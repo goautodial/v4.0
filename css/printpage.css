@@ -1,0 +1,8 @@
+.non-printable { display: none; }
+.pull-right { float: right; }
+button { display: none; }
+.print-logo {
+	text-align: center;
+	padding: 0px auto;
+	margin-bottom: 20px;
+}

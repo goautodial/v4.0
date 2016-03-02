@@ -1,0 +1,24 @@
+{
+  "name": "Creamy",
+  "description": "Creamy -- A lightweight, minimalist and open source CRM in PHP.",
+  "homepage": "http://creamycrm.com/",
+  "keywords": [
+    "php",
+    "crm",
+    "responsive",
+    "front-end",
+    "back-end",
+    "opensource",
+    "js"
+  ],
+  "authors": [
+    {
+      "name": "Ignacio Nieto Carvajal",
+      "email": "contact@digitalleaves.com"
+    }
+  ],
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/DigitalLeaves/Creamy/issues"
+  }
+}

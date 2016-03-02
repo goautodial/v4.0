@@ -1,0 +1,3 @@
+<?php
+// specific instalation configuration
+?>

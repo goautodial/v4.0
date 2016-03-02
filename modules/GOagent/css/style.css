@@ -1,0 +1,30 @@
+#livecall {
+	width: 150px;
+	text-align: right;
+}
+#livecall h3 {
+	font-size: 16px;
+	padding-right: 20px;
+    margin: 10px 0;
+	font-family: Verdana, sans-serif;
+	text-shadow: 1px 0 0 #222, -1px 0 0 #222, 0 1px 0 #222, 0 -1px 0 #222, 1px 1px #222, -1px -1px 0 #222, 1px -1px 0 #222, -1px 1px 0 #222;
+	cursor: default;
+	-webkit-user-select: none;  /* Chrome all / Safari all */
+	-moz-user-select: none;     /* Firefox all */
+	-ms-user-select: none;      /* IE 10+ */
+	user-select: none;          /* Likely future */   
+}
+.livecall {
+	color: #0F0;
+}
+.nolivecall {
+	color: #808080;
+	opacity: 0.7;
+	filter: alpha(opacity=70);
+}
+.deadcall {
+	color: #FF6347;
+}
+.callhangup {
+	color: rgb(200, 0, 0);
+}
