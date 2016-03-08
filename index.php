@@ -1,5 +1,4 @@
 <?php
-
 /**
 	The MIT License (MIT)
 	
@@ -41,7 +40,7 @@ try {
 }
 
 // initialize session and DDBB handler
-include_once('./php/UIHandler.php');//die(print_r($user));
+include_once('./php/UIHandler.php');
 require_once('./php/LanguageHandler.php');
 require_once('./php/DbHandler.php');
 $ui = \creamy\UIHandler::getInstance();
@@ -65,7 +64,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
-
+		
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -83,6 +82,9 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
+		
+		<!-- Circle Buttons style -->
+		  <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -107,7 +109,9 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 
                 <!-- Main content -->
                 <section class="content">
-
+					
+					
+					
 					<!-- Update (if needed) -->
                     <?php
 						require_once('./php/Updater.php');
@@ -184,22 +188,166 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		                            	</div>
 		                            	<div class="col-md-4 chart-legend" id="customers-chart-legend">
 		                            	</div>
-	                                </div>
+	                                 </div>
 		                            <?php } else { 
 			                        	print $ui->calloutWarningMessage($lh->translationFor("no_customers_yet"));
 			                        	print $ui->simpleLinkButton("no_customers_add_customer", $lh->translationFor("create_new"), "customerslist.php?customer_type=clients_1");
 			                        } ?>
 	                            </div>
 	                        </div>
+							
                         </section><!-- /.Left col -->
+						
                     </div><!-- /.row (main row) -->
-
+				
 					<?php print $ui->hooksForDashboard(); ?>
+					
+					
+					<div class="bottom-menu skin-blue">
+						<?php print $ui->getCircleButton("calls", "plus"); ?>
+						<div class="fab-div-area" id="fab-div-area">
+								<ul class="fab-ul" style="height: 250px;">
+									<li class="li-style"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaigns_modal"></a></li><br/>
+									<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_users"> </a></li>
+								</ul>
+							</div>
+					</div>
+					
+					<div class="modal fade" id="add_campaigns_modal" name="add_campaigns_modal" tabindex="-1" role="dialog" aria-hidden="true">
+			        <div class="modal-dialog">
+			            <div class="modal-content">
+						
+			                <div class="modal-header">
+			                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                    <h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translateText("Campaign Wizard"); ?></b></h4>
+			                </div>
 
+			                <form action="" method="post" name="" id="">
+			                    <div class="modal-body">
+			                        <div class="form-group">
+										<center><h4><b><?php $lh->translateText("Step 1  » Outbound"); ?> </b></h4></center>
+			                            <label for="campaign_type"><?php $lh->translateText("Campaign Type"); ?></label>
+			                            <input type="text required" class="form-control" id="campaign_type" name="campaign_type" placeholder="<?php $lh->translateText("Campaign Type"); ?>">
+										
+										<label for="campaign_id"><?php $lh->translateText("Campaign ID"); ?></label>
+			                            <input type="text required" class="form-control" id="campaign_id" name="campaign_id" placeholder="<?php $lh->translateText("Campaign ID"); ?>">
+										
+										<label for="campaign_name"><?php $lh->translateText("Campaign Name"); ?></label>
+			                            <input type="text required" class="form-control" id="campaign_name" name="campaign_name" placeholder="<?php $lh->translateText("Campaign Name"); ?>">
+										
+									<hr/>
+										<center><h4><b><?php $lh->translateText("Step 2  » Load Leads"); ?> </b></h4></center>
+										<label for="lead_file"><?php $lh->translateText("Lead File"); ?></label>
+			                            <input type="file" class="form-control" id="lead_file" name="lead_file" placeholder="<?php $lh->translateText("Lead File"); ?>">
+										
+										<label for="list_id"><?php $lh->translateText("List ID"); ?></label>
+			                            <input type="text required" class="form-control" id="list_id" name="list_id" placeholder="<?php $lh->translateText("List ID"); ?>">
+										
+										<label for="country"><?php $lh->translateText("Country"); ?></label>
+			                            <input type="text required" class="form-control" id="country" name="country" placeholder="<?php $lh->translateText("Country"); ?>">
+										
+										<label for="duplicate_check"><?php $lh->translateText("Check For Duplicates"); ?></label>
+			                            <select id="duplicate_check" class="form-control">
+											<option>NO DUPLICATE CHECK</option>
+											<option>CHECK DUPLICATES BY PHONE IN LIST ID</option>
+											<option>CHECK DUPLICATES BY PHONE IN ALL CAMPAIGN LISTS</option>
+										</select><br/>
+										<button type="button" class="btn"> U P L O A D   L E A D S</button>
+										
+									<hr/>
+										<center><h4><b><?php $lh->translateText("Step 3  » Information"); ?> </b></h4></center>
+										<label for="dial_method"><?php $lh->translateText("Dial Method"); ?></label>
+										<select id="dial_method" class="form-control">
+											<option>MANUAL</option>
+											<option>AUTO DIAL</option>
+											<option>PREDICTIVE</option>
+											<option>INBOUND MAN</option>
+										</select>	
+											
+										<label for="autodial_lvl"><?php $lh->translateText("AutoDial Level"); ?></label>
+										<select id="autodial_lvl" class="form-control">
+											<option>OFF</option>
+											<option>SLOW</option>
+											<option>NORMAL</option>
+											<option>HIGH</option>
+											<option>MAX</option>
+											<option>MAX PREDICTIVE</option>
+										</select>
+										<label for="carrier_for_campaign"><?php $lh->translateText("Carrier to use for this Campaign"); ?></label>
+										<select id="carrier_for_campaign" >
+											<option>CUSTOM DIAL PREFIX</option>
+										</select>
+										<input type="number">
+										<br/>
+										<label for="answering_machine"><?php $lh->translateText("Answering Machine Detection"); ?></label>
+										<select id="answering_machine" class="form-control">
+											<option>ON</option>
+											<option>OFF</option>
+										</select>
+									</div>
+			                    </div>
+			                    <div class="modal-footer clearfix">
+			                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal" id="changetaskCancelButton"><i class="fa fa-times"></i> <?php $lh->translateText("cancel"); ?></button>
+			                        <button type="submit" class="btn btn-primary pull-right" id="changeeventsOkButton"><i class="fa fa-check"></i> <?php $lh->translateText("Add New Campaign"); ?></button>
+								</div>
+								
+			                </form>
+							
+			            </div><!-- /.modal-content -->
+			        </div><!-- /.modal-dialog -->
+			    </div><!-- /.modal -->	
+				
+				
+				<!-- USERS MODAL -->
+				<div class="modal fade" id="add_users" name="add_users" tabindex="-1" role="dialog" aria-hidden="true">
+			        <div class="modal-dialog">
+			            <div class="modal-content">
+
+			                <div class="modal-header">
+			                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                    <h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translateText("User Wizard"); ?></b></h4>
+			                </div>
+							
+			                <form action="" method="post" name="" id="">
+			                    <div class="modal-body">
+									<div class="form-group">
+										<center><h4><b><?php $lh->translateText("Step 1  » Add New User"); ?> </b></h4></center>
+			                        
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="0"
+										aria-valuemin="0" aria-valuemax="100" style="width:0%">
+										  0%
+										</div>
+									</div>
+									</div>
+			                    </div>
+			                    <div class="modal-footer clearfix">
+			                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal" id="changetaskCancelButton"><i class="fa fa-times"></i> <?php $lh->translateText("cancel"); ?></button>
+			                        <button type="submit" class="btn btn-primary pull-right" id="changeeventsOkButton"><i class="fa fa-check"></i> <?php $lh->translateText("Add New Campaign"); ?></button>
+								</div>
+								
+			                </form>
+							
+			            </div><!-- /.modal-content -->
+			        </div><!-- /.modal-dialog -->
+			    </div><!-- /.modal -->
+				
+				
                 </section><!-- /.content -->
+				
             </aside><!-- /.right-side -->
+			
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
+		
+		
+	<script>
+		$(document).ready(function(){
+			$(".bottom-menu").on('mouseenter mouseleave', function () {
+			  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
+			});
+		});
+	</script>
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 

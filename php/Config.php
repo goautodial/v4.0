@@ -9,7 +9,7 @@ define('DB_NAME', 'goautodial');
 define('DB_PORT', '3306');
 
 //database config for asterisk change values if necessary
-//database configuration for 'asterisk'
+//database configuration for 'asterisk' test
 define('DB_USERNAME_ASTERISK', 'justgocloud');
 define('DB_PASSWORD_ASTERISK', 'justgocloud1234');
 //define('DB_HOST', 'localhost');

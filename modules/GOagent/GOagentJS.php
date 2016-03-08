@@ -9,7 +9,6 @@ require_once(GO_BASE_DIRECTORY.'/php/LanguageHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/DatabaseConnectorFactory.php');
 include(GO_BASE_DIRECTORY.'/php/Session.php');
 
-
 $lh = \creamy\LanguageHandler::getInstance();
 $lh->addCustomTranslationsFromFile(GO_LANG_DIRECTORY . $lh->getLanguageHandlerLocale());
 
@@ -28,6 +27,11 @@ $cPass = $cDB->getOne(CRM_SETTINGS_TABLE_NAME);
 $astHost = (isset($cHost["value"])) ? $cHost["value"] : DB_HOST;
 $astUser = (isset($cUser["value"])) ? $cUser["value"] : DB_USERNAME;
 $astPass = (isset($cPass["value"])) ? $cPass["value"] : DB_PASSWORD;
+    
+$US='_';
+$NOW_TIME = date("Y-m-d H:i:s");
+$tsNOW_TIME = date("YmdHis");
+$StarTtimE = date("U");
 
 //Connect to Asterisk DB
 $astDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL, $astHost, 'asterisk', $astUser, $astPass);
@@ -40,11 +44,6 @@ if ($astDB == null) {
 
 if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
     header('Content-Type: text/javascript');
-    
-    $US='_';
-    $NOW_TIME = date("Y-m-d H:i:s");
-    $tsNOW_TIME = date("YmdHis");
-    $StarTtimE = date("U");
 ?>
 var baseURL = '<?=$baseURL?>';
 var NOW_TIME = '<?=$NOW_TIME?>';
@@ -560,8 +559,7 @@ $(document).ready(function() {
             paddingBottom : resized ? barHeight : 0,
         });
         
-        var footerHeight = resized ? 0 : barHeight;
-        if (($(window).scrollTop() + $(window).height() + footerHeight) == $(document).height()) {
+        if (($(window).scrollTop() + document.body.clientHeight) == $(document).height()) {
             $("html, body").animate({ scrollTop: $(document).height() }, 'slow');
         }
         
@@ -1855,8 +1853,7 @@ function ManualDialCheckChannel () {
                 alert("<?=$lh->translationFor('call_rejected')?>: " + MDchannel + "\n" + MDerrorDesc + "\n" + MDerrorDescSIP);
             }
             
-            if ( (MDchannel.match(regMDL)) && (asterisk_version != '1.0.8') && (asterisk_version != '1.0.9') )
-            {
+            if ( (MDchannel.match(regMDL)) && (asterisk_version != '1.0.8') && (asterisk_version != '1.0.9') ) {
                 // bad grab of Local channel, try again
                 MD_ring_seconds++;
             } else {
@@ -1887,8 +1884,7 @@ function ManualDialCheckChannel () {
         }
     });
     
-    if ( (MD_ring_seconds > 49) && (MD_ring_seconds > dial_timeout) )
-    {
+    if ( (MD_ring_seconds > 49) && (MD_ring_seconds > dial_timeout) ) {
         MD_channel_look = 0;
         MD_ring_seconds = 0;
         
@@ -1919,34 +1915,27 @@ function phone_number_format(formatphone) {
     var regFR_SPACphone = new RegExp("FR_SPAC","g");
     var status_display_number = formatphone;
     var dispnum = formatphone;
-    if (disable_alter_custphone == 'HIDE')
-    {
-	var status_display_number = 'XXXXXXXXXX';
-	var dispnum = 'XXXXXXXXXX';
+    if (disable_alter_custphone == 'HIDE') {
+        var status_display_number = 'XXXXXXXXXX';
+        var dispnum = 'XXXXXXXXXX';
     }
-    if (header_phone_format.match(regUS_DASHphone))
-    {
-	var status_display_number = dispnum.substring(0,3) + '-' + dispnum.substring(3,6) + '-' + dispnum.substring(6,10);
+    if (header_phone_format.match(regUS_DASHphone)) {
+        var status_display_number = dispnum.substring(0,3) + '-' + dispnum.substring(3,6) + '-' + dispnum.substring(6,10);
     }
-    if (header_phone_format.match(regUS_PARNphone))
-    {
-	var status_display_number = '(' + dispnum.substring(0,3) + ')' + dispnum.substring(3,6) + '-' + dispnum.substring(6,10);
+    if (header_phone_format.match(regUS_PARNphone)) {
+        var status_display_number = '(' + dispnum.substring(0,3) + ')' + dispnum.substring(3,6) + '-' + dispnum.substring(6,10);
     }
-    if (header_phone_format.match(regUK_DASHphone))
-    {
-	var status_display_number = dispnum.substring(0,2) + ' ' + dispnum.substring(2,6) + '-' + dispnum.substring(6,10);
+    if (header_phone_format.match(regUK_DASHphone)) {
+        var status_display_number = dispnum.substring(0,2) + ' ' + dispnum.substring(2,6) + '-' + dispnum.substring(6,10);
     }
-    if (header_phone_format.match(regAU_SPACphone))
-    {
-	var status_display_number = dispnum.substring(0,3) + ' ' + dispnum.substring(3,6) + ' ' + dispnum.substring(6,9);
+    if (header_phone_format.match(regAU_SPACphone)) {
+        var status_display_number = dispnum.substring(0,3) + ' ' + dispnum.substring(3,6) + ' ' + dispnum.substring(6,9);
     }
-    if (header_phone_format.match(regIT_DASHphone))
-    {
-	var status_display_number = dispnum.substring(0,4) + '-' + dispnum.substring(4,7) + '-' + dispnum.substring(8,10);
+    if (header_phone_format.match(regIT_DASHphone)) {
+        var status_display_number = dispnum.substring(0,4) + '-' + dispnum.substring(4,7) + '-' + dispnum.substring(8,10);
     }
-    if (header_phone_format.match(regFR_SPACphone))
-    {
-	var status_display_number = dispnum.substring(0,2) + ' ' + dispnum.substring(2,4) + ' ' + dispnum.substring(4,6) + ' ' + dispnum.substring(6,8) + ' ' + dispnum.substring(8,10);
+    if (header_phone_format.match(regFR_SPACphone)) {
+        var status_display_number = dispnum.substring(0,2) + ' ' + dispnum.substring(2,4) + ' ' + dispnum.substring(4,6) + ' ' + dispnum.substring(6,8) + ' ' + dispnum.substring(8,10);
     }
 
     return status_display_number;
@@ -1958,256 +1947,446 @@ String.prototype.toUpperFirst = function() {
 <?php
 } else {
     if ($_REQUEST['module_name'] == 'GOagent') {
-        // Get User Settings
-        $agent = \creamy\CreamyUser::currentUser();
-        $astDB->where('user', $agent->getUserName());
-        $users = $astDB->getOne('vicidial_users');
-        var_dump($users->user_group);
+        $campaign = $_REQUEST['campaign_id'];
+        $users = \creamy\CreamyUser::currentUser();
+        $agent = get_settings('user', $astDB, $users->getUserName());
+        
         switch ($_REQUEST['action']) {
             case "login":
-                //$CIDdate = date("ymdHis");
-                //$month_old = mktime(11, 0, 0, date("m"), date("d")-2,  date("Y"));
-                //$past_month_date = date("Y-m-d H:i:s",$month_old);
-                //$user = $uname;
-                //$camp = $camp;
-                //$VU_user_group = $agent->user_group;
-                //
-                //$phone_settings = get_settings('phone', $db, $agent->phone_login, $agent->phone_pass);
-                //$campaign_settings = get_settings('campaign', $db, $camp);
-                //$user_settings = get_settings('user', $db, $user);
-                //$system_settings = get_settings('system', $db);
-                //
-                //$query = $db->query("SELECT asterisk_version FROM servers WHERE server_ip='{$phone_settings->server_ip}';");
-                //
-                //$extension = $phone_settings->extension;
-                //if ($phone_settings->protocol == 'EXTERNAL')
-                //{
-                //    $protocol = 'Local';
-                //    $extension = "{$phone_settings->dialplan_number}@{$phone_settings->ext_context}";
-                //}
-                //if (preg_match("/Zap/i",$phone_settings->protocol))
-                //{
-                //    if (preg_match("/^1\.0|^1\.2|^1\.4\.1|^1\.4\.20|^1\.4\.21/i",$query->row()->asterisk_version))
-                //    {
-                //        $do_nothing = 1;
-                //    } else {
-                //        $protocol = 'DAHDI';
-                //    }
-                //}
-                //
-                ////$this->session->set_userdata('phone_login', $login);
-                ////$this->session->set_userdata('phone_pass', $pass);
-                ////$this->session->set_userdata('protocol', $protocol);
-                ////$this->session->set_userdata('extension', $extension);
-                ////$this->session->set_userdata('server_ip', $phone_settings->server_ip);
-                //
-                //$SIP_user = "{$protocol}/{$extension}";
-                //$SIP_user_DiaL = "{$protocol}/{$extension}";
-                //$qm_extension = "$extension";
-                //if ( (preg_match('/8300/',$phone_settings->dialplan_number)) and (strlen($phone_settings->dialplan_number)<5) and ($protocol == 'Local') )
-                //{
-                //    $SIP_user = "{$protocol}/{$extension}{$login}";
-                //    $qm_extension = "{$extension}{$login}";
-                //}
-                //
-                //$session_ext = preg_replace("/[^a-z0-9]/i", "", $extension);
-                //if (strlen($session_ext) > 10) {$session_ext = substr($session_ext, 0, 10);}
-                //$session_rand = (rand(1,9999999) + 10000000);
-                //$session_name = "$StarTtimE$US$session_ext$session_rand";
-                ////$this->session->set_userdata('session_name', $session_name);
-                ////$this->session->set_userdata('SIP_user', $SIP_user);
-                //
-                //$query = $db->query("DELETE FROM web_client_sessions WHERE start_time < '$past_month_date' AND extension='$extension' AND server_ip = '{$phone_settings->server_ip}' AND program = 'vicidial';");
-                //
-                //$query = $db->query("INSERT INTO web_client_sessions VALUES('$extension','{$phone_settings->server_ip}','vicidial','$NOW_TIME','$session_name');");
-                //
-                //$campaign_leads_to_call = 1; // for testing purposes -- chris
-                //if ( ( ($campaign_allow_inbound == 'Y') and ($dial_method != 'MANUAL') ) || ($campaign_leads_to_call > 0) || (preg_match('/Y/',$no_hopper_leads_logins)) )
-                //{
-                //    ##### check to see if the user has a conf extension already, this happens if they previously exited uncleanly
-                //    $query = $db->query("SELECT conf_exten FROM vicidial_conferences WHERE extension='$SIP_user' AND server_ip = '{$phone_settings->server_ip}' LIMIT 1;");
-                //    $prev_login_ct = $query->num_rows();
-                //    
-                //    $i=0;
-                //    while ($i < $prev_login_ct)
-                //    {
-                //        $session_id = $query->row()->conf_exten;
-                //        $i++;
-                //    }
-                //    
-                //    if ($prev_login_ct > 0)
-                //    {
-                //        //var_dump("USING PREVIOUS MEETME ROOM - $session_id - $NOW_TIME - $SIP_user");
-                //    } else {
-                //        ##### grab the next available vicidial_conference room and reserve it
-                //        $query = $db->query("SELECT count(*) FROM vicidial_conferences WHERE server_ip='{$phone_settings->server_ip}' AND ((extension='') OR (extension IS null));");
-                //        
-                //        if ($query->num_rows() > 0)
-                //        {
-                //            $query = $db->query("UPDATE vicidial_conferences SET extension='$SIP_user', leave_3way='0' WHERE server_ip='{$phone_settings->server_ip}' AND ((extension='') OR (extension IS null)) LIMIT 1;");
-                //            
-                //            $query = $db->query("SELECT conf_exten FROM vicidial_conferences WHERE server_ip='{$phone_settings->server_ip}' AND ( (extension='$SIP_user') OR (extension='$user') );");
-                //            $session_id = $query->row()->conf_exten;
-                //        }
-                //        
-                //        //var_dump("USING NEW MEETME ROOM - $session_id - $NOW_TIME - $SIP_user");
-                //    }
-                //    
-                //    //$this->session->set_userdata('conf_exten', $session_id);
-                //    
-                //    ##### clearing records from vicidial_live_agents and vicidial_live_inbound_agents
-                //    $query = $db->query("DELETE FROM vicidial_live_agents WHERE user='$user';");
-                //    $query = $db->query("DELETE FROM vicidial_live_inbound_agents WHERE user='$user';");
-                //                
-                //    ##### insert a NEW record to the vicidial_manager table to be processed
-                //    $SIqueryCID = "S{$CIDdate}{$session_id}";
-                //    $TEMP_SIP_user_DiaL = $SIP_user_DiaL;
-                //    if ($phone_settings->on_hook_agent == 'Y')
-                //        {$TEMP_SIP_user_DiaL = 'Local/8300@default';}
-                //    $agent_login_data = "||$NOW_TIME|NEW|N|{$phone_settings->server_ip}||Originate|$SIqueryCID|Channel: $TEMP_SIP_user_DiaL|Context: {$phone_settings->ext_context}|Exten: $session_id|Priority: 1|Callerid: $SIqueryCID|||||";
-                //    $query = $db->query("INSERT INTO vicidial_manager VALUES('','','$NOW_TIME','NEW','N','{$phone_settings->server_ip}','','Originate','$SIqueryCID','Channel: $TEMP_SIP_user_DiaL','Context: {$phone_settings->ext_context}','Exten: $session_id','Priority: 1','Callerid: \"$SIqueryCID\" <{$campaign_settings->campaign_cid}>','','','','','');");
-                //    
-                //    $WebPhonEurl = '';
-                //    $query = $db->query("DELETE from vicidial_session_data where user='$user';");
-                //    
-                //    $query = $db->query("INSERT INTO vicidial_session_data SET session_name='$session_name',user='$user',campaign_id='$camp',server_ip='{$phone_settings->server_ip}',conf_exten='$session_id',extension='$extension',login_time='$NOW_TIME',webphone_url='$WebPhonEurl',agent_login_call='{$agent_login_data}';");
-                //    
-                //    $query = $db->query("SELECT campaign_weight,calls_today,campaign_grade FROM vicidial_campaign_agents where user='$user' and campaign_id='$camp';");
-                //    
-                //    if ($query->num_rows() > 0)
-                //    {
-                //            $rowC = $query->row();
-                //            $campaign_weight = $rowC->campaign_weight;
-                //            $calls_today = $rowC->calls_today;
-                //            $campaign_grade = $rowC->campaign_grade;
-                //    } else {
-                //            $campaign_weight = '0';
-                //            $calls_today = '0';
-                //            $campaign_grade = '1';
-                //            
-                //            $query = $db->query("INSERT INTO vicidial_campaign_agents (user,campaign_id,campaign_rank,campaign_weight,calls_today,campaign_grade) values('$user','$camp','0','0','$calls_today','$campaign_grade');");
-                //    }
-                //    
-                //    if ($campaign_settings->auto_dial_level > 0) {
-                //            $outbound_autodial = 'Y';
-                //    } else {
-                //            $outbound_autodial = 'N';
-                //    }
-                //    
-                //    $random = (rand(1000000, 9999999) + 10000000);
-                //    $query = $db->query("INSERT INTO vicidial_live_agents (user,server_ip,conf_exten,extension,status,lead_id,campaign_id,closer_campaigns,uniqueid,callerid,channel,random_id,last_call_time,last_update_time,last_call_finish,user_level,campaign_weight,calls_today,last_state_change,outbound_autodial,manager_ingroup_set,on_hook_ring_time,on_hook_agent,last_inbound_call_time,last_inbound_call_finish,campaign_grade) values('$user','{$phone_settings->server_ip}','$session_id','$SIP_user','PAUSED','','$camp','','','','','$random','$NOW_TIME','$tsNOW_TIME','$NOW_TIME','{$user_settings->user_level}', '$campaign_weight', '$calls_today','$NOW_TIME','$outbound_autodial','N','{$phone_settings->phone_ring_timeout}','{$phone_settings->on_hook_agent}','$NOW_TIME','$NOW_TIME','$campaign_grade');");
-                //            
-                //    $query = $db->query("INSERT INTO vicidial_agent_log (user,server_ip,event_time,campaign_id,pause_epoch,pause_sec,wait_epoch,user_group,sub_status) values('$user','{$phone_settings->server_ip}','$NOW_TIME','$camp','$StarTtimE','0','$StarTtimE','{$user_settings->user_group}','LOGIN');");
-                //    $agent_log_id = $db->insert_id();
-                //    
-                //    $query = $db->query("UPDATE vicidial_campaigns SET campaign_logindate='$NOW_TIME' WHERE campaign_id='$camp';");
-                //    
-                //    $query = $db->query("UPDATE vicidial_live_agents SET agent_log_id='$agent_log_id' where user='$user';");
-                //    
-                //    $query = $db->query("UPDATE vicidial_users SET shift_override_flag='0' where user='$user' and shift_override_flag='1';");
-                //    
-                //    $closer_campaigns = '';
-                //    $query = $db->query("UPDATE vicidial_live_agents SET closer_campaigns='$closer_campaigns' WHERE user='$user' AND server_ip='{$phone_settings->server_ip}';");
-                //}
-                //
-                //$user_abb = "$uname$uname$uname$uname";
-                //while ( (strlen($user_abb) > 4) and ($forever_stop < 200) )
-                //    {$user_abb = preg_replace("/^\./i","",$user_abb);   $forever_stop++;}
-                //
-                //$query = $db->query("SELECT asterisk_version FROM servers WHERE server_ip='{$phone_settings->server_ip}';");
-                //$asterisk_version = $query->row()->asterisk_version;
-                //
-                //$VARCBstatusesLIST = '';
-                //##### grab the statuses that can be used for dispositioning by an agent
-                //$query = $db->query("SELECT status,status_name,scheduled_callback FROM vicidial_statuses WHERE selectable='Y' ORDER BY status LIMIT 500;");
-                //$statuses_ct = $query->num_rows();
-                //foreach ($query->result() as $row)
-                //{
-                //    $statuses[$row->status] = "{$row->status_name}";
-                //    if ($row->scheduled_callback == 'Y')
-                //        {$VARCBstatusesLIST .= " {$row->status}";}
-                //}
-                //
-                //##### grab the campaign-specific statuses that can be used for dispositioning by an agent
-                //$query = $db->query("SELECT status,status_name,scheduled_callback FROM vicidial_campaign_statuses WHERE selectable='Y' AND campaign_id='$camp' ORDER BY status LIMIT 500;");
-                //$statuses_camp_ct = $query->num_rows();
-                //foreach ($query->result() as $row)
-                //{
-                //    $statuses[$row->status] = "{$row->status_name}";
-                //    if ($row->scheduled_callback == 'Y')
-                //        {$VARCBstatusesLIST .= " {$row->status}";}
-                //}
-                //$statuses_ct = ($statuses_ct + $statuses_camp_ct);
-                //$VARCBstatusesLIST .= " ";
-                //
-                //$xfer_groups = preg_replace("/^ | -$/","",$campaign_settings->xfer_groups);
-                //$xfer_groups = preg_replace("/ /","','",$xfer_groups);
+                $CIDdate = date("ymdHis");
+                $month_old = mktime(11, 0, 0, date("m"), date("d")-2,  date("Y"));
+                $past_month_date = date("Y-m-d H:i:s",$month_old);
+                $user = $agent->user;
+                $VU_user_group = $agent->user_group;
+                $phone_login = (isset($_REQUEST['pl'])) ? $_REQUEST['pl'] : $agent->phone_login;
+                $phone_pass = (isset($_REQUEST['pp'])) ? $_REQUEST['pp'] : $agent->phone_pass;
+                
+                $phone_settings = get_settings('phone', $astDB, $phone_login, $phone_pass);
+                $campaign_settings = get_settings('campaign', $astDB, $campaign);
+                $system_settings = get_settings('system', $astDB);
+                
+                $astDB->where('server_ip', $phone_settings->server_ip);
+                $query = $astDB->getOne('servers', 'asterisk_version');
+                $asterisk_version = $query['asterisk_version'];
+                
+                $extension = $phone_settings->extension;
+                if ($phone_settings->protocol == 'EXTERNAL') {
+                    $protocol = 'Local';
+                    $extension = "{$phone_settings->dialplan_number}@{$phone_settings->ext_context}";
+                }
+                if (preg_match("/Zap/i",$phone_settings->protocol)) {
+                    if (preg_match("/^1\.0|^1\.2|^1\.4\.1|^1\.4\.20|^1\.4\.21/i", $asterisk_version)) {
+                        $do_nothing = 1;
+                    } else {
+                        $protocol = 'DAHDI';
+                    }
+                }
+                
+                //$this->session->set_userdata('phone_login', $login);
+                //$this->session->set_userdata('phone_pass', $pass);
+                //$this->session->set_userdata('protocol', $protocol);
+                //$this->session->set_userdata('extension', $extension);
+                //$this->session->set_userdata('server_ip', $phone_settings->server_ip);
+                
+                $SIP_user = "{$protocol}/{$extension}";
+                $SIP_user_DiaL = "{$protocol}/{$extension}";
+                $qm_extension = "$extension";
+                if ( (preg_match('/8300/',$phone_settings->dialplan_number)) and (strlen($phone_settings->dialplan_number)<5) and ($protocol == 'Local') ) {
+                    $SIP_user = "{$protocol}/{$extension}{$agent->phone_login}";
+                    $qm_extension = "{$extension}{$agent->phone_login}";
+                }
+                
+                $session_ext = preg_replace("/[^a-z0-9]/i", "", $extension);
+                if (strlen($session_ext) > 10) {$session_ext = substr($session_ext, 0, 10);}
+                $session_rand = (rand(1,9999999) + 10000000);
+                $session_name = "$StarTtimE$US$session_ext$session_rand";
+                //$this->session->set_userdata('session_name', $session_name);
+                //$this->session->set_userdata('SIP_user', $SIP_user);
+                
+                $astDB->where('start_time', $past_month_date, '<');
+                $astDB->where('extension', $extension);
+                $astDB->where('server_ip', $phone_settings->server_ip);
+                $astDB->where('program', 'vicidial');
+                $query = $astDB->delete('web_client_sessions');
+                
+                $query = $astDB->insert('web_client_sessions', array('extension' => $extension, 'server_ip' => $phone_settings->server_ip, 'program' => 'vicidial', 'start_time' => $NOW_TIME, 'session_name' => $session_name));
+                
+                $campaign_leads_to_call = 1; // for testing purposes -- chris
+                if ( ( ($campaign_allow_inbound == 'Y') and ($dial_method != 'MANUAL') ) || ($campaign_leads_to_call > 0) || (preg_match('/Y/',$no_hopper_leads_logins)) ) {
+                    ##### check to see if the user has a conf extension already, this happens if they previously exited uncleanly
+                    //$query = $db->query("SELECT conf_exten FROM vicidial_conferences WHERE extension='$SIP_user' AND server_ip = '{$phone_settings->server_ip}' LIMIT 1;");
+                    $astDB->where('extension', $SIP_user);
+                    $astDB->where('server_ip', $phone_settings->server_ip);
+                    $query = $astDB->getOne('vicidial_conferences', 'conf_exten');
+                    $prev_login_ct = $astDB->getRowCount();
+                    
+                    $i=0;
+                    while ($i < $prev_login_ct) {
+                        $session_id = $query['conf_exten'];
+                        $i++;
+                    }
+                    
+                    if ($prev_login_ct > 0) {
+                        //var_dump("USING PREVIOUS MEETME ROOM - $session_id - $NOW_TIME - $SIP_user");
+                    } else {
+                        ##### grab the next available vicidial_conference room and reserve it
+                        //$query = $astDB->query("SELECT count(*) FROM vicidial_conferences WHERE server_ip='{$phone_settings->server_ip}' AND ((extension='') OR (extension IS null));");
+                        $astDB->where('server_ip', $phone_settings->server_ip);
+                        $astDB->where('extension', '');
+                        $astDB->orWhere('extension', null);
+                        $query = $astDB->get('vicidial_conferences');
+                        if ($astDB->getRowCount() > 0) {
+                            $query = $astDB->rawQuery("UPDATE vicidial_conferences SET extension='$SIP_user', leave_3way='0' WHERE server_ip='{$phone_settings->server_ip}' AND ((extension='') OR (extension=null))", 1);
+
+                        var_dump($query);
+                            $astDB->where('server_ip', $phone_settings->server_ip);
+                            $astDB->where('extension', $SIP_user);
+                            $astDB->orWhere('extension', $user);
+                            $query = $astDB->getOne('vicidial_conferences', 'conf_exten');
+                            $session_id = $query['conf_exten'];
+                        }
+                        
+                        //var_dump("USING NEW MEETME ROOM - $session_id - $NOW_TIME - $SIP_user");
+                    }
+                    
+                    //$this->session->set_userdata('conf_exten', $session_id);
+                    
+                    ##### clearing records from vicidial_live_agents and vicidial_live_inbound_agents
+                    $astDB->where('user', $user);
+                    $query = $astDB->delete('vicidial_live_agents');
+                    $astDB->where('user', $user);
+                    $query = $astDB->delete('vicidial_live_inbound_agents');
+                                
+                    ##### insert a NEW record to the vicidial_manager table to be processed
+                    $SIqueryCID = "S{$CIDdate}{$session_id}";
+                    $TEMP_SIP_user_DiaL = $SIP_user_DiaL;
+                    if ($phone_settings->on_hook_agent == 'Y')
+                        {$TEMP_SIP_user_DiaL = 'Local/8300@default';}
+                    $agent_login_data = "||$NOW_TIME|NEW|N|{$phone_settings->server_ip}||Originate|$SIqueryCID|Channel: $TEMP_SIP_user_DiaL|Context: {$phone_settings->ext_context}|Exten: $session_id|Priority: 1|Callerid: $SIqueryCID|||||";
+                    $insertData = array(
+                        'man_id' => '',
+                        'uniqueid' => '',
+                        'entry_date' => $NOW_TIME,
+                        'status' => 'NEW',
+                        'response' => 'N',
+                        'server_ip' => $phone_settings->server_ip,
+                        'channel' => '',
+                        'action' => 'Originate',
+                        'callerid' => $SIqueryCID,
+                        'cmd_line_b' => "Channel: $TEMP_SIP_user_DiaL",
+                        'cmd_line_c' => "Context: {$phone_settings->ext_context}",
+                        'cmd_line_d' => "Exten: $session_id",
+                        'cmd_line_e' => 'Priority: 1',
+                        'cmd_line_f' => "Callerid: \"$SIqueryCID\" <{$campaign_settings->campaign_cid}>",
+                        'cmd_line_g' => '',
+                        'cmd_line_h' => '',
+                        'cmd_line_i' => '',
+                        'cmd_line_j' => '',
+                        'cmd_line_k' => ''
+                    );
+                    $query = $astDB->insert('vicidial_manager', $insertData);
+                    
+                    $WebPhonEurl = '';
+                    $astDB->where('user', $user);
+                    $query = $astDB->delete('vicidial_session_data');
+                    
+                    $query = $astDB->insert('vicidial_session_data', array('session_name' => $session_name, 'user' => $user, 'campaign_id' => $campaign, 'server_ip' => $phone_settings->server_ip, 'conf_exten' => $session_id, 'extension' => $extension, 'login_time' => $NOW_TIME, 'webphone_url' => $WebPhonEurl, 'agent_login_call' => $agent_login_data));
+                    
+                    $astDB->where('user', $user);
+                    $astDB->where('campaign_id', $campaign);
+                    $query = $astDB->getOne('vicidial_campaign_agents', 'campaign_weight,calls_today,campaign_grade');
+                    
+                    if ($astDB->getRowCount() > 0) {
+                        $campaign_weight = $query['campaign_weight'];
+                        $calls_today = $query['calls_today'];
+                        $campaign_grade = $query['campaign_grade'];
+                    } else {
+                        $campaign_weight = '0';
+                        $calls_today = '0';
+                        $campaign_grade = '1';
+                        
+                        $insertData = array(
+                            'user' => $user,
+                            'campaign_id' => $campaign,
+                            'campaign_rank' => '0',
+                            'campaign_weight' => '0',
+                            'calls_today' => $calls_today,
+                            'campaign_grade' => $campaign_grade
+                        );
+                        $query = $astDB->insert('vicidial_campaign_agents', $insertData);
+                    }
+                    
+                    if ($campaign_settings->auto_dial_level > 0) {
+                        $outbound_autodial = 'Y';
+                    } else {
+                        $outbound_autodial = 'N';
+                    }
+                    
+                    $random = (rand(1000000, 9999999) + 10000000);
+                    $query = $astDB->rawQuery("INSERT INTO vicidial_live_agents (user,server_ip,conf_exten,extension,status,lead_id,campaign_id,closer_campaigns,uniqueid,callerid,channel,random_id,last_call_time,last_update_time,last_call_finish,user_level,campaign_weight,calls_today,last_state_change,outbound_autodial,manager_ingroup_set,on_hook_ring_time,on_hook_agent,last_inbound_call_time,last_inbound_call_finish,campaign_grade) values('$user','{$phone_settings->server_ip}','$session_id','$SIP_user','PAUSED','','$campaign','','','','','$random','$NOW_TIME','$tsNOW_TIME','$NOW_TIME','{$user_settings->user_level}', '$campaign_weight', '$calls_today','$NOW_TIME','$outbound_autodial','N','{$phone_settings->phone_ring_timeout}','{$phone_settings->on_hook_agent}','$NOW_TIME','$NOW_TIME','$campaign_grade')");
+                            
+                    $query = $astDB->rawQuery("INSERT INTO vicidial_agent_log (user,server_ip,event_time,campaign_id,pause_epoch,pause_sec,wait_epoch,user_group,sub_status) values('$user','{$phone_settings->server_ip}','$NOW_TIME','$campaign','$StarTtimE','0','$StarTtimE','{$user_settings->user_group}','LOGIN')");
+                    $agent_log_id = $astDB->getInsertId();
+                    
+                    //$query = $db->query("UPDATE vicidial_campaigns SET campaign_logindate='$NOW_TIME' WHERE campaign_id='$campaign';");
+                    $astDB->where('campaign_id', $campaign);
+                    $query = $astDB->update('vicidial_campaigns', array('campaign_logindate' => $NOW_TIME));
+                    
+                    //$query = $db->query("UPDATE vicidial_live_agents SET agent_log_id='$agent_log_id' where user='$user';");
+                    $astDB->where('user', $user);
+                    $query = $astDB->update('vicidial_live_agents', array('agent_log_id' => $agent_log_id));
+                    
+                    //$query = $db->query("UPDATE vicidial_users SET shift_override_flag='0' where user='$user' and shift_override_flag='1';");
+                    $astDB->where('user', $user);
+                    $astDB->where('shift_override_flag', '1');
+                    $query = $astDB->update('vicidial_users', array('shift_override_flag' => '0'));
+                    
+                    $closer_campaigns = '';
+                    //$query = $db->query("UPDATE vicidial_live_agents SET closer_campaigns='$closer_campaigns' WHERE user='$user' AND server_ip='{$phone_settings->server_ip}';");
+                    $astDB->where('user', $user);
+                    $astDB->where('server_ip', $phone_settings->server_ip);
+                    $query = $astDB->update('vicidial_live_agents', array('closer_campaigns' => $closer_campaigns));
+                }
+                
+                $VARCBstatusesLIST = '';
+                ##### grab the statuses that can be used for dispositioning by an agent
+                $astDB->where('selectable', 'Y');
+                $astDB->orderBy('status');
+                $query = $astDB->get('vicidial_statuses', 500, 'status,status_name,scheduled_callback');
+                $statuses_ct = $astDB->getRowCount();
+                foreach ($query as $row) {
+                    $status = $row['status'];
+                    $status_name = $row['status_name'];
+                    $scheduled_callback = $row['scheduled_callback'];
+                    $statuses[$status] = "{$status_name}";
+                    if ($scheduled_callback == 'Y')
+                        {$VARCBstatusesLIST .= " {$status}";}
+                }
+                
+                ##### grab the campaign-specific statuses that can be used for dispositioning by an agent
+                $astDB->where('selectable', 'Y');
+                $astDB->where('campaign_id', $campaign);
+                $astDB->orderBy('status');
+                $query = $astDB->get('vicidial_campaign_statuses', 500, 'status,status_name,scheduled_callback');
+                $statuses_camp_ct = $astDB->getRowCount();
+                foreach ($query as $row) {
+                    $status = $row['status'];
+                    $status_name = $row['status_name'];
+                    $scheduled_callback = $row['scheduled_callback'];
+                    $statuses[$status] = "{$status_name}";
+                    if ($scheduled_callback == 'Y')
+                        {$VARCBstatusesLIST .= " {$status}";}
+                }
+                $statuses_ct = ($statuses_ct + $statuses_camp_ct);
+                $VARCBstatusesLIST .= " ";
+                
+                $xfer_groups = preg_replace("/^ | -$/", "", $campaign_settings->xfer_groups);
+                $xfer_groups = explode(" ", $xfer_groups);
+                //$xfer_groups = preg_replace("/ /", "','", $xfer_groups);
                 //$xfer_groups = "'$xfer_groups'";
-                //$XFgrpCT = 0;
-                //$VARxferGroups="''";
-                //$VARxferGroupsNames = '';
-                //$default_xfer_group_name = '';
-                //if ($campaign_settings->allow_closers == 'Y')
-                //{
-                //    $VARxferGroups = '';
-                //    $result = $db->query("SELECT group_id,group_name FROM vicidial_inbound_groups WHERE active = 'Y' AND group_id IN($xfer_groups) ORDER BY group_id LIMIT 800;");
-                //    $xfer_ct = $result->num_rows();
-                //    $XFgrpCT = 0;
-                //    while ($XFgrpCT < $xfer_ct)
-                //    {
-                //        $row = $result->row();
-                //        $VARxferGroups = "{$VARxferGroups}'{$row->group_id}',";
-                //        $VARxferGroupsNames = "{$VARxferGroupsNames}'{$row->group_name}',";
-                //        if ($row->group_id == "{$campaign_settings->default_xfer_group}") {$default_xfer_group_name = $row->group_name;}
-                //        $XFgrpCT++;
-                //    }
-                //    $VARxferGroups = substr("$VARxferGroups", 0, -1); 
-                //    $VARxferGroupsNames = substr("$VARxferGroupsNames", 0, -1); 
-                //}
-                //
-                //$return = array(
-                //    'user' => $uname,
-                //    'agent_log_id' => $agent_log_id,
-                //    'start_time' => $StarTtimE,
-                //    'now_time' => $NOW_TIME,
-                //    'timestamp' => $tsNOW_TIME,
-                //    'protocol' => $protocol,
-                //    'extension' => $extension,
-                //    'conf_exten' => $session_id,
-                //    'session_id' => $session_id,
-                //    'session_name' => $session_name,
-                //    'server_ip' => $phone_settings->server_ip,
-                //    'asterisk_version' => $asterisk_version,
-                //    'SIP' => $SIP_user,
-                //    'qm_extension' => $qm_extension,
-                //    'user_abb' => $user_abb,
-                //    'statuses_ct' => $statuses_ct,
-                //    'statuses' => $statuses,
-                //    'VARCBstatusesLIST' => $VARCBstatusesLIST,
-                //    'XFgroupCOUNT' => $XFgrpCT,
-                //    'VARxferGroups' => $VARxferGroups,
-                //    'VARxferGroupsNames' => $VARxferGroupsNames,
-                //    'Copy_to_Clipboard' => $campaign_settings->agent_clipboard_copy,
-                //    'Call_XC_a_DTMF' => $campaign_settings->xferconf_a_dtmf,
-                //    'Call_XC_a_Number' => $campaign_settings->xferconf_a_number,
-                //    'Call_XC_b_DTMF' => $campaign_settings->xferconf_b_dtmf,
-                //    'Call_XC_b_Number' => $campaign_settings->xferconf_b_number,
-                //    'Call_XC_c_Number' => $campaign_settings->xferconf_c_number,
-                //    'Call_XC_d_Number' => $campaign_settings->xferconf_d_number,
-                //    'Call_XC_e_Number' => $campaign_settings->xferconf_e_number,
-                //    'default_xfer_group_name' => $default_xfer_group_name,
-                //    'camp_settings' => $campaign_settings,
-                //    'phone_settings' => $phone_settings,
-                //    'user_settings' => $user_settings,
-                //    'system_settings' => $system_settings
-                //);
-                //$return = json_encode($return);
-                ////echo "User: {$user}|StartTime: {$StarTtimE}|Now: {$NOW_TIME}|TimeStamp: {$tsNOW_TIME}|Protocol: {$protocol}|Extension: {$extension}|ServerIP: {$phone_settings->server_ip}|{$session_name}|SIP: {$SIP_user}|SessionID: {$session_id}";
-                //echo $return;
+                $XFgrpCT = 0;
+                $VARxferGroups = "''";
+                $VARxferGroupsNames = '';
+                $default_xfer_group_name = '';
+                if ($campaign_settings->allow_closers == 'Y') {
+                    $VARxferGroups = '';
+                    $astDB->where('active', 'Y');
+                    $astDB->where('group_id', $xfer_groups, 'IN');
+                    $astDB->orderBy('group_id');
+                    $result = $astDB->get('vicidial_inbound_groups', 800, 'group_id,group_name');
+                    //$result = $astDB->query("SELECT group_id,group_name FROM vicidial_inbound_groups WHERE active = 'Y' AND group_id IN($xfer_groups) ORDER BY group_id LIMIT 800;");
+                    $xfer_ct = $astDB->getRowCount();
+                    $XFgrpCT = 0;
+                    while ($XFgrpCT < $xfer_ct) {
+                        $row = $result[$XFgrpCT];
+                        $VARxferGroups = "{$VARxferGroups}'{$row['group_id']}',";
+                        $VARxferGroupsNames = "{$VARxferGroupsNames}'{$row['group_name']}',";
+                        if ($row['group_id'] == "{$campaign_settings->default_xfer_group}") {$default_xfer_group_name = $row['group_name'];}
+                        $XFgrpCT++;
+                    }
+                    $VARxferGroups = substr("$VARxferGroups", 0, -1); 
+                    $VARxferGroupsNames = substr("$VARxferGroupsNames", 0, -1); 
+                }
+                
+                $return = array(
+                    'user' => $user,
+                    'agent_log_id' => $agent_log_id,
+                    'start_time' => $StarTtimE,
+                    'now_time' => $NOW_TIME,
+                    'timestamp' => $tsNOW_TIME,
+                    'protocol' => $protocol,
+                    'extension' => $extension,
+                    'conf_exten' => $session_id,
+                    'session_id' => $session_id,
+                    'session_name' => $session_name,
+                    'server_ip' => $phone_settings->server_ip,
+                    'asterisk_version' => $asterisk_version,
+                    'SIP' => $SIP_user,
+                    'qm_extension' => $qm_extension,
+                    'user_abb' => $user_abb,
+                    'statuses_ct' => $statuses_ct,
+                    'statuses' => $statuses,
+                    'VARCBstatusesLIST' => $VARCBstatusesLIST,
+                    'XFgroupCOUNT' => $XFgrpCT,
+                    'VARxferGroups' => $VARxferGroups,
+                    'VARxferGroupsNames' => $VARxferGroupsNames,
+                    'Copy_to_Clipboard' => $campaign_settings->agent_clipboard_copy,
+                    'Call_XC_a_DTMF' => $campaign_settings->xferconf_a_dtmf,
+                    'Call_XC_a_Number' => $campaign_settings->xferconf_a_number,
+                    'Call_XC_b_DTMF' => $campaign_settings->xferconf_b_dtmf,
+                    'Call_XC_b_Number' => $campaign_settings->xferconf_b_number,
+                    'Call_XC_c_Number' => $campaign_settings->xferconf_c_number,
+                    'Call_XC_d_Number' => $campaign_settings->xferconf_d_number,
+                    'Call_XC_e_Number' => $campaign_settings->xferconf_e_number,
+                    'default_xfer_group_name' => $default_xfer_group_name,
+                    'camp_settings' => $campaign_settings,
+                );
+                $return = json_encode($return);
+                //echo "User: {$user}|StartTime: {$StarTtimE}|Now: {$NOW_TIME}|TimeStamp: {$tsNOW_TIME}|Protocol: {$protocol}|Extension: {$extension}|ServerIP: {$phone_settings->server_ip}|{$session_name}|SIP: {$SIP_user}|SessionID: {$session_id}";
+                echo $return;
+                break;
+
+            case "logout":
+                $NOW_TIME = date("Y-m-d H:i:s");
+                $StarTtime = date("U");
+                $user = $agent->user;
+                $user_group = $agent->user_group;
+                $phone_login = (isset($_REQUEST['pl'])) ? $_REQUEST['pl'] : $agent->phone_login;
+                $phone_pass = (isset($_REQUEST['pp'])) ? $_REQUEST['pp'] : $agent->phone_pass;
+            
+                $phone_settings = get_settings('phone', $astDB, $phone_login, $phone_pass);
+                $campaign_settings = get_settings('campaign', $astDB, $campaign);
+                
+                $astDB->where('server_ip', $phone_settings->server_ip);
+                $query = $astDB->getOne('servers', 'asterisk_version');
+                $asterisk_version = $query['asterisk_version'];
+                
+                $extension = $phone_settings->extension;
+                if ($phone_settings->protocol == 'EXTERNAL')
+                {
+                    $protocol = 'Local';
+                    $extension = "{$phone_settings->dialplan_number}@{$phone_settings->ext_context}";
+                }
+                if (preg_match("/Zap/i",$phone_settings->protocol))
+                {
+                    if (preg_match("/^1\.0|^1\.2|^1\.4\.1|^1\.4\.20|^1\.4\.21/i", $asterisk_version))
+                    {
+                        $do_nothing = 1;
+                    } else {
+                        $protocol = 'DAHDI';
+                    }
+                }
+                
+                $server_ip = $phone_settings->server_ip;
+                
+                $astDB->where('server_ip', $server_ip);
+                $astDB->where('channel', "$protocol/$extension%", 'like');
+                $astDB->orderBy('channel');
+                $query = $astDB->getOne('live_sip_channels', 'channel');
+                //$query = $db->query("SELECT channel FROM live_sip_channels where server_ip = '$server_ip' and channel LIKE \"$protocol/$extension%\" order by channel desc;");
+                $agent_channel = '';
+                if ($astDB->getRowCount() > 0) {
+                    $agent_channel = $query['channel'];
+                    $query = $astDB->rawQuery("INSERT INTO vicidial_manager values('','','$NOW_TIME','NEW','N','$server_ip','','Hangup','ULGH3459$StarTtime','Channel: $agent_channel','','','','','','','','','')");
+                }
+                
+                ##### check to see if the user has a conf extension already, this happens if they previously exited uncleanly
+                $SIP_user = "{$protocol}/{$extension}";
+                if ( (preg_match('/8300/', $phone_settings->dialplan_number)) and (strlen($phone_settings->dialplan_number)<5) and ($protocol == 'Local') ) {
+                    $SIP_user = "{$protocol}/{$extension}{$login}";
+                }
+                
+                $astDB->where('extension', $SIP_user);
+                $astDB->where('server_ip', $server_ip);
+                $query = $astDB->getOne('vicidial_conferences', 'conf_exten');
+                $prev_login_ct = $astDB->getRowCount();
+                
+                $i=0;
+                while ($i < $prev_login_ct) {
+                    $session_id = $query['conf_exten'];
+                    $i++;
+                }
+                
+                if (strlen($session_id) > 0) {
+                    ##### insert an entry on vicidial_user_log
+                    $query = $astDB->rawQuery("INSERT INTO vicidial_user_log (user,event,campaign_id,event_date,event_epoch,user_group) values('$user','LOGOUT','$campaign','$NOW_TIME','$StarTtime','$user_group')");
+                            
+                    sleep(1);
+                    
+                    $astDB->where('server_ip', $server_ip);
+                    $astDB->where('user', $user);
+                    $query = $astDB->delete('vicidial_live_agents');
+                    
+                    $astDB->where('user', $user);
+                    $query = $astDB->delete('vicidial_live_inbound_agents');
+                    
+                    $channel = $agent_channel;
+                    $local_DEF = 'Local/5555';
+                    $conf_exten = $session_id;
+                    $local_AMP = '@';
+                    $ext_context = 'default';
+                    $kick_local_channel = "$local_DEF$conf_exten$local_AMP$ext_context";
+                    $queryCID = "ULGH3458$StarTtime";
+                    
+                    $query = $astDB->rawQuery("INSERT INTO vicidial_manager values('','','$NOW_TIME','NEW','N','$server_ip','','Originate','$queryCID','Channel: $kick_local_channel','Context: $ext_context','Exten: 8300','Priority: 1','Callerid: $queryCID','','','','$channel','$conf_exten')");
+                    
+                    $return = "SUCCESS: {$user} has logged out.";
+                } else {
+                    $return = "ERROR: {$user} not logged in.";
+                }
+                
+                header("Cache-Control: no-store, no-cache, must-revalidate");
+                header("Cache-Control: post-check=0, pre-check=0");
+                header("Pragma: no-cache");
+                
+                echo $return;
                 break;
         }
     } else {
         echo "ERROR: Module '{$_REQUEST['module_name']}' not found.";
     }
+}
+
+function get_settings($type=null, $dbase, $param1=null, $param2=null) {
+    switch ($type) {
+        case "user":
+            //User Settings
+            $dbase->where('user', $param1);
+            $return = $dbase->getOne('vicidial_users');
+            break;
+        
+        case "campaign":
+            //Campaign Settings
+            $dbase->where('campaign_id', $param1);
+            $return = $dbase->getOne('vicidial_campaigns');
+            break;
+        
+        case "hotkeys":
+            //Campaign HotKeys
+            $dbase->where('campaign_id', $param1);
+            $dbase->orderBy('hotkey', 'asc');
+            $return = $dbase->get('vicidial_campaign_hotkeys');
+            break;
+        
+        case "phone":
+            //Phone Settings
+            $dbase->where('login', $param1);
+            $dbase->where('pass', $param2);
+            $dbase->where('active', 'Y');
+            $return = $dbase->getOne('phones');
+            break;
+        
+        case "usergroup":
+            //User Group Settings
+            $dbase->where('user_group', $param1);
+            $return = $dbase->getOne('vicidial_user_groups');
+            break;
+        
+        default:
+            //System Settings
+            $return = $dbase->getOne('system_settings');
+    }
+    
+    return json_decode(json_encode($return), FALSE);
 }
 ?>

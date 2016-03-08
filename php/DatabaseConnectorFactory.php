@@ -120,8 +120,8 @@ class DatabaseConnectorFactory {
 	    
 	    if (empty($dbhost) && defined('DB_HOST')) { $dbhost = DB_HOST; }	    
 	    if (empty($dbname) && defined('DB_NAME_ASTERISK')) { $dbname = DB_NAME_ASTERISK; }	    
-	    if (empty($dbuser) && defined('DB_USERNAME_ASTERISK')) { $dbuser = DB_USERNAME_ASTERISK; }	    
-	    if (empty($dbpass) && defined('DB_PASSWORD_ASTERISK')) { $dbpass = DB_PASSWORD_ASTERISK; }	    
+	    if (empty($dbuser) && defined('DB_USERNAME')) { $dbuser = DB_USERNAME; }	    
+	    if (empty($dbpass) && defined('DB_PASSWORD')) { $dbpass = DB_PASSWORD; }	    
 	    if (empty($dbport) && defined('DB_PORT')) { $dbport = DB_PORT; }	    
 
 	    if ($type == CRM_DB_CONNECTOR_TYPE_MYSQL) { // MySQL Database connector
@@ -159,7 +159,7 @@ class DatabaseConnectorFactory {
 	 */
     public static function instantiationAvailableForConnectorOfType($type) {
 	    if ($type == CRM_DB_CONNECTOR_TYPE_MYSQL) { // for mysql, we need the credentials defined in Config.php
-		    if (defined("DB_HOST") && defined("DB_USERNAME") && defined("DB_PASSWORD") && defined("DB_NAME") && defined("DB_PORT") && defined('DB_USERNAME_ASTERISK') && defined('DB_PASSWORD_ASTERISK') && defined('DB_NAME_ASTERISK')) return true;
+		    if (defined("DB_HOST") && defined("DB_USERNAME") && defined("DB_PASSWORD") && defined("DB_NAME") && defined("DB_PORT")) return true;
 		    else return false;
 	    } else { // not supported.
 		    return false;

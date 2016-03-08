@@ -40,7 +40,7 @@ class GOagent extends Module {
 		if ($this->userrole > 1) {
 			$_SESSION['is_logged_in'] = $this->checkIfLoggedOnPhone();
 
-			//echo $this->getGOagentContent();
+			echo $this->getGOagentContent();
 		}
 	}
 		

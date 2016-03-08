@@ -1,0 +1,142 @@
+/* Custom CSS for action circle buttons for creamy */
+
+.circle-button{
+    position: fixed;
+    right: 24px;
+    width: 50px;
+    height: 50px;
+    bottom: 45px;
+    /*background-color: #13B353;*/
+    border-radius: 50px;
+    padding: 15px;
+    border: 1px solid #9C9C9C;
+    box-shadow: 3px 3px 5px #888888;
+    cursor:pointer;
+}
+
+.circle-button-large{
+    position: fixed;
+    right: 24px;
+    width: 55.5px;
+    height: 55.5px;
+    bottom: 45px;
+    /*background-color: #13B353;*/
+    border-radius: 55.5px;
+    padding: 17px;
+    box-shadow: 3px 3px 5px #888888;
+    cursor:pointer;
+    bottom: 45px;
+    right: 24px;
+    z-index: 1;
+}
+
+.button-area span{
+    
+	font-size: 24px;
+    color: white;
+    text-align: center;
+}
+
+.fab-div-area{
+    display:none;
+    border-radius:auto;
+    position: fixed;
+    bottom: 75px;
+    right: 22px;
+}
+
+.fab-div-item{
+    width: 55px;
+    height: 55px;
+    border-radius: 55.5px;
+    color: white;
+    background-color: #333;
+    padding: 22px;
+    box-shadow: 3px 3px 5px #888888;
+    cursor:pointer;
+    z-index: 5;
+    width: auto;
+}
+
+.li-style{
+    list-style:none;
+    margin: 0.000000001px 0;
+}
+
+/* Theme Colors */
+/* Black */
+.skin-black{
+    background-color: #F0F0F0;
+}
+
+.skin-black:hover,
+.skin-black:focus{
+    background-color: #fff;
+    cursor:pointer;
+}
+
+/* Blue */
+.skin-blue{
+    background-color: #3c8dbc;
+}
+
+.skin-blue:hover,
+.skin-blue:focus{
+    background-color: #50BBFA;
+    cursor:pointer;
+}
+
+/* Green */
+.skin-green{
+    background-color: #00a65a;
+}
+
+.skin-green:hover,
+.skin-green:focus{
+    background-color: #00FC89;
+    cursor:pointer;
+}
+
+/* Minimalist */
+.skin-minimalist{
+    background-color: #ddd;
+}
+
+.skin-minimalist:hover,
+.skin-minimalist:focus{
+    background-color: #fff;
+    cursor:pointer;
+}
+
+/* Purple */
+.skin-purple{
+    background-color: #8680EB;
+}
+
+.skin-purple:hover,
+.skin-purple:focus{
+    background-color: #605ca8;
+    cursor:pointer;
+}
+
+/* Red */
+.skin-red{
+    background-color: #dd4b39;
+}
+
+.skin-red:hover,
+.skin-red:focus{
+    background-color: #FC5641;
+    cursor:pointer;
+}
+
+/* Yellow */
+.skin-yellow{
+    background-color: #f39c12;
+}
+
+.skin-yellow:hover,
+.skin-yellow:focus{
+    background-color: #FFA413;
+    cursor:pointer;
+}

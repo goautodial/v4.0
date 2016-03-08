@@ -37,6 +37,9 @@
 
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
+		
+		<!-- Circle Buttons style -->
+		  <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -70,7 +73,7 @@
                                     <h3 class="box-title"><?php $lh->translateText("users"); ?></h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table" id="users_table">
-									<?php print $ui->goGetAllUserLists(); ?>
+									<?php print $ui->goGetAllUserList(); ?>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>
@@ -82,9 +85,62 @@
 						print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					}
 				?>
+				
+					<div class="bottom-menu skin-blue">
+						<?php print $ui->getCircleButton("telephonyusers", "users"); ?>
+						<div class="fab-div-area" id="fab-div-area">
+								<ul class="fab-ul" style="height: 250px;">
+									<li class="li-style"><a class="fa fa-dashboard fab-div-item" ></a></li><br/>
+									<li class="li-style"><a class="fa fa-users fab-div-item"> </a></li>
+								</ul>
+							</div>
+					</div>
+					<script>
+						$(document).ready(function(){
+							$(".bottom-menu").on('mouseenter mouseleave', function () {
+							  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
+							});
+						});
+					</script>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
-
+		  
+		<!-- Forms and actions -->
+		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				
+				/**
+				  * Edit user details
+				 */
+				 $(".edit-T_user").click(function(e) {
+					e.preventDefault();
+					var url = './edittelephonyuser.php';
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="userid" value="' + $(this).attr('href') + '" /></form>');
+					//$('body').append(form);  // This line is not necessary
+					$(form).submit();
+				 });
+				
+				/**
+				 * Delete user.
+				 */
+				 $(".delete-T_user").click(function(e) {
+					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
+					e.preventDefault();
+					if (r == true) {
+						var user_id = $(this).attr('href');
+						$.post("./php/DeleteTelephonyUser.php", { userid: user_id } ,function(data){
+							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
+							else { alert ("<?php $lh->translateText("unable_delete_user"); ?>"); }
+						});
+					}
+				 });
+				
+				
+				
+			});
+			
+		</script>
     </body>
 </html>

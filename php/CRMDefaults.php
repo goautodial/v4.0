@@ -179,7 +179,7 @@ define ('CRM_SETTING_JOB_LAST_MONTH', 'job_scheduling_last_month');
 
 
 //define ('CRM_SETTING_DEFAULT_CUSTOMER_LIST_FIELDS', 'id,name,email,phone,id_number');
-define ('CRM_SETTING_DEFAULT_CUSTOMER_LIST_FIELDS', 'lead_id,first_name,email,phone_number');
+define ('CRM_SETTING_DEFAULT_CUSTOMER_LIST_FIELDS', 'first_name,phone_number,address1');
 //define('NAME', serialize(array("first_name", "middle_initial", "last_name")));
 //define ('CRM_SETTING_DEFAULT_CUSTOMER_LIST_FIELDS', 'lead_id,name,email,phone_number');
 define ('CRM_SETTING_DEFAULT_THEME', "blue");

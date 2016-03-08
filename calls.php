@@ -28,7 +28,7 @@
 	require_once('./php/UIHandler.php');
 	require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
-
+	
     $ui = \creamy\UIHandler::getInstance();
     $lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
@@ -59,6 +59,8 @@
     <link href="css/iCheck/minimal/blue.css" rel="stylesheet" type="text/css" />
     <!-- Creamy style -->
     <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+    <!-- Circle Buttons style -->
+    <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
     <?php print $ui->creamyThemeCSS(); ?>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -105,7 +107,7 @@
           </h1>
             <ol class="breadcrumb">
                 <li><a href="./index.php"><i class="fa fa-envelope"></i> <?php $lh->translateText("home"); ?></a></li>
-                <li class="active"><?php $lh->translateText("my_messages"); ?></li>
+                <li class="active">My Call Logs</li>
             </ol>
         </section>
 
@@ -114,7 +116,7 @@
           <div class="row">
 	        <!-- left side folder list column -->
             <div class="col-md-3">
-              <a href="makecall.php" class="btn btn-primary btn-block margin-bottom"><?php $lh->translateText("new_call"); ?></a>
+              <!--<a href="makecall.php" class="btn btn-primary btn-block margin-bottom"><?php $lh->translateText("new_call"); ?></a>-->
               <div class="box box-solid">
                 <div class="box-header with-border">
                   <h3 class="box-title"><?php print $lh->translationFor("folders"); ?></h3>
@@ -141,6 +143,7 @@
                 </div><!-- /.box-body -->
                 <div class="box-footer no-padding">
                   <div class="mailbox-controls">
+			<?php print $ui->getCallButtons($folder); ?>
 			<div id="messages-message-box">
 				<?php if (!empty($message)) { print $ui->calloutInfoMessage($message); } ?>
 			</div>
@@ -150,10 +153,44 @@
             </div><!-- /.col -->
           </div><!-- /.row -->
         </section><!-- /.content -->
+		
+	<div class="bottom-menu skin-blue">
+	<?php print $ui->getCircleButton("calls", "phone"); ?>
+	
+	    	<div class="fab-div-area" id="fab-div-area">
+				<ul class="fab-ul" style="height: 250px;">
+					<li class="li-style"><a class="fa fa-phone fab-div-item"> Phone Calls</a></li><br/>
+					<li class="li-style"><a class="fa fa-tasks fab-div-item"> Tasks</a></li><br/>
+					<li class="li-style"><a class="fa fa-plus fab-div-item"> Add Calls</a></li>
+				</ul>
+	    	</div>
+	</div>
+	<script>
+		$(document).ready(function(){
+			/*
+			$(".circle-button-large").onhover(function(){
+				$('.fab-div-area').slideToggle();
+				$('.fab-div-item').fadeIn();
+				$('.fab-div-item').show();
+				$('.fab-div-area').show();
+			});
+			$('.fab-div-item').hide();
+			$('.fab-div-area').hide();
+			*/
+			
+			$(".bottom-menu").on('mouseenter mouseleave', function () {
+			  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
+
+			});
+			
+			
+		});
+		
+	</script>
       </div><!-- /.content-wrapper -->
 	  <?php print $ui->creamyFooter(); ?>
     </div><!-- ./wrapper -->
-
+    
         <!-- Page script -->
         <script type="text/javascript">
 			var datatable = null;

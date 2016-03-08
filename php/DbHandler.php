@@ -22,7 +22,6 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-
 namespace creamy;
 
 // dependencies
@@ -252,7 +251,7 @@ class DbHandler {
 					$arr["id"] = $userobj["user_id"];
 	                $arr["name"] = $userobj["user"];
 	                $arr["email"] = $userobj["email"];
-					$arr["role"] = ($user_role == 9 || $user_role == 8) ? 0 : 3;
+					$arr["role"] = ($user_role == 9 || $user_role == 8 || $user_role == 0) ? 0 : 3;
 					$arr["avatar"] = "";
 	                
 	                return $arr;
@@ -670,12 +669,13 @@ class DbHandler {
 	public function getCustomerColumnsToBeShownInCustomerList($customerType) {
 		// try to get fields from database.
 		//$setting = $this->getSettingValueForKey(CRM_SETTING_CUSTOMER_LIST_FIELDS);
-		$setting = "lead_id|CONCAT_WS(' ', first_name, middle_initial, last_name)|email|phone_number";
+		$setting = "lead_id|CONCAT_WS(' ', first_name, middle_initial, last_name)|phone_number|address1";
 		if (isset($setting)) { return explode("|", $setting); }
 		
 		// fallback to default columns
 		return explode(",", CRM_SETTING_DEFAULT_CUSTOMER_LIST_FIELDS);
 	}
+	
 	
 	/**
 	 * Gets the first groups of customers other than contacts. If no other customer group is found, returns null.
@@ -743,6 +743,8 @@ class DbHandler {
 	//insert to asterisk
 		if ($this->dbConnectorAsterisk->insert($customerType, $data)) { return true; }
 		else { error_log($this->dbConnectorAsterisk->getLastError()); return false; }
+	
+	
 	}
 
 	/**
@@ -1754,19 +1756,25 @@ class DbHandler {
 	 * Inserts a new entry in the statistics table with the current number of customers in every table.
 	 * @return boolean true if the operation was successful, false otherwise.
 	 */
+	
 	public function generateStatisticsForToday() {
 		// get customer tables
-		$customerTypes = $this->getCustomerTypes();
+		$customerType = "vicidial_list";
 		if (empty($customerTypes)) return true;
 
 		// build the query by adding customer types
+		//alex
+		$currentTimestamp = time();
+		$currentNow = date("Y-m-d H:i:s", $currentTimestamp);
 		$data = array("timestamp" => $this->dbConnector->now());
-		foreach ($customerTypes as $customerType) {
-			$numCustomers = $this->getNumberOfClientsFromTable($customerType["table_name"]);
-			$customerKey = $customerType["table_name"];
+		//foreach ($customerTypes as $customerType) {
+			$numCustomers = $this->getNumberOfClientsFromTable($customerType["lead_id"]);
+			$customerKey = $customerType["lead_id"];
 			$data[$customerKey] = $numCustomers;
-		}
-		return $this->dbConnectorAsterisk->insert(CRM_STATISTICS_TABLE_NAME, $data);
+		//}
+		
+		
+		return $this->dbConnector->insert(CRM_STATISTICS_TABLE_NAME, $data);
 	}
 
 	/**
@@ -1830,7 +1838,7 @@ class DbHandler {
 		$numClients = 0;
 		foreach ($customerTypes as $customerType) {
 			if ($customerType["table_name"] == CRM_CONTACTS_TABLE_NAME) continue;
-			$this->dbConnector->where("DATE(creation_date) BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE()");
+			$this->dbConnectorAsterisk->where("DATE(entry_date) BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE()");
 			$numClients += $this->dbConnector->getValue($customerType["table_name"], "count(*)");
 		}
 		return $numClients;
@@ -1842,7 +1850,7 @@ class DbHandler {
 	 * 
 	 */	
 	public function getLastCustomerStatistics($limit = 6) {
-        $this->dbConnector->orderBy("timestamp", "desc");
+        $this->dbConnector->orderBy("entry_date", "desc");
         $result = $this->dbConnector->get(CRM_STATISTICS_TABLE_NAME, $limit);
         if (isset($result)) { return array_reverse($result); }
         else return array();

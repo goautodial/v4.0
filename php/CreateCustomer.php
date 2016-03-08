@@ -165,7 +165,8 @@ if ($validated == 1) {
 	if ($gender < 0 || $gender > 1) $gender = NULL;
 	if ($gender == 0) $gender = "F";
 	if ($gender == 1) $gender = "M";
-
+	
+	
 	// create customer and return result.
 	$result = $db->createCustomer($customerType, $first_name, $middle_initial, $last_name, $email, $phone, $alt_phone, 
 		$address1, $address2, $address3, $city, $state, $province, $postal_code, $country_code, $date_of_birth, $createdByUser, $gender, $comments);

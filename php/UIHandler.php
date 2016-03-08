@@ -210,7 +210,8 @@ error_reporting(E_ERROR | E_PARSE);
 			foreach ($items as $item) {
 				//telephony
 					if($item == "active"){$item = "status";}
-					if($item == "full_name"){$item = "Name";}
+					if($item == "agentid"){$item = "Agent ID";}
+					if($item == "full_name"){$item = "Agent Name";}
 					if($item == "user_level"){$item = "Level";}
 					if($item == "user_group"){$item = "Group";}
 					if($item == "campaign_id"){$item = "Campaign ID";}
@@ -271,15 +272,9 @@ error_reporting(E_ERROR | E_PARSE);
 					if($item == "file_date"){$item = "Date";}
 					if($item == "file_size"){$item = "Size";}
 				//contacts
-				if($item == "lead_id"){
-		    		$item = "id";
-		    	}
-		    	if($item == "CONCAT_WS(' ', first_name, middle_initial, last_name)"){
-		    		$item = "Name";
-		    	}
-		    	if($item == "phone_number"){
-		    		$item = "Phone";
-		    	}
+					if($item == "lead_id"){$item = "id";}
+					if($item == "CONCAT_WS(' ', first_name, middle_initial, last_name)"){$item = "Name";}
+					if($item == "phone_number"){$item = "Phone";}
 			    // class modifiers for hiding classes in medium or low resolutions.
 			    $classModifiers = "class=\"";
 			    if (in_array($item, $hideOnMedium)) { $classModifiers .= " hide-on-medium "; }
@@ -1052,7 +1047,41 @@ error_reporting(E_ERROR | E_PARSE);
 	                </ul>
 	            </div>';
 	}
-
+	//telephony menu
+	private function getUserActionMenuForT_User($userid, $username, $status) {
+		
+		return '<div class="btn-group">
+	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+						<span class="caret"></span>
+						<span class="sr-only">Toggle Dropdown</span>
+	                </button>
+	                <ul class="dropdown-menu" role="menu">
+	                    <li><a class="edit-T_user" href="'.$userid.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li class="divider"></li>
+	                    <li><a class="delete-T_user" href="'.$userid.'">'.$this->lh->translationFor("delete_user").'</a></li>
+	                </ul>
+	            </div>';
+			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
+	}
+	
+	private function getUserActionMenuForLists($listid, $listname) {
+		
+		return '<div class="btn-group">
+	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+						<span class="caret"></span>
+						<span class="sr-only">Toggle Dropdown</span>
+	                </button>
+	                <ul class="dropdown-menu" role="menu">
+	                    <li><a class="edit-lists" href="'.$listid.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li class="divider"></li>
+	                    <li><a class="delete-lists" href="'.$listid.'">'.$this->lh->translationFor("delete_list").'</a></li>
+	                </ul>
+	            </div>';
+			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
+	}
+	
     /**
      * Returns a HTML Table representation containing all the user's in the system (only relevant data).
      * @return String a HTML Table representation of the data of all users in the system.
@@ -1220,7 +1249,7 @@ error_reporting(E_ERROR | E_PARSE);
 			//<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="32"> '.$name.'</a>
 		// return header
 		return '<header class="main-header">
-				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="40"></a>
+				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="35"></a>
 	            <nav class="navbar navbar-static-top" role="navigation">
 	                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 	                    <span class="sr-only">Toggle navigation</span>
@@ -1556,7 +1585,8 @@ error_reporting(E_ERROR | E_PARSE);
         $result .= $telephonyArea;
 		$result .= $settings;
 		$result .= $callreports;
-		$result .= $this->getSidebarItem("https://www.goautodial.com/supporttickets.php", "support", $this->lh->translationFor("support"));
+		$result .= $adminArea;
+		
 		// include a link for every customer type
         foreach ($customerTypes as $customerType) {
 	        if (isset($customerType["table_name"]) && isset($customerType["description"])) {
@@ -1578,11 +1608,13 @@ error_reporting(E_ERROR | E_PARSE);
         // suffix: modules
         $activeModules = $mh->activeModulesInstances();
         foreach ($activeModules as $shortName => $module) {
-		if ($module->mainPageViewTitle() != null && $module->needsSidebarDisplay()) {
+		if ($module->needsSidebarDisplay()) {
 	        	$result .= $this->getSidebarItem($mh->pageLinkForModule($shortName, null), $module->mainPageViewIcon(), $module->mainPageViewTitle(), $module->sidebarBadgeNumber());
 		}
-        } 
-		$result .= $adminArea.'</ul></section></aside>';
+        }
+		
+		$result .= $this->getSidebarItem("https://www.goautodial.com/supporttickets.php", "support", $this->lh->translationFor("support"));
+		$result .= '</ul></section></aside>';
 		
 		return $result;
 	}
@@ -1676,12 +1708,28 @@ error_reporting(E_ERROR | E_PARSE);
 	   $hideOnMedium = array("email", "phone_number");
 	   $hideOnLow = array("email", "phone_number");
 	   $result = $this->generateTableHeaderWithItems($columns, "contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-
+	   
        // print suffix
        $result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
        return $result;
 	}
-
+	
+	/**
+	 * Generates the HTML with an empty table for a list of telephony users.
+	 */
+	public function getEmptyT_UsersList($customerType) {
+	   // print prefix
+	   $columns = array("user", "full_name", "user_level", "user_group", "active", "Action");
+	   $columns[] = $this->lh->translationFor("action");
+	   $hideOnMedium = array("user_level", "user_group");
+	   $hideOnLow = array("user","user_level", "user_level");
+	   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+	   
+       // print suffix
+       $result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
+       return $result;
+	}
+	
 	/** Tasks */
 
 	/**
@@ -1866,7 +1914,7 @@ error_reporting(E_ERROR | E_PARSE);
            // var_dump($dateAsDMY);
 
 	}
-	//	var_dump($dateAsDMY);
+	
 		$md = $this->maskedDateInputElement("date_of_birth", "date_of_birth", "dd/mm/yyyy", $dateAsDMY, "calendar", true);
 		$birth_f = $this->singleFormGroupWithInputGroup($md, $this->lh->translationFor("birthdate"));
 		//$birth_f = $this->singleFormGroupWithInputGroup("date_of_birth", "date_of_birth", $this->lh->translationFor("birthdate"), $dateAsDMY, "calendar", true);						
@@ -2571,6 +2619,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$datasets = "datasets: [";
 		$data = array();
 		$statsArray = $this->db->getLastCustomerStatistics();
+		
 		$customerTypes = $this->db->getCustomerTypes();
 
 		// create the empty data fields.
@@ -2682,153 +2731,132 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 	
 	//TELEPHONY
+	// get user list
+	public function goGetAllUserList() {
+	$url = "https://encrypted.goautodial.com/goAPI/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = "admin"; #Username goes here. (required)
+		$postfields["goPass"] = "goautodial"; #Password goes here. (required)
+		$postfields["goAction"] = "goGetAllUserLists"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = "json"; #json. (required)
 	
-	public function goGetAllUserLists() {
-       //$users = $this->db->getCampaigns();
-	   // gets campaign_id, campaign_name, dial_method, active
-	   $users = array("12110", "J", "Auto-Dial", "Active");
-       // is null?
-       if (is_null($users)) { // error getting contacts
+	 $ch = curl_init();
+	 curl_setopt($ch, CURLOPT_URL, $url);
+	 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+	 curl_setopt($ch, CURLOPT_POST, 1);
+	 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	 $data = curl_exec($ch);
+	 curl_close($ch);
+	 $output = json_decode($data);
+
+       if($output->result=="success") {
+       	   $columns = array("agentid", "full_name", "user_level", "user_group", "active", "Action");
+	       $hideOnMedium = array("agentid", "user_level", "user_group", "active");
+	       $hideOnLow = array("agentid", "user_level", "user_group", "active");
+		   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+	       //$result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false);
+		   
+	       // iterate through all users
+	       for($i=0;$i<count($output->userno);$i++){
+				
+				// if no entry in user list
+				if (empty($output->userno[$i])) { 
+				 return $this->calloutWarningMessage($this->lh->translationFor("no_entry_in_user_list"));
+			   }
+				
+				if($output->active[$i] == "Y"){
+					$output->active[$i] = "Active";
+				 }else{
+					$output->active[$i] = "Inactive";
+				 }
+			   
+	       	   $action = $this->getUserActionMenuForT_User($output->userno[$i], $output->full_name[$i], $output->active[$i]); 
+	       	        
+		        $result = $result."<tr>
+	                     <td class='hide-on-medium hide-on-low'>".$output->userno[$i]."</td>
+						 <td><a class=\"edit-T_user\" href=\"".$output->userno[$i]."\">".$output->full_name[$i]."</a></td>
+						 <td class='hide-on-medium hide-on-low'>".$output->user_level[$i]."</td>
+	                     <td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
+	                     <td class='hide-on-low'>".$output->active[$i]."</td>
+	                     <td>".$action."</td>
+				         </tr>";
+	       }
+	       
+	       // print suffix
+	       $result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
+	       return $result; 
+       }else{
+			// error getting contacts
+			//return $output->result;
 	       return $this->calloutErrorMessage($this->lh->translationFor("unable_get_user_list"));
-       } else if (empty($users)) { // no contacts found
-	       return $this->calloutWarningMessage($this->lh->translationFor("no_entry_in_user_list"));
-       } else {
-       	   $columns = array("user", "full_name", "user_level", "user_group", "active", "Action");
-	       $hideOnMedium = array("user_level", "user_group", "active");
-	       $hideOnLow = array("user_level", "user_group", "active");
-		   $result = $this->generateTableHeaderWithItems($columns, "campaigns", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-	       
-	       // iterate through all contacts
-	       //foreach ($users as $userData) {
-	       	   // $status = $userData["status"] == 1 ? $this->lh->translationFor("enabled") : $this->lh->translationFor("disabled");
-	       	   // $userRole = $this->lh->translationFor($this->getRoleNameForRole($userData["role"]));	
-	       	   //$status = $userData["active"] == "Y" ? $this->lh->translationFor("enabled") : $this->lh->translationFor("disabled");
-	       	   //$userRole = $this->lh->translationFor($this->getRoleNameForRole($userData["user_level"]));	
-	       	   
-	       	   $action = $this->getUserActionMenuForUser($userData["id"], $userData["name"], $userData["status"]); 
-	       	   //$action = $this->getUserActionMenuForUser($userData["user_id"], $userData["user"], $userData["active"]);       
-		       // $result = $result."<tr>
-	        //             <td>".$userData["id"]."</td>
-	        //             <td><a class=\"edit-action\" href=\"".$userData["id"]."\">".$userData["name"]."</a></td>
-	        //             <td class='hide-on-medium hide-on-low'>".$userData["email"]."</td>
-	        //             <td class='hide-on-medium hide-on-low'>".$userData["creation_date"]."</td>
-	        //             <td class='hide-on-medium hide-on-low'>".$userRole."</td>
-	        //             <td class='hide-on-low'>".$status."</td>
-	        //             <td>".$action."</td>
-	        //         </tr>";
-	           $result = $result."<tr>
-	                    <td>150002</td>
-	                    <td>John Whiskey Go Smith</td>
-						<td class='hide-on-medium hide-on-low'>9</td>
-	                    <td class='hide-on-medium hide-on-low'>ADMIN</td>
-	                    <td class='hide-on-medium hide-on-low'>Active<span color='green'></span></td>
-	                    <td>".$action."</td>
-	                </tr>";
-	       //}
-	       
-	       // print suffix
-	       $result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
-	       return $result; 
        }
 	}
 	
 	
-	public function getCampaignInfo() {
-       //$users = $this->db->getCampaigns();
-	   // gets campaign_id, campaign_name, dial_method, active
-	   $campaigns = array("55555", "Test Campaign", "Auto-Dial", "Active");
-       // is null?
-       if (is_null($campaigns)) { // error getting contacts
-	       return $this->calloutErrorMessage($this->lh->translationFor("unable_get_campaign_list"));
-       } else if (empty($campaigns)) { // no contacts found
-	       return $this->calloutWarningMessage($this->lh->translationFor("no_entry_in_campaign_list"));
-       } else {
-       	   $columns = array("campaign_id", "campaign_name", "dial_method", "active", "Action");
-	       $hideOnMedium = array("dial_method", "active");
-	       $hideOnLow = array("dial_method", "active");
-		   $result = $this->generateTableHeaderWithItems($columns, "campaigns", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-	       
-	       // iterate through all contacts
-	       //foreach ($users as $userData) {
-	       	   // $status = $userData["status"] == 1 ? $this->lh->translationFor("enabled") : $this->lh->translationFor("disabled");
-	       	   // $userRole = $this->lh->translationFor($this->getRoleNameForRole($userData["role"]));	
-	       	   //$status = $userData["active"] == "Y" ? $this->lh->translationFor("enabled") : $this->lh->translationFor("disabled");
-	       	   //$userRole = $this->lh->translationFor($this->getRoleNameForRole($userData["user_level"]));	
-	       	   
-	       	   $action = $this->getUserActionMenuForUser($userData["id"], $userData["name"], $userData["status"]); 
-	       	   //$action = $this->getUserActionMenuForUser($userData["user_id"], $userData["user"], $userData["active"]);       
-		       // $result = $result."<tr>
-	        //             <td>".$userData["id"]."</td>
-	        //             <td><a class=\"edit-action\" href=\"".$userData["id"]."\">".$userData["name"]."</a></td>
-	        //             <td class='hide-on-medium hide-on-low'>".$userData["email"]."</td>
-	        //             <td class='hide-on-medium hide-on-low'>".$userData["creation_date"]."</td>
-	        //             <td class='hide-on-medium hide-on-low'>".$userRole."</td>
-	        //             <td class='hide-on-low'>".$status."</td>
-	        //             <td>".$action."</td>
-	        //         </tr>";
-	           $result = $result."<tr>
-	                    <td>150002</td>
-	                    <td>Test Campaign</td>
-	                    <td class='hide-on-medium hide-on-low'>Auto-Dial</td>
-	                    <td class='hide-on-medium hide-on-low'>Active<span color='green'></span></td>
+	public function goGetAllLists() {		
+		$url = "https://encrypted.goautodial.com/goAPI/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = "admin"; #Username goes here. (required)
+		$postfields["goPass"] = "goautodial"; #Password goes here. (required)
+		$postfields["goAction"] = "goGetAllLists"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = "json"; #json. (required)
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);		
+		curl_setopt($ch, CURLOPT_POST, 1);		
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);		
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);		
+		$data = curl_exec($ch);		
+		curl_close($ch);		
+		$output = json_decode($data);		 
+		
+		if ($output->result=="success") {
+		# Result was OK!
+		
+		$columns = array("list_id", "list_name", "active", "list_lastcalldate", "tally", "campaign_id", "Action");
+	    $hideOnMedium = array("dial_method", "active");
+	    $hideOnLow = array("dial_method", "active");
+		$result = $this->generateTableHeaderWithItems($columns, "T_list", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			   
+			for($i=0;$i<count($output->list_id);$i++){					
+				// if no entry in user list
+				if (empty($output->list_id[$i])) { 
+				 return $this->calloutWarningMessage($this->lh->translationFor("no_entry_in_list"));
+			   }
+				
+				if($output->active[$i] == "Y"){
+					$output->active[$i] = "Active";
+				}else{
+					$output->active[$i] = "Inactive";
+				}
+				
+				$action = $this->getUserActionMenuForLists($output->list_id[$i], $output->list_name[$i]);
+				
+				$result = $result."<tr>
+	                    <td>".$output->list_id[$i]."</td>
+	                    <td><a class=''>".$output->list_name[$i]."</a></td>
+						<td>".$output->active[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->list_lastcalldate[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->tally[$i]."</td>
+						<td>".$output->campaign_id[$i]."</td>
 	                    <td>".$action."</td>
 	                </tr>";
-	       //}
+
+			}
+			
+			return $result; 
+			
+		} else {		
+		# An error occured		
+			return $this->calloutErrorMessage($this->lh->translationFor("unable_get_list"));
+			// $this->calloutErrorMessage($this->lh->translationFor($results["message"]));
+		}
 	       
-	       // print suffix
-	       $result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
-	       return $result; 
-       }
-	}
-	
-	public function goGetAllLists() {
-       //$users = $this->db->getCampaigns();
-	   // gets campaign_id, campaign_name, dial_method, active
-	   $campaigns = array("55555", "Test Campaign", "Auto-Dial", "Active");
-       // is null?
-       if (is_null($campaigns)) { // error getting contacts
-	       return $this->calloutErrorMessage($this->lh->translationFor("unable_get_campaign_list"));
-       } else if (empty($campaigns)) { // no contacts found
-	       return $this->calloutWarningMessage($this->lh->translationFor("no_entry_in_campaign_list"));
-       } else {
-       	   $columns = array("list_id", "list_name", "active", "list_lastcalldate", "tally", "campaign_id", "Action");
-	       $hideOnMedium = array("dial_method", "active");
-	       $hideOnLow = array("dial_method", "active");
-		   $result = $this->generateTableHeaderWithItems($columns, "campaigns", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-	       
-	       // iterate through all contacts
-	       //foreach ($users as $userData) {
-	       	   // $status = $userData["status"] == 1 ? $this->lh->translationFor("enabled") : $this->lh->translationFor("disabled");
-	       	   // $userRole = $this->lh->translationFor($this->getRoleNameForRole($userData["role"]));	
-	       	   //$status = $userData["active"] == "Y" ? $this->lh->translationFor("enabled") : $this->lh->translationFor("disabled");
-	       	   //$userRole = $this->lh->translationFor($this->getRoleNameForRole($userData["user_level"]));	
-	       	   
-	       	   $action = $this->getUserActionMenuForUser($userData["id"], $userData["name"], $userData["status"]); 
-	       	   //$action = $this->getUserActionMenuForUser($userData["user_id"], $userData["user"], $userData["active"]);       
-		       // $result = $result."<tr>
-	        //             <td>".$userData["id"]."</td>
-	        //             <td><a class=\"edit-action\" href=\"".$userData["id"]."\">".$userData["name"]."</a></td>
-	        //             <td class='hide-on-medium hide-on-low'>".$userData["email"]."</td>
-	        //             <td class='hide-on-medium hide-on-low'>".$userData["creation_date"]."</td>
-	        //             <td class='hide-on-medium hide-on-low'>".$userRole."</td>
-	        //             <td class='hide-on-low'>".$status."</td>
-	        //             <td>".$action."</td>
-	        //         </tr>";
-	           $result = $result."<tr>
-	                    <td>101</td>
-	                    <td>Default Manual List</td>
-						<td>INACTIVE</td>
-	                    <td class='hide-on-medium hide-on-low'>2016-02-10 19:13:23</td>
-	                    <td class='hide-on-medium hide-on-low'>14</td>
-						<td>TESTCAMP</td>
-	                    <td>".$action."</td>
-	                </tr>";
-	       //}
-	       
-	       // print suffix
-	       $result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
-	       return $result; 
-       }
+	    // print suffix
+	    //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);   
+       
 	}
 	
 	
@@ -2877,7 +2905,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       //}
 	       
 	       // print suffix
-	       $result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
+	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	       return $result; 
        }
 	}
@@ -2887,9 +2915,9 @@ error_reporting(E_ERROR | E_PARSE);
        //$users = $this->db->getCampaigns();
 	   $moh = array("55555", "Test Campaign", "Auto-Dial", "Active", "Play");
        // is null?
-       if (is_null($moh)) { // error getting contacts
+       if (is_null($moh)) { // error getting voice file
 	       return $this->calloutErrorMessage($this->lh->translationFor("unable_get_moh_list"));
-       } else if (empty($moh)) { // no contacts found
+       } else if (empty($moh)) { // no voice files found
 	       return $this->calloutWarningMessage($this->lh->translationFor("no_entry_in_moh_list"));
        } else {
        	   $columns = array("No.", "file_name", "file_date", "file_size", "Play");
@@ -2927,9 +2955,226 @@ error_reporting(E_ERROR | E_PARSE);
 	       //}
 	       
 	       // print suffix
-	       $result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
+	      // $result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	       return $result; 
        }
 	}
 	
+	
+	/** Getting Circle Buttons */
+
+	/**
+	 * Generates action circle buttons for different pages/module
+	 * @param page name of page/current page
+	 * @param icon will determine what icon to be use for the button
+	 */
+	public function getCircleButton($page, $icon){
+	    $theme = $this->db->getSettingValueForKey(CRM_SETTING_THEME);
+	    if(empty($theme)){
+	    	$theme = 'blue';
+	    }
+	    
+	    // this will be the output html
+	    $button = "";
+	    $button .= '<div class="circle-button skin-'.$theme.'">';
+	    $button .= '<a class="fa fa-'.$icon.' button-area">';
+	    $button .= '</a>';
+	    $button .= '</div>';
+	    
+	    return $button;
+	}
+
+	/** Campaigns API - Get all list of campaign */
+	/**
+	 * Generates action circle buttons for different pages/module
+	 * @param goUser 
+	 * @param goPass 
+	 * @param goAction 
+	 * @param responsetype
+	 */
+	public function getListAllCampaigns($goUser, $goPass, $goAction, $responsetype){
+		$url = "http://162.254.144.92/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = "goautodial"; #Username goes here. (required)
+        $postfields["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
+        $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
+        $postfields["responsetype"] = "json"; #json. (required)
+
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+         
+        if ($output->result=="success") {
+           # Result was OK!
+
+           	$columns = array("campaign_id", "campaign_name", "dial_method", "active", "Action");
+	      	$hideOnMedium = array("dial_method", "active");
+	       	$hideOnLow = array("dial_method", "active");
+		   	$result = $this->generateTableHeaderWithItems($columns, "campaigns", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
+
+	        for($i=0;$i<count($output->campaign_id);$i++){
+                    $result .= "<tr>
+	                    <td>".$output->campaign_id[$i]."</td>
+	                    <td>".$output->campaign_name[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->dial_method[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."<span color='green'></span></td>
+	                    <td>
+	                    	<ul class='action-btn-campaign'>
+	                    		<li><span class='edit-campaign fa fa-pencil' data-id='".$output->campaign_id[$i]."'></span></li>
+	                    		<li><span class='view-campaign fa fa-eye' data-id='".$output->campaign_id[$i]."'></span></li>
+	                    		<li><span class='delete-campaign fa fa-trash' data-id='".$output->campaign_id[$i]."'></span></li>
+	                    	</ul>
+	                    </td>
+	                </tr>";
+            }
+
+	        return $result;
+
+         } else {
+           # An error occured
+           return $output->result;
+        }
+	}
+
+
+	/**
+     * Returns a HTML representation of the wizard form of campaign
+     * 
+     */
+	public function wizardFromCampaign(){
+		return '
+			<div class="form-horizontal">
+    			<div class="form-group">
+    				<label class="control-label col-lg-4">Campaign Type:</label>
+    				<div class="col-lg-8">
+    					<select id="campaignType" class="form-control">
+    						<option value="outbound">Outbound</option>
+    						<option value="inbound">Inbound</option>
+    						<option value="blended">Blended</option>
+    						<option value="survey">Survey</option>
+    						<option value="copy">Copy Campaign</option>
+    					</select>
+    				</div>
+    			</div>
+    			<div class="form-group campaign-id">
+    				<label class="control-label col-lg-4">Campaign ID:</label>
+    				<div class="col-lg-8">
+    					<div class="input-group">
+					      <input id="campaign-id" name="campaign_id" type="text" class="form-control" placeholder="" readonly>
+					      <span class="input-group-btn">
+					        <button id="campaign-id-edit-btn" class="btn btn-default" type="button"><i class="fa fa-pencil"></i></button>
+					      </span>
+					    </div><!-- /input-group -->
+    				</div>
+    			</div>
+    			<div class="form-group">
+    				<label class="control-label col-lg-4">Campaign Name:</label>
+    				<div class="col-lg-8">
+    					<input id="campaign-name" type="text" class="form-control">
+    				</div>
+    			</div>
+    			<div class="form-group did-tfn-ext hide">
+    				<label class="control-label col-lg-4">DID / TFN Extension:</label>
+    				<div class="col-lg-8">
+    					<input id="did-tfn" type="text" class="form-control">
+    				</div>
+    			</div>
+    			<div class="form-group call-route hide">
+    				<span class="control-label col-lg-4">Call route:</span>
+    				<div class="col-lg-8">
+    					<select id="call-route" class="form-control">
+    						<option value="NONE"></option>
+    						<option value="INGROUP">INGROUP (campaign)</option>
+    						<option value="IVR">IVR (callmenu)</option>
+    						<option value="AGENT">AGENT</option>
+    						<option value="VOICEMAIL">VOICEMAIL</option>
+    					</select>
+    				</div>
+    			</div>
+    			<div class="form-group surver-type hide">
+    				<span class="control-label col-lg-4">Survey Type:</span>
+    				<div class="col-lg-8">
+    					<select id="survey-type" class="form-control">
+    						<option value="BROADCAST">VOICE BROADCAST</option>
+    						<option value="PRESS1">SURVEY PRESS 1</option>
+    					</select>
+    				</div>
+    			</div>
+    			<div class="form-group no-channels hide">
+    				<span class="control-label col-lg-4">Number of Channels:</span>
+    				<div class="col-lg-8">
+    					<select id="no-channels" class="form-control">
+    						<option>1</option>
+    						<option>5</option>
+    						<option>10</option>
+    						<option>15</option>
+    						<option>20</option>
+    						<option>30</option>
+    					</select>
+    				</div>
+    			</div>
+    			<div class="form-group copy-from hide">
+    				<span class="control-label col-lg-4">Copy from:</span>
+    				<div class="col-lg-8">
+    					<select id="copy-from" class="form-control">
+    						<option>LIST HERE</option>
+    					</select>
+    				</div>
+    			</div>
+    			<div class="form-group upload-wav hide">
+    				<span class="control-label col-lg-4">Please Upload .wav file</span>
+    				<div class="col-lg-8">
+    					<div class="input-group">
+					      <input type="text" class="form-control" placeholder="16 bit mono 8000 PCM WAV audio files only">
+					      <span class="input-group-btn">
+					        <button class="btn btn-primary" type="button">Browse</button>
+					      </span>
+					    </div><!-- /input-group -->
+    				</div>
+    			</div>
+    			<div class="lead-section hide">
+        			<div class="form-group">
+        				<label class="control-label col-lg-4">Lead File:</label>
+        				<div class="col-lg-8">
+        					<input type="text" class="form-control">
+        				</div>
+        			</div>
+        			<div class="form-group">
+        				<label class="control-label col-lg-4">List ID:</label>
+        				<div class="col-lg-8">
+        					<span>Auto Generated here range</span>
+        				</div>
+        			</div>
+        			<div class="form-group">
+        				<label class="control-label col-lg-4">Country:</label>
+        				<div class="col-lg-8">
+        					<select class="form-control">
+        						<option>LIST HERE</option>
+        					</select>
+        				</div>
+        			</div>
+        			<div class="form-group">
+        				<label class="control-label col-lg-4">Check For Duplicates:</label>
+        				<div class="col-lg-8">
+        					<select class="form-control">
+        						<option>LIST HERE</option>
+        					</select>
+        				</div>
+        			</div>
+        			<div class="form-group">
+        				<label class="control-label col-lg-4">&nbsp</label>
+        				<div class="col-lg-8">
+        					<button type="button" class="btn btn-default">UPLOAD LEADS</button>
+        				</div>
+        			</div>
+    			</div>
+    		</div>
+		';
+	}
 }

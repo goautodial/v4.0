@@ -84,6 +84,38 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
-
+		<!-- Forms and actions -->
+		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				
+				/**
+				  * Edit user details
+				 */
+				 $(".edit-lists").click(function(e) {
+					e.preventDefault();
+					var url = './edittelephonylist.php';
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="listid" value="' + $(this).attr('href') + '" /></form>');
+					//$('body').append(form);  // This line is not necessary
+					$(form).submit();
+				 });
+				
+				/**
+				 * Delete user.
+				 */
+				 $(".delete-lists").click(function(e) {
+					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
+					e.preventDefault();
+					if (r == true) {
+						var list_id = $(this).attr('href');
+						$.post("./php/DeleteTelephonyList.php", { userid: list_id } ,function(data){
+							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
+							else { alert ("<?php $lh->translateText("unable_delete_list"); ?>"); }
+						});
+					}
+				 });
+				
+			});
+		</script>
     </body>
 </html>

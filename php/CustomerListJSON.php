@@ -56,7 +56,7 @@ define ('CRM_CUSTOMER_DATATABLE_ECHO', 'sEcho');
 $name = "CONCAT_WS(' ',first_name, middle_initial,last_name)";
 //define("NAME", serialize(array("first_name", "middle_initial", "last_name")));
 define ('CRM_CUSTOMER_COLUMN_ID', 'lead_id');
-//define ('CRM_CUSTOMER_COLUMN_NAME', 'name');
+define ('CRM_CUSTOMER_COLUMN_NAME', $name);
 //define ('CRM_CUSTOMER_COLUMN_ID', 'id');
 
 /**
@@ -78,7 +78,7 @@ function filteredResultsForCustomerColumn($customer, $customer_type) {
 	// default filtering for column name: includes a link for editing the customer data.
 	//edited
 	if (isset($customer[$name]) && isset($customer[CRM_CUSTOMER_COLUMN_ID])) {
-           $customer[$name] = "<a href=\"editcustomer.php?customerid=".$customer[CRM_CUSTOMER_COLUMN_ID]."&customer_type=".$customer_type."\" >".$customer[$name]."</a>";
+           $customer[CRM_CUSTOMER_COLUMN_NAME] = "<a href=\"editcustomer.php?customerid=".$customer[$name]."</a>";
 	}
 	//if (isset($customer[CRM_CUSTOMER_COLUMN_FNAME]) && isset($customer[CRM_CUSTOMER_COLUMN_ID])) {
 		//$customer[CRM_CUSTOMER_COLUMN_FNAME] = "<a href=\"editcustomer.php?customerid=".$customer[CRM_CUSTOMER_COLUMN_ID]."&customer_type=".$customer_type."\" >".$customer[CRM_CUSTOMER_COLUMN_FNAME]."</a>";

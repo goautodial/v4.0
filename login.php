@@ -38,12 +38,10 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	
 	$error = ''; // Variable To Store Error Message
-	
 	if (isset($_POST['submit'])) {
 		if (empty($_POST['username']) || empty($_POST['password'])) {
 			$error = $lh->translationFor("insert_valid_login_password");
 		} else {
-			
 			$db = new \creamy\DbHandler();
 
 			// Define $username and $password
@@ -136,13 +134,13 @@
 		<p class="text-center"><?php $lh->translateText("forgotten_password"); ?> <a href="lostpassword.php"><?php $lh->translateText("click_here"); ?>.</a></p>
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
-   <div class="margin text-center">
+   <!--<div class="margin text-center">
         <span><?php $lh->translateText("never_heard_of_creamy"); ?></span>
         <br/>
         <button class="btn bg-red btn-flat" onclick="window.location.href='http://creamycrm.com'"><i class="fa fa-globe"></i></button>
         <button class="btn bg-light-blue btn-flat" onclick="window.location.href='https://github.com/DigitalLeaves/Creamy'"><i class="fa fa-github"></i></button>
         <button class="btn bg-aqua btn-flat" onclick="window.location.href='https://twitter.com/creamythecrm'"><i class="fa fa-twitter"></i></button>
-    </div>
+    </div>-->
 
 	<?php unset($error); ?>
   </body>
