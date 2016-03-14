@@ -48,6 +48,16 @@
 	color: #c9302c;
 }
 
+.playback_recording{
+	color: #5cb85c;
+}
+
+.playback_recording:hover,
+.playback_recording:focus{
+	color: #449d44;
+}
+
+
 .align-left{
 	text-align: left !important;
 }
