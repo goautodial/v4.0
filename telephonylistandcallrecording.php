@@ -21,6 +21,11 @@
         <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        <!-- Circle Buttons style -->
+        <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+        <!-- Wizard Form style -->
+        <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -34,6 +39,10 @@
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <!-- Bootstrap WYSIHTML5 -->
         <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+
+        <!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
@@ -69,8 +78,8 @@
                                 <div class="box-header">
                                     <h3 class="box-title"><?php $lh->translateText("lists"); ?></h3>
                                 </div><!-- /.box-header -->
-                                <div class="box-body table" id="users_table">
-									<?php print $ui->goGetAllLists(); ?>
+                                <div class="box-body table" id="recording_table">
+									<?php print $ui->getListAllRecordings(); ?>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>
@@ -88,32 +97,7 @@
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
-				
-				/**
-				  * Edit user details
-				 */
-				 $(".edit-lists").click(function(e) {
-					e.preventDefault();
-					var url = './edittelephonylist.php';
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="listid" value="' + $(this).attr('href') + '" /></form>');
-					//$('body').append(form);  // This line is not necessary
-					$(form).submit();
-				 });
-				
-				/**
-				 * Delete user.
-				 */
-				 $(".delete-lists").click(function(e) {
-					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
-					e.preventDefault();
-					if (r == true) {
-						var list_id = $(this).attr('href');
-						$.post("./php/DeleteTelephonyList.php", { userid: list_id } ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
-							else { alert ("<?php $lh->translateText("unable_delete_list"); ?>"); }
-						});
-					}
-				 });
+				$('#recordings').dataTable();
 				
 			});
 		</script>
