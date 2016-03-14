@@ -3012,7 +3012,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td>".$output->status[$i]."</td>
 	                    <td>".$output->last_local_call_time[$i]."</td>
 	                    <td>".$output->cnt[$i]."</td>
-	                    <td>".$output->filename[$i]."</td>
+	                    <td><span class='playback_recoding fa fa-play' data-id='".$output->location[$i]."'></span></td>
 	                    <td>
 	                    	<ul class='action-btn-recording'>
 	                    		<li><span class='edit-recording fa fa-pencil' data-id='".$output->list_id[$i]."'></span></li>
