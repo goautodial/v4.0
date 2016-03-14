@@ -2927,8 +2927,6 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function getListAllCampaigns($goUser, $goPass, $goAction, $responsetype){
 		$url = "https://encrypted.goautodial.com/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
-        $postfields["goUser"] = "admin"; #Username goes here. (required)
-        $postfields["goPass"] = "goautodial"; #Password goes here. (required)
         $postfields["goUser"] = "goautodial"; #Username goes here. (required)
         $postfields["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
         $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
