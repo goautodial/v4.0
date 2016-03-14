@@ -23,10 +23,14 @@ $cUser = $cDB->getOne(CRM_SETTINGS_TABLE_NAME);
 //get db pass
 $cDB->where('setting', 'GO_agent_pass');
 $cPass = $cDB->getOne(CRM_SETTINGS_TABLE_NAME);
+//get agent URL
+$cDB->where('setting', 'GO_agent_url');
+$cURL = $cDB->getOne(CRM_SETTINGS_TABLE_NAME);
 
-$astHost = (isset($cHost["value"])) ? $cHost["value"] : DB_HOST;
-$astUser = (isset($cUser["value"])) ? $cUser["value"] : DB_USERNAME;
-$astPass = (isset($cPass["value"])) ? $cPass["value"] : DB_PASSWORD;
+$astHost = (isset($cHost["value"]) && $cHost["value"] != '') ? $cHost["value"] : DB_HOST;
+$astUser = (isset($cUser["value"]) && $cUser["value"] != '') ? $cUser["value"] : DB_USERNAME;
+$astPass = (isset($cPass["value"]) && $cPass["value"] != '') ? $cPass["value"] : DB_PASSWORD;
+$baseURL = (isset($cURL["value"]) && $cURL["value"] != '') ? "http://" . parse_url($cURL["value"], PHP_URL_HOST) : $baseURL;
     
 $US='_';
 $NOW_TIME = date("Y-m-d H:i:s");
@@ -37,14 +41,35 @@ $StarTtimE = date("U");
 $astDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL, $astHost, 'asterisk', $astUser, $astPass);
 
 if ($astDB == null) {
-    throw new \Exception("Unable to connect to the database 'asterisk' on the specified host. Access denied, incorrect parameters or table does not exist.");
-    echo "// ERROR: Unable to connect to the database 'asterisk' on the specified host. Access denied, incorrect parameters or table does not exist.\n";
+    throw new \Exception($lh->translationFor('unable_to_connect_to_database'));
+    echo "// ".$lh->translationFor('error').": ".$lh->translationFor('unable_to_connect_to_database')."\n";
     return false;
 }
 
 if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
     header('Content-Type: text/javascript');
+
+    echo "// Session Variables\n";
+    $sess_vars = "|";
+    foreach ($_SESSION as $idx => $val) {
+        if (!preg_match("/^(userid|userrole|avatar)/", $idx)) {
+            if ($idx == 'is_logged_in')
+                $val = ($val) ? 1 : 0;
+            ${$idx} = $val;
+            $sess_vars .= "{$idx}|";
+            //if ($idx == 'is_logged_in') {
+            //    $val = ($val) ? 1 : 0;
+            //    echo "var {$idx} = {$val};\n";
+            //} else {
+            //    echo "var {$idx} = '{$val}';\n";
+            //}
+        }
+    }
+    echo "// {$sess_vars}\n";
 ?>
+
+// Settings
+var is_logged_in = <?=$is_logged_in?>;
 var baseURL = '<?=$baseURL?>';
 var NOW_TIME = '<?=$NOW_TIME?>';
 var SQLdate = '<?=$NOW_TIME?>';
@@ -57,9 +82,9 @@ var c = new Date();
     LCAc = new Array('','','','','','');
     LCAt = new Array('','','','','','');
     LMAe = new Array('','','','','','');
-var session_id = '';
-var session_name = '';
-var conf_exten = '';
+var session_id = '<?=$session_id?>';
+var session_name = '<?=$session_name?>';
+var conf_exten = '<?=$session_id?>';
 var vtiger_callback_id = '';
 var qm_extension = '';
 var nocall_dial_flag = '';
@@ -257,18 +282,6 @@ var custom_field_types = '';
 var web_form_varsX = '';
 var vicidial_agent_disable = '';
 <?php
-    foreach ($_SESSION as $idx => $val) {
-        if (preg_match("/^(is_logged_in|username)/", $idx)) {
-            ${$idx} = $val;
-            if ($idx == 'is_logged_in') {
-                $val = ($val) ? 1 : 0;
-                echo "var {$idx} = {$val};\n";
-            } else {
-                echo "var {$idx} = '{$val}';\n";
-            }
-        }
-    }
-    
     $forever_stop = 0;
     $user_abb = "{$username}{$username}{$username}{$username}";
     while ( (strlen($user_abb) > 4) and ($forever_stop < 200) )
@@ -312,6 +325,8 @@ var user_abb = '<?=$user_abb?>';
     }
     //echo "// ".$result['user_group']."\n";
     
+    $phone_login = (isset($_SESSION['phone_login'])) ? $_SESSION['phone_login'] : $phone_login;
+    $phone_pass = (isset($_SESSION['phone_pass'])) ? $_SESSION['phone_pass'] : $phone_pass;
     echo "\n// Phone Settings\n";
     $astDB->where('login', $phone_login);
     $astDB->where('pass', $phone_pass);
@@ -338,67 +353,91 @@ var user_abb = '<?=$user_abb?>';
         }
     }
     
-    echo "\n// Campaign Settings\n";
-    $astDB->where('campaign_id', 'TESTCAMP');
-    $result = $astDB->getOne('vicidial_campaigns', 'park_ext,park_file_name,web_form_address,allow_closers,auto_dial_level,dial_timeout,dial_prefix,campaign_cid,campaign_vdad_exten,campaign_rec_exten,campaign_recording,campaign_rec_filename,campaign_script,get_call_launch,am_message_exten,xferconf_a_dtmf,xferconf_a_number,xferconf_b_dtmf,xferconf_b_number,alt_number_dialing,scheduled_callbacks,wrapup_seconds,wrapup_message,closer_campaigns,use_internal_dnc,allcalls_delay,omit_phone_code,agent_pause_codes_active,no_hopper_leads_logins,campaign_allow_inbound,manual_dial_list_id,default_xfer_group,xfer_groups,disable_alter_custphone,display_queue_count,manual_dial_filter,agent_clipboard_copy,use_campaign_dnc,three_way_call_cid,dial_method,three_way_dial_prefix,web_form_target,vtiger_screen_login,agent_allow_group_alias,default_group_alias,quick_transfer_button,prepopulate_transfer_preset,view_calls_in_queue,view_calls_in_queue_launch,call_requeue_button,pause_after_each_call,no_hopper_dialing,agent_dial_owner_only,agent_display_dialable_leads,web_form_address_two,agent_select_territories,crm_popup_login,crm_login_address,timer_action,timer_action_message,timer_action_seconds,start_call_url,dispo_call_url,xferconf_c_number,xferconf_d_number,xferconf_e_number,use_custom_cid,scheduled_callbacks_alert,scheduled_callbacks_count,manual_dial_override,blind_monitor_warning,blind_monitor_message,blind_monitor_filename,timer_action_destination,enable_xfer_presets,hide_xfer_number_to_dial,manual_dial_prefix,customer_3way_hangup_logging,customer_3way_hangup_seconds,customer_3way_hangup_action,ivr_park_call,manual_preview_dial,api_manual_dial,manual_dial_call_time_check,my_callback_option,per_call_notes,agent_lead_search,agent_lead_search_method,queuemetrics_phone_environment,auto_pause_precall,auto_pause_precall_code,auto_resume_precall,manual_dial_cid,custom_3way_button_transfer,callback_days_limit,disable_dispo_screen,disable_dispo_status,screen_labels,status_display_fields,pllb_grouping,pllb_grouping_limit,in_group_dial,in_group_dial_select,pause_after_next_call,owner_populate');
-    $dial_prefix = '';
+    if (isset($_SESSION['campaign_id'])) {
+        echo "\n// Campaign Settings\n";
+        $astDB->where('campaign_id', 'TESTCAMP');
+        $result = $astDB->getOne('vicidial_campaigns', 'park_ext,park_file_name,web_form_address,allow_closers,auto_dial_level,dial_timeout,dial_prefix,campaign_cid,campaign_vdad_exten,campaign_rec_exten,campaign_recording,campaign_rec_filename,campaign_script,get_call_launch,am_message_exten,xferconf_a_dtmf,xferconf_a_number,xferconf_b_dtmf,xferconf_b_number,alt_number_dialing,scheduled_callbacks,wrapup_seconds,wrapup_message,closer_campaigns,use_internal_dnc,allcalls_delay,omit_phone_code,agent_pause_codes_active,no_hopper_leads_logins,campaign_allow_inbound,manual_dial_list_id,default_xfer_group,xfer_groups,disable_alter_custphone,display_queue_count,manual_dial_filter,agent_clipboard_copy,use_campaign_dnc,three_way_call_cid,dial_method,three_way_dial_prefix,web_form_target,vtiger_screen_login,agent_allow_group_alias,default_group_alias,quick_transfer_button,prepopulate_transfer_preset,view_calls_in_queue,view_calls_in_queue_launch,call_requeue_button,pause_after_each_call,no_hopper_dialing,agent_dial_owner_only,agent_display_dialable_leads,web_form_address_two,agent_select_territories,crm_popup_login,crm_login_address,timer_action,timer_action_message,timer_action_seconds,start_call_url,dispo_call_url,xferconf_c_number,xferconf_d_number,xferconf_e_number,use_custom_cid,scheduled_callbacks_alert,scheduled_callbacks_count,manual_dial_override,blind_monitor_warning,blind_monitor_message,blind_monitor_filename,timer_action_destination,enable_xfer_presets,hide_xfer_number_to_dial,manual_dial_prefix,customer_3way_hangup_logging,customer_3way_hangup_seconds,customer_3way_hangup_action,ivr_park_call,manual_preview_dial,api_manual_dial,manual_dial_call_time_check,my_callback_option,per_call_notes,agent_lead_search,agent_lead_search_method,queuemetrics_phone_environment,auto_pause_precall,auto_pause_precall_code,auto_resume_precall,manual_dial_cid,custom_3way_button_transfer,callback_days_limit,disable_dispo_screen,disable_dispo_status,screen_labels,status_display_fields,pllb_grouping,pllb_grouping_limit,in_group_dial,in_group_dial_select,pause_after_next_call,owner_populate');
+        $dial_prefix = '';
 ?>
 var campaign = 'TESTCAMP';      // put here the selected campaign upon login
 var group = 'TESTCAMP';         // same value as campaign variable
 <?php
-    foreach ($result as $idx => $val) {
-        if (preg_match("/^(timer_action)/", $idx)) {
-            echo "var campaign_{$idx} = '{$val}';\n";
-        } else {
-            if ($idx == 'dial_prefix')
-                {$dial_prefix = $val;}
-            if ($idx == 'manual_dial_prefix')
-                {$val = (strlen($val) < 1) ? $dial_prefix : $val;}
-            if ($idx == 'pause_after_each_call') {
-                $idx = 'dispo_check_all_pause';
-                $val = ($val == 'Y') ? 1 : 0;
-            }
-            if (preg_match("/^(campaign_rec_filename|default_group_alias)$/", $idx)) {
-                echo "var LIVE_{$idx} = '{$val}';\n";
-            }
-    
-            if (!preg_match("/^(disable_dispo_screen|disable_dispo_status|campaign_recording)$/", $idx)) {
-                if (preg_match("/^(web_form_address)", $idx)) {
-                    echo "var VDIC_{$idx} = '{$val}';\n";
-                    echo "var TEMP_VDIC_{$idx} = '{$val}';\n";
-                } else {
-                    echo "var {$idx} = '{$val}';\n";
-                    if ($idx == 'auto_dial_level') {
-                        echo "var starting_dial_level = '{$val}';\n";
-                    }
-                }
+        foreach ($result as $idx => $val) {
+            if (preg_match("/^(timer_action)/", $idx)) {
+                echo "var campaign_{$idx} = '{$val}';\n";
             } else {
-                ${$idx} = $val;
+                if ($idx == 'dial_prefix')
+                    {$dial_prefix = $val;}
+                if ($idx == 'manual_dial_prefix')
+                    {$val = (strlen($val) < 1) ? $dial_prefix : $val;}
+                if ($idx == 'pause_after_each_call') {
+                    $idx = 'dispo_check_all_pause';
+                    $val = ($val == 'Y') ? 1 : 0;
+                }
+                if (preg_match("/^(campaign_rec_filename|default_group_alias)$/", $idx)) {
+                    echo "var LIVE_{$idx} = '{$val}';\n";
+                }
+        
+                if (!preg_match("/^(disable_dispo_screen|disable_dispo_status|campaign_recording)$/", $idx)) {
+                    if (preg_match("/^(web_form_address)", $idx)) {
+                        echo "var VDIC_{$idx} = '{$val}';\n";
+                        echo "var TEMP_VDIC_{$idx} = '{$val}';\n";
+                    } else {
+                        echo "var {$idx} = '{$val}';\n";
+                        if ($idx == 'auto_dial_level') {
+                            echo "var starting_dial_level = '{$val}';\n";
+                        }
+                        if ($idx == 'api_manual_dial') {
+                            $AllowManualQueueCalls = 1;
+                            $AllowManualQueueCallsChoice = 0;
+                            if ($val == 'QUEUE') {
+                                $AllowManualQueueCalls = 0;
+                                $AllowManualQueueCallsChoice = 1;
+                            }
+                            echo "var AllowManualQueueCalls = '{$AllowManualQueueCalls}';\n";
+                            echo "var AllowManualQueueCallsChoice = '{$AllowManualQueueCallsChoice}';\n";
+                        }
+                        if ($idx == 'manual_preview_dial') {
+                            $manual_dial_preview = 1;
+                            if ($val == 'DISABLED')
+                                {$manual_dial_preview = 0;}
+                            echo "var manual_dial_preview = '{$manual_dial_preview}';\n";
+                        }
+                        if ($idx == 'manual_dial_override') {
+                            if ($val == 'ALLOW_ALL')
+                                {echo "    agentcall_manual = '1';\n";}
+                            if ($val == 'DISABLE_ALL')
+                                {echo "    agentcall_manual = '0';\n";}
+                        }
+                    }
+                } else {
+                    ${$idx} = $val;
+                }
             }
         }
-    }
-    
-    if (($disable_dispo_screen == 'DISPO_ENABLED') || ($disable_dispo_screen == 'DISPO_SELECT_DISABLED') || (strlen($disable_dispo_status) < 1)) {
-        if ($disable_dispo_screen == 'DISPO_SELECT_DISABLED') {
-            echo "var hide_dispo_list = '1';\n";
-        } else {
-            echo "var hide_dispo_list = '0';\n";
+        
+        if (($disable_dispo_screen == 'DISPO_ENABLED') || ($disable_dispo_screen == 'DISPO_SELECT_DISABLED') || (strlen($disable_dispo_status) < 1)) {
+            if ($disable_dispo_screen == 'DISPO_SELECT_DISABLED') {
+                echo "var hide_dispo_list = '1';\n";
+            } else {
+                echo "var hide_dispo_list = '0';\n";
+            }
+            echo "var disable_dispo_screen = '0';\n";
+            echo "var disable_dispo_status = '';\n";
         }
-        echo "var disable_dispo_screen = '0';\n";
-        echo "var disable_dispo_status = '';\n";
+        if (($disable_dispo_screen == 'DISPO_DISABLED') && (strlen($disable_dispo_status) > 0)) {
+            echo "var hide_dispo_list = '0';\n";
+            echo "var disable_dispo_screen = '1';\n";
+            echo "var disable_dispo_status = '{$disable_dispo_status}';\n";
+        }
+        
+        if ((!preg_match('/DISABLED/', $vicidial_recording_override)) && ($vicidial_recording > 0))
+            {$campaign_recording = $vicidial_recording_override;}
+        if ($vicidial_recording == '0')
+            {$campaign_recording = 'NEVER';}
+        echo "var campaign_recording = '{$campaign_recording}';\n";
+        echo "var LIVE_campaign_recording = '{$campaign_recording}';\n";
     }
-    if (($disable_dispo_screen == 'DISPO_DISABLED') && (strlen($disable_dispo_status) > 0)) {
-        echo "var hide_dispo_list = '0';\n";
-        echo "var disable_dispo_screen = '1';\n";
-        echo "var disable_dispo_status = '{$disable_dispo_status}';\n";
-    }
-    
-    if ((!preg_match('/DISABLED/', $vicidial_recording_override)) && ($vicidial_recording > 0))
-        {$campaign_recording = $vicidial_recording_override;}
-    if ($vicidial_recording == '0')
-        {$campaign_recording = 'NEVER';}
-    echo "var campaign_recording = '{$campaign_recording}';\n";
-    echo "var LIVE_campaign_recording = '{$campaign_recording}';\n";
 ?>
 
 $(document).ready(function() {
@@ -619,13 +658,104 @@ $(document).ready(function() {
             return confirmationMessage;                                //Webkit, Safari, Chrome etc.
         }
     });
+
+    $("#notSelectedINB, #selectedINB").sortable({
+        connectWith: ".connectedINB",
+        placeholder: "ui-state-highlight",
+        receive: function(event, ui) {
+            if ($(this).attr('id') == 'notSelectedINB' && $(this).text() != "") {
+                $("#scButton").html('<?=$lh->translationFor('select_all')?>');
+            }
+        },
+        remove: function(event, ui) {
+            if ($(this).attr('id') == 'notSelectedINB' && $(this).text() == "") {
+                $("#scButton").html('<?=$lh->translationFor('remove_all')?>');
+            } else if ($(this).attr('id') == 'selectedINB' && $(this).text() == "") {
+                $("#scButton").html('<?=$lh->translationFor('select_all')?>');
+            }
+        }
+    }).disableSelection();
+    
+    $("#select_camp").change(function() {
+        var camp = $(this).val();
+        $("#inboundSelection, #scButton, #selectionNote").addClass('hidden');
+        $("#closerSelectBlended").closest('p').addClass('hidden');
+        if (camp.length > 0) {
+            $("#logSpinner").removeClass('hidden');
+            $("#scSubmit").removeClass('disabled');
+            $.post('<?=$module_dir?>GOagentJS.php', {action: 'IngroupS', module_name: 'GOagent', campaign_id: $(this).val()}, function(result) {
+                var data = $.trim(result);
+                $("#logSpinner").addClass('hidden');
+                if (data.length > 0) {
+                    $("#selectedINB").empty();
+                    $("#notSelectedINB").empty().append(data);
+                    $("#inboundSelection, #scButton, #selectionNote").removeClass('hidden');
+                    $("#closerSelectBlended").closest('p').removeClass('hidden');
+                } else {
+                    $("#inboundSelection, #scButton, #selectionNote").addClass('hidden');
+                    $("#closerSelectBlended").closest('p').addClass('hidden');
+                }
+            });
+        } else {
+            $("#scSubmit").addClass('disabled');
+        }
+    });
+
+    $("#scButton").click(function() {
+        var content = $(this).text();
+        if (content == '<?=$lh->translationFor('select_all')?>') {
+            content = '<?=$lh->translationFor('remove_all')?>';
+            var divContent = $("#notSelectedINB").html();
+            $("#notSelectedINB").empty();
+            $("#selectedINB").append(divContent);
+        } else {
+            content = '<?=$lh->translationFor('select_all')?>';
+            var divContent = $("#selectedINB").html();
+            $("#selectedINB").empty();
+            $("#notSelectedINB").append(divContent);
+        }
+        $(this).text(content);
+    });
+    
+    $("#scSubmit").click(function() {
+        var inbArray = [];
+        $("#sSubmit").addClass('disabled');
+        $("#selectedINB").find('abbr').each(function(index) {
+            inbArray.push($(this).text());
+        });
+        var postData = {
+            module_name: 'GOagent',
+            action: 'LogiN',
+            campaign_id: $("#select_camp").val(),
+            ingroups: inbArray,
+            closer_blended: $("#closerSelectBlended").is(':checked')
+        };
+        
+        $.post('<?=$module_dir?>GOagentJS.php', postData, function(data) {
+            if (data == "SUCCESS") {
+                is_logged_in = 1;
+            } else {
+                $("#scSubmit").removeClass('disabled');
+            }
+        });
+    });
 });
 
 function btnLogMeIn () {
-    $("#select-campaign").modal({
-        keyboard: false,
-        backdrop: 'static',
-        show: true
+    var postData = {
+        module_name: 'GOagent',
+        action: 'CampaignS',
+    };
+
+    $.post('<?=$module_dir?>GOagentJS.php', postData, function(data) {
+        $("#select-campaign select#select_camp").html(data);
+        $("#inboundSelection, #scButton, #selectionNote").addClass('hidden');
+        $("#closerSelectBlended").closest('p').addClass('hidden');
+        $("#select-campaign").modal({
+            keyboard: false,
+            backdrop: 'static',
+            show: true
+        });
     });
 }
 
@@ -685,8 +815,7 @@ function toggleButton (taskname, taskaction, taskenable, toupperfirst, tolowerel
     var isEnabled = (taskenable != null) ? taskenable : true;
     var isHidden = false;
     
-    if (taskaction != null && taskaction.length > 0)
-    {
+    if (taskaction != null && taskaction.length > 0) {
         switch (taskaction.toLowerCase()) {
             case "dial":
                 actClass = "fa fa-phone";
@@ -1517,9 +1646,9 @@ function CheckForIncoming () {
             var dial_display_number = phone_number_format(callnum);
 
             var status_display_content = '';
-            if (status_display_CALLID > 0) {status_display_content = status_display_content + " UID: " + LastCID;}
-            if (status_display_LEADID > 0) {status_display_content = status_display_content + " Lead: " + $("#formMain input[name='lead_id'").val();}
-            if (status_display_LISTID > 0) {status_display_content = status_display_content + " List: " + $("#formMain input[name='list_id'").val();}
+            if ( /CALLID/.test(status_display_fields) ) {status_display_content = status_display_content + " UID: " + LastCID;}
+            if ( /LEADID/.test(status_display_fields) ) {status_display_content = status_display_content + " Lead: " + $("#formMain input[name='lead_id'").val();}
+            if ( /LISTID/.test(status_display_fields) ) {status_display_content = status_display_content + " List: " + $("#formMain input[name='list_id'").val();}
 
             $("#MainStatusSpan").html(" Incoming: " + dial_display_number + " " + custom_call_id + " " + status_display_content + " &nbsp; " + VDIC_fronter);
 
@@ -1571,9 +1700,9 @@ function CheckForIncoming () {
                 var dial_display_number = phone_number_format(callnum);
 
                 var status_display_content='';
-                if (status_display_CALLID > 0) {status_display_content = status_display_content + " UID: " + CIDcheck;}
-                if (status_display_LEADID > 0) {status_display_content = status_display_content + " Lead: " + $("#formMain input[name='lead_id']").val();}
-                if (status_display_LISTID > 0) {status_display_content = status_display_content + " List: " + $("#formMain input[name='list_id']").val();}
+                if ( /CALLID/.test(status_display_fields) ) {status_display_content = status_display_content + " UID: " + CIDcheck;}
+                if ( /LEADID/.test(status_display_fields) ) {status_display_content = status_display_content + " Lead: " + $("#formMain input[name='lead_id']").val();}
+                if ( /LISTID/.test(status_display_fields) ) {status_display_content = status_display_content + " List: " + $("#formMain input[name='list_id']").val();}
 
                 $("#MainStatusSpan").html(" Incoming: " + dial_display_number + " " + custom_call_id + " Group- " + VDIC_data_VDIG[1] + " &nbsp; " + VDIC_fronter + " " + status_display_content); 
             }
@@ -1952,7 +2081,7 @@ String.prototype.toUpperFirst = function() {
         $agent = get_settings('user', $astDB, $users->getUserName());
         
         switch ($_REQUEST['action']) {
-            case "login":
+            case "LogiN":
                 $CIDdate = date("ymdHis");
                 $month_old = mktime(11, 0, 0, date("m"), date("d")-2,  date("Y"));
                 $past_month_date = date("Y-m-d H:i:s",$month_old);
@@ -2038,7 +2167,6 @@ String.prototype.toUpperFirst = function() {
                         if ($astDB->getRowCount() > 0) {
                             $query = $astDB->rawQuery("UPDATE vicidial_conferences SET extension='$SIP_user', leave_3way='0' WHERE server_ip='{$phone_settings->server_ip}' AND ((extension='') OR (extension=null))", 1);
 
-                        var_dump($query);
                             $astDB->where('server_ip', $phone_settings->server_ip);
                             $astDB->where('extension', $SIP_user);
                             $astDB->orWhere('extension', $user);
@@ -2141,7 +2269,7 @@ String.prototype.toUpperFirst = function() {
                     $astDB->where('shift_override_flag', '1');
                     $query = $astDB->update('vicidial_users', array('shift_override_flag' => '0'));
                     
-                    $closer_campaigns = '';
+                    $closer_campaigns = (strlen($_REQUEST['ingroups'])) ? " " . implode(" ", $_REQUEST['ingroups']) . " -" : "";
                     //$query = $db->query("UPDATE vicidial_live_agents SET closer_campaigns='$closer_campaigns' WHERE user='$user' AND server_ip='{$phone_settings->server_ip}';");
                     $astDB->where('user', $user);
                     $astDB->where('server_ip', $phone_settings->server_ip);
@@ -2207,6 +2335,13 @@ String.prototype.toUpperFirst = function() {
                     $VARxferGroups = substr("$VARxferGroups", 0, -1); 
                     $VARxferGroupsNames = substr("$VARxferGroupsNames", 0, -1); 
                 }
+
+                $_SESSION['closer_blended'] = $_REQUEST['closer_blended'];
+                $_SESSION['campaign_id'] = $campaign;
+                $_SESSION['agent_log_id'] = $agent_log_id;
+                $_SESSION['session_id'] = $session_id;
+                $_SESSION['session_name'] = $session_name;
+                $_SESSION['server_ip'] = $phone_settings->server_ip;
                 
                 $return = array(
                     'user' => $user,
@@ -2223,7 +2358,6 @@ String.prototype.toUpperFirst = function() {
                     'asterisk_version' => $asterisk_version,
                     'SIP' => $SIP_user,
                     'qm_extension' => $qm_extension,
-                    'user_abb' => $user_abb,
                     'statuses_ct' => $statuses_ct,
                     'statuses' => $statuses,
                     'VARCBstatusesLIST' => $VARCBstatusesLIST,
@@ -2246,7 +2380,7 @@ String.prototype.toUpperFirst = function() {
                 echo $return;
                 break;
 
-            case "logout":
+            case "LogouT":
                 $NOW_TIME = date("Y-m-d H:i:s");
                 $StarTtime = date("U");
                 $user = $agent->user;
@@ -2341,6 +2475,46 @@ String.prototype.toUpperFirst = function() {
                 
                 echo $return;
                 break;
+            case "CampaignS":
+                // Getting Allowed Campigns
+                $astDB->where('user_group', $agent->user_group);
+                $query = $astDB->getOne('vicidial_user_groups', "TRIM(REPLACE(allowed_campaigns,' -','')) AS allowed_campaigns");
+                
+                // Get Campaign List
+                if (!preg_match("/ALL-CAMPAIGNS/", $query['allowed_campaigns'])) {
+                    $cl = explode(' ', $query['allowed_campaigns']);
+                    $astDB->where('campaign_id', $cl, 'in');
+                }
+                $astDB->where('active', 'Y');
+                $astDB->where('campaign_vdad_exten', array('8366', '8373'), 'not in');
+                $astDB->orderBy('campaign_id');
+                $result = $astDB->get('vicidial_campaigns', null, 'campaign_id,campaign_name');
+                $camp_list = "<option value=''>".$lh->translationFor('select_a_campaign')."</option>";
+                foreach ($result as $camp) {
+                    $camp_list .= "<option value='{$camp['campaign_id']}'>{$camp['campaign_name']}</option>";
+                }
+                
+                $return = $camp_list;
+                echo $return;
+                break;
+            case "IngroupS":
+                $astDB->where('campaign_id', $campaign);
+                $query = $astDB->getOne('vicidial_campaigns', 'campaign_allow_inbound,closer_campaigns');
+                
+                if ($query['campaign_allow_inbound'] == 'Y') {
+                    $inb_groups = explode(" ", $query['closer_campaigns']);
+                    foreach ($inb_groups as $inb) {
+                        if ($inb != "" && $inb != '-') {
+                            $astDB->where('group_id', $inb);
+                            $inbQ = $astDB->getOne('vicidial_inbound_groups', 'group_name');
+                            if ($astDB->getRowCount() > 0) {
+                                $return .= "<li class='ui-state-default'><abbr title='{$inbQ['group_name']}'>{$inb}</abbr></li>";
+                            }
+                        }
+                    }
+                }
+                echo $return;
+                break;
         }
     } else {
         echo "ERROR: Module '{$_REQUEST['module_name']}' not found.";
@@ -2352,20 +2526,22 @@ function get_settings($type=null, $dbase, $param1=null, $param2=null) {
         case "user":
             //User Settings
             $dbase->where('user', $param1);
-            $return = $dbase->getOne('vicidial_users');
+            $return = $dbase->getOne('vicidial_users' , 'user,pass,phone_login,phone_pass,full_name,user_level,hotkeys_active,agent_choose_ingroups,scheduled_callbacks,agentonly_callbacks,agentcall_manual,vicidial_recording,vicidial_transfers,closer_default_blended,user_group,vicidial_recording_override,alter_custphone_override,alert_enabled,agent_shift_enforcement_override,shift_override_flag,allow_alerts,closer_campaigns,agent_choose_territories,custom_one,custom_two,custom_three,custom_four,custom_five,agent_call_log_view_override,agent_choose_blended,agent_lead_search_override,preset_contact_search');
             break;
         
         case "campaign":
             //Campaign Settings
             $dbase->where('campaign_id', $param1);
-            $return = $dbase->getOne('vicidial_campaigns');
+            $return = $dbase->getOne('vicidial_campaigns', 'park_ext,park_file_name,web_form_address,allow_closers,auto_dial_level,dial_timeout,dial_prefix,campaign_cid,campaign_vdad_exten,campaign_rec_exten,campaign_recording,campaign_rec_filename,campaign_script,get_call_launch,am_message_exten,xferconf_a_dtmf,xferconf_a_number,xferconf_b_dtmf,xferconf_b_number,alt_number_dialing,scheduled_callbacks,wrapup_seconds,wrapup_message,closer_campaigns,use_internal_dnc,allcalls_delay,omit_phone_code,agent_pause_codes_active,no_hopper_leads_logins,campaign_allow_inbound,manual_dial_list_id,default_xfer_group,xfer_groups,disable_alter_custphone,display_queue_count,manual_dial_filter,agent_clipboard_copy,use_campaign_dnc,three_way_call_cid,dial_method,three_way_dial_prefix,web_form_target,vtiger_screen_login,agent_allow_group_alias,default_group_alias,quick_transfer_button,prepopulate_transfer_preset,view_calls_in_queue,view_calls_in_queue_launch,call_requeue_button,pause_after_each_call,no_hopper_dialing,agent_dial_owner_only,agent_display_dialable_leads,web_form_address_two,agent_select_territories,crm_popup_login,crm_login_address,timer_action,timer_action_message,timer_action_seconds,start_call_url,dispo_call_url,xferconf_c_number,xferconf_d_number,xferconf_e_number,use_custom_cid,scheduled_callbacks_alert,scheduled_callbacks_count,manual_dial_override,blind_monitor_warning,blind_monitor_message,blind_monitor_filename,timer_action_destination,enable_xfer_presets,hide_xfer_number_to_dial,manual_dial_prefix,customer_3way_hangup_logging,customer_3way_hangup_seconds,customer_3way_hangup_action,ivr_park_call,manual_preview_dial,api_manual_dial,manual_dial_call_time_check,my_callback_option,per_call_notes,agent_lead_search,agent_lead_search_method,queuemetrics_phone_environment,auto_pause_precall,auto_pause_precall_code,auto_resume_precall,manual_dial_cid,custom_3way_button_transfer,callback_days_limit,disable_dispo_screen,disable_dispo_status,screen_labels,status_display_fields,pllb_grouping,pllb_grouping_limit,in_group_dial,in_group_dial_select,pause_after_next_call,owner_populate');
             break;
         
         case "hotkeys":
             //Campaign HotKeys
+            $dbase->where('selectable', 'Y');
+            $dbase->where('status', 'NEW', '!=');
             $dbase->where('campaign_id', $param1);
             $dbase->orderBy('hotkey', 'asc');
-            $return = $dbase->get('vicidial_campaign_hotkeys');
+            $return = $dbase->get('vicidial_campaign_hotkeys', 9, 'hotkey,status,status_name');
             break;
         
         case "phone":
@@ -2373,18 +2549,22 @@ function get_settings($type=null, $dbase, $param1=null, $param2=null) {
             $dbase->where('login', $param1);
             $dbase->where('pass', $param2);
             $dbase->where('active', 'Y');
-            $return = $dbase->getOne('phones');
+            $return = $dbase->getOne('phones', 'extension,dialplan_number,voicemail_id,phone_ip,computer_ip,server_ip,login,pass,status,active,phone_type,fullname,company,picture,messages,old_messages,protocol,local_gmt,ASTmgrUSERNAME,ASTmgrSECRET,login_user,login_pass,login_campaign,park_on_extension,conf_on_extension,VICIDIAL_park_on_extension,VICIDIAL_park_on_filename,monitor_prefix,recording_exten,voicemail_exten,voicemail_dump_exten,ext_context,dtmf_send_extension,call_out_number_group,client_browser,install_directory,local_web_callerID_URL,VICIDIAL_web_URL,AGI_call_logging_enabled,user_switching_enabled,conferencing_enabled,admin_hangup_enabled,admin_hijack_enabled,admin_monitor_enabled,call_parking_enabled,updater_check_enabled,AFLogging_enabled,QUEUE_ACTION_enabled,CallerID_popup_enabled,voicemail_button_enabled,enable_fast_refresh,fast_refresh_rate,enable_persistant_mysql,auto_dial_next_number,VDstop_rec_after_each_call,DBX_server,DBX_database,DBX_user,DBX_pass,DBX_port,DBY_server,DBY_database,DBY_user,DBY_pass,DBY_port,outbound_cid,enable_sipsak_messages,email,template_id,conf_override,phone_context,phone_ring_timeout,conf_secret,is_webphone,use_external_server_ip,codecs_list,webphone_dialpad,phone_ring_timeout,on_hook_agent,webphone_auto_answer');
             break;
         
         case "usergroup":
             //User Group Settings
             $dbase->where('user_group', $param1);
-            $return = $dbase->getOne('vicidial_user_groups');
+            $return = $dbase->getOne('vicidial_user_groups', 'forced_timeclock_login,shift_enforcement,group_shifts,agent_status_viewable_groups,agent_status_view_time,agent_call_log_view,agent_xfer_consultative,agent_xfer_dial_override,agent_xfer_vm_transfer,agent_xfer_blind_transfer,agent_xfer_dial_with_customer,agent_xfer_park_customer_dial,agent_fullscreen,webphone_url_override,webphone_dialpad_override,webphone_systemkey_override');
             break;
+        
+        case "labels":
+            //Field Labels
+            $return = $dbase->getOne('system_settings', 'label_title,label_first_name,label_middle_initial,label_last_name,label_address1,label_address2,label_address3,label_city,label_state,label_province,label_postal_code,label_vendor_lead_code,label_gender,label_phone_number,label_phone_code,label_alt_phone,label_security_phrase,label_email,label_comments');
         
         default:
             //System Settings
-            $return = $dbase->getOne('system_settings');
+            $return = $dbase->getOne('system_settings', 'use_non_latin,vdc_header_date_format,vdc_customer_date_format,vdc_header_phone_format,webroot_writable,timeclock_end_of_day,vtiger_url,enable_vtiger_integration,outbound_autodial_active,enable_second_webform,user_territories_active,static_agent_url,custom_fields_enabled,pllb_grouping_limit,qc_features_active,allow_emails,default_language');
     }
     
     return json_decode(json_encode($return), FALSE);

@@ -9,7 +9,7 @@ include(CRM_MODULE_INCLUDE_DIRECTORY.'Session.php');
 $creamURL = \creamy\CRMUtils::creamyBaseURL();
 $creamURL = parse_url($creamURL);
 $baseURL = (!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'] : "http://".$_SERVER['SERVER_NAME'];
-define(__NAMESPACE__ . '\GO_MODULE_DIR', $baseURL.'/'.$creamURL['path'].'/modules'.DIRECTORY_SEPARATOR.'GOagent'.DIRECTORY_SEPARATOR);
+define(__NAMESPACE__ . '\GO_MODULE_DIR', $baseURL.''.$creamURL['path'].'modules'.DIRECTORY_SEPARATOR.'GOagent'.DIRECTORY_SEPARATOR);
 
 /**
  * This module is an example of how to write a module for Creamy.
@@ -94,11 +94,19 @@ class GOagent extends Module {
 	private function getGOagentContent() {
 		$custInfoTitle = $this->lh()->translationFor("customer_information");
 		$selectACampaign = $this->lh()->translationFor("select_a_campaign");
+		$availableCampaigns = $this->lh()->translationFor("available_campaigns");
+		$groupsNotSelected = $this->lh()->translationFor("groups_not_selected");
+		$selectedGroups = $this->lh()->translationFor("selected_groups");
+		$blendedCalling = $this->lh()->translationFor("blended_calling");
+		$outboundActivated = $this->lh()->translationFor("outbound_activated");
 		$selectAll = $this->lh()->translationFor("select_all");
 		$submit = $this->lh()->translationFor("submit");
+		$note = $this->lh()->translationFor("note");
+		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$labels = $this->getLabels();
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
+		$_SESSION['module_dir'] = $goModuleDIR;
 		$str = <<<EOF
 		<link type='text/css' rel='stylesheet' href='{$goModuleDIR}css/style.css'></link>
 					<script type='text/javascript' src='{$goModuleDIR}GOagentJS.php'></script>
@@ -126,7 +134,19 @@ class GOagent extends Module {
 									<h4 class="modal-title">$selectACampaign</h4>
 								</div>
 								<div class="modal-body">
-									&nbsp;
+									<div style='text-align: center;'>$availableCampaigns: &nbsp; <select id='select_camp'></select></div>
+									<br />
+									<div id="logSpinner" class="text-center hidden"><span style="font-size: 42px;" class="fa fa-spinner fa-pulse"></span></div>
+									<div id="inboundSelection" class="clearfix hidden">
+										<span style="min-width: 48%; margin: 0 5px;" class="text-center bold pull-left">$groupsNotSelected</span>
+										<span style="min-width: 48%; margin: 0 5px;" class="text-center bold pull-right">$selectedGroups</span>
+										<ul id="notSelectedINB" class="connectedINB pull-left"></ul>
+										<ul id="selectedINB" class="connectedINB pull-right"></ul>
+										<br />
+									</div>
+									<p class="text-center hidden" style="padding-top: 5px;"><input type='checkbox' name='closerSelectBlended' id='closerSelectBlended' value='closer' /> $blendedCalling ($outboundActivated)</p>
+									<br />
+									<p id="selectionNote" class="small text-center hidden" style="margin-bottom: 0px;"><b>$note</b>: $selectByDragging</p>
 								</div>
 								<div class="modal-footer">
 									<button id="scButton" class="btn btn-link bold hidden">$selectAll</button>

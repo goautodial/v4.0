@@ -2993,15 +2993,16 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 	public function getListAllCampaigns($goUser, $goPass, $goAction, $responsetype){
-		$url = "http://162.254.144.92/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
-        $postfields["goUser"] = "goautodial"; #Username goes here. (required)
-        $postfields["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
+		$url = "https://encrypted.goautodial.com/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = "admin"; #Username goes here. (required)
+        $postfields["goPass"] = "goautodial"; #Password goes here. (required)
         $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = "json"; #json. (required)
 
 
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
+	 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
          curl_setopt($ch, CURLOPT_POST, 1);
          curl_setopt($ch, CURLOPT_TIMEOUT, 100);
          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

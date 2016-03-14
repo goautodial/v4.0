@@ -28,3 +28,19 @@
 .callhangup {
 	color: rgb(200, 0, 0);
 }
+.connectedINB {
+    border: 1px solid #ccc;
+    min-height: 100px;
+    min-width: 48%;
+    list-style-type: none;
+    margin: 0;
+    padding: 3px 0 0 0;
+    margin: 0 5px;
+}
+.connectedINB li {
+    cursor: move;
+    text-align: center;
+    margin: 0 3px 3px 3px;
+    padding: 3px;
+    width: auto;
+}
