@@ -2792,73 +2792,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       return $this->calloutErrorMessage($this->lh->translationFor("unable_get_user_list"));
        }
 	}
-	
-	
-	public function goGetAllLists() {		
-		$url = "https://encrypted.goautodial.com/goAPI/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = "admin"; #Username goes here. (required)
-		$postfields["goPass"] = "goautodial"; #Password goes here. (required)
-		$postfields["goAction"] = "goGetAllLists"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = "json"; #json. (required)
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);		
-		curl_setopt($ch, CURLOPT_POST, 1);		
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);		
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);		
-		$data = curl_exec($ch);		
-		curl_close($ch);		
-		$output = json_decode($data);		 
-		
-		if ($output->result=="success") {
-		# Result was OK!
-		
-		$columns = array("list_id", "list_name", "active", "list_lastcalldate", "tally", "campaign_id", "Action");
-	    $hideOnMedium = array("dial_method", "active");
-	    $hideOnLow = array("dial_method", "active");
-		$result = $this->generateTableHeaderWithItems($columns, "T_list", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-			   
-			for($i=0;$i<count($output->list_id);$i++){					
-				// if no entry in user list
-				if (empty($output->list_id[$i])) { 
-				 return $this->calloutWarningMessage($this->lh->translationFor("no_entry_in_list"));
-			   }
-				
-				if($output->active[$i] == "Y"){
-					$output->active[$i] = "Active";
-				}else{
-					$output->active[$i] = "Inactive";
-				}
-				
-				$action = $this->getUserActionMenuForLists($output->list_id[$i], $output->list_name[$i]);
-				
-				$result = $result."<tr>
-	                    <td>".$output->list_id[$i]."</td>
-	                    <td><a class=''>".$output->list_name[$i]."</a></td>
-						<td>".$output->active[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->list_lastcalldate[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->tally[$i]."</td>
-						<td>".$output->campaign_id[$i]."</td>
-	                    <td>".$action."</td>
-	                </tr>";
 
-			}
-			
-			return $result; 
-			
-		} else {		
-		# An error occured		
-			return $this->calloutErrorMessage($this->lh->translationFor("unable_get_list"));
-			// $this->calloutErrorMessage($this->lh->translationFor($results["message"]));
-		}
-	       
-	    // print suffix
-	    //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);   
-       
-	}
-	
 	
 	// MOH
 	
@@ -2986,29 +2920,28 @@ error_reporting(E_ERROR | E_PARSE);
 
 	/** Campaigns API - Get all list of campaign */
 	/**
-	 * Generates action circle buttons for different pages/module
 	 * @param goUser 
 	 * @param goPass 
 	 * @param goAction 
 	 * @param responsetype
 	 */
 	public function getListAllCampaigns($goUser, $goPass, $goAction, $responsetype){
-		$url = "http://162.254.144.92/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = "https://encrypted.goautodial.com/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = "goautodial"; #Username goes here. (required)
         $postfields["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
         $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = "json"; #json. (required)
 
 
-         $ch = curl_init();
-         curl_setopt($ch, CURLOPT_URL, $url);
-         curl_setopt($ch, CURLOPT_POST, 1);
-         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-         $data = curl_exec($ch);
-         curl_close($ch);
-         $output = json_decode($data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        $output = json_decode($data);
          
         if ($output->result=="success") {
            # Result was OK!
@@ -3036,7 +2969,64 @@ error_reporting(E_ERROR | E_PARSE);
 
 	        return $result;
 
-         } else {
+        } else {
+           # An error occured
+           return $output->result;
+        }
+	}
+
+	/** Call Recordings API - Get all list of call recording */
+	/**
+	 * @param goUser 
+	 * @param goPass 
+	 * @param goAction 
+	 * @param responsetype
+	 */
+	public function getListAllRecordings($goUser, $goPass, $goAction, $responsetype){
+		$url = "https://encrypted.goautodial.com/goAPI/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = "goautodial"; #Username goes here. (required)
+        $postfields["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
+        $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
+        $postfields["responsetype"] = "json"; #json. (required)
+
+		  
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		// curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+
+		if ($output->result=="success") {
+            # Result was OK!
+           	$columns = array("List ID", "Name", "Status", "Last Call Date", "Leads Count", "Campaign", "Action");
+		   	$result = $this->generateTableHeaderWithItems($columns, "recordings", "table-bordered table-striped", true, false); 
+
+	        for($i=0;$i<count($output->list_id);$i++){
+                    $result .= "<tr>
+	                    <td>".$output->list_id[$i]."</td>
+	                    <td>".$output->users[$i]."</td>
+	                    <td>".$output->status[$i]."</td>
+	                    <td>".$output->last_local_call_time[$i]."</td>
+	                    <td>".$output->cnt[$i]."</td>
+	                    <td></td>
+	                    <td>
+	                    	<ul class='action-btn-recording'>
+	                    		<li><span class='edit-recording fa fa-pencil' data-id='".$output->lead_id[$i]."'></span></li>
+	                    		<li><span class='view-recording fa fa-eye' data-id='".$output->list_id[$i]."'></span></li>
+	                    		<li><span class='delete-recording fa fa-trash' data-id='".$output->list_id[$i]."'></span></li>
+	                    	</ul>
+	                    </td>
+	                </tr>";
+            }
+
+	        return $result;
+
+        } else {
            # An error occured
            return $output->result;
         }

@@ -1,2 +1,4 @@
 php\Config.php
-php/Config.phpphp/Config.php
+php/Config.php
+php/DatabaseConnectorFactory.php
+php\DatabaseConnectorFactory.php

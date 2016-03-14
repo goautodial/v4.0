@@ -25,6 +25,7 @@
     	<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
     	<!-- Wizard Form style -->
     	<link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
+    	<link href="css/style.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -38,7 +39,7 @@
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <!-- Bootstrap WYSIHTML5 -->
         <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-	<!-- Data Tables -->
+		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
@@ -76,7 +77,7 @@
                                 <div class="box-header">
                                     <h3 class="box-title"><?php $lh->translateText("campaigns"); ?></h3>
                                 </div><!-- /.box-header -->
-                                <div class="box-body table" id="users_table">
+                                <div class="box-body table" id="campaign_table">
 									<?php print $ui->getListAllCampaigns(); ?>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
