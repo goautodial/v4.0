@@ -3007,17 +3007,17 @@ error_reporting(E_ERROR | E_PARSE);
 
 	        for($i=0;$i<count($output->list_id);$i++){
                     $result .= "<tr>
-	                    <td>".$output->uniqueid[$i]."</td>
+	                    <td>".$output->list_id[$i]."</td>
 	                    <td>".$output->users[$i]."</td>
 	                    <td>".$output->status[$i]."</td>
-	                    <td>".$output->start_time[$i]."</td>
+	                    <td>".$output->last_local_call_time[$i]."</td>
 	                    <td>".$output->cnt[$i]."</td>
 	                    <td></td>
 	                    <td>
 	                    	<ul class='action-btn-recording'>
-	                    		<li><span class='edit-recording fa fa-pencil' data-id='".$output->uniqueid[$i]."'></span></li>
-	                    		<li><span class='view-recording fa fa-eye' data-id='".$output->uniqueid[$i]."'></span></li>
-	                    		<li><span class='delete-recording fa fa-trash' data-id='".$output->uniqueid[$i]."'></span></li>
+	                    		<li><span class='edit-recording fa fa-pencil' data-id='".$output->lead_id[$i]."'></span></li>
+	                    		<li><span class='view-recording fa fa-eye' data-id='".$output->list_id[$i]."'></span></li>
+	                    		<li><span class='delete-recording fa fa-trash' data-id='".$output->list_id[$i]."'></span></li>
 	                    	</ul>
 	                    </td>
 	                </tr>";
