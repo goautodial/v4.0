@@ -2999,8 +2999,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$output = json_decode($data);
-		print_r($output);
-		die;
+
 		if ($output->result=="success") {
             # Result was OK!
            	$columns = array("Name", "Status", "Last Call Date", "Leads Count", "Recording Preview", "Action");
