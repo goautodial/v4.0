@@ -48,12 +48,12 @@
 	color: #c9302c;
 }
 
-.playback_recording li span.fa-play{
+.playback_recording span.fa-play{
 	color: #5cb85c;
 }
 
-.playback_recording li span.fa-play:hover,
-.playback_recording li span.fa-play:focus{
+.playback_recording span.fa-play:hover,
+.playback_recording span.fa-play:focus{
 	color: #449d44;
 }
 
