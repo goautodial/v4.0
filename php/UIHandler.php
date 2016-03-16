@@ -3002,7 +3002,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 		if ($output->result=="success") {
             # Result was OK!
-           	$columns = array("Name", "Status", "Last Call Date", "Leads Count", "Recording Preview", "Action");
+           	$columns = array("Name", "Status", "Last Call Date", "Leads Count", "Call Preview", "Action");
 		   	$result = $this->generateTableHeaderWithItems($columns, "recordings", "table-bordered table-striped", true, false); 
 
 	        for($i=0;$i<count($output->list_id);$i++){
@@ -3011,7 +3011,11 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td>".$output->status[$i]."</td>
 	                    <td>".$output->last_local_call_time[$i]."</td>
 	                    <td>".$output->cnt[$i]."</td>
-	                    <td class='playback_recoding' style='text-align: center;'><span class='fa fa-play' data-id='".$output->location[$i]."'></span></td>
+	                    <td class='playback_recording'>
+				<a id='".$output->list_id[$i]."' class='play_audio btn btn-app' data-location='".$output->location[$i]."'>
+				    <i class='fa fa-play'></i> Play
+				</a>
+			    </td>
 	                    <td>
 	                    	<ul class='action-btn-recording'>
 	                    		<li><span class='edit-recording fa fa-pencil' data-id='".$output->list_id[$i]."'></span></li>
