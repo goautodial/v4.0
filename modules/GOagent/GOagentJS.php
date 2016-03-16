@@ -355,12 +355,12 @@ var user_abb = '<?=$user_abb?>';
     
     if (isset($_SESSION['campaign_id'])) {
         echo "\n// Campaign Settings\n";
-        $astDB->where('campaign_id', 'TESTCAMP');
+        $astDB->where('campaign_id', $_SESSION['campaign_id']);
         $result = $astDB->getOne('vicidial_campaigns', 'park_ext,park_file_name,web_form_address,allow_closers,auto_dial_level,dial_timeout,dial_prefix,campaign_cid,campaign_vdad_exten,campaign_rec_exten,campaign_recording,campaign_rec_filename,campaign_script,get_call_launch,am_message_exten,xferconf_a_dtmf,xferconf_a_number,xferconf_b_dtmf,xferconf_b_number,alt_number_dialing,scheduled_callbacks,wrapup_seconds,wrapup_message,closer_campaigns,use_internal_dnc,allcalls_delay,omit_phone_code,agent_pause_codes_active,no_hopper_leads_logins,campaign_allow_inbound,manual_dial_list_id,default_xfer_group,xfer_groups,disable_alter_custphone,display_queue_count,manual_dial_filter,agent_clipboard_copy,use_campaign_dnc,three_way_call_cid,dial_method,three_way_dial_prefix,web_form_target,vtiger_screen_login,agent_allow_group_alias,default_group_alias,quick_transfer_button,prepopulate_transfer_preset,view_calls_in_queue,view_calls_in_queue_launch,call_requeue_button,pause_after_each_call,no_hopper_dialing,agent_dial_owner_only,agent_display_dialable_leads,web_form_address_two,agent_select_territories,crm_popup_login,crm_login_address,timer_action,timer_action_message,timer_action_seconds,start_call_url,dispo_call_url,xferconf_c_number,xferconf_d_number,xferconf_e_number,use_custom_cid,scheduled_callbacks_alert,scheduled_callbacks_count,manual_dial_override,blind_monitor_warning,blind_monitor_message,blind_monitor_filename,timer_action_destination,enable_xfer_presets,hide_xfer_number_to_dial,manual_dial_prefix,customer_3way_hangup_logging,customer_3way_hangup_seconds,customer_3way_hangup_action,ivr_park_call,manual_preview_dial,api_manual_dial,manual_dial_call_time_check,my_callback_option,per_call_notes,agent_lead_search,agent_lead_search_method,queuemetrics_phone_environment,auto_pause_precall,auto_pause_precall_code,auto_resume_precall,manual_dial_cid,custom_3way_button_transfer,callback_days_limit,disable_dispo_screen,disable_dispo_status,screen_labels,status_display_fields,pllb_grouping,pllb_grouping_limit,in_group_dial,in_group_dial_select,pause_after_next_call,owner_populate');
         $dial_prefix = '';
 ?>
-var campaign = 'TESTCAMP';      // put here the selected campaign upon login
-var group = 'TESTCAMP';         // same value as campaign variable
+var campaign = '<?=$_SESSION['campaign_id']?>';      // put here the selected campaign upon login
+var group = '<?=$_SESSION['campaign_id']?>';         // same value as campaign variable
 <?php
         foreach ($result as $idx => $val) {
             if (preg_match("/^(timer_action)/", $idx)) {
@@ -737,6 +737,131 @@ $(document).ready(function() {
             } else {
                 $("#scSubmit").removeClass('disabled');
             }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '<?=$module_dir?>GOagentJS.php',
+            processData: true,
+            data: postData,
+            dataType: "json"
+        })
+        .done(function (result) {
+            refresh_interval = 1000;
+            is_logged_in = 1;
+            
+            $.each(result, function(key, value) {
+                if (key == 'camp_settings') {
+                    $.each(value, function(cKey, cValue) {
+                        var patt = /^timer_action/g;
+                        if (patt.test(cKey)) {
+                            $.globalEval("var campaign_"+cKey+" = '"+cValue+"';");
+                        } else {
+                            if (cKey == 'dial_prefix') {
+                                var dial_prefix = cValue;
+                            }
+                        
+                            if (cKey == 'manual_dial_prefix') {
+                                cValue = (cValue.length < 1) ? dial_prefix : cValue;
+                            }
+                            
+                            if (cKey == 'pause_after_each_call') {
+                                cKey = 'dispo_check_all_pause';
+                                cValue = (cValue == 'Y') ? 1 : 0;
+                            }
+                            
+                            var rec_patt = /^(campaign_rec_filename|default_group_alias)$/g;
+                            if (rec_patt.test(cKey)) {
+                                $.globalEval("var LIVE_"+cKey+" = '"+cValue+"';");
+                            }
+                            
+                            var dispo_patt = /^(disable_dispo_screen|disable_dispo_status|campaign_recording)$/g;
+                            if (!dispo_patt.test(cKey)) {
+                                if (cKey == 'web_form_address' || cKey == 'web_form_address_two') {
+                                    $.globalEval("var VDIC_"+cKey+" = '"+cValue+"';");
+                                    $.globalEval("var TEMP_VDIC_"+cKey+" = '"+cValue+"';");
+                                } else {
+                                    $.globalEval("var "+cKey+" = '"+cValue+"';");
+                                    if (cKey == 'auto_dial_level') {
+                                        $.globalEval("var starting_dial_level = '"+cValue+"';");
+                                    }
+                                    if (cKey == 'api_manual_dial') {
+                                        var amqc = 1;
+                                        var amqcc = 0;
+                                        if ($val == 'QUEUE') {
+                                            amqc = 0;
+                                            amqcc = 1;
+                                        }
+                                        $.globalEval("var AllowManualQueueCalls = '"+amqc+"';");
+                                        $.globalEval("var AllowManualQueueCallsChoice = '"+amqcc+"';");
+                                    }
+                                    if (cKey == 'manual_preview_dial') {
+                                        var mdp = 1;
+                                        if (cValue == 'DISABLED')
+                                            {mdp = 0;}
+                                        $.globalEval("var manual_dial_preview = '"+mdp+"';");
+                                    }
+                                    if (cKey == 'manual_dial_override') {
+                                        if (cValue == 'ALLOW_ALL')
+                                            {agentcall_manual = '1';}
+                                        if (cValue == 'DISABLE_ALL')
+                                            {agentcall_manual = '0';}
+                                    }
+                                }
+                            } else {
+                                $.globalEval("var "+cKey+" = '"+cValue+"';");
+                            }
+                        }
+                    });
+
+                    if ((disable_dispo_screen == 'DISPO_ENABLED') || (disable_dispo_screen == 'DISPO_SELECT_DISABLED') || (disable_dispo_status.length < 1)) {
+                        if (disable_dispo_screen == 'DISPO_SELECT_DISABLED') {
+                            $.globalEval("var hide_dispo_list = '1';");
+                        } else {
+                            $.globalEval("var hide_dispo_list = '0';");
+                        }
+                        $.globalEval("var disable_dispo_screen = '0';");
+                        $.globalEval("var disable_dispo_status = '';");
+                    }
+                    if ((disable_dispo_screen == 'DISPO_DISABLED') && (disable_dispo_status.length > 0)) {
+                        $.globalEval("var hide_dispo_list = '0';");
+                        $.globalEval("var disable_dispo_screen = '1';");
+                        $.globalEval("var disable_dispo_status = '"+disable_dispo_status+"';");
+                    }
+                    
+                    var vro_patt = /DISABLED/;
+                    if ((!vro_patt.test(vicidial_recording_override)) && (vicidial_recording > 0))
+                        {var camp_rec = vicidial_recording_override;}
+                    if (vicidial_recording == '0')
+                        {var camp_rec = 'NEVER';}
+                    $.globalEval("var campaign_recording = '"+camp_rec+"';");
+                    $.globalEval("var LIVE_campaign_recording = '"+camp_rec+"';");
+                } else {
+                    var patt = /^(user|pass)$/g;
+                    if (!patt.test(key)) {
+                        //console.log("var "+key+" = '"+value+"';");
+                        if (key == 'now_time') {
+                            $.globalEval("var NOW_TIME = '"+value+"';");
+                            $.globalEval("var SQLdate = '"+value+"';");
+                        } else if (key == 'start_time') {
+                            $.globalEval("var StarTtimE = '"+value+"';");
+                            $.globalEval("var UnixTime = '"+value+"';");
+                        } else if (key == 'VARxferGroups' || key == 'VARxferGroupsNames') {
+                            $.globalEval("var "+key+" = new Array("+value+");");
+                        } else if (key == 'session_name') {
+                            $.globalEval("var "+key+" = '"+value+"';");
+                            $.globalEval("var webform_session = '&"+key+"="+value+"';");
+                        } else {
+                            $.globalEval("var "+key+" = '"+value+"';");
+                        }
+                    }
+                }
+            });
+        })
+        .fail(function() {
+            refresh_interval = 730000;
+            is_logged_in = 0;
+            $("#scSubmit").removeClass('disabled');
         });
     });
 });
