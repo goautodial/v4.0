@@ -48,12 +48,16 @@
 	color: #c9302c;
 }
 
-.playback_recording span.fa-play{
+.playback_recording{
+	text-align: center;
+}
+
+.playback_recording i.fa-play{
 	color: #5cb85c;
 }
 
-.playback_recording span.fa-play:hover,
-.playback_recording span.fa-play:focus{
+.playback_recording i.fa-play:hover,
+.playback_recording i.fa-play:focus{
 	color: #449d44;
 }
 
@@ -102,4 +106,8 @@
 
 .align-left{
 	text-align: left !important;
+}
+
+audio{
+	width: 100%;
 }
