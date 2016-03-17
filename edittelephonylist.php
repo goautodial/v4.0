@@ -61,15 +61,15 @@ if (isset($_POST["listid"])) {
                 <section class="content-header">
                     <h1>
                         <?php $lh->translateText("telephony"); ?>
-                        <small><?php $lh->translateText("telephony_users_edition"); ?></small>
+                        <small><?php $lh->translateText("telephony_lists_edition"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
                         <li> <?php $lh->translateText("telephony"); ?></li>
                         <?php
-							if(isset($_POST["userid"])){
+							if(isset($_POST["listid"])){
 						?>	
-							<li><a href="./telephony_users.php"><?php $lh->translateText("telephony_users"); ?></a></li>
+							<li><a href="./telephonylistandcallrecording.php"><?php $lh->translateText("list_and_call_recording"); ?></a></li>
                         <?php
 							}
                         ?>	                    
@@ -85,8 +85,6 @@ if (isset($_POST["listid"])) {
 					$errormessage = NULL;
 					
 					if(isset($listid)) {
-						//$db = new \creamy\DbHandler();
-						//$customerobj = $db->getDataForCustomer($customerid, $customerType);
 						
 						$url = "https://encrypted.goautodial.com/goAPI/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
 						$postfields["goUser"] = "admin"; #Username goes here. (required)
@@ -111,43 +109,76 @@ if (isset($_POST["listid"])) {
 						if ($output->result=="success") {
 						# Result was OK!
 							for($i=0;$i<count($output->list_id);$i++){
-								/*echo $output->list_id[$i]."</br>";
-								echo $output->list_name[$i]."</br>";								
-								echo $output->active[$i]."</br>";								
-								echo $output->list_lastcalldate[$i]."</br>";								
-								echo $output->tally[$i]."</br>";								
-								echo $output->campaign_id[$i]."</br>";*/
-								
 								
 								$hidden_f = $ui->hiddenFormField("modifyid", $listid);
 								
-								$id_f = '<h4>List ID : <b>'.$listid.'</b></h4>';
-								
-								// name
-								// $name_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("name", "name", "text", $lh->translationFor("name"), $userobj["name"], "user", true));
-								//$name_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("name", "name", "text", $lh->translationFor("name"), $output->full_name[$i], "user", true));
+								$id_f = '<h4>Modify List ID : <b>'.$listid.'</b><h5><i> Last call date : '.$output->list_lastcalldate[$i].'</i></h5></h4>';
 								
 								$name_l = '<h4>Name</h4>';
 								$ph = $lh->translationFor("Name").' ('.$lh->translationFor("mandatory").')';
 								$vl = isset($output->list_name[$i]) ? $output->list_name[$i] : null;
 								$name_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("name", "name", "text", $ph, $vl, "tasks", "required"));
 								
+								$desc_l = '<h4>Description</h4>';
+								$ph = $lh->translationFor("Description").' ('.$lh->translationFor("optional").')';
+								$vl = isset($output->list_description[$i]) ? $output->list_description[$i] : null;
+								$desc_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("desc", "desc", "text", $ph, $vl, "tasks", "required"));
+								
+								
+								$url2 = "http://162.254.144.92/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+								$postfields2["goUser"] = "goautodial"; #Username goes here. (required)
+								$postfields2["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
+								$postfields2["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
+								$postfields2["responsetype"] = "json"; #json. (required)						
+								$ch2 = curl_init();								
+								curl_setopt($ch2, CURLOPT_URL, $url2);								
+								curl_setopt($ch2, CURLOPT_HTTPHEADER, $header2);								
+								curl_setopt($ch2, CURLOPT_POST, 1);								
+								curl_setopt($ch2, CURLOPT_TIMEOUT, 100);								
+								curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);								
+								curl_setopt($ch2, CURLOPT_POSTFIELDS, $postfields2);								
+								$data2 = curl_exec($ch2);								
+								curl_close($ch2);								
+								$output2 = json_decode($data2);
 								
 								$campaign_l = '<h4>Campaign</h4>';
-								$campaign_f = '<select class="form-control" id="campaign" name="campaign">';
+								$campaign_f = '<select class="form-control" id="campaign" name="campaign" required>';		
+								
+								
+								if ($output2->result=="success") {								
+								# Result was OK!
+								
+									for($a=0;$a<count($output2->campaign_id);$a++){
+										if($output->campaign_id[$i] == $output2->campaign_id[$a]){
+											$campaign_f .= '<option value="'.$output2->campaign_id[$a].'" selected>'.$output2->campaign_name[$a].'</option>';
+										}else{
+											$campaign_f .= '<option value="'.$output2->campaign_id[$a].'" >'.$output2->campaign_name[$a].'</option>';
+										}
 									
-                                    //for($a=0;$a<=count($output->campaign))			
-									
-                                    if($output->campaign_id[$i] == "TEST CAMPAIGN"){
-										$campaign_f .= '<option value="TEST CAMPAIGN" selected>TEST CAMPAIGN</option>';
-									}else{
-										$campaign_f .= '<option value="TEST CAMPAIGN" >TEST CAMPAIGN</option>';
 									}
-									
+								} else {
+								# An error occured
+									echo $output2->result;
+								}
 									
 								$campaign_f .= '</select>';
-								
-								
+								$reset_l = '<h4>Reset Lead-Called-Status</h4>';
+								$reset_f = '<select class="form-control" id="reset" name="reset">';
+												
+									if($output->reset_list[$i] == "Y"){
+										$reset_f .= '<option value="Y" selected> YES </option>';
+									}else{
+										$reset_f .= '<option value="Y" > YES </option>';
+									}
+									
+									if($output->reset_list[$i] == "N"){
+										$reset_f .= '<option value="N" selected> NO </option>';
+									}else{
+										$reset_f .= '<option value="N" > NO </option>';
+									}
+									
+								$reset_f .= '</select>';
+								 
 								$status_l = '<h4>Active</h4>';
 								$status_f = '<select class="form-control" id="status" name="status">';
 												
@@ -165,78 +196,29 @@ if (isset($_POST["listid"])) {
 									
 								$status_f .= '</select>';
 								
-								
-								$userlevel_l = '<h4>User Level</h4>';
-								$userlevel_f = '<select class="form-control" id="userlevel" name="userlevel">';
-								
-										if($output->user_level[$i] == "1"){
-											$userlevel_f .= '<option value="1" selected> 1 </option>';
-										}else{
-											$userlevel_f .= '<option value="1" > 1 </option>';
-										}
-										if($output->user_level[$i] == "2"){
-											$userlevel_f .= '<option value="2" selected> 2 </option>';
-										}else{
-											$userlevel_f .= '<option value="2" > 2 </option>';
-										}
-										if($output->user_level[$i] == "3"){
-											$userlevel_f .= '<option value="3" selected> 3 </option>';
-										}else{
-											$userlevel_f .= '<option value="3" > 3 </option>';
-										}
-										if($output->user_level[$i] == "4"){
-											$userlevel_f .= '<option value="4" selected> 4 </option>';
-										}else{
-											$userlevel_f .= '<option value="4" > 4 </option>';
-										}
-										if($output->user_level[$i] == "5"){
-											$userlevel_f .= '<option value="5" selected> 5 </option>';
-										}else{
-											$userlevel_f .= '<option value="5" > 5 </option>';
-										}
-										if($output->user_level[$i] == "6"){
-											$userlevel_f .= '<option value="6" selected> 6 </option>';
-										}else{
-											$userlevel_f .= '<option value="6" > 6 </option>';
-										}
-										if($output->user_level[$i] == "7"){
-											$userlevel_f .= '<option value="7" selected> 7 </option>';
-										}else{
-											$userlevel_f .= '<option value="7" > 7 </option>';
-										}
-										if($output->user_level[$i] == "8"){
-											$userlevel_f .= '<option value="8" selected> 8 </option>';
-										}else{
-											$userlevel_f .= '<option value="8" > 8 </option>';
-										}
-										if($output->user_level[$i] == "9"){
-											$userlevel_f .= '<option value="9" selected> 9 </option>';
-										}else{
-											$userlevel_f .= '<option value="9" > 9 </option>';
-										}
-											
-								$userlevel_f .= '</select>';
+								$reset_status_row = $ui->rowWithVariableContents(array("6", "6","6","6"), array($reset_l, $status_l, $reset_f, $status_f));
+								$rs_f = $ui->singleFormGroupWrapper($reset_status_row);
 								
 								// buttons at bottom (only for writing+ permissions)
 								$buttons = "";
 								if ($user->userHasWritePermission()) {
-									$buttons = $ui->buttonWithLink("modifyT_userDeleteButton", $listid, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
+									$buttons = $ui->buttonWithLink("modifyT_listDeleteButton", $listid, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
 									$buttons .= $ui->buttonWithLink("modifyCustomerOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
 									$buttons = $ui->singleFormGroupWrapper($buttons);
 								}
 		
 								// generate the form
-								$fields = $hidden_f.$id_f.$name_l.$name_f.$campaign_l.$campaign_f.$status_l.$status_f.$userlevel_l.$userlevel_f;
+								$fields = $hidden_f.$name_l.$name_f.$desc_l.$desc_f.$campaign_l.$campaign_f.$rs_f;
 								
 								// generate form: header
-								$form = $ui->formWithCustomFooterButtons("modifyuser", $fields, $buttons, "modifyT_userresult");
+								$form = $ui->formWithCustomFooterButtons("modifylist", $fields, $buttons, "modifyT_listresult");
 								
 								// generate and show the box
 								//$box = $ui->boxWithForm("modifyuser", , $fields, $lh->translationFor("edit_user"));
 								//print $box;
 								
 								// generate box
-								$boxTitle = $lh->translationFor("insert_new_data");
+								$boxTitle = $id_f;
 								$formBox = $ui->boxWithContent($boxTitle, $form);
 								// print our modifying customer box.
 								print $formBox;
@@ -252,7 +234,6 @@ if (isset($_POST["listid"])) {
 					}
 					
 					?>
-					
                 </section>
 				<!-- /.content -->
             </aside><!-- /.right-side -->
@@ -267,28 +248,28 @@ if (isset($_POST["listid"])) {
 		<script type="text/javascript">
 			$(document).ready(function() {				
 				/** 
-				 * Modifies a telephony user
+				 * Modifies a telephony list
 			 	 */
-				//$("#modifycustomerform").validate({
-				$("#modifyuser").validate({
+				$("#modifylist").validate({
                 	submitHandler: function() {
 						//submit the form
 							$("#resultmessage").html();
 							$("#resultmessage").fadeOut();
-							$.post("./php/ModifyTelephonyUser.php", //post
-							$("#modifyuser").serialize(), 
+							$.post("./php/ModifyTelephonyList.php", //post
+							$("#modifylist").serialize(), 
 								function(data){
 									//if message is sent
 									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
 									<?php 
 										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-										print $ui->fadingInMessageJS($errorMsg, "modifyT_userresult"); 
+										print $ui->fadingInMessageJS($errorMsg, "modifyT_listresult"); 
 									?>				
 									} else {
 									<?php 
 										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data"), false, true);
-										print $ui->fadingInMessageJS($errorMsg, "modifyT_userresult");
+										print $ui->fadingInMessageJS($errorMsg, "modifyT_listresult");
 									?>
+									
 									}
 									//
 								});
@@ -297,19 +278,19 @@ if (isset($_POST["listid"])) {
 				});
 				
 				/**
-				 * Deletes a customer
+				 * Deletes a telephony list
 				 */
-				 $("#modifyT_userDeleteButton").click(function (e) {
+				 $("#modifyT_listDeleteButton").click(function (e) {
 					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
 					e.preventDefault();
 					if (r == true) {
-						var userid = $(this).attr('href');
-						$.post("./php/DeleteTelephonyUser.php", { userid: userid } ,function(data){
+						var listid = $(this).attr('href');
+						$.post("./php/DeleteTelephonyList.php", { listid: listid } ,function(data){
 							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
-								alert("<?php $lh->translateText("user_successfully_deleted"); ?>");
+								alert("<?php $lh->translateText("list_successfully_deleted"); ?>");
 								window.location = "index.php";
 							}
-							else { alert ("<?php $lh->translateText("unable_delete_user"); ?>: "+data); }
+							else { alert ("<?php $lh->translateText("unable_delete_list"); ?>: "+data); }
 						});
 					}
 				 });
