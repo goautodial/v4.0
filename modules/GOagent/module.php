@@ -6,10 +6,8 @@ require_once(CRM_MODULE_INCLUDE_DIRECTORY.'CRMDefaults.php');
 require_once(CRM_MODULE_INCLUDE_DIRECTORY.'LanguageHandler.php');
 include(CRM_MODULE_INCLUDE_DIRECTORY.'Session.php');
 
-$creamURL = \creamy\CRMUtils::creamyBaseURL();
-$creamURL = parse_url($creamURL);
 $baseURL = (!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'] : "http://".$_SERVER['SERVER_NAME'];
-define(__NAMESPACE__ . '\GO_MODULE_DIR', $baseURL.''.$creamURL['path'].'modules'.DIRECTORY_SEPARATOR.'GOagent'.DIRECTORY_SEPARATOR);
+define(__NAMESPACE__ . '\GO_MODULE_DIR', $baseURL.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.'GOagent'.DIRECTORY_SEPARATOR);
 
 /**
  * This module is an example of how to write a module for Creamy.

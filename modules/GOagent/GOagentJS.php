@@ -297,6 +297,7 @@ var user_abb = '<?=$user_abb?>';
     foreach ($result as $idx => $val) {
         if (preg_match("/^(vicidial_recording|vicidial_recording_override)$/", $idx)) {
             ${$idx} = $val;
+            echo "var {$idx} = '{$val}';\n";
         } else {
             if ($idx == 'user') {
                 echo "var {$idx} = '{$val}';\n";
@@ -379,7 +380,7 @@ var group = '<?=$_SESSION['campaign_id']?>';         // same value as campaign v
                 }
         
                 if (!preg_match("/^(disable_dispo_screen|disable_dispo_status|campaign_recording)$/", $idx)) {
-                    if (preg_match("/^(web_form_address)", $idx)) {
+                    if (preg_match("/^(web_form_address)/", $idx)) {
                         echo "var VDIC_{$idx} = '{$val}';\n";
                         echo "var TEMP_VDIC_{$idx} = '{$val}';\n";
                     } else {
@@ -408,6 +409,12 @@ var group = '<?=$_SESSION['campaign_id']?>';         // same value as campaign v
                                 {echo "    agentcall_manual = '1';\n";}
                             if ($val == 'DISABLE_ALL')
                                 {echo "    agentcall_manual = '0';\n";}
+                        }
+                        if ($idx == 'agent_clipboard_copy') {
+                            echo "var Copy_to_Clipboard = '{$val}';\n";
+                        }
+                        if (preg_match("/^(xferconf_)/", $idx)) {
+                            echo "var ".preg_replace(array('/xferconf/', '/number/', '/dtmf/'), array('Call_XC', 'Number', 'DTMF'), $idx)." = '{$val}';\n";
                         }
                     }
                 } else {
@@ -540,6 +547,8 @@ $(document).ready(function() {
                         ManualDialCheckChannel();
                     }
                 }
+            } else {
+                updateButtons();
             }
         }, refresh_interval);
     });
@@ -559,9 +568,7 @@ $(document).ready(function() {
 
     $("footer").append($navBar);
     var $vtFooter = jQuery(".main-footer");
-    $vtFooter.css({
-        'paddingBottom' : $navBar.css('border-top-width'),
-    });
+    var circleButton = jQuery(".circle-button").css('bottom');
     $("footer").prepend($('<div id="go_nav_tab" title="<?=$lh->translationFor('open_tab')?>"> <i class="fa fa-chevron-up"></i> </div>'));
     $("#go_nav_tab").css({
         'left' : '3px',
@@ -595,7 +602,11 @@ $(document).ready(function() {
         });
         
         $(".main-footer").stop(true, false).animate({
-            paddingBottom : resized ? barHeight : 0,
+            paddingBottom : resized ? barHeight : 15,
+        });
+        
+        $(".circle-button").stop(true, false).animate({
+            bottom : resized ? (barHeight + parseInt(circleButton)) : circleButton,
         });
         
         if (($(window).scrollTop() + document.body.clientHeight) == $(document).height()) {
@@ -611,7 +622,18 @@ $(document).ready(function() {
 
     // buttons
     $("#go_nav_bar").append("<div id='go_nav_btn' class='hidden'></div>");
-    $("#go_nav_btn").append("<button id='btnOtherMenu' class='btn btn-default pull-right' style='margin: 5px 0;'><i class='fa fa-navicon'></i></button>");
+    $("#go_nav_btn").append("<div id='go_btn_group' class='btn-group dropup pull-right' style='margin: 0 1px;'>");
+    $("#go_btn_group").append("<button type='button' data-toggle='dropdown' class='btn btn-default dropdown-toggle' style='margin: 5px 0;'><i class='fa fa-navicon'></i></button>");
+    $("#go_btn_group").append("<ul id='go_dropdown' class='dropdown-menu'>");
+    $("#go_dropdown").append("<li id='manual-dial'><a>Manual Dial <span class='fa fa-phone pull-right'></span></a></li>");
+    $("#go_dropdown").append("<li><a>Available Hot Keys <span class='fa fa-keyboard-o pull-right'></span></a></li>");
+    $("#go_dropdown").append("<li><a>Active Callbacks <span class='badge pull-right'>0</span></a></li>");
+    $("#go_dropdown").append("<li><a>Callbacks For Today <span class='badge pull-right'>0</span></a></li>");
+    $("#go_dropdown").append("<li><a>Enter Pause Code <span class='fa fa-pause-circle-o pull-right'></span></a></li>");
+    $("#go_dropdown").append("<li><a>Lead Search <span class='fa fa-search pull-right'></span></a></li>");
+    $("#go_dropdown").append("<li id='btnLogMeOut'><a>Logout from Phone <span class='fa fa-sign-out pull-right'></span></a></li>");
+    $("#go_btn_group").append("</ul>");
+    $("#go_nav_btn").append("</div>");
     $("#go_nav_btn").append("<div id='livecall' class='pull-right'><h3 class='nolivecall' title=''><?=$lh->translationFor('no_live_call')?></h3></div>");
     $("#go_nav_btn").append("<div id='go_btn_div' class='pull-left'></div>");
     $("#go_btn_div").append("<button id='btnDialHangup' title='<?=$lh->translationFor('dial_next_call')?>' class='btn btn-danger' style='margin: 5px 5px 5px 0;'><i class='fa fa-phone'></i></button>");
@@ -627,7 +649,6 @@ $(document).ready(function() {
 
     $("button[id^='btn']").click(function() {
         var btnID = $(this).attr('id').replace('btn', '');
-        console.log(btnID);
         switch (btnID) {
             case "DialHangup":
                 btnDialHangup();
@@ -637,6 +658,16 @@ $(document).ready(function() {
                 break;
             case "LogMeIn":
                 btnLogMeIn();
+                break;
+        }
+    });
+    
+    $("li[id^='btn']").click(function() {
+        var btnID = $(this).attr('id').replace('btn', '');
+        switch (btnID) {
+            case "LogMeOut":
+                btnLogMeOut();
+                break;
         }
     });
 
@@ -647,6 +678,7 @@ $(document).ready(function() {
         });
     });
 
+    updateButtons();
     toggleButtons('RATIO');
     toggleStatus('NOLIVE');
 
@@ -730,14 +762,6 @@ $(document).ready(function() {
             ingroups: inbArray,
             closer_blended: $("#closerSelectBlended").is(':checked')
         };
-        
-        $.post('<?=$module_dir?>GOagentJS.php', postData, function(data) {
-            if (data == "SUCCESS") {
-                is_logged_in = 1;
-            } else {
-                $("#scSubmit").removeClass('disabled');
-            }
-        });
 
         $.ajax({
             type: 'POST',
@@ -788,7 +812,7 @@ $(document).ready(function() {
                                     if (cKey == 'api_manual_dial') {
                                         var amqc = 1;
                                         var amqcc = 0;
-                                        if ($val == 'QUEUE') {
+                                        if (cValue == 'QUEUE') {
                                             amqc = 0;
                                             amqcc = 1;
                                         }
@@ -813,33 +837,10 @@ $(document).ready(function() {
                             }
                         }
                     });
-
-                    if ((disable_dispo_screen == 'DISPO_ENABLED') || (disable_dispo_screen == 'DISPO_SELECT_DISABLED') || (disable_dispo_status.length < 1)) {
-                        if (disable_dispo_screen == 'DISPO_SELECT_DISABLED') {
-                            $.globalEval("var hide_dispo_list = '1';");
-                        } else {
-                            $.globalEval("var hide_dispo_list = '0';");
-                        }
-                        $.globalEval("var disable_dispo_screen = '0';");
-                        $.globalEval("var disable_dispo_status = '';");
-                    }
-                    if ((disable_dispo_screen == 'DISPO_DISABLED') && (disable_dispo_status.length > 0)) {
-                        $.globalEval("var hide_dispo_list = '0';");
-                        $.globalEval("var disable_dispo_screen = '1';");
-                        $.globalEval("var disable_dispo_status = '"+disable_dispo_status+"';");
-                    }
-                    
-                    var vro_patt = /DISABLED/;
-                    if ((!vro_patt.test(vicidial_recording_override)) && (vicidial_recording > 0))
-                        {var camp_rec = vicidial_recording_override;}
-                    if (vicidial_recording == '0')
-                        {var camp_rec = 'NEVER';}
-                    $.globalEval("var campaign_recording = '"+camp_rec+"';");
-                    $.globalEval("var LIVE_campaign_recording = '"+camp_rec+"';");
                 } else {
-                    var patt = /^(user|pass)$/g;
+                    var patt = /^(user|pass|statuses|statuses_ct)$/g;
+                    //console.log("var "+key+" = '"+value+"';");
                     if (!patt.test(key)) {
-                        //console.log("var "+key+" = '"+value+"';");
                         if (key == 'now_time') {
                             $.globalEval("var NOW_TIME = '"+value+"';");
                             $.globalEval("var SQLdate = '"+value+"';");
@@ -857,6 +858,32 @@ $(document).ready(function() {
                     }
                 }
             });
+
+            if ((disable_dispo_screen == 'DISPO_ENABLED') || (disable_dispo_screen == 'DISPO_SELECT_DISABLED') || (disable_dispo_status.length < 1)) {
+                if (disable_dispo_screen == 'DISPO_SELECT_DISABLED') {
+                    $.globalEval("var hide_dispo_list = '1';");
+                } else {
+                    $.globalEval("var hide_dispo_list = '0';");
+                }
+                $.globalEval("var disable_dispo_screen = '0';");
+                $.globalEval("var disable_dispo_status = '';");
+            }
+            if ((disable_dispo_screen == 'DISPO_DISABLED') && (disable_dispo_status.length > 0)) {
+                $.globalEval("var hide_dispo_list = '0';");
+                $.globalEval("var disable_dispo_screen = '1';");
+                $.globalEval("var disable_dispo_status = '"+disable_dispo_status+"';");
+            }
+            
+            var vro_patt = /DISABLED/;
+            if ((!vro_patt.test(vicidial_recording_override)) && (vicidial_recording > 0))
+                {var camp_rec = vicidial_recording_override;}
+            if (vicidial_recording == '0')
+                {var camp_rec = 'NEVER';}
+            $.globalEval("var campaign_recording = '"+camp_rec+"';");
+            $.globalEval("var LIVE_campaign_recording = '"+camp_rec+"';");
+            
+            $("#select-campaign").modal('hide');
+            updateButtons();
         })
         .fail(function() {
             refresh_interval = 730000;
@@ -881,6 +908,24 @@ function btnLogMeIn () {
             backdrop: 'static',
             show: true
         });
+    });
+}
+
+function btnLogMeOut () {
+    var postData = {
+        module_name: 'GOagent',
+        action: 'LogouT',
+    };
+
+    $.post('<?=$module_dir?>GOagentJS.php', postData, function(data) {
+        if (data.indexOf("SUCCESS") >= 0) {
+            refresh_interval = 730000;
+            is_logged_in = 0;
+            //alert('You have logged out of phone.');
+            console.log('logged out of phone');
+        } else {
+            alert('Error logging out of phone.');
+        }
     });
 }
 
@@ -2467,6 +2512,9 @@ String.prototype.toUpperFirst = function() {
                 $_SESSION['session_id'] = $session_id;
                 $_SESSION['session_name'] = $session_name;
                 $_SESSION['server_ip'] = $phone_settings->server_ip;
+                $_SESSION['SIP_user'] = $SIP_user;
+                $_SESSION['asterisk_version'] = $asterisk_version;
+                $_SESSION['is_logged_in'] = true;
                 
                 $return = array(
                     'user' => $user,
@@ -2593,6 +2641,16 @@ String.prototype.toUpperFirst = function() {
                 } else {
                     $return = "ERROR: {$user} not logged in.";
                 }
+
+                unset($_SESSION['closer_blended']);
+                unset($_SESSION['campaign_id']);
+                unset($_SESSION['agent_log_id']);
+                unset($_SESSION['session_id']);
+                unset($_SESSION['session_name']);
+                unset($_SESSION['server_ip']);
+                unset($_SESSION['SIP_user']);
+                unset($_SESSION['asterisk_version']);
+                $_SESSION['is_logged_in'] = false;
                 
                 header("Cache-Control: no-store, no-cache, must-revalidate");
                 header("Cache-Control: post-check=0, pre-check=0");
