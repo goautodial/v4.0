@@ -22,6 +22,11 @@
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
+		<!-- Circle Buttons style -->
+    	<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+		
+    	<!-- Wizard Form style -->
+    	<link rel="stylesheet" href="css/easyWizard.css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -34,12 +39,11 @@
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <!-- Bootstrap WYSIHTML5 -->
         <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
-		
-		<!-- Circle Buttons style -->
-		  <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+		<!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -62,12 +66,12 @@
 						<li class="active"><?php $lh->translateText("users"); ?>
                     </ol>
                 </section>
-
+		
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
                     <div class="row">
-                        <div class="col-xs-12">
+                        <div class="col-xs 12">
                             <div class="box box-default">
                                 <div class="box-header">
                                     <h3 class="box-title"><?php $lh->translateText("users"); ?></h3>
@@ -78,38 +82,186 @@
                             </div><!-- /.box -->
                         </div>
                     </div>
-
 				<!-- /fila con acciones, formularios y demás -->
 				<?php
 					} else {
 						print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					}
 				?>
-				
-					<div class="bottom-menu skin-blue">
-						<?php print $ui->getCircleButton("telephonyusers", "users"); ?>
-						<div class="fab-div-area" id="fab-div-area">
-								<ul class="fab-ul" style="height: 250px;">
-									<li class="li-style"><a class="fa fa-dashboard fab-div-item" ></a></li><br/>
-									<li class="li-style"><a class="fa fa-users fab-div-item"> </a></li>
-								</ul>
-							</div>
-					</div>
-					<script>
-						$(document).ready(function(){
-							$(".bottom-menu").on('mouseenter mouseleave', function () {
-							  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
-							});
-						});
 					</script>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
-		  
+	
+	<div class="action-button-circle" data-toggle="modal" data-target="#wizard-modal">
+		<?php print $ui->getCircleButton("calls", "plus"); ?>
+	</div>
+	
+<!-- MODAL -->
+<?php $output = $ui->API_goGetAllUserLists();?>
+
+    <div class="modal fade" id="wizard-modal" tabindex="-1"aria-labelledby="T_User" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius:20px;">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="T_User">User Wizard >> Add New User</h4>
+				</div>
+				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				
+				<form class="form-horizontal " role="form">
+				<!-- STEP 1 -->
+					<div class="wizard-step">
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="user_group">User Group:</label>
+							<div class="col-sm-8">
+								<select id="user_group" class="form-control" name="user_group" onchange="session()">
+									<option value="ADMINISTRATORS">GOAUTODIAL ADMINISTRATORS</option>
+									<option value="AGENTS">GOAUTODIAL AGENTS</option>
+									<option value="SUPERVISOR">SUPERVISOR</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">		
+							<label class="col-sm-4 control-label">Current Users: </label>
+							<div class="col-sm-8">
+								<h4><?php echo count($output->userno); ?></h4>
+							</div>
+						</div>
+						
+						<div class="form-group">		
+							<label class="col-sm-4 control-label">Additional Seat(s): </label>
+							<div class="col-sm-8">
+								<select name="seats" id="seats" class="form-control">
+								<?php
+								for($i=1; $i <= count($output->userno); $i++){ ?>
+									<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+								<?php
+								}
+								?>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="generate_phone_logins">Generate Phone Logins: </label>
+							<div class="col-sm-8">
+								<select id="generate_phone_logins" name="generate_phone_logins" class="form-control">
+									<option value="" selected>No</option>
+									<option value="">Yes</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="phone_logins">Phone Login: </label>
+							<div class="col-sm-8">
+								<input type="number" name="phone_logins" id="phone_logins" class="form-control" placeholder="eg. 8001" pattern=".{3,}"  required title="Minimum of 3 characters">
+							</div>
+						</div>
+					</div>
+				
+			
+				<!-- STEP 2 -->
+					<div class="wizard-step">
+						
+						<div class="form-group">
+							<label class="control-label col-sm-4">User Group:</label>
+							<div class="col-sm-8">
+								<h4> AGENT</h4>
+							</div>
+						</div>
+						<div class="form-group">		
+							<label class="control-label col-sm-4">Users ID: </label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" name="userid" id="userid" placeholder="User ID" value="agent028" required>
+							</div>
+						</div>
+						
+						<div class="form-group">		
+							<label class="control-label col-sm-4">Password: </label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" name="password" id="userid" placeholder="Password" value="Go2014" required>
+							</div> 
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="phone_pass">Phone Password: </label>
+							<div class="col-sm-8">
+								<input type="text" name="phone_pass" id="phone_pass" class="form-control" value="Go2014">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="fullname">Fullname: </label>
+							<div class="col-sm-8">
+								<input type="text" name="fullname" id="fullname" class="form-control" >
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="active">Active:: </label>
+							<div class="col-sm-8">
+								<select name="" class="form-control">
+									<option value="" selected>No</option>
+									<option value="">Yes</option>								
+								</select>
+							</div>
+						</div>
+					</div><!--end of step2 -->
+				</form>
+				
+				<!-- NOTIFICATIONS -->
+
+					<div class="output-message-success hide">
+						<div class="alert alert-success alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong>Success!</strong> New Agent added.
+						</div>
+					</div>
+					<div class="output-message-error hide">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
+						</div>
+					</div>
+
+				</div> <!-- end of modal body -->
+				
+				<div class="modal-footer wizard-buttons">
+					<!-- The wizard button will be inserted here. -->
+				</div>
+			</div>
+		</div>
+	</div><!-- end of modal -->
+
 		<!-- Forms and actions -->
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<script src="js/easyWizard.js" type="text/javascript"></script> 
 		<script type="text/javascript">
 			$(document).ready(function() {
+				$('#T_users').dataTable();
+		
+		// for easy wizard -
+			$("#wizard-modal").wizard({
+                onfinish:function(){
+                    console.log("User Added!");
+                }
+            });
+
+				$('#add-users-btn').click(function(){
+					$.ajax({
+					  /*url: ".\php\AddCampaign.php",*/
+					  url: "./php/AddT_Users.php",
+					  type: 'POST',
+					  data: { 	  },
+					  success: function(data) {
+						// console.log(data);
+							if(data == 1){
+								$('.output-message-success').removeClass('hide');
+								$('.output-message-error').addClass('hide');
+							}else{
+								$('.output-message-error').removeClass('hide');
+								$('.output-message-success').addClass('hide');
+							}
+						}
+					});
+				});
 				
 				/**
 				  * Edit user details
