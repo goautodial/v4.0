@@ -624,14 +624,14 @@ $(document).ready(function() {
     $("#go_nav_bar").append("<div id='go_nav_btn' class='hidden'></div>");
     $("#go_nav_btn").append("<div id='go_btn_group' class='btn-group dropup pull-right' style='margin: 0 1px;'>");
     $("#go_btn_group").append("<button type='button' data-toggle='dropdown' class='btn btn-default dropdown-toggle' style='margin: 5px 0;'><i class='fa fa-navicon'></i></button>");
-    $("#go_btn_group").append("<ul id='go_dropdown' class='dropdown-menu'>");
-    $("#go_dropdown").append("<li id='manual-dial'><a>Manual Dial <span class='fa fa-phone pull-right'></span></a></li>");
-    $("#go_dropdown").append("<li><a>Available Hot Keys <span class='fa fa-keyboard-o pull-right'></span></a></li>");
-    $("#go_dropdown").append("<li><a>Active Callbacks <span class='badge pull-right'>0</span></a></li>");
-    $("#go_dropdown").append("<li><a>Callbacks For Today <span class='badge pull-right'>0</span></a></li>");
-    $("#go_dropdown").append("<li><a>Enter Pause Code <span class='fa fa-pause-circle-o pull-right'></span></a></li>");
-    $("#go_dropdown").append("<li><a>Lead Search <span class='fa fa-search pull-right'></span></a></li>");
-    $("#go_dropdown").append("<li id='btnLogMeOut'><a>Logout from Phone <span class='fa fa-sign-out pull-right'></span></a></li>");
+    $("#go_btn_group").append("<ul id='go_dropdown' class='dropdown-menu' style='width: 180px;'>");
+    $("#go_dropdown").append("<li id='manual-dial'><a style='white-space: normal;'>Manual Dial <i class='fa fa-phone pull-right' style='margin-right: 4px;'></i></a></li>");
+    $("#go_dropdown").append("<li><a style='white-space: normal;'>Available Hot Keys <i class='fa fa-keyboard-o pull-right' style='margin-right: 4px;'></i></a></li>");
+    $("#go_dropdown").append("<li><a style='white-space: normal;'>Active Callbacks <i class='badge pull-right'>0</i></a></li>");
+    $("#go_dropdown").append("<li><a style='white-space: normal;'>Callbacks For Today <i class='badge pull-right'>0</i></a></li>");
+    $("#go_dropdown").append("<li><a style='white-space: normal;'>Enter Pause Code <i class='fa fa-pause-circle-o pull-right' style='margin-right: 4px;'></span></a></li>");
+    $("#go_dropdown").append("<li><a style='white-space: normal;'>Lead Search <i class='fa fa-search pull-right' style='margin-right: 4px;'></i></a></li>");
+    $("#go_dropdown").append("<li id='btnLogMeOut'><a style='white-space: normal;'>Logout from Phone <i class='fa fa-sign-out pull-right' style='margin-right: 4px;'></span></a></li>");
     $("#go_btn_group").append("</ul>");
     $("#go_nav_btn").append("</div>");
     $("#go_nav_btn").append("<div id='livecall' class='pull-right'><h3 class='nolivecall' title=''><?=$lh->translationFor('no_live_call')?></h3></div>");
@@ -2652,9 +2652,9 @@ String.prototype.toUpperFirst = function() {
                 unset($_SESSION['asterisk_version']);
                 $_SESSION['is_logged_in'] = false;
                 
-                header("Cache-Control: no-store, no-cache, must-revalidate");
-                header("Cache-Control: post-check=0, pre-check=0");
-                header("Pragma: no-cache");
+                //header("Cache-Control: no-store, no-cache, must-revalidate");
+                //header("Cache-Control: post-check=0, pre-check=0");
+                //header("Pragma: no-cache");
                 
                 echo $return;
                 break;
