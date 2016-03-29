@@ -3176,7 +3176,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 		if ($output->result=="success") {
             # Result was OK!
-           	$columns = array("Name", "Status", "Last Call Date", "Leads Count", "Call Preview", "Action");
+           	$columns = array("Name", "Status", "Start Call Date", "End Call Date", "Actions");
 		   	$result = $this->generateTableHeaderWithItems($columns, "recordings", "table-bordered table-striped", true, false); 
 
 	        for($i=0;$i<count($output->list_id);$i++){
@@ -3184,14 +3184,9 @@ error_reporting(E_ERROR | E_PARSE);
                     $result .= "<tr>
 	                    <td>".$output->users[$i]."</td>
 	                    <td>".$output->status[$i]."</td>
-	                    <td>".$output->last_local_call_time[$i]."</td>
-	                    <td>".$output->cnt[$i]."</td>
-	                    <td class='playback_recording'>
-				<a id='".$output->uniqueid[$i]."' class='play_audio btn btn-app' data-location='".$output->location[$i]."'>
-				    <i class='fa fa-play'></i> Play
-				</a>
-			    </td>
-	                    <td>".$action."</td>
+	                    <td>".$output->start_last_local_call_time[$i]."</td>
+			    <td>".$output->end_last_local_call_time[$i]."</td>
+			    <td>".$action."</td>
 	                </tr>";
             }
 
@@ -3212,9 +3207,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="view-call-recording" href="#" data-id="'.$id.'">View Info</a></li>
-			<li><a class="edit-call-recording" href="#">Edit Call Recording</a></li>
-			<li><a class="delete-call-recording" href="#">Delete Call Recording</a></li>
+			<li><a class="play_audio" href="#" data-location="'.$location.'">Play Call Recording</a></li>
+			<li><a class="download-call-recording" href="'.$location.'" download>Download Call Recording</a></li>
 		    </ul>
 		</div>';
 	}
