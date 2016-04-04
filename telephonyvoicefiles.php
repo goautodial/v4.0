@@ -21,6 +21,13 @@
         <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        <!-- Circle Buttons style -->
+        <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+        <!-- Wizard Form style -->
+        <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+	<!-- Bootstrap Player -->
+	<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -34,6 +41,12 @@
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <!-- Bootstrap WYSIHTML5 -->
         <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+
+        <!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+	<!-- Bootstrap Player -->
+	<script src="js/bootstrap-player.js" type="text/javascript"></script>
 
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
@@ -55,8 +68,8 @@
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
-                        <li><?php $lh->translateText("telephony"); ?></li>
-						<li class="active"><?php $lh->translateText("voice_files"); ?>
+			<li><?php $lh->translateText("telephony"); ?></li>
+			<li class="active"><?php $lh->translateText("voice_files"); ?>
                     </ol>
                 </section>
 
@@ -69,8 +82,9 @@
                                 <div class="box-header">
                                     <h3 class="box-title"><?php $lh->translateText("voice_files"); ?></h3>
                                 </div><!-- /.box-header -->
-                                <div class="box-body table" id="MOH_table">
-									<?php print $ui->goGetVoiceFilesList(); ?>
+                                <div class="box-body table" id="recording_table">
+					<!--<button id="test_get_info">Test</button>-->
+					<?php print $ui->getListAllVoiceFiles(); ?>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>
@@ -84,6 +98,62 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
+	
+	<!-- Modal -->
+	<div id="voice-playback-modal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
 
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title"><b>Voice Files Playback</b></h4>
+	      </div>
+	      <div class="modal-body">
+		<div class="voice-player"></div>
+	      	<!-- <audio controls>
+			<source src="http://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
+			<source src="http://www.w3schools.com/html/horse.mp3" type="audio/mpeg" />
+			<a href="http://www.w3schools.com/html/horse.mp3">horse</a>
+		</audio> -->
+	      </div>
+	      <div class="modal-footer">
+		<a href="" class="btn btn-primary download-audio-file" download>Download File</a>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	    <!-- End of modal content -->
+	  </div>
+	</div>
+	<!-- End of modal -->
+	
+	
+		<!-- Forms and actions -->
+		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#voicefiles').dataTable();
+				
+				$('.play_voice_file').click(function(){
+					var audioFile = $(this).attr('data-location');
+					
+					var sourceFile = '<audio class="audio_file" controls>';
+					    sourceFile += '<source src="'+ audioFile +'" type="audio/mpeg" download="true"/>';
+					    sourceFile += '</audio>';
+					    
+					$('.download-audio-file').attr('href', audioFile);
+					$('.voice-player').html(sourceFile);
+					$('#call-playback-modal').modal('show');
+					
+					var aud = $('.audio_file').get(0);
+					aud.play();
+				});
+				
+				$('#voice-playback-modal').on('hidden.bs.modal', function () {
+					var aud = $('.audio_file').get(0);
+					aud.pause();
+				});
+			});
+		</script>
     </body>
 </html>

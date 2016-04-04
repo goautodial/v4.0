@@ -3163,38 +3163,36 @@ error_reporting(E_ERROR | E_PARSE);
 	    $postfields["responsetype"] = "json"; #json. (required)
 
 		  
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		// curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+	    curl_setopt($ch, CURLOPT_POST, 1);
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	    $data = curl_exec($ch);
+	    curl_close($ch);
+	    $output = json_decode($data);
 
-		if ($output->result=="success") {
-            # Result was OK!
-           	$columns = array("Name", "Status", "Start Call Date", "End Call Date", "Actions");
-		   	$result = $this->generateTableHeaderWithItems($columns, "recordings", "table-bordered table-striped", true, false); 
+	    if ($output->result=="success") {
+	    # Result was OK!
+	    $columns = array("Name", "Status", "Start Call Date", "End Call Date", "Actions");
+		    $result = $this->generateTableHeaderWithItems($columns, "recordings", "table-bordered table-striped", true, false); 
 
-	        for($i=0;$i<count($output->list_id);$i++){
-		    $action = $this->getUserActionMenuForCallRecording($output->uniqueid[$i], $output->location[$i]);
-                    $result .= "<tr>
-	                    <td>".$output->users[$i]."</td>
-	                    <td>".$output->status[$i]."</td>
-	                    <td>".$output->start_last_local_call_time[$i]."</td>
-			    <td>".$output->end_last_local_call_time[$i]."</td>
-			    <td>".$action."</td>
-	                </tr>";
-            }
-
-		    return $result;
-    
+	    for($i=0;$i<count($output->list_id);$i++){
+		$action = $this->getUserActionMenuForCallRecording($output->uniqueid[$i], $output->location[$i]);
+		$result .= "<tr>
+			<td>".$output->users[$i]."</td>
+			<td>".$output->status[$i]."</td>
+			<td>".$output->start_last_local_call_time[$i]."</td>
+			<td>".$output->end_last_local_call_time[$i]."</td>
+			<td>".$action."</td>
+		    </tr>";
+	    }
+		return $result;
 	    } else {
-	       # An error occured
-	       return $output->result;
+		# An error occured
+		return $output->result;
 	    }
 	}
 	
@@ -3209,6 +3207,137 @@ error_reporting(E_ERROR | E_PARSE);
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="play_audio" href="#" data-location="'.$location.'">Play Call Recording</a></li>
 			<li><a class="download-call-recording" href="'.$location.'" download>Download Call Recording</a></li>
+		    </ul>
+		</div>';
+	}
+	
+	/** Call Recordings API - Get all list of voice files */
+	/**
+	 * @param goUser 
+	 * @param goPass 
+	 * @param goAction 
+	 * @param responsetype
+	 */
+	public function getListAllVoiceFiles($goUser, $goPass, $goAction, $responsetype){
+	    $url = "https://encrypted.goautodial.com/goAPI/goVoiceFiles/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $postfields["goUser"] = "admin"; #Username goes here. (required)
+	    $postfields["goPass"] = "goautodial"; #Password goes here. (required)
+	    $postfields["goAction"] = "goGetVoiceFilesList"; #action performed by the [[API:Functions]]. (required)
+	    $postfields["responsetype"] = "json"; #json. (required)
+
+		  
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+	    curl_setopt($ch, CURLOPT_POST, 1);
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	    $data = curl_exec($ch);
+	    curl_close($ch);
+	    $output = json_decode($data);
+	    
+	    if ($output->result=="success") {
+	    # Result was OK!
+	    $columns = array("File Name", "Date", "Actions");
+		    $result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false); 
+
+	    for($i=0;$i<count($output->file_name);$i++){
+		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i]);
+		$result .= "<tr>
+			<td>".$output->file_name[$i]."</td>
+			<td>".$output->file_date[$i]."</td>
+			<td>".$action."</td>
+		    </tr>";
+	    }
+		return $result;
+	    } else {
+		# An error occured
+		return $output->result;
+	    }
+	}
+	
+	private function getUserActionMenuForVoiceFiles($filename) {
+	    $file_link = "https://162.254.144.92/sounds/".$filename;
+	    return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="play_voice_file" href="#" data-location="'.$file_link.'">Play Voice File</a></li>
+		    </ul>
+		</div>';
+	}
+	
+	/** Scripts API - Get all list of scripts */
+	/**
+	 * @param goUser 
+	 * @param goPass 
+	 * @param goAction 
+	 * @param responsetype
+	 */
+	public function getListAllScripts($goUser, $goPass, $goAction, $responsetype){
+	    $url = "https://encrypted.goautodial.com/goAPI/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $postfields["goUser"] = "goautodial"; #Username goes here. (required)
+	    $postfields["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
+	    $postfields["goAction"] = "getAllScripts"; #action performed by the [[API:Functions]]. (required)
+	    $postfields["responsetype"] = "json"; #json. (required)
+
+		  
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+	    curl_setopt($ch, CURLOPT_POST, 1);
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	    $data = curl_exec($ch);
+	    curl_close($ch);
+	    $output = json_decode($data);
+
+	    if ($output->result=="success") {
+	    # Result was OK!
+	    $columns = array("Script ID", "Script Name", "Status", "Type", "User Group", "Actions");
+		    $result = $this->generateTableHeaderWithItems($columns, "scripts", "table-bordered table-striped", true, false); 
+
+	    for($i=0;$i<count($output->script_id);$i++){
+		$action = $this->getUserActionMenuForScripts($output->script_id[$i]);
+		
+		if($output->active[$i] == "Y"){
+		    $active = "Active";
+		}else{
+		    $active = "Inactive";
+		}
+		
+		$result .= "<tr>
+			<td>".$output->script_id[$i]."</td>
+			<td>".$output->script_name[$i]."</td>
+			<td>".$active."</td>
+			<td>".$output->active[$i]."</td>
+			<td>".$output->user_group[$i]."</td>
+			<td>".$action."</td>
+		    </tr>";
+	    }
+		return $result;
+	    } else {
+		# An error occured
+		return $output->result;
+	    }
+	}
+	
+	private function getUserActionMenuForScripts($id) {
+		
+	    return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="edit_script" href="#" data-id="'.$id.'">Edit Script</a></li>
+			<li><a class="delete_script" href="#" data-id="'.$id.'">Delete Script</a></li>
 		    </ul>
 		</div>';
 	}
