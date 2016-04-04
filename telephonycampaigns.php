@@ -215,13 +215,6 @@
 	</div>
 	<!-- End of modal -->
 
-	
-
-        <script>
-        	// load data.
-            $(".textarea").wysihtml5();
-	</script>
-	
 	<!-- Script for wizard -->
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -385,5 +378,11 @@
 		});
 	</script>
 	<!-- End of script -->
+
+        <script>
+        	// load data.
+            $(".textarea").wysihtml5();
+	</script>
+
     </body>
 </html>

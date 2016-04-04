@@ -83,8 +83,7 @@
                                     <h3 class="box-title"><?php $lh->translateText("lists"); ?></h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table" id="recording_table">
-					<!--<button id="test_get_info">Test</button>-->
-					<?php print $ui->getListAllRecordings(); ?>
+									<?php print $ui->getListAllRecordings(); ?>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>
@@ -126,37 +125,12 @@
 	  </div>
 	</div>
 	<!-- End of modal -->
-	
-	<!-- Modal -->
-	<div id="view-call-modal" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
-
-	    <!-- Modal content-->
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Call Recording Information</b></h4>
-	      </div>
-	      <div class="modal-body">
-		test
-	      </div>
-	      <div class="modal-footer">
-		<a href="" class="btn btn-primary download-file-view" download>Download File</a>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	      </div>
-	    </div>
-	    <!-- End of modal content -->
-	  </div>
-	</div>
-	<!-- End of modal -->
-	
-	
 		<!-- Forms and actions -->
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('#recordings').dataTable();
-				//$('#view-call-modal').modal('show');
+				// $('#call-playback-modal').modal('show');
 				
 				$('.play_audio').click(function(){
 					var audioFile = $(this).attr('data-location');
@@ -176,30 +150,6 @@
 				$('#call-playback-modal').on('hidden.bs.modal', function () {
 					var aud = $('.audio_file').get(0);
 					aud.pause();
-				});
-				
-				$('.view-call-recording').click(function(){
-					var uniqueid = $(this).attr('data-id');
-
-					$.ajax({
-						/*url: ".\php\ViewCampaign.php",*/
-						url: "./php/ViewCallRecording.php",
-						type: 'POST',
-						data: { 
-						      uniqueid : uniqueid
-						},
-						dataType: 'json',
-						success: function(data) {
-							console.log(data);
-							if (data.result == "success") {
-								$('.download-file-view').attr('href', data.location);
-							} else {
-								$('.download-file-view').addClass('hide');
-							}
-							
-							$('#view-call-modal').modal('show');
-						}
-					});
 				});
 				
 			});

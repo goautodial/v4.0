@@ -8,18 +8,23 @@ $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
 
 // check required fields
-$reason = $lh->translationFor("unable_modify_in-group");
+//$reason = $lh->translationFor("unable_modify_inbound");
 
 $validated = 0;
+
+$groupid = NULL;
 if (isset($_POST["modify_groupid"])) {
-	$validated = 1;
-}
-if (isset($_POST["modify_did"])) {
-	$validated = 2;
+	$groupid = $_POST["modify_groupid"];
 }
 
+$did = NULL;
+if (isset($_POST["modify_did"])) {
+	$did = $_POST["modify_did"];
+}
+
+
 // INGROUPS
-if ($validated == 1) {
+if ($groupid != NULL) {
 	// collect new user data.	
 	$modify_groupid = $_POST["modify_groupid"];
 	
@@ -30,7 +35,7 @@ if ($validated == 1) {
 	
     $color = NULL; if (isset($_POST["color"])) { 
 		$color = $_POST["color"];
-        $color = str_replace("#", '', $string);
+        $color = str_replace("#", '', $color);
 		$color = stripslashes($color);
 	}
 
@@ -89,24 +94,24 @@ if ($validated == 1) {
     $data = curl_exec($ch);
     curl_close($ch);
     $output = json_decode($data);
-    
-    echo $color;
-    
+
+    var_dump($output);
+	
     if ($output->result=="success") {
     # Result was OK!
         ob_clean();
-		print (CRM_DEFAULT_SUCCESS_RESPONSE);
+		print "success";
     } else {
     # An error occured
         ob_clean();
-		echo $output->result;
+		print $output->result;
         //$lh->translateText("unable_modify_list");
     }
     
 } else { ob_clean(); print $reason; }
 
 // PHONE NUMBER / DID
-if ($validated == 2) {
+if ($did != NULL) {
 	// collect new user data.	
 	$modify_did = $_POST["modify_did"];
 	
@@ -151,16 +156,19 @@ if ($validated == 2) {
     curl_close($ch);
     $output = json_decode($data);
 	
-    if ($output->result=="success") {
+    if ($output->result == "success") {
     # Result was OK!
         ob_clean();
-		print (CRM_DEFAULT_SUCCESS_RESPONSE);
+		print "success";
     } else {
     # An error occured
         ob_clean();
-		echo $output->result;
+		print $output->result;
         //$lh->translateText("unable_modify_list");
     }
     
-} else { ob_clean(); print $reason; }
+}else { ob_clean();
+print $reason;
+//print $validated;
+ }
 ?>

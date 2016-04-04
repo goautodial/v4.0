@@ -99,6 +99,12 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
+						<!-- Page title -->
+						<?php
+							if ($user->userHasAdminPermission()) {
+								header("location: test_dashboard.php");
+							}
+						?>
                         <?php $lh->translateText("home"); ?>
                         <small><?php $lh->translateText("your_creamy_dashboard"); ?></small>
                     </h1>
@@ -109,9 +115,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 
                 <!-- Main content -->
                 <section class="content">
-					
-					
-					
+
 					<!-- Update (if needed) -->
                     <?php
 						require_once('./php/Updater.php');

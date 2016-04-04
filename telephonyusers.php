@@ -103,20 +103,36 @@
     <div class="modal fade" id="wizard-modal" tabindex="-1"aria-labelledby="T_User" >
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius:20px;">
+				
+				<!-- NOTIFICATIONS -->
+
+				<div class="output-message-success hide">
+					<div class="alert alert-success alert-dismissible" role="alert">
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					  <strong>Success!</strong> New Agent added.
+					</div>
+				</div>
+				<div class="output-message-error hide">
+					<div class="alert alert-danger alert-dismissible" role="alert">
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
+					</div>
+				</div>
+				
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="T_User">User Wizard >> Add New User</h4>
 				</div>
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
-				<form class="form-horizontal " role="form">
+				<form action="CreateTelephonyUser.php" method="POST" id="create_form" class="form-horizontal " role="form">
 				<!-- STEP 1 -->
 					<div class="wizard-step">
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="user_group">User Group:</label>
 							<div class="col-sm-8">
 								<select id="user_group" class="form-control" name="user_group" onchange="session()">
-									<option value="ADMINISTRATORS">GOAUTODIAL ADMINISTRATORS</option>
+									<option value="ADMIN">GOAUTODIAL ADMINISTRATORS</option>
 									<option value="AGENTS">GOAUTODIAL AGENTS</option>
 									<option value="SUPERVISOR">SUPERVISOR</option>
 								</select>
@@ -161,7 +177,7 @@
 				
 			
 				<!-- STEP 2 -->
-					<div class="wizard-step">
+					<div class="wizard-step" onload="alert('step 2');">
 						
 						<div class="form-group">
 							<label class="control-label col-sm-4">User Group:</label>
@@ -169,18 +185,45 @@
 								<h4> AGENT</h4>
 							</div>
 						</div>
+						
+						<?php
+						$max = count($output->userno);
+						$x = 0;
+						for($i=0; $i < $max; $i++){
+							//echo $max-$x;
+							$agent = substr($output->full_name[$max-$x], 0, 5);
+							if($agent == "Agent"){
+								$get_last = substr($output->full_name[$max-$x], -2);
+							}else{
+								$x = $x+1;
+							}
+						}
+
+						$agent_num = $get_last + 1;
+						$num_padded = sprintf("%03d", $agent_num);
+						
+						$fullname = "Agent ".$num_padded;
+						$user_id_for_form = "agent".$num_padded;
+						?>
+						
 						<div class="form-group">		
 							<label class="control-label col-sm-4">Users ID: </label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="userid" id="userid" placeholder="User ID" value="agent028" required>
+								<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID" value="<?php echo $user_id_for_form;?>" required>
 							</div>
 						</div>
 						
 						<div class="form-group">		
-							<label class="control-label col-sm-4">Password: </label>
+							<label class="control-label col-sm-4" for="password">Password: </label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="password" id="userid" placeholder="Password" value="Go2014" required>
+								<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="Go2014" required>
 							</div> 
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="phone_login1">Phone Login: </label>
+							<div class="col-sm-8">
+								<input type="text" readonly name="phone_login1" id="phone_login1" class="form-control">
+							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="phone_pass">Phone Password: </label>
@@ -188,39 +231,26 @@
 								<input type="text" name="phone_pass" id="phone_pass" class="form-control" value="Go2014">
 							</div>
 						</div>
+						
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="fullname">Fullname: </label>
 							<div class="col-sm-8">
-								<input type="text" name="fullname" id="fullname" class="form-control" >
+								<input type="text" name="fullname" id="fullname" class="form-control"
+									   value="<?php echo $fullname;?>">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="active">Active:: </label>
+							<label class="col-sm-4 control-label" for="status">Active: </label>
 							<div class="col-sm-8">
-								<select name="" class="form-control">
-									<option value="" selected>No</option>
-									<option value="">Yes</option>								
+								<select name="status" class="form-control">
+									<option value="N" selected>No</option>
+									<option value="Y">Yes</option>								
 								</select>
 							</div>
 						</div>
 					</div><!--end of step2 -->
 				</form>
-				
-				<!-- NOTIFICATIONS -->
-
-					<div class="output-message-success hide">
-						<div class="alert alert-success alert-dismissible" role="alert">
-						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>Success!</strong> New Agent added.
-						</div>
-					</div>
-					<div class="output-message-error hide">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
-						</div>
-					</div>
-
+		
 				</div> <!-- end of modal body -->
 				
 				<div class="modal-footer wizard-buttons">
@@ -239,36 +269,46 @@
 		
 		// for easy wizard -
 			$("#wizard-modal").wizard({
+				onnext:function(){
+					//alert("Nexted!");
+					var phone_logins = document.getElementById('phone_logins').value;
+					document.getElementById("phone_login1").value = phone_logins;
+					
+					if(phone_logins == null || phone_logins == ""){
+					  alert("Please Fill All Required Field");
+					  return false;
+						
+						
+					}
+				},
                 onfinish:function(){
-                    console.log("User Added!");
-                }
-            });
-
-				$('#add-users-btn').click(function(){
 					$.ajax({
-					  /*url: ".\php\AddCampaign.php",*/
-					  url: "./php/AddT_Users.php",
-					  type: 'POST',
-					  data: { 	  },
-					  success: function(data) {
-						// console.log(data);
-							if(data == 1){
-								$('.output-message-success').removeClass('hide');
-								$('.output-message-error').addClass('hide');
-							}else{
-								$('.output-message-error').removeClass('hide');
-								$('.output-message-success').addClass('hide');
-							}
+						/*url: ".\php\AddCampaign.php",*/
+						url: "./php/CreateTelephonyUser.php",
+						type: 'POST',
+						data: $("#create_form").serialize(),
+						success: function(data) {
+						  // console.log(data);
+							  if(data == 1){
+								  $('.output-message-success').removeClass('hide');
+								  $('.output-message-error').addClass('hide');
+								  window.location = window.location.href;
+							  }else{
+								  $('.output-message-error').removeClass('hide');
+								  $('.output-message-success').addClass('hide');
+							  }
 						}
 					});
-				});
+                }
+				
+            });
 				
 				/**
 				  * Edit user details
 				 */
 				 $(".edit-T_user").click(function(e) {
 					e.preventDefault();
-					var url = './edittelephonyuser.php';
+					var url = 'edittelephonyuser.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="userid" value="' + $(this).attr('href') + '" /></form>');
 					//$('body').append(form);  // This line is not necessary
 					$(form).submit();
