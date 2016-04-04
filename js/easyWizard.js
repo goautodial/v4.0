@@ -54,7 +54,7 @@ $.fn.wizard = function(config) {
     btns += '<button type="button" class="btn btn-default wizard-button-exit"'+contentForModal+'>'+ exitText +'</button>';
     btns += '<button type="button" class="btn btn-default wizard-button-back">'+ backText +'</button>';
     btns += '<button type="button" class="btn btn-default wizard-button-next">'+ nextText +'</button>';
-    btns += '<button type="button" class="btn btn-primary wizard-button-finish" '+contentForModal+'>'+ finishText +'</button>';
+    btns += '<input type="submit" class="btn btn-primary wizard-button-finish" value="Submit" />';
     $(this).find(".wizard-buttons").html("");
     $(this).find(".wizard-buttons").append(btns);
     var btnExit = $(this).find(".wizard-button-exit");
@@ -75,6 +75,11 @@ $.fn.wizard = function(config) {
         btnFinish.show();
         btnNext.hide();
       }
+      //added this for validation for forms
+      if(!!config.onnext){
+        config.onnext();
+      }
+      
       btnExit.hide();
       btnBack.show();
     });

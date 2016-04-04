@@ -14,19 +14,16 @@ $user = \creamy\CreamyUser::currentUser();
 $groupid = NULL;
 if (isset($_POST["groupid"])) {
 	$groupid = $_POST["groupid"];
-	
 }
 
 $ivr = NULL;
-if (isset($_POST["groupid"])) {
-	$groupid = $_POST["groupid"];
-	
+if (isset($_POST["ivr"])) {
+	$groupid = $_POST["ivr"];
 }
 
 $did = NULL;
 if (isset($_POST["did"])) {
 	$did = $_POST["did"];
-	
 }
 
 ?>
@@ -79,7 +76,7 @@ if (isset($_POST["did"])) {
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
                         <li> <?php $lh->translateText("telephony"); ?></li>
                         <?php
-							if(isset($_POST["groupid"])){
+							if($groupid != NULL || $ivr != NULL || $did != NULL){
 						?>	
 							<li><a href="./telephonyinbound.php"><?php $lh->translateText("inbound"); ?></a></li>
                         <?php
@@ -91,6 +88,7 @@ if (isset($_POST["did"])) {
 
                 <!-- Main content -->
                 <section class="content">
+					
 					<!-- standard custom edition form -->
 					<?php
 					$errormessage = NULL;
@@ -118,7 +116,7 @@ if (isset($_POST["did"])) {
 						
 						if ($output->result=="success") {
 						# Result was OK!
-							for($i=0;$i<count($output->group_id);$i++){
+							for($i=0;$i < count($output->group_id);$i++){
 								
 								$hidden_f = $ui->hiddenFormField("modify_groupid", $groupid);
 								
@@ -140,7 +138,7 @@ if (isset($_POST["did"])) {
 								//$ph = $lh->translationFor("Color").' ('.$lh->translationFor("mandatory").')';
 								//$vl = isset($output->group_color[$i]) ? $output->group_color[$i] : null;
 								//$color_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("color", "color", "color", $ph, $vl, "tasks", "required"));
-                                $color_f = '<input type="text" class="demo1" value="#5367ce" />';
+                                $color_f = '<input type="color" class="form-control" name="color" value="'.$color.'" />';
 								
 								$status_l = '<h4>Status</h4>';
 								$status_f = '<select class="form-control" id="status" name="status">';
@@ -279,13 +277,21 @@ if (isset($_POST["did"])) {
 								
 								$script_l = '<h4>Script</h4>';
 								$script_f = '<select class="form-control" id="script" name="script">';
-
+							
+							$scripts = $ui->API_goGetAllScripts();
 									if($output->ingroup_script[$i] == NULL){
 										$script_f .= '<option value="NONE" selected> NONE </option>';
 									}else{
 										$script_f .= '<option value="NONE" > NONE </option>';
 									}
-									
+								for($x=0; $x<count($scripts->script_id);$x++){									
+									if($output->ingroup_script[$i] == $scripts->script_id[$x]){
+										$script_f .= '<option value="'.$scripts->script_id[$x].'" selected> '.$scripts->script_id[$x].' - '.$scripts->script_name[$x].' </option>';
+									}else{
+										$script_f .= '<option value="'.$scripts->script_id[$x].'"> '.$scripts->script_id[$x].' - '.$scripts->script_name[$x].' </option>';
+									}
+
+								}
 								$script_f .= '</select>';
 								
 								$display_script_row = $ui->rowWithVariableContents(array("2","3","2","3"), array($display_l, $display_f, $script_l, $script_f));
@@ -295,7 +301,7 @@ if (isset($_POST["did"])) {
 								$buttons = "";
 								if ($user->userHasWritePermission()) {
 									$buttons = $ui->buttonWithLink("modifyINGROUPDeleteButton", $groupid, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
-									$buttons .= $ui->buttonWithLink("modifyCustomerOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
+									$buttons .= $ui->buttonWithLink("modifyInboundOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
 									$buttons = $ui->singleFormGroupWrapper($buttons);
 								}
 		
@@ -321,7 +327,7 @@ if (isset($_POST["did"])) {
 							echo $output->result;
 						}
                         
-					} else {
+					}else {
 			    		$errormessage = $lh->translationFor("some_fields_missing");
 					}
 					
@@ -486,20 +492,24 @@ if (isset($_POST["did"])) {
 							$("#resultmessage").html();
 							$("#resultmessage").fadeOut();
 							$.post("./php/ModifyTelephonyInbound.php", //post
-							$("#modifyingroups").serialize(), 
+							$("#modifyingroup").serialize(), 
 								function(data){
 									//if message is sent
-									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
+									if (data == 'success') {
+										$("#success_notif").show().delay(5000).fadeOut();
 									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-										print $ui->fadingInMessageJS($errorMsg, "modifyINGROUPresult"); 
+										//$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
+										
+										//print $ui->fadingInMessageJS($errorMsg, "modifyINGROUPresult"); 
 									?>				
-									} else {
+									}else {
+										$("#success_notif").show().delay(5000).fadeOut();
 									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data<br/>".data), false, true);
-										print $ui->fadingInMessageJS($errorMsg, "modifyINGROUPresult");
+										//$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data"), false, true);
+										//$errorMsg .= $errorMsg+data;
+										
+										//print $ui->fadingInMessageJS(, "modifyINGROUPresult");
 									?>
-									
 									}
 									//
 								});
@@ -516,7 +526,7 @@ if (isset($_POST["did"])) {
 							$("#modifyphonenumber").serialize(), 
 								function(data){
 									//if message is sent
-									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
+									if (data == 'success') {
 									<?php 
 										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
 										print $ui->fadingInMessageJS($errorMsg, "modifyDIDresult"); 

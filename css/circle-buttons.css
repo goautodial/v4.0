@@ -7,7 +7,7 @@
     border-radius: 55.5px;
     color: white;
     padding: 22px;
-    box-shadow: 3px 3px 5px #888888;
+    box-shadow: 1px 1px 3px #000000;
     z-index: 5;
     right: 24px;
     /*bottom: 45px;*/
@@ -111,7 +111,7 @@
 .skin-red:hover,
 .skin-red:focus{
     background-color: #FC5641;
-    cursor:pointer;
+    /*cursor:pointer;*/
 }
 
 /* Yellow */
@@ -122,5 +122,5 @@
 .skin-yellow:hover,
 .skin-yellow:focus{
     background-color: #FFA413;
-    cursor:pointer;
+    /*cursor:pointer;*/
 }

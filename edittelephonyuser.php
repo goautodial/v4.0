@@ -69,7 +69,7 @@ if (isset($_POST["userid"])) {
                         <?php
 							if(isset($_POST["userid"])){
 						?>	
-							<li><a href="./telephony_users.php"><?php $lh->translateText("telephony_users"); ?></a></li>
+							<li><a href="./telephonyusers.php"><?php $lh->translateText("telephony_users"); ?></a></li>
                         <?php
 							}
                         ?>	                    
@@ -129,7 +129,7 @@ if (isset($_POST["userid"])) {
 								$usergroup_l = '<h4>User Group</h4>';
 								$usergroup_f = '<select class="form-control" id="usergroup" name="usergroup">';
 												
-									if($output->user_group[$i] == "ADMINISTRATORS"){
+									if($output->user_group[$i] == "ADMIN"){
 										$usergroup_f .= '<option value="ADMINISTRATORS" selected>GOAUTODIAL ADMINISTRATORS</option>';
 									}else{
 										$usergroup_f .= '<option value="ADMINISTRATORS" >GOAUTODIAL ADMINISTRATORS</option>';

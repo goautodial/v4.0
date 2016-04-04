@@ -227,6 +227,11 @@ error_reporting(E_ERROR | E_PARSE);
 					if($item == "file_name"){$item = "FileName";}
 					if($item == "file_date"){$item = "Date";}
 					if($item == "file_size"){$item = "Size";}
+					//inbound
+						if($item == "group_id"){$item = "In-Group";}
+						if($item == "group_name"){$item = "Descriptions";}
+						if($item == "queue_priority"){$item = "Priority";}
+						if($item == "call_time_id"){$item = "Time";}
 				//contacts
 				if($item == "lead_id"){$item = "id";}
 		    	if($item == "CONCAT_WS(' ', first_name, middle_initial, last_name)"){
@@ -985,12 +990,6 @@ error_reporting(E_ERROR | E_PARSE);
 					$dateFormat = $this->lh->getDateFormatForCurrentLocale();
 				    return $this->singleFormGroupWithInputGroup($this->maskedDateInputElement($setting, $setting, $dateFormat, $currentValue), $this->lh->translationFor($setting));
 					break;
-				case CRM_SETTING_TYPE_LABEL:
-					return $this->singleFormGroupWithInputGroup($this->lh->translationFor($setting));
-					break;
-				case CRM_SETTING_TYPE_PASS:
-					return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "password", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));
-					break;
 		    }
 	    }
     }
@@ -1047,8 +1046,8 @@ error_reporting(E_ERROR | E_PARSE);
 	                </ul>
 	            </div>';
 	}
-	//telephony menu
-	private function getUserActionMenuForT_User($userid, $username, $status) {
+	//telephony menu for users
+	private function getUserActionMenuForT_User($userid) {
 		
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -1064,7 +1063,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
-	
+	//telephony menu for lists and call recordings
 	private function getUserActionMenuForLists($listid, $listname) {
 		
 		return '<div class="btn-group">
@@ -1349,7 +1348,7 @@ error_reporting(E_ERROR | E_PARSE);
 	public function creamyBody() {
 		$theme = $this->db->getSettingValueForKey(CRM_SETTING_THEME);
 		if (empty($theme)) { $theme = CRM_SETTING_DEFAULT_THEME; }
-		return '<body class="skin-'.$theme.'">';
+		return '<body class="skin-'.$theme.' sidebar-mini">';
 	}
 	
 	/**
@@ -1585,8 +1584,10 @@ error_reporting(E_ERROR | E_PARSE);
 		$settings = "";
 		$callreports = "";
 		if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
+			
 			$modulesWithSettings = $mh->modulesWithSettings();
-			$adminArea = '<li class="treeview"><a href="#"><i class="fa fa-dashboard"></i> <span>'.$this->lh->translationFor("administration").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
+			$adminArea = '<li class="treeview"><a href="#"><i class="fa fa-dashboard"></i> <span>'.$this->lh->translationFor("administration").'</span><i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu">';
 			$adminArea .= $this->getSidebarItem("./adminsettings.php", "gears", $this->lh->translationFor("settings")); // admin settings
 			$adminArea .= $this->getSidebarItem("./adminusers.php", "user", $this->lh->translationFor("users")); // admin settings
 			$adminArea .= $this->getSidebarItem("./adminmodules.php", "archive", $this->lh->translationFor("modules")); // admin settings
@@ -1617,6 +1618,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$callreports = '<li class="treeview"><a href="#"><i class="fa fa-phone"></i> <span>'.$this->lh->translationFor("call_reports").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';	
 			$callreports .= $this-> getSidebarItem("./callreports.php", "tasks", $this->lh->translationFor("reports_and_go_analytics"));
 			$callreports .= '</ul></li>';
+			
 		}
 		
 		// get customer types
@@ -1662,9 +1664,7 @@ error_reporting(E_ERROR | E_PARSE);
         // suffix: modules
         $activeModules = $mh->activeModulesInstances();
         foreach ($activeModules as $shortName => $module) {
-		if ($module->needsSidebarDisplay()) {
-	        	$result .= $this->getSidebarItem($mh->pageLinkForModule($shortName, null), $module->mainPageViewIcon(), $module->mainPageViewTitle(), $module->sidebarBadgeNumber());
-		}
+        	$result .= $this->getSidebarItem($mh->pageLinkForModule($shortName, null), $module->mainPageViewIcon(), $module->mainPageViewTitle(), $module->sidebarBadgeNumber());
         }
 		
 		$result .= $this->getSidebarItem("https://www.goautodial.com/supporttickets.php", "support", $this->lh->translationFor("support"));
@@ -2831,12 +2831,11 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = "Inactive";
 				 }
 			   
-	       	   $action = $this->getUserActionMenuForT_User($output->userno[$i], $output->full_name[$i], $output->active[$i]); 
+	       	   $action = $this->getUserActionMenuForT_User($output->userno[$i]); 
 	       	        
 		        $result .= "<tr>
 	                     <td class='hide-on-low'>".$output->userno[$i]."</td>
-						 <td><a class=\"edit-T_user\" href=\"".$output->userno[$i]."\">".$output->full_name[$i]."</a></td>";
-						 //<td class='hide-on-medium hide-on-low'>".$output->user_level[$i]."</td>
+						 <td><a class=\"edit-T_user\" href=".$output->userno[$i].">".$output->full_name[$i]."</a></td>";
 	             $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
 	                     <td class='hide-on-low'>".$output->active[$i]."</td>
 	                     <td style='width: 200px;'>".$action."</td>
@@ -2853,15 +2852,18 @@ error_reporting(E_ERROR | E_PARSE);
 	       return $this->calloutErrorMessage($this->lh->translationFor("unable_get_user_list"));
        }
 	}
-
 	
-	// TELEPHONY INBOUND
-	//ingroups
-	public function getInGroups() {
-		$url = "https://encrypted.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+	
+	/**
+     * Returns a HTML representation of the wizard form for Telephony Users
+     * 
+     */
+	
+	public function goGetAllLists() {		
+		$url = "https://encrypted.goautodial.com/goAPI/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = "admin"; #Username goes here. (required)
 		$postfields["goPass"] = "goautodial"; #Password goes here. (required)
-		$postfields["goAction"] = "goGetAllInboundList"; #action performed by the [[API:Functions]]. (required)
+		$postfields["goAction"] = "goGetAllLists"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = "json"; #json. (required)
 		
 		$ch = curl_init();
@@ -2878,8 +2880,83 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 		
+		$columns = array("list_id", "list_name", "active", "list_lastcalldate", "tally", "campaign_id", "Action");
+	    $hideOnMedium = array("dial_method", "active");
+	    $hideOnLow = array("dial_method", "active");
+		$result = $this->generateTableHeaderWithItems($columns, "T_list", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		
-		$columns = array("group_id", "group_name", "queue_priority", "active", "call_time_id", "Action");
+		
+			for($i=0;$i < count($output->list_id);$i++){				
+				// if no entry in user list
+				if (empty($output->list_id[$i])) {
+				 return $this->calloutWarningMessage($this->lh->translationFor("no_entry_in_list"));
+			   }
+				
+				
+				if($output->active[$i] == "Y"){
+					$output->active[$i] = "Active";
+				}else{
+					$output->active[$i] = "Inactive";
+				}
+				
+				$action = $this->getUserActionMenuForLists($output->list_id[$i], $output->list_name[$i]);
+				
+				$result = $result."<tr>
+	                    <td>".$output->list_id[$i]."</td>
+	                    <td><a class=''>".$output->list_name[$i]."</a></td>
+						<td>".$output->active[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->list_lastcalldate[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->tally[$i]."</td>
+						<td>".$output->campaign_id[$i]."</td>
+	                    <td>".$action."</td>
+	                </tr>";
+				
+		
+		
+			}
+			
+			return $result; 
+			
+		} else {		
+		# An error occured		
+			return $this->calloutErrorMessage($this->lh->translationFor("unable_get_list"));
+		}
+	       // print suffix
+	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
+	}
+	
+	
+// TELEPHONY INBOUND
+	//ingroups
+	public function API_getInGroups() {
+		$url = "https://encrypted.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = "admin"; #Username goes here. (required)
+		$postfields["goPass"] = "goautodial"; #Password goes here. (required)
+		$postfields["goAction"] = "goGetAllInboundList"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = "json"; #json. (required)
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);		
+		curl_setopt($ch, CURLOPT_POST, 1);		
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);		
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);		
+		$data = curl_exec($ch);
+		curl_close($ch);		
+		$output = json_decode($data);
+		
+		return $output;
+	}
+	
+	public function getInGroups() {
+		$output = $this->API_getInGroups();
+		
+		if ($output->result=="success") {
+		# Result was OK!
+		
+		
+		$columns = array("In-Group", "Descriptions", "Priority", "active", "Time", "Action");
 	    $hideOnMedium = array("call_time_id","queue_priority", "active");
 	    $hideOnLow = array("call_time_id","queue_priority", "active");
 		$result = $this->generateTableHeaderWithItems($columns, "T_ingroup", "tab-pane fade table-bordered table-striped active in", true, false, $hideOnMedium, $hideOnLow);
@@ -2919,7 +2996,29 @@ error_reporting(E_ERROR | E_PARSE);
 	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	}
 	
-	//phone number(DID)
+	// Telephony > IVR
+	public function API_getIVR() {
+		$url = "https://encrypted.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = "admin"; #Username goes here. (required)
+		$postfields["goPass"] = "goautodial"; #Password goes here. (required)
+		$postfields["goAction"] = "goGetIVRMenusList"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = "json"; #json. (required)
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);		
+		curl_setopt($ch, CURLOPT_POST, 1);		
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);		
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);		
+		$data = curl_exec($ch);
+		curl_close($ch);		
+		$output = json_decode($data);
+		
+		return $output;
+	}
+	
+	//Telephony > phone number(DID)
 	public function getPhoneNumber() {
 		$url = "https://encrypted.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = "admin"; #Username goes here. (required)
@@ -2979,8 +3078,9 @@ error_reporting(E_ERROR | E_PARSE);
 		
 	}
 	
-	// Phone
-	public function getPhonesList() {
+
+	// Settings > Phone
+	public function API_getPhonesList(){
 		$url = "https://encrypted.goautodial.com/goAPI/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = "admin"; #Username goes here. (required)
 		$postfields["goPass"] = "goautodial"; #Password goes here. (required)
@@ -2996,8 +3096,13 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);		
 		$data = curl_exec($ch);
 		curl_close($ch);		
-		$output = json_decode($data);		 
-
+		$output = json_decode($data);
+		
+		return $output;
+	}
+	
+	public function getPhonesList() {
+		$output = $this->API_getPhonesList();
 		
 		if ($output->result=="success") {
 		# Result was OK!
@@ -3008,6 +3113,16 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false);
 		
 			for($i=0;$i < count($output->extension);$i++){
+				
+				/*echo $output->extension[$i]."</br>";
+				echo $output->protocol[$i]."</br>";
+				echo $output->server_ip[$i]."</br>";
+				echo $output->dialplan_number[$i]."</br>";
+				echo $output->active[$i]."</br>";
+				echo $output->fullname[$i]."</br>";
+				echo $output->messages[$i]."</br>";
+				echo $output->old_messages[$i]."</br>";
+				echo $output->user_group[$i]."<brd>";*/
 				
 				// if no entry in inbound
 				if (empty($output->extension[$i])) {
@@ -3046,17 +3161,87 @@ error_reporting(E_ERROR | E_PARSE);
 	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	}
 	
-	// MOH
-	
-	public function goGetListInfo() {
-       
+	// VoiceFiles
+	public function API_goGetVoiceMails() {
+       //https://162.254.144.92/goAPI/goVoicemails/docs/goGetAllVoicemailsAPI.php
+
+		$url = "https://encrypted.goautodial.com/goAPI/goVoicemails/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = "admin"; #Username goes here. (required)
+        $postfields["goPass"] = "goautodial"; #Password goes here. (required)
+        $postfields["goAction"] = "getAllVoicemails"; #action performed by the [[API:Functions]]. (required)
+        $postfields["responsetype"] = "json"; #json. (required)
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+		 
+		 return $output;
+	/*
+        if ($output->result=="success") {
+           # Result was OK!
+
+			for($i=0;$i<count($output->voicemail_id);$i++){
+					echo $output->voicemail_id[$i]."</br>";
+					echo $output->fullname[$i]."</br>";
+					echo $output->active[$i]."</br>";
+					echo $output->messages[$i]."</br>";
+					echo $output->old_messages[$i]."</br>";
+					echo $output->delete_vm_after_email[$i]."</br>";
+					echo $output->user_group[$i]."</br>";
+					echo "</br>";
+			}
+
+         } else {
+
+           # An error occured
+                echo $output->result;
+        }*/
 	}
 	
-	
-	public function goGetVoiceFilesList() {
-      
+	// API Scripts
+	public function API_goGetAllScripts(){
+		//goGetAllScriptsAPI
+		$url = "https://encrypted.goautodial.com/goAPI/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = "admin"; #Username goes here. (required)
+        $postfields["goPass"] = "goautodial"; #Password goes here. (required)
+        $postfields["goAction"] = "getAllScripts"; #action performed by the [[API:Functions]]. (required)
+        $postfields["responsetype"] = "json"; #json. (required)
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+		 
+		 return $output;
+		
+		/*
+        if ($output->result=="success") {
+           # Result was OK!
+                        for($i=0;$i<count($output->script_id);$i++){
+                                echo $output->script_id[$i]."</br>";
+                                echo $output->f[$i]."</br>";
+                                echo $output->active[$i]."</br>";
+                                echo $output->user_group[$i]."</br>";
+                                echo "</br>";
+                        }
+
+         } else {
+           # An error occured
+                echo $output->result;
+        }
+        */
 	}
-	
 	
 	/** Getting Circle Buttons */
 
@@ -3083,27 +3268,29 @@ error_reporting(E_ERROR | E_PARSE);
 
 	/** Campaigns API - Get all list of campaign */
 	/**
+	 * Generates action circle buttons for different pages/module
 	 * @param goUser 
 	 * @param goPass 
 	 * @param goAction 
 	 * @param responsetype
 	 */
 	public function getListAllCampaigns($goUser, $goPass, $goAction, $responsetype){
-		$url = "https://encrypted.goautodial.com/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = "http://162.254.144.92/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = "goautodial"; #Username goes here. (required)
         $postfields["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
         $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = "json"; #json. (required)
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-        $data = curl_exec($ch);
-        curl_close($ch);
-        $output = json_decode($data);
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
          
         if ($output->result=="success") {
            # Result was OK!
@@ -3131,67 +3318,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	        return $result;
 
-        } else {
-           # An error occured
-           return $output->result;
-        }
-	}
-
-	/** Call Recordings API - Get all list of call recording */
-	/**
-	 * @param goUser 
-	 * @param goPass 
-	 * @param goAction 
-	 * @param responsetype
-	 */
-	public function getListAllRecordings($goUser, $goPass, $goAction, $responsetype){
-		$url = "https://encrypted.goautodial.com/goAPI/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
-        $postfields["goUser"] = "goautodial"; #Username goes here. (required)
-        $postfields["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
-        $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
-        $postfields["responsetype"] = "json"; #json. (required)
-
-		  
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		// curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
-
-		if ($output->result=="success") {
-            # Result was OK!
-           	$columns = array("Name", "Status", "Last Call Date", "Leads Count", "Call Preview", "Action");
-		   	$result = $this->generateTableHeaderWithItems($columns, "recordings", "table-bordered table-striped", true, false); 
-
-	        for($i=0;$i<count($output->list_id);$i++){
-                    $result .= "<tr>
-	                    <td>".$output->users[$i]."</td>
-	                    <td>".$output->status[$i]."</td>
-	                    <td>".$output->last_local_call_time[$i]."</td>
-	                    <td>".$output->cnt[$i]."</td>
-	                    <td class='playback_recording'>
-				<a id='".$output->list_id[$i]."' class='play_audio btn btn-app' data-location='".$output->location[$i]."'>
-				    <i class='fa fa-play'></i> Play
-				</a>
-			    </td>
-	                    <td>
-	                    	<ul class='action-btn-recording'>
-	                    		<li><span class='edit-recording fa fa-pencil' data-id='".$output->list_id[$i]."'></span></li>
-	                    		<li><span class='view-recording fa fa-eye' data-id='".$output->list_id[$i]."'></span></li>
-	                    		<li><span class='delete-recording fa fa-trash' data-id='".$output->list_id[$i]."'></span></li>
-	                    	</ul>
-	                    </td>
-	                </tr>";
-            }
-
-	        return $result;
-
-        } else {
+         } else {
            # An error occured
            return $output->result;
         }
@@ -3332,4 +3459,526 @@ error_reporting(E_ERROR | E_PARSE);
     		</div>
 		';
 	}
+	
+	
+	/*
+	 * APIs for Dashboard
+	 *
+	*/
+		/*
+		 * Displaying Total Sales
+		 * [[API: Function]] - goGetTotalSales
+		 * This application is used to get total number of total sales.
+		*/
+		
+		public function API_GetTotalSales() {
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial";
+			$postfields["goAction"] = "goGetTotalSales"; #action performed by the [[API:Functions]]
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			//var_dump($data);
+			 $data = explode(";",$data);
+			 foreach ($data AS $temp) {
+			   $temp = explode("=",$temp);
+			   $results[$temp[0]] = $temp[1];
+			 }
+			
+			 if ($results["result"]=="success") {
+			   # Result was OK!
+			   //var_dump($results); #to see the returned arrays.
+					echo $results["TotalSales"];
+			 } else {
+			   # An error occurred
+			   echo 0;
+			 }
+			
+		}
+		
+		/*
+		 * Displaying in Sales / Hour
+		 * [[API: Function]] - goGetINSalesHour
+		 * This application is used to get total number of in Sales per hour
+		*/
+		public function API_GetINSalesHour() {
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial";
+			$postfields["goAction"] = "goGetINSalesHour"; #action performed by the [[API:Functions]]
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			//var_dump($data);
+			 $data = explode(";",$data);
+			 foreach ($data AS $temp) {
+			   $temp = explode("=",$temp);
+			   $results[$temp[0]] = $temp[1];
+			 }
+			
+			 if ($results["result"]=="success") {
+			   # Result was OK!
+			   //var_dump($results); #to see the returned arrays.
+					echo $results["getInSalesPerHour"];
+			 } else {
+			   # An error occurred
+			   echo 0;
+			 }
+
+		}
+		 
+		/*
+		 * Displaying OUT Sales / Hour
+		 * [[API: Function]] - goGetOutSalesPerHour
+		 * This application is used to get OUT sales per hour.
+		*/
+
+		public function API_GetOUTSalesPerHour(){
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial";
+			$postfields["goAction"] = "goGetOutSalesPerHour"; #action performed by the [[API:Functions]]
+
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			//var_dump($data);
+			 $data = explode(";",$data);
+			 foreach ($data AS $temp) {
+			   $temp = explode("=",$temp);
+			   $results[$temp[0]] = $temp[1];
+			 }
+			
+			 if ($results["result"]=="success") {
+			   # Result was OK!
+			   //var_dump($results); #to see the returned arrays.
+					echo $results["OutSalesPerHour"];
+			 } else {
+			   # An error occurred
+			   echo 0;
+			 }
+		}
+		
+		/*
+		 * Displaying Agent(s) Waiting
+		 * [[API: Function]] - getTotalAgentsWaitCalls
+		 * This application is used to get total of agents waiting
+		*/
+		
+		public function API_getTotalAgentsWaitCalls() {
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial";
+			$postfields["goAction"] = "goGetTotalAgentsWaitCalls"; #action performed by the [[API:Functions]]
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			//var_dump($data);
+			 $data = explode(";",$data);
+			 foreach ($data AS $temp) {
+			   $temp = explode("=",$temp);
+			   $results[$temp[0]] = $temp[1];
+			 }
+			
+			 if ($results["result"]=="success") {
+			   # Result was OK!
+			   //var_dump($results); #to see the returned arrays.
+					echo $results["TotalAgentsWaitCalls"];
+			 } else {
+			   # An error occured
+			   echo 0;
+			 }
+		}
+		
+		/*
+		 *Displaying Agent(s) on Paused
+		 *[[API: Function]] - goGetTotalAgentsPaused
+		 *This application is used to get total of agents paused
+		*/
+		
+		public function API_GetTotalAgentsPaused(){
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial";
+			$postfields["goAction"] = "goGetTotalAgentsPaused"; #action performed by the [[API:Functions]]
+			
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			//var_dump($data);
+			 $data = explode(";",$data);
+			 foreach ($data AS $temp) {
+			   $temp = explode("=",$temp);
+			   $results[$temp[0]] = $temp[1];
+			 }
+			
+			 if ($results["result"]=="success") {
+			   # Result was OK!
+			   //var_dump($results); #to see the returned arrays.
+					echo $results["TotalAgentsPaused"];
+			 } else {
+			   # An error occurred
+			   echo 0;
+			 }
+		
+		}
+		
+		/*
+		 * Displaying Agent(s) on Call
+		 * [[API: Function]] - goGetTotalAgentsCall
+		 * This application is used to get total of agents on call
+		*/
+
+		public function API_GetTotalAgentsCall() {
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial"; 
+			$postfields["goAction"] = "goGetTotalAgentsCall"; #action performed by the [[API:Functions]]
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			//var_dump($data);
+			 $data = explode(";",$data);
+			 foreach ($data AS $temp) {
+			   $temp = explode("=",$temp);
+			   $results[$temp[0]] = $temp[1];
+			 }
+			
+			 if ($results["result"]=="success") {
+			   # Result was OK!
+			   //var_dump($results); #to see the returned arrays.
+					echo $results["TotalAgentsCall"];
+			 } else {
+			   # An error occured
+					echo "0";
+			 }
+		}
+		
+		/*
+		 * Displaying Leads in hopper
+		 * [[API: Function]] - goGetLeadsinHopper
+		 * This application is used to get total number of leads in hopper
+		*/
+		
+		public function API_GetLeadsinHopper() {
+			
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial";
+			$postfields["goAction"] = "goGetLeadsinHopper"; #action performed by the [[API:Functions]]
+			
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			//var_dump($data);
+			 $data = explode(";",$data);
+			 foreach ($data AS $temp) {
+			   $temp = explode("=",$temp);
+			   $results[$temp[0]] = $temp[1];
+			 }
+			
+			 if ($results["result"]=="success") {
+			   # Result was OK!
+			   //var_dump($results); #to see the returned arrays.
+					echo $results["getLeadsinHopper"];
+			 } else {
+			   # An error occured
+			   echo "0";
+			 }
+		
+		}
+		
+		/*
+		 * Displaying Dialable Leads
+		 * [[API: Function]] - goGetTotalDialableLeads
+		 * This application is used to get total number of dialable leads.
+		*/
+		
+		public function API_GetTotalDialableLeads(){
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial";
+			$postfields["goAction"] = "goGetTotalDialableLeads"; #action performed by the [[API:Functions]]
+	
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			//var_dump($data);
+			 $data = explode(";",$data);
+			 foreach ($data AS $temp) {
+			   $temp = explode("=",$temp);
+			   $results[$temp[0]] = $temp[1];
+			 }
+			
+			 if ($results["result"]=="success") {
+			   # Result was OK!
+			   //var_dump($results); #to see the returned arrays.
+					echo $results["getTotalDialableLeads"];
+			 } else {
+			   # An error occurred
+			   echo 0;
+			 }
+		
+		}
+		
+		/*
+		 * Displaying Total Active Leads
+		 * [[API: Function]] - goGetTotalActiveLeads
+		 * This application is used to get total number of active leads
+		*/
+
+		public function API_GetTotalActiveLeads(){
+			
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial";
+			$postfields["goAction"] = "goGetTotalActiveLeads"; #action performed by the [[API:Functions]]
+
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			//var_dump($data);
+			 $data = explode(";",$data);
+			 foreach ($data AS $temp) {
+			   $temp = explode("=",$temp);
+			   $results[$temp[0]] = $temp[1];
+			 }
+			
+			 if ($results["result"]=="success") {
+			   # Result was OK!
+			   //var_dump($results); #to see the returned arrays.
+					echo $results["getTotalActiveLeads"];
+			 } else {
+			   # An error occurred
+			   echo 0;
+			 }
+		}
+		
+		/*
+		 * Displaying Call(s) Ringing
+		 * [[API: Function]] - goGetRingingCall
+		 * This application is used to get calls ringing
+		*/
+
+		public function API_GetRingingCall() {
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial";
+			$postfields["goAction"] = "goGetRingingCall"; #action performed by the [[API:Functions]]
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			//var_dump($data);
+			$data = explode(";",$data);
+			foreach ($data AS $temp) {
+			   $temp = explode("=",$temp);
+			   $results[$temp[0]] = $temp[1];
+			}
+			
+			if ($results["result"]=="success") {
+			   # Result was OK!
+			   //var_dump($results); #to see the returned arrays.
+					echo $results["ringing"];
+			} else {
+			   # An error occurred
+					echo "The following error occured: ".$results["message"];
+			}
+		
+		}
+		
+		/*
+		 * Displaying Total Calls
+		 * [[API: Function]] - getTotalcalls
+		 * This application is used to get total calls.
+		*/
+		
+		public function API_getTotalcalls(){
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial";
+			$postfields["goAction"] = "getTotalcalls"; #action performed by the [[API:Functions]]
+
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			//var_dump($data);
+			$data = explode(";",$data);
+			foreach ($data AS $temp) {
+			   $temp = explode("=",$temp);
+			   $results[$temp[0]] = $temp[1];
+			}
+			
+			if ($results["result"]=="success") {
+			   # Result was OK!
+			   //var_dump($results); #to see the returned arrays.
+					echo $results["totcalls"];
+			} else {
+			   # An error occurred
+			   echo "The following error occured: ".$results["message"];
+			}
+		}
+		
+		/*
+		 * Displaying Live Outbound
+		 * [[API: Function]] - goGetLiveOutbound
+		 * This application is used to get live outbound..
+		*/
+
+		public function API_GetLiveOutbound() {
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial";
+			$postfields["goAction"] = "goGetLiveOutbound"; #action performed by the [[API:Functions]]
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			//var_dump($data);
+			$data = explode(";",$data);
+			foreach ($data AS $temp) {
+			   $temp = explode("=",$temp);
+			   $results[$temp[0]] = $temp[1];
+			}
+			
+			if ($results["result"]=="success") {
+			   # Result was OK!
+			   //var_dump($results); #to see the returned arrays.
+					 echo $results["outbound"];
+			} else {
+			   # An error occured
+			   echo "The following error occured: ".$results["message"];
+			}
+		
+		}
+		
+		/*
+		 * Displaying Calls / Hour
+		 * [[API: Function]] - getCallPerHour
+		 * This application is used to get calls per hour.
+		*/
+		
+		public function API_getCallPerHour() {
+			$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = "admin"; #Username goes here. (required)
+			$postfields["goPass"] = "goautodial";
+			$postfields["goAction"] = "getPerHourCall"; #action performed by the [[API:Functions]]
+
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+			return $data;
+		}
+		
+		/*
+		 * Display Dropped Percentage
+		 * [[API: Function]] - goGetDroppedPercentage
+		 * This application is used to get dropped call percentage.
+		*/
+		public function API_GetDroppedPercentage() {
+		$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = "admin"; #Username goes here. (required)
+		$postfields["goPass"] = "goautodial";
+		$postfields["goAction"] = "goGetDroppedPercentage"; #action performed by the [[API:Functions]]
+		
+		
+		 $ch = curl_init();
+		 curl_setopt($ch, CURLOPT_URL, $url);
+		 curl_setopt($ch, CURLOPT_POST, 1);
+		 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		 $data = curl_exec($ch);
+		 curl_close($ch);
+		
+		return $data;
+		
+		}
+
+		
 }

@@ -8,7 +8,7 @@ $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
 
 // check required fields
-$reason = $lh->translationFor("unable_modify_in-group");
+$reason = $lh->translationFor("unable_modify_phones");
 
 $validated = 1;
 if (!isset($_POST["modifyid"])) {
