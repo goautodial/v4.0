@@ -4052,7 +4052,7 @@ error_reporting(E_ERROR | E_PARSE);
 					echo $results["ringing"];
 			} else {
 			   # An error occurred
-					echo "The following error occured: ".$results["message"];
+					echo 0;
 			}
 		
 		}
@@ -4091,7 +4091,7 @@ error_reporting(E_ERROR | E_PARSE);
 					echo $results["totcalls"];
 			} else {
 			   # An error occurred
-			   echo "The following error occured: ".$results["message"];
+			   echo 0;
 			}
 		}
 		
@@ -4129,7 +4129,7 @@ error_reporting(E_ERROR | E_PARSE);
 					 echo $results["outbound"];
 			} else {
 			   # An error occured
-			   echo "The following error occured: ".$results["message"];
+			   echo 0;
 			}
 		
 		}
@@ -4178,10 +4178,32 @@ error_reporting(E_ERROR | E_PARSE);
 		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		 $data = curl_exec($ch);
 		 curl_close($ch);
-		
+
 		return $data;
 		
-		}
+	}
+	
+	/*
+	 * Displaying Cluster Status
+	 * [[API: Function]] - goGetClusterStatus
+	 * This application is used to get cluster status
+	*/
 
-		
+	public function API_GetClusterStatus(){
+		$url = "https://encrypted.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = "admin"; #Username goes here. (required)
+		$postfields["goPass"] = "goautodial";
+		$postfields["goAction"] = "goGetClusterStatus"; #action performed by the [[API:Functions]]
+
+		 $ch = curl_init();
+		 curl_setopt($ch, CURLOPT_URL, $url);
+		 curl_setopt($ch, CURLOPT_POST, 1);
+		 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		 $data = curl_exec($ch);
+		 curl_close($ch);
+
+		 return $data;
+	}
 }

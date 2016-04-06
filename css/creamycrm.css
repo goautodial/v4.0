@@ -3807,7 +3807,7 @@ fieldset[disabled] .btn-vk.active {
 .bg-light-blue,
 .label-primary,
 .modal-primary .modal-body {
-  background-color: #3c8dbc !important;
+  background-color: #3c8dbc;
 }
 .bg-green,
 .callout.callout-success,

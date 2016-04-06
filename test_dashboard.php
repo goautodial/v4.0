@@ -168,15 +168,15 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                      <div class="ph">
 						<div class="pull-right">
 							<span class="fa-stack">
-								<em class="fa fa-circle fa-stack-2x text-purple" style="margin-top: -5;"></em>
+								<em class="fa fa-circle fa-stack-2x text-red" style="margin-top: -5;"></em>
 								<em class="icon-people fa-lg fa-stack-1x fa-inverse text-white pull-right"></em>
 							</span>
 						</div>
                         <div class="h2 mt0">
 							<span class="text-lg "><?php echo $ui->API_GetTotalAgentsCall();?></span> <span class="text-sm">Agent(s) On Call</span><br/>
 							<div style="padding-left: 5px;" class="text-purple">
-								<span class="text-purple"><?php echo $ui->API_GetTotalAgentsPaused();?></span>	<span class="text-sm text-purple">Agent(s) On Paused</span><br/>
-								<span class="text-blue"><?php echo $ui->API_getTotalAgentsWaitCalls();?></span>	<span class="text-sm text-purple">Agent(s) Waiting</span><br/>
+								<span class="text-orange"><?php echo $ui->API_GetTotalAgentsPaused();?></span>	<span class="text-sm text-orange">Agent(s) On Paused</span><br/>
+								<span class="text-green"><?php echo $ui->API_getTotalAgentsWaitCalls();?></span>	<span class="text-sm text-green">Agent(s) Waiting</span><br/>
 							</div>
 						</div>
                         <div class="text-uppercase">AGENTS</div>
@@ -192,15 +192,15 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                      <div class="ph">
 						<div class="pull-right">
 							<span class="fa-stack">
-								<em class="fa fa-circle fa-stack-2x text-red" style="margin-top: -5;"></em>
-								<em class="icon-basket fa-lg fa-stack-1x fa-inverse text-white "></em>
+								<em class="fa fa-circle fa-stack-2x text-green" style="margin-top: -5;"></em>
+								<em class="fa fa-money fa-lg fa-stack-1x fa-inverse text-white" style="margin-top: -5;"></em>
 							</span>
 						</div>
                         <div class="h2 mt0">
 							<span class="text-lg"><?php echo $ui->API_GetTotalSales();?></span> <span class="text-sm">TOTAL Sales</span><br/>
 							<div style="padding-left: 5px;">
-								<span class="text-purple"><?php echo $ui->API_GetINSalesHour();?></span> <span class="text-sm text-purple">Inbound Sales</span><br/>
-								<span class="text-blue"><?php echo $ui->API_GetOUTSalesPerHour();?></span> <span class="text-sm text-blue">Outbound Sales</span><br/>
+								<span class="text-orange"><?php echo $ui->API_GetINSalesHour();?></span> <span class="text-sm text-orange">Inbound Sales</span><br/>
+								<span class="text-green"><?php echo $ui->API_GetOUTSalesPerHour();?></span> <span class="text-sm text-green">Outbound Sales</span><br/>
 							</div>
                         </div>
                         <div class="text-uppercase mb0">SALES</div>
@@ -217,15 +217,15 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                      <div class="ph">
 						<div class="pull-right">
 							<span class="fa-stack">
-								<em class="fa fa-circle fa-stack-2x text-green" style="margin-top: -5;"></em>
+								<em class="fa fa-circle fa-stack-2x text-orange" style="margin-top: -5;"></em>
 								<em class="icon-note fa-lg fa-stack-1x fa-inverse text-white"></em>
 							</span>
 						</div>
                         <div class="h2 mt0">
 							<span class="text-lg"><?php $ui->API_GetTotalActiveLeads(); ?></span>	<span class="text-sm">Total Active Leads</span><br/>
 							<div style="padding-left: 5px;">
-								<span class="text-purple"><?php $ui->API_GetLeadsinHopper(); ?></span>	<span class="text-sm text-purple">Leads in Hopper</span><br/>
-								<span class="text-blue"><?php $ui->API_GetTotalDialableLeads(); ?>	<span class="text-sm text-blue">Dialable Leads</span><br/>
+								<span class="text-orange"><?php $ui->API_GetLeadsinHopper(); ?></span>	<span class="text-sm text-orange">Leads in Hopper</span><br/>
+								<span class="text-green"><?php $ui->API_GetTotalDialableLeads(); ?>	<span class="text-sm text-green">Dialable Leads</span><br/>
 							</div>
 						</div>
                         <div class="text-uppercase">LEAD</div>
@@ -241,7 +241,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                      <div class="ph">
 						<div class="pull-right">
 							<span class="fa-stack">
-								<em class="fa fa-circle fa-stack-2x text-blue" style="margin-top: -5;"></em>
+								<em class="fa fa-circle fa-stack-2x text-light-blue" style="margin-top: -5;"></em>
 								<em class="icon-earphones-alt fa-lg fa-stack-1x fa-inverse text-white"></em>
 							</span>
 						</div>
@@ -249,10 +249,10 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 							<span class="text-lg" id="load_total_calls"> <?php echo $ui->API_getTotalcalls();?> </span>
 								<span class="text-sm">Total Calls</span><br/>
 							<div style="padding-left: 5px;">
-								<span class="text-purple" id="load_calls_ringing"> <?php echo $ui->API_GetRingingCall();?> </span>
-									<span class="text-sm text-purple">Call(s) Ringing</span><br/>
-								<span class="text-blue" id="load_live_outbound"> <?php echo $ui->API_GetLiveOutbound();?></span>
-									<span class="text-sm text-blue">Live Outbound</span><br/>
+								<span class="text-orange" id="load_calls_ringing"> <?php echo $ui->API_GetRingingCall();?> </span>
+									<span class="text-sm text-orange">Call(s) Ringing</span><br/>
+								<span class="text-green" id="load_live_outbound"> <?php echo $ui->API_GetLiveOutbound();?></span>
+									<span class="text-sm text-green">Live Outbound</span><br/>
 							</div>
 						</div>
                         <div class="text-uppercase">Calls</div>
@@ -325,7 +325,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 								<a href="#" class="text-muted pull-right">
 									 <em class="fa fa-arrow-right"></em>
 								</a>
-								<div class="text-info">Dropped Calls Percentage</div>
+								<div class="text-muted">Dropped Calls Percentage</div>
 								<?php
 									// GET DATA FROM UIHandler.php
 									$data = $ui->API_GetDroppedPercentage();
@@ -335,15 +335,13 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 									  $results[$temp[0]] = $temp[1];
 									}
 								   
-								   $dropcall_result = NULL;
+									$dropcall_result = 0;
 								   
 									if ($results["result"]=="success") {
 									  # Result was OK!
 									  //var_dump($results); #to see the returned arrays.
-										   if($reuslt["drop_call_per"] == NULL){
-													$dropcall_result = 0;
-										   }else {
-													$dropcall_result = $results["drop_call_per"];
+										   if($results["drop_call_per"] != ""){
+												$dropcall_result = $results["drop_call_per"];
 										   }
 									}
 								?>
@@ -351,7 +349,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 										<input type="text"
 										class="knob" value="<?php echo $dropcall_result;?>" data-width="150" data-height="150" data-padding="21px"
-										data-fgcolor="#3c8dbc" data-readonly="true" readonly="readonly"
+										data-fgcolor="#00a65a " data-readonly="true" readonly="readonly"
 										style="
 											width: 49px;
 											height: 100px;
@@ -368,7 +366,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 											line-height: normal;
 											font-family: Arial;
 											text-align: center;
-											color: <?php echo $theme;?>
+											color: #f0ad4e;
 											padding: 0px;
 											-webkit-appearance: none;
 											background: none;
@@ -388,15 +386,15 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					</div><!-- end of 2nd row -->
 		<!-- 3rd row -->
 					<div class="row">
-						<div class="col-lg-6">
+						<div class="col-lg-9">
 						   <!-- START panel tab-->
 						   <div role="tabpanel" class="panel panel-transparent">
 							  <ul role="tablist" class="nav nav-tabs nav-justified">
 							  
 							  <!-- Nav task panel tabs-->
 								 <li role="presentation" class="active">
-									<a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-									   <em class="fa fa-clock-o fa-fw"></em>Tasks Panel</a>
+									<a href="#cluster_status" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+									   <em class="fa fa-clock-o fa-fw"></em>Cluster Status</a>
 								 </li>
 							<!-- transaction panel tab -->
 								 <li role="presentation">
@@ -404,43 +402,76 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 									   <em class="fa fa-money fa-fw"></em>Transactions Panel</a>
 								 </li>
 							  </ul>
-							  <!-- Tab panes-->
-							  <div class="tab-content p0 bg-white">
-								 <div id="home" role="tabpanel" class="tab-pane active">
-									<!-- START list group-->
-									<div class="list-group mb0">
-										<a href="#" class="list-group-item bt0">
-										   <span class="label label-purple pull-right">just now</span>
-										   <em class="fa fa-fw fa-calendar mr"></em>Calendar updated</a>
-										<a href="#" class="list-group-item">
-										   <span class="label label-purple pull-right">4 minutes ago</span>
-										   <em class="fa fa-fw fa-comment mr"></em>Commented on a post</a>
-										<a href="#" class="list-group-item">
-										   <span class="label label-purple pull-right">23 minutes ago</span>
-										   <em class="fa fa-fw fa-truck mr"></em>Order 392 shipped</a>
-										<a href="#" class="list-group-item">
-										   <span class="label label-purple pull-right">46 minutes ago</span>
-										   <em class="fa fa-fw fa-money mr"></em>Invoice 653 has been paid</a>
-										<a href="#" class="list-group-item">
-										   <span class="label label-purple pull-right">1 hour ago</span>
-										   <em class="fa fa-fw fa-user mr"></em>A new user has been added</a>
-										<a href="#" class="list-group-item">
-										   <span class="label label-purple pull-right">2 hours ago</span>
-										   <em class="fa fa-fw fa-check mr"></em>Completed task: "pick up dry cleaning"</a>
-										<a href="#" class="list-group-item">
-										   <span class="label label-purple pull-right">yesterday</span>
-										   <em class="fa fa-fw fa-globe mr"></em>Saved the world</a>
-										<a href="#" class="list-group-item">
-										   <span class="label label-purple pull-right">two days ago</span>
-										   <em class="fa fa-fw fa-check mr"></em>Completed task: "fix error on sales page"</a>
-										<a href="#" class="list-group-item">
-										   <span class="label label-purple pull-right">two days ago</span>
-										   <em class="fa fa-fw fa-check mr"></em>Completed task: "fix error on sales page"</a>
-									</div>
-									<!-- END list group-->
-									<div class="panel-footer text-right"><a href="#" class="btn btn-default btn-sm">View All Activity </a>
-									</div>
-								 </div>
+				<?php
+					$data_clusterstatus = $ui->API_GetClusterStatus();
+					$data_clusterstatus = explode(";",$data_clusterstatus);
+					foreach ($data AS $temp) {
+					  $temp = explode("=",$temp);
+					  $cluster[$temp[0]] = $temp[1];
+					}
+				?>
+							<!-- Tab panes-->
+							<div class="tab-content p0 bg-white">
+							   <div id="cluster_status" role="tabpanel" class="tab-pane active refresh_clusterstats">
+								<!-- Cluster Status -->
+								<div class="table-responsive">
+									<table class="table table-striped table-bordered table-hover" style="height: 242px;">
+									   <thead>
+										  <tr>
+											 <th>SERVER ID</th>
+											 <th>SERVER IP</th>
+											 <th>STATUS</th>
+											 <th>LOAD</th>
+											 <th>CHANNELS</th>
+											 <th>DISK</th>
+											 <th>TIME</th>
+										  </tr>
+									   </thead>
+									   <tbody>
+											<tr>
+												<?php
+													echo "<td>".$cluster["server_id"]."</td>";
+													echo "<td>".$cluster["server_ip"]."</td>";
+													if($cluster["active"] == 'Y'){
+														echo "<td><font color='red'><b><i>Active</i></b></font></td>";
+													}else{
+														echo "<td>Inactive</td>";
+													}
+													
+													echo "<td>".$cluster["sysload"]." - ". $results['cpu']."%"."</td>";
+													echo "<td>".$cluster["channels_total"]."</td>";
+													echo "<td>".$cluster["disk_usage"]."% </td>";
+													echo "<td>".$cluster["s_time"]."</td>";
+												?>
+											</tr>
+											<tr>
+												<?php
+													echo "<td>&nbsp;</td>";
+													echo "<td>&nbsp;</td>";
+													echo "<td><b>PHP Time</b></td>";
+													echo "<td>&nbsp;</td>";
+													echo "<td>&nbsp;</td>";
+													echo "<td>&nbsp;</td>";
+													echo "<td>".$cluster["php_time"]."</td>";
+												?>
+											</tr>
+											<tr>
+												<?php
+													echo "<td>&nbsp;</td>";
+													echo "<td>&nbsp;</td>";
+													echo "<td><b>DB Time</b></td>";
+													echo "<td>&nbsp;</td>";
+													echo "<td>&nbsp;</td>";
+													echo "<td>&nbsp;</td>";
+													echo "<td>".$cluster["db_time"]."</td>";
+												?>
+											</tr>
+									   </tbody>
+									</table>
+								</div>
+								<div class="panel-footer text-right">&nbsp;</div>
+							 </div>
+							<!--===== 2nd tab =====-->
 								 <div id="profile" role="tabpanel" class="tab-pane">
 									<!-- START table responsive-->
 									<div class="table-responsive">
@@ -472,120 +503,19 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 						   <!-- END panel tab-->
 						</div><!-- end of tasks and transaction panels -->
 						
-						<div class="col-lg-3"><!-- START messages and activity-->
-							<div class="panel panel-default">
-							   <div class="panel-heading">
-								  <div class="panel-title">Latest activities</div>
-							   </div>
-							   <!-- START list group-->
-							   <div class="list-group">
-								  <!-- START list group item-->
-								  <div class="list-group-item">
-									 <div class="media-box">
-										<div class="pull-left">
-										   <span class="fa-stack">
-											  <em class="fa fa-circle fa-stack-2x text-purple"></em>
-											  <em class="fa fa-cloud-upload fa-stack-1x fa-inverse text-white"></em>
-										   </span>
-										</div>
-										<div class="media-box-body clearfix">
-										   <small class="text-muted pull-right ml">15m</small>
-										   <div class="media-box-heading"><a href="#" class="text-purple m0">NEW FILE</a>
-										   </div>
-										   <p class="m0">
-											  <small><a href="#">Bootstrap.xls</a>
-											  </small>
-										   </p>
-										</div>
-									 </div>
-								  </div>
-								  <!-- END list group item-->
-								  <!-- START list group item-->
-								  <div class="list-group-item">
-									 <div class="media-box">
-										<div class="pull-left">
-										   <span class="fa-stack">
-											  <em class="fa fa-circle fa-stack-2x text-info"></em>
-											  <em class="fa fa-file-text-o fa-stack-1x fa-inverse text-white"></em>
-										   </span>
-										</div>
-										<div class="media-box-body clearfix">
-										   <small class="text-muted pull-right ml">2h</small>
-										   <div class="media-box-heading"><a href="#" class="text-info m0">NEW DOCUMENT</a>
-										   </div>
-										   <p class="m0">
-											  <small><a href="#">Bootstrap.doc</a>
-											  </small>
-										   </p>
-										</div>
-									 </div>
-								  </div>
-								  <!-- END list group item-->
-								  <!-- START list group item-->
-								  <div class="list-group-item">
-									 <div class="media-box">
-										<div class="pull-left">
-										   <span class="fa-stack">
-											  <em class="fa fa-circle fa-stack-2x text-danger"></em>
-											  <em class="fa fa-exclamation fa-stack-1x fa-inverse text-white"></em>
-										   </span>
-										</div>
-										<div class="media-box-body clearfix">
-										   <small class="text-muted pull-right ml">5h</small>
-										   <div class="media-box-heading"><a href="#" class="text-danger m0">BROADCAST</a>
-										   </div>
-										   <p class="m0"><a href="#">Read</a>
-										   </p>
-										</div>
-									 </div>
-								  </div>
-								  <!-- END list group item-->
-								  <!-- START list group item-->
-								  <div class="list-group-item">
-									 <div class="media-box">
-										<div class="pull-left">
-										   <span class="fa-stack">
-											  <em class="fa fa-circle fa-stack-2x text-success"></em>
-											  <em class="fa fa-clock-o fa-stack-1x fa-inverse text-white"></em>
-										   </span>
-										</div>
-										<div class="media-box-body clearfix">
-										   <small class="text-muted pull-right ml">15h</small>
-										   <div class="media-box-heading"><a href="#" class="text-success m0">NEW MEETING</a>
-										   </div>
-										   <p class="m0">
-											  <small>On
-												 <em>10/12/2015 09:00 am</em>
-											  </small>
-										   </p>
-										</div>
-									 </div>
-								  </div>
-								  <!-- END list group item-->
-							   </div>
-							   <!-- END list group-->
-							   <!-- START panel footer-->
-								<div class="panel-footer clearfix">
-									<a href="#" class="pull-left">
-									   <small>Load more</small>
-									</a>
-								</div>
-							</div> <!-- END panel-footer-->
-						</div><!-- END messages and activity-->
-						
 					<!-- START loader widget-->
 						<div class="col-lg-3">
 							<div class="panel panel-default">
 							   <div class="panel-body">
 									<a href="#" class="text-muted pull-right">
-										 <em class="fa fa-arrow-right">adwadwadwa</em>
+										 <em class="fa fa-arrow-right"></em>
 									</a>
-									<div class="text-info"></div>
+									<div class="text-muted">Load Percentage</div>
 									<center>
 										<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 											<input type="text"
 											class="knob" value="30" data-width="150" data-height="150" data-padding="21px"
-											data-fgcolor="#3c8dbc" data-readonly="true" readonly="readonly"
+											data-fgcolor="#f0ad4e" data-readonly="true" readonly="readonly"
 											style="
 												width: 49px;
 												height: 100px;
@@ -602,7 +532,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 												line-height: normal;
 												font-family: Arial;
 												text-align: center;
-												color: rgb(60, 141, 188);
+												color: #f0ad4e;
 												padding: 0px;
 												-webkit-appearance: none;
 												background: none;
@@ -789,10 +719,47 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		(function(window, document, $, undefined){
 			$(function(){
 			  var datav3 = [{
+				"label": "Outbound Calls",
+				"color": "#656565",
+				"data": [
+				<?php
+				if($callsperhour->result=="success"){
+					echo '["9AM", 0],';
+					echo '["10AM", 0],';
+					echo '["11AM", 0],';
+					echo '["12NN", 0],';
+					echo '["1AM", 0],';
+					echo '["2PM", 0],';
+					echo '["3PM", 0],';
+					echo '["4PM", 0],';
+					echo '["5PM", 0],';
+					echo '["6PM", 0],';
+					echo '["7PM", 0],';
+					echo '["8PM", 0],';
+					echo '["9PM", 0]';
+				}else{
+					echo '["9AM", 0],';
+					echo '["10AM", 0],';
+					echo '["11AM", 0],';
+					echo '["12NN", 0],';
+					echo '["1AM", 0],';
+					echo '["2PM", 0],';
+					echo '["3PM", 0],';
+					echo '["4PM", 0],';
+					echo '["5PM", 0],';
+					echo '["6PM", 0],';
+					echo '["7PM", 0],';
+					echo '["8PM", 0],';
+					echo '["9PM", 0]';
+				}
+				?>
+				]},			
+			{
 				"label": "Inbound Calls",
 				"color": "#F39C12",
 				"data": [
 				<?php
+				if($callsperhour->result=="success"){
 					echo '["9AM",'.$results["Hour9"].'],';
 					echo '["10AM",'.$results["Hour10"].'],';
 					echo '["11AM",'.$results["Hour11"].'],';
@@ -806,14 +773,30 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					echo '["7PM",'.$results["Hour19"].'],';
 					echo '["8PM",'.$results["Hour20"].'],';
 					echo '["9PM",'.$results["Hour21"].']';
+				}else{
+					echo '["9AM", 0],';
+					echo '["10AM", 0],';
+					echo '["11AM", 0],';
+					echo '["12NN", 0],';
+					echo '["1AM", 0],';
+					echo '["2PM", 0],';
+					echo '["3PM", 0],';
+					echo '["4PM", 0],';
+					echo '["5PM", 0],';
+					echo '["6PM", 0],';
+					echo '["7PM", 0],';
+					echo '["8PM", 0],';
+					echo '["9PM", 0]';
+				}
 				?>
 
 			  ]},
 				{
 				"label": "Dropped Calls",
-				"color": "#656565",
+				"color": "#dd4b39",
 				"data": [
 				<?php
+				if($callsperhour->result=="success"){
 					echo '["9AM",'.$results["Hour9d"].'],';
 					echo '["10AM",'.$results["Hour10d"].'],';
 					echo '["11AM",'.$results["Hour11d"].'],';
@@ -827,6 +810,21 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					echo '["7PM",'.$results["Hour19d"].'],';
 					echo '["8PM",'.$results["Hour20d"].'],';
 					echo '["9PM",'.$results["Hour21d"].']';
+				}else{
+					echo '["9AM", 0],';
+					echo '["10AM", 0],';
+					echo '["11AM", 0],';
+					echo '["12NN", 0],';
+					echo '["1AM", 0],';
+					echo '["2PM", 0],';
+					echo '["3PM", 0],';
+					echo '["4PM", 0],';
+					echo '["5PM", 0],';
+					echo '["6PM", 0],';
+					echo '["7PM", 0],';
+					echo '["8PM", 0],';
+					echo '["9PM", 0]';
+				}
 				?>
 				]
 			  }];
@@ -837,7 +835,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					},
 					points: {
 						show: true,
-						radius: 4
+						radius: 3
 					},
 					splines: {
 						show: true,
@@ -952,9 +950,10 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 			function ()
 			{
 					console.log("calls div auto loaded");
-				$('#autoload_calls');
+				$('.autoload_calls');
 			}, 5000); // refresh every 10000 milliseconds
 			
+			$('#cluster_status').load('php/API_clusterstatus.php #cluster_status');
 	</script>
 	
     <!-- =============== VENDOR SCRIPTS ===============-->

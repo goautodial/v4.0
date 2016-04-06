@@ -309,7 +309,7 @@ a:focus {
   float: left;
   background-color: transparent;
   background-image: none;
-  padding: 15px 15px;
+  padding: 14px 15px;
   font-family: fontAwesome;
 }
 .main-header .sidebar-toggle:before {
@@ -3809,7 +3809,7 @@ fieldset[disabled] .btn-vk.active {
 .bg-light-blue,
 .label-primary,
 .modal-primary .modal-body {
-  background-color: #3c8dbc !important;
+  background-color: #3c8dbc ;
 }
 .bg-green,
 .callout.callout-success,
