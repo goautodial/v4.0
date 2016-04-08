@@ -10,9 +10,9 @@
 	 * @param campaign_id
 	 */
 
-	$url = "http://162.254.144.92/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
-	$postfields["goUser"] 			= "goautodial"; #Username goes here. (required)
-	$postfields["goPass"] 			= "JUs7g0P455W0rD11214"; #Password goes here. (required)
+	$url = "http://gadcs.goautodial.com/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+	$postfields["goUser"] 			= "admin"; #Username goes here. (required)
+	$postfields["goPass"] 			= "kam0teque1234"; #Password goes here. (required)
 	$postfields["goAction"] 		= "getCampaignInfo"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] 	= "json"; #json (required)
 	$postfields["campaign_id"] 		= $_POST['campaign_id']; #Desired campaign id (required)

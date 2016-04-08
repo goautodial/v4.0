@@ -17,9 +17,9 @@ if ($validated == 1) {
 	
 
 //uncomment to work	
-    $url = "https://encrypted.goautodial.com/goAPI/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
+    $url = "https://gadcs.goautodial.com/goAPI/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = "admin"; #Username goes here. (required)
-    $postfields["goPass"] = "goautodial"; #Password goes here. (required)
+    $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
     $postfields["goAction"] = "goDeleteList"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = "json"; #json. (required)
     $postfields["list_id"] = "$listid"; #Desired User ID. (required)

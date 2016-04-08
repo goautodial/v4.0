@@ -40,9 +40,9 @@ if ($validated == 1) {
 	}
 	
 	
-	$url = "https://encrypted.goautodial.com/goAPI/goUsers/goAPI.php"; # URL to GoAutoDial API file
+	$url = "https://gadcs.goautodial.com/goAPI/goUsers/goAPI.php"; # URL to GoAutoDial API file
     $postfields["goUser"] = "admin"; #Username goes here. (required)
-    $postfields["goPass"] = "goautodial"; #Password goes here. (required)
+    $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
     $postfields["goAction"] = "goEditUser"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = "json"; #json (required)
 	$postfields["user"] = $modifyid; #Desired value for user (required)

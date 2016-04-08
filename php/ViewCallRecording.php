@@ -10,10 +10,10 @@
 	 * @param leadid
 	 */
          
-        $url = "https://encrypted.goautodial.com/goAPI/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
+        $url = "https://gadcs.goautodial.com/goAPI/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
 
-        $postfields["goUser"] = "goautodial"; #Username goes here. (required)
-        $postfields["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
+        $postfields["goUser"] = "admin"; #Username goes here. (required)
+        $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
         $postfields["goAction"] = "goGetViewRecordings"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = "json"; #json. (required)
         $postfields["uniqueid"] = $_POST['uniqueid']; #Desired uniqueid. (required)

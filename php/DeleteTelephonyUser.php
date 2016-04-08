@@ -31,9 +31,9 @@ if ($validated == 1) {
 	//$result = $db->deleteUser($userid);
 
 //uncomment to work	
-    $url = "https://encrypted.goautodial.com/goAPI/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
+    $url = "https://gadcs.goautodial.com/goAPI/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = "admin"; #Username goes here. (required)
-    $postfields["goPass"] = "goautodial"; #Password goes here. (required)
+    $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
     $postfields["goAction"] = "goDeleteUser"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = "json"; #json. (required)
     $postfields["user"] = "$userid"; #Desired User ID. (required)

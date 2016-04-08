@@ -69,9 +69,9 @@ if ($groupid != NULL) {
 		$script = stripslashes($script);
 	}
     
-	$url = "https://encrypted.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+	$url = "https://gadcs.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = "admin"; #Username goes here. (required)
-    $postfields["goPass"] = "goautodial"; #Password goes here. (required)
+    $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
     $postfields["goAction"] = "goEditInbound"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = "json"; #json (required)
     $postfields["group_id"] = $modify_groupid; #Desired list id. (required)

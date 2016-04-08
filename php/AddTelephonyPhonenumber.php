@@ -20,9 +20,9 @@ if($validate == 1){
 }  
     
 if($validate == 0){
-	$url = "http://encrypted.goautodial.com/goAPI/goInbound/goAPI.php"; # URL to GoAutoDial API file
+	$url = "http://gadcs.goautodial.com/goAPI/goInbound/goAPI.php"; # URL to GoAutoDial API file
 	$postfields["goUser"] 			= "admin"; #Username goes here. (required)
-	$postfields["goPass"] 			= "goautodial"; #Password goes here. (required)
+	$postfields["goPass"] 			= "kam0teque1234"; #Password goes here. (required)
 	$postfields["goAction"] 		= "goAddDID"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] 	= "json"; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
