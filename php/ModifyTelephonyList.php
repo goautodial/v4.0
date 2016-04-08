@@ -3,6 +3,7 @@
 require_once('CRMDefaults.php');
 require_once('LanguageHandler.php');
 require('Session.php');
+require_once('goCRMAPISettings.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
@@ -46,10 +47,10 @@ if ($validated == 1) {
 	
 
 	$url = "https://gadcs.goautodial.com/goAPI/goLists/goAPI.php"; # URL to GoAutoDial API file
-    $postfields["goUser"] = "admin"; #Username goes here. (required)
-    $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+    $postfields["goUser"] = goUser; #Username goes here. (required)
+    $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goEditList"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = "json"; #json (required)
+    $postfields["responsetype"] = responsetype; #json (required)
     $postfields["list_id"] = $modifyid; #Desired list id. (required)
 	$postfields["list_name"] = $name; #Desired value for user (required)
 	$postfields["list_description"] = $desc; #Desired value for user (required)

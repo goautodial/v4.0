@@ -9,13 +9,14 @@
 	 * @param responsetype
 	 * @param leadid
 	 */
+        require_once('goCRMAPISettings.php');
          
         $url = "https://gadcs.goautodial.com/goAPI/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
 
-        $postfields["goUser"] = "admin"; #Username goes here. (required)
-        $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+        $postfields["goUser"] = goUser; #Username goes here. (required)
+        $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getScriptInfo"; #action performed by the [[API:Functions]]. (required)
-        $postfields["responsetype"] = "json"; #json. (required)
+        $postfields["responsetype"] = responsetype; #json. (required)
         $postfields["script_id"] = $_POST['script_id']; #Desired uniqueid. (required)
         
         

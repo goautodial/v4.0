@@ -30,6 +30,7 @@ require_once('CRMDefaults.php');
 require_once('LanguageHandler.php');
 require_once('CRMUtils.php');
 require_once('ModuleHandler.php');
+require_once('goCRMAPISettings.php');
 
 // constants
 define ('CRM_UI_DEFAULT_RESULT_MESSAGE_TAG', "resultmessage");
@@ -2793,10 +2794,10 @@ error_reporting(E_ERROR | E_PARSE);
 	
 	public function API_goGetAllUserLists(){
 		$url = "https://gadcs.goautodial.com/goAPI/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = "admin"; #Username goes here. (required)
-		$postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAllUserLists"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = "json"; #json. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);
 		 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -2861,10 +2862,10 @@ error_reporting(E_ERROR | E_PARSE);
 	
 	public function goGetAllLists() {		
 		$url = "https://gadcs.goautodial.com/goAPI/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = "admin"; #Username goes here. (required)
-		$postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAllLists"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = "json"; #json. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -2930,10 +2931,10 @@ error_reporting(E_ERROR | E_PARSE);
 	//ingroups
 	public function API_getInGroups() {
 		$url = "https://gadcs.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = "admin"; #Username goes here. (required)
-		$postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAllInboundList"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = "json"; #json. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -2999,10 +3000,10 @@ error_reporting(E_ERROR | E_PARSE);
 	// Telephony > IVR
 	public function API_getIVR() {
 		$url = "https://gadcs.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = "admin"; #Username goes here. (required)
-		$postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetIVRMenusList"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = "json"; #json. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -3021,10 +3022,10 @@ error_reporting(E_ERROR | E_PARSE);
 	//Telephony > phone number(DID)
 	public function getPhoneNumber() {
 		$url = "https://gadcs.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = "admin"; #Username goes here. (required)
-		$postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetDIDsList"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = "json"; #json. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -3082,10 +3083,10 @@ error_reporting(E_ERROR | E_PARSE);
 	// Settings > Phone
 	public function API_getPhonesList(){
 		$url = "https://gadcs.goautodial.com/goAPI/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = "admin"; #Username goes here. (required)
-		$postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetPhonesList"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = "json"; #json. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -3166,10 +3167,10 @@ error_reporting(E_ERROR | E_PARSE);
        //https://162.254.144.92/goAPI/goVoicemails/docs/goGetAllVoicemailsAPI.php
 
 		$url = "https://gadcs.goautodial.com/goAPI/goVoicemails/goAPI.php"; #URL to GoAutoDial API. (required)
-        $postfields["goUser"] = "admin"; #Username goes here. (required)
-        $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+        $postfields["goUser"] = goUser; #Username goes here. (required)
+        $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getAllVoicemails"; #action performed by the [[API:Functions]]. (required)
-        $postfields["responsetype"] = "json"; #json. (required)
+        $postfields["responsetype"] = responsetype; #json. (required)
 
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
@@ -3208,10 +3209,10 @@ error_reporting(E_ERROR | E_PARSE);
 	public function API_goGetAllScripts(){
 		//goGetAllScriptsAPI
 		$url = "https://gadcs.goautodial.com/goAPI/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
-        $postfields["goUser"] = "admin"; #Username goes here. (required)
-        $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+        $postfields["goUser"] = goUser; #Username goes here. (required)
+        $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getAllScripts"; #action performed by the [[API:Functions]]. (required)
-        $postfields["responsetype"] = "json"; #json. (required)
+        $postfields["responsetype"] = responsetype; #json. (required)
 
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
@@ -3275,10 +3276,10 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function getListAllCampaigns($goUser, $goPass, $goAction, $responsetype){
 	    $url = "https://gadcs.goautodial.com/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
-	    $postfields["goUser"] = "admin"; #Username goes here. (required)
-	    $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+	    $postfields["goUser"] = goUser; #Username goes here. (required)
+	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
-	    $postfields["responsetype"] = "json"; #json. (required)
+	    $postfields["responsetype"] = responsetype; #json. (required)
     
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
@@ -3342,10 +3343,10 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function getListAllRecordings($goUser, $goPass, $goAction, $responsetype){
 	    $url = "https://gadcs.goautodial.com/goAPI/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
-	    $postfields["goUser"] = "admin"; #Username goes here. (required)
-	    $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+	    $postfields["goUser"] = goUser; #Username goes here. (required)
+	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
-	    $postfields["responsetype"] = "json"; #json. (required)
+	    $postfields["responsetype"] = responsetype; #json. (required)
 
 		  
 	    $ch = curl_init();
@@ -3405,10 +3406,10 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function getListAllVoiceFiles($goUser, $goPass, $goAction, $responsetype){
 	    $url = "https://gadcs.goautodial.com/goAPI/goVoiceFiles/goAPI.php"; #URL to GoAutoDial API. (required)
-	    $postfields["goUser"] = "admin"; #Username goes here. (required)
-	    $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+	    $postfields["goUser"] = goUser; #Username goes here. (required)
+	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetVoiceFilesList"; #action performed by the [[API:Functions]]. (required)
-	    $postfields["responsetype"] = "json"; #json. (required)
+	    $postfields["responsetype"] = responsetype; #json. (required)
 
 		  
 	    $ch = curl_init();
@@ -3465,10 +3466,10 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function getListAllScripts($goUser, $goPass, $goAction, $responsetype){
 	    $url = "https://gadcs.goautodial.com/goAPI/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
-	    $postfields["goUser"] = "admin"; #Username goes here. (required)
-	    $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+	    $postfields["goUser"] = goUser; #Username goes here. (required)
+	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllScripts"; #action performed by the [[API:Functions]]. (required)
-	    $postfields["responsetype"] = "json"; #json. (required)
+	    $postfields["responsetype"] = responsetype; #json. (required)
 
 		  
 	    $ch = curl_init();
@@ -3676,8 +3677,8 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		public function API_GetTotalSales() {
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234";
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalSales"; #action performed by the [[API:Functions]]
 			
 			 $ch = curl_init();
@@ -3714,8 +3715,8 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 		public function API_GetINSalesHour() {
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234";
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetINSalesHour"; #action performed by the [[API:Functions]]
 			
 			 $ch = curl_init();
@@ -3753,8 +3754,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 		public function API_GetOUTSalesPerHour(){
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234";
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetOutSalesPerHour"; #action performed by the [[API:Functions]]
 
 			 $ch = curl_init();
@@ -3791,8 +3792,8 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		public function API_getTotalAgentsWaitCalls() {
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234";
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalAgentsWaitCalls"; #action performed by the [[API:Functions]]
 			
 			 $ch = curl_init();
@@ -3829,8 +3830,8 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		public function API_GetTotalAgentsPaused(){
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234";
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalAgentsPaused"; #action performed by the [[API:Functions]]
 			
 			
@@ -3869,8 +3870,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 		public function API_GetTotalAgentsCall() {
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234"; 
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass; 
 			$postfields["goAction"] = "goGetTotalAgentsCall"; #action performed by the [[API:Functions]]
 			
 			 $ch = curl_init();
@@ -3908,8 +3909,8 @@ error_reporting(E_ERROR | E_PARSE);
 		public function API_GetLeadsinHopper() {
 			
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234";
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetLeadsinHopper"; #action performed by the [[API:Functions]]
 			
 			
@@ -3948,8 +3949,8 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		public function API_GetTotalDialableLeads(){
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234";
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalDialableLeads"; #action performed by the [[API:Functions]]
 	
 			 $ch = curl_init();
@@ -3988,8 +3989,8 @@ error_reporting(E_ERROR | E_PARSE);
 		public function API_GetTotalActiveLeads(){
 			
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234";
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalActiveLeads"; #action performed by the [[API:Functions]]
 
 			 $ch = curl_init();
@@ -4026,8 +4027,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 		public function API_GetRingingCall() {
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234";
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetRingingCall"; #action performed by the [[API:Functions]]
 			
 			 $ch = curl_init();
@@ -4065,8 +4066,8 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		public function API_getTotalcalls(){
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234";
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "getTotalcalls"; #action performed by the [[API:Functions]]
 
 			 $ch = curl_init();
@@ -4103,8 +4104,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 		public function API_GetLiveOutbound() {
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234";
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetLiveOutbound"; #action performed by the [[API:Functions]]
 			
 			 $ch = curl_init();
@@ -4142,8 +4143,8 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		public function API_getCallPerHour() {
 			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = "admin"; #Username goes here. (required)
-			$postfields["goPass"] = "kam0teque1234";
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "getPerHourCall"; #action performed by the [[API:Functions]]
 
 			 $ch = curl_init();
@@ -4165,8 +4166,8 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 		public function API_GetDroppedPercentage() {
 		$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = "admin"; #Username goes here. (required)
-		$postfields["goPass"] = "kam0teque1234";
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass;
 		$postfields["goAction"] = "goGetDroppedPercentage"; #action performed by the [[API:Functions]]
 		
 		
@@ -4191,8 +4192,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 	public function API_GetClusterStatus(){
 		$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = "admin"; #Username goes here. (required)
-		$postfields["goPass"] = "kam0teque1234";
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass;
 		$postfields["goAction"] = "goGetClusterStatus"; #action performed by the [[API:Functions]]
 
 		 $ch = curl_init();

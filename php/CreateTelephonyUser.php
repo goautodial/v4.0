@@ -4,6 +4,8 @@
 	/**
 	 * Generates action circle buttons for different pages/module
 	 */
+require_once('goCRMAPISettings.php');	
+
 $validate = 0;	
     if($_POST['phone_logins'] == ""){
         $validate = 1;
@@ -11,10 +13,10 @@ $validate = 0;
 
 if($validate == 0){
 	$url = "http://gadcs.goautodial.com/goAPI/goUsers/goAPI.php"; # URL to GoAutoDial API file
-	$postfields["goUser"] 			= "admin"; #Username goes here. (required)
-	$postfields["goPass"] 			= "kam0teque1234"; #Password goes here. (required)
+	$postfields["goUser"] 			= goUser; #Username goes here. (required)
+	$postfields["goPass"] 			= goPass; #Password goes here. (required)
 	$postfields["goAction"] 		= "goAddUser"; #action performed by the [[API:Functions]]
-	$postfields["responsetype"] 	= "json"; #json (required)
+	$postfields["responsetype"] 	= responsetype; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["user"] 			= $_POST['user_form']; 
 	$postfields["pass"] 			= $_POST['password']; 
