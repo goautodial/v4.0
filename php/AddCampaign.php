@@ -17,12 +17,14 @@
 	 * @param campaign_id
 	 * @param campaign_name
 	 */
+        
+        require_once('goCRMAPISettings.php');
 	
-	$url = "http://162.254.144.92/goAPI/goCampaigns/goAPI.php"; # URL to GoAutoDial API file
-	$postfields["goUser"] 			= "goautodial"; #Username goes here. (required)
-	$postfields["goPass"] 			= "JUs7g0P455W0rD11214"; #Password goes here. (required)
+	$url = "http://gadcs.goautodial.com/goAPI/goCampaigns/goAPI.php"; # URL to GoAutoDial API file
+	$postfields["goUser"] 			= goUser; #Username goes here. (required)
+	$postfields["goPass"] 			= goPass; #Password goes here. (required)
 	$postfields["goAction"] 		= "goAddCampaign"; #action performed by the [[API:Functions]]
-	$postfields["responsetype"] 	= "json"; #json (required)
+	$postfields["responsetype"] 	= responsetype; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["did_pattern"] 		= $_POST['did_tfn']; #Desired did pattern (required if campaign type is BLENDED)
 	// $postfields["group_color"] 		= $_POST['']; #Desired group color (required if campaign type is BLENDED)

@@ -3,6 +3,7 @@
 require_once('CRMDefaults.php');
 require_once('LanguageHandler.php');
 require('Session.php');
+require_once('goCRMAPISettings.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
@@ -69,11 +70,11 @@ if ($groupid != NULL) {
 		$script = stripslashes($script);
 	}
     
-	$url = "https://encrypted.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = "admin"; #Username goes here. (required)
-    $postfields["goPass"] = "goautodial"; #Password goes here. (required)
+	$url = "https://gadcs.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+    $postfields["goUser"] = goUser; #Username goes here. (required)
+    $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goEditInbound"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = "json"; #json (required)
+    $postfields["responsetype"] = responsetype; #json (required)
     $postfields["group_id"] = $modify_groupid; #Desired list id. (required)
 	$postfields["group_name"] = $desc; #Desired value for user (required)
 	$postfields["group_color"] = $color; #Desired value for user (required)
