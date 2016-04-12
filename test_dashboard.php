@@ -699,14 +699,15 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
 	<!-- get API data for chart from UIHandler.php -->
-		<?php $callsperhour = $ui->API_getCallPerHour();
-		//var_dump($data);
+		<?php
+		$callsperhour = $ui->API_getCallPerHour();
+		//var_dump($callsperhour);
 			 $data = explode(";",$callsperhour);
 			 foreach ($data AS $temp) {
 			   $temp = explode("=",$temp);
 			   $results[$temp[0]] = $temp[1];
 			 }
-			
+		//echo $results["result"].' milo';
 		?>
 	
 	<!-- Inbound and Outbound Calls Per Hour Data -->
@@ -718,20 +719,20 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				"color": "#656565",
 				"data": [
 				<?php
-				if($callsperhour->result=="success"){
-					echo '["9AM", 0],';
-					echo '["10AM", 0],';
-					echo '["11AM", 0],';
-					echo '["12NN", 0],';
-					echo '["1AM", 0],';
-					echo '["2PM", 0],';
-					echo '["3PM", 0],';
-					echo '["4PM", 0],';
-					echo '["5PM", 0],';
-					echo '["6PM", 0],';
-					echo '["7PM", 0],';
-					echo '["8PM", 0],';
-					echo '["9PM", 0]';
+				if($results["result"] == "success"){
+					echo '["9AM",'.$results["Hour9o"].'],';
+					echo '["10AM",'.$results["Hour10o"].'],';
+					echo '["11AM",'.$results["Hour11o"].'],';
+					echo '["12NN",'.$results["Hour12o"].'],';
+					echo '["1AM",'.$results["Hour13o"].'],';
+					echo '["2PM",'.$results["Hour14o"].'],';
+					echo '["3PM",'.$results["Hour15o"].'],';
+					echo '["4PM",'.$results["Hour16o"].'],';
+					echo '["5PM",'.$results["Hour17o"].'],';
+					echo '["6PM",'.$results["Hour18o"].'],';
+					echo '["7PM",'.$results["Hour19o"].'],';
+					echo '["8PM",'.$results["Hour20o"].'],';
+					echo '["9PM",'.$results["Hour21o"].']';
 				}else{
 					echo '["9AM", 0],';
 					echo '["10AM", 0],';
@@ -754,7 +755,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				"color": "#F39C12",
 				"data": [
 				<?php
-				if($callsperhour->result=="success"){
+				if($results["result"] == "success"){
 					echo '["9AM",'.$results["Hour9"].'],';
 					echo '["10AM",'.$results["Hour10"].'],';
 					echo '["11AM",'.$results["Hour11"].'],';
@@ -769,6 +770,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					echo '["8PM",'.$results["Hour20"].'],';
 					echo '["9PM",'.$results["Hour21"].']';
 				}else{
+					
 					echo '["9AM", 0],';
 					echo '["10AM", 0],';
 					echo '["11AM", 0],';
@@ -791,7 +793,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				"color": "#dd4b39",
 				"data": [
 				<?php
-				if($callsperhour->result=="success"){
+				if($results["result"] == "success"){
 					echo '["9AM",'.$results["Hour9d"].'],';
 					echo '["10AM",'.$results["Hour10d"].'],';
 					echo '["11AM",'.$results["Hour11d"].'],';
@@ -855,7 +857,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				},
 				yaxis: {
 					min: 0,
-					max: 5, // optional: use it for a clear represetation
+					max: 100, // optional: use it for a clear represetation
 					tickColor: '#eee',
 					//position: 'right' or 'left',
 					tickFormatter: function (v) {
