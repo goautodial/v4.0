@@ -1,5 +1,5 @@
 <?php
-require_once('./goCRMAPISettings.php');
+require_once('../goCRMAPISettings.php');
 /*
     * Displaying in Sales / Hour
     * [[API: Function]] - goGetINSalesHour

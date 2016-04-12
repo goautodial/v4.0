@@ -1,5 +1,5 @@
 <?php
-require_once('./goCRMAPISettings.php');
+require_once('../goCRMAPISettings.php');
 /*
 *Displaying Agent(s) on Paused
 *[[API: Function]] - goGetTotalAgentsPaused

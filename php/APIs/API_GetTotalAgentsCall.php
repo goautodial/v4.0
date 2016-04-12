@@ -1,5 +1,5 @@
 <?php
-require_once('./goCRMAPISettings.php');
+require_once('../goCRMAPISettings.php');
 
     $url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
