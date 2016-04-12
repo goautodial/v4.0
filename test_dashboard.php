@@ -160,7 +160,11 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                 <section class="content">
 					
 	<!--====== STATUS BOXES =======-->
-	
+		<style>
+			.status_boxes{
+				margin-top: -5;
+			}
+		</style>
 			<div class="row">
                <div class="col-lg-3 col-sm-6">
                   <!-- START widget-->
@@ -168,15 +172,18 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                      <div class="ph">
 						<div class="pull-right">
 							<span class="fa-stack">
-								<em class="fa fa-circle fa-stack-2x text-red" style="margin-top: -5;"></em>
+								<em class="fa fa-circle fa-stack-2x text-red status_boxes"></em>
 								<em class="icon-people fa-lg fa-stack-1x fa-inverse text-white pull-right"></em>
 							</span>
 						</div>
                         <div class="h2 mt0">
-							<span class="text-lg "><?php echo $ui->API_GetTotalAgentsCall();?></span> <span class="text-sm">Agent(s) On Call</span><br/>
+							<span class="text-lg" id="refresh_totalagentscall"></span>
+								<span class="text-sm">Agent(s) On Call</span><br/>
 							<div style="padding-left: 5px;" class="text-purple">
-								<span class="text-orange"><?php echo $ui->API_GetTotalAgentsPaused();?></span>	<span class="text-sm text-orange">Agent(s) On Paused</span><br/>
-								<span class="text-green"><?php echo $ui->API_getTotalAgentsWaitCalls();?></span>	<span class="text-sm text-green">Agent(s) Waiting</span><br/>
+								<span class="text-orange" id="refresh_totalagentspaused"></span>
+									<span class="text-sm text-orange">Agent(s) On Paused</span><br/>
+								<span class="text-green" id="refresh_totalagentswaitcalls"></span>
+									<span class="text-sm text-green">Agent(s) Waiting</span><br/>
 							</div>
 						</div>
                         <div class="text-uppercase">AGENTS</div>
@@ -192,15 +199,18 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                      <div class="ph">
 						<div class="pull-right">
 							<span class="fa-stack">
-								<em class="fa fa-circle fa-stack-2x text-green" style="margin-top: -5;"></em>
-								<em class="fa fa-money fa-lg fa-stack-1x fa-inverse text-white" style="margin-top: -5;"></em>
+								<em class="fa fa-circle fa-stack-2x text-green status_boxes"></em>
+								<em class="fa fa-money fa-lg fa-stack-1x fa-inverse text-white status_boxes"></em>
 							</span>
 						</div>
                         <div class="h2 mt0">
-							<span class="text-lg"><?php echo $ui->API_GetTotalSales();?></span> <span class="text-sm">TOTAL Sales</span><br/>
+							<span class="text-lg" id="refresh_GetTotalSales"></span>
+								<span class="text-sm">TOTAL Sales</span><br/>
 							<div style="padding-left: 5px;">
-								<span class="text-orange"><?php echo $ui->API_GetINSalesHour();?></span> <span class="text-sm text-orange">Inbound Sales</span><br/>
-								<span class="text-green"><?php echo $ui->API_GetOUTSalesPerHour();?></span> <span class="text-sm text-green">Outbound Sales</span><br/>
+								<span class="text-orange" id="refresh_GetINSalesHour"></span>
+									<span class="text-sm text-orange">Inbound Sales</span><br/>
+								<span class="text-green" id="refresh_GetOUTSalesPerHour"></span>
+									<span class="text-sm text-green">Outbound Sales</span><br/>
 							</div>
                         </div>
                         <div class="text-uppercase mb0">SALES</div>
@@ -217,18 +227,21 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                      <div class="ph">
 						<div class="pull-right">
 							<span class="fa-stack">
-								<em class="fa fa-circle fa-stack-2x text-orange" style="margin-top: -5;"></em>
+								<em class="fa fa-circle fa-stack-2x text-orange status_boxes"></em>
 								<em class="icon-note fa-lg fa-stack-1x fa-inverse text-white"></em>
 							</span>
 						</div>
                         <div class="h2 mt0">
-							<span class="text-lg"><?php $ui->API_GetTotalActiveLeads(); ?></span>	<span class="text-sm">Total Active Leads</span><br/>
+							<span class="text-lg" id="refresh_GetTotalActiveLeads"></span>
+								<span class="text-sm">Total Active Leads</span><br/>
 							<div style="padding-left: 5px;">
-								<span class="text-orange"><?php $ui->API_GetLeadsinHopper(); ?></span>	<span class="text-sm text-orange">Leads in Hopper</span><br/>
-								<span class="text-green"><?php $ui->API_GetTotalDialableLeads(); ?>	<span class="text-sm text-green">Dialable Leads</span><br/>
+								<span class="text-orange" id="refresh_GetLeadsinHopper"></span>
+									<span class="text-sm text-orange">Leads in Hopper</span><br/>
+								<span class="text-green" id="refresh_GetTotalDialableLeads"></span>
+									<span class="text-sm text-green">Dialable Leads</span><br/>
 							</div>
 						</div>
-                        <div class="text-uppercase">LEAD</div>
+                        <div class="text-uppercase">LEADS</div>
                      </div>
                      <div data-sparkline="" data-type="line" data-width="100%" data-height="75px" data-line-color="#23b7e5" data-chart-range-min="0" data-fill-color="#23b7e5" data-spot-color="#23b7e5" data-min-spot-color="#23b7e5" data-max-spot-color="#23b7e5"
                      data-highlight-spot-color="#23b7e5" data-highlight-line-color="#23b7e5" values="4,5,3,10,7,15" style="margin-bottom: -2px" data-resize="true"></div>
@@ -241,17 +254,17 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                      <div class="ph">
 						<div class="pull-right">
 							<span class="fa-stack">
-								<em class="fa fa-circle fa-stack-2x text-light-blue" style="margin-top: -5;"></em>
+								<em class="fa fa-circle fa-stack-2x text-light-blue status_boxes"></em>
 								<em class="icon-earphones-alt fa-lg fa-stack-1x fa-inverse text-white"></em>
 							</span>
 						</div>
                         <div class="h2 mt0" id="autoload_calls">
-							<span class="text-lg" id="load_total_calls"> <?php echo $ui->API_getTotalcalls();?> </span>
+							<span class="text-lg" id="refresh_Totalcalls"></span>
 								<span class="text-sm">Total Calls</span><br/>
 							<div style="padding-left: 5px;">
-								<span class="text-orange" id="load_calls_ringing"> <?php echo $ui->API_GetRingingCall();?> </span>
+								<span class="text-orange" id="refresh_RingingCall"></span>
 									<span class="text-sm text-orange">Call(s) Ringing</span><br/>
-								<span class="text-green" id="load_live_outbound"> <?php echo $ui->API_GetLiveOutbound();?></span>
+								<span class="text-green" id="refresh_LiveOutbound"></span>
 									<span class="text-sm text-green">Live Outbound</span><br/>
 							</div>
 						</div>
@@ -326,29 +339,11 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 									 <em class="fa fa-arrow-right"></em>
 								</a>
 								<div class="text-muted">Dropped Calls Percentage</div>
-								<?php
-									// GET DATA FROM UIHandler.php
-									$data = $ui->API_GetDroppedPercentage();
-									$droppedpercentage = explode(";",$data);
-									foreach ($droppedpercentage AS $temp) {
-									  $temp = explode("=",$temp);
-									  $results[$temp[0]] = $temp[1];
-									}
-								   
-									$dropcall_result = 0;
-								   
-									if ($results["result"]=="success") {
-									  # Result was OK!
-									  //var_dump($results); #to see the returned arrays.
-										   if($results["drop_call_per"] != ""){
-												$dropcall_result = $results["drop_call_per"];
-										   }
-									}
-								?>
+								
 								<center>
 									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 										<input type="text"
-										class="knob" value="<?php echo $dropcall_result;?>" data-width="150" data-height="150" data-padding="21px"
+										class="knob" value="<?php echo $ui->API_GetDroppedPercentage();?>" data-width="150" data-height="150" data-padding="21px"
 										data-fgcolor="#00a65a " data-readonly="true" readonly="readonly"
 										style="
 											width: 49px;
@@ -376,7 +371,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 								<div class="panel-footer">
 								   <p class="text-muted">
 									  <em class="fa fa-upload fa-fw"></em>
-									  <span>This day: <?php echo $dropcall_result;?>%</span>
+									  <span>This day: <?php echo $ui->API_GetDroppedPercentage();?>%</span>
 								   </p>
 								</div>
 								</div>
@@ -939,21 +934,48 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 			}
 		  });
 		  /* END JQUERY KNOB */
-	  
 		});
-		
 	</script>
 	
+<!--========== REFRESH DIVS ==============-->
+<script src="../js/load_statusboxes.js"></script>
 	<script>
-		// autoloading of CALLS
-			var auto_refresh = setInterval(
-			function ()
-			{
-					console.log("calls div auto loaded");
-				$('.autoload_calls');
-			}, 5000); // refresh every 10000 milliseconds
-			
-			$('#cluster_status').load('php/API_clusterstatus.php #cluster_status');
+		$(document).ready(function(){
+	// ---- status boxes
+		// ---- agents 
+			load_totalagentscall(); 
+			load_totalagentspaused();
+			load_totalagentswaitingcall();
+		// ---- sales	
+			load_totalSales();
+			load_INSalesHour();
+			load_OUTSalesPerHour();
+		// ---- leads
+			load_TotalActiveLeads();
+			load_LeadsinHopper();
+			load_TotalDialableLeads();
+		// ---- calls
+			load_Totalcalls();
+			load_RingingCall();
+			load_LiveOutbound();
+		});
+	 
+	//Refresh functions() after 5000 milliseconds
+		setInterval(load_totalagentscall,5000);
+		setInterval(load_totalagentspaused,5000);
+		setInterval(load_totalagentswaitingcall,5000);
+		
+		setInterval(load_totalSales,5000);
+		setInterval(load_INSalesHour,5000);
+		setInterval(load_OUTSalesPerHour,5000);
+		
+		setInterval(load_TotalActiveLeads,5000);
+		setInterval(load_LeadsinHopper,5000);
+		setInterval(load_TotalDialableLeads,5000);
+		
+		setInterval(load_Totalcalls,5000);
+		setInterval(load_RingingCall,5000);
+		setInterval(load_LiveOutbound,5000);
 	</script>
 	
     <!-- =============== VENDOR SCRIPTS ===============-->
