@@ -1,5 +1,5 @@
 <?php
-require_once('../goCRMAPISettings.php');
+require_once('./goCRMAPISettings.php');
 /*
 * Displaying Total Calls
 * [[API: Function]] - getTotalcalls
