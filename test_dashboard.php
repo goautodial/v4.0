@@ -938,7 +938,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 	</script>
 	
 <!--========== REFRESH DIVS ==============-->
-<script src="../js/load_statusboxes.js"></script>
+<script src="js/load_statusboxes.js"></script>
+
 	<script>
 		$(document).ready(function(){
 	// ---- status boxes
