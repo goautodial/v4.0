@@ -75,7 +75,7 @@
 				} else { // random avatar.
 					$_SESSION["avatar"] = CRM_DEFAULTS_USER_AVATAR;
 				}
-				header("location: index.php"); // Redirecting To Main Page
+				header("location: test_dashboard.php"); // Redirecting To Main Page
 			}
 		}
 	}

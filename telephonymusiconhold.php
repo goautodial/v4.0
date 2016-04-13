@@ -21,6 +21,13 @@
         <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        <!-- Circle Buttons style -->
+        <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+        <!-- Wizard Form style -->
+        <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+	<!-- Bootstrap Player -->
+	<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -34,6 +41,12 @@
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <!-- Bootstrap WYSIHTML5 -->
         <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+
+        <!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+	<!-- Bootstrap Player -->
+	<script src="js/bootstrap-player.js" type="text/javascript"></script>
 
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
@@ -55,7 +68,7 @@
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
-                        <li><?php $lh->translateText("telephony"); ?></li>
+                       <li><?php $lh->translateText("telephony"); ?></li>
 						<li class="active"><?php $lh->translateText("music_on_hold"); ?>
                     </ol>
                 </section>
@@ -67,10 +80,10 @@
                         <div class="col-xs-12">
                             <div class="box box-default">
                                 <div class="box-header">
-                                    <h3 class="box-title"><?php $lh->translateText("music_on_hold"); ?>(MOH) Listings</h3>
+                                    <h3 class="box-title"><?php $lh->translateText("music_on_hold"); ?></h3>
                                 </div><!-- /.box-header -->
-                                <div class="box-body table" id="MOH_table">
-									<?php print $ui->goGetListInfo(); ?>
+                                <div class="box-body table" id="recording_table">
+					<?php print $ui->getListAllMusicOnHold(); ?>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>
@@ -84,6 +97,178 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
+	
+	<!-- Modal -->
+	<div id="view-moh-modal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
 
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title"><b>Music On Hold Details</b></h4>
+	      </div>
+	      <div class="modal-body">
+		<div class="form-horizontal">
+			<div class="message_box"></div>
+			<div class="form-group">
+				<label class="control-label col-lg-4">Music on Hold Name:</label>
+				<div class="col-lg-8">
+					<input type="text" class="form-control moh_name">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-4">Status:</label>
+				<div class="col-lg-8">
+					<select class="form-control moh_status">
+						<option value="Y">Active</option>
+						<option value="N">Inactive</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-4">User Group:</label>
+				<div class="col-lg-8">
+					<select class="form-control moh_user_group">
+						<option value="---ALL---">--- All User Groups ---</option>
+						<option value="ADMIN">ADMIN - GOAUTODIAL ADMINISTRATORS</option>
+						<option value="AGENTS">AGENTS - GOAUTODIAL AGENTS</option>
+						<option value="SUPERVISOR">SUPERVISOR - SUPERVISOR</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-4">Random Order:</label>
+				<div class="col-lg-8">
+					<select class="form-control moh_rand_order">
+						<option value="Y">Yes</option>
+						<option value="N">No</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	      </div>
+	      <div class="modal-footer">
+		<button type="button" class="btn btn-primary btn-update-moh-info" data-id="">Modify</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	    <!-- End of modal content -->
+	  </div>
+	</div>
+	<!-- End of modal -->
+	
+	<!-- Modal -->
+	<div id="confirmation-delete-modal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title"><b>Confirmation Box</b></h4>
+	      </div>
+	      <div class="modal-body">
+	      	<p>Are you sure you want to delete Music On Hold ID: <span class="moh-id-delete-label" data-id=""></span></p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" id="delete-moh-btn" data-id="">Yes</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+	      </div>
+	    </div>
+	    <!-- End of modal content -->
+	  </div>
+	</div>
+	<!-- End of modal -->
+		<!-- Forms and actions -->
+		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#music-on-hold').dataTable();
+				//$('#view-moh-modal').modal('show');
+				
+				$('.edit-moh').click(function(){
+					var moh_id = $(this).attr('data-id');
+
+					$.ajax({
+						url: "./php/ViewMOH.php",
+						type: 'POST',
+						data: { 
+						      moh_id : moh_id,
+						},
+						dataType: 'json',
+						success: function(data) {
+						      $('.btn-update-moh-info').attr('data-id', data.moh_id);
+						      $('.moh_name').val(data.moh_name);
+						      $('.moh_status option[value="' + data.active + '"]').attr('selected','selected');
+						      $('.moh_user_group option[value="' + data.user_group + '"]').attr('selected','selected');
+						      $('.moh_rand_order option[value="' + data.random + '"]').attr('selected','selected');
+						      
+						      $('#view-moh-modal').modal('show');
+						}
+					});
+				});
+				
+				$('.btn-update-moh-info').click(function(){
+					$.ajax({
+						url: "./php/UpdateMOH.php",
+						type: 'POST',
+						data: { 
+						      moh_id : $(this).attr('data-id'),
+						      moh_name : $('.moh_name').val(),
+						      user_group : $('.mog_user_group').val(),
+						      active : $('.moh_status').val(),
+						      random : $('.moh_rand_order').val(),
+						},
+						dataType: 'json',
+						success: function(data) {
+						      if (data.result == "success") {
+							var message = '<div class="alert alert-success">';
+							    message += '<strong>Success!</strong> Record successfully updated.';
+							    message += '</div>';
+						      } else {
+							var message = '<div class="alert alert-success">';
+							    message += '<strong>Error!</strong> Something went wrong with the update.';
+							    message += '</div>';
+						      }
+						      
+						      $('.message_box').html(message);
+						}
+					});
+				});
+				
+				$('.delete-moh').click(function(){
+					var moh_id = $(this).attr('data-id');
+					$('.moh-id-delete-label').text(moh_id);
+					$('.moh-id-delete-label').attr( "data-id", moh_id);
+					$('#confirmation-delete-modal').modal('show');
+				});
+				
+				$('#delete-moh-btn').click(function(){
+					var moh_id = $('.moh-id-delete-label').attr('data-id');
+					$.ajax({
+						url: "./php/UpdateMOH.php",
+						type: 'POST',
+						data: { 
+						      moh_id : moh_id,
+						},
+						dataType: 'json',
+						success: function(data) {
+							if(data == 1){
+								var table = $('#music-on-hold').DataTable({
+									"sAjaxSource": ""
+								});
+								alert('Success');
+								$('#confirmation-delete-modal').modal('hide');
+								table.fnDraw();
+							}else{
+								alert('Error');
+							}
+						}
+					});
+				});
+							
+			});
+		</script>
     </body>
 </html>
