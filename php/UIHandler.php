@@ -1303,7 +1303,7 @@ error_reporting(E_ERROR | E_PARSE);
 			//<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="32"> '.$name.'</a>
 		// return header
 		return '<header class="main-header">
-				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="35"></a>
+				<a href="./test_dashboard.php" class="logo"><img src="'.$logo.'" width="auto" height="35"></a>
 	            <nav class="navbar navbar-static-top" role="navigation">
 	                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 	                    <span class="sr-only">Toggle navigation</span>
@@ -1638,7 +1638,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>
 	            <ul class="sidebar-menu"><li class="header">'.strtoupper($this->lh->translationFor("menu")).'</li>';
 	    // body: home and customer menus
-        $result .= $this->getSidebarItem("./index.php", "bar-chart-o", $this->lh->translationFor("home"));
+        $result .= $this->getSidebarItem("./test_dashboard.php", "bar-chart-o", $this->lh->translationFor("home"));
         $result .= $telephonyArea;
 		$result .= $settings;
 		$result .= $callreports;
@@ -4232,8 +4232,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass;
 		$postfields["goAction"] = "goGetDroppedPercentage"; #action performed by the [[API:Functions]]
-		
-		
+
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);
 		 curl_setopt($ch, CURLOPT_POST, 1);
@@ -4242,8 +4241,24 @@ error_reporting(E_ERROR | E_PARSE);
 		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		 $data = curl_exec($ch);
 		 curl_close($ch);
-
-		return $data;
+			
+		$data = explode(";",$data);
+		foreach ($data AS $temp) {
+		  $temp = explode("=",$temp);
+		  $results[$temp[0]] = $temp[1];
+		}
+		
+		if ($results["result"]=="success") {
+		# Result was OK!
+		//var_dump($results); #to see the returned arrays.
+			 if($results["drop_call_per"] != ""){
+				echo $dropcall_result = $results["drop_call_per"];
+			 }else{
+				echo $dropcall_result = 0;
+			 }
+		}else{
+			echo $dropcall_result = 0;	
+		}
 		
 	}
 	
@@ -4271,3 +4286,5 @@ error_reporting(E_ERROR | E_PARSE);
 		 return $data;
 	}
 }
+
+?>
