@@ -389,7 +389,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 							  <!-- Nav task panel tabs-->
 								 <li role="presentation" class="active">
 									<a href="#cluster_status" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-									   <em class="fa fa-clock-o fa-fw"></em>Cluster Status</a>
+									   <em class="fa fa-bar-chart-o fa-fw"></em>Cluster Status</a>
 								 </li>
 							<!-- transaction panel tab -->
 								 <li role="presentation">
@@ -424,42 +424,32 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 									   </thead>
 									   <tbody>
 											<tr>
-												<?php
-													echo "<td>".$cluster["server_id"]."</td>";
-													echo "<td>".$cluster["server_ip"]."</td>";
-													if($cluster["active"] == 'Y'){
-														echo "<td><font color='red'><b><i>Active</i></b></font></td>";
-													}else{
-														echo "<td>Inactive</td>";
-													}
-													
-													echo "<td>".$cluster["sysload"]." - ". $results['cpu']."%"."</td>";
-													echo "<td>".$cluster["channels_total"]."</td>";
-													echo "<td>".$cluster["disk_usage"]."% </td>";
-													echo "<td>".$cluster["s_time"]."</td>";
-												?>
+												<td><center><span id="refresh_server_id"></span></center></td>
+												<td><center><span id="refresh_server_ip"></span></center></td>
+												<td><span id="refresh_active"></span></td>
+												<td><center><span id="refresh_sysload"></span> - <span id="refresh_cpu"></span></center></td>
+												<td><center><span id="refresh_channels_total"></span></center></td>
+												<td><center><span id="refresh_disk_usage"></span></center></td>
+												<td><span id="refresh_s_time"></span></td>
+												
 											</tr>
 											<tr>
-												<?php
-													echo "<td>&nbsp;</td>";
-													echo "<td>&nbsp;</td>";
-													echo "<td><b>PHP Time</b></td>";
-													echo "<td>&nbsp;</td>";
-													echo "<td>&nbsp;</td>";
-													echo "<td>&nbsp;</td>";
-													echo "<td>".$cluster["php_time"]."</td>";
-												?>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td><b>PHP Time</b></td>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td><span id="refresh_php_time"></span></td>
 											</tr>
 											<tr>
-												<?php
-													echo "<td>&nbsp;</td>";
-													echo "<td>&nbsp;</td>";
-													echo "<td><b>DB Time</b></td>";
-													echo "<td>&nbsp;</td>";
-													echo "<td>&nbsp;</td>";
-													echo "<td>&nbsp;</td>";
-													echo "<td>".$cluster["db_time"]."</td>";
-												?>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td><b>DB Time</b></td>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td><span id="refresh_db_time"></span></td>
 											</tr>
 									   </tbody>
 									</table>
@@ -686,8 +676,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 			
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
-		
-		
+
+
 	<script>
 		$(document).ready(function(){
 			$(".bottom-menu").on('mouseenter mouseleave', function () {
@@ -941,6 +931,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 	
 <!--========== REFRESH DIVS ==============-->
 <script src="js/load_statusboxes.js"></script>
+<script src="js/load_clusterstatus.js"></script>
 
 	<script>
 		$(document).ready(function(){
@@ -961,9 +952,25 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 			load_Totalcalls();
 			load_RingingCall();
 			load_LiveOutbound();
+			
+	// ---- clusterstatus table
+		// ---- server 
+			load_server_id(); 
+			load_server_ip();
+			load_active();
+			load_sysload();
+			load_cpu();
+			load_channels_total();
+			load_disk_usage();
+			load_s_time();
+		// ---- PHP TIME
+			load_php_time();
+		// ---- DB TIME
+			load_db_time();
 		});
 	 
-	//Refresh functions() after 5000 milliseconds
+	//Refresh functions() after 5000 millisecond
+		// ... status boxes ...
 		setInterval(load_totalagentscall,5000);
 		setInterval(load_totalagentspaused,5000);
 		setInterval(load_totalagentswaitingcall,5000);
@@ -979,6 +986,17 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		setInterval(load_Totalcalls,5000);
 		setInterval(load_RingingCall,5000);
 		setInterval(load_LiveOutbound,5000);
+		
+		// ... cluster status table ...
+		setInterval(load_server_id,5000);
+		setInterval(load_server_ip,5000);
+		setInterval(load_active,5000);
+		setInterval(load_sysload,5000);
+		setInterval(load_cpu,5000);
+		setInterval(load_channels_total,5000);
+		setInterval(load_disk_usage,5000);
+		setInterval(load_php_time,5000);
+		setInterval(load_db_time,5000);
 	</script>
 	
     <!-- =============== VENDOR SCRIPTS ===============-->
