@@ -3590,7 +3590,138 @@ error_reporting(E_ERROR | E_PARSE);
 		    </ul>
 		</div>';
 	}
+	
+	/** Call Times API - Get all list of call times */
+	/**
+	 * @param goUser 
+	 * @param goPass 
+	 * @param goAction 
+	 * @param responsetype
+	 */
+	public function getListAllCallTimes($goUser, $goPass, $goAction, $responsetype){
+	    $url = "https://gadcs.goautodial.com/goAPI/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $postfields["goUser"] = goUser; #Username goes here. (required)
+	    $postfields["goPass"] = goPass; #Password goes here. (required)
+	    $postfields["goAction"] = "getAllCalltimes"; #action performed by the [[API:Functions]]. (required)
+	    $postfields["responsetype"] = responsetype; #json. (required)
+    
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_POST, 1);
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	    $data = curl_exec($ch);
+	    curl_close($ch);
+	    $output = json_decode($data);
+	   
+	    if ($output->result=="success") {
+	    # Result was OK!
 
+           	$columns = array("Call Time ID", "Call Time Name", "Default Start", "Default Stop", "Group", "Action");
+		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
+
+	        for($i=0;$i<count($output->call_time_id);$i++){
+		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i]);
+                    $result .= "<tr>
+	                    <td>".$output->call_time_id[$i]."</td>
+	                    <td>".$output->call_time_name[$i]."</td>
+	                    <td>".$output->ct_default_start[$i]."</td>
+			    <td>".$output->ct_default_stop[$i]."</td>
+			    <td>".$output->user_group[$i]."</td>
+	                    <td>".$action."</td>
+	                </tr>";
+            }
+
+		    return $result;
+    
+	    } else {
+	       # An error occured
+	       return $output->result;
+	    }
+	}
+	
+	private function getUserActionMenuForCalltimes($id) {
+		
+	    return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="edit-calltime" href="#" data-id="'.$id.'">Edit Call Time</a></li>
+			<li><a class="delete-calltime" href="#" data-id="'.$id.'">Delete Call Time</a></li>
+		    </ul>
+		</div>';
+	}
+	
+	/** Carriers API - Get all list of carriers */
+	/**
+	 * @param goUser 
+	 * @param goPass 
+	 * @param goAction 
+	 * @param responsetype
+	 */
+	public function getListAllCarriers($goUser, $goPass, $goAction, $responsetype){
+	    $url = "https://gadcs.goautodial.com/goAPI/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $postfields["goUser"] = goUser; #Username goes here. (required)
+	    $postfields["goPass"] = goPass; #Password goes here. (required)
+	    $postfields["goAction"] = "goGetCarriersList"; #action performed by the [[API:Functions]]. (required)
+	    $postfields["responsetype"] = responsetype; #json. (required)
+    
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_POST, 1);
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	    $data = curl_exec($ch);
+	    curl_close($ch);
+	    $output = json_decode($data);
+	   
+	    if ($output->result=="success") {
+	    # Result was OK!
+
+           	$columns = array("Carrier ID", "Carrier Name", "Server IP", "Protocol", "Registration", "Status", "Group", "Action");
+		$result = $this->generateTableHeaderWithItems($columns, "carriers", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
+
+	        for($i=0;$i<count($output->carrier_id);$i++){
+		    $action = $this->getUserActionMenuForCarriers($output->carrier_id[$i]);
+                    $result .= "<tr>
+	                    <td>".$output->carrier_id[$i]."</td>
+	                    <td>".$output->carrier_name[$i]."</td>
+	                    <td>".$output->server_ip[$i]."</td>
+			    <td>".$output->protocol[$i]."</td>
+			    <td>".$output->registration_string[$i]."</td>
+			    <td>".$output->active[$i]."</td>
+			    <td>".$output->user_group[$i]."</td>
+	                    <td>".$action."</td>
+	                </tr>";
+            }
+
+		    return $result;
+    
+	    } else {
+	       # An error occured
+	       return $output->result;
+	    }
+	}
+	
+	private function getUserActionMenuForCarriers($id) {
+		
+	    return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="edit-carrier" href="#" data-id="'.$id.'">Edit Carrier</a></li>
+			<li><a class="delete-carrier" href="#" data-id="'.$id.'">Delete Carrier</a></li>
+		    </ul>
+		</div>';
+	}
 
 	/**
      * Returns a HTML representation of the wizard form of campaign

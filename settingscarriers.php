@@ -21,6 +21,13 @@
         <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        <!-- Circle Buttons style -->
+        <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+        <!-- Wizard Form style -->
+        <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+	<!-- Bootstrap Player -->
+	<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -34,6 +41,12 @@
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <!-- Bootstrap WYSIHTML5 -->
         <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+
+        <!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+	<!-- Bootstrap Player -->
+	<script src="js/bootstrap-player.js" type="text/javascript"></script>
 
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
@@ -55,7 +68,7 @@
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
-                        <li><?php $lh->translateText("settings"); ?></li>
+                       <li><?php $lh->translateText("settings"); ?></li>
 						<li class="active"><?php $lh->translateText("carriers"); ?>
                     </ol>
                 </section>
@@ -69,8 +82,8 @@
                                 <div class="box-header">
                                     <h3 class="box-title"><?php $lh->translateText("carriers"); ?></h3>
                                 </div><!-- /.box-header -->
-                                <div class="box-body table" id="scripts_table">
-									<?php print $ui->getTelephonyScripts(); ?>
+                                <div class="box-body table" id="recording_table">
+					<?php print $ui->getListAllCarriers(); ?>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>
@@ -84,6 +97,114 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
+	
+	<!-- Modal -->
+	<div id="view-calltime-modal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
 
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title"><b>Call Time Details</b></h4>
+	      </div>
+	      <div class="modal-body">
+		<div class="form-horizontal">
+			<div class="message_box"></div>
+			<div class="form-group">
+				<label class="control-label col-lg-4">Music on Hold Name:</label>
+				<div class="col-lg-8">
+					<input type="text" class="form-control moh_name">
+				</div>
+			</div>
+		</div>
+	      </div>
+	      <div class="modal-footer">
+		<button type="button" class="btn btn-primary btn-update-calltime" data-id="">Modify</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	    <!-- End of modal content -->
+	  </div>
+	</div>
+	<!-- End of modal -->
+	
+	<!-- Modal -->
+	<div id="confirmation-delete-modal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title"><b>Confirmation Box</b></h4>
+	      </div>
+	      <div class="modal-body">
+	      	<p>Are you sure you want to delete Carrier ID: <span class="carrier-id-delete-label" data-id=""></span></p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" id="delete-carrier-btn" data-id="">Yes</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+	      </div>
+	    </div>
+	    <!-- End of modal content -->
+	  </div>
+	</div>
+	<!-- End of modal -->
+		<!-- Forms and actions -->
+		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#carriers').dataTable();
+				
+				$('.edit-carrier').click(function(){
+					var carrier_id = $(this).attr('data-id');
+					
+					$.ajax({
+						url: "./php/ViewCarrier.php",
+						type: 'POST',
+						data: { 
+						      carrier_id : carrier_id,
+						},
+						dataType: 'json',
+						success: function(data) {
+						      console.log(data);
+						      //$('#view-calltime-modal').modal('show');
+						}
+					});
+				});
+				
+				$('.delete-carrier').click(function(){
+					var carrier_id = $(this).attr('data-id');
+					$('.carrier-id-delete-label').text(carrier_id);
+					$('.carrier-id-delete-label').attr( "data-id", carrier_id);
+					$('#confirmation-delete-modal').modal('show');
+				});
+				
+				$('#delete-carrier-btn').click(function(){
+					var carrier_id = $('.carrier-id-delete-label').attr('data-id');
+					$.ajax({
+						url: "./php/DeleteCarrier.php",
+						type: 'POST',
+						data: { 
+						      carrier_id : carrier_id,
+						},
+						dataType: 'json',
+						success: function(data) {
+							if(data == 1){
+								var table = $('#carriers').DataTable({
+									"sAjaxSource": ""
+								});
+								alert('Success');
+								$('#confirmation-delete-modal').modal('hide');
+								table.fnDraw();
+							}else{
+								alert('Error');
+							}
+						}
+					});
+				});
+			});
+		</script>
     </body>
 </html>
