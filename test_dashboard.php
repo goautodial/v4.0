@@ -162,7 +162,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 	<!--====== STATUS BOXES =======-->
 		<style>
 			.status_boxes{
-				margin-top: -5;
+				margin-top:-5px;
 			}
 		</style>
 			<div class="row">
@@ -344,7 +344,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 										<input type="text"
 										class="knob" value="<?php echo $ui->API_GetDroppedPercentage();?>" data-width="150" data-height="150" data-padding="21px"
-										data-fgcolor="#00a65a " data-readonly="true" readonly="readonly"
+										data-fgcolor="#dd4b39" data-readonly="true" readonly="readonly"
 										style="
 											width: 49px;
 											height: 100px;
@@ -361,7 +361,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 											line-height: normal;
 											font-family: Arial;
 											text-align: center;
-											color: #f0ad4e;
+											color: #dd4b39;
 											padding: 0px;
 											-webkit-appearance: none;
 											background: none;
@@ -397,17 +397,10 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 									   <em class="fa fa-money fa-fw"></em>Transactions Panel</a>
 								 </li>
 							  </ul>
-				<?php
-					$data_clusterstatus = $ui->API_GetClusterStatus();
-					$data_clusterstatus = explode(";",$data_clusterstatus);
-					foreach ($data AS $temp) {
-					  $temp = explode("=",$temp);
-					  $cluster[$temp[0]] = $temp[1];
-					}
-				?>
+							  
 							<!-- Tab panes-->
 							<div class="tab-content p0 bg-white">
-							   <div id="cluster_status" role="tabpanel" class="tab-pane active refresh_clusterstats">
+							   <div id="cluster_status" role="tabpanel" class="tab-pane active">
 								<!-- Cluster Status -->
 								<div class="table-responsive">
 									<table class="table table-striped table-bordered table-hover" style="height: 242px;">
@@ -677,210 +670,51 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
 
+<?php
+	/*
+	 * Modal Dialogs
+	*/
+		include_once ("./php/ModalPasswordDialogs.php");
 
-	<script>
-		$(document).ready(function(){
-			$(".bottom-menu").on('mouseenter mouseleave', function () {
-			  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
-			});
-		});
-	</script>
-		<!-- Modal Dialogs -->
-		<?php include_once "./php/ModalPasswordDialogs.php" ?>
+	/*
+	 * get API data for chart from UIHandler.php
+	*/
 
-	<!-- get API data for chart from UIHandler.php -->
-		<?php
-		$callsperhour = $ui->API_getCallPerHour();
-		//var_dump($callsperhour);
-			 $data = explode(";",$callsperhour);
-			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			 }
-		//echo $results["result"].' milo';
-		?>
+	$callsperhour = $ui->API_getCallPerHour();
+	//var_dump($callsperhour);
 	
-	<!-- Inbound and Outbound Calls Per Hour Data -->
-	<script>
-		(function(window, document, $, undefined){
-			$(function(){
-			  var datav3 = [{
-				"label": "Outbound Calls",
-				"color": "#656565",
-				"data": [
-				<?php
-				if($results["result"] == "success"){
-					echo '["9AM",'.$results["Hour9o"].'],';
-					echo '["10AM",'.$results["Hour10o"].'],';
-					echo '["11AM",'.$results["Hour11o"].'],';
-					echo '["12NN",'.$results["Hour12o"].'],';
-					echo '["1AM",'.$results["Hour13o"].'],';
-					echo '["2PM",'.$results["Hour14o"].'],';
-					echo '["3PM",'.$results["Hour15o"].'],';
-					echo '["4PM",'.$results["Hour16o"].'],';
-					echo '["5PM",'.$results["Hour17o"].'],';
-					echo '["6PM",'.$results["Hour18o"].'],';
-					echo '["7PM",'.$results["Hour19o"].'],';
-					echo '["8PM",'.$results["Hour20o"].'],';
-					echo '["9PM",'.$results["Hour21o"].']';
-				}else{
-					echo '["9AM", 0],';
-					echo '["10AM", 0],';
-					echo '["11AM", 0],';
-					echo '["12NN", 0],';
-					echo '["1AM", 0],';
-					echo '["2PM", 0],';
-					echo '["3PM", 0],';
-					echo '["4PM", 0],';
-					echo '["5PM", 0],';
-					echo '["6PM", 0],';
-					echo '["7PM", 0],';
-					echo '["8PM", 0],';
-					echo '["9PM", 0]';
-				}
-				?>
-				]},			
-			{
-				"label": "Inbound Calls",
-				"color": "#F39C12",
-				"data": [
-				<?php
-				if($results["result"] == "success"){
-					echo '["9AM",'.$results["Hour9"].'],';
-					echo '["10AM",'.$results["Hour10"].'],';
-					echo '["11AM",'.$results["Hour11"].'],';
-					echo '["12NN",'.$results["Hour12"].'],';
-					echo '["1AM",'.$results["Hour13"].'],';
-					echo '["2PM",'.$results["Hour14"].'],';
-					echo '["3PM",'.$results["Hour15"].'],';
-					echo '["4PM",'.$results["Hour16"].'],';
-					echo '["5PM",'.$results["Hour17"].'],';
-					echo '["6PM",'.$results["Hour18"].'],';
-					echo '["7PM",'.$results["Hour19"].'],';
-					echo '["8PM",'.$results["Hour20"].'],';
-					echo '["9PM",'.$results["Hour21"].']';
-				}else{
-					
-					echo '["9AM", 0],';
-					echo '["10AM", 0],';
-					echo '["11AM", 0],';
-					echo '["12NN", 0],';
-					echo '["1AM", 0],';
-					echo '["2PM", 0],';
-					echo '["3PM", 0],';
-					echo '["4PM", 0],';
-					echo '["5PM", 0],';
-					echo '["6PM", 0],';
-					echo '["7PM", 0],';
-					echo '["8PM", 0],';
-					echo '["9PM", 0]';
-				}
-				?>
-
-			  ]},
-				{
-				"label": "Dropped Calls",
-				"color": "#dd4b39",
-				"data": [
-				<?php
-				if($results["result"] == "success"){
-					echo '["9AM",'.$results["Hour9d"].'],';
-					echo '["10AM",'.$results["Hour10d"].'],';
-					echo '["11AM",'.$results["Hour11d"].'],';
-					echo '["12NN",'.$results["Hour12d"].'],';
-					echo '["1AM",'.$results["Hour13d"].'],';
-					echo '["2PM",'.$results["Hour14d"].'],';
-					echo '["3PM",'.$results["Hour15d"].'],';
-					echo '["4PM",'.$results["Hour16d"].'],';
-					echo '["5PM",'.$results["Hour17d"].'],';
-					echo '["6PM",'.$results["Hour18d"].'],';
-					echo '["7PM",'.$results["Hour19d"].'],';
-					echo '["8PM",'.$results["Hour20d"].'],';
-					echo '["9PM",'.$results["Hour21d"].']';
-				}else{
-					echo '["9AM", 0],';
-					echo '["10AM", 0],';
-					echo '["11AM", 0],';
-					echo '["12NN", 0],';
-					echo '["1AM", 0],';
-					echo '["2PM", 0],';
-					echo '["3PM", 0],';
-					echo '["4PM", 0],';
-					echo '["5PM", 0],';
-					echo '["6PM", 0],';
-					echo '["7PM", 0],';
-					echo '["8PM", 0],';
-					echo '["9PM", 0]';
-				}
-				?>
-				]
-			  }];
-			  var options = {
-				series: {
-					lines: {
-						show: false
-					},
-					points: {
-						show: true,
-						radius: 3
-					},
-					splines: {
-						show: true,
-						tension: 0.4,
-						lineWidth: 1,
-						fill: 0.5
-					}
-				},
-				grid: {
-					borderColor: '#eee',
-					borderWidth: 1,
-					hoverable: true,
-					backgroundColor: '#fcfcfc'
-				},
-				tooltip: true,
-				tooltipOpts: {
-					content: function (label, x, y) { return x + ' : ' + y; }
-				},
-				xaxis: {
-					tickColor: '#fcfcfc',
-					mode: 'categories'
-				},
-				yaxis: {
-					min: 0,
-					max: 100, // optional: use it for a clear represetation
-					tickColor: '#eee',
-					//position: 'right' or 'left',
-					tickFormatter: function (v) {
-						return v/* + ' visitors'*/;
-					}
-				},
-				shadowSize: 0
-			  };
+		 $callsperhour = explode(";",$callsperhour);
+		 foreach ($callsperhour AS $temp) {
+		   $temp = explode("=",$temp);
+		   $results[$temp[0]] = $temp[1];
+		 }
 	
-			  var chartv3 = $('.chart-splinev3');
-			  if(chartv3.length)
-				$.plot(chartv3, datav3, options);
-		  
-			});
-		})(window, document, window.jQuery);
+		$outbound_calls = max($results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
 		
+		$inbound_calls = max($results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
+		
+		$dropped_calls = max($results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
+		
+		echo $max = max($inbound_calls, $outbound_calls, $dropped_calls);
+	
+		$max = 0;
+		
+		if($max <= 0){
+			$max = 5;
+		}else{
+			$max = $max+1;
+		}
+
+?>
+
+<script>
 	/*
 	 * JQuery Knob = need for dropped calls percentage and other pie loader
-	 */
-		
+	*/
 		$(function () {
 		  /* jQueryKnob */
 	  
 		  $(".knob").knob({
-			/*change : function (value) {
-			 //console.log("change : " + value);
-			 },
-			 release : function (value) {
-			 console.log("release : " + value);
-			 },
-			 cancel : function () {
-			 console.log("cancel : " + this.value);
-			 },*/
 			draw: function () {
 	  
 			  // "tron" case
@@ -927,14 +761,181 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		  });
 		  /* END JQUERY KNOB */
 		});
-	</script>
+</script>
 	
 <!--========== REFRESH DIVS ==============-->
-<script src="js/load_statusboxes.js"></script>
-<script src="js/load_clusterstatus.js"></script>
+	<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>
+	<script src="js/load_statusboxes.js"></script>
+	<script src="js/load_clusterstatus.js"></script>
 
 	<script>
+	/*
+	 * Inbound and Outbound Calls Per Hour Data
+	*/
+		(function(window, document, $, undefined){
+			$(function(){
+				var datav3 = [
+					{
+					"label": "Outbound Calls",
+					"color": "#656565",
+					"data": [
+					<?php
+					if($results["result"] == "success" || $results["result"] == NULL){
+						echo '["9AM",'.$results["Hour9o"].'],';
+						echo '["10AM",'.$results["Hour10o"].'],';
+						echo '["11AM",'.$results["Hour11o"].'],';
+						echo '["12NN",'.$results["Hour12o"].'],';
+						echo '["1AM",'.$results["Hour13o"].'],';
+						echo '["2PM",'.$results["Hour14o"].'],';
+						echo '["3PM",'.$results["Hour15o"].'],';
+						echo '["4PM",'.$results["Hour16o"].'],';
+						echo '["5PM",'.$results["Hour17o"].'],';
+						echo '["6PM",'.$results["Hour18o"].'],';
+						echo '["7PM",'.$results["Hour19o"].'],';
+						echo '["8PM",'.$results["Hour20o"].'],';
+						echo '["9PM",'.$results["Hour21o"].']';
+					}else{
+						echo '["9AM", 0],';
+						echo '["10AM", 0],';
+						echo '["11AM", 0],';
+						echo '["12NN", 0],';
+						echo '["1AM", 0],';
+						echo '["2PM", 0],';
+						echo '["3PM", 0],';
+						echo '["4PM", 0],';
+						echo '["5PM", 0],';
+						echo '["6PM", 0],';
+						echo '["7PM", 0],';
+						echo '["8PM", 0],';
+						echo '["9PM", 0]';
+					}
+					?>]
+					},{
+						"label": "Inbound Calls",
+						"color": "#F39C12",
+						"data": [
+						<?php
+						if($results["result"] == "success" || $results["result"] == NULL){
+							echo '["9AM",'.$results["Hour9"].'],';
+							echo '["10AM",'.$results["Hour10"].'],';
+							echo '["11AM",'.$results["Hour11"].'],';
+							echo '["12NN",'.$results["Hour12"].'],';
+							echo '["1AM",'.$results["Hour13"].'],';
+							echo '["2PM",'.$results["Hour14"].'],';
+							echo '["3PM",'.$results["Hour15"].'],';
+							echo '["4PM",'.$results["Hour16"].'],';
+							echo '["5PM",'.$results["Hour17"].'],';
+							echo '["6PM",'.$results["Hour18"].'],';
+							echo '["7PM",'.$results["Hour19"].'],';
+							echo '["8PM",'.$results["Hour20"].'],';
+							echo '["9PM",'.$results["Hour21"].']';
+						}else{
+							echo '["9AM", 0],';
+							echo '["10AM", 0],';
+							echo '["11AM", 0],';
+							echo '["12NN", 0],';
+							echo '["1AM", 0],';
+							echo '["2PM", 0],';
+							echo '["3PM", 0],';
+							echo '["4PM", 0],';
+							echo '["5PM", 0],';
+							echo '["6PM", 0],';
+							echo '["7PM", 0],';
+							echo '["8PM", 0],';
+							echo '["9PM", 0]';
+						}
+						?>]
+					},{
+					"label": "Dropped Calls",
+					"color": "#dd4b39",
+					"data": [
+					<?php
+						if($results["result"] == "success" || $results["result"] == NULL){
+							echo '["9AM",'.$results["Hour9d"].'],';
+							echo '["10AM",'.$results["Hour10d"].'],';
+							echo '["11AM",'.$results["Hour11d"].'],';
+							echo '["12NN",'.$results["Hour12d"].'],';
+							echo '["1AM",'.$results["Hour13d"].'],';
+							echo '["2PM",'.$results["Hour14d"].'],';
+							echo '["3PM",'.$results["Hour15d"].'],';
+							echo '["4PM",'.$results["Hour16d"].'],';
+							echo '["5PM",'.$results["Hour17d"].'],';
+							echo '["6PM",'.$results["Hour18d"].'],';
+							echo '["7PM",'.$results["Hour19d"].'],';
+							echo '["8PM",'.$results["Hour20d"].'],';
+							echo '["9PM",'.$results["Hour21d"].']';
+						}else{
+							echo '["9AM", 0],';
+							echo '["10AM", 0],';
+							echo '["11AM", 0],';
+							echo '["12NN", 0],';
+							echo '["1AM", 0],';
+							echo '["2PM", 0],';
+							echo '["3PM", 0],';
+							echo '["4PM", 0],';
+							echo '["5PM", 0],';
+							echo '["6PM", 0],';
+							echo '["7PM", 0],';
+							echo '["8PM", 0],';
+							echo '["9PM", 0]';
+						}
+						?>]
+					}];
+					
+				var options = {
+					series: {
+						lines: {
+							show: false
+						},
+						points: {
+							show: true,
+							radius: 4
+						},
+						splines: {
+							show: true,
+							tension: 0.4,
+							lineWidth: 1,
+							fill: 0.5
+						}
+					},
+					grid: {
+						borderColor: '#eee',
+						borderWidth: 1,
+						hoverable: true,
+						backgroundColor: '#fcfcfc'
+					},
+					tooltip: true,
+					tooltipOpts: {
+						content: function (label, x, y) { return x + ' : ' + y; }
+					},
+					xaxis: {
+						tickColor: '#fcfcfc',
+						mode: 'categories'
+					},
+					yaxis: {
+						min: 0,
+						max: <?php echo $max;?>, // optional: use it for a clear represetation
+						tickColor: '#eee',
+						//position: 'right' or 'left',
+						tickFormatter: function (v) {
+							return v/* + ' visitors'*/;
+						}
+					},
+					shadowSize: 0
+				  };
+				  var chartv3 = $('.chart-splinev3');
+				  if(chartv3.length)
+					$.plot(chartv3, datav3, options);
+			});
+		})(window, document, window.jQuery);
+		
+		
 		$(document).ready(function(){
+	// ---- Fixed Action Button
+			$(".bottom-menu").on('mouseenter mouseleave', function () {
+			  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
+			});
+			
 	// ---- status boxes
 		// ---- agents 
 			load_totalagentscall(); 
@@ -968,7 +969,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		// ---- DB TIME
 			load_db_time();
 		});
-	 
+		
 	//Refresh functions() after 5000 millisecond
 		// ... status boxes ...
 		setInterval(load_totalagentscall,5000);
@@ -1022,13 +1023,14 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
    <script src="theme_dashboard/js/Flot/jquery.flot.time.js"></script>
    <script src="theme_dashboard/js/Flot/jquery.flot.categories.js"></script>
    <script src="theme_dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
-   <!-- CLASSY LOADER-->
-   <script src="theme_dashboard/js/jquery-classyloader/js/jquery.classyloader.min.js"></script>
    <!-- VECTOR MAP-->
    <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
    <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-world-mill-en.js"></script>
    <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-us-mill-en.js"></script>
-   <script src="theme_dashboard/js/demo/demo-vector-map.js"></script>
+   
+   <!-- CLASSY LOADER-->
+   <script src="theme_dashboard/js/jquery-classyloader/js/jquery.classyloader.min.js"></script>
+   
    <!-- =============== APP SCRIPTS ===============-->
     <script src="theme_dashboard/js/app.js"></script>
 	<script src="theme_dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>

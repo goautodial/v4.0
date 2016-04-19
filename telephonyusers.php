@@ -24,7 +24,8 @@
         <?php print $ui->creamyThemeCSS(); ?>
 		<!-- Circle Buttons style -->
     	<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
-		
+		<!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
     	<!-- Wizard Form style -->
     	<link rel="stylesheet" href="css/easyWizard.css">
 

@@ -6,7 +6,7 @@ require_once('../goCRMAPISettings.php');
     * This application is used to get total number of in Sales per hour
 */
     
-    $url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+    $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetINSalesHour"; #action performed by the [[API:Functions]]

@@ -71,14 +71,30 @@
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
+				
+				<!-- TAB CONTENT CONTROLLER -->
+				<ul class="nav nav-tabs" role="tablist"> 
+					<li role="presentation" class="active"><a data-toggle="tab" aria-controls="T_campaigns" role="tab" href="#T_campaigns">Campaigns</a></li>
+					<li role="presentation"><a data-toggle="tab" aria-controls="T_disposition" role="tab" href="#T_disposition">Dispositions</a></li>
+					<li role="presentation"><a data-toggle="tab" aria-controls="T_LeadFilters" role="tab" href="#T_LeadFilters">Lead Filters</a></li>
+				</ul><!-- END OF CONTROLLER -->
+				
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="box box-default">
-                                <div class="box-header">
-                                    <h3 class="box-title"><?php $lh->translateText("campaigns"); ?></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body table" id="campaign_table">
-									<?php print $ui->getListAllCampaigns(); ?>
+                                <div class="box-body">
+							
+							<!-- TAB CONTENT -->
+								<div class="tab-content">
+										
+										<?php echo $ui->getListAllCampaigns(); ?>
+										
+										<?php echo $ui->getAllDispositions(); ?>
+										
+										<?php echo $ui->getLeadFilters(); ?>
+
+								</div><!-- end of tab content -->
+									
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>
@@ -218,10 +234,16 @@
 	<!-- Script for wizard -->
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$('#campaigns').dataTable();
+			//$('#campaigns').dataTable();
 			// $('#wizard-modal').modal('show');
 			// $('#view-campaign-modal').modal('show');
+		
+		 
+		 
+			//$('#T_disposition').DataTable();
 
+			
+			
 			$('#campaign-id-edit-btn').click(function(){
 				$('.campaign-id').find('input[name="campaign_id"]').prop('readonly',function(i,r){
 			        return !r;
