@@ -247,7 +247,7 @@
 				$('#delete-moh-btn').click(function(){
 					var moh_id = $('.moh-id-delete-label').attr('data-id');
 					$.ajax({
-						url: "./php/UpdateMOH.php",
+						url: "./php/DeleteMOH.php",
 						type: 'POST',
 						data: { 
 						      moh_id : moh_id,
