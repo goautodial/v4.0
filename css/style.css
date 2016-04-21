@@ -1,11 +1,13 @@
 #campaign_table .dataTables_paginate ul.pagination,
-#recording_table .dataTables_paginate ul.pagination{
+#recording_table .dataTables_paginate ul.pagination,
+#users_table .dataTables_paginate ul.pagination{
 	float: right !important;
 	margin-top: 0px;
 }
 
 #campaign_table .dataTables_filter,
-#recording_table .dataTables_filter{
+#recording_table .dataTables_filter,
+#users_table .dataTables_filter{
 	float: right !important;
 }
 

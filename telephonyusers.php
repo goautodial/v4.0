@@ -26,6 +26,7 @@
     	<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
 		
     	<!-- Wizard Form style -->
+	<link href="css/style.css" rel="stylesheet" type="text/css" />
     	<link rel="stylesheet" href="css/easyWizard.css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
