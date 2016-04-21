@@ -31,21 +31,6 @@
     $ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-    
-    // get the type of customers.
-    $customerType = NULL;
-    $customerName = NULL;
-    
-    if (isset($_GET["customer_type"])) {
-	    $customerType = $_GET["customer_type"];
-	    if (isset($_GET["customer_name"])) $customerName = $_GET["customer_name"];
-		else { 
-		    // if we have not been provided with the "human readable" name, we need to find it in the database.
-		    require_once('./php/DbHandler.php'); 
-		    $db = new \creamy\DbHandler();
-			$customerName = $db->getNameForCustomerType($customerType);
-		}
-    }
 ?>
 <html>
     <head>
@@ -85,6 +70,9 @@
 		<script src="js/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
+		<!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -93,16 +81,16 @@
 			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="right-side">
+            <aside class="right-side" style="min-height: 100%;">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        <?php print $customerName; ?>
-                        <small><?php $lh->translateText("customer_list"); ?></small>
+                        Contacts
+                        <small><?php $lh->translateText("Contacts"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-users"></i> <?php $lh->translateText("home"); ?></a></li>
-                        <li class="active"><?php print $customerName; ?></li>
+                        <li class="active">Contacts</li>
                     </ol>
                 </section>
 
@@ -114,30 +102,32 @@
                         <div class="col-xs-12">
                             <div class="box box-default">
                                 <div class="box-header">
-                                    <h3 class="box-title"><?php print $customerName; ?></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body table-responsive">							<?php } ?>
-									<?php
 									
-										print $ui->getEmptyCustomersList($customerType);
+                                </div><!-- /.box-header -->
+								
+                               <div class="box-body table">	
+									<?php
+										$output = $ui->API_GetLeads();
+										if ($output->result=="success") {
+										# Result was OK!
+											echo $ui->GetContacts();
+										} else {
+										   # An error occured
+											echo $output->result;
+										 }
 									?>
                                 </div><!-- /.box-body -->
-                                <div class="box-footer">
-	                                <?php 
-										if ($user->userHasWritePermission()) { ?>
-										<a id="create-customer-trigger-button" customer_type="<?php print $customerType; ?>" class="btn btn-primary" data-toggle="modal" data-target="#create-client-dialog-modal">
-											<i class="fa fa-plus"></i>&nbsp; <?php print($lh->translationFor("add_to")." ".strtolower($customerName)); ?></a>
-										<?php print $ui->getCustomerListFooter($customerType); 	
-									?>
-                                </div>
+					<?php } ?>
+                            
                             </div><!-- /.box -->
                         </div>
                     </div>
                     <!-- user not authorized -->
+					<?php 
+					if ($user->userHasWritePermission()) { ?>
 					<?php } else { print $ui->getUnauthotizedAccessMessage(); } ?>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
-            <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
 
         <!-- Modal Dialogs -->
@@ -167,25 +157,16 @@
 					if (e.currentTarget.value != 'on') selectedCustomers.push(e.currentTarget.value);
 					alert("customers: "+selectedCustomers);
 				});
-
-                $("#contacts").dataTable({
+				
+				$('#contacts').dataTable();
+               /* 
+				$("#contacts").dataTable({
 	                "bProcessing": true,
 	                "bPaginate": true,
 					"bServerSide": true,
-					"sAjaxSource": "./php/CustomerListJSON.php",
-					"aoColumnDefs": [ { "bSortable": false, "bVisible": true, "aTargets": [ -1 ] } ],
-					"fnServerParams": function (aoData) { // custom param: customer_type
-			            aoData.push({
-			                "name": "customer_type",
-			                "value": "<?php echo $customerType; ?>"
-			            })
-		            },
-					<?php
-						$datatablesTranslationURL = $lh->urlForDatatablesTranslation();
-						if (isset($datatablesTranslationURL)) { print '"oLanguage": { "sUrl": "'.$datatablesTranslationURL.'" },'."\n"; } 
-					?>
+					"aoColumnDefs": [ { "bSortable": false, "bVisible": true, "aTargets": [ -1 ] } ]
                 });
-                
+                */
                 //Datemask dd/mm/yyyy
 			    $("#birthdate").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
 			

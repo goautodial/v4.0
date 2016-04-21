@@ -21,6 +21,8 @@
         <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+		<!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 		<!-- Circle Buttons style -->
     	<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />

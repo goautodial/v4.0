@@ -1643,19 +1643,9 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= $settings;
 		$result .= $callreports;
 		$result .= $adminArea;
-		
-		// include a link for every customer type
-        foreach ($customerTypes as $customerType) {
-	        if (isset($customerType["table_name"]) && isset($customerType["description"])) {
-		        $customerTableName = $customerType["table_name"];
-		        $customerFriendlyName = $customerType["description"];
-		        $url = 'customerslist.php?customer_type='.$customerTableName.'&customer_name='.$customerFriendlyName;
-		        $result .= $this->getSidebarItem($url, "users", $customerFriendlyName);
-	        }
-        }
 
-        // ending: messages, notifications, tasks, events.
-        
+        // ending: contacts, messages, notifications, tasks, events.
+        $result .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
 		$result .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
         $result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
 	$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
@@ -2786,14 +2776,14 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 	
 	/**
-	
-	 TELEPHONY - this area is for the APIs called from .92 server and implemented through the use of CURL/
-	
+	*
+	* TELEPHONY - this area is for the APIs called from gadcs server and implemented through the use of CURL/
+	*
 	**/
 	
 	
 	public function API_goGetAllUserLists(){
-		$url = "https://gadcs.goautodial.com/goAPI/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAllUserLists"; #action performed by the [[API:Functions]]. (required)
@@ -2861,7 +2851,7 @@ error_reporting(E_ERROR | E_PARSE);
      */
 	
 	public function goGetAllLists() {		
-		$url = "https://gadcs.goautodial.com/goAPI/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAllLists"; #action performed by the [[API:Functions]]. (required)
@@ -2930,7 +2920,7 @@ error_reporting(E_ERROR | E_PARSE);
 // TELEPHONY INBOUND
 	//ingroups
 	public function API_getInGroups() {
-		$url = "https://gadcs.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAllInboundList"; #action performed by the [[API:Functions]]. (required)
@@ -2999,7 +2989,7 @@ error_reporting(E_ERROR | E_PARSE);
 	
 	// Telephony > IVR
 	public function API_getIVR() {
-		$url = "https://gadcs.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetIVRMenusList"; #action performed by the [[API:Functions]]. (required)
@@ -3021,7 +3011,7 @@ error_reporting(E_ERROR | E_PARSE);
 	
 	//Telephony > phone number(DID)
 	public function getPhoneNumber() {
-		$url = "https://gadcs.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetDIDsList"; #action performed by the [[API:Functions]]. (required)
@@ -3042,35 +3032,32 @@ error_reporting(E_ERROR | E_PARSE);
 		# Result was OK!
 		
 		$columns = array("Phone Numbers", "Description", "Status", "Route", "Action");
-	   // $hideOnMedium = array("call_time_id","queue_priority", "active");
-	    //$hideOnLow = array("call_time_id","queue_priority", "active");
+	    $hideOnMedium = array("");
+	    $hideOnLow = array("");
 		$result = $this->generateTableHeaderWithItems($columns, "T_phonenumber", "tab-pane fade table-bordered table-striped ", true, false);
 		
-			for($i=0;$i < count($output->did_pattern);$i++){
-				
-				
-				if($output->active[$i] == "Y"){
-					$output->active[$i] = "Active";
-				}else{
-					$output->active[$i] = "Inactive";
-				}
-				
-				$action = $this->getUserActionMenuForDID($output->did_pattern[$i]);
-				//$action = "WALA";
-				$result .= "<tr>
-								<td>".$output->did_pattern[$i]."</td>
-								<td><a class=''>".$output->did_description[$i]."</a></td>
-								<td>".$output->active[$i]."</td>
-								<td>".$output->did_route[$i]."</td>
-								<td>".$action."</td>
-							</tr>"
-							
-							;
-				
+		for($i=0;$i < count($output->did_pattern);$i++){
+
+			if($output->active[$i] == "Y"){
+				$output->active[$i] = "Active";
+			}else{
+				$output->active[$i] = "Inactive";
 			}
 			
-			
-			return $result; 
+			$action = $this->getUserActionMenuForDID($output->did_pattern[$i]);
+			//$action = "WALA";
+			$result .= "<tr>
+							<td>".$output->did_pattern[$i]."</td>
+							<td><a class=''>".$output->did_description[$i]."</a></td>
+							<td>".$output->active[$i]."</td>
+							<td>".$output->did_route[$i]."</td>
+							<td>".$action."</td>
+						</tr>"
+						
+						;
+		}
+		
+		return $result; 
 			
 		} else {		
 		# An error occured		
@@ -3082,7 +3069,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	// Settings > Phone
 	public function API_getPhonesList(){
-		$url = "https://gadcs.goautodial.com/goAPI/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetPhonesList"; #action performed by the [[API:Functions]]. (required)
@@ -3166,7 +3153,7 @@ error_reporting(E_ERROR | E_PARSE);
 	public function API_goGetVoiceMails() {
        //https://162.254.144.92/goAPI/goVoicemails/docs/goGetAllVoicemailsAPI.php
 
-		$url = "https://gadcs.goautodial.com/goAPI/goVoicemails/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goVoicemails/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getAllVoicemails"; #action performed by the [[API:Functions]]. (required)
@@ -3208,7 +3195,7 @@ error_reporting(E_ERROR | E_PARSE);
 	// API Scripts
 	public function API_goGetAllScripts(){
 		//goGetAllScriptsAPI
-		$url = "https://gadcs.goautodial.com/goAPI/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getAllScripts"; #action performed by the [[API:Functions]]. (required)
@@ -3274,8 +3261,8 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function getListAllCampaigns($goUser, $goPass, $goAction, $responsetype){
-	    $url = "https://gadcs.goautodial.com/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+	public function API_getListAllCampaigns($goUser, $goPass, $goAction, $responsetype){
+	    $url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
@@ -3290,24 +3277,31 @@ error_reporting(E_ERROR | E_PARSE);
 	    $data = curl_exec($ch);
 	    curl_close($ch);
 	    $output = json_decode($data);
-         
+        
+		return $output;
+	}
+	
+	public function getListAllCampaigns() {
+		$output = $this->API_getListAllCampaigns();
+		
 	    if ($output->result=="success") {
 	    # Result was OK!
 
            	$columns = array("campaign_id", "campaign_name", "dial_method", "active", "Action");
 	      	$hideOnMedium = array("dial_method", "active");
 	       	$hideOnLow = array("dial_method", "active");
-		   	$result = $this->generateTableHeaderWithItems($columns, "campaigns", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
+		   	$result = $this->generateTableHeaderWithItems($columns, "T_campaigns", "tab-pane fade table-bordered table-striped active in", true, false, $hideOnMedium, $hideOnLow); 
 
 	        for($i=0;$i<count($output->campaign_id);$i++){
-		    $action = $this->getUserActionMenuForCampaigns($output->campaign_id[$i]);
-                    $result .= "<tr>
-	                    <td>".$output->campaign_id[$i]."</td>
-	                    <td>".$output->campaign_name[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->dial_method[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."<span color='green'></span></td>
-	                    <td>".$action."</td>
-	                </tr>";
+		    $action = $this->ActionMenuForCampaigns($output->campaign_id[$i]);
+			
+			$result .= "<tr>
+							<td>".$output->campaign_id[$i]."</td>
+							<td>".$output->campaign_name[$i]."</td>
+							<td class='hide-on-medium hide-on-low'>".$output->dial_method[$i]."</td>
+							<td class='hide-on-medium hide-on-low'>".$output->active[$i]."<span color='green'></span></td>
+							<td>".$action."</td>
+						</tr>";
             }
 
 		    return $result;
@@ -3318,7 +3312,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 	
-	private function getUserActionMenuForCampaigns($id) {
+	private function ActionMenuForCampaigns($id) {
 		
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3342,13 +3336,12 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 	public function getListAllRecordings($goUser, $goPass, $goAction, $responsetype){
-	    $url = "https://gadcs.goautodial.com/goAPI/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
 
-		  
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
 	    // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -3366,14 +3359,15 @@ error_reporting(E_ERROR | E_PARSE);
 		    $result = $this->generateTableHeaderWithItems($columns, "recordings", "table-bordered table-striped", true, false); 
 
 	    for($i=0;$i<count($output->list_id);$i++){
-		$action = $this->getUserActionMenuForCallRecording($output->uniqueid[$i], $output->location[$i]);
-		$result .= "<tr>
-			<td>".$output->users[$i]."</td>
-			<td>".$output->status[$i]."</td>
-			<td>".$output->start_last_local_call_time[$i]."</td>
-			<td>".$output->end_last_local_call_time[$i]."</td>
-			<td>".$action."</td>
-		    </tr>";
+			$action = $this->getUserActionMenuForCallRecording($output->uniqueid[$i], $output->location[$i]);
+			
+			$result .= "<tr>
+				<td>".$output->users[$i]."</td>
+				<td>".$output->status[$i]."</td>
+				<td>".$output->start_last_local_call_time[$i]."</td>
+				<td>".$output->end_last_local_call_time[$i]."</td>
+				<td>".$action."</td>
+				</tr>";
 	    }
 		return $result;
 	    } else {
@@ -3405,7 +3399,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 	public function getListAllMusicOnHold($goUser, $goPass, $goAction, $responsetype){
-	    $url = "https://gadcs.goautodial.com/goAPI/goMusicOnHold/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $url = gourl."/goMusicOnHold/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetAllMusicOnHold"; #action performed by the [[API:Functions]]. (required)
@@ -3429,14 +3423,15 @@ error_reporting(E_ERROR | E_PARSE);
 	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold", "table-bordered table-striped", true, false); 
 
 	    for($i=0;$i<count($output->moh_id);$i++){
-		$action = $this->getUserActionMenuForMusicOnHold($output->moh_id[$i]);
-		$result .= "<tr>
-			<td>".$output->moh_name[$i]."</td>
-			<td>".$output->active[$i]."</td>
-			<td>".$output->random[$i]."</td>
-			<td>".$output->user_group[$i]."</td>
-			<td>".$action."</td>
-		    </tr>";
+			$action = $this->getUserActionMenuForMusicOnHold($output->moh_id[$i]);
+			
+			$result .= "<tr>
+				<td>".$output->moh_name[$i]."</td>
+				<td>".$output->active[$i]."</td>
+				<td>".$output->random[$i]."</td>
+				<td>".$output->user_group[$i]."</td>
+				<td>".$action."</td>
+				</tr>";
 	    }
 		return $result;
 	    } else {
@@ -3468,7 +3463,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 	public function getListAllVoiceFiles($goUser, $goPass, $goAction, $responsetype){
-	    $url = "https://gadcs.goautodial.com/goAPI/goVoiceFiles/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $url = gourl."/goVoiceFiles/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetVoiceFilesList"; #action performed by the [[API:Functions]]. (required)
@@ -3528,7 +3523,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 	public function getListAllScripts($goUser, $goPass, $goAction, $responsetype){
-	    $url = "https://gadcs.goautodial.com/goAPI/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $url = gourl."/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllScripts"; #action performed by the [[API:Functions]]. (required)
@@ -3857,7 +3852,165 @@ error_reporting(E_ERROR | E_PARSE);
     		</div>
 		';
 	}
+
+//--------- Disposition ---------
 	
+	/*
+	 * Displaying Disposition
+	 * [[API: Function]] - getAllDispositions
+	 * 	This application is used to get list of campaign belongs to user.
+	*/
+	public function API_getAllDispositions(){
+        $url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = goUser; #Username goes here. (required)
+        $postfields["goPass"] = goPass; #Password goes here. (required)
+        $postfields["goAction"] = "getAllDispositions"; #action performed by the [[API:Functions]]. (required)
+        $postfields["responsetype"] = responsetype; #json. (required)
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+		
+		//var_dump($data);
+		return $output;
+	}
+	
+	# table for dispositions
+	public function getDispositions() {
+		$campaign = $this->API_getListAllCampaigns();
+		$output = $this->API_getAllDispositions();
+		
+		if ($output->result=="success") {
+		# Result was OK!
+
+		$columns = array("Campaign ID", "Campaign Name", "Custom Disposition", "Action");
+	    $hideOnMedium = array("");
+	    $hideOnLow = array("");
+		$result = $this->generateTableHeaderWithItems($columns, "T_disposition", "tab-pane fade table-bordered table-striped ", true, false, $hideOnMedium, $hideOnLow);
+
+		$action = $this->ActionMenuForDisposition($output->status[$i]);
+		//$action = "WALA";
+			for($a=0;$a < count($campaign->campaign_id[$a]);$a++){
+					
+					$result .= "<tr>	
+									<td>".$campaign->campaign_id[$a]."</td>
+									<td><a class=''>".$campaign->campaign_name[$a]."</a></td>
+									<td>";
+								for($i=0;$i < count($output->status);$i++){
+									$result .= $output->status_name[$i];
+									
+									if($i <= count($output->status)){
+										$result .= ", ";
+									}
+								}
+					$result .= "		</td>
+									<td>".$action."</td>
+								</tr>";
+				}
+				
+				return $result; 
+		}else {	
+		# An error occured		
+			return $output->result;
+		}
+
+	}
+	
+	public function ActionMenuForDisposition($id) {
+		 return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="view_disposition" href="#" data-id="'.$id.'">View Disposition</a></li>
+			<li><a class="edit_disposition" href="#" data-id="'.$id.'">Edit Disposition</a></li>
+			<li><a class="delete_disposition" href="#" data-id="'.$id.'">Delete Disposition</a></li>
+		    </ul>
+		</div>';
+	}
+
+//--------- Lead Filter ---------
+	
+	/*
+	 * Displaying Lead Filter
+	 * [[API: Function]] - getAllLeadFilters
+	 * 	This application is used to get list of lead filter belongs to user.
+	*/
+	public function API_getAllLeadFilters(){
+        $url = gourl."/goLeadFilters/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = goUser; #Username goes here. (required)
+        $postfields["goPass"] = goPass; #Password goes here. (required)
+        $postfields["goAction"] = "getAllLeadFilters"; #action performed by the [[API:Functions]]. (required)
+        $postfields["responsetype"] = responsetype; #json. (required)
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+
+		//var_dump($data);
+		return $output;
+	}
+	
+	public function getLeadFilters() {
+		$output = $this->API_getAllLeadFilters();
+
+		$columns = array("Filter ID", "Filter Name", "Action");
+	    $hideOnMedium = array("");
+	    $hideOnLow = array("");
+		$result = $this->generateTableHeaderWithItems($columns, "T_LeadFilters", "tab-pane fade table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			
+		if ($output->result=="success") {
+			
+			# Result was OK!
+			for($i=0;$i<count($output->lead_filter_id);$i++){
+				$action = $this->ActionMenuForLeadFilters($output->status[$i]);
+				$result .= "<tr>
+								<td>".$output->lead_filter_id[$i]."</td>
+								<td><a class=''>".$output->lead_filter_name[$i]."</a></td>
+								<td>".$action."</td>
+							</tr>";
+			}
+			
+			return $result;
+		
+		} else {
+			# An error occured
+			return $output->result;
+		}
+
+	}
+
+	public function ActionMenuForLeadFilters($id) {
+		 return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="view_disposition" href="#" data-id="'.$id.'">View Disposition</a></li>
+			<li><a class="edit_disposition" href="#" data-id="'.$id.'">Edit Disposition</a></li>
+			<li><a class="delete_disposition" href="#" data-id="'.$id.'">Delete Disposition</a></li>
+		    </ul>
+		</div>';
+	}
+	
+	/*
+	 * <<<<==================== END OF TELEPHONY APIs =====================>>>>
+	 */
 	
 	/*
 	 * APIs for Dashboard
@@ -3870,7 +4023,7 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 		
 		public function API_GetTotalSales() {
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalSales"; #action performed by the [[API:Functions]]
@@ -3908,7 +4061,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get total number of in Sales per hour
 		*/
 		public function API_GetINSalesHour() {
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetINSalesHour"; #action performed by the [[API:Functions]]
@@ -3947,7 +4100,7 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 
 		public function API_GetOUTSalesPerHour(){
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetOutSalesPerHour"; #action performed by the [[API:Functions]]
@@ -3985,7 +4138,7 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 		
 		public function API_getTotalAgentsWaitCalls() {
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalAgentsWaitCalls"; #action performed by the [[API:Functions]]
@@ -4023,7 +4176,7 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 		
 		public function API_GetTotalAgentsPaused(){
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalAgentsPaused"; #action performed by the [[API:Functions]]
@@ -4063,7 +4216,7 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 
 		public function API_GetTotalAgentsCall() {
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass; 
 			$postfields["goAction"] = "goGetTotalAgentsCall"; #action performed by the [[API:Functions]]
@@ -4102,7 +4255,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		public function API_GetLeadsinHopper() {
 			
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetLeadsinHopper"; #action performed by the [[API:Functions]]
@@ -4142,7 +4295,7 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 		
 		public function API_GetTotalDialableLeads(){
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalDialableLeads"; #action performed by the [[API:Functions]]
@@ -4182,7 +4335,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 		public function API_GetTotalActiveLeads(){
 			
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalActiveLeads"; #action performed by the [[API:Functions]]
@@ -4220,7 +4373,7 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 
 		public function API_GetRingingCall() {
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetRingingCall"; #action performed by the [[API:Functions]]
@@ -4259,7 +4412,7 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 		
 		public function API_getTotalcalls(){
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "getTotalcalls"; #action performed by the [[API:Functions]]
@@ -4297,7 +4450,7 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 
 		public function API_GetLiveOutbound() {
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetLiveOutbound"; #action performed by the [[API:Functions]]
@@ -4336,20 +4489,20 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 		
 		public function API_getCallPerHour() {
-			$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "getPerHourCall"; #action performed by the [[API:Functions]]
 
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
-			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
+
 			return $data;
 		}
 		
@@ -4359,7 +4512,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get dropped call percentage.
 		*/
 		public function API_GetDroppedPercentage() {
-		$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass;
 		$postfields["goAction"] = "goGetDroppedPercentage"; #action performed by the [[API:Functions]]
@@ -4383,12 +4536,12 @@ error_reporting(E_ERROR | E_PARSE);
 		# Result was OK!
 		//var_dump($results); #to see the returned arrays.
 			 if($results["drop_call_per"] != ""){
-				echo $dropcall_result = $results["drop_call_per"];
+				echo $results["drop_call_per"];
 			 }else{
-				echo $dropcall_result = 0;
+				echo 0;
 			 }
 		}else{
-			echo $dropcall_result = 0;	
+			echo 0;	
 		}
 		
 	}
@@ -4400,7 +4553,7 @@ error_reporting(E_ERROR | E_PARSE);
 	*/
 
 	public function API_GetClusterStatus(){
-		$url = "https://gadcs.goautodial.com/goAPI/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass;
 		$postfields["goAction"] = "goGetClusterStatus"; #action performed by the [[API:Functions]]
@@ -4415,6 +4568,64 @@ error_reporting(E_ERROR | E_PARSE);
 		 curl_close($ch);
 
 		 return $data;
+	}
+	
+// <<<=================== END OF DASHBOARD APIs =============>>>
+	
+	/*
+	 * Displaying Contacts
+	 * [[API: Function]] - goGetLeads
+	 * This application is used to get cluster status
+	*/
+	public function API_GetLeads(){
+	$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
+	$postfields["goUser"] = goUser; #Username goes here. (required)
+	$postfields["goPass"] = goPass;
+	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
+	$postfields["responsetype"] = responsetype; #json. (required)
+	
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	$data = curl_exec($ch);
+	curl_close($ch);
+	$output = json_decode($data);
+	 
+		return $output;
+	}
+	
+	// get contact list
+	public function GetContacts() {
+	$output = $this->API_GetLeads();
+       if($output->result=="success") {
+       	   $columns = array("List ID", "Name", "Phone Number", "Action");
+	       $hideOnMedium = array("List ID", "Phone Number", "active");
+	       $hideOnLow = array( "List ID", "Phone Number", "active");
+		   $result = $this->generateTableHeaderWithItems($columns, "contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			
+			
+			for($i=0;$i<count($output->list_id);$i++){
+			
+			$action = $this->getUserActionMenuForT_User($output->list_id[$i]);
+			
+			$result .= '<tr>
+							<td>' .$output->list_id[$i]. '</td>
+							<td>' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
+							<td>' .$output->phone_number[$i].'</td>
+							 <td style="width: 200px;">' .$action.'</td>
+						</tr> ';
+			
+			}
+
+			return $result;
+       }else{
+			// error getting contacts
+			//return $output->result;
+	       return $this->calloutErrorMessage($this->lh->translationFor("unable_get_user_list"));
+       }
 	}
 }
 
