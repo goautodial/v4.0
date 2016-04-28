@@ -5,6 +5,7 @@ require_once('./php/UIHandler.php');
 //require_once('./php/DbHandler.php');
 require_once('./php/LanguageHandler.php');
 require('./php/Session.php');
+require_once('./php/goCRMAPISettings.php');
 
 // initialize structures
 $ui = \creamy\UIHandler::getInstance();
@@ -18,7 +19,7 @@ if (isset($_POST["groupid"])) {
 
 $ivr = NULL;
 if (isset($_POST["ivr"])) {
-	$groupid = $_POST["ivr"];
+	$ivr = $_POST["ivr"];
 }
 
 $did = NULL;
@@ -95,11 +96,11 @@ if (isset($_POST["did"])) {
 					
 					// IF INGROUP
 					if($groupid != NULL) {
-						$url = "https://encrypted.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-						$postfields["goUser"] = "admin"; #Username goes here. (required)
-						$postfields["goPass"] = "goautodial"; #Password goes here. (required)
+						$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+						$postfields["goUser"] = goUser; #Username goes here. (required)
+						$postfields["goPass"] = goPass; #Password goes here. (required)
 						$postfields["goAction"] = "goGetInboundInfo"; #action performed by the [[API:Functions]]. (required)
-						$postfields["responsetype"] = "json"; #json. (required)
+						$postfields["responsetype"] = responsetype; #json. (required)
 						$postfields["group_id"] = $groupid; #Desired list id. (required)
             
 						$ch = curl_init();
@@ -330,14 +331,168 @@ if (isset($_POST["did"])) {
 					}else {
 			    		$errormessage = $lh->translationFor("some_fields_missing");
 					}
-					
+				
+				// IF IVR
+					if($ivr != NULL) {
+						/*
+						 * Displaying Interactive Voice Response Information
+						 * [[API:Function]] – goGetIVRInfo
+						 * Allows to retrieve some attributes of a given IVR menu. IVR menu should belong to the user that authenticated the request.
+						 */
+
+						$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+						$postfields["goUser"] = goUser; #Username goes here. (required)
+						$postfields["goPass"] = goPass; #Password goes here. (required)
+						$postfields["goAction"] = "goGetIVRInfo"; #action performed by the [[API:Functions]]. (required)
+						$postfields["responsetype"] = responsetype; #json. (required)
+						$postfields["menu_id"] = $ivr; #Desired menu id. (required)
+						$ch = curl_init();
+						curl_setopt($ch, CURLOPT_URL, $url);
+						curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+						curl_setopt($ch, CURLOPT_POST, 1);
+						curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+						curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+						$data = curl_exec($ch);
+						curl_close($ch);
+						$output = json_decode($data);
+						
+						//print_r($data);
+						
+						if ($output->result=="success") {
+						# Result was OK!
+							for($i=0;$i<count($output->menu_id);$i++){
+								
+								$hidden_f = $ui->hiddenFormField("modifyid", $menu_id);
+								$voicefiles = $ui->API_GetVoiceFilesList();
+
+								$id_f = '<h4>Modify Call Menu : <b>'.$menu_id.'</b>';
+								
+								$menu_id_f = '<h4>Menu ID : '.$menu_id;
+
+								$name_l = '<h4>Menu Name</h4>';
+								$ph = $lh->translationFor("Name").' ('.$lh->translationFor("mandatory").')';
+								$vl = isset($output->list_name[$i]) ? $output->list_name[$i] : null;
+								$name_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("name", "name", "text", $ph, $vl, "tasks", "required"));
+																
+								$prompt_l = '<h4>Menu Prompt</h4>';
+								$prompt_f = '<select class="form-control" id="menu_prompt" name="menu_prompt" required>';		
+								
+								if ($voicefiles->result=="success") {								
+								# Result was OK!
+								
+									for($a=0;$a<count($voicefiles->file_name);$a++){
+										$file = substr($voicefiles->file_name[$a], 0, -4);
+
+										if($voicefiles->menu_prompt[$i] == $file){
+											$prompt_f .= '<option value="'.$file.'" selected>'.$file.'</option>';
+										}else{
+											$prompt_f .= '<option value="'.$file.'" >'.$file.'</option>';
+										}
+									}
+								} else {
+								# An error occured
+									$prompt_f = '<option value="" selected disabled>-- NO AVAILABLE VOICE FILE --</option>';;
+								}
+									
+								$prompt_f .= '</select>';
+
+								$timeout_l = '<h4>Menu Timeout</h4>';
+								$ph = $lh->translationFor("Menu Timeout").' ('.$lh->translationFor("mandatory").')';
+								$vl = isset($output->menu_timeout[$i]) ? $output->menu_timeout[$i] : null;
+								$timeout_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("menu_timeout", "menu_timeout", "number", $ph, $vl, "clock", "required"));
+								
+								$timeout_prompt_l = '<h4>Menu Timeout Prompt</h4>';
+								$timeout_prompt_f = '<select class="form-control" id="menu_timeout_prompt" name="menu_timeout_prompt" required>';		
+								
+								if ($voicefiles->result=="success") {								
+								# Result was OK!
+								
+									for($a=0;$a<count($voicefiles->file_name);$a++){
+										$file = substr($voicefiles->file_name[$a], 0, -4);
+
+										if($voicefiles->menu_timeout_prompt[$i] == $file){
+											$timeout_prompt_f .= '<option value="'.$file.'" selected>'.$file.'</option>';
+										}else{
+											$timeout_prompt_f .= '<option value="'.$file.'" >'.$file.'</option>';
+										}
+									}
+								} else {
+								# An error occured
+									$timeout_prompt_f = '<option value="" selected disabled>-- NO AVAILABLE VOICE FILE --</option>';;
+								}
+									
+								$timeout_prompt_f .= '</select>';
+
+								$invalid_prompt_l = '<h4>Menu Invalid Prompt</h4>';
+								$invalid_prompt_f = '<select class="form-control" id="menu_invalid_prompt" name="menu_invalid_prompt" required>';		
+								
+								if ($voicefiles->result=="success") {								
+								# Result was OK!
+								
+									for($a=0;$a<count($voicefiles->file_name);$a++){
+										$file = substr($voicefiles->file_name[$a], 0, -4);
+
+										if($voicefiles->menu_invalid_prompt[$i] == $file){
+											$invalid_prompt_f .= '<option value="'.$file.'" selected>'.$file.'</option>';
+										}else{
+											$invalid_prompt_f .= '<option value="'.$file.'" >'.$file.'</option>';
+										}
+									}
+								} else {
+								# An error occured
+									$invalid_prompt_f = '<option value="" selected disabled>-- NO AVAILABLE VOICE FILE --</option>';;
+								}
+									
+								$invalid_prompt_f .= '</select>';
+								
+								$repeat_l = '<h4>Menu Repeat</h4>';
+								$ph = $lh->translationFor("Menu Repeat").' ('.$lh->translationFor("mandatory").')';
+								$vl = isset($output->menu_repeat[$i]) ? $output->menu_repeat[$i] : null;
+								$repeat_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("menu_repeat", "menu_repeat", "number", $ph, $vl, "clock", "required"));
+								
+								
+								// buttons at bottom (only for writing+ permissions)
+								$buttons = "";
+								if ($user->userHasWritePermission()) {
+									$buttons = $ui->buttonWithLink("modifyT_ivrDeleteButton", $menu_id, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
+									$buttons .= $ui->buttonWithLink("modifyCustomerOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
+									$buttons = $ui->singleFormGroupWrapper($buttons);
+								}
+		
+								// generate the form
+								$fields = $hidden_f.$id_f.$menu_id_f.$name_l.$name_f.$prompt_l.$prompt_f.$timeout_l.$timeout_f.$timeout_prompt_l.$timeout_prompt_f.$invalid_prompt_l.$invalid_prompt_f.$repeat_l.$repeat_f;
+								
+								// generate form: header
+								$form = $ui->formWithCustomFooterButtons("modifyivr", $fields, $buttons, "modifyT_ivrresult");
+								
+								// generate and show the box
+								//$box = $ui->boxWithForm("modifyuser", , $fields, $lh->translationFor("edit_user"));
+								//print $box;
+								
+								// generate box
+								$boxTitle = $id_f;
+								$formBox = $ui->boxWithContent($boxTitle, $form);
+								// print our modifying customer box.
+								print $formBox;
+								
+							}
+						} else {
+						# An error occured
+							echo $output->result;
+						}
+                        
+					} else {
+			    		$errormessage = $lh->translationFor("some_fields_missing");
+					}
+
 				// IF PHONE NUMBER / DID
 					if($did != NULL) {
-						$url = "https://encrypted.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-						$postfields["goUser"] = "admin"; #Username goes here. (required)
-						$postfields["goPass"] = "goautodial"; #Password goes here. (required)
+						$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+						$postfields["goUser"] = goUser; #Username goes here. (required)
+						$postfields["goPass"] = goPass; #Password goes here. (required)
 						$postfields["goAction"] = "goGetDIDInfo"; #action performed by the [[API:Functions]]. (required)
-						$postfields["responsetype"] = "json"; #json. (required)
+						$postfields["responsetype"] = responsetype; #json. (required)
 						$postfields["did_pattern"] = $did; #Desired did. (required)
             
 						$ch = curl_init();

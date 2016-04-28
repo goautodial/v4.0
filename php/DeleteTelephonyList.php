@@ -18,12 +18,12 @@ if ($validated == 1) {
 	
 
 //uncomment to work	
-    $url = "https://gadcs.goautodial.com/goAPI/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
+    $url = gourl"/goAPI/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goDeleteList"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["list_id"] = "$listid"; #Desired User ID. (required)
+    $postfields["list_id"] = $listid; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     
     $ch = curl_init();

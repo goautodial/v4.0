@@ -18,7 +18,7 @@ if ($validated == 1) {
 	
 
 //uncomment to work	
-    $url = "https://gadcs.goautodial.com/goAPI/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
+    $url = gorul."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goDeletePhone"; #action performed by the [[API:Functions]]. (required)

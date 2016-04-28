@@ -1100,6 +1100,23 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
+		//ivr
+	private function ActionMenuForIVR($ivr) {
+		
+		return '<div class="btn-group">
+	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+						<span class="caret"></span>
+						<span class="sr-only">Toggle Dropdown</span>
+	                </button>
+	                <ul class="dropdown-menu" role="menu">
+	                    <li><a class="edit-ivr" href="'.$ivr.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li class="divider"></li>
+	                    <li><a class="delete-ivr" href="'.$ivr.'">'.$this->lh->translationFor("delete_ivr").'</a></li>
+	                </ul>
+	            </div>';
+			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
+	}
 		//did
 	private function getUserActionMenuForDID($did) {
 		
@@ -2954,11 +2971,6 @@ error_reporting(E_ERROR | E_PARSE);
 		
 			for($i=0;$i < count($output->group_id);$i++){
 				
-				// if no entry in inbound
-				if (empty($output->group_id[$i])) {
-					return $this->calloutWarningMessage($this->lh->translationFor("no_entry_in_list"));
-				}
-				
 				if($output->active[$i] == "Y"){
 					$output->active[$i] = "Active";
 				}else{
@@ -2987,7 +2999,8 @@ error_reporting(E_ERROR | E_PARSE);
 	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	}
 	
-	// Telephony > IVR
+
+	// Telephony IVR
 	public function API_getIVR() {
 		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -3005,10 +3018,42 @@ error_reporting(E_ERROR | E_PARSE);
 		$data = curl_exec($ch);
 		curl_close($ch);		
 		$output = json_decode($data);
-		
-		return $output;
+
+		return $output; 
+
 	}
 	
+	public function getIVR() {
+	$output = $this->API_getIVR();
+		if ($output->result=="success") {
+			# Result was OK!
+			
+			$columns = array("Menu ID", "Descriptions", "Prompt", "Timeout", "Action");
+		    $hideOnMedium = array("");
+		    $hideOnLow = array("");
+			$result = $this->generateTableHeaderWithItems($columns, "T_ivr", "tab-pane fade table-bordered table-striped ", true, false);
+
+			for($i=0;$i < count($output->menu_id);$i++){
+				$action = $this->ActionMenuForIVR($output->menu_id[$i]);
+				//$action = "WALA";
+				$result .= "<tr>
+								<td>".$output->menu_id[$i]."</td>
+								<td><a class=''>".$output->menu_name[$i]."</a></td>
+								<td>".$output->menu_prompt[$i]."</td>
+								<td>".$output->menu_timeout[$i]."</td>
+								<td>".$action."</td>
+							</tr>"
+							
+							;
+			}
+
+			return $result;
+
+		} else {		
+			# An error occured		
+				return $this->calloutErrorMessage($this->lh->translationFor("unable_get_phonenumber"));
+		}
+	}
 	//Telephony > phone number(DID)
 	public function getPhoneNumber() {
 		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -3149,7 +3194,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	}
 	
-	// VoiceFiles
+	// VoiceMails
 	public function API_goGetVoiceMails() {
        //https://162.254.144.92/goAPI/goVoicemails/docs/goGetAllVoicemailsAPI.php
 
@@ -3462,7 +3507,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function getListAllVoiceFiles($goUser, $goPass, $goAction, $responsetype){
+	public function API_GetVoiceFilesList($goUser, $goPass, $goAction, $responsetype){
 	    $url = gourl."/goVoiceFiles/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -3480,7 +3525,12 @@ error_reporting(E_ERROR | E_PARSE);
 	    $data = curl_exec($ch);
 	    curl_close($ch);
 	    $output = json_decode($data);
-	    
+
+	    return $output;
+	}
+
+	public function getListAllVoiceFiles(){
+		$output = $this->API_GetVoiceFilesList();
 	    if ($output->result=="success") {
 	    # Result was OK!
 	    $columns = array("File Name", "Date", "Actions");

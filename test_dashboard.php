@@ -695,7 +695,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		
 		$dropped_calls = max($results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
 		
-		echo $max = max($inbound_calls, $outbound_calls, $dropped_calls);
+		$max = max($inbound_calls, $outbound_calls, $dropped_calls);
 	
 		$max = 0;
 		

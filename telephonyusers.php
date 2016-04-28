@@ -104,7 +104,7 @@
 
     <div class="modal fade" id="wizard-modal" tabindex="-1"aria-labelledby="T_User" >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius:20px;">
+            <div class="modal-content" style="border-radius:10px;">
 				
 				<!-- NOTIFICATIONS -->
 

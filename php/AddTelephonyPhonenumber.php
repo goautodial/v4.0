@@ -71,13 +71,13 @@ if($validate == 0){
 	
 	if ($output->result=="success") {
 		# Result was OK!
-		$status = "success";
+		echo $status = "success";
 		//$return['msg'] = "New User has been successfully saved.";
 	} else {
 		# An error occured
 		//$status = 0;
 		// $return['msg'] = "Something went wrong please see input data on form.";
-        $status = $output->result;
+        echo $status = $output->result;
 	}
 
 	echo $status;

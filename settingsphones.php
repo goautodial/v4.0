@@ -95,24 +95,27 @@
 		<div class="action-button-circle" data-toggle="modal" data-target="#wizard-modal">
 			<?php print $ui->getCircleButton("calls", "plus"); ?>
 		</div>
-	
+<?php
+	// API List
+	$phones = $ui->API_getPhonesList();
+?>
 <!-- MODAL -->
     <div class="modal fade" id="wizard-modal" tabindex="-1"aria-labelledby="T_Phones" >
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius:20px;">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="T_Phones">Phone Wizard >> Add New User</h4>
+					<h4 class="modal-title" id="T_Phones"><b>Phone Wizard >> Add New Phone</b></h4>
 				</div>
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
-				<form class="form-horizontal" role="form">
+				<form class="form-horizontal" name="create_form" id="create_form" role="form">
 				<!-- STEP 1 -->
 					<div class="wizard-step">
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="add_phones">Additional Phone(s):</label>
 							<div class="col-sm-8">
-								<select class="form-control" id="add_phones">
+								<select class="form-control" name="add_phones" id="add_phones">
 									<option>CUSTOM</option>
 								</select>
 							</div>
@@ -128,27 +131,25 @@
 				<!-- STEP 2 -->
 					<div class="wizard-step">
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="add_phones">Phone Extension/Login:	</label>
+							<label class="col-sm-4 control-label" for="phone_ext">Phone Extension/Login:	</label>
 							<div class="col-sm-8">
-								<select class="form-control" id="add_phones">
-									<option>CUSTOM</option>
-								</select>
+								<input text="text" name="phone_ext" id="phone_ext" placeholder="e.g. 8001" class="form-control" required/>
 							</div>
 						</div>
 						<div class="form-group">		
 							<label class="col-sm-4 control-label" for="start_ext">Phone Login Password:</label>
 							<div class="col-sm-8">
-								<input type="number" value="Go2014" name="start_ext" id="start_ext" class="form-control" required>
+								<input type="text" value="G016gO" name="pass" id="pass" class="form-control" required>
 							</div>
 						</div>
 						<div class="form-group">		
 							<label class="col-sm-4 control-label" for="start_ext">User Group:</label>
 							<div class="col-sm-8">
-								<select name="ip" id="ip" class="form-control" required>
-									<option>ALL USER GROUPS</option>
-									<option>ADMIN - GOAUTODIAL ADMINISTRATORS</option>
-									<option>AGENTS - GOAUTODIAL AGENTS </option>
-									<option>SUPERVISOR - SUPERVISOR </option>
+								<select name="user_group" id="user_group" class="form-control" required>
+									<option value="---ALL---">ALL USER GROUPS</option>
+									<option value="ADMIN">ADMIN - GOAUTODIAL ADMINISTRATORS</option>
+									<option value="AGENTS">AGENTS - GOAUTODIAL AGENTS </option>
+									<option value="SUPERVISOR">SUPERVISOR - SUPERVISOR </option>
 								</select>
 							</div>
 						</div>
@@ -156,10 +157,13 @@
 							<label class="col-sm-4 control-label" for="ip">Server IP:	</label>
 							<div class="col-sm-8">
 								<select name="ip" id="ip" class="form-control" required>
-									<option></option>
+									<option value="162.216.5.162">
+										162.216.5.162 - GOautodial Meetme Server
+									</option>
 								</select>
 							</div>
 						</div>
+
 						<div class="form-group">		
 							<label class="col-sm-4 control-label" for="name">Full Name:</label>
 							<div class="col-sm-8">
@@ -169,8 +173,8 @@
 						<div class="form-group">		
 							<label class="col-sm-4 control-label" for="gmt">Local GMT:	</label>
 							<div class="col-sm-8">
-								<select name="gmt" id="gmt" placeholder="e.g. 8001" class="form-control" required>
-									<option></option>
+								<select name="gmt" id="gmt" class="form-control" required>
+									<option value="-5.00" selected>-- Default --</option>
 								</select>
 							</div>
 						</div>
@@ -211,7 +215,22 @@
 				
 				$("#wizard-modal").wizard({
 					onfinish:function(){
-						console.log("User Added!");
+						$.ajax({
+							url: "./php/AddSettingsPhones.php",
+							type: 'POST',
+							data: $("#create_form").serialize(),
+							success: function(data) {
+							  // console.log(data);
+								  if(data == 1){
+									  $('.output-message-success').removeClass('hide');
+									  $('.output-message-error').addClass('hide');
+									  window.location = window.location.href;
+								  }else{
+									  $('.output-message-error').removeClass('hide');
+									  $('.output-message-success').addClass('hide');
+								  }
+							}
+						});
 					}
 				});
 				

@@ -75,7 +75,7 @@
 				<!-- TAB CONTENT CONTROLLER -->
 				<ul class="nav nav-tabs" role="tablist"> 
 					<li role="presentation" class="active"><a data-toggle="tab" aria-controls="T_ingroup" role="tab" href="#T_ingroup">In-Groups</a></li>
-					<li role="presentation"><a data-toggle="tab" aria-controls="ivr" role="tab" href="#ivr">Interactive Voice Response (IVR) Menus</a></li>
+					<li role="presentation"><a data-toggle="tab" aria-controls="T_ivr" role="tab" href="#T_ivr">Interactive Voice Response (IVR) Menus</a></li>
 					<li role="presentation"><a data-toggle="tab" aria-controls="T_phonenumber" role="tab" href="#T_phonenumber">Phone Numbers (DIDs/TFNs)</a></li>
 				</ul><!-- END OF CONTROLLER -->
 				
@@ -88,9 +88,7 @@
 							
 								<?php echo $ui->getInGroups(); ?>
 							
-							<div role="tabpanel" id="ivr" class="tab-pane table fade">
-								<?php //print $ui->getIVR(); ?>
-							</div>
+								<?php echo $ui->getIVR();?>
 							
 								<?php echo $ui->getPhoneNumber(); ?>
 							
@@ -134,12 +132,16 @@
 	$phones = $ui->API_getPhonesList();
 	$ivr = $ui->API_getIVR();
 	$scripts = $ui->API_goGetAllScripts();
+	$voicefiles = $ui->API_GetVoiceFilesList();
 ?>
+
+
+<!-- TELEPHONY INBOUND MODALS -->
 
 	<!-- ADD INGROUP MODAL -->
 		<div class="modal fade" id="add_ingroups" tabindex="-1" aria-labelledby="ingroup_modal" >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius:20px;">
+            <div class="modal-content" style="border-radius:10px;">
 			
 			<!-- NOTIFICATIONS -->
 				<div class="output-message-success hide">
@@ -191,7 +193,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="user_group">User Group: </label>
 							<div class="col-sm-8">
-								<select id="user_group" class="form-control" name="user_group" onchange="session()">
+								<select id="user_group" class="form-control" name="user_group">
 									<option value="ADMIN">GOAUTODIAL ADMINISTRATORS</option>
 									<option value="AGENTS">GOAUTODIAL AGENTS</option>
 									<option value="SUPERVISOR">SUPERVISOR</option>
@@ -218,12 +220,18 @@
 							<div class="col-sm-8">	
 								<select name="ingroup_voicemail" id="ingroup_voicemail" class="form-control">
 									<?php
+										if($voicemails == NULL){
+									?>
+										<option value="TEST" selected>--No Voicemails Available--</option>
+									<?php
+										}else{
 										for($i=0;$i<count($voicemails->voicemail_id);$i++){
 									?>
-										<option value="<?php echo $voicemails->voicemail_id[$i];?>">
-											<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
-										</option>									
+											<option value="<?php echo $voicemails->voicemail_id[$i];?>">
+												<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
+											</option>									
 									<?php
+											}
 										}
 									?>
 								</select>
@@ -300,11 +308,179 @@
 		</div>
 	</div><!-- end of modal -->
 	
+	<!-- ADD IVR MODAL -->
+		<div class="modal fade" id="add_ivr" tabindex="-1" aria-labelledby="ivr_modal" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius:10px;">
+            	<!-- NOTIFICATIONS -->
+
+					<div class="output-message-success hide">
+						<div class="alert alert-success alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong>Success!</strong> New Call Menu added.
+						</div>
+					</div>
+					<div class="output-message-error hide">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong><span id="ivr_result"></span></strong> Something went wrong, please see input data on form or if agent already exists.
+						</div>
+					</div>
+					<div class="output-message-incomplete hide">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong>Incomplete!</strong> Something went wrong, please complete all the fields below.
+						</div>
+					</div>
+					
+				<div class="modal-header">					
+					<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="ivr_modal"><b>Call Menu Wizard » Create New Call Menu</b></h4>
+				</div>
+				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				
+				<form action="AddTelephonyIVR.php" method="POST" id="create_ivr" class="form-horizontal " role="form">
+				<!-- STEP 1 -->
+					<div class="wizard-step" style="display: block;">
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="menu_id">Menu ID:</label>
+							<div class="col-sm-8">
+								<input type="text" name="menu_id" id="menu_id" class="form-control" placeholder="Menu ID" minlength="4" required title="No Spaces. Minimum of 4 characters">
+							</div>
+						</div>
+						<div class="form-group">		
+							<label class="col-sm-4 control-label" for="menu_name">Menu Name: </label>
+							<div class="col-sm-8">
+								<input type="text" name="menu_name" id="menu_name" class="form-control" placeholder="Menu Name" required>
+							</div>
+						</div>
+						
+						<div class="form-group">		
+							<label class="col-sm-4 control-label" for="menu_prompt">Menu Greeting: </label>
+							<div class="col-sm-8">
+								<select name="menu_prompt" id="menu_prompt" class="form-control">
+									<option value="goWelcomeIVR" selected>-- Default Value --</option>
+									<?php
+										for($i=0;$i<count($voicefiles->file_name);$i++){
+											$file = substr($voicefiles->file_name[$i], 0, -4);
+									?>
+										<option value="<?php echo $file;?>"><?php echo $file;?></option>		
+									<?php
+										}
+									?>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">		
+							<label class="col-sm-4 control-label" for="menu_timeout">Menu Timeout: </label>
+							<div class="col-sm-8">
+								<input type="number" name="menu_timeout" id="menu_timeout" class="form-control" value="10" min="0" required>
+							</div>
+						</div>
+						<div class="form-group">		
+							<label class="col-sm-4 control-label" for="menu_timeout_prompt">Menu Timeout Greeting: </label>
+							<div class="col-sm-8">
+								<select name="menu_timeout_prompt " id="menu_timeout_prompt" class="form-control">
+									<option value="" selected>-- Default Value --</option>
+									<?php
+										for($i=0;$i<count($voicefiles->file_name);$i++){
+											$file = substr($voicefiles->file_name[$i], 0, -4);
+									?>
+										<option value="<?php echo $file;?>"><?php echo $file;?></option>		
+									<?php
+										}
+									?>				
+								</select>
+							</div>
+						</div>
+						<div class="form-group">		
+							<label class="col-sm-4 control-label" for="menu_invalid_prompt">Menu Invalid Greeting: </label>
+							<div class="col-sm-8">
+								<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control">
+									<option value="" selected>-- Default Value --</option>	
+									<?php
+										for($i=0;$i<count($voicefiles->file_name);$i++){
+											$file = substr($voicefiles->file_name[$i], 0, -4);
+									?>
+										<option value="<?php echo $file;?>"><?php echo $file;?></option>		
+									<?php
+										}
+									?>				
+								</select>
+							</div>
+						</div>
+						<div class="form-group">		
+							<label class="col-sm-4 control-label" for="menu_repeat">Menu Repeat: </label>
+							<div class="col-sm-8">
+								<input type="number" name="menu_repeat" id="menu_repeat" class="form-control" value="1" min="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="tracking_group">Tracking Groups: </label>
+							<div class="col-sm-8">
+								<select name="tracking_group" id="tracking_group" class="form-control">
+								<?php
+									for($i=0;$i<count($ingroups->group_id);$i++){
+								?>
+									<option value="<?php echo $ingroups->group_id[$i];?>">
+										<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+									</option>									
+								<?php
+									}
+								?>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="user_groups">User Groups: </label>
+							<div class="col-sm-8">
+								<select name="user_groups" id="user_groups" class="form-control">
+									<option value="ADMIN" > ADMIN - GOAUTODIAL ADMINISTRATORS </option>
+									<option value="AGENTS" > AGENTS - GOAUTODIAL AGENTS </option>
+									<option value="SUPERVISOR" > SUPERVISOR - SUPERVISOR </option>			
+								</select>
+							</div>
+						</div>
+					</div><!-- End of Step -->
+
+				<!-- STEP 2 -->
+					<div class="wizard-step" style="display: block;">
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="">Default Call Menu Entry:</label>
+							<div class="col-sm-8" disabled>
+								Option:
+								<select class="form-control" disabled>
+									<option selected>TIMEOUT</option>
+								</select>
+								Desription: 
+								<input type="text" name="" id="" disabled class="form-control" placeholder="Description" required value="Hangup">
+								Route:
+								<select class="form-control" disabled>
+									<option selected>Hangup</option>
+								</select>
+								Audio File:
+								<input type="text" name="" id="" disabled class="form-control" placeholder="Description" required value="vm-goodbye">
+							</div>
+						</div>
+					</div><!-- End of Step -->
+				
+
+				</div> <!-- end of modal body -->
+				</form>
+				<div class="modal-footer wizard-buttons">
+					<!-- The wizard button will be inserted here. -->
+				</div>
+				
+				
+			</div>
+		</div>
+	</div><!-- end of modal -->
+
 	
 	<!-- ADD DID MODAL -->
 		<div class="modal fade" id="add_phonenumbers" tabindex="-1" aria-labelledby="did_modal" >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius:20px;">
+            <div class="modal-content" style="border-radius:10px;">
 				<div class="modal-header">
 					
 					<!-- NOTIFICATIONS -->
@@ -536,18 +712,19 @@
 				
 
 				</div> <!-- end of modal body -->
-				
+				</form>
 				<div class="modal-footer">
 					<!-- The wizard button will be inserted here. -->
 					<button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
 					<input type="submit" class="btn btn-primary" id="submit_did" value="Submit" style="display: inline-block;">
 					
 				</div>
-				
-				</form>
+			</div>
 		</div>
 	</div><!-- end of modal -->
-		
+
+<!-- END OF TELEPHONY INBOUND MODALS -->
+
 		<script>
 			$(document).ready(function(){
 				$(".bottom-menu").on('mouseenter mouseleave', function () {
@@ -561,6 +738,10 @@
 			
 			//reloads page when modal closes
 				$('#add_ingroups').on('hidden.bs.modal', function () {
+					window.location = window.location.href;
+				});
+
+				$('#add_ivr').on('hidden.bs.modal', function () {
 					window.location = window.location.href;
 				});
 
@@ -623,18 +804,8 @@
 					
 				});
 				
-				/*$("#T_ingroup").dataTable({
-	                "bPaginate": true,
-					"aoColumnDefs": [ { "bSortable": false, "bVisible": true, "aTargets": [ -1 ] } ]
-                });
-				$("#T_phonenumber").dataTable({
-	                "bPaginate": true,
-					"aoColumnDefs": [ { "bSortable": false, "bVisible": true, "aTargets": [ -1 ] } ]
-                });*/
-				
-				//$('#T_ingroup').dataTable();
-				//$('#T_phonenumber').dataTable();
-				
+
+
 				/**
 				  * Edit details
 				 */
@@ -643,10 +814,40 @@
 				// for easy wizard -
 				$("#add_ingroups").wizard({
 					onfinish:function(){
-						console.log("User Added!");
+						console.log("Ingroup Added!");
 					}
 				});
 				
+				$("#add_ivr").wizard({
+					onfinish:function(){
+						console.log("Call Menu Added!");
+
+						$.ajax({
+							url: "./php/AddTelephonyIVR.php",
+							type: 'POST',
+							data: $("#create_ivr").serialize(),
+							success: function(data) {
+							  // console.log(data);
+								  if(data == "success"){
+									  $('.output-message-success').removeClass('hide');
+									  $('.output-message-error').addClass('hide');
+								  }
+								  else{
+									  $('.output-message-error').removeClass('hide');
+									  $("#ivr_result").html(data); 
+									  $('.output-message-success').addClass('hide');
+								  }
+							}
+						});
+					}
+				});
+
+				$("#add_phonenumbers").wizard({
+					onfinish:function(){
+					}
+				});
+
+				// ajax commands for modals -
 				$('#submit_ingroup').click(function(){
 				$.ajax({
 					url: "./php/AddTelephonyIngroup.php",
@@ -657,7 +858,6 @@
 						  if(data == "success"){
 							  $('.output-message-success').removeClass('hide');
 							  $('.output-message-error').addClass('hide');
-							  window.location = window.location.href;
 						  }
 						  else{
 							  $('.output-message-error').removeClass('hide');
@@ -679,7 +879,6 @@
 							  $('.output-message-success').removeClass('hide');
 							  $('.output-message-error').addClass('hide');
 							  $('.output-message-incomplete').addClass('hide');
-							  window.location = window.location.href;
 						  }
 						  else if(data == "incomplete"){
 							  $('.output-message-incomplete').removeClass('hide');
@@ -696,12 +895,10 @@
 				});
 				});
 				
-				$("#add_phonenumbers").wizard({
-					onfinish:function(){
-					}
-				});
+
+			      
 				
-				//INGROUP
+				//EDIT INGROUP
 				 $(".edit-ingroup").click(function(e) {
 					e.preventDefault();
 					var url = './edittelephonyinbound.php';
@@ -709,7 +906,15 @@
 					//$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				 });
-				 //PHONENUMBER/DID
+				 //EDIT IVR
+				 $(".edit-ivr").click(function(e) {
+					e.preventDefault();
+					var url = './edittelephonyinbound.php';
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="ivr" value="' + $(this).attr('href') + '" /></form>');
+					//$('body').append(form);  // This line is not necessary
+					$(form).submit();
+				 });
+				 //EDIT PHONENUMBER/DID
 				 $(".edit-phonenumber").click(function(e) {
 					e.preventDefault();
 					var url = './edittelephonyinbound.php';
@@ -719,27 +924,41 @@
 				 });
 				
 				/**
-				 * Delete user.
+				 * Delete Actions.
 				 */
-				//INGROUPS
+				//DELETE INGROUPS
 				 $(".delete-ingroup").click(function(e) {
 					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
 					e.preventDefault();
 					if (r == true) {
-						var list_id = $(this).attr('href');
-						$.post("./php/DeleteTelephonyList.php", { userid: list_id } ,function(data){
+						var groupid = $(this).attr('href');
+						$.post("./php/DeleteTelephonyInbound.php", { groupid: groupid } ,function(data){
 							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
 							else { alert ("<?php $lh->translateText("unable_delete_list"); ?>"); }
 						});
 					}
 				 });
-				 //PHONENUMBER/DID
+
+				 //DELETE IVR
+				 $(".delete-ivr").click(function(e) {
+					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
+					e.preventDefault();
+					if (r == true) {
+						var menu_id = $(this).attr('href');
+						$.post("./php/DeleteTelephonyInbound.php", { ivr: menu_id } ,function(data){
+							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
+							else { alert ("<?php $lh->translateText("unable_delete_ivr"); ?>"); }
+						});
+					}
+				 });
+
+				 //DELETE PHONENUMBER/DID
 				 $(".delete-phonenumber").click(function(e) {
 					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
 					e.preventDefault();
 					if (r == true) {
 						var did = $(this).attr('href');
-						$.post("./php/DeleteTelephonyList.php", { userid: did } ,function(data){
+						$.post("./php/DeleteTelephonyInbound.php", { did: did } ,function(data){
 							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
 							else { alert ("<?php $lh->translateText("unable_delete_phonenumber"); ?>"); }
 						});
