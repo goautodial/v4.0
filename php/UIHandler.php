@@ -3935,7 +3935,7 @@ error_reporting(E_ERROR | E_PARSE);
 	public function getDispositions() {
 		$campaign = $this->API_getListAllCampaigns();
 		$output = $this->API_getAllDispositions();
-		
+
 		if ($output->result=="success") {
 		# Result was OK!
 
@@ -3944,8 +3944,9 @@ error_reporting(E_ERROR | E_PARSE);
 	    $hideOnLow = array("");
 		$result = $this->generateTableHeaderWithItems($columns, "T_disposition", "tab-pane fade table-bordered table-striped ", true, false, $hideOnMedium, $hideOnLow);
 
-		$action = $this->ActionMenuForDisposition($output->status[$i]);
-		//$action = "WALA";
+		//$action = $this->ActionMenuForDisposition($output->status[$i]);
+		$action = "WALA";
+		/*
 			for($a=0;$a < count($campaign->campaign_id[$a]);$a++){
 					
 					$result .= "<tr>	
@@ -3953,6 +3954,7 @@ error_reporting(E_ERROR | E_PARSE);
 									<td><a class=''>".$campaign->campaign_name[$a]."</a></td>
 									<td>";
 								for($i=0;$i < count($output->status);$i++){
+									
 									$result .= $output->status_name[$i];
 									
 									if($i <= count($output->status)){
@@ -3962,8 +3964,8 @@ error_reporting(E_ERROR | E_PARSE);
 					$result .= "		</td>
 									<td>".$action."</td>
 								</tr>";
-				}
-				
+			}
+		*/	
 				return $result; 
 		}else {	
 		# An error occured		
@@ -4051,9 +4053,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="view_disposition" href="#" data-id="'.$id.'">View Disposition</a></li>
-			<li><a class="edit_disposition" href="#" data-id="'.$id.'">Edit Disposition</a></li>
-			<li><a class="delete_disposition" href="#" data-id="'.$id.'">Delete Disposition</a></li>
+			<li><a class="view_disposition" href="#" data-id="'.$id.'">View Lead Filter</a></li>
+			<li><a class="edit_disposition" href="#" data-id="'.$id.'">Edit Lead Filter</a></li>
+			<li><a class="delete_disposition" href="#" data-id="'.$id.'">Delete Lead Filter</a></li>
 		    </ul>
 		</div>';
 	}

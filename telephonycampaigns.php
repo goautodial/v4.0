@@ -89,7 +89,7 @@
 										
 										<?php echo $ui->getListAllCampaigns(); ?>
 										
-										<?php echo $ui->getAllDispositions(); ?>
+										<?php echo $ui->getDispositions(); ?>
 										
 										<?php echo $ui->getLeadFilters(); ?>
 
@@ -108,12 +108,26 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
 		
+        <div class="bottom-menu skin-blue">
+			<div class="action-button-circle" data-toggle="modal">
+				<?php print $ui->getCircleButton("calls", "plus"); ?>
+			</div>
+			<div class="fab-div-area" id="fab-div-area">
+				<ul class="fab-ul" style="height: 250px;">
+					<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_campaign"></a></li><br/>
+					<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_ivr"></a></li><br/>
+					<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers"> </a></li>
+				</ul>
+			</div>
+		</div>
+
 	</div><!-- ./wrapper -->
-	<div class="action-button-circle" data-toggle="modal" data-target="#wizard-modal">
-		<?php print $ui->getCircleButton("calls", "plus"); ?>
-	</div>
+
+
+	
+
 	<!-- Modal -->
-	<div id="wizard-modal" class="modal fade" role="dialog">
+	<div id="add_campaign" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
 
 	    <!-- Modal content-->
@@ -231,19 +245,23 @@
 	</div>
 	<!-- End of modal -->
 
+
+	<script>
+		$(document).ready(function(){
+			$(".bottom-menu").on('mouseenter mouseleave', function () {
+			  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
+			});
+		});
+	</script>
+
 	<!-- Script for wizard -->
 	<script type="text/javascript">
 		$(document).ready(function(){
 			//$('#campaigns').dataTable();
-			// $('#wizard-modal').modal('show');
+			// $('#add_campaign').modal('show');
 			// $('#view-campaign-modal').modal('show');
-		
-		 
-		 
-			//$('#T_disposition').DataTable();
+			
 
-			
-			
 			$('#campaign-id-edit-btn').click(function(){
 				$('.campaign-id').find('input[name="campaign_id"]').prop('readonly',function(i,r){
 			        return !r;
