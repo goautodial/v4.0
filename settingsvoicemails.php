@@ -67,10 +67,10 @@
                         <div class="col-xs-12">
                             <div class="box box-default">
                                 <div class="box-header">
-                                    <h3 class="box-title"><?php $lh->translateText("voice_mails"); ?></h3>
+                                    <h3 class="box-title">Voicemails Boxes</h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table" id="scripts_table">
-									<?php print $ui->getTelephonyScripts(); ?>
+									<?php print $ui->getVoiceMails(); ?>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>

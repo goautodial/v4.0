@@ -19,6 +19,8 @@
         <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
         <!-- bootstrap wysihtml5 - text editor -->
         <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
         <!-- Circle Buttons style -->
@@ -71,35 +73,146 @@
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
+<?php
+	/*
+	 * API used for display in tables
+	 */
+	$campaign = $ui->API_getListAllCampaigns();
+	$disposition = $ui->API_getAllDispositions();
+	$leadfilter = $ui->API_getAllLeadFilters();
+?>			
+				 <div role="tabpanel" class="panel panel-transparent">
 				
-				<!-- TAB CONTENT CONTROLLER -->
-				<ul class="nav nav-tabs" role="tablist"> 
-					<li role="presentation" class="active"><a data-toggle="tab" aria-controls="T_campaigns" role="tab" href="#T_campaigns">Campaigns</a></li>
-					<li role="presentation"><a data-toggle="tab" aria-controls="T_disposition" role="tab" href="#T_disposition">Dispositions</a></li>
-					<li role="presentation"><a data-toggle="tab" aria-controls="T_LeadFilters" role="tab" href="#T_LeadFilters">Lead Filters</a></li>
-				</ul><!-- END OF CONTROLLER -->
-				
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box box-default">
-                                <div class="box-body">
-							
-							<!-- TAB CONTENT -->
-								<div class="tab-content">
-										
-										<?php echo $ui->getListAllCampaigns(); ?>
-										
-										<?php echo $ui->getDispositions(); ?>
-										
-										<?php echo $ui->getLeadFilters(); ?>
+					<ul role="tablist" class="nav nav-tabs">
 
-								</div><!-- end of tab content -->
-									
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box -->
-                        </div>
-                    </div>
-				<!-- /fila con acciones, formularios y demás -->
+					 <!-- In-group panel tabs-->
+						 <li role="presentation" class="active">
+							<a href="#T_campaign" aria-controls="T_campaign" role="tab" data-toggle="tab" class="bb0">
+							   <sup><span class="fa fa-users"></span></sup> Campaigns </a>
+						 </li>
+					<!-- IVR panel tab -->
+						 <li role="presentation">
+							<a href="#T_disposition" aria-controls="T_disposition" role="tab" data-toggle="tab" class="bb0">
+							   <sup><span class="fa fa-volume-up"></span></sup> Dispositions </a>
+						 </li>
+					<!-- DID panel tab -->
+						 <li role="presentation">
+							<a href="#T_leadfilter" aria-controls="T_leadfilter" role="tab" data-toggle="tab" class="bb0">
+							   <sup><span class="fa fa-phone-square"></span></sup> Lead Filters </a>
+						 </li>
+					  </ul>
+					  
+					<!-- Tab panes-->
+					<div class="tab-content p0 bg-white">
+
+
+					<!--==== In-group ====-->
+					  <div id="T_campaign" role="tabpanel" class="tab-pane active" style="padding: 20px;">
+							<table class="table table-striped table-bordered table-hover" id="table_campaign">
+							   <thead>
+								  <tr>
+									 <th>Campaign ID</th>
+									 <th>Campaign Name</th>
+									 <th class='hide-on-medium hide-on-low'>Dial Method</th>
+									 <th>Status</th>
+									 <th>Action</th>
+								  </tr>
+							   </thead>
+							   <tbody>
+								   	<?php
+								   		for($i=0;$i < count($campaign->campaign_id);$i++){
+						
+											if($ingroup->active[$i] == "Y"){
+												$ingroup->active[$i] = "Active";
+											}else{
+												$ingroup->active[$i] = "Inactive";
+											}
+
+										$action_CAMPAIGN = $ui->ActionMenuForCampaigns($campaign->campaign_id[$i]);
+
+								   	?>	
+										<tr>
+											<td><?php echo $campaign->campaign_id[$i];?></td>
+											<td><a class=''><?php echo $campaign->campaign_name[$i];?></a></td>
+											<td class='hide-on-medium hide-on-low'><?php echo $campaign->dial_method[$i];?></td>
+											<td><?php echo $campaign->active[$i];?></td>
+											<td><?php echo $action_CAMPAIGN;?></td>
+										</tr>
+									<?php
+										}
+									?>
+							   </tbody>
+							</table>
+							<br/>
+						<div class="panel-footer text-right">&nbsp;</div>
+					 </div>
+					
+					<!--==== Disposition ====-->
+					  <div id="T_disposition" role="tabpanel" class="tab-pane" style="padding: 20px;">
+							<table class="table table-striped table-bordered table-hover" id="table_disposition">
+							   <thead>
+								  <tr>
+									 <th>Campaign ID</th>
+									 <th>Campaign Name</th>
+									 <th>Custom Disposition</th>
+									 <th>Action</th>
+								  </tr>
+							   </thead>
+							   <tbody>
+								   	<?php
+								   		for($i=0;$i < count($campaign->campaign_id);$i++){
+
+										$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i]);
+
+								   	?>	
+										<tr>
+											<td><?php echo $campaign->campaign_id[$i];?></td>
+											<td><a class=''><?php echo $campaign->campaign_name[$i];?></a></td>
+											<td><?php echo $campaign->campaign_id[$i];?></td>
+											<td><?php echo $action_DISPOSITION;?></td>
+										</tr>
+									<?php
+										}
+									?>
+							   </tbody>
+							</table>
+							<br/>
+						<div class="panel-footer text-right">&nbsp;</div>
+					 </div>
+
+					 <!--==== Lead Filter ====-->
+					  <div id="T_leadfilter" role="tabpanel" class="tab-pane" style="padding: 20px;">
+							<table class="table table-striped table-bordered table-hover" id="table_leadfilter">
+							   <thead>
+								  <tr>
+									 <th>Filter ID</th>
+									 <th>Filter Name</th>
+									 <th>Action</th>
+								  </tr>
+							   </thead>
+							   <tbody>
+								   	<?php
+								   		for($i=0;$i < count($leadfilter->lead_filter_id);$i++){
+
+										$action_LEADFILTER = $ui->ActionMenuForLeadFilters($leadfilter->lead_filter_id[$i]);
+
+								   	?>	
+										<tr>
+											<td><?php echo $leadfilter->lead_filter_id[$i];?></td>
+											<td><a class=''><?php echo $leadfilter->lead_filter_name[$i];?></a></td>
+											<td><?php echo $action_LEADFILTER;?></td>
+										</tr>
+									<?php
+										}
+									?>
+							   </tbody>
+							</table>
+							<br/>
+						<div class="panel-footer text-right">&nbsp;</div>
+					 </div>
+
+					</div><!-- END tab content-->
+				</div>
 				<?php
 					} else {
 						print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
@@ -257,7 +370,11 @@
 	<!-- Script for wizard -->
 	<script type="text/javascript">
 		$(document).ready(function(){
-			//$('#campaigns').dataTable();
+			//load datatable functionalities
+			$('#table_campaign').dataTable();
+			$('#table_disposition').dataTable();
+			$('#table_leadfilter').dataTable();
+
 			// $('#add_campaign').modal('show');
 			// $('#view-campaign-modal').modal('show');
 			

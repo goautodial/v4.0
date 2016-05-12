@@ -23,7 +23,7 @@ if ($validated == 1) {
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goDeletePhone"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["exten_id"] = "$extenid"; #Desired User ID. (required)
+    $postfields["exten_id"] = $extenid; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     
     $ch = curl_init();

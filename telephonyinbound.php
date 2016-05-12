@@ -19,6 +19,8 @@
         <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
         <!-- bootstrap wysihtml5 - text editor -->
         <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+    	<!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
@@ -71,32 +73,165 @@
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
+
+<?php
+	/*
+	 * APIs used
+	 */
+
+	$ingroup = $ui->API_getInGroups();
+
+	$ivr = $ui->API_getIVR();
+
+	$phonenumber = $ui->API_getPhoneNumber();
+
+?>
+            <div role="tabpanel" class="panel panel-transparent">
 				
-				<!-- TAB CONTENT CONTROLLER -->
-				<ul class="nav nav-tabs" role="tablist"> 
-					<li role="presentation" class="active"><a data-toggle="tab" aria-controls="T_ingroup" role="tab" href="#T_ingroup">In-Groups</a></li>
-					<li role="presentation"><a data-toggle="tab" aria-controls="T_ivr" role="tab" href="#T_ivr">Interactive Voice Response (IVR) Menus</a></li>
-					<li role="presentation"><a data-toggle="tab" aria-controls="T_phonenumber" role="tab" href="#T_phonenumber">Phone Numbers (DIDs/TFNs)</a></li>
-				</ul><!-- END OF CONTROLLER -->
+				<ul role="tablist" class="nav nav-tabs">
+
+				 <!-- In-group panel tabs-->
+					 <li role="presentation" class="active">
+						<a href="#T_ingroup" aria-controls="T_ingroup" role="tab" data-toggle="tab" class="bb0">
+						   <sup><span class="fa fa-users"></span></sup> In-Groups</a>
+					 </li>
+				<!-- IVR panel tab -->
+					 <li role="presentation">
+						<a href="#T_ivr" aria-controls="T_ivr" role="tab" data-toggle="tab" class="bb0">
+						   <sup><span class="fa fa-volume-up"></span></sup> Interactive Voice Response (IVR) Menus </a>
+					 </li>
+				<!-- DID panel tab -->
+					 <li role="presentation">
+						<a href="#T_phonenumber" aria-controls="T_phonenumber" role="tab" data-toggle="tab" class="bb0">
+						   <sup><span class="fa fa-phone-square"></span></sup> Phone Numbers (DIDs/TFNs) </a>
+					 </li>
+				  </ul>
+				  
+				<!-- Tab panes-->
+				<div class="tab-content p0 bg-white">
+
+
+				<!--==== In-group ====-->
+				  <div id="T_ingroup" role="tabpanel" class="tab-pane active" style="padding: 20px;">
+						<table class="table table-striped table-bordered table-hover" id="table_ingroup">
+						   <thead>
+							  <tr>
+								 <th>In-Group</th>
+								 <th>Descriptions</th>
+								 <th>Priority</th>
+								 <th>Status</th>
+								 <th>Time</th>
+								 <th>Action</th>
+							  </tr>
+						   </thead>
+						   <tbody>
+							   	<?php
+							   		for($i=0;$i < count($ingroup->group_id);$i++){
+					
+										if($ingroup->active[$i] == "Y"){
+											$ingroup->active[$i] = "Active";
+										}else{
+											$ingroup->active[$i] = "Inactive";
+										}
+
+									$action_INGROUP = $ui->getUserActionMenuForInGroups($ingroup->group_id[$i]);
+
+							   	?>	
+									<tr>
+										<td><?php echo $ingroup->group_id[$i];?></td>
+										<td><a class=''><?php echo $ingroup->group_name[$i];?></a></td>
+										<td><?php echo $ingroup->queue_priority[$i];?></td>
+										<td class='hide-on-medium hide-on-low'><?php echo $ingroup->active[$i];?></td>
+										<td class='hide-on-medium hide-on-low'><?php echo $ingroup->call_time_id[$i];?></td>
+										<td><?php echo $action_INGROUP;?></td>
+									</tr>
+								<?php
+									}
+								?>
+						   </tbody>
+						</table>
+						<br/>
+					<div class="panel-footer text-right">&nbsp;</div>
+				 </div>
 				
-                <div class="row">
-					<div class="col-xs-12">
-						<div class="box box-default">
-							<div class="box-body">
-					<!-- TAB CONTENT -->
-						<div class="tab-content">
-							
-								<?php echo $ui->getInGroups(); ?>
-							
-								<?php echo $ui->getIVR();?>
-							
-								<?php echo $ui->getPhoneNumber(); ?>
-							
-						</div><!-- end of tab content -->
-							</div>
-						</div>
-					</div>
-				</div>
+				<!--==== IVR ====-->
+				  <div id="T_ivr" role="tabpanel" class="tab-pane" style="padding: 20px;">
+						<table class="table table-striped table-bordered table-hover" id="table_ivr">
+						   <thead>
+							  <tr>
+								 <th>Menu ID</th>
+								 <th>Descriptions</th>
+								 <th>Prompt</th>
+								 <th class='hide-on-medium hide-on-low'>Timeout</th>
+								 <th>Action</th>
+							  </tr>
+						   </thead>
+						   <tbody>
+							   	<?php
+							   		for($i=0;$i < count($ivr->menu_id);$i++){
+
+									$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i]);
+
+							   	?>	
+									<tr>
+										<td><?php echo $ivr->menu_id[$i];?></td>
+										<td><a class=''><?php echo $ivr->menu_name[$i];?></a></td>
+										<td><?php echo $ivr->menu_prompt[$i];?></td>
+										<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_timeout[$i];?></td>
+										<td><?php echo $action_IVR;?></td>
+									</tr>
+								<?php
+									}
+								?>
+						   </tbody>
+						</table>
+						<br/>
+					<div class="panel-footer text-right">&nbsp;</div>
+				 </div>
+
+				 <!--==== phonenumber / DID ====-->
+				  <div id="T_phonenumber" role="tabpanel" class="tab-pane" style="padding: 20px;">
+						<table class="table table-striped table-bordered table-hover" id="table_did">
+						   <thead>
+							  <tr>
+								 <th>Phone Numbers</th>
+								 <th>Description</th>
+								 <th class='hide-on-medium hide-on-low'>Status</th>
+								 <th class='hide-on-medium hide-on-low'>Route</th>
+								 <th>Action</th>
+							  </tr>
+						   </thead>
+						   <tbody>
+							   	<?php
+							   		for($i=0;$i < count($phonenumber->did_pattern);$i++){
+
+							   			if($phonenumber->active[$i] == "Y"){
+											$phonenumber->active[$i] = "Active";
+										}else{
+											$phonenumber->active[$i] = "Inactive";
+										}
+
+									$action_DID = $ui->getUserActionMenuForDID($phonenumber->did_pattern[$i]);
+
+							   	?>	
+									<tr>
+										<td><?php echo $phonenumber->did_pattern[$i];?></td>
+										<td><a class=''><?php echo $phonenumber->did_description[$i];?></a></td>
+										<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->active[$i];?></td>
+										<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->did_route[$i];?></td>
+										<td><?php echo $action_DID;?></td>
+									</tr>
+								<?php
+									}
+								?>
+						   </tbody>
+						</table>
+						<br/>
+					<div class="panel-footer text-right">&nbsp;</div>
+				 </div>
+
+				</div><!-- END tab content-->
+			</div>
 
 				<!-- /fila con acciones, formularios y demás -->
 				<?php
@@ -735,7 +870,11 @@
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
 		<script type="text/javascript">
 			$(document).ready(function() {
-			
+			//loads datatable functions
+				$('#table_ingroup').dataTable();
+				$('#table_ivr').dataTable();
+				$('#table_did').dataTable();
+
 			//reloads page when modal closes
 				$('#add_ingroups').on('hidden.bs.modal', function () {
 					window.location = window.location.href;

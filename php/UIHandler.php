@@ -1084,7 +1084,7 @@ error_reporting(E_ERROR | E_PARSE);
 	
 	//telephony menu for INBOUNDS
 		//ingroup
-	private function getUserActionMenuForInGroups($groupid) {
+	public function getUserActionMenuForInGroups($groupid) {
 		
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -1093,15 +1093,15 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-ingroup" href="'.$groupid.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li><a class="edit-ingroup" href="'.$groupid.'">Modify In-group</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-ingroup" href="'.$groupid.'">'.$this->lh->translationFor("delete_in-group").'</a></li>
+	                    <li><a class="delete-ingroup" href="'.$groupid.'">Delete In-group</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 		//ivr
-	private function ActionMenuForIVR($ivr) {
+	public function ActionMenuForIVR($ivr) {
 		
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -1110,15 +1110,15 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-ivr" href="'.$ivr.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li><a class="edit-ivr" href="'.$ivr.'">Modify IVR</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-ivr" href="'.$ivr.'">'.$this->lh->translationFor("delete_ivr").'</a></li>
+	                    <li><a class="delete-ivr" href="'.$ivr.'">Delete IVR</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 		//did
-	private function getUserActionMenuForDID($did) {
+	public function getUserActionMenuForDID($did) {
 		
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -1127,9 +1127,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-phonenumber" href="'.$did.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li><a class="edit-phonenumber" href="'.$did.'">Modify Phonenumber / DID</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-phonenumber" href="'.$did.'">'.$this->lh->translationFor("delete_phonenumber").'</a></li>
+	                    <li><a class="delete-phonenumber" href="'.$did.'">Delete Phonenumber / DID</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -2956,49 +2956,6 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		return $output;
 	}
-	
-	public function getInGroups() {
-		$output = $this->API_getInGroups();
-		
-		if ($output->result=="success") {
-		# Result was OK!
-		
-		
-		$columns = array("In-Group", "Descriptions", "Priority", "active", "Time", "Action");
-	    $hideOnMedium = array("call_time_id","queue_priority", "active");
-	    $hideOnLow = array("call_time_id","queue_priority", "active");
-		$result = $this->generateTableHeaderWithItems($columns, "T_ingroup", "tab-pane fade table-bordered table-striped active in", true, false, $hideOnMedium, $hideOnLow);
-		
-			for($i=0;$i < count($output->group_id);$i++){
-				
-				if($output->active[$i] == "Y"){
-					$output->active[$i] = "Active";
-				}else{
-					$output->active[$i] = "Inactive";
-				}
-				
-				$action = $this->getUserActionMenuForInGroups($output->group_id[$i]);
-				
-				$result .= "<tr>
-								<td>".$output->group_id[$i]."</td>
-								<td><a class=''>".$output->group_name[$i]."</a></td>
-								<td>".$output->queue_priority[$i]."</td>
-								<td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
-								<td class='hide-on-medium hide-on-low'>".$output->call_time_id[$i]."</td>
-								<td>".$action."</td>
-							</tr>";
-			}
-			
-			return $result; 
-			
-		} else {		
-		# An error occured		
-			return $this->calloutErrorMessage($this->lh->translationFor("unable_get_inbound"));
-		}
-	       // print suffix
-	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
-	}
-	
 
 	// Telephony IVR
 	public function API_getIVR() {
@@ -3023,39 +2980,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 	}
 	
-	public function getIVR() {
-	$output = $this->API_getIVR();
-		if ($output->result=="success") {
-			# Result was OK!
-			
-			$columns = array("Menu ID", "Descriptions", "Prompt", "Timeout", "Action");
-		    $hideOnMedium = array("");
-		    $hideOnLow = array("");
-			$result = $this->generateTableHeaderWithItems($columns, "T_ivr", "tab-pane fade table-bordered table-striped ", true, false);
-
-			for($i=0;$i < count($output->menu_id);$i++){
-				$action = $this->ActionMenuForIVR($output->menu_id[$i]);
-				//$action = "WALA";
-				$result .= "<tr>
-								<td>".$output->menu_id[$i]."</td>
-								<td><a class=''>".$output->menu_name[$i]."</a></td>
-								<td>".$output->menu_prompt[$i]."</td>
-								<td>".$output->menu_timeout[$i]."</td>
-								<td>".$action."</td>
-							</tr>"
-							
-							;
-			}
-
-			return $result;
-
-		} else {		
-			# An error occured		
-				return $this->calloutErrorMessage($this->lh->translationFor("unable_get_phonenumber"));
-		}
-	}
-	//Telephony > phone number(DID)
-	public function getPhoneNumber() {
+	//Telephony > phonenumber(DID)
+	public function API_getPhoneNumber() {
 		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
@@ -3073,44 +2999,15 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_close($ch);		
 		$output = json_decode($data);		 
 		
-		if ($output->result=="success") {
-		# Result was OK!
-		
-		$columns = array("Phone Numbers", "Description", "Status", "Route", "Action");
-	    $hideOnMedium = array("");
-	    $hideOnLow = array("");
-		$result = $this->generateTableHeaderWithItems($columns, "T_phonenumber", "tab-pane fade table-bordered table-striped ", true, false);
-		
-		for($i=0;$i < count($output->did_pattern);$i++){
-
-			if($output->active[$i] == "Y"){
-				$output->active[$i] = "Active";
-			}else{
-				$output->active[$i] = "Inactive";
-			}
-			
-			$action = $this->getUserActionMenuForDID($output->did_pattern[$i]);
-			//$action = "WALA";
-			$result .= "<tr>
-							<td>".$output->did_pattern[$i]."</td>
-							<td><a class=''>".$output->did_description[$i]."</a></td>
-							<td>".$output->active[$i]."</td>
-							<td>".$output->did_route[$i]."</td>
-							<td>".$action."</td>
-						</tr>"
-						
-						;
-		}
-		
-		return $result; 
-			
-		} else {		
-		# An error occured		
-			return $this->calloutErrorMessage($this->lh->translationFor("unable_get_phonenumber"));
-		}
+		return $output;
 		
 	}
 	
+	/*
+	 *
+	 * SETTINGS MENU
+	 *
+	*/
 
 	// Settings > Phone
 	public function API_getPhonesList(){
@@ -3196,7 +3093,6 @@ error_reporting(E_ERROR | E_PARSE);
 	
 	// VoiceMails
 	public function API_goGetVoiceMails() {
-       //https://162.254.144.92/goAPI/goVoicemails/docs/goGetAllVoicemailsAPI.php
 
 		$url = gourl."/goVoicemails/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -3215,28 +3111,69 @@ error_reporting(E_ERROR | E_PARSE);
          $output = json_decode($data);
 		 
 		 return $output;
-	/*
-        if ($output->result=="success") {
-           # Result was OK!
-
-			for($i=0;$i<count($output->voicemail_id);$i++){
-					echo $output->voicemail_id[$i]."</br>";
-					echo $output->fullname[$i]."</br>";
-					echo $output->active[$i]."</br>";
-					echo $output->messages[$i]."</br>";
-					echo $output->old_messages[$i]."</br>";
-					echo $output->delete_vm_after_email[$i]."</br>";
-					echo $output->user_group[$i]."</br>";
-					echo "</br>";
-			}
-
-         } else {
-
-           # An error occured
-                echo $output->result;
-        }*/
+	
 	}
 	
+	public function getVoiceMails() {
+		$output = $this->API_goGetVoiceMails();
+
+		if ($output->result=="success") {
+		# Result was OK!
+		
+		$columns = array("Voicemail ID", "Name", "Status", "New Messages", "Old Messages", "Delete", "User Group", "Action");
+	    //$hideOnMedium = array("call_time_id","queue_priority", "active");
+	   // $hideOnLow = array("call_time_id","queue_priority", "active");
+		$result = $this->generateTableHeaderWithItems($columns, "T_voicemails", "table-bordered table-striped", true, false);
+		
+			for($i=0;$i < count($output->voicemail_id);$i++){
+
+				if($output->active[$i] == "Y"){
+					$output->active[$i] = "Active";
+				}else{
+					$output->active[$i] = "Inactive";
+				}
+				
+				$action = $this->ActionMenuForVoicemail($output->voicemail_id[$i]);
+				
+				$result = $result."<tr>
+	                    <td>".$output->voicemail_id[$i]."</td>
+	                    <td><a class=''>".$output->fullname[$i]."</a></td>
+						<td>".$output->server_ip[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->messages[$i]."</td>
+						<td class='hide-on-medium hide-on-low'>".$output->old_messages[$i]."</td>
+						<td class='hide-on-medium hide-on-low'>".$output->delete_vm_after_email[$i]."</td>
+						<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
+	                    <td>".$action."</td>
+	                </tr>";
+				
+			}
+			
+			return $result; 
+			
+		} else {		
+		# An error occured		
+			return $this->calloutErrorMessage($this->lh->translationFor("unable_get_voicemail"));
+		}
+	}
+
+	private function ActionMenuForVoicemail($id) {
+		
+	   return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="view-voicemail" href="#" data-id="'.$id.'">View Info</a></li>
+			<li><a class="edit-voicemail" href="#" data-id="'.$id.'">Edit Voicemail</a></li>
+			<li class="divider"></li>
+			<li><a class="delete-voicemail" href="#" data-id="'.$id.'">Delete Voicemail</a></li>
+		    </ul>
+		</div>';
+	}
+
 	// API Scripts
 	public function API_goGetAllScripts(){
 		//goGetAllScriptsAPI
@@ -3326,38 +3263,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 	
-	public function getListAllCampaigns() {
-		$output = $this->API_getListAllCampaigns();
-		
-	    if ($output->result=="success") {
-	    # Result was OK!
-
-           	$columns = array("campaign_id", "campaign_name", "dial_method", "active", "Action");
-	      	$hideOnMedium = array("dial_method", "active");
-	       	$hideOnLow = array("dial_method", "active");
-		   	$result = $this->generateTableHeaderWithItems($columns, "T_campaigns", "tab-pane fade table-bordered table-striped active in", true, false, $hideOnMedium, $hideOnLow); 
-
-	        for($i=0;$i<count($output->campaign_id);$i++){
-		    $action = $this->ActionMenuForCampaigns($output->campaign_id[$i]);
-			
-			$result .= "<tr>
-							<td>".$output->campaign_id[$i]."</td>
-							<td>".$output->campaign_name[$i]."</td>
-							<td class='hide-on-medium hide-on-low'>".$output->dial_method[$i]."</td>
-							<td class='hide-on-medium hide-on-low'>".$output->active[$i]."<span color='green'></span></td>
-							<td>".$action."</td>
-						</tr>";
-            }
-
-		    return $result;
-    
-	    } else {
-	       # An error occured
-	       return $output->result;
-	    }
-	}
-	
-	private function ActionMenuForCampaigns($id) {
+	public function ActionMenuForCampaigns($id) {
 		
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3931,49 +3837,6 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 	
-	# table for dispositions
-	public function getDispositions() {
-		$campaign = $this->API_getListAllCampaigns();
-		$output = $this->API_getAllDispositions();
-
-		if ($output->result=="success") {
-		# Result was OK!
-
-		$columns = array("Campaign ID", "Campaign Name", "Custom Disposition", "Action");
-	    $hideOnMedium = array("");
-	    $hideOnLow = array("");
-		$result = $this->generateTableHeaderWithItems($columns, "T_disposition", "tab-pane fade table-bordered table-striped ", true, false, $hideOnMedium, $hideOnLow);
-
-		//$action = $this->ActionMenuForDisposition($output->status[$i]);
-		$action = "WALA";
-		/*
-			for($a=0;$a < count($campaign->campaign_id[$a]);$a++){
-					
-					$result .= "<tr>	
-									<td>".$campaign->campaign_id[$a]."</td>
-									<td><a class=''>".$campaign->campaign_name[$a]."</a></td>
-									<td>";
-								for($i=0;$i < count($output->status);$i++){
-									
-									$result .= $output->status_name[$i];
-									
-									if($i <= count($output->status)){
-										$result .= ", ";
-									}
-								}
-					$result .= "		</td>
-									<td>".$action."</td>
-								</tr>";
-			}
-		*/	
-				return $result; 
-		}else {	
-		# An error occured		
-			return $output->result;
-		}
-
-	}
-	
 	public function ActionMenuForDisposition($id) {
 		 return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -4015,35 +3878,6 @@ error_reporting(E_ERROR | E_PARSE);
 		//var_dump($data);
 		return $output;
 	}
-	
-	public function getLeadFilters() {
-		$output = $this->API_getAllLeadFilters();
-
-		$columns = array("Filter ID", "Filter Name", "Action");
-	    $hideOnMedium = array("");
-	    $hideOnLow = array("");
-		$result = $this->generateTableHeaderWithItems($columns, "T_LeadFilters", "tab-pane fade table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-			
-		if ($output->result=="success") {
-			
-			# Result was OK!
-			for($i=0;$i<count($output->lead_filter_id);$i++){
-				$action = $this->ActionMenuForLeadFilters($output->status[$i]);
-				$result .= "<tr>
-								<td>".$output->lead_filter_id[$i]."</td>
-								<td><a class=''>".$output->lead_filter_name[$i]."</a></td>
-								<td>".$action."</td>
-							</tr>";
-			}
-			
-			return $result;
-		
-		} else {
-			# An error occured
-			return $output->result;
-		}
-
-	}
 
 	public function ActionMenuForLeadFilters($id) {
 		 return '<div class="btn-group">
@@ -4053,9 +3887,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="view_disposition" href="#" data-id="'.$id.'">View Lead Filter</a></li>
-			<li><a class="edit_disposition" href="#" data-id="'.$id.'">Edit Lead Filter</a></li>
-			<li><a class="delete_disposition" href="#" data-id="'.$id.'">Delete Lead Filter</a></li>
+			<li><a class="view_leadfilter" href="#" data-id="'.$id.'">View Lead Filter</a></li>
+			<li><a class="edit_leadfilter" href="#" data-id="'.$id.'">Edit Lead Filter</a></li>
+			<li><a class="delete_leadfilter" href="#" data-id="'.$id.'">Delete Lead Filter</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4659,17 +4493,15 @@ error_reporting(E_ERROR | E_PARSE);
 		   $result = $this->generateTableHeaderWithItems($columns, "contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
 			
-			for($i=0;$i<count($output->list_id);$i++){
+			for($i=0;$i<=count($output->list_id);$i++){
 			
 			$action = $this->getUserActionMenuForT_User($output->list_id[$i]);
-			
-			$result .= '<tr>
-							<td>' .$output->list_id[$i]. '</td>
-							<td>' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
-							<td>' .$output->phone_number[$i].'</td>
-							 <td style="width: 200px;">' .$action.'</td>
-						</tr> ';
-			
+				$result .= '<tr>
+								<td>' .$output->list_id[$i]. '</td> 
+								<td>' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
+								<td>' .$output->phone_number[$i].'</td>
+								 <td style="width: 200px;">' .$action.'</td>
+							</tr> ';
 			}
 
 			return $result;
