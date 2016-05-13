@@ -4370,7 +4370,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		/*
 		 * Displaying Calls / Hour
-		 * [[API: Function]] - getCallPerHour
+		 * [[API: Function]] - getPerHourCall
 		 * This application is used to get calls per hour.
 		*/
 		

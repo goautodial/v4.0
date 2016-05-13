@@ -16,8 +16,6 @@ if (!isset($_POST["extenid"])) {
 if ($validated == 1) {
 	$extenid = $_POST["extenid"];
 	
-
-//uncomment to work	
     $url = gorul."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)

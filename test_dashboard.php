@@ -683,7 +683,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 	$callsperhour = $ui->API_getCallPerHour();
 	//var_dump($callsperhour);
 	
-		 $callsperhour = explode(";",$callsperhour);
+		 $callsperhour = explode(";",trim($callsperhour, ';'));
 		 foreach ($callsperhour AS $temp) {
 		   $temp = explode("=",$temp);
 		   $results[$temp[0]] = $temp[1];
@@ -705,8 +705,9 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 			$max = $max+1;
 		}
 
+	//var_dump($results);
+	
 ?>
-
 <script>
 	/*
 	 * JQuery Knob = need for dropped calls percentage and other pie loader
@@ -780,7 +781,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					"color": "#656565",
 					"data": [
 					<?php
-					if($results["result"] == "success" || $results["result"] == NULL){
+					if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9o"])){
 						echo '["9AM",'.$results["Hour9o"].'],';
 						echo '["10AM",'.$results["Hour10o"].'],';
 						echo '["11AM",'.$results["Hour11o"].'],';
@@ -815,7 +816,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 						"color": "#F39C12",
 						"data": [
 						<?php
-						if($results["result"] == "success" || $results["result"] == NULL){
+						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9"])){
 							echo '["9AM",'.$results["Hour9"].'],';
 							echo '["10AM",'.$results["Hour10"].'],';
 							echo '["11AM",'.$results["Hour11"].'],';
@@ -850,7 +851,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					"color": "#dd4b39",
 					"data": [
 					<?php
-						if($results["result"] == "success" || $results["result"] == NULL){
+						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9d"])){
 							echo '["9AM",'.$results["Hour9d"].'],';
 							echo '["10AM",'.$results["Hour10d"].'],';
 							echo '["11AM",'.$results["Hour11d"].'],';
