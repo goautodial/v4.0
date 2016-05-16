@@ -682,7 +682,9 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 
 	$callsperhour = $ui->API_getCallPerHour();
 	//var_dump($callsperhour);
-	
+		
+		$max = 0;
+
 		 $callsperhour = explode(";",trim($callsperhour, ';'));
 		 foreach ($callsperhour AS $temp) {
 		   $temp = explode("=",$temp);
@@ -697,12 +699,9 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		
 		$max = max($inbound_calls, $outbound_calls, $dropped_calls);
 	
-		$max = 0;
 		
 		if($max <= 0){
 			$max = 5;
-		}else{
-			$max = $max+1;
 		}
 
 	//var_dump($results);
@@ -907,7 +906,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					},
 					tooltip: true,
 					tooltipOpts: {
-						content: function (label, x, y) { return x + ' : ' + y; }
+						content: function (label, x, y) { return y + ' ' + label + ' around ' + x; }
 					},
 					xaxis: {
 						tickColor: '#fcfcfc',
