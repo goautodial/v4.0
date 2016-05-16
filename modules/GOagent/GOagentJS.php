@@ -568,6 +568,10 @@ $(document).ready(function() {
 
     $("footer").append($navBar);
     var $vtFooter = jQuery(".main-footer");
+    $vtFooter.css({
+        'margin-left' : '230px',
+        'zIndex' : '3'
+    });
     var circleButton = jQuery(".circle-button").css('bottom');
     $("footer").prepend($('<div id="go_nav_tab" title="<?=$lh->translationFor('open_tab')?>"> <i class="fa fa-chevron-up"></i> </div>'));
     $("#go_nav_tab").css({
