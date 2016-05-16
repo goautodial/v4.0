@@ -781,7 +781,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					"color": "#656565",
 					"data": [
 					<?php
-					if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9o"])){
+					if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9o"]) && $outbound_calls != 0){
 						echo '["9AM",'.$results["Hour9o"].'],';
 						echo '["10AM",'.$results["Hour10o"].'],';
 						echo '["11AM",'.$results["Hour11o"].'],';
@@ -816,7 +816,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 						"color": "#F39C12",
 						"data": [
 						<?php
-						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9"])){
+						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9"]) && $inbound_calls != 0){
 							echo '["9AM",'.$results["Hour9"].'],';
 							echo '["10AM",'.$results["Hour10"].'],';
 							echo '["11AM",'.$results["Hour11"].'],';
@@ -851,7 +851,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					"color": "#dd4b39",
 					"data": [
 					<?php
-						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9d"])){
+						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9d"]) && $dropped_calls != 0){
 							echo '["9AM",'.$results["Hour9d"].'],';
 							echo '["10AM",'.$results["Hour10d"].'],';
 							echo '["11AM",'.$results["Hour11d"].'],';
