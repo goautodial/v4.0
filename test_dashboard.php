@@ -700,7 +700,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		$max = max($inbound_calls, $outbound_calls, $dropped_calls);
 	
 		
-		if($max <= 0){
+		if($max <= 5){
 			$max = 5;
 		}
 
