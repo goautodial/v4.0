@@ -3008,13 +3008,12 @@ error_reporting(E_ERROR | E_PARSE);
 	 * SETTINGS MENU
 	 *
 	*/
-
-	// Settings > Phone
-	public function API_getPhonesList(){
+	// Settings > Admin Logs
+	public function API_goGetAdminLogsList(){
 		$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "goGetPhonesList"; #action performed by the [[API:Functions]]. (required)
+		$postfields["goAction"] = "goGetAdminLogsList"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		
 		$ch = curl_init();
@@ -3030,9 +3029,9 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		return $output;
 	}
-	
-	public function getPhonesList() {
-		$output = $this->API_getPhonesList();
+
+	public function getAdminLogsList() {
+		$output = $this->API_goGetAdminLogsList();
 		
 		if ($output->result=="success") {
 		# Result was OK!
@@ -3085,7 +3084,85 @@ error_reporting(E_ERROR | E_PARSE);
 			
 		} else {		
 		# An error occured		
-			return $this->calloutErrorMessage($this->lh->translationFor("unable_get_phone"));
+			return $this->calloutErrorMessage($this->lh->translationFor("Unable to get Phone List"));
+		}
+	       // print suffix
+	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
+	}
+
+	// Settings > Phone
+	public function API_getPhonesList(){
+		$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "goGetPhonesList"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);		
+		curl_setopt($ch, CURLOPT_POST, 1);		
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);		
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);		
+		$data = curl_exec($ch);
+		curl_close($ch);		
+		$output = json_decode($data);
+		
+		return $output;
+	}
+	
+	public function getPhonesList() {
+		$output = $this->API_getPhonesList();
+		
+		if ($output->result=="success") {
+		# Result was OK!
+		
+		$columns = array("Exten", "Protocol", "Server", "Dial Plan", "Status", "Name", "VMail", "Group", "Action");
+	    //$hideOnMedium = array("call_time_id","queue_priority", "active");
+	   // $hideOnLow = array("call_time_id","queue_priority", "active");
+		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false);
+		
+			for($i=0;$i < count($output->extension);$i++){
+				
+				/*echo $output->extension[$i]."</br>";
+				echo $output->protocol[$i]."</br>";
+				echo $output->server_ip[$i]."</br>";
+				echo $output->dialplan_number[$i]."</br>";
+				echo $output->active[$i]."</br>";
+				echo $output->fullname[$i]."</br>";
+				echo $output->messages[$i]."</br>";
+				echo $output->old_messages[$i]."</br>";
+				echo $output->user_group[$i]."<brd>";*/
+
+				
+				if($output->active[$i] == "Y"){
+					$output->active[$i] = "Active";
+				}else{
+					$output->active[$i] = "Inactive";
+				}
+				
+				$action = $this->getUserActionMenuForPhones($output->extension[$i]);
+				
+				$result = $result."<tr>
+	                    <td>".$output->extension[$i]."</td>
+	                    <td><a class=''>".$output->protocol[$i]."</a></td>
+						<td>".$output->server_ip[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->dialplan_number[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
+						<td class='hide-on-medium hide-on-low'>".$output->fullname[$i]."</td>
+						<td class='hide-on-medium hide-on-low'>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>
+						<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
+	                    <td>".$action."</td>
+	                </tr>";
+				
+			}
+			
+			return $result; 
+			
+		} else {		
+		# An error occured		
+			return $this->calloutErrorMessage($this->lh->translationFor("Unable to get Phone List"));
 		}
 	       // print suffix
 	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);

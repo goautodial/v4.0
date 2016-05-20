@@ -1,14 +1,13 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require('Session.php');
-
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
+require_once('goCRMAPISettings.php');
 
 // check required fields
-$reason = $lh->translationFor("unable_modify_phones");
+$reason = "Unable to Modify Phones";
 
 $validated = 1;
 if (!isset($_POST["modifyid"])) {
@@ -56,11 +55,11 @@ if ($validated == 1) {
 	}
   
     
-	$url = "https://gadcs.goautodial.com/goAPI/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = "admin"; #Username goes here. (required)
-    $postfields["goPass"] = "kam0teque1234"; #Password goes here. (required)
+	$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
+    $postfields["goUser"] = goUser; #Username goes here. (required)
+    $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goEditPhone"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = "json"; #json (required)
+    $postfields["responsetype"] = responsetype; #json (required)
     $postfields["extension"] = $modifyid; #Desired list id. (required)
 	$postfields["dialplan_number"] = $plan; #Desired value for user (required)
 	$postfields["voicemail_id"] = $vmid; #Desired value for user (required)
@@ -80,9 +79,7 @@ if ($validated == 1) {
     $data = curl_exec($ch);
     curl_close($ch);
     $output = json_decode($data);
-    
-    echo $color;
-    
+
     if ($output->result=="success") {
     # Result was OK!
         ob_clean();

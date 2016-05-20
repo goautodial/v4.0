@@ -1,15 +1,13 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require('Session.php');
 require_once('goCRMAPISettings.php');
 
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
-
 // check required fields
-//$reason = $lh->translationFor("unable_modify_inbound");
+$reason = "Unable to Modify Inbound";
 
 $validated = 0;
 
@@ -19,8 +17,8 @@ if (isset($_POST["modify_groupid"])) {
 }
 
 $did = NULL;
-if (isset($_POST["modify_did"])) {
-	$did = $_POST["modify_did"];
+if (isset($_POST["did"])) {
+	$did = $_POST["did"];
 }
 
 
@@ -70,7 +68,7 @@ if ($groupid != NULL) {
 		$script = stripslashes($script);
 	}
     
-	$url = "https://gadcs.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+	$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goEditInbound"; #action performed by the [[API:Functions]]
@@ -95,13 +93,11 @@ if ($groupid != NULL) {
     $data = curl_exec($ch);
     curl_close($ch);
     $output = json_decode($data);
-
-    var_dump($output);
 	
     if ($output->result=="success") {
     # Result was OK!
         ob_clean();
-		print "success";
+		print (CRM_DEFAULT_SUCCESS_RESPONSE);
     } else {
     # An error occured
         ob_clean();
@@ -109,13 +105,16 @@ if ($groupid != NULL) {
         //$lh->translateText("unable_modify_list");
     }
     
-} else { ob_clean(); print $reason; }
+}
 
 // PHONE NUMBER / DID
 if ($did != NULL) {
 	// collect new user data.	
-	$modify_did = $_POST["modify_did"];
-	
+	$modify_did = NULL; if (isset($_POST["modify_did"])) { 
+		$modify_did = $_POST["modify_did"];
+		$modify_did = stripslashes($modify_did);
+	}
+
     $exten = NULL; if (isset($_POST["exten"])) { 
 		$exten = $_POST["exten"];
 		$exten = stripslashes($exten);
@@ -136,12 +135,13 @@ if ($did != NULL) {
 		$status = stripslashes($status);
 	}
     
-	$url = "https://encrypted.goautodial.com/goAPI/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = "admin"; #Username goes here. (required)
-    $postfields["goPass"] = "goautodial"; #Password goes here. (required)
-    $postfields["goAction"] = "goEditDIDAPI"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = "json"; #json (required)
-    $postfields["did_pattern"] = $modify_did; #Desired list id. (required)
+	$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+    $postfields["goUser"] = goUser; #Username goes here. (required)
+    $postfields["goPass"] = goPass; #Password goes here. (required)
+    $postfields["goAction"] = "goEditDID"; #action performed by the [[API:Functions]]
+    $postfields["responsetype"] = responsetype; #json (required)
+    $postfields["did_id"] = $modify_did; #Desired list id. (required)
+    $postfields["did_pattern"] = $did; #Desired list id. (required)
 	$postfields["did_description"] = $desc; #Desired value for user (required)
 	$postfields["route"] = $route; #Desired value for user (required)
 	$postfields["active"] = $status; #Desired value for user (required)
@@ -156,11 +156,13 @@ if ($did != NULL) {
     $data = curl_exec($ch);
     curl_close($ch);
     $output = json_decode($data);
-	
+
+    //print($output);
+
     if ($output->result == "success") {
     # Result was OK!
-        ob_clean();
-		print "success";
+         ob_clean();
+		print (CRM_DEFAULT_SUCCESS_RESPONSE);
     } else {
     # An error occured
         ob_clean();
@@ -168,8 +170,5 @@ if ($did != NULL) {
         //$lh->translateText("unable_modify_list");
     }
     
-}else { ob_clean();
-print $reason;
-//print $validated;
- }
+}
 ?>

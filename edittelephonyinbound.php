@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
@@ -511,10 +514,15 @@ if (isset($_POST["did"])) {
 						# Result was OK!
 							for($i=0;$i<count($output->did_pattern);$i++){
 								
-								$hidden_f = $ui->hiddenFormField("modify_did", $did);
+								$hidden_f = $ui->hiddenFormField("did", $did);
 								
 								$id_f = '<h4>Modify Record : <b>'.$did.'</b>';
 								
+								$newid_l = '<h4>DID ID</h4>';
+								$ph = $lh->translationFor("DID Extension").' ('.$lh->translationFor("mandatory").')';
+								$vl = isset($output->did_pattern[$i]) ? $output->did_pattern[$i] : null;
+								$newid_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("modify_did", "modify_did", "text", $ph, $vl, "tasks", "required"));
+
 								$exten_l = '<h4>DID Extension</h4>';
 								$ph = $lh->translationFor("DID Extension").' ('.$lh->translationFor("mandatory").')';
 								$vl = isset($output->did_pattern[$i]) ? $output->did_pattern[$i] : null;
@@ -592,7 +600,7 @@ if (isset($_POST["did"])) {
 								}
 		
 							// generate the form
-							$fields = $hidden_f.$exten_l.$exten_f.$desc_l.$desc_f.$status_l.$status_f.$route_l.$route_f;
+							$fields = $hidden_f.$newid_l.$newid_f.$exten_l.$exten_f.$desc_l.$desc_f.$status_l.$status_f.$route_l.$route_f;
 								
 								// generate form: header
 								$form = $ui->formWithCustomFooterButtons("modifyphonenumber", $fields, $buttons, "modifyDIDresult");
@@ -650,20 +658,15 @@ if (isset($_POST["did"])) {
 							$("#modifyingroup").serialize(), 
 								function(data){
 									//if message is sent
-									if (data == 'success') {
-										$("#success_notif").show().delay(5000).fadeOut();
+									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
 									<?php 
-										//$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-										
-										//print $ui->fadingInMessageJS($errorMsg, "modifyINGROUPresult"); 
+										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
+										print $ui->fadingInMessageJS($errorMsg, "modifyINGROUPresult"); 
 									?>				
-									}else {
-										$("#success_notif").show().delay(5000).fadeOut();
+									} else {
 									<?php 
-										//$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data"), false, true);
-										//$errorMsg .= $errorMsg+data;
-										
-										//print $ui->fadingInMessageJS(, "modifyINGROUPresult");
+										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data<br/>"), false, true);
+										print $ui->fadingInMessageJS($errorMsg, "modifyINGROUPresult");
 									?>
 									}
 									//
@@ -681,14 +684,14 @@ if (isset($_POST["did"])) {
 							$("#modifyphonenumber").serialize(), 
 								function(data){
 									//if message is sent
-									if (data == 'success') {
+									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
 									<?php 
 										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
 										print $ui->fadingInMessageJS($errorMsg, "modifyDIDresult"); 
 									?>				
 									} else {
 									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data<br/>".data), false, true);
+										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data<br/>"), false, true);
 										print $ui->fadingInMessageJS($errorMsg, "modifyDIDresult");
 									?>
 									

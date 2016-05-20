@@ -82,7 +82,7 @@
 	$ingroup = $ui->API_getInGroups();
 
 	$ivr = $ui->API_getIVR();
-
+	
 	$phonenumber = $ui->API_getPhoneNumber();
 
 ?>

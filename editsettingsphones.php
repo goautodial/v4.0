@@ -6,6 +6,7 @@ require_once('./php/UIHandler.php');
 require_once('./php/LanguageHandler.php');
 require('./php/Session.php');
 
+
 // initialize structures
 $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
@@ -16,6 +17,8 @@ if (isset($_POST["extenid"])) {
 	$extenid = $_POST["extenid"];
 	
 }
+
+include('php/goCRMAPISettings.php');
 
 ?>
 <html>
@@ -85,25 +88,25 @@ if (isset($_POST["extenid"])) {
 					
                     
 					if(isset($extenid)) {
-						
-						$url = "https://encrypted.goautodial.com/goAPI/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
-						$postfields["goUser"] = "admin"; #Username goes here. (required)
-						$postfields["goPass"] = "goautodial"; #Password goes here. (required)
-						$postfields["goAction"] = "goGetPhoneInfo"; #action performed by the [[API:Functions]]. (required)
-						$postfields["responsetype"] = "json"; #json. (required)
-						$postfields["exten_id"] = $extenid; #Desired list id. (required)
-            
-						$ch = curl_init();
-						curl_setopt($ch, CURLOPT_URL, $url);
-						curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-						curl_setopt($ch, CURLOPT_POST, 1);
-						curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-						curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-						$data = curl_exec($ch);
-						curl_close($ch);
-						$output = json_decode($data);
-                                                
+						$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
+				        $postfields["goUser"] = goUser; #Username goes here. (required)
+				        $postfields["goPass"] = goPass; #Password goes here. (required)
+				        $postfields["goAction"] = "goGetPhoneInfo"; #action performed by the [[API:Functions]]. (required)
+				        $postfields["responsetype"] = responsetype; #json. (required)
+				        $postfields["exten_id"] = $extenid; #Desired exten ID. (required)
+
+				         $ch = curl_init();
+				         curl_setopt($ch, CURLOPT_URL, $url);
+				         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+				         curl_setopt($ch, CURLOPT_POST, 1);
+				         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+				         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+				         $data = curl_exec($ch);
+				         curl_close($ch);
+				         $output = json_decode($data);
+
+			
 						if ($output->result=="success") {
 						# Result was OK!
 							for($i=0;$i<count($output->extension);$i++){
@@ -257,6 +260,9 @@ if (isset($_POST["extenid"])) {
 							}
 						} else {
 						# An error occured
+							if(!isset($output->result)){
+								echo "Error in API: Return NULL";
+							}
 							echo $output->result;
 						}
                         
@@ -295,11 +301,9 @@ if (isset($_POST["extenid"])) {
 									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
 									<?php 
 										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-										print $ui->fadingInMessageJS($errorMsg, "modifyT_phonesresult"); 
 									?>				
 									} else {
 									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data<br/>".data), false, true);
 										print $ui->fadingInMessageJS($errorMsg, "modifyT_phonesresult");
 									?>
 									
