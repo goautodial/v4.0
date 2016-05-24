@@ -360,22 +360,24 @@ if (isset($_POST["did"])) {
 						curl_close($ch);
 						$output = json_decode($data);
 						
-						//print_r($data);
-						
+						//var_dump($output);
+
+						$voicefiles = $ui->API_GetVoiceFilesList();
+
 						if ($output->result=="success") {
 						# Result was OK!
-							for($i=0;$i<count($output->menu_id);$i++){
+							for($i=0;$i < count($output->menu_id);$i++){
 								
-								$hidden_f = $ui->hiddenFormField("modifyid", $menu_id);
-								$voicefiles = $ui->API_GetVoiceFilesList();
+								$hidden_f = $ui->hiddenFormField("modify_ivr", $ivr);
+								
 
-								$id_f = '<h4>Modify Call Menu : <b>'.$menu_id.'</b>';
+								$id_f = '<h4>Modify Call Menu : <b>'.$ivr.'</b>';
 								
-								$menu_id_f = '<h4>Menu ID : '.$menu_id;
+								$menu_id_f = '<h4>Menu ID : '.$ivr;
 
 								$name_l = '<h4>Menu Name</h4>';
 								$ph = $lh->translationFor("Name").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->list_name[$i]) ? $output->list_name[$i] : null;
+								$vl = isset($output->menu_name[$i]) ? $output->menu_name[$i] : null;
 								$name_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("name", "name", "text", $ph, $vl, "tasks", "required"));
 																
 								$prompt_l = '<h4>Menu Prompt</h4>';
@@ -387,7 +389,7 @@ if (isset($_POST["did"])) {
 									for($a=0;$a<count($voicefiles->file_name);$a++){
 										$file = substr($voicefiles->file_name[$a], 0, -4);
 
-										if($voicefiles->menu_prompt[$i] == $file){
+										if($output->menu_prompt[$i] == $file){
 											$prompt_f .= '<option value="'.$file.'" selected>'.$file.'</option>';
 										}else{
 											$prompt_f .= '<option value="'.$file.'" >'.$file.'</option>';
@@ -414,7 +416,7 @@ if (isset($_POST["did"])) {
 									for($a=0;$a<count($voicefiles->file_name);$a++){
 										$file = substr($voicefiles->file_name[$a], 0, -4);
 
-										if($voicefiles->menu_timeout_prompt[$i] == $file){
+										if($output->menu_timeout_prompt[$i] == $file){
 											$timeout_prompt_f .= '<option value="'.$file.'" selected>'.$file.'</option>';
 										}else{
 											$timeout_prompt_f .= '<option value="'.$file.'" >'.$file.'</option>';
@@ -426,7 +428,7 @@ if (isset($_POST["did"])) {
 								}
 									
 								$timeout_prompt_f .= '</select>';
-
+								
 								$invalid_prompt_l = '<h4>Menu Invalid Prompt</h4>';
 								$invalid_prompt_f = '<select class="form-control" id="menu_invalid_prompt" name="menu_invalid_prompt" required>';		
 								
@@ -436,7 +438,7 @@ if (isset($_POST["did"])) {
 									for($a=0;$a<count($voicefiles->file_name);$a++){
 										$file = substr($voicefiles->file_name[$a], 0, -4);
 
-										if($voicefiles->menu_invalid_prompt[$i] == $file){
+										if($output->menu_invalid_prompt[$i] == $file){
 											$invalid_prompt_f .= '<option value="'.$file.'" selected>'.$file.'</option>';
 										}else{
 											$invalid_prompt_f .= '<option value="'.$file.'" >'.$file.'</option>';
@@ -450,7 +452,7 @@ if (isset($_POST["did"])) {
 								$invalid_prompt_f .= '</select>';
 								
 								$repeat_l = '<h4>Menu Repeat</h4>';
-								$ph = $lh->translationFor("Menu Repeat").' ('.$lh->translationFor("mandatory").')';
+								$ph = $lh->translationFor("Menu Repeat");
 								$vl = isset($output->menu_repeat[$i]) ? $output->menu_repeat[$i] : null;
 								$repeat_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("menu_repeat", "menu_repeat", "number", $ph, $vl, "clock", "required"));
 								
@@ -458,16 +460,16 @@ if (isset($_POST["did"])) {
 								// buttons at bottom (only for writing+ permissions)
 								$buttons = "";
 								if ($user->userHasWritePermission()) {
-									$buttons = $ui->buttonWithLink("modifyT_ivrDeleteButton", $menu_id, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
+									$buttons = $ui->buttonWithLink("modifyIVRDeleteButton", $menu_id, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
 									$buttons .= $ui->buttonWithLink("modifyCustomerOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
 									$buttons = $ui->singleFormGroupWrapper($buttons);
 								}
-		
+				
 								// generate the form
-								$fields = $hidden_f.$id_f.$menu_id_f.$name_l.$name_f.$prompt_l.$prompt_f.$timeout_l.$timeout_f.$timeout_prompt_l.$timeout_prompt_f.$invalid_prompt_l.$invalid_prompt_f.$repeat_l.$repeat_f;
+								$fields = $hidden_f.$menu_id_f.$name_l.$name_f.$prompt_l.$prompt_f.$timeout_l.$timeout_f.$timeout_prompt_l.$timeout_prompt_f.$invalid_prompt_l.$invalid_prompt_f.$repeat_l.$repeat_f;
 								
 								// generate form: header
-								$form = $ui->formWithCustomFooterButtons("modifyivr", $fields, $buttons, "modifyT_ivrresult");
+								$form = $ui->formWithCustomFooterButtons("modifyivr", $fields, $buttons, "modifyIVRresult");
 								
 								// generate and show the box
 								//$box = $ui->boxWithForm("modifyuser", , $fields, $lh->translationFor("edit_user"));
@@ -514,7 +516,7 @@ if (isset($_POST["did"])) {
 						# Result was OK!
 							for($i=0;$i<count($output->did_pattern);$i++){
 								
-								$hidden_f = $ui->hiddenFormField("did", $did);
+								$hidden_f = $ui->hiddenFormField("modify_did", $did);
 								
 								$id_f = '<h4>Modify Record : <b>'.$did.'</b>';
 								
@@ -674,6 +676,32 @@ if (isset($_POST["did"])) {
 						return false; //don't let the form refresh the page...
 					}					
 				});
+				//IVR
+				$("#modifyivr").validate({
+                	submitHandler: function() {
+						//submit the form
+							$("#resultmessage").html();
+							$("#resultmessage").fadeOut();
+							$.post("./php/ModifyTelephonyInbound.php", //post
+							$("#modifyivr").serialize(), 
+								function(data){
+									//if message is sent
+									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
+									<?php 
+										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
+										print $ui->fadingInMessageJS($errorMsg, "modifyIVRresult"); 
+									?>				
+									} else {
+									<?php 
+										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data<br/>"), false, true);
+										print $ui->fadingInMessageJS($errorMsg, "modifyIVRresult");
+									?>
+									}
+									//
+								});
+						return false; //don't let the form refresh the page...
+					}					
+				});
 				//a phone number / DID
 				$("#modifyphonenumber").validate({
                 	submitHandler: function() {
@@ -704,32 +732,51 @@ if (isset($_POST["did"])) {
 				/**
 				 * Deletes a telephony list
 				 */
-				 $("#modifyINGROUPDeleteButton").click(function (e) {
+
+				//delete_ingroup
+				$("#modifyINGROUPDeleteButton").click(function (e) {
 					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
 					e.preventDefault();
 					if (r == true) {
-						var listid = $(this).attr('href');
-						$.post("./php/DeleteTelephonyInbound.php", { listid: listid } ,function(data){
+						var groupid = $(this).attr('href');
+						$.post("./php/DeleteTelephonyInbound.php", { groupid: groupid } ,function(data){
 							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
-								alert("<?php $lh->translateText("inbound_successfully_deleted"); ?>");
+								alert("<?php $lh->translateText("ingroup_successfully_deleted"); ?>");
 								window.location = "index.php";
 							}
-							else { alert ("<?php $lh->translateText("unable_delete_list"); ?>: "+data); }
+							else { alert ("<?php $lh->translateText("unable_delete_ingroup"); ?>: "+data); }
 						});
 					}
 				 });
-				//phone number
+
+				//delete_ivr
+				  $("#modifyIVRDeleteButton").click(function (e) {
+					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
+					e.preventDefault();
+					if (r == true) {
+						var ivr = $(this).attr('href');
+						$.post("./php/DeleteTelephonyInbound.php", { ivr: ivr } ,function(data){
+							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
+								alert("<?php $lh->translateText("ivr_successfully_deleted"); ?>");
+								window.location = "index.php";
+							}
+							else { alert ("<?php $lh->translateText("unable_delete_ivr"); ?>: "+data); }
+						});
+					}
+				 });
+
+				//delete_phonenumber
 				  $("#modifyDIDDeleteButton").click(function (e) {
 					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
 					e.preventDefault();
 					if (r == true) {
-						var listid = $(this).attr('href');
-						$.post("./php/DeleteTelephonyInbound.php", { listid: listid } ,function(data){
+						var did = $(this).attr('href');
+						$.post("./php/DeleteTelephonyInbound.php", { did: did } ,function(data){
 							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
-								alert("<?php $lh->translateText("inbound_successfully_deleted"); ?>");
+								alert("<?php $lh->translateText("did_successfully_deleted"); ?>");
 								window.location = "index.php";
 							}
-							else { alert ("<?php $lh->translateText("unable_delete_list"); ?>: "+data); }
+							else { alert ("<?php $lh->translateText("unable_delete_did"); ?>: "+data); }
 						});
 					}
 				 });
