@@ -3306,17 +3306,24 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    if ($output->result=="success") {
 	    # Result was OK!
-	    $columns = array("Name", "Status", "Start Call Date", "End Call Date", "Actions");
+	    // $columns = array("Name", "Status", "Start Call Date", "End Call Date", "Actions");
+	    $columns = array("Date", "Customer", "Phone Number", "Agent", "Duration", "Actions");
 		    $result = $this->generateTableHeaderWithItems($columns, "recordings", "table-bordered table-striped", true, false); 
 
 	    for($i=0;$i<count($output->list_id);$i++){
 			$action = $this->getUserActionMenuForCallRecording($output->uniqueid[$i], $output->location[$i]);
+
+			$d1 = strtotime($output->start_last_local_call_time[$i]);
+			$d2 = strtotime($output->end_last_local_call_time[$i]);
+
+			$diff = abs($d2 - $d1);
 			
 			$result .= "<tr>
-				<td>".$output->users[$i]."</td>
-				<td>".$output->status[$i]."</td>
-				<td>".$output->start_last_local_call_time[$i]."</td>
 				<td>".$output->end_last_local_call_time[$i]."</td>
+				<td>".$output->full_name[$i]."</td>
+				<td>".$output->phone_number[$i]."</td>
+				<td>".$output->users[$i]."</td>
+				<td>".gmdate('H:i:s', $diff)."</td>
 				<td>".$action."</td>
 				</tr>";
 	    }

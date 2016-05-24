@@ -113,7 +113,7 @@
 								  <tr>
 									 <th>Campaign ID</th>
 									 <th>Campaign Name</th>
-									 <th class='hide-on-medium hide-on-low'>Dial Method</th>
+									 <th class='hide-on-medium hide-on-low'>Type</th>
 									 <th>Status</th>
 									 <th>Action</th>
 								  </tr>
