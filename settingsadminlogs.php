@@ -69,7 +69,7 @@
                                     <h3 class="box-title"><?php $lh->translateText("admin_logs"); ?></h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table" id="scripts_table">
-									<?php print $ui->getTelephonyScripts(); ?>
+									
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>
