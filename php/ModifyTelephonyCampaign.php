@@ -88,7 +88,7 @@ if ($leadfilter != NULL) {
 	$postfields["responsetype"] = responsetype; #json (required)
 	$postfields["lead_filter_id"] = $leadfilter;
 	$postfields["lead_filter_name"] = $name;
-
+	$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, $header);

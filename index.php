@@ -56,12 +56,14 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Creamy</title>
+        <title>Dashboard</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+     
+		<!--<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />-->
+        
+		<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
 		
@@ -85,9 +87,28 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		
 		<!-- Circle Buttons style -->
 		  <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+		
+         <!-- theme_dashboard folder -->
+					<!-- FONT AWESOME-->
+			<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
+					<!-- SIMPLE LINE ICONS-->
+			<link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">
+					<!-- ANIMATE.CSS-->
+			<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">
+					<!-- WHIRL (spinners)-->
+			<link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
+				<!-- =============== PAGE VENDOR STYLES ===============-->
+					<!-- WEATHER ICONS-->
+			<link rel="stylesheet" href="theme_dashboard/weather-icons/css/weather-icons.min.css">
+				<!-- =============== BOOTSTRAP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+				<!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+		
+		
     </head>
     <?php print $ui->creamyBody(); ?>
-        <div class="wrapper">
+        <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
 	        <!-- header logo: style can be found in header.less -->
 			<?php print $ui->creamyHeader($user); ?>
 
@@ -97,25 +118,165 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="content-wrapper">
                 <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <h1>
-						<!-- Page title -->
+                <section class="content-heading">
+                    
+					<!-- START Language list-->
+					<div class="pull-right">
+					   <div class="btn-group">
+						  <button type="button" data-toggle="dropdown" class="btn btn-default">English</button>
+						  <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
+							 <li><a href="#" data-set-lang="en">English</a>
+							 </li>
+							 <li><a href="#" data-set-lang="es">Spanish</a>
+							 </li>
+						  </ul>
+					   </div>
+					</div>
+					<!-- END Language list    -->
+					
+					<!-- Page title -->
 						<?php
 							if ($user->userHasAdminPermission()) {
-								header("location: test_dashboard.php");
+								$lh->translateText("Dashboard");
+						?>
+							<small class="ng-binding">Welcome to Goautodial  !</small>
+						<?php
+							}else{
+								$lh->translateText("home");
+						?>
+							<small><?php $lh->translateText("your_creamy_dashboard"); ?></small>
+						<?php
 							}
 						?>
-                        <?php $lh->translateText("home"); ?>
-                        <small><?php $lh->translateText("your_creamy_dashboard"); ?></small>
-                    </h1>
+                    
+					<!--
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-bar-chart-o"></i> <?php $lh->translateText("home"); ?></a></li>
                     </ol>
+					--> 	
                 </section>
 
                 <!-- Main content -->
                 <section class="content">
-
+					
+	<!--====== STATUS BOXES =======-->
+		<style>
+			.status_boxes{
+				margin-top:-5px;
+			}
+		</style>
+			<div class="row">
+               <div class="col-lg-3 col-sm-6">
+                  <!-- START widget-->
+                  <div class="panel pt b0 widget">
+                     <div class="ph">
+						<div class="pull-right">
+							<span class="fa-stack">
+								<em class="fa fa-circle fa-stack-2x text-red status_boxes"></em>
+								<em class="icon-people fa-lg fa-stack-1x fa-inverse text-white pull-right"></em>
+							</span>
+						</div>
+                        <div class="h2 mt0">
+							<span class="text-lg" id="refresh_totalagentscall"></span>
+								<span class="text-sm">Agent(s) On Call</span><br/>
+							<div style="padding-left: 5px;" class="text-purple">
+								<span class="text-orange" id="refresh_totalagentspaused"></span>
+									<span class="text-sm text-orange">Agent(s) On Paused</span><br/>
+								<span class="text-green" id="refresh_totalagentswaitcalls"></span>
+									<span class="text-sm text-green">Agent(s) Waiting</span><br/>
+							</div>
+						</div>
+                        <div class="text-uppercase">AGENTS</div>
+                     </div>
+                     <div data-sparkline="" data-type="line" data-width="100%" data-height="75px" data-line-color="#23b7e5" data-chart-range-min="0" data-fill-color="#23b7e5" data-spot-color="#23b7e5" data-min-spot-color="#23b7e5" data-max-spot-color="#23b7e5"
+                     data-highlight-spot-color="#23b7e5" data-highlight-line-color="#23b7e5" values="2,5,3,7,4,5" style="margin-bottom: -2px" data-resize="true"></div>
+					 <canvas style="display: inline-block; width: 287px; height: 10px; vertical-align: top;" width="287" height="75"></canvas>
+				  </div>
+               </div>
+               <div class="col-lg-3 col-sm-6">
+                  <!-- START widget-->
+                  <div class="panel widget pt b0 widget">
+                     <div class="ph">
+						<div class="pull-right">
+							<span class="fa-stack">
+								<em class="fa fa-circle fa-stack-2x text-green status_boxes"></em>
+								<em class="fa fa-money fa-lg fa-stack-1x fa-inverse text-white status_boxes"></em>
+							</span>
+						</div>
+                        <div class="h2 mt0">
+							<span class="text-lg" id="refresh_GetTotalSales"></span>
+								<span class="text-sm">TOTAL Sales</span><br/>
+							<div style="padding-left: 5px;">
+								<span class="text-orange" id="refresh_GetINSalesHour"></span>
+									<span class="text-sm text-orange">Inbound Sales</span><br/>
+								<span class="text-green" id="refresh_GetOUTSalesPerHour"></span>
+									<span class="text-sm text-green">Outbound Sales</span><br/>
+							</div>
+                        </div>
+                        <div class="text-uppercase mb0">SALES</div>
+                     </div>
+                     <div data-sparkline="" data-type="line" data-width="100%" data-height="75px" data-line-color="#7266ba" data-chart-range-min="0" data-fill-color="#7266ba" data-spot-color="#7266ba" data-min-spot-color="#7266ba" data-max-spot-color="#7266ba"
+                     data-highlight-spot-color="#7266ba" data-highlight-line-color="#7266ba" values="1,4,5,4,8,7,10" style="margin-bottom: -2px" data-resize="true"></div>
+					 
+					 <canvas style="display: inline-block; width: 287px; height: 10px; vertical-align: top;" width="287" height="75"></canvas>
+				  </div>
+               </div>
+               <div class="col-lg-3 col-md-6 col-sm-12">
+                  <!-- START widget-->
+                  <div class="panel widget pt b0 widget">
+                     <div class="ph">
+						<div class="pull-right">
+							<span class="fa-stack">
+								<em class="fa fa-circle fa-stack-2x text-orange status_boxes"></em>
+								<em class="icon-note fa-lg fa-stack-1x fa-inverse text-white"></em>
+							</span>
+						</div>
+                        <div class="h2 mt0">
+							<span class="text-lg" id="refresh_GetTotalActiveLeads"></span>
+								<span class="text-sm">Total Active Leads</span><br/>
+							<div style="padding-left: 5px;">
+								<span class="text-orange" id="refresh_GetLeadsinHopper"></span>
+									<span class="text-sm text-orange">Leads in Hopper</span><br/>
+								<span class="text-green" id="refresh_GetTotalDialableLeads"></span>
+									<span class="text-sm text-green">Dialable Leads</span><br/>
+							</div>
+						</div>
+                        <div class="text-uppercase">LEADS</div>
+                     </div>
+                     <div data-sparkline="" data-type="line" data-width="100%" data-height="75px" data-line-color="#23b7e5" data-chart-range-min="0" data-fill-color="#23b7e5" data-spot-color="#23b7e5" data-min-spot-color="#23b7e5" data-max-spot-color="#23b7e5"
+                     data-highlight-spot-color="#23b7e5" data-highlight-line-color="#23b7e5" values="4,5,3,10,7,15" style="margin-bottom: -2px" data-resize="true"></div>
+					 <canvas style="display: inline-block; width: 287px; height: 10px; vertical-align: top;" width="287" height="75"></canvas>
+				  </div>
+               </div>
+               <div class="col-lg-3 col-md-6 col-sm-12">
+                  <!-- START widget-->
+                  <div class="panel widget pt b0 widget">
+                     <div class="ph">
+						<div class="pull-right">
+							<span class="fa-stack">
+								<em class="fa fa-circle fa-stack-2x text-light-blue status_boxes"></em>
+								<em class="icon-earphones-alt fa-lg fa-stack-1x fa-inverse text-white"></em>
+							</span>
+						</div>
+                        <div class="h2 mt0" id="autoload_calls">
+							<span class="text-lg" id="refresh_Totalcalls"></span>
+								<span class="text-sm">Total Calls</span><br/>
+							<div style="padding-left: 5px;">
+								<span class="text-orange" id="refresh_RingingCall"></span>
+									<span class="text-sm text-orange">Call(s) Ringing</span><br/>
+								<span class="text-green" id="refresh_LiveOutbound"></span>
+									<span class="text-sm text-green">Live Outbound</span><br/>
+							</div>
+						</div>
+                        <div class="text-uppercase">Calls</div>
+                     </div>
+                     <div data-sparkline="" data-type="line" data-width="100%" data-height="75px" data-line-color="#7266ba" data-chart-range-min="0" data-fill-color="#7266ba" data-spot-color="#7266ba" data-min-spot-color="#7266ba" data-max-spot-color="#7266ba"
+                     data-highlight-spot-color="#7266ba" data-highlight-line-color="#7266ba" values="1,3,4,5,7,8" style="margin-bottom: -2px" data-resize="true"></div>
+					 <canvas style="display: inline-block; width: 287px; height: 10px; vertical-align: top;" width="287" height="75"></canvas>
+				  </div>
+               </div>
+            </div>
+					
 					<!-- Update (if needed) -->
                     <?php
 						require_once('./php/Updater.php');
@@ -150,62 +311,347 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                             </div>
                         </section>
                     </div>   <!-- /.row -->
-					<?php } ?>
-
-                    <!-- Status boxes -->
-					<div class="row">
-						<?php print $ui->dashboardInfoBoxes($user->getUserId()); ?>
-			        </div><!-- /.row -->                    
-
-                     <!-- Statistics -->
+					<?php } ?>          
+	
+	<!--===== CHART =======-->
+                <!-- wrapper for chart and loader -->
                     <div class="row">
-                        <!-- Left col -->
-                        <section class="col-md-7"> 
-	                    	<!-- Gráfica de clientes -->   
-	                        <div class="box box-default">
-	                            <div class="box-header">
-	                                <i class="fa fa-bar-chart-o"></i>
-	                                <h3 class="box-title"><?php $lh->translateText("customer_statistics"); ?></h3>
-	                            </div>
-                                <div class="box-body" id="graph-box"><div>
-	                            <?php if ($statsOk) { ?>
-									<canvas id="lineChart" height="250"></canvas>
-	                            <?php } else { 
-		                        	print $ui->calloutWarningMessage($lh->translationFor("no_statistics_yet"));
-		                        } ?>
-	                            </div></div>
-	                        </div>
-                        </section><!-- /.Left col -->
-						<!-- Left col -->
-                        <section class="col-md-5"> 
-	                    	<!-- Gráfica de clientes -->   
-	                        <div class="box box-default">
-	                            <div class="box-header">
-	                                <i class="fa fa-bar-chart-o"></i>
-	                                <h3 class="box-title"><?php $lh->translateText("current_customer_distribution"); ?></h3>
-	                            </div>
-                                <div class="box-body" id="graph-box">
-		                            <?php if ($custsOk) { ?>
-	                                <div class="row">
-										<div class="col-md-8">
-											<canvas id="pieChart" height="250"></canvas>
-		                            	</div>
-		                            	<div class="col-md-4 chart-legend" id="customers-chart-legend">
-		                            	</div>
-	                                 </div>
-		                            <?php } else { 
-			                        	print $ui->calloutWarningMessage($lh->translationFor("no_customers_yet"));
-			                        	print $ui->simpleLinkButton("no_customers_add_customer", $lh->translationFor("create_new"), "customerslist.php?customer_type=clients_1");
-			                        } ?>
-	                            </div>
-	                        </div>
-							
-                        </section><!-- /.Left col -->
+					<!-- calls per hour chart-->
+                       <div class="col-lg-9">
+                          <!-- START widget-->
+                          <div id="panelChart9" ng-controller="FlotChartController" class="panel panel-default">
+                             <div class="panel-heading">
+                                <div class="panel-title">Calls Per Hour</div>
+                             </div>
+                             <div collapse="panelChart9" class="panel-wrapper">
+                                <div class="panel-body">
+                                   <div class="chart-splinev3 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)--> 
+                                </div>
+                             </div>
+                          </div>
+                          <!-- END widget-->
+                       </div>
+	<!--==== DROP CALLS PERCENTAGE PIE LOADER ======-->
+					   <div class="col-lg-3">
+							<div class="panel panel-default">
+							   <div class="panel-body">
+								<a href="#" class="text-muted pull-right">
+									 <em class="fa fa-arrow-right"></em>
+								</a>
+								<div class="text-muted">Dropped Calls Percentage</div>
+								
+								<center>
+									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
+										<input type="text"
+										class="knob" value="<?php echo $ui->API_GetDroppedPercentage();?>" data-width="150" data-height="150" data-padding="21px"
+										data-fgcolor="#dd4b39" data-readonly="true" readonly="readonly"
+										style="
+											width: 49px;
+											height: 100px;
+											position: absolute;
+											margin-top: 45px;
+											margin-left: -98px;
+											vertical-align: middle;
+											border: 0px;
+											font-style: normal;
+											font-variant: normal;
+											font-weight: bold;
+											/* font-stretch: normal; */
+											font-size: 30px;
+											line-height: normal;
+											font-family: Arial;
+											text-align: center;
+											color: #dd4b39;
+											padding: 0px;
+											-webkit-appearance: none;
+											background: none;
+										">
+									</div>
+								</center>
+								<div class="panel-footer">
+								   <p class="text-muted">
+									  <em class="fa fa-upload fa-fw"></em>
+									  <span>This day: <?php echo $ui->API_GetDroppedPercentage();?>%</span>
+								   </p>
+								</div>
+								</div>
+							 </div>
+						</div>
+                    <!-- END chart-->
+					</div><!-- end of 2nd row -->
+		<!-- 3rd row -->
+					<div class="row">
+						<div class="col-lg-9">
+						   <!-- START panel tab-->
+						   <div role="tabpanel" class="panel panel-transparent">
+							  <ul role="tablist" class="nav nav-tabs nav-justified">
+							  
+							  <!-- Nav task panel tabs-->
+								 <li role="presentation" class="active">
+									<a href="#cluster_status" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+									   <em class="fa fa-bar-chart-o fa-fw"></em>Cluster Status</a>
+								 </li>
+							<!-- transaction panel tab -->
+								 <li role="presentation">
+									<a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="bb0">
+									   <em class="fa fa-money fa-fw"></em>Transactions Panel</a>
+								 </li>
+							  </ul>
+							  
+							<!-- Tab panes-->
+							<div class="tab-content p0 bg-white">
+							   <div id="cluster_status" role="tabpanel" class="tab-pane active">
+								<!-- Cluster Status -->
+								<div class="table-responsive">
+									<table class="table table-striped table-bordered table-hover" style="height: 242px;">
+									   <thead>
+										  <tr>
+											 <th>SERVER ID</th>
+											 <th>SERVER IP</th>
+											 <th>STATUS</th>
+											 <th>LOAD</th>
+											 <th>CHANNELS</th>
+											 <th>DISK</th>
+											 <th>TIME</th>
+										  </tr>
+									   </thead>
+									   <tbody>
+											<tr>
+												<td><center><span id="refresh_server_id"></span></center></td>
+												<td><center><span id="refresh_server_ip"></span></center></td>
+												<td><span id="refresh_active"></span></td>
+												<td><center><span id="refresh_sysload"></span> - <span id="refresh_cpu"></span></center></td>
+												<td><center><span id="refresh_channels_total"></span></center></td>
+												<td><center><span id="refresh_disk_usage"></span></center></td>
+												<td><span id="refresh_s_time"></span></td>
+												
+											</tr>
+											<tr>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td><b>PHP Time</b></td>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td><span id="refresh_php_time"></span></td>
+											</tr>
+											<tr>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td><b>DB Time</b></td>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td>&nbsp;</td>
+												<td><span id="refresh_db_time"></span></td>
+											</tr>
+									   </tbody>
+									</table>
+								</div>
+								<div class="panel-footer text-right">&nbsp;</div>
+							 </div>
+							<!--===== 2nd tab =====-->
+								 <div id="profile" role="tabpanel" class="tab-pane">
+									<!-- START table responsive-->
+									<div class="table-responsive">
+									   <table class="table table-bordered table-hover table-striped">
+										  <thead>
+											 <tr>
+												<th>Order #</th>
+												<th>Order Date</th>
+												<th>Order Time</th>
+												<th>Amount (USD)</th>
+											 </tr>
+										  </thead>
+										  <tbody>
+											 <tr>
+												<td>3326</td>
+												<td>10/21/2013</td>
+												<td>3:29 PM</td>
+												<td>$321.33</td>
+											 </tr>
+										  </tbody>
+									   </table>
+									</div>
+									<!-- END table responsive-->
+									<div class="panel-footer text-right"><a href="#" class="btn btn-default btn-sm">View All Transactions</a>
+									</div>
+								 </div>
+							  </div>
+						   </div>
+						   <!-- END panel tab-->
+						</div><!-- end of tasks and transaction panels -->
 						
-                    </div><!-- /.row (main row) -->
-				
-					<?php print $ui->hooksForDashboard(); ?>
+					<!-- START loader widget-->
+						<div class="col-lg-3">
+							<div class="panel panel-default">
+							   <div class="panel-body">
+									<a href="#" class="text-muted pull-right">
+										 <em class="fa fa-arrow-right"></em>
+									</a>
+									<div class="text-muted">Load Percentage</div>
+									<center>
+										<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
+											<input type="text"
+											class="knob" value="30" data-width="150" data-height="150" data-padding="21px"
+											data-fgcolor="#f0ad4e" data-readonly="true" readonly="readonly"
+											style="
+												width: 49px;
+												height: 100px;
+												position: absolute;
+												margin-top: 45px;
+												margin-left: -98px;
+												vertical-align: middle;
+												border: 0px;
+												font-style: normal;
+												font-variant: normal;
+												font-weight: bold;
+												/* font-stretch: normal; */
+												font-size: 30px;
+												line-height: normal;
+												font-family: Arial;
+												text-align: center;
+												color: #f0ad4e;
+												padding: 0px;
+												-webkit-appearance: none;
+												background: none;
+											">
+										</div>
+									</center>
+								   <div class="panel-footer">
+									  <p class="text-muted">
+										 <em class="fa fa-upload fa-fw"></em>
+										 <span>This Month</span>
+										 <span class="text-dark">1000 Gb</span>
+									  </p>
+								   </div>
+								</div>
+								<!-- END loader widget-->
+							</div>
+						</div>
+						
+					</div><!-- end of row -->
+						
+					<div class="row">
+						<!-- Team Messages -->
+						<div class="col-lg-6">
+							<div class="panel panel-default">
+							   <div class="panel-heading">
+								  <div class="pull-right label label-danger">5</div>
+								  <div class="pull-right label label-success">12</div>
+								  <div class="panel-title">Team messages</div>
+							   </div>
+							   <!-- START list group-->
+							   <div data-height="230" data-scrollable="" class="list-group">
+								  <!-- START list group item-->
+								  <a href="#" class="list-group-item">
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/02.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <small class="pull-right">2h</small>
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis</strong>
+										   <p class="mb-sm">
+											  <small>Goautodial, the best...</small>
+										   </p>
+										</div>
+									 </div>
+								  </a>
+								  <!-- END list group item-->
+								  <!-- START list group item-->
+								  <a href="#" class="list-group-item">
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/03.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <small class="pull-right">3h</small>
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-success circle-lg text-left"></span>Jessica Silva</strong>
+										   <p class="mb-sm">
+											  <small>James is macho.</small>
+										   </p>
+										</div>
+									 </div>
+								  </a>
+								  <!-- END list group item-->
+								  <!-- START list group item-->
+								  <a href="#" class="list-group-item">
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/09.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <small class="pull-right">4h</small>
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-danger circle-lg text-left"></span>Jessie Wells</strong>
+										   <p class="mb-sm">
+											  <small>DOTA tiiiime...</small>
+										   </p>
+										</div>
+									 </div>
+								  </a>
+								  <!-- END list group item-->
+								  <!-- START list group item-->
+								  <a href="#" class="list-group-item">
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/12.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <small class="pull-right">1d</small>
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-danger circle-lg text-left"></span>Rosa Burke</strong>
+										   <p class="mb-sm">
+											  <small>Go letran!</small>
+										   </p>
+										</div>
+									 </div>
+								  </a>
+								  <!-- END list group item-->
+								  <!-- START list group item-->
+								  <a href="#" class="list-group-item">
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/10.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <small class="pull-right">2d</small>
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-danger circle-lg text-left"></span>Michelle Lane</strong>
+										   <p class="mb-sm">
+											  <small>Watching secret affair right now...</small>
+										   </p>
+										</div>
+									 </div>
+								  </a>
+								  <!-- END list group item-->
+							   </div>
+							   <!-- END list group-->
+							   <!-- START panel footer-->
+							   <div class="panel-footer clearfix">
+								  <div class="input-group">
+									 <input type="text" placeholder="Search message .." class="form-control input-sm">
+									 <span class="input-group-btn">
+										<button type="submit" class="btn btn-default btn-sm"><i class="fa fa-search"></i>
+										</button>
+									 </span>
+								  </div>
+							   </div>
+							   <!-- END panel-footer-->
+							</div>
+						</div><!-- end team messages -->
+			<!--==== VECTOR MAP LOADER ======-->
+						<div ng-controller="VectorMapController" class="col-lg-6">
+							<div class="panel panel-transparent">
+							   <div data-vector-map="" data-height="450" data-scale='0' data-map-name="world_mill_en"></div>
+							</div>
+						 </div>
+
+					</div>
 					
+					<?php print $ui->hooksForDashboard(); ?>
 					
 					<div class="bottom-menu skin-blue">
 						<?php print $ui->getCircleButton("calls", "plus"); ?>
@@ -216,126 +662,6 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 								</ul>
 							</div>
 					</div>
-					
-					<div class="modal fade" id="add_campaigns_modal" name="add_campaigns_modal" tabindex="-1" role="dialog" aria-hidden="true">
-			        <div class="modal-dialog">
-			            <div class="modal-content">
-						
-			                <div class="modal-header">
-			                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                    <h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translateText("Campaign Wizard"); ?></b></h4>
-			                </div>
-
-			                <form action="" method="post" name="" id="">
-			                    <div class="modal-body">
-			                        <div class="form-group">
-										<center><h4><b><?php $lh->translateText("Step 1  » Outbound"); ?> </b></h4></center>
-			                            <label for="campaign_type"><?php $lh->translateText("Campaign Type"); ?></label>
-			                            <input type="text required" class="form-control" id="campaign_type" name="campaign_type" placeholder="<?php $lh->translateText("Campaign Type"); ?>">
-										
-										<label for="campaign_id"><?php $lh->translateText("Campaign ID"); ?></label>
-			                            <input type="text required" class="form-control" id="campaign_id" name="campaign_id" placeholder="<?php $lh->translateText("Campaign ID"); ?>">
-										
-										<label for="campaign_name"><?php $lh->translateText("Campaign Name"); ?></label>
-			                            <input type="text required" class="form-control" id="campaign_name" name="campaign_name" placeholder="<?php $lh->translateText("Campaign Name"); ?>">
-										
-									<hr/>
-										<center><h4><b><?php $lh->translateText("Step 2  » Load Leads"); ?> </b></h4></center>
-										<label for="lead_file"><?php $lh->translateText("Lead File"); ?></label>
-			                            <input type="file" class="form-control" id="lead_file" name="lead_file" placeholder="<?php $lh->translateText("Lead File"); ?>">
-										
-										<label for="list_id"><?php $lh->translateText("List ID"); ?></label>
-			                            <input type="text required" class="form-control" id="list_id" name="list_id" placeholder="<?php $lh->translateText("List ID"); ?>">
-										
-										<label for="country"><?php $lh->translateText("Country"); ?></label>
-			                            <input type="text required" class="form-control" id="country" name="country" placeholder="<?php $lh->translateText("Country"); ?>">
-										
-										<label for="duplicate_check"><?php $lh->translateText("Check For Duplicates"); ?></label>
-			                            <select id="duplicate_check" class="form-control">
-											<option>NO DUPLICATE CHECK</option>
-											<option>CHECK DUPLICATES BY PHONE IN LIST ID</option>
-											<option>CHECK DUPLICATES BY PHONE IN ALL CAMPAIGN LISTS</option>
-										</select><br/>
-										<button type="button" class="btn"> U P L O A D   L E A D S</button>
-										
-									<hr/>
-										<center><h4><b><?php $lh->translateText("Step 3  » Information"); ?> </b></h4></center>
-										<label for="dial_method"><?php $lh->translateText("Dial Method"); ?></label>
-										<select id="dial_method" class="form-control">
-											<option>MANUAL</option>
-											<option>AUTO DIAL</option>
-											<option>PREDICTIVE</option>
-											<option>INBOUND MAN</option>
-										</select>	
-											
-										<label for="autodial_lvl"><?php $lh->translateText("AutoDial Level"); ?></label>
-										<select id="autodial_lvl" class="form-control">
-											<option>OFF</option>
-											<option>SLOW</option>
-											<option>NORMAL</option>
-											<option>HIGH</option>
-											<option>MAX</option>
-											<option>MAX PREDICTIVE</option>
-										</select>
-										<label for="carrier_for_campaign"><?php $lh->translateText("Carrier to use for this Campaign"); ?></label>
-										<select id="carrier_for_campaign" >
-											<option>CUSTOM DIAL PREFIX</option>
-										</select>
-										<input type="number">
-										<br/>
-										<label for="answering_machine"><?php $lh->translateText("Answering Machine Detection"); ?></label>
-										<select id="answering_machine" class="form-control">
-											<option>ON</option>
-											<option>OFF</option>
-										</select>
-									</div>
-			                    </div>
-			                    <div class="modal-footer clearfix">
-			                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal" id="changetaskCancelButton"><i class="fa fa-times"></i> <?php $lh->translateText("cancel"); ?></button>
-			                        <button type="submit" class="btn btn-primary pull-right" id="changeeventsOkButton"><i class="fa fa-check"></i> <?php $lh->translateText("Add New Campaign"); ?></button>
-								</div>
-								
-			                </form>
-							
-			            </div><!-- /.modal-content -->
-			        </div><!-- /.modal-dialog -->
-			    </div><!-- /.modal -->	
-				
-				
-				<!-- USERS MODAL -->
-				<div class="modal fade" id="add_users" name="add_users" tabindex="-1" role="dialog" aria-hidden="true">
-			        <div class="modal-dialog">
-			            <div class="modal-content">
-
-			                <div class="modal-header">
-			                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                    <h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translateText("User Wizard"); ?></b></h4>
-			                </div>
-							
-			                <form action="" method="post" name="" id="">
-			                    <div class="modal-body">
-									<div class="form-group">
-										<center><h4><b><?php $lh->translateText("Step 1  » Add New User"); ?> </b></h4></center>
-			                        
-									<div class="progress">
-										<div class="progress-bar" role="progressbar" aria-valuenow="0"
-										aria-valuemin="0" aria-valuemax="100" style="width:0%">
-										  0%
-										</div>
-									</div>
-									</div>
-			                    </div>
-			                    <div class="modal-footer clearfix">
-			                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal" id="changetaskCancelButton"><i class="fa fa-times"></i> <?php $lh->translateText("cancel"); ?></button>
-			                        <button type="submit" class="btn btn-primary pull-right" id="changeeventsOkButton"><i class="fa fa-check"></i> <?php $lh->translateText("Add New Campaign"); ?></button>
-								</div>
-								
-			                </form>
-							
-			            </div><!-- /.modal-content -->
-			        </div><!-- /.modal-dialog -->
-			    </div><!-- /.modal -->
-				
 				
                 </section><!-- /.content -->
 				
@@ -343,114 +669,370 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 			
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
+
+<?php
+	/*
+	 * Modal Dialogs
+	*/
+		include_once ("./php/ModalPasswordDialogs.php");
+
+	/*
+	 * get API data for chart from UIHandler.php
+	*/
+
+	$callsperhour = $ui->API_getCallPerHour();
+	//var_dump($callsperhour);
 		
+		$max = 0;
+
+		 $callsperhour = explode(";",trim($callsperhour, ';'));
+		 foreach ($callsperhour AS $temp) {
+		   $temp = explode("=",$temp);
+		   $results[$temp[0]] = $temp[1];
+		 }
+	
+		$outbound_calls = max($results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
 		
+		$inbound_calls = max($results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
+		
+		$dropped_calls = max($results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
+		
+		$max = max($inbound_calls, $outbound_calls, $dropped_calls);
+	
+		
+		if($max <= 5){
+			$max = 5;
+		}
+
+	//var_dump($results);
+	
+?>
+<script>
+	/*
+	 * JQuery Knob = need for dropped calls percentage and other pie loader
+	*/
+		$(function () {
+		  /* jQueryKnob */
+	  
+		  $(".knob").knob({
+			draw: function () {
+	  
+			  // "tron" case
+			  if (this.$.data('skin') == 'tron') {
+	  
+				var a = this.angle(this.cv)  // Angle
+					, sa = this.startAngle          // Previous start angle
+					, sat = this.startAngle         // Start angle
+					, ea                            // Previous end angle
+					, eat = sat + a                 // End angle
+					, r = true;
+	  
+				this.g.lineWidth = this.lineWidth;
+	  
+				this.o.cursor
+				&& (sat = eat - 0.3)
+				&& (eat = eat + 0.3);
+	  
+				if (this.o.displayPrevious) {
+				  ea = this.startAngle + this.angle(this.value);
+				  this.o.cursor
+				  && (sa = ea - 0.3)
+				  && (ea = ea + 0.3);
+				  this.g.beginPath();
+				  this.g.strokeStyle = this.previousColor;
+				  this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false);
+				  this.g.stroke();
+				}
+	  
+				this.g.beginPath();
+				this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
+				this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false);
+				this.g.stroke();
+	  
+				this.g.lineWidth = 2;
+				this.g.beginPath();
+				this.g.strokeStyle = this.o.fgColor;
+				this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
+				this.g.stroke();
+	  
+				return false;
+			  }
+			}
+		  });
+		  /* END JQUERY KNOB */
+		});
+</script>
+	
+<!--========== REFRESH DIVS ==============-->
+	<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>
+	<script src="js/load_statusboxes.js"></script>
+	<script src="js/load_clusterstatus.js"></script>
+
 	<script>
+	/*
+	 * Inbound and Outbound Calls Per Hour Data
+	*/
+		(function(window, document, $, undefined){
+			$(function(){
+				var datav3 = [
+					{
+					"label": "Outbound Calls",
+					"color": "#656565",
+					"data": [
+					<?php
+					if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9o"]) && $outbound_calls != 0){
+						echo '["9AM",'.$results["Hour9o"].'],';
+						echo '["10AM",'.$results["Hour10o"].'],';
+						echo '["11AM",'.$results["Hour11o"].'],';
+						echo '["12NN",'.$results["Hour12o"].'],';
+						echo '["1AM",'.$results["Hour13o"].'],';
+						echo '["2PM",'.$results["Hour14o"].'],';
+						echo '["3PM",'.$results["Hour15o"].'],';
+						echo '["4PM",'.$results["Hour16o"].'],';
+						echo '["5PM",'.$results["Hour17o"].'],';
+						echo '["6PM",'.$results["Hour18o"].'],';
+						echo '["7PM",'.$results["Hour19o"].'],';
+						echo '["8PM",'.$results["Hour20o"].'],';
+						echo '["9PM",'.$results["Hour21o"].']';
+					}else{
+						echo '["9AM", 0],';
+						echo '["10AM", 0],';
+						echo '["11AM", 0],';
+						echo '["12NN", 0],';
+						echo '["1AM", 0],';
+						echo '["2PM", 0],';
+						echo '["3PM", 0],';
+						echo '["4PM", 0],';
+						echo '["5PM", 0],';
+						echo '["6PM", 0],';
+						echo '["7PM", 0],';
+						echo '["8PM", 0],';
+						echo '["9PM", 0]';
+					}
+					?>]
+					},{
+						"label": "Inbound Calls",
+						"color": "#F39C12",
+						"data": [
+						<?php
+						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9"]) && $inbound_calls != 0){
+							echo '["9AM",'.$results["Hour9"].'],';
+							echo '["10AM",'.$results["Hour10"].'],';
+							echo '["11AM",'.$results["Hour11"].'],';
+							echo '["12NN",'.$results["Hour12"].'],';
+							echo '["1AM",'.$results["Hour13"].'],';
+							echo '["2PM",'.$results["Hour14"].'],';
+							echo '["3PM",'.$results["Hour15"].'],';
+							echo '["4PM",'.$results["Hour16"].'],';
+							echo '["5PM",'.$results["Hour17"].'],';
+							echo '["6PM",'.$results["Hour18"].'],';
+							echo '["7PM",'.$results["Hour19"].'],';
+							echo '["8PM",'.$results["Hour20"].'],';
+							echo '["9PM",'.$results["Hour21"].']';
+						}else{
+							echo '["9AM", 0],';
+							echo '["10AM", 0],';
+							echo '["11AM", 0],';
+							echo '["12NN", 0],';
+							echo '["1AM", 0],';
+							echo '["2PM", 0],';
+							echo '["3PM", 0],';
+							echo '["4PM", 0],';
+							echo '["5PM", 0],';
+							echo '["6PM", 0],';
+							echo '["7PM", 0],';
+							echo '["8PM", 0],';
+							echo '["9PM", 0]';
+						}
+						?>]
+					},{
+					"label": "Dropped Calls",
+					"color": "#dd4b39",
+					"data": [
+					<?php
+						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9d"]) && $dropped_calls != 0){
+							echo '["9AM",'.$results["Hour9d"].'],';
+							echo '["10AM",'.$results["Hour10d"].'],';
+							echo '["11AM",'.$results["Hour11d"].'],';
+							echo '["12NN",'.$results["Hour12d"].'],';
+							echo '["1AM",'.$results["Hour13d"].'],';
+							echo '["2PM",'.$results["Hour14d"].'],';
+							echo '["3PM",'.$results["Hour15d"].'],';
+							echo '["4PM",'.$results["Hour16d"].'],';
+							echo '["5PM",'.$results["Hour17d"].'],';
+							echo '["6PM",'.$results["Hour18d"].'],';
+							echo '["7PM",'.$results["Hour19d"].'],';
+							echo '["8PM",'.$results["Hour20d"].'],';
+							echo '["9PM",'.$results["Hour21d"].']';
+						}else{
+							echo '["9AM", 0],';
+							echo '["10AM", 0],';
+							echo '["11AM", 0],';
+							echo '["12NN", 0],';
+							echo '["1AM", 0],';
+							echo '["2PM", 0],';
+							echo '["3PM", 0],';
+							echo '["4PM", 0],';
+							echo '["5PM", 0],';
+							echo '["6PM", 0],';
+							echo '["7PM", 0],';
+							echo '["8PM", 0],';
+							echo '["9PM", 0]';
+						}
+						?>]
+					}];
+					
+				var options = {
+					series: {
+						lines: {
+							show: false
+						},
+						points: {
+							show: true,
+							radius: 4
+						},
+						splines: {
+							show: true,
+							tension: 0.4,
+							lineWidth: 1,
+							fill: 0.5
+						}
+					},
+					grid: {
+						borderColor: '#eee',
+						borderWidth: 1,
+						hoverable: true,
+						backgroundColor: '#fcfcfc'
+					},
+					tooltip: true,
+					tooltipOpts: {
+						content: function (label, x, y) { return y + ' ' + label + ' around ' + x; }
+					},
+					xaxis: {
+						tickColor: '#fcfcfc',
+						mode: 'categories'
+					},
+					yaxis: {
+						min: 0,
+						max: <?php echo $max;?>, // optional: use it for a clear represetation
+						tickColor: '#eee',
+						//position: 'right' or 'left',
+						tickFormatter: function (v) {
+							return v/* + ' visitors'*/;
+						}
+					},
+					shadowSize: 0
+				  };
+				  var chartv3 = $('.chart-splinev3');
+				  if(chartv3.length)
+					$.plot(chartv3, datav3, options);
+			});
+		})(window, document, window.jQuery);
+		
+		
 		$(document).ready(function(){
+	// ---- Fixed Action Button
 			$(".bottom-menu").on('mouseenter mouseleave', function () {
 			  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 			});
+			
+	// ---- status boxes
+		// ---- agents 
+			load_totalagentscall(); 
+			load_totalagentspaused();
+			load_totalagentswaitingcall();
+		// ---- sales	
+			load_totalSales();
+			load_INSalesHour();
+			load_OUTSalesPerHour();
+		// ---- leads
+			load_TotalActiveLeads();
+			load_LeadsinHopper();
+			load_TotalDialableLeads();
+		// ---- calls
+			load_Totalcalls();
+			load_RingingCall();
+			load_LiveOutbound();
+			
+	// ---- clusterstatus table
+		// ---- server 
+			load_server_id(); 
+			load_server_ip();
+			load_active();
+			load_sysload();
+			load_cpu();
+			load_channels_total();
+			load_disk_usage();
+			load_s_time();
+		// ---- PHP TIME
+			load_php_time();
+		// ---- DB TIME
+			load_db_time();
 		});
+		
+	//Refresh functions() after 5000 millisecond
+		// ... status boxes ...
+		setInterval(load_totalagentscall,5000);
+		setInterval(load_totalagentspaused,5000);
+		setInterval(load_totalagentswaitingcall,5000);
+		
+		setInterval(load_totalSales,5000);
+		setInterval(load_INSalesHour,5000);
+		setInterval(load_OUTSalesPerHour,5000);
+		
+		setInterval(load_TotalActiveLeads,5000);
+		setInterval(load_LeadsinHopper,5000);
+		setInterval(load_TotalDialableLeads,5000);
+		
+		setInterval(load_Totalcalls,5000);
+		setInterval(load_RingingCall,5000);
+		setInterval(load_LiveOutbound,5000);
+		
+		// ... cluster status table ...
+		setInterval(load_server_id,5000);
+		setInterval(load_server_ip,5000);
+		setInterval(load_active,5000);
+		setInterval(load_sysload,5000);
+		setInterval(load_cpu,5000);
+		setInterval(load_channels_total,5000);
+		setInterval(load_disk_usage,5000);
+		setInterval(load_php_time,5000);
+		setInterval(load_db_time,5000);
 	</script>
-		<!-- Modal Dialogs -->
-		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-
-		<!-- Statistics -->
-		<?php if ($statsOk) { ?>
-		<script type="text/javascript">
-			
-			var lineChartData = {
-			  <?php print $ui->generateLineChartStatisticsData($colors); ?>
-	        };
-			
-		  var lineChartOptions = {
-          //Boolean - If we should show the scale at all
-          showScale: true,
-          //Boolean - Whether grid lines are shown across the chart
-          scaleShowGridLines: false,
-          //String - Colour of the grid lines
-          scaleGridLineColor: "rgba(0,0,0,.05)",
-          //Number - Width of the grid lines
-          scaleGridLineWidth: 1,
-          //Boolean - Whether to show horizontal lines (except X axis)
-          scaleShowHorizontalLines: true,
-		  // String - Template string for multiple tooltips
-		  multiTooltipTemplate: " <%= datasetLabel %> <%= value %>",
-		  //Boolean - Whether to show vertical lines (except Y axis)
-          scaleShowVerticalLines: true,
-          //Boolean - Whether the line is curved between points
-          bezierCurve: true,
-          //Number - Tension of the bezier curve between points
-          bezierCurveTension: 0.3,
-          //Boolean - Whether to show a dot for each point
-          pointDot: true,
-          //Number - Radius of each point dot in pixels
-          pointDotRadius: 4,
-          //Number - Pixel width of point dot stroke
-          pointDotStrokeWidth: 1,
-          //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-          pointHitDetectionRadius: 20,
-          //Boolean - Whether to show a stroke for datasets
-          datasetStroke: true,
-          //Number - Pixel width of dataset stroke
-          datasetStrokeWidth: 2,
-          //Boolean - Whether to fill the dataset with a color
-          datasetFill: false,
-          //String - A legend template
-          legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
-          //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-          maintainAspectRatio: false,
-          //Boolean - whether to make the chart responsive to window resizing
-          responsive: true
-        };
-
-        //-------------
-        //- LINE CHART -
-        //--------------
-        var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
-        var lineChart = new Chart(lineChartCanvas);
-        lineChart.Line(lineChartData, lineChartOptions);
-		</script>
-		<?php } ?>
-		<?php if ($custsOk) { ?>
-		<script type="text/javascript">
-
-        //-------------
-        //- PIE CHART -
-        //-------------
-        // Get context with jQuery - using jQuery's .get() method.
-        var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-        var PieData = [
-          <?php print $ui->generatePieChartStatisticsData($colors); ?>
-        ];
-        var pieOptions = {
-          //Boolean - Whether we should show a stroke on each segment
-          segmentShowStroke: true,
-          //String - The colour of each segment stroke
-          segmentStrokeColor: "#fff",
-          //Number - The width of each segment stroke
-          segmentStrokeWidth: 2,
-          //Number - The percentage of the chart that we cut out of the middle
-          percentageInnerCutout: 50, // This is 0 for Pie charts
-          //Number - Amount of animation steps
-          animationSteps: 100,
-          //String - Animation easing effect
-          animationEasing: "easeOutBounce",
-          //Boolean - Whether we animate the rotation of the Doughnut
-          animateRotate: true,
-          //Boolean - Whether we animate scaling the Doughnut from the centre
-          animateScale: false,
-          //Boolean - whether to make the chart responsive to window resizing
-          responsive: true,
-          // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-          maintainAspectRatio: false,
-          //String - A legend template
-          legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\" style=\"list-style-type: none;\"><% for (var i=0; i<segments.length; i++){%><li><i class=\"fa fa-circle-o\" style=\"color:<%=segments[i].fillColor%>\"> </i><%if(segments[i].label){%>  <%=segments[i].label%><%}%></li><%}%></ul>"
-        };
-        var pieChart = new Chart(pieChartCanvas).Doughnut(PieData, pieOptions);
-		$('#customers-chart-legend').html(pieChart.generateLegend());
-
-		</script>
-		<?php } ?>
+	
+    <!-- =============== VENDOR SCRIPTS ===============-->
+   <!-- JQUERY EASING-->
+   <script src="theme_dashboard/js/jquery.easing/js/jquery.easing.js"></script>
+   <!-- ANIMO-->
+   <script src="theme_dashboard/js/animo.js/animo.js"></script>
+   <!-- SLIMSCROLL-->
+   <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+   <!-- SCREENFULL-->
+   <script src="theme_dashboard/js/screenfull/dist/screenfull.js"></script>
+   <!-- LOCALIZE-->
+   <script src="theme_dashboard/js/jquery-localize-i18n/dist/jquery.localize.js"></script>
+   <!-- RTL demo--
+   <script src="theme_dashboard/js/demo/demo-rtl.js"></script>
+   <!-- =============== PAGE VENDOR SCRIPTS ===============-->
+   <!-- SPARKLINE-->
+   <script src="theme_dashboard/js/sparkline/index.js"></script>
+   <!-- FLOT CHART-->
+   <script src="theme_dashboard/js/Flot/jquery.flot.js"></script>
+   <script src="theme_dashboard/js/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+   <script src="theme_dashboard/js/Flot/jquery.flot.resize.js"></script>
+   <script src="theme_dashboard/js/Flot/jquery.flot.time.js"></script>
+   <script src="theme_dashboard/js/Flot/jquery.flot.categories.js"></script>
+   <script src="theme_dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
+   <!-- VECTOR MAP-->
+   <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+   <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+   <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-us-mill-en.js"></script>
+   
+   <!-- CLASSY LOADER-->
+   <script src="theme_dashboard/js/jquery-classyloader/js/jquery.classyloader.min.js"></script>
+   
+   <!-- =============== APP SCRIPTS ===============-->
+    <script src="theme_dashboard/js/app.js"></script>
+	<script src="theme_dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
     </body>
 </html>
