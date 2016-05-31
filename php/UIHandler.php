@@ -2906,6 +2906,22 @@ error_reporting(E_ERROR | E_PARSE);
 				}else{
 					$output->active[$i] = "Inactive";
 				}
+
+				if($output->dial_method[$i] == "RATIO"){
+					$output->dial_method[$i] = "AUTO DIAL";
+				}
+				
+				if($output->dial_method[$i] == "MANUAL"){
+					$output->dial_method[$i] = "MANUAL";
+				}
+				
+				if($output->dial_method[$i] == "ADAPT_TAPERED"){
+					$output->dial_method[$i] = "PREDICTIVE";
+				}
+
+				if($output->dial_method[$i] == "INBOUND_MAN"){
+					$output->dial_method[$i] = "INBOUND_MAN";
+				}
 				
 				$action = $this->getUserActionMenuForLists($output->list_id[$i], $output->list_name[$i]);
 				
