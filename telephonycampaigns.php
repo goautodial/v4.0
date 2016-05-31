@@ -499,6 +499,50 @@
 				    }
 				});
 			});
+			
+			/*
+			 *
+			 * Edit Actions
+			 *
+			*/
+			//EDIT CAMPAIGN
+			 $(".edit-campaign").click(function(e) {
+				e.preventDefault();
+				var url = './edittelephonycampaign.php';
+				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="campaign" value="' + $(this).attr('data-id') + '" /></form>');
+				//$('body').append(form);  // This line is not necessary
+				$(form).submit();
+			 });
+			 //EDIT IVR
+			 $(".edit-disposition").click(function(e) {
+				e.preventDefault();
+				var url = './edittelephonycampaign.php';
+				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="disposition" value="' + $(this).attr('data-id') + '" /></form>');
+				//$('body').append(form);  // This line is not necessary
+				$(form).submit();
+			 });
+			 //EDIT PHONENUMBER/DID
+			 $(".edit-leadfilter").click(function(e) {
+				e.preventDefault();
+				var url = './edittelephonycampaign.php';
+				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="leadfilter" value="' + $(this).attr('data-id') + '" /></form>');
+				//$('body').append(form);  // This line is not necessary
+				$(form).submit();
+			 });
+
+			 //DELETE LEADFILTER
+			 $(".delete-leadfilter").click(function(e) {
+				var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
+				e.preventDefault();
+				if (r == true) {
+					var leadfilter = $(this).attr('data-id');
+					$.post("./php/DeleteTelephonyCampaign.php", { leadfilter: leadfilter } ,function(data){
+						if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
+						else { alert ("<?php $lh->translateText("unable_delete_leadfilter"); ?>"); }
+					});
+				}
+			 });
+
 
 			$('.delete-campaign').click(function(){
 				var camp_id = $(this).attr('data-id');
