@@ -22,9 +22,7 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 // check if Creamy has been installed.
 require_once('./php/CRMDefaults.php');
 if (!file_exists(CRM_INSTALLED_FILE)) { // check if already installed 
