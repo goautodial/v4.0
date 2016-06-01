@@ -403,7 +403,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 							   <div id="cluster_status" role="tabpanel" class="tab-pane active">
 								<!-- Cluster Status -->
 								<div class="table-responsive">
-									<table class="table table-striped table-bordered table-hover" style="height: 242px;">
+									<table class="table table-striped table-bordered table-hover">
 									   <thead>
 										  <tr>
 											 <th>SERVER ID</th>
@@ -417,10 +417,10 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 									   </thead>
 									   <tbody>
 											<tr>
-												<td><center><span id="refresh_server_id"></span></center></td>
-												<td><center><span id="refresh_server_ip"></span></center></td>
-												<td><span id="refresh_active"></span></td>
-												<td><center><span id="refresh_sysload"></span> - <span id="refresh_cpu"></span></center></td>
+												<td><span id="refresh_server_id"></span></td>
+												<td><span id="refresh_server_ip"></span></td>
+												<td><span id="refresh_active"></td>
+												<td><span id="refresh_sysload"></span> - <span id="refresh_cpu"></span></td>
 												<td><center><span id="refresh_channels_total"></span></center></td>
 												<td><center><span id="refresh_disk_usage"></span></center></td>
 												<td><span id="refresh_s_time"></span></td>
