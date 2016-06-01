@@ -22,7 +22,9 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // check if Creamy has been installed.
 require_once('./php/CRMDefaults.php');
 if (!file_exists(CRM_INSTALLED_FILE)) { // check if already installed 
@@ -397,7 +399,10 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 									   <em class="fa fa-money fa-fw"></em>Transactions Panel</a>
 								 </li>
 							  </ul>
-							  
+				<?php
+					$cluster = $ui->API_GetClusterStatus();
+					//var_dump($cluster);
+				?>
 							<!-- Tab panes-->
 							<div class="tab-content p0 bg-white">
 							   <div id="cluster_status" role="tabpanel" class="tab-pane active">
@@ -416,6 +421,24 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 										  </tr>
 									   </thead>
 									   <tbody>
+											<?php
+												for($i=0;$i < count($cluster->server_id);$i++){
+													if($cluster->active[$i] == "Y"){
+														$cluster->active[$i] = "<font color='green'><i>Active</i></font>";
+													}else{
+														$cluster->active[$i] = "<font color='red'><i>Inactive</i></font>";
+													}
+											?>
+											<tr>
+												<td><?php echo $cluster->server_id[$i];?></td>
+												<td><?php echo $cluster->server_ip[$i];?></td>
+												<td><?php echo $cluster->active[$i];?></td>
+												<td><?php echo $cluster->sysload[$i]."% - ".$cluster->cpu[$i];?></td>
+												<td><center><?php echo $cluster->channel[$i];?></center></td>
+												<td><center><?php echo $cluster->disk_usage[$i]."%";?></center></td>
+												<td><?php echo $cluster->systemtime[$i];?></td>
+											</tr>
+										<!--
 											<tr>
 												<td><span id="refresh_server_id"></span></td>
 												<td><span id="refresh_server_ip"></span></td>
@@ -424,9 +447,11 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 												<td><center><span id="refresh_channels_total"></span></center></td>
 												<td><center><span id="refresh_disk_usage"></span></center></td>
 												<td><span id="refresh_s_time"></span></td>
-												
 											</tr>
-											<tr>
+										-->
+											<?php
+												}
+											?>
 												<td>&nbsp;</td>
 												<td>&nbsp;</td>
 												<td><b>PHP Time</b></td>
