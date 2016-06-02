@@ -26,12 +26,7 @@
 // dependencies
 namespace creamy;
 @include_once("Config.php");
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'goautodial');
-define('DB_PORT', '3306');
-define('DB_NAME_ASTERISK', 'asterisk');
+
 
 // Database Connectors
 define ('CRM_DB_CONNECTOR_TYPE_MYSQL', "MySQL");

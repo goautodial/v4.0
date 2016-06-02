@@ -139,11 +139,11 @@
 					<div class="form-group">
 						<label class="control-label col-lg-4">User Group:</label>
 						<div class="col-lg-8">
-							<select name="user_group" class="form-control call-time-user-group" name="call_time_user_group">
-								<option value="--ALL---">ALL USER GROUPS</option>
+							<select class="form-control call-time-user-group" name="call_time_user_group">
+								<!-- <option value="ALL">ALL USER GROUPS</option> -->
 								<option value="ADMIN">ADMIN - GOAUTODIAL ADMINISTRATORS</option>
 								<option value="AGENTS">AGENTS - GOAUTODIAL AGENTS</option>
-								<option value="SUPERVISOR">SUPERVISOR - SUPERVISOR</option>
+								<!-- <option value="SUPERVISOR">SUPERVISOR - SUPERVISOR</option> -->
 							</select>
 						</div>
 					</div>
@@ -370,9 +370,12 @@
 						data: { 
 						      form_data : form_data,
 						},
-						//dataType: 'json',
+						dataType: 'json',
 						success: function(data) {
-						    console.log(data);
+						    console.log(data.result);
+						    if(data.result == "success"){
+						    	window.location.href = "http://localhost/CreamCRM/settingscalltimes.php";
+						    }
 						}
 					});
 					
