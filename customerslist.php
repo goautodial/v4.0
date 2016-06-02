@@ -221,6 +221,31 @@
 				$("#createCustomerCancelButton").click(function(e) { location.reload(); });
 				$('#create-client-dialog-modal').on('hidden.bs.modal', function () { if (clientCreated) { location.reload(); } });
 
+
+				//EDIT CONTACT
+				 $(".edit-contact").click(function(e) {
+					e.preventDefault();
+					var url = './editcustomer.php';
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="lead_id" value="' + $(this).attr('href') + '" /></form>');
+					//$('body').append(form);  // This line is not necessary
+					$(form).submit();
+				 });
+				
+
+				//DELETE CONTACT
+				 $(".delete-contact").click(function(e) {
+					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
+					e.preventDefault();
+					if (r == true) {
+						var groupid = $(this).attr('href');
+						$.post("./php/DeleteTelephonyInbound.php", { groupid: groupid } ,function(data){
+							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
+							else { alert ("<?php $lh->translateText("unable_delete_list"); ?>"); }
+						});
+					}
+				 });
+
+
 			});
 			
             // function to delete a customer with the "delete" button.
