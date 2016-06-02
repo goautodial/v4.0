@@ -3186,7 +3186,6 @@ error_reporting(E_ERROR | E_PARSE);
          $data = curl_exec($ch);
          curl_close($ch);
          $output = json_decode($data);
-		 
 		 return $output;
 	
 	}
@@ -3306,7 +3305,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    // this will be the output html
 	    $button = "";
 	    $button .= '<div class="circle-button skin-'.$theme.'">';
-	    $button .= '<a class="fa fa-'.$icon.' button-area">';
+	    $button .= '<a class="fa fa-'.$icon.' button-area add-'.$page.'">';
 	    $button .= '</a>';
 	    $button .= '</div>';
 	    
