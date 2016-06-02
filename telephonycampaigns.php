@@ -106,14 +106,14 @@
 					<div class="tab-content p0 bg-white">
 
 
-					<!--==== In-group ====-->
+					<!--==== Campaigns ====-->
 					  <div id="T_campaign" role="tabpanel" class="tab-pane active" style="padding: 20px;">
 							<table class="table table-striped table-bordered table-hover" id="table_campaign">
 							   <thead>
 								  <tr>
 									 <th>Campaign ID</th>
 									 <th>Campaign Name</th>
-									 <th class='hide-on-medium hide-on-low'>Type</th>
+									 <th class='hide-on-medium hide-on-low'>Dial Method</th>
 									 <th>Status</th>
 									 <th>Action</th>
 								  </tr>
@@ -122,10 +122,26 @@
 								   	<?php
 								   		for($i=0;$i < count($campaign->campaign_id);$i++){
 						
-											if($ingroup->active[$i] == "Y"){
-												$ingroup->active[$i] = "Active";
+											if($campaign->active[$i] == "Y"){
+												$campaign->active[$i] = "Active";
 											}else{
-												$ingroup->active[$i] = "Inactive";
+												$campaign->active[$i] = "Inactive";
+											}
+
+											if($campaign->dial_method[$i] == "RATIO"){
+												$campaign->dial_method[$i] = "AUTO DIAL";
+											}
+											
+											if($campaign->dial_method[$i] == "MANUAL"){
+												$campaign->dial_method[$i] = "MANUAL";
+											}
+											
+											if($campaign->dial_method[$i] == "ADAPT_TAPERED"){
+												$campaign->dial_method[$i] = "PREDICTIVE";
+											}
+
+											if($campaign->dial_method[$i] == "INBOUND_MAN"){
+												$campaign->dial_method[$i] = "INBOUND_MAN";
 											}
 
 										$action_CAMPAIGN = $ui->ActionMenuForCampaigns($campaign->campaign_id[$i]);
@@ -499,6 +515,50 @@
 				    }
 				});
 			});
+			
+			/*
+			 *
+			 * Edit Actions
+			 *
+			*/
+			//EDIT CAMPAIGN
+			 $(".edit-campaign").click(function(e) {
+				e.preventDefault();
+				var url = './edittelephonycampaign.php';
+				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="campaign" value="' + $(this).attr('data-id') + '" /></form>');
+				//$('body').append(form);  // This line is not necessary
+				$(form).submit();
+			 });
+			 //EDIT IVR
+			 $(".edit-disposition").click(function(e) {
+				e.preventDefault();
+				var url = './edittelephonycampaign.php';
+				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="disposition" value="' + $(this).attr('data-id') + '" /></form>');
+				//$('body').append(form);  // This line is not necessary
+				$(form).submit();
+			 });
+			 //EDIT PHONENUMBER/DID
+			 $(".edit-leadfilter").click(function(e) {
+				e.preventDefault();
+				var url = './edittelephonycampaign.php';
+				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="leadfilter" value="' + $(this).attr('data-id') + '" /></form>');
+				//$('body').append(form);  // This line is not necessary
+				$(form).submit();
+			 });
+
+			 //DELETE LEADFILTER
+			 $(".delete-leadfilter").click(function(e) {
+				var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
+				e.preventDefault();
+				if (r == true) {
+					var leadfilter = $(this).attr('data-id');
+					$.post("./php/DeleteTelephonyCampaign.php", { leadfilter: leadfilter } ,function(data){
+						if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
+						else { alert ("<?php $lh->translateText("unable_delete_leadfilter"); ?>"); }
+					});
+				}
+			 });
+
 
 			$('.delete-campaign').click(function(){
 				var camp_id = $(this).attr('data-id');
@@ -527,7 +587,7 @@
 							$('#confirmation-delete-modal').modal('hide');
 							table.fnDraw();
 						}else{
-							alert('Error');
+							alert(data);
 						}
 				    }
 				});

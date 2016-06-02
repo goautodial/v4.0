@@ -1,10 +1,11 @@
 <?php
+
 require_once('../goCRMAPISettings.php');
     $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetClusterStatus"; #action performed by the [[API:Functions]]
-
+    $postfields["responsetype"] = responsetype; 
      $ch = curl_init();
      curl_setopt($ch, CURLOPT_URL, $url);
      curl_setopt($ch, CURLOPT_POST, 1);
@@ -13,54 +14,64 @@ require_once('../goCRMAPISettings.php');
      curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
      $data = curl_exec($ch);
      curl_close($ch);
+
+     $output = json_decode($data);
      
+     /*
      $data = explode(";",$data);
     foreach ($data AS $temp) {
       $temp = explode("=",$temp);
       $cluster[$temp[0]] = $temp[1];
     }
-    
-    if($cluster['result']=="success"){
-      if(isset($_POST['api1'])){
-        echo $cluster['server_id'];
-      }
+    */
+
+    if($output->result=="success"){
+      for($i=0;$i < count($output->server_id);$i++){
+
+        if(isset($_POST['api1'])){
+          echo $output->server_id[$i];
+        }
+        
+        if(isset($_POST['api2'])){
+          echo $output->server_ip[$i];
+        }
+        
+        if(isset($_POST['api3'])){
+          echo $output->active[$i];
+        }
+        
+        if(isset($_POST['api4'])){
+          echo $output->sysload[$i]."%";
+        }
+        
+        if(isset($_POST['api5'])){
+          echo $output->cpu[$i];
+        }
+        
+        if(isset($_POST['api6'])){
+          echo $output->channel[$i];
+        }
+        
+        if(isset($_POST['api7'])){
+          echo $output->disk_usage[$i]."%";
+        }
+        
+        if(isset($_POST['api8'])){
+          echo $output->cpu[$i];
+        }
       
-      if(isset($_POST['api2'])){
-        echo $cluster['server_ip'];
-      }
-      
-      if(isset($_POST['api3'])){
-        echo $cluster['active'];
-      }
-      
-      if(isset($_POST['api4'])){
-        echo $cluster['sysload']."%";
-      }
-      
-      if(isset($_POST['api5'])){
-        echo $cluster['cpu'];
-      }
-      
-      if(isset($_POST['api6'])){
-        echo $cluster['channels_total'];
-      }
-      
-      if(isset($_POST['api7'])){
-        echo $cluster['disk_usage']."%";
-      }
-      
-      if(isset($_POST['api8'])){
-        echo $cluster['s_time'];
-      }
-      
-      if(isset($_POST['api9'])){
-        echo $cluster['php_time'];
-      }
-      
-      if(isset($_POST['api10'])){
-        echo $cluster['db_time'];
-      }
-      
+       }
+
+        if(isset($_POST['api9'])){
+          echo $output->phptime;
+        }
+        
+        if(isset($_POST['api10'])){
+          echo $output->dbtime;
+        }
+
+     
+
     }else{
       echo " --- ";
     }

@@ -2,39 +2,40 @@
 
 require_once('CRMDefaults.php');
 require_once('LanguageHandler.php');
-require_once('DbHandler.php');
+//require_once('DbHandler.php');
 require_once('goCRMAPISettings.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 
-$groupid = NULL;
-if (isset($_POST["groupid"])) {
-    $groupid = $_POST["groupid"];
+$campaign = NULL;
+if (isset($_POST["campaign"])) {
+    $campaign = $_POST["campaign"];
 }
 
-$ivr = NULL;
-if (isset($_POST["ivr"])) {
-    $ivr = $_POST["ivr"];
+$disposition = NULL;
+if (isset($_POST["disposition"])) {
+    $disposition = $_POST["disposition"];
 }
 
-$did = NULL;
-if (isset($_POST["did"])) {
-    $did = $_POST["did"];
+$leadfilter = NULL;
+if (isset($_POST["leadfilter"])) {
+    $leadfilter = $_POST["leadfilter"];
 }
 
-// IF INGROUP IS DELETED
-if ($groupid != NULL) {
+// IF CAMPAIGN IS DELETED
+if ($campaign != NULL) {
 /*
- * Deleting In-group
- * [[API:Function]] – goDeleteInbound
- * This application is used to delete a in-group. Only in-group that belongs to authenticated user can be delete.
-*/
-    $url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+ * Deleting Campaign
+ * [[API:Function]] – goDeleteCampaign
+ * This application is used to delete a campaign.
+ */
+
+    $url = gourl."/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeleteInbound"; #action performed by the [[API:Functions]]. (required)
+    $postfields["goAction"] = "goDeleteCampaign"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["group_id"] = $groupid; #Desired User ID. (required)
+    $postfields["campaign_id"] = $campaign; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     
     $ch = curl_init();
@@ -54,26 +55,27 @@ if ($groupid != NULL) {
         print CRM_DEFAULT_SUCCESS_RESPONSE;
     } else {
         ob_clean(); 
-        $lh->translateText("unable_delete_ingroup");
+        $lh->translateText("unable_delete_campaign");
     }
 
 } else {
     ob_clean(); $lh->translateText("some_fields_missing");
 }
 
-// IF IVR IS DELETED
-if ($ivr != NULL) {
+// IF DISPOSITION IS DELETED
+if ($disposition != NULL) {
 /*
- * Deleting Interactive Voice Response
- * [[API:Function]] – goDeleteIVR
- * This application is used to delete a IVR menu. Only IVR menu that belongs to authenticated user can be delete.
+ * Deleting Disposition
+ * [[API:Function]] – goDeleteDisposition
+ * This application is used to delete a disposition. Only disposition that belongs to authenticated user can be delete.
 */
     $url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeleteIVR"; #action performed by the [[API:Functions]]. (required)
+    $postfields["goAction"] = "goDeleteDisposition"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["menu_id"] = $ivr; #Desired User ID. (required)
+    $postfields["campaign_id"] = $disposition; #Desired campaign id. (required)
+    $postfields["statuses"] = ""; #Desired campaign status. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     
     $ch = curl_init();
@@ -100,19 +102,19 @@ if ($ivr != NULL) {
 	ob_clean(); $lh->translateText("some_fields_missing");
 }
 
-// IF PHONENUMBER IS DELETED
-if ($did != NULL) {
+// IF LEAD FILTER IS DELETED
+if ($leadfilter != NULL) {
 /*
- * Deleting DID
- * [[API:Function]] – goDeleteDID
- * This application is used to delete a did. Only did that belongs to authenticated user can be delete.
+ * Deleting Lead Filter
+ * [[API:Function]] – goDeleteLeadFilter
+ * This application is used to delete a lead filter. Only lead filter that belongs to authenticated user can be delete.
 */
-    $url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+    $url = gourl."/goLeadFilters/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeleteDID"; #action performed by the [[API:Functions]]. (required)
+    $postfields["goAction"] = "goDeleteLeadFilter"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["did_id"] = $did; #Desired User ID. (required)
+    $postfields["lead_filter_id"] = $leadfilter; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     
     $ch = curl_init();
@@ -132,7 +134,7 @@ if ($did != NULL) {
         print CRM_DEFAULT_SUCCESS_RESPONSE;
     } else {
         ob_clean(); 
-        $lh->translateText("unable_delete_phonenumber");
+        $lh->translateText("unable_delete_leadfilter");
     }
 
 } else {

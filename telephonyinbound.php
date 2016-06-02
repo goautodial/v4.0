@@ -943,12 +943,6 @@
 					
 				});
 				
-
-
-				/**
-				  * Edit details
-				 */
-				
 	
 				// for easy wizard -
 				$("#add_ingroups").wizard({

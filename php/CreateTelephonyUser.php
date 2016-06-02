@@ -12,7 +12,7 @@ $validate = 0;
     }
 
 if($validate == 0){
-	$url = "http://gadcs.goautodial.com/goAPI/goUsers/goAPI.php"; # URL to GoAutoDial API file
+	$url = gourl."/goUsers/goAPI.php"; # URL to GoAutoDial API file
 	$postfields["goUser"] 			= goUser; #Username goes here. (required)
 	$postfields["goPass"] 			= goPass; #Password goes here. (required)
 	$postfields["goAction"] 		= "goAddUser"; #action performed by the [[API:Functions]]

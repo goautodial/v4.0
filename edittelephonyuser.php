@@ -5,6 +5,7 @@ require_once('./php/UIHandler.php');
 //require_once('./php/DbHandler.php');
 require_once('./php/LanguageHandler.php');
 require('./php/Session.php');
+require_once('./php/goCRMAPISettings.php');
 
 // initialize structures
 $ui = \creamy\UIHandler::getInstance();
@@ -88,11 +89,11 @@ if (isset($_POST["userid"])) {
 						//$db = new \creamy\DbHandler();
 						//$customerobj = $db->getDataForCustomer($customerid, $customerType);
 						
-						$url = "https://encrypted.goautodial.com/goAPI/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
-						$postfields["goUser"] = "admin"; #Username goes here. (required)
-						$postfields["goPass"] = "goautodial"; #Password goes here. (required)
+						$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
+						$postfields["goUser"] = goUser; #Username goes here. (required)
+						$postfields["goPass"] = goPass; #Password goes here. (required)
 						$postfields["goAction"] = "goGetUserInfo"; #action performed by the [[API:Functions]]. (required)
-						$postfields["responsetype"] = "json"; #json. (required)
+						$postfields["responsetype"] = responsetype; #json. (required)
 						$postfields["user_id"] = $userid; #Desired User ID (required)
 
 						$ch = curl_init();

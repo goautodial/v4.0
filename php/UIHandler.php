@@ -1320,7 +1320,7 @@ error_reporting(E_ERROR | E_PARSE);
 			//<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="32"> '.$name.'</a>
 		// return header
 		return '<header class="main-header">
-				<a href="./test_dashboard.php" class="logo"><img src="'.$logo.'" width="auto" height="35"></a>
+				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="35"></a>
 	            <nav class="navbar navbar-static-top" role="navigation">
 	                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 	                    <span class="sr-only">Toggle navigation</span>
@@ -1655,7 +1655,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>
 	            <ul class="sidebar-menu"><li class="header">'.strtoupper($this->lh->translationFor("menu")).'</li>';
 	    // body: home and customer menus
-        $result .= $this->getSidebarItem("./test_dashboard.php", "bar-chart-o", $this->lh->translationFor("home"));
+        $result .= $this->getSidebarItem("./index.php", "bar-chart-o", $this->lh->translationFor("home"));
         $result .= $telephonyArea;
 		$result .= $settings;
 		$result .= $callreports;
@@ -2905,6 +2905,22 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = "Active";
 				}else{
 					$output->active[$i] = "Inactive";
+				}
+
+				if($output->dial_method[$i] == "RATIO"){
+					$output->dial_method[$i] = "AUTO DIAL";
+				}
+				
+				if($output->dial_method[$i] == "MANUAL"){
+					$output->dial_method[$i] = "MANUAL";
+				}
+				
+				if($output->dial_method[$i] == "ADAPT_TAPERED"){
+					$output->dial_method[$i] = "PREDICTIVE";
+				}
+
+				if($output->dial_method[$i] == "INBOUND_MAN"){
+					$output->dial_method[$i] = "INBOUND_MAN";
 				}
 				
 				$action = $this->getUserActionMenuForLists($output->list_id[$i], $output->list_name[$i]);
@@ -4526,7 +4542,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass;
 		$postfields["goAction"] = "goGetClusterStatus"; #action performed by the [[API:Functions]]
-
+		$postfields["responsetype"] = responsetype;
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);
 		 curl_setopt($ch, CURLOPT_POST, 1);
@@ -4535,8 +4551,8 @@ error_reporting(E_ERROR | E_PARSE);
 		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		 $data = curl_exec($ch);
 		 curl_close($ch);
-
-		 return $data;
+		 $output = json_decode($data);
+		 return $output;
 	}
 	
 // <<<=================== END OF DASHBOARD APIs =============>>>
