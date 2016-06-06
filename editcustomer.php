@@ -34,10 +34,10 @@ $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
 
-$customerType = NULL;
-$customerid = NULL;
-if (isset($_GET["customer_type"])) { $customerType = $_GET["customer_type"]; }
-if (isset($_GET["customerid"])) { $customerid = $_GET["customerid"]; }
+//$customerType = NULL;
+$lead_id = NULL;
+//if (isset($_GET["customer_type"])) { $customerType = $_GET["customer_type"]; }
+if (isset($_POST['lead_id'])) { $lead_id = $_POST["lead_id"]; }
 ?>
 <html>
     <head>
@@ -99,17 +99,150 @@ if (isset($_GET["customerid"])) { $customerid = $_GET["customerid"]; }
                 <section class="content">
 					<!-- standard custom edition form -->
 					<?php
-					$customerobj = NULL;
+					//$customerobj = NULL;
 					$errormessage = NULL;
 					
-					if (isset($customerid) && isset($customerType)) {
+					/*if (isset($customerid) && isset($customerType)) {
 						$db = new \creamy\DbHandler();
 						$customerobj = $db->getDataForCustomer($customerid, $customerType);
 					} else {
 			    		$errormessage = $lh->translationFor("some_fields_missing");
-					}
+					}*/
 					
-					if (!empty($customerobj)) {
+					if (isset($lead_id)) {
+						$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
+				        $postfields["goUser"] = goUser; #Username goes here. (required)
+				        $postfields["goPass"] = goPass; #Password goes here. (required)
+				        $postfields["goAction"] = "goGetLeadsInfo"; #action performed by the [[API:Functions]]. (required)
+				        $postfields["responsetype"] = responsetype; #json. (required)
+				        $postfields["lead_id"] = $lead_id; #Desired exten ID. (required)
+
+				         $ch = curl_init();
+				         curl_setopt($ch, CURLOPT_URL, $url);
+				         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+				         curl_setopt($ch, CURLOPT_POST, 1);
+				         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+				         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+				         $data = curl_exec($ch);
+				         curl_close($ch);
+				         $output = json_decode($data);
+
+				         if ($output->result=="success") {
+				         	for($i=0;$i<count($output->lead_id);$i++){
+								
+								$hidden_f = $ui->hiddenFormField("modifyid", $lead_id);
+								
+								$id_f = '<h4>Modify Phone <b>'.$lead_id.'</b>';
+								
+                                $plan_l = '<h4>Dial Plan Number</h4>';
+								$ph = $lh->translationFor("Dial Plan Number").' ('.$lh->translationFor("mandatory").')';
+								$vl = isset($output->dialplan_number[$i]) ? $output->dialplan_number[$i] : null;
+								$plan_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("plan", "plan", "text", $ph, $vl, "tasks", "required"));
+								
+                                 $vmid_l = '<h4>Voicemail ID</h4>';
+								$ph = $lh->translationFor("Voicemail ID").' ('.$lh->translationFor("mandatory").')';
+								$vl = isset($output->voicemail_id[$i]) ? $output->voicemail_id[$i] : null;
+								$vmid_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("vmid", "vmid", "text", $ph, $vl, "tasks", "required"));
+                                                                
+                                $ip_l = '<h4>Server IP</h4>';
+								$ph = $lh->translationFor("Server IP").' ('.$lh->translationFor("mandatory").')';
+								$vl = isset($output->server_ip[$i]) ? $output->server_ip[$i] : null;
+								$ip_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("ip", "ip", "text", $ph, $vl, "tasks", "required"));
+								
+								$active_l = '<br/><h4>Active Account</h4>';
+								$active_f = '<br/><select class="form-control" id="active" name="active">';
+												
+									if($output->active[$i] == "Y"){
+										$active_f .= '<option value="Y" selected> YES </option>';
+									}else{
+										$active_f .= '<option value="Y" > YES </option>';
+									}
+									
+									if($output->active[$i] == "N"){
+										$active_f .= '<option value="N" selected> NO </option>';
+									}else{
+										$active_f .= '<option value="N" > NO </option>';
+									}
+									
+								$active_f .= '</select>';
+								
+                                $status_l = '<br/><h4>Status</h4>';
+								$status_f = '<br/><select class="form-control" id="status" name="status">';
+												
+									if($output->status[$i] == "ACTIVE"){
+										$status_f .= '<option value="ACTIVE" selected> ACTIVE </option>';
+									}else{
+										$status_f .= '<option value="ACTIVE" > ACTIVE </option>';
+									}
+									
+									if($output->status[$i] == "SUSPENDED"){
+										$status_f .= '<option value="SUSPENDED" selected> SUSPENDED </option>';
+									}else{
+										$status_f .= '<option value="SUSPENDED" > SUSPENDED </option>';
+									}
+                                    
+                                    if($output->status[$i] == "CLOSED"){
+										$status_f .= '<option value="CLOSED" selected> CLOSED </option>';
+									}else{
+										$status_f .= '<option value="CLOSED" > CLOSED </option>';
+									}
+                                    
+                                    if($output->status[$i] == "PENDING"){
+										$status_f .= '<option value="PENDING" selected> PENDING </option>';
+									}else{
+										$status_f .= '<option value="PENDING" > PENDING </option>';
+									}
+                                    
+                                    if($output->status[$i] == "ADMIN "){
+										$status_f .= '<option value="ADMIN " selected> ADMIN  </option>';
+									}else{
+										$status_f .= '<option value="ADMIN " > ADMIN  </option>';
+									}
+									
+								$status_f .= '</select>';
+                                
+                                $active_status_row = $ui->rowWithVariableContents(array("2", "3","2","3"), array($active_l, $active_f, $status_l, $status_f));
+								$as_f = $ui->singleFormGroupWrapper($active_status_row);
+                                
+                                
+								$name_l = '<h4>Full Name</h4>';
+								$ph = $lh->translationFor("Full Name").' ('.$lh->translationFor("mandatory").')';
+								$vl = isset($output->fullname[$i]) ? $output->fullname[$i] : null;
+								$name_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("fullname", "fullname", "text", $ph, $vl, "tasks"));
+								
+								$new_msg = '<h4>New Messages: <b>'.$output->messages[$i].'</b></h4>';
+                                $old_msg = '<h4>Old Messages: <b>'.$output->old_messages[$i].'</b></h4>';
+								
+                                $protocol_l = '<h4>Client Protocol</h4>';
+								$protocol_f = '<select class="form-control" id="protocol" name="protocol">';
+								
+                                    if($output->protocol[$i] == "SIP"){
+                                        $protocol_f .= '<option value="SIP" selected> SIP </option>';
+                                    }else{
+                                        $protocol_f .= '<option value="SIP"> SIP </option>';
+                                    }
+                                    
+                                    if($output->protocol[$i] == "Zap"){
+                                        $protocol_f .= '<option value="Zap" selected> Zap </option>';
+                                    }else{
+                                        $protocol_f .= '<option value="Zap"> Zap </option>';
+                                    }
+                                    
+                                    if($output->protocol[$i] == "IAX2"){
+                                        $protocol_f .= '<option value="IAX2" selected> IAX2 </option>';
+                                    }else{
+                                        $protocol_f .= '<option value="IAX2"> IAX2 </option>';
+                                    }
+                                     
+                                    if($output->protocol[$i] == "EXTERNAL"){
+                                        $protocol_f .= '<option value="EXTERNAL" selected> EXTERNAL </option>';
+                                    }else{
+                                        $protocol_f .= '<option value="EXTERNAL"> EXTERNAL </option>';
+                                    }
+									
+								$protocol_f .= '</select>';
+				         }
 
 						// buttons at bottom (only for writing+ permissions)
 						$buttons = "";
@@ -119,7 +252,8 @@ if (isset($_GET["customerid"])) { $customerid = $_GET["customerid"]; }
 							$buttons = $ui->singleFormGroupWrapper($buttons);
 						}
 						// form fields
-						$formcontent = $ui->customerFieldsForForm($customerobj, $customerType, $customerid);
+							//$formcontent = $ui->customerFieldsForForm($customerobj, $customerType, $customerid);
+							$formcontent = 
 
 						// generate form: header
 						$form = $ui->formWithCustomFooterButtons("modifycustomerform", $formcontent, $buttons, "modifycustomerresult");

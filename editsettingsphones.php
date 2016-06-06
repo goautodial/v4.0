@@ -234,15 +234,15 @@ include('php/goCRMAPISettings.php');
 								}
 		
 							// generate the form
-							$fields = $hidden_f.
-                            $plan_l.$plan_f.
-                            $vmid_l.$vmid_f.
-                            $ip_l.$ip_f.
-                            $as_f.
-                            $name_l.$name_f.
-                            "<br/>".$new_msg.$old_msg."<br>".
-                            $protocol_l.$protocol_f
-                            ;
+							$fields = 
+								$hidden_f.
+	                            $plan_l.$plan_f.
+	                            $vmid_l.$vmid_f.
+	                            $ip_l.$ip_f.
+	                            $as_f.
+	                            $name_l.$name_f.
+	                            "<br/>".$new_msg.$old_msg."<br>".
+	                            $protocol_l.$protocol_f;
 								
 								// generate form: header
 								$form = $ui->formWithCustomFooterButtons("modifyphones", $fields, $buttons, "modifyT_phonesresult");

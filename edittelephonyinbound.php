@@ -74,12 +74,12 @@ if (isset($_POST["did"])) {
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        <?php $lh->translateText("telephony"); ?>
-                        <small><?php $lh->translateText("telephony_lists_edition"); ?></small>
+                        <?php $lh->translateText("Ingroup"); ?>
+                        <small><?php $lh->translateText("Edit Ingroup"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
-                        <li> <?php $lh->translateText("telephony"); ?></li>
+                        <li> <?php $lh->translateText("Telephony"); ?></li>
                         <?php
 							if($groupid != NULL || $ivr != NULL || $did != NULL){
 						?>	
@@ -92,7 +92,7 @@ if (isset($_POST["did"])) {
                 </section>
 
                 <!-- Main content -->
-                <section class="content">
+                <section class="content" style="padding:30px; padding-left:100px; padding-right:100px; margin-left: 0; margin-right: 0;">
 					
 					<!-- standard custom edition form -->
 					<?php
@@ -122,210 +122,359 @@ if (isset($_POST["did"])) {
 						if ($output->result=="success") {
 						# Result was OK!
 							for($i=0;$i < count($output->group_id);$i++){
-								
-								$hidden_f = $ui->hiddenFormField("modify_groupid", $groupid);
-								
-								$id_f = '<h4>Modify In-group : <b>'.$groupid.'</b>';
-								
-								$desc_l = '<h4>Description</h4>';
-								$ph = $lh->translationFor("Description").' ('.$lh->translationFor("optional").')';
-								$vl = isset($output->group_name[$i]) ? $output->group_name[$i] : null;
-								$desc_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("desc", "desc", "text", $ph, $vl, "tasks", "required"));
-								
-								$color="";				
-								if($output->group_color == NULL){
-									$color = "#FFFFFF";
-								}else{
-									$color = "#".$output->group_color;
-								}
-								
-                                $color_l = '<h4>Color</h4>';
-								//$ph = $lh->translationFor("Color").' ('.$lh->translationFor("mandatory").')';
-								//$vl = isset($output->group_color[$i]) ? $output->group_color[$i] : null;
-								//$color_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("color", "color", "color", $ph, $vl, "tasks", "required"));
-                                $color_f = '<input type="color" class="form-control" name="color" value="'.$color.'" />';
-								
-								$status_l = '<h4>Status</h4>';
-								$status_f = '<select class="form-control" id="status" name="status">';
-												
-									if($output->active[$i] == "Y"){
-										$status_f .= '<option value="Y" selected> YES </option>';
-									}else{
-										$status_f .= '<option value="Y" > YES </option>';
-									}
-									
-									if($output->active[$i] == "N"){
-										$status_f .= '<option value="N" selected> NO </option>';
-									}else{
-										$status_f .= '<option value="N" > NO </option>';
-									}
-									
-								$status_f .= '</select>';
-								
-                                $color_status_row = $ui->rowWithVariableContents(array("1","3","1","3"), array($color_l, $color_f, $status_l, $status_f));
-								$cs_f = $ui->singleFormGroupWrapper($color_status_row);
-                                
-								$web_l = '<h4>Webform</h4>';
-								$ph = $lh->translationFor("insert_url").' ('.$lh->translationFor("optional").')';
-								$vl = isset($output->web_form_address[$i]) ? $output->web_form_address[$i] : null;
-								$web_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("webform", "webform", "text", $ph, $vl, "tasks"));
-								
-								$next_l = '<h4>Next Agent Call</h4>';
-								$next_f = '<select class="form-control" id="nextagent" name="nextagent">';
-									
-									if($output->next_agent_call[$i] == "random"){
-										$next_f .= '<option value="random" selected> random </option>';
-									}else{
-										$next_f .= '<option value="random" > random </option>';
-									}
-									
-									if($output->next_agent_call[$i] == "oldest_call_start"){
-										$next_f .= '<option value="oldest_call_start" selected> oldest_call_start </option>';
-									}else{
-										$next_f .= '<option value="oldest_call_start" > oldest_call_start </option>';
-									}
-									
-									if($output->next_agent_call[$i] == "oldest_call_finish"){
-										$next_f .= '<option value="oldest_call_finish" selected> oldest_call_finish </option>';
-									}else{
-										$next_f .= '<option value="oldest_call_finish" > oldest_call_finish </option>';
-									}
-									
-									if($output->next_agent_call[$i] == "overall_user_level"){
-										$next_f .= '<option value="overall_user_level" selected> overall_user_level </option>';
-									}else{
-										$next_f .= '<option value="overall_user_level" > overall_user_level </option>';
-									}
-									
-									if($output->next_agent_call[$i] == "inbound_group_rank"){
-										$next_f .= '<option value="inbound_group_rank" selected> inbound_group_rank </option>';
-									}else{
-										$next_f .= '<option value="inbound_group_rank" > inbound_group_rank </option>';
-									}
-									
-									if($output->next_agent_call[$i] == "campaign_rank"){
-										$next_f .= '<option value="campaign_rank" selected> campaign_rank </option>';
-									}else{
-										$next_f .= '<option value="campaign_rank" > campaign_rank </option>';
-									}
-									
-									if($output->next_agent_call[$i] == "fewest_calls"){
-										$next_f .= '<option value="fewest_calls" selected> fewest_calls </option>';
-									}else{
-										$next_f .= '<option value="fewest_calls" > fewest_calls </option>';
-									}
-									
-									if($output->next_agent_call[$i] == "fewest_calls_campaign"){
-										$next_f .= '<option value="fewest_calls_campaign" selected> fewest_calls_campaign </option>';
-									}else{
-										$next_f .= '<option value="fewest_calls_campaign" > fewest_calls_campaign </option>';
-									}
-									
-									if($output->next_agent_call[$i] == "longest_wait_time"){
-										$next_f .= '<option value="longest_wait_time" selected> longest_wait_time </option>';
-									}else{
-										$next_f .= '<option value="longest_wait_time" > longest_wait_time </option>';
-									}
-									
-									if($output->next_agent_call[$i] == "ring_all"){
-										$next_f .= '<option value="ring_all" selected> ring_all </option>';
-									}else{
-										$next_f .= '<option value="ring_all" > ring_all </option>';
-									}
+					?>			
 
-								$next_f .= '</select>';
-								
-                                $prio_l = '<h4>Queue Priority</h4>';
-								$prio_f = '<select class="form-control" id="prio" name="prio">';
-								
-                                for($a=99; $a >= -99; $a--){
-                                    
-                                    $a_desc = "";
-                                   
-                                   if($a < 0){
-                                       $a_desc = "Lower";
-                                   }
-                                   if($a == 0){
-                                       $a_desc = "Even";
-                                   }
-                                   if($a > 0){
-                                       $a_desc = "Higher";
-                                   }
-                                       if($output->queue_priority[$i] == $a){
-                                           $prio_f .= '<option value="'.$a.'" selected> '.$a.'  -  '.$a_desc.' </option>';
-                                       }else{
-                                           $prio_f .= '<option value="'.$a.'">'.$a.'  -  '.$a_desc.' </option>';
-									}
-                                }
-									
-								$prio_f .= '</select>';
-								
-								$next_prio_row = $ui->rowWithVariableContents(array("2","3","2","3"), array($next_l, $next_f, $prio_l, $prio_f));
-								$np_f = $ui->singleFormGroupWrapper($next_prio_row);
-								
-								$display_l = '<h4>Fronter Display</h4>';
-								$display_f = '<select class="form-control" id="display" name="display">';
-												
-									if($output->fronter_display[$i] == "Y"){
-										$display_f .= '<option value="Y" selected> YES </option>';
-									}else{
-										$display_f .= '<option value="Y" > YES </option>';
-									}
-									
-									if($output->fronter_display[$i] == "N"){
-										$display_f .= '<option value="N" selected> NO </option>';
-									}else{
-										$display_f .= '<option value="N" > NO </option>';
-									}
-									
-								$display_f .= '</select>';
-								
-								$script_l = '<h4>Script</h4>';
-								$script_f = '<select class="form-control" id="script" name="script">';
+						<div role="tabpanel" class="panel panel-transparent" style="box-shadow: 5px 5px 8px #888888;">
 							
-							$scripts = $ui->API_goGetAllScripts();
-									if($output->ingroup_script[$i] == NULL){
-										$script_f .= '<option value="NONE" selected> NONE </option>';
-									}else{
-										$script_f .= '<option value="NONE" > NONE </option>';
-									}
-								for($x=0; $x<count($scripts->script_id);$x++){									
-									if($output->ingroup_script[$i] == $scripts->script_id[$x]){
-										$script_f .= '<option value="'.$scripts->script_id[$x].'" selected> '.$scripts->script_id[$x].' - '.$scripts->script_name[$x].' </option>';
-									}else{
-										$script_f .= '<option value="'.$scripts->script_id[$x].'"> '.$scripts->script_id[$x].' - '.$scripts->script_name[$x].' </option>';
-									}
+							<h4 style="padding:15px;"><a type="button" class="btn" href="telephonyinbound.php"><i class="fa fa-arrow-left"></i> Cancel</a><center><b>MODIFY IN-GROUP: <?php echo $groupid;?></b></center></h4>
 
-								}
-								$script_f .= '</select>';
+								<ul role="tablist" class="nav nav-tabs" style="padding: 5px 30px;">
+
+								 <!-- Settings panel tabs-->
+									 <li role="presentation" class="active">
+										<a href="#settings" aria-controls="settings" role="tab" data-toggle="tab" class="bb0">
+										<span class="fa fa-gear"></span> Settings</a>
+									 </li>
+								<!-- Agents tab -->
+									 <li role="presentation">
+										<a href="#agents" aria-controls="agents" role="tab" data-toggle="tab" class="bb0">
+										<span class="fa fa-users"></span> Agents </a>
+									 </li>								  
+								<!-- Tab panes-->
+								<div class="tab-content p0 bg-white">
+
+
+								<!--==== Settings ====-->
+								  <div id="settings" role="tabpanel" class="tab-pane active">
+										
+										<form id="modifyingroup">
+											<input type="hidden" name="modify_groupid" value="<?php echo $groupid;?>">
+										<!-- BASIC SETTINGS -->
+											<div class="panel text-left" style="margin-top: 50px; padding: 0px 30px">
+												<div class="form-group">
+													<label for="description">Description</label>
+													<input type="text" class="form-control" name="desc" id="description" value="<?php echo $output->group_name[$i];?>">
+												</div>
+												<div class="row">
+													<label for="color" class="col-md-5">Color
+													<input type="text" class="form-control" name="" id="color" value="<?php echo $output->group_color[$i];?>">
+													</label>
+												</div>
+												<div class="row">
+													<label for="status" class="col-md-3">Status
+													<select class="form-control" name="status" id="status">
+													<?php
+														$status = NULL;
+														if($output->active[$i] == "Y"){
+															$status .= '<option value="Y" selected> YES </option>';
+														}else{
+															$status .= '<option value="Y" > YES </option>';
+														}
+														
+														if($output->active[$i] == "N"){
+															$status .= '<option value="N" selected> NO </option>';
+														}else{
+															$status .= '<option value="N" > NO </option>';
+														}
+														echo $status;
+													?>
+														
+													</select>
+													</label>
+												</div>
+												<div class="form-group">
+													<label for="webform">Web Form</label>
+													<input type="text" class="form-control" name="" id="webform" value="<?php echo $output->web_form_address[$i];?>">
+												</div>
+												<div class="row">
+													<label for="nextagent" class="col-md-5">Next Agent Call
+													<select class="form-control" id="nextagent" name="nextagent">
+														<?php
+															$next = NULL;
+															if($output->next_agent_call[$i] == "random"){
+																$next .= '<option value="random" selected> random </option>';
+															}else{
+																$next .= '<option value="random" > random </option>';
+															}
+															
+															if($output->next_agent_call[$i] == "oldest_call_start"){
+																$next .= '<option value="oldest_call_start" selected> oldest_call_start </option>';
+															}else{
+																$next .= '<option value="oldest_call_start" > oldest_call_start </option>';
+															}
+															
+															if($output->next_agent_call[$i] == "oldest_call_finish"){
+																$next .= '<option value="oldest_call_finish" selected> oldest_call_finish </option>';
+															}else{
+																$next .= '<option value="oldest_call_finish" > oldest_call_finish </option>';
+															}
+															
+															if($output->next_agent_call[$i] == "overall_user_level"){
+																$next .= '<option value="overall_user_level" selected> overall_user_level </option>';
+															}else{
+																$next .= '<option value="overall_user_level" > overall_user_level </option>';
+															}
+															
+															if($output->next_agent_call[$i] == "ingroup_rank"){
+																$next .= '<option value="ingroup_rank" selected> ingroup_rank </option>';
+															}else{
+																$next .= '<option value="ingroup_rank" > ingroup_rank </option>';
+															}
+															
+															if($output->next_agent_call[$i] == "campaign_rank"){
+																$next .= '<option value="campaign_rank" selected> campaign_rank </option>';
+															}else{
+																$next .= '<option value="campaign_rank" > campaign_rank </option>';
+															}
+															
+															if($output->next_agent_call[$i] == "fewest_calls"){
+																$next .= '<option value="fewest_calls" selected> fewest_calls </option>';
+															}else{
+																$next .= '<option value="fewest_calls" > fewest_calls </option>';
+															}
+															
+															if($output->next_agent_call[$i] == "fewest_calls_campaign"){
+																$next .= '<option value="fewest_calls_campaign" selected> fewest_calls_campaign </option>';
+															}else{
+																$next .= '<option value="fewest_calls_campaign" > fewest_calls_campaign </option>';
+															}
+															
+															if($output->next_agent_call[$i] == "longest_wait_time"){
+																$next .= '<option value="longest_wait_time" selected> longest_wait_time </option>';
+															}else{
+																$next .= '<option value="longest_wait_time" > longest_wait_time </option>';
+															}
+															
+															if($output->next_agent_call[$i] == "ring_all"){
+																$next .= '<option value="ring_all" selected> ring_all </option>';
+															}else{
+																$next .= '<option value="ring_all" > ring_all </option>';
+															}
+															echo $next;
+														?>
+													</select>
+													</label>
+												</div>
+												<div class="row">
+													<label for="priority" class="col-md-5">Queue Priority
+													<select class="form-control" id="priority" name="prio">
+														<?php
+														$prio = NULL;
+															for($a=99; $a >= -99; $a--){
+							                                    $a_desc = "";
+							                                   
+							                                   if($a < 0){
+							                                       $a_desc = "Lower";
+							                                   }
+							                                   if($a == 0){
+							                                       $a_desc = "Even";
+							                                   }
+							                                   if($a > 0){
+							                                       $a_desc = "Higher";
+							                                   }
+							                                       if($output->queue_priority[$i] == $a){
+							                                           $prio .= '<option value="'.$a.'" selected> '.$a.'  -  '.$a_desc.' </option>';
+							                                       }else{
+							                                           $prio .= '<option value="'.$a.'">'.$a.'  -  '.$a_desc.' </option>';
+																}
+							                                }
+							                                echo $prio;
+														?>
+													</select>
+													</label>
+												</div>
+												<div class="row">
+													<label for="display" class="col-md-3">Fronter Display
+													<select class="form-control" id="display" name="display">
+														<?php
+														$display = NULL;
+															if($output->fronter_display[$i] == "Y"){
+																$display .= '<option value="Y" selected> YES </option>';
+															}else{
+																$display .= '<option value="Y" > YES </option>';
+															}
+															
+															if($output->fronter_display[$i] == "N"){
+																$display .= '<option value="N" selected> NO </option>';
+															}else{
+																$display .= '<option value="N" > NO </option>';
+															}
+														echo $display;
+														?>
+													</select>
+													</label>
+												</div>
+												<div class="row">
+													<label for="script" class="col-md-5">Script
+													<select class="form-control" id="script" name="script">
+														<?php
+														$script = NULL;
+														$scripts = $ui->API_goGetAllScripts();
+																if($output->ingroup_script[$i] == NULL){
+																	$script .= '<option value="NONE" selected> NONE </option>';
+																}else{
+																	$script .= '<option value="NONE" > NONE </option>';
+																}
+															for($x=0; $x<count($scripts->script_id);$x++){									
+																if($output->ingroup_script[$i] == $scripts->script_id[$x]){
+																	$script .= '<option value="'.$scripts->script_id[$x].'" selected> '.$scripts->script_id[$x].' - '.$scripts->script_name[$x].' </option>';
+																}else{
+																	$script .= '<option value="'.$scripts->script_id[$x].'"> '.$scripts->script_id[$x].' - '.$scripts->script_name[$x].' </option>';
+																}
+
+															}
+														echo $script;
+														?>
+													</select>
+													</label>
+												</div>
+												<div class="row" id="btn_show">
+													<br/>
+													<center>
+													<a class="btn btn-app" style="padding:6px 20px; width:95%; height: 45px;" id="show_advanced_settings" >
+										               <div id="show"><i class="fa fa-plus"></i></div>
+										               <div id="hide" hidden><i class="fa fa-minus"></i></div>
+										                Advanced Settings
+										            </a>
+										            </center>
+									       		</div>
+									       		<!-- ADVANCED SETTINGS -->
+									       		<div id="advanced_settings_wrapper" style="background-color: #E4F3E8; padding: 25px 50px;" hidden>
+									       			<div class="row">
+									       				<label for="call_launch" class="col-md-5">Get Call Launch
+														<select class="form-control" id="call_launch" name="call_launch">
+														<?php
+														$call_launch = NULL;
+															if($output->fronter_display[$i] == "none"){
+																$call_launch .= '<option value="none" selected> NONE </option>';
+															}else{
+																$call_launch .= '<option value="none" > NONE </option>';
+															}
+																
+															if($output->fronter_display[$i] == "script"){
+																$call_launch .= '<option value="script" selected> SCRIPT </option>';
+															}else{
+																$call_launch .= '<option value="script" > SCRIPT </option>';
+															}
+
+															if($output->fronter_display[$i] == "webform"){
+																$call_launch .= '<option value="webform" selected> WEBFORM </option>';
+															}else{
+																$call_launch .= '<option value="webform" > WEBFORM </option>';
+															}
+
+															if($output->fronter_display[$i] == "form"){
+																$call_launch .= '<option value="form" selected> FORM </option>';
+															}else{
+																$call_launch .= '<option value="form" > FORM </option>';
+															}
+														echo $call_launch;
+														?>
+													</select>
+														</label>
+									       			</div>
+									       			<div class="row">
+									       				<label for="accept_calls" class="col-md-3">Accept Calls when there are No Available Agents?
+														<select class="form-control" id="accept_calls" name="accept_calls">
+															<?php
+															$accept_calls = NULL;
+																if($output->fronter_display[$i] == "no"){
+																	$accept_calls .= '<option value="no" selected> NO </option>';
+																}else{
+																	$accept_calls .= '<option value="no" > NO </option>';
+																}
+																
+																if($output->fronter_display[$i] == "yes"){
+																	$accept_calls .= '<option value="yes" selected> YES </option>';
+																}else{
+																	$accept_calls .= '<option value="yes" > YES </option>';
+																}
+
+																if($output->fronter_display[$i] == "no_paused"){
+																	$accept_calls .= '<option value="no_paused" selected> NO PAUSED </option>';
+																}else{
+																	$accept_calls .= '<option value="no_paused" > NO PAUSED </option>';
+																}
+															echo $accept_calls;
+															?>
+														</select>
+														</label>
+									       			</div>
+									       			<div class="row">
+									       				<label for="call_launch" class="col-md-6">No Available Agents Routing
+														<input type="text" class="form-control" name="" id="call_launch" value="">
+														</label>
+									       			</div>
+									       			<div class="row">
+									       				<label for="call_launch" class="col-md-7">Welcome Message Filename
+														<input type="text" class="form-control" name="" id="call_launch" value="">
+														</label>
+									       			</div>
+									       			<div class="row">
+									       				<label for="call_launch" class="col-md-5">Music On Hold Context
+														<input type="text" class="form-control" name="" id="call_launch" value="">
+														</label>
+									       			</div>
+									       			<div class="row">
+									       				<label for="call_launch" class="col-md-6">On Hold Prompt
+														<input type="text" class="form-control" name="" id="call_launch" value="">
+														</label>
+									       			</div>
+									       		</div>
+											</div>
+											
+									<div id="modifyINGROUPresult"></div>
+									<div class="row" style="padding:0px 20px;">
+										<button type="button" class="btn btn-danger" id="modifyINGROUPDeleteButton" href=""><i class="fa fa-times"></i> Delete</button>
+
+										<button type="submit" class="btn btn-primary pull-right" id="modifyInboundOkButton" href=""><i class="fa fa-check"></i> Save</button>
+									</div>
+									
+									</form>
+								 </div>
 								
-								$display_script_row = $ui->rowWithVariableContents(array("2","3","2","3"), array($display_l, $display_f, $script_l, $script_f));
-								$ds_f = $ui->singleFormGroupWrapper($display_script_row);
-								
-								// buttons at bottom (only for writing+ permissions)
-								$buttons = "";
-								if ($user->userHasWritePermission()) {
-									$buttons = $ui->buttonWithLink("modifyINGROUPDeleteButton", $groupid, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
-									$buttons .= $ui->buttonWithLink("modifyInboundOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
-									$buttons = $ui->singleFormGroupWrapper($buttons);
-								}
-		
-							// generate the form
-							$fields = $hidden_f.$desc_l.$desc_f.'<br/>'.$cs_f.$web_l.$web_f.'<br/>'.$np_f.$ds_f;
-								
-								// generate form: header
-								$form = $ui->formWithCustomFooterButtons("modifyingroup", $fields, $buttons, "modifyINGROUPresult");
-								
-								// generate and show the box
-								//$box = $ui->boxWithForm("modifyuser", , $fields, $lh->translationFor("edit_user"));
-								//print $box;
-								
-								// generate box
-								$boxTitle = $id_f;
-								$formBox = $ui->boxWithContent($boxTitle, $form);
-								// print our modifying customer box.
-								print $formBox;
-								
+								<!--==== Agents ====-->
+								  <div id="agents" role="tabpanel" class="tab-pane">
+										<table class="table table-striped table-bordered table-hover" id="table_ivr">
+										   <thead>
+											  <tr>
+												 <th>Menu ID</th>
+												 <th>Descriptions</th>
+												 <th>Prompt</th>
+												 <th class='hide-on-medium hide-on-low'>Timeout</th>
+												 <th>Action</th>
+											  </tr>
+										   </thead>
+										   <tbody>
+											   	<?php
+											   		for($i=0;$i < count($ivr->menu_id);$i++){
+
+													$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i]);
+
+											   	?>	
+													<tr>
+														<td><?php echo $ivr->menu_id[$i];?></td>
+														<td><a class=''><?php echo $ivr->menu_name[$i];?></a></td>
+														<td><?php echo $ivr->menu_prompt[$i];?></td>
+														<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_timeout[$i];?></td>
+														<td><?php echo $action_IVR;?></td>
+													</tr>
+												<?php
+													}
+												?>
+										   </tbody>
+										</table>
+										<br/>
+									<div class="panel-footer text-right">&nbsp;</div>
+								 </div>
+
+								</div><!-- END tab content-->
+							</div>
+
+					<?php			
+								/*
+									INSERT OLD CODE HERE
+								*/
 							}
 						} else {
 						# An error occured
@@ -644,10 +793,18 @@ if (isset($_POST["did"])) {
 		<script type="text/javascript">
 			$(document).ready(function() {
 
-			$(function(){
-				$('.demo1').colorpicker();
+			$("#show_advanced_settings").click(function(){
+			    $("#advanced_settings_wrapper").toggle();
+			    if ($('#hide').is(":hidden")){
+			    	$("#hide").show();
+			   		$("#show").hide();
+			    }else{
+			    	$("#show").show();
+			   		$("#hide").hide();
+			    }
+			    
 			});
-	
+			
 				/** 
 				 * Modifies 
 			 	 */
