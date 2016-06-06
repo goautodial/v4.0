@@ -354,6 +354,11 @@
 				$('#calltimes').dataTable();
 
 				$('.add-calltimes').click(function(){
+					$('.call-time-id').text('');
+					$('.call-time-name').val('');
+					$('.call-time-comments').val('');
+					$('.call-time-user-group option[value="ADMIN"]').attr('selected','selected');
+
 					$('.call-time-id').addClass('hide');
 					$('.call-time-id-textbox').removeClass('hide');
 					$('.btn-save-calltime').removeClass('hide');
@@ -392,7 +397,7 @@
 						},
 						dataType: 'json',
 						success: function(data) {
-						    console.log(data);
+						    // console.log(data);
 						    $('.call-time-id').text(data.call_time_id);
 							$('.call-time-name').val(data.call_time_name);
 							$('.call-time-comments').val();
