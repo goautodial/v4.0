@@ -556,6 +556,7 @@ if (isset($_POST["did"])) {
 	$scripts = $ui->API_goGetAllScripts();
 	$voicefiles = $ui->API_GetVoiceFilesList();
 
+
 				// IF PHONE NUMBER / DID
 					if($did != NULL) {
 						$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -691,10 +692,71 @@ if (isset($_POST["did"])) {
 										<div class="form-group">
 											<label for="route_unavail">Agent Unavailable Action: </label>
 											<select name="route_unavail" id="route_unavail" class="form-control">
-												<option value="" > Voicemail </option>
-												<option value="" > Phone </option>
-												<option value="" > In-group </option>
-												<option value="" > Custom Extension </option>
+												<option value="EXTEN" > Custom Extension </option>
+												<option value="INGROUP" > In-group </option>
+												<option value="PHONE" > Phone </option>
+												<option value="VOICEMAIL" > Voicemail </option>												
+											</select>
+										</div>
+											<!-- FOR AGENT UNAVAILABLE ACTION -->
+												<!--IF route_unavail = EXTEN -->
+													<div class="form-group" id="ru_exten" style="display: none;">
+														<label for="ru_exten">Extension</label>
+														<input type="text" class="form-control" name="ru_exten" id="ru_exten" value="<?php echo $output->did_pattern[$i];?>">
+													</div>
+												<!--IF route_unavail = INGROUP -->
+													<div class="form-group" id="ru_ingroup" style="display: none;">
+														<label for="ru_ingroup">Ingroup</label>
+														<select name="ru_ingroup" id="ru_ingroup" class="form-control">
+															<?php
+																for($i=0;$i<count($ingroups->group_id);$i++){
+															?>
+																<option value="<?php echo $ingroups->group_id[$i];?>">
+																	<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+																</option>									
+															<?php
+																}
+															?>
+														</select>
+													</div>
+												<!--IF route_unavail = PHONE -->
+													<div class="form-group" id="ru_phone" style="display: none;">
+														<label for="exten">Phone</label>
+														<select name="ru_phone" id="ru_phone" class="form-control">
+															<?php
+																for($i=0;$i<count($phones->extension);$i++){
+															?>
+																<option value="<?php echo $phones->extension[$i];?>">
+																	<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
+																</option>									
+															<?php
+																}
+															?>
+														</select>
+													</div>
+												<!--IF route_unavail = VOICEMAIL -->
+													<div class="form-group" id="ru_voicemail" style="display: none;">
+														<label for="exten">Voicemail</label>
+														<input type="text" class="form-control" name="exten" id="exten" value="<?php echo $output->did_pattern[$i];?>">
+													</div>
+
+										<div class="form-group">
+											<label for="route_settings">Agent Route Settings: </label>
+											<select name="route_settings" id="route_settings" class="form-control">
+												<option value="">
+													---NONE---
+												</option>	
+											<?php
+												for($i=0;$i<count($ingroups->group_id);$i++){
+													if($ingroups->group_id[$i] != "AGENTDIRECT"){
+											?>
+												<option value="<?php echo $ingroups->group_id[$i];?>">
+													<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+												</option>									
+											<?php
+													}
+												}
+											?>
 											</select>
 										</div>
 									</div><!-- end of div agent-->
@@ -873,6 +935,36 @@ if (isset($_POST["did"])) {
 			    
 			});
 			
+			$('#route_unavail').on('change', function() {
+				//  alert( this.value ); // or $(this).val()
+				if(this.value == "EXTEN") {
+				  $('#ru_exten').show();
+				  
+				  $('#ru_phone').hide();
+				  $('#ru_ingroup').hide();
+				  $('#ru_voicemail').hide();
+				}if(this.value == "INGROUP") {
+				  $('#ru_ingroup').show();
+				  
+				  $('#ru_exten').hide();
+				  $('#ru_phone').hide();
+				  $('#ru_voicemail').hide();
+				}if(this.value == "PHONE") {
+				  $('#ru_phone').show();
+				  
+				  $('#ru_exten').hide();
+				  $('#ru_ingroup').hide();
+				  $('#ru_voicemail').hide();
+				}if(this.value == "VOICEMAIL") {
+				  $('#ru_voicemail').show();
+				  
+				  $('#ru_exten').hide();
+				  $('#ru_ingroup').hide();
+				  $('#ru_phone').hide();
+				}
+				
+			});
+
 			$('#route').on('change', function() {
 				//  alert( this.value ); // or $(this).val()
 				if(this.value == "AGENT") {
