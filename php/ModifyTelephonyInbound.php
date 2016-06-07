@@ -216,10 +216,10 @@ if ($did != NULL) {
     $postfields["goAction"] = "goEditDID"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; #json (required)
     $postfields["did_id"] = $modify_did; #Desired list id. (required)
-    $postfields["did_pattern"] = $did; #Desired list id. (required)
+    $postfields["did_pattern"] = $exten; #Desired list id. (required)
 	$postfields["did_description"] = $desc; #Desired value for user (required)
-	$postfields["route"] = $route; #Desired value for user (required)
-	$postfields["active"] = $status; #Desired value for user (required)
+	$postfields["did_route"] = $route; #Desired value for user (required)
+	$postfields["did_active"] = $status; #Desired value for user (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

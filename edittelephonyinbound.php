@@ -35,7 +35,13 @@ if (isset($_POST["did"])) {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Edit In-Group</title>
+        <title>Edit 
+        	<?php 
+        		if($groupid != NULL){echo "In-Group";}
+        		if($ivr != NULL){echo "Interactive Voice Record";}
+        		if($did != NULL){echo "DID/Phone Number";}
+        	?>
+        </title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -74,8 +80,14 @@ if (isset($_POST["did"])) {
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        <?php $lh->translateText("Ingroup"); ?>
-                        <small><?php $lh->translateText("Edit Ingroup"); ?></small>
+                    	Inbound
+                        <small>Edit 
+                        	<?php 
+				        		if($groupid != NULL){echo "In-Group";}
+				        		if($ivr != NULL){echo "Interactive Voice Record";}
+				        		if($did != NULL){echo "DID/Phone Number";}
+					        ?>
+					    </small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -139,7 +151,8 @@ if (isset($_POST["did"])) {
 									 <li role="presentation">
 										<a href="#agents" aria-controls="agents" role="tab" data-toggle="tab" class="bb0">
 										<span class="fa fa-users"></span> Agents </a>
-									 </li>								  
+									 </li>
+								</ul>						  
 								<!-- Tab panes-->
 								<div class="tab-content p0 bg-white">
 
@@ -517,120 +530,11 @@ if (isset($_POST["did"])) {
 						if ($output->result=="success") {
 						# Result was OK!
 							for($i=0;$i < count($output->menu_id);$i++){
-								
-								$hidden_f = $ui->hiddenFormField("modify_ivr", $ivr);
-								
+							
+						?>
 
-								$id_f = '<h4>Modify Call Menu : <b>'.$ivr.'</b>';
-								
-								$menu_id_f = '<h4>Menu ID : '.$ivr;
-
-								$name_l = '<h4>Menu Name</h4>';
-								$ph = $lh->translationFor("Name").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->menu_name[$i]) ? $output->menu_name[$i] : null;
-								$name_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("name", "name", "text", $ph, $vl, "tasks", "required"));
-																
-								$prompt_l = '<h4>Menu Prompt</h4>';
-								$prompt_f = '<select class="form-control" id="menu_prompt" name="menu_prompt" required>';		
-								
-								if ($voicefiles->result=="success") {								
-								# Result was OK!
-								
-									for($a=0;$a<count($voicefiles->file_name);$a++){
-										$file = substr($voicefiles->file_name[$a], 0, -4);
-
-										if($output->menu_prompt[$i] == $file){
-											$prompt_f .= '<option value="'.$file.'" selected>'.$file.'</option>';
-										}else{
-											$prompt_f .= '<option value="'.$file.'" >'.$file.'</option>';
-										}
-									}
-								} else {
-								# An error occured
-									$prompt_f = '<option value="" selected disabled>-- NO AVAILABLE VOICE FILE --</option>';;
-								}
-									
-								$prompt_f .= '</select>';
-
-								$timeout_l = '<h4>Menu Timeout</h4>';
-								$ph = $lh->translationFor("Menu Timeout").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->menu_timeout[$i]) ? $output->menu_timeout[$i] : null;
-								$timeout_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("menu_timeout", "menu_timeout", "number", $ph, $vl, "clock", "required"));
-								
-								$timeout_prompt_l = '<h4>Menu Timeout Prompt</h4>';
-								$timeout_prompt_f = '<select class="form-control" id="menu_timeout_prompt" name="menu_timeout_prompt" required>';		
-								
-								if ($voicefiles->result=="success") {								
-								# Result was OK!
-								
-									for($a=0;$a<count($voicefiles->file_name);$a++){
-										$file = substr($voicefiles->file_name[$a], 0, -4);
-
-										if($output->menu_timeout_prompt[$i] == $file){
-											$timeout_prompt_f .= '<option value="'.$file.'" selected>'.$file.'</option>';
-										}else{
-											$timeout_prompt_f .= '<option value="'.$file.'" >'.$file.'</option>';
-										}
-									}
-								} else {
-								# An error occured
-									$timeout_prompt_f = '<option value="" selected disabled>-- NO AVAILABLE VOICE FILE --</option>';;
-								}
-									
-								$timeout_prompt_f .= '</select>';
-								
-								$invalid_prompt_l = '<h4>Menu Invalid Prompt</h4>';
-								$invalid_prompt_f = '<select class="form-control" id="menu_invalid_prompt" name="menu_invalid_prompt" required>';		
-								
-								if ($voicefiles->result=="success") {								
-								# Result was OK!
-								
-									for($a=0;$a<count($voicefiles->file_name);$a++){
-										$file = substr($voicefiles->file_name[$a], 0, -4);
-
-										if($output->menu_invalid_prompt[$i] == $file){
-											$invalid_prompt_f .= '<option value="'.$file.'" selected>'.$file.'</option>';
-										}else{
-											$invalid_prompt_f .= '<option value="'.$file.'" >'.$file.'</option>';
-										}
-									}
-								} else {
-								# An error occured
-									$invalid_prompt_f = '<option value="" selected disabled>-- NO AVAILABLE VOICE FILE --</option>';;
-								}
-									
-								$invalid_prompt_f .= '</select>';
-								
-								$repeat_l = '<h4>Menu Repeat</h4>';
-								$ph = $lh->translationFor("Menu Repeat");
-								$vl = isset($output->menu_repeat[$i]) ? $output->menu_repeat[$i] : null;
-								$repeat_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("menu_repeat", "menu_repeat", "number", $ph, $vl, "clock", "required"));
-								
-								
-								// buttons at bottom (only for writing+ permissions)
-								$buttons = "";
-								if ($user->userHasWritePermission()) {
-									$buttons = $ui->buttonWithLink("modifyIVRDeleteButton", $menu_id, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
-									$buttons .= $ui->buttonWithLink("modifyCustomerOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
-									$buttons = $ui->singleFormGroupWrapper($buttons);
-								}
-				
-								// generate the form
-								$fields = $hidden_f.$menu_id_f.$name_l.$name_f.$prompt_l.$prompt_f.$timeout_l.$timeout_f.$timeout_prompt_l.$timeout_prompt_f.$invalid_prompt_l.$invalid_prompt_f.$repeat_l.$repeat_f;
-								
-								// generate form: header
-								$form = $ui->formWithCustomFooterButtons("modifyivr", $fields, $buttons, "modifyIVRresult");
-								
-								// generate and show the box
-								//$box = $ui->boxWithForm("modifyuser", , $fields, $lh->translationFor("edit_user"));
-								//print $box;
-								
-								// generate box
-								$boxTitle = $id_f;
-								$formBox = $ui->boxWithContent($boxTitle, $form);
-								// print our modifying customer box.
-								print $formBox;
-								
+						
+						<?php
 							}
 						} else {
 						# An error occured
@@ -640,6 +544,17 @@ if (isset($_POST["did"])) {
 					} else {
 			    		$errormessage = $lh->translationFor("some_fields_missing");
 					}
+
+	/*
+	 * APIs for getting lists for the some of the forms
+	 */
+	$users = $ui->API_goGetAllUserLists();
+	$ingroups = $ui->API_getInGroups();
+	$voicemails = $ui->API_goGetVoiceMails();
+	$phones = $ui->API_getPhonesList();
+	$ivr = $ui->API_getIVR();
+	$scripts = $ui->API_goGetAllScripts();
+	$voicefiles = $ui->API_GetVoiceFilesList();
 
 				// IF PHONE NUMBER / DID
 					if($did != NULL) {
@@ -661,112 +576,265 @@ if (isset($_POST["did"])) {
 						curl_close($ch);
 						$output = json_decode($data);
 						
+						//var_dump($output);
 						
 						if ($output->result=="success") {
 						# Result was OK!
 							for($i=0;$i<count($output->did_pattern);$i++){
+						?>
+							
+							<div role="tabpanel" class="panel panel-transparent" style="box-shadow: 5px 5px 8px #888888;">
+							
+							<h4 style="padding:15px;"><a type="button" class="btn" href="telephonyinbound.php"><i class="fa fa-arrow-left"></i> Cancel</a><center><b>MODIFY DID RECORD: <?php echo $output->did_id[$i];?></b></center></h4>
+									
+								<form id="modifydid">
+									<input type="hidden" name="modify_did" value="<?php echo $output->did_id[$i];?>">
 								
-								$hidden_f = $ui->hiddenFormField("modify_did", $did);
-								
-								$id_f = '<h4>Modify Record : <b>'.$did.'</b>';
-								
-								$newid_l = '<h4>DID ID</h4>';
-								$ph = $lh->translationFor("DID Extension").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->did_pattern[$i]) ? $output->did_pattern[$i] : null;
-								$newid_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("modify_did", "modify_did", "text", $ph, $vl, "tasks", "required"));
-
-								$exten_l = '<h4>DID Extension</h4>';
-								$ph = $lh->translationFor("DID Extension").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->did_pattern[$i]) ? $output->did_pattern[$i] : null;
-								$exten_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("exten", "exten", "text", $ph, $vl, "tasks", "required"));
-								
-								$desc_l = '<h4>DID Description</h4>';
-								$ph = $lh->translationFor("DID Extension").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->did_description[$i]) ? $output->did_description[$i] : null;
-								$desc_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("desc", "desc", "text", $ph, $vl, "tasks", "required"));
-								
-								$route_l = '<h4>DID Route</h4>';
-								$route_f = '<select class="form-control" id="route" name="route">';
+							<!-- BASIC SETTINGS -->
+								<div class="panel text-left" style="margin-top: 50px; padding: 0px 30px">
+									<div class="form-group">
+										<label for="exten">DID NUMBER</label>
+										<input type="text" class="form-control" name="exten" id="exten" value="<?php echo $output->did_pattern[$i];?>">
+									</div>
+									<div class="form-group">
+										<label for="desc">Description</label>
+										<input type="text" class="form-control" name="desc" id="desc" value="<?php echo $output->did_description[$i];?>">
+									</div>
+									<div class="row">
+										<label for="status" class="col-md-3">Status
+										<select class="form-control" name="status" id="status">
+										<?php
+											$status = NULL;
+											if($output->active[$i] == "Y"){
+												$status .= '<option value="Y" selected> YES </option>';
+											}else{
+												$status .= '<option value="Y" > YES </option>';
+											}
+											
+											if($output->active[$i] == "N" || $output->active[$i] == NULL){
+												$status .= '<option value="N" selected> NO </option>';
+											}else{
+												$status .= '<option value="N" > NO </option>';
+											}
+											echo $status;
+										?>
+											
+										</select>
+										</label>
+									</div>
+									<div class="row">
+										<label for="route" class="col-md-5">DID Route
+										<select class="form-control" id="route" name="route">
+											<?php
+												$route = NULL;
+												if($output->did_route [$i] == "AGENT"){
+													$route .= '<option value="AGENT" selected> Agent </option>';
+												}else{
+													$route .= '<option value="AGENT" > Agent </option>';
+												}
 												
-									if($output->did_route [$i] == "AGENT"){
-										$route_f .= '<option value="AGENT" selected> Agent </option>';
-									}else{
-										$route_f .= '<option value="AGENT" > Agent </option>';
-									}
-									
-									if($output->did_route [$i] == "IN_GROUP"){
-										$route_f .= '<option value="IN_GROUP" selected> In-group </option>';
-									}else{
-										$route_f .= '<option value="IN_GROUP" > In-group </option>';
-									}
-									
-									if($output->did_route [$i] == "PHONE"){
-										$route_f .= '<option value="PHONE" selected> Phone </option>';
-									}else{
-										$route_f .= '<option value="PHONE" > Phone </option>';
-									}
-									
-									if($output->did_route [$i] == "CALLMENU "){
-										$route_f .= '<option value="CALLMENU " selected> Call Menu / IVR </option>';
-									}else{
-										$route_f .= '<option value="CALLMENU " > Call Menu / IVR </option>';
-									}
-									
-									if($output->did_route [$i] == "VOICEMAIL "){
-										$route_f .= '<option value="VOICEMAIL " selected> Voicemail </option>';
-									}else{
-										$route_f .= '<option value="VOICEMAIL " > Voicemail </option>';
-									}
-									
-									if($output->did_route [$i] == "EXTEN "){
-										$route_f .= '<option value="EXTEN " selected> Custom Extension </option>';
-									}else{
-										$route_f .= '<option value="EXTEN " > Custom Extension </option>';
-									}
-
-								$route_f .= '</select>';
-								
-								$status_l = '<h4>Status</h4>';
-								$status_f = '<select class="form-control" id="status" name="status">';
+												if($output->did_route [$i] == "IN_GROUP"){
+													$route .= '<option value="IN_GROUP" selected> In-group </option>';
+												}else{
+													$route .= '<option value="IN_GROUP" > In-group </option>';
+												}
 												
-									if($output->active[$i] == "Y"){
-										$status_f .= '<option value="Y" selected> YES </option>';
-									}else{
-										$status_f .= '<option value="Y" > YES </option>';
-									}
+												if($output->did_route [$i] == "PHONE"){
+													$route .= '<option value="PHONE" selected> Phone </option>';
+												}else{
+													$route .= '<option value="PHONE" > Phone </option>';
+												}
+												
+												if($output->did_route [$i] == "CALLMENU "){
+													$route .= '<option value="CALLMENU" selected> Call Menu / IVR </option>';
+												}else{
+													$route .= '<option value="CALLMENU" > Call Menu / IVR </option>';
+												}
+												
+												if($output->did_route [$i] == "VOICEMAIL"){
+													$route .= '<option value="VOICEMAIL" selected> Voicemail </option>';
+												}else{
+													$route .= '<option value="VOICEMAIL" > Voicemail </option>';
+												}
+												
+												if($output->did_route [$i] == "EXTEN"){
+													$route .= '<option value="EXTEN" selected> Custom Extension </option>';
+												}else{
+													$route .= '<option value="EXTEN" > Custom Extension </option>';
+												}
+												echo $route;
+											?>
+										</select>
+										</label>
+									</div>
+									<br/>
+									<!-- HIDING DIVS COLOR -->
+									<div style="background-color: #EAFBEF; padding: 1px 10px;">
+
+									<!-- IF DID ROUTE = AGENT-->
+									<div id="form_route_agent">
+										<div class="form-group">
+											<label for="route_agentid">Agent ID: </label>
+											<select name="route_agentid" id="route_agentid" class="form-control">
+												<option value="" > -- NONE -- </option>
+												<?php
+													for($i=0;$i<count($users->userno);$i++){
+												?>
+													<option value="<?php echo $users->userno[$i];?>">
+														<?php echo $users->userno[$i].' - '.$users->full_name[$i];?>
+													</option>									
+												<?php
+													}
+												?>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="route_unavail">Agent Unavailable Action: </label>
+											<select name="route_unavail" id="route_unavail" class="form-control">
+												<option value="" > Voicemail </option>
+												<option value="" > Phone </option>
+												<option value="" > In-group </option>
+												<option value="" > Custom Extension </option>
+											</select>
+										</div>
+									</div><!-- end of div agent-->
 									
-									if($output->active[$i] == "N"){
-										$status_f .= '<option value="N" selected> NO </option>';
-									}else{
-										$status_f .= '<option value="N" > NO </option>';
-									}
+								<!-- IF DID ROUTE = IN-GROUP-->
+								
+									<div id="form_route_ingroup" class="form-group" style="display: none;">										
+										<label for="route_ingroupid">In-Group ID: </label>
+										<select name="route_ingroupid" id="route_ingroupid" class="form-control">
+											<?php
+												for($i=0;$i<count($ingroups->group_id);$i++){
+											?>
+												<option value="<?php echo $ingroups->group_id[$i];?>">
+													<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+												</option>									
+											<?php
+												}
+											?>
+										</select>
+									</div><!-- end of ingroup div -->
 									
-								$status_f .= '</select>';
+								<!-- IF DID ROUTE = PHONE -->
+
+									<div id="form_route_phone" style="display: none;">
+										<div class="form-group">
+											<label  for="route_phone_exten">Phone Extension: </label>
+											<select name="route_phone_exten" id="route_phone_exten" class="form-control">
+												<?php
+													for($i=0;$i<count($phones->extension);$i++){
+												?>
+													<option value="<?php echo $phones->extension[$i];?>">
+														<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
+													</option>									
+												<?php
+													}
+												?>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for="route_phone_server">Server IP: </label>
+											<select name="route_phone_server" id="route_phone_server" class="form-control">
+												<option value="" > -- NONE -- </option>
+												<?php
+													for($i=0;$i < 1;$i++){
+												?>
+													<option value="<?php echo $phones->server_ip[$i];?>">
+														<?php echo 'GOautodial - '.$phones->server_ip[$i];?>
+													</option>									
+												<?php
+													}
+												?>
+											</select>
+										</div>
+									</div><!-- end of phone div -->
+									
+								<!-- IF DID ROUTE = IVR -->
+
+									<div id="form_route_callmenu" style="display: none;">
+										<div class="form-group">
+											<label for="route_ivr">Call Menu: </label>
+											<select name="route_ivr" id="route_ivr" class="form-control">
+												<?php
+													for($i=0;$i<count($ivr->menu_id);$i++){
+												?>
+													<option value="<?php echo $ivr->menu_id[$i];?>">
+														<?php echo $ivr->menu_id[$i].' - '.$ivr->menu_name[$i];?>
+													</option>									
+												<?php
+													}
+												?>
+											</select>
+										</div>
+									</div><!-- end of ivr div -->
+									
+								<!-- IF DID ROUTE = VoiceMail -->
+
+									<div id="form_route_voicemail" style="display: none;">
+										<div class="form-group">
+											<label for="route_voicemail">Voicemail Box: </label>
+											<select name="route_voicemail" id="route_voicemail" class="form-control">
+												<?php
+													for($i=0;$i<count($voicemails->voicemail_id);$i++){
+												?>
+													<option value="<?php echo $voicemails->voicemail_id[$i];?>">
+														<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
+													</option>									
+												<?php
+													}
+												?>
+											</select>
+										</div>
+									</div><!-- end of voicemail div -->
+									
+									<!-- IF DID ROUTE = Custom Extension -->
+
+									<div id="form_route_exten" style="display: none;">
+										<div class="form-group">
+											<label for="route_exten">Extension: </label>
+											<input type="text" name="route_exten" id="route_exten" placeholder="Extension" class="form-control" required>
+										</div>
+										<div class="form-group">
+											<label for="route_exten_context">Extension Context: </label>
+											<input type="text" name="route_exten_context" id="route_exten_context" placeholder="Extension Context" class="form-control" required>
+										</div>
+									</div><!-- end of custom extension div -->
+									
+									</div><!-- end of color-->
+
+									<div class="row" id="btn_show">
+										<br/>
+										<center>
+										<a class="btn btn-app" style="padding:6px 20px; width:95%; height: 45px;" id="show_advanced_settings" >
+							               <div id="show"><i class="fa fa-plus"></i></div>
+							               <div id="hide" hidden><i class="fa fa-minus"></i></div>
+							                Advanced Settings
+							            </a>
+							            </center>
+						       		</div>
+						       		<!-- ADVANCED SETTINGS -->
+						       		<div id="advanced_settings_wrapper" style="background-color: #E4F3E8; padding: 25px 50px;" hidden>
+						       			<div class="row">
+						       				<label for="cid_num" class="col-md-6">Clean CID Number
+											<input type="text" class="form-control" name="cid_num" id="cid_num" value="">
+											</label>
+						       			</div>						       			
+						       		</div>
+								</div>
+										
+								<div id="modifyDIDresult"></div>
+								<div class="row" style="padding:0px 20px;">
+									<button type="button" class="btn btn-danger" id="modifyDIDDeleteButton" href=""><i class="fa fa-times"></i> Delete</button>
+
+									<button type="submit" class="btn btn-primary pull-right" id="modifyInboundOkButton" href=""><i class="fa fa-check"></i> Save</button>
+								</div>
 								
-								// buttons at bottom (only for writing+ permissions)
-								$buttons = "";
-								if ($user->userHasWritePermission()) {
-									$buttons = $ui->buttonWithLink("modifyDIDDeleteButton", $did, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
-									$buttons .= $ui->buttonWithLink("modifyCustomerOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
-									$buttons = $ui->singleFormGroupWrapper($buttons);
-								}
-		
-							// generate the form
-							$fields = $hidden_f.$newid_l.$newid_f.$exten_l.$exten_f.$desc_l.$desc_f.$status_l.$status_f.$route_l.$route_f;
+								</form>								
 								
-								// generate form: header
-								$form = $ui->formWithCustomFooterButtons("modifyphonenumber", $fields, $buttons, "modifyDIDresult");
-								
-								// generate and show the box
-								//$box = $ui->boxWithForm("modifyuser", , $fields, $lh->translationFor("edit_user"));
-								//print $box;
-								
-								// generate box
-								$boxTitle = $id_f;
-								$formBox = $ui->boxWithContent($boxTitle, $form);
-								// print our modifying customer box.
-								print $formBox;
-								
+							</div>
+
+						<?php		
 							}
 						} else {
 						# An error occured
@@ -805,6 +873,60 @@ if (isset($_POST["did"])) {
 			    
 			});
 			
+			$('#route').on('change', function() {
+				//  alert( this.value ); // or $(this).val()
+				if(this.value == "AGENT") {
+				  $('#form_route_agent').show();
+				  
+				  $('#form_route_ingroup').hide();
+				  $('#form_route_phone').hide();
+				  $('#form_route_callmenu').hide();
+				  $('#form_route_voicemail').hide();
+				  $('#form_route_exten').hide();
+				}if(this.value == "IN_GROUP") {
+				  $('#form_route_ingroup').show();
+				  
+				  $('#form_route_agent').hide();
+				  $('#form_route_phone').hide();
+				  $('#form_route_callmenu').hide();
+				  $('#form_route_voicemail').hide();
+				  $('#form_route_exten').hide();
+				}if(this.value == "PHONE") {
+				  $('#form_route_phone').show();
+				  
+				  $('#form_route_agent').hide();
+				  $('#form_route_ingroup').hide();
+				  $('#form_route_callmenu').hide();
+				  $('#form_route_voicemail').hide();
+				  $('#form_route_exten').hide();
+				}if(this.value == "CALLMENU") {
+				  $('#form_route_callmenu').show();
+				  
+				  $('#form_route_agent').hide();
+				  $('#form_route_ingroup').hide();
+				  $('#form_route_phone').hide();
+				  $('#form_route_voicemail').hide();
+				  $('#form_route_exten').hide();
+				}if(this.value == "VOICEMAIL") {
+				  $('#form_route_voicemail').show();
+				  
+				  $('#form_route_agent').hide();
+				  $('#form_route_ingroup').hide();
+				  $('#form_route_phone').hide();
+				  $('#form_route_callmenu').hide();
+				  $('#form_route_exten').hide();
+				}if(this.value == "EXTEN") {
+				  $('#form_route_exten').show();
+				  
+				  $('#form_route_agent').hide();
+				  $('#form_route_ingroup').hide();
+				  $('#form_route_phone').hide();
+				  $('#form_route_voicemail').hide();
+				  $('#form_route_callmenu').hide();
+				}
+				
+			});
+
 				/** 
 				 * Modifies 
 			 	 */
@@ -861,13 +983,13 @@ if (isset($_POST["did"])) {
 					}					
 				});
 				//a phone number / DID
-				$("#modifyphonenumber").validate({
+				$("#modifydid").validate({
                 	submitHandler: function() {
 						//submit the form
 							$("#resultmessage").html();
 							$("#resultmessage").fadeOut();
 							$.post("./php/ModifyTelephonyInbound.php", //post
-							$("#modifyphonenumber").serialize(), 
+							$("#modifydid").serialize(), 
 								function(data){
 									//if message is sent
 									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
