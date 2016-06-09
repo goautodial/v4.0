@@ -445,7 +445,7 @@
 	
 	<!-- ADD IVR MODAL -->
 		<div class="modal fade" id="add_ivr" tabindex="-1" aria-labelledby="ivr_modal" >
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" role="document" style="width: 800px;">
             <div class="modal-content" style="border-radius:10px;">
             	<!-- NOTIFICATIONS -->
 
@@ -481,6 +481,12 @@
 							<label class="col-sm-4 control-label" for="menu_id">Menu ID:</label>
 							<div class="col-sm-8">
 								<input type="text" name="menu_id" id="menu_id" class="form-control" placeholder="Menu ID" minlength="4" required title="No Spaces. Minimum of 4 characters">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="description">Description:</label>
+							<div class="col-sm-8">
+								<input type="text" name="description" id="description" class="form-control" placeholder="Description" minlength="4" required>
 							</div>
 						</div>
 						<div class="form-group">		
@@ -550,6 +556,30 @@
 								<input type="number" name="menu_repeat" id="menu_repeat" class="form-control" value="1" min="0" required>
 							</div>
 						</div>
+						<div class="form-group">		
+							<label class="col-sm-4 control-label" for="menu_time_check">Menu Time Check: </label>
+							<div class="col-sm-8">
+								<select name="menu_time_check" id="menu_time_check" class="form-control">
+									<option value="ADMIN" > Select Menu Time Check </option>		
+								</select>
+							</div>
+						</div>
+						<div class="form-group">		
+							<label class="col-sm-4 control-label" for="call_time">Call Time: </label>
+							<div class="col-sm-8">
+								<select name="call_time" id="call_time" class="form-control">
+									<option value="ADMIN" > Select Call Time </option>		
+								</select>
+							</div>
+						</div>
+						<div class="form-group">		
+							<label class="col-sm-4 control-label" for="menu_repeat">Track call in realtime report: </label>
+							<div class="col-sm-8"> 
+								<select name="call_time" id="call_time" class="form-control">
+									<option value="ADMIN" > Select Track Call </option>		
+								</select>
+							</div>
+						</div>
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="tracking_group">Tracking Groups: </label>
 							<div class="col-sm-8">
@@ -581,22 +611,37 @@
 				<!-- STEP 2 -->
 					<div class="wizard-step" style="display: block;">
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="">Default Call Menu Entry:</label>
-							<div class="col-sm-8" disabled>
-								Option:
-								<select class="form-control" disabled>
-									<option selected>TIMEOUT</option>
-								</select>
-								Desription: 
-								<input type="text" name="" id="" disabled class="form-control" placeholder="Description" required value="Hangup">
-								Route:
-								<select class="form-control" disabled>
-									<option selected>Hangup</option>
-								</select>
-								Audio File:
-								<input type="text" name="" id="" disabled class="form-control" placeholder="Description" required value="vm-goodbye">
+							<div class="col-lg-12">
+								<div class="pull-right">
+									<button type="button" class="btn btn-primary add-option">Add Option</button>
+								</div>
 							</div>
 						</div>
+						<div class="form-group to-clone-opt">
+							<label class="col-sm-3 control-label" for="">Default Call Menu Entry:</label>
+							<div class="col-lg-2">
+								Option:
+								<select class="form-control">
+									<option selected>TIMEOUT</option>
+								</select>
+							</div>
+							<div class="col-lg-2">
+								Desription: 
+								<input type="text" name="" id="" class="form-control" placeholder="Description" required value="Hangup">
+							</div>
+							<div class="col-lg-2">
+								Route:
+								<select class="form-control">
+									<option selected>Hangup</option>
+								</select>
+							</div>
+							<div class="col-lg-2">
+								Audio File:
+								<input type="text" name="" id="" class="form-control" placeholder="Description" required value="vm-goodbye">
+							</div>
+							<div class="col-lg-1 btn-remove"></div>
+						</div>
+						<div class="cloning-area"></div>
 					</div><!-- End of Step -->
 				
 
@@ -1097,6 +1142,23 @@
 						});
 					}
 				 });
+
+				$('.add-option').click(function(){
+					var toClone = $('.to-clone-opt').clone();
+
+					toClone.removeClass('to-clone-opt');
+					toClone.find('label.control-label').text('');
+					toClone.find('.btn-remove').append('<span class="fa fa-remove fa-2x text-red remove-row"></span>');
+
+					$('.cloning-area').append(toClone);
+				});
+
+				$(document).on('click', '.remove-row', function(){
+					var row = $(this).parent().parent();
+					
+					row.remove();
+				});
+
 				
 			});
 		</script>
