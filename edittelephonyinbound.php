@@ -699,6 +699,7 @@ if (isset($_POST["did"])) {
 											</select>
 										</div>
 											<!-- FOR AGENT UNAVAILABLE ACTION -->
+												<div style="padding-left: 30px;">
 												<!--IF route_unavail = EXTEN -->
 													<div class="form-group" id="ru_exten" style="display: none;">
 														<label for="ru_exten">Extension</label>
@@ -739,7 +740,7 @@ if (isset($_POST["did"])) {
 														<label for="exten">Voicemail</label>
 														<input type="text" class="form-control" name="exten" id="exten" value="<?php echo $output->did_pattern[$i];?>">
 													</div>
-
+												</div>
 										<div class="form-group">
 											<label for="route_settings">Agent Route Settings: </label>
 											<select name="route_settings" id="route_settings" class="form-control">
