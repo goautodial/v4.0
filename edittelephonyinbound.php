@@ -163,7 +163,7 @@ if (isset($_POST["did"])) {
 										<form id="modifyingroup">
 											<input type="hidden" name="modify_groupid" value="<?php echo $groupid;?>">
 										<!-- BASIC SETTINGS -->
-											<div class="panel text-left" style="margin-top: 50px; padding: 0px 30px">
+											<div class="panel text-left" style="margin-top: 20px; padding: 0px 30px">
 												<div class="form-group">
 													<label for="description">Description</label>
 													<input type="text" class="form-control" name="desc" id="description" value="<?php echo $output->group_name[$i];?>">
@@ -437,7 +437,7 @@ if (isset($_POST["did"])) {
 											</div>
 											
 									<div id="modifyINGROUPresult"></div>
-									<div class="row" style="padding:0px 20px;">
+									<div class="row" style="padding:0px 50px;">
 										<button type="button" class="btn btn-danger" id="modifyINGROUPDeleteButton" href=""><i class="fa fa-times"></i> Delete</button>
 
 										<button type="submit" class="btn btn-primary pull-right" id="modifyInboundOkButton" href=""><i class="fa fa-check"></i> Save</button>
@@ -592,7 +592,7 @@ if (isset($_POST["did"])) {
 									<input type="hidden" name="modify_did" value="<?php echo $output->did_id[$i];?>">
 								
 							<!-- BASIC SETTINGS -->
-								<div class="panel text-left" style="margin-top: 50px; padding: 0px 30px">
+								<div class="panel text-left" style="margin-top: 20px; padding: 0px 30px">
 									<div class="form-group">
 										<label for="exten">DID NUMBER</label>
 										<input type="text" class="form-control" name="exten" id="exten" value="<?php echo $output->did_pattern[$i];?>">
@@ -887,7 +887,7 @@ if (isset($_POST["did"])) {
 								</div>
 										
 								<div id="modifyDIDresult"></div>
-								<div class="row" style="padding:0px 20px;">
+								<div class="row" style="padding:0px 50px;">
 									<button type="button" class="btn btn-danger" id="modifyDIDDeleteButton" href=""><i class="fa fa-times"></i> Delete</button>
 
 									<button type="submit" class="btn btn-primary pull-right" id="modifyInboundOkButton" href=""><i class="fa fa-check"></i> Save</button>

@@ -22,7 +22,7 @@ if (isset($_POST["userid"])) {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Edit Telephony Users</title>
+        <title>Edit Users</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -61,8 +61,8 @@ if (isset($_POST["userid"])) {
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        <?php $lh->translateText("telephony"); ?>
-                        <small><?php $lh->translateText("telephony_users_edition"); ?></small>
+                        <?php $lh->translateText("Users"); ?>
+                        <small><?php $lh->translateText("Edit Users"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -70,7 +70,7 @@ if (isset($_POST["userid"])) {
                         <?php
 							if(isset($_POST["userid"])){
 						?>	
-							<li><a href="./telephonyusers.php"><?php $lh->translateText("telephony_users"); ?></a></li>
+							<li><a href="./telephonyusers.php"><?php $lh->translateText("Users"); ?></a></li>
                         <?php
 							}
                         ?>	                    
@@ -79,7 +79,7 @@ if (isset($_POST["userid"])) {
                 </section>
 
                 <!-- Main content -->
-                <section class="content">
+                <section class="content" style="padding:30px; padding-left:100px; padding-right:100px; margin-left: 0; margin-right: 0;">
 					<!-- standard custom edition form -->
 					<?php
 					$userobj = NULL;
@@ -112,7 +112,7 @@ if (isset($_POST["userid"])) {
 						if ($output->result=="success") {
 						# Result was OK!
 							for($i=0;$i<count($output->userno);$i++){
-								
+					/*			
 								$hidden_f = $ui->hiddenFormField("modifyid", $userid);
 								
 								$id_f = '<h4>Agent ID : <b>'.$userid.'</b></h4>';
@@ -243,7 +243,238 @@ if (isset($_POST["userid"])) {
 								$formBox = $ui->boxWithContent($boxTitle, $form);
 								// print our modifying customer box.
 								print $formBox;
+						*/
+						?>
+
+							<div role="tabpanel" class="panel panel-transparent" style="box-shadow: 5px 5px 8px #888888;">
+							
+							<h4 style="padding:15px;"><a type="button" class="btn" href="telephonyusers.php"><i class="fa fa-arrow-left"></i> Cancel</a><center><b>MODIFY USER</b></center></h4>
+									
+								<form id="modifyuser">
+									<input type="hidden" name="modifyid" value="<?php echo $userid;?>">
 								
+							<!-- BASIC SETTINGS -->
+								<div class="panel text-left" style="margin-top: 20px; padding: 0px 30px">
+									<div class="form-group">
+										<label>AGENT ID: </label>
+										<span style="padding-left:20px; font-size: 20;"><?php echo $userid;?></span>
+									</div>
+									<div class="form-group">
+										<label for="fullname">Fullname</label>
+										<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->full_name[$i];?>">
+									</div>
+									<div class="form-group">
+										<label for="email">Email</label>
+										<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->email[$i];?>">
+									</div>
+									<div class="row">
+										<label for="usergroup" class="col-md-5">User Group
+										<select class="form-control" id="usergroup" name="usergroup">
+											<?php
+												$usergroup = NULL;
+												if($output->user_group[$i] == "ADMIN"){
+													$usergroup .= '<option value="ADMINISTRATORS" selected>GOAUTODIAL ADMINISTRATORS</option>';
+												}else{
+													$usergroup .= '<option value="ADMINISTRATORS" >GOAUTODIAL ADMINISTRATORS</option>';
+												}
+												
+												if($output->user_group[$i] == "AGENTS"){
+													$usergroup .= '<option value="AGENTS" selected>GOAUTODIAL AGENTS</option>';
+												}else{
+													$usergroup .= '<option value="AGENTS" >GOAUTODIAL AGENTS</option>';
+												}
+												
+												if($output->user_group[$i] == "SUPERVISOR"){
+													$usergroup .= '<option value="SUPERVISOR" selected>SUPERVISOR</option>';
+												}else{
+													$usergroup .= '<option value="SUPERVISOR" >SUPERVISOR</option>';
+												}
+												echo $usergroup;
+											?>
+										</select>
+										</label>
+									</div>
+									<div class="row">
+										<label for="status" class="col-md-3">Status
+										<select class="form-control" name="status" id="status">
+										<?php
+											$status = NULL;
+											if($output->active[$i] == "Y"){
+												$status .= '<option value="Y" selected> YES </option>';
+											}else{
+												$status .= '<option value="Y" > YES </option>';
+											}
+											
+											if($output->active[$i] == "N" || $output->active[$i] == NULL){
+												$status .= '<option value="N" selected> NO </option>';
+											}else{
+												$status .= '<option value="N" > NO </option>';
+											}
+											echo $status;
+										?>
+										</select>
+										</label>
+									</div>
+									<div class="row">
+										<label for="userlevel" class="col-md-1">User Level
+										<select class="form-control" name="userlevel" id="userlevel">
+										<?php
+											$userlevel = NULL;
+												if($output->user_level[$i] == "1"){
+													$userlevel .= '<option value="1" selected> 1 </option>';
+												}else{
+													$userlevel .= '<option value="1" > 1 </option>';
+												}
+												if($output->user_level[$i] == "2"){
+													$userlevel .= '<option value="2" selected> 2 </option>';
+												}else{
+													$userlevel .= '<option value="2" > 2 </option>';
+												}
+												if($output->user_level[$i] == "3"){
+													$userlevel .= '<option value="3" selected> 3 </option>';
+												}else{
+													$userlevel .= '<option value="3" > 3 </option>';
+												}
+												if($output->user_level[$i] == "4"){
+													$userlevel .= '<option value="4" selected> 4 </option>';
+												}else{
+													$userlevel .= '<option value="4" > 4 </option>';
+												}
+												if($output->user_level[$i] == "5"){
+													$userlevel .= '<option value="5" selected> 5 </option>';
+												}else{
+													$userlevel .= '<option value="5" > 5 </option>';
+												}
+												if($output->user_level[$i] == "6"){
+													$userlevel .= '<option value="6" selected> 6 </option>';
+												}else{
+													$userlevel .= '<option value="6" > 6 </option>';
+												}
+												if($output->user_level[$i] == "7"){
+													$userlevel .= '<option value="7" selected> 7 </option>';
+												}else{
+													$userlevel .= '<option value="7" > 7 </option>';
+												}
+												if($output->user_level[$i] == "8"){
+													$userlevel .= '<option value="8" selected> 8 </option>';
+												}else{
+													$userlevel .= '<option value="8" > 8 </option>';
+												}
+												if($output->user_level[$i] == "9"){
+													$userlevel .= '<option value="9" selected> 9 </option>';
+												}else{
+													$userlevel .= '<option value="9" > 9 </option>';
+												}
+											echo $userlevel;
+										?>
+											
+										</select>
+										</label>
+									</div>
+									<div class="form-group">
+										<label for="phone_login">Phone Login</label>
+										<input type="text" class="form-control" name="phone_login" id="phone_login" value="<?php echo $output->full_name[$i];?>">
+									</div>
+									<div class="form-group">
+										<label for="phone_password">Phone Password</label>
+										<input type="text" class="form-control" name="phone_password" id="phone_password" value="<?php echo $output->full_name[$i];?>">
+									</div>									
+									<div class="row">
+										<label for="voicemail" class="col-md-5">Voicemail
+										<select class="form-control" name="voicemail" id="voicemail">
+										</select>
+										</label>
+									</div>
+									<div class="row">
+										<label for="change_pass" class="col-md-2">Change Password?
+										<select class="form-control" name="change_pass" id="change_pass">
+											<option value="N" selected> No </option>
+											<option value="Y" > Yes </option>
+										</select>
+										</label>
+									</div>
+									<div class="form-group" id="form_password" style="display:none;">
+										<label for="password">Password</label>
+										<input type="text" class="form-control" name="password" id="password" value="<?php echo $output->password[$i];?>">
+									</div>
+
+									<div class="row" id="btn_show">
+										<br/>
+										<center>
+										<a class="btn btn-app" style="padding:6px 20px; width:95%; height: 45px;" id="show_advanced_settings" >
+							               <div id="show"><i class="fa fa-plus"></i></div>
+							               <div id="hide" hidden><i class="fa fa-minus"></i></div>
+							                Advanced Settings
+							            </a>
+							            </center>
+						       		</div>
+						       		
+						       		<!-- ADVANCED SETTINGS -->
+						       		<div id="advanced_settings_wrapper" style="background-color: #E4F3E8; padding: 25px 50px;" hidden>
+						       			<input type="hidden" name="agent_choose_ingroup" value="0">
+						       			<input type="hidden" name="agent_choose_blended" value="0">
+						       			<input type="hidden" name="scheduled_callbacks" value="1">
+						       			<input type="hidden" name="agent_call_manual" value="1">
+						       			<div class="row">
+											<label for="hotkeys" class="col-md-2">HotKeys
+											<select class="form-control" name="hotkeys" id="hotkeys">
+											<?php
+												$status = NULL;
+												if($output->hot_keys[$i] == "1"){
+													$status .= '<option value="1" selected> Active </option>';
+												}else{
+													$status .= '<option value="1" > Active </option>';
+												}
+												
+												if($output->hot_keys[$i] == "0" || $output->hot_keys[$i] == NULL){
+													$status .= '<option value="0" selected> Inactive </option>';
+												}else{
+													$status .= '<option value="0" > Inactive </option>';
+												}
+												echo $status;
+											?>
+												
+											</select>
+											</label>
+										</div>
+										<div class="row">
+											<label for="agent_recordings" class="col-md-1">Agent Recordings
+											<select class="form-control" name="agent_recordings" id="agent_recordings">
+												<option value="0"> 0 </option>
+											</select>
+											</label>
+										</div>
+										<div class="row">
+											<label for="agent_transfers" class="col-md-1">Agent Transfers
+											<select class="form-control" name="agent_transfers" id="agent_transfers">
+												<option value="1"> 1 </option>
+											</select>
+											</label>
+										</div>
+										<div class="row">
+											<label for="closer_default_blended" class="col-md-1">Closer Default Blended
+											<select class="form-control" name="closer_default_blended" id="closer_default_blended">
+												<option value="1"> 1 </option>
+											</select>
+											</label>
+										</div>    			
+						       		</div>
+									
+									<br/>
+								</div>
+										
+								<div id="modifyUSERresult"></div>
+								<div class="row" style="padding:0px 50px;">
+									<button type="button" class="btn btn-danger" id="modifyUSERDeleteButton" href=""><i class="fa fa-times"></i> Delete</button>
+
+									<button type="submit" class="btn btn-primary pull-right" id="modifyUserOkButton" href=""><i class="fa fa-check"></i> Update</button>
+								</div>
+								
+								</form>								
+								
+							</div>
+
+						<?php
 							}
 						} else {
 						# An error occured
@@ -268,7 +499,29 @@ if (isset($_POST["userid"])) {
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
 		<script type="text/javascript">
-			$(document).ready(function() {				
+			$(document).ready(function() {
+
+				$("#show_advanced_settings").click(function(){
+				    $("#advanced_settings_wrapper").toggle();
+				    if ($('#hide').is(":hidden")){
+				    	$("#hide").show();
+				   		$("#show").hide();
+				    }else{
+				    	$("#show").show();
+				   		$("#hide").hide();
+				    }
+				});
+
+				$('#change_pass').on('change', function() {
+				//  alert( this.value ); // or $(this).val()
+					if(this.value == "Y") {
+					  $('#form_password').show();
+					}
+					if(this.value == "N") {
+					  $('#form_password').hide();
+					}
+				});
+
 				/** 
 				 * Modifies a telephony user
 			 	 */
@@ -285,12 +538,12 @@ if (isset($_POST["userid"])) {
 									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
 									<?php 
 										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-										print $ui->fadingInMessageJS($errorMsg, "modifyT_userresult"); 
+										print $ui->fadingInMessageJS($errorMsg, "modifyUSERresult"); 
 									?>				
 									} else {
 									<?php 
 										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data"), false, true);
-										print $ui->fadingInMessageJS($errorMsg, "modifyT_userresult");
+										print $ui->fadingInMessageJS($errorMsg, "modifyUSERresult");
 									?>
 									}
 									//
@@ -302,7 +555,7 @@ if (isset($_POST["userid"])) {
 				/**
 				 * Deletes a customer
 				 */
-				 $("#modifyT_userDeleteButton").click(function (e) {
+				 $("#modifyUSERDeleteButton").click(function (e) {
 					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
 					e.preventDefault();
 					if (r == true) {

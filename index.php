@@ -432,8 +432,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 												<td><?php echo $cluster->server_ip[$i];?></td>
 												<td><?php echo $cluster->active[$i];?></td>
 												<td><?php echo $cluster->sysload[$i]."% - ".$cluster->cpu[$i];?></td>
-												<td><center><?php echo $cluster->channel[$i];?></center></td>
-												<td><center><?php echo $cluster->disk_usage[$i]."%";?></center></td>
+												<td style="padding-left:20px;"><?php echo $cluster->channel[$i];?></td>
+												<td><?php echo $cluster->disk_usage[$i]."%";?></td>
 												<td><?php echo $cluster->systemtime[$i];?></td>
 											</tr>
 										<!--

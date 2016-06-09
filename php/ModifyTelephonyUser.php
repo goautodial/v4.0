@@ -1,15 +1,13 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require('Session.php');
 require_once('goCRMAPISettings.php');
 
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
-
 // check required fields
-$reason = $lh->translationFor("unable_modify_user");
+$reason = "Unable to Modify Users";
 $validated = 1;
 if (!isset($_POST["modifyid"])) {
 	$validated = 0;
@@ -18,13 +16,18 @@ if (!isset($_POST["modifyid"])) {
 if ($validated == 1) {
 
 	// collect new user data.	
-	$modifyid = $_POST["modifyid"];
+	echo $modifyid = $_POST["modifyid"];
     
-	$name = NULL; if (isset($_POST["name"])) { 
-		$name = $_POST["name"]; 
+	$name = NULL; if (isset($_POST["fullname"])) { 
+		$name = $_POST["fullname"]; 
 		$name = stripslashes($name);
 	}
-	
+
+	$email = NULL; if (isset($_POST["email"])) { 
+		$email = $_POST["email"]; 
+		$email = stripslashes($email);
+	}
+
     $user_group = NULL; if (isset($_POST["usergroup"])) { 
 		$user_group = $_POST["usergroup"]; 
 		$user_group = stripslashes($user_group);
@@ -41,7 +44,7 @@ if ($validated == 1) {
 	}
 	
 	
-	$url = "https://gadcs.goautodial.com/goAPI/goUsers/goAPI.php"; # URL to GoAutoDial API file
+	$url = gourl."/goUsers/goAPI.php"; # URL to GoAutoDial API file
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goEditUser"; #action performed by the [[API:Functions]]
@@ -65,6 +68,8 @@ if ($validated == 1) {
     curl_close($ch);
     $output = json_decode($data);
     
+    //var_dump($output);
+
     if ($output->result=="success") {
     # Result was OK!
         ob_clean();
