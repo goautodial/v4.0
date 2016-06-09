@@ -8,7 +8,7 @@
     color: white;
     padding: 22px;
     box-shadow: 1px 1px 3px #000000;
-    z-index: 5;
+    z-index: 1000;
     right: 24px;
     /*bottom: 45px;*/
     bottom: 20px;

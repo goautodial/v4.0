@@ -991,6 +991,12 @@ error_reporting(E_ERROR | E_PARSE);
 					$dateFormat = $this->lh->getDateFormatForCurrentLocale();
 				    return $this->singleFormGroupWithInputGroup($this->maskedDateInputElement($setting, $setting, $dateFormat, $currentValue), $this->lh->translationFor($setting));
 					break;
+				case CRM_SETTING_TYPE_LABEL:
+					return $this->singleFormGroupWithInputGroup($this->lh->translationFor($setting));
+					break;
+				case CRM_SETTING_TYPE_PASS:
+					return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "password", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));
+					break;
 		    }
 	    }
     }
@@ -1672,7 +1678,9 @@ error_reporting(E_ERROR | E_PARSE);
         // suffix: modules
         $activeModules = $mh->activeModulesInstances();
         foreach ($activeModules as $shortName => $module) {
-        	$result .= $this->getSidebarItem($mh->pageLinkForModule($shortName, null), $module->mainPageViewIcon(), $module->mainPageViewTitle(), $module->sidebarBadgeNumber());
+			if ($module->mainPageViewTitle() != null && $module->needsSidebarDisplay()) {
+				$result .= $this->getSidebarItem($mh->pageLinkForModule($shortName, null), $module->mainPageViewIcon(), $module->mainPageViewTitle(), $module->sidebarBadgeNumber());
+			}
         }
 		
 		$result .= $this->getSidebarItem("https://www.goautodial.com/supporttickets.php", "support", $this->lh->translationFor("support"));

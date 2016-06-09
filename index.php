@@ -714,11 +714,11 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		   $results[$temp[0]] = $temp[1];
 		 }
 	
-		$outbound_calls = max($results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
+		$outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
 		
-		$inbound_calls = max($results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
+		$inbound_calls = max($results["Hour8"],$results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
 		
-		$dropped_calls = max($results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
+		$dropped_calls = max($results["Hour8d"],$results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
 		
 		$max = max($inbound_calls, $outbound_calls, $dropped_calls);
 	
@@ -804,33 +804,55 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					"data": [
 					<?php
 					if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9o"]) && $outbound_calls != 0){
-						echo '["9AM",'.$results["Hour9o"].'],';
-						echo '["10AM",'.$results["Hour10o"].'],';
-						echo '["11AM",'.$results["Hour11o"].'],';
-						echo '["12NN",'.$results["Hour12o"].'],';
-						echo '["1AM",'.$results["Hour13o"].'],';
-						echo '["2PM",'.$results["Hour14o"].'],';
-						echo '["3PM",'.$results["Hour15o"].'],';
-						echo '["4PM",'.$results["Hour16o"].'],';
-						echo '["5PM",'.$results["Hour17o"].'],';
-						echo '["6PM",'.$results["Hour18o"].'],';
-						echo '["7PM",'.$results["Hour19o"].'],';
-						echo '["8PM",'.$results["Hour20o"].'],';
-						echo '["9PM",'.$results["Hour21o"].']';
+						echo '["01",'.$results["Hour1o"].'],';
+						echo '["02",'.$results["Hour2o"].'],';
+						echo '["03",'.$results["Hour3o"].'],';
+						echo '["04",'.$results["Hour4o"].'],';
+						echo '["05",'.$results["Hour5o"].'],';
+						echo '["06",'.$results["Hour6o"].'],';
+						echo '["07",'.$results["Hour7o"].'],';
+						echo '["08",'.$results["Hour8o"].'],';
+						echo '["09",'.$results["Hour9o"].'],';
+						echo '["10",'.$results["Hour10o"].'],';
+						echo '["11",'.$results["Hour11o"].'],';
+						echo '["12",'.$results["Hour12o"].'],';
+						echo '["13",'.$results["Hour13o"].'],';
+						echo '["14",'.$results["Hour14o"].'],';
+						echo '["15",'.$results["Hour15o"].'],';
+						echo '["16",'.$results["Hour16o"].'],';
+						echo '["17",'.$results["Hour17o"].'],';
+						echo '["18",'.$results["Hour18o"].'],';
+						echo '["19",'.$results["Hour19o"].'],';
+						echo '["20",'.$results["Hour20o"].'],';
+						echo '["21",'.$results["Hour21o"].'],';
+						echo '["22",'.$results["Hour22o"].'],';
+						echo '["23",'.$results["Hour23o"].'],';
+						echo '["24",'.$results["Hour24o"].']';
 					}else{
-						echo '["9AM", 0],';
-						echo '["10AM", 0],';
-						echo '["11AM", 0],';
-						echo '["12NN", 0],';
-						echo '["1AM", 0],';
-						echo '["2PM", 0],';
-						echo '["3PM", 0],';
-						echo '["4PM", 0],';
-						echo '["5PM", 0],';
-						echo '["6PM", 0],';
-						echo '["7PM", 0],';
-						echo '["8PM", 0],';
-						echo '["9PM", 0]';
+						echo '["01", 0],';
+						echo '["02", 0],';
+						echo '["03", 0],';
+						echo '["04", 0],';
+						echo '["05", 0],';
+						echo '["06", 0],';
+						echo '["07", 0],';
+						echo '["08", 0],';
+						echo '["09", 0],';
+						echo '["10", 0],';
+						echo '["11", 0],';
+						echo '["12", 0],';
+						echo '["13", 0],';
+						echo '["14", 0],';
+						echo '["15", 0],';
+						echo '["16", 0],';
+						echo '["17", 0],';
+						echo '["18", 0],';
+						echo '["19", 0],';
+						echo '["20", 0],';
+						echo '["21", 0],';
+						echo '["22", 0],';
+						echo '["23", 0],';
+						echo '["24", 0]';
 					}
 					?>]
 					},{
@@ -839,33 +861,55 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 						"data": [
 						<?php
 						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9"]) && $inbound_calls != 0){
-							echo '["9AM",'.$results["Hour9"].'],';
-							echo '["10AM",'.$results["Hour10"].'],';
-							echo '["11AM",'.$results["Hour11"].'],';
-							echo '["12NN",'.$results["Hour12"].'],';
-							echo '["1AM",'.$results["Hour13"].'],';
-							echo '["2PM",'.$results["Hour14"].'],';
-							echo '["3PM",'.$results["Hour15"].'],';
-							echo '["4PM",'.$results["Hour16"].'],';
-							echo '["5PM",'.$results["Hour17"].'],';
-							echo '["6PM",'.$results["Hour18"].'],';
-							echo '["7PM",'.$results["Hour19"].'],';
-							echo '["8PM",'.$results["Hour20"].'],';
-							echo '["9PM",'.$results["Hour21"].']';
+							echo '["01",'.$results["Hour1"].'],';
+							echo '["02",'.$results["Hour2"].'],';
+							echo '["03",'.$results["Hour3"].'],';
+							echo '["04",'.$results["Hour4"].'],';
+							echo '["05",'.$results["Hour5"].'],';
+							echo '["06",'.$results["Hour6"].'],';
+							echo '["07",'.$results["Hour7"].'],';
+							echo '["08",'.$results["Hour8"].'],';
+							echo '["09",'.$results["Hour9"].'],';
+							echo '["10",'.$results["Hour10"].'],';
+							echo '["11",'.$results["Hour11"].'],';
+							echo '["12",'.$results["Hour12"].'],';
+							echo '["13",'.$results["Hour13"].'],';
+							echo '["14",'.$results["Hour14"].'],';
+							echo '["15",'.$results["Hour15"].'],';
+							echo '["16",'.$results["Hour16"].'],';
+							echo '["17",'.$results["Hour17"].'],';
+							echo '["18",'.$results["Hour18"].'],';
+							echo '["19",'.$results["Hour19"].'],';
+							echo '["20",'.$results["Hour20"].'],';
+							echo '["21",'.$results["Hour21"].'],';
+							echo '["22",'.$results["Hour22"].'],';
+							echo '["23",'.$results["Hour23"].'],';
+							echo '["24",'.$results["Hour24"].']';
 						}else{
-							echo '["9AM", 0],';
-							echo '["10AM", 0],';
-							echo '["11AM", 0],';
-							echo '["12NN", 0],';
-							echo '["1AM", 0],';
-							echo '["2PM", 0],';
-							echo '["3PM", 0],';
-							echo '["4PM", 0],';
-							echo '["5PM", 0],';
-							echo '["6PM", 0],';
-							echo '["7PM", 0],';
-							echo '["8PM", 0],';
-							echo '["9PM", 0]';
+							echo '["01", 0],';
+							echo '["02", 0],';
+							echo '["03", 0],';
+							echo '["04", 0],';
+							echo '["05", 0],';
+							echo '["06", 0],';
+							echo '["07", 0],';
+							echo '["08", 0],';
+							echo '["09", 0],';
+							echo '["10", 0],';
+							echo '["11", 0],';
+							echo '["12", 0],';
+							echo '["13", 0],';
+							echo '["14", 0],';
+							echo '["15", 0],';
+							echo '["16", 0],';
+							echo '["17", 0],';
+							echo '["18", 0],';
+							echo '["19", 0],';
+							echo '["20", 0],';
+							echo '["21", 0],';
+							echo '["22", 0],';
+							echo '["23", 0],';
+							echo '["24", 0]';
 						}
 						?>]
 					},{
@@ -874,33 +918,55 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					"data": [
 					<?php
 						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9d"]) && $dropped_calls != 0){
-							echo '["9AM",'.$results["Hour9d"].'],';
-							echo '["10AM",'.$results["Hour10d"].'],';
-							echo '["11AM",'.$results["Hour11d"].'],';
-							echo '["12NN",'.$results["Hour12d"].'],';
-							echo '["1AM",'.$results["Hour13d"].'],';
-							echo '["2PM",'.$results["Hour14d"].'],';
-							echo '["3PM",'.$results["Hour15d"].'],';
-							echo '["4PM",'.$results["Hour16d"].'],';
-							echo '["5PM",'.$results["Hour17d"].'],';
-							echo '["6PM",'.$results["Hour18d"].'],';
-							echo '["7PM",'.$results["Hour19d"].'],';
-							echo '["8PM",'.$results["Hour20d"].'],';
-							echo '["9PM",'.$results["Hour21d"].']';
+							echo '["01",'.$results["Hour1d"].'],';
+							echo '["02",'.$results["Hour2d"].'],';
+							echo '["03",'.$results["Hour3d"].'],';
+							echo '["04",'.$results["Hour4d"].'],';
+							echo '["05",'.$results["Hour5d"].'],';
+							echo '["06",'.$results["Hour6d"].'],';
+							echo '["07",'.$results["Hour7d"].'],';
+							echo '["08",'.$results["Hour8d"].'],';
+							echo '["09",'.$results["Hour9d"].'],';
+							echo '["10",'.$results["Hour10d"].'],';
+							echo '["11",'.$results["Hour11d"].'],';
+							echo '["12",'.$results["Hour12d"].'],';
+							echo '["13",'.$results["Hour13d"].'],';
+							echo '["14",'.$results["Hour14d"].'],';
+							echo '["15",'.$results["Hour15d"].'],';
+							echo '["16",'.$results["Hour16d"].'],';
+							echo '["17",'.$results["Hour17d"].'],';
+							echo '["18",'.$results["Hour18d"].'],';
+							echo '["19",'.$results["Hour19d"].'],';
+							echo '["20",'.$results["Hour20d"].'],';
+							echo '["21",'.$results["Hour21d"].'],';
+							echo '["22",'.$results["Hour22d"].'],';
+							echo '["23",'.$results["Hour23d"].'],';
+							echo '["24",'.$results["Hour24d"].']';
 						}else{
-							echo '["9AM", 0],';
-							echo '["10AM", 0],';
-							echo '["11AM", 0],';
-							echo '["12NN", 0],';
-							echo '["1AM", 0],';
-							echo '["2PM", 0],';
-							echo '["3PM", 0],';
-							echo '["4PM", 0],';
-							echo '["5PM", 0],';
-							echo '["6PM", 0],';
-							echo '["7PM", 0],';
-							echo '["8PM", 0],';
-							echo '["9PM", 0]';
+							echo '["01", 0],';
+							echo '["02", 0],';
+							echo '["03", 0],';
+							echo '["04", 0],';
+							echo '["05", 0],';
+							echo '["06", 0],';
+							echo '["07", 0],';
+							echo '["08", 0],';
+							echo '["09", 0],';
+							echo '["10", 0],';
+							echo '["11", 0],';
+							echo '["12", 0],';
+							echo '["13", 0],';
+							echo '["14", 0],';
+							echo '["15", 0],';
+							echo '["16", 0],';
+							echo '["17", 0],';
+							echo '["18", 0],';
+							echo '["19", 0],';
+							echo '["20", 0],';
+							echo '["21", 0],';
+							echo '["22", 0],';
+							echo '["23", 0],';
+							echo '["24", 0]';
 						}
 						?>]
 					}];
@@ -929,7 +995,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					},
 					tooltip: true,
 					tooltipOpts: {
-						content: function (label, x, y) { return y + ' ' + label + ' around ' + x; }
+						content: function (label, x, y) { return y + ' ' + label + ' around ' + x + ' hours'; }
 					},
 					xaxis: {
 						tickColor: '#fcfcfc',
