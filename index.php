@@ -213,7 +213,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                </div>
 				<div class="col-lg-3 col-md-6 col-sm-12">
 					<!-- START date widget-->
-					<div class="panel widget">
+					<div class="panel widget" style="height: 87px;">
 						<div class="col-xs-4 text-center bg-green pv-lg">
 						<!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
 							<div class="text-sm"><?php echo date("F", time());?></div>
@@ -839,7 +839,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				var datav3 = [
 					{
 					"label": "Outbound Calls",
-					"color": "#656565",
+					"color": "#009688",
 					"data": [
 					<?php
 					if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9o"]) && $outbound_calls != 0){
@@ -896,7 +896,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					?>]
 					},{
 						"label": "Inbound Calls",
-						"color": "#F39C12",
+						"color": "#23b7e5",
 						"data": [
 						<?php
 						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9"]) && $inbound_calls != 0){
@@ -953,7 +953,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 						?>]
 					},{
 					"label": "Dropped Calls",
-					"color": "#dd4b39",
+					"color": "#512e90",
 					"data": [
 					<?php
 						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9d"]) && $dropped_calls != 0){
