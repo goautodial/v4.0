@@ -497,7 +497,6 @@ if (isset($_POST["did"])) {
 					}else {
 			    		$errormessage = $lh->translationFor("some_fields_missing");
 					}
-				
 				// IF IVR
 					if($ivr != NULL) {
 						/*
@@ -522,7 +521,7 @@ if (isset($_POST["did"])) {
 						$data = curl_exec($ch);
 						curl_close($ch);
 						$output = json_decode($data);
-						
+
 						//var_dump($output);
 
 						$voicefiles = $ui->API_GetVoiceFilesList();
@@ -532,7 +531,197 @@ if (isset($_POST["did"])) {
 							for($i=0;$i < count($output->menu_id);$i++){
 							
 						?>
+						<div role="tabpanel" class="panel panel-transparent" style="box-shadow: 5px 5px 8px #888888; overflow: hidden;">
+							
+							<h4 style="padding:15px;"><a type="button" class="btn" href="telephonyinbound.php"><i class="fa fa-arrow-left"></i> Cancel</a><center><b>MODIFY IVR: <?php echo $output->menu_id[$i];?></b></center></h4>
 
+							<form id="modifyivr" class="form-horizontal">
+								<input type="hidden" name="modify_ivr" value="<?php echo $output->menu_id[$i];?>">
+								<div class="col-lg-12">
+									<!-- Custom Tabs -->
+									<div class="nav-tabs-custom">
+										<ul class="nav nav-tabs">
+											<li class="active"><a href="#tab_1" data-toggle="tab">Basic</a></li>
+											<li><a href="#tab_2" data-toggle="tab">Options</a></li>
+											<li><a href="#tab_3" data-toggle="tab">Advance Settings</a></li>
+											<!-- <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li> -->
+										</ul>
+										<div class="tab-content">
+											<div class="tab-pane active" id="tab_1">
+												<div class="form-group">
+													<label class="col-sm-4 control-label" for="menu_id">Menu ID:</label>
+													<div class="col-sm-8">
+														<input type="text" name="menu_id" id="menu_id" class="form-control" placeholder="Menu ID" minlength="4" required title="No Spaces. Minimum of 4 characters" value="<?php echo $output->menu_id[$i];?>">
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-4 control-label" for="description">Description:</label>
+													<div class="col-sm-8">
+														<input type="text" name="description" id="description" class="form-control" placeholder="Description" minlength="4" required>
+													</div>
+												</div>
+												<div class="form-group">		
+													<label class="col-sm-4 control-label" for="menu_name">Menu Name: </label>
+													<div class="col-sm-8">
+														<input type="text" name="menu_name" id="menu_name" class="form-control" placeholder="Menu Name" required value="<?php echo $output->menu_name[$i];?>">
+													</div>
+												</div>
+												<div class="form-group">		
+													<label class="col-sm-4 control-label" for="menu_prompt">Menu Greeting: </label>
+													<div class="col-sm-8">
+														<select name="menu_prompt" id="menu_prompt" class="form-control">
+															<option value="goWelcomeIVR" selected>-- Default Value --</option>
+															<?php
+																for($i=0;$i<count($voicefiles->file_name);$i++){
+																	$file = substr($voicefiles->file_name[$i], 0, -4);
+															?>
+																<option value="<?php echo $file;?>"><?php echo $file;?></option>		
+															<?php
+																}
+															?>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">		
+													<label class="col-sm-4 control-label" for="menu_timeout">Menu Timeout: </label>
+													<div class="col-sm-8">
+														<input type="number" name="menu_timeout" id="menu_timeout" class="form-control" value="10" min="0" required>
+													</div>
+												</div>
+												<div class="form-group">		
+													<label class="col-sm-4 control-label" for="menu_timeout_prompt">Menu Timeout Greeting: </label>
+													<div class="col-sm-8">
+														<select name="menu_timeout_prompt " id="menu_timeout_prompt" class="form-control">
+															<option value="" selected>-- Default Value --</option>
+															<?php
+																for($i=0;$i<count($voicefiles->file_name);$i++){
+																	$file = substr($voicefiles->file_name[$i], 0, -4);
+															?>
+																<option value="<?php echo $file;?>"><?php echo $file;?></option>		
+															<?php
+																}
+															?>				
+														</select>
+													</div>
+												</div>
+												<div class="form-group">		
+													<label class="col-sm-4 control-label" for="menu_invalid_prompt">Menu Invalid Greeting: </label>
+													<div class="col-sm-8">
+														<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control">
+															<option value="" selected>-- Default Value --</option>	
+															<?php
+																for($i=0;$i<count($voicefiles->file_name);$i++){
+																	$file = substr($voicefiles->file_name[$i], 0, -4);
+															?>
+																<option value="<?php echo $file;?>"><?php echo $file;?></option>		
+															<?php
+																}
+															?>				
+														</select>
+													</div>
+												</div>
+												<div class="form-group">		
+													<label class="col-sm-4 control-label" for="menu_repeat">Menu Repeat: </label>
+													<div class="col-sm-8">
+														<input type="number" name="menu_repeat" id="menu_repeat" class="form-control"value="<?php echo $output->menu_repeat[$i];?>" min="0" required>
+													</div>
+												</div>
+												<div class="form-group">		
+													<label class="col-sm-4 control-label" for="menu_time_check">Menu Time Check: </label>
+													<div class="col-sm-8">
+														<select name="menu_time_check" id="menu_time_check" class="form-control">
+															<option value="ADMIN" > Select Menu Time Check </option>		
+														</select>
+													</div>
+												</div>
+												<div class="form-group">		
+													<label class="col-sm-4 control-label" for="call_time">Call Time: </label>
+													<div class="col-sm-8">
+														<select name="call_time" id="call_time" class="form-control">
+															<option value="ADMIN" > Select Call Time </option>		
+														</select>
+													</div>
+												</div>
+												<div class="form-group">		
+													<label class="col-sm-4 control-label" for="menu_repeat">Track call in realtime report: </label>
+													<div class="col-sm-8"> 
+														<select name="call_time" id="call_time" class="form-control">
+															<option value="ADMIN" > Select Track Call </option>		
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-4 control-label" for="tracking_group">Tracking Groups: </label>
+													<div class="col-sm-8">
+														<select name="tracking_group" id="tracking_group" class="form-control">
+														<?php
+															for($i=0;$i<count($ingroups->group_id);$i++){
+														?>
+															<option value="<?php echo $ingroups->group_id[$i];?>">
+																<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+															</option>									
+														<?php
+															}
+														?>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-4 control-label" for="user_groups">User Groups: </label>
+													<div class="col-sm-8">
+														<select name="user_groups" id="user_groups" class="form-control">
+															<option value="ADMIN" > ADMIN - GOAUTODIAL ADMINISTRATORS </option>
+															<option value="AGENTS" > AGENTS - GOAUTODIAL AGENTS </option>
+															<option value="SUPERVISOR" > SUPERVISOR - SUPERVISOR </option>			
+														</select>
+													</div>
+												</div>
+											</div>
+											<!-- /.tab-pane -->
+											<div class="tab-pane" id="tab_2">
+												<div class="form-group">
+													<div class="col-lg-12">
+														<div class="pull-right">
+															<button type="button" class="btn btn-primary add-option">Add Option</button>
+														</div>
+													</div>
+												</div>
+												<div class="form-group to-clone-opt">
+													<label class="col-sm-3 control-label" for="">Default Call Menu Entry:</label>
+													<div class="col-lg-2">
+														Option:
+														<select class="form-control">
+															<option selected>TIMEOUT</option>
+														</select>
+													</div>
+													<div class="col-lg-2">
+														Desription: 
+														<input type="text" name="" id="" class="form-control" placeholder="Description" required value="Hangup">
+													</div>
+													<div class="col-lg-2">
+														Route:
+														<select class="form-control">
+															<option selected>Hangup</option>
+														</select>
+													</div>
+													<div class="col-lg-2">
+														Audio File:
+														<input type="text" name="" id="" class="form-control" placeholder="Description" required value="vm-goodbye">
+													</div>
+													<div class="col-lg-1 btn-remove"></div>
+												</div>
+												<div class="cloning-area"></div>
+											</div>
+											<!-- /.tab-pane -->
+											<div class="tab-pane" id="tab_3">
+												Advance Settings Here
+											</div>
+										</div>
+									<!-- /.tab-content -->
+									</div>
+								</div>
+							</form>
+						</div>
 						
 						<?php
 							}
@@ -1153,6 +1342,22 @@ if (isset($_POST["did"])) {
 						});
 					}
 				 });
+
+				$('.add-option').click(function(){
+					var toClone = $('.to-clone-opt').clone();
+
+					toClone.removeClass('to-clone-opt');
+					toClone.find('label.control-label').text('');
+					toClone.find('.btn-remove').append('<span class="fa fa-remove fa-2x text-red remove-row"></span>');
+
+					$('.cloning-area').append(toClone);
+				});
+
+				$(document).on('click', '.remove-row', function(){
+					var row = $(this).parent().parent();
+					
+					row.remove();
+				});
 			});
 		</script>
 
