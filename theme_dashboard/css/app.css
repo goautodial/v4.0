@@ -7127,7 +7127,7 @@ body .jvectormap-zoomout {
   color: inherit;
 }
 .bg-purple {
-  background-color: #7266ba;
+  background-color: #673ab7;
   color: #ffffff !important;
 }
 .bg-purple-light {
@@ -7135,7 +7135,7 @@ body .jvectormap-zoomout {
   color: #ffffff !important;
 }
 .bg-purple-dark {
-  background-color: #564aa3;
+  background-color: #512e90;
   color: #ffffff !important;
 }
 .bg-purple small {
@@ -7180,11 +7180,11 @@ body .jvectormap-zoomout {
   color: #ffffff !important;
 }
 .bg-gray-dark {
-  background-color: #3a3f51;
+  background-color: #00635a;
   color: #ffffff !important;
 }
 .bg-gray {
-  background-color: #dde6e9;
+  background-color: #1ea296;
   color: #515253 !important;
 }
 .bg-gray-light {

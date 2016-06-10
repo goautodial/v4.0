@@ -3816,7 +3816,7 @@ fieldset[disabled] .btn-vk.active {
 .alert-success,
 .label-success,
 .modal-success .modal-body {
-  background-color: #00a65a !important;
+  background-color: #009688 !important;
 }
 .bg-navy {
   background-color: #001f3f !important;
@@ -3837,7 +3837,7 @@ fieldset[disabled] .btn-vk.active {
   background-color: #f012be !important;
 }
 .bg-purple {
-  background-color: #605ca8 !important;
+  background-color: #673ab7  !important;
 }
 .bg-maroon {
   background-color: #d81b60 !important;
