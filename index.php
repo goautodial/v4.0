@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 /**
 	The MIT License (MIT)
 	
@@ -119,27 +122,64 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
             <aside class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-heading">
-                    
-					<!-- START Language list-->
-					<div class="pull-right">
+<?php
+/*
+ * APIs FOR FILTER LIST
+ */
+
+$campaign = $ui->API_getListAllCampaigns();
+//var_dump($campaign);
+$ingroup = $ui->API_getInGroups();
+?>            
+		
+		<style>
+			.ingroup_filter_list{
+				float: right !important;   				
+			}
+			.campaign_filter_list{
+				float: right !important;
+				padding-right: 20px;
+			}
+		</style>
+
+		<!--===== FILTER LIST =======-->
+				
+			<!-- == INGROUP == -->
+				<div class="ingroup_filter_list">
+				<label for="ingroup_dropdown"><small>In-group:</small></label>
+				   <div class="btn-group">
+					  <button type="button" data-toggle="dropdown" id="ingroup_dropdown" class="btn btn-default"> - - - All In-groups - - - </button>
+					  <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
+						 <?php
+						 	for($i=0;$i < count($ingroup->group_id);$i++){
+						 		echo "<li><a href='#'>".$ingroup->group_name[$i]."</a></li>";
+						 	}
+						 ?>
+					  </ul>
+				   </div>
+				</div>
+			<!-- == CAMPAIGN == -->
+				<div class="campaign_filter_list">
+					<label for="campaign_dropdown"><small>Campaign:</small></label>
 					   <div class="btn-group">
-						  <button type="button" data-toggle="dropdown" class="btn btn-default">English</button>
+						  <button type="button" data-toggle="dropdown" id="campaign_dropdown" class="btn btn-default"> - - - All Campaigns - - - </button>
 						  <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
-							 <li><a href="#" data-set-lang="en">English</a>
-							 </li>
-							 <li><a href="#" data-set-lang="es">Spanish</a>
-							 </li>
+							 <?php
+							 	for($i=0;$i < count($campaign->campaign_id);$i++){
+							 		echo "<li><a href='#'>".$campaign->campaign_name[$i]."</a></li>";
+							 	}
+							 ?>
 						  </ul>
 					   </div>
-					</div>
-					<!-- END Language list    -->
+				</div>
+					<!-- END FILTER list    -->
 					
 					<!-- Page title -->
 						<?php
 							if ($user->userHasAdminPermission()) {
 								$lh->translateText("Dashboard");
 						?>
-							<small class="ng-binding">Welcome to Goautodial  !</small>
+							<small class="ng-binding animated fadeInUpShort">Welcome to Goautodial  !</small>
 						<?php
 							}else{
 								$lh->translateText("home");
@@ -161,53 +201,60 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					
 	<!--====== STATUS BOXES =======-->
 			<div class="row">
-				<div class="col-lg-3 col-sm-6">
-				<!-- START widget-->
-					<div class="panel widget bg-purple">
-						<div class="col-xs-4 text-center bg-purple-dark pv-lg">
-							<div class="h2 mt0">
-								<span class="text-lg" id="refresh_totalagentscall"></span>
+			
+			
+				<div class="col-lg-3 col-sm-6 animated fadeInUpShort">
+					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
+						<div class="panel widget bg-purple">
+							<div class="col-xs-4 text-center bg-purple-dark pv-lg">
+								<div class="h2 mt0">
+									<span class="text-lg" id="refresh_totalagentscall"></span>
+								</div>
+							</div>
+							<div class="col-xs-8 pv-lg">
+								<div class="h2">
+									<span class="text-sm">Agent(s) On Call</span>
+								</div>
 							</div>
 						</div>
-						<div class="col-xs-8 pv-lg">
-							<div class="h2">
-								<span class="text-sm">Agent(s) On Call</span>
-							</div>
-						</div>
-					</div>
+					</a>
 				</div>
-				<div class="col-lg-3 col-md-6">
-					<!-- START widget-->
-					<div class="panel widget bg-purple">
-						<div class="col-xs-4 text-center bg-purple-dark pv-lg">
-							<div class="h2 mt0">
-								<span class="text-lg" id="refresh_totalagentswaitcalls"></span>
+			
+
+				<div class="col-lg-3 col-md-6 animated fadeInUpShort">
+					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
+						<div class="panel widget bg-purple">
+							<div class="col-xs-4 text-center bg-purple-dark pv-lg">
+								<div class="h2 mt0">
+									<span class="text-lg" id="refresh_totalagentswaitcalls"></span>
+								</div>
+							</div>
+							<div class="col-xs-8 pv-lg">
+								<div class="h2">
+									<span class="text-sm">Agent(s) Waiting</span>
+								</div>
 							</div>
 						</div>
-						<div class="col-xs-8 pv-lg">
-							<div class="h2">
-								<span class="text-sm">Agent(s) Waiting</span>
-							</div>
-						</div>
-					</div>
+					</a>
 				</div>
-               <div class="col-lg-3 col-md-6 col-sm-12">
-                  <!-- START widget-->
-                  <div class="panel widget bg-green">
-                        <div class="col-xs-4 text-center bg-gray-dark pv-lg">
-                           <div class="h2 mt0">
-                           		<span class="text-lg" id="refresh_totalagentspaused"></span>
-                           </div>
-                        </div>
-                        <div class="col-xs-8 pv-lg">
-                        	<div class="h2">
-                           		<span class="text-sm">Agent(s) On Paused</span>
-                       		</div>
-                        </div>
-                  </div>
+               <div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
+                  	<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
+		                <div class="panel widget bg-green">
+		                        <div class="col-xs-4 text-center bg-gray-dark pv-lg">
+		                           <div class="h2 mt0">
+		                           		<span class="text-lg" id="refresh_totalagentspaused"></span>
+		                           </div>
+		                        </div>
+		                        <div class="col-xs-8 pv-lg animated fadeInUpShort">
+		                        	<div class="h2">
+		                           		<span class="text-sm">Agent(s) On Paused</span>
+		                       		</div>
+		                        </div>
+		                </div>
+              		</a>
                </div>
-				<div class="col-lg-3 col-md-6 col-sm-12">
-					<!-- START date widget-->
+				<div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
+					<!-- date widget    -->
 					<div class="panel widget" style="height: 87px;">
 						<div class="col-xs-4 text-center bg-green pv-lg">
 						<!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
@@ -727,6 +774,51 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
 
+<!--================= MODALS =====================-->
+	<!-- agents monitoring -->
+	<div class="modal fade" id="agent_monitoring" tabindex="-1" aria-labelledby="agent_monitoring">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+			<!-- Header -->
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="agent_monitoring">Agent Monitoring</h4>
+				</div>
+				<div class="modal-body">
+					<table widht="100%">
+						<thead>
+							<tr>
+								<th>Agent</th>
+								<th>Tenant</th>
+								<th>Status</th>
+								<th>Cust Phone</th>
+								<th>MM:SS</th>
+								<th>Campaign</th>
+								<th>Caller ID</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr>
+								<td>Gwaltney</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+
+					</table>
+				</div> <!-- end of modal body -->
+				
+			</div>
+		</div>
+	</div>
+	<!-- End of modal -->
+
+
 <?php
 	/*
 	 * Modal Dialogs
@@ -1029,7 +1121,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					},
 					tooltip: true,
 					tooltipOpts: {
-						content: function (label, x, y) { return y + ' ' + label + ' around ' + x + ' hours'; }
+						content: function (label, x, y) { return y + ' ' + label + ' around ' + x + ':00'; }
 					},
 					xaxis: {
 						tickColor: '#fcfcfc',

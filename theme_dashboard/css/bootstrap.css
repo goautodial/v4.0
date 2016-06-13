@@ -1292,7 +1292,7 @@ p {
 }
 small,
 .small {
-  font-size: 85%;
+  font-size: 59%;
 }
 mark,
 .mark {
@@ -2497,7 +2497,7 @@ label {
   display: inline-block;
   max-width: 100%;
   margin-bottom: 5px;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 input[type="search"] {
   -webkit-box-sizing: border-box;
