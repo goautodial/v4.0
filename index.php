@@ -160,11 +160,6 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                 <section class="content">
 					
 	<!--====== STATUS BOXES =======-->
-		<style>
-			.status_boxes{
-				margin-top:-5px;
-			}
-		</style>
 			<div class="row">
 				<div class="col-lg-3 col-sm-6">
 				<!-- START widget-->
@@ -269,7 +264,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 
 
 			<div class="row"> <!-- ROW FOR THE REST -->
-				<div class="col-lg-9">
+				<div class="col-lg-9" style="padding-right: 30px;">
 	<!--===== CALLS PER HOUR CHART =======--> 
                 <div class="row">
 	              <!-- START widget-->
@@ -288,7 +283,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 
 	<!--===== INFOBOXES WITH BLUE WHITE SUN =======--> 
 	            <div class="row">
-	            	<div class="col-lg-12">
+	            	<div class="col-lg-12" style="padding: 15px 0px;">
 	                    <div class="panel widget">
 							<div class="col-md-2 col-sm-3 col-xs-6 text-center bg-info pv-xl">
 								<em class="wi wi-day-sunny fa-4x"></em>
