@@ -1,7 +1,9 @@
 <?php
+/*
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL)
+*/
 /**
 	The MIT License (MIT)
 	
@@ -138,7 +140,7 @@ $ingroup = $ui->API_getInGroups();
 			}
 			.campaign_filter_list{
 				float: right !important;
-				padding-right: 20px;
+				padding-right: 15px;
 			}
 		</style>
 
@@ -146,31 +148,52 @@ $ingroup = $ui->API_getInGroups();
 				
 			<!-- == INGROUP == -->
 				<div class="ingroup_filter_list">
-				<label for="ingroup_dropdown"><small>In-group:</small></label>
+				<label for="ingroup_dropdown"><small style="font-size: 60%;">In-group:</small></label>
+				   <!--
 				   <div class="btn-group">
 					  <button type="button" data-toggle="dropdown" id="ingroup_dropdown" class="btn btn-default"> - - - All In-groups - - - </button>
 					  <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
-						 <?php
+						 <?php/*
 						 	for($i=0;$i < count($ingroup->group_id);$i++){
 						 		echo "<li><a href='#'>".$ingroup->group_name[$i]."</a></li>";
-						 	}
+						 	}*/
 						 ?>
 					  </ul>
 				   </div>
+					-->
+				    <select id="ingroup_dropdown" style="font-size:50%; padding: 6px;">
+				   			<option selected> --- All In-groups --- </option>
+				   		<?php
+						 	for($i=0;$i < count($ingroup->group_id);$i++){
+						 		echo "<option>".$ingroup->group_name[$i]."</option>";
+						 	}
+						?>
+				    </select>
 				</div>
 			<!-- == CAMPAIGN == -->
 				<div class="campaign_filter_list">
-					<label for="campaign_dropdown"><small>Campaign:</small></label>
+					<label for="campaign_dropdown"><small style="font-size: 60%;">Campaign:</small></label>
+							
+					<!--
 					   <div class="btn-group">
 						  <button type="button" data-toggle="dropdown" id="campaign_dropdown" class="btn btn-default"> - - - All Campaigns - - - </button>
 						  <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
-							 <?php
+							 <?php/*
 							 	for($i=0;$i < count($campaign->campaign_id);$i++){
 							 		echo "<li><a href='#'>".$campaign->campaign_name[$i]."</a></li>";
-							 	}
+							 	}*/
 							 ?>
 						  </ul>
 					   </div>
+					-->
+					<select id="campaign_dropdown" style="font-size:50%; padding: 6px;">
+				   			<option selected> --- All Campaigns --- </option>
+				   		<?php
+						 	for($i=0;$i < count($campaign->campaign_id);$i++){
+							 	echo "<option>".$campaign->campaign_name[$i]."</option>";
+							}
+						?>
+				    </select>
 				</div>
 					<!-- END FILTER list    -->
 					
@@ -783,8 +806,48 @@ $ingroup = $ui->API_getInGroups();
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="agent_monitoring">Agent Monitoring</h4>
+				<!--===== FILTER LIST =======-->
+					<div class="agent_monitor_filter pull-right">
+						<small>Filter: </small>
+					<!-- == INGROUP == -->
+						<span class="tenant_filter_agentmonitoring">
+						    <select id="tenant_dropdown_agent_monitoring" style="font-size:80%; padding: 6px;">
+						   			<option selected> --- All Tenants --- </option>
+						   		<?php
+								 	for($i=0;$i < count($ingroup->group_id);$i++){
+								 		echo "<option>".$ingroup->group_name[$i]."</option>";
+								 	}
+								?>
+						    </select>
+						</span>
+					<!-- == TENANT == -->
+						<span class="campaign_filter_agentmonitoring">
+							<!--
+							   <div class="btn-group">
+								  <button type="button" data-toggle="dropdown" id="campaign_dropdown" class="btn btn-default"> - - - All Campaigns - - - </button>
+								  <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
+									 <?php/*
+									 	for($i=0;$i < count($campaign->campaign_id);$i++){
+									 		echo "<li><a href='#'>".$campaign->campaign_name[$i]."</a></li>";
+									 	}*/
+									 ?>
+								  </ul>
+							   </div>
+							-->
+							<select id="campaign_dropdown" style="font-size:80%; padding: 6px;">
+						   			<option selected> --- All Campaigns --- </option>
+						   		<?php
+								 	for($i=0;$i < count($campaign->campaign_id);$i++){
+									 	echo "<option>".$campaign->campaign_name[$i]."</option>";
+									}
+								?>
+						    </select>
+						</span>
+					</div>
+							<!-- END FILTER list    -->
 				</div>
 				<div class="modal-body">
+					<!--
 					<table widht="100%">
 						<thead>
 							<tr>
@@ -811,6 +874,101 @@ $ingroup = $ui->API_getInGroups();
 						</tbody>
 
 					</table>
+					-->
+<script>
+$(function()
+{
+    var noAgentsLogged = 1;
+    if (noAgentsLogged)
+    {
+	$('#realTimeMonitor').hide();
+	$('#legendMonitoring').hide();
+	$('#noAgents').show();
+// 	$('#realTimeMonitor').show();
+// 	$('#legendMonitoring').show();
+// 	$('#noAgents').hide();
+    }
+    else
+    {
+	$('#realTimeMonitor').show();
+	$('#legendMonitoring').show();
+	$('#noAgents').hide();
+    }
+
+});
+
+function sendMonitor(user, sessionid, serverip)
+{
+    $('#overlayMonitor').fadeIn('fast');
+// alert(window.offset);
+	$('#boxMonitor').show();
+    $('#agent').text(user);
+    $('#boxMonitor').css({'width': '300px', 'height': '130px', 'margin-left': '50%', 'left': '-150px', 'padding-bottom': '20px'});
+    $('#boxMonitor').animate({
+// 	top: Math.max(0, (($(window).height() - $('#boxMonitor').outerHeight()) / 2) + $(window).scrollTop()) + "px"
+		top: "70px"
+    }, 500);
+
+    $('#session_id').val(sessionid);
+    $('#server_ip').val(serverip);
+}
+</script>
+<style type="text/css">
+.tBorder{
+	-webkit-border-radius: 7px;-moz-border-radius: 7px;border-radius: 7px;border:1px solid #90B09F;
+}
+.tBorderSmall{
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	border:0px solid #90B09F;
+	font-size:11px;
+}
+ul{
+	list-style-type:disc;
+	list-style-position:inside;
+}
+li{
+	line-height:10px;
+}
+</style>
+					<div id="noAgents" style="display:none;">
+					<br>
+						<table border=0 cellpadding=0 cellspacing=0 width="100%" align=center style="margin-top:0px;">
+							<tr>
+								<td align="center">
+									<table border=0 cellpadding=0 cellspacing=0 style="font-family:Verdana, Arial, Helvetica, sans-serif;" align=center>
+										<tr>
+											<td style="width:7px;height:50px;"></td>
+											<td style="width:100px;font-size:30px;white-space:nowrap;" align=center> &nbsp; NO AGENTS LOGGED IN &nbsp; </td>
+											<td style="width:6px;height:50px;"></td>
+										</tr>
+									</table>
+								<br>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div id="realTimeMonitor" style="display:none;">
+					<br>
+						<table border=0 cellpadding=0 cellspacing=0 width="100%" align=center style="margin-top:0px;">
+							<tr>
+								<td align="center">
+									<table border=0 cellpadding=0 cellspacing=0 style="font-family:Verdana, Arial, Helvetica, sans-serif;" align=center>
+										<tr>
+											<td style="width:7px;height:50px;"></td>
+											<td style="width:100px;font-size:30px;white-space:nowrap;" align=center> &nbsp; NO AGENTS LOGGED IN &nbsp; </td>
+											<td style="width:6px;height:50px;"></td>
+										</tr>
+									</table>
+								<br>
+								</td>
+							</tr>
+						</table>
+					</div>
 				</div> <!-- end of modal body -->
 				
 			</div>
@@ -930,55 +1088,33 @@ $ingroup = $ui->API_getInGroups();
 					"data": [
 					<?php
 					if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9o"]) && $outbound_calls != 0){
-						echo '["01",'.$results["Hour1o"].'],';
-						echo '["02",'.$results["Hour2o"].'],';
-						echo '["03",'.$results["Hour3o"].'],';
-						echo '["04",'.$results["Hour4o"].'],';
-						echo '["05",'.$results["Hour5o"].'],';
-						echo '["06",'.$results["Hour6o"].'],';
-						echo '["07",'.$results["Hour7o"].'],';
-						echo '["08",'.$results["Hour8o"].'],';
-						echo '["09",'.$results["Hour9o"].'],';
-						echo '["10",'.$results["Hour10o"].'],';
-						echo '["11",'.$results["Hour11o"].'],';
-						echo '["12",'.$results["Hour12o"].'],';
-						echo '["13",'.$results["Hour13o"].'],';
-						echo '["14",'.$results["Hour14o"].'],';
-						echo '["15",'.$results["Hour15o"].'],';
-						echo '["16",'.$results["Hour16o"].'],';
-						echo '["17",'.$results["Hour17o"].'],';
-						echo '["18",'.$results["Hour18o"].'],';
-						echo '["19",'.$results["Hour19o"].'],';
-						echo '["20",'.$results["Hour20o"].'],';
-						echo '["21",'.$results["Hour21o"].'],';
-						echo '["22",'.$results["Hour22o"].'],';
-						echo '["23",'.$results["Hour23o"].'],';
-						echo '["24",'.$results["Hour24o"].']';
+						echo '["9 AM",'.$results["Hour9o"].'],';
+						echo '["10 AM",'.$results["Hour10o"].'],';
+						echo '["11 AM",'.$results["Hour11o"].'],';
+						echo '["12 NN",'.$results["Hour12o"].'],';
+						echo '["1 PM",'.$results["Hour13o"].'],';
+						echo '["2 PM",'.$results["Hour14o"].'],';
+						echo '["3 PM",'.$results["Hour15o"].'],';
+						echo '["4 PM",'.$results["Hour16o"].'],';
+						echo '["5 PM",'.$results["Hour17o"].'],';
+						echo '["6 PM",'.$results["Hour18o"].'],';
+						echo '["7 PM",'.$results["Hour19o"].'],';
+						echo '["8 PM",'.$results["Hour20o"].'],';
+						echo '["9 PM",'.$results["Hour21o"].']';
 					}else{
-						echo '["01", 0],';
-						echo '["02", 0],';
-						echo '["03", 0],';
-						echo '["04", 0],';
-						echo '["05", 0],';
-						echo '["06", 0],';
-						echo '["07", 0],';
-						echo '["08", 0],';
-						echo '["09", 0],';
-						echo '["10", 0],';
-						echo '["11", 0],';
-						echo '["12", 0],';
-						echo '["13", 0],';
-						echo '["14", 0],';
-						echo '["15", 0],';
-						echo '["16", 0],';
-						echo '["17", 0],';
-						echo '["18", 0],';
-						echo '["19", 0],';
-						echo '["20", 0],';
-						echo '["21", 0],';
-						echo '["22", 0],';
-						echo '["23", 0],';
-						echo '["24", 0]';
+						echo '["9 AM", 0],';
+						echo '["10 AM", 0],';
+						echo '["11 AM", 0],';
+						echo '["12 NN", 0],';
+						echo '["1 PM", 0],';
+						echo '["2 PM", 0],';
+						echo '["3 PM", 0],';
+						echo '["4 PM", 0],';
+						echo '["5 PM", 0],';
+						echo '["6 PM", 0],';
+						echo '["7 PM", 0],';
+						echo '["8 PM", 0],';
+						echo '["9 PM", 0]';
 					}
 					?>]
 					},{
@@ -987,55 +1123,33 @@ $ingroup = $ui->API_getInGroups();
 						"data": [
 						<?php
 						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9"]) && $inbound_calls != 0){
-							echo '["01",'.$results["Hour1"].'],';
-							echo '["02",'.$results["Hour2"].'],';
-							echo '["03",'.$results["Hour3"].'],';
-							echo '["04",'.$results["Hour4"].'],';
-							echo '["05",'.$results["Hour5"].'],';
-							echo '["06",'.$results["Hour6"].'],';
-							echo '["07",'.$results["Hour7"].'],';
-							echo '["08",'.$results["Hour8"].'],';
-							echo '["09",'.$results["Hour9"].'],';
-							echo '["10",'.$results["Hour10"].'],';
-							echo '["11",'.$results["Hour11"].'],';
-							echo '["12",'.$results["Hour12"].'],';
-							echo '["13",'.$results["Hour13"].'],';
-							echo '["14",'.$results["Hour14"].'],';
-							echo '["15",'.$results["Hour15"].'],';
-							echo '["16",'.$results["Hour16"].'],';
-							echo '["17",'.$results["Hour17"].'],';
-							echo '["18",'.$results["Hour18"].'],';
-							echo '["19",'.$results["Hour19"].'],';
-							echo '["20",'.$results["Hour20"].'],';
-							echo '["21",'.$results["Hour21"].'],';
-							echo '["22",'.$results["Hour22"].'],';
-							echo '["23",'.$results["Hour23"].'],';
-							echo '["24",'.$results["Hour24"].']';
+							echo '["9 AM",'.$results["Hour9"].'],';
+							echo '["10 AM",'.$results["Hour10"].'],';
+							echo '["11 AM",'.$results["Hour11"].'],';
+							echo '["12 NN",'.$results["Hour12"].'],';
+							echo '["1 PM",'.$results["Hour13"].'],';
+							echo '["2 PM",'.$results["Hour14"].'],';
+							echo '["3 PM",'.$results["Hour15"].'],';
+							echo '["4 PM",'.$results["Hour16"].'],';
+							echo '["5 PM",'.$results["Hour17"].'],';
+							echo '["6 PM",'.$results["Hour18"].'],';
+							echo '["7 PM",'.$results["Hour19"].'],';
+							echo '["8 PM",'.$results["Hour20"].'],';
+							echo '["9 PM",'.$results["Hour21"].']';
 						}else{
-							echo '["01", 0],';
-							echo '["02", 0],';
-							echo '["03", 0],';
-							echo '["04", 0],';
-							echo '["05", 0],';
-							echo '["06", 0],';
-							echo '["07", 0],';
-							echo '["08", 0],';
-							echo '["09", 0],';
-							echo '["10", 0],';
-							echo '["11", 0],';
-							echo '["12", 0],';
-							echo '["13", 0],';
-							echo '["14", 0],';
-							echo '["15", 0],';
-							echo '["16", 0],';
-							echo '["17", 0],';
-							echo '["18", 0],';
-							echo '["19", 0],';
-							echo '["20", 0],';
-							echo '["21", 0],';
-							echo '["22", 0],';
-							echo '["23", 0],';
-							echo '["24", 0]';
+							echo '["9 AM", 0],';
+							echo '["10 AM", 0],';
+							echo '["11 AM", 0],';
+							echo '["12 NN", 0],';
+							echo '["1 PM", 0],';
+							echo '["2 PM", 0],';
+							echo '["3 PM", 0],';
+							echo '["4 PM", 0],';
+							echo '["5 PM", 0],';
+							echo '["6 PM", 0],';
+							echo '["7 PM", 0],';
+							echo '["8 PM", 0],';
+							echo '["9 PM", 0]';
 						}
 						?>]
 					},{
@@ -1044,55 +1158,33 @@ $ingroup = $ui->API_getInGroups();
 					"data": [
 					<?php
 						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9d"]) && $dropped_calls != 0){
-							echo '["01",'.$results["Hour1d"].'],';
-							echo '["02",'.$results["Hour2d"].'],';
-							echo '["03",'.$results["Hour3d"].'],';
-							echo '["04",'.$results["Hour4d"].'],';
-							echo '["05",'.$results["Hour5d"].'],';
-							echo '["06",'.$results["Hour6d"].'],';
-							echo '["07",'.$results["Hour7d"].'],';
-							echo '["08",'.$results["Hour8d"].'],';
-							echo '["09",'.$results["Hour9d"].'],';
-							echo '["10",'.$results["Hour10d"].'],';
-							echo '["11",'.$results["Hour11d"].'],';
-							echo '["12",'.$results["Hour12d"].'],';
-							echo '["13",'.$results["Hour13d"].'],';
-							echo '["14",'.$results["Hour14d"].'],';
-							echo '["15",'.$results["Hour15d"].'],';
-							echo '["16",'.$results["Hour16d"].'],';
-							echo '["17",'.$results["Hour17d"].'],';
-							echo '["18",'.$results["Hour18d"].'],';
-							echo '["19",'.$results["Hour19d"].'],';
-							echo '["20",'.$results["Hour20d"].'],';
-							echo '["21",'.$results["Hour21d"].'],';
-							echo '["22",'.$results["Hour22d"].'],';
-							echo '["23",'.$results["Hour23d"].'],';
-							echo '["24",'.$results["Hour24d"].']';
+							echo '["9 AM",'.$results["Hour9d"].'],';
+							echo '["10 AM",'.$results["Hour10d"].'],';
+							echo '["11 AM",'.$results["Hour11d"].'],';
+							echo '["12 NN",'.$results["Hour12d"].'],';
+							echo '["1 PM",'.$results["Hour13d"].'],';
+							echo '["2 PM",'.$results["Hour14d"].'],';
+							echo '["3 PM",'.$results["Hour15d"].'],';
+							echo '["4 PM",'.$results["Hour16d"].'],';
+							echo '["5 PM",'.$results["Hour17d"].'],';
+							echo '["6 PM",'.$results["Hour18d"].'],';
+							echo '["7 PM",'.$results["Hour19d"].'],';
+							echo '["8 PM",'.$results["Hour20d"].'],';
+							echo '["9 PM",'.$results["Hour21d"].']';
 						}else{
-							echo '["01", 0],';
-							echo '["02", 0],';
-							echo '["03", 0],';
-							echo '["04", 0],';
-							echo '["05", 0],';
-							echo '["06", 0],';
-							echo '["07", 0],';
-							echo '["08", 0],';
-							echo '["09", 0],';
-							echo '["10", 0],';
-							echo '["11", 0],';
-							echo '["12", 0],';
-							echo '["13", 0],';
-							echo '["14", 0],';
-							echo '["15", 0],';
-							echo '["16", 0],';
-							echo '["17", 0],';
-							echo '["18", 0],';
-							echo '["19", 0],';
-							echo '["20", 0],';
-							echo '["21", 0],';
-							echo '["22", 0],';
-							echo '["23", 0],';
-							echo '["24", 0]';
+							echo '["9 AM", 0],';
+							echo '["10 AM", 0],';
+							echo '["11 AM", 0],';
+							echo '["12 NN", 0],';
+							echo '["1 PM", 0],';
+							echo '["2 PM", 0],';
+							echo '["3 PM", 0],';
+							echo '["4 PM", 0],';
+							echo '["5 PM", 0],';
+							echo '["6 PM", 0],';
+							echo '["7 PM", 0],';
+							echo '["8 PM", 0],';
+							echo '["9 PM", 0]';
 						}
 						?>]
 					}];
