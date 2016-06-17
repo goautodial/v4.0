@@ -44,6 +44,7 @@ try {
 	die();
 }
 
+
 // initialize session and DDBB handler
 include_once('./php/UIHandler.php');
 require_once('./php/LanguageHandler.php');
@@ -71,6 +72,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -93,6 +96,10 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		<!-- Circle Buttons style -->
 		  <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
 		
+		<!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+
          <!-- theme_dashboard folder -->
 					<!-- FONT AWESOME-->
 			<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
@@ -132,8 +139,37 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 $campaign = $ui->API_getListAllCampaigns();
 //var_dump($campaign);
 $ingroup = $ui->API_getInGroups();
-?>            
-		
+
+
+/*
+ * get API data for chart from UIHandler.php
+*/
+
+$callsperhour = $ui->API_getCallPerHour();
+//var_dump($callsperhour);
+	
+	$max = 0;
+
+	 $callsperhour = explode(";",trim($callsperhour, ';'));
+	 foreach ($callsperhour AS $temp) {
+	   $temp = explode("=",$temp);
+	   $results[$temp[0]] = $temp[1];
+	 }
+
+	$outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
+	
+	$inbound_calls = max($results["Hour8"],$results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
+	
+	$dropped_calls = max($results["Hour8d"],$results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
+	
+	$max = max($inbound_calls, $outbound_calls, $dropped_calls);
+
+	
+	if($max <= 5){
+		$max = 5;
+	}
+	
+?>		
 		<style>
 			.ingroup_filter_list{
 				float: right !important;   				
@@ -353,7 +389,7 @@ $ingroup = $ui->API_getInGroups();
 
 	<!--===== INFOBOXES WITH BLUE WHITE SUN =======--> 
 	            <div class="row">
-	            	<div class="col-lg-12" style="padding: 15px 0px;">
+	            	<div class="col-lg-12" style="padding: 0px 0px;">
 	                    <div class="panel widget">
 							<div class="col-md-2 col-sm-3 col-xs-6 text-center bg-info pv-xl">
 								<em class="wi wi-day-sunny fa-4x"></em>
@@ -368,14 +404,14 @@ $ingroup = $ui->API_getInGroups();
 							</div>
 							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br">
 								<div class="h2 m0">420</div>
-								<div class="text-muted">Average Handling Time (sec)</div>
+								<div class="text-muted" style="font-size: small;">Average Handling Time (sec)</div>
 							</div>
 							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br">
-								<div class="h2 m0">719</div>
+								<div class="h2 m0"><?php echo $inbound_calls;?></div>
 								<div class="text-muted">Inbound Calls Today</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br">
-								<div class="h2 m0">55</div>
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center">
+								<div class="h2 m0"><?php echo $outbound_calls;?></div>
 								<div class="text-muted">Outbound Calls Today</div>
 							</div>
 	                    </div>
@@ -659,46 +695,37 @@ $ingroup = $ui->API_getInGroups();
 							-->
 
 					<div class="row">
-						<!-- Team Messages -->
+						<!-- Agent Monitoring Summary -->
 						<div class="col-lg-6">
 							<div class="panel panel-default">
 							   <div class="panel-heading">
-								  <div class="pull-right label label-danger">5</div>
-								  <div class="pull-right label label-success">12</div>
-								  <div class="panel-title">Team messages</div>
+								  <div class="panel-title">Agent Monitoring Summary</div>
+								  <hr/>
 							   </div>
 							   <!-- START list group-->
-							   <div data-height="230" data-scrollable="" class="list-group">
+							   <div data-height="230" data-scrollable="yes" class="list-group">
 								  <!-- START list group item-->
 								  <a href="#" class="list-group-item">
 									 <div class="media-box">
 										<div class="pull-left">
-										   <img src="theme_dashboard/img/user/02.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										   <img src="<?php echo $_SESSION['avatar'];?>" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										   <small class="pull-right">2h</small>
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis</strong>
-										   <p class="mb-sm">
-											  <small>Goautodial, the best...</small>
-										   </p>
+											
 										</div>
 									 </div>
 								  </a>
 								  <!-- END list group item-->
-								  <!-- START list group item-->
 								  <a href="#" class="list-group-item">
 									 <div class="media-box">
 										<div class="pull-left">
 										   <img src="theme_dashboard/img/user/03.jpg" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										   <small class="pull-right">3h</small>
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-success circle-lg text-left"></span>Jessica Silva</strong>
-										   <p class="mb-sm">
-											  <small>James is macho.</small>
-										   </p>
 										</div>
 									 </div>
 								  </a>
@@ -710,12 +737,8 @@ $ingroup = $ui->API_getInGroups();
 										   <img src="theme_dashboard/img/user/09.jpg" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										   <small class="pull-right">4h</small>
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Jessie Wells</strong>
-										   <p class="mb-sm">
-											  <small>DOTA tiiiime...</small>
-										   </p>
 										</div>
 									 </div>
 								  </a>
@@ -727,12 +750,8 @@ $ingroup = $ui->API_getInGroups();
 										   <img src="theme_dashboard/img/user/12.jpg" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										   <small class="pull-right">1d</small>
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Rosa Burke</strong>
-										   <p class="mb-sm">
-											  <small>Go letran!</small>
-										   </p>
 										</div>
 									 </div>
 								  </a>
@@ -744,12 +763,8 @@ $ingroup = $ui->API_getInGroups();
 										   <img src="theme_dashboard/img/user/10.jpg" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										   <small class="pull-right">2d</small>
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Michelle Lane</strong>
-										   <p class="mb-sm">
-											  <small>Watching secret affair right now...</small>
-										   </p>
 										</div>
 									 </div>
 								  </a>
@@ -758,13 +773,9 @@ $ingroup = $ui->API_getInGroups();
 							   <!-- END list group-->
 							   <!-- START panel footer-->
 							   <div class="panel-footer clearfix">
-								  <div class="input-group">
-									 <input type="text" placeholder="Search message .." class="form-control input-sm">
-									 <span class="input-group-btn">
-										<button type="submit" class="btn btn-default btn-sm"><i class="fa fa-search"></i>
-										</button>
-									 </span>
-								  </div>
+								  	<a href="#" data-toggle="modal" data-target="#agent_monitoring" class="pull-right">
+		                           		<small>View more</small> <em class="fa fa-arrow-right"></em>
+		                        	</a>
 							   </div>
 							   <!-- END panel-footer-->
 							</div>
@@ -847,128 +858,131 @@ $ingroup = $ui->API_getInGroups();
 							<!-- END FILTER list    -->
 				</div>
 				<div class="modal-body">
-					<!--
-					<table widht="100%">
+					<table class="table table-striped table-bordered table-hover" id="agent_monitoring_table">
 						<thead>
 							<tr>
 								<th>Agent</th>
-								<th>Tenant</th>
-								<th>Status</th>
-								<th>Cust Phone</th>
-								<th>MM:SS</th>
 								<th>Campaign</th>
-								<th>Caller ID</th>
+								<th>MM:SS</th>
 							</tr>
 						</thead>
-						
 						<tbody>
 							<tr>
-								<td>Gwaltney</td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>
+								  <!-- START list group item-->
+									<div class="media-box">
+										<div class="pull-left">
+										   <img src="<?php echo $_SESSION['avatar'];?>" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis</strong>
+										</div>
+									</div>
+								</td>
+								
+								<td>
+									CS HOTLINE
+								</td>
+
+								<td>
+									01:49
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+								  <!-- START list group item-->
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/03.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-success circle-lg text-left"></span>Jessica Silva</strong>
+										</div>
+									 </div>
+								</td>
+
+								<td>
+									CS HOTLINE
+								</td>
+
+								<td>
+									01:49
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+								  <!-- START list group item-->
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/02.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-danger circle-lg text-left"></span>Jessie Wells</strong>
+										</div>
+									 </div>
+								</td>
+
+								<td>
+									CS HOTLINE
+								</td>
+
+								<td>
+									01:49
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+								  <!-- START list group item-->
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/12.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-danger circle-lg text-left"></span>Rosa Burke</strong>
+										</div>
+									 </div>
+								</td>
+
+								<td>
+									CS HOTLINE
+								</td>
+
+								<td>
+									01:49
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+								  <!-- START list group item-->
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/10.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-danger circle-lg text-left"></span>Michelle Lane</strong>
+										</div>
+									 </div>
+								</td>
+
+								<td>
+									CS HOTLINE
+								</td>
+
+								<td>
+									01:49
+								</td>
 							</tr>
 						</tbody>
-
 					</table>
-					-->
-<script>
-$(function()
-{
-    var noAgentsLogged = 1;
-    if (noAgentsLogged)
-    {
-	$('#realTimeMonitor').hide();
-	$('#legendMonitoring').hide();
-	$('#noAgents').show();
-// 	$('#realTimeMonitor').show();
-// 	$('#legendMonitoring').show();
-// 	$('#noAgents').hide();
-    }
-    else
-    {
-	$('#realTimeMonitor').show();
-	$('#legendMonitoring').show();
-	$('#noAgents').hide();
-    }
-
-});
-
-function sendMonitor(user, sessionid, serverip)
-{
-    $('#overlayMonitor').fadeIn('fast');
-// alert(window.offset);
-	$('#boxMonitor').show();
-    $('#agent').text(user);
-    $('#boxMonitor').css({'width': '300px', 'height': '130px', 'margin-left': '50%', 'left': '-150px', 'padding-bottom': '20px'});
-    $('#boxMonitor').animate({
-// 	top: Math.max(0, (($(window).height() - $('#boxMonitor').outerHeight()) / 2) + $(window).scrollTop()) + "px"
-		top: "70px"
-    }, 500);
-
-    $('#session_id').val(sessionid);
-    $('#server_ip').val(serverip);
-}
-</script>
-<style type="text/css">
-.tBorder{
-	-webkit-border-radius: 7px;-moz-border-radius: 7px;border-radius: 7px;border:1px solid #90B09F;
-}
-.tBorderSmall{
-	-webkit-border-top-left-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
-	-moz-border-radius-topleft: 3px;
-	-moz-border-radius-topright: 3px;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-	border:0px solid #90B09F;
-	font-size:11px;
-}
-ul{
-	list-style-type:disc;
-	list-style-position:inside;
-}
-li{
-	line-height:10px;
-}
-</style>
-					<div id="noAgents" style="display:none;">
-					<br>
-						<table border=0 cellpadding=0 cellspacing=0 width="100%" align=center style="margin-top:0px;">
-							<tr>
-								<td align="center">
-									<table border=0 cellpadding=0 cellspacing=0 style="font-family:Verdana, Arial, Helvetica, sans-serif;" align=center>
-										<tr>
-											<td style="width:7px;height:50px;"></td>
-											<td style="width:100px;font-size:30px;white-space:nowrap;" align=center> &nbsp; NO AGENTS LOGGED IN &nbsp; </td>
-											<td style="width:6px;height:50px;"></td>
-										</tr>
-									</table>
-								<br>
-								</td>
-							</tr>
-						</table>
-					</div>
-					<div id="realTimeMonitor" style="display:none;">
-					<br>
-						<table border=0 cellpadding=0 cellspacing=0 width="100%" align=center style="margin-top:0px;">
-							<tr>
-								<td align="center">
-									<table border=0 cellpadding=0 cellspacing=0 style="font-family:Verdana, Arial, Helvetica, sans-serif;" align=center>
-										<tr>
-											<td style="width:7px;height:50px;"></td>
-											<td style="width:100px;font-size:30px;white-space:nowrap;" align=center> &nbsp; NO AGENTS LOGGED IN &nbsp; </td>
-											<td style="width:6px;height:50px;"></td>
-										</tr>
-									</table>
-								<br>
-								</td>
-							</tr>
-						</table>
-					</div>
 				</div> <!-- end of modal body -->
 				
 			</div>
@@ -982,37 +996,6 @@ li{
 	 * Modal Dialogs
 	*/
 		include_once ("./php/ModalPasswordDialogs.php");
-
-	/*
-	 * get API data for chart from UIHandler.php
-	*/
-
-	$callsperhour = $ui->API_getCallPerHour();
-	//var_dump($callsperhour);
-		
-		$max = 0;
-
-		 $callsperhour = explode(";",trim($callsperhour, ';'));
-		 foreach ($callsperhour AS $temp) {
-		   $temp = explode("=",$temp);
-		   $results[$temp[0]] = $temp[1];
-		 }
-	
-		$outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
-		
-		$inbound_calls = max($results["Hour8"],$results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
-		
-		$dropped_calls = max($results["Hour8d"],$results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
-		
-		$max = max($inbound_calls, $outbound_calls, $dropped_calls);
-	
-		
-		if($max <= 5){
-			$max = 5;
-		}
-
-	//var_dump($results);
-	
 ?>
 <script>
 	/*
@@ -1213,7 +1196,7 @@ li{
 					},
 					tooltip: true,
 					tooltipOpts: {
-						content: function (label, x, y) { return y + ' ' + label + ' around ' + x + ':00'; }
+						content: function (label, x, y) { return y + ' ' + label + ' around ' + x; }
 					},
 					xaxis: {
 						tickColor: '#fcfcfc',
@@ -1238,6 +1221,10 @@ li{
 		
 		
 		$(document).ready(function(){
+
+	// ---- loads datatable functions
+				$('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
+
 	// ---- Fixed Action Button
 			$(".bottom-menu").on('mouseenter mouseleave', function () {
 			  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');

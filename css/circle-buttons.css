@@ -68,7 +68,7 @@
 .skin-blue:hover,
 .skin-blue:focus{
     background-color: #50BBFA;
-    cursor:pointer;
+    /* cursor:pointer; */
 }
 
 /* Green */
@@ -79,7 +79,7 @@
 .skin-green:hover,
 .skin-green:focus{
     background-color: #00FC89;
-    cursor:pointer;
+    /*cursor:pointer;*/
 }
 
 /* Minimalist */
