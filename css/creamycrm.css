@@ -4176,6 +4176,9 @@ Gradient Background colors
 /* high resolution, 1024px or higher */
 @media only screen and (min-width: 1024px){
 }
- 
- 
+
+/* unbolds characters */
+select{
+  font-weight: normal;
+}
 

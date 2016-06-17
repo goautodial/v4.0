@@ -1,3 +1,4 @@
+
 <?php
 /*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -60,6 +61,11 @@ if (isset($_POST["leadfilter"])) {
         <script src="js/app.min.js" type="text/javascript"></script>
 
     </head>
+    <style>
+    	select{
+    		font-weight: normal;
+    	}
+    </style>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
