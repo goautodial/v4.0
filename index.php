@@ -149,8 +149,8 @@ $callsperhour = $ui->API_getCallPerHour();
 //var_dump($callsperhour);
 	
 	$max = 0;
-
-	 $callsperhour = explode(";",trim($callsperhour, ';'));
+	
+	$callsperhour = explode(";",trim($callsperhour, ';'));
 	 foreach ($callsperhour AS $temp) {
 	   $temp = explode("=",$temp);
 	   $results[$temp[0]] = $temp[1];
@@ -168,23 +168,20 @@ $callsperhour = $ui->API_getCallPerHour();
 	if($max <= 5){
 		$max = 5;
 	}
-	
+	if($outbound_calls == NULL || $outbound_calls == 0){
+		$outbound_calls = 0;
+	}
+	if($inbound_calls == NULL || $inbound_calls == 0){
+		$inbound_calls = 0;
+	}
+
 ?>		
-		<style>
-			.ingroup_filter_list{
-				float: right !important;   				
-			}
-			.campaign_filter_list{
-				float: right !important;
-				padding-right: 15px;
-			}
-		</style>
 
 		<!--===== FILTER LIST =======-->
 				
 			<!-- == INGROUP == -->
 				<div class="ingroup_filter_list">
-				<label for="ingroup_dropdown"><small style="font-size: 60%;">In-group:</small></label>
+				<label for="ingroup_dropdown"><small class="small_filterlist">In-group:</small></label>
 				   <!--
 				   <div class="btn-group">
 					  <button type="button" data-toggle="dropdown" id="ingroup_dropdown" class="btn btn-default"> - - - All In-groups - - - </button>
@@ -197,7 +194,7 @@ $callsperhour = $ui->API_getCallPerHour();
 					  </ul>
 				   </div>
 					-->
-				    <select id="ingroup_dropdown" style="font-size:50%; padding: 6px;">
+				    <select id="ingroup_dropdown" class="filterlist_dropdown">
 				   			<option selected> --- All In-groups --- </option>
 				   		<?php
 						 	for($i=0;$i < count($ingroup->group_id);$i++){
@@ -208,7 +205,7 @@ $callsperhour = $ui->API_getCallPerHour();
 				</div>
 			<!-- == CAMPAIGN == -->
 				<div class="campaign_filter_list">
-					<label for="campaign_dropdown"><small style="font-size: 60%;">Campaign:</small></label>
+					<label for="campaign_dropdown"><small class="small_filterlist">Campaign:</small></label>
 							
 					<!--
 					   <div class="btn-group">
@@ -222,7 +219,7 @@ $callsperhour = $ui->API_getCallPerHour();
 						  </ul>
 					   </div>
 					-->
-					<select id="campaign_dropdown" style="font-size:50%; padding: 6px;">
+					<select id="campaign_dropdown" class="filterlist_dropdown">
 				   			<option selected> --- All Campaigns --- </option>
 				   		<?php
 						 	for($i=0;$i < count($campaign->campaign_id);$i++){
@@ -370,7 +367,7 @@ $callsperhour = $ui->API_getCallPerHour();
 
 
 			<div class="row"> <!-- ROW FOR THE REST -->
-				<div class="col-lg-9" style="padding-right: 30px;">
+				<div class="col-lg-9" id="row_for_rest">
 	<!--===== CALLS PER HOUR CHART =======--> 
                 <div class="row">
 	              <!-- START widget-->
@@ -390,27 +387,27 @@ $callsperhour = $ui->API_getCallPerHour();
 	<!--===== INFOBOXES WITH BLUE WHITE SUN =======--> 
 	            <div class="row">
 	            	<div class="col-lg-12" style="padding: 0px 0px;">
-	                    <div class="panel widget">
+	                    <div class="panel widget" style="height:17%">
 							<div class="col-md-2 col-sm-3 col-xs-6 text-center bg-info pv-xl">
 								<em class="wi wi-day-sunny fa-4x"></em>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
 								<div class="h2 m0">32</div>
 								<div class="text-muted">Abandoned Calls</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
 								<div class="h2 m0">21</div>
 								<div class="text-muted">Answered < 20 sec</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
 								<div class="h2 m0">420</div>
 								<div class="text-muted" style="font-size: small;">Average Handling Time (sec)</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
 								<div class="h2 m0"><?php echo $inbound_calls;?></div>
 								<div class="text-muted">Inbound Calls Today</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center info_sun_boxes">
 								<div class="h2 m0"><?php echo $outbound_calls;?></div>
 								<div class="text-muted">Outbound Calls Today</div>
 							</div>
@@ -816,13 +813,13 @@ $callsperhour = $ui->API_getCallPerHour();
 			<!-- Header -->
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="agent_monitoring">Agent Monitoring</h4>
+					
 				<!--===== FILTER LIST =======-->
 					<div class="agent_monitor_filter pull-right">
 						<small>Filter: </small>
 					<!-- == INGROUP == -->
 						<span class="tenant_filter_agentmonitoring">
-						    <select id="tenant_dropdown_agent_monitoring" style="font-size:80%; padding: 6px;">
+						    <select id="tenant_dropdown_agent_monitoring">
 						   			<option selected> --- All Tenants --- </option>
 						   		<?php
 								 	for($i=0;$i < count($ingroup->group_id);$i++){
@@ -845,7 +842,7 @@ $callsperhour = $ui->API_getCallPerHour();
 								  </ul>
 							   </div>
 							-->
-							<select id="campaign_dropdown" style="font-size:80%; padding: 6px;">
+							<select id="campaign_dropdown_agentmonitoring">
 						   			<option selected> --- All Campaigns --- </option>
 						   		<?php
 								 	for($i=0;$i < count($campaign->campaign_id);$i++){
@@ -856,6 +853,8 @@ $callsperhour = $ui->API_getCallPerHour();
 						</span>
 					</div>
 							<!-- END FILTER list    -->
+					<h4 class="modal-title" id="agent_monitoring">Agent Monitoring</h4>
+				
 				</div>
 				<div class="modal-body">
 					<table class="table table-striped table-bordered table-hover" id="agent_monitoring_table">
