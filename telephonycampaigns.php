@@ -257,7 +257,7 @@
 
 	<!-- Modal -->
 	<div id="add_campaign" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog" style="width: 800px;">
 
 	    <!-- Modal content-->
 	    <div class="modal-content">
@@ -279,7 +279,394 @@
 				</div>
 			</div>
 	        <div id="content" class="wizard-form">
-			    <?php print $ui->wizardFromCampaign(); ?>
+			    <?php //print $ui->wizardFromCampaign(); ?>
+				<!-- Custom Tabs (Pulled to the right) -->
+					<div class="nav-tabs-custom">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab1" data-toggle="tab">Basic</a></li>
+							<li><a href="#tab2" data-toggle="tab">Advance Settings</a></li>
+						</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab1">
+							<div class="form-horizontal">
+				    			<div class="form-group">
+				    				<label class="control-label col-lg-4">Campaign Type:</label>
+				    				<div class="col-lg-8">
+				    					<select id="campaignType" class="form-control">
+				    						<option value="outbound">Outbound</option>
+				    						<option value="inbound">Inbound</option>
+				    						<option value="blended">Blended</option>
+				    						<option value="survey">Survey</option>
+				    						<option value="copy">Copy Campaign</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group campaign-id">
+				    				<label class="control-label col-lg-4">Campaign ID:</label>
+				    				<div class="col-lg-8">
+				    					<div class="input-group">
+									      <input id="campaign-id" name="campaign_id" type="text" class="form-control" placeholder="" readonly>
+									      <span class="input-group-btn">
+									        <button id="campaign-id-edit-btn" class="btn btn-default" type="button"><i class="fa fa-pencil"></i></button>
+									      </span>
+									    </div><!-- /input-group -->
+				    				</div>
+				    			</div>
+				    			<div class="form-group">
+				    				<label class="control-label col-lg-4">Campaign Name:</label>
+				    				<div class="col-lg-8">
+				    					<input id="campaign-name" type="text" class="form-control">
+				    				</div>
+				    			</div>
+				    			<div class="form-group">
+				    				<label class="control-label col-lg-4">Description:</label>
+				    				<div class="col-lg-8">
+				    					<input id="campaign-description" type="text" class="form-control">
+				    				</div>
+				    			</div>
+				    			<div class="form-group">
+				    				<label class="control-label col-lg-4">Status:</label>
+				    				<div class="col-lg-8">
+				    					<select id="status" class="form-control">
+				    						<option>Active</option>
+				    						<option>Inactive</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group">
+				    				<label class="control-label col-lg-4">Call Recordings:</label>
+				    				<div class="col-lg-8">
+				    					<select id="status" class="form-control">
+				    						<option>On</option>
+				    						<option>Off</option>
+				    						<option>on-demand</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group">
+				    				<label class="control-label col-lg-4">Script:</label>
+				    				<div class="col-lg-8">
+				    					<select id="status" class="form-control">
+				    						<option>List Here</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group">
+				    				<label class="control-label col-lg-4">Caller ID:</label>
+				    				<div class="col-lg-8">
+				    					<input id="campaign-caller-id" type="text" class="form-control">
+				    				</div>
+				    			</div>
+				    			<div class="form-group">
+				    				<label class="control-label col-lg-4">Dial Method:</label>
+				    				<div class="col-lg-8">
+				    					<select id="status" class="form-control">
+				    						<option>Predictive</option>
+				    						<option>Autodial</option>
+				    						<option>Manual</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group">
+				    				<label class="control-label col-lg-4">Carrier to use:</label>
+				    				<div class="col-lg-8">
+				    					<select id="carrier-to-use" class="form-control">
+				    						<option>List Here</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group">
+				    				<label class="control-label col-lg-4">Answering machine detection:</label>
+				    				<div class="col-lg-8">
+				    					<select id="answering-machine" class="form-control">
+				    						<option>On</option>
+				    						<option>Off</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group">
+				    				<label class="control-label col-lg-4">Force Reset of Hopper:</label>
+				    				<div class="col-lg-8">
+				    					<select id="force-reset-hopper" class="form-control">
+				    						<option>Y</option>
+				    						<option>N</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group did-tfn-ext hide">
+				    				<label class="control-label col-lg-4">DID / TFN Extension:</label>
+				    				<div class="col-lg-8">
+				    					<input id="did-tfn" type="text" class="form-control">
+				    				</div>
+				    			</div>
+				    			<div class="form-group call-route hide">
+				    				<span class="control-label col-lg-4">Call route:</span>
+				    				<div class="col-lg-8">
+				    					<select id="call-route" class="form-control">
+				    						<option value="NONE"></option>
+				    						<option value="INGROUP">INGROUP (campaign)</option>
+				    						<option value="IVR">IVR (callmenu)</option>
+				    						<option value="AGENT">AGENT</option>
+				    						<option value="VOICEMAIL">VOICEMAIL</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group surver-type hide">
+				    				<span class="control-label col-lg-4">Survey Type:</span>
+				    				<div class="col-lg-8">
+				    					<select id="survey-type" class="form-control">
+				    						<option value="BROADCAST">VOICE BROADCAST</option>
+				    						<option value="PRESS1">SURVEY PRESS 1</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group no-channels hide">
+				    				<span class="control-label col-lg-4">Number of Channels:</span>
+				    				<div class="col-lg-8">
+				    					<select id="no-channels" class="form-control">
+				    						<option>1</option>
+				    						<option>5</option>
+				    						<option>10</option>
+				    						<option>15</option>
+				    						<option>20</option>
+				    						<option>30</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group copy-from hide">
+				    				<span class="control-label col-lg-4">Copy from:</span>
+				    				<div class="col-lg-8">
+				    					<select id="copy-from" class="form-control">
+				    						<option>LIST HERE</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group upload-wav hide">
+				    				<span class="control-label col-lg-4">Please Upload .wav file</span>
+				    				<div class="col-lg-8">
+				    					<div class="input-group">
+									      <input type="text" class="form-control" placeholder="16 bit mono 8000 PCM WAV audio files only">
+									      <span class="input-group-btn">
+									        <button class="btn btn-primary" type="button">Browse</button>
+									      </span>
+									    </div><!-- /input-group -->
+				    				</div>
+				    			</div>
+				    			<div class="lead-section hide">
+				        			<div class="form-group">
+				        				<label class="control-label col-lg-4">Lead File:</label>
+				        				<div class="col-lg-8">
+				        					<input type="text" class="form-control">
+				        				</div>
+				        			</div>
+				        			<div class="form-group">
+				        				<label class="control-label col-lg-4">List ID:</label>
+				        				<div class="col-lg-8">
+				        					<span>Auto Generated here range</span>
+				        				</div>
+				        			</div>
+				        			<div class="form-group">
+				        				<label class="control-label col-lg-4">Country:</label>
+				        				<div class="col-lg-8">
+				        					<select class="form-control">
+				        						<option>LIST HERE</option>
+				        					</select>
+				        				</div>
+				        			</div>
+				        			<div class="form-group">
+				        				<label class="control-label col-lg-4">Check For Duplicates:</label>
+				        				<div class="col-lg-8">
+				        					<select class="form-control">
+				        						<option>LIST HERE</option>
+				        					</select>
+				        				</div>
+				        			</div>
+				        			<div class="form-group">
+				        				<label class="control-label col-lg-4">&nbsp</label>
+				        				<div class="col-lg-8">
+				        					<button type="button" class="btn btn-default">UPLOAD LEADS</button>
+				        				</div>
+				        			</div>
+				    			</div>
+			    			</div>
+						</div>
+						<!-- /.tab-pane -->
+						<div class="tab-pane" id="tab2">
+							<div class="form-horizontal">
+								<div class="form-group call-time hide">
+				    				<label class="control-label col-lg-4">Call time:</label>
+				    				<div class="col-lg-8">
+				    					<select id="call-time" class="form-control">
+				    						<option>List here</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group dial-status hide">
+				    				<label class="control-label col-lg-4">Dial status:</label>
+				    				<div class="col-lg-8">
+				    					<select id="status" class="form-control">
+				    						<option>List here</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group list-order hide">
+				    				<label class="control-label col-lg-4">List order:</label>
+				    				<div class="col-lg-8">
+				    					<select id="list_order" class="form-control">
+				    						<option>List here</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group lead-filter hide">
+				    				<label class="control-label col-lg-4">Lead filter:</label>
+				    				<div class="col-lg-8">
+				    					<select id="lead_filter" class="form-control">
+				    						<option>List here</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group reset-leads-on-hopper hide">
+				    				<label class="control-label col-lg-4">Reset leads on hopper:</label>
+				    				<div class="col-lg-8">
+				    					<select id="reset_leads_on_hopper" class="form-control">
+				    						<option>List here</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group dial-timeout hide">
+				    				<label class="control-label col-lg-4">Dial timeout:</label>
+				    				<div class="col-lg-8">
+				    					<input id="dial_timeout" type="text" class="form-control">
+				    				</div>
+				    			</div>
+				    			<div class="form-group manual-dial-prefix hide">
+				    				<label class="control-label col-lg-4">Manual dial prefix:</label>
+				    				<div class="col-lg-8">
+				    					<input id="cmanual_dial_prefix" type="text" class="form-control">
+				    				</div>
+				    			</div>
+				    			<div class="form-group call-lunch hide">
+				    				<label class="control-label col-lg-4">Get call lunch:</label>
+				    				<div class="col-lg-8">
+				    					<select id="call_lunch" class="form-control">
+				    						<option>None</option>
+				    						<option>Script</option>
+				    						<option>Webform</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group answering-machine-message hide">
+				    				<label class="control-label col-lg-4">Answering machine message:</label>
+				    				<div class="col-lg-8">
+				    					<input id="campaign-answering-machine-message" type="text" class="form-control">
+				    				</div>
+				    			</div>
+				    			<div class="form-group pause-codes hide">
+				    				<label class="control-label col-lg-4">Pause codes:</label>
+				    				<div class="col-lg-8">
+				    					<select id="pause_codes" class="form-control">
+				    						<option>Active</option>
+				    						<option>Inactive</option>
+				    					</select>
+				    				</div>
+				    			</div><div class="form-group manual-dial-filter hide">
+				    				<label class="control-label col-lg-4">Manual dial filter:</label>
+				    				<div class="col-lg-8">
+				    					<select id="manual_dial_filter" class="form-control">
+				    						<option>dnc only</option>
+				    						<option>camplist only</option>
+				    						<option>dnc & camplist</option>
+				    						<option>dnc & camplist all</option>
+				    						<option>none</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group manual-dial-list-id hide">
+				    				<label class="control-label col-lg-4">Manual dial List ID:</label>
+				    				<div class="col-lg-8">
+				    					<select id="manual_dial_list_id" class="form-control">
+				    						<option>Active</option>
+				    						<option>Inactive</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group availability-only-tally hide">
+				    				<label class="control-label col-lg-4">Availability only tally:</label>
+				    				<div class="col-lg-8">
+				    					<select id="availability_only_tally" class="form-control">
+				    						<option>Active</option>
+				    						<option>Inactive</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group recording-filename hide">
+				    				<label class="control-label col-lg-4">Campaign Recording filename:</label>
+				    				<div class="col-lg-8">
+				    					<input id="campaign_recording_filename" type="text" class="form-control">
+				    				</div>
+				    			</div>
+				    			<div class="form-group next-agent-call hide">
+				    				<label class="control-label col-lg-4">Next agent call:</label>
+				    				<div class="col-lg-8">
+				    					<select id="next_agent_call" class="form-control">
+				    						<option>random</option>
+				    						<option>oldest call start</option>
+				    						<option>oldest call finish</option>
+				    						<option>overall user level</option>
+				    						<option>fewest callslongest waiting time</option>
+				    						<option>longest waiting time</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group caller-id-3-way-call hide">
+				    				<label class="control-label col-lg-4">Caller ID for 3-way calls:</label>
+				    				<div class="col-lg-8">
+				    					<select id="calle_id_3_way_call" class="form-control">
+				    						<option>campaign</option>
+				    						<option>customer</option>
+				    						<option>agent phone</option>
+				    						<option>custom</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group dial-prefix-3-way-call hide">
+				    				<label class="control-label col-lg-4">Dial prefix for 3-way calls:</label>
+				    				<div class="col-lg-8">
+				    					<input id="dial_prefix_3_way_call" type="text" class="form-control">
+				    				</div>
+				    			</div>
+				    			<div class="form-group 3-way-hangup-logging hide">
+				    				<label class="control-label col-lg-4">Customer 3-way hangup logging:</label>
+				    				<div class="col-lg-8">
+				    					<select id="3_way_hangup_logging" class="form-control">
+				    						<option>List here</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group 3-way-hangup-seconds hide">
+				    				<label class="control-label col-lg-4">Customer 3-way hangup seconds:</label>
+				    				<div class="col-lg-8">
+				    					<select id="3_way_hangup_seconds" class="form-control">
+				    						<option>List here</option>
+				    					</select>
+				    				</div>
+				    			</div>
+				    			<div class="form-group 3-way-hangup-action hide">
+				    				<label class="control-label col-lg-4">Customer 3-way hangup action:</label>
+				    				<div class="col-lg-8">
+				    					<select id="3_way_hangup_action" class="form-control">
+				    						<option>List here</option>
+				    					</select>
+				    				</div>
+				    			</div>
+							</div>
+						</div>
+						<!-- /.tab-pane -->
+					</div>
+					<!-- /.tab-content -->
+					</div>
+				<!-- nav-tabs-custom -->
+			    
 			</div>
 	      </div>
 	      <div class="modal-footer">
@@ -402,6 +789,25 @@
 			});
 
 			$('.lead-section').removeClass('hide');
+			$('.call-time').removeClass('hide');
+			$('.dial-status').removeClass('hide');
+			$('.list-order').removeClass('hide');
+			$('.lead-filter').removeClass('hide');
+			$('.dial-timeout').removeClass('hide');
+			$('.manual-dial-prefix').removeClass('hide');
+			$('.call-lunch').removeClass('hide');
+			$('.answering-machine-message').removeClass('hide');
+			$('.pause-codes').removeClass('hide');
+			$('.manual-dial-filter').removeClass('hide');
+			$('.manual-dial-list-id').removeClass('hide');
+			$('.availability-only-tally').removeClass('hide');
+			$('.recording-filename').removeClass('hide');
+			$('.next-agent-call').removeClass('hide');
+			$('.caller-id-3-way-call').removeClass('hide');
+			$('.dial-prefix-3-way-call').removeClass('hide');
+			$('.3-way-hangup-logging').removeClass('hide');
+			$('.3-way-hangup-seconds').removeClass('hide');
+			$('.3-way-hangup-action').removeClass('hide');
 			$('#campaignType').change(function(){
 				var selectedTypeText = $(this).find("option:selected").text();
 				var selectedTypeVal = $(this).find("option:selected").val();
@@ -417,8 +823,51 @@
 
 					if(selectedTypeVal == 'inbound'){
 						$('.lead-section').addClass('hide');
+						$('.call-lunch').removeClass('hide');
+						$('.answering-machine-message').removeClass('hide');
+						$('.pause-codes').removeClass('hide');
+						$('.manual-dial-filter').removeClass('hide');
+						$('.availability-only-tally').removeClass('hide');
+						$('.recording-filename').removeClass('hide');
+						$('.next-agent-call').removeClass('hide');
+						$('.dial-timeout').removeClass('hide');
+						$('.manual-dial-prefix').removeClass('hide');
+						$('.caller-id-3-way-call').removeClass('hide');
+						$('.dial-prefix-3-way-call').removeClass('hide');
+						$('.3-way-hangup-logging').removeClass('hide');
+						$('.3-way-hangup-seconds').removeClass('hide');
+						$('.3-way-hangup-action').removeClass('hide');
+
+						$('.lead-section').addClass('hide');
+						$('.call-time').addClass('hide');
+						$('.dial-status').addClass('hide');
+						$('.list-order').addClass('hide');
+						$('.lead-filter').addClass('hide');
+						$('.manual-dial-list-id').addClass('hide');
+						$('.reset-leads-on-hopper').addClass('hide');
 					}else{	
 						$('.lead-section').removeClass('hide');
+						$('.call-time').removeClass('hide');
+						$('.dial-status').removeClass('hide');
+						$('.list-order').removeClass('hide');
+						$('.lead-filter').removeClass('hide');
+						$('.reset-leads-on-hopper').removeClass('hide');
+						$('.dial-timeout').removeClass('hide');
+						$('.manual-dial-prefix').removeClass('hide');
+						$('.call-lunch').removeClass('hide');
+						$('.answering-machine-message').removeClass('hide');
+						$('.pause-codes').removeClass('hide');
+						$('.manual-dial-filter').removeClass('hide');
+						$('.availability-only-tally').removeClass('hide');
+						$('.recording-filename').removeClass('hide');
+						$('.next-agent-call').removeClass('hide');
+						$('.caller-id-3-way-call').removeClass('hide');
+						$('.dial-prefix-3-way-call').removeClass('hide');
+						$('.3-way-hangup-logging').removeClass('hide');
+						$('.3-way-hangup-seconds').removeClass('hide');
+						$('.3-way-hangup-action').removeClass('hide');
+
+						$('.manual-dial-list-id').addClass('hide');
 					}
 
 				}else if(selectedTypeVal == 'survey'){
@@ -429,6 +878,26 @@
 					$('.copy-from').addClass('hide');
 					$('.upload-wav').removeClass('hide');
 					$('.lead-section').removeClass('hide');
+
+					$('.call-time').removeClass('hide');
+					$('.dial-status').removeClass('hide');
+					$('.list-order').removeClass('hide');
+					$('.lead-filter').removeClass('hide');
+					$('.dial-timeout').removeClass('hide');
+					$('.manual-dial-prefix').removeClass('hide');
+					$('.call-lunch').removeClass('hide');
+					$('.answering-machine-message').removeClass('hide');
+					$('.pause-codes').removeClass('hide');
+					$('.manual-dial-filter').removeClass('hide');
+					$('.manual-dial-list-id').removeClass('hide');
+					$('.availability-only-tally').removeClass('hide');
+					$('.recording-filename').removeClass('hide');
+					$('.next-agent-call').removeClass('hide');
+					$('.caller-id-3-way-call').removeClass('hide');
+					$('.dial-prefix-3-way-call').removeClass('hide');
+					$('.3-way-hangup-logging').removeClass('hide');
+					$('.3-way-hangup-seconds').removeClass('hide');
+					$('.3-way-hangup-action').removeClass('hide');
 				}else if(selectedTypeVal == 'copy'){
 					$('.did-tfn-ext').addClass('hide');
 					$('.call-route').addClass('hide');
@@ -437,6 +906,26 @@
 					$('.copy-from').removeClass('hide');
 					$('.upload-wav').addClass('hide');
 					$('.lead-section').addClass('hide');
+
+					$('.call-time').removeClass('hide');
+					$('.dial-status').removeClass('hide');
+					$('.list-order').removeClass('hide');
+					$('.lead-filter').removeClass('hide');
+					$('.dial-timeout').removeClass('hide');
+					$('.manual-dial-prefix').removeClass('hide');
+					$('.call-lunch').removeClass('hide');
+					$('.answering-machine-message').removeClass('hide');
+					$('.pause-codes').removeClass('hide');
+					$('.manual-dial-filter').removeClass('hide');
+					$('.manual-dial-list-id').removeClass('hide');
+					$('.availability-only-tally').removeClass('hide');
+					$('.recording-filename').removeClass('hide');
+					$('.next-agent-call').removeClass('hide');
+					$('.caller-id-3-way-call').removeClass('hide');
+					$('.dial-prefix-3-way-call').removeClass('hide');
+					$('.3-way-hangup-logging').removeClass('hide');
+					$('.3-way-hangup-seconds').removeClass('hide');
+					$('.3-way-hangup-action').removeClass('hide');
 				}else{
 					// default
 					$('.did-tfn-ext').addClass('hide');
@@ -446,6 +935,25 @@
 					$('.copy-from').addClass('hide');
 					$('.upload-wav').addClass('hide');
 					$('.lead-section').removeClass('hide');
+					$('.call-time').removeClass('hide');
+					$('.dial-status').removeClass('hide');
+					$('.list-order').removeClass('hide');
+					$('.lead-filter').removeClass('hide');
+					$('.dial-timeout').removeClass('hide');
+					$('.manual-dial-prefix').removeClass('hide');
+					$('.call-lunch').removeClass('hide');
+					$('.answering-machine-message').removeClass('hide');
+					$('.pause-codes').removeClass('hide');
+					$('.manual-dial-filter').removeClass('hide');
+					$('.manual-dial-list-id').removeClass('hide');
+					$('.availability-only-tally').removeClass('hide');
+					$('.recording-filename').removeClass('hide');
+					$('.next-agent-call').removeClass('hide');
+					$('.caller-id-3-way-call').removeClass('hide');
+					$('.dial-prefix-3-way-call').removeClass('hide');
+					$('.3-way-hangup-logging').removeClass('hide');
+					$('.3-way-hangup-seconds').removeClass('hide');
+					$('.3-way-hangup-action').removeClass('hide');
 				}
 			});
 
