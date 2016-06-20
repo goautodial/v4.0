@@ -131,25 +131,25 @@
 				<!-- STEP 1 -->
 					<div class="wizard-step">
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="user_group">User Group:</label>
-							<div class="col-sm-8">
+							<label class="col-sm-4 control-label" for="user_group" style="padding-top:15px;">User Group:</label>
+							<div class="col-sm-8" style="padding-top:10px;">
 								<select id="user_group" class="form-control" name="user_group" onchange="session()">
-									<option value="ADMIN">GOAUTODIAL ADMINISTRATORS</option>
 									<option value="AGENTS">GOAUTODIAL AGENTS</option>
+									<option value="ADMIN">GOAUTODIAL ADMINISTRATORS</option>
 									<option value="SUPERVISOR">SUPERVISOR</option>
 								</select>
 							</div>
 						</div>
 						<div class="form-group">		
-							<label class="col-sm-4 control-label">Current Users: </label>
-							<div class="col-sm-8">
-								<h4><?php echo count($output->userno); ?></h4>
+							<label class="col-sm-4 control-label" style="padding-top:15px;">Current Users: </label>
+							<div class="col-sm-8" style="padding-top:10px;">
+								<h4 style="padding-left:20px;"><?php echo count($output->userno); ?></h4>
 							</div>
 						</div>
 						
 						<div class="form-group">		
-							<label class="col-sm-4 control-label">Additional Seat(s): </label>
-							<div class="col-sm-8">
+							<label class="col-sm-4 control-label" style="padding-top:15px;">Additional Seat(s): </label>
+							<div class="col-sm-8" style="padding-top:10px;">
 								<select name="seats" id="seats" class="form-control">
 								<?php
 								for($i=1; $i <= count($output->userno); $i++){ ?>
@@ -157,21 +157,28 @@
 								<?php
 								}
 								?>
+									<option value="custom_seats">Custom</option>
 								</select>
 							</div>
 						</div>
+						<div class="form-group" id="custom_seats" style="display:none;">
+							<label class="col-sm-4 control-label" for="custom_num_seats" style="padding-top:15px;">Number of Seats: </label>
+							<div class="col-sm-8" style="padding-top:10px;">
+								<input type="number" name="custom_num_seats" id="custom_num_seats" class="form-control" min="1" max="99" placeholder="Number of Seats">
+							</div>
+						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="generate_phone_logins">Generate Phone Logins: </label>
-							<div class="col-sm-8">
+							<label class="col-sm-4 control-label" for="generate_phone_logins" style="padding-top:15px;">Generate Phone Logins: </label>
+							<div class="col-sm-8" style="padding-top:10px;">
 								<select id="generate_phone_logins" name="generate_phone_logins" class="form-control">
-									<option value="" selected>No</option>
-									<option value="">Yes</option>
+									<option value="N" selected>No</option>
+									<option value="Y">Yes</option>
 								</select>
 							</div>
 						</div>
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="phone_logins">Phone Login: </label>
-							<div class="col-sm-8">
+						<div class="form-group" id="phone_logins_form" style="display:none;">
+							<label class="col-sm-4 control-label" for="phone_logins" style="padding-top:15px;">Phone Login: </label>
+							<div class="col-sm-8" style="padding-top:10px;">
 								<input type="number" name="phone_logins" id="phone_logins" class="form-control" placeholder="eg. 8001" pattern=".{3,}"  required title="Minimum of 3 characters">
 							</div>
 						</div>
@@ -218,7 +225,7 @@
 						<div class="form-group">		
 							<label class="control-label col-sm-4" for="password">Password: </label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="Go2014" required>
+								<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="Go2016" required>
 							</div> 
 						</div>
 						<div class="form-group">
@@ -230,7 +237,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="phone_pass">Phone Password: </label>
 							<div class="col-sm-8">
-								<input type="text" name="phone_pass" id="phone_pass" class="form-control" value="Go2014">
+								<input type="text" name="phone_pass" id="phone_pass" class="form-control" value="Go2016">
 							</div>
 						</div>
 						
@@ -304,7 +311,29 @@
                 }
 				
             });
-				
+		
+		/* additional number custom*/
+			$('#seats').on('change', function() {
+			//  alert( this.value ); // or $(this).val()
+				if(this.value == "custom_seats") {
+				  $('#custom_seats').show();
+				}
+				if(this.value != "custom_seats") {
+				  $('#custom_seats').hide();
+				}
+			});
+
+		/* generate phone logins*/
+			$('#generate_phone_logins').on('change', function() {
+			//  alert( this.value ); // or $(this).val()
+				if(this.value == "Y") {
+				  $('#phone_logins_form').show();
+				}
+				if(this.value == "N") {
+				  $('#phone_logins_form').hide();
+				}
+			});
+
 				/**
 				  * Edit user details
 				 */

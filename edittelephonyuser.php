@@ -49,6 +49,11 @@ if (isset($_POST["userid"])) {
         <script src="js/app.min.js" type="text/javascript"></script>
 
     </head>
+    <style>
+    	select{
+    		font-weight: normal;
+    	}
+    </style>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
@@ -272,17 +277,18 @@ if (isset($_POST["userid"])) {
 										<select class="form-control" id="usergroup" name="usergroup">
 											<?php
 												$usergroup = NULL;
-												if($output->user_group[$i] == "ADMIN"){
-													$usergroup .= '<option value="ADMINISTRATORS" selected>GOAUTODIAL ADMINISTRATORS</option>';
-												}else{
-													$usergroup .= '<option value="ADMINISTRATORS" >GOAUTODIAL ADMINISTRATORS</option>';
-												}
-												
+
 												if($output->user_group[$i] == "AGENTS"){
 													$usergroup .= '<option value="AGENTS" selected>GOAUTODIAL AGENTS</option>';
 												}else{
 													$usergroup .= '<option value="AGENTS" >GOAUTODIAL AGENTS</option>';
 												}
+
+												if($output->user_group[$i] == "ADMIN"){
+													$usergroup .= '<option value="ADMINISTRATORS" selected>GOAUTODIAL ADMINISTRATORS</option>';
+												}else{
+													$usergroup .= '<option value="ADMINISTRATORS" >GOAUTODIAL ADMINISTRATORS</option>';
+												}												
 												
 												if($output->user_group[$i] == "SUPERVISOR"){
 													$usergroup .= '<option value="SUPERVISOR" selected>SUPERVISOR</option>';
@@ -300,15 +306,15 @@ if (isset($_POST["userid"])) {
 										<?php
 											$status = NULL;
 											if($output->active[$i] == "Y"){
-												$status .= '<option value="Y" selected> YES </option>';
+												$status .= '<option value="Y" selected> Active </option>';
 											}else{
-												$status .= '<option value="Y" > YES </option>';
+												$status .= '<option value="Y" > Active </option>';
 											}
 											
 											if($output->active[$i] == "N" || $output->active[$i] == NULL){
-												$status .= '<option value="N" selected> NO </option>';
+												$status .= '<option value="N" selected> Inactive </option>';
 											}else{
-												$status .= '<option value="N" > NO </option>';
+												$status .= '<option value="N" > Inactive </option>';
 											}
 											echo $status;
 										?>
@@ -316,7 +322,7 @@ if (isset($_POST["userid"])) {
 										</label>
 									</div>
 									<div class="row">
-										<label for="userlevel" class="col-md-1">User Level
+										<label for="userlevel" class="col-md-2">User Level
 										<select class="form-control" name="userlevel" id="userlevel">
 										<?php
 											$userlevel = NULL;
@@ -410,7 +416,7 @@ if (isset($_POST["userid"])) {
 						       		</div>
 						       		
 						       		<!-- ADVANCED SETTINGS -->
-						       		<div id="advanced_settings_wrapper" style="background-color: #E4F3E8; padding: 25px 50px;" hidden>
+						       		<div id="advanced_settings_wrapper" style="padding: 25px 0px;" hidden>
 						       			<input type="hidden" name="agent_choose_ingroup" value="0">
 						       			<input type="hidden" name="agent_choose_blended" value="0">
 						       			<input type="hidden" name="scheduled_callbacks" value="1">
@@ -438,21 +444,21 @@ if (isset($_POST["userid"])) {
 											</label>
 										</div>
 										<div class="row">
-											<label for="agent_recordings" class="col-md-1">Agent Recordings
+											<label for="agent_recordings" class="col-md-2">Agent Recordings
 											<select class="form-control" name="agent_recordings" id="agent_recordings">
 												<option value="0"> 0 </option>
 											</select>
 											</label>
 										</div>
 										<div class="row">
-											<label for="agent_transfers" class="col-md-1">Agent Transfers
+											<label for="agent_transfers" class="col-md-2">Agent Transfers
 											<select class="form-control" name="agent_transfers" id="agent_transfers">
 												<option value="1"> 1 </option>
 											</select>
 											</label>
 										</div>
 										<div class="row">
-											<label for="closer_default_blended" class="col-md-1">Closer Default Blended
+											<label for="closer_default_blended" class="col-md-2">Closer Default Blended
 											<select class="form-control" name="closer_default_blended" id="closer_default_blended">
 												<option value="1"> 1 </option>
 											</select>

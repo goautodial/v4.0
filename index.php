@@ -1,4 +1,9 @@
 <?php
+/*
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL)
+*/
 /**
 	The MIT License (MIT)
 	
@@ -39,6 +44,7 @@ try {
 	die();
 }
 
+
 // initialize session and DDBB handler
 include_once('./php/UIHandler.php');
 require_once('./php/LanguageHandler.php');
@@ -66,6 +72,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -88,6 +96,10 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		<!-- Circle Buttons style -->
 		  <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
 		
+		<!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+
          <!-- theme_dashboard folder -->
 					<!-- FONT AWESOME-->
 			<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
@@ -119,27 +131,111 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
             <aside class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-heading">
-                    
-					<!-- START Language list-->
-					<div class="pull-right">
+<?php
+/*
+ * APIs FOR FILTER LIST
+ */
+
+$campaign = $ui->API_getListAllCampaigns();
+//var_dump($campaign);
+$ingroup = $ui->API_getInGroups();
+
+
+/*
+ * get API data for chart from UIHandler.php
+*/
+
+$callsperhour = $ui->API_getCallPerHour();
+//var_dump($callsperhour);
+	
+	$max = 0;
+	
+	$callsperhour = explode(";",trim($callsperhour, ';'));
+	 foreach ($callsperhour AS $temp) {
+	   $temp = explode("=",$temp);
+	   $results[$temp[0]] = $temp[1];
+	 }
+
+	$outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
+	
+	$inbound_calls = max($results["Hour8"],$results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
+	
+	$dropped_calls = max($results["Hour8d"],$results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
+	
+	$max = max($inbound_calls, $outbound_calls, $dropped_calls);
+
+	
+	if($max <= 5){
+		$max = 5;
+	}
+	if($outbound_calls == NULL || $outbound_calls == 0){
+		$outbound_calls = 0;
+	}
+	if($inbound_calls == NULL || $inbound_calls == 0){
+		$inbound_calls = 0;
+	}
+
+?>		
+
+		<!--===== FILTER LIST =======-->
+				
+			<!-- == INGROUP == -->
+				<div class="ingroup_filter_list">
+				<label for="ingroup_dropdown"><small class="small_filterlist">In-group:</small></label>
+				   <!--
+				   <div class="btn-group">
+					  <button type="button" data-toggle="dropdown" id="ingroup_dropdown" class="btn btn-default"> - - - All In-groups - - - </button>
+					  <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
+						 <?php/*
+						 	for($i=0;$i < count($ingroup->group_id);$i++){
+						 		echo "<li><a href='#'>".$ingroup->group_name[$i]."</a></li>";
+						 	}*/
+						 ?>
+					  </ul>
+				   </div>
+					-->
+				    <select id="ingroup_dropdown" class="filterlist_dropdown">
+				   			<option selected> --- All In-groups --- </option>
+				   		<?php
+						 	for($i=0;$i < count($ingroup->group_id);$i++){
+						 		echo "<option>".$ingroup->group_name[$i]."</option>";
+						 	}
+						?>
+				    </select>
+				</div>
+			<!-- == CAMPAIGN == -->
+				<div class="campaign_filter_list">
+					<label for="campaign_dropdown"><small class="small_filterlist">Campaign:</small></label>
+							
+					<!--
 					   <div class="btn-group">
-						  <button type="button" data-toggle="dropdown" class="btn btn-default">English</button>
+						  <button type="button" data-toggle="dropdown" id="campaign_dropdown" class="btn btn-default"> - - - All Campaigns - - - </button>
 						  <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
-							 <li><a href="#" data-set-lang="en">English</a>
-							 </li>
-							 <li><a href="#" data-set-lang="es">Spanish</a>
-							 </li>
+							 <?php/*
+							 	for($i=0;$i < count($campaign->campaign_id);$i++){
+							 		echo "<li><a href='#'>".$campaign->campaign_name[$i]."</a></li>";
+							 	}*/
+							 ?>
 						  </ul>
 					   </div>
-					</div>
-					<!-- END Language list    -->
+					-->
+					<select id="campaign_dropdown" class="filterlist_dropdown">
+				   			<option selected> --- All Campaigns --- </option>
+				   		<?php
+						 	for($i=0;$i < count($campaign->campaign_id);$i++){
+							 	echo "<option>".$campaign->campaign_name[$i]."</option>";
+							}
+						?>
+				    </select>
+				</div>
+					<!-- END FILTER list    -->
 					
 					<!-- Page title -->
 						<?php
 							if ($user->userHasAdminPermission()) {
 								$lh->translateText("Dashboard");
 						?>
-							<small class="ng-binding">Welcome to Goautodial  !</small>
+							<small class="ng-binding animated fadeInUpShort">Welcome to Goautodial  !</small>
 						<?php
 							}else{
 								$lh->translateText("home");
@@ -160,121 +256,76 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                 <section class="content">
 					
 	<!--====== STATUS BOXES =======-->
-		<style>
-			.status_boxes{
-				margin-top:-5px;
-			}
-		</style>
 			<div class="row">
-               <div class="col-lg-3 col-sm-6">
-                  <!-- START widget-->
-                  <div class="panel pt b0 widget">
-                     <div class="ph">
-						<div class="pull-right">
-							<span class="fa-stack">
-								<em class="fa fa-circle fa-stack-2x text-red status_boxes"></em>
-								<em class="icon-people fa-lg fa-stack-1x fa-inverse text-white pull-right"></em>
-							</span>
-						</div>
-                        <div class="h2 mt0">
-							<span class="text-lg" id="refresh_totalagentscall"></span>
-								<span class="text-sm">Agent(s) On Call</span><br/>
-							<div style="padding-left: 5px;" class="text-purple">
-								<span class="text-orange" id="refresh_totalagentspaused"></span>
-									<span class="text-sm text-orange">Agent(s) On Paused</span><br/>
-								<span class="text-green" id="refresh_totalagentswaitcalls"></span>
-									<span class="text-sm text-green">Agent(s) Waiting</span><br/>
+			
+			
+				<div class="col-lg-3 col-sm-6 animated fadeInUpShort">
+					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
+						<div class="panel widget bg-purple">
+							<div class="col-xs-4 text-center bg-purple-dark pv-lg">
+								<div class="h2 mt0">
+									<span class="text-lg" id="refresh_totalagentscall"></span>
+								</div>
+							</div>
+							<div class="col-xs-8 pv-lg">
+								<div class="h2">
+									<span class="text-sm">Agent(s) On Call</span>
+								</div>
 							</div>
 						</div>
-                        <div class="text-uppercase">AGENTS</div>
-                     </div>
-                     <div data-sparkline="" data-type="line" data-width="100%" data-height="75px" data-line-color="#23b7e5" data-chart-range-min="0" data-fill-color="#23b7e5" data-spot-color="#23b7e5" data-min-spot-color="#23b7e5" data-max-spot-color="#23b7e5"
-                     data-highlight-spot-color="#23b7e5" data-highlight-line-color="#23b7e5" values="2,5,3,7,4,5" style="margin-bottom: -2px" data-resize="true"></div>
-					 <canvas style="display: inline-block; width: 287px; height: 10px; vertical-align: top;" width="287" height="75"></canvas>
-				  </div>
-               </div>
-               <div class="col-lg-3 col-sm-6">
-                  <!-- START widget-->
-                  <div class="panel widget pt b0 widget">
-                     <div class="ph">
-						<div class="pull-right">
-							<span class="fa-stack">
-								<em class="fa fa-circle fa-stack-2x text-green status_boxes"></em>
-								<em class="fa fa-money fa-lg fa-stack-1x fa-inverse text-white status_boxes"></em>
-							</span>
-						</div>
-                        <div class="h2 mt0">
-							<span class="text-lg" id="refresh_GetTotalSales"></span>
-								<span class="text-sm">TOTAL Sales</span><br/>
-							<div style="padding-left: 5px;">
-								<span class="text-orange" id="refresh_GetINSalesHour"></span>
-									<span class="text-sm text-orange">Inbound Sales</span><br/>
-								<span class="text-green" id="refresh_GetOUTSalesPerHour"></span>
-									<span class="text-sm text-green">Outbound Sales</span><br/>
+					</a>
+				</div>
+			
+
+				<div class="col-lg-3 col-md-6 animated fadeInUpShort">
+					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
+						<div class="panel widget bg-purple">
+							<div class="col-xs-4 text-center bg-purple-dark pv-lg">
+								<div class="h2 mt0">
+									<span class="text-lg" id="refresh_totalagentswaitcalls"></span>
+								</div>
 							</div>
-                        </div>
-                        <div class="text-uppercase mb0">SALES</div>
-                     </div>
-                     <div data-sparkline="" data-type="line" data-width="100%" data-height="75px" data-line-color="#7266ba" data-chart-range-min="0" data-fill-color="#7266ba" data-spot-color="#7266ba" data-min-spot-color="#7266ba" data-max-spot-color="#7266ba"
-                     data-highlight-spot-color="#7266ba" data-highlight-line-color="#7266ba" values="1,4,5,4,8,7,10" style="margin-bottom: -2px" data-resize="true"></div>
-					 
-					 <canvas style="display: inline-block; width: 287px; height: 10px; vertical-align: top;" width="287" height="75"></canvas>
-				  </div>
-               </div>
-               <div class="col-lg-3 col-md-6 col-sm-12">
-                  <!-- START widget-->
-                  <div class="panel widget pt b0 widget">
-                     <div class="ph">
-						<div class="pull-right">
-							<span class="fa-stack">
-								<em class="fa fa-circle fa-stack-2x text-orange status_boxes"></em>
-								<em class="icon-note fa-lg fa-stack-1x fa-inverse text-white"></em>
-							</span>
-						</div>
-                        <div class="h2 mt0">
-							<span class="text-lg" id="refresh_GetTotalActiveLeads"></span>
-								<span class="text-sm">Total Active Leads</span><br/>
-							<div style="padding-left: 5px;">
-								<span class="text-orange" id="refresh_GetLeadsinHopper"></span>
-									<span class="text-sm text-orange">Leads in Hopper</span><br/>
-								<span class="text-green" id="refresh_GetTotalDialableLeads"></span>
-									<span class="text-sm text-green">Dialable Leads</span><br/>
+							<div class="col-xs-8 pv-lg">
+								<div class="h2">
+									<span class="text-sm">Agent(s) Waiting</span>
+								</div>
 							</div>
 						</div>
-                        <div class="text-uppercase">LEADS</div>
-                     </div>
-                     <div data-sparkline="" data-type="line" data-width="100%" data-height="75px" data-line-color="#23b7e5" data-chart-range-min="0" data-fill-color="#23b7e5" data-spot-color="#23b7e5" data-min-spot-color="#23b7e5" data-max-spot-color="#23b7e5"
-                     data-highlight-spot-color="#23b7e5" data-highlight-line-color="#23b7e5" values="4,5,3,10,7,15" style="margin-bottom: -2px" data-resize="true"></div>
-					 <canvas style="display: inline-block; width: 287px; height: 10px; vertical-align: top;" width="287" height="75"></canvas>
-				  </div>
+					</a>
+				</div>
+               <div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
+                  	<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
+		                <div class="panel widget bg-green">
+		                        <div class="col-xs-4 text-center bg-gray-dark pv-lg">
+		                           <div class="h2 mt0">
+		                           		<span class="text-lg" id="refresh_totalagentspaused"></span>
+		                           </div>
+		                        </div>
+		                        <div class="col-xs-8 pv-lg animated fadeInUpShort">
+		                        	<div class="h2">
+		                           		<span class="text-sm">Agent(s) On Paused</span>
+		                       		</div>
+		                        </div>
+		                </div>
+              		</a>
                </div>
-               <div class="col-lg-3 col-md-6 col-sm-12">
-                  <!-- START widget-->
-                  <div class="panel widget pt b0 widget">
-                     <div class="ph">
-						<div class="pull-right">
-							<span class="fa-stack">
-								<em class="fa fa-circle fa-stack-2x text-light-blue status_boxes"></em>
-								<em class="icon-earphones-alt fa-lg fa-stack-1x fa-inverse text-white"></em>
-							</span>
+				<div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
+					<!-- date widget    -->
+					<div class="panel widget" style="height: 87px;">
+						<div class="col-xs-4 text-center bg-green pv-lg">
+						<!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
+							<div class="text-sm"><?php echo date("F", time());?></div>
+							<div class="h2 mt0"><?php echo date("d", time());?></div>
 						</div>
-                        <div class="h2 mt0" id="autoload_calls">
-							<span class="text-lg" id="refresh_Totalcalls"></span>
-								<span class="text-sm">Total Calls</span><br/>
-							<div style="padding-left: 5px;">
-								<span class="text-orange" id="refresh_RingingCall"></span>
-									<span class="text-sm text-orange">Call(s) Ringing</span><br/>
-								<span class="text-green" id="refresh_LiveOutbound"></span>
-									<span class="text-sm text-green">Live Outbound</span><br/>
+						<div class="col-xs-8 pv-lg">
+							<div class="text-uppercase"><?php echo date("l", time());?></div>
+							<div class="h3 mt0"><?php echo date("h:i", time());?> 
+								<span class="text-muted text-sm"><?php echo date("A", time());?></span>
 							</div>
 						</div>
-                        <div class="text-uppercase">Calls</div>
-                     </div>
-                     <div data-sparkline="" data-type="line" data-width="100%" data-height="75px" data-line-color="#7266ba" data-chart-range-min="0" data-fill-color="#7266ba" data-spot-color="#7266ba" data-min-spot-color="#7266ba" data-max-spot-color="#7266ba"
-                     data-highlight-spot-color="#7266ba" data-highlight-line-color="#7266ba" values="1,3,4,5,7,8" style="margin-bottom: -2px" data-resize="true"></div>
-					 <canvas style="display: inline-block; width: 287px; height: 10px; vertical-align: top;" width="287" height="75"></canvas>
-				  </div>
-               </div>
+					</div>
+					<!-- END date widget    -->
+				</div>
             </div>
 					
 					<!-- Update (if needed) -->
@@ -284,6 +335,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 						$currentVersion = $upd->getCurrentVersion();
 						if (!$upd->CRMIsUpToDate()) {
 					?>
+
                     <div class="row">
                         <section class="col-lg-12">
                             <!-- version -->
@@ -311,40 +363,160 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                             </div>
                         </section>
                     </div>   <!-- /.row -->
-					<?php } ?>          
-	
-	<!--===== CHART =======-->
-                <!-- wrapper for chart and loader -->
-                    <div class="row">
-					<!-- calls per hour chart-->
-                       <div class="col-lg-9">
-                          <!-- START widget-->
-                          <div id="panelChart9" ng-controller="FlotChartController" class="panel panel-default">
-                             <div class="panel-heading">
-                                <div class="panel-title">Calls Per Hour</div>
-                             </div>
-                             <div collapse="panelChart9" class="panel-wrapper">
-                                <div class="panel-body">
-                                   <div class="chart-splinev3 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)--> 
-                                </div>
-                             </div>
-                          </div>
-                          <!-- END widget-->
-                       </div>
-	<!--==== DROP CALLS PERCENTAGE PIE LOADER ======-->
-					   <div class="col-lg-3">
-							<div class="panel panel-default">
-							   <div class="panel-body">
-								<a href="#" class="text-muted pull-right">
-									 <em class="fa fa-arrow-right"></em>
-								</a>
-								<div class="text-muted">Dropped Calls Percentage</div>
-								
+					<?php } ?>   
+
+
+			<div class="row"> <!-- ROW FOR THE REST -->
+				<div class="col-lg-9" id="row_for_rest">
+	<!--===== CALLS PER HOUR CHART =======--> 
+                <div class="row">
+	              <!-- START widget-->
+	              <div id="panelChart9" ng-controller="FlotChartController" class="panel panel-default">
+	                 <div class="panel-heading">
+	                    <div class="panel-title">Calls Per Hour</div>
+	                 </div>
+	                 <div collapse="panelChart9" class="panel-wrapper">
+	                    <div class="panel-body">
+	                       <div class="chart-splinev3 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)--> 
+	                    </div>
+	                 </div>
+	              </div>
+	            </div>
+	            <!-- END widget-->
+
+	<!--===== INFOBOXES WITH BLUE WHITE SUN =======--> 
+	            <div class="row">
+	            	<div class="col-lg-12" style="padding: 0px 0px;">
+	                    <div class="panel widget" style="height:17%">
+							<div class="col-md-2 col-sm-3 col-xs-6 text-center bg-info pv-xl">
+								<em class="wi wi-day-sunny fa-4x"></em>
+							</div>
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
+								<div class="h2 m0">32</div>
+								<div class="text-muted">Abandoned Calls</div>
+							</div>
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
+								<div class="h2 m0">21</div>
+								<div class="text-muted">Answered < 20 sec</div>
+							</div>
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
+								<div class="h2 m0">420</div>
+								<div class="text-muted" style="font-size: small;">Average Handling Time (sec)</div>
+							</div>
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
+								<div class="h2 m0"><?php echo $inbound_calls;?></div>
+								<div class="text-muted">Inbound Calls Today</div>
+							</div>
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center info_sun_boxes">
+								<div class="h2 m0"><?php echo $outbound_calls;?></div>
+								<div class="text-muted">Outbound Calls Today</div>
+							</div>
+	                    </div>
+	                </div>
+                </div>
+        <!-- ====== CLUSTER STATUS ======= -->
+                <div class="row">
+                	<div role="tabpanel" class="panel panel-transparent">
+					  <ul role="tablist" class="nav nav-tabs nav-justified">
+					  
+					  <!-- Nav task panel tabs-->
+						 <li role="presentation" class="active">
+							<a href="#cluster_status" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+							   <em class="fa fa-bar-chart-o fa-fw"></em>Cluster Status</a>
+						 </li>
+					  </ul>
+				<?php
+					$cluster = $ui->API_GetClusterStatus();
+				?>
+						<!-- Tab panes-->
+						<div class="tab-content p0 bg-white">
+						   <div id="cluster_status" role="tabpanel" class="tab-pane active">
+							<!-- Cluster Status -->
+							<div class="table-responsive">
+								<table class="table table-striped table-bordered table-hover">
+								   <thead>
+									  <tr>
+										 <th>SERVER ID</th>
+										 <th>SERVER IP</th>
+										 <th>STATUS</th>
+										 <th>LOAD</th>
+										 <th>CHANNELS</th>
+										 <th>DISK</th>
+										 <th>TIME</th>
+									  </tr>
+								   </thead>
+								   <tbody>
+										<?php
+											for($i=0;$i < count($cluster->server_id);$i++){
+												if($cluster->active[$i] == "Y"){
+													$cluster->active[$i] = "<font color='green'><i>Active</i></font>";
+												}else{
+													$cluster->active[$i] = "<font color='red'><i>Inactive</i></font>";
+												}
+										?>
+										<tr>
+											<td><?php echo $cluster->server_id[$i];?></td>
+											<td><?php echo $cluster->server_ip[$i];?></td>
+											<td><?php echo $cluster->active[$i];?></td>
+											<td><?php echo $cluster->sysload[$i]."% - ".$cluster->cpu[$i];?></td>
+											<td style="padding-left:20px;"><?php echo $cluster->channel[$i];?></td>
+											<td><?php echo $cluster->disk_usage[$i]."%";?></td>
+											<td><?php echo $cluster->systemtime[$i];?></td>
+										</tr>
+									<!--
+										<tr>
+											<td><span id="refresh_server_id"></span></td>
+											<td><span id="refresh_server_ip"></span></td>
+											<td><span id="refresh_active"></td>
+											<td><span id="refresh_sysload"></span> - <span id="refresh_cpu"></span></td>
+											<td><center><span id="refresh_channels_total"></span></center></td>
+											<td><center><span id="refresh_disk_usage"></span></center></td>
+											<td><span id="refresh_s_time"></span></td>
+										</tr>
+									-->
+										<?php
+											}
+										?>
+											<td>&nbsp;</td>
+											<td>&nbsp;</td>
+											<td><b>PHP Time</b></td>
+											<td>&nbsp;</td>
+											<td>&nbsp;</td>
+											<td>&nbsp;</td>
+											<td><span id="refresh_php_time"></span></td>
+										</tr>
+										<tr>
+											<td>&nbsp;</td>
+											<td>&nbsp;</td>
+											<td><b>DB Time</b></td>
+											<td>&nbsp;</td>
+											<td>&nbsp;</td>
+											<td>&nbsp;</td>
+											<td><span id="refresh_db_time"></span></td>
+										</tr>
+								   </tbody>
+								</table>
+							</div>
+							<div class="panel-footer text-right">&nbsp;</div>
+						 	</div>
+						</div>
+					</div>
+                </div>
+
+            	</div><!-- END OF COLUMN 9 -->
+
+
+            	<aside class="col-lg-3">
+
+        <!--==== SERVICE LEVEL AGREEMENT ==== -->
+	            		<div class="panel panel-default">
+						   <div class="panel-body">
+								<div class="text-primary">Service Level Agreement</div>
 								<center>
 									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 										<input type="text"
-										class="knob" value="<?php echo $ui->API_GetDroppedPercentage();?>" data-width="150" data-height="150" data-padding="21px"
-										data-fgcolor="#dd4b39" data-readonly="true" readonly="readonly"
+										class="knob" value="95" data-width="150" data-height="150" data-padding="21px"
+										data-fgcolor="#0073b7" data-readonly="true" readonly="readonly"
 										style="
 											width: 49px;
 											height: 100px;
@@ -361,240 +533,196 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 											line-height: normal;
 											font-family: Arial;
 											text-align: center;
-											color: #dd4b39;
+											color: #0073b7;
 											padding: 0px;
 											-webkit-appearance: none;
 											background: none;
 										">
 									</div>
 								</center>
-								<div class="panel-footer">
-								   <p class="text-muted">
-									  <em class="fa fa-upload fa-fw"></em>
-									  <span>This day: <?php echo $ui->API_GetDroppedPercentage();?>%</span>
-								   </p>
-								</div>
-								</div>
-							 </div>
-						</div>
-                    <!-- END chart-->
-					</div><!-- end of 2nd row -->
-		<!-- 3rd row -->
-					<div class="row">
-						<div class="col-lg-9">
-						   <!-- START panel tab-->
-						   <div role="tabpanel" class="panel panel-transparent">
-							  <ul role="tablist" class="nav nav-tabs nav-justified">
-							  
-							  <!-- Nav task panel tabs-->
-								 <li role="presentation" class="active">
-									<a href="#cluster_status" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-									   <em class="fa fa-bar-chart-o fa-fw"></em>Cluster Status</a>
-								 </li>
-							<!-- transaction panel tab -->
-								 <li role="presentation">
-									<a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="bb0">
-									   <em class="fa fa-money fa-fw"></em>Transactions Panel</a>
-								 </li>
-							  </ul>
-				<?php
-					$cluster = $ui->API_GetClusterStatus();
-					//var_dump($cluster);
-				?>
-							<!-- Tab panes-->
-							<div class="tab-content p0 bg-white">
-							   <div id="cluster_status" role="tabpanel" class="tab-pane active">
-								<!-- Cluster Status -->
-								<div class="table-responsive">
-									<table class="table table-striped table-bordered table-hover">
-									   <thead>
-										  <tr>
-											 <th>SERVER ID</th>
-											 <th>SERVER IP</th>
-											 <th>STATUS</th>
-											 <th>LOAD</th>
-											 <th>CHANNELS</th>
-											 <th>DISK</th>
-											 <th>TIME</th>
-										  </tr>
-									   </thead>
-									   <tbody>
-											<?php
-												for($i=0;$i < count($cluster->server_id);$i++){
-													if($cluster->active[$i] == "Y"){
-														$cluster->active[$i] = "<font color='green'><i>Active</i></font>";
-													}else{
-														$cluster->active[$i] = "<font color='red'><i>Inactive</i></font>";
-													}
-											?>
-											<tr>
-												<td><?php echo $cluster->server_id[$i];?></td>
-												<td><?php echo $cluster->server_ip[$i];?></td>
-												<td><?php echo $cluster->active[$i];?></td>
-												<td><?php echo $cluster->sysload[$i]."% - ".$cluster->cpu[$i];?></td>
-												<td style="padding-left:20px;"><?php echo $cluster->channel[$i];?></td>
-												<td><?php echo $cluster->disk_usage[$i]."%";?></td>
-												<td><?php echo $cluster->systemtime[$i];?></td>
-											</tr>
-										<!--
-											<tr>
-												<td><span id="refresh_server_id"></span></td>
-												<td><span id="refresh_server_ip"></span></td>
-												<td><span id="refresh_active"></td>
-												<td><span id="refresh_sysload"></span> - <span id="refresh_cpu"></span></td>
-												<td><center><span id="refresh_channels_total"></span></center></td>
-												<td><center><span id="refresh_disk_usage"></span></center></td>
-												<td><span id="refresh_s_time"></span></td>
-											</tr>
-										-->
-											<?php
-												}
-											?>
-												<td>&nbsp;</td>
-												<td>&nbsp;</td>
-												<td><b>PHP Time</b></td>
-												<td>&nbsp;</td>
-												<td>&nbsp;</td>
-												<td>&nbsp;</td>
-												<td><span id="refresh_php_time"></span></td>
-											</tr>
-											<tr>
-												<td>&nbsp;</td>
-												<td>&nbsp;</td>
-												<td><b>DB Time</b></td>
-												<td>&nbsp;</td>
-												<td>&nbsp;</td>
-												<td>&nbsp;</td>
-												<td><span id="refresh_db_time"></span></td>
-											</tr>
-									   </tbody>
-									</table>
-								</div>
-								<div class="panel-footer text-right">&nbsp;</div>
-							 </div>
-							<!--===== 2nd tab =====-->
-								 <div id="profile" role="tabpanel" class="tab-pane">
-									<!-- START table responsive-->
-									<div class="table-responsive">
-									   <table class="table table-bordered table-hover table-striped">
-										  <thead>
-											 <tr>
-												<th>Order #</th>
-												<th>Order Date</th>
-												<th>Order Time</th>
-												<th>Amount (USD)</th>
-											 </tr>
-										  </thead>
-										  <tbody>
-											 <tr>
-												<td>3326</td>
-												<td>10/21/2013</td>
-												<td>3:29 PM</td>
-												<td>$321.33</td>
-											 </tr>
-										  </tbody>
-									   </table>
-									</div>
-									<!-- END table responsive-->
-									<div class="panel-footer text-right"><a href="#" class="btn btn-default btn-sm">View All Transactions</a>
-									</div>
-								 </div>
-							  </div>
-						   </div>
-						   <!-- END panel tab-->
-						</div><!-- end of tasks and transaction panels -->
-						
-					<!-- START loader widget-->
-						<div class="col-lg-3">
-							<div class="panel panel-default">
-							   <div class="panel-body">
-									<a href="#" class="text-muted pull-right">
-										 <em class="fa fa-arrow-right"></em>
-									</a>
-									<div class="text-muted">Load Percentage</div>
-									<center>
-										<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
-											<input type="text"
-											class="knob" value="30" data-width="150" data-height="150" data-padding="21px"
-											data-fgcolor="#f0ad4e" data-readonly="true" readonly="readonly"
-											style="
-												width: 49px;
-												height: 100px;
-												position: absolute;
-												margin-top: 45px;
-												margin-left: -98px;
-												vertical-align: middle;
-												border: 0px;
-												font-style: normal;
-												font-variant: normal;
-												font-weight: bold;
-												/* font-stretch: normal; */
-												font-size: 30px;
-												line-height: normal;
-												font-family: Arial;
-												text-align: center;
-												color: #f0ad4e;
-												padding: 0px;
-												-webkit-appearance: none;
-												background: none;
-											">
-										</div>
-									</center>
-								   <div class="panel-footer">
-									  <p class="text-muted">
-										 <em class="fa fa-upload fa-fw"></em>
-										 <span>This Month</span>
-										 <span class="text-dark">1000 Gb</span>
-									  </p>
-								   </div>
-								</div>
-								<!-- END loader widget-->
+							   <div class="panel-footer">
+								  <p class="text-muted">
+									 <em class="fa fa-upload fa-fw"></em>
+									 <span>Service Level Agreement Percentage</span>
+									 <span class="text-dark">95%</span>
+								  </p>
+							   </div>
 							</div>
+							<!-- END loader widget-->
 						</div>
-						
-					</div><!-- end of row -->
-						
+
+			<!-- ==== TASK ACTIVITIES ===== -->
+						<div class="panel panel-default">
+		                     <div class="panel-heading">
+		                        <div class="panel-title">Latest activities</div>
+		                     </div>
+		                     <!-- START list group-->
+		                     <div class="list-group">
+		                        <!-- START list group item-->
+		                        <div class="list-group-item">
+		                           <div class="media-box">
+		                              <div class="pull-left">
+		                                 <span class="fa-stack">
+		                                    <em class="fa fa-circle fa-stack-2x text-purple"></em>
+		                                    <em class="fa fa-cloud-upload fa-stack-1x fa-inverse text-white"></em>
+		                                 </span>
+		                              </div>
+		                              <div class="media-box-body clearfix">
+		                                 <small class="text-muted pull-right ml">15m</small>
+		                                 <div class="media-box-heading"><a href="#" class="text-purple m0">NEW FILE</a>
+		                                 </div>
+		                                 <p class="m0">
+		                                    <small><a href="#">Bootstrap.xls</a>
+		                                    </small>
+		                                 </p>
+		                              </div>
+		                           </div>
+		                        </div>
+		                        <!-- END list group item-->
+		                        <!-- START list group item-->
+		                        <div class="list-group-item">
+		                           <div class="media-box">
+		                              <div class="pull-left">
+		                                 <span class="fa-stack">
+		                                    <em class="fa fa-circle fa-stack-2x text-info"></em>
+		                                    <em class="fa fa-file-text-o fa-stack-1x fa-inverse text-white"></em>
+		                                 </span>
+		                              </div>
+		                              <div class="media-box-body clearfix">
+		                                 <small class="text-muted pull-right ml">2h</small>
+		                                 <div class="media-box-heading"><a href="#" class="text-info m0">NEW DOCUMENT</a>
+		                                 </div>
+		                                 <p class="m0">
+		                                    <small><a href="#">Bootstrap.doc</a>
+		                                    </small>
+		                                 </p>
+		                              </div>
+		                           </div>
+		                        </div>
+		                        <!-- END list group item-->
+		                        <!-- START list group item-->
+		                        <div class="list-group-item">
+		                           <div class="media-box">
+		                              <div class="pull-left">
+		                                 <span class="fa-stack">
+		                                    <em class="fa fa-circle fa-stack-2x text-danger"></em>
+		                                    <em class="fa fa-exclamation fa-stack-1x fa-inverse text-white"></em>
+		                                 </span>
+		                              </div>
+		                              <div class="media-box-body clearfix">
+		                                 <small class="text-muted pull-right ml">5h</small>
+		                                 <div class="media-box-heading"><a href="#" class="text-danger m0">BROADCAST</a>
+		                                 </div>
+		                                 <p class="m0"><a href="#">Read</a>
+		                                 </p>
+		                              </div>
+		                           </div>
+		                        </div>
+		                        <!-- END list group item-->
+		                        <!-- START list group item-->
+		                        <div class="list-group-item">
+		                           <div class="media-box">
+		                              <div class="pull-left">
+		                                 <span class="fa-stack">
+		                                    <em class="fa fa-circle fa-stack-2x text-success"></em>
+		                                    <em class="fa fa-clock-o fa-stack-1x fa-inverse text-white"></em>
+		                                 </span>
+		                              </div>
+		                              <div class="media-box-body clearfix">
+		                                 <small class="text-muted pull-right ml">15h</small>
+		                                 <div class="media-box-heading"><a href="#" class="text-success m0">NEW MEETING</a>
+		                                 </div>
+		                                 <p class="m0">
+		                                    <small>On
+		                                       <em>10/12/2015 09:00 am</em>
+		                                    </small>
+		                                 </p>
+		                              </div>
+		                           </div>
+		                        </div>
+		                        <!-- END list group item-->
+		                        <!-- START list group item-->
+		                        <div class="list-group-item">
+		                           <div class="media-box">
+		                              <div class="pull-left">
+		                                 <span class="fa-stack">
+		                                    <em class="fa fa-circle fa-stack-2x text-warning"></em>
+		                                    <em class="fa fa-tasks fa-stack-1x fa-inverse text-white"></em>
+		                                 </span>
+		                              </div>
+		                              <div class="media-box-body clearfix">
+		                                 <small class="text-muted pull-right ml">1w</small>
+		                                 <div class="media-box-heading"><a href="#" class="text-warning m0">TASKS COMPLETION</a>
+		                                 </div>
+		                                 <div class="progress progress-xs m0">
+		                                    <div role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" style="width: 22%" class="progress-bar progress-bar-warning progress-bar-striped">
+		                                       <span class="sr-only">22% Complete</span>
+		                                    </div>
+		                                 </div>
+		                              </div>
+		                           </div>
+		                        </div>
+		                     </div>
+		                     <div class="panel-footer clearfix">
+		                        <a href="#" class="pull-left">
+		                           <small>Load more</small>
+		                        </a>
+		                     </div>
+		                </div>
+            	</aside><!-- END OF COLUMN 3 -->
+
+
+            </div><!-- END OF ROW -->
+           
+	
+							<!--
+							<div class="panel panel-default">
+								<div class="panel-heading text-blue">Service Level Agreement</div>
+								<div class="panel-body text-center">
+									<div data-label="90%" class="radial-bar radial-bar-100 radial-bar-lg"></div>
+								</div>
+								<div class="panel-footer">
+								  <p class="text-muted">
+									 <em class="fa fa-upload fa-fw"></em>
+									 <span>Service Level Agreement Percentage</span>
+									 <span class="text-dark">90% Gb</span>
+								  </p>
+							   </div>
+							</div>
+							-->
+
 					<div class="row">
-						<!-- Team Messages -->
+						<!-- Agent Monitoring Summary -->
 						<div class="col-lg-6">
 							<div class="panel panel-default">
 							   <div class="panel-heading">
-								  <div class="pull-right label label-danger">5</div>
-								  <div class="pull-right label label-success">12</div>
-								  <div class="panel-title">Team messages</div>
+								  <div class="panel-title">Agent Monitoring Summary</div>
+								  <hr/>
 							   </div>
 							   <!-- START list group-->
-							   <div data-height="230" data-scrollable="" class="list-group">
+							   <div data-height="230" data-scrollable="yes" class="list-group">
 								  <!-- START list group item-->
 								  <a href="#" class="list-group-item">
 									 <div class="media-box">
 										<div class="pull-left">
-										   <img src="theme_dashboard/img/user/02.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										   <img src="<?php echo $_SESSION['avatar'];?>" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										   <small class="pull-right">2h</small>
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis</strong>
-										   <p class="mb-sm">
-											  <small>Goautodial, the best...</small>
-										   </p>
+											
 										</div>
 									 </div>
 								  </a>
 								  <!-- END list group item-->
-								  <!-- START list group item-->
 								  <a href="#" class="list-group-item">
 									 <div class="media-box">
 										<div class="pull-left">
 										   <img src="theme_dashboard/img/user/03.jpg" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										   <small class="pull-right">3h</small>
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-success circle-lg text-left"></span>Jessica Silva</strong>
-										   <p class="mb-sm">
-											  <small>James is macho.</small>
-										   </p>
 										</div>
 									 </div>
 								  </a>
@@ -606,12 +734,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 										   <img src="theme_dashboard/img/user/09.jpg" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										   <small class="pull-right">4h</small>
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Jessie Wells</strong>
-										   <p class="mb-sm">
-											  <small>DOTA tiiiime...</small>
-										   </p>
 										</div>
 									 </div>
 								  </a>
@@ -623,12 +747,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 										   <img src="theme_dashboard/img/user/12.jpg" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										   <small class="pull-right">1d</small>
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Rosa Burke</strong>
-										   <p class="mb-sm">
-											  <small>Go letran!</small>
-										   </p>
 										</div>
 									 </div>
 								  </a>
@@ -640,12 +760,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 										   <img src="theme_dashboard/img/user/10.jpg" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										   <small class="pull-right">2d</small>
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Michelle Lane</strong>
-										   <p class="mb-sm">
-											  <small>Watching secret affair right now...</small>
-										   </p>
 										</div>
 									 </div>
 								  </a>
@@ -654,13 +770,9 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 							   <!-- END list group-->
 							   <!-- START panel footer-->
 							   <div class="panel-footer clearfix">
-								  <div class="input-group">
-									 <input type="text" placeholder="Search message .." class="form-control input-sm">
-									 <span class="input-group-btn">
-										<button type="submit" class="btn btn-default btn-sm"><i class="fa fa-search"></i>
-										</button>
-									 </span>
-								  </div>
+								  	<a href="#" data-toggle="modal" data-target="#agent_monitoring" class="pull-right">
+		                           		<small>View more</small> <em class="fa fa-arrow-right"></em>
+		                        	</a>
 							   </div>
 							   <!-- END panel-footer-->
 							</div>
@@ -693,42 +805,196 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
 
+<!--================= MODALS =====================-->
+	<!-- agents monitoring -->
+	<div class="modal fade" id="agent_monitoring" tabindex="-1" aria-labelledby="agent_monitoring">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+			<!-- Header -->
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
+					
+				<!--===== FILTER LIST =======-->
+					<div class="agent_monitor_filter pull-right">
+						<small>Filter: </small>
+					<!-- == INGROUP == -->
+						<span class="tenant_filter_agentmonitoring">
+						    <select id="tenant_dropdown_agent_monitoring">
+						   			<option selected> --- All Tenants --- </option>
+						   		<?php
+								 	for($i=0;$i < count($ingroup->group_id);$i++){
+								 		echo "<option>".$ingroup->group_name[$i]."</option>";
+								 	}
+								?>
+						    </select>
+						</span>
+					<!-- == TENANT == -->
+						<span class="campaign_filter_agentmonitoring">
+							<!--
+							   <div class="btn-group">
+								  <button type="button" data-toggle="dropdown" id="campaign_dropdown" class="btn btn-default"> - - - All Campaigns - - - </button>
+								  <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
+									 <?php/*
+									 	for($i=0;$i < count($campaign->campaign_id);$i++){
+									 		echo "<li><a href='#'>".$campaign->campaign_name[$i]."</a></li>";
+									 	}*/
+									 ?>
+								  </ul>
+							   </div>
+							-->
+							<select id="campaign_dropdown_agentmonitoring">
+						   			<option selected> --- All Campaigns --- </option>
+						   		<?php
+								 	for($i=0;$i < count($campaign->campaign_id);$i++){
+									 	echo "<option>".$campaign->campaign_name[$i]."</option>";
+									}
+								?>
+						    </select>
+						</span>
+					</div>
+							<!-- END FILTER list    -->
+					<h4 class="modal-title" id="agent_monitoring">Agent Monitoring</h4>
+				
+				</div>
+				<div class="modal-body">
+					<table class="table table-striped table-bordered table-hover" id="agent_monitoring_table">
+						<thead>
+							<tr>
+								<th>Agent</th>
+								<th>Campaign</th>
+								<th>MM:SS</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+								  <!-- START list group item-->
+									<div class="media-box">
+										<div class="pull-left">
+										   <img src="<?php echo $_SESSION['avatar'];?>" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis</strong>
+										</div>
+									</div>
+								</td>
+								
+								<td>
+									CS HOTLINE
+								</td>
+
+								<td>
+									01:49
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+								  <!-- START list group item-->
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/03.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-success circle-lg text-left"></span>Jessica Silva</strong>
+										</div>
+									 </div>
+								</td>
+
+								<td>
+									CS HOTLINE
+								</td>
+
+								<td>
+									01:49
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+								  <!-- START list group item-->
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/02.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-danger circle-lg text-left"></span>Jessie Wells</strong>
+										</div>
+									 </div>
+								</td>
+
+								<td>
+									CS HOTLINE
+								</td>
+
+								<td>
+									01:49
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+								  <!-- START list group item-->
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/12.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-danger circle-lg text-left"></span>Rosa Burke</strong>
+										</div>
+									 </div>
+								</td>
+
+								<td>
+									CS HOTLINE
+								</td>
+
+								<td>
+									01:49
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+								  <!-- START list group item-->
+									 <div class="media-box">
+										<div class="pull-left">
+										   <img src="theme_dashboard/img/user/10.jpg" alt="Image" class="media-box-object img-circle thumb32">
+										</div>
+										<div class="media-box-body clearfix">
+										   <strong class="media-box-heading text-primary">
+											  <span class="circle circle-danger circle-lg text-left"></span>Michelle Lane</strong>
+										</div>
+									 </div>
+								</td>
+
+								<td>
+									CS HOTLINE
+								</td>
+
+								<td>
+									01:49
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div> <!-- end of modal body -->
+				
+			</div>
+		</div>
+	</div>
+	<!-- End of modal -->
+
+
 <?php
 	/*
 	 * Modal Dialogs
 	*/
 		include_once ("./php/ModalPasswordDialogs.php");
-
-	/*
-	 * get API data for chart from UIHandler.php
-	*/
-
-	$callsperhour = $ui->API_getCallPerHour();
-	//var_dump($callsperhour);
-		
-		$max = 0;
-
-		 $callsperhour = explode(";",trim($callsperhour, ';'));
-		 foreach ($callsperhour AS $temp) {
-		   $temp = explode("=",$temp);
-		   $results[$temp[0]] = $temp[1];
-		 }
-	
-		$outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
-		
-		$inbound_calls = max($results["Hour8"],$results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
-		
-		$dropped_calls = max($results["Hour8d"],$results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
-		
-		$max = max($inbound_calls, $outbound_calls, $dropped_calls);
-	
-		
-		if($max <= 5){
-			$max = 5;
-		}
-
-	//var_dump($results);
-	
 ?>
 <script>
 	/*
@@ -800,173 +1066,107 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				var datav3 = [
 					{
 					"label": "Outbound Calls",
-					"color": "#656565",
+					"color": "#009688",
 					"data": [
 					<?php
 					if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9o"]) && $outbound_calls != 0){
-						echo '["01",'.$results["Hour1o"].'],';
-						echo '["02",'.$results["Hour2o"].'],';
-						echo '["03",'.$results["Hour3o"].'],';
-						echo '["04",'.$results["Hour4o"].'],';
-						echo '["05",'.$results["Hour5o"].'],';
-						echo '["06",'.$results["Hour6o"].'],';
-						echo '["07",'.$results["Hour7o"].'],';
-						echo '["08",'.$results["Hour8o"].'],';
-						echo '["09",'.$results["Hour9o"].'],';
-						echo '["10",'.$results["Hour10o"].'],';
-						echo '["11",'.$results["Hour11o"].'],';
-						echo '["12",'.$results["Hour12o"].'],';
-						echo '["13",'.$results["Hour13o"].'],';
-						echo '["14",'.$results["Hour14o"].'],';
-						echo '["15",'.$results["Hour15o"].'],';
-						echo '["16",'.$results["Hour16o"].'],';
-						echo '["17",'.$results["Hour17o"].'],';
-						echo '["18",'.$results["Hour18o"].'],';
-						echo '["19",'.$results["Hour19o"].'],';
-						echo '["20",'.$results["Hour20o"].'],';
-						echo '["21",'.$results["Hour21o"].'],';
-						echo '["22",'.$results["Hour22o"].'],';
-						echo '["23",'.$results["Hour23o"].'],';
-						echo '["24",'.$results["Hour24o"].']';
+						echo '["9 AM",'.$results["Hour9o"].'],';
+						echo '["10 AM",'.$results["Hour10o"].'],';
+						echo '["11 AM",'.$results["Hour11o"].'],';
+						echo '["12 NN",'.$results["Hour12o"].'],';
+						echo '["1 PM",'.$results["Hour13o"].'],';
+						echo '["2 PM",'.$results["Hour14o"].'],';
+						echo '["3 PM",'.$results["Hour15o"].'],';
+						echo '["4 PM",'.$results["Hour16o"].'],';
+						echo '["5 PM",'.$results["Hour17o"].'],';
+						echo '["6 PM",'.$results["Hour18o"].'],';
+						echo '["7 PM",'.$results["Hour19o"].'],';
+						echo '["8 PM",'.$results["Hour20o"].'],';
+						echo '["9 PM",'.$results["Hour21o"].']';
 					}else{
-						echo '["01", 0],';
-						echo '["02", 0],';
-						echo '["03", 0],';
-						echo '["04", 0],';
-						echo '["05", 0],';
-						echo '["06", 0],';
-						echo '["07", 0],';
-						echo '["08", 0],';
-						echo '["09", 0],';
-						echo '["10", 0],';
-						echo '["11", 0],';
-						echo '["12", 0],';
-						echo '["13", 0],';
-						echo '["14", 0],';
-						echo '["15", 0],';
-						echo '["16", 0],';
-						echo '["17", 0],';
-						echo '["18", 0],';
-						echo '["19", 0],';
-						echo '["20", 0],';
-						echo '["21", 0],';
-						echo '["22", 0],';
-						echo '["23", 0],';
-						echo '["24", 0]';
+						echo '["9 AM", 0],';
+						echo '["10 AM", 0],';
+						echo '["11 AM", 0],';
+						echo '["12 NN", 0],';
+						echo '["1 PM", 0],';
+						echo '["2 PM", 0],';
+						echo '["3 PM", 0],';
+						echo '["4 PM", 0],';
+						echo '["5 PM", 0],';
+						echo '["6 PM", 0],';
+						echo '["7 PM", 0],';
+						echo '["8 PM", 0],';
+						echo '["9 PM", 0]';
 					}
 					?>]
 					},{
 						"label": "Inbound Calls",
-						"color": "#F39C12",
+						"color": "#23b7e5",
 						"data": [
 						<?php
 						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9"]) && $inbound_calls != 0){
-							echo '["01",'.$results["Hour1"].'],';
-							echo '["02",'.$results["Hour2"].'],';
-							echo '["03",'.$results["Hour3"].'],';
-							echo '["04",'.$results["Hour4"].'],';
-							echo '["05",'.$results["Hour5"].'],';
-							echo '["06",'.$results["Hour6"].'],';
-							echo '["07",'.$results["Hour7"].'],';
-							echo '["08",'.$results["Hour8"].'],';
-							echo '["09",'.$results["Hour9"].'],';
-							echo '["10",'.$results["Hour10"].'],';
-							echo '["11",'.$results["Hour11"].'],';
-							echo '["12",'.$results["Hour12"].'],';
-							echo '["13",'.$results["Hour13"].'],';
-							echo '["14",'.$results["Hour14"].'],';
-							echo '["15",'.$results["Hour15"].'],';
-							echo '["16",'.$results["Hour16"].'],';
-							echo '["17",'.$results["Hour17"].'],';
-							echo '["18",'.$results["Hour18"].'],';
-							echo '["19",'.$results["Hour19"].'],';
-							echo '["20",'.$results["Hour20"].'],';
-							echo '["21",'.$results["Hour21"].'],';
-							echo '["22",'.$results["Hour22"].'],';
-							echo '["23",'.$results["Hour23"].'],';
-							echo '["24",'.$results["Hour24"].']';
+							echo '["9 AM",'.$results["Hour9"].'],';
+							echo '["10 AM",'.$results["Hour10"].'],';
+							echo '["11 AM",'.$results["Hour11"].'],';
+							echo '["12 NN",'.$results["Hour12"].'],';
+							echo '["1 PM",'.$results["Hour13"].'],';
+							echo '["2 PM",'.$results["Hour14"].'],';
+							echo '["3 PM",'.$results["Hour15"].'],';
+							echo '["4 PM",'.$results["Hour16"].'],';
+							echo '["5 PM",'.$results["Hour17"].'],';
+							echo '["6 PM",'.$results["Hour18"].'],';
+							echo '["7 PM",'.$results["Hour19"].'],';
+							echo '["8 PM",'.$results["Hour20"].'],';
+							echo '["9 PM",'.$results["Hour21"].']';
 						}else{
-							echo '["01", 0],';
-							echo '["02", 0],';
-							echo '["03", 0],';
-							echo '["04", 0],';
-							echo '["05", 0],';
-							echo '["06", 0],';
-							echo '["07", 0],';
-							echo '["08", 0],';
-							echo '["09", 0],';
-							echo '["10", 0],';
-							echo '["11", 0],';
-							echo '["12", 0],';
-							echo '["13", 0],';
-							echo '["14", 0],';
-							echo '["15", 0],';
-							echo '["16", 0],';
-							echo '["17", 0],';
-							echo '["18", 0],';
-							echo '["19", 0],';
-							echo '["20", 0],';
-							echo '["21", 0],';
-							echo '["22", 0],';
-							echo '["23", 0],';
-							echo '["24", 0]';
+							echo '["9 AM", 0],';
+							echo '["10 AM", 0],';
+							echo '["11 AM", 0],';
+							echo '["12 NN", 0],';
+							echo '["1 PM", 0],';
+							echo '["2 PM", 0],';
+							echo '["3 PM", 0],';
+							echo '["4 PM", 0],';
+							echo '["5 PM", 0],';
+							echo '["6 PM", 0],';
+							echo '["7 PM", 0],';
+							echo '["8 PM", 0],';
+							echo '["9 PM", 0]';
 						}
 						?>]
 					},{
 					"label": "Dropped Calls",
-					"color": "#dd4b39",
+					"color": "#512e90",
 					"data": [
 					<?php
 						if($results["result"] == "success" && isset($results["result"]) && isset($results["Hour9d"]) && $dropped_calls != 0){
-							echo '["01",'.$results["Hour1d"].'],';
-							echo '["02",'.$results["Hour2d"].'],';
-							echo '["03",'.$results["Hour3d"].'],';
-							echo '["04",'.$results["Hour4d"].'],';
-							echo '["05",'.$results["Hour5d"].'],';
-							echo '["06",'.$results["Hour6d"].'],';
-							echo '["07",'.$results["Hour7d"].'],';
-							echo '["08",'.$results["Hour8d"].'],';
-							echo '["09",'.$results["Hour9d"].'],';
-							echo '["10",'.$results["Hour10d"].'],';
-							echo '["11",'.$results["Hour11d"].'],';
-							echo '["12",'.$results["Hour12d"].'],';
-							echo '["13",'.$results["Hour13d"].'],';
-							echo '["14",'.$results["Hour14d"].'],';
-							echo '["15",'.$results["Hour15d"].'],';
-							echo '["16",'.$results["Hour16d"].'],';
-							echo '["17",'.$results["Hour17d"].'],';
-							echo '["18",'.$results["Hour18d"].'],';
-							echo '["19",'.$results["Hour19d"].'],';
-							echo '["20",'.$results["Hour20d"].'],';
-							echo '["21",'.$results["Hour21d"].'],';
-							echo '["22",'.$results["Hour22d"].'],';
-							echo '["23",'.$results["Hour23d"].'],';
-							echo '["24",'.$results["Hour24d"].']';
+							echo '["9 AM",'.$results["Hour9d"].'],';
+							echo '["10 AM",'.$results["Hour10d"].'],';
+							echo '["11 AM",'.$results["Hour11d"].'],';
+							echo '["12 NN",'.$results["Hour12d"].'],';
+							echo '["1 PM",'.$results["Hour13d"].'],';
+							echo '["2 PM",'.$results["Hour14d"].'],';
+							echo '["3 PM",'.$results["Hour15d"].'],';
+							echo '["4 PM",'.$results["Hour16d"].'],';
+							echo '["5 PM",'.$results["Hour17d"].'],';
+							echo '["6 PM",'.$results["Hour18d"].'],';
+							echo '["7 PM",'.$results["Hour19d"].'],';
+							echo '["8 PM",'.$results["Hour20d"].'],';
+							echo '["9 PM",'.$results["Hour21d"].']';
 						}else{
-							echo '["01", 0],';
-							echo '["02", 0],';
-							echo '["03", 0],';
-							echo '["04", 0],';
-							echo '["05", 0],';
-							echo '["06", 0],';
-							echo '["07", 0],';
-							echo '["08", 0],';
-							echo '["09", 0],';
-							echo '["10", 0],';
-							echo '["11", 0],';
-							echo '["12", 0],';
-							echo '["13", 0],';
-							echo '["14", 0],';
-							echo '["15", 0],';
-							echo '["16", 0],';
-							echo '["17", 0],';
-							echo '["18", 0],';
-							echo '["19", 0],';
-							echo '["20", 0],';
-							echo '["21", 0],';
-							echo '["22", 0],';
-							echo '["23", 0],';
-							echo '["24", 0]';
+							echo '["9 AM", 0],';
+							echo '["10 AM", 0],';
+							echo '["11 AM", 0],';
+							echo '["12 NN", 0],';
+							echo '["1 PM", 0],';
+							echo '["2 PM", 0],';
+							echo '["3 PM", 0],';
+							echo '["4 PM", 0],';
+							echo '["5 PM", 0],';
+							echo '["6 PM", 0],';
+							echo '["7 PM", 0],';
+							echo '["8 PM", 0],';
+							echo '["9 PM", 0]';
 						}
 						?>]
 					}];
@@ -995,7 +1195,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 					},
 					tooltip: true,
 					tooltipOpts: {
-						content: function (label, x, y) { return y + ' ' + label + ' around ' + x + ' hours'; }
+						content: function (label, x, y) { return y + ' ' + label + ' around ' + x; }
 					},
 					xaxis: {
 						tickColor: '#fcfcfc',
@@ -1020,6 +1220,10 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 		
 		
 		$(document).ready(function(){
+
+	// ---- loads datatable functions
+				$('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
+
 	// ---- Fixed Action Button
 			$(".bottom-menu").on('mouseenter mouseleave', function () {
 			  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');

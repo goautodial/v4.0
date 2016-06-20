@@ -3816,7 +3816,7 @@ fieldset[disabled] .btn-vk.active {
 .alert-success,
 .label-success,
 .modal-success .modal-body {
-  background-color: #00a65a !important;
+  background-color: #009688 !important;
 }
 .bg-navy {
   background-color: #001f3f !important;
@@ -3837,7 +3837,7 @@ fieldset[disabled] .btn-vk.active {
   background-color: #f012be !important;
 }
 .bg-purple {
-  background-color: #605ca8 !important;
+  background-color: #673ab7  !important;
 }
 .bg-maroon {
   background-color: #d81b60 !important;
@@ -4178,6 +4178,47 @@ Gradient Background colors
 /* high resolution, 1024px or higher */
 @media only screen and (min-width: 1024px){
 }
- 
- 
 
+
+/* Added styles fo dashboard */
+
+.agent_monitor_filter{
+  padding-top: 15px; 
+  padding-right: 20px;
+}
+
+#tenant_dropdown_agent_monitoring{
+  font-size:90%; 
+  padding: 6px;
+}
+
+#campaign_dropdown_agentmonitoring{
+  font-size:90%; 
+  padding: 6px;
+}
+
+.ingroup_filter_list{
+  float: right !important;          
+}
+.campaign_filter_list{
+  float: right !important;
+  padding-right: 15px;
+}
+
+.small_filterlist{
+  font-size: 60%;
+}
+
+.filterlist_dropdown{
+  font-size:50%; 
+  padding: 6px;
+}
+
+#row_for_rest{
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
+.info_sun_boxes{
+  margin-top: -5px;
+}
