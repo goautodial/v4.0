@@ -1326,7 +1326,7 @@ error_reporting(E_ERROR | E_PARSE);
 			//<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="32"> '.$name.'</a>
 		// return header
 		return '<header class="main-header">
-				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="35"></a>
+				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
 	            <nav class="navbar navbar-static-top" role="navigation">
 	                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 	                    <span class="sr-only">Toggle navigation</span>
@@ -1623,7 +1623,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "user", $this->lh->translationFor("users"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonycampaigns.php", "fa fa-dashboard", $this->lh->translationFor("campaigns"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonylistandcallrecording.php", "tasks", $this->lh->translationFor("list_and_call_recording"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "tasks", $this->lh->translationFor("scripts"));
+			$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "book", $this->lh->translationFor("scripts"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonymusiconhold.php", "phone", $this->lh->translationFor("music_on_hold"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyvoicefiles.php", "phone", $this->lh->translationFor("voice_files"));
@@ -1645,6 +1645,12 @@ error_reporting(E_ERROR | E_PARSE);
 			
 		}
 		
+		$agentmenu = NULL;
+		if($userrole == CRM_DEFAULTS_USER_ROLE_AGENT){
+			$agentmenu .= $this-> getSidebarItem("", "book", $this->lh->translationFor("scripts"));
+			$agentmenu .= $this-> getSidebarItem("", "tasks", $this->lh->translationFor("Custom Form"));
+		}
+
 		// get customer types
 		$customerTypes = $this->db->getCustomerTypes();
 		
@@ -1661,17 +1667,27 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>
 	            <ul class="sidebar-menu"><li class="header">'.strtoupper($this->lh->translationFor("menu")).'</li>';
 	    // body: home and customer menus
-        $result .= $this->getSidebarItem("./index.php", "bar-chart-o", $this->lh->translationFor("home"));
+	    if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN){
+	    	$result .= $this->getSidebarItem("./index.php", "dashboard", $this->lh->translationFor("Dashboard"));
+	    }
+	    if($userrole == CRM_DEFAULTS_USER_ROLE_AGENT){
+	    	$result .= $this->getSidebarItem("./agent.php", "dashboard", $this->lh->translationFor("Home"));
+	    }
+
+	    // menu for admin
         $result .= $telephonyArea;
 		$result .= $settings;
 		$result .= $callreports;
 		$result .= $adminArea;
+		
+		// menu for agents
+		$result .= $agentmenu;
 
         // ending: contacts, messages, notifications, tasks, events.
         $result .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
 		$result .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
         $result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
-	$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
+		$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
         $result .= $this->getSidebarItem("notifications.php", "exclamation", $this->lh->translationFor("notifications"), $numNotifications, "orange");
         $result .= $this->getSidebarItem("tasks.php", "tasks", $this->lh->translationFor("tasks"), $numTasks, "red");
         
@@ -1683,7 +1699,6 @@ error_reporting(E_ERROR | E_PARSE);
 			}
         }
 		
-		$result .= $this->getSidebarItem("https://www.goautodial.com/supporttickets.php", "support", $this->lh->translationFor("support"));
 		$result .= '</ul></section></aside>';
 		
 		return $result;

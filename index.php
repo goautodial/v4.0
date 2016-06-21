@@ -44,6 +44,12 @@ try {
 	die();
 }
 
+//proper user redirects
+if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
+	if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
+		header("location: agent.php");
+	}
+}
 
 // initialize session and DDBB handler
 include_once('./php/UIHandler.php');
@@ -94,8 +100,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <script src="js/app.min.js" type="text/javascript"></script>
 		
 		<!-- Circle Buttons style -->
-		  <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
-		
+		<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
@@ -116,8 +122,6 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
 				<!-- =============== APP STYLES ===============-->
 			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-		
-		
     </head>
     <?php print $ui->creamyBody(); ?>
         <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
@@ -262,7 +266,7 @@ $callsperhour = $ui->API_getCallPerHour();
 				<div class="col-lg-3 col-sm-6 animated fadeInUpShort">
 					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
 						<div class="panel widget bg-purple">
-							<div class="col-xs-4 text-center bg-purple-dark pv-lg">
+							<div class="col-xs-4 text-center bg-purple-dark pv-lg animated fadeInUpShort">
 								<div class="h2 mt0">
 									<span class="text-lg" id="refresh_totalagentscall"></span>
 								</div>
@@ -280,13 +284,13 @@ $callsperhour = $ui->API_getCallPerHour();
 				<div class="col-lg-3 col-md-6 animated fadeInUpShort">
 					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
 						<div class="panel widget bg-purple">
-							<div class="col-xs-4 text-center bg-purple-dark pv-lg">
+							<div class="col-xs-4 text-center bg-purple-dark pv-lg animated fadeInUpShort">
 								<div class="h2 mt0">
 									<span class="text-lg" id="refresh_totalagentswaitcalls"></span>
 								</div>
 							</div>
 							<div class="col-xs-8 pv-lg">
-								<div class="h2">
+								<div class="h2 ">
 									<span class="text-sm">Agent(s) Waiting</span>
 								</div>
 							</div>
@@ -296,12 +300,12 @@ $callsperhour = $ui->API_getCallPerHour();
                <div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
                   	<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
 		                <div class="panel widget bg-green">
-		                        <div class="col-xs-4 text-center bg-gray-dark pv-lg">
+		                        <div class="col-xs-4 text-center bg-gray-dark pv-lg animated fadeInUpShort">
 		                           <div class="h2 mt0">
 		                           		<span class="text-lg" id="refresh_totalagentspaused"></span>
 		                           </div>
 		                        </div>
-		                        <div class="col-xs-8 pv-lg animated fadeInUpShort">
+		                        <div class="col-xs-8 pv-lg">
 		                        	<div class="h2">
 		                           		<span class="text-sm">Agent(s) On Paused</span>
 		                       		</div>
@@ -391,23 +395,23 @@ $callsperhour = $ui->API_getCallPerHour();
 							<div class="col-md-2 col-sm-3 col-xs-6 text-center bg-info pv-xl">
 								<em class="wi wi-day-sunny fa-4x"></em>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes animated fadeInUpShort">
 								<div class="h2 m0">32</div>
 								<div class="text-muted">Abandoned Calls</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes animated fadeInUpShort">
 								<div class="h2 m0">21</div>
 								<div class="text-muted">Answered < 20 sec</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes animated fadeInUpShort">
 								<div class="h2 m0">420</div>
 								<div class="text-muted" style="font-size: small;">Average Handling Time (sec)</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes animated fadeInUpShort">
 								<div class="h2 m0"><?php echo $inbound_calls;?></div>
 								<div class="text-muted">Inbound Calls Today</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center info_sun_boxes">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center info_sun_boxes animated fadeInUpShort">
 								<div class="h2 m0"><?php echo $outbound_calls;?></div>
 								<div class="text-muted">Outbound Calls Today</div>
 							</div>

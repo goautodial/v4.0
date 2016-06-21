@@ -75,7 +75,14 @@
 				} else { // random avatar.
 					$_SESSION["avatar"] = CRM_DEFAULTS_USER_AVATAR;
 				}
-				header("location: index.php"); // Redirecting To Main Page
+
+				if($_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_ADMIN){
+					header("location: index.php"); // Redirecting To Admin Dashboard
+				}
+				if($_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_AGENT){
+					header("location: agent.php"); // Redirecting to Agent Dashboard
+				}
+
 			}
 		}
 	}
