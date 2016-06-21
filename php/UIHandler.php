@@ -1470,7 +1470,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$eventsForToday = $this->db->getEventsForToday($user->getUserId());
 		if (!empty($eventsForToday)) $notificationNum += count($eventsForToday);
 		// build header
-		$headerText = $this->lh->translationFor("you_have").' '.$notificationNum.' '.strtolower($this->lh->translationFor("notifications"));
+		$headerText = $this->lh->translationFor("you_have").' '.$notificationNum.' '.$this->lh->translationFor("notifications");
 		$result = $this->getTopbarMenuHeader("calendar", $notificationNum, CRM_UI_TOPBAR_MENU_STYLE_SIMPLE, $headerText, null, CRM_UI_STYLE_WARNING, false);
 		// build notifications
         foreach ($notifications as $notification) {

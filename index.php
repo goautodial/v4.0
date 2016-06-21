@@ -712,9 +712,11 @@ $callsperhour = $ui->API_getCallPerHour();
 										   <img src="<?php echo $_SESSION['avatar'];?>" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										   <strong class="media-box-heading text-primary">
-											  <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis</strong>
-											
+										    <strong class="media-box-heading text-primary">
+											  <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis
+											</strong>
+											<strong class="media-box-heading" style="padding-left: 50px;"> CS HOTLINE </strong>
+											<span class="media-box-heading" style="padding-left: 50px;"> 1:49 </span>
 										</div>
 									 </div>
 								  </a>
@@ -727,6 +729,8 @@ $callsperhour = $ui->API_getCallPerHour();
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-success circle-lg text-left"></span>Jessica Silva</strong>
+											<strong class="media-box-heading" style="padding-left: 50px;"> CS HOTLINE </strong>
+											<span class="media-box-heading" style="padding-left: 50px;"> 1:49 </span>
 										</div>
 									 </div>
 								  </a>
@@ -740,6 +744,8 @@ $callsperhour = $ui->API_getCallPerHour();
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Jessie Wells</strong>
+											<strong class="media-box-heading" style="padding-left: 50px;"> CS HOTLINE </strong>
+											<span class="media-box-heading" style="padding-left: 50px;"> 1:49 </span>
 										</div>
 									 </div>
 								  </a>
@@ -753,6 +759,8 @@ $callsperhour = $ui->API_getCallPerHour();
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Rosa Burke</strong>
+											<strong class="media-box-heading" style="padding-left: 50px;"> CS HOTLINE </strong>
+											<span class="media-box-heading" style="padding-left: 50px;"> 1:49 </span>
 										</div>
 									 </div>
 								  </a>
@@ -766,6 +774,8 @@ $callsperhour = $ui->API_getCallPerHour();
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Michelle Lane</strong>
+											<strong class="media-box-heading" style="padding-left: 50px;"> CS HOTLINE </strong>
+											<span class="media-box-heading" style="padding-left: 50px;"> 1:49 </span>
 										</div>
 									 </div>
 								  </a>
@@ -775,7 +785,7 @@ $callsperhour = $ui->API_getCallPerHour();
 							   <!-- START panel footer-->
 							   <div class="panel-footer clearfix">
 								  	<a href="#" data-toggle="modal" data-target="#agent_monitoring" class="pull-right">
-		                           		<small>View more</small> <em class="fa fa-arrow-right"></em>
+		                           		<medium>View more</medium> <em class="fa fa-arrow-right"></em>
 		                        	</a>
 							   </div>
 							   <!-- END panel-footer-->

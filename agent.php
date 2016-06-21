@@ -184,7 +184,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 	                        <div class="box box-default">
 	                            <div class="box-header">
 	                                <i class="fa fa-bar-chart-o"></i>
-	                                <h3 class="box-title"><?php $lh->translateText("current_customer_distribution"); ?></h3>
+	                                <h3 class="box-title"><?php $lh->translateText("New Contacts"); ?></h3>
 	                            </div>
                                 <div class="box-body" id="graph-box">
 		                            <?php if ($custsOk) { ?>

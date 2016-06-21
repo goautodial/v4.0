@@ -358,7 +358,7 @@ if (isset($_POST["did"])) {
 										            </center>
 									       		</div>
 									       		<!-- ADVANCED SETTINGS -->
-									       		<div id="advanced_settings_wrapper" style="background-color: #E4F3E8; padding: 25px 50px;" hidden>
+									       		<div id="advanced_settings_wrapper" style="padding: 25px 0px;" hidden>
 									       			<div class="row">
 									       				<label for="call_launch" class="col-md-5">Get Call Launch
 														<select class="form-control" id="call_launch" name="call_launch">
@@ -865,7 +865,7 @@ if (isset($_POST["did"])) {
 									</div>
 									<br/>
 									<!-- HIDING DIVS COLOR -->
-									<div style="background-color: #EAFBEF; padding: 1px 10px;">
+									<div style="padding: 1px 10px;">
 
 									<!-- IF DID ROUTE = AGENT-->
 									<div id="form_route_agent">
@@ -1072,7 +1072,7 @@ if (isset($_POST["did"])) {
 							            </center>
 						       		</div>
 						       		<!-- ADVANCED SETTINGS -->
-						       		<div id="advanced_settings_wrapper" style="background-color: #E4F3E8; padding: 25px 50px;" hidden>
+						       		<div id="advanced_settings_wrapper" style="padding: 25px 0px;" hidden>
 						       			<div class="row">
 						       				<label for="cid_num" class="col-md-6">Clean CID Number
 											<input type="text" class="form-control" name="cid_num" id="cid_num" value="">
