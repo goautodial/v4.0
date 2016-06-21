@@ -4222,5 +4222,7 @@ Gradient Background colors
 }
 
 .info_sun_boxes{
-  margin-top: -5px;
+  /* margin-top: 0px; */
+  padding-top: 28px;
+  height: 17%;
 }

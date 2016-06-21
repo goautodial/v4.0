@@ -391,6 +391,7 @@ $callsperhour = $ui->API_getCallPerHour();
 	<!--===== INFOBOXES WITH BLUE WHITE SUN =======--> 
 	            <div class="row">
 	            	<div class="col-lg-12" style="padding: 0px 0px;">
+	            		<!--
 	                    <div class="panel widget" style="height:17%">
 							<div class="col-md-2 col-sm-3 col-xs-6 text-center bg-info pv-xl">
 								<em class="wi wi-day-sunny fa-4x"></em>
@@ -416,6 +417,30 @@ $callsperhour = $ui->API_getCallPerHour();
 								<div class="text-muted">Outbound Calls Today</div>
 							</div>
 	                    </div>
+	                	-->
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info br">
+	                		<em class="wi wi-day-sunny fa-4x"></em>
+	                	</div>
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+	                		<div class="h2 m0">32</div>
+								<div class="text-muted">Abandoned Calls</div>
+	                	</div>
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+	                		<div class="h2 m0">21</div>
+								<div class="text-muted">Answered < 20 sec</div>
+	                	</div>
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+	                		<div class="h2 m0">420</div>
+								<div class="text-muted" style="font-size: small;">Average Handling Time (sec)</div>
+	                	</div>
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+	                		<div class="h2 m0"><?php echo $inbound_calls;?></div>
+								<div class="text-muted">Inbound Calls Today</div>
+	                	</div>
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes">
+	                		<div class="h2 m0"><?php echo $outbound_calls;?></div>
+								<div class="text-muted">Outbound Calls Today</div>
+	                	</div>
 	                </div>
                 </div>
         <!-- ====== CLUSTER STATUS ======= -->
@@ -697,11 +722,10 @@ $callsperhour = $ui->API_getCallPerHour();
 
 					<div class="row">
 						<!-- Agent Monitoring Summary -->
-						<div class="col-lg-6">
+						<div class="col-lg-3">
 							<div class="panel panel-default">
 							   <div class="panel-heading">
 								  <div class="panel-title">Agent Monitoring Summary</div>
-								  <hr/>
 							   </div>
 							   <!-- START list group-->
 							   <div data-height="230" data-scrollable="yes" class="list-group">
@@ -715,8 +739,9 @@ $callsperhour = $ui->API_getCallPerHour();
 										    <strong class="media-box-heading text-primary">
 											  <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis
 											</strong>
-											<strong class="media-box-heading" style="padding-left: 50px;"> CS HOTLINE </strong>
-											<span class="media-box-heading" style="padding-left: 50px;"> 1:49 </span>
+											<br/>
+											<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
 								  </a>
@@ -729,8 +754,9 @@ $callsperhour = $ui->API_getCallPerHour();
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-success circle-lg text-left"></span>Jessica Silva</strong>
-											<strong class="media-box-heading" style="padding-left: 50px;"> CS HOTLINE </strong>
-											<span class="media-box-heading" style="padding-left: 50px;"> 1:49 </span>
+											<br/>
+											<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
 								  </a>
@@ -744,8 +770,9 @@ $callsperhour = $ui->API_getCallPerHour();
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Jessie Wells</strong>
-											<strong class="media-box-heading" style="padding-left: 50px;"> CS HOTLINE </strong>
-											<span class="media-box-heading" style="padding-left: 50px;"> 1:49 </span>
+											<br/>
+											<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
 								  </a>
@@ -759,8 +786,9 @@ $callsperhour = $ui->API_getCallPerHour();
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Rosa Burke</strong>
-											<strong class="media-box-heading" style="padding-left: 50px;"> CS HOTLINE </strong>
-											<span class="media-box-heading" style="padding-left: 50px;"> 1:49 </span>
+											<br/>
+											<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
 								  </a>
@@ -774,8 +802,9 @@ $callsperhour = $ui->API_getCallPerHour();
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Michelle Lane</strong>
-											<strong class="media-box-heading" style="padding-left: 50px;"> CS HOTLINE </strong>
-											<span class="media-box-heading" style="padding-left: 50px;"> 1:49 </span>
+											<br/>
+											<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
 								  </a>
@@ -792,7 +821,7 @@ $callsperhour = $ui->API_getCallPerHour();
 							</div>
 						</div><!-- end team messages -->
 			<!--==== VECTOR MAP LOADER ======-->
-						<div ng-controller="VectorMapController" class="col-lg-6">
+						<div ng-controller="VectorMapController" class="col-lg-9">
 							<div class="panel panel-transparent">
 							   <div data-vector-map="" data-height="450" data-scale='0' data-map-name="world_mill_en"></div>
 							</div>
