@@ -63,14 +63,17 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Agent Dashboard</title>
+        <title>Dashboard</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+     
+		<!--<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />-->
+		
         <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -91,28 +94,44 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <script src="js/app.min.js" type="text/javascript"></script>
 		
 		<!-- Circle Buttons style -->
-		  <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+		<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+
+		<!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+
+         <!-- theme_dashboard folder -->
+					<!-- FONT AWESOME-->
+			<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
+					<!-- SIMPLE LINE ICONS-->
+			<link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">
+					<!-- ANIMATE.CSS-->
+			<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">
+					<!-- WHIRL (spinners)-->
+			<link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
+				<!-- =============== PAGE VENDOR STYLES ===============-->
+					<!-- WEATHER ICONS-->
+			<link rel="stylesheet" href="theme_dashboard/weather-icons/css/weather-icons.min.css">
+				<!-- =============== BOOTSTRAP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+				<!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
     </head>
     <?php print $ui->creamyBody(); ?>
-        <div class="wrapper">
+        <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
 	        <!-- header logo: style can be found in header.less -->
 			<?php print $ui->creamyHeader($user); ?>
 
             <!-- Left side column. contains the logo and sidebar -->
 			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
 
-            <!-- Right side column. Contains the navbar and content of the page -->
+             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="content-wrapper">
                 <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <h1>
-						<!-- Page title -->
-                        <?php $lh->translateText("Home"); ?>
-                        <small><?php $lh->translateText("Agent Dashboard"); ?></small>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="./index.php"><i class="fa fa-bar-chart-o"></i> <?php $lh->translateText("home"); ?></a></li>
-                    </ol>
+                <section class="content-heading">
+					<!-- Page title -->
+                    <?php $lh->translateText("Agent Dashboard"); ?>
+                    <small class="ng-binding animated fadeInUpShort">Welcome to Goautodial !</small>
                 </section>
 
                 <!-- Main content -->
@@ -157,6 +176,23 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
                     <!-- Status boxes -->
 					<div class="row">
 						<?php print $ui->dashboardInfoBoxes($user->getUserId()); ?>
+						<div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
+							<!-- date widget    -->
+							<div class="panel widget" style="height: 87px;">
+								<div class="col-xs-4 text-center bg-green pv-lg">
+								<!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
+									<div class="text-sm"><?php echo date("F", time());?></div>
+									<div class="h2 mt0"><?php echo date("d", time());?></div>
+								</div>
+								<div class="col-xs-8 pv-lg">
+									<div class="text-uppercase"><?php echo date("l", time());?></div>
+									<div class="h3 mt0"><?php echo date("h:i", time());?> 
+										<span class="text-muted text-sm"><?php echo date("A", time());?></span>
+									</div>
+								</div>
+							</div>
+							<!-- END date widget    -->
+						</div>
 			        </div><!-- /.row -->                    
 
                      <!-- Statistics -->

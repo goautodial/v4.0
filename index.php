@@ -72,8 +72,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
      
 		<!--<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />-->
-        
-		<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+		
         <!-- Creamy style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
@@ -236,19 +235,10 @@ $callsperhour = $ui->API_getCallPerHour();
 					
 					<!-- Page title -->
 						<?php
-							if ($user->userHasAdminPermission()) {
 								$lh->translateText("Dashboard");
 						?>
 							<small class="ng-binding animated fadeInUpShort">Welcome to Goautodial  !</small>
-						<?php
-							}else{
-								$lh->translateText("home");
-						?>
-							<small><?php $lh->translateText("your_creamy_dashboard"); ?></small>
-						<?php
-							}
-						?>
-                    
+						
 					<!--
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-bar-chart-o"></i> <?php $lh->translateText("home"); ?></a></li>

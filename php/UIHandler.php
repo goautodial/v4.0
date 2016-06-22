@@ -176,10 +176,28 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $this->boxWithContent($title, $body_content, null, $icon, $style, $body_id, $additional_body_classes);
     }
     
-    public function infoBox($title, $subtitle, $url, $icon, $color, $colsize = 3) {
-	    return '<div class="col-md-'.$colsize.'"><div class="info-box"><a href="'.$url.'"><span class="info-box-icon bg-'.$color.'"><i class="fa fa-'.$icon.'"></i></span></a>
+    public function infoBox($title, $subtitle, $url, $icon, $color, $color2) {
+	    /*return '<div class="col-md-'.$colsize.'"><div class="info-box"><a href="'.$url.'"><span class="info-box-icon bg-'.$color.'"><i class="fa fa-'.$icon.'"></i></span></a>
 	    	<div class="info-box-content"><span class="info-box-text">'.$title.'</span>
 			<span class="info-box-number">'.$subtitle.'</span></div></div></div>';
+		*/
+		return '<div class="col-lg-3 col-sm-6 animated fadeInUpShort">
+				<a href="'.$url.'">
+					<div class="panel widget bg-'.$color.'"  style="height: 87px;">
+		    			<div class="col-xs-4 text-center bg-'.$color2.' pv-lg animated fadeInUpShort">
+							<div class="h2 mt0">
+								<i class="fa fa-'.$icon.'" style="padding: 15px;"></i></span>
+							</div>
+						</div>
+						<div class="col-xs-8 pv-lg">
+							<div class="h2" style="margin-top: 15px;">
+								<span class="info-box-text">'.$title.'</span>
+								<span class="info-box-number">'.$subtitle.'</span>
+							</div>
+						</div>
+					</div>
+				</a>
+				</div>';
     }
     
     public function boxWithSpinner($header_title, $body_content, $footer_content = NULL, $icon = NULL, $overlayId = "loading-overlay") {
@@ -1439,19 +1457,19 @@ error_reporting(E_ERROR | E_PARSE);
 
 		// new contacts
 		$contactsUrl = "./customerslist.php?customer_type=vicidial_list&customer_name=".urlencode($this->lh->translationFor("contacts"));
-		$boxes .= $this->infoBox($this->lh->translationFor("new_contacts"), $this->db->getNumberOfNewContacts(), $contactsUrl, "user-plus", "aqua", $columnSize);
+		$boxes .= $this->infoBox($this->lh->translationFor("new_contacts"), $this->db->getNumberOfNewContacts(), $contactsUrl, "user-plus", "purple", "purple-dark");
 		// new customers
 		if (isset($firstCustomerType)) {
 			$customersURL = "./customerslist.php?customer_type=vicidial_list&customer_name=".urlencode($firstCustomerType["description"]);
-			$boxes .= $this->infoBox($this->lh->translationFor("new_customers"), $this->db->getNumberOfNewCustomers(), $customersURL, "users", "green",  $columnSize);
+			$boxes .= $this->infoBox($this->lh->translationFor("new_customers"), $this->db->getNumberOfNewCustomers(), $customersURL, "users", "purple", "purple-dark");
 		}
 		// notifications
 		$numNotifications = intval($this->db->getNumberOfTodayNotifications($userid));
 		$numEvents = intval($this->db->getNumberOfTodayEvents($userid));
 		$num = $numNotifications + $numEvents;
-		$boxes .= $this->infoBox($this->lh->translationFor("notifications"),$num , "notifications.php", "clock-o", "yellow", $columnSize);
+		$boxes .= $this->infoBox($this->lh->translationFor("notifications"),$num , "notifications.php", "clock-o", "purple", "purple-dark");
 		// events today // TODO: Change
-		$boxes .= $this->infoBox($this->lh->translationFor("unfinished_tasks"), $this->db->getUnfinishedTasksNumber($userid), "tasks.php", "calendar", "red", $columnSize);
+		$boxes .= $this->infoBox($this->lh->translationFor("unfinished_tasks"), $this->db->getUnfinishedTasksNumber($userid), "tasks.php", "calendar", "green", "gray-dark");
 
 		return $boxes;
 	}
