@@ -44,6 +44,12 @@ try {
 	die();
 }
 
+//proper user redirects
+if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
+	if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
+		header("location: agent.php");
+	}
+}
 
 // initialize session and DDBB handler
 include_once('./php/UIHandler.php');
@@ -66,8 +72,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
      
 		<!--<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />-->
-        
-		<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+		
         <!-- Creamy style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
@@ -94,8 +99,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <script src="js/app.min.js" type="text/javascript"></script>
 		
 		<!-- Circle Buttons style -->
-		  <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
-		
+		<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
@@ -116,8 +121,6 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
 				<!-- =============== APP STYLES ===============-->
 			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-		
-		
     </head>
     <?php print $ui->creamyBody(); ?>
         <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
@@ -232,19 +235,10 @@ $callsperhour = $ui->API_getCallPerHour();
 					
 					<!-- Page title -->
 						<?php
-							if ($user->userHasAdminPermission()) {
 								$lh->translateText("Dashboard");
 						?>
 							<small class="ng-binding animated fadeInUpShort">Welcome to Goautodial  !</small>
-						<?php
-							}else{
-								$lh->translateText("home");
-						?>
-							<small><?php $lh->translateText("your_creamy_dashboard"); ?></small>
-						<?php
-							}
-						?>
-                    
+						
 					<!--
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-bar-chart-o"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -262,7 +256,7 @@ $callsperhour = $ui->API_getCallPerHour();
 				<div class="col-lg-3 col-sm-6 animated fadeInUpShort">
 					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
 						<div class="panel widget bg-purple">
-							<div class="col-xs-4 text-center bg-purple-dark pv-lg">
+							<div class="col-xs-4 text-center bg-purple-dark pv-lg animated fadeInUpShort">
 								<div class="h2 mt0">
 									<span class="text-lg" id="refresh_totalagentscall"></span>
 								</div>
@@ -280,13 +274,13 @@ $callsperhour = $ui->API_getCallPerHour();
 				<div class="col-lg-3 col-md-6 animated fadeInUpShort">
 					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
 						<div class="panel widget bg-purple">
-							<div class="col-xs-4 text-center bg-purple-dark pv-lg">
+							<div class="col-xs-4 text-center bg-purple-dark pv-lg animated fadeInUpShort">
 								<div class="h2 mt0">
 									<span class="text-lg" id="refresh_totalagentswaitcalls"></span>
 								</div>
 							</div>
 							<div class="col-xs-8 pv-lg">
-								<div class="h2">
+								<div class="h2 ">
 									<span class="text-sm">Agent(s) Waiting</span>
 								</div>
 							</div>
@@ -296,12 +290,12 @@ $callsperhour = $ui->API_getCallPerHour();
                <div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
                   	<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
 		                <div class="panel widget bg-green">
-		                        <div class="col-xs-4 text-center bg-gray-dark pv-lg">
+		                        <div class="col-xs-4 text-center bg-gray-dark pv-lg animated fadeInUpShort">
 		                           <div class="h2 mt0">
 		                           		<span class="text-lg" id="refresh_totalagentspaused"></span>
 		                           </div>
 		                        </div>
-		                        <div class="col-xs-8 pv-lg animated fadeInUpShort">
+		                        <div class="col-xs-8 pv-lg">
 		                        	<div class="h2">
 		                           		<span class="text-sm">Agent(s) On Paused</span>
 		                       		</div>
@@ -387,31 +381,56 @@ $callsperhour = $ui->API_getCallPerHour();
 	<!--===== INFOBOXES WITH BLUE WHITE SUN =======--> 
 	            <div class="row">
 	            	<div class="col-lg-12" style="padding: 0px 0px;">
+	            		<!--
 	                    <div class="panel widget" style="height:17%">
 							<div class="col-md-2 col-sm-3 col-xs-6 text-center bg-info pv-xl">
 								<em class="wi wi-day-sunny fa-4x"></em>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes animated fadeInUpShort">
 								<div class="h2 m0">32</div>
 								<div class="text-muted">Abandoned Calls</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes animated fadeInUpShort">
 								<div class="h2 m0">21</div>
 								<div class="text-muted">Answered < 20 sec</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes animated fadeInUpShort">
 								<div class="h2 m0">420</div>
 								<div class="text-muted" style="font-size: small;">Average Handling Time (sec)</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes animated fadeInUpShort">
 								<div class="h2 m0"><?php echo $inbound_calls;?></div>
 								<div class="text-muted">Inbound Calls Today</div>
 							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center info_sun_boxes">
+							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center info_sun_boxes animated fadeInUpShort">
 								<div class="h2 m0"><?php echo $outbound_calls;?></div>
 								<div class="text-muted">Outbound Calls Today</div>
 							</div>
 	                    </div>
+	                	-->
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info br">
+	                		<em class="wi wi-day-sunny fa-4x"></em>
+	                	</div>
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+	                		<div class="h2 m0">32</div>
+								<div class="text-muted">Abandoned Calls</div>
+	                	</div>
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+	                		<div class="h2 m0">21</div>
+								<div class="text-muted">Answered < 20 sec</div>
+	                	</div>
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+	                		<div class="h2 m0">420</div>
+								<div class="text-muted" style="font-size: small;">Average Handling Time (sec)</div>
+	                	</div>
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+	                		<div class="h2 m0"><?php echo $inbound_calls;?></div>
+								<div class="text-muted">Inbound Calls Today</div>
+	                	</div>
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes">
+	                		<div class="h2 m0"><?php echo $outbound_calls;?></div>
+								<div class="text-muted">Outbound Calls Today</div>
+	                	</div>
 	                </div>
                 </div>
         <!-- ====== CLUSTER STATUS ======= -->
@@ -693,11 +712,10 @@ $callsperhour = $ui->API_getCallPerHour();
 
 					<div class="row">
 						<!-- Agent Monitoring Summary -->
-						<div class="col-lg-6">
+						<div class="col-lg-3">
 							<div class="panel panel-default">
 							   <div class="panel-heading">
 								  <div class="panel-title">Agent Monitoring Summary</div>
-								  <hr/>
 							   </div>
 							   <!-- START list group-->
 							   <div data-height="230" data-scrollable="yes" class="list-group">
@@ -708,9 +726,12 @@ $callsperhour = $ui->API_getCallPerHour();
 										   <img src="<?php echo $_SESSION['avatar'];?>" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										   <strong class="media-box-heading text-primary">
-											  <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis</strong>
-											
+										    <strong class="media-box-heading text-primary">
+											  <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis
+											</strong>
+											<br/>
+											<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
 								  </a>
@@ -723,6 +744,9 @@ $callsperhour = $ui->API_getCallPerHour();
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-success circle-lg text-left"></span>Jessica Silva</strong>
+											<br/>
+											<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
 								  </a>
@@ -736,6 +760,9 @@ $callsperhour = $ui->API_getCallPerHour();
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Jessie Wells</strong>
+											<br/>
+											<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
 								  </a>
@@ -749,6 +776,9 @@ $callsperhour = $ui->API_getCallPerHour();
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Rosa Burke</strong>
+											<br/>
+											<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
 								  </a>
@@ -762,6 +792,9 @@ $callsperhour = $ui->API_getCallPerHour();
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
 											  <span class="circle circle-danger circle-lg text-left"></span>Michelle Lane</strong>
+											<br/>
+											<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
 								  </a>
@@ -771,14 +804,14 @@ $callsperhour = $ui->API_getCallPerHour();
 							   <!-- START panel footer-->
 							   <div class="panel-footer clearfix">
 								  	<a href="#" data-toggle="modal" data-target="#agent_monitoring" class="pull-right">
-		                           		<small>View more</small> <em class="fa fa-arrow-right"></em>
+		                           		<medium>View more</medium> <em class="fa fa-arrow-right"></em>
 		                        	</a>
 							   </div>
 							   <!-- END panel-footer-->
 							</div>
 						</div><!-- end team messages -->
 			<!--==== VECTOR MAP LOADER ======-->
-						<div ng-controller="VectorMapController" class="col-lg-6">
+						<div ng-controller="VectorMapController" class="col-lg-9">
 							<div class="panel panel-transparent">
 							   <div data-vector-map="" data-height="450" data-scale='0' data-map-name="world_mill_en"></div>
 							</div>

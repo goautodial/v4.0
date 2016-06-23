@@ -4315,7 +4315,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-nav .open .dropdown-menu {
     position: static;
     float: none;
-    width: auto;
+    /* width: auto; */
     margin-top: 0;
     background-color: transparent;
     border: 0;
@@ -4830,7 +4830,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   font-size: 75%;
   font-weight: bold;
   line-height: 1;
-  color: #2a2a2a;
+  color: #fff;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;

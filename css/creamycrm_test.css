@@ -204,8 +204,10 @@ body {
  /* edited padding: 15px;*/
   margin-right: auto;
   margin-left: auto;
-  padding-left: 15px;
-  padding-right: 15px;
+ /* 
+  padding-left: 0px;
+  padding-right: 0px;
+ */
 }
 /* H1 - H6 font */
 h1,
@@ -4220,5 +4222,7 @@ Gradient Background colors
 }
 
 .info_sun_boxes{
-  margin-top: -5px;
+  /* margin-top: 0px; */
+  padding-top: 28px;
+  height: 17%;
 }
