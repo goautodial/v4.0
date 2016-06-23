@@ -545,10 +545,10 @@
 				    					<input id="cmanual_dial_prefix" type="text" class="form-control">
 				    				</div>
 				    			</div>
-				    			<div class="form-group call-lunch hide">
-				    				<label class="control-label col-lg-4">Get call lunch:</label>
+				    			<div class="form-group call-launch hide">
+				    				<label class="control-label col-lg-4">Get call launch:</label>
 				    				<div class="col-lg-8">
-				    					<select id="call_lunch" class="form-control">
+				    					<select id="call_launch" class="form-control">
 				    						<option>None</option>
 				    						<option>Script</option>
 				    						<option>Webform</option>
@@ -795,7 +795,7 @@
 			$('.lead-filter').removeClass('hide');
 			$('.dial-timeout').removeClass('hide');
 			$('.manual-dial-prefix').removeClass('hide');
-			$('.call-lunch').removeClass('hide');
+			$('.call-launch').removeClass('hide');
 			$('.answering-machine-message').removeClass('hide');
 			$('.pause-codes').removeClass('hide');
 			$('.manual-dial-filter').removeClass('hide');
@@ -823,7 +823,7 @@
 
 					if(selectedTypeVal == 'inbound'){
 						$('.lead-section').addClass('hide');
-						$('.call-lunch').removeClass('hide');
+						$('.call-launch').removeClass('hide');
 						$('.answering-machine-message').removeClass('hide');
 						$('.pause-codes').removeClass('hide');
 						$('.manual-dial-filter').removeClass('hide');
@@ -854,7 +854,7 @@
 						$('.reset-leads-on-hopper').removeClass('hide');
 						$('.dial-timeout').removeClass('hide');
 						$('.manual-dial-prefix').removeClass('hide');
-						$('.call-lunch').removeClass('hide');
+						$('.call-launch').removeClass('hide');
 						$('.answering-machine-message').removeClass('hide');
 						$('.pause-codes').removeClass('hide');
 						$('.manual-dial-filter').removeClass('hide');
@@ -885,7 +885,7 @@
 					$('.lead-filter').removeClass('hide');
 					$('.dial-timeout').removeClass('hide');
 					$('.manual-dial-prefix').removeClass('hide');
-					$('.call-lunch').removeClass('hide');
+					$('.call-launch').removeClass('hide');
 					$('.answering-machine-message').removeClass('hide');
 					$('.pause-codes').removeClass('hide');
 					$('.manual-dial-filter').removeClass('hide');
@@ -913,7 +913,7 @@
 					$('.lead-filter').removeClass('hide');
 					$('.dial-timeout').removeClass('hide');
 					$('.manual-dial-prefix').removeClass('hide');
-					$('.call-lunch').removeClass('hide');
+					$('.call-launch').removeClass('hide');
 					$('.answering-machine-message').removeClass('hide');
 					$('.pause-codes').removeClass('hide');
 					$('.manual-dial-filter').removeClass('hide');
@@ -941,7 +941,7 @@
 					$('.lead-filter').removeClass('hide');
 					$('.dial-timeout').removeClass('hide');
 					$('.manual-dial-prefix').removeClass('hide');
-					$('.call-lunch').removeClass('hide');
+					$('.call-launch').removeClass('hide');
 					$('.answering-machine-message').removeClass('hide');
 					$('.pause-codes').removeClass('hide');
 					$('.manual-dial-filter').removeClass('hide');
@@ -971,6 +971,26 @@
 				  	survey_type : $('#survey-type').val(),
 				  	no_channels : $('#no-channels').val(),
 				  	copy_from : $('#copy-from').val(),
+				  	call_time : $('.call-time').val(),
+					dial_status : $('.dial-status').val(),
+					list_order : $('.list-order').val(),
+					lead_filter : $('.lead-filter').val(),
+					dial_timeout : $('.dial-timeout').val(),
+					manual_dial_prefix : $('.manual-dial-prefix').val(),
+					call_launch : $('.call-launch').val(),
+					answering_machine_message : $('.answering-machine-message').val(),
+					pause_codes : $('.pause-codes').val(),
+					manual_dial_filter : $('.manual-dial-filter').val(),
+					manual_dial_list_id : $('.manual-dial-list-id').val(),
+					availability_only_tally : $('.availability-only-tally').val(),
+					recording_filename : $('.recording-filename').val(),
+					next_agent_call : $('.next-agent-call').val(),
+					caller_id_3_way_call : $('.caller-id-3-way-call').val(),
+					dial_prefix_3_way_call : $('.dial-prefix-3-way-call').val(),
+					three_way_hangup_logging : $('.3-way-hangup-logging').val(),
+					three_way_hangup_seconds : $('.3-way-hangup-seconds').val(),
+					three_way_hangup_action : $('.3-way-hangup-action').val(),
+					reset_leads_on_hopper : $('.reset-leads-on-hopper').val()
 				  },
 				  success: function(data) {
 				  	// console.log(data);
