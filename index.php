@@ -408,7 +408,7 @@ $callsperhour = $ui->API_getCallPerHour();
 							</div>
 	                    </div>
 	                	-->
-	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info br">
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info br" style="padding: 20px 0px;">
 	                		<em class="wi wi-day-sunny fa-4x"></em>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">

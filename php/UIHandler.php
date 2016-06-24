@@ -184,8 +184,8 @@ error_reporting(E_ERROR | E_PARSE);
 		return '<div class="col-lg-3 col-sm-6 animated fadeInUpShort">
 				<a href="'.$url.'">
 					<div class="panel widget bg-'.$color.'"  style="height: 87px;">
-		    			<div class="col-xs-4 text-center bg-'.$color2.' pv-lg animated fadeInUpShort">
-							<div class="h2 mt0">
+		    			<div class="col-xs-4 text-center bg-'.$color2.' pv-lg">
+							<div class="h2 mt0 animated fadeInUpShort">
 								<i class="fa fa-'.$icon.'" style="padding: 15px;"></i></span>
 							</div>
 						</div>
@@ -4208,14 +4208,14 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goAction"] = "goGetTotalAgentsPaused"; #action performed by the [[API:Functions]]
 			
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
 			//var_dump($data);
 			 $data = explode(";",$data);
@@ -4286,15 +4286,14 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetLeadsinHopper"; #action performed by the [[API:Functions]]
 			
-			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
 			//var_dump($data);
 			 $data = explode(";",$data);
@@ -4603,10 +4602,12 @@ error_reporting(E_ERROR | E_PARSE);
 	 * [[API: Function]] - goGetLeads
 	 * This application is used to get cluster status
 	*/
-	public function API_GetLeads(){
+	public function API_GetLeads($userName){
 	$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass;
+	$postfields["goVarLimit"] = "100";
+	$postfields["user_id"] = $userName;
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
 	
@@ -4618,32 +4619,34 @@ error_reporting(E_ERROR | E_PARSE);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	$data = curl_exec($ch);
 	curl_close($ch);
-	$output = json_decode($data);
-	 
+	$output = json_decode($data); 	
+	 	
 		return $output;
-	}
+	}	
 	
 	// get contact list
-	public function GetContacts() {
-	$output = $this->API_GetLeads();
+	public function GetContacts($userid) {
+	$output = $this->API_GetLeads($userid);
        if($output->result=="success") {
        	   $columns = array("List ID", "Name", "Phone Number", "Action");
 	       $hideOnMedium = array("List ID", "Phone Number", "active");
 	       $hideOnLow = array( "List ID", "Phone Number", "active");
 		   $result = $this->generateTableHeaderWithItems($columns, "contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
-			
-			for($i=0;$i<=count($output->list_id);$i++){
-			
-			$action = $this->getUserActionMenuForT_User($output->list_id[$i]);
+			//for($i=0;$i<=count($output->list_id);$i++){
+		   	for($i=0;$i<=500;$i++){
+				if($output->phone_number[$i] != ""){
+
+				$action = $this->getUserActionMenuForT_User($output->list_id[$i]);
 				$result .= '<tr>
 								<td>' .$output->list_id[$i]. '</td> 
 								<td>' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
 								<td>' .$output->phone_number[$i].'</td>
 								 <td style="width: 200px;">' .$action.'</td>
 							</tr> ';
+				}
 			}
-
+			
 			return $result;
        }else{
 			// error getting contacts

@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 	/**
 		The MIT License (MIT)
 		
@@ -31,6 +34,7 @@
     $ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+
 ?>
 <html>
     <head>
@@ -97,7 +101,7 @@
                 <!-- Main content -->
                 <section class="content">
 	                <!-- check permissions -->
-	                <?php if ($user->userHasBasicPermission()) { ?>
+	                <?php //if ($user->userHasBasicPermission()) { ?>
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="box box-default">
@@ -106,26 +110,32 @@
                                 </div><!-- /.box-header -->
 								
                                <div class="box-body table">	
+									
 									<?php
-										$output = $ui->API_GetLeads();
+
+									//var_dump($user->getUserName());
+
+									$output = $ui->API_GetLeads();
+									//var_dump($output);
+
 										if ($output->result=="success") {
 										# Result was OK!
-											echo $ui->GetContacts();
+											echo $ui->GetContacts($user->getUserName());
 										} else {
 										   # An error occured
 											echo $output->result;
-										 }
+										}
 									?>
                                 </div><!-- /.box-body -->
-					<?php } ?>
+					<?php //} ?>
                             
                             </div><!-- /.box -->
                         </div>
                     </div>
                     <!-- user not authorized -->
 					<?php 
-					if ($user->userHasWritePermission()) { ?>
-					<?php } else { print $ui->getUnauthotizedAccessMessage(); } ?>
+					//if ($user->userHasWritePermission()) { ?>
+					<?php //} else { print $ui->getUnauthotizedAccessMessage(); } ?>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
@@ -152,6 +162,7 @@
 
 	        // load datatable of customer.
             $(document).ready(function() {
+
 			    // uncheck individual customer
 				$('input[type=checkbox]').on("ifChecked", function(e) {
 					if (e.currentTarget.value != 'on') selectedCustomers.push(e.currentTarget.value);
