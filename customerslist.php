@@ -140,6 +140,102 @@ error_reporting(E_ALL);
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 
+<!-- View Modal -->
+	<div id="view-contact-modal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title"><b>Contact/Lead Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="output-message-no-result hide">
+		      	<div class="alert alert-warning alert-dismissible" role="alert">
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				  <strong>Notice!</strong> There was an error retrieving " style="font-weight: normal;padding-left: 20px;". Either error or no result.
+				</div>
+			</div>
+	        <div id="content" class="view-form hide">
+			    <div class="form-horizontal">
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">List ID:
+			    			<span class="info-list-id"></span>
+			    		</label>
+			    	</div>
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">Full Name:
+			    			<span class="info-fullname"></span>
+			    		</label>
+			    	</div>
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">Phone Number:
+			    			<span class="info-phonenumber"></span>
+			    		</label>
+			    	</div>
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">Alternative Phone Number:
+			    			<span class="info-altphonenumber"></span>
+			    		</label>
+			    	</div>
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">Email:
+			    			<span class="info-email"></span>
+			    		</label>
+			    	</div>
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">Address 1:
+			    			<span class="info-address1"></span>
+			    		</label>
+			    	</div>
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">Address 2:
+			    			<span class="info-address2"></span>
+			    		</label>
+			    	</div>
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">Address 3:
+			    			<span class="info-address3"></span>
+			    		</label>
+			    	</div>
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">City:
+			    			<span class="info-city"></span>
+			    		</label>
+			    	</div>
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">Province:
+			    			<span class="info-province"></span>
+			    		</label>
+			    	</div>
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">State:
+			    			<span class="info-state"></span>
+			    		</label>
+			    	</div>
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">Postal Code:
+			    			<span class="info-postalcode"></span>
+			    		</label>
+			    	</div>
+			    	<div class="row">
+			    		<label class="control-label col-lg-8">Gender:
+			    			<span class="info-gender"></span>
+			    		</label>
+			    	</div>
+			    </div>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	    <!-- End of modal content -->
+	  </div>
+	</div>
+	<!-- End of modal -->
+
         <!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 		<?php 
@@ -232,6 +328,105 @@ error_reporting(E_ALL);
 				$("#createCustomerCancelButton").click(function(e) { location.reload(); });
 				$('#create-client-dialog-modal').on('hidden.bs.modal', function () { if (clientCreated) { location.reload(); } });
 
+
+				//VIEW CONTACT INFO
+				$('.view-contact').click(function(){
+					var cont_id = $(this).attr('data-id');
+					// alert(camp_id);
+					$.ajax({
+					  url: "./php/ViewContact.php",
+					  type: 'POST',
+					  data: { 
+					  	contact_id :cont_id,
+					  },
+					  dataType: 'json',
+					  success: function(data) {
+					  		// console.log(data);
+					  		if(data){
+					  			
+								$('.output-message-no-result').addClass('hide');
+								$('.view-form').removeClass('hide');
+
+								// set info here
+								var fullname = data.first_name + " " + data.middle_initial + " " + data.last_name;
+								var blank_data = " - - - - - ";
+
+								$('.info-list-id').text(data.list_id);
+								$('.info-fullname').text(fullname);
+								$('.info-phonenumber').text(data.phone_number);
+
+								if(data.alt_phone == ""){
+									$('.info-altphonenumber').text(blank_data);
+								}else{
+									$('.info-altphonenumber').text(data.alt_phone);
+								}
+
+								if(data.email == ""){
+									$('.info-email').text(blank_data);
+								}else{
+									$('.info-email').text(data.email);
+								}
+
+								if(data.address1 == ""){
+									$('.info-address1').text(blank_data);
+								}else{
+									$('.info-address1').text(data.address1);
+								}
+
+								if(data.address2 == ""){
+									$('.info-address2').text(blank_data);
+								}else{
+									$('.info-address2').text(data.address2);
+								}
+
+								if(data.address3 == ""){
+									$('.info-address3').text(blank_data);
+								}else{
+									$('.info-address3').text(data.address3);
+								}
+
+								if(data.city == ""){
+									$('.info-city').text(blank_data);
+								}else{
+									$('.info-city').text(data.city);
+								}
+
+								if(data.province == ""){
+									$('.info-province').text(blank_data);
+								}else{
+									$('.info-province').text(data.province);
+								}
+
+								if(data.state == ""){
+									$('.info-state').text(blank_data);
+								}else{
+									$('.info-state').text(data.state);
+								}
+								
+								if(data.postal_code == ""){
+									$('.info-postalcode').text(blank_data);
+								}else{
+									$('.info-postalcode').text(data.postal_code);
+								}
+
+								if(data.gender == ""){
+									$('.info-gender').text(blank_data);
+								}else{
+									$('.info-gender').text(data.gender);
+								}
+
+								$('.output-message-no-result').addClass('hide');
+								$('.view-form').removeClass('hide');
+
+								$('#view-contact-modal').modal('show');
+
+					  		}else{
+								$('.output-message-no-result').removeClass('hide');
+								$('.view-form').addClass('hide');
+					  		}
+					    }
+					});
+				});
 
 				//EDIT CONTACT
 				 $(".edit-contact").click(function(e) {

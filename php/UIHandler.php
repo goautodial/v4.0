@@ -1053,6 +1053,21 @@ error_reporting(E_ERROR | E_PARSE);
      * @param $status Int the status of the user (enabled=1, disabled=0)
      * @return String a HTML representation of the action associated with a user in the admin panel.
      */
+    private function ActionMenuForContacts($lead_id) {
+		return '<div class="btn-group">
+	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+						<span class="caret"></span>
+						<span class="sr-only">Toggle Dropdown</span>
+	                </button>
+	                <ul class="dropdown-menu" role="menu">
+	                	<li><a class="view-contact" href="#" data-id="'.$lead_id.'">'.$this->lh->translationFor("View Contact Info").'</a></li>
+	                    <li><a class="edit-contact" href="'.$lead_id.'">'.$this->lh->translationFor("Edit Contact Details").'</a></li>
+	                    <li class="divider"></li>
+	                    <li><a class="delete-contact" href="'.$lead_id.'">'.$this->lh->translationFor("Delete Contact").'</a></li>
+	                </ul>
+	            </div>';
+	}
 	private function getUserActionMenuForUser($userid, $username, $status) {
 		$textForStatus = $status == "Y" ? $this->lh->translationFor("disable") : $this->lh->translationFor("enable");
 		$actionForStatus = $status == "Y" ? "deactivate-user-action" : "activate-user-action";
@@ -1625,6 +1640,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$telephonyArea = "";
 		$settings = "";
 		$callreports = "";
+		$loadleads = "";
 		if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
 			
 			$modulesWithSettings = $mh->modulesWithSettings();
@@ -1661,6 +1677,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$callreports .= $this-> getSidebarItem("./callreports.php", "tasks", $this->lh->translationFor("reports_and_go_analytics"));
 			$callreports .= '</ul></li>';
 			
+			$loadleads .= $this->getSidebarItem("loadleads.php", "sort-alpha-asc", $this->lh->translationFor("load_leads"));
 		}
 		
 		$agentmenu = NULL;
@@ -1697,12 +1714,12 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= $settings;
 		$result .= $callreports;
 		$result .= $adminArea;
-		
+		$result .= $loadleads;
 		// menu for agents
 		$result .= $agentmenu;
 
         // ending: contacts, messages, notifications, tasks, events.
-        $result .= $this->getSidebarItem("loadleads.php", "sort-alpha-asc", $this->lh->translationFor("load_leads"));
+        
         $result .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
 		$result .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
         $result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
@@ -4607,7 +4624,7 @@ error_reporting(E_ERROR | E_PARSE);
 	$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass;
-	$postfields["goVarLimit"] = "100";
+	$postfields["goVarLimit"] = "";
 	$postfields["user_id"] = $userName;
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
@@ -4623,7 +4640,30 @@ error_reporting(E_ERROR | E_PARSE);
 	$output = json_decode($data); 	
 	 	
 		return $output;
-	}	
+	}
+
+	// get specific contact info
+	public function API_GetLeadInfo(){
+		$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = goUser; #Username goes here. (required)
+        $postfields["goPass"] = goPass; #Password goes here. (required)
+        $postfields["goAction"] = "goGetLeadsInfo"; #action performed by the [[API:Functions]]. (required)
+        $postfields["responsetype"] = responsetype; #json. (required)
+        $postfields["lead_id"] = $lead_id; #Desired exten ID. (required)
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+
+         return $output;
+	}
 	
 	// get contact list
 	public function GetContacts($userid) {
@@ -4634,11 +4674,11 @@ error_reporting(E_ERROR | E_PARSE);
 	       $hideOnLow = array( "List ID", "Phone Number", "active");
 		   $result = $this->generateTableHeaderWithItems($columns, "contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
-			//for($i=0;$i<=count($output->list_id);$i++){
-		   	for($i=0;$i<=500;$i++){
+			for($i=0;$i<=count($output->list_id);$i++){
+		   	//for($i=0;$i<=500;$i++){
 				if($output->phone_number[$i] != ""){
 
-				$action = $this->getUserActionMenuForT_User($output->list_id[$i]);
+				$action = $this->ActionMenuForContacts($output->lead_id[$i]);
 				$result .= '<tr>
 								<td>' .$output->list_id[$i]. '</td> 
 								<td>' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>

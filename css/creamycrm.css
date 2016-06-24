@@ -4182,3 +4182,9 @@ select{
   font-weight: normal;
 }
 
+label span{
+    display: inline-block;
+    width: 35%;
+    vertical-align:top;
+    font-weight: normal;
+}
