@@ -1702,6 +1702,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= $agentmenu;
 
         // ending: contacts, messages, notifications, tasks, events.
+        $result .= $this->getSidebarItem("loadleads.php", "sort-alpha-asc", $this->lh->translationFor("load_leads"));
         $result .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
 		$result .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
         $result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
