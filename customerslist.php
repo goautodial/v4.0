@@ -436,15 +436,14 @@ error_reporting(E_ALL);
 					//$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				 });
-				
 
 				//DELETE CONTACT
 				 $(".delete-contact").click(function(e) {
 					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
 					e.preventDefault();
 					if (r == true) {
-						var groupid = $(this).attr('href');
-						$.post("./php/DeleteTelephonyInbound.php", { groupid: groupid } ,function(data){
+						var leadid = $(this).attr('href');
+						$.post("./php/DeleteContact.php", { leadid: leadid } ,function(data){
 							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
 							else { alert ("<?php $lh->translateText("unable_delete_list"); ?>"); }
 						});
@@ -454,16 +453,6 @@ error_reporting(E_ALL);
 
 			});
 			
-            // function to delete a customer with the "delete" button.
-            function deleteCustomer(customerId, customerType) {
-				var r = confirm("¿Estás seguro? Esta acción no puede deshacerse");
-				if (r == true) {
-					$.post("./php/DeleteCustomer.php", { "customerid": customerId, "customer_type": customerType }, function(data){
-						if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') { location.reload(); }
-						else { alert(data); }
-					});
-				}
-            }
             // function to create an event associated with a customer.
             function createEventForCustomer(customerId, customerType) {
 				$.post("./php/CreateEvent.php", { "customerid": customerId, "customer_type": customerType }, function(data){

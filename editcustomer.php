@@ -316,12 +316,12 @@ if (isset($_POST['lead_id'])) { $lead_id = $_POST["lead_id"]; }
 					e.preventDefault();
 					if (r == true) {
 						var customerid = $(this).attr('href');
-						$.post("./php/DeleteCustomer.php", $("#modifycustomerform").serialize() ,function(data){
+						$.post("./php/DeleteContact.php", $("#modifycustomerform").serialize() ,function(data){
 							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
-								alert("<?php $lh->translateText("customer_successfully_deleted"); ?>");
+								alert("<?php $lh->translateText("Contact Successfully Deleted"); ?>");
 								window.location = "index.php";
 							}
-							else { alert ("<?php $lh->translateText("unable_delete_customer"); ?>: "+data); }
+							else { alert ("<?php $lh->translateText("Unable to Delete Contact"); ?>: "+data); }
 						});
 					}
 				 });
