@@ -242,6 +242,7 @@
 							<label class="col-sm-4 control-label" for="password" style="padding-top:0px;">* Password: </label>
 							<div class="col-sm-8" style="display:inline-flex;">
 								<input type="password" class="form-control" name="password" id="password" placeholder="Password" value="Go2016" required>
+								
 							</div> 
 						</div>
 						<div class="form-group">		
@@ -249,6 +250,9 @@
 							<div class="col-sm-8 wizard-inline">
 								<input type="password" class="form-control" id="conf_password" placeholder="Password" value="Go2016" required>
 							</div> 
+						</div>
+						<div class="row">
+							<p class="col-sm-12"><small class="pull-right" style="padding-right:20px;"><i><span id="pass_result"></span></i></small></p>
 						</div>
 
 						<div id="phone_div" style="display:none;">
@@ -270,8 +274,8 @@
 							<label class="col-sm-4 control-label" for="status" style="padding-top:15px;">Active: </label>
 							<div class="col-sm-4 wizard-inline">
 								<select name="status" class="form-control">
-									<option value="N" >No</option>
-									<option value="Y" selected>Yes</option>								
+									<option value="Y" selected>Yes</option>		
+									<option value="N" >No</option>						
 								</select>
 							</div>
 						</div>
@@ -290,7 +294,21 @@
 		<!-- Forms and actions -->
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
-		<script type="text/javascript">
+	
+	<script type="text/javascript">
+
+		function checkPasswordMatch() {
+		    var password = $("#password").val();
+		    var confirmPassword = $("#conf_password").val();
+
+		    if (password != confirmPassword)
+		        $("#pass_result").html("<font color='red'>Passwords Do Not Match! <font size='5'>✖</font> </font>");
+		    else
+		    	 $("#pass_result").html("<font color='green'>Passwords Match! <font size='5'>✔</font> </font>");
+		}
+
+	//-------------------------
+
 			$(document).ready(function() {
 				$('#T_users').dataTable();
 
@@ -355,6 +373,9 @@
             });
 		
 		
+		/* password confirmation */
+		$("#password").keyup(checkPasswordMatch);
+		$("#conf_password").keyup(checkPasswordMatch);
 
 		/* additional number custom */
 			$('#seats').on('change', function() {
