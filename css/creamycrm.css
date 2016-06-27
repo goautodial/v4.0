@@ -4183,8 +4183,9 @@ select{
 }
 
 label span{
-    display: inline-block;
+    display: inline-flex;
     width: 35%;
     vertical-align:top;
+    padding-left: 10px;
     font-weight: normal;
 }

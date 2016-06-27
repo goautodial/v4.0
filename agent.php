@@ -204,11 +204,11 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 							<!-- END date widget    -->
 						</div>
 			        </div><!-- /.row -->                    
-
+			       
                      <!-- Statistics -->
                     <div class="row">
                         <!-- Left col -->
-                        <section class="col-md-7"> 
+                        <section class="col-md-4"> 
 				              <div class="box box-default">
 				                <div class="box-body no-padding">
 				                  <!-- THE CALENDAR -->
@@ -256,7 +256,6 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 								</ul>
 							</div>
 					</div>
-					
 					<div class="modal fade" id="add_campaigns_modal" name="add_campaigns_modal" tabindex="-1" role="dialog" aria-hidden="true">
 			        <div class="modal-dialog">
 			            <div class="modal-content">
