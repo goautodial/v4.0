@@ -45,6 +45,15 @@
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+
+        <!-- preloader -->
+        <link rel="stylesheet" href="css/customizedLoader.css">
+
+        <script type="text/javascript">
+			$(window).load(function() {
+				$(".preloader").fadeOut("slow");
+			})
+		</script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">

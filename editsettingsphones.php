@@ -50,6 +50,14 @@ include('php/goCRMAPISettings.php');
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 
+        <!-- preloader -->
+        <link rel="stylesheet" href="css/customizedLoader.css">
+
+        <script type="text/javascript">
+			$(window).load(function() {
+				$(".preloader").fadeOut("slow");
+			})
+		</script>
     </head>
     <style>
     	select{

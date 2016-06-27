@@ -47,9 +47,19 @@
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+        
+        <!-- preloader -->
+        <link rel="stylesheet" href="css/customizedLoader.css">
+
+        <script type="text/javascript">
+			$(window).load(function() {
+				$(".preloader").fadeOut("slow");
+			})
+		</script>
+
     </head>
     <?php print $ui->creamyBody(); ?>
-        <div class="wrapper">
+        <div class="wrapper">	
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
             <!-- Left side column. contains the logo and sidebar -->
@@ -309,25 +319,25 @@
 					<div class="wizard-step">
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="groupid">Group ID:</label>
-							<div class="col-sm-8">
+							<div class="col-sm-7">
 								<input type="text" name="groupid" id="groupid" class="form-control" placeholder="Group ID" maxlength="20" minlength="2" required title="No Spaces. 2-20 characters in length.">
 							</div>
 						</div>
 						<div class="form-group">		
 							<label class="col-sm-4 control-label" for="groupname">Group Name: </label>
-							<div class="col-sm-8">
+							<div class="col-sm-7">
 								<input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name" maxlength="20" minlength="2" required title="2-20 characters in length">
 							</div>
 						</div>
 						<div class="form-group">		
 							<label class="col-sm-4 control-label" for="color">Group Color: </label>
-							<div class="col-sm-8">
+							<div class="col-sm-7">
 								<input type="color" class="form-control" id="color" name="color" value="#FFFFFF">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="user_group">User Group: </label>
-							<div class="col-sm-8">
+							<div class="col-sm-7">
 								<select id="user_group" class="form-control" name="user_group">
 									<option value="ADMIN">GOAUTODIAL ADMINISTRATORS</option>
 									<option value="AGENTS">GOAUTODIAL AGENTS</option>
@@ -337,7 +347,7 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="active">Active: </label>
-							<div class="col-sm-8">
+							<div class="col-sm-2">
 								<select name="active" id="active" class="form-control">
 									<option value="N" selected>No</option>
 									<option value="Y">Yes</option>								
@@ -346,13 +356,13 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="web_form">Web Form: </label>
-							<div class="col-sm-8">
+							<div class="col-sm-7">
 								<input type="url" name="web_form" id="web_form" class="form-control" placeholder=""  required title="Must be a valid URL">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="ingroup_voicemail">Voicemail: </label>
-							<div class="col-sm-8">	
+							<div class="col-sm-7">	
 								<select name="ingroup_voicemail" id="ingroup_voicemail" class="form-control">
 									<?php
 										if($voicemails == NULL){
@@ -374,7 +384,7 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="next_agent_call">Next Agent Call: </label>
-							<div class="col-sm-8">	
+							<div class="col-sm-4">	
 								<select name="next_agent_call" id="next_agent_call" class="form-control">
 										<option value="random" > random </option>
 										<option value="oldest_call_start" > oldest_call_start </option>
@@ -391,7 +401,7 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="display">Fronter Display: </label>
-							<div class="col-sm-8">
+							<div class="col-sm-2">
 								<select name="display" id="display" class="form-control">
 									<option value="Y">Yes</option>	
 									<option value="N" selected>No</option>
@@ -400,7 +410,7 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="script">Script: </label>
-							<div class="col-sm-8">	
+							<div class="col-sm-5">	
 								<select name="script" id="script" class="form-control">
 									<option value="NONE">--- NONE --- </option>
 									<?php
@@ -417,7 +427,7 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="call_launch">Get Call Launch: </label>
-							<div class="col-sm-8">	
+							<div class="col-sm-3">	
 								<select name="call_launch" id="call_launch" class="form-control">
 										<option value="NONE" > NONE </option>
 										<option value="SCRIPT" > SCRIPT </option>
@@ -905,16 +915,22 @@
 
 <!-- END OF TELEPHONY INBOUND MODALS -->
 
-		<script>
-			$(document).ready(function(){
+        <!-- wizard -->
+		<script src="js/easyWizard.js" type="text/javascript"></script>
+ 		<script type="text/javascript">
+			$(document).ready(function() {
+
 				$(".bottom-menu").on('mouseenter mouseleave', function () {
 				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 				});
-			});
-		</script>
-		<script src="js/easyWizard.js" type="text/javascript"></script> 
-		<script type="text/javascript">
-			$(document).ready(function() {
+
+			/*preloader
+            	$(".fakeloader").fakeLoader({
+                    timeToHide:1200,
+                    bgColor:"#9b59b6",
+                    spinner:"spinner7"
+                });
+			*/
 			//loads datatable functions
 				$('#table_ingroup').dataTable();
 				$('#table_ivr').dataTable();

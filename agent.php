@@ -126,6 +126,14 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 	    <!-- fullCalendar 2.2.5 -->
 	    <script src="js/plugins/fullcalendar/moment.min.js" type="text/javascript"></script>
 	    <script src="js/plugins/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+	    <!-- preloader -->
+        <link rel="stylesheet" href="css/customizedLoader.css">
+
+        <script type="text/javascript">
+			$(window).load(function() {
+				$(".preloader").fadeOut("slow");
+			})
+		</script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">

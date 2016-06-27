@@ -87,11 +87,12 @@
   }
 
 .animate-header {
-    margin-left: 5%;
-    -webkit-animation: rightThenLeft 4s linear;
+    margin-left: 3%;
+    -webkit-animation: rightThenLeft 3s linear;
 }
 
 @-webkit-keyframes rightThenLeft {
     0%   {margin-left:0;}
-    30%  {margin-left:5%;}
+    30%  {margin-left:3%;}
 }
+

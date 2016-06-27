@@ -1375,7 +1375,15 @@ error_reporting(E_ERROR | E_PARSE);
 	                    </ul>
 	                </div>
 	            </nav>
-	        </header>';
+	        </header>
+	        <div class="preloader">
+    			<center>
+    					<img src="'.$logo.'"/>
+    					<span class="dots">
+    					<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
+    					</span>
+    			</center>
+    		</div>';
 	}
 	
 	/**
