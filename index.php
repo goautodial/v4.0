@@ -126,7 +126,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
-			$(window).load(function() {
+			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
 			})
 		</script>
