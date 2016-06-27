@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
+/*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL);*/
 	/**
 		The MIT License (MIT)
 		
@@ -82,7 +82,7 @@ error_reporting(E_ALL);
         <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
-			$(window).load(function() {
+			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
 			})
 		</script>

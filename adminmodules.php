@@ -60,6 +60,14 @@
           <script src="js/html5shiv.js"></script>
           <script src="js/respond.min.js"></script>
         <![endif]-->
+        <!-- preloader -->
+        <link rel="stylesheet" href="css/customizedLoader.css">
+
+        <script type="text/javascript">
+            $(window).ready(function() {
+                $(".preloader").fadeOut("slow");
+            })
+        </script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <!-- header logo: style can be found in header.less -->

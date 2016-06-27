@@ -1,4 +1,5 @@
 
+
 <?php
 /*
 ini_set('display_errors', 1);
@@ -72,7 +73,7 @@ if (isset($_POST["did"])) {
         <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
-			$(window).load(function() {
+			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
 			})
 		</script>

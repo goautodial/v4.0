@@ -92,7 +92,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
         <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
-			$(window).load(function() {
+			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
 			})
 		</script>

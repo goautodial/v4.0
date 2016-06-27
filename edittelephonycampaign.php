@@ -1,4 +1,5 @@
 
+
 <?php
 /*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -64,7 +65,7 @@ if (isset($_POST["leadfilter"])) {
         <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
-			$(window).load(function() {
+			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
 			})
 		</script>
