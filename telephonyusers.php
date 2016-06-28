@@ -113,22 +113,7 @@
 
     <div class="modal fade" id="wizard-modal" tabindex="-1"aria-labelledby="T_User" >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius:10px;">
-				
-				<!-- NOTIFICATIONS -->
-
-				<div class="output-message-success hide">
-					<div class="alert alert-success alert-dismissible" role="alert">
-					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					  <strong>Success!</strong> New Agent added.
-					</div>
-				</div>
-				<div class="output-message-error hide">
-					<div class="alert alert-danger alert-dismissible" role="alert">
-					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
-					</div>
-				</div>
+            <div class="modal-content" style="border-radius:5px;">
 				
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -164,10 +149,11 @@
 							<div class="col-sm-8" style="padding-top:10px;">
 								<select name="seats" id="seats" class="form-control">
 								<?php
-								for($i=1; $i <= count($output->userno); $i++){ ?>
+									for($i=1; $i <= 9; $i++){ 
+								?>
 									<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 								<?php
-								}
+									}
 								?>
 									<option value="custom_seats">Custom</option>
 								</select>
@@ -191,7 +177,7 @@
 						<div class="form-group" id="phone_logins_form" style="display:none;">
 							<label class="col-sm-4 control-label" for="phone_logins" style="padding-top:15px;">* Phone Login: </label>
 							<div class="col-sm-8" style="padding-top:10px;">
-								<input type="number" name="phone_logins" id="phone_logins" class="form-control" placeholder="eg. 8001" pattern=".{3,}" title="Minimum of 3 characters">
+								<input type="number" name="phone_logins" id="phone_logins" class="form-control" placeholder="eg. 8001" pattern=".{3,}" title="Minimum of 3 characters" required>
 							</div>
 						</div>
 					</div>
@@ -216,15 +202,16 @@
 						$x = 0;
 						for($i=0; $i < $max; $i++){
 							//echo $max-$x;
-							$agent = substr($output->full_name[$max-$x], 0, 5);
-							if($agent == "Agent"){
-								$get_last = substr($output->full_name[$max-$x], -2);
+							$agent = substr($output->userno[$max-$x], 0, 5);
+							if($agent == "agent"){
+								$get_last = substr($output->userno[$max-$x], -2);
 							}else{
 								$x = $x+1;
 							}
 						}
 
 						$agent_num = $get_last + 1;
+
 						$num_padded = sprintf("%03d", $agent_num);
 						
 						$fullname = "Agent ".$num_padded;
@@ -284,6 +271,7 @@
 							<div class="col-sm-4 wizard-inline">
 								<select name="status" class="form-control">
 									<option value="Y" selected>Yes</option>		
+			
 									<option value="N" >No</option>						
 								</select>
 							</div>
@@ -293,6 +281,25 @@
 		
 				</div> <!-- end of modal body -->
 				
+				<!-- NOTIFICATIONS -->
+				<div id="notifications">
+					<div class="output-message-success" style="display:none;">
+						<div class="alert alert-success alert-dismissible" role="alert">
+						  <strong>Success!</strong> New Agent added.
+						</div>
+					</div>
+					<div class="output-message-error" style="display:none;">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+						  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
+						</div>
+					</div>
+					<div class="output-message-incomplete" style="display:none;">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+						  Please fill-up all the fields correctly and do not leave any fields with (<strong> * </strong>) blank.
+						</div>
+					</div>
+				</div>
+
 				<div class="modal-footer wizard-buttons">
 					<!-- The wizard button will be inserted here. -->
 				</div>
@@ -322,15 +329,23 @@
 				$('#T_users').dataTable();
 
 		// for easy wizard 
+			var form = document.getElementById('create_form');
 			var validate_wizard = 0;
+			
+			var generate_phone_logins = document.getElementById('generate_phone_logins').value;
+			var phone_logins = document.getElementById('phone_logins').value;
+			var phone_pass = document.getElementById('phone_pass').value;
+
+			var password = document.getElementById('password').value;
+			var conf_password = document.getElementById('conf_password').value;
 
 			$("#wizard-modal").wizard({
-				onnext:function(){
-					
-					var generate_phone_logins = document.getElementById('generate_phone_logins').value;
 
+				onnext:function(){		
+
+					var generate_phone_logins = document.getElementById('generate_phone_logins').value;
 					var phone_logins = document.getElementById('phone_logins').value;
-					
+
 					if(generate_phone_logins == "Y"){
 						document.getElementById("phone_login1").value = phone_logins;
 						$('#phone_div').show();
@@ -350,33 +365,66 @@
 					}
 					document.getElementById("display_user_group").innerHTML =  user_group;
 
-					
 				},
                 onfinish:function(){
                 
                 /* validate required fields
 					- phone_logins if generate_phone_logins = Y
 					- phone_password if generate_phone_logins = Y
-					- number of seats if additional seat(s) = custom
+					- password and conf_password confirmation are equal
 					- 
 				*/
-					$.ajax({
-						/*url: ".\php\AddCampaign.php",*/
-						url: "./php/CreateTelephonyUser.php",
-						type: 'POST',
-						data: $("#create_form").serialize(),
-						success: function(data) {
-						  // console.log(data);
-							  if(data == 1){
-								  $('.output-message-success').removeClass('hide');
-								  $('.output-message-error').addClass('hide');
-								  window.location = window.location.href;
-							  }else{
-								  $('.output-message-error').removeClass('hide');
-								  $('.output-message-success').addClass('hide');
-							  }
+				var generate_phone_logins = document.getElementById('generate_phone_logins').value;
+				var phone_logins = document.getElementById('phone_logins').value;
+				var phone_pass = document.getElementById('phone_pass').value;
+
+				var user_form = document.getElementById('user_form').value;
+				var fullname = document.getElementById('fullname').value;
+				var password = document.getElementById('password').value;
+				var conf_password = document.getElementById('conf_password').value;
+
+					if(generate_phone_logins == "Y"){
+						if(phone_logins == ""){
+							validate_wizard = 1;
 						}
-					});
+						if(phone_pass == ""){
+							validate_wizard = 1;
+						}
+					}
+
+					if(user_form == ""){
+						validate_wizard = 1;
+					}
+
+					if(fullname == ""){
+						validate_wizard = 1;
+					}
+					
+					if(password != conf_password || password == ""){
+						validate_wizard = 1;
+					}
+
+					if(validate_wizard == 0){
+						//alert("User Created!");
+						$.ajax({
+							url: "./php/CreateTelephonyUser.php",
+							type: 'POST',
+							data: $("#create_form").serialize(),
+							success: function(data) {
+							  // console.log(data);
+								  if(data == 1){
+								  	  $('.output-message-success').show().focus().delay(2000).fadeOut().queue(function(n){$(this).hide(); n();});
+									  window.setTimeout(function(){location.reload()},3000)
+								  }else{
+									  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+								  }
+							}
+						});
+					}else{
+						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+						validate_wizard = 0;
+					}
+
                 }
 				
             });

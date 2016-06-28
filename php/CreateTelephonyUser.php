@@ -6,24 +6,21 @@
 	 */
 require_once('goCRMAPISettings.php');	
 
-$validate = 0;	
-    if($_POST['phone_logins'] == ""){
-        $validate = 1;
-    }
-
-if($validate == 0){
 	$url = gourl."/goUsers/goAPI.php"; # URL to GoAutoDial API file
 	$postfields["goUser"] 			= goUser; #Username goes here. (required)
 	$postfields["goPass"] 			= goPass; #Password goes here. (required)
 	$postfields["goAction"] 		= "goAddUser"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] 	= responsetype; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
+	
 	$postfields["user"] 			= $_POST['user_form']; 
 	$postfields["pass"] 			= $_POST['password']; 
 	$postfields["full_name"] 		= $_POST['fullname']; 
 	$postfields["user_group"] 		= $_POST['user_group']; 
 	$postfields["active"] 			= $_POST['status']; 
-	
+	$postfields["seats"]			= $_POST["seats"];
+	$postfields["phone_login"]		= $_POST["phone_logins"];
+	$postfields["phone_pass"]		= $_POST["phone_pass"];
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -49,5 +46,5 @@ if($validate == 0){
 	}
 
 	echo $status;
-}
+
 ?>

@@ -4651,7 +4651,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	// get specific contact info
-	public function API_GetLeadInfo(){
+	public function API_GetLeadInfo($lead_id){
 		$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)

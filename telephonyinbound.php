@@ -286,7 +286,7 @@
 	<!-- ADD INGROUP MODAL -->
 		<div class="modal fade" id="add_ingroups" tabindex="-1" aria-labelledby="ingroup_modal" >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius:10px;">
+            <div class="modal-content" style="border-radius:5px;">
 			
 			<!-- NOTIFICATIONS -->
 				<div class="output-message-success hide">
@@ -456,7 +456,7 @@
 	<!-- ADD IVR MODAL -->
 		<div class="modal fade" id="add_ivr" tabindex="-1" aria-labelledby="ivr_modal" >
         <div class="modal-dialog" role="document" style="width: 800px;">
-            <div class="modal-content" style="border-radius:10px;">
+            <div class="modal-content" style="border-radius:5px;">
             	<!-- NOTIFICATIONS -->
 
 					<div class="output-message-success hide">
@@ -670,7 +670,7 @@
 	<!-- ADD DID MODAL -->
 		<div class="modal fade" id="add_phonenumbers" tabindex="-1" aria-labelledby="did_modal" >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius:10px;">
+            <div class="modal-content" style="border-radius:5px;">
 				<div class="modal-header">
 					
 					<!-- NOTIFICATIONS -->
