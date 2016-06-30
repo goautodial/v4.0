@@ -1690,8 +1690,8 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		$agentmenu = NULL;
 		if($userrole == CRM_DEFAULTS_USER_ROLE_AGENT){
-			$agentmenu .= $this-> getSidebarItem("", "book", $this->lh->translationFor("scripts"));
-			$agentmenu .= $this-> getSidebarItem("", "tasks", $this->lh->translationFor("Custom Form"));
+			//$agentmenu .= $this-> getSidebarItem("", "book", $this->lh->translationFor("scripts"));
+			//$agentmenu .= $this-> getSidebarItem("", "tasks", $this->lh->translationFor("Custom Form"));
 		}
 
 		// get customer types
@@ -1731,7 +1731,7 @@ error_reporting(E_ERROR | E_PARSE);
         $result .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
 		$result .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
         $result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
-		$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
+		//$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
         $result .= $this->getSidebarItem("notifications.php", "exclamation", $this->lh->translationFor("notifications"), $numNotifications, "orange");
         $result .= $this->getSidebarItem("tasks.php", "tasks", $this->lh->translationFor("tasks"), $numTasks, "red");
         
@@ -2910,7 +2910,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       	        
 		        $result .= "<tr>
 	                     <td class='hide-on-low'>".$output->userno[$i]."</td>
-						 <td><a class=\"edit-T_user\" href=".$output->userno[$i].">".$output->full_name[$i]."</a></td>";
+						 <td><a class='edit-T_user' href=".$output->userno[$i].">".$output->full_name[$i]."</a></td>";
 	             $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
 	                     <td class='hide-on-low'>".$output->active[$i]."</td>
 	                     <td style='width: 200px;'>".$action."</td>
@@ -2928,7 +2928,42 @@ error_reporting(E_ERROR | E_PARSE);
        }
 	}
 	
-	
+	// API to get user groups
+
+	public function API_goGetUserGroupsList() {
+		$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = goUser; #Username goes here. (required)
+        $postfields["goPass"] = goPass; #Password goes here. (required)
+        $postfields["goAction"] = "goGetUserGroupsList"; #action performed by the [[API:Functions]]. (required)
+        $postfields["responsetype"] = "json"; #json. (required)
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+
+         return $output;
+        /*
+        if ($output->result=="success") {
+           # Result was OK!
+                        for($i=0;$i<count($output->user_group);$i++){
+                                echo $output->user_group[$i]."</br>";
+                                echo $output->group_name[$i]."</br>";
+                                echo $output->group_type[$i]."</br>";
+                                echo $output->forced_timeclock_login[$i]."</br>";
+                        }
+         } else {
+           # An error occured
+                echo "The following error occured: ".$results["message"];
+        }
+		*/
+	}
 	/**
      * Returns a HTML representation of the wizard form for Telephony Users
      * 

@@ -7,46 +7,22 @@
 require_once('goCRMAPISettings.php');
 	 
 $validate = 0;	
-    if($_POST['groupid'] == ""){
-        $validate = 1;
-    }
-    if($_POST['groupname'] == ""){
-        $validate = 1;
-    }
-    if($_POST['color'] == ""){
-        $validate = 1;
-    }
-    if($_POST['active'] == ""){
-        $validate = 1;
-    }
-    if($_POST['web_form'] == ""){
-        $validate = 1;
-    }
-    if($_POST['user_group'] == ""){
-        $validate = 1;
-    }
-    if($_POST['ingroup_voicemail'] == ""){
-        $validate = 1;
-    }
-    if($_POST['next_agent_call'] == ""){
-        $validate = 1;
-    }
-    if($_POST['display'] == ""){
-        $validate = 1;
-    }
-    if($_POST['script'] == ""){
-        $validate = 1;
-    }
-    if($_POST['call_launch'] == ""){
-        $validate = 1;
-    }
-    
+
 $color = $_POST["color"];
 $color = str_replace("#", '', $color);
-
-if($validate == 1){
-    echo "incomplete";
-}
+/*
+echo 'groupid:'.$_POST['groupid']; echo "<br/>";
+echo 'groupname:'.$_POST['groupname']; echo "<br/>";
+echo 'color:'.$color;  echo "<br/>";
+echo 'active:'.$_POST['active'];  echo "<br/>";
+echo 'webform:'.$_POST['web_form']; echo "<br/>";
+echo 'usergroup:'.$_POST['user_group'];  echo "<br/>";
+echo 'ingroupvoicemail:'.$_POST['ingroup_voicemail'];  echo "<br/>";
+echo 'nextagentcall:'.$_POST['next_agent_call']; echo "<br/>";
+echo 'display:'.$_POST['display']; echo "<br/>";
+echo 'script:'.$_POST['script'];  echo "<br/>";
+echo 'calllaunch:'.$_POST['call_launch']; echo "<br/>";
+*/
 
 if($validate == 0){
 	$url = gourl."/goInbound/goAPI.php"; # URL to GoAutoDial API file
@@ -96,4 +72,5 @@ if($validate == 0){
 
 	echo $status;
 }
+
 ?>

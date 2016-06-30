@@ -105,11 +105,15 @@
         </div><!-- ./wrapper -->
 	
 	<div class="action-button-circle" data-toggle="modal" data-target="#wizard-modal">
-		<?php print $ui->getCircleButton("calls", "plus"); ?>
+		<?php print $ui->getCircleButton("calls", "user-plus"); ?>
 	</div>
 	
 <!-- MODAL -->
-<?php $output = $ui->API_goGetAllUserLists();?>
+<?php 
+	$output = $ui->API_goGetAllUserLists();
+	$user_groups = $ui->API_goGetUserGroupsList();
+	$phones = $ui->API_getPhonesList();
+?>
 
     <div class="modal fade" id="wizard-modal" tabindex="-1"aria-labelledby="T_User" >
         <div class="modal-dialog" role="document">
@@ -131,9 +135,13 @@
 							<label class="col-sm-4 control-label" for="user_group" style="padding-top:15px;">User Group:</label>
 							<div class="col-sm-8" style="padding-top:10px;">
 								<select id="user_group" class="form-control" name="user_group">
-									<option value="AGENTS" selected>GOAUTODIAL AGENTS</option>
-									<option value="ADMIN">GOAUTODIAL ADMINISTRATORS</option>
-									<option value="SUPERVISOR">SUPERVISOR</option>
+									<?php
+										for($i=0;$i<count($user_groups->user_group);$i++){
+									?>
+										<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
+									<?php
+										}
+									?>
 								</select>
 							</div>
 						</div>
@@ -174,10 +182,17 @@
 								</select>
 							</div>
 						</div>
+						<?php
+							$latest_phone = max($phones->extension);
+							//var_dump($latest_phone);
+							//var_dump($phones->extension);
+							$latest_phone = $latest_phone + 1;
+							
+						?>
 						<div class="form-group" id="phone_logins_form" style="display:none;">
 							<label class="col-sm-4 control-label" for="phone_logins" style="padding-top:15px;">* Phone Login: </label>
 							<div class="col-sm-8" style="padding-top:10px;">
-								<input type="number" name="phone_logins" id="phone_logins" class="form-control" placeholder="eg. 8001" pattern=".{3,}" title="Minimum of 3 characters" required>
+								<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" value="<?php echo $latest_phone;?>" pattern=".{3,}" title="Minimum of 3 characters" required>
 							</div>
 						</div>
 					</div>

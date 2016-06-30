@@ -272,6 +272,7 @@
 	 * APIs for getting lists for the some of the forms
 	 */
 	$users = $ui->API_goGetAllUserLists();
+	$user_groups = $ui->API_goGetUserGroupsList();
 	$ingroups = $ui->API_getInGroups();
 	$voicemails = $ui->API_goGetVoiceMails();
 	$phones = $ui->API_getPhonesList();
@@ -287,46 +288,32 @@
 		<div class="modal fade" id="add_ingroups" tabindex="-1" aria-labelledby="ingroup_modal" >
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius:5px;">
-			
-			<!-- NOTIFICATIONS -->
-				<div class="output-message-success hide">
-					<div class="alert alert-success alert-dismissible" role="alert">
-					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					  <strong>Success!</strong> New Agent added.
-					</div>
-				</div>
-				<div class="output-message-error hide">
-					<div class="alert alert-danger alert-dismissible" role="alert">
-					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					  <strong>Error: <div id="ingroup_result"></div></strong> Something went wrong please see input data on form or if agent already exists.
-					</div>
-				</div>
-				<div class="output-message-incomplete hide">
-					<div class="alert alert-danger alert-dismissible" role="alert">
-					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					  <strong>Incomplete!</strong> Something went wrong, please complete all the fields below.
-					</div>
-				</div>
+
 			<!-- Header -->
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="ingroup_modal">In-Group Wizard » Create New Ingroup</h4>
+					<h4 class="modal-title animate-header" id="ingroup_modal"><b>In-Group Wizard » Create New Ingroup</b></h4>
 				</div>
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
 				<form action="AddTelephonyIngroup.php" method="POST" id="create_ingroup" class="form-horizontal " role="form">
 				<!-- STEP 1 -->
 					<div class="wizard-step">
+						<div class="row" style="padding-top:10px;padding-bottom:10px;">
+							<p class="col-sm-12"><small><i> - - - All fields with ( </i></small> <b>*</b> <small><i> ) are Required Field.  - - -</i></small></p>
+						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="groupid">Group ID:</label>
+							<label class="col-sm-4 control-label" for="groupid">* Group ID:</label>
 							<div class="col-sm-7">
-								<input type="text" name="groupid" id="groupid" class="form-control" placeholder="Group ID" maxlength="20" minlength="2" required title="No Spaces. 2-20 characters in length.">
+								<input type="text" name="groupid" id="groupid" class="form-control" placeholder="Group ID" maxlength="20" minlength="2">
+								<span  style="color:red;"><small><i>* No Spaces. 2-20 characters in length.</i></small></span>
 							</div>
 						</div>
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="groupname">Group Name: </label>
+							<label class="col-sm-4 control-label" for="groupname">* Group Name: </label>
 							<div class="col-sm-7">
-								<input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name" maxlength="20" minlength="2" required title="2-20 characters in length">
+								<input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name" maxlength="20" minlength="2">
+								<span  style="color:red;"><small><i>* 2-20 characters in length</i></small></span>
 							</div>
 						</div>
 						<div class="form-group">		
@@ -339,9 +326,13 @@
 							<label class="col-sm-4 control-label" for="user_group">User Group: </label>
 							<div class="col-sm-7">
 								<select id="user_group" class="form-control" name="user_group">
-									<option value="ADMIN">GOAUTODIAL ADMINISTRATORS</option>
-									<option value="AGENTS">GOAUTODIAL AGENTS</option>
-									<option value="SUPERVISOR">SUPERVISOR</option>
+									<?php
+										for($i=0;$i<count($user_groups->user_group);$i++){
+									?>
+										<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
+									<?php
+										}
+									?>
 								</select>
 							</div>
 						</div>
@@ -349,15 +340,15 @@
 							<label class="col-sm-4 control-label" for="active">Active: </label>
 							<div class="col-sm-2">
 								<select name="active" id="active" class="form-control">
-									<option value="N" selected>No</option>
-									<option value="Y">Yes</option>								
+									<option value="Y" selected>Yes</option>
+									<option value="N">No</option>
 								</select>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="web_form">Web Form: </label>
+							<label class="col-sm-4 control-label" for="web_form">* Web Form: </label>
 							<div class="col-sm-7">
-								<input type="url" name="web_form" id="web_form" class="form-control" placeholder=""  required title="Must be a valid URL">
+								<input type="url" name="web_form" id="web_form" class="form-control" placeholder="Place a valid URL here... ">
 							</div>
 						</div>
 						<div class="form-group">
@@ -386,16 +377,16 @@
 							<label class="col-sm-4 control-label" for="next_agent_call">Next Agent Call: </label>
 							<div class="col-sm-4">	
 								<select name="next_agent_call" id="next_agent_call" class="form-control">
-										<option value="random" > random </option>
-										<option value="oldest_call_start" > oldest_call_start </option>
-										<option value="oldest_call_finish" > oldest_call_finish </option>
-										<option value="overall_user_level" > overall_user_level </option>
-										<option value="inbound_group_rank" > inbound_group_rank </option>
-										<option value="campaign_rank" > campaign_rank </option>
-										<option value="fewest_calls" > fewest_calls </option>
-										<option value="fewest_calls_campaign" > fewest_calls_campaign </option>
-										<option value="longest_wait_time" > longest_wait_time </option>
-										<option value="ring_all" > ring_all </option>
+										<option value="random"> Random </option>
+										<option value="oldest_call_start"> Oldest Call Start </option>
+										<option value="oldest_call_finish"> Oldest Call Finish </option>
+										<option value="overall_user_level"> Overall User Lever </option>
+										<option value="inbound_group_rank"> Inbound Group Rank </option>
+										<option value="campaign_rank"> Campaign Rank </option>
+										<option value="fewest_calls"> Fewest Calls </option>
+										<option value="fewest_calls_campaign"> Fewest Calls Campaign </option>
+										<option value="longest_wait_time"> Longest Wait Time </option>
+										<option value="ring_all"> Ring All </option>
 								</select>
 							</div>
 						</div>
@@ -403,8 +394,8 @@
 							<label class="col-sm-4 control-label" for="display">Fronter Display: </label>
 							<div class="col-sm-2">
 								<select name="display" id="display" class="form-control">
-									<option value="Y">Yes</option>	
 									<option value="N" selected>No</option>
+									<option value="Y">Yes</option>
 								</select>
 							</div>
 						</div>
@@ -429,12 +420,12 @@
 							<label class="col-sm-4 control-label" for="call_launch">Get Call Launch: </label>
 							<div class="col-sm-3">	
 								<select name="call_launch" id="call_launch" class="form-control">
-										<option value="NONE" > NONE </option>
-										<option value="SCRIPT" > SCRIPT </option>
-										<option value="WEBFORM" > WEBFORM </option>
-										<option value="WEBFORMTWO" > WEBFORMTWO </option>
-										<option value="FORM" > FORM </option>
-										<option value="EMAIL" > EMAIL </option>
+										<option value="NONE"> NONE </option>
+										<option value="SCRIPT"> SCRIPT </option>
+										<option value="WEBFORM"> WEBFORM </option>
+										<option value="WEBFORMTWO"> WEBFORMTWO </option>
+										<option value="FORM"> FORM </option>
+										<option value="EMAIL"> EMAIL </option>
 								</select>
 							</div>
 						</div>
@@ -443,7 +434,26 @@
 				</form>
 
 				</div> <!-- end of modal body -->
-				
+
+				<!-- NOTIFICATIONS -->
+				<div id="notifications">
+					<div class="output-message-success" style="display:none;">
+						<div class="alert alert-success alert-dismissible" role="alert">
+						  <strong>Success!</strong> New Ingroup added !
+						</div>
+					</div>
+					<div class="output-message-error" style="display:none;">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+						  <span id="ingroup_result"></span>
+						</div>
+					</div>
+					<div class="output-message-incomplete" style="display:none;">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+						  Please fill-up all the fields correctly and do not leave any fields with (<strong> * </strong>) blank.
+						</div>
+					</div>
+				</div>
+
 				<div class="modal-footer">
 					<!-- The wizard button will be inserted here. -->
 					<button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
@@ -610,9 +620,9 @@
 							<label class="col-sm-4 control-label" for="user_groups">User Groups: </label>
 							<div class="col-sm-8">
 								<select name="user_groups" id="user_groups" class="form-control">
-									<option value="ADMIN" > ADMIN - GOAUTODIAL ADMINISTRATORS </option>
-									<option value="AGENTS" > AGENTS - GOAUTODIAL AGENTS </option>
-									<option value="SUPERVISOR" > SUPERVISOR - SUPERVISOR </option>			
+									<option value="ADMIN"> ADMIN - GOAUTODIAL ADMINISTRATORS </option>
+									<option value="AGENTS"> AGENTS - GOAUTODIAL AGENTS </option>
+									<option value="SUPERVISOR"> SUPERVISOR - SUPERVISOR </option>			
 								</select>
 							</div>
 						</div>
@@ -924,13 +934,6 @@
 				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 				});
 
-			/*preloader
-            	$(".fakeloader").fakeLoader({
-                    timeToHide:1200,
-                    bgColor:"#9b59b6",
-                    spinner:"spinner7"
-                });
-			*/
 			//loads datatable functions
 				$('#table_ingroup').dataTable();
 				$('#table_ivr').dataTable();
@@ -1043,23 +1046,47 @@
 
 				// ajax commands for modals -
 				$('#submit_ingroup').click(function(){
-				$.ajax({
-					url: "./php/AddTelephonyIngroup.php",
-					type: 'POST',
-					data: $("#create_ingroup").serialize(),
-					success: function(data) {
-					  // console.log(data);
-						  if(data == "success"){
-							  $('.output-message-success').removeClass('hide');
-							  $('.output-message-error').addClass('hide');
-						  }
-						  else{
-							  $('.output-message-error').removeClass('hide');
-							  $("#ingroup_result").html(data); 
-							  $('.output-message-success').addClass('hide');
-						  }
+				
+				var validate_ingroup = 0;
+				var groupid = $("#groupid").val();
+				var groupname = $("#groupname").val();
+				var web_form = $("#web_form").val();
+				
+				if(groupid == ""){
+					validate_ingroup = 1;
+				}
+
+				if(groupname == ""){
+					validate_ingroup = 1;
+				}
+
+				if(web_form == ""){
+					validate_ingroup = 1;
+				}
+
+					if(validate_ingroup == 0){
+					//alert("Validated !");
+					
+						$.ajax({
+							url: "./php/AddTelephonyIngroup.php",
+							type: 'POST',
+							data: $("#create_ingroup").serialize(),
+							success: function(data) {
+							  // console.log(data);
+								  if(data == "success"){
+									  $('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+								  }
+								  else{
+									  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+									  $("#ingroup_result").html(data); 
+								  }
+							}
+						});
+					
+					}else{
+						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+						validate_ingroup = 0;
 					}
-				});
 				});
 				
 				$('#submit_did').click(function(){
