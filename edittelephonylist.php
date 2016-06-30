@@ -138,7 +138,7 @@ if (isset($_POST["listid"])) {
 								$desc_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("desc", "desc", "text", $ph, $vl, "tasks", "required"));
 								
 								
-								$url2 = "http://162.254.144.92/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+								$url2 = "http://69.46.6.35/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
 								$postfields2["goUser"] = "goautodial"; #Username goes here. (required)
 								$postfields2["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
 								$postfields2["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
