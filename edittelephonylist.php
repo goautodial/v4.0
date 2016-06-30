@@ -99,7 +99,7 @@ if (isset($_POST["listid"])) {
 					
 					if(isset($listid)) {
 						
-						$url = "https://encrypted.goautodial.com/goAPI/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
+						$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
 						$postfields["goUser"] = "admin"; #Username goes here. (required)
 						$postfields["goPass"] = "goautodial"; #Password goes here. (required)
 						$postfields["goAction"] = "goGetListInfo"; #action performed by the [[API:Functions]]. (required)

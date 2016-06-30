@@ -51,8 +51,16 @@ for($i=0;$i < count($output->list_id);$i++){
 	$address3 		= $output->address3[$i];
 	$city 			= $output->city[$i];
 	$state 			= $output->state[$i];
+	$country 		= $output->country[$i];
+	$gender 		= $output->gender[$i];
+	$data_of_birth 	= $output->data_of_birth[$i];
+	$comments 		= $output->comments[$i];
+	$title 			= $output->title[$i];
+	$call_count 	= $output->call_count[$i];
+	$last_local_call_time = $output->last_local_call_time[$i];
 }
-$fullname = $first_name.' '.$middle_initial.' '.$last_name;
+$fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
+$data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 //var_dump($output);
 ?>
 <html>
@@ -92,7 +100,6 @@ $fullname = $first_name.' '.$middle_initial.' '.$last_name;
 			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
 				<!-- =============== APP STYLES ===============-->
 			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -123,7 +130,19 @@ $fullname = $first_name.' '.$middle_initial.' '.$last_name;
 			}
 			input[type=text] {
 			    border: none;
-			    border-bottom: .5px solid;
+			    border-bottom: .5px solid #656565;
+			}
+			input[type=number] {
+			    border: none;
+			    border-bottom: .5px solid #656565;
+			}
+			input[type=date] {
+			    border: none;
+			    border-bottom: .5px solid #656565;
+			}
+			.select{
+				border: none;
+    			border-bottom: .5px solid #656565;
 			}
 			.form-control[disabled], fieldset[disabled] .form-control{
 				cursor: text;
@@ -138,6 +157,17 @@ $fullname = $first_name.' '.$middle_initial.' '.$last_name;
 			label > p {
 				padding-top:10px;
 				width:25%;
+			}
+			.edit-profile-button{
+				font-size:14px; 
+				font-weight:normal; 
+				margin-right:30px;
+			}
+			.hide_div{
+				display: none;
+			}
+			.required_div{
+				background: #f4fdd9;
 			}
 		</style>
     </head>
@@ -277,76 +307,165 @@ $fullname = $first_name.' '.$middle_initial.' '.$last_name;
 							                    </tr>
 								            </table>
 										</div>
+									
 										<div id="profile" role="tabpanel" class="tab-pane active">
-											<div style="padding-top:20px;padding-left:20px;">
-												<h4>Personal Details</h4>
-											
-											<form role="form" class="form-inline" >
+
+											<div style="padding-top:20px;padding-left:20px;padding-right:30px;">
+												<h4>Personal Details
+													<a href="#" data-role="button" class="pull-right edit-profile-button" id="edit-profile">Edit Profile</a>
+												</h4>
+											<form role="form" id="name_form" class="form-inline" >
+												
+												<!--LEAD ID-->
+												<input type="hidden" value="<?php echo $lead_id;?>" name="lead_id">
+
 												<div class="form-group">
 							                        <p style="padding-right:10px;padding-top: 20px;">Name:</p> 
 							                    </div>
 												<div class="form-group">
-							                        <input id="first_name" type="text" placeholder="First Name" value="<?php echo $first_name;?>" class="form-control" disabled>
+							                        <input id="first_name" name="first_name" type="text" placeholder="First Name" value="<?php echo $first_name;?>" class="form-control input-disabled" disabled required>
 							                    </div>
 							                    <div class="form-group">
-							                        <input id="middle_initial" type="text" placeholder="Middle Initial" value="<?php echo $middle_initial;?>" class="form-control" disabled>
+							                        <input id="middle_initial" name="middle_initial" type="text" placeholder="Middle Initial" value="<?php echo $middle_initial;?>" class="form-control input-disabled" disabled>
 							                        
 							                    </div>
 							                    <div class="form-group">
-							                        <input id="last_name" type="text" placeholder="Last Name" value="<?php echo $last_name;?>" class="form-control" disabled>
+							                        <input id="last_name" name="last_name" type="text" placeholder="Last Name" value="<?php echo $last_name;?>" class="form-control input-disabled" disabled required>
 							                        
 							                    </div>
+											</form>
+											<form role="form" id="gender_form" class="form-inline" >
+												<div class="form-group">
+							                        <p style="padding-right:0px;padding-top: 20px;">Title:</p> 
+							                    </div>
+												<div class="form-group">
+							                        <input id="title" name="title" type="text" placeholder="Title" value="<?php echo $title;?>" style="width:100px;" class="form-control input-disabled" disabled>
+							                    </div>
+												<div class="form-group">
+							                        <p style="padding-right:0px;padding-top: 20px;">Gender:</p> 
+							                    </div>
+												<div class="form-group" style="padding-right:10px;">
+							                        <select id="gender" name="gender" placeholder="Gender" value="<?php echo $gender;?>" class="form-control select input-disabled" disabled required>
+							                        	<?php 
+							                        		if($gender == "M"){
+							                        	?>
+							                        		<option selected value="M">Male</option>
+							                        		<option value="F">Female</option>
+							                        	<?php
+							                        		}else
+							                        		if($gender == "F"){
+							                        	?>
+							                        		<option selected value="F">Female</option>
+							                        		<option value="M">Male</option>
+							                        	<?php
+							                        		}else{
+							                        	?>
+							                        		<option selected disabled value=""> - - - </option>
+							                        		<option value="M">Male</option>
+							                        		<option value="F">Female</option>
+							                        	<?php
+							                        		}
+							                        	?>
+							                        </select>
+							                    </div>		
+
+							                    <div class="form-group">
+							                        <p style="padding-right:5px;padding-top: 20px;">Date Of Birth:</p> 
+							                    </div>
+												<div class="form-group">
+													<?php echo $date_of_birth;?>
+													<input type="date" id="date_of_birth" value="<?php echo $data_of_birth;?>" name="date_of_birth" class="form-control input-disabled" disabled required>
+							                    </div>						                   
 											</form>
 											</div>
 											<div style="padding-top:10px;padding-left:20px;">
 												<h4>Contact Details</h4>
+											<form id="contact_details_form">
+												<div class="form-group">
+													<label><p><em class="fa fa-at fa-fw"></em> E-mail Address:</p> 
+							                        	<input id="email" name="email" type="text" width="auto" placeholder="E-Mail Address" value="<?php echo $email;?>" class="form-control input-disabled" disabled required>
+							                       	</label>
+							                    </div>
 												<div class="form-group">
 													<label><p><em class="fa fa-mobile-phone fa-fw"></em> Phone Number:</p> 
-							                        	<input id="address1" type="text" width="auto" placeholder="Phone Number" value="<?php echo $address1;?>" class="form-control" disabled>
+							                        	<input id="phone" name="phone" type="number" width="auto" placeholder="Phone Number" value="<?php echo $phone_number;?>" class="form-control input-disabled" disabled required>
 							                       	</label>
 							                    </div>
 							                    <div class="form-group">
-													<label><p style="width:50%;padding-right:10px;"><em class="fa fa-phone fa-fw"></em> Alternative Phone Number:</p>
-							                        	<input id="address1" type="text" width="100" placeholder="Alternative Phone Number" value="<?php echo $address1;?>" class="form-control" disabled>
+													<label><p style="width:47%;padding-right:10px;"><em class="fa fa-phone fa-fw"></em> Alternative Phone Number:</p>
+							                        	<input id="alt_phone" name="alt_phone" type="number" width="100" placeholder="Alternative Phone Number" value="<?php echo $alt_phone;?>" class="form-control input-disabled" disabled>
 							                       	</label>
 							                    </div>
 												<div class="form-group">
 													<label><p><em class="fa fa-home fa-fw"></em> Address Street 1:</p> 
-							                        	<input id="address1" type="text" width="auto" placeholder="Address Street 1" value="<?php echo $address1;?>" class="form-control" disabled>
+							                        	<input id="address1" name="address1" type="text" width="auto" placeholder="Address Street 1" value="<?php echo $address1;?>" class="form-control input-disabled" disabled required>
 							                       	</label>
 							                    </div>
 							                    <div class="form-group">
 							                    	<label><p><em class="fa fa-home fa-fw"></em> Address Street  2:</p>
-							                        	<input id="address2" type="text" placeholder="Address Street 2" value="<?php echo $address2;?>" class="form-control" disabled>
+							                        	<input id="address2" name="address2" type="text" placeholder="Address Street 2" value="<?php echo $address2;?>" class="form-control input-disabled" disabled>
 							                    	</label>
 							                    </div>
 							                    <div class="form-group">
 							                    	<label><p><em class="fa fa-home fa-fw"></em>  Address Street 3: </p>
-							                        	<input id="address3" type="text" placeholder="Address Street 3" value="<?php echo $address3;?>" class="form-control" disabled>
+							                        	<input id="address3" name="address3" type="text" placeholder="Address Street 3" value="<?php echo $address3;?>" class="form-control input-disabled" disabled>
 							                    	</label>
 							                    </div>
 							                    <div class="form-group">
 							                    	<label><p style="width:11%;padding-right:10px;"><em class="fa fa-building fa-fw"></em> City:</p>
-							                        	<input id="city" type="text" placeholder="Last Name" value="<?php echo $city;?>" class="form-control" disabled>
+							                        	<input id="city" name="city" type="text" placeholder="City" value="<?php echo $city;?>" class="form-control input-disabled" disabled required>
 							                    	</label>
 							                    </div>
 							                    <div class="form-group">
 							                        <label><p style="width:17%;padding-right:10px;"><em class="fa fa-building fa-fw"></em>  Province:</p>
-							                    	    <input id="province" type="text" placeholder="Last Name" value="<?php echo $province;?>" class="form-control" disabled>
+							                    	    <input id="province" name="province" type="text" placeholder="Province" value="<?php echo $province;?>" class="form-control input-disabled" disabled>
 							                    	</label>
 							                    </div>
 							                    <div class="form-group">
 							                        <label><p style="width:12%;padding-right:10px;"><em class="fa fa-building-o fa-fw"></em> State:</p>
-							                        	<input id="state" type="text" placeholder="Last Name" value="<?php echo $state;?>" class="form-control" disabled>
+							                        	<input id="state" name="state" type="text" placeholder="State" value="<?php echo $state;?>" class="form-control input-disabled" disabled>
 							                    	</label>
 							                    </div>
+							                    <div class="form-group">
+							                        <label><p style="width:21%;padding-right:10px;"><em class="fa fa-send fa-fw"></em> Postal Code:</p>
+							                        	<input id="postal_code" name="postal_code" type="text" placeholder="Postal Code" value="<?php echo $postal_code;?>" class="form-control input-disabled" disabled>
+							                    	</label>
+							                    </div>
+							                    <div class="form-group">
+							                        <label><p style="width:16%;padding-right:10px;"><em class="fa fa-globe fa-fw"></em> Country:</p>
+							                        	<input id="country" name="country" type="text" placeholder="Country" value="<?php echo $country;?>" class="form-control input-disabled" disabled required>
+							                    	</label>
+							                    </div>
+							                </form> 
 							                </div>
-										</div>
+							                <br/>
+							                <!-- NOTIFICATIONS -->
+											<div id="notifications">
+												<div class="output-message-success" style="display:none;">
+													<div class="alert alert-success alert-dismissible" role="alert">
+													  <strong>Success!</strong> New Agent added.
+													</div>
+												</div>
+												<div class="output-message-error" style="display:none;">
+													<div class="alert alert-danger alert-dismissible" role="alert">
+													  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
+													</div>
+												</div>
+												<div class="output-message-incomplete" style="display:none;">
+													<div class="alert alert-danger alert-dismissible" role="alert">
+													  Please fill-up all the fields correctly and do not leave any highlighted fields blank.
+													</div>
+												</div>
+											</div>
+
+							                <div class="hide_div">
+							                	<button type="submit" name="submit" id="submit_edit_form" class="btn btn-primary btn-block btn-flat">Submit</button>
+							                </div>
+							               
+										</div><!--End of Profile-->
 									</div>
 								</div>
 							</div>
-
-							
 				               
 
 							<div class="col-lg-3 col-lg-3 pv">
@@ -421,17 +540,29 @@ $fullname = $first_name.' '.$middle_initial.' '.$last_name;
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
 		<script type="text/javascript">
-			$(document).ready(function() {				
+			$(document).ready(function() {
+				$("#edit-profile").click(function(event){
+				    $('.input-disabled').prop('disabled', false);
+				    $('.hide_div').show();
+				    $("input:required, select:required").addClass("required_div");
+				    $('#edit-profile').hide();
+				    
+				    var txtBox=document.getElementById("first_name" );
+					txtBox.focus();
+				    //$("#submit_div").focus(function() { $(this).select(); } );
+				    //$('input[name="first_name"]').focus();
+				});
+
 				/** 
 				 * Modifies a customer
-			 	 */
+			 	
 				$("#modifycustomerform").validate({
 					submitHandler: function() {
 						//submit the form
 							$("#resultmessage").html();
 							$("#resultmessage").fadeOut();
 							$.post("./php/ModifyCustomer.php", //post
-							$("#modifycustomerform").serialize(), 
+							$("#name_form, #gender_form, #contact_details_form").serialize(), 
 								function(data){
 									//if message is sent
 									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
@@ -450,7 +581,48 @@ $fullname = $first_name.' '.$middle_initial.' '.$last_name;
 						return false; //don't let the form refresh the page...
 					}					
 				});
+				 */
+				$("#submit_edit_form").click(function(event){
+				//alert("User Created!");
 				
+				var validate = 0;
+
+					if($('#name_form')[0].checkValidity()) {
+					    if($('#gender_form')[0].checkValidity()) {
+					    	if($('#contact_details_form')[0].checkValidity()) {
+								
+								//alert("Form Submitted!");
+								$.ajax({
+									url: "./php/ModifyCustomer.php",
+									type: 'POST',
+									data: $("#name_form, #gender_form, #contact_details_form").serialize(),
+									success: function(data) {
+									  // console.log(data);
+										  if(data == 1){
+										  	  $('.output-message-success').show().focus().delay(2000).fadeOut().queue(function(n){$(this).hide(); n();});
+											  window.setTimeout(function(){location.reload()},2000)
+										  }else{
+											  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+										  }
+									}
+								});
+
+							}else{
+								validate = 1;
+							}
+						}else{
+							validate = 1;
+						}
+					}else{
+						validate = 1;
+					}
+
+					if(validate == 1){
+						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+						validate = 0;
+					}
+				
+				});
 				/**
 				 * Deletes a customer
 				 */

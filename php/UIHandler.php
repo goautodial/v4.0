@@ -3751,7 +3751,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 	public function getListAllCallTimes($goUser, $goPass, $goAction, $responsetype){
-	    $url = "https://gadcs.goautodial.com/goAPI/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllCalltimes"; #action performed by the [[API:Functions]]. (required)
@@ -3816,7 +3816,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 	public function getListAllCarriers($goUser, $goPass, $goAction, $responsetype){
-	    $url = "https://gadcs.goautodial.com/goAPI/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCarriersList"; #action performed by the [[API:Functions]]. (required)
