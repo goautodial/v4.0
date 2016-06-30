@@ -3624,7 +3624,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 	
 	private function getUserActionMenuForVoiceFiles($filename) {
-	    $file_link = "https://162.254.144.92/sounds/".$filename;
+	    $file_link = "https://69.46.6.35/sounds/".$filename;
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">

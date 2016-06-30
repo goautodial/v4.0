@@ -36,6 +36,8 @@
     margin: 0;
     padding: 3px 0 0 0;
     margin: 0 5px;
+	height: 125px;
+	overflow-y: scroll;
 }
 .connectedINB li {
     cursor: move;
@@ -43,4 +45,24 @@
     margin: 0 3px 3px 3px;
     padding: 3px;
     width: auto;
+}
+.dropdown-menu {
+	min-width: 200px;
+	cursor: pointer;
+	-webkit-user-select: none;  /* Chrome all / Safari all */
+	-moz-user-select: none;     /* Firefox all */
+	-ms-user-select: none;      /* IE 10+ */
+	user-select: none;          /* Likely future */  
+}
+.dropdown-menu li span.fa {
+	vertical-align: middle;
+	margin-top: 2px;
+	margin-right: 3px;
+	padding-right: 0;
+}
+.dropdown-menu > li > a {
+	white-space: normal;
+}
+.modal-dialog {
+	z-index: 1045;
 }
