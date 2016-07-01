@@ -146,6 +146,8 @@ var refresh_interval = 1000;
         } else {
             if ($idx == 'allow_emails') {
                 echo "var email_enabled = '{$val}';\n";
+            } else if ($idx == 'qc_features_active') {
+                echo "var qc_enabled = '{$val}';\n";
             } else {
                 echo "var {$idx} = '{$val}';\n";
             }
@@ -1235,37 +1237,37 @@ function CheckForConfCalls (confnum, force) {
                 if (api_transferconf_function == 'LEAVE_3WAY_CALL')
                     {leave_3way_call('FIRST');}
                 if (api_transferconf_function == 'BLIND_TRANSFER') {
-                    document.vicidial_form.xfernumber.value = api_transferconf_number;
+                    $("#formMain_xfernumber.value = api_transferconf_number;
                     mainxfer_send_redirect('XfeRBLIND',lastcustchannel,lastcustserverip);
                 }
                 if (external_transferconf_count < 1) {
                     if (api_transferconf_function == 'LOCAL_CLOSER') {
                         API_selected_xfergroup = api_transferconf_group;
-                        document.vicidial_form.xfernumber.value = api_transferconf_number;
+                        $("#formMain_xfernumber.value = api_transferconf_number;
                         mainxfer_send_redirect('XfeRLOCAL',lastcustchannel,lastcustserverip);
                     }
                     if (api_transferconf_function == 'DIAL_WITH_CUSTOMER') {
                         if (api_transferconf_consultative=='YES')
-                            {document.vicidial_form.consultativexfer.checked=true;}
+                            {$("#formMain_consultativexfer.checked=true;}
                         if (api_transferconf_consultative=='NO')
-                            {document.vicidial_form.consultativexfer.checked=false;}
+                            {$("#formMain_consultativexfer.checked=false;}
                         if (api_transferconf_override=='YES')
-                            {document.vicidial_form.xferoverride.checked=true;}
+                            {$("#formMain_xferoverride.checked=true;}
                         API_selected_xfergroup = api_transferconf_group;
-                        document.vicidial_form.xfernumber.value = api_transferconf_number;
+                        $("#formMain_xfernumber.value = api_transferconf_number;
                         active_group_alias = api_transferconf_group_alias;
                         cid_choice = api_transferconf_cid_number;
                         SendManualDial('YES');
                     }
                     if (api_transferconf_function == 'PARK_CUSTOMER_DIAL') {
                         if (api_transferconf_consultative == 'YES')
-                            {document.vicidial_form.consultativexfer.checked = true;}
+                            {$("#formMain_consultativexfer.checked = true;}
                         if (api_transferconf_consultative == 'NO')
-                            {document.vicidial_form.consultativexfer.checked = false;}
+                            {$("#formMain_consultativexfer.checked = false;}
                         if (api_transferconf_override == 'YES')
-                            {document.vicidial_form.xferoverride.checked = true;}
+                            {$("#formMain_xferoverride.checked = true;}
                         API_selected_xfergroup = api_transferconf_group;
-                        document.vicidial_form.xfernumber.value = api_transferconf_number;
+                        $("#formMain_xfernumber.value = api_transferconf_number;
                         active_group_alias = api_transferconf_group_alias;
                         cid_choice = api_transferconf_cid_number;
                         xfer_park_dial();
@@ -1289,7 +1291,7 @@ function CheckForConfCalls (confnum, force) {
                 api_dtmf = api_dtmf.replace(REGdtmfPOUND, '#');
                 api_dtmf = api_dtmf.replace(REGdtmfSTAR, '*');
                 api_dtmf = api_dtmf.replace(REGdtmfQUIET, ',');
-                document.vicidial_form.conf_dtmf.value = api_dtmf;
+                $("#formMain_conf_dtmf.value = api_dtmf;
                 //SendConfDTMF(session_id);
             }
     
@@ -1772,22 +1774,22 @@ function CheckForIncoming () {
             //Added By Poundteam for Audited Comments (Manual Dial Section Only)
             //if (qc_enabled > 0)
             //{
-            //    document.vicidial_form.ViewCommentButton.value                                  = check_VDIC_array[53];
-            //    document.vicidial_form.audit_comments_button.value                              = check_VDIC_array[53];
+            //    $("#formMain_ViewCommentButton.value                                  = check_VDIC_array[53];
+            //    $("#formMain_audit_comments_button.value                              = check_VDIC_array[53];
             //    var REGACcomments = new RegExp("!N","g");
             //    check_VDIC_array[54] = check_VDIC_array[54].replace(REGACcomments, "\n");
-            //    document.vicidial_form.audit_comments.value                                     = check_VDIC_array[54];
+            //    $("#formMain_audit_comments.value                                     = check_VDIC_array[54];
             //}
             //END section Added By Poundteam for Audited Comments
             // Add here for AutoDial (VDADcheckINCOMING in vdc_db_query)
 
             //if (hide_gender > 0)
             //{
-            //    document.vicidial_form.gender_list.value	= check_VDIC_array[25];
+            //    $("#formMain_gender_list.value	= check_VDIC_array[25];
             //} else {
             //    var gIndex = 0;
-            //    if (document.vicidial_form.gender.value == 'M') {var gIndex = 1;}
-            //    if (document.vicidial_form.gender.value == 'F') {var gIndex = 2;}
+            //    if ($("#formMain_gender.value == 'M') {var gIndex = 1;}
+            //    if ($("#formMain_gender.value == 'F') {var gIndex = 2;}
             //    document.getElementById("gender_list").selectedIndex = gIndex;
             //}
 
@@ -1961,7 +1963,7 @@ function CheckForIncoming () {
             //{
             //    var genderIndex = document.getElementById("gender_list").selectedIndex;
             //    var genderValue =  document.getElementById('gender_list').options[genderIndex].value;
-            //    document.vicidial_form.gender.value = genderValue;
+            //    $("#formMain_gender.value = genderValue;
             //}
 
             LeadDispo = '';
@@ -2595,12 +2597,43 @@ function DispoSelectSubmit() {
         });
         
         //CLEAR ALL FORM VARIABLES
-        $("div.sidebar-container:first").contents()
-            .filter("p")
-            .remove()
-            .end()
-            .filter("select")
-            .addClass("hidden");
+        $("#formMain_lead_id").val('');
+        $("#formMain_vendor_lead_code").val('');
+        $("#formMain_list_id").val('');
+        $("#formMain_entry_list_id").val('');
+        $("#formMain_gmt_offset_now").val('');
+        $("#formMain_phone_code").val('');
+        if ( (disable_alter_custphone == 'Y') || (disable_alter_custphone == 'HIDE') ) {
+            var tmp_pn = $("#phone_numberDISP");
+            tmp_pn.html(' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ');
+        }
+        $("#formMain_phone_number").val('');
+        $("#formMain_title").val('');
+        $("#formMain_first_name").val('');
+        $("#formMain_middle_initial").val('');
+        $("#formMain_last_name").val('');
+        $("#formMain_address1").val('');
+        $("#formMain_address2").val('');
+        $("#formMain_address3").val('');
+        $("#formMain_city").val('');
+        $("#formMain_state").val('');
+        $("#formMain_province").val('');
+        $("#formMain_postal_code").val('');
+        $("#formMain_country_code").val('');
+        $("#formMain_gender").val('');
+        $("#formMain_date_of_birth").val('');
+        $("#formMain_alt_phone").val('');
+        $("#formMain_email").val('');
+        $("#formMain_security_phrase").val('');
+        $("#formMain_comments").val('');
+        $("#formMain_audit_comments").val('');
+        if (qc_enabled > 0) {
+            $("#formMain_ViewCommentButton").val('');
+            $("#formMain_audit_comments_button").val('');
+        }
+        $("#formMain_called_count").val('');
+        $("#formMain_call_notes").val('');
+        $("#formMain_call_notes_dispo").val('');
         VDCL_group_id = '';
         fronter = '';
         inOUT = 'OUT';
@@ -3298,7 +3331,7 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 				var RG_CFN_field = new RegExp("--A--" + CFN_field + "--B--","g");
 				if ( (CFN_field.length > 0) && (encoded.match(RG_CFN_field)) ) {
 					if (CF_loaded == '1') {
-						var CFN_value='';
+						var CFN_value = '';
 						var field_parsed=0;
 						if ( (CFT_array[CFN_tick]=='TIME') && (field_parsed < 1) ) {
 							var CFN_field_hour = 'HOUR_' + CFN_field;
