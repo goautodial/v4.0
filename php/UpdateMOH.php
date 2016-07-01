@@ -11,11 +11,7 @@
 	 */
         require_once('goCRMAPISettings.php');
         
-<<<<<<< HEAD
         $url = gourl."/goMusicOnHold/goAPI.php"; #URL to GoAutoDial API. (required)
-=======
-        $url = gourl."/goAPI/goMusicOnHold/goAPI.php"; #URL to GoAutoDial API. (required)
->>>>>>> a5452525bbc1a7d8e694b130debcb946dca6d2d2
         
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)

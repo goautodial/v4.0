@@ -2256,7 +2256,7 @@ function NewManualDialCall(tempDiaLnow) {
 
 // ################################################################################
 // Fast version of manual dial
-    function NewManualDialCallFast() {
+function NewManualDialCallFast() {
     var MDDiaLCodEform = $("#formMain_phone_code").val();
     var MDPhonENumbeRform = $("#formMain_phone_number").val();
     var MDVendorLeadCode = $("#formMain_vendor_lead_code").val();
@@ -2285,6 +2285,16 @@ function NewManualDialCall(tempDiaLnow) {
             ManualDialNext("","",MDDiaLCodEform,MDPhonENumbeRform,MDLookuPLeaD,MDVendorLeadCode,'0');
         }
     }
+}
+
+// ################################################################################
+// Finish Callback and go back to original screen
+function ManualDialFinished() {
+    alt_phone_dialing = starting_alt_phone_dialing;
+    auto_dial_level = starting_dial_level;
+    //MainPanelToFront();
+    //CalLBacKsCounTCheck();
+    manual_dial_in_progress = 0;
 }
 
 
@@ -2714,7 +2724,7 @@ function DispoSelectSubmit() {
         }
 
         if (manual_dial_in_progress == 1) {
-            //manual_dial_finished();
+            ManualDialFinished();
         }
 
         AgentDispoing = 0;
