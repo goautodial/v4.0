@@ -118,8 +118,18 @@ if ($error) { $title = $lh->translationFor("error"); }
 						$content = $ui->hiddenFormField("module_name", $moduleName);
 						// module settings
 						$settings = $instance->moduleSettings();
-						foreach ($settings as $setting => $type) { 
-							$content .= $ui->inputFieldForModuleSettingOfType($setting, $type, $instance->valueForModuleSetting($setting)); 
+						foreach ($settings as $setting => $type) {
+							$options = array();
+							if (is_array($type)) {
+								$setOpt = array("$setting");
+								foreach ($type as $k => $v) {
+									${$k} = $v;
+								}
+								$setOpt[] = $options;
+								$content .= $ui->inputFieldForModuleSettingOfType($setOpt, $type, $instance->valueForModuleSetting($setting));
+							} else {
+								$content .= $ui->inputFieldForModuleSettingOfType($setting, $type, $instance->valueForModuleSetting($setting));
+							}
 						}
 						
 						// show form

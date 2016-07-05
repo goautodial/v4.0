@@ -109,7 +109,7 @@
 	</div>
 	
 <!-- MODAL -->
-<?php 
+<?php
 	$output = $ui->API_goGetAllUserLists();
 	$user_groups = $ui->API_goGetUserGroupsList();
 	$phones = $ui->API_getPhonesList();

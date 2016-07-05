@@ -1012,9 +1012,8 @@ error_reporting(E_ERROR | E_PARSE);
 				case CRM_SETTING_TYPE_LABEL:
 					return $this->singleFormGroupWithInputGroup($this->lh->translationFor($setting));
 					break;
-				case CRM_SETTING_TYPE_TITLE:
-					$thisLabel = "<strong>".$this->lh->translationFor($setting)."</strong>";
-					return $this->singleFormGroupWithInputGroup($thisLabel);
+				case CRM_SETTING_TYPE_SELECT:
+					return $this->singleFormGroupWithInputGroup($this->dropdownFormInputElement($setting[0], $setting[0], $setting[1], $currentValue));
 					break;
 				case CRM_SETTING_TYPE_PASS:
 					return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "password", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));
@@ -4833,6 +4832,18 @@ error_reporting(E_ERROR | E_PARSE);
                 return $output->result;
         }
 
+	}
+	
+	public function dropdownFormInputElement($id, $name, $options = array(), $currentValue, $required = false) {
+		$requiredCode = $required ? "required" : "";
+		$optionList = "";
+		if (count($options) > 0) {
+			foreach ($options as $k => $opt) {
+				$isSelected = ($currentValue == $opt) ? "selected" : "";
+				$optionList .= '<option value="'.$opt.'" '.$isSelected.'>'.$opt.'</option>';
+			}
+		}
+		return '<select name="'.$name.'" id="'.$id.'" class="form-control '.$requiredCode.'">'.$optionList.'</select></div>';
 	}
 }
 

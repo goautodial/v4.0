@@ -278,13 +278,8 @@ class GOagent extends Module {
 					var remoteStream;
 					
 					var configuration = {
-<<<<<<< HEAD
 						'ws_servers': '{$webProtocol}://{$websocketURL}:44344/',
 						'uri': 'sip:'+phone_login+'@{$websocketSIP},
-=======
-						'ws_servers': 'wss://webrtc.goautodial.com:44344/',
-						'uri': 'sip:'+phone_login+'@webrtc.goautodial.com',
->>>>>>> origin/master
 						'password': phone_pass,
 						'session_timers': false
 					};
@@ -651,7 +646,18 @@ EOF;
 	
 	// settings
 	public function moduleSettings() {
-		return array("GO_agent_wss" => CRM_SETTING_TYPE_STRING, "GO_agent_wss_info" => CRM_SETTING_TYPE_LABEL, "GO_agent_sip_server" => CRM_SETTING_TYPE_LABEL, "GO_agent_sip_server_info" => CRM_SETTING_TYPE_LABEL);
+		$options = array('', 'asterisk', 'kamailio');
+		$moduleSettings = array(
+			"GO_agent_wss" => CRM_SETTING_TYPE_STRING,
+			"GO_agent_wss_info" => CRM_SETTING_TYPE_LABEL,
+			"GO_agent_sip_server_title" => CRM_SETTING_TYPE_TITLE,
+			"GO_agent_sip_server" => array(
+				"type" => CRM_SETTING_TYPE_SELECT,
+				"options" => $options
+			),
+			"GO_agent_sip_server_info" => CRM_SETTING_TYPE_LABEL
+		);
+		return $moduleSettings;
 	}
 }
 

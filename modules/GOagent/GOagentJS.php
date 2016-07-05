@@ -128,7 +128,7 @@ var SIPserver = '<?=$SIPserver?>';
                 echo "var {$idx} = '{$val}';\n";
                 echo "var fName = '{$val}';\n";
                 echo "var LOGfullname = '{$val}';\n";
-            } else if (preg_match("/^(custom_)/g", $idx)) {
+            } else if (preg_match("/^(custom_)/", $idx)) {
                 echo "var user_{$idx} = '{$val}';\n";
             } else {
                 echo "var {$idx} = '{$val}';\n";
@@ -2596,11 +2596,7 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
                     {CBflag = '*';}
                 else
                     {CBflag = '';}
-<<<<<<< HEAD
-                console.log(statuses[loop_ct], taskDSgrp);
-=======
                 //console.log(statuses[loop_ct], taskDSgrp);
->>>>>>> origin/master
                 if (taskDSgrp == statuses[loop_ct]) {
                     dispo_HTML = dispo_HTML + "<span id='dispo-sel-"+statuses[loop_ct]+"' style='background-color:#99FF99;cursor:pointer;color:#77a30a;'>&nbsp; " + statuses[loop_ct] + " - " + statuses_names[loop_ct] + " " + CBflag + " &nbsp;</span><br /><br />";
                 } else {
