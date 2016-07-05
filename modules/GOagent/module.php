@@ -111,6 +111,7 @@ class GOagent extends Module {
 		$custInfoTitle = $this->lh()->translationFor("customer_information");
 		$selectACampaign = $this->lh()->translationFor("select_a_campaign");
 		$dispositionCall = $this->lh()->translationFor("disposition_call");
+		$endOfCallDispositionSelection = $this->lh()->translationFor("end_of_call_disposition_selection");
 		$manualDialLead = $this->lh()->translationFor("manual_dial_lead");
 		$availableCampaigns = $this->lh()->translationFor("available_campaigns");
 		$groupsNotSelected = $this->lh()->translationFor("groups_not_selected");
@@ -154,7 +155,7 @@ class GOagent extends Module {
 					$labelHTML .= "<tr>\n";
 					$labelHTML .= "<td align='right' valign='top' width='200' nowrap style='padding-right: 10px;'>$value:<br style='display:none;'><span id='viewcommentsdisplay' style='display:none;'><input type='button' id='ViewCommentButton' onClick=\"ViewComments('ON')\" value='-History-'/></span> </td><td><textarea rows='5' cols='50' id='formMain_$key' name='$key' class='cust_form_text' value='' style='resize:none;'></textarea></td>\n";
 					$labelHTML .= "</tr>\n";
-				} else if ($key == "gender_list") {
+				} else if ($key == "gender") {
 					$labelHTML .= "<tr>\n";
 					$labelHTML .= "<td align='right' width='200' nowrap style='padding-right: 10px;'>$value:</td><td><span id='GENDERhideFORie'><select size='1' name='$key' class='cust_form' id='formMain_$key'><option value='U'>U - Undefined</option><option value='M'>M - Male</option><option value='F'>F - Female</option></select></span></td>\n";
 					$labelHTML .= "</tr>\n";
@@ -249,7 +250,7 @@ class GOagent extends Module {
 				if ($key == "phone_code") { $additionalDISP = "<span id='converted_dial_code' style='display:none;'></span>"; }
 				$labelHTML .= "<tr style='display:none;' width='200' nowrap style='padding-right: 10px;'>\n";
 				$labelHTML .= "<td align='right'>$value:</td><td>$additionalDISP<input type='hidden' id='formMain_$key' name='$key' value='' />";
-				if ($key == "gender_list")
+				if ($key == "gender")
 					{$labelHTML .= "<span id='GENDERhideFORie' style='display:none;'><select size='1' name='$key' class='cust_form' id='formMain_$key'><option value='U'>U - Undefined</option><option value='M'>M - Male</option><option value='F'>F - Female</option></select></span>";}
 				$labelHTML .= "</td>\n";
 				$labelHTML .= "</tr>\n";
@@ -268,8 +269,8 @@ class GOagent extends Module {
 					var remoteStream;
 					
 					var configuration = {
-						'ws_servers': '{$webProtocol}://webrtc.goautodial.com:44344/',
-						'uri': 'sip:'+phone_login+'@'+server_ip,
+						'ws_servers': 'wss://webrtc.goautodial.com:44344/',
+						'uri': 'sip:'+phone_login+'@webrtc.goautodial.com',
 						'password': phone_pass,
 						'session_timers': false
 					};
@@ -518,11 +519,19 @@ class GOagent extends Module {
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title">$dispositionCall</h4>
+									<h4>$dispositionCall: <span id='DispoSelectPhone'></span></h4>
 								</div>
 								<div class="modal-body">
-									
+									<span id="Dispo3wayMessage"></span>
+									<span id="DispoManualQueueMessage"></span>
+									<span id="PerCallNotesContent"><input type="hidden" name="call_notes_dispo" id="call_notes_dispo" value="" /></span>
+									<div id="DispoSelectContent"> $endOfCallDispositionSelection </div>
+								</div>
+								<div class="modal-footer">
+									<input type="hidden" name="DispoSelection" id="DispoSelection" value="" />
+									<label><input type="checkbox" name="DispoSelectStop" id="DispoSelectStop" value="0" style="vertical-align: bottom;" /> Pause Agent</label> &nbsp;&nbsp;
+									<button class="btn btn-default btn-raised" id="btn-dispo-reset">Clear Form</button> 
+									<button class="btn btn-warning btn-raised" id="btn-dispo-submit">Submit</button>
 								</div>
 							</div>
 						</div>

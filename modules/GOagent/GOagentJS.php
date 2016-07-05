@@ -73,17 +73,24 @@ var refresh_interval = 1000;
         } else if (is_array($val)) {
             echo "    {$idx} = new Array('','','','','','');\n";
         } else if (is_object($val)) {
-            $valList = "";
-            $valName = $idx;
+            $valList  = "";
+            $valList2 = "";
+            $valName  = $idx;
             foreach ($val as $idz => $valz) {
-                $valList .= "'{$idz}',";
+                $valList  .= "'{$idz}',";
+                $valList2 .= "'{$valz}',";
             }
-            $valList = preg_replace("/,$/", "", $valList);
+            $valList  = preg_replace("/,$/", "", $valList);
+            $valList2 = preg_replace("/,$/", "", $valList2);
             
             if ($idx == 'xfer_groups') {
                 $valName = 'VARxferGroups';
             } else if ($idx == 'xfer_group_names') {
                 $valName = 'VARxferGroupsNames';
+            }
+            
+            if ($idx == 'statuses') {
+                echo "var statuses_names = new Array({$valList2});\n";
             }
             echo "var {$valName} = new Array({$valList});\n";
         } else {
@@ -249,6 +256,7 @@ var group = '<?=$camp_info->campaign_id?>';         // same value as campaign va
 $(document).ready(function() {
     $(window).load(function() {
         var refreshId = setInterval(function() {
+            //GOagentWebRTC = window.open('http://google.com','GOagentWebRTC', 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,left=0, top=0, width=10, height=10');
             if (is_logged_in) {
                 //Start of checking for live calls
                 if (live_customer_call == 1) {
@@ -302,7 +310,7 @@ $(document).ready(function() {
                     //    $("#GENDERhideFORieALT").html('<select size="1" name="gender_list" class="cust_form" id="gender_list"><option value="U">U - <?=$lh->translationFor('undefined')?></option><option value="M">M - <?=$lh->translationFor('male')?></option><option value="F">F - <?=$lh->translationFor('female')?></option></select>');
                     //}
     
-                    //DispoSelectBox();
+                    DispoSelectBox();
                     //DispoSelectContent_create('','ReSET');
                     WaitingForNextStep = 1;
                     open_dispo_screen = 0;
@@ -576,11 +584,13 @@ $(document).ready(function() {
     toggleStatus('NOLIVE');
 
     window.addEventListener("beforeunload", function (e) {
-        if (live_customer_call) {
+        if (is_logged_in) {
             var confirmationMessage = "<?=$lh->translationFor('currently_in_call')?>";
         
             (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
             return confirmationMessage;                                //Webkit, Safari, Chrome etc.
+        } else {
+            //GOagentWebRTC.close();
         }
     });
 
@@ -763,7 +773,7 @@ $(document).ready(function() {
                             }
                         });
                     } else {
-                        var patt = /^(user|pass|statuses|statuses_ct)$/g;
+                        var patt = /^(user|pass|statuses|statuses_count)$/g;
                         //console.log("var "+key+" = '"+value+"';");
                         if (!patt.test(key)) {
                             if (key == 'now_time') {
@@ -842,6 +852,18 @@ $(document).ready(function() {
         $("#MDPhonENumbeRHiddeN").val('');
         $("#MDLeadID").val('');
         $("#MDType").val('');
+    });
+    
+    $("#btn-dispo-submit").click(function() {
+        if ($("#DispoSelectStop").is(':checked')) {
+            toggleButton('ResumePause', 'resume');
+        }
+        
+        DispoSelectSubmit();
+    });
+    
+    $("#btn-dispo-reset").click(function() {
+        DispoSelectContent_create('', 'ReSET');
     });
 });
 
@@ -1237,37 +1259,37 @@ function CheckForConfCalls (confnum, force) {
                 if (api_transferconf_function == 'LEAVE_3WAY_CALL')
                     {leave_3way_call('FIRST');}
                 if (api_transferconf_function == 'BLIND_TRANSFER') {
-                    $("#formMain_xfernumber.value = api_transferconf_number;
+                    $("#formMain_xfernumber").val(api_transferconf_number);
                     mainxfer_send_redirect('XfeRBLIND',lastcustchannel,lastcustserverip);
                 }
                 if (external_transferconf_count < 1) {
                     if (api_transferconf_function == 'LOCAL_CLOSER') {
                         API_selected_xfergroup = api_transferconf_group;
-                        $("#formMain_xfernumber.value = api_transferconf_number;
-                        mainxfer_send_redirect('XfeRLOCAL',lastcustchannel,lastcustserverip);
+                        $("#formMain_xfernumber").val(api_transferconf_number);
+                        //mainxfer_send_redirect('XfeRLOCAL',lastcustchannel,lastcustserverip);
                     }
                     if (api_transferconf_function == 'DIAL_WITH_CUSTOMER') {
                         if (api_transferconf_consultative=='YES')
-                            {$("#formMain_consultativexfer.checked=true;}
+                            {$("#formMain_consultativexfer").is(':checked') = true;}
                         if (api_transferconf_consultative=='NO')
-                            {$("#formMain_consultativexfer.checked=false;}
+                            {$("#formMain_consultativexfer").is(':checked') = false;}
                         if (api_transferconf_override=='YES')
-                            {$("#formMain_xferoverride.checked=true;}
+                            {$("#formMain_xferoverride").is(':checked') = true;}
                         API_selected_xfergroup = api_transferconf_group;
-                        $("#formMain_xfernumber.value = api_transferconf_number;
+                        $("#formMain_xfernumber").val(api_transferconf_number);
                         active_group_alias = api_transferconf_group_alias;
                         cid_choice = api_transferconf_cid_number;
                         SendManualDial('YES');
                     }
                     if (api_transferconf_function == 'PARK_CUSTOMER_DIAL') {
                         if (api_transferconf_consultative == 'YES')
-                            {$("#formMain_consultativexfer.checked = true;}
+                            {$("#formMain_consultativexfer").is(':checked') = true;}
                         if (api_transferconf_consultative == 'NO')
-                            {$("#formMain_consultativexfer.checked = false;}
+                            {$("#formMain_consultativexfer").is(':checked') = false;}
                         if (api_transferconf_override == 'YES')
-                            {$("#formMain_xferoverride.checked = true;}
+                            {$("#formMain_xferoverride").is(':checked') = true;}
                         API_selected_xfergroup = api_transferconf_group;
-                        $("#formMain_xfernumber.value = api_transferconf_number;
+                        $("#formMain_xfernumber").val(api_transferconf_number);
                         active_group_alias = api_transferconf_group_alias;
                         cid_choice = api_transferconf_cid_number;
                         xfer_park_dial();
@@ -1291,7 +1313,7 @@ function CheckForConfCalls (confnum, force) {
                 api_dtmf = api_dtmf.replace(REGdtmfPOUND, '#');
                 api_dtmf = api_dtmf.replace(REGdtmfSTAR, '*');
                 api_dtmf = api_dtmf.replace(REGdtmfQUIET, ',');
-                $("#formMain_conf_dtmf.value = api_dtmf;
+                $("#formMain_conf_dtmf").val(api_dtmf);
                 //SendConfDTMF(session_id);
             }
     
@@ -1774,22 +1796,22 @@ function CheckForIncoming () {
             //Added By Poundteam for Audited Comments (Manual Dial Section Only)
             //if (qc_enabled > 0)
             //{
-            //    $("#formMain_ViewCommentButton.value                                  = check_VDIC_array[53];
-            //    $("#formMain_audit_comments_button.value                              = check_VDIC_array[53];
+            //    $("#formMain_ViewCommentButton").val(check_VDIC_array[53]);
+            //    $("#formMain_audit_comments_button").val(check_VDIC_array[53]);
             //    var REGACcomments = new RegExp("!N","g");
             //    check_VDIC_array[54] = check_VDIC_array[54].replace(REGACcomments, "\n");
-            //    $("#formMain_audit_comments.value                                     = check_VDIC_array[54];
+            //    $("#formMain_audit_comments").val(check_VDIC_array[54]);
             //}
             //END section Added By Poundteam for Audited Comments
             // Add here for AutoDial (VDADcheckINCOMING in vdc_db_query)
 
             //if (hide_gender > 0)
             //{
-            //    $("#formMain_gender_list.value	= check_VDIC_array[25];
+            //    $("#formMain_gender_list").val(check_VDIC_array[25]);
             //} else {
             //    var gIndex = 0;
-            //    if ($("#formMain_gender.value == 'M') {var gIndex = 1;}
-            //    if ($("#formMain_gender.value == 'F') {var gIndex = 2;}
+            //    if ($("#formMain_gender").val() == 'M') {var gIndex = 1;}
+            //    if ($("#formMain_gender").val() == 'F') {var gIndex = 2;}
             //    document.getElementById("gender_list").selectedIndex = gIndex;
             //}
 
@@ -2520,6 +2542,87 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
 }
 
 
+function DispoSelectBox() {
+    DispoSelectContent_create('','ReSET');
+    $("#select-disposition").modal({
+        backdrop: 'static',
+        keyboard: false
+    });
+}
+
+function DispoSelectContent_create(taskDSgrp,taskDSstage) {
+    if (disable_dispo_screen > 0) {
+        $("#DispoSelection").val(disable_dispo_status);
+        DispoSelectSubmit();
+    } else {
+        if (customer_3way_hangup_dispo_message.length > 1) {
+            $("#Dispo3wayMessage").html("<b>" + customer_3way_hangup_dispo_message + "</b>");
+        }
+        if (APIManualDialQueue > 0) {
+            $("#DispoManualQueueMessage").html("<b><?=$lh->translationFor('manual_dial_queue_calls_waiting')?>: " + APIManualDialQueue + "</b>");
+        }
+        if (per_call_notes == 'ENABLED') {
+            var test_notes = $("#call_notes_dispo").val();
+            if (test_notes.length > 0)
+                {$("#formMain_call_notes").val(test_notes);}
+            $("#PerCallNotesContent").html("<br /><b><font size='3'><?=$lh->translationFor('call_notes')?>: </font></b><br /><textarea name='call_notes_dispo' id='call_notes_dispo' rows='2' cols='100' class='cust_form_text' value=''>" + $("#formMain_call_notes").val() + "</textarea>");
+        } else {
+            $("#PerCallNotesContent").html("<input type='hidden' name='call_notes_dispo' id='call_notes_dispo' value='' />");
+        }
+
+        AgentDispoing = 1;
+        var CBflag = '';
+        var statuses_ct_half = parseInt(statuses_count / 2);
+        var dispo_HTML = "<script>";
+            dispo_HTML = dispo_HTML + "$(function() {";
+            dispo_HTML = dispo_HTML + "    $('[id^=dispo-add-]').click(function() {";
+            dispo_HTML = dispo_HTML + "        var dispoID = $(this).attr('id');";
+            dispo_HTML = dispo_HTML + "        DispoSelectContent_create(dispoID.replace('dispo-add-', ''), 'ADD');";
+            //dispo_HTML = dispo_HTML + "alert($('#DispoSelection').val());";
+            dispo_HTML = dispo_HTML + "    });";
+            dispo_HTML = dispo_HTML + "    $('[id^=dispo-sel-]').click(function() {";
+            dispo_HTML = dispo_HTML + "        DispoSelectSubmit();";
+            dispo_HTML = dispo_HTML + "    });";
+            dispo_HTML = dispo_HTML + "});";
+            dispo_HTML = dispo_HTML + "</script>";
+            dispo_HTML = dispo_HTML + "<table cellpadding='5' cellspacing='5' width='500px' style='-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; margin: 0 auto;'><tr><td colspan='2'>&nbsp; <b><?=$lh->translationFor('call_dispositions')?></b><br><br></td></tr><tr><td bgcolor='#FFFFFF' height='300px' width='240px' valign='top' class='DispoSelectA'>";
+        var loop_ct = 0;
+        if (hide_dispo_list < 1) {
+            while (loop_ct < statuses_count) {
+                var regCBstatus = new RegExp(' ' + statuses[loop_ct] + ' ', "ig");
+                if (VARCBstatusesLIST.match(regCBstatus))
+                    {CBflag = '*';}
+                else
+                    {CBflag = '';}
+                //console.log(statuses[loop_ct], taskDSgrp);
+                if (taskDSgrp == statuses[loop_ct]) {
+                    dispo_HTML = dispo_HTML + "<span id='dispo-sel-"+statuses[loop_ct]+"' style='background-color:#99FF99;cursor:pointer;color:#77a30a;'>&nbsp; " + statuses[loop_ct] + " - " + statuses_names[loop_ct] + " " + CBflag + " &nbsp;</span><br /><br />";
+                } else {
+                    dispo_HTML = dispo_HTML + "<span id='dispo-add-"+statuses[loop_ct]+"' style='cursor:pointer;color:#77a30a;'>&nbsp; " + statuses[loop_ct] + " - " + statuses_names[loop_ct] + "</span> " + CBflag + " &nbsp;<br /><br />";
+                }
+                if (loop_ct == statuses_ct_half) 
+                    {dispo_HTML = dispo_HTML + "</td><td bgcolor='#FFFFFF' height='300px' width='240px' valign='top' class='DispoSelectB'>";}
+                loop_ct++;
+            }
+        } else {
+            dispo_HTML = dispo_HTML + "<?=$lh->translationFor('dispo_status_list_hidden')?><br /><br />";
+        }
+        dispo_HTML = dispo_HTML + "</td></tr></table>";
+
+        if (taskDSstage == 'ReSET') {$("#DispoSelection").val('');}
+        else {$("#DispoSelection").val(taskDSgrp);}
+
+        $("#DispoSelectContent").html(dispo_HTML);
+        if (focus_blur_enabled == 1) {
+            //document.inert_form.inert_button.focus();
+            //document.inert_form.inert_button.blur();
+        }
+        if (my_callback_option == 'CHECKED')
+            {$("#CallBackOnlyMe").prop('checked', true);}
+    }
+}
+
+
 function DispoSelectSubmit() {
     console.log('Disposing call...');
     if (VDCL_group_id.length > 1) {var group = VDCL_group_id;}
@@ -2541,231 +2644,288 @@ function DispoSelectSubmit() {
     //$("#ParkCustomerDial").html('');
     //$("#HangupBothLines").html('');
 
-    var DispoChoice = DispoSelection;
+    var DispoChoice = $("#DispoSelection").val();
 
     if (DispoChoice.length < 1) {
      	alert("<?=$lh->translationFor('must_select_disposition')?>.");
         console.log("Dispo Choice: Must select disposition.");
     } else {
-	if (DialALTPhone == true) {
-        var man_status = "";
-        alt_dial_status_display = 0;
-    }
-
-	var regCBstatus = new RegExp(' ' + DispoChoice + ' ',"ig");
-    if ((VARCBstatusesLIST.match(regCBstatus)) && (DispoChoice.length > 0) && (scheduled_callbacks > 0) && (DispoChoice != 'CBHOLD')) {
-        console.info("Open Callback Selection Box");
-    } else {
-        var postData = {
-            goServerIP: server_ip,
-            goSessionName: session_name,
-            goAction: 'goUpdateDispo',
-            goUser: uName,
-            goPass: uPass,
-            goDispoChoice: DispoChoice,
-            goLeadID: lead_id,
-            goCampaign: campaign,
-            goAutoDialLevel: auto_dial_level,
-            goAgentLogID: agent_log_id,
-            goCallBackDateTime: CallBackDateTime,
-            goListID: list_id,
-            goRecipient: CallBackRecipient,
-            goUseInternalDNC: use_internal_dnc,
-            goUseCampaignDNC: use_campaign_dnc,
-            goMDnextCID: LastCID,
-            goStage: group,
-            goPhoneNumber: cust_phone_number,
-            goPhoneCode: cust_phone_code,
-            goDialMethod: dial_method,
-            goUniqueid: uniqueid,
-            goCallBackLeadStatus: CallBackLeadStatus,
-            goComments: encodeURIComponent(CallBackComments),
-            goCustomFieldNames: custom_field_names,
-            goCallNotes: encodeURIComponent(call_notes_dispo),
-            goQMDispoCode: DispoQMcsCODE,
-            goEmailEnabled: email_enabled
-        };
-
-        $.ajax({
-            type: 'POST',
-            url: '<?=$goAPI?>/goAgent/goAPI.php',
-            processData: true,
-            data: postData,
-            dataType: "json",
-        })
-        .done(function (result) {
-            if (auto_dial_level < 1) {
-                if (result.result == 'success') {
-                    agent_log_id = result.data.agent_log_id;
-                } else {
-                    dispo_error++;
-                    alert('<?=$lh->translationFor('dispo_leadid_not_valid')?>');
-                }
-            }
-
-            waiting_on_dispo = 0;
-        });
-        
-        //CLEAR ALL FORM VARIABLES
-        $("#formMain_lead_id").val('');
-        $("#formMain_vendor_lead_code").val('');
-        $("#formMain_list_id").val('');
-        $("#formMain_entry_list_id").val('');
-        $("#formMain_gmt_offset_now").val('');
-        $("#formMain_phone_code").val('');
-        if ( (disable_alter_custphone == 'Y') || (disable_alter_custphone == 'HIDE') ) {
-            var tmp_pn = $("#phone_numberDISP");
-            tmp_pn.html(' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ');
+        if (DialALTPhone == true) {
+            var man_status = "";
+            alt_dial_status_display = 0;
         }
-        $("#formMain_phone_number").val('');
-        $("#formMain_title").val('');
-        $("#formMain_first_name").val('');
-        $("#formMain_middle_initial").val('');
-        $("#formMain_last_name").val('');
-        $("#formMain_address1").val('');
-        $("#formMain_address2").val('');
-        $("#formMain_address3").val('');
-        $("#formMain_city").val('');
-        $("#formMain_state").val('');
-        $("#formMain_province").val('');
-        $("#formMain_postal_code").val('');
-        $("#formMain_country_code").val('');
-        $("#formMain_gender").val('');
-        $("#formMain_date_of_birth").val('');
-        $("#formMain_alt_phone").val('');
-        $("#formMain_email").val('');
-        $("#formMain_security_phrase").val('');
-        $("#formMain_comments").val('');
-        $("#formMain_audit_comments").val('');
-        if (qc_enabled > 0) {
-            $("#formMain_ViewCommentButton").val('');
-            $("#formMain_audit_comments_button").val('');
-        }
-        $("#formMain_called_count").val('');
-        $("#formMain_call_notes").val('');
-        $("#formMain_call_notes_dispo").val('');
-        VDCL_group_id = '';
-        fronter = '';
-        inOUT = 'OUT';
-        vtiger_callback_id = '0';
-        recording_filename = '';
-        recording_id = '';
-        MDuniqueid = '';
-        XDuniqueid = '';
-        tmp_vicidial_id = '';
-        EAphone_code = '';
-        EAphone_number = '';
-        EAalt_phone_notes = '';
-        EAalt_phone_active = '';
-        EAalt_phone_count = '';
-        XDnextCID = '';
-        XDcheck = '';
-        MDnextCID = '';
-        XD_live_customer_call = 0;
-        XD_live_call_seconds = 0;
-        xfer_in_call = 0;
-        MD_channel_look = 0;
-        MD_ring_secondS = 0;
-        uniqueid_status_display = '';
-        uniqueid_status_prefix = '';
-        custom_call_id = '';
-        API_selected_xfergroup = '';
-        API_selected_callmenu = '';
-        timer_action = '';
-        timer_action_seconds = '';
-        timer_action_mesage = '';
-        timer_action_destination = '';
-        did_pattern = '';
-        did_id = '';
-        did_extension = '';
-        did_description = '';
-        closecallid = '';
-        xfercallid = '';
-        custom_field_names = '';
-        custom_field_values = '';
-        custom_field_types = '';
-        customerparked = 0;
-        customerparkedcounter = 0;
-        consult_custom_wait = 0;
-        consult_custom_go = 0;
-        consult_custom_sent = 0;
-        xfername = '';
-        //$("#xfernumhidden").val('');
-        //$("#debugbottomspan").html('');
-        customer_3way_hangup_dispo_message = '';
-        Dispo3wayMessage = '';
-        DispoManualQueueMessage = '';
-        //$("#ManualQueueNotice").html('');
-        APIManualDialQueue_last = 0;
-        $("#formMain_FORM_LOADED").val('0');
-        CallBackLeadStatus = '';
-        CallBackDateTime = '';
-        CallBackRecipient = '';
-        CallBackComments = '';
-        DispoQMcsCODE = '';
-        active_ingroup_dial = '';
-        nocall_dial_flag = 'DISABLED';
-
-        //CLEAR ALL SUB FORM VARIABLES
-        //$("#subForm").find(':input').each(function()
-        //{
-        //    var pattID = /(callchannel|xferchannel|LeadLookUP)/;
-        //    var testInput = pattID.test($(this).attr('id'));
-        //    if ( ! testInput ) {
-        //        $(this).val('');
-        //    }
-        //});
-        inbound_lead_search = 0;
-
-        if (post_phone_time_diff_alert_message.length > 10) {
-            $("#post_phone_time_diff_span_contents").html("");
-            //hideDiv('post_phone_time_diff_span');
-            post_phone_time_diff_alert_message = '';
-        }
-
-        if (manual_dial_in_progress == 1) {
-            ManualDialFinished();
-        }
-
-        AgentDispoing = 0;
-
-        if ( (shift_logout_flag < 1) && (api_logout_flag < 1) ) {
-            if (wrapup_waiting == 0) {
-                if (DispoSelectStop) {
-                    if (auto_dial_level != '0') {
-                        AutoDialWaiting = 0;
-                        QUEUEpadding = 0;
-                        AutoDial_Resume_Pause("VDADpause");
-                    }
-                    pause_calling = 1;
-                    if (dispo_check_all_pause != '1') {
-                        DispoSelectStop = false;
-                    }
-                } else {
-                    if (auto_dial_level != '0') {
-                        AutoDialWaiting = 1;
-                        agent_log_id = AutoDial_Resume_Pause("VDADready","NEW_ID");
-                    } else {
-                        // trigger HotKeys manual dial automatically go to next lead
-                        //if (manual_auto_hotkey > 0)
-                        //{
-                        //    manual_auto_hotkey = 0;
-                        //    ManualDialNext('','','','','','0');
-                        //}
-                    }
-                }
-            }
+    
+        var regCBstatus = new RegExp(' ' + DispoChoice + ' ',"ig");
+        if ((VARCBstatusesLIST.match(regCBstatus)) && (DispoChoice.length > 0) && (scheduled_callbacks > 0) && (DispoChoice != 'CBHOLD')) {
+            console.info("Open Callback Selection Box");
         } else {
-            //if (shift_logout_flag > 0)
-            //    {LogMeOut('SHIFT');}
-            //else
-            //    {LogMeOut('API');}
-        }
-        if (focus_blur_enabled == 1) {
-            //$("#inert_button").focus();
-            //$("#inert_button").blur();
+            var postData = {
+                goServerIP: server_ip,
+                goSessionName: session_name,
+                goAction: 'goUpdateDispo',
+                goUser: uName,
+                goPass: uPass,
+                goDispoChoice: DispoChoice,
+                goLeadID: lead_id,
+                goCampaign: campaign,
+                goAutoDialLevel: auto_dial_level,
+                goAgentLogID: agent_log_id,
+                goCallBackDateTime: CallBackDateTime,
+                goListID: list_id,
+                goRecipient: CallBackRecipient,
+                goUseInternalDNC: use_internal_dnc,
+                goUseCampaignDNC: use_campaign_dnc,
+                goMDnextCID: LastCID,
+                goStage: group,
+                goPhoneNumber: cust_phone_number,
+                goPhoneCode: cust_phone_code,
+                goDialMethod: dial_method,
+                goUniqueid: uniqueid,
+                goCallBackLeadStatus: CallBackLeadStatus,
+                goComments: encodeURIComponent(CallBackComments),
+                goCustomFieldNames: custom_field_names,
+                goCallNotes: encodeURIComponent(call_notes_dispo),
+                goQMDispoCode: DispoQMcsCODE,
+                goEmailEnabled: email_enabled,
+                responsetype: 'json'
+            };
+    
+            $.ajax({
+                type: 'POST',
+                url: '<?=$goAPI?>/goAgent/goAPI.php',
+                processData: true,
+                data: postData,
+                dataType: "json",
+            })
+            .done(function (result) {
+                if (auto_dial_level < 1) {
+                    if (result.result == 'success') {
+                        agent_log_id = result.data.agent_log_id;
+                    } else {
+                        dispo_error++;
+                        alert('<?=$lh->translationFor('dispo_leadid_not_valid')?>');
+                    }
+                }
+    
+                waiting_on_dispo = 0;
+            });
+            
+            //CLEAR ALL FORM VARIABLES
+            $("#formMain_lead_id").val('');
+            $("#formMain_vendor_lead_code").val('');
+            $("#formMain_list_id").val('');
+            $("#formMain_entry_list_id").val('');
+            $("#formMain_gmt_offset_now").val('');
+            $("#formMain_phone_code").val('');
+            if ( (disable_alter_custphone == 'Y') || (disable_alter_custphone == 'HIDE') ) {
+                var tmp_pn = $("#phone_numberDISP");
+                tmp_pn.html(' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ');
+            }
+            $("#formMain_phone_number").val('');
+            $("#formMain_title").val('');
+            $("#formMain_first_name").val('');
+            $("#formMain_middle_initial").val('');
+            $("#formMain_last_name").val('');
+            $("#formMain_address1").val('');
+            $("#formMain_address2").val('');
+            $("#formMain_address3").val('');
+            $("#formMain_city").val('');
+            $("#formMain_state").val('');
+            $("#formMain_province").val('');
+            $("#formMain_postal_code").val('');
+            $("#formMain_country_code").val('');
+            $("#formMain_gender").val('');
+            $("#formMain_date_of_birth").val('');
+            $("#formMain_alt_phone").val('');
+            $("#formMain_email").val('');
+            $("#formMain_security_phrase").val('');
+            $("#formMain_comments").val('');
+            $("#formMain_audit_comments").val('');
+            if (qc_enabled > 0) {
+                $("#formMain_ViewCommentButton").val('');
+                $("#formMain_audit_comments_button").val('');
+            }
+            $("#formMain_called_count").val('');
+            $("#formMain_call_notes").val('');
+            $("#formMain_call_notes_dispo").val('');
+            VDCL_group_id = '';
+            fronter = '';
+            inOUT = 'OUT';
+            vtiger_callback_id = '0';
+            recording_filename = '';
+            recording_id = '';
+            MDuniqueid = '';
+            XDuniqueid = '';
+            tmp_vicidial_id = '';
+            EAphone_code = '';
+            EAphone_number = '';
+            EAalt_phone_notes = '';
+            EAalt_phone_active = '';
+            EAalt_phone_count = '';
+            XDnextCID = '';
+            XDcheck = '';
+            MDnextCID = '';
+            XD_live_customer_call = 0;
+            XD_live_call_seconds = 0;
+            xfer_in_call = 0;
+            MD_channel_look = 0;
+            MD_ring_secondS = 0;
+            uniqueid_status_display = '';
+            uniqueid_status_prefix = '';
+            custom_call_id = '';
+            API_selected_xfergroup = '';
+            API_selected_callmenu = '';
+            timer_action = '';
+            timer_action_seconds = '';
+            timer_action_mesage = '';
+            timer_action_destination = '';
+            did_pattern = '';
+            did_id = '';
+            did_extension = '';
+            did_description = '';
+            closecallid = '';
+            xfercallid = '';
+            custom_field_names = '';
+            custom_field_values = '';
+            custom_field_types = '';
+            customerparked = 0;
+            customerparkedcounter = 0;
+            consult_custom_wait = 0;
+            consult_custom_go = 0;
+            consult_custom_sent = 0;
+            xfername = '';
+            //$("#xfernumhidden").val('');
+            //$("#debugbottomspan").html('');
+            customer_3way_hangup_dispo_message = '';
+            Dispo3wayMessage = '';
+            DispoManualQueueMessage = '';
+            //$("#ManualQueueNotice").html('');
+            APIManualDialQueue_last = 0;
+            $("#formMain_FORM_LOADED").val('0');
+            CallBackLeadStatus = '';
+            CallBackDateTime = '';
+            CallBackRecipient = '';
+            CallBackComments = '';
+            DispoQMcsCODE = '';
+            active_ingroup_dial = '';
+            nocall_dial_flag = 'DISABLED';
+    
+            //CLEAR ALL SUB FORM VARIABLES
+            //$("#subForm").find(':input').each(function()
+            //{
+            //    var pattID = /(callchannel|xferchannel|LeadLookUP)/;
+            //    var testInput = pattID.test($(this).attr('id'));
+            //    if ( ! testInput ) {
+            //        $(this).val('');
+            //    }
+            //});
+            inbound_lead_search = 0;
+    
+            if (post_phone_time_diff_alert_message.length > 10) {
+                $("#post_phone_time_diff_span_contents").html("");
+                //hideDiv('post_phone_time_diff_span');
+                post_phone_time_diff_alert_message = '';
+            }
+    
+            if (manual_dial_in_progress == 1) {
+                ManualDialFinished();
+            }
+    
+            $("#select-disposition").modal('hide');
+            AgentDispoing = 0;
+    
+            if ( (shift_logout_flag < 1) && (api_logout_flag < 1) ) {
+                if (wrapup_waiting == 0) {
+                    if (DispoSelectStop) {
+                        if (auto_dial_level != '0') {
+                            AutoDialWaiting = 0;
+                            QUEUEpadding = 0;
+                            AutoDial_Resume_Pause("VDADpause");
+                        }
+                        pause_calling = 1;
+                        if (dispo_check_all_pause != '1') {
+                            DispoSelectStop = false;
+                        }
+                    } else {
+                        if (auto_dial_level != '0') {
+                            AutoDialWaiting = 1;
+                            agent_log_id = AutoDial_Resume_Pause("VDADready","NEW_ID");
+                        } else {
+                            // trigger HotKeys manual dial automatically go to next lead
+                            if (manual_auto_hotkey > 0) {
+                                manual_auto_hotkey = 0;
+                                ManualDialNext('','','','','','0');
+                            }
+                        }
+                    }
+                }
+            } else {
+                //if (shift_logout_flag > 0)
+                //    {LogMeOut('SHIFT');}
+                //else
+                //    {LogMeOut('API');}
+            }
+            if (focus_blur_enabled == 1) {
+                //$("#inert_button").focus();
+                //$("#inert_button").blur();
+            }
         }
     }
+}
+
+
+// ################################################################################
+// Update vicidial_list lead record with all altered values from form
+function CustomerData_update() {
+    var REGcommentsAMP = new RegExp('&',"g");
+    var REGcommentsQUES = new RegExp("\\?","g");
+    var REGcommentsPOUND = new RegExp("\\#","g");
+    var REGcommentsRESULT = $("#formMain_comments").val();
+        REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsAMP, "--AMP--");
+        REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsQUES, "--QUES--");
+        REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsPOUND, "--POUND--");
+
+    var postData = {
+        goAction: 'goUpdateLead',
+        goUser: uName,
+        goPass: uPass,
+        goCampaign: campaign,
+        goServerIP: server_ip,
+        goSessionName: session_name,
+        goLeadID: $("#formMain_lead_id").val(),
+        goVendorLeadCode: $("#formMain_vendor_lead_code").val(),
+        goPhoneNumber: $("#formMain_phone_number").val(),
+        goTitle: $("#formMain_title").val(),
+        goFirstName: $("#formMain_first_name").val(),
+        goMiddleInitial: $("#formMain_middle_initial").val(),
+        goLastName: $("#formMain_last_name").val(),
+        goAddress1: $("#formMain_address1").val(),
+        goAddress2: $("#formMain_address2").val(),
+        goAddress3: $("#formMain_address3").val(),
+        goCity: $("#formMain_city").val(),
+        goState: $("#formMain_state").val(),
+        goProvince: $("#formMain_province").val(),
+        goPostalCode: $("#formMain_postal_code").val(),
+        goCountryCode: $("#formMain_country_code").val(),
+        goGender: $("#formMain_gender").val(),
+        goDateOfBirth: $("#formMain_date_of_birth").val(),
+        goALTPhone: $("#formMain_alt_phone").val(),
+        goEmail: $("#formMain_email").val(),
+        goSecurity: $("#formMain_security_phrase").val(),
+        goComments: REGcommentsRESULT,
+        responsetype: 'json'
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json",
+    })
+    .done(function (result) {
+        console.log('Customer data updated...');
+    });
 }
 
 
@@ -3328,12 +3488,12 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 	if (scriptformat == 'YES') {
 		// custom fields populate if lead information is sent with custom field names
 		if (custom_field_names.length > 2) {
-			var CFN_array=custom_field_names.split('|');
-			var CFV_array=custom_field_values.split('----------');
-			var CFT_array=custom_field_types.split('|');
-			var CFN_count=CFN_array.length;
-			var CFN_tick=0;
-			var CFN_debug='';
+			var CFN_array = custom_field_names.split('|');
+			var CFV_array = custom_field_values.split('----------');
+			var CFT_array = custom_field_types.split('|');
+			var CFN_count = CFN_array.length;
+			var CFN_tick = 0;
+			var CFN_debug = '';
 			var CF_loaded = $("#formMain_FORM_LOADED").val();
 		//	alert(custom_field_names + "\n" + custom_field_values + "\n" + CFN_count + "\n" + CF_loaded);
 			while (CFN_tick < CFN_count) {
