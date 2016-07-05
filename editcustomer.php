@@ -65,7 +65,11 @@ for($i=0;$i < count($output->list_id);$i++){
 $fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
 $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 //var_dump($output);
+ $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
+ 									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
+
 ?>
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -204,11 +208,11 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							<div class="col-lg-9 col-lg-9 br pv custom-row">
 								<div class="row">
 									<div class="col-md-2 text-center visible-md visible-lg">
-					                	<img src="theme_dashboard/img/user/05.jpg" alt="Image" class="media-object img-circle thumb96 pull-left">
+					                	<img src="<?php echo $user->getUserAvatar();?>" alt="Image" class="media-object img-circle thumb96 pull-left">
 					                </div>
 					                <div class="col-md-10">
-						                <h4><?php echo $fullname;?></h4>
-						                <p class="ng-binding animated fadeInUpShort">Lead director</p>
+						                <h4><?php echo $user->getUserName();?></h4>
+						                <p class="ng-binding animated fadeInUpShort">Agent</p>
 						                <address>
 						                <?php
 						                /* 
@@ -481,13 +485,13 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 				                  <div class="text-center">
 				                  	<div class="col-md-12 text-center">
 				                  		<center>
-				                  			<img src="theme_dashboard/img/user/05.jpg" alt="Image" class="media-object img-circle thumb48">
+				                  			<img src="<?php echo $user->getUserAvatar();?>" alt="Image" class="media-object img-circle thumb48">
 				                  		</center>
 				                  		<br/>
 				                  	</div>
-				                    <h4><?php echo $fullname;?></h4>
+				                    <h4><?php echo $user->getUserName();?></h4>
 				                    <p>
-				                    	Lead director<br>
+				                    	Agent<br>
 				                    	<?php echo $email;?>
 				                    </p>
 				                    
@@ -495,40 +499,17 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 				                  <hr>
 				                  <ul class="list-unstyled ph-xl">
 				                    <li>
-				                        <em class="fa fa-home fa-fw mr-lg"></em>
-				                    	<?php
-				                    		echo $address1; 
-						             		if($address2 != NULL){
-						             			echo ", ";
-						             			echo $address2; 
-						             		}
-						             		if($address3 != NULL){
-						             			echo ", ";
-						             			echo $address3;
-						             		}
-						                	if($city != NULL){
-						                		echo ", ".$city;
-						                	}
-						                	if($province != NULL){
-						                		echo ", ".$province;
-						                	}
-						                	if($state != NULL){
-						                		echo ", ".$state;
-						                	}
-				                    	?>
+				                        <em class="fa fa-comment fa-fw mr-lg"></em><a href="#" data-toggle="modal" data-target="#script" role="button">Script</a>
 				                    </li>
 				                     <li>
-				                        <em class="fa fa-briefcase fa-fw mr-lg"></em><a href="#">Themicon.co</a>
+				                        <em class="fa fa-globe fa-fw mr-lg"></em><a href="#" data-toggle="modal" data-target="#webform" role="button">Webform</a>
 				                     </li>
-				                     <li>
-				                        <em class="fa fa-graduation-cap fa-fw mr-lg"></em>Master Designer</li>
 				                  </ul>
 				                  <hr/>
 				                  <!-- 
 									*
 									*
 								  -->
-				                  	<small> --- INSERT PHONE HERE --- </small> 
 								  <!--
 									*
 									*
@@ -536,6 +517,36 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 
 				                </div>
 							</div>
+
+					<!-- SCRIPT MODAL -->
+							<div class="modal fade" id="script" name="script" tabindex="-1" role="dialog" aria-hidden="true">
+						        <div class="modal-dialog">
+						            <div class="modal-content">
+									
+						                <div class="modal-header">
+						                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						                    <h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translateText("Script"); ?></b></h4>
+						                </div>
+
+						                    <div class="modal-body">
+						                        <?php echo $output_script;?>
+											</div>
+										
+						            </div><!-- /.modal-content -->
+						        </div><!-- /.modal-dialog -->
+						    </div><!-- /.modal -->
+
+					<!-- WEBFORM MODAL -->
+							<div class="modal fade" id="webform" name="webform" tabindex="-1" role="dialog" aria-hidden="true">
+						        <div class="modal-dialog">
+						            <div class="modal-content">
+										<br/>
+										<center><h2>Ok!</h2></center>
+										<br/>
+						            </div><!-- /.modal-content -->
+						        </div><!-- /.modal-dialog -->
+						    </div><!-- /.modal -->
+
 						</div>
 					</div>
                 </section><!-- /.content -->
