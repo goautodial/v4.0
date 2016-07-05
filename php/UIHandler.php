@@ -230,9 +230,9 @@ error_reporting(E_ERROR | E_PARSE);
 				//telephony
 					if($item == "active"){$item = "status";}
 					if($item == "agentid"){$item = "Agent ID";}
-					if($item == "full_name"){$item = "Agent Name";}
+					if($item == "full_name"){$item = "Fullname";}
 					if($item == "user_level"){$item = "Level";}
-					if($item == "user_group"){$item = "Group";}
+					if($item == "user_group"){$item = "Group(s)";}
 					if($item == "campaign_id"){$item = "Campaign ID";}
 					if($item == "campaign_name"){$item = "Campaign Name";}
 					if($item == "dial_method"){$item = "Dial Method";}
@@ -1009,8 +1009,11 @@ error_reporting(E_ERROR | E_PARSE);
 					$dateFormat = $this->lh->getDateFormatForCurrentLocale();
 				    return $this->singleFormGroupWithInputGroup($this->maskedDateInputElement($setting, $setting, $dateFormat, $currentValue), $this->lh->translationFor($setting));
 					break;
+				case CRM_SETTING_TYPE_TITLE:
+					$isTitle = true;
 				case CRM_SETTING_TYPE_LABEL:
-					return $this->singleFormGroupWithInputGroup($this->lh->translationFor($setting));
+					$thisLabel = ($isTitle) ? "<strong>".$this->lh->translationFor($setting)."</strong>" : $this->lh->translationFor($setting);
+					return $this->singleFormGroupWithInputGroup($thisLabel);
 					break;
 				case CRM_SETTING_TYPE_PASS:
 					return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "password", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));
@@ -1350,7 +1353,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * Returns the default creamy header for all pages.
 	 */
 	public function creamyHeader($user) {
-		// module topbar elements
+		// module topbar elements milo
 		$mh = \creamy\ModuleHandler::getInstance();
 		$moduleTopbarElements = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_TOPBAR, null, CRM_MODULE_MERGING_STRATEGY_APPEND);
 		// header elements
@@ -2909,11 +2912,11 @@ error_reporting(E_ERROR | E_PARSE);
 	       	   $action = $this->getUserActionMenuForT_User($output->userno[$i]); 
 	       	        
 		        $result .= "<tr>
-	                     <td class='hide-on-low'>".$output->userno[$i]."</td>
-						 <td><a class='edit-T_user' href=".$output->userno[$i].">".$output->full_name[$i]."</a></td>";
-	             $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
+	                     <td class='hide-on-low'><a class='edit-T_user' href=".$output->userno[$i].">".$output->userno[$i]." </a></td>
+						 <td class='hide-on-low'>".$output->full_name[$i]."</td>";
+	             $result .="<td class='hide-on-low'>".$output->user_group[$i]."</td>
 	                     <td class='hide-on-low'>".$output->active[$i]."</td>
-	                     <td style='width: 200px;'>".$action."</td>
+	                     <td class='hide-on-low'>".$action."</td>
 				         </tr>";
 	       }
 	       
