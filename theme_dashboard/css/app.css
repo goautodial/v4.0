@@ -473,6 +473,7 @@ body {
   .content-wrapper > .content-heading {
     margin: -20px;
     margin-bottom: 20px;
+    margin-top: 0px;
     padding: 20px;
   }
   .content-wrapper > button,
