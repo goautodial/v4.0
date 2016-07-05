@@ -4782,6 +4782,54 @@ error_reporting(E_ERROR | E_PARSE);
 	       return $this->calloutErrorMessage($this->lh->translationFor("unable_get_user_list"));
        }
 	}
+
+	// get script
+	public function getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, $phone_number, $alt_phone,
+		$address1, $address2, $address3, $city, $province, $state, $postal_code, $country_code){
+		$url = gourl."/goViewScripts/goAPI.php"; # URL to GoAutoDial API filem (required)
+         $postfields["goUser"] = goUser; #Username goes here. (required)
+         $postfields["goPass"] = goPass; #Password goes here. (required)
+         $postfields["goAction"] = "goViewAgentScript"; #action performed by the [[API:Functions]] (required0
+         $postfields["responsetype"] = responsetype; #response type by the [[API:Functions]] (required)
+
+         #required fields
+         $postfields["lead_id"] = $lead_id; #Agent full anme(required)
+         $postfields["fullname"] = $fullname; #Agent full anme(required)
+         $postfields["first_name"] = $first_name; #Lead first_name (required)
+         $postfields["last_name"] = $last_name; #Lead last_name (required)
+         $postfields["middle_initial"] = $middle_initial; #Lead middle_initial (required)
+         $postfields["email"] = $email; #Lead email (required)
+         $postfields["phone_number"] = $phone_number; #Lead phone_number (required)
+         $postfields["alt_phone"] = $alt_phone; #Lead alt_phone (required)
+         $postfields["address1"] = $address1; #Lead address1 (required)
+         $postfields["address2"] = $address2; #Lead address2 (required)
+         $postfields["address3"] = $address3; #Lead address3 (required)
+         $postfields["city"] = $city; #Lead city (required)
+         $postfields["province"] = $province; #Lead province (required)
+         $postfields["state"] = $state; #Lead state (required)
+         $postfields["postal_code"] = $postal_code; #Lead postal_code (required)
+         $postfields["country_code"] = $country_code; #Lead country_code(required)
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+        // var_dump($output);
+        if ($output->result=="success") {
+           # Result was OK!
+                return $output->gocampaignScript;
+         } else {
+           # An error occured
+                return $output->result;
+        }
+
+	}
 }
 
 ?>
