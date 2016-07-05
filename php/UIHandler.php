@@ -1389,6 +1389,45 @@ error_reporting(E_ERROR | E_PARSE);
     		</div>';
 	}
 	
+    /**
+	 * Returns the default creamy header for all pages.
+	 */
+	public function creamyAgentHeader($user) {
+		// module topbar elements
+		$mh = \creamy\ModuleHandler::getInstance();
+		$moduleTopbarElements = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_TOPBAR, null, CRM_MODULE_MERGING_STRATEGY_APPEND);
+		// header elements
+		$logo = $this->creamyHeaderLogo();
+		$name = $this->creamyHeaderName();
+			//<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="32"> '.$name.'</a>
+		// return header
+		return '<header class="main-header">
+				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
+	            <nav class="navbar navbar-static-top" role="navigation">
+	                
+	                <div class="navbar-custom-menu">
+	                    <ul class="nav navbar-nav">
+	                    		'.$moduleTopbarElements.'
+	                    		'.$this->getTopbarMessagesMenu($user).'  
+		                    	'.$this->getTopbarNotificationsMenu($user).'
+		                    	'.$this->getTopbarTasksMenu($user).'
+		                    	'.$this->getTopbarUserMenu($user).'
+		                    	<li>
+			                    	<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+				                </li>
+	                    </ul>
+	                </div>
+	            </nav>
+	        </header>
+	        <div class="preloader">
+    			<center>
+    					<img src="'.$logo.'"/>
+    					<span class="dots">
+    					<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
+    					</span>
+    			</center>
+    		</div>';
+	}
 	/**
 	 * Returns the creamy company custom logo. If no custom logo is defined, returns 
 	 * the default white creamy logo.
@@ -1416,9 +1455,13 @@ error_reporting(E_ERROR | E_PARSE);
 	public function creamyBody() {
 		$theme = $this->db->getSettingValueForKey(CRM_SETTING_THEME);
 		if (empty($theme)) { $theme = CRM_SETTING_DEFAULT_THEME; }
-		return '<body class="skin-'.$theme.' sidebar-mini">';
+		return '<body class="skin-'.$theme.' sidebar-mini fixed ">';
 	}
-	
+	public function creamyAgentBody() {
+		$theme = $this->db->getSettingValueForKey(CRM_SETTING_THEME);
+		if (empty($theme)) { $theme = CRM_SETTING_DEFAULT_THEME; }
+		return '<body class="skin-'.$theme.' sidebar-collapse fixed">';
+	}
 	/**
 	 * Returns the proper css style for the selected theme.
 	 * If theme is not found, it defaults to CRM_SETTING_DEFAULT_THEME
@@ -1750,6 +1793,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		return $result;
 	}
+
 
 	/**
 	 * Generates the HTML code for a sidebar link.

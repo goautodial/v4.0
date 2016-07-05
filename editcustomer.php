@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 /**
 	The MIT License (MIT)
 	
@@ -81,9 +84,9 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <script src="js/jquery.validate.min.js" type="text/javascript"></script>
 		
-        <!-- Creamy App -->
+        <!-- Creamy App 
         <script src="js/app.min.js" type="text/javascript"></script>
-
+		-->
          <!-- theme_dashboard folder -->
 					<!-- FONT AWESOME-->
 			<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
@@ -100,6 +103,12 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
 				<!-- =============== APP STYLES ===============-->
 			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+			<!-- SLIMSCROLL-->
+  			<script src="theme_dashboard/slimScroll/jquery.slimscroll.min.js"></script>
+
+  		<!-- Theme style -->
+  		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
+
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -171,15 +180,14 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 			}
 		</style>
     </head>
-    <?php print $ui->creamyBody(); ?>
-    <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
+    <?php print $ui->creamyAgentBody(); ?>
+    <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
-		<?php print $ui->creamyHeader($user); ?>
-            <!-- Left side column. contains the logo and sidebar -->
-			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
-
+		<?php print $ui->creamyAgentHeader($user); ?>
+            
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="content-wrapper">
+
                 <!-- Content Header (Page header) -->
                 <section class="content-heading">
 					<!-- Page title -->
@@ -323,14 +331,14 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                        <p style="padding-right:10px;padding-top: 20px;">Name:</p> 
 							                    </div>
 												<div class="form-group">
-							                        <input id="first_name" name="first_name" type="text" placeholder="First Name" value="<?php echo $first_name;?>" class="form-control input-disabled" disabled required>
+							                        <input id="first_name" name="first_name" type="text" placeholder="First Name" value="<?php echo $first_name;?>" class="form-control input-disabled" disabled>
 							                    </div>
 							                    <div class="form-group">
 							                        <input id="middle_initial" name="middle_initial" type="text" placeholder="Middle Initial" value="<?php echo $middle_initial;?>" class="form-control input-disabled" disabled>
 							                        
 							                    </div>
 							                    <div class="form-group">
-							                        <input id="last_name" name="last_name" type="text" placeholder="Last Name" value="<?php echo $last_name;?>" class="form-control input-disabled" disabled required>
+							                        <input id="last_name" name="last_name" type="text" placeholder="Last Name" value="<?php echo $last_name;?>" class="form-control input-disabled" disabled>
 							                        
 							                    </div>
 											</form>
@@ -345,7 +353,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                        <p style="padding-right:0px;padding-top: 20px;">Gender:</p> 
 							                    </div>
 												<div class="form-group" style="padding-right:10px;">
-							                        <select id="gender" name="gender" placeholder="Gender" value="<?php echo $gender;?>" class="form-control select input-disabled" disabled required>
+							                        <select id="gender" name="gender" placeholder="Gender" value="<?php echo $gender;?>" class="form-control select input-disabled" disabled>
 							                        	<?php 
 							                        		if($gender == "M"){
 							                        	?>
@@ -374,7 +382,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                    </div>
 												<div class="form-group">
 													<?php echo $date_of_birth;?>
-													<input type="date" id="date_of_birth" value="<?php echo $data_of_birth;?>" name="date_of_birth" class="form-control input-disabled" disabled required>
+													<input type="date" id="date_of_birth" value="<?php echo $data_of_birth;?>" name="date_of_birth" class="form-control input-disabled" disabled>
 							                    </div>						                   
 											</form>
 											</div>
@@ -383,7 +391,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 											<form id="contact_details_form">
 												<div class="form-group">
 													<label><p><em class="fa fa-at fa-fw"></em> E-mail Address:</p> 
-							                        	<input id="email" name="email" type="text" width="auto" placeholder="E-Mail Address" value="<?php echo $email;?>" class="form-control input-disabled" disabled required>
+							                        	<input id="email" name="email" type="text" width="auto" placeholder="E-Mail Address" value="<?php echo $email;?>" class="form-control input-disabled" disabled>
 							                       	</label>
 							                    </div>
 												<div class="form-group">
@@ -398,7 +406,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                    </div>
 												<div class="form-group">
 													<label><p><em class="fa fa-home fa-fw"></em> Address Street 1:</p> 
-							                        	<input id="address1" name="address1" type="text" width="auto" placeholder="Address Street 1" value="<?php echo $address1;?>" class="form-control input-disabled" disabled required>
+							                        	<input id="address1" name="address1" type="text" width="auto" placeholder="Address Street 1" value="<?php echo $address1;?>" class="form-control input-disabled" disabled>
 							                       	</label>
 							                    </div>
 							                    <div class="form-group">
@@ -413,7 +421,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                    </div>
 							                    <div class="form-group">
 							                    	<label><p style="width:11%;padding-right:10px;"><em class="fa fa-building fa-fw"></em> City:</p>
-							                        	<input id="city" name="city" type="text" placeholder="City" value="<?php echo $city;?>" class="form-control input-disabled" disabled required>
+							                        	<input id="city" name="city" type="text" placeholder="City" value="<?php echo $city;?>" class="form-control input-disabled" disabled>
 							                    	</label>
 							                    </div>
 							                    <div class="form-group">
@@ -433,7 +441,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                    </div>
 							                    <div class="form-group">
 							                        <label><p style="width:16%;padding-right:10px;"><em class="fa fa-globe fa-fw"></em> Country:</p>
-							                        	<input id="country" name="country" type="text" placeholder="Country" value="<?php echo $country;?>" class="form-control input-disabled" disabled required>
+							                        	<input id="country" name="country" type="text" placeholder="Country" value="<?php echo $country;?>" class="form-control input-disabled" disabled>
 							                    	</label>
 							                    </div>
 							                </form> 
@@ -443,7 +451,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 											<div id="notifications">
 												<div class="output-message-success" style="display:none;">
 													<div class="alert alert-success alert-dismissible" role="alert">
-													  <strong>Success!</strong> New Agent added.
+													  <strong>Success!</strong> Successfuly updated contact.
 													</div>
 												</div>
 												<div class="output-message-error" style="display:none;">
@@ -528,16 +536,96 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 
 				                </div>
 							</div>
-
 						</div>
 					</div>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
+
             <?php //print $ui->creamyFooter(); ?>
+
+            <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+      <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content" style="border-width:0;">
+      <!-- Home tab content -->
+      <div class="tab-pane active" id="control-sidebar-home-tab">
+        <h3 class="control-sidebar-heading">Recent Activity</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript::;">
+              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+
+                <p>Will be 23 on April 24th</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+        <h3 class="control-sidebar-heading">Tasks Progress</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript::;">
+              <h4 class="control-sidebar-subheading">
+                Custom Template Design
+                <span class="label label-danger pull-right">70%</span>
+              </h4>
+
+              <div class="progress progress-xxs">
+                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+      </div>
+      <!-- /.tab-pane -->
+      <!-- Stats tab content -->
+      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+      <!-- /.tab-pane -->
+      <!-- Settings tab content -->
+      <div class="tab-pane" id="control-sidebar-settings-tab">
+        <form method="post">
+          <h3 class="control-sidebar-heading">General Settings</h3>
+
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Report panel usage
+              <input type="checkbox" class="pull-right" checked>
+            </label>
+
+            <p>
+              Some information about this general settings option
+            </p>
+          </div>
+          <!-- /.form-group -->
+        </form>
+      </div>
+      <!-- /.tab-pane -->
+    </div>
+  </aside>
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg" style="    position: fixed;
+    height: auto;"></div>
+
         </div><!-- ./wrapper -->
 
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
+
+		<!-- AdminLTE App -->
+		<script src="adminlte/js/app.min.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {

@@ -257,6 +257,7 @@ var group = '<?=$camp_info->campaign_id?>';         // same value as campaign va
 $(document).ready(function() {
     $(window).load(function() {
         var refreshId = setInterval(function() {
+            //GOagentWebRTC = window.open('http://google.com','GOagentWebRTC', 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,left=0, top=0, width=10, height=10');
             if (is_logged_in) {
                 //Start of checking for live calls
                 if (live_customer_call == 1) {
@@ -589,6 +590,8 @@ $(document).ready(function() {
         
             (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
             return confirmationMessage;                                //Webkit, Safari, Chrome etc.
+        } else {
+            //GOagentWebRTC.close();
         }
     });
 
@@ -2593,7 +2596,11 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
                     {CBflag = '*';}
                 else
                     {CBflag = '';}
+<<<<<<< HEAD
                 console.log(statuses[loop_ct], taskDSgrp);
+=======
+                //console.log(statuses[loop_ct], taskDSgrp);
+>>>>>>> origin/master
                 if (taskDSgrp == statuses[loop_ct]) {
                     dispo_HTML = dispo_HTML + "<span id='dispo-sel-"+statuses[loop_ct]+"' style='background-color:#99FF99;cursor:pointer;color:#77a30a;'>&nbsp; " + statuses[loop_ct] + " - " + statuses_names[loop_ct] + " " + CBflag + " &nbsp;</span><br /><br />";
                 } else {

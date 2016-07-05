@@ -278,8 +278,13 @@ class GOagent extends Module {
 					var remoteStream;
 					
 					var configuration = {
+<<<<<<< HEAD
 						'ws_servers': '{$webProtocol}://{$websocketURL}:44344/',
 						'uri': 'sip:'+phone_login+'@{$websocketSIP},
+=======
+						'ws_servers': 'wss://webrtc.goautodial.com:44344/',
+						'uri': 'sip:'+phone_login+'@webrtc.goautodial.com',
+>>>>>>> origin/master
 						'password': phone_pass,
 						'session_timers': false
 					};
