@@ -994,9 +994,9 @@ error_reporting(E_ERROR | E_PARSE);
 	    if (is_array($type)) { // select type
 		    return $this->singleFormGroupWithSelect($this->lh->translationFor($setting), $setting, $setting, $type, $currentValue);
 	    } else { // single input type: text, number, bool, date...
-		    switch ($type) {
-			    case CRM_SETTING_TYPE_STRING:
-				    return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "text", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));
+		   switch ($type) {
+			   case CRM_SETTING_TYPE_STRING:
+				   return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "text", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));
 					break;
 				case CRM_SETTING_TYPE_INT:
 				case CRM_SETTING_TYPE_FLOAT:
@@ -1009,10 +1009,11 @@ error_reporting(E_ERROR | E_PARSE);
 					$dateFormat = $this->lh->getDateFormatForCurrentLocale();
 				    return $this->singleFormGroupWithInputGroup($this->maskedDateInputElement($setting, $setting, $dateFormat, $currentValue), $this->lh->translationFor($setting));
 					break;
-				case CRM_SETTING_TYPE_TITLE:
-					$isTitle = true;
 				case CRM_SETTING_TYPE_LABEL:
-					$thisLabel = ($isTitle) ? "<strong>".$this->lh->translationFor($setting)."</strong>" : $this->lh->translationFor($setting);
+					return $this->singleFormGroupWithInputGroup($this->lh->translationFor($setting));
+					break;
+				case CRM_SETTING_TYPE_TITLE:
+					$thisLabel = "<strong>".$this->lh->translationFor($setting)."</strong>";
 					return $this->singleFormGroupWithInputGroup($thisLabel);
 					break;
 				case CRM_SETTING_TYPE_PASS:
