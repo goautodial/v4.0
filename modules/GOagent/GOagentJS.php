@@ -60,6 +60,7 @@ var UnixTimeMS = 0;
 var t = new Date();
 var c = new Date();
 var refresh_interval = 1000;
+var SIPserver = '<?=$SIPserver?>';
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -907,6 +908,7 @@ function btnLogMeOut () {
             goAction: 'goLogoutUser',
             goUser: user,
             goPass: pass,
+            goSIPserver: SIPserver,
             responsetype: 'json'
         };
     
@@ -2594,7 +2596,11 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
                     {CBflag = '*';}
                 else
                     {CBflag = '';}
+<<<<<<< HEAD
+                console.log(statuses[loop_ct], taskDSgrp);
+=======
                 //console.log(statuses[loop_ct], taskDSgrp);
+>>>>>>> origin/master
                 if (taskDSgrp == statuses[loop_ct]) {
                     dispo_HTML = dispo_HTML + "<span id='dispo-sel-"+statuses[loop_ct]+"' style='background-color:#99FF99;cursor:pointer;color:#77a30a;'>&nbsp; " + statuses[loop_ct] + " - " + statuses_names[loop_ct] + " " + CBflag + " &nbsp;</span><br /><br />";
                 } else {
@@ -3011,6 +3017,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
             qm_extension: qm_extension,
             goDialIngroup: active_ingroup_dial,
             goNoCallDialFlag: nocall_dial_flag,
+            goSIPserver: SIPserver,
             responsetype: 'json'
         };
 

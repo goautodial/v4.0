@@ -1009,8 +1009,11 @@ error_reporting(E_ERROR | E_PARSE);
 					$dateFormat = $this->lh->getDateFormatForCurrentLocale();
 				    return $this->singleFormGroupWithInputGroup($this->maskedDateInputElement($setting, $setting, $dateFormat, $currentValue), $this->lh->translationFor($setting));
 					break;
+				case CRM_SETTING_TYPE_TITLE:
+					$isTitle = true;
 				case CRM_SETTING_TYPE_LABEL:
-					return $this->singleFormGroupWithInputGroup($this->lh->translationFor($setting));
+					$thisLabel = ($isTitle) ? "<strong>".$this->lh->translationFor($setting)."</strong>" : $this->lh->translationFor($setting);
+					return $this->singleFormGroupWithInputGroup($thisLabel);
 					break;
 				case CRM_SETTING_TYPE_PASS:
 					return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "password", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));

@@ -48,13 +48,17 @@ class GOagent extends Module {
 		if (!isset($customLanguageFile)) { $customLanguageFile = $this->getModuleLanguageFileForLocale(CRM_LANGUAGE_DEFAULT_LOCALE); }
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
 		
-		$this->astDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL, null, 'asterisk');
-		$this->goDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL);
+		$this->astDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL, null, $VARDB_database);
+		$this->goDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL, null, $VARDBgo_database);
 
 		$this->userrole = \creamy\CreamyUser::currentUser()->getUserRole();
 
 		if ($this->userrole > 1) {
 			$_SESSION['is_logged_in'] = $this->checkIfLoggedOnPhone();
+			
+			$this->goDB->where('setting', 'GO_agent_sip_server');
+			$rslt = $this->goDB->getOne('settings', 'value');
+			$_SESSION['SIPserver'] = (strlen($rslt['value']) > 0) ? $rslt['value'] : 'kamailio';
 
 			echo $this->getGOagentContent();
 		}
@@ -141,6 +145,11 @@ class GOagent extends Module {
 		
 		//$webProtocol = (preg_match("/Windows/", $_SERVER['HTTP_USER_AGENT'])) ? "wss" : "ws";
 		$webProtocol = "wss";
+		
+		$this->goDB->where('setting', 'GO_agent_wss');
+		$rslt = $this->goDB->getOne('settings', 'value');
+		$websocketURL = (strlen($rslt['value']) > 0) ? $rslt['value'] : "webrtc.goautodial.com";
+		$websocketSIP = (strlen($rslt['value']) > 0) ? "{$websocketURL}'" : "'+server_ip";
 		
 		$labels = $this->getLabels()->labels;
 		$disable_alter_custphone = $this->getLabels()->disable_alter_custphone;
@@ -269,8 +278,13 @@ class GOagent extends Module {
 					var remoteStream;
 					
 					var configuration = {
+<<<<<<< HEAD
+						'ws_servers': '{$webProtocol}://{$websocketURL}:44344/',
+						'uri': 'sip:'+phone_login+'@{$websocketSIP},
+=======
 						'ws_servers': 'wss://webrtc.goautodial.com:44344/',
 						'uri': 'sip:'+phone_login+'@webrtc.goautodial.com',
+>>>>>>> origin/master
 						'password': phone_pass,
 						'session_timers': false
 					};
@@ -637,7 +651,7 @@ EOF;
 	
 	// settings
 	public function moduleSettings() {
-		return array("GO_agent_url" => CRM_SETTING_TYPE_STRING, "GO_agent_url_info" => CRM_SETTING_TYPE_LABEL, "GO_agent_db" => CRM_SETTING_TYPE_STRING, "GO_agent_user" => CRM_SETTING_TYPE_STRING, "GO_agent_pass" => CRM_SETTING_TYPE_PASS, "GO_agent_db_info" => CRM_SETTING_TYPE_LABEL);
+		return array("GO_agent_wss" => CRM_SETTING_TYPE_STRING, "GO_agent_wss_info" => CRM_SETTING_TYPE_LABEL, "GO_agent_sip_server" => CRM_SETTING_TYPE_LABEL, "GO_agent_sip_server_info" => CRM_SETTING_TYPE_LABEL);
 	}
 }
 
