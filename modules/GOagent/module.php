@@ -149,7 +149,7 @@ class GOagent extends Module {
 		$this->goDB->where('setting', 'GO_agent_wss');
 		$rslt = $this->goDB->getOne('settings', 'value');
 		$websocketURL = (strlen($rslt['value']) > 0) ? $rslt['value'] : "webrtc.goautodial.com";
-		$websocketSIP = (strlen($rslt['value']) > 0) ? "{$websocketURL}'" : "'+server_ip";
+		$websocketSIP = (strlen($rslt['value']) > 10000) ? "{$websocketURL}'" : "'+server_ip";
 		
 		$labels = $this->getLabels()->labels;
 		$disable_alter_custphone = $this->getLabels()->disable_alter_custphone;
@@ -281,7 +281,9 @@ class GOagent extends Module {
 						'ws_servers': '{$webProtocol}://{$websocketURL}:44344/',
 						'uri': 'sip:'+phone_login+'@{$websocketSIP},
 						'password': phone_pass,
-						'session_timers': false
+						'session_timers': false,
+						'connection_recovery_max_interval': 30,
+						'connection_recovery_min_interval': 2
 					};
 					
 					var rtcninja = JsSIP.rtcninja;
@@ -343,7 +345,6 @@ class GOagent extends Module {
 							audioElement.src = window.URL.createObjectURL(remoteStream);
 							
 							$(document).on('keydown', function(event) {
-								console.log(event);
 								var keys = {
 									48: '0', 49: '1', 50: '2', 51: '3', 52: '4', 53: '5', 54: '6', 55: '7', 56: '8', 57: '9'
 								};
@@ -364,7 +365,10 @@ class GOagent extends Module {
 										},
 									}
 								};
-								session.sendDTMF(keys[event.which], options);
+								
+								if (live_customer_call) {
+									session.sendDTMF(keys[event.which], options);
+								}
 							});
 						});
 					
@@ -545,64 +549,7 @@ class GOagent extends Module {
 							</div>
 						</div>
 					</div>
-					<div id="manual-dial-box" class="modal fade" tabindex="-1">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title">$manualDialLead</h4>
-								</div>
-								<div class="modal-body">
-									<table width="100%">
-										<tr>
-											<td align="right" style="padding-right: 10px">$dialCode:</td>
-											<td align="left">
-												<input type="text" size="7" maxlength="10" name="MDDiaLCodE" id="MDDiaLCodE" class="digits-only" value="1" />&nbsp; <small>($dialCodeInfo)</small>
-											</td>
-										</tr>
-										<tr>
-											<td align="right" style="padding-right: 10px">$phoneNumber:</td>
-											<td align="left">
-												<input type="text" size="14" maxlength="18" name="MDPhonENumbeR" id="MDPhonENumbeR" class="phonenumbers-only" value="" onkeyup="activateLinks();" onchange="activateLinks();" />&nbsp; <small>($digitsOnly)</small>
-												<input type="hidden" name="MDPhonENumbeRHiddeN" id="MDPhonENumbeRHiddeN" value="" />
-												<input type="hidden" name="MDLeadID" id="MDLeadID" value="" />
-												<input type="hidden" name="MDType" id="MDType" value="" />
-											</td>
-										</tr>
-										<tr>
-											<td align="right" style="padding-right: 10px">$searchExistingLeads:</td>
-											<td align="left">
-												<input type="checkbox" name="LeadLookUP" id="LeadLookUP" size="1" value="0" disabled /><!--&nbsp; ($searchExistingLeadsInfo)-->
-											</td>
-										</tr>
-										<tr>
-											<td align="left" colspan="2" style="display:none;">
-											<br /><br />
-											<CENTER>
-												<span id="ManuaLDiaLGrouPSelecteD"></span> &nbsp; &nbsp; <span id="ManuaLDiaLGrouP"></span>
-												<br><br>
-												<span id="ManuaLDiaLInGrouPSelecteD"></span> &nbsp; &nbsp; <span id="ManuaLDiaLInGrouP"></span>
-												<br><br>
-												<span id="NoDiaLSelecteD"></span>
-											</CENTER>
-											<br /><br />$dialOverrideInfo<br /> &nbsp; </td>
-										</tr>
-										<tr style="display:none;">
-											<td align="right">$dialOverride:</td>
-											<td align="left">
-												<input type="text" size="24" maxlength="20" name="MDDiaLOverridE" id="MDDiaLOverridE" class="cust_form" value="" />&nbsp; ($digitsOnlyPlease)
-											</td>
-										</tr>
-									</table>
-								</div>
-								<div class="modal-footer">
-									<button id="manual-dial-now" class="btn btn-warning disabled">$dialNow</button>
-									<button id="manual-dial-preview" class="btn btn-default disabled">$previewCall</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					
+
 EOF;
 		return $str;
 	}

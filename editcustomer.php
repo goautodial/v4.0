@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 /**
 	The MIT License (MIT)
 	
@@ -40,27 +40,30 @@ $user = \creamy\CreamyUser::currentUser();
 
 $lead_id = $_GET['lead_id'];
 $output = $ui->API_GetLeadInfo($lead_id);
+$list_id_ct = count($output->list_id);
 
-for($i=0;$i < count($output->list_id);$i++){
-	$first_name 	= $output->first_name[$i];
-	$middle_initial = $output->middle_initial[$i];
-	$last_name 		= $output->last_name[$i];
-	
-	$email 			= $output->email[$i];
-	$phone_number 	= $output->phone_number[$i];
-	$alt_phone 		= $output->alt_phone[$i];
-	$address1 		= $output->address1[$i];
-	$address2 		= $output->address2[$i];
-	$address3 		= $output->address3[$i];
-	$city 			= $output->city[$i];
-	$state 			= $output->state[$i];
-	$country 		= $output->country[$i];
-	$gender 		= $output->gender[$i];
-	$data_of_birth 	= $output->data_of_birth[$i];
-	$comments 		= $output->comments[$i];
-	$title 			= $output->title[$i];
-	$call_count 	= $output->call_count[$i];
-	$last_local_call_time = $output->last_local_call_time[$i];
+if ($list_id_ct > 0) {
+	for($i=0;$i < $list_id_ct;$i++){
+		$first_name 	= $output->first_name[$i];
+		$middle_initial = $output->middle_initial[$i];
+		$last_name 		= $output->last_name[$i];
+		
+		$email 			= $output->email[$i];
+		$phone_number 	= $output->phone_number[$i];
+		$alt_phone 		= $output->alt_phone[$i];
+		$address1 		= $output->address1[$i];
+		$address2 		= $output->address2[$i];
+		$address3 		= $output->address3[$i];
+		$city 			= $output->city[$i];
+		$state 			= $output->state[$i];
+		$country 		= $output->country[$i];
+		$gender 		= $output->gender[$i];
+		$data_of_birth 	= $output->data_of_birth[$i];
+		$comments 		= $output->comments[$i];
+		$title 			= $output->title[$i];
+		$call_count 	= $output->call_count[$i];
+		$last_local_call_time = $output->last_local_call_time[$i];
+	}
 }
 $fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
 $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
@@ -558,43 +561,56 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-      <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+      <li class="active"><a href="#control-sidebar-dialer-tab" data-toggle="tab"><i class="fa fa-phone"></i></a></li>
       <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content" style="border-width:0;">
       <!-- Home tab content -->
-      <div class="tab-pane active" id="control-sidebar-home-tab">
-        <h3 class="control-sidebar-heading">Recent Activity</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript::;">
-              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-
-                <p>Will be 23 on April 24th</p>
-              </div>
-            </a>
-          </li>
+      <div class="tab-pane active" id="control-sidebar-dialer-tab">
+        <!--<h3 class="control-sidebar-heading">Agent Dialer</h3>-->
+        <ul class="control-sidebar-menu" id="go_agent_dialpad">
+			<!--<li>
+				<a href="javascript::;">
+					<i class="menu-icon fa fa-birthday-cake bg-red"></i>
+		
+					<div class="menu-info">
+						<h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+		  
+						<p>Will be 23 on April 24th</p>
+					</div>
+				</a>
+			</li>-->
         </ul>
         <!-- /.control-sidebar-menu -->
 
-        <h3 class="control-sidebar-heading">Tasks Progress</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript::;">
-              <h4 class="control-sidebar-subheading">
-                Custom Template Design
-                <span class="label label-danger pull-right">70%</span>
-              </h4>
-
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-              </div>
-            </a>
-          </li>
+        <!--<h3 class="control-sidebar-heading">Tasks Progress</h3>-->
+        <ul class="control-sidebar-menu" id="go_agent_status" style="margin-top: 15px;padding: 0 15px;">
+			<!-- <li>
+				<a href="javascript::;">
+					<h4 class="control-sidebar-subheading">
+						Custom Template Design
+						<span class="label label-danger pull-right">70%</span>
+					</h4>
+		
+					<div class="progress progress-xxs">
+						<div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+					</div>
+				</a>
+			</li> -->
+        </ul>
+		
+        <h3 class="control-sidebar-heading">Manual Dial:</h3>
+        <ul class="control-sidebar-menu" id="go_agent_manualdial" style="margin-top: -10px;padding: 0 15px;">
+			
+        </ul>
+		
+        <ul class="control-sidebar-menu" id="go_agent_login" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+			
+        </ul>
+		
+        <ul class="control-sidebar-menu hidden" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+			
         </ul>
         <!-- /.control-sidebar-menu -->
 

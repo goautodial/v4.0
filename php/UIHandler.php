@@ -1413,7 +1413,7 @@ error_reporting(E_ERROR | E_PARSE);
 		                    	'.$this->getTopbarTasksMenu($user).'
 		                    	'.$this->getTopbarUserMenu($user).'
 		                    	<li>
-			                    	<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+			                    	<a href="#" data-toggle="control-sidebar"><i class="fa fa-tty"></i></a>
 				                </li>
 	                    </ul>
 	                </div>

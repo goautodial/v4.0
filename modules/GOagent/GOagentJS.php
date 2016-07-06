@@ -12,7 +12,7 @@ $goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : st
 
 $lh = \creamy\LanguageHandler::getInstance();
 $lh->addCustomTranslationsFromFile(GO_LANG_DIRECTORY . $lh->getLanguageHandlerLocale());
-    
+
 $US = '_';
 $NOW_TIME = date("Y-m-d H:i:s");
 $tsNOW_TIME = date("YmdHis");
@@ -52,6 +52,7 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
 
 // Settings
 var is_logged_in = <?=$is_logged_in?>;
+var logoutWarn = true;
 var NOW_TIME = '<?=$NOW_TIME?>';
 var SQLdate = '<?=$NOW_TIME?>';
 var StarTtimE = '<?=$StarTtimE?>';
@@ -388,8 +389,44 @@ $(document).ready(function() {
                 }
             }
         }, refresh_interval);
+        
+        if (is_logged_in) {
+            $("aside.control-sidebar").addClass('control-sidebar-open');
+        }
     });
 
+    var logoutRegX = new RegExp("logout\.php", "ig");
+    $("a.btn-default").click(function(event) {
+        var hRef = $(this).attr('href');
+        var loggedOut = 0;
+        if (hRef.match(logoutRegX)) {
+            event.preventDefault();
+            if (phone.isConnected()) {
+                phone.stop();
+                loggedOut++;
+            }
+            if (is_logged_in) {
+                logoutWarn = false;
+                btnLogMeOut();
+                loggedOut++;
+            }
+            if (loggedOut > 0) {
+                console.log('<?=$lh->translationFor('logging_out_phones')?> '+SIPserver+' <?=$lh->translationFor('sip_server')?>...');
+                $("div.preloader center").append('<br><br><span style="font-size: 24px; color: white;"><?=$lh->translationFor('logging_out_phones')?> '+SIPserver+' <?=$lh->translationFor('sip_server')?>...</span>');
+                $("div.preloader").fadeIn("slow");
+                setTimeout(
+                    function() {
+                        window.location.href = hRef;
+                    },
+                    3000
+                );
+            }
+        }
+    });
+
+    <?php
+    if ($GOmodule) {
+    ?>
     var $navBar = $("<div id='go_nav_bar'></div>");
     $navBar.css({
         'left' : '0px',
@@ -471,34 +508,51 @@ $(document).ready(function() {
         
         resized = !resized;
     });
+    <?php
+    }
+    ?>
 
     // buttons
-    $("#go_nav_bar").append("<div id='go_nav_btn' class='hidden'></div>");
-    $("#go_nav_btn").append("<div id='go_btn_group' class='btn-group dropup pull-right' style='margin: 0 1px;'>");
-    $("#go_btn_group").append("<button id='dropdownMenuAgent' type='button' data-toggle='dropdown' class='btn btn-default dropdown-toggle' style='margin: 5px 0;'><i class='fa fa-navicon'></i></button>");
-    $("#go_btn_group").append("<ul id='go_dropdown' class='dropdown-menu'>");
-    $("#go_dropdown").append("<li id='manual-dial'><a><?=$lh->translationFor('manual_dial')?> <span class='fa fa-phone pull-right'></span></a></li>");
-    $("#go_dropdown").append("<li><a><?=$lh->translationFor('available_hot_keys')?> <span class='fa fa-keyboard-o pull-right'></span></a></li>");
-    $("#go_dropdown").append("<li><a><?=$lh->translationFor('active_callbacks')?> <span class='badge pull-right bg-green'>0</span></a></li>");
-    $("#go_dropdown").append("<li><a><?=$lh->translationFor('callbacks_for_today')?> <span class='badge pull-right bg-red'>0</span></a></li>");
-    $("#go_dropdown").append("<li><a><?=$lh->translationFor('enter_pause_code')?> <span class='fa fa-pause-circle-o pull-right'></span></a></li>");
-    $("#go_dropdown").append("<li><a><?=$lh->translationFor('lead_search')?> <span class='fa fa-search pull-right'></span></a></li>");
-    $("#go_dropdown").append("<li id='btnLogMeOut'><a><?=$lh->translationFor('logout_from_phone')?> <span class='fa fa-sign-out pull-right'></span></a></li>");
-    $("#go_btn_group").append("</ul>");
-    $("#go_nav_btn").append("</div>");
-    $("#go_nav_btn").append("<div id='livecall' class='pull-right'><h3 class='nolivecall' title=''><?=$lh->translationFor('no_live_call')?></h3></div>");
-    $("#go_nav_btn").append("<div id='go_btn_div' class='pull-left'></div>");
+    $("#go_agent_dialpad").append("<li id='go_nav_btn' class='hidden' style='margin-top: 15px;'></li>");
+    //$("#go_nav_btn").append("<div id='go_btn_group' class='btn-group dropup pull-right' style='margin: 0 1px;'>");
+    //$("#go_btn_group").append("<button id='dropdownMenuAgent' type='button' data-toggle='dropdown' class='btn btn-default dropdown-toggle' style='margin: 5px 0;'><i class='fa fa-navicon'></i></button>");
+    //$("#go_btn_group").append("<ul id='go_dropdown' class='dropdown-menu'>");
+    //$("#go_dropdown").append("<li id='manual-dial'><a><?=$lh->translationFor('manual_dial')?> <span class='fa fa-phone pull-right'></span></a></li>");
+    //$("#go_dropdown").append("<li><a><?=$lh->translationFor('available_hot_keys')?> <span class='fa fa-keyboard-o pull-right'></span></a></li>");
+    //$("#go_dropdown").append("<li><a><?=$lh->translationFor('active_callbacks')?> <span class='badge pull-right bg-green'>0</span></a></li>");
+    //$("#go_dropdown").append("<li><a><?=$lh->translationFor('callbacks_for_today')?> <span class='badge pull-right bg-red'>0</span></a></li>");
+    //$("#go_dropdown").append("<li><a><?=$lh->translationFor('enter_pause_code')?> <span class='fa fa-pause-circle-o pull-right'></span></a></li>");
+    //$("#go_dropdown").append("<li><a><?=$lh->translationFor('lead_search')?> <span class='fa fa-search pull-right'></span></a></li>");
+    //$("#go_dropdown").append("<li id='btnLogMeOut'><a><?=$lh->translationFor('logout_from_phone')?> <span class='fa fa-sign-out pull-right'></span></a></li>");
+    //$("#go_btn_group").append("</ul>");
+    //$("#go_nav_btn").append("</div>");
+    $("#go_nav_btn").append("<div id='livecall' class='center-block'><h3 class='nolivecall' title=''><?=$lh->translationFor('no_live_call')?></h3></div>");
+    $("#go_nav_btn").append("<div id='go_btn_div' class='center-block' style='text-align: center;'></div>");
     $("#go_btn_div").append("<button id='btnDialHangup' title='<?=$lh->translationFor('dial_next_call')?>' class='btn btn-danger' style='margin: 5px 5px 5px 0;'><i class='fa fa-phone'></i></button>");
     $("#go_btn_div").append("<button id='btnResumePause' title='<?=$lh->translationFor('resume_dialing')?>' class='btn btn-success' style='margin: 5px 5px 5px 0;'><i class='fa fa-play'></i></button>");
     $("#go_btn_div").append("<button id='btnParkCall' title='<?=$lh->translationFor('park_call')?>' class='btn btn-warning' style='margin: 5px 5px 5px 0;'><i class='fa fa-music'></i></button>");
-    $("#go_btn_div").append("<button id='btnTransferCall' title='<?=$lh->translationFor('transfer_call')?>' class='btn btn-default' style='margin: 5px 5px 5px 0;'><i class='fa fa-exchange'></i></button>");
+    $("#go_btn_div").append("<br id='btn_spacer' class='hidden'>");
+    $("#go_btn_div").append("<button id='btnTransferCall' title='<?=$lh->translationFor('transfer_call')?>' class='btn btn-default' style='margin: 5px 5px 5px 0;'><i class='fa fa-random'></i></button>");
     $("#go_btn_div").append("<button id='btnIVRParkCall' title='<?=$lh->translationFor('ivr_park_call')?>' class='btn btn-default' style='margin: 5px 5px 5px 0;'><i class='fa fa-tty'></i></button>");
     $("#go_btn_div").append("<button id='btnReQueueCall' title='<?=$lh->translationFor('requeue_call')?>' class='btn btn-default' style='margin: 5px 5px 5px 0;'><i class='fa fa-refresh'></i></button>");
-    $("#go_nav_btn").append("<div id='cust-info' class='center-block' style='text-align: center; line-height: 35px;'><i class='fa fa-user'></i> <span id='cust-name' style='padding-right: 20px;'></span> <i class='fa fa-phone-square'></i> <span id='cust-phone'></span><input type='hidden' id='cust-phone-number' /></div>");
-    $("#go_nav_btn").append("<div id='MainStatusSpan' class='center-block' style='text-align: center; line-height: 35px; display: none;'></div>");
+    //$("#go_nav_btn").append("<div id='cust-info' class='center-block' style='text-align: center; line-height: 35px;'><i class='fa fa-user'></i> <span id='cust-name' style='padding-right: 20px;'></span> <i class='fa fa-phone-square'></i> <span id='cust-phone'></span><input type='hidden' id='cust-phone-number' /></div>");
+    $("#go_agent_status").append("<li><div id='MainStatusSpan' class='center-block' style='line-height: 35px;'>&nbsp;</div></li>");
+    
+    <?php
+    $padPx = (preg_match("/Chrome/", $_SERVER['HTTP_USER_AGENT'])) ? "4px" : "3px";
+    ?>
+    $("#go_agent_manualdial").append("<li><div class='btn-group pull-right'><a href='javascript:void(0)' class='btn btn-success' style='padding: 4px 3px <?=$padPx?> 5px;' id='manual-dial-now'><?=$lh->translationFor('dial')?></a><a href='#' data-target='#' class='btn btn-success dropdown-toggle' data-toggle='dropdown' style='padding: 11px 6px 12px;' id='manual-dial-dropdown'><span class='caret'></span></a><ul class='dropdown-menu'><li><a href='javascript:void(0)' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></a></li><li><a href='javascript:void(0)' id='manual-dial-preview'><?=$lh->translationFor('preview_call')?></a></li></ul></div><input type='hidden' size='7' maxlength='10' name='MDDiaLCodE' id='MDDiaLCodE' class='digits-only' value='1' /><input type='text' size='18' maxlength='18' name='MDPhonENumbeR' id='MDPhonENumbeR' class='phonenumbers-only' value='' placeholder='<?=$lh->translationFor('enter_phone_number')?>' onkeyup='activateLinks();' onchange='activateLinks();' style='padding: 4px 2px 3px; color: #222;' /><br><small>(<?=$lh->translationFor('digits_only_please')?>)</small><input type='hidden' name='MDPhonENumbeRHiddeN' id='MDPhonENumbeRHiddeN' value='' /><input type='hidden' name='MDLeadID' id='MDLeadID' value='' /><input type='hidden' name='MDType' id='MDType' value='' /><input type='checkbox' name='LeadLookUP' id='LeadLookUP' size='1' value='0' class='hidden' disabled /><input type='hidden' size='24' maxlength='20' name='MDDiaLOverridE' id='MDDiaLOverridE' class='cust_form' value='' /></li>");
 
-    $("#go_nav_bar").append("<div id='go_nav_log'></div>");
-    $("#go_nav_log").append("<button id='btnLogMeIn' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-in'></i> <?=$lh->translationFor('login_on_phone')?></button>");
+    $("#go_agent_login").append("<li><button id='btnLogMeIn' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-in'></i> <?=$lh->translationFor('login_on_phone')?></button></li>");
+    $("#go_agent_logout").append("<li><button id='btnLogMeOut' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-out'></i> <?=$lh->translationFor('logout_from_phone')?></button></li>");
+    
+    var paddingHB = 100;
+    var navConBar = $("ul.control-sidebar-tabs").innerHeight();
+    var minusThis = (parseInt(navConBar) + parseInt(paddingHB));
+    var newHeight = parseInt($("body").innerHeight()) - minusThis;
+    $("aside.control-sidebar div.tab-content").css({
+        'height': newHeight
+    });
 
     $("button[id^='btn']").click(function() {
         var btnID = $(this).attr('id').replace('btn', '');
@@ -511,6 +565,9 @@ $(document).ready(function() {
                 break;
             case "LogMeIn":
                 btnLogMeIn();
+                break;
+            case "LogMeOut":
+                btnLogMeOut();
                 break;
         }
     });
@@ -525,7 +582,7 @@ $(document).ready(function() {
     });
 
     var showInfo = false;
-    $("#cust-info, #MainStatusSpan").click(function() {
+    $("#cust-info").click(function() {
         if (!showInfo) {
             $("#dialog-custinfo").modal({
                 backdrop: 'static',
@@ -547,11 +604,11 @@ $(document).ready(function() {
     
     $("#dialog-custinfo div.modal-dialog").css({'width': '750px'});
     
-    $("button[id^='manual-dial-']").click(function() {
-        $('#manual-dial-box').modal('hide');
+    $("a[id^='manual-dial-']").click(function() {
+        //$('#manual-dial-box').modal('hide');
         var btnID = $(this).attr('id').replace('manual-dial-', '');
-        if (! $(this).hasClass('disabled')) {
-            NewManualDialCall(btnID);
+        if (btnID != 'dropdown' && ! $(this).hasClass('disabled')) {
+            NewManualDialCall(btnID.toUpperCase());
         }
     });
     
@@ -583,6 +640,7 @@ $(document).ready(function() {
     updateButtons();
     toggleButtons(dial_method);
     toggleStatus('NOLIVE');
+    activateLinks();
 
     window.addEventListener("beforeunload", function (e) {
         if (is_logged_in) {
@@ -676,7 +734,7 @@ $(document).ready(function() {
     $("#scSubmit").click(function(e) {
         e.preventDefault();
         var inbArray = [];
-        $("#sSubmit").addClass('disabled');
+        $("#scSubmit").addClass('disabled');
         $("#selectedINB").find('abbr').each(function(index) {
             inbArray.push($(this).text());
         });
@@ -901,7 +959,10 @@ function btnLogMeIn () {
 }
 
 function btnLogMeOut () {
-    var logMeOut = confirm("Are you sure you want to log out?");
+    var logMeOut = true;
+    if (logoutWarn) {
+        logMeOut = confirm("Are you sure you want to log out?");
+    }
     if (logMeOut) {
         refresh_interval = 730000;
         var postData = {
@@ -928,6 +989,7 @@ function btnLogMeOut () {
                 alert('ERROR: ' + result.message);
             }
         });
+        logoutWarn = true;
     }
 }
 
@@ -982,9 +1044,9 @@ function activateLinks() {
     var phoneNumber = $('#MDPhonENumbeR').val();
 
     if (phoneNumber.length > 5) {
-        $("button[id^='manual-dial-']").removeClass('disabled');
+        $("a[id^='manual-dial-']").removeClass('disabled');
     } else {
-        $("button[id^='manual-dial-']").addClass('disabled');
+        $("a[id^='manual-dial-']").addClass('disabled');
     }
 }
 
@@ -1069,7 +1131,6 @@ function toggleButtons (taskaction, taskivr, taskrequeue) {
         
         switch (taskaction.toLowerCase()) {
             case "manual":
-                console.log(taskaction);
                 toggleButton('DialHangup', 'dial');
                 toggleButton('ResumePause', 'hide');
                 break;
@@ -1083,16 +1144,30 @@ function toggleButtons (taskaction, taskivr, taskrequeue) {
         toggleButton('ParkCall', 'off');
         toggleButton('IVRParkCall', btnIVR);
         toggleButton('ReQueueCall', btnRequeue);
+        
+        if (btnIVR == 'hide' && btnRequeue == 'hide') {
+            $("#btn_spacer").addClass('hidden');
+        } else {
+            $("#btn_spacer").removeClass('hidden');
+        }
     }
 }
 
 function updateButtons () {
     if (is_logged_in) {
         $("#go_nav_btn").removeClass('hidden');
-        $("#go_nav_log").addClass('hidden');
+        $("#go_agent_login").addClass('hidden');
+        $("#go_agent_logout").removeClass('hidden');
+        $("#go_agent_status").removeClass('hidden');
+        $("#go_agent_manualdial").removeClass('hidden');
+        $("#go_agent_manualdial").prev().removeClass('hidden');
     } else {
         $("#go_nav_btn").addClass('hidden');
-        $("#go_nav_log").removeClass('hidden');
+        $("#go_agent_login").removeClass('hidden');
+        $("#go_agent_logout").addClass('hidden');
+        $("#go_agent_status").addClass('hidden');
+        $("#go_agent_manualdial").addClass('hidden');
+        $("#go_agent_manualdial").prev().addClass('hidden');
     }
 }
 
@@ -1827,11 +1902,11 @@ function CheckForIncoming () {
             //$("#cust-phone").html(phone_number_format(dispnum));
 
             var status_display_content = '';
-            if (status_display_CALLID > 0) {status_display_content = status_display_content + " UID: " + LastCID;}
-            if (status_display_LEADID > 0) {status_display_content = status_display_content + " Lead ID: " + $("#formMain input[name='lead_id'").val();}
-            if (status_display_LISTID > 0) {status_display_content = status_display_content + " List ID: " + $("#formMain input[name='list_id'").val();}
+            if (status_display_CALLID > 0) {status_display_content = status_display_content + "<br><?=$lh->translationFor('uid')?>: " + LastCID;}
+            if (status_display_LEADID > 0) {status_display_content = status_display_content + "<br><?=$lh->translationFor('lead_id')?>: " + $("#formMain input[name='lead_id'").val();}
+            if (status_display_LISTID > 0) {status_display_content = status_display_content + "<br><?=$lh->translationFor('list_id')?>: " + $("#formMain input[name='list_id'").val();}
 
-            $("#MainStatusSpan").html("<b><?=$lh->translationFor('incoming_call')?>:</b> " + dial_display_number + " " + custom_call_id + " " + status_display_content + " &nbsp; " + VDIC_fronter);
+            $("#MainStatusSpan").html("<b><?=$lh->translationFor('incoming_call')?>:</b> " + dial_display_number + " " + custom_call_id + " " + status_display_content + "<br>" + VDIC_fronter);
 
             //if (CBentry_time.length > 2)
             //{
@@ -1876,9 +1951,9 @@ function CheckForIncoming () {
                 var dial_display_number = phone_number_format(callnum);
 
                 var status_display_content = '';
-                if (status_display_CALLID > 0) {status_display_content = status_display_content + " <?=$lh->translationFor('uid')?>: " + CIDcheck;}
-                if (status_display_LEADID > 0) {status_display_content = status_display_content + " <?=$lh->translationFor('lead_id')?>: " + $("#formMain input[name='lead_id']").val();}
-                if (status_display_LISTID > 0) {status_display_content = status_display_content + " <?=$lh->translationFor('list_id')?>: " + $("#formMain input[name='list_id']").val();}
+                if (status_display_CALLID > 0) {status_display_content = status_display_content + "<br><?=$lh->translationFor('uid')?>: " + CIDcheck;}
+                if (status_display_LEADID > 0) {status_display_content = status_display_content + "<br><?=$lh->translationFor('lead_id')?>: " + $("#formMain input[name='lead_id']").val();}
+                if (status_display_LISTID > 0) {status_display_content = status_display_content + "<br><?=$lh->translationFor('list_id')?>: " + $("#formMain input[name='list_id']").val();}
 
                 $("#MainStatusSpan").html("<b><?=$lh->translationFor('incoming_call')?>:</b> " + dial_display_number + " " + custom_call_id + " <?=$lh->translationFor('group')?>- " + this_VDIC_data.group_name + " &nbsp; " + VDIC_fronter + " " + status_display_content); 
             }
@@ -2154,11 +2229,11 @@ function ManualDialCheckChannel(taskCheckOR) {
             
             var status_display_content = '';
             if (alt_dial_status_display == 0) {
-                if (status_display_CALLID > 0) {status_display_content += " <?=$lh->translationFor('uid')?>: " + CIDcheck;}
-                if (status_display_LEADID > 0) {status_display_content += " <?=$lh->translationFor('lead_id')?>: " + $("#formMain_lead_id").val();}
-                if (status_display_LISTID > 0) {status_display_content += " <?=$lh->translationFor('list_id')?>: " + $("#formMain_list_id").val();}
+                if (status_display_CALLID > 0) {status_display_content += "<br><?=$lh->translationFor('uid')?>: " + CIDcheck;}
+                if (status_display_LEADID > 0) {status_display_content += "<br><?=$lh->translationFor('lead_id')?>: " + $("#formMain_lead_id").val();}
+                if (status_display_LISTID > 0) {status_display_content += "<br><?=$lh->translationFor('list_id')?>: " + $("#formMain_list_id").val();}
                 
-                $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + " &nbsp; <?=$lh->translationFor('waiting_for_ring')?>... " + MD_ring_seconds + " <?=$lh->translationFor('seconds')?>");
+                $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + " <br><?=$lh->translationFor('waiting_for_ring')?>... " + MD_ring_seconds + " <?=$lh->translationFor('seconds')?>");
             }
         } else {
             MDuniqueid = this_MD_data.uniqueid;
@@ -2192,9 +2267,9 @@ function ManualDialCheckChannel(taskCheckOR) {
                 live_call_seconds = 0;
                 MD_channel_look = 0;
                 var status_display_content = '';
-                if (status_display_CALLID > 0) {status_display_content += " <?=$lh->translationFor('uid')?>: " + CIDcheck;}
-                if (status_display_LEADID > 0) {status_display_content += " <?=$lh->translationFor('lead_id')?>: " + $("#formMain_lead_id").val();}
-                if (status_display_LISTID > 0) {status_display_content += " <?=$lh->translationFor('list_id')?>: " + $("#formMain_list_id").val();}
+                if (status_display_CALLID > 0) {status_display_content += "<br><?=$lh->translationFor('uid')?>: " + CIDcheck;}
+                if (status_display_LEADID > 0) {status_display_content += "<br><?=$lh->translationFor('lead_id')?>: " + $("#formMain_lead_id").val();}
+                if (status_display_LISTID > 0) {status_display_content += "<br><?=$lh->translationFor('list_id')?>: " + $("#formMain_list_id").val();}
                 
                 $("#MainStatusSpan").html("<b><?=$lh->translationFor('called')?>:</b> " + status_display_number + " " + status_display_content);
                 
@@ -2453,7 +2528,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
         //document.getElementById("VolumeDownSpan").innerHTML = "<img src=\"./images/vdc_volume_down_off.gif\" border=\"0\" />";
         
         if ($("#DialALTPhone").is(':checked')) {
-            $("#MainStatusSpan").html("");
+            $("#MainStatusSpan").html("&nbsp;");
         }
 
         if (quick_transfer_button_enabled > 0) {
@@ -2514,7 +2589,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
                             alt_dial_status_display = 0;
 
                             //$("#MainStatusSpan").style.background = panel_bgcolor;
-                            $("#MainStatusSpan").html('');
+                            $("#MainStatusSpan").html('&nbsp;');
                             if (dial_method == "INBOUND_MAN") {
                                 toggleButton('ResumePause', 'resume', false);
                                 //document.getElementById("DiaLControl").innerHTML = "<img src=\"./images/pause_OFF.png\" border=\"0\" title=\"<?=$lang['pause']?>\" alt=\" <?=$lang['pause']?> \" /><br /><img src=\"./images/resume_OFF.png\" border=\"0\" title=\"<?=$lang['resume']?>\" alt=\"<?=$lang['resume']?>\" /><small>&nbsp;</small><img src=\"./images/dialnext_OFF.png\" border=\"0\" title=\"<?=$lang['dial_next']?>\" alt=\"<?=$lang['dial_next']?>\" />";
@@ -3014,6 +3089,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
             goDialIngroup: active_ingroup_dial,
             goNoCallDialFlag: nocall_dial_flag,
             goSIPserver: SIPserver,
+            goVTCallbackID: vtiger_callback_id,
             responsetype: 'json'
         };
 
@@ -3161,11 +3237,11 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     dispnum = dialed_number;
                     var status_display_number = phone_number_format(dispnum);
                     var status_display_content = '';
-                    if (status_display_CALLID > 0) {status_display_content = status_display_content + " <?=$lh->translationFor('uid')?>: " + MDnextCID;}
-                    if (status_display_LEADID > 0) {status_display_content = status_display_content + " <?=$lh->translationFor('lead_id')?>: " + $("#formMain_lead_id").val();}
-                    if (status_display_LISTID > 0) {status_display_content = status_display_content + " <?=$lh->translationFor('list_id')?>: " + $("#formMain_list_id").val();}
+                    if (status_display_CALLID > 0) {status_display_content = status_display_content + "<br><?=$lh->translationFor('uid')?>: " + MDnextCID;}
+                    if (status_display_LEADID > 0) {status_display_content = status_display_content + "<br><?=$lh->translationFor('lead_id')?>: " + $("#formMain_lead_id").val();}
+                    if (status_display_LISTID > 0) {status_display_content = status_display_content + "<br><?=$lh->translationFor('list_id')?>: " + $("#formMain_list_id").val();}
                     
-                    $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + " &nbsp; " + man_status);
+                    $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
                     
                     LeadDispo = '';
                     
@@ -3426,11 +3502,11 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 		"&fullname=" + LOGfullname + '' +
 		"&recording_filename=" + recording_filename + '' +
 		"&recording_id=" + recording_id + '' +
-		"&user_custom_one=" + custom_one + '' +
-		"&user_custom_two=" + custom_two + '' +
-		"&user_custom_three=" + custom_three + '' +
-		"&user_custom_four=" + custom_four + '' +
-		"&user_custom_five=" + custom_five + '' +
+		"&user_custom_one=" + user_custom_one + '' +
+		"&user_custom_two=" + user_custom_two + '' +
+		"&user_custom_three=" + user_custom_three + '' +
+		"&user_custom_four=" + user_custom_four + '' +
+		"&user_custom_five=" + user_custom_five + '' +
 		"&preset_number_a=" + Call_XC_a_Number + '' +
 		"&preset_number_b=" + Call_XC_b_Number + '' +
 		"&preset_number_c=" + Call_XC_c_Number + '' +
@@ -3622,11 +3698,11 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 		var SCin_script = Call_Script_ID;
 		var SCrecording_filename = recording_filename;
 		var SCrecording_id = recording_id;
-		var SCuser_custom_one = custom_one;
-		var SCuser_custom_two = custom_two;
-		var SCuser_custom_three = custom_three;
-		var SCuser_custom_four = custom_four;
-		var SCuser_custom_five = custom_five;
+		var SCuser_custom_one = user_custom_one;
+		var SCuser_custom_two = user_custom_two;
+		var SCuser_custom_three = user_custom_three;
+		var SCuser_custom_four = user_custom_four;
+		var SCuser_custom_five = user_custom_five;
 		var SCpreset_number_a = Call_XC_a_Number;
 		var SCpreset_number_b = Call_XC_b_Number;
 		var SCpreset_number_c = Call_XC_c_Number;
@@ -3890,7 +3966,7 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
     //      decoded = decoded.replace(RGnl, "<br />");
 	//
 	return decoded;
-};
+}
 
 function utf8_decode(utftext) {
     var string = "";
@@ -3920,7 +3996,7 @@ function utf8_decode(utftext) {
     }
 
     return string;
-};
+}
 
 
 // ################################################################################
