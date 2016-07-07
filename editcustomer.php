@@ -333,6 +333,18 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 												
 												<!--LEAD ID-->
 												<input type="hidden" value="<?php echo $lead_id;?>" name="lead_id">
+												<!--LIST ID-->
+												<input type="hidden" value="<?php echo $list_id;?>" name="list_id">
+												<!--ENTRY LIST ID-->
+												<input type="hidden" value="<?php echo $entry_list_id;?>" name="entry_list_id">
+												<!--VENDOR ID-->
+												<input type="hidden" value="<?php echo $vendor_lead_code;?>" name="vendor_lead_code">
+												<!--GMT OFFSET-->
+												<input type="hidden" value="<?php echo $gmt_offset_now;?>" name="gmt_offset_now">
+												<!--SECURITY PHRASE-->
+												<input type="hidden" value="<?php echo $security_phrase;?>" name="security_phrase">
+												<!--RANK-->
+												<input type="hidden" value="<?php echo $rank;?>" name="rank">
 
 												<div class="form-group">
 							                        <p style="padding-right:10px;padding-top: 20px;">Name:</p> 
@@ -402,8 +414,10 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                       	</label>
 							                    </div>
 												<div class="form-group">
-													<label><p><em class="fa fa-mobile-phone fa-fw"></em> Phone Number:</p> 
-							                        	<input id="phone" name="phone" type="number" width="auto" placeholder="Phone Number" value="<?php echo $phone_number;?>" class="form-control input-disabled" disabled required>
+													<label><p><em class="fa fa-mobile-phone fa-fw"></em> Phone Number:</p>
+														<span id="phone_numberDISP" class="hidden"></span>
+														<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
+							                        	<input id="phone_number" name="phone_number" type="number" width="auto" placeholder="Phone Number" value="<?php echo $phone_number;?>" class="form-control input-disabled" disabled required>
 							                       	</label>
 							                    </div>
 							                    <div class="form-group">
@@ -600,7 +614,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 			</li> -->
         </ul>
 		
-        <h3 class="control-sidebar-heading">Manual Dial:</h3>
+        <h3 class="control-sidebar-heading"><?php $lh->translateText("Manual Dial"); ?>:</h3>
         <ul class="control-sidebar-menu" id="go_agent_manualdial" style="margin-top: -10px;padding: 0 15px;">
 			
         </ul>
