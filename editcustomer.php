@@ -122,7 +122,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
-			})
+			});
 		</script>
 		<style>
 			.nav-tabs > li > a{
@@ -576,7 +576,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
       <li class="active"><a href="#control-sidebar-dialer-tab" data-toggle="tab"><i class="fa fa-phone"></i></a></li>
-      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+      <li><a href="#control-sidebar-agents-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content" style="border-width:0;">
@@ -634,22 +634,37 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
       <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
       <!-- /.tab-pane -->
       <!-- Settings tab content -->
-      <div class="tab-pane" id="control-sidebar-settings-tab">
-        <form method="post">
-          <h3 class="control-sidebar-heading">General Settings</h3>
-
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Report panel usage
-              <input type="checkbox" class="pull-right" checked>
-            </label>
-
-            <p>
-              Some information about this general settings option
-            </p>
-          </div>
-          <!-- /.form-group -->
-        </form>
+      <div class="tab-pane" id="control-sidebar-agents-tab">
+		<ul class="control-sidebar-menu" id="go_agent_profile">
+			<li>
+				<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px;">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<img src="<?=$user->getUserAvatar()?>" width="120" height="auto" style="border-color:transparent;" alt="User Image" />
+						<p><?=$user->getUserName()?><br><small><?=$lh->translationFor("nice_to_see_you_again")?></small></p>
+					</a>
+				</div>
+			</li>
+			<?php
+			if ($user->userHasBasicPermission()) {
+				echo '<li>
+					<div class="text-center"><a href="" data-toggle="modal" id="change-password-toggle" data-target="#change-password-dialog-modal">'.$lh->translationFor("change_password").'</a></div>
+					<div class="text-center"><a href="./messages.php">'.$lh->translationFor("messages").'</a></div>
+					<div class="text-center"><a href="./notificationes.php">'.$lh->translationFor("notifications").'</a></div>
+					<div class="text-center"><a href="./tasks.php">'.$lh->translationFor("tasks").'</a></div>
+				</li>';
+			}
+			?>
+		</ul>
+		
+        <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+			<li>
+				<div class="center-block" style="text-align: center">
+					<a href="./edituser.php" class="btn btn-warning"><i class='fa fa-user'></i> <?=$lh->translationFor("my_profile")?></a>
+					 &nbsp; 
+					<a href="./logout.php" class="btn btn-warning"><i class='fa fa-sign-out'></i> <?=$lh->translationFor("exit")?></a>
+				</div>
+			</li>
+        </ul>
       </div>
       <!-- /.tab-pane -->
     </div>
