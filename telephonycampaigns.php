@@ -771,7 +771,9 @@
 	</div>
 	<!-- End of modal -->
 
-
+<!-- SLIMSCROLL-->
+   <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+   
 	<script>
 		$(document).ready(function(){
 			$(".bottom-menu").on('mouseenter mouseleave', function () {

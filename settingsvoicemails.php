@@ -94,6 +94,8 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
-
+    <!-- SLIMSCROLL-->
+   <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+   
     </body>
 </html>

@@ -1,5 +1,7 @@
-
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
@@ -25,7 +27,7 @@ include('php/goCRMAPISettings.php');
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Edit Phone Extension</title>
+        <title>Edit Phone Extension</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -95,13 +97,12 @@ include('php/goCRMAPISettings.php');
                 </section>
 
                 <!-- Main content -->
-                <section class="content">
+                <section class="content" style="padding:30px; padding-left:100px; padding-right:100px; margin-left: 0; margin-right: 0;">
 					<!-- standard custom edition form -->
 					<?php
 					$errormessage = NULL;
 					
-                    
-					if(isset($extenid)) {
+					//if(isset($extenid)) {
 						$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
 				        $postfields["goUser"] = goUser; #Username goes here. (required)
 				        $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -120,8 +121,9 @@ include('php/goCRMAPISettings.php');
 				         curl_close($ch);
 				         $output = json_decode($data);
 
-			
+			/*
 						if ($output->result=="success") {
+							
 						# Result was OK!
 							for($i=0;$i<count($output->extension);$i++){
 								
@@ -279,13 +281,86 @@ include('php/goCRMAPISettings.php');
 							}
 							echo $output->result;
 						}
+            */          
+					//} else {
+			    	//	$errormessage = $lh->translationFor("some_fields_missing");
+					//}
+						
+					?>
+                    
+                    <div role="tabpanel" class="panel panel-transparent" style="box-shadow: 5px 5px 8px #888888;">
+							
+						<h4 style="padding:15px;"><a type="button" class="btn" href="telephonyusers.php"><i class="fa fa-arrow-left"></i> Cancel</a><center><b>MODIFY USER</b></center></h4>
+								
+							<form id="modifyuser">
+								<input type="hidden" name="modifyid" value="<?php //echo $userid;?>">
+							
+						<!-- BASIC SETTINGS -->
+							<div class="panel text-left" style="margin-top: 20px; padding: 0px 30px">
+								<div class="form-group">
+									<label>AGENT ID: </label>
+									<span style="padding-left:20px; font-size: 20;"><?php //echo $userid;?></span>
+								</div>
+								<div class="form-group">
+									<label for="fullname">Fullname</label>
+									<input type="text" class="form-control" name="fullname" id="fullname" value="<?php //echo $output->full_name[$i];?>">
+								</div>
+								<div class="form-group">
+									<label for="email">Email</label>
+									<input type="text" class="form-control" name="email" id="email" value="<?php //echo $output->email[$i];?>">
+								</div>
+								<div class="row">
+									<label for="usergroup" class="col-md-5">User Group
+									<select class="form-control" id="usergroup" name="usergroup">
+										<?php/*
+											$usergroup = NULL;
+
+											if($output->user_group[$i] == "AGENTS"){
+												$usergroup .= '<option value="AGENTS" selected>GOAUTODIAL AGENTS</option>';
+											}else{
+												$usergroup .= '<option value="AGENTS" >GOAUTODIAL AGENTS</option>';
+											}
+
+											if($output->user_group[$i] == "ADMIN"){
+												$usergroup .= '<option value="ADMINISTRATORS" selected>GOAUTODIAL ADMINISTRATORS</option>';
+											}else{
+												$usergroup .= '<option value="ADMINISTRATORS" >GOAUTODIAL ADMINISTRATORS</option>';
+											}												
+											
+											if($output->user_group[$i] == "SUPERVISOR"){
+												$usergroup .= '<option value="SUPERVISOR" selected>SUPERVISOR</option>';
+											}else{
+												$usergroup .= '<option value="SUPERVISOR" >SUPERVISOR</option>';
+											}
+											echo $usergroup;*/
+										?>
+									</select>
+									</label>
+								</div>
+
+								<br/>
+
+							</div>
+									
+							<div id="modifyUSERresult"></div>
+							<div class="row" style="padding:0px 50px;">
+								<button type="button" class="btn btn-danger" id="modifyUSERDeleteButton" href=""><i class="fa fa-times"></i> Delete</button>
+
+								<button type="submit" class="btn btn-primary pull-right" id="modifyUserOkButton" href=""><i class="fa fa-check"></i> Update</button>
+							</div>
+							
+							</form>								
+							
+						</div>
+
+					<?php
+							
                         
 					} else {
 			    		$errormessage = $lh->translationFor("some_fields_missing");
 					}
-					
+						*/
 					?>
-                    
                 </section>
 				<!-- /.content -->
             </aside><!-- /.right-side -->

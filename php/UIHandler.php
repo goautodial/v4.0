@@ -1090,7 +1090,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>';
 	}
 	//telephony menu for users
-	private function getUserActionMenuForT_User($userid) {
+	private function getUserActionMenuForT_User($userid, $role) {
 		
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -1099,9 +1099,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-T_user" href="'.$userid.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li><a class="edit-T_user" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("Modify User").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-T_user" href="'.$userid.'">'.$this->lh->translationFor("delete_user").'</a></li>
+	                    <li><a class="delete-T_user" href="#" data-id="'.$userid.'">'.$this->lh->translationFor("Delete User").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1135,15 +1135,15 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-ingroup" href="'.$groupid.'">Modify In-group</a></li>
+	                    <li><a class="edit-ingroup" href="#" data-id="'.$groupid.'">Modify In-group</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-ingroup" href="'.$groupid.'">Delete In-group</a></li>
+	                    <li><a class="delete-ingroup" href="#" data-id="'.$groupid.'">Delete In-group</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 		//ivr
-	public function ActionMenuForIVR($ivr) {
+	public function ActionMenuForIVR($ivr, $desc) {
 		
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -1152,15 +1152,15 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-ivr" href="'.$ivr.'">Modify IVR</a></li>
+	                    <li><a class="edit-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Modify IVR</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-ivr" href="'.$ivr.'">Delete IVR</a></li>
+	                    <li><a class="delete-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Delete IVR</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 		//did
-	public function getUserActionMenuForDID($did) {
+	public function getUserActionMenuForDID($did, $desc) {
 		
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -1169,9 +1169,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-phonenumber" href="'.$did.'">Modify Phonenumber / DID</a></li>
+	                    <li><a class="edit-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Modify Phonenumber / DID</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-phonenumber" href="'.$did.'">Delete Phonenumber / DID</a></li>
+	                    <li><a class="delete-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Delete Phonenumber / DID</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1187,9 +1187,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-phone" href="'.$exten.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li><a class="edit-phone" href="#" data-id="'.$exten.'">'.$this->lh->translationFor("Modify Phone Extension").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-phone" href="'.$exten.'">'.$this->lh->translationFor("delete_phone_extension").'</a></li>
+	                    <li><a class="delete-phone" href="#" data-id="'.$exten.'">'.$this->lh->translationFor("Delete Phone Extension").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -2952,7 +2952,7 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = "Inactive";
 				 }
 			   
-	       	   $action = $this->getUserActionMenuForT_User($output->userno[$i]); 
+	       	   $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_group[$i]); 
 	       	        
 		        $result .= "<tr>
 	                     <td class='hide-on-low'>".$output->userno[$i]."</td>
@@ -2974,7 +2974,7 @@ error_reporting(E_ERROR | E_PARSE);
        }
 	}
 	
-	// API to get user groups
+	// API to get usergroups
 
 	public function API_goGetUserGroupsList() {
 		$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -4843,6 +4843,60 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 		}
 		return '<select name="'.$name.'" id="'.$id.'" class="form-control '.$requiredCode.'">'.$optionList.'</select></div>';
+	}
+
+	public function deleteValidateModal($action, $id){
+		return '
+		<div id="delete_notification_modal" class="modal modal-warning fade">
+        	<div class="modal-dialog">
+	            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+					<div class="modal-header">
+						<h4 class="modal-title">Delete '.$action.' ?</h4>
+					</div>
+					<div class="modal-body">
+						Are you sure you want to delete '.$action.': '.$id.' ?
+					</div>
+				</div>
+			</div>
+		</div>
+		';
+	}
+
+	public function deleteNotificationModal($action, $id, $result){
+		//var_dump($id);
+		
+		if($result != ''){
+			return '
+			<div id="delete_notification_modal" class="modal modal-success fade">
+	        	<div class="modal-dialog">
+		            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+						<div class="modal-header">
+							<h4 class="modal-title">Successfully Deleted '.$action.' !</h4>
+						</div>
+						<div class="modal-body" style="background:#fff;">
+							You have successfully deleted '.$action.': <b>'.$id.'</b>. 
+						</div>
+					</div>
+				</div>
+			</div>
+			';
+		}else{
+			return '
+			<div id="delete_notification_modal" class="modal modal-danger fade">
+	        	<div class="modal-dialog">
+		            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+						<div class="modal-header">
+							<h4 class="modal-title">Failed to Delete '.$action.' !</h4>
+						</div>
+						<div class="modal-body" style="background:#fff;">
+							A problem occured while deleting '.$action.': <b>'.$id.'</b>.<br/>
+							Please Try again. 
+						</div>
+					</div>
+				</div>
+			</div>
+			';
+		}
 	}
 }
 
