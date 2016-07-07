@@ -1411,10 +1411,9 @@ error_reporting(E_ERROR | E_PARSE);
 	                    		'.$this->getTopbarMessagesMenu($user).'  
 		                    	'.$this->getTopbarNotificationsMenu($user).'
 		                    	'.$this->getTopbarTasksMenu($user).'
-		                    	'.$this->getTopbarUserMenu($user).'
 		                    	<li>
-			                    	<a href="#" data-toggle="control-sidebar"><i class="fa fa-tty"></i></a>
-				                </li>
+			                    	<a href="#" data-toggle="control-sidebar"><i class="fa fa-cogs"></i></a>
+				               </li>
 	                    </ul>
 	                </div>
 	            </nav>

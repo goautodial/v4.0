@@ -149,7 +149,7 @@ class GOagent extends Module {
 		$this->goDB->where('setting', 'GO_agent_wss');
 		$rslt = $this->goDB->getOne('settings', 'value');
 		$websocketURL = (strlen($rslt['value']) > 0) ? $rslt['value'] : "webrtc.goautodial.com";
-		$websocketSIP = (strlen($rslt['value']) > 10000) ? "{$websocketURL}'" : "'+server_ip";
+		$websocketSIP = (strlen($rslt['value']) > 0) ? "{$websocketURL}'" : "'+server_ip";
 		
 		$labels = $this->getLabels()->labels;
 		$disable_alter_custphone = $this->getLabels()->disable_alter_custphone;
