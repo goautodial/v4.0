@@ -590,13 +590,13 @@ $(document).ready(function() {
         var loggedOut = 0;
         if (hRef.match(logoutRegX)) {
             event.preventDefault();
+            if (phone.isConnected()) {
+                phone.stop();
+                loggedOut++;
+            }
             if (is_logged_in) {
                 logoutWarn = false;
                 btnLogMeOut();
-                loggedOut++;
-            }
-            if (phone.isConnected()) {
-                phone.stop();
                 loggedOut++;
             }
             if (loggedOut > 0) {

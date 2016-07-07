@@ -144,12 +144,19 @@ class GOagent extends Module {
 		$_SESSION['campaign_id'] = (strlen($_SESSION['campaign_id']) > 0) ? $_SESSION['campaign_id'] : '';
 		
 		//$webProtocol = (preg_match("/Windows/", $_SERVER['HTTP_USER_AGENT'])) ? "wss" : "ws";
-		$webProtocol = "wss";
+		$webProtocol = (strlen($_SERVER['HTTPS']) > 0) ? "wss" : "ws";
 		
 		$this->goDB->where('setting', 'GO_agent_wss');
 		$rslt = $this->goDB->getOne('settings', 'value');
 		$websocketURL = (strlen($rslt['value']) > 0) ? $rslt['value'] : "webrtc.goautodial.com";
-		$websocketSIP = (strlen($rslt['value']) > 0) ? "{$websocketURL}'" : "'+server_ip";
+		
+		$this->goDB->where('setting', 'GO_agent_wss_port');
+		$rslt = $this->goDB->getOne('settings', 'value');
+		$websocketPORT = (strlen($rslt['value']) > 0) ? $rslt['value'] : "10443";
+		
+		$this->goDB->where('setting', 'GO_agent_wss_sip');
+		$rslt = $this->goDB->getOne('settings', 'value');
+		$websocketSIP = (strlen($rslt['value']) > 0) ? "{$rslt['value']}'" : "'+server_ip";
 		
 		$labels = $this->getLabels()->labels;
 		$disable_alter_custphone = $this->getLabels()->disable_alter_custphone;
@@ -278,7 +285,7 @@ class GOagent extends Module {
 					var remoteStream;
 					
 					var configuration = {
-						'ws_servers': '{$webProtocol}://{$websocketURL}:44344/',
+						'ws_servers': '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
 						'uri': 'sip:'+phone_login+'@{$websocketSIP},
 						'password': phone_pass,
 						'session_timers': false,
@@ -597,7 +604,10 @@ EOF;
 		$moduleSettings = array(
 			"GO_agent_wss" => CRM_SETTING_TYPE_STRING,
 			"GO_agent_wss_info" => CRM_SETTING_TYPE_LABEL,
-			"GO_agent_sip_server_title" => CRM_SETTING_TYPE_TITLE,
+			"GO_agent_wss_port" => CRM_SETTING_TYPE_INT,
+			"GO_agent_wss_port_info" => CRM_SETTING_TYPE_LABEL,
+			"GO_agent_wss_sip" => CRM_SETTING_TYPE_STRING,
+			"GO_agent_wss_sip_info" => CRM_SETTING_TYPE_LABEL,
 			"GO_agent_sip_server" => array(
 				"type" => CRM_SETTING_TYPE_SELECT,
 				"options" => $options
