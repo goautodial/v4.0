@@ -585,18 +585,18 @@ $(document).ready(function() {
     });
 
     var logoutRegX = new RegExp("logout\.php", "ig");
-    $("a.btn-default").click(function(event) {
+    $("#cream-agent-logout").click(function(event) {
         var hRef = $(this).attr('href');
         var loggedOut = 0;
         if (hRef.match(logoutRegX)) {
             event.preventDefault();
-            if (phone.isConnected()) {
-                phone.stop();
-                loggedOut++;
-            }
             if (is_logged_in) {
                 logoutWarn = false;
                 btnLogMeOut();
+                loggedOut++;
+            }
+            if (phone.isConnected()) {
+                phone.stop();
                 loggedOut++;
             }
             if (loggedOut > 0) {
