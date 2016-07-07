@@ -1,5 +1,8 @@
-
 <?php	
+/*
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);*/
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -46,7 +49,7 @@
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-
+       
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -108,6 +111,9 @@
 <?php
 	// API List
 	$phones = $ui->API_getPhonesList();
+	$user_groups = $ui->API_goGetUserGroupsList();
+	$max = max($phones->extension);
+	$suggested_extension = $max + 1;
 ?>
 <!-- MODAL -->
     <div class="modal fade" id="wizard-modal" tabindex="-1"aria-labelledby="T_Phones" >
@@ -115,7 +121,7 @@
             <div class="modal-content" style="border-radius:20px;">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="T_Phones"><b>Phone Wizard >> Add New Phone</b></h4>
+					<h4 class="modal-title animate-header" id="T_Phones"><b>Phone Wizard >> Add New Phone</b></h4>
 				</div>
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
@@ -124,16 +130,24 @@
 					<div class="wizard-step">
 						<div class="form-group">
 							<label class="col-sm-4 control-label" for="add_phones">Additional Phone(s):</label>
-							<div class="col-sm-8">
+							<div class="col-sm-6">
 								<select class="form-control" name="add_phones" id="add_phones">
-									<option>CUSTOM</option>
+									<option value="1"> 1 </option>
+									<option value="2"> 2 </option>
+									<option value="3"> 3 </option>
+									<option value="4"> 4 </option>
+									<option value="5"> 5 </option>
+									<option value="CUSTOM">CUSTOM</option>
 								</select>
+							</div>
+							<div class="col-sm-2" id="custom_seats" style="display:none;">
+								<input type="number" name="custom_seats" value="1" min="1" max="99" style="padding:5px;">
 							</div>
 						</div>
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="start_ext">Starting Extension:</label>
-							<div class="col-sm-8">
-								<input type="number" name="start_ext" id="start_ext" placeholder="e.g. 8001" class="form-control" required>
+							<label class="col-sm-4 control-label" for="start_ext" style="padding-top:15px;">Starting Extension:</label>
+							<div class="col-sm-6" style="padding-top:10px;">
+								<input type="number" name="start_ext" id="start_ext" placeholder="e.g. 8001" value="<?php echo $suggested_extension;?>" class="form-control" required>
 							</div>
 						</div>
 					</div>
@@ -141,134 +155,277 @@
 				<!-- STEP 2 -->
 					<div class="wizard-step">
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="phone_ext">Phone Extension/Login:	</label>
-							<div class="col-sm-8">
+							<label class="col-sm-4 control-label" for="phone_ext" style="padding-top:15px;">Phone Extension/Login: <b> * </b>	</label>
+							<div class="col-sm-6 wizard-inline">
 								<input text="text" name="phone_ext" id="phone_ext" placeholder="e.g. 8001" class="form-control" required/>
 							</div>
 						</div>
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="start_ext">Phone Login Password:</label>
-							<div class="col-sm-8">
-								<input type="text" value="G016gO" name="pass" id="pass" class="form-control" required>
+							<label class="col-sm-4 control-label" for="phone_pass" style="padding-top:15px;">Phone Login Password: <b> * </b></label>
+							<div class="col-sm-6 wizard-inline">
+								<input type="text" value="G016gO" name="phone_pass" id="phone_pass" class="form-control" required>
 							</div>
 						</div>
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="start_ext">User Group:</label>
-							<div class="col-sm-8">
+							<label class="col-sm-4 control-label" for="start_ext" style="padding-top:15px;">User Group:</label>
+							<div class="col-sm-8 wizard-inline">
 								<select name="user_group" id="user_group" class="form-control" required>
 									<option value="---ALL---">ALL USER GROUPS</option>
-									<option value="ADMIN">ADMIN - GOAUTODIAL ADMINISTRATORS</option>
-									<option value="AGENTS">AGENTS - GOAUTODIAL AGENTS </option>
-									<option value="SUPERVISOR">SUPERVISOR - SUPERVISOR </option>
+									<?php
+										for($i=0; $i < count($user_groups->user_group); $i++){
+									?>
+										<option value="<?php echo $user_groups->user_group[$i];?>"> <?php echo $user_groups->group_name[$i]; ?></option>
+									<?php
+										}
+									?>
 								</select>
 							</div>
 						</div>
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="ip">Server IP:	</label>
-							<div class="col-sm-8">
+							<label class="col-sm-4 control-label" for="ip" style="padding-top:15px;">Server IP:	</label>
+							<div class="col-sm-8 wizard-inline">
 								<select name="ip" id="ip" class="form-control" required>
-									<option value="162.216.5.162">
-										162.216.5.162 - GOautodial Meetme Server
+									<option value="69.46.6.35">
+										<?php echo $_SERVER['REMOTE_ADDR'];?>
 									</option>
 								</select>
 							</div>
 						</div>
 
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="name">Full Name:</label>
-							<div class="col-sm-8">
-								<input type="text" name="name" id="name" placeholder="Full Name" class="form-control" required>
+							<label class="col-sm-4 control-label" for="fullname" style="padding-top:15px;">Full Name: <b> * </b></label>
+							<div class="col-sm-7 wizard-inline">
+								<input type="text" name="fullname" id="fullname" placeholder="Full Name" class="form-control" required>
 							</div>
 						</div>
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="gmt">Local GMT:	</label>
-							<div class="col-sm-8">
-								<select name="gmt" id="gmt" class="form-control" required>
-									<option value="-5.00" selected>-- Default --</option>
+							<label class="col-sm-4 control-label" for="gmt" style="padding-top:15px;">Local GMT:	</label>
+							<div class="col-sm-8 wizard-inline">
+								<select name="gmt" id="gmt" class="col-sm-4" required>
+									<option value="12:75"> 12:75 </option>
+									<option value="12:00"> 12:00 </option>
+									<option value="11:00"> 11:00 </option>
+									<option value="10:00"> 10:00 </option>
+									<option value="9:50"> 9:50 </option>
+									<option value="9:00"> 9:00 </option>
+									<option value="8:00"> 8:00 </option>
+									<option value="7:00"> 7:00 </option>
+									<option value="6:50"> 6:50 </option>
+									<option value="6:00"> 6:00 </option>
+									<option value="5:75"> 5:75 </option>
+									<option value="5:50"> 5:50 </option>
+									<option value="5:00"> 5:00 </option>
+									<option value="4:50"> 4:50 </option>
+									<option value="4:00"> 4:00 </option>
+									<option value="3:50"> 3:50 </option>
+									<option value="3:00"> 3:00 </option>
+									<option value="2:00"> 2:00 </option>
+									<option value="1:00"> 1:00 </option>
+									<option value="0:00"> 0:00 </option>
+									<option value="-1:00"> -1:00 </option>
+									<option value="-2:00"> -2:00 </option>
+									<option value="-3:00"> -3:00 </option>
+									<option value="-4:00"> -4:00 </option>
+									<option value="-5:00" selected> -5:00 </option>
+									<option value="-6:00"> -6:00 </option>
+									<option value="-7:00"> -7:00 </option>
+									<option value="-8:00"> -8:00 </option>	
+									<option value="-9:00"> -9:00 </option>
+									<option value="-10:00"> -10:00 </option>
+									<option value="-11:00"> -11:00 </option>
+									<option value="-12:00"> -12:00 </option>
 								</select>
+								<p class="text-muted col-sm-8">( Do NOT adjust for DST)</p>
 							</div>
 						</div>
 					</div>
 				<!-- end of step 2-->
 				</form>
-				
-				<!-- NOTIFICATIONS -->
-
-					<div class="output-message-success hide">
-						<div class="alert alert-success alert-dismissible" role="alert">
-						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>Success!</strong> New Agent added.
-						</div>
-					</div>
-					<div class="output-message-error hide">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
-						</div>
-					</div>
 
 				</div> <!-- end of modal body -->
 				
+				<!-- NOTIFICATIONS -->
+
+					<div class="output-message-success" style="display:none;">
+						<div class="alert alert-success alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong>Success!</strong> New Phone added.
+						</div>
+					</div>
+					<div class="output-message-error" style="display:none;">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong>Error!</strong> Something went wrong, please see if phone extension already exists or there might be a problem in you internet connection.
+						</div>
+					</div>
+					<div class="output-message-incomplete" style="display:none;">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+						  Please fill-up all the fields correctly and do not leave any fields with (<strong> * </strong>) blank.
+						</div>
+					</div>
 				<div class="modal-footer wizard-buttons">
 					<!-- The wizard button will be inserted here. -->
 				</div>
 			</div>
 		</div>
 	</div><!-- end of modal -->
-		
+
+	<!-- DELETE VALIDATION MODAL -->
+	<div id="delete_validation_modal" class="modal modal-warning fade">
+    	<div class="modal-dialog">
+            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+				<div class="modal-header">
+					<h4 class="modal-title">Confirm Deletion of Phone Extension ?</h4>
+				</div>
+				<div class="modal-body" style="background:#fff;">
+					<p>Are you sure you want to delete Phone Extension <i><b style="font-size:20px;"><span id="delete_extension"></span></b></i> ?</p>
+				</div>
+				<div class="modal-footer" style="background:#fff;">
+					<button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
+               		<button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
+              </div>
+			</div>
+		</div>
+	</div>
+
+	<!-- DELETE NOTIFICATION MODAL -->
+	<div id="delete_notification" style="display:none;">
+		<?php echo $ui->deleteNotificationModal('Phone Extension','<span id="id_span"></span>', '<span id="result_span"></span>');?>
+	</div>
 		
 		<!-- for wizard -->
 		<script src="js/easyWizard.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
-				$('#T_phones').dataTable();
+				$('#T_phones').dataTable({
+					stateSave: true
+				});
 				
+				/* additional number custom */
+				$('#add_phones').on('change', function() {
+				//  alert( this.value ); // or $(this).val()
+					if(this.value == "CUSTOM") {
+					  $('#custom_seats').show();
+					}
+					if(this.value != "CUSTOM") {
+					  $('#custom_seats').hide();
+					}
+				});
+
+
 				$("#wizard-modal").wizard({
+					onnext:function(){
+						
+						var ext = document.getElementById('start_ext').value;
+						document.getElementById("phone_ext").value = ext;
+						document.getElementById("fullname").value = ext;
+						
+					},
 					onfinish:function(){
-						$.ajax({
-							url: "./php/AddSettingsPhones.php",
-							type: 'POST',
-							data: $("#create_form").serialize(),
-							success: function(data) {
-							  // console.log(data);
-								  if(data == 1){
-									  $('.output-message-success').removeClass('hide');
-									  $('.output-message-error').addClass('hide');
-									  window.location = window.location.href;
-								  }else{
-									  $('.output-message-error').removeClass('hide');
-									  $('.output-message-success').addClass('hide');
-								  }
-							}
-						});
+
+					var validate_wizard = 0;
+
+						var phone_ext = document.getElementById('phone_ext').value;
+						var fullname = document.getElementById('fullname').value;
+						var phone_pass = document.getElementById('phone_pass').value;
+
+					if(phone_ext == ""){
+						validate_wizard = 1;
+					}
+					if(fullname == ""){
+						validate_wizard = 1;
+					}
+					if(phone_pass == ""){
+						validate_wizard = 1;
+					}
+
+						if(validate_wizard == 0){
+							$.ajax({
+								url: "./php/AddSettingsPhones.php",
+								type: 'POST',
+								data: $("#create_form").serialize(),
+								success: function(data) {
+								  // console.log(data);
+									  if(data == 1){
+										  $('.output-message-success').show().focus().delay(2000).fadeOut().queue(function(n){$(this).hide(); n();});
+										  window.setTimeout(function(){location.reload()},3000)
+									  }else{
+										  $('.output-message-error').show().focus().delay(8000).fadeOut().queue(function(n){$(this).hide(); n();});
+									  }
+								}
+							});
+						}else{
+							$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+							validate_wizard = 0;
+						}
 					}
 				});
 				
 				/**
 				  * Edit user details
 				 */
-				 $(".edit-phone").click(function(e) {
-					e.preventDefault();
+				$(document).on('click','.edit-phone',function() {
 					var url = './editsettingsphones.php';
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="extenid" value="' + $(this).attr('href') + '" /></form>');
+					var extenid = $(this).attr('data-id');
+					//alert(extenid);
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="extenid" value="'+extenid+'" /></form>');
 					//$('body').append(form);  // This line is not necessary
 					$(form).submit();
-				 });
+				});
+						
 				
 				/**
-				 * Delete user.
+				 * Delete phones.
 				 */
-				 $(".delete-phone").click(function(e) {
-					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
-					e.preventDefault();
-					if (r == true) {
-						var extenid = $(this).attr('href');
-						$.post("./php/DeleteSettingsPhones.php", { extenid: extenid } ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
-							else { alert ("<?php $lh->translateText("unable_delete_list"); ?>"); }
-						});
-					}
+				 $(document).on('click','.delete-phone',function() {
+				 	
+				 	var extenid = $(this).attr('data-id');
+				 	
+				 	$("#delete_extension").html(extenid);
+				 	
+					$('.id-delete-label').attr( "data-id", extenid);
+
+				 	$('#delete_validation_modal').modal('show');
+
 				 });
+
+				 /**
+				 * Delete action.
+				 */
+				 $(document).on('click','#delete_yes',function() {
+				 	
+				 	var extenid = $(this).attr('data-id');
+				 	var success = "success";
+				 	var failed = "";
+
+				 	$('#id_span').html(extenid);
+				 	
+
+					$.ajax({
+					  url: "./php/DeleteSettingsPhones.php",
+					  type: 'POST',
+					  data: { 
+					  	exten_id :extenid,
+					  },
+					  success: function(data) {
+					  		// console.log(data);
+					  		if(data == 1){
+					  			$('#result_span').html(success);
+					  			$('#delete_notification').show();
+							 	$('#delete_notification_modal').modal('show');
+							 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
+								//window.setTimeout(function(){location.reload()},3000)
+							}else{
+								$('#result_span').html(failed);
+								$('#delete_notification').show();
+							 	$('#delete_notification_modal').modal('show');
+							 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 4000);
+							}
+					    }
+					});
+					
+				 });
+				 
 				
 			});
 		</script>

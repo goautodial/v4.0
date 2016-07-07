@@ -325,7 +325,9 @@
 		<!-- Forms and actions -->
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
-	
+	<!-- SLIMSCROLL-->
+   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+   
 	<script type="text/javascript">
 
 		function checkPasswordMatch() {
@@ -474,10 +476,12 @@
 				/**
 				  * Edit user details
 				 */
-				 $(".edit-T_user").click(function(e) {
-					e.preventDefault();
+				$(document).on('click','.edit-T_user',function() {
 					var url = 'edittelephonyuser.php';
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="userid" value="' + $(this).attr('href') + '" /></form>');
+					var userid = $(this).attr('data-id');
+					var role = $(this).attr('data-role');
+					//alert(userid);
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="userid" value="'+userid+'" /><input type="hidden" name="role" value="'+role+'"></form>');
 					//$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				 });
@@ -486,7 +490,7 @@
 				 * Delete user.
 				 */
 				 $(".delete-T_user").click(function(e) {
-					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
+					/*var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
 					e.preventDefault();
 					if (r == true) {
 						var user_id = $(this).attr('href');
@@ -494,7 +498,7 @@
 							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
 							else { alert ("<?php $lh->translateText("unable_delete_user"); ?>"); }
 						});
-					}
+					}*/
 				 });
 				
 				

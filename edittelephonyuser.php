@@ -15,7 +15,9 @@ $user = \creamy\CreamyUser::currentUser();
 $userid = NULL;
 if (isset($_POST["userid"])) {
 	$userid = $_POST["userid"];
-	
+}
+if(isset($_POST["role"])){
+	$userrole = $_POST["role"];
 }
 
 ?>
@@ -91,13 +93,25 @@ if (isset($_POST["userid"])) {
                     </ol>
                 </section>
 
+                <?php
+                	if($userrole == "ADMIN"){
+					echo "<br/><br/>";
+					print $ui->getUnauthotizedAccessMessage();
+
+					}else{
+                ?>
+
                 <!-- Main content -->
                 <section class="content" style="padding:30px; padding-left:100px; padding-right:100px; margin-left: 0; margin-right: 0;">
 					<!-- standard custom edition form -->
 					<?php
 					$userobj = NULL;
 					$errormessage = NULL;
-					
+
+				//echo $userrole;
+
+				
+				
 					if(isset($userid)) {
 						//$db = new \creamy\DbHandler();
 						//$customerobj = $db->getDataForCustomer($customerid, $customerType);
@@ -494,10 +508,8 @@ if (isset($_POST["userid"])) {
 						# An error occured
 							echo $output->result;
 						}
-                        
-					} else {
-			    		$errormessage = $lh->translationFor("some_fields_missing");
-					}
+                	}
+                }
 					
 					?>
 					

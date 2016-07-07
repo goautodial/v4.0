@@ -1,27 +1,13 @@
 <?php
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 	/** Telephony Users API - Add a new Telephony User */
 	/**
 	 * Generates action circle buttons for different pages/module
 	 */
 require_once('goCRMAPISettings.php');
-	 
-$validate = 0;	
-    if($_POST['route'] == ""){
-        $validate = 1;
-    }
-    if($_POST['did_exten'] == ""){
-        $validate = 1;
-    }
-    if($_POST['desc'] == ""){
-        $validate = 1;
-    }
 
-if($validate == 1){
-    echo "incomplete";    
-}  
-    
-if($validate == 0){
 	$url = gourl."/goInbound/goAPI.php"; # URL to GoAutoDial API file
 	$postfields["goUser"] 			= goUser; #Username goes here. (required)
 	$postfields["goPass"] 			= goPass; #Password goes here. (required)
@@ -69,17 +55,18 @@ if($validate == 0){
 
 	$output = json_decode($data);
 	
+    //var_dump($output);
+
 	if ($output->result=="success") {
 		# Result was OK!
-		echo $status = "success";
+		$status = 1;
 		//$return['msg'] = "New User has been successfully saved.";
 	} else {
 		# An error occured
 		//$status = 0;
 		// $return['msg'] = "Something went wrong please see input data on form.";
-        echo $status = $output->result;
+        $status = $output->result;
 	}
 
-	echo $status;
-}
+echo $status;
 ?>
