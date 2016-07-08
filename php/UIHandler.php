@@ -1013,7 +1013,7 @@ error_reporting(E_ERROR | E_PARSE);
 					return $this->singleFormGroupWithInputGroup($this->lh->translationFor($setting));
 					break;
 				case CRM_SETTING_TYPE_SELECT:
-					return $this->singleFormGroupWithInputGroup($this->dropdownFormInputElement($setting[0], $setting[0], $setting[1], $currentValue));
+					return $this->singleFormGroupWithInputGroup($this->dropdownFormInputElement($setting[0], $setting[0], $setting[1], $currentValue), $this->lh->translationFor($setting[0]));
 					break;
 				case CRM_SETTING_TYPE_PASS:
 					return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "password", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));

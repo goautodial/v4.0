@@ -585,7 +585,7 @@ $(document).ready(function() {
     });
 
     var logoutRegX = new RegExp("logout\.php", "ig");
-    $("a.btn-default").click(function(event) {
+    $("#cream-agent-logout").click(function(event) {
         var hRef = $(this).attr('href');
         var loggedOut = 0;
         if (hRef.match(logoutRegX)) {

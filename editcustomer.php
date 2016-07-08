@@ -661,7 +661,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 				<div class="center-block" style="text-align: center">
 					<a href="./edituser.php" class="btn btn-warning"><i class='fa fa-user'></i> <?=$lh->translationFor("my_profile")?></a>
 					 &nbsp; 
-					<a href="./logout.php" class="btn btn-warning"><i class='fa fa-sign-out'></i> <?=$lh->translationFor("exit")?></a>
+					<a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class='fa fa-sign-out'></i> <?=$lh->translationFor("exit")?></a>
 				</div>
 			</li>
         </ul>
