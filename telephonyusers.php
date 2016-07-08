@@ -151,7 +151,7 @@
 								<h4 style="padding-left:20px;"><?php echo count($output->userno); ?></h4>
 							</div>
 						</div>
-						
+					<!-- ENABLE IF ADD MULTIPLE IS READY --
 						<div class="form-group">		
 							<label class="col-sm-4 control-label" style="padding-top:15px;">Additional Seat(s): </label>
 							<div class="col-sm-8" style="padding-top:10px;">
@@ -167,6 +167,7 @@
 								</select>
 							</div>
 						</div>
+					-->
 						<div class="form-group" id="custom_seats" style="display:none;">
 							<label class="col-sm-4 control-label" for="custom_num_seats" style="padding-top:15px;">Number of Seats: </label>
 							<div class="col-sm-6" style="padding-top:10px;">
@@ -431,7 +432,7 @@
 							  // console.log(data);
 								  if(data == 1){
 								  	  $('.output-message-success').show().focus().delay(2000).fadeOut().queue(function(n){$(this).hide(); n();});
-									  window.setTimeout(function(){location.reload()},3000)
+									  window.setTimeout(function(){location.reload()},1000)
 								  }else{
 									  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 								  }
@@ -462,6 +463,20 @@
 				}
 			});
 
+		/* user group */
+			$('#user_group').on('change', function() {
+			//  alert( this.value ); // or $(this).val()
+				if(this.value == "AGENTS") {
+					document.getElementById('generate_phone_logins').value = "Y";
+					$('#phone_logins_form').show();
+					//$('#generate_phone_logins').val() = "Y";
+				}else{
+					document.getElementById('generate_phone_logins').value = "N";
+					$('#phone_logins_form').hide();
+					//$('#generate_phone_logins').val() = "N";
+				}
+			});
+		
 		/* generate phone logins*/
 			$('#generate_phone_logins').on('change', function() {
 			//  alert( this.value ); // or $(this).val()

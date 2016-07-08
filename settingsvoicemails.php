@@ -23,6 +23,8 @@
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -30,12 +32,15 @@
           <script src="js/html5shiv.js"></script>
           <script src="js/respond.min.js"></script>
         <![endif]-->
+
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <!-- Bootstrap WYSIHTML5 -->
         <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-
+        <!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 
@@ -77,7 +82,7 @@
                         <div class="col-xs-12">
                             <div class="box box-default">
                                 <div class="box-header">
-                                    <h3 class="box-title">Voicemails Boxes</h3>
+                                    <h3 class="box-title">Voicemails</h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table" id="scripts_table">
 									<?php print $ui->getVoiceMails(); ?>
@@ -96,6 +101,10 @@
         </div><!-- ./wrapper -->
     <!-- SLIMSCROLL-->
    <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
-   
+    <script>
+        $(document).ready(function() {
+                $('#voicemails_table').dataTable();
+        });
+    </script>
     </body>
 </html>

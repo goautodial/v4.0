@@ -20,6 +20,8 @@
         <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
         <!-- bootstrap wysihtml5 - text editor -->
         <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
@@ -35,7 +37,9 @@
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <!-- Bootstrap WYSIHTML5 -->
         <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-
+        <!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 
@@ -80,7 +84,7 @@
                                     <h3 class="box-title"><?php $lh->translateText("user_groups"); ?></h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body table" id="scripts_table">
-									<?php print $ui->getTelephonyScripts(); ?>
+									<?php print $ui->goGetUserGroupsList(); ?>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>
@@ -94,6 +98,10 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
-
+        <script>
+            $(document).ready(function() {
+                $('#usergroups_table').dataTable();
+            });
+        </script>
     </body>
 </html>
