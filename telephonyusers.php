@@ -1,4 +1,3 @@
-
 <?php	
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
@@ -323,6 +322,31 @@
 		</div>
 	</div><!-- end of modal -->
 
+	<!-- DELETE VALIDATION MODAL -->
+	<div id="delete_validation_modal" class="modal modal-warning fade">
+    	<div class="modal-dialog">
+            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+				<div class="modal-header">
+					<h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
+				</div>
+				<div class="modal-body" style="background:#fff;">
+					<p>This action cannot be undone.</p>
+					<p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
+				</div>
+				<div class="modal-footer" style="background:#fff;">
+					<button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
+               		<button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
+              </div>
+			</div>
+		</div>
+	</div>
+
+	<!-- DELETE NOTIFICATION MODAL -->
+	<div id="delete_notification" style="display:none;">
+		<?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
+	</div>
+
+
 		<!-- Forms and actions -->
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
@@ -431,7 +455,7 @@
 							success: function(data) {
 							  // console.log(data);
 								  if(data == 1){
-								  	  $('.output-message-success').show().focus().delay(2000).fadeOut().queue(function(n){$(this).hide(); n();});
+								  	  $('.output-message-success').show().focus().delay(2000);
 									  window.setTimeout(function(){location.reload()},1000)
 								  }else{
 									  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
@@ -502,18 +526,51 @@
 				 });
 				
 				/**
-				 * Delete user.
+				 * Delete validation modal
 				 */
-				 $(".delete-T_user").click(function(e) {
-					/*var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
-					e.preventDefault();
-					if (r == true) {
-						var user_id = $(this).attr('href');
-						$.post("./php/DeleteTelephonyUser.php", { userid: user_id } ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
-							else { alert ("<?php $lh->translateText("unable_delete_user"); ?>"); }
+				 $(document).on('click','.delete-T_user',function() {
+				 	
+				 	var user_id = $(this).attr('data-id');
+				 	var user_name = $(this).attr('data-name');
+				 	var action = "User";
+
+				 	$('.id-delete-label').attr("data-id", user_id);
+					$('.id-delete-label').attr("data-action", action);
+
+				 	$(".delete_extension").text(user_name);
+					$(".action_validation").text(action);
+
+				 	$('#delete_validation_modal').modal('show');
+				 });
+
+				 $(document).on('click','#delete_yes',function() {
+				 	
+				 	var id = $(this).attr('data-id');
+				 	var action = $(this).attr('data-action');
+
+				 	$('#id_span').html(id);
+
+						$.ajax({
+							url: "./php/DeleteTelephonyUser.php",
+							type: 'POST',
+							data: { 
+								userid:id,
+							},
+							success: function(data) {
+							console.log(data);
+						  		if(data == 1){
+						  			$('#result_span').text(data);
+						  			$('#delete_notification').show();
+								 	$('#delete_notification_modal').modal('show');
+								 	//window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
+									window.setTimeout(function(){location.reload()},1000)
+								}else{
+									$('#delete_notification').show();
+								 	$('#delete_notification_modal').modal('show');
+								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+								}
+							}
 						});
-					}*/
 				 });
 				
 				

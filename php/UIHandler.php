@@ -1090,7 +1090,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>';
 	}
 	//telephony menu for users
-	private function getUserActionMenuForT_User($userid, $role) {
+	private function getUserActionMenuForT_User($userid, $role, $name) {
 		
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -1101,7 +1101,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                <ul class="dropdown-menu" role="menu">
 	                    <li><a class="edit-T_user" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("Modify User").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-T_user" href="#" data-id="'.$userid.'">'.$this->lh->translationFor("Delete User").'</a></li>
+	                    <li><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("Delete User").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -2952,7 +2952,7 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = "Inactive";
 				 }
 			   
-	       	   $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_group[$i]); 
+	       	   $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i]); 
 	       	        
 		        $result .= "<tr>
 	                     <td class='hide-on-low'>".$output->userno[$i]."</td>
