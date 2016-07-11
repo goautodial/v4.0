@@ -1315,9 +1315,9 @@
 								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
 									//window.setTimeout(function(){location.reload()},3000)
 								}else{
-									$('#result_span').html(failed);
-									$('#delete_notification').show();
-								 	$('#delete_notification_modal').modal('show');
+									$('#result_span').html(data);
+                                    $('#delete_notification').show();
+                                    $('#delete_notification_modal_fail').modal('show');
 								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 4000);
 								}
 							}
@@ -1340,9 +1340,9 @@
 								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
 									//window.setTimeout(function(){location.reload()},3000)
 								}else{
-									$('#result_span').html(failed);
-									$('#delete_notification').show();
-								 	$('#delete_notification_modal').modal('show');
+									$('#result_span').html(data);
+                                    $('#delete_notification').show();
+                                    $('#delete_notification_modal_fail').modal('show');
 								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 4000);
 								}
 							}
@@ -1369,9 +1369,9 @@
 								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
 									//window.setTimeout(function(){location.reload()},3000)
 								}else{
-									$('#result_span').html(failed);
-									$('#delete_notification').show();
-								 	$('#delete_notification_modal').modal('show');
+									$('#result_span').html(data);
+                                    $('#delete_notification').show();
+                                    $('#delete_notification_modal_fail').modal('show');
 								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 4000);
 								}
 							}

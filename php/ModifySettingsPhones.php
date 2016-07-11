@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
+/*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL);*/
 
 require_once('CRMDefaults.php');
 require_once('goCRMAPISettings.php');
@@ -82,11 +82,9 @@ if ($validated == 1) {
 
     if ($output->result=="success") {
     # Result was OK!
-        ob_clean();
-		print (CRM_DEFAULT_SUCCESS_RESPONSE);
+        echo 1;
     } else {
     # An error occured
-        ob_clean();
 		echo $output->result;
         //$lh->translateText("unable_modify_list");
     }

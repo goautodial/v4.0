@@ -3059,9 +3059,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-usergroup" href="#" data-id="'.$id.'">Edit Voicemail</a></li>
+			<li><a class="edit-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">Edit User Group</a></li>
 			<li class="divider"></li>
-			<li><a class="delete-usergroup" href="#" data-id="'.$id.'">Delete Voicemail</a></li>
+			<li><a class="delete-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete User Group</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3398,15 +3398,14 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = "Inactive";
 				}
 				
-				$action = $this->ActionMenuForVoicemail($output->voicemail_id[$i]);
+				$action = $this->ActionMenuForVoicemail($output->voicemail_id[$i], $output->fullname[$i]);
 				
 				$result = $result."<tr>
 	                    <td>".$output->voicemail_id[$i]."</td>
 	                    <td><a class=''>".$output->fullname[$i]."</a></td>
-						<td>".$output->server_ip[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
+						<td>".$output->active[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->messages[$i]."</td>
-						<td class='hide-on-medium hide-on-low'>".$output->old_messages[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->old_messages[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->delete_vm_after_email[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
 	                    <td>".$action."</td>
@@ -3422,7 +3421,7 @@ error_reporting(E_ERROR | E_PARSE);
 		}
 	}
 
-	private function ActionMenuForVoicemail($id) {
+	private function ActionMenuForVoicemail($id, $name) {
 		
 	   return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3431,10 +3430,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="view-voicemail" href="#" data-id="'.$id.'">View Info</a></li>
-			<li><a class="edit-voicemail" href="#" data-id="'.$id.'">Edit Voicemail</a></li>
+			<li><a class="edit-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">Edit Voicemail</a></li>
 			<li class="divider"></li>
-			<li><a class="delete-voicemail" href="#" data-id="'.$id.'">Delete Voicemail</a></li>
+			<li><a class="delete-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Voicemail</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3845,7 +3843,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
 
 	        for($i=0;$i<count($output->call_time_id);$i++){
-		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i]);
+		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i], $output->call_time_name[$i]);
                     $result .= "<tr>
 	                    <td>".$output->call_time_id[$i]."</td>
 	                    <td>".$output->call_time_name[$i]."</td>
@@ -3864,7 +3862,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 	
-	private function getUserActionMenuForCalltimes($id) {
+	private function getUserActionMenuForCalltimes($id, $name) {
 		
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3873,8 +3871,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-calltime" href="#" data-id="'.$id.'">Edit Call Time</a></li>
-			<li><a class="delete-calltime" href="#" data-id="'.$id.'">Delete Call Time</a></li>
+			<li><a class="edit-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">Edit Call Time</a></li>
+			<li><a class="delete-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Call Time</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4889,39 +4887,34 @@ error_reporting(E_ERROR | E_PARSE);
 
 	public function deleteNotificationModal($action, $id, $result){
 		//var_dump($id);
+		return '
+		<div id="delete_notification_modal" class="modal modal-success fade">
+        	<div class="modal-dialog">
+	            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+					<div class="modal-header">
+						<h4 class="modal-title">Successfully Deleted '.$action.' !</h4>
+					</div>
+					<div class="modal-body" style="background:#fff;">
+						You have successfully deleted <b>'.$id.'</b>. 
+					</div>
+				</div>
+			</div>
+		</div>
 		
-		if($result != ''){
-			return '
-			<div id="delete_notification_modal" class="modal modal-success fade">
-	        	<div class="modal-dialog">
-		            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-						<div class="modal-header">
-							<h4 class="modal-title">Successfully Deleted '.$action.' !</h4>
-						</div>
-						<div class="modal-body" style="background:#fff;">
-							You have successfully deleted '.$action.': <b>'.$id.'</b>. 
-						</div>
+		<div id="delete_notification_modal_fail" class="modal modal-danger fade">
+        	<div class="modal-dialog">
+	            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+					<div class="modal-header">
+						<h4 class="modal-title">Failed to Delete '.$action.' !</h4>
+					</div>
+					<div class="modal-body" style="background:#fff;">
+						<p>'.$result.'<br/><br/>
+						Please Try again. </p>
 					</div>
 				</div>
 			</div>
-			';
-		}else{
-			return '
-			<div id="delete_notification_modal" class="modal modal-danger fade">
-	        	<div class="modal-dialog">
-		            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-						<div class="modal-header">
-							<h4 class="modal-title">Failed to Delete '.$action.' !</h4>
-						</div>
-						<div class="modal-body" style="background:#fff;">
-							A problem occured while deleting '.$action.': <b>'.$id.'</b>.<br/>
-							Please Try again. 
-						</div>
-					</div>
-				</div>
-			</div>
-			';
-		}
+		</div>
+		';
 	}
 }
 

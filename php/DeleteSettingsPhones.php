@@ -1,7 +1,8 @@
 <?php
+/*
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL);*/
 require_once('CRMDefaults.php');
 //require_once('LanguageHandler.php');
 require_once('goCRMAPISettings.php');
@@ -40,12 +41,7 @@ if ($validated == 1) {
     if ($output->result=="success") {
     # Result was OK!
 		echo 1;
-    } else {
-		echo $output->result;
     }
 
-} else {
-    echo "Some Fields Missing";
-//	ob_clean(); $lh->translateText("some_fields_missing");
 }
 ?>

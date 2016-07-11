@@ -28,6 +28,13 @@
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
         $data = curl_exec($ch);
         curl_close($ch);
-        
-        echo $data;
+        $output = json_decode($data);
+     
+        //var_dump($output);
+        if ($output->result=="success") {
+            # Result was OK!
+                echo 1;
+        }else{
+                echo $output->result;
+        }
 ?>
