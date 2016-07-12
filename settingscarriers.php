@@ -1,3 +1,4 @@
+
 <?php	
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
@@ -50,6 +51,15 @@
 
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
+
+        <!-- preloader -->
+        <link rel="stylesheet" href="css/customizedLoader.css">
+
+        <script type="text/javascript">
+			$(window).ready(function() {
+				$(".preloader").fadeOut("slow");
+			})
+		</script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">

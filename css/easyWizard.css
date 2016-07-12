@@ -80,3 +80,19 @@
   .wizard-steps-panel.steps-quantity-6 .step-number {
     width: 15%;
   }
+
+  .wizard-inline{
+    padding-top:10px; 
+    display: inline-flex;
+  }
+
+.animate-header {
+    margin-left: 3%;
+    -webkit-animation: rightThenLeft 3s linear;
+}
+
+@-webkit-keyframes rightThenLeft {
+    0%   {margin-left:0;}
+    30%  {margin-left:3%;}
+}
+

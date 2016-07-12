@@ -184,8 +184,8 @@ error_reporting(E_ERROR | E_PARSE);
 		return '<div class="col-lg-3 col-sm-6 animated fadeInUpShort">
 				<a href="'.$url.'">
 					<div class="panel widget bg-'.$color.'"  style="height: 87px;">
-		    			<div class="col-xs-4 text-center bg-'.$color2.' pv-lg animated fadeInUpShort">
-							<div class="h2 mt0">
+		    			<div class="col-xs-4 text-center bg-'.$color2.' pv-lg">
+							<div class="h2 mt0 animated fadeInUpShort">
 								<i class="fa fa-'.$icon.'" style="padding: 15px;"></i></span>
 							</div>
 						</div>
@@ -994,9 +994,9 @@ error_reporting(E_ERROR | E_PARSE);
 	    if (is_array($type)) { // select type
 		    return $this->singleFormGroupWithSelect($this->lh->translationFor($setting), $setting, $setting, $type, $currentValue);
 	    } else { // single input type: text, number, bool, date...
-		    switch ($type) {
-			    case CRM_SETTING_TYPE_STRING:
-				    return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "text", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));
+		   switch ($type) {
+			   case CRM_SETTING_TYPE_STRING:
+				   return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "text", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));
 					break;
 				case CRM_SETTING_TYPE_INT:
 				case CRM_SETTING_TYPE_FLOAT:
@@ -1011,6 +1011,9 @@ error_reporting(E_ERROR | E_PARSE);
 					break;
 				case CRM_SETTING_TYPE_LABEL:
 					return $this->singleFormGroupWithInputGroup($this->lh->translationFor($setting));
+					break;
+				case CRM_SETTING_TYPE_SELECT:
+					return $this->singleFormGroupWithInputGroup($this->dropdownFormInputElement($setting[0], $setting[0], $setting[1], $currentValue), $this->lh->translationFor($setting[0]));
 					break;
 				case CRM_SETTING_TYPE_PASS:
 					return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "password", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));
@@ -1053,6 +1056,21 @@ error_reporting(E_ERROR | E_PARSE);
      * @param $status Int the status of the user (enabled=1, disabled=0)
      * @return String a HTML representation of the action associated with a user in the admin panel.
      */
+    private function ActionMenuForContacts($lead_id) {
+		return '<div class="btn-group">
+	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+						<span class="caret"></span>
+						<span class="sr-only">Toggle Dropdown</span>
+	                </button>
+	                <ul class="dropdown-menu" role="menu">
+	                	<li><a class="view-contact" href="#" data-id="'.$lead_id.'">'.$this->lh->translationFor("View Contact Info").'</a></li>
+	                    <li><a class="edit-contact" href="'.$lead_id.'">'.$this->lh->translationFor("Edit Contact Details").'</a></li>
+	                    <li class="divider"></li>
+	                    <li><a class="delete-contact" href="'.$lead_id.'">'.$this->lh->translationFor("Delete Contact").'</a></li>
+	                </ul>
+	            </div>';
+	}
 	private function getUserActionMenuForUser($userid, $username, $status) {
 		$textForStatus = $status == "Y" ? $this->lh->translationFor("disable") : $this->lh->translationFor("enable");
 		$actionForStatus = $status == "Y" ? "deactivate-user-action" : "activate-user-action";
@@ -1072,7 +1090,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>';
 	}
 	//telephony menu for users
-	private function getUserActionMenuForT_User($userid) {
+	private function getUserActionMenuForT_User($userid, $role, $name) {
 		
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -1081,9 +1099,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-T_user" href="'.$userid.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li><a class="edit-T_user" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("Modify User").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-T_user" href="'.$userid.'">'.$this->lh->translationFor("delete_user").'</a></li>
+	                    <li><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("Delete User").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1117,15 +1135,15 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-ingroup" href="'.$groupid.'">Modify In-group</a></li>
+	                    <li><a class="edit-ingroup" href="#" data-id="'.$groupid.'">Modify In-group</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-ingroup" href="'.$groupid.'">Delete In-group</a></li>
+	                    <li><a class="delete-ingroup" href="#" data-id="'.$groupid.'">Delete In-group</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 		//ivr
-	public function ActionMenuForIVR($ivr) {
+	public function ActionMenuForIVR($ivr, $desc) {
 		
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -1134,15 +1152,15 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-ivr" href="'.$ivr.'">Modify IVR</a></li>
+	                    <li><a class="edit-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Modify IVR</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-ivr" href="'.$ivr.'">Delete IVR</a></li>
+	                    <li><a class="delete-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Delete IVR</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 		//did
-	public function getUserActionMenuForDID($did) {
+	public function getUserActionMenuForDID($did, $desc) {
 		
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -1151,9 +1169,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-phonenumber" href="'.$did.'">Modify Phonenumber / DID</a></li>
+	                    <li><a class="edit-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Modify Phonenumber / DID</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-phonenumber" href="'.$did.'">Delete Phonenumber / DID</a></li>
+	                    <li><a class="delete-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Delete Phonenumber / DID</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1169,9 +1187,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-phone" href="'.$exten.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li><a class="edit-phone" href="#" data-id="'.$exten.'">'.$this->lh->translationFor("Modify Phone Extension").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-phone" href="'.$exten.'">'.$this->lh->translationFor("delete_phone_extension").'</a></li>
+	                    <li><a class="delete-phone" href="#" data-id="'.$exten.'">'.$this->lh->translationFor("Delete Phone Extension").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1360,9 +1378,55 @@ error_reporting(E_ERROR | E_PARSE);
 	                    </ul>
 	                </div>
 	            </nav>
-	        </header>';
+	        </header>
+	        <div class="preloader">
+    			<center>
+    					<img src="'.$logo.'"/>
+    					<span class="dots">
+    					<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
+    					</span>
+    			</center>
+    		</div>';
 	}
 	
+    /**
+	 * Returns the default creamy header for all pages.
+	 */
+	public function creamyAgentHeader($user) {
+		// module topbar elements
+		$mh = \creamy\ModuleHandler::getInstance();
+		$moduleTopbarElements = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_TOPBAR, null, CRM_MODULE_MERGING_STRATEGY_APPEND);
+		// header elements
+		$logo = $this->creamyHeaderLogo();
+		$name = $this->creamyHeaderName();
+			//<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="32"> '.$name.'</a>
+		// return header
+		return '<header class="main-header">
+				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
+	            <nav class="navbar navbar-static-top" role="navigation">
+	                
+	                <div class="navbar-custom-menu">
+	                    <ul class="nav navbar-nav">
+	                    		'.$moduleTopbarElements.'
+	                    		'.$this->getTopbarMessagesMenu($user).'  
+		                    	'.$this->getTopbarNotificationsMenu($user).'
+		                    	'.$this->getTopbarTasksMenu($user).'
+		                    	<li>
+			                    	<a href="#" data-toggle="control-sidebar"><i class="fa fa-cogs"></i></a>
+				               </li>
+	                    </ul>
+	                </div>
+	            </nav>
+	        </header>
+	        <div class="preloader">
+    			<center>
+    					<img src="'.$logo.'"/>
+    					<span class="dots">
+    					<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
+    					</span>
+    			</center>
+    		</div>';
+	}
 	/**
 	 * Returns the creamy company custom logo. If no custom logo is defined, returns 
 	 * the default white creamy logo.
@@ -1390,9 +1454,13 @@ error_reporting(E_ERROR | E_PARSE);
 	public function creamyBody() {
 		$theme = $this->db->getSettingValueForKey(CRM_SETTING_THEME);
 		if (empty($theme)) { $theme = CRM_SETTING_DEFAULT_THEME; }
-		return '<body class="skin-'.$theme.' sidebar-mini">';
+		return '<body class="skin-'.$theme.' sidebar-mini fixed ">';
 	}
-	
+	public function creamyAgentBody() {
+		$theme = $this->db->getSettingValueForKey(CRM_SETTING_THEME);
+		if (empty($theme)) { $theme = CRM_SETTING_DEFAULT_THEME; }
+		return '<body class="skin-'.$theme.' sidebar-collapse fixed">';
+	}
 	/**
 	 * Returns the proper css style for the selected theme.
 	 * If theme is not found, it defaults to CRM_SETTING_DEFAULT_THEME
@@ -1625,6 +1693,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$telephonyArea = "";
 		$settings = "";
 		$callreports = "";
+		$loadleads = "";
 		if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
 			
 			$modulesWithSettings = $mh->modulesWithSettings();
@@ -1661,12 +1730,13 @@ error_reporting(E_ERROR | E_PARSE);
 			$callreports .= $this-> getSidebarItem("./callreports.php", "tasks", $this->lh->translationFor("reports_and_go_analytics"));
 			$callreports .= '</ul></li>';
 			
+			$loadleads .= $this->getSidebarItem("loadleads.php", "sort-alpha-asc", $this->lh->translationFor("load_leads"));
 		}
 		
 		$agentmenu = NULL;
 		if($userrole == CRM_DEFAULTS_USER_ROLE_AGENT){
-			$agentmenu .= $this-> getSidebarItem("", "book", $this->lh->translationFor("scripts"));
-			$agentmenu .= $this-> getSidebarItem("", "tasks", $this->lh->translationFor("Custom Form"));
+			//$agentmenu .= $this-> getSidebarItem("", "book", $this->lh->translationFor("scripts"));
+			//$agentmenu .= $this-> getSidebarItem("", "tasks", $this->lh->translationFor("Custom Form"));
 		}
 
 		// get customer types
@@ -1697,16 +1767,16 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= $settings;
 		$result .= $callreports;
 		$result .= $adminArea;
-		
+		$result .= $loadleads;
 		// menu for agents
 		$result .= $agentmenu;
 
         // ending: contacts, messages, notifications, tasks, events.
-        $result .= $this->getSidebarItem("loadleads.php", "sort-alpha-asc", $this->lh->translationFor("load_leads"));
+        
         $result .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
 		$result .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
         $result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
-		$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
+		//$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
         $result .= $this->getSidebarItem("notifications.php", "exclamation", $this->lh->translationFor("notifications"), $numNotifications, "orange");
         $result .= $this->getSidebarItem("tasks.php", "tasks", $this->lh->translationFor("tasks"), $numTasks, "red");
         
@@ -1722,6 +1792,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		return $result;
 	}
+
 
 	/**
 	 * Generates the HTML code for a sidebar link.
@@ -2881,11 +2952,11 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = "Inactive";
 				 }
 			   
-	       	   $action = $this->getUserActionMenuForT_User($output->userno[$i]); 
+	       	   $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i]); 
 	       	        
 		        $result .= "<tr>
 	                     <td class='hide-on-low'>".$output->userno[$i]."</td>
-						 <td><a class=\"edit-T_user\" href=".$output->userno[$i].">".$output->full_name[$i]."</a></td>";
+						 <td><a class='edit-T_user' href=".$output->userno[$i].">".$output->full_name[$i]."</a></td>";
 	             $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
 	                     <td class='hide-on-low'>".$output->active[$i]."</td>
 	                     <td style='width: 200px;'>".$action."</td>
@@ -2903,6 +2974,7 @@ error_reporting(E_ERROR | E_PARSE);
        }
 	}
 	
+
 	public function API_goGetAllLists(){
 		$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -2924,8 +2996,101 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 	
+	// API to get usergroups
+	public function API_goGetUserGroupsList() {
+		$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = goUser; #Username goes here. (required)
+        $postfields["goPass"] = goPass; #Password goes here. (required)
+        $postfields["goAction"] = "goGetUserGroupsList"; #action performed by the [[API:Functions]]. (required)
+        $postfields["responsetype"] = "json"; #json. (required)
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+
+         return $output;
+        /*
+        if ($output->result=="success") {
+           # Result was OK!
+                        for($i=0;$i<count($output->user_group);$i++){
+                                echo $output->user_group[$i]."</br>";
+                                echo $output->group_name[$i]."</br>";
+                                echo $output->group_type[$i]."</br>";
+                                echo $output->forced_timeclock_login[$i]."</br>";
+                        }
+         } else {
+           # An error occured
+                echo "The following error occured: ".$results["message"];
+        }
+		*/
+	}
+	//USERGROUPS LIST
+	public function goGetUserGroupsList() {		
+		$output = $this->API_goGetUserGroupsList();
+		
+		if ($output->result=="success") {
+		# Result was OK!
+		
+		$columns = array("User Group", "Group Name", "Type", "Forced Timeclock", "Action");
+	    $hideOnMedium = array("Type", "Forced Timeclock");
+	    $hideOnLow = array("Type", "Forced Timeclock");
+		$result = $this->generateTableHeaderWithItems($columns, "usergroups_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		
+		
+			for($i=0;$i < count($output->user_group);$i++){
+				
+				if($output->forced_timeclock_login[$i] == "Y"){
+					$output->forced_timeclock_login[$i] = "YES";
+				}else{
+					$output->forced_timeclock_login[$i] = "NO";
+				}
+
+				$action = $this->ActionMenuForUserGroups($output->user_group[$i], $output->group_name[$i]);
+				
+				$result = $result."<tr>
+	                    <td>".$output->user_group[$i]."</td>
+	                    <td><a class=''>".$output->group_name[$i]."</a></td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->group_type[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->forced_timeclock_login[$i]."</td>
+	                    <td>".$action."</td>
+	                </tr>";
+				
+			}
+			
+			return $result; 
+			
+		} else {		
+		# An error occured		
+			return $this->calloutWarningMessage($this->lh->translationFor("No Entry in Database"));
+		}
+
+	}
+	private function ActionMenuForUserGroups($id, $name) {
+		
+	   return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="edit-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">Edit User Group</a></li>
+			<li class="divider"></li>
+			<li><a class="delete-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete User Group</a></li>
+		    </ul>
+		</div>';
+	}
+
+
 	/**
-     * Returns a HTML representation of the wizard form for Telephony Users
+     * Returns a HTML representation of the wizard form for Telephony Lists
      * 
      */
 	
@@ -3088,7 +3253,7 @@ error_reporting(E_ERROR | E_PARSE);
 	*/
 	// Settings > Admin Logs
 	public function API_goGetAdminLogsList(){
-		$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goAdminLogs/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAdminLogsList"; #action performed by the [[API:Functions]]. (required)
@@ -3104,8 +3269,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$data = curl_exec($ch);
 		curl_close($ch);		
 		$output = json_decode($data);
-		
-		return $output;
+		var_dump($output);
+		//return $output;
 	}
 
 	public function getAdminLogsList() {
@@ -3114,58 +3279,35 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 		
-		$columns = array("Exten", "Protocol", "Server", "Dial Plan", "Status", "Name", "VMail", "Group", "Action");
+		$columns = array("User", "IP Address", "Date & Time", "Event", "Details", "Action");
 	    //$hideOnMedium = array("call_time_id","queue_priority", "active");
 	   // $hideOnLow = array("call_time_id","queue_priority", "active");
-		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false);
+		$result = $this->generateTableHeaderWithItems($columns, "adminlogs_table", "table-bordered table-striped", true, false);
 		
-			for($i=0;$i < count($output->extension);$i++){
+			for($i=0;$i < count($output->admin_log_id);$i++){
 				
-				/*echo $output->extension[$i]."</br>";
-				echo $output->protocol[$i]."</br>";
-				echo $output->server_ip[$i]."</br>";
-				echo $output->dialplan_number[$i]."</br>";
-				echo $output->active[$i]."</br>";
-				echo $output->fullname[$i]."</br>";
-				echo $output->messages[$i]."</br>";
-				echo $output->old_messages[$i]."</br>";
-				echo $output->user_group[$i]."<brd>";*/
-				
-				// if no entry in inbound
-				if (empty($output->extension[$i])) {
-					return $this->calloutWarningMessage($this->lh->translationFor("no_entry_in_phones"));
-				}
-				
-				if($output->active[$i] == "Y"){
-					$output->active[$i] = "Active";
-				}else{
-					$output->active[$i] = "Inactive";
-				}
-				
-				$action = $this->getUserActionMenuForPhones($output->extension[$i]);
+				$action = $this->ActionMenuForAdminLogs($output->admin_log_id[$i]);
 				
 				$result = $result."<tr>
-	                    <td>".$output->extension[$i]."</td>
-	                    <td><a class=''>".$output->protocol[$i]."</a></td>
-						<td>".$output->server_ip[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->dialplan_number[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
+	                    <td>".$output->user[$i]."</td>
+	                    <td><a class=''>".$output->ip_address[$i]."</a></td>
+						<td>".$output->event_date[$i]."</td>";
+					/*
+	                    <td class='hide-on-medium hide-on-low'>".$output->[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->fullname[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>
 						<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
 	                    <td>".$action."</td>
 	                </tr>";
-				
+					*/
 			}
 			
 			return $result; 
 			
 		} else {		
-		# An error occured		
-			return $this->calloutErrorMessage($this->lh->translationFor("Unable to get Phone List"));
+			return $output->result;
 		}
-	       // print suffix
-	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	}
 
 	// Settings > Phone
@@ -3202,17 +3344,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false);
 		
 			for($i=0;$i < count($output->extension);$i++){
-				
-				/*echo $output->extension[$i]."</br>";
-				echo $output->protocol[$i]."</br>";
-				echo $output->server_ip[$i]."</br>";
-				echo $output->dialplan_number[$i]."</br>";
-				echo $output->active[$i]."</br>";
-				echo $output->fullname[$i]."</br>";
-				echo $output->messages[$i]."</br>";
-				echo $output->old_messages[$i]."</br>";
-				echo $output->user_group[$i]."<brd>";*/
-
 				
 				if($output->active[$i] == "Y"){
 					$output->active[$i] = "Active";
@@ -3264,7 +3395,9 @@ error_reporting(E_ERROR | E_PARSE);
          $data = curl_exec($ch);
          curl_close($ch);
          $output = json_decode($data);
-		 return $output;
+		
+		//var_dump($output);
+		return $output;
 	
 	}
 	
@@ -3276,8 +3409,8 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		$columns = array("Voicemail ID", "Name", "Status", "New Messages", "Old Messages", "Delete", "User Group", "Action");
 	    //$hideOnMedium = array("call_time_id","queue_priority", "active");
-	   // $hideOnLow = array("call_time_id","queue_priority", "active");
-		$result = $this->generateTableHeaderWithItems($columns, "T_voicemails", "table-bordered table-striped", true, false);
+	    //$hideOnLow = array("call_time_id","queue_priority", "active");
+		$result = $this->generateTableHeaderWithItems($columns, "voicemails_table", "table-bordered table-striped", true, false);
 		
 			for($i=0;$i < count($output->voicemail_id);$i++){
 
@@ -3287,15 +3420,14 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = "Inactive";
 				}
 				
-				$action = $this->ActionMenuForVoicemail($output->voicemail_id[$i]);
+				$action = $this->ActionMenuForVoicemail($output->voicemail_id[$i], $output->fullname[$i]);
 				
 				$result = $result."<tr>
 	                    <td>".$output->voicemail_id[$i]."</td>
 	                    <td><a class=''>".$output->fullname[$i]."</a></td>
-						<td>".$output->server_ip[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
+						<td>".$output->active[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->messages[$i]."</td>
-						<td class='hide-on-medium hide-on-low'>".$output->old_messages[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->old_messages[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->delete_vm_after_email[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
 	                    <td>".$action."</td>
@@ -3305,13 +3437,13 @@ error_reporting(E_ERROR | E_PARSE);
 			
 			return $result; 
 			
-		} else {		
-		# An error occured		
-			return $this->calloutErrorMessage($this->lh->translationFor("unable_get_voicemail"));
+		}else{
+			// if no entry in voicemails
+			return $this->calloutWarningMessage($this->lh->translationFor("No Entry in Database"));
 		}
 	}
 
-	private function ActionMenuForVoicemail($id) {
+	private function ActionMenuForVoicemail($id, $name) {
 		
 	   return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3320,10 +3452,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="view-voicemail" href="#" data-id="'.$id.'">View Info</a></li>
-			<li><a class="edit-voicemail" href="#" data-id="'.$id.'">Edit Voicemail</a></li>
+			<li><a class="edit-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">Edit Voicemail</a></li>
 			<li class="divider"></li>
-			<li><a class="delete-voicemail" href="#" data-id="'.$id.'">Delete Voicemail</a></li>
+			<li><a class="delete-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Voicemail</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3619,7 +3750,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 	
 	private function getUserActionMenuForVoiceFiles($filename) {
-	    $file_link = "https://162.254.144.92/sounds/".$filename;
+	    $file_link = "https://69.46.6.35/sounds/".$filename;
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -3711,7 +3842,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 	public function getListAllCallTimes($goUser, $goPass, $goAction, $responsetype){
-	    $url = "https://gadcs.goautodial.com/goAPI/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllCalltimes"; #action performed by the [[API:Functions]]. (required)
@@ -3734,7 +3865,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
 
 	        for($i=0;$i<count($output->call_time_id);$i++){
-		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i]);
+		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i], $output->call_time_name[$i]);
                     $result .= "<tr>
 	                    <td>".$output->call_time_id[$i]."</td>
 	                    <td>".$output->call_time_name[$i]."</td>
@@ -3753,7 +3884,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 	
-	private function getUserActionMenuForCalltimes($id) {
+	private function getUserActionMenuForCalltimes($id, $name) {
 		
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3762,8 +3893,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-calltime" href="#" data-id="'.$id.'">Edit Call Time</a></li>
-			<li><a class="delete-calltime" href="#" data-id="'.$id.'">Delete Call Time</a></li>
+			<li><a class="edit-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">Edit Call Time</a></li>
+			<li><a class="delete-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Call Time</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3776,7 +3907,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 	public function getListAllCarriers($goUser, $goPass, $goAction, $responsetype){
-	    $url = "https://gadcs.goautodial.com/goAPI/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCarriersList"; #action performed by the [[API:Functions]]. (required)
@@ -4229,14 +4360,14 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goAction"] = "goGetTotalAgentsPaused"; #action performed by the [[API:Functions]]
 			
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
 			//var_dump($data);
 			 $data = explode(";",$data);
@@ -4307,15 +4438,14 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetLeadsinHopper"; #action performed by the [[API:Functions]]
 			
-			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
 			//var_dump($data);
 			 $data = explode(";",$data);
@@ -4624,47 +4754,74 @@ error_reporting(E_ERROR | E_PARSE);
 	 * [[API: Function]] - goGetLeads
 	 * This application is used to get cluster status
 	*/
-	public function API_GetLeads(){
+	public function API_GetLeads($userName){
 	$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass;
+	$postfields["goVarLimit"] = "";
+	$postfields["user_id"] = $userName;
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
 	
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 600);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	$data = curl_exec($ch);
 	curl_close($ch);
-	$output = json_decode($data);
-	 
+	$output = json_decode($data); 	
+	 	
 		return $output;
+	}
+
+	// get specific contact info
+	public function API_GetLeadInfo($lead_id){
+		$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = goUser; #Username goes here. (required)
+        $postfields["goPass"] = goPass; #Password goes here. (required)
+        $postfields["goAction"] = "goGetLeadsInfo"; #action performed by the [[API:Functions]]. (required)
+        $postfields["responsetype"] = responsetype; #json. (required)
+        $postfields["lead_id"] = $lead_id; #Desired exten ID. (required)
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+
+         return $output;
 	}
 	
 	// get contact list
-	public function GetContacts() {
-	$output = $this->API_GetLeads();
+	public function GetContacts($userid) {
+	$output = $this->API_GetLeads($userid);
        if($output->result=="success") {
        	   $columns = array("List ID", "Name", "Phone Number", "Action");
 	       $hideOnMedium = array("List ID", "Phone Number", "active");
 	       $hideOnLow = array( "List ID", "Phone Number", "active");
 		   $result = $this->generateTableHeaderWithItems($columns, "contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
-			
 			for($i=0;$i<=count($output->list_id);$i++){
-			
-			$action = $this->getUserActionMenuForT_User($output->list_id[$i]);
+		   	//for($i=0;$i<=500;$i++){
+				if($output->phone_number[$i] != ""){
+
+				$action = $this->ActionMenuForContacts($output->lead_id[$i]);
 				$result .= '<tr>
 								<td>' .$output->list_id[$i]. '</td> 
 								<td>' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
 								<td>' .$output->phone_number[$i].'</td>
 								 <td style="width: 200px;">' .$action.'</td>
 							</tr> ';
+				}
 			}
-
+			
 			return $result;
        }else{
 			// error getting contacts
@@ -4673,6 +4830,7 @@ error_reporting(E_ERROR | E_PARSE);
        }
 	}
 
+<<<<<<< HEAD
 	public function getAllowedList($user_id){
 		$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -4692,6 +4850,115 @@ error_reporting(E_ERROR | E_PARSE);
 		$output = json_decode($data);
 
 		return $output->lists;
+=======
+	// get script
+	public function getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, $phone_number, $alt_phone,
+		$address1, $address2, $address3, $city, $province, $state, $postal_code, $country_code){
+		$url = gourl."/goViewScripts/goAPI.php"; # URL to GoAutoDial API filem (required)
+         $postfields["goUser"] = goUser; #Username goes here. (required)
+         $postfields["goPass"] = goPass; #Password goes here. (required)
+         $postfields["goAction"] = "goViewAgentScript"; #action performed by the [[API:Functions]] (required0
+         $postfields["responsetype"] = responsetype; #response type by the [[API:Functions]] (required)
+
+         #required fields
+         $postfields["lead_id"] = $lead_id; #Agent full anme(required)
+         $postfields["fullname"] = $fullname; #Agent full anme(required)
+         $postfields["first_name"] = $first_name; #Lead first_name (required)
+         $postfields["last_name"] = $last_name; #Lead last_name (required)
+         $postfields["middle_initial"] = $middle_initial; #Lead middle_initial (required)
+         $postfields["email"] = $email; #Lead email (required)
+         $postfields["phone_number"] = $phone_number; #Lead phone_number (required)
+         $postfields["alt_phone"] = $alt_phone; #Lead alt_phone (required)
+         $postfields["address1"] = $address1; #Lead address1 (required)
+         $postfields["address2"] = $address2; #Lead address2 (required)
+         $postfields["address3"] = $address3; #Lead address3 (required)
+         $postfields["city"] = $city; #Lead city (required)
+         $postfields["province"] = $province; #Lead province (required)
+         $postfields["state"] = $state; #Lead state (required)
+         $postfields["postal_code"] = $postal_code; #Lead postal_code (required)
+         $postfields["country_code"] = $country_code; #Lead country_code(required)
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+        // var_dump($output);
+        if ($output->result=="success") {
+           # Result was OK!
+                return $output->gocampaignScript;
+         } else {
+           # An error occured
+                return $output->result;
+        }
+
+	}
+	
+	public function dropdownFormInputElement($id, $name, $options = array(), $currentValue, $required = false) {
+		$requiredCode = $required ? "required" : "";
+		$optionList = "";
+		if (count($options) > 0) {
+			foreach ($options as $k => $opt) {
+				$isSelected = ($currentValue == $opt) ? "selected" : "";
+				$optionList .= '<option value="'.$opt.'" '.$isSelected.'>'.$opt.'</option>';
+			}
+		}
+		return '<select name="'.$name.'" id="'.$id.'" class="form-control '.$requiredCode.'">'.$optionList.'</select></div>';
+	}
+
+	public function deleteValidateModal($action, $id){
+		return '
+		<div id="delete_notification_modal" class="modal modal-warning fade">
+        	<div class="modal-dialog">
+	            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+					<div class="modal-header">
+						<h4 class="modal-title">Delete '.$action.' ?</h4>
+					</div>
+					<div class="modal-body">
+						Are you sure you want to delete '.$action.': '.$id.' ?
+					</div>
+				</div>
+			</div>
+		</div>
+		';
+	}
+
+	public function deleteNotificationModal($action, $id, $result){
+		//var_dump($id);
+		return '
+		<div id="delete_notification_modal" class="modal modal-success fade">
+        	<div class="modal-dialog">
+	            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+					<div class="modal-header">
+						<h4 class="modal-title">Successfully Deleted '.$action.' !</h4>
+					</div>
+					<div class="modal-body" style="background:#fff;">
+						You have successfully deleted <b>'.$id.'</b>. 
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="delete_notification_modal_fail" class="modal modal-danger fade">
+        	<div class="modal-dialog">
+	            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+					<div class="modal-header">
+						<h4 class="modal-title">Failed to Delete '.$action.' !</h4>
+					</div>
+					<div class="modal-body" style="background:#fff;">
+						<p>'.$result.'<br/><br/>
+						Please Try again. </p>
+					</div>
+				</div>
+			</div>
+		</div>
+		';
+>>>>>>> e4c17d403bbe0f3a697085df824b3d3b82c2549c
 	}
 }
 

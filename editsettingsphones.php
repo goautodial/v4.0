@@ -1,11 +1,15 @@
 <?php
-
+/*
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+*/
 require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
 //require_once('./php/DbHandler.php');
 require_once('./php/LanguageHandler.php');
 require('./php/Session.php');
-
+require_once('./php/goCRMAPISettings.php');
 
 // initialize structures
 $ui = \creamy\UIHandler::getInstance();
@@ -15,16 +19,13 @@ $user = \creamy\CreamyUser::currentUser();
 $extenid = NULL;
 if (isset($_POST["extenid"])) {
 	$extenid = $_POST["extenid"];
-	
 }
-
-include('php/goCRMAPISettings.php');
 
 ?>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Edit Phone Extension</title>
+        <title>Edit Phone Extension</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -50,6 +51,14 @@ include('php/goCRMAPISettings.php');
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 
+        <!-- preloader -->
+        <link rel="stylesheet" href="css/customizedLoader.css">
+
+        <script type="text/javascript">
+			$(window).ready(function() {
+				$(".preloader").fadeOut("slow");
+			})
+		</script>
     </head>
     <style>
     	select{
@@ -69,7 +78,7 @@ include('php/goCRMAPISettings.php');
                 <section class="content-header">
                     <h1>
                         <?php $lh->translateText("telephony"); ?>
-                        <small><?php $lh->translateText("telephony_phone_edition"); ?></small>
+                        <small><?php $lh->translateText("Phone Edit"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -86,13 +95,12 @@ include('php/goCRMAPISettings.php');
                 </section>
 
                 <!-- Main content -->
-                <section class="content">
+                <section class="content" style="padding:30px; padding-left:10%; padding-right:10%; margin-left: 0; margin-right: 0;">
 					<!-- standard custom edition form -->
 					<?php
 					$errormessage = NULL;
 					
-                    
-					if(isset($extenid)) {
+					//if(isset($extenid)) {
 						$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
 				        $postfields["goUser"] = goUser; #Username goes here. (required)
 				        $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -111,172 +119,178 @@ include('php/goCRMAPISettings.php');
 				         curl_close($ch);
 				         $output = json_decode($data);
 
-			
 						if ($output->result=="success") {
+							
 						# Result was OK!
 							for($i=0;$i<count($output->extension);$i++){
-								
-								$hidden_f = $ui->hiddenFormField("modifyid", $extenid);
-								
-								$id_f = '<h4>Modify Phone <b>'.$extenid.'</b>';
-								
-                                $exten_l = '<h4>Phone Extension/Login</h4>:'.$extenid;
-         
-                                $plan_l = '<h4>Dial Plan Number</h4>';
-								$ph = $lh->translationFor("Dial Plan Number").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->dialplan_number[$i]) ? $output->dialplan_number[$i] : null;
-								$plan_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("plan", "plan", "text", $ph, $vl, "tasks", "required"));
-								
-                                 $vmid_l = '<h4>Voicemail ID</h4>';
-								$ph = $lh->translationFor("Voicemail ID").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->voicemail_id[$i]) ? $output->voicemail_id[$i] : null;
-								$vmid_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("vmid", "vmid", "text", $ph, $vl, "tasks", "required"));
-                                                                
-                                $ip_l = '<h4>Server IP</h4>';
-								$ph = $lh->translationFor("Server IP").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->server_ip[$i]) ? $output->server_ip[$i] : null;
-								$ip_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("ip", "ip", "text", $ph, $vl, "tasks", "required"));
-								
-								$active_l = '<br/><h4>Active Account</h4>';
-								$active_f = '<br/><select class="form-control" id="active" name="active">';
-												
-									if($output->active[$i] == "Y"){
-										$active_f .= '<option value="Y" selected> YES </option>';
-									}else{
-										$active_f .= '<option value="Y" > YES </option>';
-									}
-									
-									if($output->active[$i] == "N"){
-										$active_f .= '<option value="N" selected> NO </option>';
-									}else{
-										$active_f .= '<option value="N" > NO </option>';
-									}
-									
-								$active_f .= '</select>';
-								
-                                $status_l = '<br/><h4>Status</h4>';
-								$status_f = '<br/><select class="form-control" id="status" name="status">';
-												
-									if($output->status[$i] == "ACTIVE"){
-										$status_f .= '<option value="ACTIVE" selected> ACTIVE </option>';
-									}else{
-										$status_f .= '<option value="ACTIVE" > ACTIVE </option>';
-									}
-									
-									if($output->status[$i] == "SUSPENDED"){
-										$status_f .= '<option value="SUSPENDED" selected> SUSPENDED </option>';
-									}else{
-										$status_f .= '<option value="SUSPENDED" > SUSPENDED </option>';
-									}
-                                    
-                                    if($output->status[$i] == "CLOSED"){
-										$status_f .= '<option value="CLOSED" selected> CLOSED </option>';
-									}else{
-										$status_f .= '<option value="CLOSED" > CLOSED </option>';
-									}
-                                    
-                                    if($output->status[$i] == "PENDING"){
-										$status_f .= '<option value="PENDING" selected> PENDING </option>';
-									}else{
-										$status_f .= '<option value="PENDING" > PENDING </option>';
-									}
-                                    
-                                    if($output->status[$i] == "ADMIN "){
-										$status_f .= '<option value="ADMIN " selected> ADMIN  </option>';
-									}else{
-										$status_f .= '<option value="ADMIN " > ADMIN  </option>';
-									}
-									
-								$status_f .= '</select>';
-                                
-                                $active_status_row = $ui->rowWithVariableContents(array("2", "3","2","3"), array($active_l, $active_f, $status_l, $status_f));
-								$as_f = $ui->singleFormGroupWrapper($active_status_row);
-                                
-                                
-								$name_l = '<h4>Full Name</h4>';
-								$ph = $lh->translationFor("Full Name").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->fullname[$i]) ? $output->fullname[$i] : null;
-								$name_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("fullname", "fullname", "text", $ph, $vl, "tasks"));
-								
-								$new_msg = '<h4>New Messages: <b>'.$output->messages[$i].'</b></h4>';
-                                $old_msg = '<h4>Old Messages: <b>'.$output->old_messages[$i].'</b></h4>';
-								
-                                $protocol_l = '<h4>Client Protocol</h4>';
-								$protocol_f = '<select class="form-control" id="protocol" name="protocol">';
-								
-                                    if($output->protocol[$i] == "SIP"){
-                                        $protocol_f .= '<option value="SIP" selected> SIP </option>';
-                                    }else{
-                                        $protocol_f .= '<option value="SIP"> SIP </option>';
-                                    }
-                                    
-                                    if($output->protocol[$i] == "Zap"){
-                                        $protocol_f .= '<option value="Zap" selected> Zap </option>';
-                                    }else{
-                                        $protocol_f .= '<option value="Zap"> Zap </option>';
-                                    }
-                                    
-                                    if($output->protocol[$i] == "IAX2"){
-                                        $protocol_f .= '<option value="IAX2" selected> IAX2 </option>';
-                                    }else{
-                                        $protocol_f .= '<option value="IAX2"> IAX2 </option>';
-                                    }
-                                     
-                                    if($output->protocol[$i] == "EXTERNAL"){
-                                        $protocol_f .= '<option value="EXTERNAL" selected> EXTERNAL </option>';
-                                    }else{
-                                        $protocol_f .= '<option value="EXTERNAL"> EXTERNAL </option>';
-                                    }
-									
-								$protocol_f .= '</select>';
-								
-								// buttons at bottom (only for writing+ permissions)
-								$buttons = "";
-								if ($user->userHasWritePermission()) {
-									$buttons = $ui->buttonWithLink("modifyPhonesDeleteButton", $extenid, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
-									$buttons .= $ui->buttonWithLink("modifyCustomerOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
-									$buttons = $ui->singleFormGroupWrapper($buttons);
-								}
-		
-							// generate the form
-							$fields = 
-								$hidden_f.
-	                            $plan_l.$plan_f.
-	                            $vmid_l.$vmid_f.
-	                            $ip_l.$ip_f.
-	                            $as_f.
-	                            $name_l.$name_f.
-	                            "<br/>".$new_msg.$old_msg."<br>".
-	                            $protocol_l.$protocol_f;
-								
-								// generate form: header
-								$form = $ui->formWithCustomFooterButtons("modifyphones", $fields, $buttons, "modifyT_phonesresult");
-								
-								// generate and show the box
-								//$box = $ui->boxWithForm("modifyuser", , $fields, $lh->translationFor("edit_user"));
-								//print $box;
-								
-								// generate box
-								$boxTitle = $id_f;
-								$formBox = $ui->boxWithContent($boxTitle, $form);
-								// print our modifying customer box.
-								print $formBox;
-								
-							}
-						} else {
-						# An error occured
-							if(!isset($output->result)){
-								echo "Error in API: Return NULL";
-							}
-							echo $output->result;
-						}
-                        
-					} else {
-			    		$errormessage = $lh->translationFor("some_fields_missing");
-					}
-					
 					?>
                     
+                    <div role="tabpanel" class="panel panel-transparent" style="box-shadow: 5px 5px 8px #888888;">
+							
+						<h4 style="padding:15px;"><a type="button" class="btn" href="settingsphones.php"><i class="fa fa-arrow-left"></i> Cancel</a><center><b>MODIFY PHONES</b></center></h4>
+								
+							<form id="modifyphones">
+								<input type="hidden" name="modifyid" value="<?php echo $extenid;?>">
+							
+						<!-- BASIC SETTINGS -->
+							<div class="panel text-left" style="margin-top: 20px; padding: 0px 30px">
+								<div class="form-group">
+									<label>Phone Extension: </label>
+									<span style="padding-left:20px; font-size: 20;"><?php echo $extenid;?></span>
+								</div>
+								<div class="form-group">
+									<label for="plan">Dial Plan Number</label>
+									<input type="number" class="form-control" name="plan" id="plan" placeholder="Dial Plan Number (Mandatory)" value="<?php echo $output->dialplan_number[$i];?>">
+								</div>
+								<div class="form-group">
+									<label for="vmid">Voicemail ID</label>
+									<input type="text" class="form-control" name="vmid" id="vmid" value="<?php echo $output->voicemail_id[$i];?>">
+								</div>
+								<div class="form-group">
+									<label for="ip">Server IP</label>
+									<input type="text" class="form-control" name="ip" id="ip" value="<?php echo $output->server_ip[$i];?>">
+								</div>
+								<div class="form-group">
+									<label for="status">Active Account</label>
+									<select class="form-control" name="active" id="active">
+									<?php
+										$active = NULL;
+										if($output->active[$i] == "Y"){
+											$active .= '<option value="Y" selected> YES </option>';
+										}else{
+											$active .= '<option value="Y" > YES </option>';
+										}
+										
+										if($output->active[$i] == "N" || $output->active[$i] == NULL){
+											$active .= '<option value="N" selected> NO </option>';
+										}else{
+											$active .= '<option value="N" > NO </option>';
+										}
+										echo $active;
+									?>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="status">Status
+									<select class="form-control" id="status" name="status">
+										<?php
+											$status = NULL;
+
+											if($output->status[$i] == "ACTIVE"){
+												$status .= '<option value="ACTIVE" selected> ACTIVE </option>';
+											}else{
+												$status .= '<option value="ACTIVE" > ACTIVE </option>';
+											}
+											
+											if($output->status[$i] == "SUSPENDED"){
+												$status .= '<option value="SUSPENDED" selected> SUSPENDED </option>';
+											}else{
+												$status .= '<option value="SUSPENDED" > SUSPENDED </option>';
+											}
+		                                    
+		                                    if($output->status[$i] == "CLOSED"){
+												$status .= '<option value="CLOSED" selected> CLOSED </option>';
+											}else{
+												$status .= '<option value="CLOSED" > CLOSED </option>';
+											}
+		                                    
+		                                    if($output->status[$i] == "PENDING"){
+												$status .= '<option value="PENDING" selected> PENDING </option>';
+											}else{
+												$status .= '<option value="PENDING" > PENDING </option>';
+											}
+		                                    
+		                                    if($output->status[$i] == "ADMIN "){
+												$status .= '<option value="ADMIN " selected> ADMIN  </option>';
+											}else{
+												$status .= '<option value="ADMIN " > ADMIN  </option>';
+											}
+
+											echo $status;
+										?>
+									</select>
+									</label>
+								</div>
+								<div class="form-group">
+									<label for="fullname">Fullname</label>
+									<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->fullname[$i];?>">
+								</div>
+								<div class="form-group">
+									<label>New Messages: </label>
+									<span style="padding-left:20px; font-size: 20;"><?php echo $output->messages[$i];?></span>
+								</div>
+								<div class="form-group">
+									<label>Old Messages: </label>
+									<span style="padding-left:20px; font-size: 20;"><?php echo $output->old_messages[$i];?></span>
+								</div>
+								<div class="form-group">
+									<label for="protocol">Client Protocol</label>
+									<select class="form-control" id="protocol" name="protocol">
+										<?php
+											$protocol = NULL;
+
+											if($output->protocol[$i] == "SIP"){
+		                                        $protocol .= '<option value="SIP" selected> SIP </option>';
+		                                    }else{
+		                                        $protocol .= '<option value="SIP"> SIP </option>';
+		                                    }
+		                                    
+		                                    if($output->protocol[$i] == "Zap"){
+		                                        $protocol .= '<option value="Zap" selected> Zap </option>';
+		                                    }else{
+		                                        $protocol .= '<option value="Zap"> Zap </option>';
+		                                    }
+		                                    
+		                                    if($output->protocol[$i] == "IAX2"){
+		                                        $protocol .= '<option value="IAX2" selected> IAX2 </option>';
+		                                    }else{
+		                                        $protocol .= '<option value="IAX2"> IAX2 </option>';
+		                                    }
+		                                     
+		                                    if($output->protocol[$i] == "EXTERNAL"){
+		                                        $protocol .= '<option value="EXTERNAL" selected> EXTERNAL </option>';
+		                                    }else{
+		                                        $protocol .= '<option value="EXTERNAL"> EXTERNAL </option>';
+		                                    }
+
+											echo $protocol;
+										?>
+									</select>
+								</div>
+
+								<br/>
+
+							</div>
+							
+							<!-- NOTIFICATIONS -->
+		                    <div id="notifications">
+		                        <div class="output-message-success" style="display:none;">
+		                            <div class="alert alert-success alert-dismissible" role="alert">
+		                              <strong>Success!</strong> Phone <?php echo $extenid?> modified !
+		                            </div>
+		                        </div>
+		                        <div class="output-message-error" style="display:none;">
+		                            <div class="alert alert-danger alert-dismissible" role="alert">
+		                              <span id="modifyT_phonesresult"></span>
+		                            </div>
+		                        </div>
+		                    </div>
+
+							<div class="row" style="padding:0px 50px;">
+								<button type="button" class="btn btn-danger delete-phone" id="modifyUSERDeleteButton" data-id="<?php echo $extenid?>" data-name="<?php echo $extenid;?>" href=""><i class="fa fa-times"></i> Delete</button>
+
+								<button type="submit" class="btn btn-primary pull-right" id="modifyUserOkButton" href=""><i class="fa fa-check"></i> Update</button>
+							</div>
+							
+							</form>								
+							
+						</div>
+
+					<?php
+							}
+						}	
+                        
+					?>
                 </section>
 				<!-- /.content -->
             </aside><!-- /.right-side -->
@@ -285,8 +299,35 @@ include('php/goCRMAPISettings.php');
 			
         </div><!-- ./wrapper -->
 
+        <!-- DELETE VALIDATION MODAL -->
+        <div id="delete_validation_modal" class="modal modal-warning fade">
+            <div class="modal-dialog">
+                <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
+                    </div>
+                    <div class="modal-body" style="background:#fff;">
+                        <p>This action cannot be undone.</p>
+                        <p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
+                    </div>
+                    <div class="modal-footer" style="background:#fff;">
+                        <button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DELETE NOTIFICATION MODAL -->
+        <div id="delete_notification" style="display:none;">
+            <?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
+        </div>
+
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
+		
+		<!-- SLIMSCROLL-->
+   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -303,10 +344,9 @@ include('php/goCRMAPISettings.php');
 							$("#modifyphones").serialize(), 
 								function(data){
 									//if message is sent
-									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-									?>				
+									if (data == 1) {
+										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                                        window.setTimeout(function(){location.reload()},2000)			
 									} else {
 									<?php 
 										print $ui->fadingInMessageJS($errorMsg, "modifyT_phonesresult");
@@ -320,22 +360,53 @@ include('php/goCRMAPISettings.php');
 				});
 				
 				/**
-				 * Deletes a telephony list
-				 */
-				 $("#modifyPhonesDeleteButton").click(function (e) {
-					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
-					e.preventDefault();
-					if (r == true) {
-						var exten_id = $(this).attr('href');
-						$.post("./php/DeleteSettingsPhones.php", { extenid: exten_id } ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
-								alert("<?php $lh->translateText("Phone_successfully_deleted"); ?>");
-								window.location = "index.php";
-							}
-							else { alert ("<?php $lh->translateText("unable_delete_phone"); ?>: "+data); }
-						});
-					}
-				 });
+	             * Delete validation modal
+	             */
+	             $(document).on('click','.delete-phone',function() {
+	                
+	                var exten_id = $(this).attr('data-id');
+	                var exten_name = $(this).attr('data-name');
+	                var action = "Phone Extension";
+
+	                $('.id-delete-label').attr("data-id", exten_id);
+	                $('.id-delete-label').attr("data-action", action);
+
+	                $(".delete_extension").text(exten_name);
+	                $(".action_validation").text(action);
+
+	                $('#delete_validation_modal').modal('show');
+	             });
+
+	             $(document).on('click','#delete_yes',function() {
+	                
+	                var id = $(this).attr('data-id');
+	                var action = $(this).attr('data-action');
+
+	                $('#id_span').html(id);
+
+	                    $.ajax({
+	                        url: "./php/DeleteSettingsPhones.php",
+	                        type: 'POST',
+	                        data: { 
+	                            exten_id:id,
+	                        },
+	                        success: function(data) {
+	                        console.log(data);
+	                            if(data == 1){
+	                                $('#result_span').text(data);
+	                                $('#delete_notification').show();
+	                                $('#delete_notification_modal').modal('show');
+	                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
+	                                window.location.replace("./settingsphones.php");
+	                            }else{
+	                                $('#result_span').html(data);
+	                                $('#delete_notification').show();
+	                                $('#delete_notification_modal_fail').modal('show');
+	                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+	                            }
+	                        }
+	                    });
+	             });
 				 
 			});
 		</script>

@@ -1475,7 +1475,10 @@ a:focus {
   width: 100%!important;
 }
 .box-body .fc {
-  margin-top: 5px;
+  /* margin-top: 5px; */
+  background: #512e90;
+  color: #fefeff;
+  padding-top: 10px;
 }
 .box-body .full-width-chart {
   margin: -19px;
@@ -4223,6 +4226,6 @@ Gradient Background colors
 
 .info_sun_boxes{
   /* margin-top: 0px; */
-  padding-top: 28px;
+  padding: 15px 0px;
   height: 17%;
 }

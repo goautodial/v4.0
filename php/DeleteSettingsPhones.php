@@ -1,27 +1,30 @@
 <?php
-
+/*
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);*/
 require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
+//require_once('LanguageHandler.php');
 require_once('goCRMAPISettings.php');
 //require_once('DbHandler.php');
 
-$lh = \creamy\LanguageHandler::getInstance();
+//$lh = \creamy\LanguageHandler::getInstance();
 
 // check required fields
 $validated = 1;
-if (!isset($_POST["extenid"])) {
+if (!isset($_POST["exten_id"])) {
 	$validated = 0;
 }
 
 if ($validated == 1) {
-	$extenid = $_POST["extenid"];
+	$extenid = $_POST["exten_id"];
 	
-    $url = gorul."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
+    $url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goDeletePhone"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["exten_id"] = $extenid; #Desired User ID. (required)
+    $postfields["extension"] = $extenid; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     
     $ch = curl_init();
@@ -37,14 +40,8 @@ if ($validated == 1) {
      
     if ($output->result=="success") {
     # Result was OK!
-		ob_clean();
-		print CRM_DEFAULT_SUCCESS_RESPONSE;
-    } else {
-		ob_clean(); 
-		$lh->translateText("unable_delete_phone");
+		echo 1;
     }
 
-} else {
-	ob_clean(); $lh->translateText("some_fields_missing");
 }
 ?>

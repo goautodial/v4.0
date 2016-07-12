@@ -1,4 +1,5 @@
 
+
 <?php	
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
@@ -12,7 +13,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial</title>
+        <title>Call Times</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -51,6 +52,15 @@
 
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
+
+        <!-- preloader -->
+        <link rel="stylesheet" href="css/customizedLoader.css">
+
+        <script type="text/javascript">
+			$(window).ready(function() {
+				$(".preloader").fadeOut("slow");
+			})
+		</script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -324,11 +334,11 @@
 	</div>
 	<!-- End of modal -->
 	
-	<!-- Modal -->
+	<!-- Modal --
 	<div id="confirmation-delete-modal" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
 
-	    <!-- Modal content-->
+	    <!-- Modal content--
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -342,12 +352,40 @@
 	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
 	      </div>
 	    </div>
-	    <!-- End of modal content -->
+	    <!-- End of modal content --
 	  </div>
 	</div>
 	<!-- End of modal -->
+
+	<!-- DELETE VALIDATION MODAL -->
+        <div id="delete_validation_modal" class="modal modal-warning fade">
+            <div class="modal-dialog">
+                <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
+                    </div>
+                    <div class="modal-body" style="background:#fff;">
+                        <p>This action cannot be undone.</p>
+                        <p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
+                    </div>
+                    <div class="modal-footer" style="background:#fff;">
+                        <button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DELETE NOTIFICATION MODAL -->
+        <div id="delete_notification" style="display:none;">
+            <?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
+        </div>
+
 		<!-- Forms and actions -->
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<!-- SLIMSCROLL-->
+        <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+
 		<script type="text/javascript">
 			$(document).ready(function() {
 				// $('#view-calltime-modal').modal('show');
@@ -413,36 +451,56 @@
 					});
 				});
 				
-				$('.delete-calltime').click(function(){
-					var call_time_id = $(this).attr('data-id');
-					$('.calltime-id-delete-label').text(call_time_id);
-					$('.calltime-id-delete-label').attr( "data-id", call_time_id);
-					$('#confirmation-delete-modal').modal('show');
-				});
+				/**
+                 * Delete validation modal
+                 */
+                 $(document).on('click','.delete-calltime',function() {
+                    
+                    var calltime_id = $(this).attr('data-id');
+                    var calltime_name = $(this).attr('data-name');
+                    var action = "Call Time";
+
+                    $('.id-delete-label').attr("data-id", calltime_id);
+                    $('.id-delete-label').attr("data-action", action);
+
+                    $(".delete_extension").text(calltime_name);
+                    $(".action_validation").text(action);
+
+                    $('#delete_validation_modal').modal('show');
+                 });
+
+                 $(document).on('click','#delete_yes',function() {
+                    
+                    var id = $(this).attr('data-id');
+                    var action = $(this).attr('data-action');
+
+                    $('#id_span').html(id);
+                    	//alert(id);
+                        $.ajax({
+                            url: "./php/DeleteCallTime.php",
+                            type: 'POST',
+                            data: { 
+                                call_time_id:id,
+                            },
+                            success: function(data) {
+                            console.log(data);
+                                if(data == 1){
+                                    $('#result_span').text(data);
+                                    $('#delete_notification').show();
+                                    $('#delete_notification_modal').modal('show');
+                                    //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
+                                    window.setTimeout(function(){location.reload()},1000)
+                                }else{
+                                	$('#result_span').html(data);
+                                    $('#delete_notification').show();
+                                    $('#delete_notification_modal_fail').modal('show');
+                                    window.setTimeout(function(){$('#delete_notification_modal_fail').modal('hide');}, 3000);
+                                }
+                            }
+                        });
+                 });
+
 				
-				$('#delete-calltime-btn').click(function(){
-					var call_time_id = $('.calltime-id-delete-label').attr('data-id');
-					$.ajax({
-						url: "./php/DeleteCalltime.php",
-						type: 'POST',
-						data: { 
-						      call_time_id : call_time_id,
-						},
-						dataType: 'json',
-						success: function(data) {
-							if(data == 1){
-								var table = $('#calltimes').DataTable({
-									"sAjaxSource": ""
-								});
-								alert('Success');
-								$('#confirmation-delete-modal').modal('hide');
-								table.fnDraw();
-							}else{
-								alert('Error');
-							}
-						}
-					});
-				});
 			});
 		</script>
     </body>

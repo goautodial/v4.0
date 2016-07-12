@@ -47,7 +47,7 @@ try {
 //proper user redirects
 if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 	if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
-		header("location: agent.php");
+		header("location: editcustomer.php");
 	}
 }
 
@@ -68,7 +68,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Dashboard</title>
+        <title>Admin Dashboard</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
      
 		<!--<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />-->
@@ -121,6 +121,15 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
 				<!-- =============== APP STYLES ===============-->
 			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+
+		<!-- preloader -->
+        <link rel="stylesheet" href="css/customizedLoader.css">
+
+        <script type="text/javascript">
+			$(window).ready(function() {
+				$(".preloader").fadeOut("slow");
+			})
+		</script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
@@ -408,7 +417,7 @@ $callsperhour = $ui->API_getCallPerHour();
 							</div>
 	                    </div>
 	                	-->
-	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info br">
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info br" style="padding: 20px 0px;">
 	                		<em class="wi wi-day-sunny fa-4x"></em>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">

@@ -473,6 +473,7 @@ body {
   .content-wrapper > .content-heading {
     margin: -20px;
     margin-bottom: 20px;
+    margin-top: 0px;
     padding: 20px;
   }
   .content-wrapper > button,
@@ -6917,8 +6918,10 @@ body .jvectormap-zoomout {
 .bb0 {
   border-bottom-width: 0 !important;
 }
-.br {
-  border-right: 1px solid rgba(0, 0, 0, 0.12);
+@media (min-width: 1200px){
+  .br {
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+  }
 }
 .bl {
   border-left: 1px solid rgba(0, 0, 0, 0.12);

@@ -1,4 +1,3 @@
-
 <?php
 /*
 ini_set('display_errors', 1);
@@ -68,6 +67,14 @@ if (isset($_POST["did"])) {
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 
+        <!-- preloader -->
+        <link rel="stylesheet" href="css/customizedLoader.css">
+
+        <script type="text/javascript">
+			$(window).ready(function() {
+				$(".preloader").fadeOut("slow");
+			})
+		</script>
     </head>
     <style>
     	select{
@@ -722,7 +729,15 @@ if (isset($_POST["did"])) {
 											<div class="tab-pane" id="tab_3">
 												Advance Settings Here
 											</div>
+
+											<div id="modifyIVRresult"></div>
+											<div class="row" style="padding:0px 50px;">
+												<button type="button" class="btn btn-danger" id="modifyDIDDeleteButton" href=""><i class="fa fa-times"></i> Delete</button>
+
+												<button type="submit" class="btn btn-primary pull-right" id="modifyInboundOkButton" href=""><i class="fa fa-check"></i> Save</button>
+											</div>
 										</div>
+
 									<!-- /.tab-content -->
 									</div>
 								</div>

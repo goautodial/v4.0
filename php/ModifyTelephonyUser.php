@@ -72,11 +72,8 @@ if ($validated == 1) {
 
     if ($output->result=="success") {
     # Result was OK!
-        ob_clean();
-		echo "success";
+        echo 1;
     } else {
-    # An error occured
-        ob_clean();
 		echo $output->result;
         //$lh->translateText("unable_modify_user");
     }

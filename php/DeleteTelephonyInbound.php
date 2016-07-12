@@ -1,11 +1,13 @@
 <?php
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require_once('DbHandler.php');
+//require_once('LanguageHandler.php');
+//require_once('DbHandler.php');
 require_once('goCRMAPISettings.php');
 
-$lh = \creamy\LanguageHandler::getInstance();
+//$lh = \creamy\LanguageHandler::getInstance();
 
 $groupid = NULL;
 if (isset($_POST["groupid"])) {
@@ -18,8 +20,8 @@ if (isset($_POST["ivr"])) {
 }
 
 $did = NULL;
-if (isset($_POST["did"])) {
-    $did = $_POST["did"];
+if (isset($_POST["modify_did"])) {
+    $did = $_POST["modify_did"];
 }
 
 // IF INGROUP IS DELETED
@@ -39,7 +41,7 @@ if ($groupid != NULL) {
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_TIMEOUT, 100);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -50,15 +52,15 @@ if ($groupid != NULL) {
      
     if ($output->result=="success") {
     # Result was OK!
-        ob_clean();
-        print CRM_DEFAULT_SUCCESS_RESPONSE;
+        echo 1;
+        //ob_clean();
+        //print CRM_DEFAULT_SUCCESS_RESPONSE;
     } else {
-        ob_clean(); 
-        $lh->translateText("unable_delete_ingroup");
+        echo $output->result;
+        //ob_clean();
+        //$lh->translateText("unable_delete_ingroup");
     }
 
-} else {
-    ob_clean(); $lh->translateText("some_fields_missing");
 }
 
 // IF IVR IS DELETED
@@ -78,7 +80,7 @@ if ($ivr != NULL) {
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_TIMEOUT, 100);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -89,15 +91,15 @@ if ($ivr != NULL) {
      
     if ($output->result=="success") {
     # Result was OK!
-		ob_clean();
-		print CRM_DEFAULT_SUCCESS_RESPONSE;
+        echo 1;
+		//ob_clean();
+		//print CRM_DEFAULT_SUCCESS_RESPONSE;
     } else {
-		ob_clean(); 
-		$lh->translateText("unable_delete_ivr");
+        echo $output->result;
+		//ob_clean(); 
+		//$lh->translateText("unable_delete_ivr");
     }
 
-} else {
-	ob_clean(); $lh->translateText("some_fields_missing");
 }
 
 // IF PHONENUMBER IS DELETED
@@ -117,7 +119,7 @@ if ($did != NULL) {
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_TIMEOUT, 100);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -128,15 +130,15 @@ if ($did != NULL) {
      
     if ($output->result=="success") {
     # Result was OK!
-        ob_clean();
-        print CRM_DEFAULT_SUCCESS_RESPONSE;
+        echo 1;
+       //ob_clean();
+        //print CRM_DEFAULT_SUCCESS_RESPONSE;
     } else {
-        ob_clean(); 
-        $lh->translateText("unable_delete_phonenumber");
+        echo $output->result;
+        //ob_clean(); 
+        //$lh->translateText("unable_delete_phonenumber");
     }
 
-} else {
-    ob_clean(); $lh->translateText("some_fields_missing");
 }
 
 ?>

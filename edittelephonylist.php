@@ -1,4 +1,3 @@
-
 <?php
 
 require_once('./php/CRMDefaults.php');
@@ -48,6 +47,14 @@ if (isset($_POST["listid"])) {
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 
+        <!-- preloader -->
+        <link rel="stylesheet" href="css/customizedLoader.css">
+
+        <script type="text/javascript">
+			$(window).ready(function() {
+				$(".preloader").fadeOut("slow");
+			})
+		</script>
     </head>
     <style>
     	select{
@@ -92,7 +99,7 @@ if (isset($_POST["listid"])) {
 					
 					if(isset($listid)) {
 						
-						$url = "https://encrypted.goautodial.com/goAPI/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
+						$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
 						$postfields["goUser"] = "admin"; #Username goes here. (required)
 						$postfields["goPass"] = "goautodial"; #Password goes here. (required)
 						$postfields["goAction"] = "goGetListInfo"; #action performed by the [[API:Functions]]. (required)
@@ -131,7 +138,7 @@ if (isset($_POST["listid"])) {
 								$desc_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("desc", "desc", "text", $ph, $vl, "tasks", "required"));
 								
 								
-								$url2 = "http://162.254.144.92/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+								$url2 = "http://69.46.6.35/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
 								$postfields2["goUser"] = "goautodial"; #Username goes here. (required)
 								$postfields2["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
 								$postfields2["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)

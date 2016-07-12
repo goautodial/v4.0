@@ -1,13 +1,12 @@
 #livecall {
-	width: 150px;
-	text-align: right;
+	width: 200px;
+	text-align: center;
 }
 #livecall h3 {
-	font-size: 16px;
-	padding-right: 20px;
+	font-size: 22px;
+	/*padding-right: 20px;*/
     margin: 10px 0;
 	font-family: Verdana, sans-serif;
-	text-shadow: 1px 0 0 #222, -1px 0 0 #222, 0 1px 0 #222, 0 -1px 0 #222, 1px 1px #222, -1px -1px 0 #222, 1px -1px 0 #222, -1px 1px 0 #222;
 	cursor: default;
 	-webkit-user-select: none;  /* Chrome all / Safari all */
 	-moz-user-select: none;     /* Firefox all */
@@ -16,17 +15,21 @@
 }
 .livecall {
 	color: #0F0;
+	text-shadow: 1px 0 0 #555, -1px 0 0 #555, 0 1px 0 #555, 0 -1px 0 #555, 1px 1px #555, -1px -1px 0 #555, 1px -1px 0 #555, -1px 1px 0 #555;
 }
 .nolivecall {
 	color: #808080;
 	opacity: 0.7;
 	filter: alpha(opacity=70);
+	text-shadow: 1px 0 0 #555, -1px 0 0 #555, 0 1px 0 #555, 0 -1px 0 #555, 1px 1px #555, -1px -1px 0 #555, 1px -1px 0 #555, -1px 1px 0 #555;
 }
 .deadcall {
-	color: #FF6347;
+	color: #000;
+	text-shadow: 1px 0 0 #888, -1px 0 0 #888, 0 1px 0 #888, 0 -1px 0 #888, 1px 1px #888, -1px -1px 0 #888, 1px -1px 0 #888, -1px 1px 0 #888;
 }
 .callhangup {
 	color: rgb(200, 0, 0);
+	text-shadow: 1px 0 0 #555, -1px 0 0 #555, 0 1px 0 #555, 0 -1px 0 #555, 1px 1px #555, -1px -1px 0 #555, 1px -1px 0 #555, -1px 1px 0 #555;
 }
 .connectedINB {
     border: 1px solid #ccc;
@@ -36,6 +39,8 @@
     margin: 0;
     padding: 3px 0 0 0;
     margin: 0 5px;
+	height: 125px;
+	overflow-y: scroll;
 }
 .connectedINB li {
     cursor: move;
@@ -43,4 +48,24 @@
     margin: 0 3px 3px 3px;
     padding: 3px;
     width: auto;
+}
+.dropdown-menu {
+	min-width: 200px;
+	cursor: pointer;
+	-webkit-user-select: none;  /* Chrome all / Safari all */
+	-moz-user-select: none;     /* Firefox all */
+	-ms-user-select: none;      /* IE 10+ */
+	user-select: none;          /* Likely future */  
+}
+.dropdown-menu li span.fa {
+	vertical-align: middle;
+	margin-top: 2px;
+	margin-right: 3px;
+	padding-right: 0;
+}
+.dropdown-menu > li > a {
+	white-space: normal;
+}
+.modal-dialog {
+	z-index: 1045;
 }

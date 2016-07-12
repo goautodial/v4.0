@@ -7105,7 +7105,7 @@ var View = fc.View = Class.extend({
 			element.addClass('fc-unthemed');
 		}
 
-		content = $("<div class='fc-view-container'/>").prependTo(element);
+		content = $("<div class='fc-view-container' style='background:white;'/>").prependTo(element);
 
 		header = new Header(t, options);
 		headerElement = header.render();

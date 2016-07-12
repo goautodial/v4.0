@@ -11,7 +11,8 @@
 	 */
         require_once('goCRMAPISettings.php');
         
-        $url = "https://gadcs.goautodial.com/goAPI/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
+
+        $url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
         
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
