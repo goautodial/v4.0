@@ -549,7 +549,7 @@ $(document).ready(function() {
                     }
                 }
             } else {
-                //updateButtons();
+                updateButtons();
                 
                 if (DefaultALTDial == 1) {
                     $("#DiaLAltPhonE").prop('checked', true);
