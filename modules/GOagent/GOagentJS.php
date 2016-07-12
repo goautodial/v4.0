@@ -549,7 +549,7 @@ $(document).ready(function() {
                     }
                 }
             } else {
-                updateButtons();
+                //updateButtons();
                 
                 if (DefaultALTDial == 1) {
                     $("#DiaLAltPhonE").prop('checked', true);
@@ -1715,8 +1715,10 @@ function CheckForConfCalls (confnum, force) {
                         {$("#LeadLookUP").prop('checked', true);}
                     else
                         {$("#LeadLookUP").prop('checked', false);}
-                    if (APIdial_array_detail[4] == 'YES')  // focus on vicidial agent screen
-                        {window.focus();   alert("<?=$lh->translationFor('placing_call_to')?>:" + APIdial_array_detail[1] + " " + APIdial_array_detail[0]);}
+                    if (APIdial_array_detail[4] == 'YES') { // focus on vicidial agent screen
+                        window.focus();
+                        alert("<?=$lh->translationFor('placing_call_to')?>:" + APIdial_array_detail[1] + " " + APIdial_array_detail[0]);
+                    }
                     if (APIdial_array_detail[3] == 'YES')  // call preview
                         {NewManualDialCall('PREVIEW');}
                     else
@@ -1765,8 +1767,14 @@ function CheckForConfCalls (confnum, force) {
                     var conv_start = -1;
                     var live_conf_HTML = '<font face="Arial,Helvetica"><b><?=$lh->translationFor('live_calls_in_your_session')?>:</b></font><br /><table width="340px"><tr><td><font class="log_title">#</font></td><td><font class="log_title"><?=$lh->translationFor('remote_channel')?></font></td><td><font class="log_title"><?=$lh->translationFor('hangup')?></font></td></tr>';
                     if ( (LMAcount > live_conf_calls)  || (LMAcount < live_conf_calls) || (LMAforce > 0)) {
-                        LMAe[0]=''; LMAe[1]=''; LMAe[2]=''; LMAe[3]=''; LMAe[4]=''; LMAe[5]=''; 
-                        LMAcount=0;   LMAcontent_change++;
+                        LMAe[0] = '';
+                        LMAe[1] = '';
+                        LMAe[2] = '';
+                        LMAe[3] = '';
+                        LMAe[4] = '';
+                        LMAe[5] = ''; 
+                        LMAcount = 0;
+                        LMAcontent_change++;
                     }
     
                     while (loop_ct < live_conf_calls) {
@@ -1789,8 +1797,8 @@ function CheckForConfCalls (confnum, force) {
                             var hide_channel=1;
                             blind_monitoring_now++;
                             temp_blind_monitors++;
-                            if (blind_monitoring_now==1)
-                                {blind_monitoring_now_trigger=1;}
+                            if (blind_monitoring_now == 1)
+                                {blind_monitoring_now_trigger = 1;}
                         } else {
                             if (channelfieldA.match(regRNnolink)) {
                                 // do not show hangup or volume control links for recording channels
@@ -4883,10 +4891,12 @@ function get_user_info($user_id) {
     $ch = curl_init();
     
     //set the url, number of POST vars, POST data
-    curl_setopt($ch,CURLOPT_URL, $url);
-    curl_setopt($ch,CURLOPT_POST, count($fields));
-    curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, count($fields));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     
     //execute post
     $result = json_decode(curl_exec($ch));
