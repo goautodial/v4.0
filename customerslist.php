@@ -97,31 +97,58 @@
                 <!-- Main content -->
                 <section class="content">
 	                <!-- check permissions -->
+	                <?php 
+                    	$list = $ui->getAllowedList($user->getUserId());
+                    	// print_r($list);
+                    ?>
 	                <?php if ($user->userHasBasicPermission()) { ?>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box box-default">
-                                <div class="box-header">
-									
-                                </div><!-- /.box-header -->
+                        <div class="box box-primary">
+                            <div class="box-header">
 								
-                               <div class="box-body table">	
-									<?php
-										$output = $ui->API_GetLeads();
-										if ($output->result=="success") {
-										# Result was OK!
-											echo $ui->GetContacts();
-										} else {
-										   # An error occured
-											echo $output->result;
-										 }
-									?>
-                                </div><!-- /.box-body -->
-					<?php } ?>
-                            
-                            </div><!-- /.box -->
-                        </div>
-                    </div>
+                            </div><!-- /.box-header -->
+							
+                           <div class="box-body">	
+                           		<form class="form-horizontal clearfix" method="POST" action="searchLeads.php">
+                           			<input type="hidden" name="lists" value="<?php echo $list; ?>">
+                           			<div class="fom-group">
+                           				<label class="control-label col-lg-2">Last Name:</label>
+                           				<div class="col-lg-3">
+                           					<input type="text" class="form-control last-name" name="last_name" required>
+                           				</div>
+                           				<label class="control-label col-lg-2">Phone Number:</label>
+                           				<div class="col-lg-3">
+                           					<input type="text" class="form-control phone-number" name="phone_number">
+                           				</div>
+                           				<div class="col-lg-2">
+                           					<button type="submit" class="btn btn-primary">Search</button>
+                           				</div>
+                           			</div>
+                           		</form>
+                           </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                        <style>
+                        	.letter div{
+                        		padding: 20px;
+                        		margin: 2px;
+                        		border-radius: 8px;
+                        		font-size: 15px;
+                        	}
+                        </style>
+                        <div class="box">
+                           <div class="box-body">	
+                           		<?php $alphabet = range('A', 'Z'); ?>
+                           		<div class="row">
+	                           		<?php foreach($alphabet as $letter){ ?>
+	                           		<a href="#">
+	                           			<div class="col-lg-2 text-center letter">
+		                           			<div class="btn btn-success letter-select" data-letter="<?php echo $letter; ?>" style="width: 100%"><b><?php echo $letter; ?></b></div>
+	                           			</div>
+	                           		</a>
+	                           		<?php } ?>
+                           		</div>
+                           </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                    <?php } ?>
                     <!-- user not authorized -->
 					<?php 
 					if ($user->userHasWritePermission()) { ?>
@@ -152,6 +179,12 @@
 
 	        // load datatable of customer.
             $(document).ready(function() {
+            	$('.letter-select').click(function(e){
+            		e.preventDefault();
+            		var letter = $(this).attr('data-letter');
+            		console.log(letter);
+            	});
+
 			    // uncheck individual customer
 				$('input[type=checkbox]').on("ifChecked", function(e) {
 					if (e.currentTarget.value != 'on') selectedCustomers.push(e.currentTarget.value);

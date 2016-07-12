@@ -33,6 +33,8 @@
  */
 
 // global constants
+define ('BASE_URL', 'http://localhost/CreamCRM');
+
 define ('CRM_INSTALL_VERSION', '1.0');
 define ('CRM_INSTALLED_FILE', 'installed.txt');
 define ('CRM_SKEL_DIRECTORY', 'skel');

@@ -95,11 +95,23 @@
                                 </div><!-- /.box-header -->
                                 <div class="box-body clearfix" id="load_leads">
                                 	<div class="col-lg-12">
+                                	<?php 
+                                		$lists = $ui->API_goGetAllLists();
+                                		// print_r($lists);
+                                		
+                                	?>
 										<form class="form-horizontal" action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data">
 											<div class="form-group">
 												<label class="">List ID:</label>
 												<div>
-													<input type="text" class="form-control" name="list_id">
+													<select class="form-control" name="list_id">
+													<option value="">-- Select List ID --</option>
+														<?php 
+															for($i=0;$i<count($lists->list_id);$i++){
+					                                			echo '<option value="'.$lists->list_id[$i].'">'.$lists->list_id[$i].'</option>';
+					                                		}
+														?>
+													</select>
 												</div>
 											</div>
 											<div class="form-group">
