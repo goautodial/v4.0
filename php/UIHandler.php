@@ -4830,7 +4830,7 @@ error_reporting(E_ERROR | E_PARSE);
        }
 	}
 
-<<<<<<< HEAD
+
 	public function getAllowedList($user_id){
 		$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -4850,7 +4850,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$output = json_decode($data);
 
 		return $output->lists;
-=======
+
 	// get script
 	public function getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, $phone_number, $alt_phone,
 		$address1, $address2, $address3, $city, $province, $state, $postal_code, $country_code){
@@ -4958,7 +4958,6 @@ error_reporting(E_ERROR | E_PARSE);
 			</div>
 		</div>
 		';
->>>>>>> e4c17d403bbe0f3a697085df824b3d3b82c2549c
 	}
 }
 
