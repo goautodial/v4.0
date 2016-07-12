@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial</title>
+        <title>Goautodial Voicefiles</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -27,6 +27,8 @@
         <!-- Wizard Form style -->
         <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 	<!-- Bootstrap Player -->
 	<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
@@ -140,6 +142,9 @@
 	
 		<!-- Forms and actions -->
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<!-- SLIMSCROLL-->
+   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+   		
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('#voicefiles').dataTable();

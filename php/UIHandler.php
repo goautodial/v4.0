@@ -3436,45 +3436,6 @@ error_reporting(E_ERROR | E_PARSE);
 		    </ul>
 		</div>';
 	}
-
-	// API Scripts
-	public function API_goGetAllScripts(){
-		//goGetAllScriptsAPI
-		$url = gourl."/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
-        $postfields["goUser"] = goUser; #Username goes here. (required)
-        $postfields["goPass"] = goPass; #Password goes here. (required)
-        $postfields["goAction"] = "getAllScripts"; #action performed by the [[API:Functions]]. (required)
-        $postfields["responsetype"] = responsetype; #json. (required)
-
-         $ch = curl_init();
-         curl_setopt($ch, CURLOPT_URL, $url);
-         curl_setopt($ch, CURLOPT_POST, 1);
-         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-         $data = curl_exec($ch);
-         curl_close($ch);
-         $output = json_decode($data);
-		 
-		 return $output;
-		
-		/*
-        if ($output->result=="success") {
-           # Result was OK!
-                        for($i=0;$i<count($output->script_id);$i++){
-                                echo $output->script_id[$i]."</br>";
-                                echo $output->f[$i]."</br>";
-                                echo $output->active[$i]."</br>";
-                                echo $output->user_group[$i]."</br>";
-                                echo "</br>";
-                        }
-
-         } else {
-           # An error occured
-                echo $output->result;
-        }
-        */
-	}
 	
 	/** Getting Circle Buttons */
 
@@ -3619,13 +3580,12 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function getListAllMusicOnHold($goUser, $goPass, $goAction, $responsetype){
-	    $url = gourl."/goMusicOnHold/goAPI.php"; #URL to GoAutoDial API. (required)
+	public function API_goGetAllMusicOnHold(){
+		$url = gourl."/goMusicOnHold/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetAllMusicOnHold"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
-
 		  
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
@@ -3637,15 +3597,41 @@ error_reporting(E_ERROR | E_PARSE);
 	    $data = curl_exec($ch);
 	    curl_close($ch);
 	    $output = json_decode($data);
-	    
+
 	    if ($output->result=="success") {
+	    	return $output;
+	    } else {
+		# An error occured
+			return $output->result;
+	    }
+	}
+
+	public function getListAllMusicOnHold($goUser, $goPass, $goAction, $responsetype){
+	    $output = $this->API_goGetAllMusicOnHold();
+
 	    # Result was OK!
 	    $columns = array("MOH Name", "Status", "Random Order", "Group", "Actions");
-	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold", "table-bordered table-striped", true, false); 
+	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold_table", "table-bordered table-striped", true, false); 
 
 	    for($i=0;$i<count($output->moh_id);$i++){
-			$action = $this->getUserActionMenuForMusicOnHold($output->moh_id[$i]);
+			$action = $this->getUserActionMenuForMusicOnHold($output->moh_id[$i], $output->moh_name[$i]);
 			
+			if($output->active[$i] == "Y"){
+				$output->active[$i] = "Active";
+			}else{
+				$output->active[$i] = "Inactive";
+			}
+
+			if($output->random[$i] == "Y"){
+				$output->random[$i] = "YES";
+			}else{
+				$output->random[$i] = "NO";
+			}
+
+			if($output->user_group[$i] == "---ALL---"){
+				$output->user_group[$i] = "ALL USER GROUPS";
+			}
+
 			$result .= "<tr>
 				<td>".$output->moh_name[$i]."</td>
 				<td>".$output->active[$i]."</td>
@@ -3655,13 +3641,9 @@ error_reporting(E_ERROR | E_PARSE);
 				</tr>";
 	    }
 		return $result;
-	    } else {
-		# An error occured
-		return $output->result;
-	    }
 	}
 	
-	private function getUserActionMenuForMusicOnHold($id) {
+	private function getUserActionMenuForMusicOnHold($id, $name) {
 		
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3671,7 +3653,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="edit-moh" href="#" data-id="'.$id.'">Edit Music On Hold</a></li>
-			<li><a class="delete-moh" href="#" data-id="'.$id.'">Delete Music On Hold</a></li>
+			<li><a class="delete-moh" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Music On Hold</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3741,6 +3723,7 @@ error_reporting(E_ERROR | E_PARSE);
 		</div>';
 	}
 	
+
 	/** Scripts API - Get all list of scripts */
 	/**
 	 * @param goUser 
@@ -3748,32 +3731,40 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function getListAllScripts($goUser, $goPass, $goAction, $responsetype){
-	    $url = gourl."/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
-	    $postfields["goUser"] = goUser; #Username goes here. (required)
-	    $postfields["goPass"] = goPass; #Password goes here. (required)
-	    $postfields["goAction"] = "getAllScripts"; #action performed by the [[API:Functions]]. (required)
-	    $postfields["responsetype"] = responsetype; #json. (required)
 
-		  
-	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $url);
-	    // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-	    curl_setopt($ch, CURLOPT_POST, 1);
-	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	    $data = curl_exec($ch);
-	    curl_close($ch);
-	    $output = json_decode($data);
+	// API Scripts
+	public function API_goGetAllScripts(){
+		//goGetAllScriptsAPI
+		$url = gourl."/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = goUser; #Username goes here. (required)
+        $postfields["goPass"] = goPass; #Password goes here. (required)
+        $postfields["goAction"] = "getAllScripts"; #action performed by the [[API:Functions]]. (required)
+        $postfields["responsetype"] = responsetype; #json. (required)
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+		 
+		 return $output;
+
+	}
+
+	public function getListAllScripts($goUser, $goPass, $goAction, $responsetype){
+	    $output = $this->API_goGetAllScripts();
 
 	    if ($output->result=="success") {
 	    # Result was OK!
 	    $columns = array("Script ID", "Script Name", "Status", "Type", "User Group", "Actions");
-		    $result = $this->generateTableHeaderWithItems($columns, "scripts", "table-bordered table-striped", true, false); 
+		    $result = $this->generateTableHeaderWithItems($columns, "scripts_table", "table-bordered table-striped", true, false); 
 
 	    for($i=0;$i<count($output->script_id);$i++){
-		$action = $this->getUserActionMenuForScripts($output->script_id[$i]);
+		$action = $this->getUserActionMenuForScripts($output->script_id[$i], $output->script_name[$i]);
 		
 		if($output->active[$i] == "Y"){
 		    $active = "Active";
@@ -3797,7 +3788,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 	
-	private function getUserActionMenuForScripts($id) {
+	private function getUserActionMenuForScripts($id, $name) {
 		
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3807,7 +3798,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="edit_script" href="#" data-id="'.$id.'">Edit Script</a></li>
-			<li><a class="delete_script" href="#" data-id="'.$id.'">Delete Script</a></li>
+			<li><a class="delete_script" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Script</a></li>
 		    </ul>
 		</div>';
 	}
