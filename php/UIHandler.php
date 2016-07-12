@@ -4850,6 +4850,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$output = json_decode($data);
 
 		return $output->lists;
+	}
 
 	// get script
 	public function getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, $phone_number, $alt_phone,
