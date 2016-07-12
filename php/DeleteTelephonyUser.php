@@ -1,11 +1,8 @@
 <?php
 
 require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require_once('DbHandler.php');
 require_once('goCRMAPISettings.php');
 
-$lh = \creamy\LanguageHandler::getInstance();
 
 // check required fields
 $validated = 1;
@@ -37,7 +34,7 @@ if ($validated == 1) {
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goDeleteUser"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["user"] = "$userid"; #Desired User ID. (required)
+    $postfields["user_id"] = "$userid"; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     
     $ch = curl_init();
@@ -50,17 +47,15 @@ if ($validated == 1) {
     $data = curl_exec($ch);
     curl_close($ch);
     $output = json_decode($data);
-     
+    
+    //var_dump($output);
+
     if ($output->result=="success") {
     # Result was OK!
-		ob_clean();
-		print CRM_DEFAULT_SUCCESS_RESPONSE;
+		echo 1;
     } else {
-		ob_clean(); 
-		$lh->translateText("unable_delete_user");
+		echo $output->result;
     }
 
-} else {
-	ob_clean(); $lh->translateText("some_fields_missing");
 }
 ?>

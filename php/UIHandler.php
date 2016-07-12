@@ -1090,7 +1090,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>';
 	}
 	//telephony menu for users
-	private function getUserActionMenuForT_User($userid, $role) {
+	private function getUserActionMenuForT_User($userid, $role, $name) {
 		
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -1101,7 +1101,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                <ul class="dropdown-menu" role="menu">
 	                    <li><a class="edit-T_user" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("Modify User").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-T_user" href="#" data-id="'.$userid.'">'.$this->lh->translationFor("Delete User").'</a></li>
+	                    <li><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("Delete User").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -2952,7 +2952,7 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = "Inactive";
 				 }
 			   
-	       	   $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_group[$i]); 
+	       	   $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i]); 
 	       	        
 		        $result .= "<tr>
 	                     <td class='hide-on-low'>".$output->userno[$i]."</td>
@@ -2975,7 +2975,6 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 	
 	// API to get usergroups
-
 	public function API_goGetUserGroupsList() {
 		$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -3010,8 +3009,66 @@ error_reporting(E_ERROR | E_PARSE);
         }
 		*/
 	}
+	//USERGROUPS LIST
+	public function goGetUserGroupsList() {		
+		$output = $this->API_goGetUserGroupsList();
+		
+		if ($output->result=="success") {
+		# Result was OK!
+		
+		$columns = array("User Group", "Group Name", "Type", "Forced Timeclock", "Action");
+	    $hideOnMedium = array("Type", "Forced Timeclock");
+	    $hideOnLow = array("Type", "Forced Timeclock");
+		$result = $this->generateTableHeaderWithItems($columns, "usergroups_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		
+		
+			for($i=0;$i < count($output->user_group);$i++){
+				
+				if($output->forced_timeclock_login[$i] == "Y"){
+					$output->forced_timeclock_login[$i] = "YES";
+				}else{
+					$output->forced_timeclock_login[$i] = "NO";
+				}
+
+				$action = $this->ActionMenuForUserGroups($output->user_group[$i], $output->group_name[$i]);
+				
+				$result = $result."<tr>
+	                    <td>".$output->user_group[$i]."</td>
+	                    <td><a class=''>".$output->group_name[$i]."</a></td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->group_type[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->forced_timeclock_login[$i]."</td>
+	                    <td>".$action."</td>
+	                </tr>";
+				
+			}
+			
+			return $result; 
+			
+		} else {		
+		# An error occured		
+			return $this->calloutWarningMessage($this->lh->translationFor("No Entry in Database"));
+		}
+
+	}
+	private function ActionMenuForUserGroups($id, $name) {
+		
+	   return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="edit-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">Edit User Group</a></li>
+			<li class="divider"></li>
+			<li><a class="delete-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete User Group</a></li>
+		    </ul>
+		</div>';
+	}
+
+
 	/**
-     * Returns a HTML representation of the wizard form for Telephony Users
+     * Returns a HTML representation of the wizard form for Telephony Lists
      * 
      */
 	
@@ -3174,7 +3231,7 @@ error_reporting(E_ERROR | E_PARSE);
 	*/
 	// Settings > Admin Logs
 	public function API_goGetAdminLogsList(){
-		$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goAdminLogs/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAdminLogsList"; #action performed by the [[API:Functions]]. (required)
@@ -3190,8 +3247,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$data = curl_exec($ch);
 		curl_close($ch);		
 		$output = json_decode($data);
-		
-		return $output;
+		var_dump($output);
+		//return $output;
 	}
 
 	public function getAdminLogsList() {
@@ -3200,58 +3257,35 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 		
-		$columns = array("Exten", "Protocol", "Server", "Dial Plan", "Status", "Name", "VMail", "Group", "Action");
+		$columns = array("User", "IP Address", "Date & Time", "Event", "Details", "Action");
 	    //$hideOnMedium = array("call_time_id","queue_priority", "active");
 	   // $hideOnLow = array("call_time_id","queue_priority", "active");
-		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false);
+		$result = $this->generateTableHeaderWithItems($columns, "adminlogs_table", "table-bordered table-striped", true, false);
 		
-			for($i=0;$i < count($output->extension);$i++){
+			for($i=0;$i < count($output->admin_log_id);$i++){
 				
-				/*echo $output->extension[$i]."</br>";
-				echo $output->protocol[$i]."</br>";
-				echo $output->server_ip[$i]."</br>";
-				echo $output->dialplan_number[$i]."</br>";
-				echo $output->active[$i]."</br>";
-				echo $output->fullname[$i]."</br>";
-				echo $output->messages[$i]."</br>";
-				echo $output->old_messages[$i]."</br>";
-				echo $output->user_group[$i]."<brd>";*/
-				
-				// if no entry in inbound
-				if (empty($output->extension[$i])) {
-					return $this->calloutWarningMessage($this->lh->translationFor("no_entry_in_phones"));
-				}
-				
-				if($output->active[$i] == "Y"){
-					$output->active[$i] = "Active";
-				}else{
-					$output->active[$i] = "Inactive";
-				}
-				
-				$action = $this->getUserActionMenuForPhones($output->extension[$i]);
+				$action = $this->ActionMenuForAdminLogs($output->admin_log_id[$i]);
 				
 				$result = $result."<tr>
-	                    <td>".$output->extension[$i]."</td>
-	                    <td><a class=''>".$output->protocol[$i]."</a></td>
-						<td>".$output->server_ip[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->dialplan_number[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
+	                    <td>".$output->user[$i]."</td>
+	                    <td><a class=''>".$output->ip_address[$i]."</a></td>
+						<td>".$output->event_date[$i]."</td>";
+					/*
+	                    <td class='hide-on-medium hide-on-low'>".$output->[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->fullname[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>
 						<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
 	                    <td>".$action."</td>
 	                </tr>";
-				
+					*/
 			}
 			
 			return $result; 
 			
 		} else {		
-		# An error occured		
-			return $this->calloutErrorMessage($this->lh->translationFor("Unable to get Phone List"));
+			return $output->result;
 		}
-	       // print suffix
-	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	}
 
 	// Settings > Phone
@@ -3288,17 +3322,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false);
 		
 			for($i=0;$i < count($output->extension);$i++){
-				
-				/*echo $output->extension[$i]."</br>";
-				echo $output->protocol[$i]."</br>";
-				echo $output->server_ip[$i]."</br>";
-				echo $output->dialplan_number[$i]."</br>";
-				echo $output->active[$i]."</br>";
-				echo $output->fullname[$i]."</br>";
-				echo $output->messages[$i]."</br>";
-				echo $output->old_messages[$i]."</br>";
-				echo $output->user_group[$i]."<brd>";*/
-
 				
 				if($output->active[$i] == "Y"){
 					$output->active[$i] = "Active";
@@ -3350,7 +3373,9 @@ error_reporting(E_ERROR | E_PARSE);
          $data = curl_exec($ch);
          curl_close($ch);
          $output = json_decode($data);
-		 return $output;
+		
+		//var_dump($output);
+		return $output;
 	
 	}
 	
@@ -3362,8 +3387,8 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		$columns = array("Voicemail ID", "Name", "Status", "New Messages", "Old Messages", "Delete", "User Group", "Action");
 	    //$hideOnMedium = array("call_time_id","queue_priority", "active");
-	   // $hideOnLow = array("call_time_id","queue_priority", "active");
-		$result = $this->generateTableHeaderWithItems($columns, "T_voicemails", "table-bordered table-striped", true, false);
+	    //$hideOnLow = array("call_time_id","queue_priority", "active");
+		$result = $this->generateTableHeaderWithItems($columns, "voicemails_table", "table-bordered table-striped", true, false);
 		
 			for($i=0;$i < count($output->voicemail_id);$i++){
 
@@ -3373,15 +3398,14 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = "Inactive";
 				}
 				
-				$action = $this->ActionMenuForVoicemail($output->voicemail_id[$i]);
+				$action = $this->ActionMenuForVoicemail($output->voicemail_id[$i], $output->fullname[$i]);
 				
 				$result = $result."<tr>
 	                    <td>".$output->voicemail_id[$i]."</td>
 	                    <td><a class=''>".$output->fullname[$i]."</a></td>
-						<td>".$output->server_ip[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
+						<td>".$output->active[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->messages[$i]."</td>
-						<td class='hide-on-medium hide-on-low'>".$output->old_messages[$i]."</td>
+	                    <td class='hide-on-medium hide-on-low'>".$output->old_messages[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->delete_vm_after_email[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
 	                    <td>".$action."</td>
@@ -3391,13 +3415,13 @@ error_reporting(E_ERROR | E_PARSE);
 			
 			return $result; 
 			
-		} else {		
-		# An error occured		
-			return $this->calloutErrorMessage($this->lh->translationFor("unable_get_voicemail"));
+		}else{
+			// if no entry in voicemails
+			return $this->calloutWarningMessage($this->lh->translationFor("No Entry in Database"));
 		}
 	}
 
-	private function ActionMenuForVoicemail($id) {
+	private function ActionMenuForVoicemail($id, $name) {
 		
 	   return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3406,10 +3430,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="view-voicemail" href="#" data-id="'.$id.'">View Info</a></li>
-			<li><a class="edit-voicemail" href="#" data-id="'.$id.'">Edit Voicemail</a></li>
+			<li><a class="edit-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">Edit Voicemail</a></li>
 			<li class="divider"></li>
-			<li><a class="delete-voicemail" href="#" data-id="'.$id.'">Delete Voicemail</a></li>
+			<li><a class="delete-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Voicemail</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3820,7 +3843,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
 
 	        for($i=0;$i<count($output->call_time_id);$i++){
-		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i]);
+		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i], $output->call_time_name[$i]);
                     $result .= "<tr>
 	                    <td>".$output->call_time_id[$i]."</td>
 	                    <td>".$output->call_time_name[$i]."</td>
@@ -3839,7 +3862,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 	
-	private function getUserActionMenuForCalltimes($id) {
+	private function getUserActionMenuForCalltimes($id, $name) {
 		
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3848,8 +3871,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-calltime" href="#" data-id="'.$id.'">Edit Call Time</a></li>
-			<li><a class="delete-calltime" href="#" data-id="'.$id.'">Delete Call Time</a></li>
+			<li><a class="edit-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">Edit Call Time</a></li>
+			<li><a class="delete-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Call Time</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4864,39 +4887,34 @@ error_reporting(E_ERROR | E_PARSE);
 
 	public function deleteNotificationModal($action, $id, $result){
 		//var_dump($id);
+		return '
+		<div id="delete_notification_modal" class="modal modal-success fade">
+        	<div class="modal-dialog">
+	            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+					<div class="modal-header">
+						<h4 class="modal-title">Successfully Deleted '.$action.' !</h4>
+					</div>
+					<div class="modal-body" style="background:#fff;">
+						You have successfully deleted <b>'.$id.'</b>. 
+					</div>
+				</div>
+			</div>
+		</div>
 		
-		if($result != ''){
-			return '
-			<div id="delete_notification_modal" class="modal modal-success fade">
-	        	<div class="modal-dialog">
-		            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-						<div class="modal-header">
-							<h4 class="modal-title">Successfully Deleted '.$action.' !</h4>
-						</div>
-						<div class="modal-body" style="background:#fff;">
-							You have successfully deleted '.$action.': <b>'.$id.'</b>. 
-						</div>
+		<div id="delete_notification_modal_fail" class="modal modal-danger fade">
+        	<div class="modal-dialog">
+	            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+					<div class="modal-header">
+						<h4 class="modal-title">Failed to Delete '.$action.' !</h4>
+					</div>
+					<div class="modal-body" style="background:#fff;">
+						<p>'.$result.'<br/><br/>
+						Please Try again. </p>
 					</div>
 				</div>
 			</div>
-			';
-		}else{
-			return '
-			<div id="delete_notification_modal" class="modal modal-danger fade">
-	        	<div class="modal-dialog">
-		            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-						<div class="modal-header">
-							<h4 class="modal-title">Failed to Delete '.$action.' !</h4>
-						</div>
-						<div class="modal-body" style="background:#fff;">
-							A problem occured while deleting '.$action.': <b>'.$id.'</b>.<br/>
-							Please Try again. 
-						</div>
-					</div>
-				</div>
-			</div>
-			';
-		}
+		</div>
+		';
 	}
 }
 

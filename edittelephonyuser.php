@@ -94,7 +94,7 @@ if(isset($_POST["role"])){
                 </section>
 
                 <?php
-                	if($userrole == "ADMIN"){
+                	if($userrole == "9"){
 					echo "<br/><br/>";
 					print $ui->getUnauthotizedAccessMessage();
 
@@ -102,7 +102,7 @@ if(isset($_POST["role"])){
                 ?>
 
                 <!-- Main content -->
-                <section class="content" style="padding:30px; padding-left:100px; padding-right:100px; margin-left: 0; margin-right: 0;">
+                <section class="content" style="padding:30px; padding-left:10%; padding-right:10%; margin-left: 0; margin-right: 0;">
 					<!-- standard custom edition form -->
 					<?php
 					$userobj = NULL;
@@ -134,143 +134,13 @@ if(isset($_POST["role"])){
 						curl_close($ch);
 						$output = json_decode($data);
 						
+						//var_dump($output);
 						// print_r($data);
 						
 						if ($output->result=="success") {
 						# Result was OK!
 							for($i=0;$i<count($output->userno);$i++){
-					/*			
-								$hidden_f = $ui->hiddenFormField("modifyid", $userid);
-								
-								$id_f = '<h4>Agent ID : <b>'.$userid.'</b></h4>';
-								
-								// name
-								// $name_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("name", "name", "text", $lh->translationFor("name"), $userobj["name"], "user", true));
-								//$name_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("name", "name", "text", $lh->translationFor("name"), $output->full_name[$i], "user", true));
-								
-								$name_l = '<h4>Full Name</h4>';
-								$ph = $lh->translationFor("Full Name").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->full_name[$i]) ? $output->full_name[$i] : null;
-								$name_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("name", "name", "text", $ph, $vl, "user", "required"));
-								
-								
-								$usergroup_l = '<h4>User Group</h4>';
-								$usergroup_f = '<select class="form-control" id="usergroup" name="usergroup">';
-												
-									if($output->user_group[$i] == "ADMIN"){
-										$usergroup_f .= '<option value="ADMINISTRATORS" selected>GOAUTODIAL ADMINISTRATORS</option>';
-									}else{
-										$usergroup_f .= '<option value="ADMINISTRATORS" >GOAUTODIAL ADMINISTRATORS</option>';
-									}
-									
-									if($output->user_group[$i] == "AGENTS"){
-										$usergroup_f .= '<option value="AGENTS" selected>GOAUTODIAL AGENTS</option>';
-									}else{
-										$usergroup_f .= '<option value="AGENTS" >GOAUTODIAL AGENTS</option>';
-									}
-									
-									if($output->user_group[$i] == "SUPERVISOR"){
-										$usergroup_f .= '<option value="SUPERVISOR" selected>SUPERVISOR</option>';
-									}else{
-										$usergroup_f .= '<option value="SUPERVISOR" >SUPERVISOR</option>';
-									}
-									
-								$usergroup_f .= '</select>';
-								
-								
-								$status_l = '<h4>Active</h4>';
-								$status_f = '<select class="form-control" id="status" name="status">';
-												
-									if($output->active[$i] == "Y"){
-										$status_f .= '<option value="Y" selected> YES </option>';
-									}else{
-										$status_f .= '<option value="Y" > YES </option>';
-									}
-									
-									if($output->active[$i] == "N"){
-										$status_f .= '<option value="N" selected> NO </option>';
-									}else{
-										$status_f .= '<option value="N" > NO </option>';
-									}
-									
-								$status_f .= '</select>';
-								
-								
-								$userlevel_l = '<h4>User Level</h4>';
-								$userlevel_f = '<select class="form-control" id="userlevel" name="userlevel">';
-								
-										if($output->user_level[$i] == "1"){
-											$userlevel_f .= '<option value="1" selected> 1 </option>';
-										}else{
-											$userlevel_f .= '<option value="1" > 1 </option>';
-										}
-										if($output->user_level[$i] == "2"){
-											$userlevel_f .= '<option value="2" selected> 2 </option>';
-										}else{
-											$userlevel_f .= '<option value="2" > 2 </option>';
-										}
-										if($output->user_level[$i] == "3"){
-											$userlevel_f .= '<option value="3" selected> 3 </option>';
-										}else{
-											$userlevel_f .= '<option value="3" > 3 </option>';
-										}
-										if($output->user_level[$i] == "4"){
-											$userlevel_f .= '<option value="4" selected> 4 </option>';
-										}else{
-											$userlevel_f .= '<option value="4" > 4 </option>';
-										}
-										if($output->user_level[$i] == "5"){
-											$userlevel_f .= '<option value="5" selected> 5 </option>';
-										}else{
-											$userlevel_f .= '<option value="5" > 5 </option>';
-										}
-										if($output->user_level[$i] == "6"){
-											$userlevel_f .= '<option value="6" selected> 6 </option>';
-										}else{
-											$userlevel_f .= '<option value="6" > 6 </option>';
-										}
-										if($output->user_level[$i] == "7"){
-											$userlevel_f .= '<option value="7" selected> 7 </option>';
-										}else{
-											$userlevel_f .= '<option value="7" > 7 </option>';
-										}
-										if($output->user_level[$i] == "8"){
-											$userlevel_f .= '<option value="8" selected> 8 </option>';
-										}else{
-											$userlevel_f .= '<option value="8" > 8 </option>';
-										}
-										if($output->user_level[$i] == "9"){
-											$userlevel_f .= '<option value="9" selected> 9 </option>';
-										}else{
-											$userlevel_f .= '<option value="9" > 9 </option>';
-										}
-											
-								$userlevel_f .= '</select>';
-								
-								// buttons at bottom (only for writing+ permissions)
-								$buttons = "";
-								if ($user->userHasWritePermission()) {
-									$buttons = $ui->buttonWithLink("modifyT_userDeleteButton", $userid, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
-									$buttons .= $ui->buttonWithLink("modifyCustomerOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
-									$buttons = $ui->singleFormGroupWrapper($buttons);
-								}
-		
-								// generate the form
-								$fields = $hidden_f.$id_f.$name_l.$name_f.$usergroup_l.$usergroup_f.$status_l.$status_f.$userlevel_l.$userlevel_f;
-								
-								// generate form: header
-								$form = $ui->formWithCustomFooterButtons("modifyuser", $fields, $buttons, "modifyT_userresult");
-								
-								// generate and show the box
-								//$box = $ui->boxWithForm("modifyuser", , $fields, $lh->translationFor("edit_user"));
-								//print $box;
-								
-								// generate box
-								$boxTitle = $lh->translationFor("insert_new_data");
-								$formBox = $ui->boxWithContent($boxTitle, $form);
-								// print our modifying customer box.
-								print $formBox;
-						*/
+					
 						?>
 
 							<div role="tabpanel" class="panel panel-transparent" style="box-shadow: 5px 5px 8px #888888;">

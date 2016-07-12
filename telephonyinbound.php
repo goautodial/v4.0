@@ -928,9 +928,10 @@
     	<div class="modal-dialog">
             <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
 				<div class="modal-header">
-					<h4 class="modal-title">Confirm Deletion of <span class="action_validation"></span> ?</h4>
+					<h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
 				</div>
 				<div class="modal-body" style="background:#fff;">
+					<p>This action cannot be undone.</p>
 					<p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
 				</div>
 				<div class="modal-footer" style="background:#fff;">
@@ -1314,9 +1315,9 @@
 								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
 									//window.setTimeout(function(){location.reload()},3000)
 								}else{
-									$('#result_span').html(failed);
-									$('#delete_notification').show();
-								 	$('#delete_notification_modal').modal('show');
+									$('#result_span').html(data);
+                                    $('#delete_notification').show();
+                                    $('#delete_notification_modal_fail').modal('show');
 								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 4000);
 								}
 							}
@@ -1339,9 +1340,9 @@
 								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
 									//window.setTimeout(function(){location.reload()},3000)
 								}else{
-									$('#result_span').html(failed);
-									$('#delete_notification').show();
-								 	$('#delete_notification_modal').modal('show');
+									$('#result_span').html(data);
+                                    $('#delete_notification').show();
+                                    $('#delete_notification_modal_fail').modal('show');
 								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 4000);
 								}
 							}
@@ -1368,9 +1369,9 @@
 								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
 									//window.setTimeout(function(){location.reload()},3000)
 								}else{
-									$('#result_span').html(failed);
-									$('#delete_notification').show();
-								 	$('#delete_notification_modal').modal('show');
+									$('#result_span').html(data);
+                                    $('#delete_notification').show();
+                                    $('#delete_notification_modal_fail').modal('show');
 								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 4000);
 								}
 							}
