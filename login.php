@@ -29,6 +29,12 @@
 	if (!file_exists(CRM_INSTALLED_FILE)) { // check if already installed 
 		header("location: ./install.php");
 	}
+	
+	// force https protocol
+	if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on") {
+		header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+		exit();
+	}
 
 	// load DB handler and Language Handler.	
 	require_once('./php/DbHandler.php');

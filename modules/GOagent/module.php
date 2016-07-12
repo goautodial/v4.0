@@ -146,6 +146,11 @@ class GOagent extends Module {
 		//$webProtocol = (preg_match("/Windows/", $_SERVER['HTTP_USER_AGENT'])) ? "wss" : "ws";
 		$webProtocol = (strlen($_SERVER['HTTPS']) > 0) ? "wss" : "ws";
 		
+		$this->goDB->where('setting', 'GO_agent_use_wss');
+		$rslt = $this->goDB->getOne('settings', 'value');
+		$useWebRTC = (strlen($rslt['value']) > 0) ? $rslt['value'] : 0;
+		$_SESSION['use_webrtc'] = $useWebRTC;
+		
 		$this->goDB->where('setting', 'GO_agent_wss');
 		$rslt = $this->goDB->getOne('settings', 'value');
 		$websocketURL = (strlen($rslt['value']) > 0) ? $rslt['value'] : "webrtc.goautodial.com";
@@ -156,7 +161,14 @@ class GOagent extends Module {
 		
 		$this->goDB->where('setting', 'GO_agent_wss_sip');
 		$rslt = $this->goDB->getOne('settings', 'value');
-		$websocketSIP = (strlen($rslt['value']) > 0) ? "{$rslt['value']}'" : "'+server_ip";
+		$websocketSIP = (strlen($rslt['value']) > 0) ? "{$rslt['value']}" : "'+server_ip";
+		
+		$this->goDB->where('setting', 'GO_agent_wss_sip_port');
+		$rslt = $this->goDB->getOne('settings', 'value');
+		$websocketSIPPort = "";
+		if (!preg_match("/server_ip/", $websocketSIP)) {
+			$websocketSIPPort = (strlen($rslt['value']) > 0 && $rslt['value'] > 0) ? ":{$rslt['value']}'" : "'";
+		}
 		
 		$labels = $this->getLabels()->labels;
 		$disable_alter_custphone = $this->getLabels()->disable_alter_custphone;
@@ -286,11 +298,9 @@ class GOagent extends Module {
 					
 					var configuration = {
 						'ws_servers': '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
-						'uri': 'sip:'+phone_login+'@{$websocketSIP},
+						'uri': 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 						'password': phone_pass,
 						'session_timers': false,
-						'connection_recovery_max_interval': 30,
-						'connection_recovery_min_interval': 2
 					};
 					
 					var rtcninja = JsSIP.rtcninja;
@@ -526,7 +536,7 @@ class GOagent extends Module {
 									<p class="text-center hidden" style="padding-top: 5px;"><input type='checkbox' name='closerSelectBlended' id='closerSelectBlended' value='closer' /> $blendedCalling ($outboundActivated)</p>
 									<br />
 									<p id="selectionNote" class="small text-center hidden" style="margin-bottom: 0px;"><b>$note</b>: $selectByDragging</p>
-									<div style="text-align: center;">Use WebRTC: <input type="checkbox" name="use_webrtc" value="1" checked disabled /></div>
+									<div class="hidden" style="text-align: center;">Use WebRTC: <input type="checkbox" name="use_webrtc" value="1" checked disabled /></div>
 								</div>
 								<div class="modal-footer">
 									<button id="scButton" class="btn btn-link bold hidden">$selectAll</button>
@@ -602,12 +612,16 @@ EOF;
 	public function moduleSettings() {
 		$options = array('', 'asterisk', 'kamailio');
 		$moduleSettings = array(
+			"GO_agent_use_wss_info" => CRM_SETTING_TYPE_LABEL,
+			"GO_agent_use_wss" => CRM_SETTING_TYPE_BOOL,
 			"GO_agent_wss" => CRM_SETTING_TYPE_STRING,
 			"GO_agent_wss_info" => CRM_SETTING_TYPE_LABEL,
 			"GO_agent_wss_port" => CRM_SETTING_TYPE_INT,
 			"GO_agent_wss_port_info" => CRM_SETTING_TYPE_LABEL,
 			"GO_agent_wss_sip" => CRM_SETTING_TYPE_STRING,
 			"GO_agent_wss_sip_info" => CRM_SETTING_TYPE_LABEL,
+			"GO_agent_wss_sip_port" => CRM_SETTING_TYPE_INT,
+			"GO_agent_wss_sip_port_info" => CRM_SETTING_TYPE_LABEL,
 			"GO_agent_sip_server" => array(
 				"type" => CRM_SETTING_TYPE_SELECT,
 				"options" => $options

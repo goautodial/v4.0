@@ -11,6 +11,7 @@
 	 */
 
 	require_once('goCRMAPISettings.php');
+	require_once('CRMDefaults.php');
 	// print_r($_FILES['file_upload']);die();
     $url = gourl."/goUploadLeads/goAPI.php"; #URL to GoAutoDial API. (required)
     
@@ -36,7 +37,8 @@
     
     $output = json_decode($data);
 
-    $home = "http://localhost/CreamCrm/loadleads.php";
+    $home = BASE_URL."/loadleads.php";
+   
     if ($output->result == "success") {
     	// echo "Success";
     	header("Location: ".$home."?message=Success");

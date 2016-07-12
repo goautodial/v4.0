@@ -1,6 +1,7 @@
 <?php
 namespace creamy;
 
+define('GO_AGENT_DIRECTORY', str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(__FILE__)));
 define('GO_BASE_DIRECTORY', dirname(dirname(dirname(__FILE__))));
 define('GO_LANG_DIRECTORY', dirname(__FILE__) . '/lang/');
 require_once(GO_BASE_DIRECTORY.'/php/CRMDefaults.php');
@@ -53,6 +54,7 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
 // Settings
 var is_logged_in = <?=$is_logged_in?>;
 var logoutWarn = true;
+var use_webrtc = <?=$use_webrtc?>;
 var NOW_TIME = '<?=$NOW_TIME?>';
 var SQLdate = '<?=$NOW_TIME?>';
 var StarTtimE = '<?=$StarTtimE?>';
@@ -261,7 +263,6 @@ var group = '<?=$camp_info->campaign_id?>';         // same value as campaign va
 $(document).ready(function() {
     $(window).load(function() {
         var refreshId = setInterval(function() {
-            //GOagentWebRTC = window.open('http://google.com','GOagentWebRTC', 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,left=0, top=0, width=10, height=10');
             if (is_logged_in) {
                 //Start of checking for live calls
                 //if (live_customer_call == 1) {
@@ -285,7 +286,7 @@ $(document).ready(function() {
                 //            }
                 //        }
                 //    }
-                //} else {
+                //}
                 
                 if (live_customer_call < 1) {
                     toggleStatus('NOLIVE');
@@ -582,6 +583,14 @@ $(document).ready(function() {
         if (is_logged_in) {
             $("aside.control-sidebar").addClass('control-sidebar-open');
         }
+        
+        if (!opener) {
+            //<?=GO_AGENT_DIRECTORY?>/jsSIP.php
+            //GOagentWebRTC = window.open('http://google.com','GOagentWebRTC', 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,left=100000, top=100000, width=10, height=10');
+            console.log('a new window is opened');
+        } else {
+            console.log('window is still open');
+        }
     });
 
     var logoutRegX = new RegExp("logout\.php", "ig");
@@ -590,25 +599,28 @@ $(document).ready(function() {
         var loggedOut = 0;
         if (hRef.match(logoutRegX)) {
             event.preventDefault();
-            if (is_logged_in) {
-                logoutWarn = false;
-                btnLogMeOut();
-                loggedOut++;
-            }
-            if (phone.isConnected()) {
-                phone.stop();
-                loggedOut++;
-            }
-            if (loggedOut > 0) {
-                console.log('<?=$lh->translationFor('logging_out_phones')?>...');
-                $("div.preloader center").append('<br><br><span style="font-size: 24px; color: white;"><?=$lh->translationFor('logging_out_phones')?>...</span>');
-                $("div.preloader").fadeIn("slow");
-                setTimeout(
-                    function() {
-                        window.location.href = hRef;
-                    },
-                    2500
-                );
+            var sureToLogout = confirm("<?=$lh->translationFor('sure_to_logout')?>");
+            if (sureToLogout) {
+                if (is_logged_in) {
+                    logoutWarn = false;
+                    btnLogMeOut();
+                    loggedOut++;
+                }
+                if (phone.isConnected()) {
+                    phone.stop();
+                    loggedOut++;
+                }
+                if (loggedOut > 0) {
+                    console.log('<?=$lh->translationFor('logging_out_phones')?>...');
+                    $("div.preloader center").append('<br><br><span style="font-size: 24px; color: white;"><?=$lh->translationFor('logging_out_phones')?>...</span>');
+                    $("div.preloader").fadeIn("slow");
+                    setTimeout(
+                        function() {
+                            window.location.href = hRef;
+                        },
+                        2500
+                    );
+                }
             }
         }
     });
@@ -936,7 +948,7 @@ $(document).ready(function() {
             goIngroups: inbArray,
             responsetype: 'json',
             closer_blended: $("#closerSelectBlended").is(':checked'),
-            goUseWebRTC: $("input[name='use_webrtc']").is(':checked')
+            goUseWebRTC: use_webrtc
         };
 
         $.ajax({
@@ -1133,26 +1145,30 @@ function btnLogMeIn () {
         dataType: "json"
     })
     .done(function (result) {
-        var camp_list = result.data.allowed_campaigns;
-        var camp_options = "<option value=''><?=$lh->translationFor('select_a_campaign')?></option>";
-        $.each(camp_list, function(idx, camp) {
-            camp_options += "<option value='"+idx+"'>"+camp+"</option>";
-        });
-        $("#select-campaign select#select_camp").html(camp_options);
-        $("#inboundSelection, #scButton, #selectionNote").addClass('hidden');
-        $("#closerSelectBlended").closest('p').addClass('hidden');
-        $("#select-campaign").modal({
-            keyboard: false,
-            backdrop: 'static',
-            show: true
-        });
+        if (result.result == 'success') {
+            var camp_list = result.data.allowed_campaigns;
+            var camp_options = "<option value=''><?=$lh->translationFor('select_a_campaign')?></option>";
+            $.each(camp_list, function(idx, camp) {
+                camp_options += "<option value='"+idx+"'>"+camp+"</option>";
+            });
+            $("#select-campaign select#select_camp").html(camp_options);
+            $("#inboundSelection, #scButton, #selectionNote").addClass('hidden');
+            $("#closerSelectBlended").closest('p').addClass('hidden');
+            $("#select-campaign").modal({
+                keyboard: false,
+                backdrop: 'static',
+                show: true
+            });
+        } else {
+            alert("<?=$lh->translationFor('error')?>: "+result.message+".\n\n<?=$lh->translationFor('contact_admin')?>");
+        }
     });
 }
 
 function btnLogMeOut () {
     var logMeOut = true;
     if (logoutWarn) {
-        logMeOut = confirm("Are you sure you want to log out?");
+        logMeOut = confirm("<?=$lh->translationFor('sure_to_logout')?>");
     }
     if (logMeOut) {
         refresh_interval = 730000;
@@ -1699,8 +1715,10 @@ function CheckForConfCalls (confnum, force) {
                         {$("#LeadLookUP").prop('checked', true);}
                     else
                         {$("#LeadLookUP").prop('checked', false);}
-                    if (APIdial_array_detail[4] == 'YES')  // focus on vicidial agent screen
-                        {window.focus();   alert("<?=$lh->translationFor('placing_call_to')?>:" + APIdial_array_detail[1] + " " + APIdial_array_detail[0]);}
+                    if (APIdial_array_detail[4] == 'YES') { // focus on vicidial agent screen
+                        window.focus();
+                        alert("<?=$lh->translationFor('placing_call_to')?>:" + APIdial_array_detail[1] + " " + APIdial_array_detail[0]);
+                    }
                     if (APIdial_array_detail[3] == 'YES')  // call preview
                         {NewManualDialCall('PREVIEW');}
                     else
@@ -1749,8 +1767,14 @@ function CheckForConfCalls (confnum, force) {
                     var conv_start = -1;
                     var live_conf_HTML = '<font face="Arial,Helvetica"><b><?=$lh->translationFor('live_calls_in_your_session')?>:</b></font><br /><table width="340px"><tr><td><font class="log_title">#</font></td><td><font class="log_title"><?=$lh->translationFor('remote_channel')?></font></td><td><font class="log_title"><?=$lh->translationFor('hangup')?></font></td></tr>';
                     if ( (LMAcount > live_conf_calls)  || (LMAcount < live_conf_calls) || (LMAforce > 0)) {
-                        LMAe[0]=''; LMAe[1]=''; LMAe[2]=''; LMAe[3]=''; LMAe[4]=''; LMAe[5]=''; 
-                        LMAcount=0;   LMAcontent_change++;
+                        LMAe[0] = '';
+                        LMAe[1] = '';
+                        LMAe[2] = '';
+                        LMAe[3] = '';
+                        LMAe[4] = '';
+                        LMAe[5] = ''; 
+                        LMAcount = 0;
+                        LMAcontent_change++;
                     }
     
                     while (loop_ct < live_conf_calls) {
@@ -1773,8 +1797,8 @@ function CheckForConfCalls (confnum, force) {
                             var hide_channel=1;
                             blind_monitoring_now++;
                             temp_blind_monitors++;
-                            if (blind_monitoring_now==1)
-                                {blind_monitoring_now_trigger=1;}
+                            if (blind_monitoring_now == 1)
+                                {blind_monitoring_now_trigger = 1;}
                         } else {
                             if (channelfieldA.match(regRNnolink)) {
                                 // do not show hangup or volume control links for recording channels
@@ -4867,10 +4891,12 @@ function get_user_info($user_id) {
     $ch = curl_init();
     
     //set the url, number of POST vars, POST data
-    curl_setopt($ch,CURLOPT_URL, $url);
-    curl_setopt($ch,CURLOPT_POST, count($fields));
-    curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, count($fields));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     
     //execute post
     $result = json_decode(curl_exec($ch));
