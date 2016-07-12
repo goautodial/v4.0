@@ -18,42 +18,42 @@
 	 * @param campaign_name
 	 */
         
-        require_once('goCRMAPISettings.php');
-	
+    require_once('goCRMAPISettings.php');
+
 	$url = gourl."/goCampaigns/goAPI.php"; # URL to GoAutoDial API file
 	$postfields["goUser"] 						= goUser; #Username goes here. (required)
 	$postfields["goPass"] 						= goPass; #Password goes here. (required)
 	$postfields["goAction"] 					= "goAddCampaign"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] 				= responsetype; #json (required)
 	$postfields["hostname"] 					= $_SERVER['REMOTE_ADDR']; #Default value
-	$postfields["did_pattern"] 					= $_POST['did_tfn']; #Desired did pattern (required if campaign type is BLENDED)
-	// $postfields["group_color"] 		= $_POST['']; #Desired group color (required if campaign type is BLENDED)
-	$postfields["call_route"] 					= $_POST['call_route']; #Desired call route (required if campaign type is BLENDED)
-	$postfields["survey_type"] 					= $_POST['survey_type']; #survey type values is BROADCAST or PRESS1 only (required if campaign type is survey)
-	$postfields["number_channels"] 				= $_POST['no_channels']; #number channel values is 1,5,10,15,20, or 30 only (requred)
-	$postfields["campaign_type"] 				= $_POST['campaign_type']; #Type of campaign, values is OITBOUND, INBOUND, BLENDED or SURVEY only. (required)
-	$postfields["campaign_id"] 					= $_POST['campaign_id']; #Desired campaign id (required)
-	$postfields["campaign_name"] 				= $_POST['campaign_name']; #Desired name of campaign
-	$postfields["call_time"] 					= $_POST['call_time'];
-	$postfields["dial_status"] 					= $_POST['dial_status'];
-	$postfields["list_order"] 					= $_POST['list_order'];
-	$postfields["lead_filter"] 					= $_POST['lead_filter'];
-	$postfields["dial_timeout"] 				= $_POST['dial_timeout'];
-	$postfields["manual_dial_prefix"] 			= $_POST['manual_dial_prefix'];
-	$postfields["call_launch"] 					= $_POST['call_launch'];
-	$postfields["answering_machine_message"] 	= $_POST['answering_machine_message'];
-	$postfields["pause_codes"] 					= $_POST['pause_codes'];
-	$postfields["manual_dial_filter"] 			= $_POST['manual_dial_filter'];
-	$postfields["manual_dial_list_id"] 			= $_POST['manual_dial_list_id'];
-	$postfields["availability_only_tally"] 		= $_POST['availability_only_tally'];
-	$postfields["recording_filename"] 			= $_POST['recording_filename'];
-	$postfields["next_agent_call"] 				= $_POST['next_agent_call'];
-	$postfields["caller_id_3_way_call"] 		= $_POST['caller_id_3_way_call'];
-	$postfields["dial_prefix_3_way_call"] 		= $_POST['dial_prefix_3_way_call'];
-	$postfields["three_way_hangup_logging"] 	= $_POST['three_way_hangup_logging'];
-	$postfields["three_way_hangup_seconds"] 	= $_POST['three_way_hangup_seconds'];
-	$postfields["three_way_hangup_action"] 		= $_POST['three_way_hangup_action'];
-	$postfields["reset_leads_on_hopper"] 		= $_POST['reset_leads_on_hopper'];
+
+	$postfields['campaign_type'] 				= $_POST['campaign_type'];
+	$postfields['campaign_id']  				= $_POST['campaign_id'];
+	$postfields['campaign_name'] 				= $_POST['campaign_name'];
+	$postfields['did_tfn_extension']  			= $_POST['did_tfn_extension'];
+	$postfields['call_route'] 					= $_POST['call_route'];
+	$postfields['group_color'] 					= $_POST['group_color'];
+	$postfields['survey_type'] 					= $_POST['survey_type'];
+	$postfields['no_channels']  				= $_POST['no_channels'];
+	$postfields['copy_from_campaign'] 			= $_POST['copy_from_campaign'];
+	$postfields['list_id'] 						= $_POST['list_id'];
+	$postfields['country'] 						= $_POST['country'];
+	$postfields['check_for_duplicates'] 		= $_POST['check_for_duplicates'];
+	$postfields['dial_method'] 					= $_POST['dial_method'];
+	$postfields['auto_dial_level'] 				= $_POST['auto_dial_level'];
+	$postfields['carrier_to_use'] 				= $_POST['carrier_to_use'];
+	$postfields['description'] 					= $_POST['description'];
+	$postfields['status'] 						= $_POST['status'];
+	$postfields['call_recordings'] 				= $_POST['call_recordings'];
+	$postfields['script'] 						= $_POST['script'];
+	$postfields['answering_machine_detection'] 	= $_POST['answering_machine_detection'];
+	$postfields['caller_id']  					= $_POST['caller_id'];
+	$postfields['force_reset_hopper'] 			= $_POST['force_reset_hopper'];
+	$postfields['campaign_recording'] 			= $_POST['campaign_recording'];
+	$postfields['inbound_man'] 					= $_POST['inbound_man'];
+	$postfields['phone_numbers'] 				= $_POST['phone_numbers'];
+	if(!empty($_FILES["lead_file"]["name"])) $postfields['lead_file'] = curl_file_create($_FILES['lead_file']['tmp_name'], $_FILES['lead_file']['type'], $_FILES["lead_file"]["name"]);
+	if(!empty($_FILES["leads"]["name"])) $postfields['leads'] = curl_file_create($_FILES['leads']['tmp_name'], $_FILES['leads']['type'], $_FILES["leads"]["name"]);
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -62,20 +62,25 @@
 	curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 	$data = curl_exec($ch);
+
 	curl_close($ch);
 
 	$output = json_decode($data);
-	
+
+	$home = $_SERVER['HTTP_REFERER'];
 	if ($output->result=="success") {
 		# Result was OK!
-		$status = 1;
+		// $status = 1;
 		// $return['msg'] = "New Campaign has been successfully saved.";
+		header("Location: ".$home."?message=Success");
 	} else {
 		# An error occured
-		$status = 0;
+		// $status = 0;
 		// $return['msg'] = "Something went wrong please see input data on form.";
+		header("Location: ".$home."?message=Error");
 	}
 
-	echo $status;
 ?>
