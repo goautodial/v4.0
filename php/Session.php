@@ -37,6 +37,12 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
     }
 }
 
+// force https protocol
+if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on") {
+    header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+    exit();
+}
+
 if (!isset($_SESSION["username"])) {
 	header('Location: login.php'); // Redirecting To Login Page
 }

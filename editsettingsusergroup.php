@@ -129,7 +129,7 @@ if (isset($_POST["usergroup_id"])) {
 							
 						<h4 style="padding:15px;"><a type="button" class="btn" href="settingsusergroups.php"><i class="fa fa-arrow-left"></i> Cancel</a><center><b>MODIFY USER GROUP <?php echo $usergroup_id;?></b></center></h4>
 								
-							<form id="modifyphones">
+							<form id="modifyvoicemail">
 								<input type="hidden" name="modifyid" value="<?php echo $usergroup_id;?>">
 							
 						<!-- BASIC SETTINGS -->
@@ -140,7 +140,7 @@ if (isset($_POST["usergroup_id"])) {
 								</div>
 								<div class="form-group">
 									<label for="group_name">Group Name</label>
-									<input type="text" class="form-control" name="group_name" id="group_name" placeholder="Group Name (Mandatory)" value="<?php echo $output->group_names[$i];?>">
+									<input type="text" class="form-control" name="group_name" id="group_name" placeholder="Group Name (Mandatory)" value="<?php echo $output->group_name[$i];?>">
 								</div>
 								<div class="form-group">
 									<label for="forced_timeclock_login">Force Timeclock Login
@@ -294,13 +294,13 @@ if (isset($_POST["usergroup_id"])) {
 				/** 
 				 * Modifies a telephony list
 			 	 */
-				$("#modifyphones").validate({
+				$("#modifyvoicemail").validate({
                 	submitHandler: function() {
 						//submit the form
 							$("#resultmessage").html();
 							$("#resultmessage").fadeOut();
-							$.post("./php/ModifySettingsPhones.php", //post
-							$("#modifyphones").serialize(), 
+							$.post("./php/ModifyUsergroup.php", //post
+							$("#modifyvoicemail").serialize(), 
 								function(data){
 									//if message is sent
 									if (data == 1) {
@@ -356,7 +356,7 @@ if (isset($_POST["usergroup_id"])) {
 	                                $('#delete_notification').show();
 	                                $('#delete_notification_modal').modal('show');
 	                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-	                                window.location.replace("./settingsphones.php");
+	                                window.location.replace("settingsusergroups.php");
 	                            }else{
 	                                $('#result_span').html(data);
 	                                $('#delete_notification').show();
