@@ -196,7 +196,6 @@ define ('CRM_SETTING_TYPE_BOOL', "bool");
 define ('CRM_SETTING_TYPE_DATE', "date");
 define ('CRM_SETTING_TYPE_LABEL', "label");
 define ('CRM_SETTING_TYPE_PASS', "password");
-define ('CRM_SETTING_TYPE_SELECT', "select");
 
 
 // misc constants

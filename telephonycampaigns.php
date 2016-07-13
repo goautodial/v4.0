@@ -102,7 +102,7 @@
 					        		You have successfully created a campaign.
 					        		
 					      		</div>
-							<?php }else{ ?>
+							<?php }elseif($_GET['message'] == "error"){ ?>
 								<div class="callout callout-danger">
 					        		<h4>Error!</h4>
 					        		Something went wrong. Please contact administrator.

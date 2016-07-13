@@ -88,7 +88,7 @@ if (isset($_POST["leadfilter"])) {
                 <section class="content-header">
                     <h1>
                         <?php $lh->translateText("telephony"); ?>
-                        <small><?php $lh->translateText("telephony_lists_edition"); ?></small>
+                        <small>Modify Campaign</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -106,206 +106,62 @@ if (isset($_POST["leadfilter"])) {
 
                 <!-- Main content -->
                 <section class="content">
+					<div class="box box-info">
+						<div class="box-header with-border">
+							<h3 class="box-title">Edit Campaign</h3>
+						</div>
+						<!-- /.box-header -->
+						<form class="form-horizontal">
+						<div class="box-body">
+							<?php $errormessage = NULL; ?>
 					
-					<!-- standard custom edition form -->
-					<?php
-					$errormessage = NULL;
-					
-					// IF CAMPAIGN
-					if($campaign != NULL) {
-						$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
-						$postfields["goUser"] = goUser; #Username goes here. (required)
-						$postfields["goPass"] = goPass; #Password goes here. (required)
-						$postfields["goAction"] = "getCampaignInfo"; #action performed by the [[API:Functions]]. (required)
-						$postfields["responsetype"] = responsetype; #json. (required)
-						$postfields["campaign_id"] = $campaign; #Desired list id. (required)
-            
-						$ch = curl_init();
-						curl_setopt($ch, CURLOPT_URL, $url);
-						curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-						curl_setopt($ch, CURLOPT_POST, 1);
-						curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-						curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-						$data = curl_exec($ch);
-						curl_close($ch);
-						$output = json_decode($data);
-						
-						//var_dump($output);
-						
-						if ($output->result=="success") {
-						# Result was OK!
-							for($i=0;$i < count($output->campaign_id);$i++){
-								
-								$hidden_f = $ui->hiddenFormField("modify_campaign", $campaign);
-								
-								$title_f = '<h4><b>Modify Campaign : '.$campaign.' - '.$output->campaign_name[$i].'</b>';
-								
-								$id_f = '<h4>Campaign ID : '.$campaign.'</h4>';
+							<!-- // IF CAMPAIGN -->
+							<?php if($campaign != NULL) { ?>
+							<?php 
+								$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+								$postfields["goUser"] = goUser; #Username goes here. (required)
+								$postfields["goPass"] = goPass; #Password goes here. (required)
+								$postfields["goAction"] = "getCampaignInfo"; #action performed by the [[API:Functions]]. (required)
+								$postfields["responsetype"] = responsetype; #json. (required)
+								$postfields["campaign_id"] = $campaign; #Desired list id. (required)
+		            
+								$ch = curl_init();
+								curl_setopt($ch, CURLOPT_URL, $url);
+								curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+								curl_setopt($ch, CURLOPT_POST, 1);
+								curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+								curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+								curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+								$data = curl_exec($ch);
+								curl_close($ch);
+								$output = json_decode($data);
 
-								$name_l = '<h4>Campaign Name</h4>';
-								$ph = $lh->translationFor("Campaign Name").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->campaign_name[$i]) ? $output->campaign_name[$i] : null;
-								$name_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("name", "name", "text", $ph, $vl, "tasks", "required"));
-								
-								$status_l = '<h4>Status</h4>';
-								$status_f = '<select class="form-control" id="status" name="status">';
-												
-									if($output->active[$i] == "Y"){
-										$status_f .= '<option value="Y" selected> YES </option>';
-									}else{
-										$status_f .= '<option value="Y" > YES </option>';
-									}
-									
-									if($output->active[$i] == "N"){
-										$status_f .= '<option value="N" selected> NO </option>';
-									}else{
-										$status_f .= '<option value="N" > NO </option>';
-									}
-									
-								$status_f .= '</select>';
-								
-                                $dial_l = '<h4>Dial Method</h4>';
-								$dial_f = '<select class="form-control" id="dial_method" name="dial_method">';
-												
-									if($output->dial_method[$i] == "RATIO"){
-										$dial_f .= '<option value="RATIO" selected> AUTO DIAL </option>';
-									}else{
-										$dial_f .= '<option value="RATIO" > AUTO DIAL </option>';
-									}
-									
-									if($output->dial_method[$i] == "MANUAL"){
-										$dial_f .= '<option value="MANUAL" selected> MANUAL </option>';
-									}else{
-										$dial_f .= '<option value="MANUAL" > MANUAL </option>';
-									}
-									
-									if($output->dial_method[$i] == "ADAPT_TAPERED"){
-										$dial_f .= '<option value="ADAPT_TAPERED" selected> PREDICTIVE </option>';
-									}else{
-										$dial_f .= '<option value="ADAPT_TAPERED" > PREDICTIVE </option>';
-									}
+								// echo "<pre>";
+								// print_r($output);
+							?>
+								<?php if ($output->result=="success") { ?>
+								<!-- # Result was OK! -->
+									<?php for($i=0;$i < count($output->campaign_id);$i++){ ?>
+										Under Construction
+									<?php } ?>
+								<?php } else { ?>
+								<!-- # An error occured -->
+									<?php echo $output->result; ?>
+								<?php } ?>
+		                        
+							<?php }else { ?>
+					    		<?php echo $errormessage = $lh->translationFor("some_fields_missing"); ?>
+							<?php } ?>
+						</div>
+						<!-- /.box-body -->
+						<div class="box-footer">
+							<a type="button" class="btn btn-warning">Cancel</a>
+							<button type="submit" class="btn btn-success pull-right">Modify</button>
+						</div>
+						<!-- /.box-footer -->
+						</form>
 
-									if($output->dial_method[$i] == "INBOUND_MAN"){
-										$dial_f .= '<option value="INBOUND_MAN" selected> INBOUND_MAN </option>';
-									}else{
-										$dial_f .= '<option value="INBOUND_MAN" > INBOUND_MAN </option>';
-									}
-								$dial_f .= '</select>';
-                                
-								// buttons at bottom (only for writing+ permissions)
-								$buttons = "";
-								if ($user->userHasWritePermission()) {
-									$buttons = $ui->buttonWithLink("modifyINGROUPDeleteButton", $groupid, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
-									$buttons .= $ui->buttonWithLink("modifyInboundOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
-									$buttons = $ui->singleFormGroupWrapper($buttons);
-								}
-		
-							// generate the form
-							$fields = $hidden_f.$id_f.$name_l.$name_f.$status_l.$status_f.$dial_l.$dial_f;
-								
-								// generate form: header
-								$form = $ui->formWithCustomFooterButtons("modifycampaign", $fields, $buttons, "modifyCAMPAIGNresult");
-								
-								// generate and show the box
-								//$box = $ui->boxWithForm("modifyuser", , $fields, $lh->translationFor("edit_user"));
-								//print $box;
-								
-								// generate box
-								$boxTitle = $title_f;
-								$formBox = $ui->boxWithContent($boxTitle, $form);
-								// print our modifying customer box.
-								print $formBox;
-								
-							}
-						} else {
-						# An error occured
-							echo $output->result;
-						}
-                        
-					}else {
-			    		$errormessage = $lh->translationFor("some_fields_missing");
-					}
-				
-				// IF LEADFILTER
-					if($leadfilter != NULL) {
-						/*
-						 * Displaying Lead Filter Information
-						 * [[API:Function]] – getLeadFilterInfo
-						 * Allows to retrieve some attributes of a given lead filter. Lead filter should belong to the user that authenticated the request
-
-						 */
-						$url = gourl."/goLeadFilters/goAPI.php"; #URL to GoAutoDial API. (required)
-				        $postfields["goUser"] = goUser; #Username goes here. (required)
-				        $postfields["goPass"] = goPass; #Password goes here. (required)
-				        $postfields["goAction"] = "getLeadFilterInfo"; #action performed by the [[API:Functions]]. (required)
-				        $postfields["responsetype"] = responsetype; #json. (required)
-				        $postfields["lead_filter_id"] = $leadfilter;
-
-
-				         $ch = curl_init();
-				         curl_setopt($ch, CURLOPT_URL, $url);
-				         curl_setopt($ch, CURLOPT_POST, 1);
-				         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-				         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-				         $data = curl_exec($ch);
-				         curl_close($ch);
-				         $output = json_decode($data);
-
-						//var_dump($output);
-
-						if ($output->result=="success") {
-						# Result was OK!
-							for($i=0;$i < count($output->lead_filter_id);$i++){
-								
-								$hidden_f = $ui->hiddenFormField("modify_leadfilter", $leadfilter);
-								
-								$id_f = '<h4><b> Modify Lead Filter : '.$leadfilter.'</b>';
-								
-								$leadfilter_id_f = '<h4>Lead Filter ID : '.$leadfilter;
-
-								$name_l = '<h4>Lead Filter Name</h4>';
-								$ph = $lh->translationFor("Name").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->lead_filter_name[$i]) ? $output->lead_filter_name[$i] : null;
-								$name_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("name", "name", "text", $ph, $vl, "tasks", "required"));
-								
-								
-								// buttons at bottom (only for writing+ permissions)
-								$buttons = "";
-								if ($user->userHasWritePermission()) {
-									$buttons = $ui->buttonWithLink("modifyLEADFILTERDeleteButton", $menu_id, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
-									$buttons .= $ui->buttonWithLink("modifyCustomerOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
-									$buttons = $ui->singleFormGroupWrapper($buttons);
-								}
-				
-								// generate the form
-								$fields = $hidden_f.$leadfilter_id_f.$name_l.$name_f;
-								
-								// generate form: header
-								$form = $ui->formWithCustomFooterButtons("modifyleadfilter", $fields, $buttons, "modifyLEADFILTERresult");
-								
-								// generate and show the box
-								//$box = $ui->boxWithForm("modifyuser", , $fields, $lh->translationFor("edit_user"));
-								//print $box;
-								
-								// generate box
-								$boxTitle = $id_f;
-								$formBox = $ui->boxWithContent($boxTitle, $form);
-								// print our modifying customer box.
-								print $formBox;
-								
-							}
-						} else {
-						# An error occured
-							echo $output->result;
-						}
-                        
-					} else {
-			    		$errormessage = $lh->translationFor("some_fields_missing");
-					}
-
-				?>
+					</div>			
                 </section>
 				<!-- /.content -->
             </aside><!-- /.right-side -->
