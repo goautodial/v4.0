@@ -144,6 +144,9 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 			.panel{
 				margin-bottom:0;
 			}
+			.required_div{
+				background: rgba(158,158,158,0.30);
+			}
 			input[type=text] {
 			    border: none;
 			    border-bottom: .5px solid #656565;
@@ -189,9 +192,6 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 			}
 			.hide_div{
 				display: none;
-			}
-			.required_div{
-				background: #f4fdd9;
 			}
 		</style>
     </head>
@@ -335,7 +335,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 
 											<div style="padding-top:20px;padding-left:20px;padding-right:30px;">
 												<h4>Personal Details
-													<a href="#" data-role="button" class="pull-right edit-profile-button" id="edit-profile">Edit Profile</a>
+													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
 												</h4>
 											<form role="form" id="name_form" class="formMain form-inline" >
 												
@@ -364,14 +364,14 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                        <p style="padding-right:10px;padding-top: 20px;">Name:</p> 
 							                    </div>
 												<div class="form-group">
-							                        <input id="first_name" name="first_name" type="text" placeholder="First Name" value="<?php echo $first_name;?>" class="form-control input-disabled" disabled>
+							                        <input id="first_name" name="first_name" type="text" placeholder="First Name" value="<?php echo $first_name;?>" class="form-control input-disabled" disabled required>
 							                    </div>
 							                    <div class="form-group">
 							                        <input id="middle_initial" name="middle_initial" type="text" placeholder="Middle Initial" value="<?php echo $middle_initial;?>" class="form-control input-disabled" disabled>
 							                        
 							                    </div>
 							                    <div class="form-group">
-							                        <input id="last_name" name="last_name" type="text" placeholder="Last Name" value="<?php echo $last_name;?>" class="form-control input-disabled" disabled>
+							                        <input id="last_name" name="last_name" type="text" placeholder="Last Name" value="<?php echo $last_name;?>" class="form-control input-disabled" disabled required>
 							                        
 							                    </div>
 											</form>
@@ -693,7 +693,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 
 		<script type="text/javascript">
 			$(document).ready(function() {
-				$("#edit-profile").click(function(event){
+				$("#edit-profile").click(function(){
 				    $('.input-disabled').prop('disabled', false);
 				    $('.hide_div').show();
 				    $("input:required, select:required").addClass("required_div");
@@ -734,7 +734,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 					}					
 				});
 				 */
-				$("#submit_edit_form").click(function(event){
+				$("#submit_edit_form").click(function(){
 				//alert("User Created!");
 				
 				var validate = 0;
@@ -747,12 +747,12 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 								$.ajax({
 									url: "./php/ModifyCustomer.php",
 									type: 'POST',
-									data: $("#name_form, #gender_form, #contact_details_form").serialize(),
+									data: $("#name_form, #gender_form, #contact_details_form, #comment_form").serialize(),
 									success: function(data) {
 									  // console.log(data);
 										  if(data == 1){
 										  	  $('.output-message-success').show().focus().delay(2000).fadeOut().queue(function(n){$(this).hide(); n();});
-											  window.setTimeout(function(){location.reload()},2000)
+											  window.setTimeout(function(){location.reload()},2000);
 										  }else{
 											  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 										  }
