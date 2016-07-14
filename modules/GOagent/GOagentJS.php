@@ -1167,12 +1167,12 @@ function btnLogMeIn () {
 }
 
 function btnLogMeOut () {
+    refresh_interval = 730000;
     var logMeOut = true;
     if (logoutWarn) {
         logMeOut = confirm("<?=$lh->translationFor('sure_to_logout')?>");
     }
     if (logMeOut) {
-        refresh_interval = 730000;
         var postData = {
             goAction: 'goLogoutUser',
             goUser: user,
@@ -1205,6 +1205,8 @@ function btnLogMeOut () {
         });
         logoutWarn = true;
         logout_stop_timeouts = 1;
+    } else {
+        refresh_interval = 1000;
     }
 }
 
@@ -4305,6 +4307,10 @@ function TimerActionRun(taskaction, taskdialalert) {
 
     if (next_action < 1)
         {timer_action = 'NONE';}	
+}
+
+function NoneInSession() {
+    //still on development
 }
 
 
