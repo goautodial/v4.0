@@ -160,6 +160,14 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 				border: none;
     			border-bottom: .5px solid #656565;
 			}
+			.textarea{
+				border: none;
+				border-bottom: .5px solid #656565;
+				width: 100%;
+				-webkit-box-sizing: border-box;
+				   -moz-box-sizing: border-box;
+						box-sizing: border-box;
+			}
 			.form-control[disabled], fieldset[disabled] .form-control{
 				cursor: text;
 				background-color: white;
@@ -329,7 +337,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 												<h4>Personal Details
 													<a href="#" data-role="button" class="pull-right edit-profile-button" id="edit-profile">Edit Profile</a>
 												</h4>
-											<form role="form" id="name_form" class="form-inline" >
+											<form role="form" id="name_form" class="formMain form-inline" >
 												
 												<!--LEAD ID-->
 												<input type="hidden" value="<?php echo $lead_id;?>" name="lead_id">
@@ -345,6 +353,12 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 												<input type="hidden" value="<?php echo $security_phrase;?>" name="security_phrase">
 												<!--RANK-->
 												<input type="hidden" value="<?php echo $rank;?>" name="rank">
+												<!--CALLED COUNT-->
+												<input type="hidden" value="<?php echo $call_count;?>" name="called_count">
+												<!--UNIQUEID-->
+												<input type="hidden" value="<?php echo $uniqueid;?>" name="uniqueid">
+												<!--SECONDS-->
+												<input type="hidden" value="" name="seconds">
 
 												<div class="form-group">
 							                        <p style="padding-right:10px;padding-top: 20px;">Name:</p> 
@@ -361,7 +375,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                        
 							                    </div>
 											</form>
-											<form role="form" id="gender_form" class="form-inline" >
+											<form role="form" id="gender_form" class="formMain form-inline" >
 												<div class="form-group">
 							                        <p style="padding-right:0px;padding-top: 20px;">Title:</p> 
 							                    </div>
@@ -404,10 +418,19 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 													<input type="date" id="date_of_birth" value="<?php echo $data_of_birth;?>" name="date_of_birth" class="form-control input-disabled" disabled>
 							                    </div>						                   
 											</form>
+											<form role="form" id="comment_form" class="formMain form-inline" >
+												<div class="form-group">
+							                        <p style="padding-right:0px;padding-top: 20px;">Comments:</p> 
+													<button id="ViewCommentButton" onClick="ViewComments('ON');" value="-History-" class="hidden"></button>
+												</div>
+												<div class="form-group">
+													<textarea rows="5" cols="73" id="comments" name="comments" placeholder="Comments" class="form-control textarea input-disabled" style="resize:none;" disabled><?=$comments?></textarea>
+							                    </div>					                   
+											</form>
 											</div>
 											<div style="padding-top:10px;padding-left:20px;">
 												<h4>Contact Details</h4>
-											<form id="contact_details_form">
+											<form id="contact_details_form" class="formMain">
 												<div class="form-group">
 													<label><p><em class="fa fa-at fa-fw"></em> E-mail Address:</p> 
 							                        	<input id="email" name="email" type="text" width="auto" placeholder="E-Mail Address" value="<?php echo $email;?>" class="form-control input-disabled" disabled>
@@ -582,36 +605,13 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
     <div class="tab-content" style="border-width:0;">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-dialer-tab">
-        <!--<h3 class="control-sidebar-heading">Agent Dialer</h3>-->
         <ul class="control-sidebar-menu" id="go_agent_dialpad">
-			<!--<li>
-				<a href="javascript::;">
-					<i class="menu-icon fa fa-birthday-cake bg-red"></i>
-		
-					<div class="menu-info">
-						<h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-		  
-						<p>Will be 23 on April 24th</p>
-					</div>
-				</a>
-			</li>-->
+			
         </ul>
         <!-- /.control-sidebar-menu -->
 
-        <!--<h3 class="control-sidebar-heading">Tasks Progress</h3>-->
         <ul class="control-sidebar-menu" id="go_agent_status" style="margin-top: 15px;padding: 0 15px;">
-			<!-- <li>
-				<a href="javascript::;">
-					<h4 class="control-sidebar-subheading">
-						Custom Template Design
-						<span class="label label-danger pull-right">70%</span>
-					</h4>
-		
-					<div class="progress progress-xxs">
-						<div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-					</div>
-				</a>
-			</li> -->
+			
         </ul>
 		
         <h3 class="control-sidebar-heading"><?php $lh->translateText("Manual Dial"); ?>:</h3>
@@ -619,11 +619,19 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 			
         </ul>
 		
-        <ul class="control-sidebar-menu" id="go_agent_login" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+        <ul class="control-sidebar-menu" id="go_agent_login" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px; text-align: center;">
 			
         </ul>
 		
-        <ul class="control-sidebar-menu hidden" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+        <ul class="control-sidebar-menu hidden" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px; text-align: center;">
+			<span>
+				<p><?=$lh->translateText("Call Duration")?>: <span id="SecondsDISP">0</span> <?=$lh->translationFor('second')?></p>
+				<span id="session_id" class="hidden"></span>
+				<span id="callchannel" class="hidden"></span>
+				<input type="hidden" id="callserverip" value="" />
+				<input type="checkbox" id="LeadPreview" value="0" class="hidden" />
+				<span id="custdatetime" class="hidden"></span>
+			</span>
 			
         </ul>
         <!-- /.control-sidebar-menu -->
