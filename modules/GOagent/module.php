@@ -559,9 +559,11 @@ class GOagent extends Module {
 								</div>
 								<div class="modal-footer">
 									<input type="hidden" name="DispoSelection" id="DispoSelection" value="" />
-									<label><input type="checkbox" name="DispoSelectStop" id="DispoSelectStop" value="0" style="vertical-align: bottom;" /> Pause Agent</label> &nbsp;&nbsp;
-									<button class="btn btn-default btn-raised" id="btn-dispo-reset">Clear Form</button> 
-									<button class="btn btn-warning btn-raised" id="btn-dispo-submit">Submit</button>
+									<span class="pull-left" style="margin-top: 5px;"><label><input type="checkbox" name="DispoSelectStop" id="DispoSelectStop" value="0" style="vertical-align: bottom;" /> &nbsp; Pause Agent</label></span>
+									<span class="pull-right">
+										<button class="btn btn-default btn-raised" id="btn-dispo-reset">Clear Form</button> 
+										<button class="btn btn-warning btn-raised" id="btn-dispo-submit">Submit</button>
+									</span>
 								</div>
 							</div>
 						</div>

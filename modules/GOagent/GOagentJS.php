@@ -3313,6 +3313,8 @@ function DispoSelectSubmit() {
             DispoQMcsCODE = '';
             active_ingroup_dial = '';
             nocall_dial_flag = 'DISABLED';
+            
+            $("#SecondsDISP").html('0');
     
             //CLEAR ALL SUB FORM VARIABLES
             //$("#subForm").find(':input').each(function()
@@ -3965,7 +3967,7 @@ function AutoDial_Resume_Pause(taskaction, taskagentlog, taskwrapup, taskstatusc
             toggleButton('DialHangup', 'dial');
         } else {
             toggleButton('ResumePause', 'pause');
-            toggleButton('DialHangup', 'dial', false);
+            toggleButton('DialHangup', 'dial');
         }
     } else {
         VDRP_stage = 'PAUSED';
