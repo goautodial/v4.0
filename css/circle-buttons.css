@@ -23,9 +23,9 @@
     display:none;
     border-radius:auto;
     position: fixed;
-    bottom: 70px;
+    bottom: 45px;
     right: 24px;
-    z-index: 999999;
+    /* z-index: 999999; */
 }
 
 .fab-div-item{

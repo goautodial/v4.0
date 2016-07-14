@@ -93,16 +93,16 @@
 	$disposition = $ui->API_getAllDispositions();
 	$leadfilter = $ui->API_getAllLeadFilters();
 ?>			
-				 <div role="tabpanel" class="panel panel-transparent ">
-					<div class="form-group clearfix" style="margin-top: 10px;">
+				 <div role="tabpanel" class="panel panel-transparent" style="border: 0px;">
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
 							<?php if($_GET['message'] == "Success") { ?>
 								<div class="callout callout-success">
 					        		<h4>Success!</h4>
 					        		You have successfully created a campaign.
 					        		
 					      		</div>
-							<?php }else{ ?>
+							<?php }else if(isset($_GET['message'])){ ?>
 								<div class="callout callout-danger">
 					        		<h4>Error!</h4>
 					        		Something went wrong. Please contact administrator.
@@ -111,7 +111,6 @@
 							<?php } ?>
 							
 						</div>
-					</div>
 					<ul role="tablist" class="nav nav-tabs">
 
 					 <!-- In-group panel tabs-->
@@ -172,7 +171,7 @@
 												$campaign->dial_method[$i] = "INBOUND_MAN";
 											}
 
-										$action_CAMPAIGN = $ui->ActionMenuForCampaigns($campaign->campaign_id[$i]);
+										$action_CAMPAIGN = $ui->ActionMenuForCampaigns($campaign->campaign_id[$i], $campaign->campaign_name[$i]);
 
 								   	?>	
 										<tr>
@@ -206,7 +205,7 @@
 								   	<?php
 								   		for($i=0;$i < count($campaign->campaign_id);$i++){
 
-										$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i]);
+										$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i]);
 
 								   	?>	
 										<tr>
@@ -238,7 +237,7 @@
 								   	<?php
 								   		for($i=0;$i < count($leadfilter->lead_filter_id);$i++){
 
-										$action_LEADFILTER = $ui->ActionMenuForLeadFilters($leadfilter->lead_filter_id[$i]);
+										$action_LEADFILTER = $ui->ActionMenuForLeadFilters($leadfilter->lead_filter_id[$i], $leadfilter->lead_filter_name[$i]);
 
 								   	?>	
 										<tr>
@@ -620,11 +619,11 @@
 	</div>
 	<!-- End of modal -->
 
-	<!-- Modal -->
+	<!-- Modal --
 	<div id="confirmation-delete-modal" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
 
-	    <!-- Modal content-->
+	    <!-- Modal content--
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -638,13 +637,34 @@
 	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
 	      </div>
 	    </div>
-	    <!-- End of modal content -->
+	    <!-- End of modal content --
 	  </div>
 	</div>
 	<!-- End of modal -->
 
-<!-- SLIMSCROLL-->
-   <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- DELETE VALIDATION MODAL -->
+    <div id="delete_validation_modal" class="modal modal-warning fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
+                <div class="modal-header">
+                    <h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
+                </div>
+                <div class="modal-body" style="background:#fff;">
+                    <p>This action cannot be undone.</p>
+                    <p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
+                </div>
+                <div class="modal-footer" style="background:#fff;">
+                    <button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE NOTIFICATION MODAL -->
+    <div id="delete_notification" style="display:none;">
+        <?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
+    </div>
    
 	<script>
 		$(document).ready(function(){
@@ -653,8 +673,13 @@
 			});
 		});
 	</script>
+	
+
 	<script src="js/jquery.validate.min.js" type="text/javascript"></script>
 	<script src="js/easyWizard.js" type="text/javascript"></script> 
+	<!-- SLIMSCROLL-->
+        <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+
 	<!-- Script for wizard -->
 	<script type="text/javascript">
 		function clear_form(){
@@ -865,38 +890,87 @@
 			 });
 
 
-			$('.delete-campaign').click(function(){
-				var camp_id = $(this).attr('data-id');
-				$('.camp-id-delete-label').text(camp_id);
-				$('.camp-id-delete-label').attr( "data-id", camp_id);
-				$('#confirmation-delete-modal').modal('show');
-			});
+			/**
+             * Delete validation modal
+             */
+             // CAMPAIGN
+             $(document).on('click','.delete-campaign',function() {
+                
+                var id = $(this).attr('data-id');
+                var name = $(this).attr('data-name');
+                var action = "Campaign";
 
-			$('#delete-campaign-btn').click(function(){
-				var camp_id = $('.camp-id-delete-label').attr('data-id');
-				// console.log(camp_id);
-				$.ajax({
-				  /*url: ".\php\DeleteCampaign.php",*/
-				  url: "./php/DeleteCampaign.php",
-				  type: 'POST',
-				  data: { 
-				  	campaign_id :camp_id,
-				  },
-				  success: function(data) {
-				  		// console.log(data);
-				  		if(data == 1){
-				  			var table = $('#campaigns').DataTable({
-				  				"sAjaxSource": ""
-				  			});
-							alert('Success');
-							$('#confirmation-delete-modal').modal('hide');
-							table.fnDraw();
-						}else{
-							alert(data);
-						}
-				    }
-				});
-			});
+                $('.id-delete-label').attr("data-id", id);
+                $('.id-delete-label').attr("data-action", action);
+
+                $(".delete_extension").text(name);
+                $(".action_validation").text(action);
+
+                $('#delete_validation_modal').modal('show');
+             });
+             // DISPOSITION
+             $(document).on('click','.delete-campaign',function() {
+                
+                var id = $(this).attr('data-id');
+                var name = $(this).attr('data-name');
+                var action = "DISPOSITION";
+
+                $('.id-delete-label').attr("data-id", id);
+                $('.id-delete-label').attr("data-action", action);
+
+                $(".delete_extension").text(name);
+                $(".action_validation").text(action);
+
+                $('#delete_validation_modal').modal('show');
+             });
+             // LEAD FILTER
+             $(document).on('click','.delete-campaign',function() {
+                
+                var id = $(this).attr('data-id');
+                var name = $(this).attr('data-name');
+                var action = "LEAD FILTER";
+
+                $('.id-delete-label').attr("data-id", id);
+                $('.id-delete-label').attr("data-action", action);
+
+                $(".delete_extension").text(name);
+                $(".action_validation").text(action);
+
+                $('#delete_validation_modal').modal('show');
+             });
+
+
+             $(document).on('click','#delete_yes',function() {
+                
+                var id = $(this).attr('data-id');
+                var action = $(this).attr('data-action');
+
+                $('#id_span').html(id);
+
+                    $.ajax({
+                        url: "./php/DeleteCampaign.php",
+                        type: 'POST',
+                        data: { 
+                            campaign_id:id,
+                        },
+                        success: function(data) {
+                        console.log(data);
+                            if(data == 1){
+                                $('#result_span').text(data);
+                                $('#delete_notification').show();
+                                $('#delete_notification_modal').modal('show');
+                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
+                                window.setTimeout(function(){location.reload()},1000)
+                            }else{
+                                $('#result_span').html(data);
+                                $('#delete_notification').show();
+                                $('#delete_notification_modal_fail').modal('show');
+                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+                            }
+                        }
+                    });
+             });
+
 		});
 	</script>
 	<!-- End of script -->

@@ -57,7 +57,7 @@ require_once('./php/LanguageHandler.php');
 require_once('./php/DbHandler.php');
 $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
-$colors = $ui->generateStatisticsColors();
+//$colors = $ui->generateStatisticsColors();
 
 // calculate number of statistics and customers
 $db = new \creamy\DbHandler();
