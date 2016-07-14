@@ -102,6 +102,10 @@
 					        		You have successfully created a campaign.
 					        		
 					      		</div>
+<<<<<<< HEAD
+=======
+							<?php }elseif($_GET['message'] == "error"){ ?>
+>>>>>>> 80bfa8e7dcff49be33a31c9b1e1f1bd4d15abd3b
 								<div class="callout callout-danger">
 					        		<h4>Error!</h4>
 					        		Something went wrong. Please contact administrator.
