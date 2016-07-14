@@ -289,6 +289,7 @@ $(document).ready(function() {
                 //}
                 
                 if (live_customer_call < 1) {
+                    $("#edit-profile").addClass('hidden');
                     //toggleStatus('NOLIVE');
                     
                     if (dialingINprogress < 1) {
@@ -417,10 +418,12 @@ $(document).ready(function() {
                         live_call_seconds++;
                         $(".formMain input[name='seconds']").val(live_call_seconds);
                         $("#SecondsDISP").html(live_call_seconds);
+                        $("#edit-profile").removeClass('hidden');
                     }
                     if (XD_live_customer_call == 1) {
                         XD_live_call_seconds++;
                         $("#xferlength").val(XD_live_call_seconds);
+                        $("#edit-profile").removeClass('hidden');
                     }
                     if (customerparked == 1) {
                         customerparkedcounter++;
@@ -3742,7 +3745,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                             toggleButton('DialHangup', 'dial');
                             toggleButton('ResumePause', 'resume');
                         } else {
-                            toggleButton('DialHangup', 'dial', false);
+                            toggleButton('DialHangup', 'dial');
                             toggleButton('ResumePause', 'resume');
                         }
                     } else {
@@ -3967,7 +3970,7 @@ function AutoDial_Resume_Pause(taskaction, taskagentlog, taskwrapup, taskstatusc
             toggleButton('DialHangup', 'dial');
         } else {
             toggleButton('ResumePause', 'pause');
-            toggleButton('DialHangup', 'dial');
+            toggleButton('DialHangup', 'dial', false);
         }
     } else {
         VDRP_stage = 'PAUSED';
@@ -3982,7 +3985,7 @@ function AutoDial_Resume_Pause(taskaction, taskagentlog, taskwrapup, taskstatusc
             toggleButton('DialHangup', 'dial');
         } else {
             toggleButton('ResumePause', 'resume');
-            toggleButton('DialHangup', 'dial', false);
+            toggleButton('DialHangup', 'dial');
         }
 
         if ( (agent_pause_codes_active=='FORCE') && (temp_reason != 'LOGOUT') && (temp_reason != 'REQUEUE') && (temp_reason != 'DIALNEXT') && (temp_auto != '1') ) {
