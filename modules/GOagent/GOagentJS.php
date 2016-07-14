@@ -587,8 +587,9 @@ $(document).ready(function() {
         
         if (!opener) {
             //<?=GO_AGENT_DIRECTORY?>/jsSIP.php
-            //GOagentWebRTC = window.open('http://google.com','GOagentWebRTC', 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,left=100000, top=100000, width=10, height=10');
-            console.log('a new window is opened');
+            //var GOagentWebRTC = window.open('http://google.com','GOagentWebRTC', 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,left=100000, top=100000, width=10, height=10');
+            //opener = GOagentWebRTC;
+            console.log('a new window is opened', opener);
         } else {
             console.log('window is still open');
         }
@@ -627,6 +628,7 @@ $(document).ready(function() {
     });
 
     <?php
+    $GOmodule = false;
     if ($GOmodule) {
     ?>
     var $navBar = $("<div id='go_nav_bar'></div>");
