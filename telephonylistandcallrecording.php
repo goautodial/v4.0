@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial</title>
+        <title>Goautodial List and Call Recordings</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -27,6 +27,7 @@
         <!-- Wizard Form style -->
         <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="css/easyWizard.css">
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 	<!-- Bootstrap Player -->
@@ -110,6 +111,107 @@
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 	
+	<!-- FIXED ACTION BUTTON -->
+	<div class="action-button-circle" data-toggle="modal" data-target="#list-modal">
+		<?php print $ui->getCircleButton("list_and_call_recording", "plus"); ?>
+	</div>
+<?php
+	/*
+	* APIs for add form
+	*/
+	$lists = $ui->API_getListAllRecordings();
+	$campaign = $ui->API_getListAllCampaigns();
+?>
+	<div class="modal fade" id="list-modal" tabindex="-1"aria-labelledby="list-modal" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius:5px;">
+				
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title animate-header" id="scripts"><b>List and Call Recordings Wizard >> Add New List and Call Recordings</b></h4>
+				</div>
+				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				
+				<form action="CreateTelephonyUser.php" method="POST" id="create_form" class="form-horizontal " role="form">
+				<!-- STEP 1 -->
+					<div class="wizard-step">
+						<div class="row" style="padding-top:10px;padding-bottom:0px;">
+							<p class="col-sm-12"><small><i> - - - All fields with ( </i></small> <b>*</b> <small><i> ) are Required Field.  - - -</i></small></p>
+						</div>
+					
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="list_id" style="padding-top:15px;">List ID:</label>
+							<div class="col-sm-8" style="padding-top:10px;">
+								<input type="text" class="form-control" name="list_id" id="list_id" value="<?php echo $script_id_for_form;?>" disabled />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="list_name" style="padding-top:15px;">List Name:</label>
+							<div class="col-sm-8" style="padding-top:10px;">
+								<input type="text" class="form-control" name="list_name" id="list_name" placeholder="List Name" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="list_desc" style="padding-top:15px;">List Description:</label>
+							<div class="col-sm-8" style="padding-top:10px;">
+								<input type="text" class="form-control" name="list_desc" id="list_desc" placeholder="List Description" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="status" style="padding-top:15px;">Campaign: </label>
+							<div class="col-sm-7" style="padding-top:10px;">
+								<select name="status" class="form-control">
+									<?php
+										for($i=0; $i < count($campaign->campaign_id);$i++){
+											echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_name[$i]." </option>";
+										}
+									?>			
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="status" style="padding-top:15px;">Active: </label>
+							<div class="col-sm-4" style="padding-top:10px;">
+								<select name="status" class="form-control">
+									<option value="Y" selected>Yes</option>
+									<option value="N" >No</option>						
+								</select>
+							</div>
+						</div>
+	
+					</div>
+				</form>
+		
+				</div> <!-- end of modal body -->
+				
+				<!-- NOTIFICATIONS -->
+				<div id="notifications">
+					<div class="output-message-success" style="display:none;">
+						<div class="alert alert-success alert-dismissible" role="alert">
+						  <strong>Success!</strong> New Agent added.
+						</div>
+					</div>
+					<div class="output-message-error" style="display:none;">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+						  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
+						</div>
+					</div>
+					<div class="output-message-incomplete" style="display:none;">
+						<div class="alert alert-danger alert-dismissible" role="alert">
+						  Please fill-up all the fields correctly and do not leave any fields with (<strong> * </strong>) blank.
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+                <!-- The wizard button will be inserted here. -->
+                    <button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
+                    <input type="submit" class="btn btn-primary" id="submit_usergroup" value="Submit" style="display: inline-block;">
+                </div>
+			</div>
+		</div>
+	</div><!-- end of modal -->
+
 	<!-- Modal -->
 	<div id="call-playback-modal" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
@@ -139,12 +241,14 @@
 	<!-- End of modal -->
 		<!-- Forms and actions -->
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<script src="js/easyWizard.js" type="text/javascript"></script> 
 		<!-- SLIMSCROLL-->
    		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
    		
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('#recordings').dataTable();
+				$('#list-modal').wizard();
 				// $('#call-playback-modal').modal('show');
 				
 				$('.play_audio').click(function(){

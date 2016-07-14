@@ -3509,7 +3509,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 	
-	public function ActionMenuForCampaigns($id) {
+	public function ActionMenuForCampaigns($id, $name) {
 		
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3520,7 +3520,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="view-campaign" href="#" data-id="'.$id.'">View Info</a></li>
 			<li><a class="edit-campaign" href="#" data-id="'.$id.'">Edit Campaign</a></li>
-			<li><a class="delete-campaign" href="#" data-id="'.$id.'">Delete Campaign</a></li>
+			<li><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Campaign</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3532,8 +3532,8 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function getListAllRecordings($goUser, $goPass, $goAction, $responsetype){
-	    $url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
+	public function API_getListAllRecordings(){
+		$url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
@@ -3549,6 +3549,12 @@ error_reporting(E_ERROR | E_PARSE);
 	    $data = curl_exec($ch);
 	    curl_close($ch);
 	    $output = json_decode($data);
+	    
+	    return $output;
+	}
+
+	public function getListAllRecordings($goUser, $goPass, $goAction, $responsetype){
+	    $output = $this->API_getListAllRecordings();
 
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -4120,7 +4126,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 	
-	public function ActionMenuForDisposition($id) {
+	public function ActionMenuForDisposition($id, $name) {
 		 return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -4130,7 +4136,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="view_disposition" href="#" data-id="'.$id.'">View Disposition</a></li>
 			<li><a class="edit_disposition" href="#" data-id="'.$id.'">Edit Disposition</a></li>
-			<li><a class="delete_disposition" href="#" data-id="'.$id.'">Delete Disposition</a></li>
+			<li><a class="delete_disposition" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Disposition</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4162,7 +4168,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 
-	public function ActionMenuForLeadFilters($id) {
+	public function ActionMenuForLeadFilters($id, $name) {
 		 return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -4172,7 +4178,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="view_leadfilter" href="#" data-id="'.$id.'">View Lead Filter</a></li>
 			<li><a class="edit_leadfilter" href="#" data-id="'.$id.'">Edit Lead Filter</a></li>
-			<li><a class="delete_leadfilter" href="#" data-id="'.$id.'">Delete Lead Filter</a></li>
+			<li><a class="delete_leadfilter" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Lead Filter</a></li>
 		    </ul>
 		</div>';
 	}
