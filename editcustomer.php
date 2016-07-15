@@ -58,7 +58,7 @@ if ($list_id_ct > 0) {
 		$state 			= $output->state[$i];
 		$country 		= $output->country[$i];
 		$gender 		= $output->gender[$i];
-		$data_of_birth 	= $output->data_of_birth[$i];
+		$date_of_birth 	= $output->date_of_birth[$i];
 		$comments 		= $output->comments[$i];
 		$title 			= $output->title[$i];
 		$call_count 	= $output->call_count[$i];
@@ -66,7 +66,7 @@ if ($list_id_ct > 0) {
 	}
 }
 $fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
-$data_of_birth = date('Y-m-d', strtotime($data_of_birth));
+$date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 //var_dump($output);
  $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
  									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
@@ -193,6 +193,9 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 			.hide_div{
 				display: none;
 			}
+			.btn.btn-raised {
+				box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+			}
 		</style>
     </head>
     <?php print $ui->creamyAgentBody(); ?>
@@ -257,6 +260,10 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 										 <li role="presentation" class="active">
 											<a href="#profile" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
 											   <em class="fa fa-user fa-fw"></em>Profile</a>
+										 </li>
+										 <li role="presentation">
+											<a href="#comments" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+											   <em class="fa fa-comments-o fa-fw"></em>Comments</a>
 										 </li>
 										 <li role="presentation">
 											<a href="#activity" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
@@ -414,18 +421,9 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                        <p style="padding-right:5px;padding-top: 20px;">Date Of Birth:</p> 
 							                    </div>
 												<div class="form-group">
-													<?php echo $date_of_birth;?>
-													<input type="date" id="date_of_birth" value="<?php echo $data_of_birth;?>" name="date_of_birth" class="form-control input-disabled" disabled>
+													<?php //echo $date_of_birth;?>
+													<input type="date" id="date_of_birth" value="<?php echo $date_of_birth;?>" name="date_of_birth" class="form-control input-disabled" disabled>
 							                    </div>						                   
-											</form>
-											<form role="form" id="comment_form" class="formMain form-inline" >
-												<div class="form-group">
-							                        <p style="padding-right:0px;padding-top: 20px;">Comments:</p> 
-													<button id="ViewCommentButton" onClick="ViewComments('ON');" value="-History-" class="hidden"></button>
-												</div>
-												<div class="form-group">
-													<textarea rows="5" cols="73" id="comments" name="comments" placeholder="Comments" class="form-control textarea input-disabled" style="resize:none;" disabled><?=$comments?></textarea>
-							                    </div>					                   
 											</form>
 											</div>
 											<div style="padding-top:10px;padding-left:20px;">
@@ -515,6 +513,25 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                </div>
 							               
 										</div><!--End of Profile-->
+										
+										<div id="comments" role="tabpanel" class="tab-pane">
+											<div style="padding-top:20px;padding-left:20px;padding-right:30px;">
+												<h4>Comments
+													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
+												</h4>
+												<form role="form" id="comment_form" class="formMain form-inline" >
+													<div class="form-group hidden">
+														<p style="padding-right:0px;padding-top: 20px;">Comments:</p> 
+														<button id="ViewCommentButton" onClick="ViewComments('ON');" value="-History-" class="hidden"></button>
+													</div>
+													<div class="form-group" style="float: left; width:100%;">
+														<textarea rows="5" id="comments" name="comments" placeholder="Comments" class="form-control textarea input-disabled" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
+													</div>
+													<div style="clear:both;"></div>
+													<br>
+												</form>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -605,7 +622,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
     <div class="tab-content" style="border-width:0;">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-dialer-tab">
-        <ul class="control-sidebar-menu" id="go_agent_dialpad">
+        <ul class="control-sidebar-menu" id="go_agent_dialer">
 			
         </ul>
         <!-- /.control-sidebar-menu -->
@@ -616,6 +633,10 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 		
         <h3 class="control-sidebar-heading"><?php $lh->translateText("Manual Dial"); ?>:</h3>
         <ul class="control-sidebar-menu" id="go_agent_manualdial" style="margin-top: -10px;padding: 0 15px;">
+			
+        </ul>
+
+        <ul class="control-sidebar-menu" id="go_agent_dialpad" style="margin-top: 15px;padding: 0 15px;">
 			
         </ul>
 		
