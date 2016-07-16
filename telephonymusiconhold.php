@@ -122,6 +122,13 @@ error_reporting(E_ALL);
 		<?php print $ui->getCircleButton("moh", "plus"); ?>
 	</div>
 
+<?php
+ /*
+  * APIs needed for form
+  */
+   $user_groups = $ui->API_goGetUserGroupsList();
+?>
+
 	<!-- Modal -->
 	<div id="view-moh-modal" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
@@ -134,7 +141,7 @@ error_reporting(E_ALL);
 	      </div>
 	      <div class="modal-body">
 		<div class="form-horizontal">
-			<div class="message_box"></div>
+			
 			<div class="form-group">
 				<label class="control-label col-lg-4">Music on Hold Name:</label>
 				<div class="col-lg-7">
@@ -154,10 +161,13 @@ error_reporting(E_ALL);
 				<label class="control-label col-lg-4">User Group:</label>
 				<div class="col-lg-7">
 					<select class="form-control moh_user_group">
-						<option value="---ALL---">--- All User Groups ---</option>
-						<option value="ADMIN">ADMIN - GOAUTODIAL ADMINISTRATORS</option>
-						<option value="AGENTS">AGENTS - GOAUTODIAL AGENTS</option>
-						<option value="SUPERVISOR">SUPERVISOR - SUPERVISOR</option>
+						<?php
+                            for($i=0;$i<count($user_groups->user_group);$i++){
+                        ?>
+                            <option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i].' - '.$user_groups->group_name[$i];?>  </option>
+                        <?php
+                            }
+                        ?>
 					</select>
 				</div>
 			</div>
@@ -172,21 +182,17 @@ error_reporting(E_ALL);
 			</div>
 		</div>
 	      </div>
+          <div class="message_box"></div>
 	      <div class="modal-footer">
-		<button type="button" class="btn btn-primary btn-update-moh-info" data-id="">Modify</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	           <button type="button" class="btn btn-primary btn-update-moh-info" data-id="">Modify</button>
+	           <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
 	      </div>
 	    </div>
 	    <!-- End of modal content -->
 	  </div>
 	</div>
 	<!-- End of modal -->
-<?php
- /*
-  * APIs needed for form
-  */
-   $user_groups = $ui->API_goGetUserGroupsList();
-?>
+
 	<!-- ADD USER GROUP MODAL -->
     <div class="modal fade" id="moh-wizard" tabindex="-1" aria-labelledby="moh-wizard" >
         <div class="modal-dialog" role="document">
@@ -363,8 +369,8 @@ error_reporting(E_ALL);
                         validate_usergroup = 0;
                     }
                 });
-
-				$('.edit-moh').click(function(){
+                
+                $(document).on('click','.edit-moh',function() {
 					var moh_id = $(this).attr('data-id');
 
 					$.ajax({
@@ -403,13 +409,20 @@ error_reporting(E_ALL);
 							var message = '<div class="alert alert-success">';
 							    message += '<strong>Success!</strong> Record successfully updated.';
 							    message += '</div>';
+                                $('.message_box').html(message);
+                                $('.message_box').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                                window.setTimeout(function(){location.reload()},2000)   
+
 						      } else {
-							var message = '<div class="alert alert-success">';
+							var message = '<div class="alert alert-danger">';
 							    message += '<strong>Error!</strong> Something went wrong with the update.';
 							    message += '</div>';
+                                $('.message_box').html(message);
+                                $('.message_box').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+
 						      }
 						      
-						      $('.message_box').html(message);
+						      
 						}
 					});
 				});

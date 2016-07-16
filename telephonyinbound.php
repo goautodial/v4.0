@@ -710,7 +710,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="user_group" >DID Route: </label>
+							<label class="col-sm-4 control-label" for="route" >DID Route: </label>
 							<div class="col-sm-6">
 								<select class="form-control" id="route" name="route">
 									<option value="AGENT"> Agent </option>
@@ -1185,8 +1185,7 @@
 					$(form).submit();
 				 });
 				 //EDIT PHONENUMBER/DID
-				 $(".edit-phonenumber").click(function(e) {
-					e.preventDefault();
+				 $(document).on('click','.edit-phonenumber',function() {
 					var url = './edittelephonyinbound.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="did" value="' + $(this).attr('data-id') + '" /></form>');
 					//$('body').append(form);  // This line is not necessary

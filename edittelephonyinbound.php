@@ -774,7 +774,7 @@ if (isset($_POST["did"])) {
 						$postfields["goPass"] = goPass; #Password goes here. (required)
 						$postfields["goAction"] = "goGetDIDInfo"; #action performed by the [[API:Functions]]. (required)
 						$postfields["responsetype"] = responsetype; #json. (required)
-						$postfields["did_pattern"] = $did; #Desired did. (required)
+						$postfields["did_id"] = $did; #Desired did. (required)
             
 						$ch = curl_init();
 						curl_setopt($ch, CURLOPT_URL, $url);
@@ -804,8 +804,8 @@ if (isset($_POST["did"])) {
 							<!-- BASIC SETTINGS -->
 								<div class="panel text-left" style="margin-top: 20px; padding: 0px 30px">
 									<div class="form-group">
-										<label for="exten">DID NUMBER</label>
-										<input type="text" class="form-control" name="exten" id="exten" value="<?php echo $output->did_pattern[$i];?>">
+										<label for="did_pattern">DID NUMBER</label>
+										<input type="text" class="form-control" name="did_pattern" id="did_pattern" value="<?php echo $output->did_pattern[$i];?>">
 									</div>
 									<div class="form-group">
 										<label for="desc">Description</label>
@@ -1130,6 +1130,9 @@ if (isset($_POST["did"])) {
 
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
+
+	<!-- SLIMSCROLL-->
+    <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
