@@ -285,6 +285,34 @@ class GOagent extends Module {
 			}
 		}
 		
+		###### Removed the DTMF HotKeys
+		//$(document).on('keydown', function(event) {
+		//	var keys = {
+		//		48: '0', 49: '1', 50: '2', 51: '3', 52: '4', 53: '5', 54: '6', 55: '7', 56: '8', 57: '9'
+		//	};
+		//	
+		//	if (keys[event.which] === undefined) {
+		//		return;
+		//	}
+		//	
+		//	console.log('keydown: '+keys[event.which], event);
+		//	var options = {
+		//		'duration': 160,
+		//		'eventHandlers': {
+		//			'succeeded': function(originator, response) {
+		//				console.log('DTMF succeeded', originator, response);
+		//			},
+		//			'failed': function(originator, response, cause) {
+		//				console.log('DTMF failed', originator, response, cause);
+		//			},
+		//		}
+		//	};
+		//	
+		//	if (live_customer_call) {
+		//		session.sendDTMF(keys[event.which], options);
+		//	}
+		//});
+		
 		$str = <<<EOF
 		<link type='text/css' rel='stylesheet' href='{$goModuleDIR}css/style.css'></link>
 					<script type='text/javascript' src='{$goModuleDIR}GOagentJS.php'></script>
@@ -295,6 +323,7 @@ class GOagent extends Module {
 					var audioElement = document.querySelector('#remoteStream');
 					var localStream;
 					var remoteStream;
+					var globalSession;
 					
 					var configuration = {
 						'ws_servers': '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
@@ -361,32 +390,7 @@ class GOagent extends Module {
 							audioElement = document.querySelector('#remoteStream');
 							audioElement.src = window.URL.createObjectURL(remoteStream);
 							
-							$(document).on('keydown', function(event) {
-								var keys = {
-									48: '0', 49: '1', 50: '2', 51: '3', 52: '4', 53: '5', 54: '6', 55: '7', 56: '8', 57: '9'
-								};
-								
-								if (keys[event.which] === undefined) {
-									return;
-								}
-								
-								console.log('keydown: '+keys[event.which], event);
-								var options = {
-									'duration': 160,
-									'eventHandlers': {
-										'succeeded': function(originator, response) {
-											console.log('DTMF succeeded', originator, response);
-										},
-										'failed': function(originator, response, cause) {
-											console.log('DTMF failed', originator, response, cause);
-										},
-									}
-								};
-								
-								if (live_customer_call) {
-									session.sendDTMF(keys[event.which], options);
-								}
-							});
+							globalSession = session;
 						});
 					
 						session.on('removestream', function (data) {
@@ -559,9 +563,11 @@ class GOagent extends Module {
 								</div>
 								<div class="modal-footer">
 									<input type="hidden" name="DispoSelection" id="DispoSelection" value="" />
-									<label><input type="checkbox" name="DispoSelectStop" id="DispoSelectStop" value="0" style="vertical-align: bottom;" /> Pause Agent</label> &nbsp;&nbsp;
-									<button class="btn btn-default btn-raised" id="btn-dispo-reset">Clear Form</button> 
-									<button class="btn btn-warning btn-raised" id="btn-dispo-submit">Submit</button>
+									<span class="pull-left" style="margin-top: 5px;"><label><input type="checkbox" name="DispoSelectStop" id="DispoSelectStop" value="0" style="vertical-align: bottom;" /> &nbsp; Pause Agent</label></span>
+									<span class="pull-right">
+										<button class="btn btn-default btn-raised" id="btn-dispo-reset">Clear Form</button> 
+										<button class="btn btn-warning btn-raised" id="btn-dispo-submit">Submit</button>
+									</span>
 								</div>
 							</div>
 						</div>
