@@ -290,6 +290,7 @@ $(document).ready(function() {
                 
                 if (live_customer_call < 1) {
                     $("#edit-profile, #for_dtmf").addClass('hidden');
+                    $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     //toggleStatus('NOLIVE');
                     
@@ -420,6 +421,7 @@ $(document).ready(function() {
                         $(".formMain input[name='seconds']").val(live_call_seconds);
                         $("#SecondsDISP").html(live_call_seconds);
                         $("#edit-profile, #for_dtmf").removeClass('hidden');
+                        $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
                         $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
                     }
                     if (XD_live_customer_call == 1) {
@@ -755,11 +757,11 @@ $(document).ready(function() {
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-7' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 7 </button>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-8' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 8 </button>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-9' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 0 5px 0; font-size: 16px; font-family: monospace;'> 9 </button>");
-    $("#AgentDialPad").append("<button type='button' id='dialer-pad-ast' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> * </button>");
+    $("#AgentDialPad").append("<button type='button' id='dialer-pad-ast' class='btn btn-default btn-lg btn-raised hidden' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> * </button>");
+    $("#AgentDialPad").append("<button type='button' id='dialer-pad-clear' class='btn btn-default btn-lg btn-raised' style='padding: 12.5px 23px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;' title='<?=$lh->translationFor('clear')?>'> <i class='fa fa-times'></i> </button>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-0' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 0 </button>");
-    $("#AgentDialPad").append("<button type='button' id='dialer-pad-hash' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 0 5px 0; font-size: 16px; font-family: monospace;'> # </button>");
-    $("#AgentDialPad").append("<button type='button' id='dialer-pad-clear' class='btn btn-default btn-lg btn-raised' style='padding: 10px 39px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> Clear </button>");
-    $("#AgentDialPad").append("<button type='button' id='dialer-pad-undo' class='btn btn-default btn-lg btn-raised' style='padding: 12.5px 23px; margin: 0 0 5px 0; font-size: 16px; font-family: monospace;'> <i class='fa fa-times'></i> </button>");
+    $("#AgentDialPad").append("<button type='button' id='dialer-pad-hash' class='btn btn-default btn-lg btn-raised hidden' style='padding: 10px 25px; margin: 0 0 5px 0; font-size: 16px; font-family: monospace;'> # </button>");
+    $("#AgentDialPad").append("<button type='button' id='dialer-pad-undo' class='btn btn-default btn-lg btn-raised' style='padding: 12.5px 22.6px; margin: 0 0 5px 0; font-size: 16px; font-family: monospace;' title='<?=$lh->translationFor('undo')?>'> <i class='fa fa-undo'></i> </button>");
     $("#AgentDialPad").append("<span id='for_dtmf' class='hidden'><small>(<?=$lh->translationFor('for_dtmf')?>)</small></span>");
     
     $("#go_agent_manualdial").append("<li><div class='input-group'><input type='text' maxlength='18' name='MDPhonENumbeR' id='MDPhonENumbeR' class='form-control phonenumbers-only' value='' placeholder='<?=$lh->translationFor('enter_phone_number')?>' onkeyup='activateLinks();' onchange='activateLinks();' style='padding: 3px 2px; color: #222; height: 30px;' aria-label='...' /><div class='input-group-btn'><button type='button' class='btn btn-success' style='padding: 3px 3px 3px 5px;' id='manual-dial-now'><?=$lh->translationFor('dial')?></button><button type='button' class='btn btn-success dropdown-toggle' data-toggle='dropdown' style='padding: 11px 6px 12px;' id='manual-dial-dropdown' aria-haspopup='true' aria-expanded='false'><span class='caret'></span></button><ul class='dropdown-menu dropdown-menu-right'><li><a href='javascript:void(0)' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></a></li><li><a href='javascript:void(0)' id='manual-dial-preview'><?=$lh->translationFor('preview_call')?></a></li></ul></div></div><small>(<?=$lh->translationFor('digits_only_please')?>)</small><input type='hidden' name='MDDiaLCodE' id='MDDiaLCodE' class='digits-only' value='1' /><input type='hidden' name='MDPhonENumbeRHiddeN' id='MDPhonENumbeRHiddeN' value='' /><input type='hidden' name='MDLeadID' id='MDLeadID' value='' /><input type='hidden' name='MDType' id='MDType' value='' /><input type='checkbox' name='LeadLookUP' id='LeadLookUP' size='1' value='0' class='hidden' disabled /><input type='hidden' size='24' maxlength='20' name='MDDiaLOverridE' id='MDDiaLOverridE' class='cust_form' value='' /></li>");
@@ -1261,6 +1263,7 @@ function btnLogMeOut () {
         });
         logoutWarn = true;
         logout_stop_timeouts = 1;
+        $("#MainStatusSpan").html('&nbsp;');
     } else {
         refresh_interval = 1000;
     }
@@ -1268,27 +1271,10 @@ function btnLogMeOut () {
 
 function btnDialHangup () {
     //console.log(live_customer_call + ' ' + toggleButton('DialHangup'));
-    if (live_customer_call == 1) {
+    if (live_customer_call == 1 || dialingINprogress == 1) {
         if (toggleButton('DialHangup')) {
-            //toggleButton('DialHangup', 'off');
-            //AgentDispoing = 1;
-            
-            //Pause
-            //if ($("#DispoSelectStop").is(':checked')) {
-            //    //sendToAPI('PAUSE');
-            //    toggleButton('ResumePause', 'resume');
-            //} else {
-            //    toggleButton('ResumePause', 'on');
-            //}
-            
-            //Hangup
-            //live_customer_call = 0;
+            dialingINprogress = 0;
             DialedCallHangup();
-            //delay(sendToAPI('HANGUP'), 500);
-            
-            //Dispose
-            //DispoSelectBox();
-            //delay(sendToAPI('STATUS', 'A'), 1000);
         }
     } else {
         toggleButton('DialHangup', 'hangup', false);
@@ -1439,16 +1425,16 @@ function updateButtons () {
         $("#go_agent_logout").removeClass('hidden');
         $("#go_agent_status").removeClass('hidden');
         $("#go_agent_manualdial").removeClass('hidden');
-        $("#go_agent_manualdial").prev().removeClass('hidden');
         $("#AgentDialPad").removeClass('hidden');
+        $("#go_agent_other_buttons").removeClass('hidden');
     } else {
         $("#go_nav_btn").addClass('hidden');
         $("#go_agent_login").removeClass('hidden');
         $("#go_agent_logout").addClass('hidden');
         $("#go_agent_status").addClass('hidden');
         $("#go_agent_manualdial").addClass('hidden');
-        $("#go_agent_manualdial").prev().addClass('hidden');
         $("#AgentDialPad").addClass('hidden');
+        $("#go_agent_other_buttons").addClass('hidden');
     }
 }
 
@@ -2135,28 +2121,28 @@ function CheckForIncoming () {
             $(".formMain input[name='list_id']").val(this_VDIC_data.list_id);
             $(".formMain input[name='gmt_offset_now']").val(this_VDIC_data.gmt_offset_now);
             $(".formMain input[name='phone_code']").val(this_VDIC_data.phone_code);
-            $(".formMain input[name='phone_number']").val(this_VDIC_data.phone_number);
-            $(".formMain input[name='title']").val(this_VDIC_data.title);
-            $(".formMain input[name='first_name']").val(this_VDIC_data.first_name);
-            $(".formMain input[name='middle_initial']").val(this_VDIC_data.middle_initial);
-            $(".formMain input[name='last_name']").val(this_VDIC_data.last_name);
-            $(".formMain input[name='address1']").val(this_VDIC_data.address1);
-            $(".formMain input[name='address2']").val(this_VDIC_data.address2);
-            $(".formMain input[name='address3']").val(this_VDIC_data.address3);
-            $(".formMain input[name='city']").val(this_VDIC_data.city);
-            $(".formMain input[name='state']").val(this_VDIC_data.state);
-            $(".formMain input[name='province']").val(this_VDIC_data.province);
-            $(".formMain input[name='postal_code']").val(this_VDIC_data.postal_code);
-            $(".formMain input[name='country_code']").val(this_VDIC_data.country_code);
-            $(".formMain input[name='gender']").val(this_VDIC_data.gender);
+            $(".formMain input[name='phone_number']").val(this_VDIC_data.phone_number).trigger('change');
+            $(".formMain input[name='title']").val(this_VDIC_data.title).trigger('change');
+            $(".formMain input[name='first_name']").val(this_VDIC_data.first_name).trigger('change');
+            $(".formMain input[name='middle_initial']").val(this_VDIC_data.middle_initial).trigger('change');
+            $(".formMain input[name='last_name']").val(this_VDIC_data.last_name).trigger('change');
+            $(".formMain input[name='address1']").val(this_VDIC_data.address1).trigger('change');
+            $(".formMain input[name='address2']").val(this_VDIC_data.address2).trigger('change');
+            $(".formMain input[name='address3']").val(this_VDIC_data.address3).trigger('change');
+            $(".formMain input[name='city']").val(this_VDIC_data.city).trigger('change');
+            $(".formMain input[name='state']").val(this_VDIC_data.state).trigger('change');
+            $(".formMain input[name='province']").val(this_VDIC_data.province).trigger('change');
+            $(".formMain input[name='postal_code']").val(this_VDIC_data.postal_code).trigger('change');
+            $(".formMain input[name='country_code']").val(this_VDIC_data.country_code).trigger('change');
+            $(".formMain input[name='gender']").val(this_VDIC_data.gender).trigger('change');
             var dateOfBirth = this_VDIC_data.date_of_birth.toString('yyyy-MM-dd');
-            $(".formMain input[name='date_of_birth']").val(dateOfBirth);
-            $(".formMain input[name='alt_phone']").val(this_VDIC_data.alt_phone);
-            $(".formMain input[name='email']").val(this_VDIC_data.email);
+            $(".formMain input[name='date_of_birth']").val(dateOfBirth).trigger('change');
+            $(".formMain input[name='alt_phone']").val(this_VDIC_data.alt_phone).trigger('change');
+            $(".formMain input[name='email']").val(this_VDIC_data.email).trigger('change');
             $(".formMain input[name='security_phrase']").val(this_VDIC_data.security);
             var REGcommentsNL = new RegExp("!N","g");
             var thisComments = this_VDIC_data.comments.replace(REGcommentsNL, "\n");
-            $(".formMain input[name='comments']").val(thisComments);
+            $(".formMain input[name='comments']").val(thisComments).trigger('change');
             $(".formMain input[name='called_count']").val(this_VDIC_data.called_count);
             CBentry_time                                = this_VDIC_data.CBentry_time;
             CBcallback_time                             = this_VDIC_data.CBcallback_time;
@@ -2741,6 +2727,7 @@ function ManualDialCheckChannel(taskCheckOR) {
                 // bad grab of Local channel, try again
                 MD_ring_seconds++;
             } else {
+                dialingINprogress = 0;
                 custchannellive = 1;
                 
                 $(".formMain input[name='uniqueid']").val(this_MD_data.uniqueid);
@@ -3134,7 +3121,7 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
         if (per_call_notes == 'ENABLED') {
             var test_notes = $("#call_notes_dispo").val();
             if (test_notes.length > 0)
-                {$(".formMain input[name='call_notes']").val(test_notes);}
+                {$(".formMain input[name='call_notes']").val(test_notes).trigger('change');}
             $("#PerCallNotesContent").html("<br /><b><font size='3'><?=$lh->translationFor('call_notes')?>: </font></b><br /><textarea name='call_notes_dispo' id='call_notes_dispo' rows='2' cols='100' class='cust_form_text' value=''>" + $(".formMain input[name='call_notes']").val() + "</textarea>");
         } else {
             $("#PerCallNotesContent").html("<input type='hidden' name='call_notes_dispo' id='call_notes_dispo' value='' />");
@@ -3291,25 +3278,25 @@ function DispoSelectSubmit() {
                 var tmp_pn = $("#phone_numberDISP");
                 tmp_pn.html(' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ');
             }
-            $(".formMain input[name='phone_number']").val('');
-            $(".formMain input[name='title']").val('');
-            $(".formMain input[name='first_name']").val('');
-            $(".formMain input[name='middle_initial']").val('');
-            $(".formMain input[name='last_name']").val('');
-            $(".formMain input[name='address1']").val('');
-            $(".formMain input[name='address2']").val('');
-            $(".formMain input[name='address3']").val('');
-            $(".formMain input[name='city']").val('');
-            $(".formMain input[name='state']").val('');
-            $(".formMain input[name='province']").val('');
-            $(".formMain input[name='postal_code']").val('');
-            $(".formMain input[name='country_code']").val('');
-            $(".formMain input[name='gender']").val('');
-            $(".formMain input[name='date_of_birth']").val('');
-            $(".formMain input[name='alt_phone']").val('');
-            $(".formMain input[name='email']").val('');
+            $(".formMain input[name='phone_number']").val('').trigger('change');
+            $(".formMain input[name='title']").val('').trigger('change');
+            $(".formMain input[name='first_name']").val('').trigger('change');
+            $(".formMain input[name='middle_initial']").val('').trigger('change');
+            $(".formMain input[name='last_name']").val('').trigger('change');
+            $(".formMain input[name='address1']").val('').trigger('change');
+            $(".formMain input[name='address2']").val('').trigger('change');
+            $(".formMain input[name='address3']").val('').trigger('change');
+            $(".formMain input[name='city']").val('').trigger('change');
+            $(".formMain input[name='state']").val('').trigger('change');
+            $(".formMain input[name='province']").val('').trigger('change');
+            $(".formMain input[name='postal_code']").val('').trigger('change');
+            $(".formMain input[name='country_code']").val('').trigger('change');
+            $(".formMain input[name='gender']").val('').trigger('change');
+            $(".formMain input[name='date_of_birth']").val('').trigger('change');
+            $(".formMain input[name='alt_phone']").val('').trigger('change');
+            $(".formMain input[name='email']").val('').trigger('change');
             $(".formMain input[name='security_phrase']").val('');
-            $(".formMain input[name='comments']").val('');
+            $(".formMain input[name='comments']").val('').trigger('change');
             $(".formMain input[name='audit_comments']").val('');
             if (qc_enabled > 0) {
                 $(".formMain input[name='ViewCommentButton']").val('');
@@ -3661,9 +3648,9 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
 
 
 function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnStagE, mdVendorid, mdgroupalias, mdtype) {
-    //dialingINprogress = 1;
+    dialingINprogress = 1;
     if (waiting_on_dispo > 0) {
-        //dialingINprogress = 0;
+        dialingINprogress = 0;
         alert("<?=$lh->translationFor('system_delay_try_again')?>\n\n<?=$lh->translationFor('code')?>: " + agent_log_id + " - " + waiting_on_dispo);
     } else {
         inOUT = 'OUT';
@@ -3831,32 +3818,32 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     cust_phone_code                         = MDnextResponse_array[7];
                     $(".formMain input[name='phone_code']").val(cust_phone_code);
                     cust_phone_number                       = MDnextResponse_array[8];
-                    $(".formMain input[name='phone_number']").val(cust_phone_number);
-                    $(".formMain input[name='title']").val(MDnextResponse_array[9]);
+                    $(".formMain input[name='phone_number']").val(cust_phone_number).trigger('change');
+                    $(".formMain input[name='title']").val(MDnextResponse_array[9]).trigger('change');
                     cust_first_name                         = MDnextResponse_array[10];
-                    $(".formMain input[name='first_name']").val(cust_first_name);
+                    $(".formMain input[name='first_name']").val(cust_first_name).trigger('change');
                     cust_middle_initial                     = MDnextResponse_array[11];
-                    $(".formMain input[name='middle_initial']").val(cust_middle_initial);
+                    $(".formMain input[name='middle_initial']").val(cust_middle_initial).trigger('change');
                     cust_last_name                          = MDnextResponse_array[12];
-                    $(".formMain input[name='last_name']").val(cust_last_name);
-                    $(".formMain input[name='address1']").val(MDnextResponse_array[13]);
-                    $(".formMain input[name='address2']").val(MDnextResponse_array[14]);
-                    $(".formMain input[name='address3']").val(MDnextResponse_array[15]);
-                    $(".formMain input[name='city']").val(MDnextResponse_array[16]);
-                    $(".formMain input[name='state']").val(MDnextResponse_array[17]);
-                    $(".formMain input[name='province']").val(MDnextResponse_array[18]);
-                    $(".formMain input[name='postal_code']").val(MDnextResponse_array[19]);
-                    $(".formMain input[name='country_code']").val(MDnextResponse_array[20]);
-                    $(".formMain input[name='gender']").val(MDnextResponse_array[21]);
+                    $(".formMain input[name='last_name']").val(cust_last_name).trigger('change');
+                    $(".formMain input[name='address1']").val(MDnextResponse_array[13]).trigger('change');
+                    $(".formMain input[name='address2']").val(MDnextResponse_array[14]).trigger('change');
+                    $(".formMain input[name='address3']").val(MDnextResponse_array[15]).trigger('change');
+                    $(".formMain input[name='city']").val(MDnextResponse_array[16]).trigger('change');
+                    $(".formMain input[name='state']").val(MDnextResponse_array[17]).trigger('change');
+                    $(".formMain input[name='province']").val(MDnextResponse_array[18]).trigger('change');
+                    $(".formMain input[name='postal_code']").val(MDnextResponse_array[19]).trigger('change');
+                    $(".formMain input[name='country_code']").val(MDnextResponse_array[20]).trigger('change');
+                    $(".formMain input[name='gender']").val(MDnextResponse_array[21]).trigger('change');
                     var dateOfBirth = MDnextResponse_array[22].toString('yyyy-MM-dd');
-                    $(".formMain input[name='date_of_birth']").val(dateOfBirth);
-                    $(".formMain input[name='alt_phone']").val(MDnextResponse_array[23]);
+                    $(".formMain input[name='date_of_birth']").val(dateOfBirth).trigger('change');
+                    $(".formMain input[name='alt_phone']").val(MDnextResponse_array[23]).trigger('change');
                     cust_email                              = MDnextResponse_array[24];
-                    $(".formMain input[name='email']").val(cust_email);
+                    $(".formMain input[name='email']").val(cust_email).trigger('change');
                     $(".formMain input[name='security_phrase']").val(MDnextResponse_array[25]);
                     var REGcommentsNL = new RegExp("!N","g");
                     MDnextResponse_array[26] = MDnextResponse_array[26].replace(REGcommentsNL, "\n");
-                    $(".formMain input[name='comments']").val(MDnextResponse_array[26]);
+                    $(".formMain input[name='comments']").val(MDnextResponse_array[26]).trigger('change');
                     called_count                            = MDnextResponse_array[27];
                     previous_called_count                   = MDnextResponse_array[27];
                     previous_dispo                          = MDnextResponse_array[2];
