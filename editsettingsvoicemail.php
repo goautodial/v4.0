@@ -17,6 +17,8 @@ $user = \creamy\CreamyUser::currentUser();
 $vmid = NULL;
 if (isset($_POST["vmid"])) {
 	$vmid = $_POST["vmid"];
+}else{
+	header("location: settingsvoicemails.php");
 }
 
 ?>
@@ -87,7 +89,7 @@ if (isset($_POST["vmid"])) {
                 </section>
 
                 <!-- Main content -->
-                <section class="content" style="padding:30px; padding-left:10%; padding-right:10%; margin-left: 0; margin-right: 0;">
+                <section class="content">
 					<!-- standard custom edition form -->
 					<?php
 					$errormessage = NULL;
@@ -111,7 +113,7 @@ if (isset($_POST["vmid"])) {
 				         curl_close($ch);
 				         $output = json_decode($data);
 
-				        var_dump($output);
+				        //var_dump($data);
 
 						if ($output->result=="success") {
 							
@@ -123,7 +125,7 @@ if (isset($_POST["vmid"])) {
 							
 						<h4 style="padding:15px;"><a type="button" class="btn" href="settingsvoicemails.php"><i class="fa fa-arrow-left"></i> Cancel</a><center><b>MODIFY VOICEMAIL</b></center></h4>
 								
-							<form id="modifyphones">
+							<form id="modifyform">
 								<input type="hidden" name="modifyid" value="<?php echo $vmid;?>">
 							
 						<!-- BASIC SETTINGS -->
@@ -145,7 +147,7 @@ if (isset($_POST["vmid"])) {
 									<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->email[$i];?>">
 								</div>
 								<div class="form-group">
-									<label for="status">Active</label>
+									<label for="active">Active</label>
 									<select class="form-control" name="active" id="active">
 									<?php
 										$active = NULL;
@@ -201,12 +203,12 @@ if (isset($_POST["vmid"])) {
 		                    <div id="notifications">
 		                        <div class="output-message-success" style="display:none;">
 		                            <div class="alert alert-success alert-dismissible" role="alert">
-		                              <strong>Success!</strong> Phone <?php echo $vmid?> modified !
+		                              <strong>Success!</strong> Voicemail <?php echo $vmid?> modified !
 		                            </div>
 		                        </div>
 		                        <div class="output-message-error" style="display:none;">
 		                            <div class="alert alert-danger alert-dismissible" role="alert">
-		                              <span id="modifyT_phonesresult"></span>
+		                              <span id="modifyVoicemailresult"></span>
 		                            </div>
 		                        </div>
 		                    </div>
@@ -270,23 +272,20 @@ if (isset($_POST["vmid"])) {
 				/** 
 				 * Modifies a telephony list
 			 	 */
-				$("#modifyphones").validate({
+				$("#modifyform").validate({
                 	submitHandler: function() {
 						//submit the form
 							$("#resultmessage").html();
 							$("#resultmessage").fadeOut();
-							$.post("./php/ModifySettingsPhones.php", //post
-							$("#modifyphones").serialize(), 
+							$.post("./php/ModifySettingsVoicemail.php", //post
+							$("#modifyform").serialize(), 
 								function(data){
 									//if message is sent
 									if (data == 1) {
 										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-                                        window.setTimeout(function(){location.reload()},2000)			
+                                        //window.setTimeout(function(){location.reload()},2000)			
 									} else {
-									<?php 
-										print $ui->fadingInMessageJS($errorMsg, "modifyT_phonesresult");
-									?>
-									
+										$('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 									}
 									//
 								});
@@ -332,7 +331,7 @@ if (isset($_POST["vmid"])) {
 	                                $('#delete_notification').show();
 	                                $('#delete_notification_modal').modal('show');
 	                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-	                                window.location.replace("./settingsphones.php");
+	                                window.location.replace("./settingsvoicemails.php");
 	                            }else{
 	                                $('#result_span').html(data);
 	                                $('#delete_notification').show();

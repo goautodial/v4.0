@@ -1477,7 +1477,8 @@ error_reporting(E_ERROR | E_PARSE);
 	public function creamyFooter() {
 		$version = $this->db->getSettingValueForKey(CRM_SETTING_CRM_VERSION);
 		if (empty($version)) { $version = "unknown"; }
-		return '<footer class="main-footer"><div class="pull-right hidden-xs"><b>Version</b> '.$version.'</div><strong>Copyright &copy; 2014 <a href="http://digitalleaves.com">Digital Leaves</a> - <a href="http://woloweb.com">Woloweb</a>.</strong> All rights reserved.</footer>';
+		$version = "4.0";
+		return '<footer class="main-footer"><div class="pull-right hidden-xs"><b>Version</b> '.$version.'</div><strong>Copyright &copy;  <a href="http://www.goautodial.com/">GoAutoDial Inc.</a> & Digital Leaves - Woloweb</strong>(portion). All rights reserved.</footer>';
 	}
 	
 	/** Topbar Menu elements */
@@ -2955,8 +2956,8 @@ error_reporting(E_ERROR | E_PARSE);
 	       	   $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i]); 
 	       	        
 		        $result .= "<tr>
-	                     <td class='hide-on-low'>".$output->userno[$i]."</td>
-						 <td><a class='edit-T_user' href=".$output->userno[$i].">".$output->full_name[$i]."</a></td>";
+	                     <td class='hide-on-low'><a class='edit-T_user' data-id=".$output->user_id[$i].">".$output->userno[$i]."</a></td>
+						 <td>".$output->full_name[$i]."</td>";
 	             $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
 	                     <td class='hide-on-low'>".$output->active[$i]."</td>
 	                     <td style='width: 200px;'>".$action."</td>
@@ -4156,7 +4157,6 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="view_disposition" href="#" data-id="'.$id.'">View Disposition</a></li>
 			<li><a class="edit_disposition" href="#" data-id="'.$id.'">Edit Disposition</a></li>
 			<li><a class="delete_disposition" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Disposition</a></li>
 		    </ul>
@@ -4970,7 +4970,7 @@ error_reporting(E_ERROR | E_PARSE);
 		';
 	}
 
-	public function deleteNotificationModal($action, $id, $result){
+	public function deleteNotificationModal($action, $id, $result, $name){
 		//var_dump($id);
 		return '
 		<div id="delete_notification_modal" class="modal modal-success fade">
