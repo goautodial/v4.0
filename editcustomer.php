@@ -79,6 +79,9 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
         <title>Contact Profile</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<!-- SnackbarJS -->
+        <link href="css/snackbar/snackbar.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/snackbar/material.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
         <!-- Customized Style -->
@@ -121,7 +124,9 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 
         <script type="text/javascript">
 			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
+				$(".preloader").fadeOut("slow", function() {
+					$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000});
+				});
 			});
 		</script>
 		<style>
@@ -197,6 +202,17 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 			}
 			button[id^='show-callbacks-']:hover, button[id^='show-callbacks-']:active {
 				text-decoration: none;
+			}
+			#popup-hotkeys {
+				position: absolute;
+				top: 160px;
+				left: 40px;
+				display: none;
+				box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+				min-width: 480px;
+			}
+			#popup-hotkeys .panel-heading {
+				background-color: #2a2a2a;
 			}
 		</style>
     </head>
@@ -426,12 +442,18 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 												<div class="form-group label-floating">
 													<label for="email" class="control-label">E-mail Address</label>
 							                        <input id="email" name="email" type="text" width="auto" value="<?php echo $email;?>" class="form-control input-disabled" disabled>
+													<span class="form-group-addon">
+														<em class="fa fa-at fa-lg"></em>
+													</span>
 							                    </div>
 												<div class="form-group label-floating">
 													<label for="phone_number" class="control-label">Phone Number</label>
 													<span id="phone_numberDISP" class="hidden"></span>
 													<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
 													<input id="phone_number" name="phone_number" type="number" width="auto" value="<?php echo $phone_number;?>" class="form-control input-disabled" disabled required>
+													<span class="form-group-addon">
+														<em class="fa fa-phone fa-lg"></em>
+													</span>
 							                    </div>
 							                    <div class="form-group label-floating">
 													<label for="alt_phone" class="control-label">Alternative Phone Number</label>
@@ -440,6 +462,9 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 												<div class="form-group label-floating">
 													<label for="address1" class="control-label">Street Address 1</label> 
 													<input id="address1" name="address1" type="text" width="auto" value="<?php echo $address1;?>" class="form-control input-disabled" disabled>
+													<span class="form-group-addon">
+														<em class="fa fa-home fa-lg"></em>
+													</span>
 							                    </div>
 							                    <div class="form-group label-floating">
 							                    	<label for="address2" class="control-label">Street Address 2</label>
@@ -588,6 +613,17 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 						        </div><!-- /.modal-dialog -->
 						    </div><!-- /.modal -->
 
+
+
+							<div id="popup-hotkeys" class="panel clearfix">
+								<div class="panel-heading"><b>AVAILABLE HOT KEYS</b></div>
+								<div class="panel-body">No available hotkeys for this campaign.</div>
+								<div class="panel-footer clearfix">
+									<div class="text-danger sidecolor" style="padding-right: 5px; background-color: inherit;">
+										<small><b>NOTE:</b> Pressing the hot keys above will hangup automatically, if you're currently in a call.</small>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
                 </section><!-- /.content -->
@@ -828,12 +864,12 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 				
 				$('.label-floating .form-control').change(function() {
 					var thisVal = $(this).val();
-					if ($(this).prop('id') != 'date_of_birth') {
-						$(this).parents('.label-floating').toggleClass('focused', (thisVal.length > 0));
-					}
+					$(this).parents('.label-floating').toggleClass('focused', (thisVal.length > 0));
 				});
 			});
 		</script>
+		<!-- SnackbarJS -->
+        <script src="js/snackbar.min.js" type="text/javascript"></script>
 
     </body>
 </html>
