@@ -316,6 +316,7 @@ class GOagent extends Module {
 		$str = <<<EOF
 		<link type='text/css' rel='stylesheet' href='{$goModuleDIR}css/style.css'></link>
 					<script type='text/javascript' src='{$goModuleDIR}GOagentJS.php'></script>
+					<script type='text/javascript' src='{$goModuleDIR}js/addons.js'></script>
 					
 					<audio id="remoteStream" style="display: none;" autoplay controls></audio>
 					<script type="text/javascript" src="{$goModuleDIR}js/jsSIP.js"></script>
@@ -471,6 +472,7 @@ class GOagent extends Module {
 						//		console.log('reply!');
 						//	}
 						//};
+						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000});
 					});
 					
 					phone.on('unregistered', function(e) {
@@ -479,6 +481,7 @@ class GOagent extends Module {
 					
 					phone.on('registrationFailed', function(e) {
 						console.log('registrationFailed', e);
+						$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000});
 					});
 					
 					rtcninja.getUserMedia({

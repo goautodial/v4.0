@@ -4240,7 +4240,7 @@ Gradient Background colors
   opacity: 0.4;
   pointer-events: none;
   position: absolute;
-  transform: translate3d(16px, 5px, 0) scale(1);
+  transform: translate3d(25px, 5px, 0) scale(1);
   transform-origin: left top;
   transition: 240ms;
   color: #333;
@@ -4250,6 +4250,10 @@ Gradient Background colors
   opacity: 1;
   transform: translate3d(3px, -15px, 0) scale(0.75);
   color: #333;
+}
+
+.label-floating .form-control {
+  padding-left: 25px;
 }
 
 .form-control {
@@ -4267,6 +4271,12 @@ Gradient Background colors
 
 .label-floating.focused .form-control::-webkit-input-placeholder {
   color: #bbb;
+}
+
+.label-floating .form-group-addon {
+  position: relative;
+  top: -24px;
+  left: 2px;
 }
 
 /* Material Switch */

@@ -75,12 +75,14 @@
 		# Result was OK!
 		// $status = 1;
 		// $return['msg'] = "New Campaign has been successfully saved.";
-		header("Location: ".$home."?message=Success");
+		$url = str_replace("?message=Success", "", $home);
+		header("Location: ".$url."?message=Success");
 	} else {
 		# An error occured
 		// $status = 0;
 		// $return['msg'] = "Something went wrong please see input data on form.";
-		header("Location: ".$home."?message=Error");
+		$url = str_replace("?message=Error", "", $home);
+		header("Location: ".$url."?message=Error");
 	}
 
 ?>

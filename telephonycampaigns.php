@@ -96,6 +96,8 @@ error_reporting(E_ALL);
 	$campaign = $ui->API_getListAllCampaigns();
 	$disposition = $ui->API_getAllDispositions();
 	$leadfilter = $ui->API_getAllLeadFilters();
+	$country_codes = $ui->getCountryCodes();
+	$list = $ui->API_goGetAllLists();
 ?>			
 				 <div role="tabpanel" class="panel panel-transparent" style="border: 0px;">
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -424,24 +426,53 @@ error_reporting(E_ALL);
 		    				</div>
 		    			</div>
 		    			<div class="form-group">
-		    				<label class="control-label col-lg-4">List ID:</label>
+		    				<label class="control-label col-lg-4">&nbsp;</label>
 		    				<div class="col-lg-8">
-		    					<input id="list-id" name="list_id" type="text" class="form-control">
+		    					<button type="button" class="btn btn-default upload-leads">UPLOAD LEADS</button>
+		    					<small class="text-green success hide">&nbsp;&nbsp;&nbsp;Leads successfully uploaded...</small>
+		    					<small class="text-red error hide">&nbsp;&nbsp;&nbsp;Error. Something went wrong...</small>
 		    				</div>
+		    			</div>
+		    			<div class="form-group">
+		    				<label class="control-label col-lg-4">List ID:</label>
+		    				<label class="control-label col-lg-8" style="text-align: left;">
+		    					<?php 
+		    						$list_id = end($list->list_id) + 1;
+		    						echo $list_id." >> List ".$list_id; 
+		    					?>
+		    				</label>
 		    			</div>
 		    			<div class="form-group">
 		    				<label class="control-label col-lg-4">Country:</label>
 		    				<div class="col-lg-8">
-		    					<input id="country" name="country" type="text" class="form-control">
+		    					<!-- <input id="country" name="country" type="text" class="form-control"> -->
+		    					<select id="country" name="country" class="form-control select2">
+		    						<?php if ($country_codes->result=="success") { ?>
+									<!-- # Result was OK! -->
+										<?php for($i=0;$i < count($country_codes->country);$i++){ ?>
+											<option value="<?php echo $country_codes->country_code[$i]?>">
+												<?php echo $country_codes->country_code[$i]?> >> <?php echo $country_codes->country[$i]?>
+											</option>
+										<?php } ?>
+									<?php } else { ?>
+									<!-- # An error occured -->
+										No record found.
+									<?php } ?>
+		    					</select>
 		    				</div>
 		    			</div>
 		    			<div class="form-group">
 		    				<label class="control-label col-lg-4">Check for duplicates:</label>
 		    				<div class="col-lg-8">
-		    					<input id="check-for-duplicates" name="check_for_duplicates" type="text" class="form-control">
+		    					<!-- <input id="check-for-duplicates" name="check_for_duplicates" type="text" class="form-control"> -->
+		    					<select id="check-for-duplicates" name="check_for_duplicates" class="form-control">
+		    						<option value="NONE">NO DUPLICATE CHECK</option>
+		    						<option value="CHECKLIST">CHECK FOR DUPLICATES BY PHONE IN LIST ID</option>
+		    						<option value="CHECKCAMP">CHECK FOR DUPLICATES BY PHONE IN ALL CAMPAIGN LISTS</option>
+		    					</select>
 		    				</div>
 		    			</div>
-		    			<div class="form-group">
+		    			<!-- <div class="form-group">
 		    				<label class="control-label col-lg-4">Upload Leads:</label>
 		    				<div class="col-lg-8">
 								<div class="input-group">
@@ -450,9 +481,9 @@ error_reporting(E_ALL);
 									<span class="input-group-btn">
 										<button class="btn btn-default btn-leads" type="button">Browse</button>
 									</span>
-								</div><!-- /input-group -->
+								</div>
 		    				</div>
-		    			</div>
+		    			</div> -->
 		    			<div class="form-group">
 		    				<label class="control-label col-lg-4">Dial Method:</label>
 		    				<div class="col-lg-8">
