@@ -40,12 +40,6 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
                 $val = ($val) ? 1 : 0;
             ${$idx} = $val;
             $sess_vars .= "{$idx}|";
-            //if ($idx == 'is_logged_in') {
-            //    $val = ($val) ? 1 : 0;
-            //    echo "var {$idx} = {$val};\n";
-            //} else {
-            //    echo "var {$idx} = '{$val}';\n";
-            //}
         }
     }
     echo "// {$sess_vars}\n";
@@ -764,7 +758,7 @@ $(document).ready(function() {
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-undo' class='btn btn-default btn-lg btn-raised' style='padding: 12.5px 22.6px; margin: 0 0 5px 0; font-size: 16px; font-family: monospace;' title='<?=$lh->translationFor('undo')?>'> <i class='fa fa-undo'></i> </button>");
     $("#AgentDialPad").append("<span id='for_dtmf' class='hidden'><small>(<?=$lh->translationFor('for_dtmf')?>)</small></span>");
     
-    $("#go_agent_manualdial").append("<li><div class='input-group'><input type='text' maxlength='18' name='MDPhonENumbeR' id='MDPhonENumbeR' class='form-control phonenumbers-only' value='' placeholder='<?=$lh->translationFor('enter_phone_number')?>' onkeyup='activateLinks();' onchange='activateLinks();' style='padding: 3px 2px; color: #222; height: 30px;' aria-label='...' /><div class='input-group-btn'><button type='button' class='btn btn-success' style='padding: 3px 3px 3px 5px;' id='manual-dial-now'><?=$lh->translationFor('dial')?></button><button type='button' class='btn btn-success dropdown-toggle' data-toggle='dropdown' style='padding: 11px 6px 12px;' id='manual-dial-dropdown' aria-haspopup='true' aria-expanded='false'><span class='caret'></span></button><ul class='dropdown-menu dropdown-menu-right'><li><a href='javascript:void(0)' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></a></li><li><a href='javascript:void(0)' id='manual-dial-preview'><?=$lh->translationFor('preview_call')?></a></li></ul></div></div><small>(<?=$lh->translationFor('digits_only_please')?>)</small><input type='hidden' name='MDDiaLCodE' id='MDDiaLCodE' class='digits-only' value='1' /><input type='hidden' name='MDPhonENumbeRHiddeN' id='MDPhonENumbeRHiddeN' value='' /><input type='hidden' name='MDLeadID' id='MDLeadID' value='' /><input type='hidden' name='MDType' id='MDType' value='' /><input type='checkbox' name='LeadLookUP' id='LeadLookUP' size='1' value='0' class='hidden' disabled /><input type='hidden' size='24' maxlength='20' name='MDDiaLOverridE' id='MDDiaLOverridE' class='cust_form' value='' /></li>");
+    $("#go_agent_manualdial").append("<li><div class='input-group center-block'><input type='text' maxlength='18' name='MDPhonENumbeR' id='MDPhonENumbeR' class='form-control col-sm-12 phonenumbers-only' value='' placeholder='<?=$lh->translationFor('enter_phone_number')?>' onkeyup='activateLinks();' onchange='activateLinks();' style='padding: 3px 2px; color: #222; height: 30px;' aria-label='...' /></div><div class='btn-group btn-block' rose='group'><button type='button' class='btn col-sm-10 btn-success btn-raised' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></button><button type='button' class='btn col-sm-2 btn-success dropdown-toggle' data-toggle='dropdown' id='manual-dial-dropdown'>&nbsp;<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span>&nbsp;</button><ul class='dropdown-menu col-lg-12' role='menu'><li><a href='javascript:void(0)' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></a></li><li><a href='javascript:void(0)' id='manual-dial-preview'><?=$lh->translationFor('preview_call')?></a></li></ul></div><input type='hidden' name='MDDiaLCodE' id='MDDiaLCodE' class='digits-only' value='1' /><input type='hidden' name='MDPhonENumbeRHiddeN' id='MDPhonENumbeRHiddeN' value='' /><input type='hidden' name='MDLeadID' id='MDLeadID' value='' /><input type='hidden' name='MDType' id='MDType' value='' /><input type='checkbox' name='LeadLookUP' id='LeadLookUP' size='1' value='0' class='hidden' disabled /><input type='hidden' size='24' maxlength='20' name='MDDiaLOverridE' id='MDDiaLOverridE' class='cust_form' value='' /></li>");
 
     $("#go_agent_login").append("<li><button id='btnLogMeIn' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-in'></i> <?=$lh->translationFor('login_on_phone')?></button></li>");
     $("#go_agent_logout").append("<li><button id='btnLogMeOut' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-out'></i> <?=$lh->translationFor('logout_from_phone')?></button></li>");
@@ -1186,6 +1180,16 @@ $(document).ready(function() {
             activateLinks();
         }
     });
+    
+    $("#enableHotKeys").on('change', function() {
+        if ($(this).is(':checked')) {
+            $("#popup-hotkeys").fadeIn("fast");
+        } else {
+            $("#popup-hotkeys").fadeOut("fast");
+        }
+    });
+    
+    $("#popup-hotkeys").drags();
 });
 
 function btnLogMeIn () {
@@ -1255,7 +1259,8 @@ function btnLogMeOut () {
         .done(function (result) {
             if (result.result == 'success') {
                 is_logged_in = 0;
-                alert('SUCCESS: You have been logged out of the dialer.');
+                //alert('SUCCESS: You have been logged out of the dialer.');
+                $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; You have logged out from the dialer.", timeout: 5000});
             } else {
                 refresh_interval = 1000;
                 alert('ERROR: ' + result.message);
@@ -1274,6 +1279,7 @@ function btnDialHangup () {
     if (live_customer_call == 1 || dialingINprogress == 1) {
         if (toggleButton('DialHangup')) {
             dialingINprogress = 0;
+            toggleButton('DialHangup', 'hangup', false);
             DialedCallHangup();
         }
     } else {
@@ -2136,7 +2142,7 @@ function CheckForIncoming () {
             $(".formMain input[name='country_code']").val(this_VDIC_data.country_code).trigger('change');
             $(".formMain input[name='gender']").val(this_VDIC_data.gender).trigger('change');
             var dateOfBirth = this_VDIC_data.date_of_birth.toString('yyyy-MM-dd');
-            $(".formMain input[name='date_of_birth']").val(dateOfBirth).trigger('change');
+            $(".formMain input[name='date_of_birth']").val(dateOfBirth);
             $(".formMain input[name='alt_phone']").val(this_VDIC_data.alt_phone).trigger('change');
             $(".formMain input[name='email']").val(this_VDIC_data.email).trigger('change');
             $(".formMain input[name='security_phrase']").val(this_VDIC_data.security);
@@ -2490,16 +2496,16 @@ function UpdateFieldsData() {
         if (UDfieldsData.status == 'GOOD') {
             var regUDvendor_lead_code = new RegExp("vendor_lead_code,","ig");
             if (fields_list.match(regUDvendor_lead_code))
-                {$("#name_form input[name='vendor_lead_code']").val(UDfieldsData.vendor_id);}
+                {$(".formMain input[name='vendor_lead_code']").val(UDfieldsData.vendor_id);}
             var regUDsource_id = new RegExp("source_id,","ig");
             if (fields_list.match(regUDsource_id))
                 {source_id = UDfieldsData.source_id;}
             var regUDgmt_offset_now = new RegExp("gmt_offset_now,","ig");
             if (fields_list.match(regUDgmt_offset_now))
-                {$("#name_form input[name='gmt_offset_now']").val(UDfieldsData.gmt_offset);}
+                {$(".formMain input[name='gmt_offset_now']").val(UDfieldsData.gmt_offset);}
             var regUDphone_code = new RegExp("phone_code,","ig");
             if (fields_list.match(regUDphone_code))
-                {$("#name_form input[name='phone_code']").val(UDfieldsData.phone_code);}
+                {$(".formMain input[name='phone_code']").val(UDfieldsData.phone_code);}
             var regUDphone_number = new RegExp("phone_number,","ig");
             if (fields_list.match(regUDphone_number)) {
                 if ( (disable_alter_custphone == 'Y') || (disable_alter_custphone == 'HIDE') ) {
@@ -2508,47 +2514,47 @@ function UpdateFieldsData() {
                         tmp_pn.html(UDfieldsData.phone_number);
                     }
                 }
-                $("#name_form input[name='phone_number']").val(UDfieldsData.phone_number);
+                $(".formMain input[name='phone_number']").val(UDfieldsData.phone_number);
             }
             var regUDtitle = new RegExp("title,","ig");
             if (fields_list.match(regUDtitle))
-                {$("#name_form input[name='title']").val(UDfieldsData.title);}
+                {$(".formMain input[name='title']").val(UDfieldsData.title);}
             var regUDfirst_name = new RegExp("first_name,","ig");
             if (fields_list.match(regUDfirst_name))
-                {$("#name_form input[name='first_name']").val(UDfieldsData.first_name);}
+                {$(".formMain input[name='first_name']").val(UDfieldsData.first_name);}
             var regUDmiddle_initial = new RegExp("middle_initial,","ig");
             if (fields_list.match(regUDmiddle_initial))
-                {$("#name_form input[name='middle_initial']").val(UDfieldsData.middle_initial);}
+                {$(".formMain input[name='middle_initial']").val(UDfieldsData.middle_initial);}
             var regUDlast_name = new RegExp("last_name,","ig");
             if (fields_list.match(regUDlast_name))
-                {$("#name_form input[name='last_name']").val(UDfieldsData.last_name);}
+                {$(".formMain input[name='last_name']").val(UDfieldsData.last_name);}
             var regUDaddress1 = new RegExp("address1,","ig");
             if (fields_list.match(regUDaddress1))
-                {$("#name_form input[name='address1']").val(UDfieldsData.address1);}
+                {$(".formMain input[name='address1']").val(UDfieldsData.address1);}
             var regUDaddress2 = new RegExp("address2,","ig");
             if (fields_list.match(regUDaddress2))
-                {$("#name_form input[name='address2']").val(UDfieldsData.address2);}
+                {$(".formMain input[name='address2']").val(UDfieldsData.address2);}
             var regUDaddress3 = new RegExp("address3,","ig");
             if (fields_list.match(regUDaddress3))
-                {$("#name_form input[name='address3']").val(UDfieldsData.address3);}
+                {$(".formMain input[name='address3']").val(UDfieldsData.address3);}
             var regUDcity = new RegExp("city,","ig");
             if (fields_list.match(regUDcity))
-                {$("#name_form input[name='city']").val(UDfieldsData.city);}
+                {$(".formMain input[name='city']").val(UDfieldsData.city);}
             var regUDstate = new RegExp("state,","ig");
             if (fields_list.match(regUDstate))
-                {$("#name_form input[name='state']").val(UDfieldsData.state);}
+                {$(".formMain input[name='state']").val(UDfieldsData.state);}
             var regUDprovince = new RegExp("province,","ig");
             if (fields_list.match(regUDprovince))
-                {$("#name_form input[name='province']").val(UDfieldsData.province);}
+                {$(".formMain input[name='province']").val(UDfieldsData.province);}
             var regUDpostal_code = new RegExp("postal_code,","ig");
             if (fields_list.match(regUDpostal_code))
-                {$("#name_form input[name='postal_code']").val(UDfieldsData.postal_code);}
+                {$(".formMain input[name='postal_code']").val(UDfieldsData.postal_code);}
             var regUDcountry_code = new RegExp("country_code,","ig");
             if (fields_list.match(regUDcountry_code))
-                {$("#name_form input[name='country_code']").val(UDfieldsData.country_code);}
+                {$(".formMain input[name='country_code']").val(UDfieldsData.country_code);}
             var regUDgender = new RegExp("gender,","ig");
             if (fields_list.match(regUDgender)) {
-                $("#name_form select[name='gender']").val(UDfieldsData.gender);
+                $(".formMain select[name='gender']").val(UDfieldsData.gender);
                 if (hide_gender > 0) {
                     //document.vicidial_form.gender_list.value		= UDfieldsResponse_array[18];
                 } else {
@@ -2564,30 +2570,30 @@ function UpdateFieldsData() {
             var regUDdate_of_birth = new RegExp("date_of_birth,","ig");
             if (fields_list.match(regUDdate_of_birth)) {
                 var dateOfBirth = UDfieldsData.date_of_birth.toString('yyyy-MM-dd');
-                $("#name_form input[name='date_of_birth']").val(dateOfBirth);
+                $(".formMain input[name='date_of_birth']").val(dateOfBirth);
             }
             var regUDalt_phone = new RegExp("alt_phone,","ig");
             if (fields_list.match(regUDalt_phone))
-                {$("#name_form input[name='alt_phone']").val(UDfieldsData.alt_phone);}
+                {$(".formMain input[name='alt_phone']").val(UDfieldsData.alt_phone);}
             var regUDemail = new RegExp("email,","ig");
             if (fields_list.match(regUDemail))
-                {$("#name_form input[name='email']").val(UDfieldsData.email);}
+                {$(".formMain input[name='email']").val(UDfieldsData.email);}
             var regUDsecurity_phrase = new RegExp("security_phrase,","ig");
             if (fields_list.match(regUDsecurity_phrase))
-                {$("#name_form input[name='security_phrase']").val(UDfieldsData.security);}
+                {$(".formMain input[name='security_phrase']").val(UDfieldsData.security);}
             var regUDcomments = new RegExp("comments,","ig");
             if (fields_list.match(regUDcomments)) {
                 var REGcommentsNL = new RegExp("!N","g");
                 var UDfieldComments = UDfieldsData.comments;
                 UDfieldComments = UDfieldComments.replace(REGcommentsNL, "\n");
-                $("#name_form input[name='comments']").val(UDfieldComments);
+                $(".formMain input[name='comments']").val(UDfieldComments);
             }
             var regUDrank = new RegExp("rank,","ig");
             if (fields_list.match(regUDrank))
-                {$("#name_form input[name='rank']").val(UDfieldsData.rank);}
+                {$(".formMain input[name='rank']").val(UDfieldsData.rank);}
             var regUDowner = new RegExp("owner,","ig");
             if (fields_list.match(regUDowner))
-                {$("#name_form input[name='owner']").val(UDfieldsData.owner);}
+                {$(".formMain input[name='owner']").val(UDfieldsData.owner);}
             var regUDformreload = new RegExp("formreload,","ig");
             if (fields_list.match(regUDformreload))
                 {FormContentsLoad();}
@@ -2631,8 +2637,8 @@ function UpdateFieldsData() {
 // ################################################################################
 // Refresh the FORM content
 function FormContentsLoad() {
-    var form_list_id = $("#name_form input[name='list_id']").val();
-    var form_entry_list_id = $("#name_form input[name='entry_list_id']").val();
+    var form_list_id = $(".formMain input[name='list_id']").val();
+    var form_entry_list_id = $(".formMain input[name='entry_list_id']").val();
     if (form_entry_list_id.length > 2)
         {form_list_id = form_entry_list_id}
     //document.getElementById('vcFormIFrame').src='./vdc_form_display.php?lead_id=' + document.vicidial_form.lead_id.value + '&list_id=' + form_list_id + '&user=' + user + '&pass=' + pass + '&campaign=' + campaign + '&server_ip=' + server_ip + '&session_id=' + '&uniqueid=' + document.vicidial_form.uniqueid.value + '&stage=DISPLAY' + "&campaign=" + campaign + "&phone_login=" + phone_login + "&original_phone_login=" + original_phone_login +"&phone_pass=" + phone_pass + "&fronter=" + fronter + "&closer=" + user + "&group=" + group + "&channel_group=" + group + "&SQLdate=" + SQLdate + "&epoch=" + UnixTime + "&uniqueid=" + document.vicidial_form.uniqueid.value + "&customer_zap_channel=" + lastcustchannel + "&customer_server_ip=" + lastcustserverip +"&server_ip=" + server_ip + "&SIPexten=" + extension + "&session_id=" + session_id + "&phone=" + document.vicidial_form.phone_number.value + "&parked_by=" + document.vicidial_form.lead_id.value +"&dispo=" + LeaDDispO + '' +"&dialed_number=" + dialed_number + '' +"&dialed_label=" + dialed_label + '' +"&camp_script=" + campaign_script + '' +"&in_script=" + CalL_ScripT_id + '' +"&script_width=" + script_width + '' +"&script_height=" + script_height + '' +"&fullname=" + LOGfullname + '' +"&recording_filename=" + recording_filename + '' +"&recording_id=" + recording_id + '' +"&user_custom_one=" + VU_custom_one + '' +"&user_custom_two=" + VU_custom_two + '' +"&user_custom_three=" + VU_custom_three + '' +"&user_custom_four=" + VU_custom_four + '' +"&user_custom_five=" + VU_custom_five + '' +"&preset_number_a=" + CalL_XC_a_NuMber + '' +"&preset_number_b=" + CalL_XC_b_NuMber + '' +"&preset_number_c=" + CalL_XC_c_NuMber + '' +"&preset_number_d=" + CalL_XC_d_NuMber + '' +"&preset_number_e=" + CalL_XC_e_NuMber + '' +"&preset_dtmf_a=" + CalL_XC_a_Dtmf + '' +"&preset_dtmf_b=" + CalL_XC_b_Dtmf + '' +"&did_id=" + did_id + '' +"&did_extension=" + did_extension + '' +"&did_pattern=" + did_pattern + '' +"&did_description=" + did_description + '' +"&closecallid=" + closecallid + '' +"&xfercallid=" + xfercallid + '' + "&agent_log_id=" + agent_log_id + "&call_id=" + LasTCID + "&user_group=" + VU_user_group + '' +"&web_vars=" + LIVE_web_vars + '';
@@ -3263,6 +3269,12 @@ function DispoSelectSubmit() {
                         alert('<?=$lh->translationFor('dispo_leadid_not_valid')?>');
                     }
                 }
+                
+                if (result.result == 'success') {
+                    $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000});
+                } else {
+                    $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000});
+                }
     
                 waiting_on_dispo = 0;
             });
@@ -3292,7 +3304,7 @@ function DispoSelectSubmit() {
             $(".formMain input[name='postal_code']").val('').trigger('change');
             $(".formMain input[name='country_code']").val('').trigger('change');
             $(".formMain input[name='gender']").val('').trigger('change');
-            $(".formMain input[name='date_of_birth']").val('').trigger('change');
+            $(".formMain input[name='date_of_birth']").val('');
             $(".formMain input[name='alt_phone']").val('').trigger('change');
             $(".formMain input[name='email']").val('').trigger('change');
             $(".formMain input[name='security_phrase']").val('');
@@ -3305,6 +3317,7 @@ function DispoSelectSubmit() {
             $(".formMain input[name='called_count']").val('');
             $(".formMain input[name='call_notes']").val('');
             $(".formMain input[name='call_notes_dispo']").val('');
+            $("#MainStatusSpan").html('&nbsp;');
             VDCL_group_id = '';
             fronter = '';
             inOUT = 'OUT';
@@ -3520,7 +3533,7 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
         var XFER_Group = XFERSelect.val();
         if (API_selected_xfergroup.length > 1)
             {var XFER_Group = API_selected_xfergroup;}
-        tasknum = Ctasknum + "*" + XFER_Group + '*CXFER*' + $("#name_form input[name='lead_id']").val() + '**' + dialed_number + '*' + user + '*' + agentdirect + '*' + live_call_seconds + '*';
+        tasknum = Ctasknum + "*" + XFER_Group + '*CXFER*' + $(".formMain input[name='lead_id']").val() + '**' + dialed_number + '*' + user + '*' + agentdirect + '*' + live_call_seconds + '*';
 
         if (consult_custom_sent < 1)
             {CustomerData_update();}
@@ -3533,7 +3546,7 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
         var closerxfercamptail = '_L';
         if (closerxfercamptail.length < 3)
             {closerxfercamptail = 'IVR';}
-        tasknum = Ctasknum + '*' + $("#name_form input[name='phone_number']").val() + '*' + $("#name_form input[name='lead_id']").val() + '*' + campaign + '*' + closerxfercamptail + '*' + user + '**' + live_call_seconds + '*';
+        tasknum = Ctasknum + '*' + $(".formMain input[name='phone_number']").val() + '*' + $(".formMain input[name='lead_id']").val() + '*' + campaign + '*' + closerxfercamptail + '*' + user + '**' + live_call_seconds + '*';
 
         if (consult_custom_sent < 1)
             {CustomerData_update();}
@@ -3565,7 +3578,7 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
         var originatevalue = protodial + "/" + extendial;
     }
 
-    var leadCID = $("#name_form input[name='lead_id']").val();
+    var leadCID = $(".formMain input[name='lead_id']").val();
     var epochCID = epoch_sec;
     if (leadCID.length < 1)
         {leadCID = user_abb;}
@@ -3608,7 +3621,7 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
         goAccount: active_group_alias,
         goAgentDialedNumber: agent_dialed_number,
         goAgentDialedType: agent_dialed_type,
-        goLeadID: $("#name_form input[name='lead_id']").val(),
+        goLeadID: $(".formMain input[name='lead_id']").val(),
         goStage: CheckDEADcallON,
         goAlertCID: alertCID,
         goCallVariables: taskvariables,
@@ -3811,9 +3824,11 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     fronter                                 = uName;
                     LastCID                                 = MDnextResponse_array[0];
                     lead_id                                 = MDnextResponse_array[1];
+                    $(".formMain input[name='lead_id']").val(lead_id);
                     LeadPrevDispo                           = MDnextResponse_array[2];
                     $(".formMain input[name='vendor_lead_code']").val(MDnextResponse_array[4]);
                     list_id                                 = MDnextResponse_array[5];
+                    $(".formMain input[name='list_id']").val(list_id);
                     $(".formMain input[name='gmt_offset_now']").val(MDnextResponse_array[6]);
                     cust_phone_code                         = MDnextResponse_array[7];
                     $(".formMain input[name='phone_code']").val(cust_phone_code);
@@ -3836,7 +3851,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='country_code']").val(MDnextResponse_array[20]).trigger('change');
                     $(".formMain input[name='gender']").val(MDnextResponse_array[21]).trigger('change');
                     var dateOfBirth = MDnextResponse_array[22].toString('yyyy-MM-dd');
-                    $(".formMain input[name='date_of_birth']").val(dateOfBirth).trigger('change');
+                    $(".formMain input[name='date_of_birth']").val(dateOfBirth);
                     $(".formMain input[name='alt_phone']").val(MDnextResponse_array[23]).trigger('change');
                     cust_email                              = MDnextResponse_array[24];
                     $(".formMain input[name='email']").val(cust_email).trigger('change');
@@ -3845,6 +3860,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     MDnextResponse_array[26] = MDnextResponse_array[26].replace(REGcommentsNL, "\n");
                     $(".formMain input[name='comments']").val(MDnextResponse_array[26]).trigger('change');
                     called_count                            = MDnextResponse_array[27];
+                    $(".formMain input[name='called_count']").val(called_count);
                     previous_called_count                   = MDnextResponse_array[27];
                     previous_dispo                          = MDnextResponse_array[2];
                     CBentry_time                            = MDnextResponse_array[28];
@@ -3864,6 +3880,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     Call_XC_d_Number                        = MDnextResponse_array[42];
                     Call_XC_e_Number                        = MDnextResponse_array[43];
                     entry_list_id                           = MDnextResponse_array[44];
+                    $(".formMain input[name='entry_list_id']").val(entry_list_id);
                     custom_field_names                      = MDnextResponse_array[45];
                     custom_field_values                     = MDnextResponse_array[46];
                     custom_field_types                      = MDnextResponse_array[47];
