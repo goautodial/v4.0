@@ -20,6 +20,8 @@ if(isset($_POST["role"])){
 	$userrole = $_POST["role"];
 }
 
+$voicemails = $ui->API_goGetVoiceMails();
+
 ?>
 <html>
     <head>
@@ -145,7 +147,7 @@ if(isset($_POST["role"])){
 
 							<div role="tabpanel" class="panel panel-transparent" style="box-shadow: 5px 5px 8px #888888;">
 							
-							<h4 style="padding:15px;"><a type="button" class="btn" href="telephonyusers.php"><i class="fa fa-arrow-left"></i> Cancel</a><center><b>MODIFY USER</b></center></h4>
+							<h4 style="padding:15px;"><center><b>MODIFY USER</b></center></h4>
 									
 								<form id="modifyuser">
 									<input type="hidden" name="modifyid" value="<?php echo $userid;?>">
@@ -280,6 +282,21 @@ if(isset($_POST["role"])){
 									<div class="row">
 										<label for="voicemail" class="col-md-5">Voicemail
 										<select class="form-control" name="voicemail" id="voicemail">
+											<?php
+												if($voicemails == NULL){
+											?>
+												<option value="" selected>--No Voicemails Available--</option>
+											<?php
+												}else{
+												for($i=0;$i<count($voicemails->voicemail_id);$i++){
+											?>
+													<option value="<?php echo $voicemails->voicemail_id[$i];?>">
+														<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
+													</option>									
+											<?php
+													}
+												}
+											?>
 										</select>
 										</label>
 									</div>
@@ -363,7 +380,7 @@ if(isset($_POST["role"])){
 										
 								<div id="modifyUSERresult"></div>
 								<div class="row" style="padding:0px 50px;">
-									<button type="button" class="btn btn-danger" id="modifyUSERDeleteButton" href=""><i class="fa fa-times"></i> Delete</button>
+									<a href="telephonyusers.php" type="button" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Cancel / Back to User List</a>
 
 									<button type="submit" class="btn btn-primary pull-right" id="modifyUserOkButton" href=""><i class="fa fa-check"></i> Update</button>
 								</div>

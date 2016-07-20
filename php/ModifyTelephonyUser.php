@@ -43,6 +43,10 @@ if ($validated == 1) {
 		$userlevel = stripslashes($userlevel);
 	}
 	
+	$voicemail = NULL; if (isset($_POST["voicemail"])) { 
+		$voicemail = $_POST["voicemail"]; 
+		$voicemail = stripslashes($voicemail);
+	}
 	
 	$url = gourl."/goUsers/goAPI.php"; # URL to GoAutoDial API file
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -54,6 +58,8 @@ if ($validated == 1) {
 	$postfields["user_group"] = $user_group; #Desired value for user (required)
 	$postfields["user_level"] = $userlevel; #Desired value for user (required)
 	$postfields["active"] = $status; #Desired value for user (required)
+	$postfields["voicemail"] = $voicemail; #Desired value for user (required)
+    
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     
 	

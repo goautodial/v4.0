@@ -324,14 +324,11 @@ error_reporting(E_ALL);*/
 
 	        // load datatable of customer.
             $(document).ready(function() {
-<<<<<<< HEAD
             	$('.letter-select').click(function(e){
             		e.preventDefault();
             		var letter = $(this).attr('data-letter');
             		console.log(letter);
             	});
-=======
->>>>>>> e4c17d403bbe0f3a697085df824b3d3b82c2549c
 
 			    // uncheck individual customer
 				$('input[type=checkbox]').on("ifChecked", function(e) {

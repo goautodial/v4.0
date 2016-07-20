@@ -4229,3 +4229,102 @@ Gradient Background colors
   padding: 15px 0px;
   height: 17%;
 }
+
+/* Floating Labels */
+.form-group.label-floating {
+  padding-top: 10px;
+}
+.control-label {
+  font-size: 16px;
+  font-weight: 400;
+  opacity: 0.4;
+  pointer-events: none;
+  position: absolute;
+  transform: translate3d(25px, 5px, 0) scale(1);
+  transform-origin: left top;
+  transition: 240ms;
+  color: #333;
+}
+
+.label-floating.focused .control-label {
+  opacity: 1;
+  transform: translate3d(3px, -15px, 0) scale(0.75);
+  color: #333;
+}
+
+.label-floating .form-control {
+  padding-left: 25px;
+}
+
+.form-control {
+  align-self: flex-end;
+}
+
+.form-control::-webkit-input-placeholder {
+  color: transparent;
+  transition: 240ms;
+}
+
+.form-control:focus::-webkit-input-placeholder {
+  transition: none;
+}
+
+.label-floating.focused .form-control::-webkit-input-placeholder {
+  color: #bbb;
+}
+
+.label-floating .form-group-addon {
+  position: relative;
+  top: -24px;
+  left: 2px;
+}
+
+/* Material Switch */
+.material-switch {
+  margin-top: 10px;
+}
+
+.material-switch > input[type="checkbox"] {
+  display: none;
+}
+
+.material-switch > label {
+  cursor: pointer;
+  height: 0px;
+  position: relative; 
+  width: 40px;  
+}
+
+.material-switch > label::before {
+  background: rgb(0, 0, 0);
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  content: '';
+  height: 16px;
+  margin-top: -8px;
+  position:absolute;
+  opacity: 0.3;
+  transition: all 0.4s ease-in-out;
+  width: 40px;
+}
+.material-switch > label::after {
+  background: rgb(255, 255, 255);
+  border-radius: 16px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  content: '';
+  height: 24px;
+  left: -4px;
+  margin-top: -8px;
+  position: absolute;
+  top: -4px;
+  transition: all 0.3s ease-in-out;
+  width: 24px;
+}
+.material-switch > input[type="checkbox"]:checked + label::before {
+  background: inherit;
+  opacity: 0.5;
+}
+.material-switch > input[type="checkbox"]:checked + label::after {
+  background: inherit;
+  left: 20px;
+}

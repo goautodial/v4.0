@@ -221,6 +221,13 @@
 											$phonenumber->active[$i] = "Inactive";
 										}
 
+										if($phonenumber->did_route[$i] == "IN_GROUP"){
+											$phonenumber->did_route[$i] = "IN-GROUP";
+										}
+										if($phonenumber->did_route[$i] == "EXTEN"){
+											$phonenumber->did_route[$i] = "CUSTOM EXTENSION";
+										}
+
 									$action_DID = $ui->getUserActionMenuForDID($phonenumber->did_id[$i], $phonenumber->did_description[$i]);
 
 							   	?>	
@@ -358,7 +365,7 @@
 									<?php
 										if($voicemails == NULL){
 									?>
-										<option value="TEST" selected>--No Voicemails Available--</option>
+										<option value="" selected>--No Voicemails Available--</option>
 									<?php
 										}else{
 										for($i=0;$i<count($voicemails->voicemail_id);$i++){
@@ -710,7 +717,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="user_group" >DID Route: </label>
+							<label class="col-sm-4 control-label" for="route" >DID Route: </label>
 							<div class="col-sm-6">
 								<select class="form-control" id="route" name="route">
 									<option value="AGENT"> Agent </option>
@@ -761,10 +768,10 @@
 							<label class="col-sm-4 control-label" for="route_unavail">Agent Unavailable Action: </label>
 							<div class="col-sm-7">	
 								<select name="route_unavail" id="route_unavail" class="form-control">
-									<option value="" > Voicemail </option>
-									<option value="" > Phone </option>
-									<option value="" > In-group </option>
-									<option value="" > Custom Extension </option>
+									<option value="VOICEMAIL" > Voicemail </option>
+									<option value="PHONE" > Phone </option>
+									<option value="IN_GROUP" > In-group </option>
+									<option value="EXTEN" > Custom Extension </option>
 								</select>
 							</div>
 						</div>
@@ -835,6 +842,7 @@
 							<div class="col-sm-7">	
 								<select name="route_ivr" id="route_ivr" class="form-control">
 									<?php
+									if(count($ivr->menu_id) > 0){
 										for($i=0;$i<count($ivr->menu_id);$i++){
 									?>
 										<option value="<?php echo $ivr->menu_id[$i];?>">
@@ -842,6 +850,11 @@
 										</option>									
 									<?php
 										}
+									}else{
+									?>
+										<option value="">- - - No Available Call Menu - - - </option>
+									<?php
+									}
 									?>
 								</select>
 							</div>
@@ -902,7 +915,7 @@
 				</div>
 				<div class="output-message-error" style="display:none;">
 					<div class="alert alert-danger alert-dismissible" role="alert">
-					  <strong>Error: <span id="phonenumber_result"></span></strong> Something went wrong, please see input data on form or if agent already exists.
+						<span id="phonenumber_result"></span></strong> 
 					</div>
 				</div>
 				<div class="output-message-incomplete" style="display:none;">
@@ -1100,7 +1113,7 @@
 							  // console.log(data);
 								  if(data == "success"){
 										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-								  		window.setTimeout(function(){location.reload()},3000)
+								  		window.setTimeout(function(){location.reload()},1000)
 								  }
 								  else{
 									  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
@@ -1151,7 +1164,7 @@
 							  // console.log(data);
 								  if(data == 1){
 										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-								  		window.setTimeout(function(){location.reload()},3000)
+								  		window.setTimeout(function(){location.reload()},1000)
 								  }else{
 										$('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 										$("#phonenumber_result").html(data); 
@@ -1185,8 +1198,7 @@
 					$(form).submit();
 				 });
 				 //EDIT PHONENUMBER/DID
-				 $(".edit-phonenumber").click(function(e) {
-					e.preventDefault();
+				 $(document).on('click','.edit-phonenumber',function() {
 					var url = './edittelephonyinbound.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="did" value="' + $(this).attr('data-id') + '" /></form>');
 					//$('body').append(form);  // This line is not necessary

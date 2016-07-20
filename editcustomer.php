@@ -58,7 +58,7 @@ if ($list_id_ct > 0) {
 		$state 			= $output->state[$i];
 		$country 		= $output->country[$i];
 		$gender 		= $output->gender[$i];
-		$data_of_birth 	= $output->data_of_birth[$i];
+		$date_of_birth 	= $output->date_of_birth[$i];
 		$comments 		= $output->comments[$i];
 		$title 			= $output->title[$i];
 		$call_count 	= $output->call_count[$i];
@@ -66,7 +66,7 @@ if ($list_id_ct > 0) {
 	}
 }
 $fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
-$data_of_birth = date('Y-m-d', strtotime($data_of_birth));
+$date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 //var_dump($output);
  $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
  									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
@@ -79,6 +79,9 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
         <title>Contact Profile</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<!-- SnackbarJS -->
+        <link href="css/snackbar/snackbar.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/snackbar/material.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
         <!-- Customized Style -->
@@ -94,24 +97,24 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
         <!-- Creamy App 
         <script src="js/app.min.js" type="text/javascript"></script>
 		-->
-         <!-- theme_dashboard folder -->
-					<!-- FONT AWESOME-->
-			<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
-					<!-- SIMPLE LINE ICONS-->
-			<link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">
-					<!-- ANIMATE.CSS-->
-			<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">
-					<!-- WHIRL (spinners)-->
-			<link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
-				<!-- =============== PAGE VENDOR STYLES ===============-->
-					<!-- WEATHER ICONS-->
-			<link rel="stylesheet" href="theme_dashboard/weather-icons/css/weather-icons.min.css">
-				<!-- =============== BOOTSTRAP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
-				<!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-			<!-- SLIMSCROLL-->
-  			<script src="theme_dashboard/slimScroll/jquery.slimscroll.min.js"></script>
+        <!-- theme_dashboard folder -->
+		<!-- FONT AWESOME-->
+		<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
+		<!-- SIMPLE LINE ICONS-->
+		<link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">
+		<!-- ANIMATE.CSS-->
+		<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">
+		<!-- WHIRL (spinners)-->
+		<link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
+		<!-- =============== PAGE VENDOR STYLES ===============-->
+		<!-- WEATHER ICONS-->
+		<link rel="stylesheet" href="theme_dashboard/weather-icons/css/weather-icons.min.css">
+		<!-- =============== BOOTSTRAP STYLES ===============-->
+		<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+		<!-- =============== APP STYLES ===============-->
+		<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+		<!-- SLIMSCROLL-->
+		<script src="theme_dashboard/slimScroll/jquery.slimscroll.min.js"></script>
 
   		<!-- Theme style -->
   		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
@@ -121,7 +124,9 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 
         <script type="text/javascript">
 			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
+				$(".preloader").fadeOut("slow", function() {
+					$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000});
+				});
 			});
 		</script>
 		<style>
@@ -144,6 +149,9 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 			.panel{
 				margin-bottom:0;
 			}
+			.required_div{
+				background: rgba(158,158,158,0.30);
+			}
 			input[type=text] {
 			    border: none;
 			    border-bottom: .5px solid #656565;
@@ -159,6 +167,14 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 			.select{
 				border: none;
     			border-bottom: .5px solid #656565;
+			}
+			.textarea{
+				border: none;
+				border-bottom: .5px solid #656565;
+				width: 100%;
+				-webkit-box-sizing: border-box;
+				   -moz-box-sizing: border-box;
+						box-sizing: border-box;
 			}
 			.form-control[disabled], fieldset[disabled] .form-control{
 				cursor: text;
@@ -176,14 +192,27 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 			}
 			.edit-profile-button{
 				font-size:14px; 
-				font-weight:normal; 
-				margin-right:30px;
+				font-weight:normal;
 			}
 			.hide_div{
 				display: none;
 			}
-			.required_div{
-				background: #f4fdd9;
+			.btn.btn-raised {
+				box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+			}
+			button[id^='show-callbacks-']:hover, button[id^='show-callbacks-']:active {
+				text-decoration: none;
+			}
+			#popup-hotkeys {
+				position: absolute;
+				top: 160px;
+				left: 40px;
+				display: none;
+				box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+				min-width: 480px;
+			}
+			#popup-hotkeys .panel-heading {
+				background-color: #2a2a2a;
 			}
 		</style>
     </head>
@@ -249,6 +278,10 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 										 <li role="presentation" class="active">
 											<a href="#profile" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
 											   <em class="fa fa-user fa-fw"></em>Profile</a>
+										 </li>
+										 <li role="presentation">
+											<a href="#comments" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+											   <em class="fa fa-comments-o fa-fw"></em>Comments</a>
 										 </li>
 										 <li role="presentation">
 											<a href="#activity" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
@@ -327,9 +360,9 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 
 											<div style="padding-top:20px;padding-left:20px;padding-right:30px;">
 												<h4>Personal Details
-													<a href="#" data-role="button" class="pull-right edit-profile-button" id="edit-profile">Edit Profile</a>
+													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
 												</h4>
-											<form role="form" id="name_form" class="form-inline" >
+											<form role="form" id="name_form" class="formMain form-inline" >
 												
 												<!--LEAD ID-->
 												<input type="hidden" value="<?php echo $lead_id;?>" name="lead_id">
@@ -345,34 +378,34 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 												<input type="hidden" value="<?php echo $security_phrase;?>" name="security_phrase">
 												<!--RANK-->
 												<input type="hidden" value="<?php echo $rank;?>" name="rank">
+												<!--CALLED COUNT-->
+												<input type="hidden" value="<?php echo $call_count;?>" name="called_count">
+												<!--UNIQUEID-->
+												<input type="hidden" value="<?php echo $uniqueid;?>" name="uniqueid">
+												<!--SECONDS-->
+												<input type="hidden" value="" name="seconds">
 
-												<div class="form-group">
-							                        <p style="padding-right:10px;padding-top: 20px;">Name:</p> 
+												<div class="form-group label-floating" style="margin-right: 25px;">
+													<label for="first_name" class="control-label">First Name</label>
+							                        <input id="first_name" name="first_name" type="text" maxlength="30" style="width: 250px;" value="<?php echo $first_name;?>" class="form-control input-disabled" disabled required>
 							                    </div>
-												<div class="form-group">
-							                        <input id="first_name" name="first_name" type="text" placeholder="First Name" value="<?php echo $first_name;?>" class="form-control input-disabled" disabled>
+							                    <div class="form-group label-floating" style="margin-right: 25px;">
+													<label for="middle_initial" class="control-label">Middle Initial</label>
+							                        <input id="middle_initial" name="middle_initial" type="text" maxlength="1" style="width: 120px;" value="<?php echo $middle_initial;?>" class="form-control input-disabled" disabled>
 							                    </div>
-							                    <div class="form-group">
-							                        <input id="middle_initial" name="middle_initial" type="text" placeholder="Middle Initial" value="<?php echo $middle_initial;?>" class="form-control input-disabled" disabled>
-							                        
-							                    </div>
-							                    <div class="form-group">
-							                        <input id="last_name" name="last_name" type="text" placeholder="Last Name" value="<?php echo $last_name;?>" class="form-control input-disabled" disabled>
-							                        
+							                    <div class="form-group label-floating">
+													<label for="last_name" class="control-label">Last Name</label>
+							                        <input id="last_name" name="last_name" type="text" maxlength="30" style="width: 250px;" value="<?php echo $last_name;?>" class="form-control input-disabled" disabled required>
 							                    </div>
 											</form>
-											<form role="form" id="gender_form" class="form-inline" >
-												<div class="form-group">
-							                        <p style="padding-right:0px;padding-top: 20px;">Title:</p> 
+											<form role="form" id="gender_form" class="formMain form-inline" >
+												<div class="form-group label-floating" style="margin-right: 25px;">
+													<label for="title" class="control-label">Title</label>
+							                        <input id="title" name="title" type="text" maxlength="4" value="<?php echo $title;?>" style="width:120px;" class="form-control input-disabled" disabled>
 							                    </div>
-												<div class="form-group">
-							                        <input id="title" name="title" type="text" placeholder="Title" value="<?php echo $title;?>" style="width:100px;" class="form-control input-disabled" disabled>
-							                    </div>
-												<div class="form-group">
-							                        <p style="padding-right:0px;padding-top: 20px;">Gender:</p> 
-							                    </div>
-												<div class="form-group" style="padding-right:10px;">
-							                        <select id="gender" name="gender" placeholder="Gender" value="<?php echo $gender;?>" class="form-control select input-disabled" disabled>
+												<div class="form-group label-floating" style="margin-right: 25px;">
+													<label for="gender" class="control-label">Gender</label>
+							                        <select id="gender" name="gender" style="width: 150px;" value="<?php echo $gender;?>" class="form-control select input-disabled" disabled>
 							                        	<?php 
 							                        		if($gender == "M"){
 							                        	?>
@@ -387,7 +420,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                        	<?php
 							                        		}else{
 							                        	?>
-							                        		<option selected disabled value=""> - - - </option>
+							                        		<option selected disabled value=""></option>
 							                        		<option value="M">Male</option>
 							                        		<option value="F">Female</option>
 							                        	<?php
@@ -396,74 +429,70 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                        </select>
 							                    </div>		
 
-							                    <div class="form-group">
-							                        <p style="padding-right:5px;padding-top: 20px;">Date Of Birth:</p> 
-							                    </div>
-												<div class="form-group">
-													<?php echo $date_of_birth;?>
-													<input type="date" id="date_of_birth" value="<?php echo $data_of_birth;?>" name="date_of_birth" class="form-control input-disabled" disabled>
+												<div class="form-group label-floating">
+													<?php //echo $date_of_birth;?>
+													<label for="date" class="control-label">Date Of Birth</label>
+													<input type="date" id="date_of_birth" style="width: 150px;" value="<?php echo $date_of_birth;?>" name="date_of_birth" class="form-control input-disabled" disabled>
 							                    </div>						                   
 											</form>
 											</div>
-											<div style="padding-top:10px;padding-left:20px;">
+											<div style="padding: 10px 20px;">
 												<h4>Contact Details</h4>
-											<form id="contact_details_form">
-												<div class="form-group">
-													<label><p><em class="fa fa-at fa-fw"></em> E-mail Address:</p> 
-							                        	<input id="email" name="email" type="text" width="auto" placeholder="E-Mail Address" value="<?php echo $email;?>" class="form-control input-disabled" disabled>
-							                       	</label>
+											<form id="contact_details_form" class="formMain">
+												<div class="form-group label-floating">
+													<label for="email" class="control-label">E-mail Address</label>
+							                        <input id="email" name="email" type="text" width="auto" value="<?php echo $email;?>" class="form-control input-disabled" disabled>
+													<span class="form-group-addon">
+														<em class="fa fa-at fa-lg"></em>
+													</span>
 							                    </div>
-												<div class="form-group">
-													<label><p><em class="fa fa-mobile-phone fa-fw"></em> Phone Number:</p>
-														<span id="phone_numberDISP" class="hidden"></span>
-														<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
-							                        	<input id="phone_number" name="phone_number" type="number" width="auto" placeholder="Phone Number" value="<?php echo $phone_number;?>" class="form-control input-disabled" disabled required>
-							                       	</label>
+												<div class="form-group label-floating">
+													<label for="phone_number" class="control-label">Phone Number</label>
+													<span id="phone_numberDISP" class="hidden"></span>
+													<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
+													<input id="phone_number" name="phone_number" type="number" width="auto" value="<?php echo $phone_number;?>" class="form-control input-disabled" disabled required>
+													<span class="form-group-addon">
+														<em class="fa fa-phone fa-lg"></em>
+													</span>
 							                    </div>
-							                    <div class="form-group">
-													<label><p style="width:47%;padding-right:10px;"><em class="fa fa-phone fa-fw"></em> Alternative Phone Number:</p>
-							                        	<input id="alt_phone" name="alt_phone" type="number" width="100" placeholder="Alternative Phone Number" value="<?php echo $alt_phone;?>" class="form-control input-disabled" disabled>
-							                       	</label>
+							                    <div class="form-group label-floating">
+													<label for="alt_phone" class="control-label">Alternative Phone Number</label>
+							                        <input id="alt_phone" name="alt_phone" type="number" width="100" value="<?php echo $alt_phone;?>" class="form-control input-disabled" disabled>
 							                    </div>
-												<div class="form-group">
-													<label><p><em class="fa fa-home fa-fw"></em> Address Street 1:</p> 
-							                        	<input id="address1" name="address1" type="text" width="auto" placeholder="Address Street 1" value="<?php echo $address1;?>" class="form-control input-disabled" disabled>
-							                       	</label>
+												<div class="form-group label-floating">
+													<label for="address1" class="control-label">Street Address 1</label> 
+													<input id="address1" name="address1" type="text" width="auto" value="<?php echo $address1;?>" class="form-control input-disabled" disabled>
+													<span class="form-group-addon">
+														<em class="fa fa-home fa-lg"></em>
+													</span>
 							                    </div>
-							                    <div class="form-group">
-							                    	<label><p><em class="fa fa-home fa-fw"></em> Address Street  2:</p>
-							                        	<input id="address2" name="address2" type="text" placeholder="Address Street 2" value="<?php echo $address2;?>" class="form-control input-disabled" disabled>
-							                    	</label>
+							                    <div class="form-group label-floating">
+							                    	<label for="address2" class="control-label">Street Address 2</label>
+													<input id="address2" name="address2" type="text" value="<?php echo $address2;?>" class="form-control input-disabled" disabled>
 							                    </div>
-							                    <div class="form-group">
-							                    	<label><p><em class="fa fa-home fa-fw"></em>  Address Street 3: </p>
-							                        	<input id="address3" name="address3" type="text" placeholder="Address Street 3" value="<?php echo $address3;?>" class="form-control input-disabled" disabled>
-							                    	</label>
+							                    <div class="form-group label-floating">
+							                    	<label for="address3" class="control-label">Street Address 3</label>
+													<input id="address3" name="address3" type="text" value="<?php echo $address3;?>" class="form-control input-disabled" disabled>
 							                    </div>
-							                    <div class="form-group">
-							                    	<label><p style="width:11%;padding-right:10px;"><em class="fa fa-building fa-fw"></em> City:</p>
-							                        	<input id="city" name="city" type="text" placeholder="City" value="<?php echo $city;?>" class="form-control input-disabled" disabled>
-							                    	</label>
+							                    <div class="form-group label-floating">
+							                    	<label for="city" class="control-label">City</label>
+													<input id="city" name="city" type="text" value="<?php echo $city;?>" class="form-control input-disabled" disabled>
 							                    </div>
-							                    <div class="form-group">
-							                        <label><p style="width:17%;padding-right:10px;"><em class="fa fa-building fa-fw"></em>  Province:</p>
-							                    	    <input id="province" name="province" type="text" placeholder="Province" value="<?php echo $province;?>" class="form-control input-disabled" disabled>
-							                    	</label>
+							                    <div class="form-group label-floating">
+							                        <label for="province" class="control-label">Province</label>
+							                    	<input id="province" name="province" type="text" value="<?php echo $province;?>" class="form-control input-disabled" disabled>
 							                    </div>
-							                    <div class="form-group">
-							                        <label><p style="width:12%;padding-right:10px;"><em class="fa fa-building-o fa-fw"></em> State:</p>
-							                        	<input id="state" name="state" type="text" placeholder="State" value="<?php echo $state;?>" class="form-control input-disabled" disabled>
-							                    	</label>
+							                    <div class="form-group label-floating">
+							                        <label for="state" class="control-label">State</label>
+							                        <input id="state" name="state" type="text" value="<?php echo $state;?>" class="form-control input-disabled" disabled>
 							                    </div>
-							                    <div class="form-group">
-							                        <label><p style="width:21%;padding-right:10px;"><em class="fa fa-send fa-fw"></em> Postal Code:</p>
-							                        	<input id="postal_code" name="postal_code" type="text" placeholder="Postal Code" value="<?php echo $postal_code;?>" class="form-control input-disabled" disabled>
-							                    	</label>
+							                    <div class="form-group label-floating">
+							                        <label for="postal_code" class="control-label">Postal Code</label>
+													<input id="postal_code" name="postal_code" type="text" value="<?php echo $postal_code;?>" class="form-control input-disabled" disabled>
 							                    </div>
-							                    <div class="form-group">
-							                        <label><p style="width:16%;padding-right:10px;"><em class="fa fa-globe fa-fw"></em> Country:</p>
-							                        	<input id="country" name="country" type="text" placeholder="Country" value="<?php echo $country;?>" class="form-control input-disabled" disabled>
-							                    	</label>
+							                    <div class="form-group label-floating">
+							                        <label for="country" class="control-label">Country</label>
+													<input id="country" name="country" type="text" value="<?php echo $country;?>" class="form-control input-disabled" disabled>
 							                    </div>
 							                </form> 
 							                </div>
@@ -492,6 +521,26 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 							                </div>
 							               
 										</div><!--End of Profile-->
+										
+										<div id="comments" role="tabpanel" class="tab-pane">
+											<div style="padding-top:20px;padding-left:20px;padding-right:30px;">
+												<h4>Comments
+													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
+												</h4>
+												<form role="form" id="comment_form" class="formMain form-inline" >
+													<div class="form-group hidden">
+														<p style="padding-right:0px;padding-top: 20px;">Comments:</p> 
+														<button id="ViewCommentButton" onClick="ViewComments('ON');" value="-History-" class="hidden"></button>
+													</div>
+													<div class="form-group label-floating" style="float: left; width:100%;">
+														<label for="comments" class="control-label">Comments</label>
+														<textarea rows="5" id="comments" name="comments" class="form-control textarea input-disabled" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
+													</div>
+													<div style="clear:both;"></div>
+													<br>
+												</form>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -564,6 +613,17 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 						        </div><!-- /.modal-dialog -->
 						    </div><!-- /.modal -->
 
+
+
+							<div id="popup-hotkeys" class="panel clearfix">
+								<div class="panel-heading"><b>AVAILABLE HOT KEYS</b></div>
+								<div class="panel-body">No available hotkeys for this campaign.</div>
+								<div class="panel-footer clearfix">
+									<div class="text-danger sidecolor" style="padding-right: 5px; background-color: inherit;">
+										<small><b>NOTE:</b> Pressing the hot keys above will hangup automatically, if you're currently in a call.</small>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
                 </section><!-- /.content -->
@@ -582,48 +642,62 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
     <div class="tab-content" style="border-width:0;">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-dialer-tab">
-        <!--<h3 class="control-sidebar-heading">Agent Dialer</h3>-->
-        <ul class="control-sidebar-menu" id="go_agent_dialpad">
-			<!--<li>
-				<a href="javascript::;">
-					<i class="menu-icon fa fa-birthday-cake bg-red"></i>
-		
-					<div class="menu-info">
-						<h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-		  
-						<p>Will be 23 on April 24th</p>
-					</div>
-				</a>
-			</li>-->
+        <ul class="control-sidebar-menu" id="go_agent_dialer">
+			
         </ul>
         <!-- /.control-sidebar-menu -->
 
-        <!--<h3 class="control-sidebar-heading">Tasks Progress</h3>-->
-        <ul class="control-sidebar-menu" id="go_agent_status" style="margin-top: 15px;padding: 0 15px;">
-			<!-- <li>
-				<a href="javascript::;">
-					<h4 class="control-sidebar-subheading">
-						Custom Template Design
-						<span class="label label-danger pull-right">70%</span>
-					</h4>
-		
-					<div class="progress progress-xxs">
-						<div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-					</div>
-				</a>
-			</li> -->
+        <ul class="control-sidebar-menu" id="go_agent_status" style="margin: 0 0 15px;padding: 0 0 10px;">
+			
         </ul>
 		
-        <h3 class="control-sidebar-heading"><?php $lh->translateText("Manual Dial"); ?>:</h3>
         <ul class="control-sidebar-menu" id="go_agent_manualdial" style="margin-top: -10px;padding: 0 15px;">
 			
         </ul>
+
+        <ul class="control-sidebar-menu" id="go_agent_dialpad" style="margin-top: 15px;padding: 0 15px;">
+			
+        </ul>
+
+        <ul class="control-sidebar-menu" id="go_agent_other_buttons" style="margin-top: 15px;padding: 0 15px;">
+			<li style="padding: 0 5px 15px 0; display: none;">
+				<div class="material-switch pull-right">
+					<input id="LeadPreview" name="LeadPreview" value="0" type="checkbox"/>
+					<label for="LeadPreview" class="label-primary"></label>
+				</div>
+				<div style="font-weight: bold;"><?=$lh->translateText('LEAD PREVIEW')?></div>
+			</li>
+			<li style="font-size: 5px;">
+				&nbsp;
+			</li>
+			<li style="padding: 0 5px 15px;">
+				<div class="material-switch pull-right">
+					<input id="enableHotKeys" name="enableHotKeys" type="checkbox"/>
+					<label for="enableHotKeys" class="label-primary"></label>
+				</div>
+				<div style="font-weight: bold;"><?=$lh->translateText('ENABLE HOT KEYS')?></div>
+			</li>
+			<li style="font-size: 5px;">
+				&nbsp;
+			</li>
+			<li>
+				<button type="button" id="show-callbacks-today" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Callbacks For Today')?> <span id="callbacks-active" class='badge pull-right bg-red'>0</span></button>
+				<button type="button" id="show-callbacks-active" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Active Callback(s)')?> <span id="callbacks-today" class='badge pull-right bg-red'>0</span></button>
+			</li>
+        </ul>
 		
-        <ul class="control-sidebar-menu" id="go_agent_login" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+        <ul class="control-sidebar-menu" id="go_agent_login" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px; text-align: center;">
 			
         </ul>
 		
-        <ul class="control-sidebar-menu hidden" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+        <ul class="control-sidebar-menu" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px; text-align: center;">
+			<li>
+				<p><strong><?=$lh->translateText("Call Duration")?>:</strong> <span id="SecondsDISP">0</span> <?=$lh->translationFor('second')?></p>
+				<span id="session_id" class="hidden"></span>
+				<span id="callchannel" class="hidden"></span>
+				<input type="hidden" id="callserverip" value="" />
+				<span id="custdatetime" class="hidden"></span>
+			</li>
 			
         </ul>
         <!-- /.control-sidebar-menu -->
@@ -672,8 +746,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
-  <div class="control-sidebar-bg" style="    position: fixed;
-    height: auto;"></div>
+  <div class="control-sidebar-bg" style="position: fixed; height: auto;"></div>
 
         </div><!-- ./wrapper -->
 
@@ -685,7 +758,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 
 		<script type="text/javascript">
 			$(document).ready(function() {
-				$("#edit-profile").click(function(event){
+				$("#edit-profile").click(function(){
 				    $('.input-disabled').prop('disabled', false);
 				    $('.hide_div').show();
 				    $("input:required, select:required").addClass("required_div");
@@ -726,7 +799,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 					}					
 				});
 				 */
-				$("#submit_edit_form").click(function(event){
+				$("#submit_edit_form").click(function(){
 				//alert("User Created!");
 				
 				var validate = 0;
@@ -739,12 +812,12 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 								$.ajax({
 									url: "./php/ModifyCustomer.php",
 									type: 'POST',
-									data: $("#name_form, #gender_form, #contact_details_form").serialize(),
+									data: $("#name_form, #gender_form, #contact_details_form, #comment_form").serialize(),
 									success: function(data) {
 									  // console.log(data);
 										  if(data == 1){
 										  	  $('.output-message-success').show().focus().delay(2000).fadeOut().queue(function(n){$(this).hide(); n();});
-											  window.setTimeout(function(){location.reload()},2000)
+											  window.setTimeout(function(){location.reload()},2000);
 										  }else{
 											  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 										  }
@@ -773,7 +846,7 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 				 $("#modifyCustomerDeleteButton").click(function (e) {
 					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
 					e.preventDefault();
-					if (r == true) {
+					if (r === true) {
 						var customerid = $(this).attr('href');
 						$.post("./php/DeleteContact.php", $("#modifycustomerform").serialize() ,function(data){
 							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
@@ -784,9 +857,19 @@ $data_of_birth = date('Y-m-d', strtotime($data_of_birth));
 						});
 					}
 				 });
-				 
+				
+				$('.form-control').on('focus blur', function (e) {
+					$(this).parents('.label-floating').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+				}).trigger('blur');
+				
+				$('.label-floating .form-control').change(function() {
+					var thisVal = $(this).val();
+					$(this).parents('.label-floating').toggleClass('focused', (thisVal.length > 0));
+				});
 			});
 		</script>
+		<!-- SnackbarJS -->
+        <script src="js/snackbar.min.js" type="text/javascript"></script>
 
     </body>
 </html>

@@ -1477,7 +1477,8 @@ error_reporting(E_ERROR | E_PARSE);
 	public function creamyFooter() {
 		$version = $this->db->getSettingValueForKey(CRM_SETTING_CRM_VERSION);
 		if (empty($version)) { $version = "unknown"; }
-		return '<footer class="main-footer"><div class="pull-right hidden-xs"><b>Version</b> '.$version.'</div><strong>Copyright &copy; 2014 <a href="http://digitalleaves.com">Digital Leaves</a> - <a href="http://woloweb.com">Woloweb</a>.</strong> All rights reserved.</footer>';
+		$version = "4.0";
+		return '<footer class="main-footer"><div class="pull-right hidden-xs"><b>Version</b> '.$version.'</div><strong>Copyright &copy;  <a href="http://www.goautodial.com/">GoAutoDial Inc.</a> & Digital Leaves - Woloweb</strong>(portion). All rights reserved.</footer>';
 	}
 	
 	/** Topbar Menu elements */
@@ -2955,8 +2956,8 @@ error_reporting(E_ERROR | E_PARSE);
 	       	   $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i]); 
 	       	        
 		        $result .= "<tr>
-	                     <td class='hide-on-low'>".$output->userno[$i]."</td>
-						 <td><a class='edit-T_user' href=".$output->userno[$i].">".$output->full_name[$i]."</a></td>";
+	                     <td class='hide-on-low'><a class='edit-T_user' data-id=".$output->user_id[$i].">".$output->userno[$i]."</a></td>
+						 <td>".$output->full_name[$i]."</td>";
 	             $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
 	                     <td class='hide-on-low'>".$output->active[$i]."</td>
 	                     <td style='width: 200px;'>".$action."</td>
@@ -3509,7 +3510,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 	
-	public function ActionMenuForCampaigns($id) {
+	public function ActionMenuForCampaigns($id, $name) {
 		
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3520,9 +3521,31 @@ error_reporting(E_ERROR | E_PARSE);
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="view-campaign" href="#" data-id="'.$id.'">View Info</a></li>
 			<li><a class="edit-campaign" href="#" data-id="'.$id.'">Edit Campaign</a></li>
-			<li><a class="delete-campaign" href="#" data-id="'.$id.'">Delete Campaign</a></li>
+			<li><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Campaign</a></li>
 		    </ul>
 		</div>';
+	}
+
+	public function API_getCampaignInfo($id){
+		$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "getCampaignInfo"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["campaign_id"] = $id; #Desired list id. (required)
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+
+		return $output;
 	}
 
 	/** Call Recordings API - Get all list of call recording */
@@ -3532,8 +3555,8 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function getListAllRecordings($goUser, $goPass, $goAction, $responsetype){
-	    $url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
+	public function API_getListAllRecordings(){
+		$url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
@@ -3549,6 +3572,12 @@ error_reporting(E_ERROR | E_PARSE);
 	    $data = curl_exec($ch);
 	    curl_close($ch);
 	    $output = json_decode($data);
+	    
+	    return $output;
+	}
+
+	public function getListAllRecordings($goUser, $goPass, $goAction, $responsetype){
+	    $output = $this->API_getListAllRecordings();
 
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -4116,11 +4145,11 @@ error_reporting(E_ERROR | E_PARSE);
          curl_close($ch);
          $output = json_decode($data);
 		
-		//var_dump($data);
+		//var_dump($output->status);
 		return $output;
 	}
 	
-	public function ActionMenuForDisposition($id) {
+	public function ActionMenuForDisposition($id, $name) {
 		 return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -4128,11 +4157,32 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="view_disposition" href="#" data-id="'.$id.'">View Disposition</a></li>
 			<li><a class="edit_disposition" href="#" data-id="'.$id.'">Edit Disposition</a></li>
-			<li><a class="delete_disposition" href="#" data-id="'.$id.'">Delete Disposition</a></li>
+			<li><a class="delete_disposition" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Disposition</a></li>
 		    </ul>
 		</div>';
+	}
+
+	public function API_getDispositionInfo($id){
+        $url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
+        $postfields["goUser"] = goUser; #Username goes here. (required)
+        $postfields["goPass"] = goPass; #Password goes here. (required)
+        $postfields["goAction"] = "getDispositionInfo"; #action performed by the [[API:Functions]]. (required)
+        $postfields["responsetype"] = responsetype; #json. (required)
+        $postfields["campaign_id"] = $id;
+
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_POST, 1);
+         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+         $data = curl_exec($ch);
+         curl_close($ch);
+         $output = json_decode($data);
+		
+		//var_dump($output->status);
+		return $output;
 	}
 
 //--------- Lead Filter ---------
@@ -4162,7 +4212,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 
-	public function ActionMenuForLeadFilters($id) {
+	public function ActionMenuForLeadFilters($id, $name) {
 		 return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -4172,7 +4222,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="view_leadfilter" href="#" data-id="'.$id.'">View Lead Filter</a></li>
 			<li><a class="edit_leadfilter" href="#" data-id="'.$id.'">Edit Lead Filter</a></li>
-			<li><a class="delete_leadfilter" href="#" data-id="'.$id.'">Delete Lead Filter</a></li>
+			<li><a class="delete_leadfilter" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Lead Filter</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4920,7 +4970,7 @@ error_reporting(E_ERROR | E_PARSE);
 		';
 	}
 
-	public function deleteNotificationModal($action, $id, $result){
+	public function deleteNotificationModal($action, $id, $result, $name){
 		//var_dump($id);
 		return '
 		<div id="delete_notification_modal" class="modal modal-success fade">

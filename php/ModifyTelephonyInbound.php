@@ -190,9 +190,8 @@ if ($did != NULL) {
 		$modify_did = stripslashes($modify_did);
 	}
 
-    $exten = NULL; if (isset($_POST["exten"])) { 
-		$exten = $_POST["exten"];
-		$exten = stripslashes($exten);
+    $did_pattern = NULL; if (isset($_POST["did_pattern"])) { 
+		$did_pattern = $_POST["did_pattern"];
 	}
 	
 	$desc = NULL; if (isset($_POST["desc"])) { 
@@ -216,10 +215,38 @@ if ($did != NULL) {
     $postfields["goAction"] = "goEditDID"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; #json (required)
     $postfields["did_id"] = $modify_did; #Desired list id. (required)
-    $postfields["did_pattern"] = $exten; #Desired list id. (required)
+    $postfields["did_pattern"] = $did_pattern; #Desired list id. (required)
 	$postfields["did_description"] = $desc; #Desired value for user (required)
 	$postfields["did_route"] = $route; #Desired value for user (required)
 	$postfields["did_active"] = $status; #Desired value for user (required)
+
+	if($_POST['route'] == "AGENT"){
+	    $postfields["user"]                     = $_POST['route_agentid']; #Desired user (required if did_route is AGENT)
+	    $postfields["user_unavailable_action"]  = $_POST['route_unavail']; #Desired user unavailable action (required if did_route is AGENT)
+	}
+
+	if($_POST['route'] == "IN_GROUP"){
+	    $postfields["group_id"]                 = $_POST['route_ingroupid']; #Desired group ID (required if did_route is IN-GROUP)
+	}
+
+	if($_POST['route'] == "PHONE"){
+	    $postfields["phone"]                    = $_POST['route_phone_exten']; #Desired phone (required if did_route is PHONE)
+	    $postfields["server_ip"]                = $_POST['route_phone_server']; #Desired server ip (required if did_route is PHONE)
+	}
+
+	if($_POST['route'] == "CALLMENU"){
+	    $postfields["menu_id"]                  = $_POST['route_ivr']; #Desired menu id (required if did_route is IVR)
+	}
+
+	if($_POST['route'] == "VOICEMAIL"){
+	    $postfields["voicemail_ext"]            = $_POST['route_voicemail']; #Desired voicemail (required if did_route is VOICEMAIL)
+	}
+
+	if($_POST['route'] == "EXTEN"){
+	    $postfields["extension"]                = $_POST['route_exten']; #Desired extension (required if did_route is CUSTOM EXTENSION)
+	    $postfields["exten_context"]            = $_POST['route_exten_context']; #Deisred context (required if did_route is CUSTOM EXTENSION)
+	}
+	
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
