@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial</title>
+        <title>Goautodial Voicemails</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -252,7 +252,9 @@
 
             // ADD FUNCTION
                 $('#submit_voicemail').click(function(){
-                
+                $('#submit_voicemail').val("Saving, Please Wait.....");
+                $('#submit_voicemail').prop("disabled", true);
+
                 var validate_voicemail = 0;
                 var voicemail_id = $("#voicemail_id").val();
                 var name = $("#name").val();
@@ -294,10 +296,13 @@
                                   if(data == 1){
                                         $('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
                                         window.setTimeout(function(){location.reload()},3000)
+                                        $('#submit_voicemail').val("Loading...");
                                   }
                                   else{
                                       $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-                                      $("#voicemail_result").html(data); 
+                                      $("#voicemail_result").html(data);
+                                      $('#submit_voicemail').val("Submit");
+                                      $('#submit_voicemail').prop("disabled", false);
                                   }
                             }
                         });
@@ -305,6 +310,8 @@
                     }else{
                         $('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
                         validate_usergroup = 0;
+                        $('#submit_voicemail').val("Submit");
+                        $('#submit_voicemail').prop("disabled", false);
                     }
                 });
             

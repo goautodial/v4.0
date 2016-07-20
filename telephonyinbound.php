@@ -26,7 +26,8 @@
         <?php print $ui->creamyThemeCSS(); ?>
 		<!-- Circle Buttons style -->
     	<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
-		
+		<!-- Bootstrap Color Picker -->
+  		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
 		<!-- Wizard Form style -->
     	<link rel="stylesheet" href="css/easyWizard.css">
 		
@@ -326,7 +327,7 @@
 						<div class="form-group">		
 							<label class="col-sm-4 control-label" for="color">Group Color: </label>
 							<div class="col-sm-7">
-								<input type="color" class="form-control" id="color" name="color" value="#FFFFFF">
+					            <input type="text" class="form-control colorpicker" name="color" id="color" value="#fffff">
 							</div>
 						</div>
 						<div class="form-group">
@@ -336,7 +337,7 @@
 									<?php
 										for($i=0;$i<count($user_groups->user_group);$i++){
 									?>
-										<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
+										<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
 									<?php
 										}
 									?>
@@ -736,7 +737,7 @@
 									<?php
 										for($i=0;$i<count($user_groups->user_group);$i++){
 									?>
-										<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
+										<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
 									<?php
 										}
 									?>
@@ -964,13 +965,18 @@
 		<script src="js/easyWizard.js" type="text/javascript"></script>
 		<!-- SLIMSCROLL-->
   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
-   
+	    <!-- bootstrap color picker -->
+		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
+
  		<script type="text/javascript">
 			$(document).ready(function() {
 
 				$(".bottom-menu").on('mouseenter mouseleave', function () {
 				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 				});
+
+			//loads colorpicker
+    		$(".colorpicker").colorpicker();
 
 			//loads datatable functions
 				$('#table_ingroup').dataTable();
@@ -1084,7 +1090,9 @@
 
 				// ajax commands for modals -
 				$('#submit_ingroup').click(function(){
-				
+				$('#submit_ingroup').val("Saving, Please Wait.....");
+				$('#submit_ingroup').prop("disabled", true);
+
 				var validate_ingroup = 0;
 				var groupid = $("#groupid").val();
 				var groupname = $("#groupname").val();
@@ -1114,10 +1122,14 @@
 								  if(data == "success"){
 										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 								  		window.setTimeout(function(){location.reload()},1000)
+								  		$('#submit_ingroup').val("Submit");
+										$('#submit_ingroup').prop("disabled", false);
 								  }
 								  else{
 									  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-									  $("#ingroup_result").html(data); 
+									  $("#ingroup_result").html(data);
+									  $('#submit_ingroup').val("Submit");
+									  $('#submit_ingroup').prop("disabled", false);
 								  }
 							}
 						});
@@ -1125,10 +1137,15 @@
 					}else{
 						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 						validate_ingroup = 0;
+						$('#submit_ingroup').val("Submit");
+						$('#submit_ingroup').prop("disabled", false);
 					}
 				});
 				
 				$('#submit_did').click(function(){
+
+				$('#submit_did').val("Saving, Please Wait.....");
+				$('#submit_did').prop("disabled", true);
 
 				var validate_did = 0;
 
@@ -1165,15 +1182,21 @@
 								  if(data == 1){
 										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 								  		window.setTimeout(function(){location.reload()},1000)
+								  		$('#submit_did').val("Submit");
+										$('#submit_did').prop("disabled", false);
 								  }else{
 										$('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-										$("#phonenumber_result").html(data); 
+										$("#phonenumber_result").html(data);
+										$('#submit_did').val("Submit");
+										$('#submit_did').prop("disabled", false);
 								  }
 							}
 						});
 					}else{
 						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 						validate_did = 0;
+						$('#submit_did').val("Submit");
+						$('#submit_did').prop("disabled", false);
 					}
 
 				});

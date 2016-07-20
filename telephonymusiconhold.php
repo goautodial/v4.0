@@ -184,7 +184,7 @@ error_reporting(E_ALL);
 	      </div>
           <div class="message_box"></div>
 	      <div class="modal-footer">
-	           <button type="button" class="btn btn-primary btn-update-moh-info" data-id="">Modify</button>
+	           <button type="button" class="btn btn-primary btn-update-moh-info" data-id=""><span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 	           <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
 	      </div>
 	    </div>
@@ -331,6 +331,9 @@ error_reporting(E_ALL);
 			// ADD FUNCTION
                 $('#submit_moh').click(function(){
                 
+                $('#submit_moh').val("Saving, Please Wait.....");
+                $('#submit_moh').prop("disabled", true);
+
                 var validate = 0;
 
                 var moh_id = $("#moh_id").val();
@@ -356,10 +359,14 @@ error_reporting(E_ALL);
                                   if(data == 1){
                                         $('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
                                         window.setTimeout(function(){location.reload()},3000)
+                                        $('#submit_moh').val("Submit");
+                                        $('#submit_moh').prop("disabled", false);
                                   }
                                   else{
                                       $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
                                       $("#voicemail_result").html(data); 
+                                      $('#submit_moh').val("Submit");
+                                      $('#submit_moh').prop("disabled", false);
                                   }
                             }
                         });
@@ -367,10 +374,13 @@ error_reporting(E_ALL);
                     }else{
                         $('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
                         validate_usergroup = 0;
+                        $('#submit_moh').val("Submit");
+                        $('#submit_moh').prop("disabled", false);
                     }
                 });
                 
                 $(document).on('click','.edit-moh',function() {
+
 					var moh_id = $(this).attr('data-id');
 
 					$.ajax({
@@ -386,13 +396,16 @@ error_reporting(E_ALL);
 						      $('.moh_status option[value="' + data.active + '"]').attr('selected','selected');
 						      $('.moh_user_group option[value="' + data.user_group + '"]').attr('selected','selected');
 						      $('.moh_rand_order option[value="' + data.random + '"]').attr('selected','selected');
-						      
-						      $('#view-moh-modal').modal('show');
+						  
+                              $('#view-moh-modal').modal('show');
 						}
 					});
 				});
 				
 				$('.btn-update-moh-info').click(function(){
+                    $('#update_button').html("<i class='fa fa-edit'></i> Updating...");
+                    $('.btn-update-moh-info').attr("disabled", true);
+
 					$.ajax({
 						url: "./php/UpdateMOH.php",
 						type: 'POST',
@@ -412,14 +425,18 @@ error_reporting(E_ALL);
                                 $('.message_box').html(message);
                                 $('.message_box').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
                                 window.setTimeout(function(){location.reload()},2000)   
-
+                                
+                                $('#update_button').html("<i class='fa fa-check'></i> Update");
+                                $('.btn-update-moh-info').attr("disabled", false);
 						      } else {
 							var message = '<div class="alert alert-danger">';
 							    message += '<strong>Error!</strong> Something went wrong with the update.';
 							    message += '</div>';
                                 $('.message_box').html(message);
                                 $('.message_box').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-
+                                
+                                $('#update_button').html("<i class='fa fa-check'></i> Update");
+                                $('.btn-update-moh-info').attr("disabled", false);
 						      }
 						      
 						      

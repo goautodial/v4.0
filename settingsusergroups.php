@@ -226,7 +226,9 @@
 
                 // ajax commands for modals -
                 $('#submit_usergroup').click(function(){
-                
+                $('#submit_usergroup').val("Saving, Please Wait.....");
+                $('#submit_usergroup').prop("disabled", true);
+
                 var validate_usergroup = 0;
                 var usergroup_id = $("#usergroup_id").val();
                 var groupname = $("#groupname").val();
@@ -252,10 +254,13 @@
                                   if(data == 1){
                                         $('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
                                         window.setTimeout(function(){location.reload()},3000)
+                                        $('#submit_usergroup').val("Loading");
                                   }
                                   else{
                                       $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-                                      $("#usergroup_result").html(data); 
+                                      $("#usergroup_result").html(data);
+                                      $('#submit_usergroup').val("Submit");
+                                      $('#submit_usergroup').prop("disabled", false);
                                   }
                             }
                         });
@@ -263,6 +268,8 @@
                     }else{
                         $('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
                         validate_usergroup = 0;
+                        $('#submit_usergroup').val("Submit");
+                        $('#submit_usergroup').prop("disabled", false);
                     }
                 });
                 

@@ -90,6 +90,7 @@ if (isset($_POST["vmid"])) {
 
                 <!-- Main content -->
                 <section class="content">
+					<div class="box box-info">
 					<!-- standard custom edition form -->
 					<?php
 					$errormessage = NULL;
@@ -121,19 +122,16 @@ if (isset($_POST["vmid"])) {
 							for($i=0;$i<count($output->voicemail_id);$i++){
 					?>
                     
-                    <div role="tabpanel" class="panel panel-transparent" style="box-shadow: 5px 5px 8px #888888;">
-							
-						<h4 style="padding:15px;"><a type="button" class="btn" href="settingsvoicemails.php"><i class="fa fa-arrow-left"></i> Cancel</a><center><b>MODIFY VOICEMAIL</b></center></h4>
-								
+                    <div class="box-header with-border">
+						<h3 class="box-title">MODIFY VOICEMAIL ID: <u><?php echo $output->voicemail_id[$i];?></u></h3>
+					</div>
+					<div class="box-body table-responsive">		
 							<form id="modifyform">
 								<input type="hidden" name="modifyid" value="<?php echo $vmid;?>">
 							
 						<!-- BASIC SETTINGS -->
-							<div class="panel text-left" style="margin-top: 20px; padding: 0px 30px">
-								<div class="form-group">
-									<label>Voicemail ID: </label>
-									<span style="padding-left:20px; font-size: 20;"><?php echo $vmid;?></span>
-								</div>
+
+							<div class="col-lg-6">
 								<div class="form-group">
 									<label for="password">Your Password</label>
 									<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="<?php echo $output->password[$i];?>">
@@ -146,8 +144,10 @@ if (isset($_POST["vmid"])) {
 									<label for="email">Email</label>
 									<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->email[$i];?>">
 								</div>
-								<div class="form-group">
-									<label for="active">Active</label>
+							</div>
+							<div class="col-lg-6">
+								<div class="row" style="padding-top:5px;">
+									<label for="active" class="col-md-5">Active
 									<select class="form-control" name="active" id="active">
 									<?php
 										$active = NULL;
@@ -165,9 +165,10 @@ if (isset($_POST["vmid"])) {
 										echo $active;
 									?>
 									</select>
+									</label>
 								</div>
-								<div class="form-group">
-									<label for="delete_vm_after_email">Delete Voicemail After Email</label>
+								<div class="row" style="padding-top:10px;">
+									<label for="delete_vm_after_email" class="col-md-5">Delete Voicemail After Email
 									<select class="form-control" name="delete_vm_after_email" id="delete_vm_after_email">
 									<?php
 										$delete_vm_after_email = NULL;
@@ -185,6 +186,7 @@ if (isset($_POST["vmid"])) {
 										echo $delete_vm_after_email;
 									?>
 									</select>
+									</label>
 								</div>
 								<div class="form-group">
 									<label>New Messages: </label>
@@ -194,10 +196,8 @@ if (isset($_POST["vmid"])) {
 									<label>Old Messages: </label>
 									<span style="padding-left:20px; font-size: 20;"><?php echo $output->old_messages[$i];?></span>
 								</div>
-
-								<br/>
-
 							</div>
+						</div>
 							
 							<!-- NOTIFICATIONS -->
 		                    <div id="notifications">
@@ -213,11 +213,11 @@ if (isset($_POST["vmid"])) {
 		                        </div>
 		                    </div>
 
-							<div class="row" style="padding:0px 50px;">
-								<button type="button" class="btn btn-danger delete-phone" id="modifyUSERDeleteButton" data-id="<?php echo $vmid?>" data-name="<?php echo $vmid;?>" href=""><i class="fa fa-times"></i> Delete</button>
+						<div class="box-footer">
+							<a type="button" class="btn btn-danger delete-phone" href="settingsvoicemails.php"><i class="fa fa-arrow-left"></i> Cancel</a>
 
-								<button type="submit" class="btn btn-primary pull-right" id="modifyUserOkButton" href=""><i class="fa fa-check"></i> Update</button>
-							</div>
+							<button type="submit" class="btn btn-primary pull-right" id="modifyVoicemailOkButton" href=""><span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+						</div>
 							
 							</form>								
 							
@@ -275,6 +275,10 @@ if (isset($_POST["vmid"])) {
 				$("#modifyform").validate({
                 	submitHandler: function() {
 						//submit the form
+						
+							$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+							$('#modifyVoicemailOkButton').prop("disabled", true);
+
 							$("#resultmessage").html();
 							$("#resultmessage").fadeOut();
 							$.post("./php/ModifySettingsVoicemail.php", //post
@@ -283,9 +287,13 @@ if (isset($_POST["vmid"])) {
 									//if message is sent
 									if (data == 1) {
 										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-                                        //window.setTimeout(function(){location.reload()},2000)			
+                                        window.setTimeout(function(){location.replace("settingsvoicemails.php")},2000)
+                                        $('#update_button').html("<i class='fa fa-check'></i> Update");
+                                        $('#modifyVoicemailOkButton').prop("disabled", false);
 									} else {
 										$('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+										$('#update_button').html("<i class='fa fa-check'></i> Update");
+										$('#modifyVoicemailOkButton').prop("disabled", false);
 									}
 									//
 								});
@@ -293,54 +301,6 @@ if (isset($_POST["vmid"])) {
 					}					
 				});
 				
-				/**
-	             * Delete validation modal
-	             */
-	             $(document).on('click','.delete-phone',function() {
-	                
-	                var exten_id = $(this).attr('data-id');
-	                var exten_name = $(this).attr('data-name');
-	                var action = "Phone Extension";
-
-	                $('.id-delete-label').attr("data-id", exten_id);
-	                $('.id-delete-label').attr("data-action", action);
-
-	                $(".delete_extension").text(exten_name);
-	                $(".action_validation").text(action);
-
-	                $('#delete_validation_modal').modal('show');
-	             });
-
-	             $(document).on('click','#delete_yes',function() {
-	                
-	                var id = $(this).attr('data-id');
-	                var action = $(this).attr('data-action');
-
-	                $('#id_span').html(id);
-
-	                    $.ajax({
-	                        url: "./php/DeleteSettingsPhones.php",
-	                        type: 'POST',
-	                        data: { 
-	                            exten_id:id,
-	                        },
-	                        success: function(data) {
-	                        console.log(data);
-	                            if(data == 1){
-	                                $('#result_span').text(data);
-	                                $('#delete_notification').show();
-	                                $('#delete_notification_modal').modal('show');
-	                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-	                                window.location.replace("./settingsvoicemails.php");
-	                            }else{
-	                                $('#result_span').html(data);
-	                                $('#delete_notification').show();
-	                                $('#delete_notification_modal_fail').modal('show');
-	                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-	                            }
-	                        }
-	                    });
-	             });
 				 
 			});
 		</script>

@@ -77,7 +77,7 @@ if (isset($_POST["extenid"])) {
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        <?php $lh->translateText("telephony"); ?>
+                        <?php $lh->translateText("settings"); ?>
                         <small><?php $lh->translateText("Phone Edit"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
@@ -95,8 +95,10 @@ if (isset($_POST["extenid"])) {
                 </section>
 
                 <!-- Main content -->
-                <section class="content" style="padding:30px; padding-left:10%; padding-right:10%; margin-left: 0; margin-right: 0;">
-					<!-- standard custom edition form -->
+                <section class="content">
+					<div class="box box-info">
+
+						<!-- standard custom edition form -->
 					<?php
 					$errormessage = NULL;
 					
@@ -125,19 +127,16 @@ if (isset($_POST["extenid"])) {
 							for($i=0;$i<count($output->extension);$i++){
 					?>
                     
-                    <div role="tabpanel" class="panel panel-transparent" style="box-shadow: 5px 5px 8px #888888;">
-							
-						<h4 style="padding:15px;"><a type="button" class="btn" href="settingsphones.php"><i class="fa fa-arrow-left"></i> Cancel</a><center><b>MODIFY PHONES</b></center></h4>
-								
+                    <div class="box-header with-border">
+							<h3 class="box-title">MODIFY PHONE EXTENSION : <u><?php echo $output->extension[$i];?></u></h3>
+						</div>
+						<div class="box-body table-responsive">
+
 							<form id="modifyphones">
 								<input type="hidden" name="modifyid" value="<?php echo $extenid;?>">
 							
 						<!-- BASIC SETTINGS -->
-							<div class="panel text-left" style="margin-top: 20px; padding: 0px 30px">
-								<div class="form-group">
-									<label>Phone Extension: </label>
-									<span style="padding-left:20px; font-size: 20;"><?php echo $extenid;?></span>
-								</div>
+							<div class="col-lg-6">
 								<div class="form-group">
 									<label for="plan">Dial Plan Number</label>
 									<input type="number" class="form-control" name="plan" id="plan" placeholder="Dial Plan Number (Mandatory)" value="<?php echo $output->dialplan_number[$i];?>">
@@ -211,6 +210,8 @@ if (isset($_POST["extenid"])) {
 									</select>
 									</label>
 								</div>
+							</div>
+							<div class="col-lg-6">
 								<div class="form-group">
 									<label for="fullname">Fullname</label>
 									<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->fullname[$i];?>">
@@ -257,30 +258,29 @@ if (isset($_POST["extenid"])) {
 										?>
 									</select>
 								</div>
-
-								<br/>
-
 							</div>
 							
-							<!-- NOTIFICATIONS -->
-		                    <div id="notifications">
-		                        <div class="output-message-success" style="display:none;">
-		                            <div class="alert alert-success alert-dismissible" role="alert">
-		                              <strong>Success!</strong> Phone <?php echo $extenid?> modified !
-		                            </div>
-		                        </div>
-		                        <div class="output-message-error" style="display:none;">
-		                            <div class="alert alert-danger alert-dismissible" role="alert">
-		                              <span id="modifyT_phonesresult"></span>
-		                            </div>
-		                        </div>
-		                    </div>
+		                </div><!-- body -->
 
-							<div class="row" style="padding:0px 50px;">
-								<button type="button" class="btn btn-danger delete-phone" id="modifyUSERDeleteButton" data-id="<?php echo $extenid?>" data-name="<?php echo $extenid;?>" href=""><i class="fa fa-times"></i> Delete</button>
+		                <!-- NOTIFICATIONS -->
+	                    <div id="notifications">
+	                        <div class="output-message-success" style="display:none;">
+	                            <div class="alert alert-success alert-dismissible" role="alert">
+	                              <strong>Success!</strong> Phone <?php echo $extenid?> modified !
+	                            </div>
+	                        </div>
+	                        <div class="output-message-error" style="display:none;">
+	                            <div class="alert alert-danger alert-dismissible" role="alert">
+	                              <span id="modifyT_phonesresult"></span>
+	                            </div>
+	                        </div>
+	                    </div>
 
-								<button type="submit" class="btn btn-primary pull-right" id="modifyUserOkButton" href=""><i class="fa fa-check"></i> Update</button>
-							</div>
+						<div class="box-footer">
+							<a type="button" class="btn btn-danger delete-phone" id="modifyUSERDeleteButton" href="settingsphones.php"><i class="fa fa-arrow-left"></i> Cancel</a>
+
+							<button type="submit" class="btn btn-primary pull-right" id="update_phones" href=""><span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+						</div>
 							
 							</form>								
 							
@@ -299,30 +299,6 @@ if (isset($_POST["extenid"])) {
 			
         </div><!-- ./wrapper -->
 
-        <!-- DELETE VALIDATION MODAL -->
-        <div id="delete_validation_modal" class="modal modal-warning fade">
-            <div class="modal-dialog">
-                <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-                    <div class="modal-header">
-                        <h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
-                    </div>
-                    <div class="modal-body" style="background:#fff;">
-                        <p>This action cannot be undone.</p>
-                        <p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
-                    </div>
-                    <div class="modal-footer" style="background:#fff;">
-                        <button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-                  </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DELETE NOTIFICATION MODAL -->
-        <div id="delete_notification" style="display:none;">
-            <?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
-        </div>
-
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 		
@@ -338,6 +314,9 @@ if (isset($_POST["extenid"])) {
 				$("#modifyphones").validate({
                 	submitHandler: function() {
 						//submit the form
+							$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+							$('#update_phones').prop("disabled", true);
+
 							$("#resultmessage").html();
 							$("#resultmessage").fadeOut();
 							$.post("./php/ModifySettingsPhones.php", //post
@@ -346,12 +325,16 @@ if (isset($_POST["extenid"])) {
 									//if message is sent
 									if (data == 1) {
 										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-                                        window.setTimeout(function(){location.reload()},2000)			
+                                        window.setTimeout(function(){location.replace('settingsphones.php')},2000)
+
+                                        ('#update_button').html("<i class='fa fa-check'></i> Update");
+										$('#update_phones').prop("disabled", false);		
 									} else {
 									<?php 
 										print $ui->fadingInMessageJS($errorMsg, "modifyT_phonesresult");
 									?>
-									
+										('#update_button').html("<i class='fa fa-check'></i> Update");
+										$('#update_phones').prop("disabled", false);	
 									}
 									//
 								});
@@ -359,54 +342,7 @@ if (isset($_POST["extenid"])) {
 					}					
 				});
 				
-				/**
-	             * Delete validation modal
-	             */
-	             $(document).on('click','.delete-phone',function() {
-	                
-	                var exten_id = $(this).attr('data-id');
-	                var exten_name = $(this).attr('data-name');
-	                var action = "Phone Extension";
-
-	                $('.id-delete-label').attr("data-id", exten_id);
-	                $('.id-delete-label').attr("data-action", action);
-
-	                $(".delete_extension").text(exten_name);
-	                $(".action_validation").text(action);
-
-	                $('#delete_validation_modal').modal('show');
-	             });
-
-	             $(document).on('click','#delete_yes',function() {
-	                
-	                var id = $(this).attr('data-id');
-	                var action = $(this).attr('data-action');
-
-	                $('#id_span').html(id);
-
-	                    $.ajax({
-	                        url: "./php/DeleteSettingsPhones.php",
-	                        type: 'POST',
-	                        data: { 
-	                            exten_id:id,
-	                        },
-	                        success: function(data) {
-	                        console.log(data);
-	                            if(data == 1){
-	                                $('#result_span').text(data);
-	                                $('#delete_notification').show();
-	                                $('#delete_notification_modal').modal('show');
-	                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-	                                window.location.replace("./settingsphones.php");
-	                            }else{
-	                                $('#result_span').html(data);
-	                                $('#delete_notification').show();
-	                                $('#delete_notification_modal_fail').modal('show');
-	                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-	                            }
-	                        }
-	                    });
-	             });
+				
 				 
 			});
 		</script>

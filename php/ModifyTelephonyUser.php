@@ -16,7 +16,7 @@ if (!isset($_POST["modifyid"])) {
 if ($validated == 1) {
 
 	// collect new user data.	
-	echo $modifyid = $_POST["modifyid"];
+	$modifyid = $_POST["modifyid"];
     
 	$name = NULL; if (isset($_POST["fullname"])) { 
 		$name = $_POST["fullname"]; 
@@ -47,25 +47,43 @@ if ($validated == 1) {
 		$voicemail = $_POST["voicemail"]; 
 		$voicemail = stripslashes($voicemail);
 	}
+
+	$hotkeys_active = NULL; if (isset($_POST["hotkeys"])) { 
+		$hotkeys_active = $_POST["hotkeys"]; 
+		$hotkeys_active = stripslashes($hotkeys_active);
+	}
+
+	$phone_login = NULL; if (isset($_POST["phone_login"])) { 
+		$phone_login = $_POST["phone_login"]; 
+		$phone_login = stripslashes($phone_login);
+	}
+
+	$phone_pass = NULL; if (isset($_POST["phone_password"])) { 
+		$phone_pass = $_POST["phone_password"]; 
+		$phone_pass = stripslashes($phone_pass);
+	}
 	
 	$url = gourl."/goUsers/goAPI.php"; # URL to GoAutoDial API file
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goEditUser"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; #json (required)
-	$postfields["user"] = $modifyid; #Desired value for user (required)
+	$postfields["user_id"] = $modifyid; #Desired value for user (required)
 	$postfields["full_name"] = $name; #Desired value for user (required)
 	$postfields["user_group"] = $user_group; #Desired value for user (required)
 	$postfields["user_level"] = $userlevel; #Desired value for user (required)
 	$postfields["active"] = $status; #Desired value for user (required)
 	$postfields["voicemail"] = $voicemail; #Desired value for user (required)
-    
+    $postfields["email"] = $email;
+    $postfields["phone_login"] = $phone_login;
+    $postfields["phone_pass"] = $phone_pass;
+    $postfields["hotkeys_active"] = $hotkeys_active;
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     
 	
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_TIMEOUT, 100);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -74,7 +92,7 @@ if ($validated == 1) {
     curl_close($ch);
     $output = json_decode($data);
     
-    //var_dump($output);
+    //var_dump($data);
 
     if ($output->result=="success") {
     # Result was OK!

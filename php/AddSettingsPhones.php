@@ -1,11 +1,9 @@
 <?php
+/*
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-	/** Telephony Users API - Add a new Telephony User */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 */
+*/
 require_once('goCRMAPISettings.php');	
 
 	$url 							= gourl."/goPhones/goAPI.php"; # URL to GoAutoDial API file
@@ -38,7 +36,7 @@ require_once('goCRMAPISettings.php');
 	curl_close($ch);
 	$output = json_decode($data);
 	 
-	// print_r($data);
+	//var_dump($data);
 	
 	if ($output->result=="success") {
 		# Result was OK!
