@@ -124,12 +124,15 @@ $disposition = $ui->API_getDispositionInfo($did);
 
                 <!-- Main content -->
                 <section class="content">
-					<div class="box box-info">
+					<div class="box box-info clearfix">
 						<div class="box-header with-border">
 							<h3 class="box-title">
 								
 								<?php 
-					        		if($campaign_id != NULL){echo "Campaign";}
+					        		if($campaign_id != NULL){
+					        			echo "Modify Campaign: ".$campaign_id." - ".$campaign->data->campaign_name;
+					        		}
+
 					        		if($did != NULL){
 					        	?>
 					        		Custom Statuses Within Campaign: <?php echo "<b>".$did."</b>";?>
@@ -142,22 +145,205 @@ $disposition = $ui->API_getDispositionInfo($did);
 						</div>
 						<!-- /.box-header -->
 						<form class="form-horizontal">
+							<?php $errormessage = NULL; ?>
+							<!-- // ---- IF CAMPAIGN -->
+							<?php if($campaign_id != NULL) { ?>
+								<?php if ($campaign->result=="success") { ?>
+									<div class="col-lg-12">
+										<div class="nav-tabs-custom">
+											<ul class="nav nav-tabs">
+												<li class="active"><a href="#tab1" data-toggle="tab">Basic</a></li>
+												<li><a href="#tab2" data-toggle="tab">Advance Settings</a></li>
+											</ul>
+											<div class="tab-content">
+												<div class="tab-pane active" id="tab1">
+													<div class="form-group">
+														<div class="col-lg-5">
+															<label class="control-label">Campaign Name:</label>
+															<input type="text" class="form-control">
+														</div>
+														<div class="col-lg-5">
+															<label class="control-label">Campaign Description:</label>
+															<input type="text" class="form-control">
+														</div>
+														<div class="col-lg-2">
+															<label class="control-label">Active:</label>
+															<select class="form-control">
+																<option value="Y">Y</option>
+																<option value="N">N</option>
+															</select>
+														</div>
+														<div class="col-lg-3">
+															<label class="control-label">Dial Method:</label>
+															<select name="dial_method" id="dial_method" class="form-control">
+																<option value="MANUAL" selected="selected">MANUAL</option>
+																<option value="AUTO_DIAL">AUTO DIAL</option>
+																<option value="PREDICTIVE">PREDICTIVE</option>
+																<option value="INBOUND_MAN">INBOUND MAN</option>
+															</select>
+														</div>
+														<div class="col-lg-4">
+															<label class="control-label">AutoDial Level:</label>
+															<div class="row">
+																<div class="col-lg-8">
+																	<select id="auto_dial_level" class="form-control">
+																		<option>OFF</option>
+																		<option>SLOW</option>
+																		<option>NORMAL</option>
+																		<option>HIGH</option>
+																		<option>MAX</option>
+																		<option>MAX_PREDICTIVE</option>
+																		<option>ADVANCE</option>
+																	</select>
+																</div>
+																<div class="col-lg-4 row">
+																	<select id="auto_dial_level_adv" class="form-control">
+																		<option>1.0</option>
+																		<option>1.5</option>
+																		<option>2.0</option>
+																		<option>2.5</option>
+																		<option>3.0</option>
+																		<option>3.5</option>
+																		<option>4.0</option>
+																		<option>4.5</option>
+																		<option>5.0</option>
+																		<option>5.5</option>
+																		<option>6.0</option>
+																		<option>6.5</option>
+																		<option>7.0</option>
+																		<option>7.5</option>
+																		<option>8.0</option>
+																		<option>8.5</option>
+																		<option>9.0</option>
+																		<option>9.5</option>
+																		<option>10.0</option>
+																		<option>10.5</option>
+																		<option>11.0</option>
+																		<option>11.5</option>
+																		<option>12.0</option>
+																		<option>12.5</option>
+																		<option>13.0</option>
+																		<option>13.5</option>
+																		<option>14.0</option>
+																		<option>14.5</option>
+																		<option>15.0</option>
+																		<option>15.5</option>
+																		<option>16.0</option>
+																		<option>16.5</option>
+																		<option>17.0</option>
+																		<option>17.5</option>
+																		<option>18.0</option>
+																		<option>18.5</option>
+																		<option>19.0</option>
+																		<option>19.5</option>
+																		<option>20.0</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="col-lg-5">
+															<label class="control-label">Carrier to use for Campaign:</label>
+															<div class="row">
+																<div class="col-lg-9">
+																	<select name="dial_prefix" id="dial_prefix" class="form-control">
+																		<option value="--CUSTOM--" selected="selected">CUSTOM DIAL PREFIX</option>
+																	</select>
+																</div>
+																<div class="col-lg-3">
+																	<input type="text" class="form-control">
+																</div>
+															</div>
+														</div>
+														<div class="col-lg-4">
+															<label class="control-label">Script:</label>
+															<select class="form-control">
+																<option>--- NONE ---</option>
+															</select>
+														</div>
+														<div class="col-lg-3">
+															<label class="control-label">Campaign Caller ID:</label>
+															<input type="text" class="form-control">
+														</div>
+														<div class="col-lg-2">
+															<label class="control-label">Campaign Recording:</label>
+															<select id="campaign_recording" class="form-control">
+																<option value="NEVER">OFF</option>
+																<option value="ALLFORCE">ON</option>
+																<option value="ONDEMAND">ONDEMAND</option>
+															</select>
+														</div>
+														<div class="col-lg-3">
+															<label class="control-label">Answer Machine Detection:</label>
+															<select id="campaign_vdad_exten" class="form-control">
+																<option value="8368">OFF</option>
+																<option value="8369">ON</option>
+															</select>
+														</div>
+														<div class="col-lg-6">
+															<label class="control-label">Local Calltime:</label>
+															<select class="form-control">
+																<option>-- LIST HERE --</option>
+															</select>
+														</div>
+														<?php if($campaign->campaign_type == "OUTBOUND") { ?>
+															<div class="col-lg-4">
+																<label class="control-label">Force Reset of Hopper:</label>
+																<select class="form-control">
+																	<option value="Y">Y</option>
+																	<option value="N">N</option>
+																</select>
+															</div>
+														<?php } elseif($campaign->campaign_type == "INBOUND") { ?>
+															<div class="col-lg-4">
+																<label class="control-label">Phone Numbers (DID/TFN) on this campaign:</label>
+																<input type="text" class="form-control">
+															</div>
+															<div class="col-lg-2">
+																<label class="control-label">Inbound Man:</label>
+																<select class="form-control">
+																	<option value="Y">Yes</option>
+																	<option value="N">No</option>
+																</select>
+															</div>
+														<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
+															<div class="col-lg-4">
+																<label class="control-label">Phone Numbers (DID/TFN) on this campaign:</label>
+																<input type="text" class="form-control">
+															</div>
+														<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
+															<!-- Nothing to do -->
+														<?php } else { ?>
+															<!-- Nothing to do -->
+														<?php } ?>
+													</div>
+												</div>
+												<!-- /.tab-pane -->
+												<div class="tab-pane" id="tab2">
+													<?php if($campaign->campaign_type == "OUTBOUND") { ?>
+														Outbound
+													<?php } elseif($campaign->campaign_type == "INBOUND") { ?>
+														Inbound
+													<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
+														Blended
+													<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
+														Survey
+													<?php } else { ?>
+														Default
+													<?php } ?>
+												</div>
+												<!-- /.tab-pane -->
+											</div>
+											<!-- /.tab-content -->
+										</div>
+										<!-- nav-tabs-custom -->
+									</div>
+								<?php } else {  ?>
+								 	<?php echo $campaign->result; ?>
+								<?php } ?>
+							<?php } ?>
+							
 							<?php 
-							
-							$errormessage = NULL; 
-
-					// ---- IF CAMPAIGN
-							if($campaign_id != NULL) {
-								if ($campaign->result=="success") {
-									for($i=0;$i < count($campaign->campaign_id);$i++){
-										echo $campaign->campaign_id[$i];
-									} 
-								} else { 
-								 	echo $campaign->result; 
-								}
-							}
-							
-					// ---- IF DID
+							// ---- IF DID
 							if($did != NULL){
 								//var_dump($disposition->result);
 								
@@ -461,12 +647,57 @@ $disposition = $ui->API_getDispositionInfo($did);
 		<script src="js/plugins/iCheck/icheck.min.js"></script>
 
 		<script type="text/javascript">
+			function setElements(type){
+				if(type == 'inbound'){
+					$('.outbound').addClass('hide');
+					$('.blended').addClass('hide');
+					$('.survey').addClass('hide');
+					$('.copy-from').addClass('hide');
+					$('.inbound').removeClass('hide');
+				}else if(type == 'survey'){
+					$('.outbound').addClass('hide');
+					$('.blended').addClass('hide');
+					$('.inbounce').addClass('hide');
+					$('.copy-from').addClass('hide');
+					$('.survey').removeClass('hide');
+				}else if(type == 'copy'){
+					$('.outbound').addClass('hide');
+					$('.blended').addClass('hide');
+					$('.survey').addClass('hide');
+					$('.inbound').addClass('hide');
+					$('.copy-from').removeClass('hide');
+				}else if(type == 'blended'){
+					$('.outbound').addClass('hide');
+					$('.inbound').addClass('hide');
+					$('.survey').addClass('hide');
+					$('.copy-from').addClass('hide');
+					$('.blended').removeClass('hide');
+				}else if(type == 'outbound'){
+					$('.inbound').addClass('hide');
+					$('.blended').addClass('hide');
+					$('.survey').addClass('hide');
+					$('.copy-from').addClass('hide');
+					$('.outbound').removeClass('hide');
+				}
+			}
+
 			$(document).ready(function() {
 				//Flat red color scheme for iCheck
 			    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
 			      checkboxClass: 'icheckbox_flat-green',
 			      radioClass: 'iradio_flat-green'
 			    });
+
+			    var campaign_type = $('#campaignType').find("option:selected").val();
+			    setElements(campaign_type);
+
+			    $('#campaignType').change(function(){
+					var selectedTypeText = $(this).find("option:selected").text();
+					var selectedTypeVal = $(this).find("option:selected").val();
+					
+
+					setElements(selectedTypeVal);
+				});
 
 			   //Add Status
 		        $('#add_new_status').click(function(){

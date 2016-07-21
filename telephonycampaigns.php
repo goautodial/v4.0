@@ -512,13 +512,13 @@ error_reporting(E_ALL);
 		    					<input id="carrier-to-use" name="carrier_to_use" type="text" class="form-control">
 		    				</div>
 		    			</div>
-		    			<div class="form-group">
+		    			<!-- <div class="form-group">
 		    				<label class="control-label col-lg-4">Description:</label>
 		    				<div class="col-lg-8">
 		    					<input id="description" name="description" type="text" class="form-control">
 		    				</div>
-		    			</div>
-		    			<div class="form-group">
+		    			</div> -->
+		    			<!-- <div class="form-group">
 		    				<label class="control-label col-lg-4">Status:</label>
 		    				<div class="col-lg-8">
 		    					<select class="form-control" id="status" name="status">
@@ -526,8 +526,8 @@ error_reporting(E_ALL);
 		    						<option value="INACTIVE">INACTIVE</option>
 		    					</select>
 		    				</div>
-		    			</div>
-		    			<div class="form-group">
+		    			</div> -->
+		    			<div class="form-group blended">
 		    				<label class="control-label col-lg-4">Call Recordings:</label>
 		    				<div class="col-lg-8">
 		    					<select class="form-control" id="call-recordings" name="call_recordings">
@@ -537,12 +537,12 @@ error_reporting(E_ALL);
 		    					</select>
 		    				</div>
 		    			</div>
-		    			<div class="form-group">
+		    			<!-- <div class="form-group">
 		    				<label class="control-label col-lg-4">Script:</label>
 		    				<div class="col-lg-8">
 		    					<input id="script" name="script" type="text" class="form-control">
 		    				</div>
-		    			</div>
+		    			</div> -->
 		    			<div class="form-group outbound blended">
 		    				<label class="control-label col-lg-4">Answering machine detection:</label>
 		    				<div class="col-lg-8">
@@ -552,13 +552,13 @@ error_reporting(E_ALL);
 		    					</select>
 		    				</div>
 		    			</div>
-		    			<div class="form-group outbound blended">
+		    			<!-- <div class="form-group outbound blended">
 		    				<label class="control-label col-lg-4">Caller ID:</label>
 		    				<div class="col-lg-8">
 		    					<input id="caller_id" name="caller_id" type="text" class="form-control">
 		    				</div>
-		    			</div>
-		    			<div class="form-group outbound">
+		    			</div> -->
+		    			<!-- <div class="form-group outbound">
 		    				<label class="control-label col-lg-4">Force reset hopper:</label>
 		    				<div class="col-lg-8">
 		    					<select class="form-control" id="force-reset-hopper" name="force_reset_hopper">
@@ -566,28 +566,25 @@ error_reporting(E_ALL);
 		    						<option value="N">N</option>
 		    					</select>
 		    				</div>
-		    			</div>
-		    			
-		    			
+		    			</div> -->
 		    			<div class="form-group inbound hide">
 		    				<label class="control-label col-lg-4">Campaign Recording:</label>
 		    				<div class="col-lg-8">
 		    					<input id="campaign-recording" name="campaign_recording" type="text" class="form-control">
 		    				</div>
 		    			</div>
-		    			<div class="form-group inbound hide">
+		    			<!-- <div class="form-group inbound hide">
 		    				<label class="control-label col-lg-4">Inbound Man:</label>
 		    				<div class="col-lg-8">
 		    					<input id="inbound-man" name="inbound_man" type="text" class="form-control">
 		    				</div>
-		    			</div>
-		    			<div class="form-group inbound blended hide">
+		    			</div> -->
+		    			<!-- <div class="form-group inbound blended hide">
 		    				<label class="control-label col-lg-4">Phone numbers(DID/TFN) on this campaign:</label>
 		    				<div class="col-lg-8">
 		    					<input id="phone-numbers" name="phone_numbers" type="text" class="form-control">
 		    				</div>
-		    			</div>
-		    			
+		    			</div> -->
 		    			<div class="form-group survey hide">
 		    				<label class="control-label col-lg-4">Upload WAV:</label>
 		    				<div class="col-lg-8">
