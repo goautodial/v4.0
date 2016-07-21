@@ -424,7 +424,7 @@ $disposition = $ui->API_getDispositionInfo($did);
 										</td>
 									<!-- ACTION BUTTONS -->
 										<td><center>
-											<a class="edit_disposition btn btn-primary" href="#" data-toggle="modal" data-target="#edit_modal" data-id="<?php echo $disposition->campaign_id[$i];?>" data-status ="<?php echo $disposition->status[$i];?>"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+											<a class="edit_disposition btn btn-primary" href="#" data-toggle="modal" data-target="#edit_disposition_modal" data-id="<?php echo $disposition->campaign_id[$i];?>" data-status ="<?php echo $disposition->status[$i];?>"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
 											<a class="delete_disposition btn btn-danger" href="#" data-id="<?php echo $disposition->campaign_id[$i];?>" data-status ="<?php echo $disposition->status[$i];?>" data-name="<?php echo $disposition->status_name[$i];?>"><i class="fa fa-close"></i></a>
 											</center>
 										</td>
@@ -467,7 +467,7 @@ $disposition = $ui->API_getDispositionInfo($did);
 											<input type="checkbox" name="add_scheduled_callback" id="add_scheduled_callback" class="flat-red" value="Y" />
 										</td>
 										<td>
-											<a type="button" id="add_new_status" data-id="<?php echo $did;?>" class="btn btn-primary"><i class="fa fa-plus"></i> New Status</a>
+											<a type="button" id="add_new_status" data-id="<?php echo $did;?>" class="btn btn-primary"><span id="add_button"><i class="fa fa-plus"></i> New Status</span></a>
 										</td>
 									</tr>
 								<!------>
@@ -497,7 +497,7 @@ $disposition = $ui->API_getDispositionInfo($did);
 
 
 					            <div class="box-footer">
-									<a href="telephonycampaigns.php" type="button" id="" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Cancel / Back to Campaigns</a>
+									<a href="telephonycampaigns.php" type="button" id="" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Cancel</a>
 								</div>
 								<!-- /.box-footer -->
 							<?php
@@ -528,8 +528,8 @@ $disposition = $ui->API_getDispositionInfo($did);
 			
         </div><!-- ./wrapper -->
 
-    <!-- EDIT MODAL -->
-    <div id="edit_modal" class="modal fade">
+    <!-- EDIT DISPOSITION MODAL -->
+    <div id="edit_disposition_modal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -606,7 +606,7 @@ $disposition = $ui->API_getDispositionInfo($did);
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="modify_disposition">Modify</button>
+                    <button type="button" class="btn btn-primary" id="modify_disposition"><span id="update_button"><i class='fa fa-check'></i> Update</span></button>
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
               	</div>
               	
@@ -701,7 +701,10 @@ $disposition = $ui->API_getDispositionInfo($did);
 
 			   //Add Status
 		        $('#add_new_status').click(function(){
-		        
+
+		        $('#add_button').html("<i class='fa fa-check'></i> Saving, Please Wait.....");
+				$('#add_new_status').attr("disabled", true);
+
 		        var validate = 0;
 		        var status = $("#add_status").val();
 		        var status_name = $("#add_status_name").val();
@@ -767,17 +770,23 @@ $disposition = $ui->API_getDispositionInfo($did);
 		                      // console.log(data);
 		                          if(data == 1){
 		                                $('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+		                                $('#add_button').html("<i class='fa fa-plus'></i> New Status");
+										$('#add_new_status').attr("disabled", false);
 		                                window.setTimeout(function(){location.reload()},1000)
 		                          }
 		                          else{
 		                              $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 		                              $("#disposition_result").html(data); 
+		                          	  $('#add_button').html("<i class='fa fa-plus'></i> New Status");
+									  $('#add_new_status').attr("disabled", false);
 		                          }
 		                    }
 		                });
 		            	
 		            }else{
 		                $('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+		                $('#add_button').html("<i class='fa fa-plus'></i> New Status");
+						$('#add_new_status').attr("disabled", false);
 		                validate = 0;
 		            }
 		        });
@@ -892,6 +901,10 @@ $disposition = $ui->API_getDispositionInfo($did);
 				
 				//LEADFILTER
 				$(document).on('click','#modify_disposition',function() {
+
+				$('#update_button').html("<i class='fa fa-edit'></i> Updating...");
+				$('#modify_disposition').attr("disabled", true);
+
 					var selectable = "Y";
 	            	if(!$('#edit_selectable').is(":checked")){
 	            		selectable = "N"
@@ -945,10 +958,14 @@ $disposition = $ui->API_getDispositionInfo($did);
 	                    console.log(data);
 	                        if(data == 1){
                                 $('.output-message-success_edit').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                                $('#update_button').html("<i class='fa fa-check'></i> Update");
+								$('#modify_disposition').attr("disabled", false);
                                 window.setTimeout(function(){location.reload()},1000)
 	                        }else{
 	                            $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-	                            $("#disposition_result").html(data); 
+	                            $("#disposition_result").html(data);
+	                            $('#update_button').html("<i class='fa fa-check'></i> Update");
+								$('#modify_disposition').attr("disabled", false);
 	                        }
                     }
                 });			

@@ -457,7 +457,10 @@
 								  if(data == 1){
 								  	  $('.output-message-success').show().focus().delay(2000);
 									  window.setTimeout(function(){location.reload()},1000)
+									  $('#add_button').val("Loading...");
 								  }else{
+								  	  $('#add_button').val("Submit");
+        							  $('#add_button').attr("disabled", false);
 									  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 								  }
 							}

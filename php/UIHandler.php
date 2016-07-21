@@ -1064,10 +1064,10 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                	<li><a class="view-contact" href="#" data-id="'.$lead_id.'">'.$this->lh->translationFor("View Contact Info").'</a></li>
-	                    <li><a class="edit-contact" href="'.$lead_id.'">'.$this->lh->translationFor("Edit Contact Details").'</a></li>
+	                	<li><a class="view-contact" href="#" data-id="'.$lead_id.'">'.$this->lh->translationFor("View").'</a></li>
+	                    <li><a class="edit-contact" href="'.$lead_id.'">'.$this->lh->translationFor("Modify").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-contact" href="'.$lead_id.'">'.$this->lh->translationFor("Delete Contact").'</a></li>
+	                    <li><a class="delete-contact" href="'.$lead_id.'">'.$this->lh->translationFor("Delete").'</a></li>
 	                </ul>
 	            </div>';
 	}
@@ -1099,9 +1099,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-T_user" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("Modify User").'</a></li>
+	                    <li><a class="edit-T_user" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("Modify").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("Delete User").'</a></li>
+	                    <li><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("Delete").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1118,7 +1118,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                <ul class="dropdown-menu" role="menu">
 	                    <li><a class="edit-lists" href="'.$listid.'">'.$this->lh->translationFor("modify").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-lists" href="'.$listid.'">'.$this->lh->translationFor("delete_list").'</a></li>
+	                    <li><a class="delete-lists" href="'.$listid.'">'.$this->lh->translationFor("delete").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1135,9 +1135,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-ingroup" href="#" data-id="'.$groupid.'">Modify In-group</a></li>
+	                    <li><a class="edit-ingroup" href="#" data-id="'.$groupid.'">Modify</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-ingroup" href="#" data-id="'.$groupid.'">Delete In-group</a></li>
+	                    <li><a class="delete-ingroup" href="#" data-id="'.$groupid.'">Delete</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1152,9 +1152,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Modify IVR</a></li>
+	                    <li><a class="edit-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Modify</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Delete IVR</a></li>
+	                    <li><a class="delete-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Delete</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1169,9 +1169,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Modify Phonenumber / DID</a></li>
+	                    <li><a class="edit-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Modify</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Delete Phonenumber / DID</a></li>
+	                    <li><a class="delete-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Delete</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1187,9 +1187,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-phone" href="#" data-id="'.$exten.'">'.$this->lh->translationFor("Modify Phone Extension").'</a></li>
+	                    <li><a class="edit-phone" href="#" data-id="'.$exten.'">'.$this->lh->translationFor("Modify").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-phone" href="#" data-id="'.$exten.'">'.$this->lh->translationFor("Delete Phone Extension").'</a></li>
+	                    <li><a class="delete-phone" href="#" data-id="'.$exten.'">'.$this->lh->translationFor("Delete").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1708,7 +1708,7 @@ error_reporting(E_ERROR | E_PARSE);
 	        $adminArea .= '</ul></li>';
 			
 			$telephonyArea = '<li class="treeview"><a href="#"><i class="fa fa-phone"></i> <span>'.$this->lh->translationFor("telephony").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';	
-			$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "user", $this->lh->translationFor("users"));
+			$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "users", $this->lh->translationFor("users"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonycampaigns.php", "fa fa-dashboard", $this->lh->translationFor("campaigns"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonylistandcallrecording.php", "tasks", $this->lh->translationFor("list_and_call_recording"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "book", $this->lh->translationFor("scripts"));
@@ -3082,9 +3082,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">Edit User Group</a></li>
+			<li><a class="edit-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">Modify</a></li>
 			<li class="divider"></li>
-			<li><a class="delete-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete User Group</a></li>
+			<li><a class="delete-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3453,9 +3453,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">Edit Voicemail</a></li>
+			<li><a class="edit-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">Modify</a></li>
 			<li class="divider"></li>
-			<li><a class="delete-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Voicemail</a></li>
+			<li><a class="delete-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3520,8 +3520,8 @@ error_reporting(E_ERROR | E_PARSE);
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="view-campaign" href="#" data-id="'.$id.'">View Info</a></li>
-			<li><a class="edit-campaign" href="#" data-id="'.$id.'">Edit Campaign</a></li>
-			<li><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Campaign</a></li>
+			<li><a class="edit-campaign" href="#" data-id="'.$id.'">Modify</a></li>
+			<li><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3703,8 +3703,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-moh" href="#" data-id="'.$id.'">Edit Music On Hold</a></li>
-			<li><a class="delete-moh" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Music On Hold</a></li>
+			<li><a class="edit-moh" href="#" data-id="'.$id.'">Modify</a></li>
+			<li><a class="delete-moh" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3848,8 +3848,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit_script" href="#" data-id="'.$id.'">Edit Script</a></li>
-			<li><a class="delete_script" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Script</a></li>
+			<li><a class="edit_script" href="#" data-id="'.$id.'">Modify</a></li>
+			<li><a class="delete_script" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3913,8 +3913,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">Edit Call Time</a></li>
-			<li><a class="delete-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Call Time</a></li>
+			<li><a class="edit-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">Modify</a></li>
+			<li><a class="delete-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3980,8 +3980,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-carrier" href="#" data-id="'.$id.'">Edit Carrier</a></li>
-			<li><a class="delete-carrier" href="#" data-id="'.$id.'">Delete Carrier</a></li>
+			<li><a class="edit-carrier" href="#" data-id="'.$id.'">Modify</a></li>
+			<li><a class="delete-carrier" href="#" data-id="'.$id.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4157,8 +4157,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit_disposition" href="#" data-id="'.$id.'">Edit Disposition</a></li>
-			<li><a class="delete_disposition" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Disposition</a></li>
+			<li><a class="edit_disposition" href="#" data-id="'.$id.'">Modify</a></li>
+			<li><a class="delete_disposition" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4220,9 +4220,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="view_leadfilter" href="#" data-id="'.$id.'">View Lead Filter</a></li>
-			<li><a class="edit_leadfilter" href="#" data-id="'.$id.'">Edit Lead Filter</a></li>
-			<li><a class="delete_leadfilter" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete Lead Filter</a></li>
+			<li><a class="view_leadfilter" href="#" data-id="'.$id.'">View</a></li>
+			<li><a class="edit_leadfilter" href="#" data-id="'.$id.'">Modify</a></li>
+			<li><a class="delete_leadfilter" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}

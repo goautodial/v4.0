@@ -15,7 +15,7 @@ error_reporting(E_ALL);*/
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial</title>
+        <title>Goautodial Phones</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -174,7 +174,7 @@ error_reporting(E_ALL);*/
 									<?php
 										for($i=0; $i < count($user_groups->user_group); $i++){
 									?>
-										<option value="<?php echo $user_groups->user_group[$i];?>"> <?php echo $user_groups->group_name[$i]; ?></option>
+										<option value="<?php echo $user_groups->user_group[$i];?>"> <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i]; ?></option>
 									<?php
 										}
 									?>
@@ -293,6 +293,9 @@ error_reporting(E_ALL);*/
 		<?php echo $ui->deleteNotificationModal('Phone Extension','<span id="id_span"></span>', '<span id="result_span"></span>');?>
 	</div>
 		
+		<!-- SLIMSCROLL-->
+    	<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+
 		<!-- for wizard -->
 		<script src="js/easyWizard.js" type="text/javascript"></script>
 		<script type="text/javascript">
@@ -349,14 +352,19 @@ error_reporting(E_ALL);*/
 									  if(data == 1){
 										  $('.output-message-success').show().focus().delay(2000).fadeOut().queue(function(n){$(this).hide(); n();});
 										  window.setTimeout(function(){location.reload()},3000)
+										  $('#add_button').val("Loading...");
 									  }else{
 										  $('.output-message-error').show().focus().delay(8000).fadeOut().queue(function(n){$(this).hide(); n();});
+									  	  $('#add_button').val("Submit");
+        							  	  $('#add_button').attr("disabled", false);
 									  }
 								}
 							});
 						}else{
 							$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 							validate_wizard = 0;
+							$('#add_button').val("Submit");
+        					$('#add_button').attr("disabled", false);
 						}
 					}
 				});

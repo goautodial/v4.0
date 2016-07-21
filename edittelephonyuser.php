@@ -21,7 +21,7 @@ if(isset($_POST["role"])){
 }
 
 $voicemails = $ui->API_goGetVoiceMails();
-
+$user_groups = $ui->API_goGetUserGroupsList();
 ?>
 <html>
     <head>
@@ -103,16 +103,15 @@ $voicemails = $ui->API_goGetVoiceMails();
 					}else{
                 ?>
 
-                <!-- Main content -->
-                <section class="content" style="padding:30px; padding-left:10%; padding-right:10%; margin-left: 0; margin-right: 0;">
+               <!-- Main content -->
+                <section class="content">
+					<div class="box box-info">
 					<!-- standard custom edition form -->
 					<?php
 					$userobj = NULL;
 					$errormessage = NULL;
 
 				//echo $userrole;
-
-				
 				
 					if(isset($userid)) {
 						//$db = new \creamy\DbHandler();
@@ -144,52 +143,35 @@ $voicemails = $ui->API_goGetVoiceMails();
 							for($i=0;$i<count($output->userno);$i++){
 					
 						?>
-
-							<div role="tabpanel" class="panel panel-transparent" style="box-shadow: 5px 5px 8px #888888;">
-							
-							<h4 style="padding:15px;"><center><b>MODIFY USER</b></center></h4>
-									
-								<form id="modifyuser">
-									<input type="hidden" name="modifyid" value="<?php echo $userid;?>">
+						<div class="box-header with-border">
+							<h3 class="box-title">MODIFY USER : <u><?php echo $output->userno[$i];?></u></h3>
+						</div>
+						<div class="box-body table-responsive">
+							<form id="modifyuser">
+								<input type="hidden" name="modifyid" value="<?php echo $userid;?>">
 								
 							<!-- BASIC SETTINGS -->
-								<div class="panel text-left" style="margin-top: 20px; padding: 0px 30px">
-									<div class="form-group">
-										<label>AGENT ID: </label>
-										<span style="padding-left:20px; font-size: 20;"><?php echo $userid;?></span>
-									</div>
+								<div class="col-lg-6">
 									<div class="form-group">
 										<label for="fullname">Fullname</label>
-										<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->full_name[$i];?>">
+										<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->full_name[$i];?>" placeholder="Fullname">
 									</div>
 									<div class="form-group">
 										<label for="email">Email</label>
-										<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->email[$i];?>">
+										<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->email[$i];?>" placeholder="Email">
+										<small><span id="email_check"></span></small>
 									</div>
 									<div class="row">
-										<label for="usergroup" class="col-md-5">User Group
+										<label for="usergroup" class="col-md-9">User Group
 										<select class="form-control" id="usergroup" name="usergroup">
 											<?php
-												$usergroup = NULL;
-
-												if($output->user_group[$i] == "AGENTS"){
-													$usergroup .= '<option value="AGENTS" selected>GOAUTODIAL AGENTS</option>';
-												}else{
-													$usergroup .= '<option value="AGENTS" >GOAUTODIAL AGENTS</option>';
+												for($a=0;$a<count($user_groups->user_group);$a++){
+											?>
+												<option value="<?php echo $user_groups->user_group[$a];?>" <?php if($output->user_group[$i] == $user_groups->user_group[$a]){echo "selected";}?> >  
+													<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>  
+												</option>
+											<?php
 												}
-
-												if($output->user_group[$i] == "ADMIN"){
-													$usergroup .= '<option value="ADMINISTRATORS" selected>GOAUTODIAL ADMINISTRATORS</option>';
-												}else{
-													$usergroup .= '<option value="ADMINISTRATORS" >GOAUTODIAL ADMINISTRATORS</option>';
-												}												
-												
-												if($output->user_group[$i] == "SUPERVISOR"){
-													$usergroup .= '<option value="SUPERVISOR" selected>SUPERVISOR</option>';
-												}else{
-													$usergroup .= '<option value="SUPERVISOR" >SUPERVISOR</option>';
-												}
-												echo $usergroup;
 											?>
 										</select>
 										</label>
@@ -216,7 +198,7 @@ $voicemails = $ui->API_goGetVoiceMails();
 										</label>
 									</div>
 									<div class="row">
-										<label for="userlevel" class="col-md-2">User Level
+										<label for="userlevel" class="col-md-4">User Level
 										<select class="form-control" name="userlevel" id="userlevel">
 										<?php
 											$userlevel = NULL;
@@ -271,16 +253,18 @@ $voicemails = $ui->API_goGetVoiceMails();
 										</select>
 										</label>
 									</div>
+								</div>
+								<div class="col-lg-6">
 									<div class="form-group">
 										<label for="phone_login">Phone Login</label>
-										<input type="text" class="form-control" name="phone_login" id="phone_login" value="<?php echo $output->full_name[$i];?>">
+										<input type="text" class="form-control" name="phone_login" id="phone_login" value="<?php echo $output->phone_login[$i];?>" placeholder="Phone Login">
 									</div>
 									<div class="form-group">
 										<label for="phone_password">Phone Password</label>
-										<input type="text" class="form-control" name="phone_password" id="phone_password" value="<?php echo $output->full_name[$i];?>">
+										<input type="text" class="form-control" name="phone_password" id="phone_password" value="<?php echo $output->phone_pass[$i];?>" placeholder="Phone Password">
 									</div>									
 									<div class="row">
-										<label for="voicemail" class="col-md-5">Voicemail
+										<label for="voicemail" class="col-md-7">Voicemail
 										<select class="form-control" name="voicemail" id="voicemail">
 											<?php
 												if($voicemails == NULL){
@@ -288,10 +272,10 @@ $voicemails = $ui->API_goGetVoiceMails();
 												<option value="" selected>--No Voicemails Available--</option>
 											<?php
 												}else{
-												for($i=0;$i<count($voicemails->voicemail_id);$i++){
+												for($a=0;$a<count($voicemails->voicemail_id);$a++){
 											?>
-													<option value="<?php echo $voicemails->voicemail_id[$i];?>">
-														<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
+													<option value="<?php echo $voicemails->voicemail_id[$i];?>" <?php if($output->voicemail_id[$i] == $voicemails->voicemail_id[$a]){echo "selected";}?> >
+														<?php echo $voicemails->voicemail_id[$a].' - '.$voicemails->fullname[$a];?>
 													</option>									
 											<?php
 													}
@@ -301,7 +285,7 @@ $voicemails = $ui->API_goGetVoiceMails();
 										</label>
 									</div>
 									<div class="row">
-										<label for="change_pass" class="col-md-2">Change Password?
+										<label for="change_pass" class="col-md-5">Change Password?
 										<select class="form-control" name="change_pass" id="change_pass">
 											<option value="N" selected> No </option>
 											<option value="Y" > Yes </option>
@@ -310,9 +294,10 @@ $voicemails = $ui->API_goGetVoiceMails();
 									</div>
 									<div class="form-group" id="form_password" style="display:none;">
 										<label for="password">Password</label>
-										<input type="text" class="form-control" name="password" id="password" value="<?php echo $output->password[$i];?>">
+										<input type="text" class="form-control" name="password" id="password" value="<?php echo $output->password[$i];?>" placeholder="Password">
 									</div>
-
+								</div>
+								<div class="col-lg-12">
 									<div class="row" id="btn_show">
 										<br/>
 										<center>
@@ -331,60 +316,59 @@ $voicemails = $ui->API_goGetVoiceMails();
 						       			<input type="hidden" name="scheduled_callbacks" value="1">
 						       			<input type="hidden" name="agent_call_manual" value="1">
 						       			<div class="row">
-											<label for="hotkeys" class="col-md-2">HotKeys
-											<select class="form-control" name="hotkeys" id="hotkeys">
-											<?php
-												$status = NULL;
-												if($output->hot_keys[$i] == "1"){
-													$status .= '<option value="1" selected> Active </option>';
-												}else{
-													$status .= '<option value="1" > Active </option>';
-												}
-												
-												if($output->hot_keys[$i] == "0" || $output->hot_keys[$i] == NULL){
-													$status .= '<option value="0" selected> Inactive </option>';
-												}else{
-													$status .= '<option value="0" > Inactive </option>';
-												}
-												echo $status;
-											?>
-												
-											</select>
-											</label>
-										</div>
-										<div class="row">
-											<label for="agent_recordings" class="col-md-2">Agent Recordings
-											<select class="form-control" name="agent_recordings" id="agent_recordings">
-												<option value="0"> 0 </option>
-											</select>
-											</label>
-										</div>
-										<div class="row">
-											<label for="agent_transfers" class="col-md-2">Agent Transfers
-											<select class="form-control" name="agent_transfers" id="agent_transfers">
-												<option value="1"> 1 </option>
-											</select>
-											</label>
-										</div>
-										<div class="row">
-											<label for="closer_default_blended" class="col-md-2">Closer Default Blended
-											<select class="form-control" name="closer_default_blended" id="closer_default_blended">
-												<option value="1"> 1 </option>
-											</select>
-											</label>
-										</div>    			
-						       		</div>
-									
-									<br/>
-								</div>
+						       				<div class="col-lg-6">
+												<label for="hotkeys" class="col-md-6">HotKeys
+												<select class="form-control" name="hotkeys" id="hotkeys">
+												<?php
+													$status = NULL;
+													if($output->hot_keys[$i] == "0"){
+														$status .= '<option value="Y" selected> Active </option>';
+													}else{
+														$status .= '<option value="Y" > Active </option>';
+													}
+													
+													if($output->hot_keys[$i] == "1" || $output->hot_keys[$i] == NULL){
+														$status .= '<option value="N" selected> Inactive </option>';
+													}else{
+														$status .= '<option value="N" > Inactive </option>';
+													}
+													echo $status;
+												?>
+													
+												</select>
+												</label>
+											
+												<label for="agent_recordings" class="col-md-6">Agent Recordings
+												<select class="form-control" name="agent_recordings" id="agent_recordings">
+													<option value="0"> 0 </option>
+												</select>
+												</label>
+											</div>
+											<div class="col-lg-6">
+												<label for="agent_transfers" class="col-md-6">Agent Transfers
+												<select class="form-control" name="agent_transfers" id="agent_transfers">
+													<option value="1"> 1 </option>
+												</select>
+												</label>
 										
-								<div id="modifyUSERresult"></div>
-								<div class="row" style="padding:0px 50px;">
-									<a href="telephonyusers.php" type="button" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Cancel / Back to User List</a>
+												<label for="closer_default_blended" class="col-md-6">Closer Default Blended
+												<select class="form-control" name="closer_default_blended" id="closer_default_blended">
+													<option value="1"> 1 </option>
+												</select>
+												</label>
+											</div>  
+										</div>  			
+						       		</div><!-- advanced settings -->
+								</div><!-- col-lg-12 -->
+						</div><!-- body -->
+						<div class="box-footer">
+							<div id="modifyUSERresult"></div>
+									
+								<a href="telephonyusers.php" type="button" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Cancel </a>
 
-									<button type="submit" class="btn btn-primary pull-right" id="modifyUserOkButton" href=""><i class="fa fa-check"></i> Update</button>
-								</div>
-								
+								<button type="submit" class="btn btn-primary pull-right" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+						</div>	
+					</div>
 								</form>								
 								
 							</div>
@@ -410,6 +394,8 @@ $voicemails = $ui->API_goGetVoiceMails();
 
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
+		<!-- SLIMSCROLL-->
+   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -438,50 +424,52 @@ $voicemails = $ui->API_goGetVoiceMails();
 				/** 
 				 * Modifies a telephony user
 			 	 */
-				//$("#modifycustomerform").validate({
-				$("#modifyuser").validate({
-                	submitHandler: function() {
-						//submit the form
-							$("#resultmessage").html();
-							$("#resultmessage").fadeOut();
-							$.post("./php/ModifyTelephonyUser.php", //post
-							$("#modifyuser").serialize(), 
-								function(data){
-									//if message is sent
-									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-										print $ui->fadingInMessageJS($errorMsg, "modifyUSERresult"); 
-									?>				
-									} else {
-									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data"), false, true);
-										print $ui->fadingInMessageJS($errorMsg, "modifyUSERresult");
-									?>
-									}
-									//
-								});
-						return false; //don't let the form refresh the page...
-					}					
-				});
 				
-				/**
-				 * Deletes a customer
-				 */
-				 $("#modifyUSERDeleteButton").click(function (e) {
-					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
-					e.preventDefault();
-					if (r == true) {
-						var userid = $(this).attr('href');
-						$.post("./php/DeleteTelephonyUser.php", { userid: userid } ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
-								alert("<?php $lh->translateText("user_successfully_deleted"); ?>");
-								window.location = "index.php";
-							}
-							else { alert ("<?php $lh->translateText("unable_delete_user"); ?>: "+data); }
-						});
+				$('#modifyUserOkButton').click(function(){
+					
+					$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+					$('#modifyUserOkButton').prop("disabled", true);
+
+					var validate_email = 0;
+
+	                var x = document.forms["modifyuser"]["email"].value;
+	                var atpos = x.indexOf("@");
+	                var dotpos = x.lastIndexOf(".");
+	                if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
+	                    validate_email = 1;
+	                }
+
+	                if(validate_email == 0){
+	                	$.ajax({
+                            url: "./php/ModifyTelephonyUser.php",
+                            type: 'POST',
+                            data: $("#modifyuser").serialize(),
+                            success: function(data) {
+                              // console.log(data);
+                                if (data == 1) {
+								<?php 
+									$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
+									print $ui->fadingInMessageJS($errorMsg, "modifyUSERresult"); 
+								?>
+								$('#update_button').html("<i class='fa fa-check'></i> Update");
+								$('#modifyUserOkButton').prop("disabled", false);
+								window.setTimeout(function(){location.replace("./telephonyusers.php")},2000);
+								} else {
+								<?php 
+									$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data"), false, true);
+									print $ui->fadingInMessageJS($errorMsg, "modifyUSERresult");
+								?>
+								$('#update_button').html("<i class='fa fa-check'></i> Update");
+								$('#modifyUserOkButton').prop("disabled", false);	
+								}
+                            }
+                        });
+					}else{
+						$("#email_check").html("<font color='red'>Input a Valid Email Address</font>");
+						$('#email_check').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 					}
-				 });
+				return false;
+				});
 				 
 			});
 		</script>

@@ -54,7 +54,7 @@ $.fn.wizard = function(config) {
     btns += '<button type="button" class="btn btn-default wizard-button-exit"'+contentForModal+'>'+ exitText +'</button>';
     btns += '<button type="button" class="btn btn-default wizard-button-back">'+ backText +'</button>';
     btns += '<button type="button" class="btn btn-default wizard-button-next">'+ nextText +'</button>';
-    btns += '<input type="submit" class="btn btn-primary wizard-button-finish" value="Submit" />';
+    btns += '<input type="submit" class="btn btn-primary wizard-button-finish" id="add_button" value="Submit" />';
     $(this).find(".wizard-buttons").html("");
     $(this).find(".wizard-buttons").append(btns);
     var btnExit = $(this).find(".wizard-button-exit");
@@ -99,6 +99,8 @@ $.fn.wizard = function(config) {
     });
 
     btnFinish.on("click", function () {
+      btnFinish.val("Saving, Please Wait...");
+      btnFinish.attr("disabled", true);
       if(!validateFinish(step, steps[step-1])){
         return;
       };

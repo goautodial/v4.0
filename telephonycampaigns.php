@@ -14,7 +14,7 @@ error_reporting(E_ALL);
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial</title>
+        <title>Goautodial Campaigns</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -124,7 +124,7 @@ error_reporting(E_ALL);
 					 <!-- In-group panel tabs-->
 						 <li role="presentation" class="active">
 							<a href="#T_campaign" aria-controls="T_campaign" role="tab" data-toggle="tab" class="bb0">
-							   <sup><span class="fa fa-users"></span></sup> Campaigns </a>
+							   <sup><span class="fa fa-dashboard"></span></sup> Campaigns </a>
 						 </li>
 					<!-- IVR panel tab -->
 						 <li role="presentation">
@@ -297,7 +297,7 @@ error_reporting(E_ALL);
 			</div>
 			<div class="fab-div-area" id="fab-div-area">
 				<ul class="fab-ul" style="height: 250px;">
-					<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_campaign"></a></li><br/>
+					<li class="li-style"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaign"></a></li><br/>
 					<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_disposition"></a></li><br/>
 					<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers"> </a></li>
 				</ul>
@@ -631,68 +631,70 @@ error_reporting(E_ALL);
                         <div class="row" style="padding-bottom:10px;">
                             <p class="col-sm-12"><small><i> - - - All fields with ( </i></small> <b>*</b> <small><i> ) are Required Field.  - - -</i></small></p>
                         </div>
-                        <div class="form-group">        
-                            <label class="col-sm-4 control-label" for="campaign" style="padding-top:15px;">Campaign: </label>
-                            <div class="col-sm-7" style="padding-top:10px;">
-                                <select id="campaign" name="campaign" class="form-control">
-                                		<option> - - - ALL CAMPAIGNS - - - </option>
-                                   <?php
-                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
-                                   			echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
-                                   		}
-                                   ?>
-                                </select>
+                        <div class="row"> 
+                        	<div class="col-lg-12">       
+	                            <label class="col-sm-4 control-label" for="campaign" style="padding-top:15px;">Campaign: </label>
+	                            <div class="col-sm-7" style="padding-top:10px;">
+	                                <select id="campaign" name="campaign" class="form-control">
+	                                		<option> - - - ALL CAMPAIGNS - - - </option>
+	                                   <?php
+	                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
+	                                   			echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
+	                                   		}
+	                                   ?>
+	                                </select>
+	                            </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="status">* Status:</label>
-                            <div class="col-sm-7">
-                                <input type="text" name="status" id="status" class="form-control" placeholder="Status" minlength="3" maxlenght="6">
-                                <span  class="text-red"><small><i>* For example: New</i></small></span>
-                            </div>
-                        </div>
-                        <div class="form-group">        
-                            <label class="col-sm-4 control-label" for="status_name">* Status Name: </label>
-                            <div class="col-sm-7">
-                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="Status Name">
-                            </div>
-                        </div>
-                        <div class="form-group">        
-                            <!--<label class="col-sm-2 control-label" for="grouplevel" style="padding-top:15px;"> </label>-->
-                            <div class="row-sm-12" style="padding-top:10px;">
-                        		<label class="col-sm-4 control-label" for="selectable">
-		                				Selectable
-						                  <input type="checkbox" id="selectable" name="selectable" value="Y" class="flat-red" checked>
+                            <div class="col-lg-12" style="padding-top:10px;"> 
+	                            <label class="col-sm-4 control-label" for="status">* Status:</label>
+	                            <div class="col-sm-7">
+	                                <input type="text" name="status" id="status" class="form-control" placeholder="Status" minlength="3" maxlenght="6">
+	                                <span  class="text-red"><small><i>* For example: New</i></small></span>
+	                            </div>
+	                        </div>
+                            <div class="col-lg-12" style="padding-top:10px;">
+	                            <label class="col-sm-4 control-label" for="status_name">* Status Name: </label>
+	                            <div class="col-sm-7">
+	                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="Status Name">
+	                            </div>
+	                        </div>
+                            <div class="col-lg-12" style="padding-top:10px;">        
+			                        <!--<label class="col-sm-2 control-label" for="grouplevel" style="padding-top:15px;"> </label>-->
+		                		<label class="col-sm-3" for="selectable">
+					                  <input type="checkbox" id="selectable" name="selectable" class="flat-red">
+					                  Selectable
 				                </label>
-				                <label class="col-sm-4 control-label" for="human_answered">
-						                Human Answered
-						                  <input type="checkbox" id="human_answered" name="human_answered" value="Y" class="flat-red">
+				                <label class="col-sm-4" for="human_answered">
+					                  <input type="checkbox" id="human_answered" name="human_answered" class="flat-red">
+					                  Human Answered
 						        </label>
-						        <div class="col-sm-4">
-							        <label class="col-sm-6 control-label" for="sale">
-						                Sale
-						                  <input type="checkbox" id="sale" name="sale" value="Y" class="flat-red">
-						            </label>
-						            <label class="col-sm-6 control-label" for="dnc">
-						               	DNC
-						                  <input type="checkbox" id="dnc" name="dnc" value="Y" class="flat-red">
-						            </label>
-					        	</div>
-				            </div>
-				            <div class="row-sm-12" style="padding-top:10px;">
-				                <label class="col-sm-4 control-label" for="customer_contact">Customer Contact
-				                  <input type="checkbox" id="customer_contact" name="customer_contact" value="Y" class="flat-red">
+						        <label class="col-sm-3" for="sale">
+					                  <input type="checkbox" id="sale" name="sale" class="flat-red">
+					                  Sale
+					            </label>
+					            <label class="col-sm-3" for="dnc">
+					                  <input type="checkbox" id="dnc" name="dnc" class="flat-red">
+					                  DNC
+					            </label>
+						          
+				                <label class="col-sm-4" for="customer_contact">
+					                  <input type="checkbox" id="customer_contact" name="customer_contact" class="flat-red">
+					                  Customer Contact
 				                </label>
-				                <label class="col-sm-4 control-label" for="not_interested">Not Interested
-				                  <input type="checkbox" id="not_interested" name="not_interested" value="Y" class="flat-red">
+				                <label class="col-sm-4" for="not_interested">
+					                  <input type="checkbox" id="not_interested" name="not_interested" class="flat-red">
+					                  Not Interested
 				                </label>
-				                <label class="col-sm-3 control-label" for="unworkable">Unworkable
-				                  <input type="checkbox" id="unworkable" name="unworkable" value="Y" class="flat-red">
+				                <label class="col-sm-3" for="unworkable">
+					                  <input type="checkbox" id="unworkable" name="unworkable" class="flat-red">
+					                  Unworkable
 				                </label>
-				                <label class="col-sm-4 control-label" for="scheduled_callback">Scheduled Callback
-				                  <input type="checkbox" id="scheduled_callback" name="scheduled_callback" value="Y" class="flat-red">
+				                <label class="col-sm-4" for="scheduled_callback">
+					                  <input type="checkbox" id="scheduled_callback" name="scheduled_callback" class="flat-red">
+					                  Scheduled Callback
 				                </label>
-                            </div>
+			                       
+		                    </div>
                         </div>
                         
                     </div><!-- end of step -->
@@ -1035,6 +1037,9 @@ error_reporting(E_ALL);
 			//submit_disposition
             $('#submit_disposition').click(function(){
             
+            $('#submit_disposition').val("Saving, Please Wait.....");
+			$('#submit_disposition').prop("disabled", true);
+
             var validate = 0;
             var status = $("#status").val();
             var status_name = $("#status_name").val();
@@ -1046,39 +1051,7 @@ error_reporting(E_ALL);
             if(status_name == ""){
                 validate = 1;
             }
-            /*
-            if($('#selectable').is(":unchecked")){
-			  $("input[type='checkbox']").val() = "N";
-			}
 
-			if($('#human_answered').is(":unchecked")){
-			  $("input[type='checkbox']").val() = "N";
-			}
-
-			if($('#sale').is(":unchecked")){
-			  $("input[type='checkbox']").val() = "N";
-			}
-
-			if($('#dnc').is(":unchecked")){
-			  $("input[type='checkbox']").val() = "N";
-			}
-
-			if($('#scheduled_callback').is(":unchecked")){
-			  $("input[type='checkbox']").val() = "N";
-			}
-
-			if($('#customer_contact').is(":unchecked")){
-			  $("input[type='checkbox']").val() = "N";
-			}
-
-			if($('#not_interested').is(":unchecked")){
-			  $("input[type='checkbox']").val() = "N";
-			}
-
-			if($('#unworkable').is(":unchecked")){
-			  $("input[type='checkbox']").val() = "N";
-			}
-*/
                 if(validate == 0){
 
 					
@@ -1091,10 +1064,13 @@ error_reporting(E_ALL);
                               if(data == 1){
                                     $('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
                                     window.setTimeout(function(){location.reload()},3000)
+                                    $('#submit_disposition').val("Loading...");
                               }
                               else{
                                   $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-                                  $("#disposition_result").html(data); 
+                                  $("#disposition_result").html(data);
+                                  $('#submit_disposition').val("Submit");
+								  $('#submit_disposition').prop("disabled", false);
                               }
                         }
                     });
@@ -1102,6 +1078,8 @@ error_reporting(E_ALL);
                 }else{
                     $('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
                     validate = 0;
+                    $('#submit_disposition').val("Submit");
+					$('#submit_disposition').prop("disabled", false);
                 }
             });
 			/*
