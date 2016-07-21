@@ -68,6 +68,10 @@ if (isset($_POST["did"])) {
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
+        	<!-- =============== BOOTSTRAP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+				<!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
@@ -94,7 +98,7 @@ if (isset($_POST["did"])) {
             <aside class="right-side">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>
+                    <h1 style="font-weight:normal;">
                     	Inbound
                         <small>Edit 
                         	<?php 
@@ -119,8 +123,8 @@ if (isset($_POST["did"])) {
                 </section>
 
                 <!-- Main content -->
-                <section class="content">
-					<div class="box box-info">
+                 <section class="content">
+					<div class="panel panel-default">
 
 					<!-- standard custom edition form -->
 					<?php
@@ -152,47 +156,55 @@ if (isset($_POST["did"])) {
 							for($i=0;$i < count($output->group_id);$i++){
 					?>			
 
-						<div class="box-header with-border">
-							<h3 class="box-title">MODIFY IN-GROUP : <u><?php echo $groupid;?></u></h3>
-						</div>
-						<div class="box-body table-responsive">
-								<ul role="tablist" class="nav nav-tabs" style="padding: 5px 30px;">
+						<div class="panel-body">
+							<legend>MODIFY IN-GROUP : <u><?php echo $groupid;?></u></legend>
+
+							<form id="modifyingroup">
+
+							<div role="tabpanel">
+								<ul role="tablist" class="nav nav-tabs">
 								 <!-- Settings panel tabs-->
 									 <li role="presentation" class="active">
-										<a href="#settings" aria-controls="settings" role="tab" data-toggle="tab" class="bb0">
-										<span class="fa fa-gear"></span> Settings</a>
+										<a href="#settings" data-toggle="tab">
+										<span class="fa fa-gear"></span> Basic Settings</a>
+									 </li>
+								<!-- Advanced settings tab -->
+									 <li role="presentation">
+										<a href="#advanced_settings" data-toggle="tab">
+										<span class="fa fa-gears"></span> Advanced Settings </a>
 									 </li>
 								<!-- Agents tab -->
 									 <li role="presentation">
-										<a href="#agents" aria-controls="agents" role="tab" data-toggle="tab" class="bb0">
+										<a href="#agents" data-toggle="tab">
 										<span class="fa fa-users"></span> Agents </a>
 									 </li>
-								</ul>						  
+								</ul>		
+
 								<!-- Tab panes-->
-								<div class="tab-content p0 bg-white">
+								<div class="tab-content">
 
-
-								<!--==== Settings ====-->
-								  <div id="settings" role="tabpanel" class="tab-pane active">
+									<!--==== Settings ====-->
+									<div id="settings" class="tab-pane fade in active">
+										<input type="hidden" name="modify_groupid" value="<?php echo $groupid;?>">
 										
-										<form id="modifyingroup">
-											<input type="hidden" name="modify_groupid" value="<?php echo $groupid;?>">
 										<!-- BASIC SETTINGS -->
-											<div class="text-left" style="margin-top: 20px;">
-
-											<div class="col-lg-6">
-												<div class="form-group">
-													<label for="description">Description</label>
+										<fieldset>
+											<div class="form-group mt">
+												<label for="description" class="col-sm-2 control-label">Description</label>
+												<div class="col-sm-10 mb">
 													<input type="text" class="form-control" name="desc" id="description" value="<?php echo $output->group_name[$i];?>">
 												</div>
-												<div class="row">
-													<?php $output->group_color[$i] = "#".$output->group_color[$i];?>
-													<label for="color" class="col-md-8">Color:
-										                <input type="text" class="form-control colorpicker" name="color" id="color" value="<?php echo $output->group_color[$i];?>">
-									                </label>
+											</div>
+											<div class="form-group">
+												<?php $output->group_color[$i] = "#".$output->group_color[$i];?>
+												<label for="color" class="col-sm-2 control-label">Color:</label>
+												<div class="col-sm-10 mb">
+									                <input type="text" class="form-control colorpicker" name="color" id="color" value="<?php echo $output->group_color[$i];?>">
 												</div>
-												<div class="row">
-													<label for="status" class="col-md-5">Status
+											</div>
+											<div class="form-group">
+												<label for="status" class="col-sm-2 control-label">Status</label>
+												<div class="col-sm-10 mb">
 													<select class="form-control" name="status" id="status">
 													<?php
 														$status = NULL;
@@ -209,18 +221,18 @@ if (isset($_POST["did"])) {
 														}
 														echo $status;
 													?>
-														
 													</select>
-													</label>
 												</div>
-												<div class="form-group">
-													<label for="webform">Web Form</label>
+											</div>
+											<div class="form-group">
+												<label for="webform" class="col-sm-2 control-label">Web Form</label>
+												<div class="col-sm-10 mb">
 													<input type="text" class="form-control" name="" id="webform" value="<?php echo $output->web_form_address[$i];?>">
 												</div>
 											</div>
-											<div class="col-lg-6">
-												<div class="row" style="padding-top:5px;">
-													<label for="nextagent" class="col-md-7">Next Agent Call
+											<div class="form-group">
+												<label for="nextagent" class="col-sm-2 control-label">Next Agent Call</label>
+												<div class="col-sm-10 mb">
 													<select class="form-control" id="nextagent" name="nextagent">
 														<?php
 															$next = NULL;
@@ -286,10 +298,11 @@ if (isset($_POST["did"])) {
 															echo $next;
 														?>
 													</select>
-													</label>
 												</div>
-												<div class="row" style="padding-top:5px;">
-													<label for="priority" class="col-md-6">Queue Priority
+											</div>
+											<div class="form-group">
+												<label for="priority" class="col-sm-2 control-label">Queue Priority</label>
+												<div class="col-sm-10 mb">
 													<select class="form-control" id="priority" name="prio">
 														<?php
 														$prio = NULL;
@@ -314,11 +327,11 @@ if (isset($_POST["did"])) {
 							                                echo $prio;
 														?>
 													</select>
-													</label>
 												</div>
-
-												<div class="row" style="padding-top:5px;">
-													<label for="display" class="col-md-3">Fronter Display
+											</div>
+											<div class="form-group">
+												<label for="display" class="col-sm-2 control-label">Fronter Display</label>
+												<div class="col-sm-10 mb">
 													<select class="form-control" id="display" name="display">
 														<?php
 														$display = NULL;
@@ -336,10 +349,11 @@ if (isset($_POST["did"])) {
 														echo $display;
 														?>
 													</select>
-													</label>
 												</div>
-												<div class="row" style="padding-top:5px;">
-													<label for="script" class="col-md-9">Script
+											</div>
+											<div class="form-group">
+												<label for="script" class="col-sm-2 control-label">Script</label>
+												<div class="col-sm-10 mb">
 													<select class="form-control" id="script" name="script">
 														<?php
 														$script = NULL;
@@ -360,115 +374,105 @@ if (isset($_POST["did"])) {
 														echo $script;
 														?>
 													</select>
-													</label>
 												</div>
 											</div>
-											<div class="col-lg-12">
-												<div class="row" id="btn_show">
-													<br/>
-													<center>
-													<a class="btn btn-app" style="padding:6px 20px; width:95%; height: 45px;" id="show_advanced_settings" >
-										               <div id="show"><i class="fa fa-plus"></i></div>
-										               <div id="hide" hidden><i class="fa fa-minus"></i></div>
-										                Advanced Settings
-										            </a>
-										            </center>
-									       		</div>
-									       	</div>
-									       	
-									       		<!-- ADVANCED SETTINGS -->
-									       		<div id="advanced_settings_wrapper" style="padding: 25px 0px;" hidden>
-									       			<div class="col-lg-6">
-										       			<div class="row">
-										       				<label for="call_launch" class="col-md-5">Get Call Launch
-															<select class="form-control" id="call_launch" name="call_launch">
-																<?php
-																$call_launch = NULL;
-																	if($output->fronter_display[$i] == "none"){
-																		$call_launch .= '<option value="none" selected> NONE </option>';
-																	}else{
-																		$call_launch .= '<option value="none" > NONE </option>';
-																	}
-																		
-																	if($output->fronter_display[$i] == "script"){
-																		$call_launch .= '<option value="script" selected> SCRIPT </option>';
-																	}else{
-																		$call_launch .= '<option value="script" > SCRIPT </option>';
-																	}
+									    </fieldset>
+									</div>
 
-																	if($output->fronter_display[$i] == "webform"){
-																		$call_launch .= '<option value="webform" selected> WEBFORM </option>';
-																	}else{
-																		$call_launch .= '<option value="webform" > WEBFORM </option>';
-																	}
+									<!-- ADVANCED SETTINGS -->
+									<div id="advanced_settings" class="tab-pane fade in">
+										<fieldset>
+							       			<div class="form-group mt">
+							       				<label for="call_launch" class="col-sm-4 control-label">Get Call Launch</label>
+							       				<div class="col-sm-8 mb">
+													<select class="form-control" id="call_launch" name="call_launch">
+														<?php
+														$call_launch = NULL;
+															if($output->fronter_display[$i] == "none"){
+																$call_launch .= '<option value="none" selected> NONE </option>';
+															}else{
+																$call_launch .= '<option value="none" > NONE </option>';
+															}
+																
+															if($output->fronter_display[$i] == "script"){
+																$call_launch .= '<option value="script" selected> SCRIPT </option>';
+															}else{
+																$call_launch .= '<option value="script" > SCRIPT </option>';
+															}
 
-																	if($output->fronter_display[$i] == "form"){
-																		$call_launch .= '<option value="form" selected> FORM </option>';
-																	}else{
-																		$call_launch .= '<option value="form" > FORM </option>';
-																	}
-																echo $call_launch;
-																?>
-															</select>
-															</label>
-										       			</div>
-										       			<div class="row">
-										       				<label for="accept_calls" class="col-md-3">Accept Calls when there are No Available Agents?
-															<select class="form-control" id="accept_calls" name="accept_calls">
-																<?php
-																$accept_calls = NULL;
-																	if($output->fronter_display[$i] == "no"){
-																		$accept_calls .= '<option value="no" selected> NO </option>';
-																	}else{
-																		$accept_calls .= '<option value="no" > NO </option>';
-																	}
-																	
-																	if($output->fronter_display[$i] == "yes"){
-																		$accept_calls .= '<option value="yes" selected> YES </option>';
-																	}else{
-																		$accept_calls .= '<option value="yes" > YES </option>';
-																	}
+															if($output->fronter_display[$i] == "webform"){
+																$call_launch .= '<option value="webform" selected> WEBFORM </option>';
+															}else{
+																$call_launch .= '<option value="webform" > WEBFORM </option>';
+															}
 
-																	if($output->fronter_display[$i] == "no_paused"){
-																		$accept_calls .= '<option value="no_paused" selected> NO PAUSED </option>';
-																	}else{
-																		$accept_calls .= '<option value="no_paused" > NO PAUSED </option>';
-																	}
-																echo $accept_calls;
-																?>
-															</select>
-															</label>
-										       			</div>
-										       			<div class="row">
-										       				<label for="call_launch" class="col-md-6">No Available Agents Routing
-															<input type="text" class="form-control" name="" id="call_launch" value="">
-															</label>
-										       			</div>
-									       			</div>
-									       			<div class="col-lg-6">
-										       			<div class="row">
-										       				<label for="call_launch" class="col-md-7">Welcome Message Filename
-															<input type="text" class="form-control" name="" id="call_launch" value="">
-															</label>
-										       			</div>
-										       			<div class="row">
-										       				<label for="call_launch" class="col-md-5">Music On Hold Context
-															<input type="text" class="form-control" name="" id="call_launch" value="">
-															</label>
-										       			</div>
-										       			<div class="row">
-										       				<label for="call_launch" class="col-md-6">On Hold Prompt
-															<input type="text" class="form-control" name="" id="call_launch" value="">
-															</label>
-										       			</div>
-										       		</div>
-									       		</div>
-											</div>
-										</div>
-									</form>
+															if($output->fronter_display[$i] == "form"){
+																$call_launch .= '<option value="form" selected> FORM </option>';
+															}else{
+																$call_launch .= '<option value="form" > FORM </option>';
+															}
+														echo $call_launch;
+														?>
+													</select>
+												</div>
+							       			</div>
+							       			<div class="form-group">
+							       				<label for="accept_calls" class="col-sm-4 control-label">Accept Calls when there are No Available Agents?</label>
+							       				<div class="col-sm-8 mb">
+													<select class="form-control" id="accept_calls" name="accept_calls">
+														<?php
+														$accept_calls = NULL;
+															if($output->fronter_display[$i] == "no"){
+																$accept_calls .= '<option value="no" selected> NO </option>';
+															}else{
+																$accept_calls .= '<option value="no" > NO </option>';
+															}
+															
+															if($output->fronter_display[$i] == "yes"){
+																$accept_calls .= '<option value="yes" selected> YES </option>';
+															}else{
+																$accept_calls .= '<option value="yes" > YES </option>';
+															}
 
-								<!--==== Agents ====-->
-								  <div id="agents" role="tabpanel" class="tab-pane">
+															if($output->fronter_display[$i] == "no_paused"){
+																$accept_calls .= '<option value="no_paused" selected> NO PAUSED </option>';
+															}else{
+																$accept_calls .= '<option value="no_paused" > NO PAUSED </option>';
+															}
+														echo $accept_calls;
+														?>
+													</select>
+												</div>
+							       			</div>
+							       			<div class="form-group">
+							       				<label for="call_launch" class="col-sm-4 control-label">No Available Agents Routing</label>
+							       				<div class="col-sm-8 mb">
+													<input type="text" class="form-control" name="" id="call_launch" value="">
+												</div>
+							       			</div>
+							       			<div class="form-group">
+							       				<label for="call_launch" class="col-sm-4 control-label">Welcome Message Filename</label>
+							       				<div class="col-sm-8 mb">
+													<input type="text" class="form-control" name="" id="call_launch" value="">
+												</div>
+							       			</div>
+							       			<div class="form-group">
+							       				<label for="call_launch" class="col-sm-4 control-label">Music On Hold Context</label>
+							       				<div class="col-sm-8 mb">
+													<input type="text" class="form-control" name="" id="call_launch" value="">
+												</div>
+							       			</div>
+							       			<div class="form-group">
+							       				<label for="call_launch" class="col-sm-4 control-label">On Hold Prompt</label>
+							       				<div class="col-sm-8 mb">
+													<input type="text" class="form-control" name="" id="call_launch" value="">
+												</div>
+							       			</div>
+							       		</fieldset>
+									</div>
+
+									<!--==== Agents ====-->
+									<div id="agents" class="tab-pane fade in">
 										<table class="table table-striped table-bordered table-hover" id="table_ivr">
 										   <thead>
 											  <tr>
@@ -498,20 +502,30 @@ if (isset($_POST["did"])) {
 												?>
 										   </tbody>
 										</table>
-										<br/>
-									<div class="panel-footer text-right">&nbsp;</div>
-								 </div>
+									</div>
+
+									<!-- FOOTER BUTTONS -->
+								   	<div id="modifyINGROUPresult"></div>
+
+								   	<fieldset>
+				                        <div class="form-group">
+				                           <div class="pull-right">
+				                              
+				                              	<div class="col-sm-6">
+													<a href="telephonyinbound.php" type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> Cancel </a>
+				                           		</div>
+				                              	<div class="col-sm-6">
+				                                	<button type="submit" class="btn btn-primary pull-right" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+												</div>
+				                           </div>
+				                        </div>
+				                    </fieldset>
 
 								</div><!-- END tab content-->
-							</div><!-- body -->
-							<div class="box-footer">		
-								<div id="modifyINGROUPresult"></div>
-								
-								<a href="telephonyinbound.php" type="button" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Cancel</a>
-
-								<button type="submit" class="btn btn-primary pull-right" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-							</div>
-
+							</div><!-- END of tabpanel -->
+							</form>
+						</div><!-- body -->
+					
 					<?php			
 								/*
 									INSERT OLD CODE HERE
@@ -559,12 +573,12 @@ if (isset($_POST["did"])) {
 							for($i=0;$i < count($output->menu_id);$i++){
 							
 						?>
-						<div class="box-header with-border">
-							<h3 class="box-title">MODIFY IVR : <u><?php echo $output->menu_id[$i];?></u></h3>
-						</div>
-						<div class="box-body table-responsive">
+
+						<div class="panel-body">
+							<legend>MODIFY IVR : <u><?php echo $output->menu_id[$i];?></u></legend>
 
 							<form id="modifyivr" class="form-horizontal">
+
 								<input type="hidden" name="modify_ivr" value="<?php echo $output->menu_id[$i];?>">
 								<div class="col-lg-12">
 									<!-- Custom Tabs -->
@@ -576,6 +590,7 @@ if (isset($_POST["did"])) {
 											<!-- <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li> -->
 										</ul>
 										<div class="tab-content">
+
 											<div class="tab-pane active" id="tab_1">
 												<div class="form-group">
 													<label class="col-sm-4 control-label" for="menu_id">Menu ID:</label>
@@ -747,7 +762,7 @@ if (isset($_POST["did"])) {
 											</div>
 
 											<div id="modifyIVRresult"></div>
-											<div class="row" style="padding:0px 50px;">
+											<div class="form-group" style="padding:0px 50px;">
 												<button type="button" class="btn btn-danger" id="modifyIVRDeleteButton" href=""><i class="fa fa-times"></i> Delete</button>
 
 												<button type="submit" class="btn btn-primary pull-right" id="modifyIVROkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
@@ -809,135 +824,205 @@ if (isset($_POST["did"])) {
 						# Result was OK!
 							for($i=0;$i<count($output->did_pattern);$i++){
 						?>
-							
-						<div class="box-header with-border">
-							<h3 class="box-title">MODIFY DID RECORD : <u><?php echo $output->did_id[$i];?></u></h3>
-						</div>
-						<div class="box-body table-responsive">	
-								<form id="modifydid">
-									<input type="hidden" name="modify_did" value="<?php echo $output->did_id[$i];?>">
+					<script>
+						$(window).ready(function() {
+							var route = document.getElementById('route').value;
+
+							if(route == "AGENT") {
+							  $('#form_route_agent').show();
+							  
+							  $('#form_route_ingroup').hide();
+							  $('#form_route_phone').hide();
+							  $('#form_route_callmenu').hide();
+							  $('#form_route_voicemail').hide();
+							  $('#form_route_exten').hide();
+							}if(route == "IN_GROUP") {
+							  $('#form_route_ingroup').show();
+							  
+							  $('#form_route_agent').hide();
+							  $('#form_route_phone').hide();
+							  $('#form_route_callmenu').hide();
+							  $('#form_route_voicemail').hide();
+							  $('#form_route_exten').hide();
+							}if(route == "PHONE") {
+							  $('#form_route_phone').show();
+							  
+							  $('#form_route_agent').hide();
+							  $('#form_route_ingroup').hide();
+							  $('#form_route_callmenu').hide();
+							  $('#form_route_voicemail').hide();
+							  $('#form_route_exten').hide();
+							}if(route == "CALLMENU") {
+							  $('#form_route_callmenu').show();
+							  
+							  $('#form_route_agent').hide();
+							  $('#form_route_ingroup').hide();
+							  $('#form_route_phone').hide();
+							  $('#form_route_voicemail').hide();
+							  $('#form_route_exten').hide();
+							}if(route == "VOICEMAIL") {
+							  $('#form_route_voicemail').show();
+							  
+							  $('#form_route_agent').hide();
+							  $('#form_route_ingroup').hide();
+							  $('#form_route_phone').hide();
+							  $('#form_route_callmenu').hide();
+							  $('#form_route_exten').hide();
+							}if(route == "EXTEN") {
+							  $('#form_route_exten').show();
+							  
+							  $('#form_route_agent').hide();
+							  $('#form_route_ingroup').hide();
+							  $('#form_route_phone').hide();
+							  $('#form_route_voicemail').hide();
+							  $('#form_route_callmenu').hide();
+							}
+						});
+					</script>
+						<div class="panel-body">
+							<legend>MODIFY DID RECORD : <u><?php echo $output->did_id[$i];?></u></legend>
 								
-							<!-- BASIC SETTINGS -->
-								<div class="text-left" style="margin-top: 20px; padding: 0px 30px">
-									<div class="col-lg-6">
-										<div class="form-group">
-											<label for="did_pattern">DID NUMBER</label>
-											<input type="text" class="form-control" name="did_pattern" id="did_pattern" value="<?php echo $output->did_pattern[$i];?>">
+								<form id="modifydid">
+
+							<!-- Custom Tabs -->
+							<div role="tabpanel">
+							<!--<div class="nav-tabs-custom">-->
+								<ul role="tablist" class="nav nav-tabs">
+									<li class="active"><a href="#tab_1" data-toggle="tab"><em class="fa fa-gear fa-lg"></em> Basic Settings</a></li>
+									<li><a href="#tab_2" data-toggle="tab"><em class="fa fa-gears fa-lg"></em> Advanced Settings</a></li>
+								</ul>
+				               <!-- Tab panes-->
+				               <div class="tab-content">
+
+					               	<!-- BASIC SETTINGS -->
+					                <div id="tab_1" class="tab-pane fade in active">
+
+										<input type="hidden" name="modify_did" value="<?php echo $output->did_id[$i];?>">
+									<fieldset>
+										<div class="form-group mt">
+											<label for="did_pattern" class="col-sm-2 control-label">DID NUMBER</label>
+											<div class="col-sm-10 mb">
+												<input type="text" class="form-control" name="did_pattern" id="did_pattern" value="<?php echo $output->did_pattern[$i];?>">
+											</div>
 										</div>
 										<div class="form-group">
-											<label for="desc">Description</label>
-											<input type="text" class="form-control" name="desc" id="desc" value="<?php echo $output->did_description[$i];?>">
+											<label for="desc" class="col-sm-2 control-label">Description</label>
+											<div class="col-sm-10 mb">
+												<input type="text" class="form-control" name="desc" id="desc" value="<?php echo $output->did_description[$i];?>">
+											</div>
 										</div>
-										<div class="row">
-											<label for="status" class="col-md-3">Status
-											<select class="form-control" name="status" id="status">
-											<?php
-												$status = NULL;
-												if($output->active[$i] == "Y"){
-													$status .= '<option value="Y" selected> YES </option>';
-												}else{
-													$status .= '<option value="Y" > YES </option>';
-												}
-												
-												if($output->active[$i] == "N" || $output->active[$i] == NULL){
-													$status .= '<option value="N" selected> NO </option>';
-												}else{
-													$status .= '<option value="N" > NO </option>';
-												}
-												echo $status;
-											?>
-												
-											</select>
-											</label>
-										</div>
-										<div class="row" style="padding-top:10px;">
-											<label for="route" class="col-md-5">DID Route
-											<select class="form-control" id="route" name="route">
+										<div class="form-group">
+											<label for="status" class="col-sm-2 control-label">Status</label>
+											<div class="col-sm-10 mb">
+												<select class="form-control" name="status" id="status">
 												<?php
-													$route = NULL;
-													if($output->did_route [$i] == "AGENT"){
-														$route .= '<option value="AGENT" selected> Agent </option>';
+													$status = NULL;
+													if($output->active[$i] == "Y"){
+														$status .= '<option value="Y" selected> YES </option>';
 													}else{
-														$route .= '<option value="AGENT" > Agent </option>';
+														$status .= '<option value="Y" > YES </option>';
 													}
 													
-													if($output->did_route [$i] == "IN_GROUP"){
-														$route .= '<option value="IN_GROUP" selected> In-group </option>';
+													if($output->active[$i] == "N" || $output->active[$i] == NULL){
+														$status .= '<option value="N" selected> NO </option>';
 													}else{
-														$route .= '<option value="IN_GROUP" > In-group </option>';
+														$status .= '<option value="N" > NO </option>';
 													}
-													
-													if($output->did_route [$i] == "PHONE"){
-														$route .= '<option value="PHONE" selected> Phone </option>';
-													}else{
-														$route .= '<option value="PHONE" > Phone </option>';
-													}
-													
-													if($output->did_route [$i] == "CALLMENU "){
-														$route .= '<option value="CALLMENU" selected> Call Menu / IVR </option>';
-													}else{
-														$route .= '<option value="CALLMENU" > Call Menu / IVR </option>';
-													}
-													
-													if($output->did_route [$i] == "VOICEMAIL"){
-														$route .= '<option value="VOICEMAIL" selected> Voicemail </option>';
-													}else{
-														$route .= '<option value="VOICEMAIL" > Voicemail </option>';
-													}
-													
-													if($output->did_route [$i] == "EXTEN"){
-														$route .= '<option value="EXTEN" selected> Custom Extension </option>';
-													}else{
-														$route .= '<option value="EXTEN" > Custom Extension </option>';
-													}
-													echo $route;
+													echo $status;
 												?>
-											</select>
-											</label>
+												</select>
+											</div>
 										</div>
-									</div>
-									
-									<!-- HIDING DIVS COLOR -->
-									<div style="padding: 1px 10px;">
-
-									<div class="col-lg-6">
-
-										<!-- IF DID ROUTE = AGENT-->
-										<div id="form_route_agent">
-											<div class="form-group">
-												<label for="route_agentid">Agent ID: </label>
-												<select name="route_agentid" id="route_agentid" class="form-control">
-													<option value="" > -- NONE -- </option>
+										<div class="form-group">
+											<label for="route" class="col-sm-2 control-label">DID Route</label>
+											<div class="col-sm-10 mb">
+												<select class="form-control" id="route" name="route">
 													<?php
-														for($i=0;$i<count($users->userno);$i++){
-													?>
-														<option value="<?php echo $users->userno[$i];?>">
-															<?php echo $users->userno[$i].' - '.$users->full_name[$i];?>
-														</option>									
-													<?php
+														$route = NULL;
+														if($output->did_route [$i] == "AGENT"){
+															$route .= '<option value="AGENT" selected> Agent </option>';
+														}else{
+															$route .= '<option value="AGENT" > Agent </option>';
 														}
+														
+														if($output->did_route [$i] == "IN_GROUP"){
+															$route .= '<option value="IN_GROUP" selected> In-group </option>';
+														}else{
+															$route .= '<option value="IN_GROUP" > In-group </option>';
+														}
+														
+														if($output->did_route [$i] == "PHONE"){
+															$route .= '<option value="PHONE" selected> Phone </option>';
+														}else{
+															$route .= '<option value="PHONE" > Phone </option>';
+														}
+														
+														if($output->did_route [$i] == "CALLMENU "){
+															$route .= '<option value="CALLMENU" selected> Call Menu / IVR </option>';
+														}else{
+															$route .= '<option value="CALLMENU" > Call Menu / IVR </option>';
+														}
+														
+														if($output->did_route [$i] == "VOICEMAIL"){
+															$route .= '<option value="VOICEMAIL" selected> Voicemail </option>';
+														}else{
+															$route .= '<option value="VOICEMAIL" > Voicemail </option>';
+														}
+														
+														if($output->did_route [$i] == "EXTEN"){
+															$route .= '<option value="EXTEN" selected> Custom Extension </option>';
+														}else{
+															$route .= '<option value="EXTEN" > Custom Extension </option>';
+														}
+														echo $route;
 													?>
 												</select>
 											</div>
+										</div>
+									</fieldset>
+									<fieldset>
+										<!-- IF DID ROUTE = AGENT-->
+										<div id="form_route_agent" style="display: none;">
 											<div class="form-group">
-												<label for="route_unavail">Agent Unavailable Action: </label>
-												<select name="route_unavail" id="route_unavail" class="form-control">
-													<option value="EXTEN" > Custom Extension </option>
-													<option value="IN_GROUP" > In-group </option>
-													<option value="PHONE" > Phone </option>
-													<option value="VOICEMAIL" > Voicemail </option>												
-												</select>
+												<label for="route_agentid" class="col-sm-3 control-label">Agent ID: </label>
+												<div class="col-sm-9 mb">
+													<select name="route_agentid" id="route_agentid" class="form-control">
+														<option value="" > -- NONE -- </option>
+														<?php
+															for($i=0;$i<count($users->userno);$i++){
+														?>
+															<option value="<?php echo $users->userno[$i];?>">
+																<?php echo $users->userno[$i].' - '.$users->full_name[$i];?>
+															</option>									
+														<?php
+															}
+														?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="route_unavail" class="col-sm-3 control-label">Agent Unavailable Action: </label>
+												<div class="col-sm-9 mb">
+													<select name="route_unavail" id="route_unavail" class="form-control">
+														<option value="EXTEN" > Custom Extension </option>
+														<option value="IN_GROUP" > In-group </option>
+														<option value="PHONE" > Phone </option>
+														<option value="VOICEMAIL" > Voicemail </option>												
+													</select>
+												</div>
 											</div>
 												<!-- FOR AGENT UNAVAILABLE ACTION -->
-													<div style="padding-left: 30px;">
-													<!--IF route_unavail = EXTEN -->
-														<div class="form-group" id="ru_exten" style="display: none;">
-															<label for="ru_exten">Extension</label>
+												<!--IF route_unavail = EXTEN -->
+													<div class="form-group" id="ru_exten" style="display: none;">
+														<label for="ru_exten" class="col-sm-3 control-label">Extension</label>
+														<div class="col-sm-9 mb">
 															<input type="text" class="form-control" name="ru_exten" id="ru_exten" value="<?php echo $output->did_pattern[$i];?>">
 														</div>
-													<!--IF route_unavail = INGROUP -->
-														<div class="form-group" id="ru_ingroup" style="display: none;">
-															<label for="ru_ingroup">Ingroup</label>
+													</div>
+												<!--IF route_unavail = INGROUP -->
+													<div class="form-group" id="ru_ingroup" style="display: none;">
+														<label for="ru_ingroup" class="col-sm-3 control-label">Ingroup</label>
+														<div class="col-sm-9 mb">
 															<select name="ru_ingroup" id="ru_ingroup" class="form-control">
 																<?php
 																	for($i=0;$i<count($ingroups->group_id);$i++){
@@ -950,9 +1035,11 @@ if (isset($_POST["did"])) {
 																?>
 															</select>
 														</div>
-													<!--IF route_unavail = PHONE -->
-														<div class="form-group" id="ru_phone" style="display: none;">
-															<label for="exten">Phone</label>
+													</div>
+												<!--IF route_unavail = PHONE -->
+													<div class="form-group" id="ru_phone" style="display: none;">
+														<label for="exten" class="col-sm-3 control-label">Phone</label>
+														<div class="col-sm-9 mb">
 															<select name="ru_phone" id="ru_phone" class="form-control">
 																<?php
 																	for($i=0;$i<count($phones->extension);$i++){
@@ -965,169 +1052,186 @@ if (isset($_POST["did"])) {
 																?>
 															</select>
 														</div>
-													<!--IF route_unavail = VOICEMAIL -->
-														<div class="form-group" id="ru_voicemail" style="display: none;">
-															<label for="exten">Voicemail</label>
+													</div>
+												<!--IF route_unavail = VOICEMAIL -->
+													<div class="form-group" id="ru_voicemail" style="display: none;">
+														<label for="exten" class="col-sm-3 control-label">Voicemail</label>
+														<div class="col-sm-9 mb">
 															<input type="text" class="form-control" name="exten" id="exten" value="<?php echo $output->did_pattern[$i];?>">
 														</div>
 													</div>
 											<div class="form-group">
-												<label for="route_settings">Agent Route Settings: </label>
-												<select name="route_settings" id="route_settings" class="form-control">
-													<option value="">
-														---NONE---
-													</option>	
-												<?php
-													for($i=0;$i<count($ingroups->group_id);$i++){
-														if($ingroups->group_id[$i] != "AGENTDIRECT"){
-												?>
-													<option value="<?php echo $ingroups->group_id[$i];?>">
-														<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
-													</option>									
-												<?php
+												<label for="route_settings" class="col-sm-3 control-label">Agent Route Settings: </label>
+												<div class="col-sm-9 mb">
+													<select name="route_settings" id="route_settings" class="form-control">
+														<option value="">
+															---NONE---
+														</option>	
+													<?php
+														for($i=0;$i<count($ingroups->group_id);$i++){
+															if($ingroups->group_id[$i] != "AGENTDIRECT"){
+													?>
+														<option value="<?php echo $ingroups->group_id[$i];?>">
+															<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+														</option>									
+													<?php
+															}
 														}
-													}
-												?>
-												</select>
+													?>
+													</select>
+												</div>
 											</div>
 										</div><!-- end of div agent-->
 										
 									<!-- IF DID ROUTE = IN-GROUP-->
-									
 										<div id="form_route_ingroup" class="form-group" style="display: none;">										
-											<label for="route_ingroupid">In-Group ID: </label>
-											<select name="route_ingroupid" id="route_ingroupid" class="form-control">
-												<?php
-													for($i=0;$i<count($ingroups->group_id);$i++){
-												?>
-													<option value="<?php echo $ingroups->group_id[$i];?>">
-														<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
-													</option>									
-												<?php
-													}
-												?>
-											</select>
+											<label for="route_ingroupid" class="col-sm-3 control-label">In-Group ID: </label>
+											<div class="col-sm-9 mb">
+												<select name="route_ingroupid" id="route_ingroupid" class="form-control">
+													<?php
+														for($i=0;$i<count($ingroups->group_id);$i++){
+													?>
+														<option value="<?php echo $ingroups->group_id[$i];?>">
+															<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+														</option>									
+													<?php
+														}
+													?>
+												</select>
+											</div>
 										</div><!-- end of ingroup div -->
 										
 									<!-- IF DID ROUTE = PHONE -->
 
 										<div id="form_route_phone" style="display: none;">
 											<div class="form-group">
-												<label  for="route_phone_exten">Phone Extension: </label>
-												<select name="route_phone_exten" id="route_phone_exten" class="form-control">
-													<?php
-														for($i=0;$i<count($phones->extension);$i++){
-													?>
-														<option value="<?php echo $phones->extension[$i];?>">
-															<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
-														</option>									
-													<?php
-														}
-													?>
-												</select>
+												<label  for="route_phone_exten" class="col-sm-3 control-label">Phone Extension: </label>
+												<div class="col-sm-9 mb">
+													<select name="route_phone_exten" id="route_phone_exten" class="form-control">
+														<?php
+															for($i=0;$i<count($phones->extension);$i++){
+														?>
+															<option value="<?php echo $phones->extension[$i];?>">
+																<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
+															</option>									
+														<?php
+															}
+														?>
+													</select>
+												</div>
 											</div>
 											<div class="form-group">
-												<label for="route_phone_server">Server IP: </label>
-												<select name="route_phone_server" id="route_phone_server" class="form-control">
-													<option value="" > -- NONE -- </option>
-													<?php
-														for($i=0;$i < 1;$i++){
-													?>
-														<option value="<?php echo $phones->server_ip[$i];?>">
-															<?php echo 'GOautodial - '.$phones->server_ip[$i];?>
-														</option>									
-													<?php
-														}
-													?>
-												</select>
+												<label for="route_phone_server" class="col-sm-3 control-label">Server IP: </label>
+												<div class="col-sm-9 mb">
+													<select name="route_phone_server" id="route_phone_server" class="form-control">
+														<option value="" > -- NONE -- </option>
+														<?php
+															for($i=0;$i < 1;$i++){
+														?>
+															<option value="<?php echo $phones->server_ip[$i];?>">
+																<?php echo 'GOautodial - '.$phones->server_ip[$i];?>
+															</option>									
+														<?php
+															}
+														?>
+													</select>
+												</div>
 											</div>
 										</div><!-- end of phone div -->
 										
 									<!-- IF DID ROUTE = IVR -->
-
 										<div id="form_route_callmenu" style="display: none;">
 											<div class="form-group">
-												<label for="route_ivr">Call Menu: </label>
-												<select name="route_ivr" id="route_ivr" class="form-control">
-													<?php
-														for($i=0;$i<count($ivr->menu_id);$i++){
-													?>
-														<option value="<?php echo $ivr->menu_id[$i];?>">
-															<?php echo $ivr->menu_id[$i].' - '.$ivr->menu_name[$i];?>
-														</option>									
-													<?php
-														}
-													?>
-												</select>
+												<label for="route_ivr" class="col-sm-3 control-label">Call Menu: </label>
+												<div class="col-sm-9 mb">
+													<select name="route_ivr" id="route_ivr" class="form-control">
+														<?php
+															for($i=0;$i<count($ivr->menu_id);$i++){
+														?>
+															<option value="<?php echo $ivr->menu_id[$i];?>">
+																<?php echo $ivr->menu_id[$i].' - '.$ivr->menu_name[$i];?>
+															</option>									
+														<?php
+															}
+														?>
+													</select>
+												</div>
 											</div>
 										</div><!-- end of ivr div -->
 										
 									<!-- IF DID ROUTE = VoiceMail -->
-
 										<div id="form_route_voicemail" style="display: none;">
 											<div class="form-group">
-												<label for="route_voicemail">Voicemail Box: </label>
-												<select name="route_voicemail" id="route_voicemail" class="form-control">
-													<?php
-														for($i=0;$i<count($voicemails->voicemail_id);$i++){
-													?>
-														<option value="<?php echo $voicemails->voicemail_id[$i];?>">
-															<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
-														</option>									
-													<?php
-														}
-													?>
-												</select>
+												<label for="route_voicemail" class="col-sm-3 control-label">Voicemail Box: </label>
+												<div class="col-sm-9 mb">
+													<select name="route_voicemail" id="route_voicemail" class="form-control">
+														<?php
+															for($i=0;$i<count($voicemails->voicemail_id);$i++){
+														?>
+															<option value="<?php echo $voicemails->voicemail_id[$i];?>">
+																<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
+															</option>									
+														<?php
+															}
+														?>
+													</select>
+												</div>
 											</div>
 										</div><!-- end of voicemail div -->
 										
 										<!-- IF DID ROUTE = Custom Extension -->
-
 										<div id="form_route_exten" style="display: none;">
 											<div class="form-group">
-												<label for="route_exten">Extension: </label>
-												<input type="text" name="route_exten" id="route_exten" placeholder="Extension" class="form-control" required>
+												<label for="route_exten" class="col-sm-3 control-label">Extension: </label>
+												<div class="col-sm-9 mb">
+													<input type="text" name="route_exten" id="route_exten" placeholder="Extension" class="form-control" required>
+												</div>
 											</div>
 											<div class="form-group">
-												<label for="route_exten_context">Extension Context: </label>
-												<input type="text" name="route_exten_context" id="route_exten_context" placeholder="Extension Context" class="form-control" required>
+												<label for="route_exten_context" class="col-sm-3 control-label">Extension Context: </label>
+												<div class="col-sm-9 mb">
+													<input type="text" name="route_exten_context" id="route_exten_context" placeholder="Extension Context" class="form-control" required>
+												</div>
 											</div>
 										</div><!-- end of custom extension div -->
-										
-										</div><!-- end of color-->
-									</div><!-- end of 2nd col -->
+									</fieldset>
 
-									<br/><br/>
-									<div class="row" id="btn_show">
-										<center>
-										<a class="btn btn-app" style="padding:6px 20px; width:95%; height: 45px; margin-top:20px;" id="show_advanced_settings" >
-							               <div id="show"><i class="fa fa-plus"></i></div>
-							               <div id="hide" hidden><i class="fa fa-minus"></i></div>
-							                Advanced Settings
-							            </a>
-							            </center>
-						       		</div>
+									</div><!-- end of basic settings-->
+								
 
 						       		<!-- ADVANCED SETTINGS -->
-						       		<div id="advanced_settings_wrapper" style="padding: 25px 0px;" hidden>
-						       			<div class="row">
-						       				<label for="cid_num" class="col-md-6">Clean CID Number
-											<input type="text" class="form-control" name="cid_num" id="cid_num" value="">
-											</label>
-						       			</div>						       			
+						       		<div id="tab_2" class="tab-pane fade in">
+						       			<fieldset>
+							       			<div class="form-group mt">
+							       				<label for="cid_num" class="col-sm-2 control-label">Clean CID Number</label>
+							       				<div class="col-sm-10 mb">
+													<input type="text" class="form-control" name="cid_num" id="cid_num" value="">
+												</div>
+							       			</div>
+							       		</fieldset>				       			
 						       		</div>
-								</div>
-							</div>
-							<div class="box-footer">
-								<div id="modifyDIDresult"></div>
-								<div class="row" style="padding:0px 50px;">
-									<a type="button" class="btn btn-danger" id="modifyDIDDeleteButton" href="telephonyinbound.php"><i class="fa fa-arrow-left"></i> Cancel</a>
+							
+								<!-- FOOTER BUTTONS -->
+								   	<div id="modifyDIDresult"></div>
 
-									<button type="submit" class="btn btn-primary pull-right" id="modifyDIDOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-								</div>
-								
-								</form>	
+								   	<fieldset>
+				                        <div class="form-group">
+				                           <div class="pull-right">
+				                              
+				                              	<div class="col-sm-6">
+													<a href="telephonyinbound.php" type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> Cancel </a>
+				                           		</div>
+				                              	<div class="col-sm-6">
+				                                	<button type="submit" class="btn btn-primary pull-right" id="modifyDIDOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+												</div>
+				                           </div>
+				                        </div>
+				                    </fieldset>
+
+								</div><!-- end of content -->
 							</div>
+							</form>	
+						</div>
 						<?php		
 							}
 						} else {
@@ -1141,6 +1245,7 @@ if (isset($_POST["did"])) {
 					
 					
 					?>
+					</div><!-- panel -->
                 </section>
 				<!-- /.content -->
             </aside><!-- /.right-side -->
@@ -1162,19 +1267,9 @@ if (isset($_POST["did"])) {
 
 			//Colorpicker
     		$(".colorpicker").colorpicker();
-
-			$("#show_advanced_settings").click(function(){
-			    $("#advanced_settings_wrapper").toggle();
-			    if ($('#hide').is(":hidden")){
-			    	$("#hide").show();
-			   		$("#show").hide();
-			    }else{
-			    	$("#show").show();
-			   		$("#hide").hide();
-			    }
-			    
-			});
 			
+			//  alert( this.value ); // or $(this).val()
+
 			$('#route_unavail').on('change', function() {
 				//  alert( this.value ); // or $(this).val()
 				if(this.value == "EXTEN") {
@@ -1354,25 +1449,6 @@ if (isset($_POST["did"])) {
 						return false; //don't let the form refresh the page...
 					}					
 				});
-				/**
-				 * Deletes a telephony list
-				 */
-
-				//delete_ingroup
-				$("#modifyINGROUPDeleteButton").click(function (e) {
-					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
-					e.preventDefault();
-					if (r == true) {
-						var groupid = $(this).attr('href');
-						$.post("./php/DeleteTelephonyInbound.php", { groupid: groupid } ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
-								alert("<?php $lh->translateText("ingroup_successfully_deleted"); ?>");
-								window.location = "index.php";
-							}
-							else { alert ("<?php $lh->translateText("unable_delete_ingroup"); ?>: "+data); }
-						});
-					}
-				 });
 
 				$('.add-option').click(function(){
 					var toClone = $('.to-clone-opt').clone();
