@@ -1,5 +1,5 @@
-GO_title = "GOagent Dialer Settings"
-GO_subtitle = "A module for GOautodial Agent Dialer integration."
+GO_title = "GOWebRTC Dialer Settings"
+GO_subtitle = "A module for GOautodial WebRTC Agent Dialer integration."
 GO_agent_url = "GOagent URL"
 GO_agent_url_info = "Set this to the URL where GOagent Dialer has been installed. If left blank, it will use the same HTTP Host URL used by the CRM."
 GO_agent_db = "GOagent DB IP/Host"
