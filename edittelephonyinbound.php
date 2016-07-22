@@ -122,10 +122,6 @@ if (isset($_POST["did"])) {
                     </ol>
                 </section>
 
-                <!-- Main content -->
-                 <section class="content">
-					<div class="panel panel-default">
-
 					<!-- standard custom edition form -->
 					<?php
 					$errormessage = NULL;
@@ -155,7 +151,9 @@ if (isset($_POST["did"])) {
 						# Result was OK!
 							for($i=0;$i < count($output->group_id);$i++){
 					?>			
-
+				<!-- Main content -->
+                 <section class="content">
+					<div class="panel panel-default">
 						<div class="panel-body">
 							<legend>MODIFY IN-GROUP : <u><?php echo $groupid;?></u></legend>
 
@@ -508,15 +506,12 @@ if (isset($_POST["did"])) {
 								   	<div id="modifyINGROUPresult"></div>
 
 								   	<fieldset>
-				                        <div class="form-group">
-				                           <div class="pull-right">
-				                              
-				                              	<div class="col-sm-6">
-													<a href="telephonyinbound.php" type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> Cancel </a>
-				                           		</div>
-				                              	<div class="col-sm-6">
-				                                	<button type="submit" class="btn btn-primary pull-right" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-												</div>
+				                        <div class="box-footer">
+				                           <div class="pull-right col-sm-3">
+												<a href="telephonyinbound.php" type="button" class="btn btn-danger pull-left"><i class="fa fa-close"></i> Cancel </a>
+				                           		
+				                                <button type="submit" class="btn btn-primary pull-right" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+											
 				                           </div>
 				                        </div>
 				                    </fieldset>
@@ -525,7 +520,8 @@ if (isset($_POST["did"])) {
 							</div><!-- END of tabpanel -->
 							</form>
 						</div><!-- body -->
-					
+					</div><!-- body -->
+                </section>
 					<?php			
 								/*
 									INSERT OLD CODE HERE
@@ -879,6 +875,9 @@ if (isset($_POST["did"])) {
 							}
 						});
 					</script>
+				<!-- Main content -->
+                <section class="content">
+					<div class="panel panel-default">
 						<div class="panel-body">
 							<legend>MODIFY DID RECORD : <u><?php echo $output->did_id[$i];?></u></legend>
 								
@@ -1215,15 +1214,12 @@ if (isset($_POST["did"])) {
 								   	<div id="modifyDIDresult"></div>
 
 								   	<fieldset>
-				                        <div class="form-group">
-				                           <div class="pull-right">
-				                              
-				                              	<div class="col-sm-6">
-													<a href="telephonyinbound.php" type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> Cancel </a>
-				                           		</div>
-				                              	<div class="col-sm-6">
-				                                	<button type="submit" class="btn btn-primary pull-right" id="modifyDIDOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-												</div>
+				                        <div class="box-footer">
+				                           <div class="pull-right col-sm-3">
+												<a href="telephonyinbound.php" type="button" class="btn btn-danger pull-left"><i class="fa fa-close"></i> Cancel </a>
+				                           		
+				                                <button type="submit" class="btn btn-primary pull-right" id="modifyDIDOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+												
 				                           </div>
 				                        </div>
 				                    </fieldset>
@@ -1232,6 +1228,8 @@ if (isset($_POST["did"])) {
 							</div>
 							</form>	
 						</div>
+					</div><!-- body -->
+                </section>
 						<?php		
 							}
 						} else {
@@ -1243,17 +1241,12 @@ if (isset($_POST["did"])) {
 			    		$errormessage = $lh->translationFor("some_fields_missing");
 					}
 					
-					
 					?>
-					</div><!-- panel -->
-                </section>
-				<!-- /.content -->
-            </aside><!-- /.right-side -->
 			
-            <?php print $ui->creamyFooter(); ?>
+           
 			
         </div><!-- ./wrapper -->
-
+         <?php print $ui->creamyFooter(); ?>
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 

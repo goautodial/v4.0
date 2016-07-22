@@ -66,11 +66,6 @@ $user_groups = $ui->API_goGetUserGroupsList();
 			})
 		</script>
     </head>
-    <style>
-    	select{
-    		font-weight: normal;
-    	}
-    </style>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
@@ -79,7 +74,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="right-side">
+            <aside class="right-side" style="min-height:0!important;">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1 style="font-weight:normal;">
@@ -393,18 +388,16 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								   	<div id="modifyUSERresult"></div>
 
 								   	<fieldset>
-				                        <div class="form-group">
-				                           <div class="pull-right">
-				                              
-				                              	<div class="col-sm-6">
-													<a href="telephonyusers.php" type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> Cancel </a>
-				                           		</div>
-				                              	<div class="col-sm-6">
+				                        <div class="box-footer">
+				                           <div class="pull-right col-sm-3">
+													<a href="telephonyusers.php" type="button" class="btn btn-danger pull-left"><i class="fa fa-close"></i> Cancel </a>
+				                           		
 				                                	<button type="submit" class="btn btn-primary pull-right" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 												</div>
 				                           </div>
 				                        </div>
 				                    </fieldset>
+
 							   		</div>
 				            	</div><!-- end of tab content -->
 				       		</form>
@@ -425,7 +418,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 				<!-- /.content -->
             </aside><!-- /.right-side -->
 			
-            <?php //print $ui->creamyFooter(); ?>
+            <?php print $ui->creamyFooter(); ?>
 			
         </div><!-- ./wrapper -->
 

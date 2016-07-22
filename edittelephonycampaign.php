@@ -73,6 +73,11 @@ $disposition = $ui->API_getDispositionInfo($did);
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 
+        	<!-- =============== BOOTSTRAP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+				<!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -98,7 +103,7 @@ $disposition = $ui->API_getDispositionInfo($did);
             <aside class="right-side">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>
+                    <h1 style="font-weight:normal;">
                         <?php $lh->translateText("telephony"); ?>
                         <small>Edit 
                         	<?php 
@@ -124,11 +129,12 @@ $disposition = $ui->API_getDispositionInfo($did);
 
                 <!-- Main content -->
                 <section class="content">
-					<div class="box box-info clearfix">
+					<div class="panel panel-default">
+						<!--
 						<div class="box-header with-border">
 							<h3 class="box-title">
 								
-								<?php 
+								<?php /*
 					        		if($campaign_id != NULL){
 					        			echo "Modify Campaign: ".$campaign_id." - ".$campaign->data->campaign_name;
 					        		}
@@ -139,10 +145,12 @@ $disposition = $ui->API_getDispositionInfo($did);
 					        	<?php
 					        		}
 					        		if($lf_id != NULL){echo "Lead Filter";}
+					        		*/
 					        	?>
 					        
 							</p>
 						</div>
+						-->
 						<!-- /.box-header -->
 						<form class="form-horizontal">
 							<?php $errormessage = NULL; ?>
@@ -497,7 +505,7 @@ $disposition = $ui->API_getDispositionInfo($did);
 
 
 					            <div class="box-footer">
-									<a href="telephonycampaigns.php" type="button" id="" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Cancel</a>
+									<a href="telephonycampaigns.php" type="button" id="" class="btn btn-danger"><i class="fa fa-remove"></i> Cancel</a>
 								</div>
 								<!-- /.box-footer -->
 							<?php
@@ -554,36 +562,36 @@ $disposition = $ui->API_getDispositionInfo($did);
 	                    </div>
 	                    <div class="col-lg-12" style="padding-top:10px;">        
 		                        <!--<label class="col-sm-2 control-label" for="grouplevel" style="padding-top:15px;"> </label>-->
-	                		<label class="col-sm-3 control-label" for="selectable">
+	                		<label class="col-sm-3" for="selectable">
 				                  <input type="checkbox" id="edit_selectable" name="edit_selectable" class="flat-red">
 				                  Selectable
 			                </label>
-			                <label class="col-sm-4 control-label" for="human_answered">
+			                <label class="col-sm-4" for="human_answered">
 				                  <input type="checkbox" id="edit_human_answered" name="edit_human_answered" class="flat-red">
 				                  Human Answered
 					        </label>
-					        <label class="col-sm-3 control-label" for="sale">
+					        <label class="col-sm-3" for="sale">
 				                  <input type="checkbox" id="edit_sale" name="edit_sale" class="flat-red">
 				                  Sale
 				            </label>
-				            <label class="col-sm-3 control-label" for="dnc">
+				            <label class="col-sm-3" for="dnc">
 				                  <input type="checkbox" id="edit_dnc" name="edit_dnc" class="flat-red">
 				                  DNC
 				            </label>
 					          
-			                <label class="col-sm-4 control-label" for="customer_contact">
+			                <label class="col-sm-4" for="customer_contact">
 				                  <input type="checkbox" id="edit_customer_contact" name="edit_customer_contact" class="flat-red">
 				                  Customer Contact
 			                </label>
-			                <label class="col-sm-4 control-label" for="not_interested">
+			                <label class="col-sm-4" for="not_interested">
 				                  <input type="checkbox" id="edit_not_interested" name="edit_not_interested" class="flat-red">
 				                  Not Interested
 			                </label>
-			                <label class="col-sm-3 control-label" for="unworkable">
+			                <label class="col-sm-3" for="unworkable">
 				                  <input type="checkbox" id="edit_unworkable" name="edit_unworkable" class="flat-red">
 				                  Unworkable
 			                </label>
-			                <label class="col-sm-4 control-label" for="scheduled_callback">
+			                <label class="col-sm-4" for="scheduled_callback">
 				                  <input type="checkbox" id="edit_scheduled_callback" name="edit_scheduled_callback" class="flat-red">
 				                  Scheduled Callback
 			                </label>
@@ -606,8 +614,11 @@ $disposition = $ui->API_getDispositionInfo($did);
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="modify_disposition"><span id="update_button"><i class='fa fa-check'></i> Update</span></button>
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                	<div class="col-sm-5 pull-right">
+                		
+                    	<button type="button" class="btn btn-primary" id="modify_disposition"><span id="update_button"><i class='fa fa-check'></i> Update</span></button>
+                    	<button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class='fa fa-remove'></i> Cancel</button>
+              		</div>
               	</div>
               	
             </div>
