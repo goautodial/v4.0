@@ -125,7 +125,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow", function() {
-					$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000});
+					$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000, htmlAllowed: true});
 				});
 			});
 		</script>
@@ -213,6 +213,13 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 			}
 			#popup-hotkeys .panel-heading {
 				background-color: #2a2a2a;
+				color: #fff;
+			}
+			#popup-hotkeys .panel-body dl {
+				margin-bottom: 0px;
+			}
+			.control-label {
+				padding-top: 0px;
 			}
 		</style>
     </head>
@@ -535,6 +542,9 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 													<div class="form-group label-floating" style="float: left; width:100%;">
 														<label for="comments" class="control-label">Comments</label>
 														<textarea rows="5" id="comments" name="comments" class="form-control textarea input-disabled" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
+														<span class="form-group-addon-textarea">
+															<em class="fa fa-commenting-o fa-lg"></em>
+														</span>
 													</div>
 													<div style="clear:both;"></div>
 													<br>
@@ -639,7 +649,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
       <li><a href="#control-sidebar-agents-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
     </ul>
     <!-- Tab panes -->
-    <div class="tab-content" style="border-width:0;">
+    <div class="tab-content" style="border-width:0; overflow-y: auto;">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-dialer-tab">
         <ul class="control-sidebar-menu" id="go_agent_dialer">
@@ -869,7 +879,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 			});
 		</script>
 		<!-- SnackbarJS -->
-        <script src="js/snackbar.min.js" type="text/javascript"></script>
+        <script src="js/snackbar.js" type="text/javascript"></script>
 
     </body>
 </html>
