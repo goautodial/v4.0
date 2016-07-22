@@ -256,74 +256,70 @@ $callsperhour = $ui->API_getCallPerHour();
                 </section>
 
                 <!-- Main content -->
+
                 <section class="content">
 					
 	<!--====== STATUS BOXES =======-->
 			<div class="row">
-			
-			
 				<div class="col-lg-3 col-sm-6 animated fadeInUpShort">
-					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
-						<div class="panel widget bg-purple">
-							<div class="col-xs-4 text-center bg-purple-dark pv-lg animated fadeInUpShort">
-								<div class="h2 mt0">
-									<span class="text-lg" id="refresh_totalagentscall"></span>
+					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="" style="text-decoration : none">
+						<div class="panel widget bg-purple" style="height: 95px;">
+							<div class="row status-box">
+								<div class="col-xs-4 text-center bg-purple-dark pv-lg animated fadeInUpShort">
+									<em class="icon-earphones fa-3x"></em>
 								</div>
-							</div>
-							<div class="col-xs-8 pv-lg">
-								<div class="h2">
-									<span class="text-sm">Agent(s) On Call</span>
+								<div class="col-xs-8 pv-lg" style="padding-top:10px !important;">
+									<div class="h2 mt0"><span class="text-lg" id="refresh_totalagentscall"></span></div>
+									<div class="text-sm">Agent(s) On Call</div>
 								</div>
 							</div>
 						</div>
 					</a>
 				</div>
-			
-
 				<div class="col-lg-3 col-md-6 animated fadeInUpShort">
-					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
-						<div class="panel widget bg-purple">
-							<div class="col-xs-4 text-center bg-purple-dark pv-lg animated fadeInUpShort">
-								<div class="h2 mt0">
-									<span class="text-lg" id="refresh_totalagentswaitcalls"></span>
+					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="" style="text-decoration : none">
+						<div class="panel widget bg-purple" style="height: 95px;">
+							<div class="row status-box">
+								<div class="col-xs-4 text-center bg-purple-dark pv-lg animated fadeInUpShort">
+									<em class="icon-clock fa-3x"></em>
 								</div>
-							</div>
-							<div class="col-xs-8 pv-lg">
-								<div class="h2 ">
-									<span class="text-sm">Agent(s) Waiting</span>
+								<div class="col-xs-8 pv-lg" style="padding-top:10px !important;">
+									<div class="h2 mt0"><span class="text-lg" id="refresh_totalagentswaitcalls"></span></div>
+									<div class="text-sm">Agent(s) Waiting</div>
 								</div>
 							</div>
 						</div>
 					</a>
 				</div>
                <div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
-                  	<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="">
-		                <div class="panel widget bg-green">
+                  	<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="" style="text-decoration : none">
+		                <div class="panel widget bg-green" style="height: 95px;">
+		                	<div class="row status-box">
 		                        <div class="col-xs-4 text-center bg-gray-dark pv-lg animated fadeInUpShort">
-		                           <div class="h2 mt0">
-		                           		<span class="text-lg" id="refresh_totalagentspaused"></span>
-		                           </div>
+		                           	<em class="icon-hourglass fa-3x"></em>
 		                        </div>
-		                        <div class="col-xs-8 pv-lg">
-		                        	<div class="h2">
-		                           		<span class="text-sm">Agent(s) On Paused</span>
-		                       		</div>
+		                        <div class="col-xs-8 pv-lg" style="padding-top:10px !important;">
+		                        	<div class="h2 mt0"><span class="text-lg" id="refresh_totalagentspaused"></span></div>
+									<div class="text-sm">Agent(s) On Paused</div>
 		                        </div>
+		                    </div>
 		                </div>
               		</a>
                </div>
 				<div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
 					<!-- date widget    -->
-					<div class="panel widget" style="height: 87px;">
-						<div class="col-xs-4 text-center bg-green pv-lg">
-						<!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
-							<div class="text-sm"><?php echo date("F", time());?></div>
-							<div class="h2 mt0"><?php echo date("d", time());?></div>
-						</div>
-						<div class="col-xs-8 pv-lg">
-							<div class="text-uppercase"><?php echo date("l", time());?></div>
-							<div class="h3 mt0"><?php echo date("h:i", time());?> 
-								<span class="text-muted text-sm"><?php echo date("A", time());?></span>
+					<div class="panel widget" style="height: 95px;">
+						<div class="row status-box">
+							<div class="col-xs-4 text-center bg-green pv-lg">
+							<!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
+								<div class="text-sm"><?php echo date("F", time());?></div>
+								<div class="h2 mt0"><?php echo date("d", time());?></div>
+							</div>
+							<div class="col-xs-8 pv-lg">
+								<div class="text-uppercase"><?php echo date("l", time());?></div>
+								<div class="h3 mt0"><?php echo date("h:i", time());?> 
+									<span class="text-muted text-sm"><?php echo date("A", time());?></span>
+								</div>
 							</div>
 						</div>
 					</div>

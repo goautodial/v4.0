@@ -5688,7 +5688,7 @@ ul.ColVis_collection > li > label input[type=radio]:checked + span {
  ========================================================================== */
 .table > thead > tr > th {
   padding: 14px 8px;
-  color: #888;
+  color: rgba(0,0,0,.8);
 }
 .table > tbody > tr > td {
   vertical-align: middle;
@@ -7773,6 +7773,10 @@ fieldset[disabled] .flatdoc-wrapper .button.focus {
   background-color: #ffffff;
 }
 
+/* 
+ADDED FROM MATERIAL
+*/
+
 .control-label{
   text-align: right;
   margin-bottom: 0;
@@ -8133,4 +8137,30 @@ fieldset[disabled] .btn-pink.focus {
   height: 50px;
   font-size: 18px;
   line-height: 50px;
+}
+
+/*
+  ADDED FOR DASHBOARD STATUS BOXES
+*/
+.status-boxes a:hover{
+  text-decoration: none;
+}
+
+.status-box{
+  display: table;
+  table-layout: fixed;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+.status-box > [class*="col-"] {
+  display: table-cell;
+  float: none;
+  table-layout: fixed;
+  vertical-align: middle;
+}
+.status-box > [class*="col-"] {
+  padding-left: 15px;
+  padding-right: 15px;
 }
