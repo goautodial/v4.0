@@ -220,7 +220,6 @@ if (isset($_POST["usergroup_id"])) {
 												<select class="form-control" name="group_level" id="group_level">
 												<?php
 													$group_level = NULL;
-
 													for($o=1; $o <= 9; $o++){
 														if($output->group_level[$i] == $o){
 															$group_level .= '<option value="'.$o.'" selected> '.$o.' </option>';
@@ -253,13 +252,13 @@ if (isset($_POST["usergroup_id"])) {
 			                    </div>
 
 			                    <!-- FOOTER BUTTONS -->
-							   	<fieldset>
+			                    <fieldset>
 			                        <div class="box-footer">
-			                           <div class="pull-right col-sm-3">
-												<a href="settingsusergroups.php" type="button" class="btn btn-danger pull-left"><i class="fa fa-close"></i> Cancel </a>
-			                           		
-			                                	<button type="submit" class="btn btn-primary pull-right" id="modifyUserGroupOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-											</div>
+			                           <div class="col-sm-4 col-sm-offset-2 pull-right">
+												<a href="settingsusergroups.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+			                           	
+			                                	<button type="submit" class="btn btn-primary" id="modifyUserGroupOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+											
 			                           </div>
 			                        </div>
 			                    </fieldset>

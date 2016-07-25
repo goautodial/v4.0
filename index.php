@@ -98,9 +98,6 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 		
-		<!-- Circle Buttons style -->
-		<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
-
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
@@ -188,60 +185,6 @@ $callsperhour = $ui->API_getCallPerHour();
 	}
 
 ?>		
-
-		<!--===== FILTER LIST =======-->
-				
-			<!-- == INGROUP == -->
-				<div class="ingroup_filter_list">
-				<label for="ingroup_dropdown"><small class="small_filterlist">In-group:</small></label>
-				   <!--
-				   <div class="btn-group">
-					  <button type="button" data-toggle="dropdown" id="ingroup_dropdown" class="btn btn-default"> - - - All In-groups - - - </button>
-					  <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
-						 <?php/*
-						 	for($i=0;$i < count($ingroup->group_id);$i++){
-						 		echo "<li><a href='#'>".$ingroup->group_name[$i]."</a></li>";
-						 	}*/
-						 ?>
-					  </ul>
-				   </div>
-					-->
-				    <select id="ingroup_dropdown" class="filterlist_dropdown">
-				   			<option selected> --- All In-groups --- </option>
-				   		<?php
-						 	for($i=0;$i < count($ingroup->group_id);$i++){
-						 		echo "<option>".$ingroup->group_name[$i]."</option>";
-						 	}
-						?>
-				    </select>
-				</div>
-			<!-- == CAMPAIGN == -->
-				<div class="campaign_filter_list">
-					<label for="campaign_dropdown"><small class="small_filterlist">Campaign:</small></label>
-							
-					<!--
-					   <div class="btn-group">
-						  <button type="button" data-toggle="dropdown" id="campaign_dropdown" class="btn btn-default"> - - - All Campaigns - - - </button>
-						  <ul role="menu" class="dropdown-menu dropdown-menu-right animated fadeInUpShort">
-							 <?php/*
-							 	for($i=0;$i < count($campaign->campaign_id);$i++){
-							 		echo "<li><a href='#'>".$campaign->campaign_name[$i]."</a></li>";
-							 	}*/
-							 ?>
-						  </ul>
-					   </div>
-					-->
-					<select id="campaign_dropdown" class="filterlist_dropdown">
-				   			<option selected> --- All Campaigns --- </option>
-				   		<?php
-						 	for($i=0;$i < count($campaign->campaign_id);$i++){
-							 	echo "<option>".$campaign->campaign_name[$i]."</option>";
-							}
-						?>
-				    </select>
-				</div>
-					<!-- END FILTER list    -->
-					
 					<!-- Page title -->
 						<?php
 								$lh->translateText("Dashboard");
@@ -265,7 +208,7 @@ $callsperhour = $ui->API_getCallPerHour();
 					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="" style="text-decoration : none">
 						<div class="panel widget bg-purple" style="height: 95px;">
 							<div class="row status-box">
-								<div class="col-xs-4 text-center bg-purple-dark pv-lg animated fadeInUpShort">
+								<div class="col-xs-4 text-center bg-purple-dark pv-md animated fadeInUpShort">
 									<em class="icon-earphones fa-3x"></em>
 								</div>
 								<div class="col-xs-8 pv-lg" style="padding-top:10px !important;">
@@ -280,7 +223,7 @@ $callsperhour = $ui->API_getCallPerHour();
 					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="" style="text-decoration : none">
 						<div class="panel widget bg-purple" style="height: 95px;">
 							<div class="row status-box">
-								<div class="col-xs-4 text-center bg-purple-dark pv-lg animated fadeInUpShort">
+								<div class="col-xs-4 text-center bg-purple-dark pv-md animated fadeInUpShort">
 									<em class="icon-clock fa-3x"></em>
 								</div>
 								<div class="col-xs-8 pv-lg" style="padding-top:10px !important;">
@@ -295,7 +238,7 @@ $callsperhour = $ui->API_getCallPerHour();
                   	<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="" style="text-decoration : none">
 		                <div class="panel widget bg-green" style="height: 95px;">
 		                	<div class="row status-box">
-		                        <div class="col-xs-4 text-center bg-gray-dark pv-lg animated fadeInUpShort">
+		                        <div class="col-xs-4 text-center bg-gray-dark pv-md animated fadeInUpShort">
 		                           	<em class="icon-hourglass fa-3x"></em>
 		                        </div>
 		                        <div class="col-xs-8 pv-lg" style="padding-top:10px !important;">
@@ -826,15 +769,6 @@ $callsperhour = $ui->API_getCallPerHour();
 					
 					<?php print $ui->hooksForDashboard(); ?>
 					
-					<div class="bottom-menu skin-blue">
-						<?php print $ui->getCircleButton("calls", "plus"); ?>
-						<div class="fab-div-area" id="fab-div-area">
-								<ul class="fab-ul" style="height: 250px;">
-									<li class="li-style"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaigns_modal"></a></li><br/>
-									<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_users"> </a></li>
-								</ul>
-							</div>
-					</div>
 				
                 </section><!-- /.content -->
 				

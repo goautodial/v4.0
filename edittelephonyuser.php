@@ -318,11 +318,19 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</select>
 												</div>
 											</div>
-											<div class="form-group" id="form_password" style="display:none;">
+											<div class="form-group form_password" style="display:none;">
 												<label for="password" class="col-sm-2 control-label">Password</label>
 												<div class="col-sm-10 mb">
-													<input type="text" class="form-control" name="password" id="password" value="<?php echo $output->password[$i];?>" placeholder="Password">
+													<input type="password" class="form-control" name="password" id="password" value="<?php echo $output->password[$i];?>" placeholder="Password">
+													<small><i><span id="pass_result"></span></i></small>
 												</div>
+											</div>
+											<div class="form-group form_password" style="display:none;">		
+												<label for="conf_password" class="col-sm-2 control-label">Confirm Password: </label>
+												<div class="col-sm-10 mb">
+													<input type="password" class="form-control" id="conf_password" placeholder="Confirm Password" required>
+													<span id="pass_result"></span></i></small>
+												</div> 
 											</div>
 										</fieldset>
 								   	</div><!-- tab 1 -->
@@ -389,11 +397,11 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 								   	<fieldset>
 				                        <div class="box-footer">
-				                           <div class="pull-right col-sm-3">
-													<a href="telephonyusers.php" type="button" class="btn btn-danger pull-left"><i class="fa fa-close"></i> Cancel </a>
-				                           		
-				                                	<button type="submit" class="btn btn-primary pull-right" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-												</div>
+				                           <div class="col-sm-4 col-sm-offset-2 pull-right">
+													<a href="telephonyusers.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+				                           	
+				                                	<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+												
 				                           </div>
 				                        </div>
 				                    </fieldset>
@@ -430,15 +438,29 @@ $user_groups = $ui->API_goGetUserGroupsList();
 		<script type="text/javascript">
 			$(document).ready(function() {
 
+				function checkPasswordMatch() {
+				    var password = $("#password").val();
+				    var confirmPassword = $("#conf_password").val();
+
+				    if (password != confirmPassword)
+				        $("#pass_result").html("<font color='red'>Passwords Do Not Match! <font size='5'>✖</font> </font>");
+				    else
+				    	 $("#pass_result").html("<font color='green'>Passwords Match! <font size='5'>✔</font> </font>");
+				}
+
 				$('#change_pass').on('change', function() {
 				//  alert( this.value ); // or $(this).val()
 					if(this.value == "Y") {
-					  $('#form_password').show();
+					  $('.form_password').show();
 					}
 					if(this.value == "N") {
-					  $('#form_password').hide();
+					  $('.form_password').hide();
 					}
 				});
+
+				/* password confirmation */
+				$("#password").keyup(checkPasswordMatch);
+				$("#conf_password").keyup(checkPasswordMatch);
 
 				/** 
 				 * Modifies a telephony user
@@ -449,16 +471,55 @@ $user_groups = $ui->API_goGetUserGroupsList();
 					$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
 					$('#modifyUserOkButton').prop("disabled", true);
 
+					var validate_password = 0;
+
+					var change_pass = document.getElementById('change_pass').value;
+					var password = document.getElementById('password').value;
+					var conf_password = document.getElementById('conf_password').value;
+
+					if(change_pass == "Y"){
+						if(password != conf_password){
+							validate_password = 1;
+						}
+						if(password == ""){
+							validate_password = 2;
+						}
+					}
+					
+
 					var validate_email = 0;
+					var email = document.getElementById('email').value;
 
 	                var x = document.forms["modifyuser"]["email"].value;
 	                var atpos = x.indexOf("@");
 	                var dotpos = x.lastIndexOf(".");
 	                if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
 	                    validate_email = 1;
+	                }else{
+	                	validate_email = 0;
 	                }
 
-	                if(validate_email == 0){
+	                if(email == ""){
+                		validate_email = 0;
+                	}
+
+	                if(validate_email == 1){
+	                	$('#update_button').html("<i class='fa fa-check'></i> Update");
+						$('#modifyUserOkButton').prop("disabled", false);	
+						$("#email_check").html("<font color='red'>Input a Valid Email Address</font>");
+						$('#email_check').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+	                }
+	                if(validate_password == 1){
+	                	$('#update_button').html("<i class='fa fa-check'></i> Update");
+						$('#modifyUserOkButton').prop("disabled", false);	
+	                }
+	                if(validate_password == 2){
+	                	$("#pass_result").html("<font color='red'><i class='fa fa-warning'></i> Input and Confirm Password, otherwise mark Change Password? as NO! </font>");
+	                	$('#update_button').html("<i class='fa fa-check'></i> Update");
+						$('#modifyUserOkButton').prop("disabled", false);	
+	                }
+
+	                if(validate_email == 0 && validate_password == 0){
 	                	$.ajax({
                             url: "./php/ModifyTelephonyUser.php",
                             type: 'POST',
@@ -483,9 +544,6 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								}
                             }
                         });
-					}else{
-						$("#email_check").html("<font color='red'>Input a Valid Email Address</font>");
-						$('#email_check').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 					}
 				return false;
 				});

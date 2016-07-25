@@ -61,6 +61,9 @@ error_reporting(E_ALL);
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 
+        <!-- =============== APP STYLES ===============-->
+            <link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -83,7 +86,7 @@ error_reporting(E_ALL);
                 <section class="content-header">
                     <h1>
                         <?php $lh->translateText("telephony"); ?>
-                        <small><?php $lh->translateText("music_on_hold"); ?></small>
+                        <small><?php $lh->translateText("music_on_hold_management"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -95,16 +98,10 @@ error_reporting(E_ALL);
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box box-default">
-                                <div class="box-header">
-                                    <h3 class="box-title"><?php $lh->translateText("music_on_hold"); ?></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body table" id="recording_table">
-					<?php print $ui->getListAllMusicOnHold(); ?>
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box -->
+                    <div class="panel panel-default">
+                        <div class="panel-body table" id="recording_table">
+                            <legend><?php $lh->translateText("music_on_hold"); ?></h3></legend>
+					       <?php print $ui->getListAllMusicOnHold(); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->

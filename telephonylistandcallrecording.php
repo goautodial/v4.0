@@ -30,6 +30,10 @@
         <link rel="stylesheet" href="css/easyWizard.css">
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+        	
+        <!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+
 	<!-- Bootstrap Player -->
 	<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
@@ -77,28 +81,22 @@
                 <section class="content-header">
                     <h1>
                         <?php $lh->translateText("telephony"); ?>
-                        <small><?php $lh->translateText("list_and_call_recording"); ?></small>
+                        <small><?php $lh->translateText("call_recordings_management"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
                        <li><?php $lh->translateText("telephony"); ?></li>
-						<li class="active"><?php $lh->translateText("list_and_call_recording"); ?>
+						<li class="active"><?php $lh->translateText("call_recordings"); ?>
                     </ol>
                 </section>
 
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box box-default">
-                                <div class="box-header">
-                                    <h3 class="box-title"><?php $lh->translateText("lists"); ?></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body table" id="recording_table">
-									<?php print $ui->getListAllRecordings(); ?>
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box -->
+                    <div class="panel panel-default">
+                        <div class="panel-body table" id="recording_table">
+                            <legend><?php $lh->translateText("call_recordings"); ?></legend>
+							<?php print $ui->getListAllRecordings(); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
