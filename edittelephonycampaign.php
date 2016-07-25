@@ -130,59 +130,55 @@ $disposition = $ui->API_getDispositionInfo($did);
                 <!-- Main content -->
                 <section class="content">
 					<div class="panel panel-default">
-						<!--
-						<div class="box-header with-border">
-							<h3 class="box-title">
-								
-								<?php /*
-					        		if($campaign_id != NULL){
-					        			echo "Modify Campaign: ".$campaign_id." - ".$campaign->data->campaign_name;
-					        		}
-
-					        		if($did != NULL){
-					        	?>
-					        		Custom Statuses Within Campaign: <?php echo "<b>".$did."</b>";?>
-					        	<?php
-					        		}
-					        		if($lf_id != NULL){echo "Lead Filter";}
-					        		*/
-					        	?>
-					        
-							</p>
-						</div>
-						-->
-						<!-- /.box-header -->
+						
+						
 						<form class="form-horizontal">
 							<?php $errormessage = NULL; ?>
-							<!-- // ---- IF CAMPAIGN -->
-							<?php if($campaign_id != NULL) { ?>
-								<?php if ($campaign->result=="success") { ?>
-									<div class="col-lg-12">
-										<div class="nav-tabs-custom">
-											<ul class="nav nav-tabs">
-												<li class="active"><a href="#tab1" data-toggle="tab">Basic</a></li>
-												<li><a href="#tab2" data-toggle="tab">Advance Settings</a></li>
-											</ul>
-											<div class="tab-content">
-												<div class="tab-pane" id="tab1">
+
+						<!-- IF CAMPAIGN -->
+							<?php
+							if($campaign_id != NULL) { 
+								if ($campaign->result=="success") { 
+							?>
+							<div class="panel-body">
+								<legend>MODIFY CAMPAIGN ID : <u><?php echo $campaign_id;?></u></legend>
+
+								<!-- Custom Tabs -->
+								<div role="tabpanel">
+								<!--<div class="nav-tabs-custom">-->
+									<ul role="tablist" class="nav nav-tabs">
+										<li class="active"><a href="#tab_1" data-toggle="tab"><em class="fa fa-gear fa-lg"></em> Basic Settings</a></li>
+										<li><a href="#tab_2" data-toggle="tab"><em class="fa fa-gears fa-lg"></em> Advanced Settings</a></li>
+									</ul>
+					               		<!-- Tab contents-->
+					               		<div class="tab-content">
+						               	<!-- BASIC SETTINGS -->
+						                	<div id="tab_1" class="tab-pane fade in active">
+												<fieldset>
+													<div class="form-group mt">
+														<label class="col-sm-2 control-label">Campaign Name:</label>
+														<div class="col-sm-10 mb">
+															<input type="text" class="form-control">
+														</div>
+													</div>
 													<div class="form-group">
-														<div class="col-lg-5">
-															<label class="control-label">Campaign Name:</label>
+														<label class="col-sm-2 control-label">Campaign Description:</label>
+														<div class="col-sm-10 mb">
 															<input type="text" class="form-control">
 														</div>
-														<div class="col-lg-5">
-															<label class="control-label">Campaign Description:</label>
-															<input type="text" class="form-control">
-														</div>
-														<div class="col-lg-2">
-															<label class="control-label">Active:</label>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Active:</label>
+														<div class="col-sm-10 mb">
 															<select class="form-control">
 																<option value="Y">Y</option>
 																<option value="N">N</option>
 															</select>
 														</div>
-														<div class="col-lg-3">
-															<label class="control-label">Dial Method:</label>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Dial Method:</label>
+														<div class="col-sm-10 mb">
 															<select name="dial_method" id="dial_method" class="form-control">
 																<option value="MANUAL" selected="selected">MANUAL</option>
 																<option value="AUTO_DIAL">AUTO DIAL</option>
@@ -190,8 +186,10 @@ $disposition = $ui->API_getDispositionInfo($did);
 																<option value="INBOUND_MAN">INBOUND MAN</option>
 															</select>
 														</div>
-														<div class="col-lg-4">
-															<label class="control-label">AutoDial Level:</label>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">AutoDial Level:</label>
+														<div class="col-sm-10 mb">
 															<div class="row">
 																<div class="col-lg-8">
 																	<select id="auto_dial_level" class="form-control">
@@ -204,7 +202,7 @@ $disposition = $ui->API_getDispositionInfo($did);
 																		<option>ADVANCE</option>
 																	</select>
 																</div>
-																<div class="col-lg-4 row">
+																<div class="col-lg-4">
 																	<select id="auto_dial_level_adv" class="form-control">
 																		<option>1.0</option>
 																		<option>1.5</option>
@@ -249,8 +247,10 @@ $disposition = $ui->API_getDispositionInfo($did);
 																</div>
 															</div>
 														</div>
-														<div class="col-lg-5">
-															<label class="control-label">Carrier to use for Campaign:</label>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Carrier to use for Campaign:</label>
+														<div class="col-sm-10 mb">
 															<div class="row">
 																<div class="col-lg-9">
 																	<select name="dial_prefix" id="dial_prefix" class="form-control">
@@ -262,145 +262,128 @@ $disposition = $ui->API_getDispositionInfo($did);
 																</div>
 															</div>
 														</div>
-														<div class="col-lg-4">
-															<label class="control-label">Script:</label>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Script:</label>
+														<div class="col-sm-10 mb">
 															<select class="form-control">
 																<option>--- NONE ---</option>
 															</select>
 														</div>
-														<div class="col-lg-3">
-															<label class="control-label">Campaign Caller ID:</label>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Campaign Caller ID:</label>
+														<div class="col-sm-10 mb">
 															<input type="text" class="form-control">
 														</div>
-														<div class="col-lg-2">
-															<label class="control-label">Campaign Recording:</label>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Campaign Recording:</label>
+														<div class="col-sm-10 mb">
 															<select id="campaign_recording" class="form-control">
 																<option value="NEVER">OFF</option>
 																<option value="ALLFORCE">ON</option>
 																<option value="ONDEMAND">ONDEMAND</option>
 															</select>
 														</div>
-														<div class="col-lg-3">
-															<label class="control-label">Answer Machine Detection:</label>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Answer Machine Detection:</label>
+														<div class="col-sm-10 mb">
 															<select id="campaign_vdad_exten" class="form-control">
 																<option value="8368">OFF</option>
 																<option value="8369">ON</option>
 															</select>
 														</div>
-														<div class="col-lg-6">
-															<label class="control-label">Local Calltime:</label>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Local Calltime:</label>
+														<div class="col-sm-10 mb">
 															<select class="form-control">
 																<option>-- LIST HERE --</option>
 															</select>
 														</div>
-														<?php if($campaign->campaign_type == "OUTBOUND") { ?>
-															<div class="col-lg-4">
-																<label class="control-label">Force Reset of Hopper:</label>
-																<select class="form-control">
-																	<option value="Y">Y</option>
-																	<option value="N">N</option>
-																</select>
-															</div>
-														<?php } elseif($campaign->campaign_type == "INBOUND") { ?>
-															<div class="col-lg-4">
-																<label class="control-label">Phone Numbers (DID/TFN) on this campaign:</label>
-																<input type="text" class="form-control">
-															</div>
-															<div class="col-lg-2">
-																<label class="control-label">Inbound Man:</label>
-																<select class="form-control">
-																	<option value="Y">Yes</option>
-																	<option value="N">No</option>
-																</select>
-															</div>
-														<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
-															<div class="col-lg-4">
-																<label class="control-label">Phone Numbers (DID/TFN) on this campaign:</label>
-																<input type="text" class="form-control">
-															</div>
-														<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
-															<!-- Nothing to do -->
-														<?php } else { ?>
-															<!-- Nothing to do -->
-														<?php } ?>
 													</div>
-												</div>
-												<!-- /.tab-pane -->
-												<div class="tab-pane active" id="tab2">
+												<?php if($campaign->campaign_type == "OUTBOUND") { ?>
 													<div class="form-group">
-														<?php if($campaign->campaign_type == "OUTBOUND") { ?>
-															<div class="col-lg-3">
-																<label class="control-label">Dial Status:</label>
-																<select class="form-control">
-																	<option>-- LIST HERE --</option>
-																</select>
-															</div>
-															<div class="col-lg-3">
-																<label class="control-label">List Order:</label>
-																<select class="form-control">
-																	<option>-- LIST HERE --</option>
-																</select>
-															</div>
-															<div class="col-lg-3">
-																<label class="control-label">Lead Filter:</label>
-																<select class="form-control">
-																	<option>-- LIST HERE --</option>
-																</select>
-															</div>
-															<div class="col-lg-3">
-																<label class="control-label">Dial timeout:</label>
-																<input type="text" class="form-control">
-															</div>
-															<div class="col-lg-3">
-																<label class="control-label">Manual Dial Prefix:</label>
-																<input type="text" class="form-control">
-															</div>
-															<div class="col-lg-3">
-																<label class="control-label">Get Call Launch:</label>
-																<select class="form-control">
-																	<option value="none">NONE</option>
-																	<option value="script">SCRIPT</option>
-																	<option value="webform">WEBFORM</option>
-																</select>
-															</div>
-															<div class="col-lg-3">
-																<label class="control-label">Answering Machine Mesage:</label>
-																<input type="text" class="form-control">
-															</div>
-															<div class="col-lg-3">
-																<label class="control-label">Pause Codes:</label>
-																<select class="form-control">
-																	<option value="active">ACTIVE</option>
-																	<option value="inactive">INACTIVE</option>
-																</select>
-															</div>
-															<div class="col-lg-3">
-																<label class="control-label">Manual Dial Filter:</label>
-																<select class="form-control">
-																	<option value="none">NONE</option>
-																	<option value="dnc only">DNC ONLY</option>
-																	<option value="camplist only">CAMPLIST ONLY</option>
-																	<option value="dnc & camplist">DNC & CAMPLIST</option>
-																	<option value="dnc & camplist all">DNC & CAMPLIST ALL</option>
-																</select>
-															</div>
-														<?php } elseif($campaign->campaign_type == "INBOUND") { ?>
-															Inbound
-														<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
-															Blended
-														<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
-															Survey
-														<?php } else { ?>
-															Default
-														<?php } ?>
+														<label class="col-sm-2 control-label">Force Reset of Hopper:</label>
+														<div class="col-sm-10 mb">
+															<select class="form-control">
+																<option value="Y">Y</option>
+																<option value="N">N</option>
+															</select>
+														</div>
 													</div>
+												<?php } elseif($campaign->campaign_type == "INBOUND") { ?>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Phone Numbers (DID/TFN) on this campaign:</label>
+														<div class="col-sm-10 mb">
+															<input type="text" class="form-control">
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Inbound Man:</label>
+														<div class="col-sm-10 mb">
+															<select class="form-control">
+																<option value="Y">Yes</option>
+																<option value="N">No</option>
+															</select>
+														</div>
+													</div>
+												<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Phone Numbers (DID/TFN) on this campaign:</label>
+														<div class="col-sm-10 mb">
+															<input type="text" class="form-control">
+														</div>
+													</div>
+												<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
+													<!-- Nothing to do -->
+												<?php } else { ?>
+													<!-- Nothing to do -->
+												<?php } ?>
+												</fieldset><!-- /.fieldset -->
+											</div><!-- /.tab-pane -->
+
+												<div class="tab-pane" id="tab_2">
+													<?php if($campaign->campaign_type == "OUTBOUND") { ?>
+														Outbound
+													<?php } elseif($campaign->campaign_type == "INBOUND") { ?>
+														Inbound
+													<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
+														Blended
+													<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
+														Survey
+													<?php } else { ?>
+														Default
+													<?php } ?>
 												</div>
 												<!-- /.tab-pane -->
-											</div>
-											<!-- /.tab-content -->
+
+											<!-- Notification -->
+										   	<div id="modifyUSERresult"></div>
+
+										   	<!-- FOOTER BUTTONS -->
+										   	<fieldset>
+						                        <div class="box-footer">
+						                           <div class="pull-right col-sm-2">
+						                           		<div class="col-sm-5">
+															<a href="telephonyusers.php" type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> Cancel </a>
+						                           		</div>
+						                           		
+						                           		<div class="col-sm-6">
+						                                	<button type="submit" class="btn btn-primary pull-left" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+														</div>
+						                           </div>
+						                        </div>
+						                    </fieldset>
+
 										</div>
-										<!-- nav-tabs-custom -->
-									</div>
+										<!-- /.tab-content -->
+								</div>
+								<!-- /.tab-panel -->
+							</div>
+							<!-- /.panel-body -->
 								<?php } else {  ?>
 								 	<?php echo $campaign->result; ?>
 								<?php } ?>
