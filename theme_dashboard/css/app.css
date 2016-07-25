@@ -326,10 +326,11 @@ fieldset .form-group {
   margin-top: -10px;
   margin-left: -10px;
 }
+/*
 .modal-backdrop {
   position: fixed;
   bottom: 0;
-}
+}*/
 .topnavbar,
 .navbar,
 .navbar .dropdown-menu {
@@ -346,7 +347,8 @@ h1,
 h2,
 h3,
 h4 {
-  font-weight: bold;
+  /*font-weight: bold;*/
+  font-weight: normal;
 }
 /* ========================================================================
    Component: layout.less
@@ -421,9 +423,10 @@ body {
 .wrapper > footer > p {
   margin: 0;
 }
+/*
 .modal-open .wrapper {
   z-index: 0;
-}
+}*/
 .content-wrapper {
   padding: 15px;
   /* edited
@@ -5608,7 +5611,7 @@ fieldset[disabled] .wizard > .actions a:active.focus {
 }
 /* ========================================================================
    Component: datatable.less
- ========================================================================== */
+ ========================================================================== 
 .dataTables_filter input {
   margin-left: 10px;
 }
@@ -5670,7 +5673,7 @@ ul.ColVis_collection > li > label input[type=radio]:checked + span {
   div.dataTables_filter label,
   div.dataTables_length label,
   div.dataTables_paginate {
-    /* float: none; */
+    /* float: none; 
   }
   div.dataTables_filter label select,
   div.dataTables_length label select,
@@ -5685,7 +5688,7 @@ ul.ColVis_collection > li > label input[type=radio]:checked + span {
 }
 /* ========================================================================
    Component: table-extras.less
- ========================================================================== */
+ ========================================================================== 
 .table > thead > tr > th {
   padding: 14px 8px;
   color: rgba(0,0,0,.8);
@@ -5730,6 +5733,219 @@ ul.ColVis_collection > li > label input[type=radio]:checked + span {
 #table-ext-2 th:nth-child(3) {
   width: 10%;
 }
+
+/* ========================================================================
+   Component: datatable.less
+ ========================================================================== */
+.dataTables_filter input {
+  margin-left: 10px;
+}
+.dataTables_length select {
+  margin-right: 10px;
+}
+table.dataTable tfoot > tr > th {
+  color: #a1a2a3;
+  background: #f1f2f3;
+}
+.panel .dataTables_wrapper .row {
+  margin: 10px 0;
+}
+.panel .dataTable {
+  width: 100% !important;
+}
+.ColVis button.ColVis_Button {
+  border-radius: 3px;
+  font-size: 13px;
+  border-color: transparent;
+  -webkit-appearance: none;
+  outline: none !important;
+  -webkit-transition: all 0.1s;
+  -o-transition: all 0.1s;
+  transition: all 0.1s;
+  -webkit-transition: box-shadow .4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color .4s cubic-bezier(0.25, 0.8, 0.25, 1), transform .4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  -o-transition: box-shadow .4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color .4s cubic-bezier(0.25, 0.8, 0.25, 1), transform .4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: box-shadow .4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color .4s cubic-bezier(0.25, 0.8, 0.25, 1), transform .4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-color: #eaeaea;
+  background-image: none;
+  box-shadow: 0 0 0 #000;
+  cursor: pointer;
+  height: 31px;
+}
+.ColVis button.ColVis_Button.btn-link {
+  box-shadow: none;
+  border: 0;
+}
+.ColVis button.ColVis_Button.btn-default {
+  border-color: #eaeaea;
+}
+.input-group .ColVis button.ColVis_Button {
+  font-size: 14px;
+  border-color: #dde6e9;
+}
+.input-group .input-sm + .input-group-btn .ColVis button.ColVis_Button {
+  font-size: 13px;
+}
+.ColVis button.ColVis_Button > span {
+  color: #656565;
+}
+.ColVis_collectionBackground {
+  display: none;
+}
+ul.ColVis_collection {
+  background-color: #fff !important;
+}
+ul.ColVis_collection > li {
+  border: 0 !important;
+  background-image: none !important;
+  box-shadow: 0 0 0 #000 !important;
+  margin: 0;
+}
+ul.ColVis_collection > li > label {
+  margin: 0;
+}
+ul.ColVis_collection > li > label > span {
+  color: #888;
+  vertical-align: top;
+  font-weight: normal;
+}
+ul.ColVis_collection > li > label > span:hover {
+  color: #555;
+}
+ul.ColVis_collection > li > label input[type=checkbox]:checked + span,
+ul.ColVis_collection > li > label input[type=radio]:checked + span {
+  background-color: transparent;
+}
+.ColVis_catcher {
+  cursor: pointer;
+}
+table.dataTable {
+  border-bottom: 1px solid #e4eaec !important;
+  border-top: 0; /*added*/
+}
+table.dataTable thead th,
+table.dataTable thead td {
+  border-bottom: 1px solid #e4eaec !important;
+}
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper select {
+  box-shadow: none;
+  /* height: 30px; */
+  height: 40px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #3a3f51;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #dde6e9;
+  border-radius: 4px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  background-image: none !important;
+  background-color: #edf1f2 !important;
+  border: 0 !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background-color: #fff !important;
+}
+body .dataTable:before,
+body .dataTable:after {
+  content: " ";
+  display: table;
+}
+body .dataTable:after {
+  clear: both;
+}
+body .dataTables_wrapper .dataTables_paginate .paginate_button {
+  background-color: #fff !important;
+  border: 1px solid #e4eaec !important;
+  margin-left: 0;
+  padding: 6px 16px;
+}
+body .dataTables_wrapper .dataTables_paginate .paginate_button.previous {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+body .dataTables_wrapper .dataTables_paginate .paginate_button.next {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+body .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  color: #3f51b5 !important;
+}
+body .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+body .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background-color: #3f51b5 !important;
+  color: #fff !important;
+  border-color: #3f51b5 !important;
+}
+body table.dataTable.row-border tbody th,
+body table.dataTable.row-border tbody td,
+body table.dataTable.display tbody th,
+body table.dataTable.display tbody td {
+  border-top-color: #eee;
+}
+body table.dataTable tbody tr:nth-child(odd),
+body table.dataTable.hover tbody tr:hover,
+body table.dataTable.display tbody tr:hover {
+  background-color: #fafbfc;
+}
+body table.dataTable thead th,
+body .dataTables_wrapper .dataTables_length,
+body .dataTables_wrapper .dataTables_filter,
+body .dataTables_wrapper .dataTables_info,
+body .dataTables_wrapper .dataTables_processing,
+body .dataTables_wrapper .dataTables_paginate {
+  color: #888;
+}
+/* ========================================================================
+   Component: table-extras.less
+ ========================================================================== */
+.table > thead > tr > th {
+  padding: 14px 8px;
+  color: #888;
+}
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
+.table > tbody > tr > td > .media img {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto;
+}
+.table .checkbox {
+  margin: 0 auto;
+  width: 20px;
+}
+.table .progress {
+  margin-bottom: 0;
+}
+.table .radial-bar {
+  margin-bottom: 0;
+  margin: 0 auto;
+}
+.jqstooltip {
+  box-sizing: content-box;
+}
+#table-ext-1 th:nth-child(1) {
+  width: 3%;
+}
+#table-ext-1 th:nth-child(2) {
+  width: 5%;
+}
+#table-ext-1 th:nth-child(7) {
+  width: 5%;
+}
+#table-ext-1 th:nth-child(9) {
+  width: 5%;
+}
+#table-ext-2 th:nth-child(1) {
+  width: 5%;
+}
+#table-ext-2 th:nth-child(3) {
+  width: 10%;
+}
+
 /* ========================================================================
    Component: jqgrid.less
  ========================================================================== */
@@ -8163,4 +8379,9 @@ fieldset[disabled] .btn-pink.focus {
 .status-box > [class*="col-"] {
   padding-left: 15px;
   padding-right: 15px;
+}
+
+.pv-md{
+  padding-top: 10px;
+  padding-bottom: 15px;
 }

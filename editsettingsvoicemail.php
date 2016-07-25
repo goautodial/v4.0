@@ -237,13 +237,13 @@ if (isset($_POST["vmid"])) {
 		                    </div>
 
 						<!-- FOOTER BUTTONS -->
-						   	<fieldset>
+		                    <fieldset>
 		                        <div class="box-footer">
-		                           <div class="pull-right col-sm-3">
-											<a href="settingsvoicemails.php" type="button" class="btn btn-danger pull-left"><i class="fa fa-close"></i> Cancel </a>
-		                           		
-		                                	<button type="submit" class="btn btn-primary pull-right" id="modifyVoicemailOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-										</div>
+		                           <div class="col-sm-4 col-sm-offset-2 pull-right">
+											<a href="settingsvoicemails.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+		                           	
+		                                	<button type="submit" class="btn btn-primary" id="modifyVoicemailOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+										
 		                           </div>
 		                        </div>
 		                    </fieldset>

@@ -13,9 +13,14 @@
 	padding-top: 15%;
 }
 
+.preloader img{
+  height: auto;
+  width: auto;
+}
+
 .dots {
-  width: 90px;
-  height: 30px;
+  width: 10%;
+  height: 5%;
   text-align: center;
   padding-top: 25%;
 }

@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial</title>
+        <title>Goautodial Carriers</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -27,6 +27,8 @@
         <!-- Wizard Form style -->
         <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 	<!-- Bootstrap Player -->
 	<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
@@ -52,6 +54,9 @@
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 
+        <!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -74,7 +79,7 @@
                 <section class="content-header">
                     <h1>
                         <?php $lh->translateText("settings"); ?>
-                        <small><?php $lh->translateText("carriers"); ?></small>
+                        <small><?php $lh->translateText("carriers_management"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -86,16 +91,10 @@
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box box-default">
-                                <div class="box-header">
-                                    <h3 class="box-title"><?php $lh->translateText("carriers"); ?></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body table" id="recording_table">
-					<?php print $ui->getListAllCarriers(); ?>
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box -->
+                    <div class="panel panel-default">
+                        <div class="panel-body table" id="recording_table">
+                            <legend><?php $lh->translateText("carriers"); ?></legend>
+							<?php print $ui->getListAllCarriers(); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->

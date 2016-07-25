@@ -9,12 +9,15 @@ div.dataTables_length select {
 }
 
 div.dataTables_filter label {
-	font-weight: normal;
+	/* font-weight: normal; */
+	/* float: right; */
 	float: right;
+    text-align: right;
 }
 
 div.dataTables_filter input {
-	width: 16em;
+	/*width: 16em;*/
+	/* width: 100%; */
 }
 
 div.dataTables_info {
