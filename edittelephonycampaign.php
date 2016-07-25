@@ -156,7 +156,7 @@ $disposition = $ui->API_getDispositionInfo($did);
 												<li><a href="#tab2" data-toggle="tab">Advance Settings</a></li>
 											</ul>
 											<div class="tab-content">
-												<div class="tab-pane active" id="tab1">
+												<div class="tab-pane" id="tab1">
 													<div class="form-group">
 														<div class="col-lg-5">
 															<label class="control-label">Campaign Name:</label>
@@ -318,18 +318,74 @@ $disposition = $ui->API_getDispositionInfo($did);
 													</div>
 												</div>
 												<!-- /.tab-pane -->
-												<div class="tab-pane" id="tab2">
-													<?php if($campaign->campaign_type == "OUTBOUND") { ?>
-														Outbound
-													<?php } elseif($campaign->campaign_type == "INBOUND") { ?>
-														Inbound
-													<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
-														Blended
-													<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
-														Survey
-													<?php } else { ?>
-														Default
-													<?php } ?>
+												<div class="tab-pane active" id="tab2">
+													<div class="form-group">
+														<?php if($campaign->campaign_type == "OUTBOUND") { ?>
+															<div class="col-lg-3">
+																<label class="control-label">Dial Status:</label>
+																<select class="form-control">
+																	<option>-- LIST HERE --</option>
+																</select>
+															</div>
+															<div class="col-lg-3">
+																<label class="control-label">List Order:</label>
+																<select class="form-control">
+																	<option>-- LIST HERE --</option>
+																</select>
+															</div>
+															<div class="col-lg-3">
+																<label class="control-label">Lead Filter:</label>
+																<select class="form-control">
+																	<option>-- LIST HERE --</option>
+																</select>
+															</div>
+															<div class="col-lg-3">
+																<label class="control-label">Dial timeout:</label>
+																<input type="text" class="form-control">
+															</div>
+															<div class="col-lg-3">
+																<label class="control-label">Manual Dial Prefix:</label>
+																<input type="text" class="form-control">
+															</div>
+															<div class="col-lg-3">
+																<label class="control-label">Get Call Launch:</label>
+																<select class="form-control">
+																	<option value="none">NONE</option>
+																	<option value="script">SCRIPT</option>
+																	<option value="webform">WEBFORM</option>
+																</select>
+															</div>
+															<div class="col-lg-3">
+																<label class="control-label">Answering Machine Mesage:</label>
+																<input type="text" class="form-control">
+															</div>
+															<div class="col-lg-3">
+																<label class="control-label">Pause Codes:</label>
+																<select class="form-control">
+																	<option value="active">ACTIVE</option>
+																	<option value="inactive">INACTIVE</option>
+																</select>
+															</div>
+															<div class="col-lg-3">
+																<label class="control-label">Manual Dial Filter:</label>
+																<select class="form-control">
+																	<option value="none">NONE</option>
+																	<option value="dnc only">DNC ONLY</option>
+																	<option value="camplist only">CAMPLIST ONLY</option>
+																	<option value="dnc & camplist">DNC & CAMPLIST</option>
+																	<option value="dnc & camplist all">DNC & CAMPLIST ALL</option>
+																</select>
+															</div>
+														<?php } elseif($campaign->campaign_type == "INBOUND") { ?>
+															Inbound
+														<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
+															Blended
+														<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
+															Survey
+														<?php } else { ?>
+															Default
+														<?php } ?>
+													</div>
 												</div>
 												<!-- /.tab-pane -->
 											</div>
