@@ -23,6 +23,13 @@
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
+        <!-- Theme style -->
+        <link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
+
+        <!-- Select2 -->
+        <link rel="stylesheet" href="adminlte/select2/select2.min.css">
+        <!-- DATETIMEPICKER-->
+        <link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,8 +42,13 @@
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <!-- Bootstrap WYSIHTML5 -->
         <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+            
+            <!-- =============== BOOTSTRAP STYLES ===============-->
+            <link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+                <!-- =============== APP STYLES ===============-->
+            <link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 
-        <!-- Creamy App -->
+        <!-- Creamy App --
         <script src="js/app.min.js" type="text/javascript"></script>
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
@@ -59,8 +71,8 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        <?php $lh->translateText("call_reports"); ?>
-                        <small><?php $lh->translateText("reports_and_go_analytics"); ?></small>
+                        <?php $lh->translateText("reports_and_go_analytics"); ?>
+                        <small><?php $lh->translateText("call_reports"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -68,7 +80,11 @@
 						<li class="active"><?php $lh->translateText("reports_and_go_analytics"); ?>
                     </ol>
                 </section>
-
+            
+            <?php
+                $campaigns = $ui->API_getListAllCampaigns();
+            ?>
+            
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
@@ -76,10 +92,41 @@
                         <div class="col-xs-12">
                             <div class="box box-default">
                                 <div class="box-header">
-                                    <h3 class="box-title"><?php $lh->translateText("reports_and_go_analytics"); ?></h3>
+                                    <div class="pull-left">
+                                        <select class="form-control select2">
+                                            <option>Statistical Report</option>
+                                            <option>Agent Time Detail</option>
+                                            <option>Agent Performance Detail</option>
+                                            <option>Dial Statuses Summary</option>
+                                            <option>Sales Per Agent</option>
+                                            <option>Sales Tracker</option>
+                                            <option>Inbound Call Report</option>
+                                            <option>Export Call Report</option>
+                                            <option>Dashboard</option>
+                                            <option>Call History (CDRs)</option>
+                                        </select>
+                                        <select class="form-control select2">
+                                            <?php
+                                                for($i=0; $i < count($campaigns->campaign_id);$i++){
+                                            ?>
+                                                <option><?php echo $campaigns->campaign_name[$i];?></option>
+                                            <?php
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="pull-right">
+                                        <!--<button class="btn datetimepicker1"><i class="fa fa-calendar"></i></button>-->
+                                        <div id="datetimepicker1" class="input-group date">
+                                             <input type="text" class="form-control">
+                                             <span class="input-group-addon">
+                                                <span class="fa fa-calendar"></span>
+                                             </span>
+                                        </div>
+                                    </div>
                                 </div><!-- /.box-header -->
-                                <div class="box-body table" id="scripts_table">
-									<?php print $ui->getTelephonyScripts(); ?>
+                                <div class="box-body table" id="">
+
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
                         </div>
@@ -93,6 +140,37 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
+        <!-- Select2 -->
+        <script src="adminlte/select2/select2.full.min.js"></script>
+        <!-- DATETIMEPICKER-->
+        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
+        <script>
+            $(function () {
+                //Initialize Select2 Elements
+                $(".select2").select2();
+
+                // DATETIMEPICKER
+                $('#datetimepicker1').datetimepicker({
+                  icons: {
+                      time: 'fa fa-clock-o',
+                      date: 'fa fa-calendar',
+                      up: 'fa fa-chevron-up',
+                      down: 'fa fa-chevron-down',
+                      previous: 'fa fa-chevron-left',
+                      next: 'fa fa-chevron-right',
+                      today: 'fa fa-crosshairs',
+                      clear: 'fa fa-trash'
+                    }
+                });
+
+                // WYSIWYG
+                // ----------------------------------- 
+
+                $('.wysiwyg').wysiwyg();
+            });
+        </script>
+        <!-- =============== APP SCRIPTS ===============-->
+        <script src="theme_dashboard/js/app.js"></script>
     </body>
 </html>

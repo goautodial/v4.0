@@ -51,6 +51,11 @@ $user_groups = $ui->API_goGetUserGroupsList();
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
+        	
+        	<!-- =============== BOOTSTRAP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+				<!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
@@ -61,11 +66,6 @@ $user_groups = $ui->API_goGetUserGroupsList();
 			})
 		</script>
     </head>
-    <style>
-    	select{
-    		font-weight: normal;
-    	}
-    </style>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
@@ -74,10 +74,10 @@ $user_groups = $ui->API_goGetUserGroupsList();
 			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="right-side">
+            <aside class="right-side" style="min-height:0!important;">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>
+                    <h1 style="font-weight:normal;">
                         <?php $lh->translateText("Users"); ?>
                         <small><?php $lh->translateText("Edit Users"); ?></small>
                     </h1>
@@ -105,7 +105,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
                <!-- Main content -->
                 <section class="content">
-					<div class="box box-info">
+					<div class="panel panel-default">
 					<!-- standard custom edition form -->
 					<?php
 					$userobj = NULL;
@@ -143,235 +143,265 @@ $user_groups = $ui->API_goGetUserGroupsList();
 							for($i=0;$i<count($output->userno);$i++){
 					
 						?>
-						<div class="box-header with-border">
-							<h3 class="box-title">MODIFY USER : <u><?php echo $output->userno[$i];?></u></h3>
-						</div>
-						<div class="box-body table-responsive">
+
+						<div class="panel-body">
+						<legend>MODIFY USER : <u><?php echo $output->userno[$i];?></u></legend>
+
 							<form id="modifyuser">
-								<input type="hidden" name="modifyid" value="<?php echo $userid;?>">
-								
-							<!-- BASIC SETTINGS -->
-								<div class="col-lg-6">
-									<div class="form-group">
-										<label for="fullname">Fullname</label>
-										<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->full_name[$i];?>" placeholder="Fullname">
-									</div>
-									<div class="form-group">
-										<label for="email">Email</label>
-										<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->email[$i];?>" placeholder="Email">
-										<small><span id="email_check"></span></small>
-									</div>
-									<div class="row">
-										<label for="usergroup" class="col-md-9">User Group
-										<select class="form-control" id="usergroup" name="usergroup">
-											<?php
-												for($a=0;$a<count($user_groups->user_group);$a++){
-											?>
-												<option value="<?php echo $user_groups->user_group[$a];?>" <?php if($output->user_group[$i] == $user_groups->user_group[$a]){echo "selected";}?> >  
-													<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>  
-												</option>
-											<?php
-												}
-											?>
-										</select>
-										</label>
-									</div>
-									<div class="row">
-										<label for="status" class="col-md-3">Status
-										<select class="form-control" name="status" id="status">
-										<?php
-											$status = NULL;
-											if($output->active[$i] == "Y"){
-												$status .= '<option value="Y" selected> Active </option>';
-											}else{
-												$status .= '<option value="Y" > Active </option>';
-											}
-											
-											if($output->active[$i] == "N" || $output->active[$i] == NULL){
-												$status .= '<option value="N" selected> Inactive </option>';
-											}else{
-												$status .= '<option value="N" > Inactive </option>';
-											}
-											echo $status;
-										?>
-										</select>
-										</label>
-									</div>
-									<div class="row">
-										<label for="userlevel" class="col-md-4">User Level
-										<select class="form-control" name="userlevel" id="userlevel">
-										<?php
-											$userlevel = NULL;
-												if($output->user_level[$i] == "1"){
-													$userlevel .= '<option value="1" selected> 1 </option>';
-												}else{
-													$userlevel .= '<option value="1" > 1 </option>';
-												}
-												if($output->user_level[$i] == "2"){
-													$userlevel .= '<option value="2" selected> 2 </option>';
-												}else{
-													$userlevel .= '<option value="2" > 2 </option>';
-												}
-												if($output->user_level[$i] == "3"){
-													$userlevel .= '<option value="3" selected> 3 </option>';
-												}else{
-													$userlevel .= '<option value="3" > 3 </option>';
-												}
-												if($output->user_level[$i] == "4"){
-													$userlevel .= '<option value="4" selected> 4 </option>';
-												}else{
-													$userlevel .= '<option value="4" > 4 </option>';
-												}
-												if($output->user_level[$i] == "5"){
-													$userlevel .= '<option value="5" selected> 5 </option>';
-												}else{
-													$userlevel .= '<option value="5" > 5 </option>';
-												}
-												if($output->user_level[$i] == "6"){
-													$userlevel .= '<option value="6" selected> 6 </option>';
-												}else{
-													$userlevel .= '<option value="6" > 6 </option>';
-												}
-												if($output->user_level[$i] == "7"){
-													$userlevel .= '<option value="7" selected> 7 </option>';
-												}else{
-													$userlevel .= '<option value="7" > 7 </option>';
-												}
-												if($output->user_level[$i] == "8"){
-													$userlevel .= '<option value="8" selected> 8 </option>';
-												}else{
-													$userlevel .= '<option value="8" > 8 </option>';
-												}
-												if($output->user_level[$i] == "9"){
-													$userlevel .= '<option value="9" selected> 9 </option>';
-												}else{
-													$userlevel .= '<option value="9" > 9 </option>';
-												}
-											echo $userlevel;
-										?>
-											
-										</select>
-										</label>
-									</div>
-								</div>
-								<div class="col-lg-6">
-									<div class="form-group">
-										<label for="phone_login">Phone Login</label>
-										<input type="text" class="form-control" name="phone_login" id="phone_login" value="<?php echo $output->phone_login[$i];?>" placeholder="Phone Login">
-									</div>
-									<div class="form-group">
-										<label for="phone_password">Phone Password</label>
-										<input type="text" class="form-control" name="phone_password" id="phone_password" value="<?php echo $output->phone_pass[$i];?>" placeholder="Phone Password">
-									</div>									
-									<div class="row">
-										<label for="voicemail" class="col-md-7">Voicemail
-										<select class="form-control" name="voicemail" id="voicemail">
-											<?php
-												if($voicemails == NULL){
-											?>
-												<option value="" selected>--No Voicemails Available--</option>
-											<?php
-												}else{
-												for($a=0;$a<count($voicemails->voicemail_id);$a++){
-											?>
-													<option value="<?php echo $voicemails->voicemail_id[$i];?>" <?php if($output->voicemail_id[$i] == $voicemails->voicemail_id[$a]){echo "selected";}?> >
-														<?php echo $voicemails->voicemail_id[$a].' - '.$voicemails->fullname[$a];?>
-													</option>									
-											<?php
-													}
-												}
-											?>
-										</select>
-										</label>
-									</div>
-									<div class="row">
-										<label for="change_pass" class="col-md-5">Change Password?
-										<select class="form-control" name="change_pass" id="change_pass">
-											<option value="N" selected> No </option>
-											<option value="Y" > Yes </option>
-										</select>
-										</label>
-									</div>
-									<div class="form-group" id="form_password" style="display:none;">
-										<label for="password">Password</label>
-										<input type="text" class="form-control" name="password" id="password" value="<?php echo $output->password[$i];?>" placeholder="Password">
-									</div>
-								</div>
-								<div class="col-lg-12">
-									<div class="row" id="btn_show">
-										<br/>
-										<center>
-										<a class="btn btn-app" style="padding:6px 20px; width:95%; height: 45px;" id="show_advanced_settings" >
-							               <div id="show"><i class="fa fa-plus"></i></div>
-							               <div id="hide" hidden><i class="fa fa-minus"></i></div>
-							                Advanced Settings
-							            </a>
-							            </center>
-						       		</div>
-						       		
-						       		<!-- ADVANCED SETTINGS -->
-						       		<div id="advanced_settings_wrapper" style="padding: 25px 0px;" hidden>
+
+							<!-- Custom Tabs -->
+							<div role="tabpanel">
+							<!--<div class="nav-tabs-custom">-->
+								<ul role="tablist" class="nav nav-tabs">
+									<li class="active"><a href="#tab_1" data-toggle="tab"><em class="fa fa-gear fa-lg"></em> Basic Settings</a></li>
+									<li><a href="#tab_2" data-toggle="tab"><em class="fa fa-gears fa-lg"></em> Advanced Settings</a></li>
+								</ul>
+				               <!-- Tab panes-->
+				               <div class="tab-content">
+
+					               	<!-- BASIC SETTINGS -->
+					                <div id="tab_1" class="tab-pane fade in active">
+
+										<input type="hidden" name="modifyid" value="<?php echo $userid;?>" />
+									
+										<fieldset>
+											<div class="form-group mt">
+												<label for="fullname" class="col-sm-2 control-label">Fullname</label>
+												<div class="col-sm-10 mb">
+													<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->full_name[$i];?>" placeholder="Fullname">
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="email" class="col-sm-2 control-label">Email</label>
+												<div class="col-sm-10 mb">
+													<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->email[$i];?>" placeholder="Email">
+													<small><span id="email_check"></span></small>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="usergroup" class="col-sm-2 control-label">User Group</label>
+												<div class="col-sm-10 mb">
+													<select class="form-control" id="usergroup" name="usergroup">
+														<?php
+															for($a=0;$a<count($user_groups->user_group);$a++){
+														?>
+															<option value="<?php echo $user_groups->user_group[$a];?>" <?php if($output->user_group[$i] == $user_groups->user_group[$a]){echo "selected";}?> >  
+																<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>  
+															</option>
+														<?php
+															}
+														?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="status" class="col-sm-2 control-label">Status</label>
+												<div class="col-sm-10 mb">
+													<select class="form-control" name="status" id="status">
+													<?php
+														$status = NULL;
+														if($output->active[$i] == "Y"){
+															$status .= '<option value="Y" selected> Active </option>';
+														}else{
+															$status .= '<option value="Y" > Active </option>';
+														}
+														
+														if($output->active[$i] == "N" || $output->active[$i] == NULL){
+															$status .= '<option value="N" selected> Inactive </option>';
+														}else{
+															$status .= '<option value="N" > Inactive </option>';
+														}
+														echo $status;
+													?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="userlevel" class="col-sm-2 control-label">User Level</label>
+												<div class="col-sm-10 mb">
+													<select class="form-control" name="userlevel" id="userlevel">
+													<?php
+														$userlevel = NULL;
+															if($output->user_level[$i] == "1"){
+																$userlevel .= '<option value="1" selected> 1 </option>';
+															}else{
+																$userlevel .= '<option value="1" > 1 </option>';
+															}
+															if($output->user_level[$i] == "2"){
+																$userlevel .= '<option value="2" selected> 2 </option>';
+															}else{
+																$userlevel .= '<option value="2" > 2 </option>';
+															}
+															if($output->user_level[$i] == "3"){
+																$userlevel .= '<option value="3" selected> 3 </option>';
+															}else{
+																$userlevel .= '<option value="3" > 3 </option>';
+															}
+															if($output->user_level[$i] == "4"){
+																$userlevel .= '<option value="4" selected> 4 </option>';
+															}else{
+																$userlevel .= '<option value="4" > 4 </option>';
+															}
+															if($output->user_level[$i] == "5"){
+																$userlevel .= '<option value="5" selected> 5 </option>';
+															}else{
+																$userlevel .= '<option value="5" > 5 </option>';
+															}
+															if($output->user_level[$i] == "6"){
+																$userlevel .= '<option value="6" selected> 6 </option>';
+															}else{
+																$userlevel .= '<option value="6" > 6 </option>';
+															}
+															if($output->user_level[$i] == "7"){
+																$userlevel .= '<option value="7" selected> 7 </option>';
+															}else{
+																$userlevel .= '<option value="7" > 7 </option>';
+															}
+															if($output->user_level[$i] == "8"){
+																$userlevel .= '<option value="8" selected> 8 </option>';
+															}else{
+																$userlevel .= '<option value="8" > 8 </option>';
+															}
+															if($output->user_level[$i] == "9"){
+																$userlevel .= '<option value="9" selected> 9 </option>';
+															}else{
+																$userlevel .= '<option value="9" > 9 </option>';
+															}
+														echo $userlevel;
+													?>
+														
+													</select>
+												</div>
+											</div>
+										</fieldset>
+										<fieldset>
+											<div class="form-group">
+												<label for="phone_login" class="col-sm-2 control-label">Phone Login</label>
+												<div class="col-sm-10 mb">
+													<input type="text" class="form-control" name="phone_login" id="phone_login" value="<?php echo $output->phone_login[$i];?>" placeholder="Phone Login">
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="phone_password" class="col-sm-2 control-label">Phone Password</label>
+												<div class="col-sm-10 mb">
+													<input type="text" class="form-control" name="phone_password" id="phone_password" value="<?php echo $output->phone_pass[$i];?>" placeholder="Phone Password">
+												</div>
+											</div>									
+											<div class="form-group">
+												<label for="voicemail" class="col-sm-2 control-label">Voicemail</label>
+												<div class="col-sm-10 mb">
+													<select class="form-control" name="voicemail" id="voicemail">
+														<?php
+															if($voicemails == NULL){
+														?>
+															<option value="" selected>--No Voicemails Available--</option>
+														<?php
+															}else{
+															for($a=0;$a<count($voicemails->voicemail_id);$a++){
+														?>
+																<option value="<?php echo $voicemails->voicemail_id[$i];?>" <?php if($output->voicemail_id[$i] == $voicemails->voicemail_id[$a]){echo "selected";}?> >
+																	<?php echo $voicemails->voicemail_id[$a].' - '.$voicemails->fullname[$a];?>
+																</option>									
+														<?php
+																}
+															}
+														?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="change_pass" class="col-sm-2 control-label">Change Password?</label>
+												<div class="col-sm-10 mb">
+													<select class="form-control " name="change_pass" id="change_pass">
+														<option value="N" selected> No </option>
+														<option value="Y" > Yes </option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group" id="form_password" style="display:none;">
+												<label for="password" class="col-sm-2 control-label">Password</label>
+												<div class="col-sm-10 mb">
+													<input type="text" class="form-control" name="password" id="password" value="<?php echo $output->password[$i];?>" placeholder="Password">
+												</div>
+											</div>
+										</fieldset>
+								   	</div><!-- tab 1 -->
+
+								   	<!-- ADVANCED SETTINGS -->
+								   	<div id="tab_2" class="tab-pane fade in">
 						       			<input type="hidden" name="agent_choose_ingroup" value="0">
 						       			<input type="hidden" name="agent_choose_blended" value="0">
 						       			<input type="hidden" name="scheduled_callbacks" value="1">
 						       			<input type="hidden" name="agent_call_manual" value="1">
-						       			<div class="row">
-						       				<div class="col-lg-6">
-												<label for="hotkeys" class="col-md-6">HotKeys
-												<select class="form-control" name="hotkeys" id="hotkeys">
-												<?php
-													$status = NULL;
-													if($output->hot_keys[$i] == "0"){
-														$status .= '<option value="Y" selected> Active </option>';
-													}else{
-														$status .= '<option value="Y" > Active </option>';
-													}
-													
-													if($output->hot_keys[$i] == "1" || $output->hot_keys[$i] == NULL){
-														$status .= '<option value="N" selected> Inactive </option>';
-													}else{
-														$status .= '<option value="N" > Inactive </option>';
-													}
-													echo $status;
-												?>
-													
-												</select>
-												</label>
-											
-												<label for="agent_recordings" class="col-md-6">Agent Recordings
-												<select class="form-control" name="agent_recordings" id="agent_recordings">
-													<option value="0"> 0 </option>
-												</select>
-												</label>
-											</div>
-											<div class="col-lg-6">
-												<label for="agent_transfers" class="col-md-6">Agent Transfers
-												<select class="form-control" name="agent_transfers" id="agent_transfers">
-													<option value="1"> 1 </option>
-												</select>
-												</label>
-										
-												<label for="closer_default_blended" class="col-md-6">Closer Default Blended
-												<select class="form-control" name="closer_default_blended" id="closer_default_blended">
-													<option value="1"> 1 </option>
-												</select>
-												</label>
-											</div>  
-										</div>  			
-						       		</div><!-- advanced settings -->
-								</div><!-- col-lg-12 -->
-						</div><!-- body -->
-						<div class="box-footer">
-							<div id="modifyUSERresult"></div>
-									
-								<a href="telephonyusers.php" type="button" class="btn btn-danger"><i class="fa fa-arrow-left"></i> Cancel </a>
 
-								<button type="submit" class="btn btn-primary pull-right" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-						</div>	
-					</div>
-								</form>								
-								
-							</div>
+						       			<fieldset>
+						       				<div class="form-group mt">
+												<label for="hotkeys" class="col-sm-2 control-label">HotKeys</label>
+												<div class="col-sm-10 mb">
+													<select class="form-control" name="hotkeys" id="hotkeys">
+													<?php
+														$status = NULL;
+														if($output->hot_keys[$i] == "0"){
+															$status .= '<option value="Y" selected> Active </option>';
+														}else{
+															$status .= '<option value="Y" > Active </option>';
+														}
+														
+														if($output->hot_keys[$i] == "1" || $output->hot_keys[$i] == NULL){
+															$status .= '<option value="N" selected> Inactive </option>';
+														}else{
+															$status .= '<option value="N" > Inactive </option>';
+														}
+														echo $status;
+													?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="agent_recordings" class="col-sm-2 control-label">Agent Recordings</label>
+												<div class="col-sm-10 mb">
+													<select class="form-control" name="agent_recordings" id="agent_recordings">
+														<option value="0"> 0 </option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="agent_transfers" class="col-sm-2 control-label">Agent Transfers</label>
+												<div class="col-sm-10 mb">
+													<select class="form-control" name="agent_transfers" id="agent_transfers">
+														<option value="1"> 1 </option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="closer_default_blended" class="col-sm-2 control-label">Closer Default Blended</label>
+												<div class="col-sm-10 mb">
+													<select class="form-control" name="closer_default_blended" id="closer_default_blended">
+														<option value="1"> 1 </option>
+													</select>
+												</div>
+											</div>
+										</fieldset>		
+									</div>
+									
+								   	<!-- FOOTER BUTTONS -->
+								   	<div id="modifyUSERresult"></div>
+
+								   	<fieldset>
+				                        <div class="box-footer">
+				                           <div class="pull-right col-sm-3">
+													<a href="telephonyusers.php" type="button" class="btn btn-danger pull-left"><i class="fa fa-close"></i> Cancel </a>
+				                           		
+				                                	<button type="submit" class="btn btn-primary pull-right" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+												</div>
+				                           </div>
+				                        </div>
+				                    </fieldset>
+
+							   		</div>
+				            	</div><!-- end of tab content -->
+				       		</form>
+	                    	</div><!-- tab panel -->
 
 						<?php
 							}
@@ -383,7 +413,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
                 }
 					
 					?>
-					
+					</div><!-- body -->
                 </section>
 				<!-- /.content -->
             </aside><!-- /.right-side -->
@@ -399,17 +429,6 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 		<script type="text/javascript">
 			$(document).ready(function() {
-
-				$("#show_advanced_settings").click(function(){
-				    $("#advanced_settings_wrapper").toggle();
-				    if ($('#hide').is(":hidden")){
-				    	$("#hide").show();
-				   		$("#show").hide();
-				    }else{
-				    	$("#show").show();
-				   		$("#hide").hide();
-				    }
-				});
 
 				$('#change_pass').on('change', function() {
 				//  alert( this.value ); // or $(this).val()

@@ -4279,6 +4279,12 @@ Gradient Background colors
   left: 2px;
 }
 
+.label-floating .form-group-addon-textarea {
+  position: relative;
+  top: -108px;
+  left: 2px;
+}
+
 /* Material Switch */
 .material-switch {
   margin-top: 10px;

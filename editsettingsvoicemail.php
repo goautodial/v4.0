@@ -45,6 +45,11 @@ if (isset($_POST["vmid"])) {
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 
+        	<!-- =============== BOOTSTRAP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+				<!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -70,7 +75,7 @@ if (isset($_POST["vmid"])) {
             <aside class="right-side">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>
+                    <h1 style="font-weight:normal;">
                         <?php $lh->translateText("Settings"); ?>
                         <small><?php $lh->translateText("Voice Mail Edit"); ?></small>
                     </h1>
@@ -88,9 +93,7 @@ if (isset($_POST["vmid"])) {
                     </ol>
                 </section>
 
-                <!-- Main content -->
-                <section class="content">
-					<div class="box box-info">
+                
 					<!-- standard custom edition form -->
 					<?php
 					$errormessage = NULL;
@@ -121,84 +124,104 @@ if (isset($_POST["vmid"])) {
 						# Result was OK!
 							for($i=0;$i<count($output->voicemail_id);$i++){
 					?>
+                <!-- Main content -->
+                <section class="content">
+					<div class="panel panel-default">
                     
-                    <div class="box-header with-border">
-						<h3 class="box-title">MODIFY VOICEMAIL ID: <u><?php echo $output->voicemail_id[$i];?></u></h3>
-					</div>
-					<div class="box-body table-responsive">		
+                    <div class="panel-body">
+						<legend>MODIFY VOICEMAIL ID: <u><?php echo $output->voicemail_id[$i];?></u></legend>
+	
 							<form id="modifyform">
 								<input type="hidden" name="modifyid" value="<?php echo $vmid;?>">
 							
-						<!-- BASIC SETTINGS -->
+						<!-- Custom Tabs -->
+						<div role="tabpanel">
+						<!--<div class="nav-tabs-custom">-->
+							<ul role="tablist" class="nav nav-tabs">
+								<li class="active"><a href="#tab_1" data-toggle="tab"><em class="fa fa-gear fa-lg"></em> Basic Settings</a></li>
+							</ul>
+			               <!-- Tab panes-->
+			               <div class="tab-content">
 
-							<div class="col-lg-6">
-								<div class="form-group">
-									<label for="password">Your Password</label>
-									<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="<?php echo $output->password[$i];?>">
-								</div>
-								<div class="form-group">
-									<label for="fullname">Name</label>
-									<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->fullname[$i];?>">
-								</div>
-								<div class="form-group">
-									<label for="email">Email</label>
-									<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->email[$i];?>">
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="row" style="padding-top:5px;">
-									<label for="active" class="col-md-5">Active
-									<select class="form-control" name="active" id="active">
-									<?php
-										$active = NULL;
-										if($output->active[$i] == "Y"){
-											$active .= '<option value="Y" selected> YES </option>';
-										}else{
-											$active .= '<option value="Y" > YES </option>';
-										}
-										
-										if($output->active[$i] == "N" || $output->active[$i] == NULL){
-											$active .= '<option value="N" selected> NO </option>';
-										}else{
-											$active .= '<option value="N" > NO </option>';
-										}
-										echo $active;
-									?>
-									</select>
-									</label>
-								</div>
-								<div class="row" style="padding-top:10px;">
-									<label for="delete_vm_after_email" class="col-md-5">Delete Voicemail After Email
-									<select class="form-control" name="delete_vm_after_email" id="delete_vm_after_email">
-									<?php
-										$delete_vm_after_email = NULL;
-										if($output->delete_vm_after_email[$i] == "Y"){
-											$delete_vm_after_email .= '<option value="Y" selected> YES </option>';
-										}else{
-											$delete_vm_after_email .= '<option value="Y" > YES </option>';
-										}
-										
-										if($output->delete_vm_after_email[$i] == "N" || $output->delete_vm_after_email[$i] == NULL){
-											$delete_vm_after_email .= '<option value="N" selected> NO </option>';
-										}else{
-											$delete_vm_after_email .= '<option value="N" > NO </option>';
-										}
-										echo $delete_vm_after_email;
-									?>
-									</select>
-									</label>
-								</div>
-								<div class="form-group">
-									<label>New Messages: </label>
-									<span style="padding-left:20px; font-size: 20;"><?php echo $output->messages[$i];?></span>
-								</div>
-								<div class="form-group">
-									<label>Old Messages: </label>
-									<span style="padding-left:20px; font-size: 20;"><?php echo $output->old_messages[$i];?></span>
-								</div>
-							</div>
-						</div>
-							
+				               	<!-- BASIC SETTINGS -->
+				                <div id="tab_1" class="tab-pane fade in active">
+				                	<fieldset>
+										<div class="form-group mt">
+											<label for="password" class="col-sm-3 control-label">Your Password</label>
+											<div class="col-sm-9 mb">
+												<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="<?php echo $output->password[$i];?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="fullname" class="col-sm-3 control-label">Name</label>
+											<div class="col-sm-9 mb">
+												<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->fullname[$i];?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="email" class="col-sm-3 control-label">Email</label>
+											<div class="col-sm-9 mb">
+												<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->email[$i];?>">
+											</div>
+										</div>
+									
+										<div class="form-group">
+											<label for="active" class="col-sm-3 control-label">Active</label>
+											<div class="col-sm-9 mb">
+												<select class="form-control" name="active" id="active">
+												<?php
+													$active = NULL;
+													if($output->active[$i] == "Y"){
+														$active .= '<option value="Y" selected> YES </option>';
+													}else{
+														$active .= '<option value="Y" > YES </option>';
+													}
+													
+													if($output->active[$i] == "N" || $output->active[$i] == NULL){
+														$active .= '<option value="N" selected> NO </option>';
+													}else{
+														$active .= '<option value="N" > NO </option>';
+													}
+													echo $active;
+												?>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="delete_vm_after_email" class="col-sm-3 control-label">Delete Voicemail After Email</label>
+											<div class="col-sm-9 mb">
+												<select class="form-control" name="delete_vm_after_email" id="delete_vm_after_email">
+												<?php
+													$delete_vm_after_email = NULL;
+													if($output->delete_vm_after_email[$i] == "Y"){
+														$delete_vm_after_email .= '<option value="Y" selected> YES </option>';
+													}else{
+														$delete_vm_after_email .= '<option value="Y" > YES </option>';
+													}
+													
+													if($output->delete_vm_after_email[$i] == "N" || $output->delete_vm_after_email[$i] == NULL){
+														$delete_vm_after_email .= '<option value="N" selected> NO </option>';
+													}else{
+														$delete_vm_after_email .= '<option value="N" > NO </option>';
+													}
+													echo $delete_vm_after_email;
+												?>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3 control-label">New Messages: </label>
+												<span style="padding-left:20px; font-size: 20;"><?php echo $output->messages[$i];?></span>
+											
+										</div>
+										<div class="form-group">
+											<label class="col-sm-3 control-label">Old Messages: </label>
+												<span style="padding-left:20px; font-size: 20;"><?php echo $output->old_messages[$i];?></span>
+											
+										</div>
+									</fieldset>
+								</div><!-- end tab1 -->
+
 							<!-- NOTIFICATIONS -->
 		                    <div id="notifications">
 		                        <div class="output-message-success" style="display:none;">
@@ -213,22 +236,31 @@ if (isset($_POST["vmid"])) {
 		                        </div>
 		                    </div>
 
-						<div class="box-footer">
-							<a type="button" class="btn btn-danger delete-phone" href="settingsvoicemails.php"><i class="fa fa-arrow-left"></i> Cancel</a>
+						<!-- FOOTER BUTTONS -->
+						   	<fieldset>
+		                        <div class="box-footer">
+		                           <div class="pull-right col-sm-3">
+											<a href="settingsvoicemails.php" type="button" class="btn btn-danger pull-left"><i class="fa fa-close"></i> Cancel </a>
+		                           		
+		                                	<button type="submit" class="btn btn-primary pull-right" id="modifyVoicemailOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+										</div>
+		                           </div>
+		                        </div>
+		                    </fieldset>
 
-							<button type="submit" class="btn btn-primary pull-right" id="modifyVoicemailOkButton" href=""><span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-						</div>
-							
-							</form>								
-							
-						</div>
+			            	</div><!-- end of tab content -->
+			            </div><!-- tab panel -->
+			       	</form>
+			       	</div><!-- body -->
+                </div>
+            </section>  	
 
-					<?php
-							}
-						}	
-                        
-					?>
-                </section>
+				<?php
+						}
+					}	
+                    
+				?>
+					
 				<!-- /.content -->
             </aside><!-- /.right-side -->
 			
