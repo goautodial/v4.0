@@ -113,8 +113,11 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 		<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
 		<!-- =============== APP STYLES ===============-->
 		<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
 		<!-- SLIMSCROLL-->
 		<script src="theme_dashboard/slimScroll/jquery.slimscroll.min.js"></script>
+		<!-- SWEETALERT-->
+		<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
 
   		<!-- Theme style -->
   		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
@@ -439,7 +442,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 												<div class="form-group label-floating">
 													<?php //echo $date_of_birth;?>
 													<label for="date" class="control-label">Date Of Birth</label>
-													<input type="date" id="date_of_birth" style="width: 150px;" value="<?php echo $date_of_birth;?>" name="date_of_birth" class="form-control input-disabled" disabled>
+													<input type="date" id="date_of_birth" style="width: 170px;" value="<?php echo $date_of_birth;?>" name="date_of_birth" class="form-control input-disabled" disabled>
 							                    </div>						                   
 											</form>
 											</div>
@@ -645,11 +648,12 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-      <li class="active"><a href="#control-sidebar-dialer-tab" data-toggle="tab"><i class="fa fa-phone"></i></a></li>
-      <li><a href="#control-sidebar-agents-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
+      <li id="dialer-tab" class="active"><a href="#control-sidebar-dialer-tab" data-toggle="tab"><i class="fa fa-phone"></i></a></li>
+      <li id="agents-tab" class="hidden"><a href="#control-sidebar-agents-tab" data-toggle="tab"><i class="fa fa-users"></i></a></li>
+      <li id="settings-tab"><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
     </ul>
     <!-- Tab panes -->
-    <div class="tab-content" style="border-width:0; overflow-y: auto;">
+    <div class="tab-content" style="border-width:0; overflow-y: auto; padding-bottom: 30px;">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-dialer-tab">
         <ul class="control-sidebar-menu" id="go_agent_dialer">
@@ -680,7 +684,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 			<li style="font-size: 5px;">
 				&nbsp;
 			</li>
-			<li style="padding: 0 5px 15px;">
+			<li id="toggleHotkeys" style="padding: 0 5px 15px;">
 				<div class="material-switch pull-right">
 					<input id="enableHotKeys" name="enableHotKeys" type="checkbox"/>
 					<label for="enableHotKeys" class="label-primary"></label>
@@ -691,8 +695,8 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 				&nbsp;
 			</li>
 			<li>
-				<button type="button" id="show-callbacks-today" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Callbacks For Today')?> <span id="callbacks-active" class='badge pull-right bg-red'>0</span></button>
 				<button type="button" id="show-callbacks-active" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Active Callback(s)')?> <span id="callbacks-today" class='badge pull-right bg-red'>0</span></button>
+				<button type="button" id="show-callbacks-today" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Callbacks For Today')?> <span id="callbacks-active" class='badge pull-right bg-red'>0</span></button>
 			</li>
         </ul>
 		
@@ -714,11 +718,16 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 
       </div>
       <!-- /.tab-pane -->
-      <!-- Stats tab content -->
-      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+      <!-- Agents View tab content -->
+      <div class="tab-pane" id="control-sidebar-agents-tab">
+		<h4><?=$lh->translationFor('other_agent_status')?></h4>
+		<ul class="control-sidebar-menu" id="go_agent_view_list" style="padding: 0px 15px;">
+			<li><div class="text-center"><?=$lh->translationFor('loading_agents')?>...</div></li>
+		</ul>
+	  </div>
       <!-- /.tab-pane -->
       <!-- Settings tab content -->
-      <div class="tab-pane" id="control-sidebar-agents-tab">
+      <div class="tab-pane" id="control-sidebar-settings-tab">
 		<ul class="control-sidebar-menu" id="go_agent_profile">
 			<li>
 				<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px;">
