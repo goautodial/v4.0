@@ -465,7 +465,7 @@ $(document).ready(function() {
                         $("#SecondsDISP").html(live_call_seconds);
                         $("#edit-profile, #for_dtmf").removeClass('hidden');
                         $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
-                        $("#dialer-pad-clear, #dialer-padundo").addClass('hidden');
+                        $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
                     }
                     if (XD_live_customer_call == 1) {
                         XD_live_call_seconds++;
@@ -651,29 +651,38 @@ $(document).ready(function() {
         var loggedOut = 0;
         if (hRef.match(logoutRegX)) {
             event.preventDefault();
-            var sureToLogout = confirm("<?=$lh->translationFor('sure_to_logout')?>");
-            if (sureToLogout) {
-                if (is_logged_in) {
-                    logoutWarn = false;
-                    btnLogMeOut();
-                    loggedOut++;
+            swal({
+                title: "<?=$lh->translationFor('sure_to_logout')?>",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "<?=$lh->translationFor('log_me_out')?>",
+                closeOnConfirm: false
+            }, function(sureToLogout){
+                if (sureToLogout) {
+                    swal.close();
+                    if (is_logged_in) {
+                        logoutWarn = false;
+                        btnLogMeOut();
+                        loggedOut++;
+                    }
+                    if (phone.isConnected()) {
+                        phone.stop();
+                        loggedOut++;
+                    }
+                    if (loggedOut > 0) {
+                        console.log('<?=$lh->translationFor('logging_out_phones')?>...');
+                        $("div.preloader center").append('<br><br><span style="font-size: 24px; color: white;"><?=$lh->translationFor('logging_out_phones')?>...</span>');
+                        $("div.preloader").fadeIn("slow");
+                        setTimeout(
+                            function() {
+                                window.location.href = hRef;
+                            },
+                            2500
+                        );
+                    }
                 }
-                if (phone.isConnected()) {
-                    phone.stop();
-                    loggedOut++;
-                }
-                if (loggedOut > 0) {
-                    console.log('<?=$lh->translationFor('logging_out_phones')?>...');
-                    $("div.preloader center").append('<br><br><span style="font-size: 24px; color: white;"><?=$lh->translationFor('logging_out_phones')?>...</span>');
-                    $("div.preloader").fadeIn("slow");
-                    setTimeout(
-                        function() {
-                            window.location.href = hRef;
-                        },
-                        2500
-                    );
-                }
-            }
+            });
         }
     });
 
@@ -1303,10 +1312,24 @@ function btnLogMeIn () {
 
 function btnLogMeOut () {
     refresh_interval = 730000;
-    var logMeOut = true;
     if (logoutWarn) {
-        logMeOut = confirm("<?=$lh->translationFor('sure_to_logout')?>");
+        swal({
+            title: "<?=$lh->translationFor('sure_to_logout')?>",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "<?=$lh->translationFor('log_me_out')?>",
+            closeOnConfirm: false
+        }, function(isConfirm){
+            swal.close();
+            sendLogout(isConfirm);
+        });
+    } else {
+        sendLogout(true);
     }
+}
+    
+function sendLogout (logMeOut) {
     if (logMeOut) {
         var postData = {
             goAction: 'goLogoutUser',
