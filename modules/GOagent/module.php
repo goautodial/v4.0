@@ -472,7 +472,7 @@ class GOagent extends Module {
 						//		console.log('reply!');
 						//	}
 						//};
-						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
+						$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
 					});
 					
 					phone.on('unregistered', function(e) {

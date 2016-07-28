@@ -3562,6 +3562,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
+	    $postfields["requestDataPhone"] = $_REQUEST['search_phone']; #json. (required)
 
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
@@ -3570,7 +3571,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	    $data = curl_exec($ch);
+	    $data = curl_exec($ch); 
 	    curl_close($ch);
 	    $output = json_decode($data);
 	    
@@ -3607,6 +3608,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    } else {
 		# An error occured
 		return $output->result;
+
 	    }
 	}
 	
