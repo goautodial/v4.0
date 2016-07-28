@@ -235,7 +235,9 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
     <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyAgentHeader($user); ?>
-            
+            <!-- Left side column. contains the logo and sidebar -->
+			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
+
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="content-wrapper">
 
@@ -249,7 +251,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
                 <!-- Main content -->
                 <section class="content">
 					<!-- standard custom edition form -->
-					<div class="container-md ng-scope">
+					<div class="container-custom ng-scope">
 						<div class="card">
 							
 								<div class="card-heading bg-inverse">
@@ -260,30 +262,6 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 										<div class="col-md-10">
 						                <h4><?php echo $user->getUserName();?></h4>
 						                <p class="ng-binding animated fadeInUpShort">Agent</p>
-						                <address>
-						                <?php
-						                /* 
-						                	echo $address1; 
-						             		if($address2 != NULL){
-						             			echo ", ";
-						             			echo $address2; 
-						             		}
-						             		if($address3 != NULL){
-						             			echo ", ";
-						             			echo $address3;
-						             		}
-						                	if($city != NULL){
-						                		echo "<br>".$city;
-						                	}
-						                	if($province != NULL){
-						                		echo ", ".$province;
-						                	}
-						                	if($state != NULL){
-						                		echo ", ".$state;
-						                	}
-						                	*/
-						                ?>
-						                </address>
 						            </div>
 									</div>
 								</div>
@@ -292,23 +270,23 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 							<!-- Card body -->
 						        <div class="card-body custom-tabpanel">
 				                	<div role="tabpanel" class="panel panel-transparent">
-									  <ul role="tablist" class="nav nav-tabs">
+									  <ul role="tablist" class="nav nav-tabs nav-justified">
 									  <!-- Nav task panel tabs-->
 										 <li role="presentation" class="active">
 											<a href="#profile" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-											   <em class="fa fa-user fa-fw"></em>Profile</a>
+											   Profile</a>
 										 </li>
 										 <li role="presentation">
 											<a href="#comments" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-											   <em class="fa fa-comments-o fa-fw"></em>Comments</a>
+											   Comments</a>
 										 </li>
 										 <li role="presentation">
 											<a href="#activity" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-											   <em class="fa fa-bullhorn fa-fw"></em>Activity</a>
+											   Activity</a>
 										 </li>
 										 <li role="presentation">
 											<a href="#scripts" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-											   <em class="fa fa-commenting-o fa-fw"></em>Script</a>
+											   Script</a>
 										 </li>
 									  </ul>
 									</div>
@@ -382,7 +360,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 										<div id="profile" role="tabpanel" class="tab-pane active">
 
 											<fieldset>
-												<h4>Personal Details
+												<h4>
 													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
 												</h4>
 												<br/>
@@ -421,7 +399,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 														<div class="mda-form-group label-floating">
 															<input id="middle_initial" name="middle_initial" type="text" maxlength="1" value="<?php echo $middle_initial;?>"
 																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-															<label for="middle_initial">Middle Initial</label>
+															<label for="middle_initial">Middle Name</label>
 														</div>
 													</div>
 													<div class="col-sm-4">
@@ -433,6 +411,86 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 													</div>
 												</div>
 												</form>
+												
+												<!-- phone number & alternative phone number -->
+												<div class="row">
+													<div class="col-sm-6">
+														<div class="mda-form-group label-floating">
+															<span id="phone_numberDISP" class="hidden"></span>
+															<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
+															<input id="phone_number" name="phone_number" type="number" min="0" width="auto" value="<?php echo $phone_number;?>"
+																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled required>
+															<label for="phone_number">Phone Number</label>
+															<!--
+															<span class="mda-input-group-addon">
+																<em class="fa fa-phone fa-lg"></em>
+															</span>-->
+														</div>
+													</div>
+													<div class="col-sm-6">
+														<div class="mda-form-group label-floating">
+															<input id="alt_phone" name="alt_phone" type="number" min="0" width="100" value="<?php echo $alt_phone;?>"
+																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+															<label for="alt_phone">Alternative Phone Number</label>
+														</div>
+													</div>
+												</div>
+												<!-- /.phonenumber & alt phonenumber -->
+												
+												<div class="mda-form-group label-floating">
+													<input id="address1" name="address1" type="text" width="auto" value="<?php echo $address1;?>"
+														class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+													<label for="address1">Address</label> 
+													<!--<span class="mda-input-group-addon">
+														<em class="fa fa-home fa-lg"></em>
+													</span>-->
+												</div>
+												
+												<div class="mda-form-group label-floating">
+													<input id="address2" name="address2" type="text" value="<?php echo $address2;?>"
+														class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+													<label for="address2">Address 2</label>
+												</div>
+												
+												<div class="row">
+													<div class="col-sm-4">
+														<div class="mda-form-group label-floating">
+															<input id="city" name="city" type="text" value="<?php echo $city;?>"
+																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+															<label for="city">City</label>
+														</div>
+													</div>
+													<div class="col-sm-4">
+														<div class="mda-form-group label-floating">
+															<input id="state" name="state" type="text" value="<?php echo $state;?>"
+																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+															<label for="state">State</label>
+														</div>
+													</div>
+													<div class="col-sm-4">
+														<div class="mda-form-group label-floating">
+															<input id="postal_code" name="postal_code" type="text" value="<?php echo $postal_code;?>"
+																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+															<label for="postal_code">Postal Code</label>
+														</div>
+													</div>
+												</div><!-- /.city,state,postalcode -->
+												
+												<form id="contact_details_form" class="formMain">
+													<div class="mda-form-group label-floating">
+														<input id="country" name="country" type="text" value="<?php echo $country;?>"
+															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+														<label for="country">Country</label>
+													</div>
+													<div class="mda-form-group label-floating"><!-- add "mda-input-group" if with image -->
+														<input id="email" name="email" type="text" width="auto" value="<?php echo $email;?>"
+															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+														<label for="email">E-mail Address</label>
+														<!--<span class="mda-input-group-addon">
+															<em class="fa fa-at fa-lg"></em>
+														</span>-->
+													</div>
+												</form> 
 												<form role="form" id="gender_form" class="formMain form-inline" >
 													<div class="row">
 														<div class="col-sm-3">
@@ -479,80 +537,6 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 														</div>
 													</div><!-- /.gender & title -->                   
 												</form>
-											</fieldset><!-- ./personal details -->
-											
-											<fieldset>
-												<h4>Contact Details</h4>
-												<br/>
-												<form id="contact_details_form" class="formMain">
-													<div class="mda-form-group mda-input-group label-floating">
-														<input id="email" name="email" type="text" width="auto" value="<?php echo $email;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="email">E-mail Address</label>
-														<span class="mda-input-group-addon">
-															<em class="fa fa-at fa-lg"></em>
-														</span>
-													</div>
-													<div class="mda-form-group mda-input-group label-floating">
-														<span id="phone_numberDISP" class="hidden"></span>
-														<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
-														<input id="phone_number" name="phone_number" type="number" min="0" width="auto" value="<?php echo $phone_number;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled required>
-														<label for="phone_number">Phone Number</label>
-														<span class="mda-input-group-addon">
-															<em class="fa fa-phone fa-lg"></em>
-														</span>
-													</div>
-													<div class="mda-form-group label-floating">
-														<input id="alt_phone" name="alt_phone" type="number" min="0" width="100" value="<?php echo $alt_phone;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="alt_phone">Alternative Phone Number</label>
-													</div>
-													<div class="mda-form-group mda-input-group label-floating">
-														<input id="address1" name="address1" type="text" width="auto" value="<?php echo $address1;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="address1">Street Address 1</label> 
-														<span class="mda-input-group-addon">
-															<em class="fa fa-home fa-lg"></em>
-														</span>
-													</div>
-													<div class="mda-form-group label-floating">
-														<input id="address2" name="address2" type="text" value="<?php echo $address2;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="address2">Street Address 2</label>
-													</div>
-													<div class="mda-form-group label-floating">
-														<input id="address3" name="address3" type="text" value="<?php echo $address3;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="address3">Street Address 3</label>
-													</div>
-													<div class="mda-form-group label-floating">
-														<input id="city" name="city" type="text" value="<?php echo $city;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="city">City</label>
-													</div>
-													<div class="mda-form-group label-floating">
-														<input id="province" name="province" type="text" value="<?php echo $province;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="province">Province</label>
-													</div>
-													<div class="mda-form-group label-floating">
-														<input id="state" name="state" type="text" value="<?php echo $state;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="state">State</label>
-													</div>
-													<div class="mda-form-group label-floating">
-														<input id="postal_code" name="postal_code" type="text" value="<?php echo $postal_code;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="postal_code">Postal Code</label>
-													</div>
-													<div class="mda-form-group label-floating">
-														<input id="country" name="country" type="text" value="<?php echo $country;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="country">Country</label>
-													</div>
-												</form> 
-							                
 							                <br/>
 							                <!-- NOTIFICATIONS -->
 											<div id="notifications">

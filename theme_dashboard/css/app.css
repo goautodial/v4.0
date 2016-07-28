@@ -449,6 +449,7 @@ body {
   line-height: 1.1;
   color: #929292;
   margin: -15px;
+  margin-top:0px;
   margin-bottom: 20px;
   padding: 15px;
   font-weight: normal;
@@ -3057,6 +3058,10 @@ x:-o-prefocus,
 }
 .container-lg {
   max-width: 1170px;
+  width: auto;
+}
+.container-custom {
+  max-width: 100%;
   width: auto;
 }
 .row-table {
