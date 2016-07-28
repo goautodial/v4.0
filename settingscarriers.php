@@ -388,7 +388,8 @@
 					</div><!--end of step2 -->
 					
 					<!-- STEP 3 -->
-					<div id="container-element">
+					<div class="wizard-step" style="display:none;">
+
 					</div>
 				</form>
 		

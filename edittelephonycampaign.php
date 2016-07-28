@@ -650,7 +650,7 @@ $disposition = $ui->API_getDispositionInfo($did);
                     </div>
                 </div>
                 <div class="modal-footer">
-                	<div class="col-sm-5 pull-right">
+                	<div class="col-sm-3 pull-right">
                 		
                     	<button type="button" class="btn btn-primary" id="modify_disposition"><span id="update_button"><i class='fa fa-check'></i> Update</span></button>
                     	<button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class='fa fa-remove'></i> Cancel</button>
