@@ -465,7 +465,7 @@ $(document).ready(function() {
                         $("#SecondsDISP").html(live_call_seconds);
                         $("#edit-profile, #for_dtmf").removeClass('hidden');
                         $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
-                        $("#dialer-pad-clear, #dialer-padundo").addClass('hidden');
+                        $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
                     }
                     if (XD_live_customer_call == 1) {
                         XD_live_call_seconds++;
@@ -651,29 +651,38 @@ $(document).ready(function() {
         var loggedOut = 0;
         if (hRef.match(logoutRegX)) {
             event.preventDefault();
-            var sureToLogout = confirm("<?=$lh->translationFor('sure_to_logout')?>");
-            if (sureToLogout) {
-                if (is_logged_in) {
-                    logoutWarn = false;
-                    btnLogMeOut();
-                    loggedOut++;
+            swal({
+                title: "<?=$lh->translationFor('sure_to_logout')?>",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "<?=$lh->translationFor('log_me_out')?>",
+                closeOnConfirm: false
+            }, function(sureToLogout){
+                if (sureToLogout) {
+                    swal.close();
+                    if (is_logged_in) {
+                        logoutWarn = false;
+                        btnLogMeOut();
+                        loggedOut++;
+                    }
+                    if (phone.isConnected()) {
+                        phone.stop();
+                        loggedOut++;
+                    }
+                    if (loggedOut > 0) {
+                        console.log('<?=$lh->translationFor('logging_out_phones')?>...');
+                        $("div.preloader center").append('<br><br><span style="font-size: 24px; color: white;"><?=$lh->translationFor('logging_out_phones')?>...</span>');
+                        $("div.preloader").fadeIn("slow");
+                        setTimeout(
+                            function() {
+                                window.location.href = hRef;
+                            },
+                            2500
+                        );
+                    }
                 }
-                if (phone.isConnected()) {
-                    phone.stop();
-                    loggedOut++;
-                }
-                if (loggedOut > 0) {
-                    console.log('<?=$lh->translationFor('logging_out_phones')?>...');
-                    $("div.preloader center").append('<br><br><span style="font-size: 24px; color: white;"><?=$lh->translationFor('logging_out_phones')?>...</span>');
-                    $("div.preloader").fadeIn("slow");
-                    setTimeout(
-                        function() {
-                            window.location.href = hRef;
-                        },
-                        2500
-                    );
-                }
-            }
+            });
         }
     });
 
@@ -1045,11 +1054,13 @@ $(document).ready(function() {
                                 }
                                 
                                 if (cKey == 'dial_prefix') {
-                                    var dial_prefix = cValue;
+                                    dial_prefix = cValue;
+                                    $.globalEval(cKey+" = '"+cValue+"';");
                                 }
                             
                                 if (cKey == 'manual_dial_prefix') {
                                     cValue = (cValue.length < 1) ? dial_prefix : cValue;
+                                    $.globalEval(cKey+" = '"+cValue+"';");
                                 }
                                 
                                 if (cKey == 'pause_after_each_call') {
@@ -1301,10 +1312,24 @@ function btnLogMeIn () {
 
 function btnLogMeOut () {
     refresh_interval = 730000;
-    var logMeOut = true;
     if (logoutWarn) {
-        logMeOut = confirm("<?=$lh->translationFor('sure_to_logout')?>");
+        swal({
+            title: "<?=$lh->translationFor('sure_to_logout')?>",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "<?=$lh->translationFor('log_me_out')?>",
+            closeOnConfirm: false
+        }, function(isConfirm){
+            swal.close();
+            sendLogout(isConfirm);
+        });
+    } else {
+        sendLogout(true);
     }
+}
+    
+function sendLogout (logMeOut) {
     if (logMeOut) {
         var postData = {
             goAction: 'goLogoutUser',
@@ -4278,6 +4303,10 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
             goAction: 'goManualDialNext',
             goUser: uName,
             goPass: uPass,
+            goServerIP: server_ip,
+            goSessionName: session_name,
+            goExtContext: ext_context,
+            goConfExten: session_id,
             goCampaign: campaign,
             goPreview: man_preview,
             goCallbackID: mdnCBid,
@@ -4288,16 +4317,27 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
             goStage: mdnStagE,
             goVendorLeadCode: mdVendorid,
             goUseGroupAlias: mdgroupalias,
-            account: active_group_alias,
+            goAccount: active_group_alias,
             goAgentDialedNumber: mdnPhonENumbeR,
             goAgentDialedType: mdtype,
-            qm_extension: qm_extension,
+            goQMExtension: qm_extension,
             goDialIngroup: active_ingroup_dial,
             goNoCallDialFlag: nocall_dial_flag,
             goSIPserver: SIPserver,
             goVTCallbackID: vtiger_callback_id,
+            goDialTimeout: dial_timeout,
+            goDialPrefix: call_prefix,
+            goCampaignCID: call_cid,
+            goAgentLogID: agent_log_id,
+            goUseInternalDNC: use_internal_dnc,
+            goUseCampaignDNC: use_campaign_dnc,
+            goOmitPhoneCode: omit_phone_code,
+            goManualDialCallTimeCheck: manual_dial_call_time_check,
+            goManualDialFilter: manual_dial_filter,
+            goUseGroupAlias: mdgroupalias,
             responsetype: 'json'
         };
+        
 
         $.ajax({
             type: 'POST',
