@@ -1045,11 +1045,13 @@ $(document).ready(function() {
                                 }
                                 
                                 if (cKey == 'dial_prefix') {
-                                    var dial_prefix = cValue;
+                                    dial_prefix = cValue;
+                                    $.globalEval(cKey+" = '"+cValue+"';");
                                 }
                             
                                 if (cKey == 'manual_dial_prefix') {
                                     cValue = (cValue.length < 1) ? dial_prefix : cValue;
+                                    $.globalEval(cKey+" = '"+cValue+"';");
                                 }
                                 
                                 if (cKey == 'pause_after_each_call') {
@@ -4278,6 +4280,10 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
             goAction: 'goManualDialNext',
             goUser: uName,
             goPass: uPass,
+            goServerIP: server_ip,
+            goSessionName: session_name,
+            goExtContext: ext_context,
+            goConfExten: session_id,
             goCampaign: campaign,
             goPreview: man_preview,
             goCallbackID: mdnCBid,
@@ -4288,16 +4294,27 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
             goStage: mdnStagE,
             goVendorLeadCode: mdVendorid,
             goUseGroupAlias: mdgroupalias,
-            account: active_group_alias,
+            goAccount: active_group_alias,
             goAgentDialedNumber: mdnPhonENumbeR,
             goAgentDialedType: mdtype,
-            qm_extension: qm_extension,
+            goQMExtension: qm_extension,
             goDialIngroup: active_ingroup_dial,
             goNoCallDialFlag: nocall_dial_flag,
             goSIPserver: SIPserver,
             goVTCallbackID: vtiger_callback_id,
+            goDialTimeout: dial_timeout,
+            goDialPrefix: call_prefix,
+            goCampaignCID: call_cid,
+            goAgentLogID: agent_log_id,
+            goUseInternalDNC: use_internal_dnc,
+            goUseCampaignDNC: use_campaign_dnc,
+            goOmitPhoneCode: omit_phone_code,
+            goManualDialCallTimeCheck: manual_dial_call_time_check,
+            goManualDialFilter: manual_dial_filter,
+            goUseGroupAlias: mdgroupalias,
             responsetype: 'json'
         };
+        
 
         $.ajax({
             type: 'POST',
