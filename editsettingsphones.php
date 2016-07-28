@@ -136,8 +136,8 @@ if (isset($_POST["extenid"])) {
 						<!-- BASIC SETTINGS -->
 							<div role="tabpanel">
 							<!--<div class="nav-tabs-custom">-->
-								<ul role="tablist" class="nav nav-tabs">
-									<li class="active"><a href="#tab_1" data-toggle="tab"><em class="fa fa-gear fa-lg"></em> Basic Settings</a></li>
+								<ul role="tablist" class="nav nav-tabs nav-justified">
+									<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
 								</ul>
 				               <!-- Tab panes-->
 				               <div class="tab-content">

@@ -4937,8 +4937,8 @@ x:-o-prefocus,
 .c-radio input[type=checkbox]:checked + span,
 .c-checkbox input[type=radio]:checked + span,
 .c-radio input[type=radio]:checked + span {
-  border-color: #5d9cec;
-  background-color: #5d9cec;
+  border-color: #3f51b5;
+  background-color: #3f51b5;
 }
 .c-checkbox input[type=radio]:checked + span,
 .c-radio input[type=radio]:checked + span {
@@ -4946,7 +4946,7 @@ x:-o-prefocus,
 }
 .c-checkbox input[type=radio]:checked + span:before,
 .c-radio input[type=radio]:checked + span:before {
-  color: #5d9cec;
+  color: #3f51b5;
 }
 .c-checkbox input[type=checkbox]:disabled + span,
 .c-radio input[type=checkbox]:disabled + span,
@@ -8384,4 +8384,8 @@ fieldset[disabled] .btn-pink.focus {
 .pv-md{
   padding-top: 10px;
   padding-bottom: 15px;
+}
+.footer-buttons{
+  padding-bottom: 0px;
+  margin-bottom: 0px;
 }

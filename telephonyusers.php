@@ -119,7 +119,7 @@
 				
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="T_User"><b>User Wizard >> Add New User</b></h4>
+					<h4 class="modal-title animate-header" id="T_User"><b>User Wizard » Add New User</b></h4>
 				</div>
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
@@ -350,9 +350,6 @@
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
 		
-	<!-- SLIMSCROLL-->
-   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
-   
 	<script type="text/javascript">
 
 		function checkPasswordMatch() {

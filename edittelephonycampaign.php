@@ -540,7 +540,7 @@ $disposition = $ui->API_getDispositionInfo($did);
 				                </div>
 
 
-					            <div class="box-footer">
+					            <div class="box-footer pull-right">
 									<a href="telephonycampaigns.php" type="button" id="" class="btn btn-danger"><i class="fa fa-remove"></i> Cancel</a>
 								</div>
 								<!-- /.box-footer -->
@@ -688,8 +688,6 @@ $disposition = $ui->API_getDispositionInfo($did);
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
-		<!-- SLIMSCROLL-->
-    	<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
     	<!-- iCheck 1.0.1 -->
 		<script src="js/plugins/iCheck/icheck.min.js"></script>
 

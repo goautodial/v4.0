@@ -1402,7 +1402,10 @@ error_reporting(E_ERROR | E_PARSE);
 		return '<header class="main-header">
 				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
 	            <nav class="navbar navbar-static-top" role="navigation">
-	                
+	                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+	                    <span class="sr-only">Toggle navigation</span>
+	                    <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+	                </a>
 	                <div class="navbar-custom-menu">
 	                    <ul class="nav navbar-nav">
 	                    		'.$moduleTopbarElements.'
@@ -3940,13 +3943,12 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function getListAllCarriers($goUser, $goPass, $goAction, $responsetype){
-	    $url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
+	public function API_getListAllCarriers($goUser, $goPass, $goAction, $responsetype){
+		$url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCarriersList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
-    
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
 	    curl_setopt($ch, CURLOPT_POST, 1);
@@ -3956,6 +3958,11 @@ error_reporting(E_ERROR | E_PARSE);
 	    $data = curl_exec($ch);
 	    curl_close($ch);
 	    $output = json_decode($data);
+	    return $output;
+	}
+
+	public function getListAllCarriers(){
+		$output = $this->API_getListAllCarriers();
 	   
 	    if ($output->result=="success") {
 	    # Result was OK!

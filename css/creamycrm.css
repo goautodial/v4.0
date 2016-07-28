@@ -1879,13 +1879,13 @@ a:focus {
   background-color: #e7e7e7 !important;
 }
 .btn-primary {
-  background-color: #3c8dbc;
-  border-color: #367fa9;
+  background-color: #3f51b5;
+  border-color: #3e4fb1;
 }
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary.hover {
-  background-color: #367fa9;
+  background-color: #3f51b5;
 }
 .btn-success {
   background-color: #00a65a;
