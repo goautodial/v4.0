@@ -30,9 +30,24 @@
         <link rel="stylesheet" href="css/easyWizard.css">
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+<<<<<<< HEAD:telephonylistandcallrecording.php
 		<!-- Bootstrap Player -->
 		<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
+=======
+        	
+        <!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+	
+
+
+	<!-- Bootstrap Player -->
+	<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
+	
+	<?php print $ui->creamyThemeCSS(); ?>
+	<!-- datetime picker --> 
+	<link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+>>>>>>> 3fa6970f6432a40246c650ae55caae0943926396:telephonylistandcallrecordingOLD.php
 
         <!-- datetime picker --> 
 		<link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
@@ -63,8 +78,11 @@
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 
+<<<<<<< HEAD:telephonylistandcallrecording.php
         <!-- =============== APP STYLES ===============-->
 			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+=======
+>>>>>>> 3fa6970f6432a40246c650ae55caae0943926396:telephonylistandcallrecordingOLD.php
 
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
@@ -74,6 +92,8 @@
 				$(".preloader").fadeOut("slow");
 			})
 		</script>
+	<script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
+	<script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -104,6 +124,7 @@ $callrecs = $ui->API_getListAllRecordings();
 ?>
                 <!-- Main content -->
                 <section class="content">
+<<<<<<< HEAD:telephonylistandcallrecording.php
                 	<div class="panel panel-default">
 						<div class="panel-body">
 							<legend>List & Call Recordings</legend>
@@ -267,6 +288,125 @@ $callrecs = $ui->API_getListAllRecordings();
 	               			</div><!-- ./filters -->
                			</div><!-- /.body -->
                		</div><!-- /.panel -->
+=======
+                <?php if ($user->userHasAdminPermission()) { ?>
+                    <div class="panel panel-default">
+                        <div class="panel-body table" id="recording_table">
+                            <legend><?php $lh->translateText("call_recordings"); ?></legend>
+				<div class="table-responsive">
+
+					<form id="search_form">
+						<table class="table table-bordered">
+						<tr>
+							<td><label>Phone: </label>
+            						<div class="form-group">
+								<input type="text" id="search_phone" name="search_phone" class="form-control">
+							</div>
+							</td>
+							<td><label>Agent: </label>
+            						<div class="form-group">
+								<input type="text" id="search_agent" name="search_agent" class="form-control">
+							</div>	
+							</td>
+						</tr>
+						<tr>
+							 <td colspan="2"><label>Customer Lastname: </label>
+            						<div class="form-group">
+								<input type="text" id="search_customer" name="search_customer" class="form-control">
+							</div>
+							</td>
+						</tr>
+						<tr>
+						<td><label>Start Date:</label>
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
+			<span class="fa fa-calendar"></span>
+                    </span>
+                </div>
+            </div>
+							</td>
+							<td><label>End Date:</label>
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker2'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </div>
+            </div>
+
+
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+		icons: {
+                      time: 'fa fa-clock-o',
+                      date: 'fa fa-calendar',
+                      up: 'fa fa-chevron-up',
+                      down: 'fa fa-chevron-down',
+                      previous: 'fa fa-chevron-left',
+                      next: 'fa fa-chevron-right',
+                      today: 'fa fa-crosshairs',
+                      clear: 'fa fa-trash'
+                    }
+		});
+
+                $('#datetimepicker2').datetimepicker({
+                icons: {
+                      time: 'fa fa-clock-o',
+                      date: 'fa fa-calendar',
+                      up: 'fa fa-chevron-up',
+                      down: 'fa fa-chevron-down',
+                      previous: 'fa fa-chevron-left',
+                      next: 'fa fa-chevron-right',
+                      today: 'fa fa-crosshairs',
+                      clear: 'fa fa-trash'
+                    }
+                });
+
+            });
+        </script>
+
+						</td>
+						</tr>
+						<tr>
+							<td colspan="2"><div class="pull-right"> <button id="search" class="btn btn-primary">Search</button> </div></td>
+						</tr>
+						</table>
+				</form>
+				</div>
+
+				<script language="javascript">
+					$(document).on('click','#search,function() {
+      
+					      $.ajax({
+						       url: "./php/UIHandler.php",
+						       type: 'POST',
+						       data: { 
+							        $("#search_form").serialize(),
+       							},
+       							success: function(data) {
+						       	console.log(data);
+       
+       							}
+      						});
+					});
+					</script>
+
+							<?php print $ui->getListAllRecordings(); ?>
+                        </div>
+                    </div>
+				<!-- /fila con acciones, formularios y demás -->
+				<?php
+					} else {
+						print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
+					}
+				?>
+>>>>>>> 3fa6970f6432a40246c650ae55caae0943926396:telephonylistandcallrecordingOLD.php
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
@@ -413,8 +553,11 @@ $callrecs = $ui->API_getListAllRecordings();
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
 		<!-- SLIMSCROLL-->
    		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
-   		
+
+
+
 		<script type="text/javascript">
+<<<<<<< HEAD:telephonylistandcallrecording.php
 
 			$(document).ready(function() {
 				$('#table_lists').dataTable();
@@ -425,6 +568,18 @@ $callrecs = $ui->API_getListAllRecordings();
 			    	stateSave: true
 				});
 
+=======
+		
+			
+			$(document).ready(function() {
+			        $('#recordings').DataTable( {
+			            deferRender:    true,
+				    select: true
+        		});
+		
+			$("#recordings_filter").css("display","none");
+ 
+>>>>>>> 3fa6970f6432a40246c650ae55caae0943926396:telephonylistandcallrecordingOLD.php
 				$('#list-modal').wizard();
 				// $('#call-playback-modal').modal('show');
 
