@@ -272,13 +272,22 @@ class DbHandler {
 		if ($userobj) { // first match valid?
 			//$password_hash = $userobj["password_hash"];
 			//$status = $userobj["status"];
+			$pass_hash = '';
+			$cwd = $_SERVER['DOCUMENT_ROOT'];
 			$password_hash = $userobj->pass;
 			$status = $userobj->active;
 			$user_role = $userobj->user_level;
+			$bcrypt = $userobj->bcrypt;
 			//if ($status == 1) { // user is active
-			if ($status == 'Y' || $status == 'y') {
+
+			if ($bcrypt > 0) {
+				$pass_hash = exec("{$cwd}/bin/bp.pl --pass=$password");
+				$pass_hash = preg_replace("/PHASH: |\n|\r|\t| /",'',$pass_hash);
+			} else {$pass_hash = $password;}
+			
+			if ( preg_match("/Y/i", $status) ) {
 				//if (\creamy\PassHash::check_password($password_hash, $password)) {
-				if ($password_hash === $password) {
+				if ($password_hash === $pass_hash) {
 	                // User password is correct. return some interesting fields...
 	                $arr = array();
 	                //$arr["id"] = $userobj["id"];
