@@ -1105,20 +1105,20 @@ error_reporting(E_ERROR | E_PARSE);
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 	//telephony menu for lists and call recordings
-	private function getUserActionMenuForLists($listid, $listname) {
+	public function getUserActionMenuForLists($listid, $listname) {
 		
-		return '<div class="btn-group">
-	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
-	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
-						<span class="caret"></span>
-						<span class="sr-only">Toggle Dropdown</span>
-	                </button>
-	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-lists" href="'.$listid.'">'.$this->lh->translationFor("modify").'</a></li>
-	                    <li class="divider"></li>
-	                    <li><a class="delete-lists" href="'.$listid.'">'.$this->lh->translationFor("delete").'</a></li>
-	                </ul>
-	            </div>';
+		   return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Modify</a></li>
+			<li class="divider"></li>
+			<li><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Delete</a></li>
+		    </ul>
+		</div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 	
@@ -1479,7 +1479,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$version = $this->db->getSettingValueForKey(CRM_SETTING_CRM_VERSION);
 		if (empty($version)) { $version = "unknown"; }
 		$version = "4.0";
-		return '<footer class="main-footer"><div class="pull-right hidden-xs"><b>Version</b> '.$version.'</div><strong>Copyright &copy;  <a href="http://www.goautodial.com/">GoAutoDial Inc.</a> All rights reserved.</footer>';
+		return '<footer class="main-footer"><div class="pull-right hidden-xs"><b>Version</b> '.$version.'</div><strong>Copyright &copy; '.date("Y").' <a href="http://www.goautodial.com/">GoAutoDial Inc.</a> All rights reserved.</footer>';
 	}
 	
 	/** Topbar Menu elements */
@@ -1711,7 +1711,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$telephonyArea = '<li class="treeview"><a href="#"><i class="fa fa-phone"></i> <span>'.$this->lh->translationFor("telephony").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';	
 			$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "users", $this->lh->translationFor("users"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonycampaigns.php", "fa fa-dashboard", $this->lh->translationFor("campaigns"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonylistandcallrecording.php", "tasks", $this->lh->translationFor("call_recordings"));
+			$telephonyArea .= $this-> getSidebarItem("./telephonylistandcallrecording.php", "tasks", $this->lh->translationFor("list_call_recordings"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "book", $this->lh->translationFor("scripts"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonymusiconhold.php", "phone", $this->lh->translationFor("music_on_hold"));
@@ -2998,6 +2998,23 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 	
+	private function ActionMenuForLists($id, $name) {
+		
+	   return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="edit-list" href="#" data-id="'.$id.'" data-name="'.$name.'">Modify</a></li>
+			<li class="divider"></li>
+			<li><a class="delete-list" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+		    </ul>
+		</div>';
+	}
+
+
 	// API to get usergroups
 	public function API_goGetUserGroupsList() {
 		$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -3340,9 +3357,9 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 		
-		$columns = array("Exten", "Protocol", "Protocol", "Dial Plan", "Status", "Name", "VMail", "Group", "Action");
-	    $hideOnMedium = array("Protocol","Protocol", "Dial Plan", "Status", "Name", "VMail", "Group");
-	    $hideOnLow = array("Protocol","Protocol", "Dial Plan", "Status", "Name", "VMail", "Group");
+		$columns = array("Exten", "Server IP", "Status", "VMail", "Action");
+	    $hideOnMedium = array("Server IP", "Status", "VMail");
+	    $hideOnLow = array("Server IP", "Status", "VMail");
 		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		
 			for($i=0;$i < count($output->extension);$i++){
@@ -3357,14 +3374,10 @@ error_reporting(E_ERROR | E_PARSE);
 				
 				$result = $result."<tr>
 	                    <td><a class='edit-phone' data-id='".$output->extension[$i]."'>".$output->extension[$i]."</a></td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->dialplan_number[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
-						<td class='hide-on-medium hide-on-low'>".$output->fullname[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>
-						<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
-	                    <td>".$action."</td>
+						<td>".$action."</td>
 	                </tr>";
 				
 			}
@@ -3556,13 +3569,13 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function API_getListAllRecordings(){
+	public function API_getListAllRecordings($search_phone){
 		$url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
-	    $postfields["requestDataPhone"] = $_REQUEST['search_phone']; #json. (required)
+	    $postfields["requestDataPhone"] = $search_phone; #json. (required)
 
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
@@ -3612,7 +3625,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 	
-	private function getUserActionMenuForCallRecording($id, $location) {
+	public function getUserActionMenuForCallRecording($id, $location) {
 		
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
