@@ -46,6 +46,7 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
 ?>
 
 // Settings
+var phone;
 var is_logged_in = <?=$is_logged_in?>;
 var logoutWarn = true;
 var use_webrtc = <?=$use_webrtc?>;
@@ -643,6 +644,34 @@ $(document).ready(function() {
         } else {
             console.log('window is still open');
         }
+    
+        $("aside.control-sidebar").css({
+            'overflow': 'hidden',
+            'min-height': $("body").innerHeight()
+        });
+    
+        var isMobile = false; //initiate as false
+        // device detection
+        if (parseInt($("body").innerHeight()) < 768) {
+            isMobile = true;
+        }
+        
+        $("[data-toggle='control-sidebar']").on('click', function() {
+            var sideBar = '230px';
+            if (isMobile) {
+                sideBar = '100%';
+            }
+            
+            if ($("aside").hasClass('control-sidebar-open')) {
+                $("aside.control-sidebar").css({
+                    'width': sideBar
+                });
+            } else {
+                $("aside.control-sidebar").css({
+                    'width': '230px'
+                });
+            }
+        });
     });
 
     var logoutRegX = new RegExp("logout\.php", "ig");
@@ -653,7 +682,6 @@ $(document).ready(function() {
             event.preventDefault();
             swal({
                 title: "<?=$lh->translationFor('sure_to_logout')?>",
-                type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "<?=$lh->translationFor('log_me_out')?>",
@@ -666,11 +694,13 @@ $(document).ready(function() {
                         btnLogMeOut();
                         loggedOut++;
                     }
-                    if (phone.isConnected()) {
-                        phone.stop();
-                        loggedOut++;
+                    if (use_webrtc) {
+                        if (phone.isConnected()) {
+                            phone.stop();
+                            loggedOut++;
+                        }
                     }
-                    if (loggedOut > 0) {
+                    if (loggedOut > 0 || (loggedOut < 1 && !is_logged_in)) {
                         console.log('<?=$lh->translationFor('logging_out_phones')?>...');
                         $("div.preloader center").append('<br><br><span style="font-size: 24px; color: white;"><?=$lh->translationFor('logging_out_phones')?>...</span>');
                         $("div.preloader").fadeIn("slow");
@@ -798,7 +828,7 @@ $(document).ready(function() {
     $("#go_btn_div").append("<button id='btnIVRParkCall' title='<?=$lh->translationFor('ivr_park_call')?>' class='btn btn-default btn-lg' style='margin: 0 5px 5px 0; padding: 10px 18px 10px 19px; font-size: 15px;'><i class='fa fa-tty'></i></button>");
     $("#go_btn_div").append("<button id='btnReQueueCall' title='<?=$lh->translationFor('requeue_call')?>' class='btn btn-default btn-lg' style='margin: 0 5px 5px 0; padding: 10px 20px 10px 21px; font-size: 15px;'><i class='fa fa-refresh'></i></button>");
     //$("#go_nav_btn").append("<div id='cust-info' class='center-block' style='text-align: center; line-height: 35px;'><i class='fa fa-user'></i> <span id='cust-name' style='padding-right: 20px;'></span> <i class='fa fa-phone-square'></i> <span id='cust-phone'></span><input type='hidden' id='cust-phone-number' /></div>");
-    $("#go_agent_status").append("<li><div id='MainStatusSpan' class='center-block'>&nbsp;</div></li>");
+    $("#go_agent_status").append("<li><div id='MainStatusSpan' class='center-block hidden-xs'>&nbsp;</div></li>");
     $("#go_agent_dialpad").append("<li><div id='AgentDialPad' class='center-block' style='text-align: center; min-width: 200px;'></div></li>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-1' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 1 </button>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-2' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 2 </button>");
@@ -816,12 +846,12 @@ $(document).ready(function() {
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-undo' class='btn btn-default btn-lg btn-raised' style='padding: 12.5px 22.6px; margin: 0 0 5px 0; font-size: 16px; font-family: monospace;' title='<?=$lh->translationFor('undo')?>'> <i class='fa fa-undo'></i> </button>");
     $("#AgentDialPad").append("<span id='for_dtmf' class='hidden'><small>(<?=$lh->translationFor('for_dtmf')?>)</small></span>");
     
-    $("#go_agent_manualdial").append("<li><div class='input-group-vertical center-block'><input type='text' maxlength='18' name='MDPhonENumbeR' id='MDPhonENumbeR' class='form-control col-sm-12 phonenumbers-only' value='' placeholder='<?=$lh->translationFor('enter_phone_number')?>' onkeyup='activateLinks();' onchange='activateLinks();' style='padding: 3px 2px; color: #222; height: 30px;' aria-label='...' /></div><div class='btn-group btn-block' rose='group'><button type='button' class='btn col-sm-10 btn-success btn-raised' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></button><button type='button' class='btn col-sm-2 btn-success dropdown-toggle' data-toggle='dropdown' id='manual-dial-dropdown'>&nbsp;<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span>&nbsp;</button><ul class='dropdown-menu col-lg-12' role='menu'><li><a href='javascript:void(0)' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></a></li><li><a href='javascript:void(0)' id='manual-dial-preview'><?=$lh->translationFor('preview_call')?></a></li></ul></div><input type='hidden' name='MDDiaLCodE' id='MDDiaLCodE' class='digits-only' value='1' /><input type='hidden' name='MDPhonENumbeRHiddeN' id='MDPhonENumbeRHiddeN' value='' /><input type='hidden' name='MDLeadID' id='MDLeadID' value='' /><input type='hidden' name='MDType' id='MDType' value='' /><input type='checkbox' name='LeadLookUP' id='LeadLookUP' size='1' value='0' class='hidden' disabled /><input type='hidden' size='24' maxlength='20' name='MDDiaLOverridE' id='MDDiaLOverridE' class='cust_form' value='' /></li>");
+    $("#go_agent_manualdial").append("<li><div class='input-group-vertical center-block'><input type='text' maxlength='18' name='MDPhonENumbeR' id='MDPhonENumbeR' class='form-control col-xs-12 phonenumbers-only' value='' placeholder='<?=$lh->translationFor('enter_phone_number')?>' onkeyup='activateLinks();' onchange='activateLinks();' style='padding: 3px 2px; color: #222; height: 30px;' aria-label='...' /></div><div class='btn-group btn-block' rose='group'><button type='button' class='btn col-xs-10 btn-success btn-raised' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></button><button type='button' class='btn col-xs-2 btn-success dropdown-toggle' data-toggle='dropdown' id='manual-dial-dropdown'>&nbsp;<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span>&nbsp;</button><ul class='dropdown-menu col-lg-12' role='menu'><li><a href='javascript:void(0)' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></a></li><li><a href='javascript:void(0)' id='manual-dial-preview'><?=$lh->translationFor('preview_call')?></a></li></ul></div><input type='hidden' name='MDDiaLCodE' id='MDDiaLCodE' class='digits-only' value='1' /><input type='hidden' name='MDPhonENumbeRHiddeN' id='MDPhonENumbeRHiddeN' value='' /><input type='hidden' name='MDLeadID' id='MDLeadID' value='' /><input type='hidden' name='MDType' id='MDType' value='' /><input type='checkbox' name='LeadLookUP' id='LeadLookUP' size='1' value='0' class='hidden' disabled /><input type='hidden' size='24' maxlength='20' name='MDDiaLOverridE' id='MDDiaLOverridE' class='cust_form' value='' /></li>");
 
     $("#go_agent_login").append("<li><button id='btnLogMeIn' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-in'></i> <?=$lh->translationFor('login_on_phone')?></button></li>");
     $("#go_agent_logout").append("<li><button id='btnLogMeOut' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-out'></i> <?=$lh->translationFor('logout_from_phone')?></button></li>");
     
-    $("div.navbar-custom-menu").prepend("<span id='server_date' class='pull-left' style='color: #fff; line-height: 21px; height: 50px; padding: 14px 20px;'></span>");
+    $("div.navbar-custom-menu").prepend("<span id='server_date' class='hidden-xs pull-left' style='color: #fff; line-height: 21px; height: 50px; padding: 14px 20px;'></span>");
     
     var paddingHB = 100;
     var navConBar = $("ul.control-sidebar-tabs").innerHeight();
@@ -901,19 +931,6 @@ $(document).ready(function() {
     $('#dropdownMenuAgent').click(function() {
         $('.circle-button').hide();
     });
-    
-    //$(".modal").on("show.bs.modal", function() {
-    //    var curModal;
-    //    curModal = this;
-    //    $(".modal").each(function() {
-    //        if (this !== curModal) {
-    //            $(this).modal("hide");
-    //            if ($(this).attr('id').match(/custinfo$/)) {
-    //                showInfo = false;
-    //            }
-    //        }
-    //    });
-    //});
 
     updateButtons();
     toggleButtons(dial_method);

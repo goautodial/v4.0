@@ -313,11 +313,15 @@ class GOagent extends Module {
 		//	}
 		//});
 		
-		$str = <<<EOF
+		$str  = <<<EOF
 		<link type='text/css' rel='stylesheet' href='{$goModuleDIR}css/style.css'></link>
 					<script type='text/javascript' src='{$goModuleDIR}GOagentJS.php'></script>
 					<script type='text/javascript' src='{$goModuleDIR}js/addons.js'></script>
 					
+EOF;
+
+		if ($useWebRTC) {
+			$str .= <<<EOF
 					<audio id="remoteStream" style="display: none;" autoplay controls></audio>
 					<script type="text/javascript" src="{$goModuleDIR}js/jsSIP.js"></script>
 					<script>
@@ -495,6 +499,10 @@ class GOagent extends Module {
 						console.error('getUserMedia failed.', e);
 					});
 					</script>
+EOF;
+		}
+
+		$str .= <<<EOF
 					<div id="dialog-custinfo" class="modal fade" tabindex="-1">
 						<div class="modal-dialog">
 							<div class="modal-content">
