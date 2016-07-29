@@ -128,7 +128,9 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow", function() {
-					$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000, htmlAllowed: true});
+					if (use_webrtc) {
+						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000, htmlAllowed: true});
+					}
 				});
 			});
 		</script>
@@ -663,7 +665,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
       <li id="settings-tab"><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
     </ul>
     <!-- Tab panes -->
-    <div class="tab-content" style="border-width:0; overflow-y: auto; padding-bottom: 30px;">
+    <div class="tab-content" style="border-width:0; overflow-y: hidden; padding-bottom: 30px;">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-dialer-tab">
         <ul class="control-sidebar-menu" id="go_agent_dialer">
@@ -679,11 +681,11 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 			
         </ul>
 
-        <ul class="control-sidebar-menu" id="go_agent_dialpad" style="margin-top: 15px;padding: 0 15px;">
+        <ul class="control-sidebar-menu hidden-xs" id="go_agent_dialpad" style="margin-top: 15px;padding: 0 15px;">
 			
         </ul>
 
-        <ul class="control-sidebar-menu" id="go_agent_other_buttons" style="margin-top: 15px;padding: 0 15px;">
+        <ul class="control-sidebar-menu hidden-xs" id="go_agent_other_buttons" style="margin-top: 15px;padding: 0 15px;">
 			<li style="padding: 0 5px 15px 0; display: none;">
 				<div class="material-switch pull-right">
 					<input id="LeadPreview" name="LeadPreview" value="0" type="checkbox"/>
@@ -743,7 +745,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 				<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px;">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<img src="<?=$user->getUserAvatar()?>" width="120" height="auto" style="border-color:transparent;" alt="User Image" />
-						<p><?=$user->getUserName()?><br><small><?=$lh->translationFor("nice_to_see_you_again")?></small></p>
+						<p style="color:white;"><?=$user->getUserName()?><br><small><?=$lh->translationFor("nice_to_see_you_again")?></small></p>
 					</a>
 				</div>
 			</li>
