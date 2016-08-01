@@ -7,7 +7,7 @@
 // define ('goPass', 'Yq48yHo2g0');
 // define ('responsetype', 'json');
 
-define ('gourl', 'http://webrtc.goautodial.com/goAPI');
+define ('gourl', 'https://webrtc.goautodial.com/goAPI');
 define ('goUser', 'admin');
 // define ('goPass', 'G02x16');
 define ('goPass', 'Yq48yHo2g0');

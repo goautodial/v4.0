@@ -1,207 +1,90 @@
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+<?php 
 
-require_once('CRMDefaults.php');
-require_once('goCRMAPISettings.php');
+	/** Campaigns API - Update Campaign */
+	/**
+	 * Generates action circle buttons for different pages/module
+	 * @param form data 
+	 */
 
-// check required fields
-$reason = "Unable to Modify Campaign";
+	require_once('goCRMAPISettings.php');+
 
-$validated = 0;
+	$url = gourl."/goCampaigns/goAPI.php"; # URL to GoAutoDial API file
+	$postfields["goUser"] 						= goUser; #Username goes here. (required)
+	$postfields["goPass"] 						= goPass; #Password goes here. (required)
+	$postfields["goAction"] 					= "goEditCampaign"; #action performed by the [[API:Functions]]
+	$postfields["responsetype"] 				= responsetype; #json (required)
+	$postfields["hostname"] 					= $_SERVER['REMOTE_ADDR']; #Default value
 
-$campaign = NULL;
-if (isset($_POST["modify_campaign"])) {
-	$campaign = $_POST["modify_campaign"];
-}
+	$postfields["campaign_id"] 					= $_POST["campaign_id"];
+	$postfields["campaign_name"] 				= $_POST["campaign_name"];
+	$postfields["campaign_desc"] 				= $_POST["campaign_desc"];
+	$postfields["active"] 						= $_POST["active"];
+	$postfields["dial_method"] 					= $_POST["dial_method"];
 
-$disposition = NULL;
-if (isset($_POST["disposition"])) {
-	$disposition = $_POST["disposition"];
-}
+	if($_POST["dial_method"] == "AUTO_DIAL")
+		$postfields["auto_dial_level"]				= $_POST["auto_dial_level"];
 
-$leadfilter = NULL;
-if (isset($_POST["modify_leadfilter"])) {
-	$leadfilter = $_POST["modify_leadfilter"];
-}
+	$postfields["auto_dial_level_adv"] 			= $_POST["auto_dial_level_adv"];
+	$postfields["dial_prefix"] 					= $_POST["dial_prefix"];
+	$postfields["custom_prefix"] 				= $_POST["custom_prefix"];
+	$postfields["campaign_script"] 				= $_POST["campaign_script"];
+	$postfields["campaign_cid"] 				= $_POST["campaign_cid"];
+	$postfields["campaign_recording"] 			= $_POST["campaign_recording"];
+	$postfields["campaign_vdad_exten"] 			= $_POST["campaign_vdad_exten"];
+	$postfields["local_call_time"] 				= $_POST["local_call_time"];
+	$postfields["force_reset_hopper"] 			= $_POST["force_reset_hopper"];
+	$postfields["dial_status"] 					= $_POST["dial_status"];
+	$postfields["lead_order"] 					= $_POST["lead_order"];
+	$postfields["lead_filter"] 					= $_POST["lead_filter"];
+	$postfields["dial_timeout"] 				= $_POST["dial_timeout"];
+	$postfields["manual_dial_prefix"] 			= $_POST["manual_dial_prefix"];
+	$postfields["get_call_launch"] 				= $_POST["get_call_launch"];
+	$postfields["am_message_exten"] 			= $_POST["am_message_exten"];
+	$postfields["am_message_chooser"] 			= $_POST["am_message_chooser"];
+	$postfields["agent_pause_codes_active"] 	= $_POST["agent_pause_codes_active"];
+	$postfields["manual_dial_filter"] 			= $_POST["manual_dial_filter"];
+	$postfields["manual_dial_list_id"] 			= $_POST["manual_dial_list_id"];
+	$postfields["available_only_ratio_tally"] 	= $_POST["available_only_ratio_tally"];
+	$postfields["campaign_rec_filename"] 		= $_POST["campaign_rec_filename"];
+	$postfields["next_agent_call"] 				= $_POST["next_agent_call"];
+	$postfields["three_way_call_cid"] 			= $_POST["three_way_call_cid"];
+	$postfields["three_way_dial_prefix"] 		= $_POST["three_way_dial_prefix"];
+	$postfields["customer_3way_hangup_logging"] = $_POST["customer_3way_hangup_logging"];
+	$postfields["customer_3way_hangup_seconds"] = $_POST["customer_3way_hangup_seconds"];
+	$postfields["customer_3way_hangup_action"] 	= $_POST["customer_3way_hangup_action"];
 
-// CAMPAIGN
-if ($campaign != NULL) {
-	// collect new user data.	
-	$name = NULL; if (isset($_POST["name"])) { 
-		$name = $_POST["name"]; 
-		$name = stripslashes($name);
+	if ($_POST["dial_method"] == "INBOUND_MAN") {
+		$postfields["inbound_man"] 					= $_POST["inbound_man"];
+	} else {
+		$postfields["inbound_man"] 					= "";
 	}
-
-	$dial_method = NULL; if (isset($_POST["dial_method"])) { 
-		$dial_method = $_POST["dial_method"]; 
-		$dial_method = stripslashes($dial_method);
-	}
-
-    $status = NULL; if (isset($_POST["status"])) { 
-		$status = $_POST["status"]; 
-		$status = stripslashes($status);
-	}
-
-	$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goEditCampaign"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = responsetype; #json (required)
-    $postfields["campaign_id"] = $campaign; #Desired list id. (required)
-	$postfields["campaign_name"] = $name; #Desired value for user (required)
-	$postfields["active"] = $status; #Desired value for user (required)
-    $postfields["dial_method"] = $dial_method; #Desired value for user (required)
-    $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
 	
-    if ($output->result=="success") {
-    # Result was OK!
-        ob_clean();
-		print (CRM_DEFAULT_SUCCESS_RESPONSE);
-    } else {
-    # An error occured
-        ob_clean();
-		print $output->result;
-        //$lh->translateText("unable_modify_list");
-    }
-    
-}
-// DISPOSITION
-if ($disposition != NULL) {
-	if(!isset($_POST['selectable'])){
-		$_POST['selectable'] = "N";
-	}
 
-	if(!isset($_POST['human_answered'])){
-		$_POST['human_answered'] = "N";
-	}
-
-	if(!isset($_POST['sale'])){
-		$_POST['sale'] = "N";
-	}
-
-	if(!isset($_POST['dnc'])){
-		$_POST['dnc'] = "N";
-	}
-
-	if(!isset($_POST['scheduled_callback'])){
-		$_POST['scheduled_callback'] = "N";
-	}
-
-	if(!isset($_POST['customer_contact'])){
-		$_POST['customer_contact'] = "N";
-	}
-
-	if(!isset($_POST['not_interested'])){
-		$_POST['not_interested'] = "N";
-	}
-
-	if(!isset($_POST['unworkable'])){
-		$_POST['unworkable'] = "N";
-	}
-		
-	$status = NULL; if (isset($_POST["status"])) { 
-		$status = $_POST["status"]; 
-		$status = stripslashes($status);
-	}
-	$status_name = NULL; if (isset($_POST["status_name"])) { 
-		$status_name = $_POST["status_name"]; 
-		$status_name = stripslashes($status_name);
-	}
-    
-	$url = gourl."/goDispositions/goAPI.php"; # URL to GoAutoDial API file
-	$postfields["goUser"] = goUser; #Username goes here. (required)
-	$postfields["goPass"] = goPass; #Password goes here. (required)
-	$postfields["goAction"] = "goEditDisposition"; #action performed by the [[API:Functions]]
-	$postfields["responsetype"] = responsetype; #json (required)
-	$postfields["campaign_id"] 			= $disposition;
-	$postfields["status"] 				= $status;
-	$postfields['status_name'] 			= $status_name;
-	$postfields['selectable'] 			= $_POST['selectable'];
-	$postfields['human_answered'] 		= $_POST['human_answered'];
-	$postfields['sale'] 				= $_POST['sale'];
-	$postfields['dnc'] 					= $_POST['dnc'];
-	$postfields['scheduled_callback'] 	= $_POST['scheduled_callback'];
-	$postfields['customer_contact'] 	= $_POST['customer_contact'];
-	$postfields['not_interested'] 		= $_POST['not_interested'];
-	$postfields['unworkable'] 			= $_POST['unworkable'];
-
-	$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
-	//curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+	// curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 	curl_setopt($ch, CURLOPT_POST, 1);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 	$data = curl_exec($ch);
+
 	curl_close($ch);
+
 	$output = json_decode($data);
-
-    //var_dump($output);
-
-    if ($output->result=="success") {
-    # Result was OK!
-        echo 1;
-    } else {
-    # An error occured
-		print $output->result;
-		//print $output->count;
-        //$lh->translateText("unable_modify_list");
-    }
-}
-
-// LEAD FILTER
-if ($leadfilter != NULL) {
-	// collect new user data.		
-	$name = NULL; if (isset($_POST["name"])) { 
-		$name = $_POST["name"]; 
-		$name = stripslashes($name);
+	
+	// print_r($output);die;
+	$home = $_SERVER['HTTP_REFERER'];
+	if ($output->result == "success") {
+		# Result was OK!
+		$url = str_replace("?message=Success&campaign=".$_POST["campaign_id"], "", $home);
+		header("Location: ".$url."?message=Success&campaign=".$_POST["campaign_id"]);
+	} else {
+		# An error occured
+		$url = str_replace("?message=Error&campaign=".$_POST["campaign_id"], "", $home);
+		header("Location: ".$url."?message=Error&campaign=".$_POST["campaign_id"]);
 	}
-    
-	$url = gourl."/goLeadFilters/goAPI.php"; # URL to GoAutoDial API file
-	$postfields["goUser"] = goUser; #Username goes here. (required)
-	$postfields["goPass"] = goPass; #Password goes here. (required)
-	$postfields["goAction"] = "goEditLeadFilter"; #action performed by the [[API:Functions]]
-	$postfields["responsetype"] = responsetype; #json (required)
-	$postfields["lead_filter_id"] = $leadfilter;
-	$postfields["lead_filter_name"] = $name;
-	$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	$data = curl_exec($ch);
-	curl_close($ch);
-	$output = json_decode($data);
 
-    //var_dump($output);
-
-    if ($output->result=="success") {
-    # Result was OK!
-        ob_clean();
-		print (CRM_DEFAULT_SUCCESS_RESPONSE);
-    } else {
-    # An error occured
-        ob_clean();
-		print $output->result;
-		//print $output->count;
-        //$lh->translateText("unable_modify_list");
-    }
-    
-}
 ?>

@@ -414,6 +414,13 @@ unable_delete_event = "There was an error while deleting the event. please, try 
 calls = "Calls"
 call_logs = "Logs"
 new_call = "New call"
+N = "No Answer"
+NA = "No Answer AAutodial"
+A = "Answering Machine"
+AA = "Answering Machine Auto"
+DROP = "Agent Not Available"
+B = "Busy"
+NEW = "New Lead"
 
 
 
