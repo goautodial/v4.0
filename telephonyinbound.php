@@ -49,6 +49,9 @@
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
         
+        <!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -72,7 +75,7 @@
                 <section class="content-header">
                     <h1>
                         <?php $lh->translateText("telephony"); ?>
-                        <small><?php $lh->translateText("inbound"); ?></small>
+                        <small><?php $lh->translateText("inbound_management"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -97,183 +100,181 @@
 	$phonenumber = $ui->API_getPhoneNumber();
 
 ?>
-            <div role="tabpanel" class="panel panel-transparent">
-				
-				<ul role="tablist" class="nav nav-tabs">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<legend>Inbound: <small>Ingroups, Call Menus, Phone Numbers</small> </legend>
 
-				 <!-- In-group panel tabs-->
-					 <li role="presentation" class="active">
-						<a href="#T_ingroup" aria-controls="T_ingroup" role="tab" data-toggle="tab" class="bb0">
-						   <sup><span class="fa fa-users"></span></sup> In-Groups</a>
-					 </li>
-				<!-- IVR panel tab -->
-					 <li role="presentation">
-						<a href="#T_ivr" aria-controls="T_ivr" role="tab" data-toggle="tab" class="bb0">
-						   <sup><span class="fa fa-volume-up"></span></sup> Interactive Voice Response (IVR) Menus </a>
-					 </li>
-				<!-- DID panel tab -->
-					 <li role="presentation">
-						<a href="#T_phonenumber" aria-controls="T_phonenumber" role="tab" data-toggle="tab" class="bb0">
-						   <sup><span class="fa fa-phone-square"></span></sup> Phone Numbers (DIDs/TFNs) </a>
-					 </li>
-				  </ul>
-				  
-				<!-- Tab panes-->
-				<div class="tab-content p0 bg-white">
+		            <div role="tabpanel">
+						
+						<ul role="tablist" class="nav nav-tabs">
 
+						 <!-- In-group panel tabs-->
+							 <li role="presentation" class="active">
+								<a href="#T_ingroup" aria-controls="T_ingroup" role="tab" data-toggle="tab" class="bb0">
+								   <sup><span class="fa fa-users"></span></sup> In-Groups</a>
+							 </li>
+						<!-- IVR panel tab -->
+							 <li role="presentation">
+								<a href="#T_ivr" aria-controls="T_ivr" role="tab" data-toggle="tab" class="bb0">
+								   <sup><span class="fa fa-volume-up"></span></sup> Interactive Voice Response (IVR) Menus </a>
+							 </li>
+						<!-- DID panel tab -->
+							 <li role="presentation">
+								<a href="#T_phonenumber" aria-controls="T_phonenumber" role="tab" data-toggle="tab" class="bb0">
+								   <sup><span class="fa fa-phone-square"></span></sup> Phone Numbers (DIDs/TFNs) </a>
+							 </li>
+						  </ul>
+						  
+						<!-- Tab panes-->
+						<div class="tab-content bg-white">
 
-				<!--==== In-group ====-->
-				  <div id="T_ingroup" role="tabpanel" class="tab-pane active" style="padding: 20px;">
-						<table class="table table-striped table-bordered table-hover" id="table_ingroup">
-						   <thead>
-							  <tr>
-								 <th>In-Group</th>
-								 <th>Descriptions</th>
-								 <th>Priority</th>
-								 <th>Status</th>
-								 <th>Time</th>
-								 <th>Action</th>
-							  </tr>
-						   </thead>
-						   <tbody>
-							   	<?php
-							   		for($i=0;$i < count($ingroup->group_id);$i++){
-					
-										if($ingroup->active[$i] == "Y"){
-											$ingroup->active[$i] = "Active";
-										}else{
-											$ingroup->active[$i] = "Inactive";
-										}
+							<!--==== In-group ====-->
+							<div id="T_ingroup" role="tabpanel" class="tab-pane active">
+								<table class="table table-striped table-bordered table-hover" id="table_ingroup">
+								   <thead>
+									  <tr>
+										 <th>In-Group</th>
+										 <th class='hide-on-low hide-on-medium'>Descriptions</th>
+										 <th class='hide-on-low hide-on-medium'>Priority</th>
+										 <th class='hide-on-low'>Status</th>
+										 <th class='hide-on-low hide-on-medium'>Time</th>
+										 <th>Action</th>
+									  </tr>
+								   </thead>
+								   <tbody>
+									   	<?php
+									   		for($i=0;$i < count($ingroup->group_id);$i++){
+							
+												if($ingroup->active[$i] == "Y"){
+													$ingroup->active[$i] = "Active";
+												}else{
+													$ingroup->active[$i] = "Inactive";
+												}
 
-									$action_INGROUP = $ui->getUserActionMenuForInGroups($ingroup->group_id[$i]);
+											$action_INGROUP = $ui->getUserActionMenuForInGroups($ingroup->group_id[$i]);
 
-							   	?>	
-									<tr>
-										<td><?php echo $ingroup->group_id[$i];?></td>
-										<td><a class=''><?php echo $ingroup->group_name[$i];?></a></td>
-										<td><?php echo $ingroup->queue_priority[$i];?></td>
-										<td class='hide-on-medium hide-on-low'><?php echo $ingroup->active[$i];?></td>
-										<td class='hide-on-medium hide-on-low'><?php echo $ingroup->call_time_id[$i];?></td>
-										<td><?php echo $action_INGROUP;?></td>
-									</tr>
-								<?php
-									}
-								?>
-						   </tbody>
-						</table>
-						<br/>
-					<div class="panel-footer text-right">&nbsp;</div>
-				 </div>
-				
-				<!--==== IVR ====-->
-				  <div id="T_ivr" role="tabpanel" class="tab-pane" style="padding: 20px;">
-						<table class="table table-striped table-bordered table-hover" id="table_ivr">
-						   <thead>
-							  <tr>
-								 <th>Menu ID</th>
-								 <th>Descriptions</th>
-								 <th>Prompt</th>
-								 <th class='hide-on-medium hide-on-low'>Timeout</th>
-								 <th>Action</th>
-							  </tr>
-						   </thead>
-						   <tbody>
-							   	<?php
-							   		for($i=0;$i < count($ivr->menu_id);$i++){
+									   	?>	
+											<tr>
+												<td><a class='edit-ingroup' data-id="<?php echo $ingroup->group_id[$i];?>"><?php echo $ingroup->group_id[$i];?></a></td>
+												<td class='hide-on-low hide-on-medium'><?php echo $ingroup->group_name[$i];?></td>
+												<td class='hide-on-low hide-on-medium'><?php echo $ingroup->queue_priority[$i];?></td>
+												<td class='hide-on-low'><?php echo $ingroup->active[$i];?></td>
+												<td class='hide-on-low hide-on-medium'><?php echo $ingroup->call_time_id[$i];?></td>
+												<td><?php echo $action_INGROUP;?></td>
+											</tr>
+										<?php
+											}
+										?>
+								   </tbody>
+								</table>
+							</div>
+							
+							<!--==== IVR ====-->
+							<div id="T_ivr" role="tabpanel" class="tab-pane">
+								<table class="table table-striped table-bordered table-hover" id="table_ivr">
+								   <thead>
+									  <tr>
+										 <th>Menu ID</th>
+										 <th class='hide-on-medium hide-on-low'>Descriptions</th>
+										 <th class='hide-on-medium hide-on-low'>Prompt</th>
+										 <th class='hide-on-medium hide-on-low'>Timeout</th>
+										 <th>Action</th>
+									  </tr>
+								   </thead>
+								   <tbody>
+									   	<?php
+									   		for($i=0;$i < count($ivr->menu_id);$i++){
 
-									$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i], $ivr->menu_name[$i]);
+											$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i], $ivr->menu_name[$i]);
 
-							   	?>	
-									<tr>
-										<td><?php echo $ivr->menu_id[$i];?></td>
-										<td><a class=''><?php echo $ivr->menu_name[$i];?></a></td>
-										<td><?php echo $ivr->menu_prompt[$i];?></td>
-										<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_timeout[$i];?></td>
-										<td><?php echo $action_IVR;?></td>
-									</tr>
-								<?php
-									}
-								?>
-						   </tbody>
-						</table>
-						<br/>
-					<div class="panel-footer text-right">&nbsp;</div>
-				 </div>
+									   	?>	
+											<tr>
+												<td><a class='edit-ivr' data-id="<?php echo $ivr->menu_id[$i];?>"><?php echo $ivr->menu_id[$i];?></a></td>
+												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_name[$i];?></td>
+												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_prompt[$i];?></td>
+												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_timeout[$i];?></td>
+												<td><?php echo $action_IVR;?></td>
+											</tr>
+										<?php
+											}
+										?>
+								   </tbody>
+								</table>
+							</div>
 
-				 <!--==== phonenumber / DID ====-->
-				  <div id="T_phonenumber" role="tabpanel" class="tab-pane" style="padding: 20px;">
-						<table class="table table-striped table-bordered table-hover" id="table_did">
-						   <thead>
-							  <tr>
-								 <th>Phone Numbers</th>
-								 <th>Description</th>
-								 <th class='hide-on-medium hide-on-low'>Status</th>
-								 <th class='hide-on-medium hide-on-low'>Route</th>
-								 <th>Action</th>
-							  </tr>
-						   </thead>
-						   <tbody>
-							   	<?php
-							   		for($i=0;$i < count($phonenumber->did_pattern);$i++){
+							<!--==== phonenumber / DID ====-->
+							<div id="T_phonenumber" class="tab-pane">
+								<table class="table table-striped table-bordered table-hover" id="table_did">
+								   <thead>
+									  <tr>
+										 <th>Phone Numbers</th>
+										 <th class='hide-on-medium hide-on-low'>Description</th>
+										 <th class='hide-on-medium hide-on-low'>Status</th>
+										 <th class='hide-on-medium hide-on-low'>Route</th>
+										 <th>Action</th>
+									  </tr>
+								   </thead>
+								   <tbody>
+									   	<?php
+									   		for($i=0;$i < count($phonenumber->did_pattern);$i++){
 
-							   			if($phonenumber->active[$i] == "Y"){
-											$phonenumber->active[$i] = "Active";
-										}else{
-											$phonenumber->active[$i] = "Inactive";
-										}
+									   			if($phonenumber->active[$i] == "Y"){
+													$phonenumber->active[$i] = "Active";
+												}else{
+													$phonenumber->active[$i] = "Inactive";
+												}
 
-										if($phonenumber->did_route[$i] == "IN_GROUP"){
-											$phonenumber->did_route[$i] = "IN-GROUP";
-										}
-										if($phonenumber->did_route[$i] == "EXTEN"){
-											$phonenumber->did_route[$i] = "CUSTOM EXTENSION";
-										}
+												if($phonenumber->did_route[$i] == "IN_GROUP"){
+													$phonenumber->did_route[$i] = "IN-GROUP";
+												}
+												if($phonenumber->did_route[$i] == "EXTEN"){
+													$phonenumber->did_route[$i] = "CUSTOM EXTENSION";
+												}
 
-									$action_DID = $ui->getUserActionMenuForDID($phonenumber->did_id[$i], $phonenumber->did_description[$i]);
+											$action_DID = $ui->getUserActionMenuForDID($phonenumber->did_id[$i], $phonenumber->did_description[$i]);
 
-							   	?>	
-									<tr>
-										<td><?php echo $phonenumber->did_pattern[$i];?></td>
-										<td><a class=''><?php echo $phonenumber->did_description[$i];?></a></td>
-										<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->active[$i];?></td>
-										<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->did_route[$i];?></td>
-										<td><?php echo $action_DID;?></td>
-									</tr>
-								<?php
-									}
-								?>
-						   </tbody>
-						</table>
-						<br/>
-					<div class="panel-footer text-right">&nbsp;</div>
-				 </div>
+									   	?>	
+											<tr>
+												<td><a class='edit-phonenumber' data-id="<?php echo $phonenumber->did_id[$i];?>"><?php echo $phonenumber->did_pattern[$i];?></a></td>
+												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->did_description[$i];?></td>
+												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->active[$i];?></td>
+												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->did_route[$i];?></td>
+												<td><?php echo $action_DID;?></td>
+											</tr>
+										<?php
+											}
+										?>
+								   </tbody>
+								</table>
+							</div>
 
-				</div><!-- END tab content-->
-			</div>
+						</div><!-- END tab content-->
 
-				<!-- /fila con acciones, formularios y demás -->
-				<?php
-					} else {
-						print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
-					}
-				?>
-				
-				<div class="bottom-menu skin-blue">
-					<div class="action-button-circle" data-toggle="modal">
-						<?php print $ui->getCircleButton("calls", "plus"); ?>
+							<!-- /fila con acciones, formularios y demás -->
+							<?php
+								} else {
+									print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
+								}
+							?>
+							
+						<div class="bottom-menu skin-blue">
+							<div class="action-button-circle" data-toggle="modal">
+								<?php print $ui->getCircleButton("calls", "plus"); ?>
+							</div>
+							<div class="fab-div-area" id="fab-div-area">
+								<ul class="fab-ul" style="height: 250px;">
+									<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_ingroups"></a></li><br/>
+									<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_ivr"></a></li><br/>
+									<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers"> </a></li>
+								</ul>
+							</div>
+						</div>
 					</div>
-					<div class="fab-div-area" id="fab-div-area">
-						<ul class="fab-ul" style="height: 250px;">
-							<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_ingroups"></a></li><br/>
-							<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_ivr"></a></li><br/>
-							<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers"> </a></li>
-						</ul>
-					</div>
-				</div>
-					
-                </section><!-- /.content -->
-            </aside><!-- /.right-side -->
-        </div><!-- ./wrapper -->
+				</div><!-- /. body -->
+			</div><!-- /. panel -->
+        </section><!-- /.content -->
+    </aside><!-- /.right-side -->
+</div><!-- ./wrapper -->
 
 <?php
 	/*
@@ -971,6 +972,7 @@
  		<script type="text/javascript">
 			$(document).ready(function() {
 
+			// loads the fixed action button
 				$(".bottom-menu").on('mouseenter mouseleave', function () {
 				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 				});
@@ -1050,15 +1052,10 @@
 					}
 					
 				});
-				
 	
 				// for easy wizard -
-				$("#add_ingroups").wizard({
-					onfinish:function(){
-						console.log("Ingroup Added!");
-					}
-				});
-				
+				$("#add_ingroups").wizard();
+				$("#add_phonenumbers").wizard();
 				$("#add_ivr").wizard({
 					onfinish:function(){
 						console.log("Call Menu Added!");
@@ -1083,10 +1080,7 @@
 					}
 				});
 
-				$("#add_phonenumbers").wizard({
-					onfinish:function(){
-					}
-				});
+				
 
 				// ajax commands for modals -
 				$('#submit_ingroup').click(function(){
@@ -1200,10 +1194,11 @@
 					}
 
 				});
-				
 
-			      
-				
+			/****
+			 ** EDIT ACTIONS
+			 ****/
+
 				//EDIT INGROUP
 				 $(".edit-ingroup").click(function(e) {
 					e.preventDefault();
@@ -1227,54 +1222,12 @@
 					//$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				 });
-				
-				/**
-				 * Delete Actions.
-				 *//*
-				//DELETE INGROUPS
-				 $(".delete-ingroup").click(function(e) {
-					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
-					e.preventDefault();
-					if (r == true) {
-						var groupid = $(this).attr('href');
-						$.post("./php/DeleteTelephonyInbound.php", { groupid: groupid } ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
-							else { alert ("<?php $lh->translateText("unable_delete_list"); ?>"); }
-						});
-					}
-				 });
 
-				 //DELETE IVR
-				 $(".delete-ivr").click(function(e) {
-					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
-					e.preventDefault();
-					if (r == true) {
-						var menu_id = $(this).attr('href');
-						$.post("./php/DeleteTelephonyInbound.php", { ivr: menu_id } ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
-							else { alert ("<?php $lh->translateText("unable_delete_ivr"); ?>"); }
-						});
-					}
-				 });
 
-				 //DELETE PHONENUMBER/DID
-				 $(".delete-phonenumber").click(function(e) {
-					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
-					e.preventDefault();
-					if (r == true) {
-						var did = $(this).attr('href');
-						$.post("./php/DeleteTelephonyInbound.php", { did: did } ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
-							else { alert ("<?php $lh->translateText("unable_delete_phonenumber"); ?>"); }
-						});
-					}
-				 });*/
+			/****
+			** DELETE Validation Popup
+			*****/
 
-			/*
-			 *
-			 * DELETE CLICKS
-			 * 
-			*/
 			//DELETE INGROUPS
 				 $(document).on('click','.delete-ingroup',function() {
 				 	var groupid = $(this).attr('data-id');
@@ -1317,11 +1270,9 @@
 				 	$('#delete_validation_modal').modal('show');
 				 });
 
-			/*
-			 *
-			 * DELETE ACTIONS
-			 *
-			 */
+			/****
+			** DELETE ACTIONS
+			****/
 				$(document).on('click','#delete_yes',function() {
 				 	
 				 	var id = $(this).attr('data-id');

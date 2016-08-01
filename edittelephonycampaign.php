@@ -1131,16 +1131,12 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 										   	<div id="modifyUSERresult"></div>
 
 										   	<!-- FOOTER BUTTONS -->
-										   	<fieldset>
+						                    <fieldset>
 						                        <div class="box-footer">
-						                           <div class="pull-right col-sm-2">
-						                           		<div class="col-sm-5">
-															<a href="telephonycampaigns.php" type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> Cancel </a>
-						                           		</div>
-						                           		
-						                           		<div class="col-sm-6">
-						                                	<button type="button" class="btn btn-primary pull-left" id="modifyCampaignButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-														</div>
+						                           <div class="col-sm-4 col-sm-offset-2 pull-right">
+															<a href="telephonycampaigns.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+						                           	
+						                                	<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 						                           </div>
 						                        </div>
 						                    </fieldset>
@@ -1239,7 +1235,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 									<!-- ACTION BUTTONS -->
 										<td><center>
 											<a class="edit_disposition btn btn-primary" href="#" data-toggle="modal" data-target="#edit_disposition_modal" data-id="<?php echo $disposition->campaign_id[$i];?>" data-status ="<?php echo $disposition->status[$i];?>"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
-											<a class="delete_disposition btn btn-danger" href="#" data-id="<?php echo $disposition->campaign_id[$i];?>" data-status ="<?php echo $disposition->status[$i];?>" data-name="<?php echo $disposition->status_name[$i];?>"><i class="fa fa-close"></i></a>
+											<a class="delete_disposition btn btn-danger" href="#" data-id="<?php echo $disposition->campaign_id[$i];?>" data-status ="<?php echo $disposition->status[$i];?>" data-name="<?php echo $disposition->status_name[$i];?>"><i class="fa fa-trash"></i></a>
 											</center>
 										</td>
 									</tr>
@@ -1310,7 +1306,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 				                </div>
 
 
-					            <div class="box-footer">
+					            <div class="box-footer pull-right">
 									<a href="telephonycampaigns.php" type="button" id="" class="btn btn-danger"><i class="fa fa-remove"></i> Cancel</a>
 								</div>
 								<!-- /.box-footer -->
@@ -1420,7 +1416,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
                     </div>
                 </div>
                 <div class="modal-footer">
-                	<div class="col-sm-5 pull-right">
+                	<div class="col-sm-3 pull-right">
                 		
                     	<button type="button" class="btn btn-primary" id="modify_disposition"><span id="update_button"><i class='fa fa-check'></i> Update</span></button>
                     	<button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class='fa fa-remove'></i> Cancel</button>
@@ -1458,8 +1454,6 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
-		<!-- SLIMSCROLL-->
-    	<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
     	<!-- iCheck 1.0.1 -->
 		<script src="js/plugins/iCheck/icheck.min.js"></script>
 

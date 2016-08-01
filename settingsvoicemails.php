@@ -48,6 +48,9 @@
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
+        <!-- =============== APP STYLES ===============-->
+            <link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -70,7 +73,7 @@
                 <section class="content-header">
                     <h1>
                         <?php $lh->translateText("settings"); ?>
-                        <small><?php $lh->translateText("voice_mails"); ?></small>
+                        <small><?php $lh->translateText("voice_mails_management"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -82,18 +85,12 @@
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box box-default">
-                                <div class="box-header">
-                                    <h3 class="box-title">Voicemails</h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body table" id="scripts_table">
-									<?php print $ui->getVoiceMails(); ?>
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box -->
+                    <div class="panel panel-default">
+                        <div class="panel-body table" id="scripts_table">
+                            <legend>Voicemails</legend>
+							<?php print $ui->getVoiceMails(); ?>
                         </div>
-                    </div>
+                    </div> 
 				<!-- /fila con acciones, formularios y demás -->
 				<?php
 					} else {
@@ -241,9 +238,6 @@
     <!-- Forms and actions -->
         <script src="js/jquery.validate.min.js" type="text/javascript"></script>
         <script src="js/easyWizard.js" type="text/javascript"></script> 
-
-    <!-- SLIMSCROLL-->
-   <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
 
     <script>
         $(document).ready(function() {

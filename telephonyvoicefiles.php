@@ -1,4 +1,3 @@
-
 <?php	
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
@@ -54,6 +53,9 @@
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
 
+        <!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -76,7 +78,7 @@
                 <section class="content-header">
                     <h1>
                         <?php $lh->translateText("telephony"); ?>
-                        <small><?php $lh->translateText("voice_files"); ?></small>
+                        <small><?php $lh->translateText("voice_files_management"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -88,17 +90,10 @@
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box box-default">
-                                <div class="box-header">
-                                    <h3 class="box-title"><?php $lh->translateText("voice_files"); ?></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body table" id="recording_table">
-					<!--<button id="test_get_info">Test</button>-->
-					<?php print $ui->getListAllVoiceFiles(); ?>
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box -->
+                    <div class="panel panel-default">
+                        <div class="panel-body table" id="recording_table">
+                            <legend><?php $lh->translateText("voice_files"); ?></legend>
+							<?php print $ui->getListAllVoiceFiles(); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->

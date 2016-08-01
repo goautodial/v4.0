@@ -9524,7 +9524,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sZeroRecords": "No se encontraron coincidencias"
+			"sZeroRecords": "No matches found..."
 		},
 	
 	

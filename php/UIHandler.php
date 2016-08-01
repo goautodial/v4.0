@@ -221,8 +221,6 @@ error_reporting(E_ERROR | E_PARSE);
     /** Tables */
 
     public function generateTableHeaderWithItems($items, $id, $styles = "", $needsTranslation = true, $hideHeading = false, $hideOnMedium = array(), $hideOnLow = array()) {
-		$hideOnMedium = array("email", "Phone");
-		$hideOnLow = array("email", "Phone");
 		$theadStyle = $hideHeading ? 'style="display: none!important;"' : '';
 	    $table = "<table id=\"$id\" class=\"table $styles\"><thead $theadStyle><tr>";
 	    if (is_array($items)) {
@@ -1107,20 +1105,20 @@ error_reporting(E_ERROR | E_PARSE);
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 	//telephony menu for lists and call recordings
-	private function getUserActionMenuForLists($listid, $listname) {
+	public function getUserActionMenuForLists($listid, $listname) {
 		
-		return '<div class="btn-group">
-	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
-	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
-						<span class="caret"></span>
-						<span class="sr-only">Toggle Dropdown</span>
-	                </button>
-	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-lists" href="'.$listid.'">'.$this->lh->translationFor("modify").'</a></li>
-	                    <li class="divider"></li>
-	                    <li><a class="delete-lists" href="'.$listid.'">'.$this->lh->translationFor("delete").'</a></li>
-	                </ul>
-	            </div>';
+		   return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Modify</a></li>
+			<li class="divider"></li>
+			<li><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Delete</a></li>
+		    </ul>
+		</div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 	
@@ -1404,7 +1402,10 @@ error_reporting(E_ERROR | E_PARSE);
 		return '<header class="main-header">
 				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
 	            <nav class="navbar navbar-static-top" role="navigation">
-	                
+	                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+	                    <span class="sr-only">Toggle navigation</span>
+	                    <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+	                </a>
 	                <div class="navbar-custom-menu">
 	                    <ul class="nav navbar-nav">
 	                    		'.$moduleTopbarElements.'
@@ -1478,7 +1479,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$version = $this->db->getSettingValueForKey(CRM_SETTING_CRM_VERSION);
 		if (empty($version)) { $version = "unknown"; }
 		$version = "4.0";
-		return '<footer class="main-footer"><div class="pull-right hidden-xs"><b>Version</b> '.$version.'</div><strong>Copyright &copy;  <a href="http://www.goautodial.com/">GoAutoDial Inc.</a> & Digital Leaves - Woloweb</strong>(portion). All rights reserved.</footer>';
+		return '<footer class="main-footer"><div class="pull-right hidden-xs"><b>Version</b> '.$version.'</div><strong>Copyright &copy; '.date("Y").' <a href="http://www.goautodial.com/">GoAutoDial Inc.</a> All rights reserved.</footer>';
 	}
 	
 	/** Topbar Menu elements */
@@ -1710,7 +1711,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$telephonyArea = '<li class="treeview"><a href="#"><i class="fa fa-phone"></i> <span>'.$this->lh->translationFor("telephony").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';	
 			$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "users", $this->lh->translationFor("users"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonycampaigns.php", "fa fa-dashboard", $this->lh->translationFor("campaigns"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonylistandcallrecording.php", "tasks", $this->lh->translationFor("list_and_call_recording"));
+			$telephonyArea .= $this-> getSidebarItem("./telephonylistandcallrecording.php", "tasks", $this->lh->translationFor("list_call_recordings"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "book", $this->lh->translationFor("scripts"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonymusiconhold.php", "phone", $this->lh->translationFor("music_on_hold"));
@@ -2939,9 +2940,9 @@ error_reporting(E_ERROR | E_PARSE);
 	$output = $this->API_goGetAllUserLists();
 	
        if($output->result=="success") {
-       	   $columns = array("agentid", "full_name", "user_group", "active", "Action");
-	       $hideOnMedium = array("user_level", "user_group", "active");
-	       $hideOnLow = array( "user_level", "user_group", "active");
+       	   $columns = array("Agent ID", "Agent Name", "Group", "Status", "Action");
+	       $hideOnMedium = array("Agent ID", "Group", "Status");
+	       $hideOnLow = array( "Agent ID", "Group", "Status");
 		   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
 			
@@ -2960,7 +2961,7 @@ error_reporting(E_ERROR | E_PARSE);
 						 <td>".$output->full_name[$i]."</td>";
 	             $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
 	                     <td class='hide-on-low'>".$output->active[$i]."</td>
-	                     <td style='width: 200px;'>".$action."</td>
+	                     <td>".$action."</td>
 				         </tr>";
 	       }
 	       
@@ -2997,6 +2998,23 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 	
+	private function ActionMenuForLists($id, $name) {
+		
+	   return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="edit-list" href="#" data-id="'.$id.'" data-name="'.$name.'">Modify</a></li>
+			<li class="divider"></li>
+			<li><a class="delete-list" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+		    </ul>
+		</div>';
+	}
+
+
 	// API to get usergroups
 	public function API_goGetUserGroupsList() {
 		$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -3041,7 +3059,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		$columns = array("User Group", "Group Name", "Type", "Forced Timeclock", "Action");
 	    $hideOnMedium = array("Type", "Forced Timeclock");
-	    $hideOnLow = array("Type", "Forced Timeclock");
+	    $hideOnLow = array("User Group", "Type", "Forced Timeclock");
 		$result = $this->generateTableHeaderWithItems($columns, "usergroups_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		
 		
@@ -3056,8 +3074,8 @@ error_reporting(E_ERROR | E_PARSE);
 				$action = $this->ActionMenuForUserGroups($output->user_group[$i], $output->group_name[$i]);
 				
 				$result = $result."<tr>
-	                    <td>".$output->user_group[$i]."</td>
-	                    <td><a class=''>".$output->group_name[$i]."</a></td>
+	                    <td class='hide-on-low'><a class='edit-usergroup' data-id='".$output->user_group[$i]."'>".$output->user_group[$i]."</td>
+	                    <td>".$output->group_name[$i]."</a></td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->group_type[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->forced_timeclock_login[$i]."</td>
 	                    <td>".$action."</td>
@@ -3339,10 +3357,10 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 		
-		$columns = array("Exten", "Protocol", "Server", "Dial Plan", "Status", "Name", "VMail", "Group", "Action");
-	    //$hideOnMedium = array("call_time_id","queue_priority", "active");
-	   // $hideOnLow = array("call_time_id","queue_priority", "active");
-		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false);
+		$columns = array("Exten", "Server IP", "Status", "VMail", "Action");
+	    $hideOnMedium = array("Server IP", "Status", "VMail");
+	    $hideOnLow = array("Server IP", "Status", "VMail");
+		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		
 			for($i=0;$i < count($output->extension);$i++){
 				
@@ -3355,15 +3373,11 @@ error_reporting(E_ERROR | E_PARSE);
 				$action = $this->getUserActionMenuForPhones($output->extension[$i]);
 				
 				$result = $result."<tr>
-	                    <td>".$output->extension[$i]."</td>
-	                    <td><a class=''>".$output->protocol[$i]."</a></td>
-						<td>".$output->server_ip[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->dialplan_number[$i]."</td>
+	                    <td><a class='edit-phone' data-id='".$output->extension[$i]."'>".$output->extension[$i]."</a></td>
+						<td class='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
-						<td class='hide-on-medium hide-on-low'>".$output->fullname[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>
-						<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
-	                    <td>".$action."</td>
+						<td>".$action."</td>
 	                </tr>";
 				
 			}
@@ -3409,9 +3423,9 @@ error_reporting(E_ERROR | E_PARSE);
 		# Result was OK!
 		
 		$columns = array("Voicemail ID", "Name", "Status", "New Messages", "Old Messages", "Delete", "User Group", "Action");
-	    //$hideOnMedium = array("call_time_id","queue_priority", "active");
-	    //$hideOnLow = array("call_time_id","queue_priority", "active");
-		$result = $this->generateTableHeaderWithItems($columns, "voicemails_table", "table-bordered table-striped", true, false);
+	    $hideOnMedium = array("Status", "New Messages", "Old Messages", "Delete", "User Group");
+	    $hideOnLow = array("Voicemail ID", "Status", "New Messages", "Old Messages", "Delete", "User Group");
+		$result = $this->generateTableHeaderWithItems($columns, "voicemails_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		
 			for($i=0;$i < count($output->voicemail_id);$i++){
 
@@ -3424,9 +3438,9 @@ error_reporting(E_ERROR | E_PARSE);
 				$action = $this->ActionMenuForVoicemail($output->voicemail_id[$i], $output->fullname[$i]);
 				
 				$result = $result."<tr>
-	                    <td>".$output->voicemail_id[$i]."</td>
-	                    <td><a class=''>".$output->fullname[$i]."</a></td>
-						<td>".$output->active[$i]."</td>
+	                    <td class='hide-on-low'><a class='edit-voicemail' data-id='".$output->voicemail_id[$i]."''>".$output->voicemail_id[$i]."</a></td>
+	                    <td>".$output->fullname[$i]."</a></td>
+						<td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->messages[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->old_messages[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->delete_vm_after_email[$i]."</td>
@@ -3555,12 +3569,13 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function API_getListAllRecordings(){
+	public function API_getListAllRecordings($search_phone){
 		$url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
+	    $postfields["requestDataPhone"] = $search_phone; #json. (required)
 
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
@@ -3569,7 +3584,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	    $data = curl_exec($ch);
+	    $data = curl_exec($ch); 
 	    curl_close($ch);
 	    $output = json_decode($data);
 	    
@@ -3606,10 +3621,11 @@ error_reporting(E_ERROR | E_PARSE);
 	    } else {
 		# An error occured
 		return $output->result;
+
 	    }
 	}
 	
-	private function getUserActionMenuForCallRecording($id, $location) {
+	public function getUserActionMenuForCallRecording($id, $location) {
 		
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
@@ -3662,7 +3678,9 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    # Result was OK!
 	    $columns = array("MOH Name", "Status", "Random Order", "Group", "Actions");
-	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold_table", "table-bordered table-striped", true, false); 
+	    $hideOnMedium = array("Random Order", "Group", "Status");
+		$hideOnLow = array( "Random Order", "Group", "Status");
+	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
 
 	    for($i=0;$i<count($output->moh_id);$i++){
 			$action = $this->getUserActionMenuForMusicOnHold($output->moh_id[$i], $output->moh_name[$i]);
@@ -3684,10 +3702,10 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 
 			$result .= "<tr>
-				<td>".$output->moh_name[$i]."</td>
-				<td>".$output->active[$i]."</td>
-				<td>".$output->random[$i]."</td>
-				<td>".$output->user_group[$i]."</td>
+				<td><a class='edit-moh' data-id='".$output->moh_id[$i]."'>".$output->moh_name[$i]."</td>
+				<td class ='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
+				<td class ='hide-on-medium hide-on-low'>".$output->random[$i]."</td>
+				<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
 				<td>".$action."</td>
 				</tr>";
 	    }
@@ -3743,13 +3761,20 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 	    # Result was OK!
 	    $columns = array("File Name", "Date", "Actions");
-		    $result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false); 
+	    $hideOnMedium = array("Date");
+		$hideOnLow = array( "Date");
+
+		    $result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
 
 	    for($i=0;$i<count($output->file_name);$i++){
+
+	    $file_link = "https://69.46.6.35/sounds/".$output->file_name[$i];
+
 		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i]);
+
 		$result .= "<tr>
-			<td>".$output->file_name[$i]."</td>
-			<td>".$output->file_date[$i]."</td>
+			<td><a class='play_voice_file' data-location='".$file_link."'>".$output->file_name[$i]."</td>
+			<td class ='hide-on-medium hide-on-low'>".$output->file_date[$i]."</td>
 			<td>".$action."</td>
 		    </tr>";
 	    }
@@ -3799,7 +3824,7 @@ error_reporting(E_ERROR | E_PARSE);
          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
          curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
          $data = curl_exec($ch);
-         curl_close($ch);
+		 curl_close($ch);
          $output = json_decode($data);
 		 
 		 return $output;
@@ -3812,27 +3837,31 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 	    # Result was OK!
 	    $columns = array("Script ID", "Script Name", "Status", "Type", "User Group", "Actions");
-		    $result = $this->generateTableHeaderWithItems($columns, "scripts_table", "table-bordered table-striped", true, false); 
+	    	$hideOnMedium = array("Script ID", "Type", "Status", "User Group");
+	    $hideOnLow = array( "Script ID", "Type", "Status", "User Group");
+
+		    $result = $this->generateTableHeaderWithItems($columns, "scripts_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
 
 	    for($i=0;$i<count($output->script_id);$i++){
 		$action = $this->getUserActionMenuForScripts($output->script_id[$i], $output->script_name[$i]);
 		
-		if($output->active[$i] == "Y"){
-		    $active = "Active";
-		}else{
-		    $active = "Inactive";
-		}
+			if($output->active[$i] == "Y"){
+			    $active = "Active";
+			}else{
+			    $active = "Inactive";
+			}
 		
-		$result .= "<tr>
-			<td>".$output->script_id[$i]."</td>
-			<td>".$output->script_name[$i]."</td>
-			<td>".$active."</td>
-			<td>".$output->active[$i]."</td>
-			<td>".$output->user_group[$i]."</td>
-			<td>".$action."</td>
-		    </tr>";
-	    }
-		return $result;
+			$result .= "<tr>
+				<td class='hide-on-low'><a class='edit-T_user' data-id='.$output->script_id[$i].'>".$output->script_id[$i]."</td>
+				<td>".$output->script_name[$i]."</td>
+				<td class='hide-on-medium hide-on-low'>".$active."</td>
+				<td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
+				<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
+				<td>".$action."</td>
+			    </tr>";
+		    }
+			return $result;
+
 	    } else {
 		# An error occured
 		return $output->result;
@@ -3881,17 +3910,20 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 	    # Result was OK!
 
-           	$columns = array("Call Time ID", "Call Time Name", "Default Start", "Default Stop", "Group", "Action");
+        $columns = array("Call Time ID", "Call Time Name", "Default Start", "Default Stop", "Group", "Action");
+        $hideOnMedium = array("Call Time ID", "Default Start", "Default Stop", "Group");
+		$hideOnLow = array( "Call Time ID", "Default Start", "Default Stop", "Group");
+
 		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
 
 	        for($i=0;$i<count($output->call_time_id);$i++){
 		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i], $output->call_time_name[$i]);
                     $result .= "<tr>
-	                    <td>".$output->call_time_id[$i]."</td>
+	                    <td class ='hide-on-medium hide-on-low'><a class='edit-calltime' data-id='".$output->call_time_id[$i]."'>".$output->call_time_id[$i]."</a></td>
 	                    <td>".$output->call_time_name[$i]."</td>
-	                    <td>".$output->ct_default_start[$i]."</td>
-			    <td>".$output->ct_default_stop[$i]."</td>
-			    <td>".$output->user_group[$i]."</td>
+	                    <td class ='hide-on-medium hide-on-low'>".$output->ct_default_start[$i]."</td>
+			   			<td class ='hide-on-medium hide-on-low'>".$output->ct_default_stop[$i]."</td>
+			    		<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
 	                    <td>".$action."</td>
 	                </tr>";
             }
@@ -3926,13 +3958,12 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function getListAllCarriers($goUser, $goPass, $goAction, $responsetype){
-	    $url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
+	public function API_getListAllCarriers($goUser, $goPass, $goAction, $responsetype){
+		$url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCarriersList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
-    
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
 	    curl_setopt($ch, CURLOPT_POST, 1);
@@ -3942,23 +3973,38 @@ error_reporting(E_ERROR | E_PARSE);
 	    $data = curl_exec($ch);
 	    curl_close($ch);
 	    $output = json_decode($data);
+	    return $output;
+	}
+
+	public function getListAllCarriers(){
+		$output = $this->API_getListAllCarriers();
 	   
 	    if ($output->result=="success") {
 	    # Result was OK!
 
-           	$columns = array("Carrier ID", "Carrier Name", "Server IP", "Protocol", "Registration", "Status", "Group", "Action");
+        $columns = array("Carrier ID", "Carrier Name", "Server IP", "Protocol", "Registration", "Status", "Group", "Action");
+        $hideOnMedium = array("Server IP", "Protocol", "Registration", "Group");
+		$hideOnLow = array( "Carrier ID", "Server IP", "Protocol", "Registration", "Status", "Group");
+
 		$result = $this->generateTableHeaderWithItems($columns, "carriers", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
 
 	        for($i=0;$i<count($output->carrier_id);$i++){
-		    $action = $this->getUserActionMenuForCarriers($output->carrier_id[$i]);
+		    
+		    	$action = $this->getUserActionMenuForCarriers($output->carrier_id[$i]);
+
+			    if($output->active[$i] == "Y"){
+				    $active = "Active";
+				}else{
+				    $active = "Inactive";
+				}
                     $result .= "<tr>
-	                    <td>".$output->carrier_id[$i]."</td>
+	                    <td class ='hide-on-low'>".$output->carrier_id[$i]."</td>
 	                    <td>".$output->carrier_name[$i]."</td>
-	                    <td>".$output->server_ip[$i]."</td>
-			    <td>".$output->protocol[$i]."</td>
-			    <td>".$output->registration_string[$i]."</td>
-			    <td>".$output->active[$i]."</td>
-			    <td>".$output->user_group[$i]."</td>
+	                    <td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
+			    		<td class ='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
+			    		<td class ='hide-on-medium hide-on-low'>".$output->registration_string[$i]."</td>
+			    		<td class ='hide-on-low'>".$output->active[$i]."</td>
+			    		<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
 	                    <td>".$action."</td>
 	                </tr>";
             }

@@ -27,7 +27,7 @@
 		<!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
     	<!-- Wizard Form style -->
-	<link href="css/style.css" rel="stylesheet" type="text/css" />
+		<link href="css/style.css" rel="stylesheet" type="text/css" />
     	<link rel="stylesheet" href="css/easyWizard.css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -48,6 +48,11 @@
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
+
+        	<!-- =============== BOOTSTRAP STYLES ===============--
+			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+				<!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -80,18 +85,12 @@
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
-                    <div class="row">
-                        <div class="col-xs 12">
-                            <div class="box box-default">
-                                <div class="box-header">
-                                    <h3 class="box-title"><?php $lh->translateText("users"); ?></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body table" id="users_table">
-									<?php print $ui->goGetAllUserList(); ?>
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box -->
-                        </div>
-                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-body table" id="users_table">
+                        <legend><?php $lh->translateText("users"); ?></legend>
+							<?php print $ui->goGetAllUserList(); ?>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
 				<!-- /fila con acciones, formularios y demás -->
 				<?php
 					} else {
@@ -120,7 +119,7 @@
 				
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="T_User"><b>User Wizard >> Add New User</b></h4>
+					<h4 class="modal-title animate-header" id="T_User"><b>User Wizard » Add New User</b></h4>
 				</div>
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
@@ -350,9 +349,7 @@
 		<!-- Forms and actions -->
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
-	<!-- SLIMSCROLL-->
-   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
-   
+		
 	<script type="text/javascript">
 
 		function checkPasswordMatch() {

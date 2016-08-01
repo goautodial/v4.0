@@ -50,6 +50,9 @@ error_reporting(E_ALL);*/
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
        
+        <!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -72,7 +75,7 @@ error_reporting(E_ALL);*/
                 <section class="content-header">
                     <h1>
                         <?php $lh->translateText("settings"); ?>
-                        <small><?php $lh->translateText("phones"); ?></small>
+                        <small><?php $lh->translateText("phones_management"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -84,16 +87,10 @@ error_reporting(E_ALL);*/
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box box-default">
-                                <div class="box-header">
-                                    <h3 class="box-title"><?php $lh->translateText("phones"); ?></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body table" id="phone_table">
-									<?php print $ui->getPhonesList(); ?>
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box -->
+                    <div class="panel panel-default">
+                        <div class="panel-body" id="phone_table">
+                            <legend><?php $lh->translateText("phones"); ?></legend>
+							<?php print $ui->getPhonesList(); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -293,9 +290,6 @@ error_reporting(E_ALL);*/
 		<?php echo $ui->deleteNotificationModal('Phone Extension','<span id="id_span"></span>', '<span id="result_span"></span>');?>
 	</div>
 		
-		<!-- SLIMSCROLL-->
-    	<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
-
 		<!-- for wizard -->
 		<script src="js/easyWizard.js" type="text/javascript"></script>
 		<script type="text/javascript">

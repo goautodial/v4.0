@@ -140,8 +140,8 @@ if (isset($_POST["usergroup_id"])) {
 						<!-- Custom Tabs -->
 						<div role="tabpanel">
 						<!--<div class="nav-tabs-custom">-->
-							<ul role="tablist" class="nav nav-tabs">
-								<li class="active"><a href="#tab_1" data-toggle="tab"><em class="fa fa-gear fa-lg"></em> Basic Settings</a></li>
+							<ul role="tablist" class="nav nav-tabs nav-justified">
+								<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
 							</ul>
 			               <!-- Tab panes-->
 			               <div class="tab-content">
@@ -220,7 +220,6 @@ if (isset($_POST["usergroup_id"])) {
 												<select class="form-control" name="group_level" id="group_level">
 												<?php
 													$group_level = NULL;
-
 													for($o=1; $o <= 9; $o++){
 														if($output->group_level[$i] == $o){
 															$group_level .= '<option value="'.$o.'" selected> '.$o.' </option>';
@@ -253,13 +252,13 @@ if (isset($_POST["usergroup_id"])) {
 			                    </div>
 
 			                    <!-- FOOTER BUTTONS -->
-							   	<fieldset>
+			                    <fieldset class="footer-buttons">
 			                        <div class="box-footer">
-			                           <div class="pull-right col-sm-3">
-												<a href="settingsusergroups.php" type="button" class="btn btn-danger pull-left"><i class="fa fa-close"></i> Cancel </a>
-			                           		
-			                                	<button type="submit" class="btn btn-primary pull-right" id="modifyUserGroupOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-											</div>
+			                           <div class="col-sm-3 pull-right">
+												<a href="settingsusergroups.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+			                           	
+			                                	<button type="submit" class="btn btn-primary" id="modifyUserGroupOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+											
 			                           </div>
 			                        </div>
 			                    </fieldset>

@@ -136,8 +136,8 @@ if (isset($_POST["extenid"])) {
 						<!-- BASIC SETTINGS -->
 							<div role="tabpanel">
 							<!--<div class="nav-tabs-custom">-->
-								<ul role="tablist" class="nav nav-tabs">
-									<li class="active"><a href="#tab_1" data-toggle="tab"><em class="fa fa-gear fa-lg"></em> Basic Settings</a></li>
+								<ul role="tablist" class="nav nav-tabs nav-justified">
+									<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
 								</ul>
 				               <!-- Tab panes-->
 				               <div class="tab-content">
@@ -300,15 +300,16 @@ if (isset($_POST["extenid"])) {
 				                        </div>
 				                    </div>
 
-				                    <fieldset>
-										<div class="box-footer">
-											<div class="pull-right col-sm-3">
-												<a type="button" class="btn btn-danger pull-left" href="settingsphones.php"><i class="fa fa-remove"></i> Cancel</a>
-
-												<button type="submit" class="btn btn-primary pull-right" id="update_phones" href=""><span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-											</div>
-										</div>
-									</fieldset>
+									<fieldset>
+				                        <div class="box-footer">
+				                           <div class="col-sm-4 col-sm-offset-2 pull-right">
+													<a href="settingsphones.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+				                           	
+				                                	<button type="submit" class="btn btn-primary" id="update_phones" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+												
+				                           </div>
+				                        </div>
+				                    </fieldset>
 						
 								</div>
 							</div>

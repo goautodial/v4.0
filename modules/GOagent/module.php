@@ -313,11 +313,15 @@ class GOagent extends Module {
 		//	}
 		//});
 		
-		$str = <<<EOF
+		$str  = <<<EOF
 		<link type='text/css' rel='stylesheet' href='{$goModuleDIR}css/style.css'></link>
 					<script type='text/javascript' src='{$goModuleDIR}GOagentJS.php'></script>
 					<script type='text/javascript' src='{$goModuleDIR}js/addons.js'></script>
 					
+EOF;
+
+		if ($useWebRTC) {
+			$str .= <<<EOF
 					<audio id="remoteStream" style="display: none;" autoplay controls></audio>
 					<script type="text/javascript" src="{$goModuleDIR}js/jsSIP.js"></script>
 					<script>
@@ -472,7 +476,7 @@ class GOagent extends Module {
 						//		console.log('reply!');
 						//	}
 						//};
-						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
+						$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
 					});
 					
 					phone.on('unregistered', function(e) {
@@ -495,6 +499,10 @@ class GOagent extends Module {
 						console.error('getUserMedia failed.', e);
 					});
 					</script>
+EOF;
+		}
+
+		$str .= <<<EOF
 					<div id="dialog-custinfo" class="modal fade" tabindex="-1">
 						<div class="modal-dialog">
 							<div class="modal-content">

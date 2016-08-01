@@ -1,7 +1,8 @@
 <?php	
+/*
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL);*/
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -53,6 +54,9 @@ error_reporting(E_ALL);
 
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
+        
+        <!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
@@ -87,6 +91,9 @@ error_reporting(E_ALL);
 
                 <!-- Main content -->
                 <section class="content">
+                	<div class="panel panel-default">
+                		<div class="panel-body">
+                			<legend>Campaigns</legend>
                 <?php if ($user->userHasAdminPermission()) { ?>
 <?php
 
@@ -99,195 +106,193 @@ error_reporting(E_ALL);
 	$country_codes = $ui->getCountryCodes();
 	$list = $ui->API_goGetAllLists();
 ?>			
-				 <div role="tabpanel" class="panel panel-transparent" style="border: 0px;">
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							 <div role="tabpanel">
+									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-							<?php if($_GET['message'] == "Success") { ?>
-								<div class="callout callout-success">
-					        		<h4>Success!</h4>
-					        		You have successfully created a campaign.
-					        		
-					      		</div>
+										<?php if($_GET['message'] == "Success") { ?>
+											<div class="callout callout-success">
+								        		<h4>Success!</h4>
+								        		You have successfully created a campaign.
+								        		
+								      		</div>
 
-							<?php }elseif($_GET['message'] == "error"){ ?>
+										<?php }elseif($_GET['message'] == "error"){ ?>
 
-								<div class="callout callout-danger">
-					        		<h4>Error!</h4>
-					        		Something went wrong. Please contact administrator.
-					        		
-					      		</div>
-							<?php } ?>
-							 
-						</div>
-					<ul role="tablist" class="nav nav-tabs">
+											<div class="callout callout-danger">
+								        		<h4>Error!</h4>
+								        		Something went wrong. Please contact administrator.
+								        		
+								      		</div>
+										<?php } ?>
+										 
+									</div>
+								<ul role="tablist" class="nav nav-tabs">
 
-					 <!-- In-group panel tabs-->
-						 <li role="presentation" class="active">
-							<a href="#T_campaign" aria-controls="T_campaign" role="tab" data-toggle="tab" class="bb0">
-							   <sup><span class="fa fa-dashboard"></span></sup> Campaigns </a>
-						 </li>
-					<!-- IVR panel tab -->
-						 <li role="presentation">
-							<a href="#T_disposition" aria-controls="T_disposition" role="tab" data-toggle="tab" class="bb0">
-							   <sup><span class="fa fa-volume-up"></span></sup> Dispositions </a>
-						 </li>
-					<!-- DID panel tab -->
-						 <li role="presentation">
-							<a href="#T_leadfilter" aria-controls="T_leadfilter" role="tab" data-toggle="tab" class="bb0">
-							   <sup><span class="fa fa-phone-square"></span></sup> Lead Filters </a>
-						 </li>
-					  </ul>
-					  
-					<!-- Tab panes-->
-					<div class="tab-content p0 bg-white">
+								 <!-- In-group panel tabs-->
+									 <li role="presentation" class="active">
+										<a href="#T_campaign" aria-controls="T_campaign" role="tab" data-toggle="tab" class="bb0">
+										   <sup><span class="fa fa-dashboard"></span></sup> Campaigns </a>
+									 </li>
+								<!-- IVR panel tab -->
+									 <li role="presentation">
+										<a href="#T_disposition" aria-controls="T_disposition" role="tab" data-toggle="tab" class="bb0">
+										   <sup><span class="fa fa-volume-up"></span></sup> Dispositions </a>
+									 </li>
+								<!-- DID panel tab -->
+									 <li role="presentation">
+										<a href="#T_leadfilter" aria-controls="T_leadfilter" role="tab" data-toggle="tab" class="bb0">
+										   <sup><span class="fa fa-phone-square"></span></sup> Lead Filters </a>
+									 </li>
+								  </ul>
+								  
+								<!-- Tab panes-->
+								<div class="tab-content bg-white">
 
-					<!--==== Campaigns ====-->
-					  <div id="T_campaign" role="tabpanel" class="tab-pane active" style="padding: 20px;">
-							<table class="table table-striped table-bordered table-hover" id="table_campaign">
-							   <thead>
-								  <tr>
-									 <th>Campaign ID</th>
-									 <th>Campaign Name</th>
-									 <th class='hide-on-medium hide-on-low'>Dial Method</th>
-									 <th>Status</th>
-									 <th>Action</th>
-								  </tr>
-							   </thead>
-							   <tbody>
-								   	<?php
-								   		for($i=0;$i < count($campaign->campaign_id);$i++){
-						
-											if($campaign->active[$i] == "Y"){
-												$campaign->active[$i] = "Active";
-											}else{
-												$campaign->active[$i] = "Inactive";
-											}
+								<!--==== Campaigns ====-->
+								  <div id="T_campaign" role="tabpanel" class="tab-pane active">
+										<table class="table table-striped table-bordered table-hover" id="table_campaign">
+										   <thead>
+											  <tr>
+												 <th class='hide-on-medium hide-on-low'>Campaign ID</th>
+												 <th >Campaign Name</th>
+												 <th class='hide-on-medium hide-on-low'>Dial Method</th>
+												 <th class='hide-on-medium hide-on-low'>Status</th>
+												 <th>Action</th>
+											  </tr>
+										   </thead>
+										   <tbody>
+											   	<?php
+											   		for($i=0;$i < count($campaign->campaign_id);$i++){
+									
+														if($campaign->active[$i] == "Y"){
+															$campaign->active[$i] = "Active";
+														}else{
+															$campaign->active[$i] = "Inactive";
+														}
 
-											if($campaign->dial_method[$i] == "RATIO"){
-												$campaign->dial_method[$i] = "AUTO DIAL";
-											}
-											
-											if($campaign->dial_method[$i] == "MANUAL"){
-												$campaign->dial_method[$i] = "MANUAL";
-											}
-											
-											if($campaign->dial_method[$i] == "ADAPT_TAPERED"){
-												$campaign->dial_method[$i] = "PREDICTIVE";
-											}
+														if($campaign->dial_method[$i] == "RATIO"){
+															$campaign->dial_method[$i] = "AUTO DIAL";
+														}
+														
+														if($campaign->dial_method[$i] == "MANUAL"){
+															$campaign->dial_method[$i] = "MANUAL";
+														}
+														
+														if($campaign->dial_method[$i] == "ADAPT_TAPERED"){
+															$campaign->dial_method[$i] = "PREDICTIVE";
+														}
 
-											if($campaign->dial_method[$i] == "INBOUND_MAN"){
-												$campaign->dial_method[$i] = "INBOUND_MAN";
-											}
+														if($campaign->dial_method[$i] == "INBOUND_MAN"){
+															$campaign->dial_method[$i] = "INBOUND_MAN";
+														}
 
-										$action_CAMPAIGN = $ui->ActionMenuForCampaigns($campaign->campaign_id[$i], $campaign->campaign_name[$i]);
+													$action_CAMPAIGN = $ui->ActionMenuForCampaigns($campaign->campaign_id[$i], $campaign->campaign_name[$i]);
 
-								   	?>	
-										<tr>
-											<td><?php echo $campaign->campaign_id[$i];?></td>
-											<td><a class=''><?php echo $campaign->campaign_name[$i];?></a></td>
-											<td class='hide-on-medium hide-on-low'><?php echo $campaign->dial_method[$i];?></td>
-											<td><?php echo $campaign->active[$i];?></td>
-											<td><?php echo $action_CAMPAIGN;?></td>
-										</tr>
-									<?php
-										}
-									?>
-							   </tbody>
-							</table>
-							<br/>
-						<div class="panel-footer text-right">&nbsp;</div>
-					 </div>
-					
-					<!--==== Disposition ====-->
-					  <div id="T_disposition" role="tabpanel" class="tab-pane" style="padding: 20px;">
-							<table class="table table-striped table-bordered table-hover" id="table_disposition">
-							   <thead>
-								  <tr>
-									 <th>Campaign ID</th>
-									 <th>Campaign Name</th>
-									 <th>Custom Disposition</th>
-									 <th>Action</th>
-								  </tr>
-							   </thead>
-							   <tbody>
-								   	<?php
-								   		for($i=0;$i < count($campaign->campaign_id);$i++){
+											   	?>	
+													<tr>
+														<td class='hide-on-medium hide-on-low'><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></td>
+														<td><?php echo $campaign->campaign_name[$i];?></a></td>
+														<td class='hide-on-medium hide-on-low'><?php echo $campaign->dial_method[$i];?></td>
+														<td class='hide-on-medium hide-on-low'><?php echo $campaign->active[$i];?></td>
+														<td><?php echo $action_CAMPAIGN;?></td>
+													</tr>
+												<?php
+													}
+												?>
+										   </tbody>
+										</table>
+										<br/>
+									<div class="panel-footer text-right">&nbsp;</div>
+								 </div>
+								
+								<!--==== Disposition ====-->
+								  <div id="T_disposition" role="tabpanel" class="tab-pane">
+										<table class="table table-striped table-bordered table-hover" id="table_disposition">
+										   <thead>
+											  <tr>
+												 <th class='hide-on-medium hide-on-low'>Campaign ID</th>
+												 <th>Campaign Name</th>
+												 <th class='hide-on-medium hide-on-low'>Custom Disposition</th>
+												 <th>Action</th>
+											  </tr>
+										   </thead>
+										   <tbody>
+											   	<?php
+											   		for($i=0;$i < count($campaign->campaign_id);$i++){
 
-										$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i]);
+													$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i]);
 
-								   	?>	
-										<tr>
-											<td><?php echo $campaign->campaign_id[$i];?></td>
-											<td><a class=''><?php echo $campaign->campaign_name[$i];?></a></td>
-											<td>
-									<?php
-									//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
-										for($a=0; $a<count($disposition->status); $a++){
-										
-										if($disposition->campaign_id[$a] == $campaign->campaign_id[$i]){
-										
-									?>
-											<?php echo "<i>".$disposition->status[$a]."</i>";?>
-									<?php
-												if($disposition->campaign_id[$a+1] == $campaign->campaign_id[$i]){
-													echo ", ";
-												}
-											}
-										}
-									//}else{
-									//	echo "- - - NONE - - -";
-									//}
-									?>
-											</td>
-											<td><?php echo $action_DISPOSITION;?></td>
-										</tr>
-									<?php
-										}
-									?>
-							   </tbody>
-							</table>
-							<br/>
-						<div class="panel-footer text-right">&nbsp;</div>
-					 </div>
+											   	?>	
+													<tr>
+														<td class='hide-on-medium hide-on-low'><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></td>
+														<td><?php echo $campaign->campaign_name[$i];?></a></td>
+														<td class='hide-on-medium hide-on-low'>
+												<?php
+												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
+													for($a=0; $a<count($disposition->status); $a++){
+													
+													if($disposition->campaign_id[$a] == $campaign->campaign_id[$i]){
+													
+												?>
+														<?php echo "<i>".$disposition->status[$a]."</i>";?>
+												<?php
+															if($disposition->campaign_id[$a+1] == $campaign->campaign_id[$i]){
+																echo ", ";
+															}
+														}
+													}
+												//}else{
+												//	echo "- - - NONE - - -";
+												//}
+												?>
+														</td>
+														<td><?php echo $action_DISPOSITION;?></td>
+													</tr>
+												<?php
+													}
+												?>
+										   </tbody>
+										</table>
+								 </div>
 
-					 <!--==== Lead Filter ====-->
-					  <div id="T_leadfilter" role="tabpanel" class="tab-pane" style="padding: 20px;">
-							<table class="table table-striped table-bordered table-hover" id="table_leadfilter">
-							   <thead>
-								  <tr>
-									 <th>Filter ID</th>
-									 <th>Filter Name</th>
-									 <th>Action</th>
-								  </tr>
-							   </thead>
-							   <tbody>
-								   	<?php
-								   		for($i=0;$i < count($leadfilter->lead_filter_id);$i++){
+								 <!--==== Lead Filter ====-->
+								  <div id="T_leadfilter" role="tabpanel" class="tab-pane">
+										<table class="table table-striped table-bordered table-hover" id="table_leadfilter">
+										   <thead>
+											  <tr>
+												 <th>Filter ID</th>
+												 <th>Filter Name</th>
+												 <th>Action</th>
+											  </tr>
+										   </thead>
+										   <tbody>
+											   	<?php
+											   		for($i=0;$i < count($leadfilter->lead_filter_id);$i++){
 
-										$action_LEADFILTER = $ui->ActionMenuForLeadFilters($leadfilter->lead_filter_id[$i], $leadfilter->lead_filter_name[$i]);
+													$action_LEADFILTER = $ui->ActionMenuForLeadFilters($leadfilter->lead_filter_id[$i], $leadfilter->lead_filter_name[$i]);
 
-								   	?>	
-										<tr>
-											<td><?php echo $leadfilter->lead_filter_id[$i];?></td>
-											<td><a class=''><?php echo $leadfilter->lead_filter_name[$i];?></a></td>
-											<td><?php echo $action_LEADFILTER;?></td>
-										</tr>
-									<?php
-										}
-									?>
-							   </tbody>
-							</table>
-							<br/>
-						<div class="panel-footer text-right">&nbsp;</div>
-					 </div>
+											   	?>	
+													<tr>
+														<td><?php echo $leadfilter->lead_filter_id[$i];?></td>
+														<td><a class=''><?php echo $leadfilter->lead_filter_name[$i];?></a></td>
+														<td><?php echo $action_LEADFILTER;?></td>
+													</tr>
+												<?php
+													}
+												?>
+										   </tbody>
+										</table>
+								 </div>
 
-					</div><!-- END tab content-->
-				</div>
-				<?php
-					} else {
-						print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
-					}
-				?>
+								</div><!-- END tab content-->
+							</div>
+							<?php
+								} else {
+									print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
+								}
+							?>
+						</div><!-- /.body -->
+					</div><!-- /.panel -->
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
 		
@@ -841,8 +846,7 @@ error_reporting(E_ALL);
 
 	<script src="js/jquery.validate.min.js" type="text/javascript"></script>
 	<script src="js/easyWizard.js" type="text/javascript"></script> 
-	<!-- SLIMSCROLL-->
-    <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+	
     <!-- iCheck 1.0.1 -->
 	<script src="js/plugins/iCheck/icheck.min.js"></script>
 
