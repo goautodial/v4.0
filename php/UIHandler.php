@@ -1711,25 +1711,25 @@ error_reporting(E_ERROR | E_PARSE);
 			$telephonyArea = '<li class="treeview"><a href="#"><i class="fa fa-phone"></i> <span>'.$this->lh->translationFor("telephony").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';	
 			$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "users", $this->lh->translationFor("users"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonycampaigns.php", "fa fa-dashboard", $this->lh->translationFor("campaigns"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonylistandcallrecording.php", "tasks", $this->lh->translationFor("list_call_recordings"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "book", $this->lh->translationFor("scripts"));
+			$telephonyArea .= $this-> getSidebarItem("./telephonylist.php", "list", $this->lh->translationFor("lists"));
+			$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "comment", $this->lh->translationFor("scripts"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonymusiconhold.php", "phone", $this->lh->translationFor("music_on_hold"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonyvoicefiles.php", "phone", $this->lh->translationFor("voice_files"));
+			$telephonyArea .= $this-> getSidebarItem("./telephonymusiconhold.php", "music", $this->lh->translationFor("music_on_hold"));
+			$telephonyArea .= $this-> getSidebarItem("./telephonyvoicefiles.php", "files-o", $this->lh->translationFor("voice_files"));
 			$telephonyArea .= '</ul></li>';
 			
 			$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';	
-			$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "tasks", $this->lh->translationFor("admin_logs"));
-			$settings .= $this-> getSidebarItem("./settingscalltimes.php", "phone", $this->lh->translationFor("call_times"));
-			$settings .= $this-> getSidebarItem("./settingscarriers.php", "phone", $this->lh->translationFor("carriers"));
+			//$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "tasks", $this->lh->translationFor("admin_logs"));
+			$settings .= $this-> getSidebarItem("./settingscalltimes.php", "list-ol", $this->lh->translationFor("call_times"));
+			$settings .= $this-> getSidebarItem("./settingscarriers.php", "signal", $this->lh->translationFor("carriers"));
 			$settings .= $this-> getSidebarItem("./settingsphones.php", "phone", $this->lh->translationFor("phones"));
-			$settings .= $this-> getSidebarItem("./settingssystemsettings.php", "gear", $this->lh->translationFor("system_settings"));
+			//$settings .= $this-> getSidebarItem("./settingssystemsettings.php", "gear", $this->lh->translationFor("system_settings"));
 			$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
-			$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "phone", $this->lh->translationFor("voice_mails"));
+			$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
 			$settings .= '</ul></li>';
 			
-			$callreports = '<li class="treeview"><a href="#"><i class="fa fa-phone"></i> <span>'.$this->lh->translationFor("call_reports").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';	
-			$callreports .= $this-> getSidebarItem("./callreports.php", "tasks", $this->lh->translationFor("reports_and_go_analytics"));
+			$callreports = '<li class="treeview"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>'.$this->lh->translationFor("call_reports").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';	
+			$callreports .= $this-> getSidebarItem("./callreports.php", "bar-chart", $this->lh->translationFor("reports_and_go_analytics"));
 			$callreports .= '</ul></li>';
 			
 			$loadleads .= $this->getSidebarItem("loadleads.php", "sort-alpha-asc", $this->lh->translationFor("load_leads"));
@@ -1775,7 +1775,8 @@ error_reporting(E_ERROR | E_PARSE);
 
         // ending: contacts, messages, notifications, tasks, events.
         
-        $result .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
+        //$result .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
+        $result .= $this-> getSidebarItem("contactsandcallrecordings.php", "phone-square", $this->lh->translationFor("contacts_call_recordings"));
 		$result .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
         $result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
 		//$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
@@ -3113,71 +3114,36 @@ error_reporting(E_ERROR | E_PARSE);
      * 
      */
 	
-	public function goGetAllLists() {		
-		$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "goGetAllLists"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = responsetype; #json. (required)
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);		
-		curl_setopt($ch, CURLOPT_POST, 1);		
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);		
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);		
-		$data = curl_exec($ch);
-		curl_close($ch);		
-		$output = json_decode($data);		 
-		
+	public function GetAllLists() {	
+		$output = $this->API_goGetAllLists();
+
 		if ($output->result=="success") {
 		# Result was OK!
 		
-		$columns = array("list_id", "list_name", "active", "list_lastcalldate", "tally", "campaign_id", "Action");
-	    $hideOnMedium = array("dial_method", "active");
-	    $hideOnLow = array("dial_method", "active");
-		$result = $this->generateTableHeaderWithItems($columns, "T_list", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$columns = array("List ID", "Name", "Status", "Last Call Date", "Leads Count", "Campaign", "Action");
+	    $hideOnMedium = array("Status", "Last Call Date", "Leads Count", "Campaign");
+	    $hideOnLow = array("List ID", "Status", "Last Call Date", "Leads Count", "Campaign");
+		$result = $this->generateTableHeaderWithItems($columns, "table_lists", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		
 		
 			for($i=0;$i < count($output->list_id);$i++){				
 				// if no entry in user list
-				if (empty($output->list_id[$i])) {
-				 return $this->calloutWarningMessage($this->lh->translationFor("no_entry_in_list"));
-			   }
-				
-				
+			
 				if($output->active[$i] == "Y"){
 					$output->active[$i] = "Active";
 				}else{
 					$output->active[$i] = "Inactive";
 				}
-
-				if($output->dial_method[$i] == "RATIO"){
-					$output->dial_method[$i] = "AUTO DIAL";
-				}
-				
-				if($output->dial_method[$i] == "MANUAL"){
-					$output->dial_method[$i] = "MANUAL";
-				}
-				
-				if($output->dial_method[$i] == "ADAPT_TAPERED"){
-					$output->dial_method[$i] = "PREDICTIVE";
-				}
-
-				if($output->dial_method[$i] == "INBOUND_MAN"){
-					$output->dial_method[$i] = "INBOUND_MAN";
-				}
 				
 				$action = $this->getUserActionMenuForLists($output->list_id[$i], $output->list_name[$i]);
 				
 				$result = $result."<tr>
-	                    <td>".$output->list_id[$i]."</td>
-	                    <td><a class=''>".$output->list_name[$i]."</a></td>
-						<td>".$output->active[$i]."</td>
+	                    <td class='hide-on-low'><a class='edit-ingroup' data-id='".$output->list_id[$i]."'>".$output->list_id[$i]."</td>
+	                    <td>".$output->list_name[$i]."</td>
+						<td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->list_lastcalldate[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->tally[$i]."</td>
-						<td>".$output->campaign_id[$i]."</td>
+						<td class='hide-on-medium hide-on-low'>".$output->campaign_id[$i]."</td>
 	                    <td>".$action."</td>
 	                </tr>";
 				
@@ -5066,6 +5032,88 @@ error_reporting(E_ERROR | E_PARSE);
 		$output = json_decode($data);
 
 		return $output;
+	}
+
+	public function getCalltimes(){
+		$url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $postfields["goUser"] = goUser; #Username goes here. (required)
+	    $postfields["goPass"] = goPass; #Password goes here. (required)
+	    $postfields["goAction"] = "getAllCalltimes"; #action performed by the [[API:Functions]]. (required)
+	    $postfields["responsetype"] = responsetype; #json. (required)
+    
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_POST, 1);
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	    $data = curl_exec($ch);
+	    curl_close($ch);
+	    $output = json_decode($data);
+
+	    return $output;
+	}
+
+	public function getCarriers(){
+		$url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $postfields["goUser"] = goUser; #Username goes here. (required)
+	    $postfields["goPass"] = goPass; #Password goes here. (required)
+	    $postfields["goAction"] = "goGetCarriersList"; #action performed by the [[API:Functions]]. (required)
+	    $postfields["responsetype"] = responsetype; #json. (required)
+    
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_POST, 1);
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	    $data = curl_exec($ch);
+	    curl_close($ch);
+	    $output = json_decode($data);
+
+	    return $output;
+	}
+
+	public function API_getAllDialStatuses($campaign_id){
+		$url = gourl."/goDialStatus/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $postfields["goUser"] = goUser; #Username goes here. (required)
+	    $postfields["goPass"] = goPass; #Password goes here. (required)
+	    $postfields["goAction"] = "getAllDialStatuses"; #action performed by the [[API:Functions]]. (required)
+	    $postfields["responsetype"] = responsetype; #json. (required)
+	    $postfields["campaign_id"] = $campaign_id;
+    
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_POST, 1);
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	    $data = curl_exec($ch);
+	    curl_close($ch);
+	    $output = json_decode($data);
+
+	    return $output;
+	}
+
+	public function API_getAllDIDs($campaign_id){
+		$url = gourl."/goUnbound/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $postfields["goUser"] = goUser; #Username goes here. (required)
+	    $postfields["goPass"] = goPass; #Password goes here. (required)
+	    $postfields["goAction"] = "getAllDIDs"; #action performed by the [[API:Functions]]. (required)
+	    $postfields["responsetype"] = responsetype; #json. (required)
+	    $postfields["campaign_id"] = $campaign_id;
+    
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_POST, 1);
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	    $data = curl_exec($ch);
+	    curl_close($ch);
+	    $output = json_decode($data);
+
+	    return $output;
 	}
 }
 

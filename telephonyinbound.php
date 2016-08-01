@@ -106,22 +106,22 @@
 
 		            <div role="tabpanel">
 						
-						<ul role="tablist" class="nav nav-tabs">
+						<ul role="tablist" class="nav nav-tabs nav-justified">
 
 						 <!-- In-group panel tabs-->
 							 <li role="presentation" class="active">
 								<a href="#T_ingroup" aria-controls="T_ingroup" role="tab" data-toggle="tab" class="bb0">
-								   <sup><span class="fa fa-users"></span></sup> In-Groups</a>
+								    In-Groups</a>
 							 </li>
 						<!-- IVR panel tab -->
 							 <li role="presentation">
 								<a href="#T_ivr" aria-controls="T_ivr" role="tab" data-toggle="tab" class="bb0">
-								   <sup><span class="fa fa-volume-up"></span></sup> Interactive Voice Response (IVR) Menus </a>
+								    Interactive Voice Response (IVR) Menus </a>
 							 </li>
 						<!-- DID panel tab -->
 							 <li role="presentation">
 								<a href="#T_phonenumber" aria-controls="T_phonenumber" role="tab" data-toggle="tab" class="bb0">
-								   <sup><span class="fa fa-phone-square"></span></sup> Phone Numbers (DIDs/TFNs) </a>
+								    Phone Numbers (DIDs/TFNs) </a>
 							 </li>
 						  </ul>
 						  

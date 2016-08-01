@@ -126,7 +126,7 @@ error_reporting(E_ALL);*/
 										<?php } ?>
 										 
 									</div>
-								<ul role="tablist" class="nav nav-tabs">
+								<ul role="tablist" class="nav nav-tabs nav-justified">
 
 								 <!-- In-group panel tabs-->
 									 <li role="presentation" class="active">

@@ -152,7 +152,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 							<!-- Custom Tabs -->
 							<div role="tabpanel">
 							<!--<div class="nav-tabs-custom">-->
-								<ul role="tablist" class="nav nav-tabs">
+								<ul role="tablist" class="nav nav-tabs nav-justified">
 									<li class="active"><a href="#tab_1" data-toggle="tab"><em class="fa fa-gear fa-lg"></em> Basic Settings</a></li>
 									<li><a href="#tab_2" data-toggle="tab"><em class="fa fa-gears fa-lg"></em> Advanced Settings</a></li>
 								</ul>
@@ -395,9 +395,9 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								   	<!-- FOOTER BUTTONS -->
 								   	<div id="modifyUSERresult"></div>
 
-								   	<fieldset>
+								   	<fieldset class="footer-buttons">
 				                        <div class="box-footer">
-				                           <div class="col-sm-4 col-sm-offset-2 pull-right">
+				                           <div class="col-sm-3 pull-right">
 													<a href="telephonyusers.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 				                           	
 				                                	<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
