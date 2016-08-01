@@ -1057,12 +1057,54 @@ error_reporting(E_ALL);*/
             }
 
                 if(validate == 0){
-
-					
+							var selectable = "Y";
+		            	if(!$('#add_selectable').is(":checked")){
+		            		selectable = "N";
+		            	}
+		            		var human_answered = "Y";
+		            	if(!$('#add_human_answered').is(":checked")){
+		            		human_answered = "N";
+		            	}
+		            		var sale = "Y";
+		            	if(!$('#add_sale').is(":checked")){
+		            		sale = "N";
+		            	}
+		            		var dnc = "Y";
+		            	if(!$('#add_dnc').is(":checked")){
+		            		dnc = "N";
+		            	}
+		            		var scheduled_callback = "Y";
+		            	if(!$('#add_scheduled_callback').is(":checked")){
+		            		scheduled_callback = "N";
+		            	}
+		            		var customer_contact = "Y";
+		            	if(!$('#add_customer_contact').is(":checked")){
+		            		customer_contact = "N";
+		            	}
+		            		var not_interested = "Y";
+		            	if(!$('#add_not_interested').is(":checked")){
+		            		not_interested = "N";
+		            	}
+		            		var unworkable = "Y";
+		            	if(!$('#add_unworkable').is(":checked")){
+		            		unworkable = "N";
+		            	}
                     $.ajax({
                         url: "./php/AddDisposition.php",
                         type: 'POST',
-                        data: $("#create_disposition").serialize(),
+                        data: {
+		                    	campaign : $('#campaign').val(),
+		                    	status : $('#add_status').val(),
+					    		status_name : $('#add_status_name').val(),
+					   			selectable : selectable,
+					    		human_answered : human_answered,
+					    		sale : sale,
+					    		dnc : dnc,
+					    		scheduled_callback : scheduled_callback,
+					    		customer_contact : customer_contact,
+					    		not_interested : not_interested,
+					    		unworkable : unworkable
+		                    },
                         success: function(data) {
                           // console.log(data);
                               if(data == 1){

@@ -196,7 +196,7 @@ $disposition = $ui->API_getAllDispositions();
 		                        <div class="form-group">
 		                           <label>Add Filters:</label>
 		                           <div class="mb">
-		                              	<select id="add_filters" multiple="multiple" class="select2-3 form-control">
+		                              	<select id="add_filters" multiple="multiple" class="select2-3 form-control" style="width:100%;">
 		                                    <option value="filter_campaign">Campaign </option>
 		                                    <option value="filter_list">List ID</option>
 		                                    <option value="filter_address">Address 	</option>
