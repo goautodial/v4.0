@@ -328,7 +328,7 @@ $callsperhour = $ui->API_getCallPerHour();
 
 	<!--===== INFOBOXES WITH BLUE WHITE SUN =======--> 
 	            <div class="row">
-	            	<div class="col-lg-12" style="padding: 0px 0px;">
+	            	<div class="col-lg-12" style="padding: 0px;">
 	            		<!--
 	                    <div class="panel widget" style="height:17%">
 							<div class="col-md-2 col-sm-3 col-xs-6 text-center bg-info pv-xl">
@@ -356,8 +356,8 @@ $callsperhour = $ui->API_getCallPerHour();
 							</div>
 	                    </div>
 	                	-->
-	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info br" style="padding: 20px 0px;">
-	                		<em class="wi wi-day-sunny fa-4x"></em>
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info">
+	                		<em class="icon-phone fa-4x"></em>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0">32</div>

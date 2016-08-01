@@ -160,7 +160,7 @@ if (isset($_POST["did"])) {
 							<form id="modifyingroup">
 
 							<div role="tabpanel">
-								<ul role="tablist" class="nav nav-tabs">
+								<ul role="tablist" class="nav nav-tabs nav-justified">
 								 <!-- Settings panel tabs-->
 									 <li role="presentation" class="active">
 										<a href="#settings" data-toggle="tab">
@@ -505,9 +505,9 @@ if (isset($_POST["did"])) {
 									<!-- FOOTER BUTTONS -->
 								   	<div id="modifyINGROUPresult"></div>
 								   	
-				                    <fieldset>
+				                    <fieldset class="footer-buttons">
 				                        <div class="box-footer">
-				                           <div class="col-sm-4 col-sm-offset-2 pull-right">
+				                           <div class="col-sm-3 pull-right">
 													<a href="telephonyinbound.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 				                           	
 				                                	<button type="submit" class="btn btn-primary" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
@@ -762,7 +762,7 @@ if (isset($_POST["did"])) {
 
 											<fieldset>
 						                        <div class="box-footer">
-						                           <div class="col-sm-4 col-sm-offset-2 pull-right">
+						                           <div class="col-sm-3 pull-right">
 															<a href="telephonyinbound.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 						                           	
 						                                	<button type="submit" class="btn btn-primary" id="modifyIVROkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
@@ -1220,9 +1220,9 @@ if (isset($_POST["did"])) {
 								<!-- FOOTER BUTTONS -->
 								   	<div id="modifyDIDresult"></div>
 
-				                    <fieldset>
+				                    <fieldset class="footer-buttons">
 				                        <div class="box-footer">
-				                           <div class="col-sm-4 col-sm-offset-2 pull-right">
+				                           <div class="col-sm-3 pull-right">
 													<a href="telephonyinbound.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 				                           	
 				                                	<button type="submit" class="btn btn-primary" id="modifyDIDOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>

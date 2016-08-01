@@ -302,7 +302,7 @@ if (isset($_POST["extenid"])) {
 
 									<fieldset>
 				                        <div class="box-footer">
-				                           <div class="col-sm-4 col-sm-offset-2 pull-right">
+				                           <div class="col-sm-3 pull-right">
 													<a href="settingsphones.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 				                           	
 				                                	<button type="submit" class="btn btn-primary" id="update_phones" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>

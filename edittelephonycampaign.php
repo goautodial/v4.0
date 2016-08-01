@@ -146,7 +146,7 @@ $disposition = $ui->API_getDispositionInfo($did);
 								<!-- Custom Tabs -->
 								<div role="tabpanel">
 								<!--<div class="nav-tabs-custom">-->
-									<ul role="tablist" class="nav nav-tabs">
+									<ul role="tablist" class="nav nav-tabs nav-justified">
 										<li class="active"><a href="#tab_1" data-toggle="tab"><em class="fa fa-gear fa-lg"></em> Basic Settings</a></li>
 										<li><a href="#tab_2" data-toggle="tab"><em class="fa fa-gears fa-lg"></em> Advanced Settings</a></li>
 									</ul>
