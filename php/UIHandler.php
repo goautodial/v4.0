@@ -1413,7 +1413,10 @@ error_reporting(E_ERROR | E_PARSE);
 		                    	'.$this->getTopbarNotificationsMenu($user).'
 		                    	'.$this->getTopbarTasksMenu($user).'
 		                    	<li>
-			                    	<a href="#" data-toggle="control-sidebar"><i class="fa fa-cogs"></i></a>
+			                    	<a href="#" data-toggle="control-sidebar" role="button">
+											<span class="sr-only">Toggle dialer</span>
+											<i class="fa fa-cogs"></i>
+										</a>
 				               </li>
 	                    </ul>
 	                </div>
