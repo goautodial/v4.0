@@ -112,7 +112,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js" type="text/javascript"></script>
     </head>
-  <body class="login-page">
+  <body class="login-page" style="overflow: hidden;">
     <div class="login-box" id="login-box">
 	  <div class="margin text-center">
 		<img src="img/logo.png" width="auto" height="64">
