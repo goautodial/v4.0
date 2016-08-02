@@ -313,7 +313,8 @@ $(document).ready(function() {
                 //}
                 
                 if (live_customer_call < 1) {
-                    $("#edit-profile, #for_dtmf").addClass('hidden');
+                    $("#for_dtmf").addClass('hidden');
+                    $('#edit-profile').hide();
                     $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     //toggleStatus('NOLIVE');
@@ -464,14 +465,15 @@ $(document).ready(function() {
                         live_call_seconds++;
                         $(".formMain input[name='seconds']").val(live_call_seconds);
                         $("#SecondsDISP").html(live_call_seconds);
-                        $("#edit-profile, #for_dtmf").removeClass('hidden');
+                        $("#for_dtmf").removeClass('hidden');
+                        $('#edit-profile').show();
                         $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
                         $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
                     }
                     if (XD_live_customer_call == 1) {
                         XD_live_call_seconds++;
                         $("#xferlength").val(XD_live_call_seconds);
-                        $("#edit-profile").removeClass('hidden');
+                        $('#edit-profile').show();
                     }
                     if (customerparked == 1) {
                         customerparkedcounter++;
@@ -652,9 +654,27 @@ $(document).ready(function() {
     
         var isMobile = false; //initiate as false
         // device detection
-        if (parseInt($("body").innerHeight()) < 768) {
+        if (parseInt($("body").innerWidth()) < 768) {
             isMobile = true;
         }
+        
+        $(window).resize(function() {
+            if (parseInt($("body").innerWidth()) < 768) {
+                isMobile = true;
+                paddingHB = 50;
+            } else {
+                isMobile = false;
+                paddingHB = 100;
+            }
+            
+            var navConBar = $("header.main-header").innerHeight();
+            var minusThis = (parseInt(navConBar) + parseInt(paddingHB));
+            var newHeight = parseInt($("body").innerHeight()) - minusThis;
+            console.log(paddingHB, navConBar, minusThis, newHeight);
+            $("aside.control-sidebar div.tab-content").css({
+                'height': newHeight
+            });
+        });
         
         $("[data-toggle='control-sidebar']").on('click', function() {
             var sideBar = '230px';
@@ -848,15 +868,16 @@ $(document).ready(function() {
     
     $("#go_agent_manualdial").append("<li><div class='input-group-vertical center-block'><input type='text' maxlength='18' name='MDPhonENumbeR' id='MDPhonENumbeR' class='form-control col-xs-12 phonenumbers-only' value='' placeholder='<?=$lh->translationFor('enter_phone_number')?>' onkeyup='activateLinks();' onchange='activateLinks();' style='padding: 3px 2px; color: #222; height: 30px;' aria-label='...' /></div><div class='btn-group btn-block' rose='group'><button type='button' class='btn col-xs-10 btn-success btn-raised' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></button><button type='button' class='btn col-xs-2 btn-success dropdown-toggle' data-toggle='dropdown' id='manual-dial-dropdown'>&nbsp;<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span>&nbsp;</button><ul class='dropdown-menu col-lg-12' role='menu'><li><a href='javascript:void(0)' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></a></li><li><a href='javascript:void(0)' id='manual-dial-preview'><?=$lh->translationFor('preview_call')?></a></li></ul></div><input type='hidden' name='MDDiaLCodE' id='MDDiaLCodE' class='digits-only' value='1' /><input type='hidden' name='MDPhonENumbeRHiddeN' id='MDPhonENumbeRHiddeN' value='' /><input type='hidden' name='MDLeadID' id='MDLeadID' value='' /><input type='hidden' name='MDType' id='MDType' value='' /><input type='checkbox' name='LeadLookUP' id='LeadLookUP' size='1' value='0' class='hidden' disabled /><input type='hidden' size='24' maxlength='20' name='MDDiaLOverridE' id='MDDiaLOverridE' class='cust_form' value='' /></li>");
 
-    $("#go_agent_login").append("<li><button id='btnLogMeIn' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-in'></i> <?=$lh->translationFor('login_on_phone')?></button></li>");
+    $("#go_agent_login").append("<li><button id='btnLogMeIn' class='btn btn-warning btn-lg center-block' style='margin-top: 2px;'><i class='fa fa-sign-in'></i> <?=$lh->translationFor('login_on_phone')?></button></li>");
     $("#go_agent_logout").append("<li><button id='btnLogMeOut' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-out'></i> <?=$lh->translationFor('logout_from_phone')?></button></li>");
     
     $("div.navbar-custom-menu").prepend("<span id='server_date' class='hidden-xs pull-left' style='color: #fff; line-height: 21px; height: 50px; padding: 14px 20px;'></span>");
     
     var paddingHB = 100;
-    var navConBar = $("ul.control-sidebar-tabs").innerHeight();
+    var navConBar = $("header.main-header").innerHeight();
     var minusThis = (parseInt(navConBar) + parseInt(paddingHB));
     var newHeight = parseInt($("body").innerHeight()) - minusThis;
+    console.log(paddingHB, navConBar, minusThis, newHeight);
     $("aside.control-sidebar div.tab-content").css({
         'height': newHeight
     });
@@ -1284,6 +1305,27 @@ $(document).ready(function() {
     });
     
     $("#popup-hotkeys").drags();
+    
+    $("[data-toggle='control-sidebar']").on('click', function() {
+        var $isOpen = $("aside.control-sidebar").hasClass("control-sidebar-open");
+        var options = {};
+        if ($isOpen) {
+            options = {
+                'margin-right': '0'
+            };
+            if (parseInt($("body").innerWidth()) < 768) {
+                options['margin-left'] = '0';
+            }
+        } else {
+            options = {
+                'margin-right': '230px'
+            };
+            if (parseInt($("body").innerWidth()) < 768) {
+                options['margin-left'] = '-230px';
+            }
+        }
+        $("aside.content-wrapper").css(options);
+    });
 });
 
 function btnLogMeIn () {

@@ -538,7 +538,7 @@ EOF;
 									<h4 class="modal-title">$selectACampaign</h4>
 								</div>
 								<div class="modal-body">
-									<div style='text-align: center;'>$availableCampaigns: &nbsp; <select id='select_camp'></select></div>
+									<div style='text-align: center; padding: 2px 5px;'><select id='select_camp' class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select'></select><label for="select_camp" class="control-label">$availableCampaigns</label></div>
 									<br />
 									<div id="logSpinner" class="text-center hidden"><span style="font-size: 42px;" class="fa fa-spinner fa-pulse"></span></div>
 									<div id="inboundSelection" class="clearfix hidden">
