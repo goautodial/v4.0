@@ -131,17 +131,17 @@ error_reporting(E_ALL);*/
 								 <!-- In-group panel tabs-->
 									 <li role="presentation" class="active">
 										<a href="#T_campaign" aria-controls="T_campaign" role="tab" data-toggle="tab" class="bb0">
-										   <sup><span class="fa fa-dashboard"></span></sup> Campaigns </a>
+										   Campaigns </a>
 									 </li>
 								<!-- IVR panel tab -->
 									 <li role="presentation">
 										<a href="#T_disposition" aria-controls="T_disposition" role="tab" data-toggle="tab" class="bb0">
-										   <sup><span class="fa fa-volume-up"></span></sup> Dispositions </a>
+										   Dispositions </a>
 									 </li>
 								<!-- DID panel tab -->
 									 <li role="presentation">
 										<a href="#T_leadfilter" aria-controls="T_leadfilter" role="tab" data-toggle="tab" class="bb0">
-										   <sup><span class="fa fa-phone-square"></span></sup> Lead Filters </a>
+										   Lead Filters </a>
 									 </li>
 								  </ul>
 								  

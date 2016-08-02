@@ -1054,7 +1054,7 @@ error_reporting(E_ERROR | E_PARSE);
      * @param $status Int the status of the user (enabled=1, disabled=0)
      * @return String a HTML representation of the action associated with a user in the admin panel.
      */
-    private function ActionMenuForContacts($lead_id) {
+    public function ActionMenuForContacts($lead_id) {
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -1769,7 +1769,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= $settings;
 		$result .= $callreports;
 		$result .= $adminArea;
-		$result .= $loadleads;
+		//$result .= $loadleads; uncomment this if enable stand alone upload leads
 		// menu for agents
 		$result .= $agentmenu;
 
@@ -3120,9 +3120,9 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 		
-		$columns = array("List ID", "Name", "Status", "Last Call Date", "Leads Count", "Campaign", "Action");
-	    $hideOnMedium = array("Status", "Last Call Date", "Leads Count", "Campaign");
-	    $hideOnLow = array("List ID", "Status", "Last Call Date", "Leads Count", "Campaign");
+		$columns = array("List ID", "Name", "Status", "Leads Count", "Campaign", "Action");
+	    $hideOnMedium = array("Status", "Leads Count", "Campaign");
+	    $hideOnLow = array("List ID", "Status", "Leads Count", "Campaign");
 		$result = $this->generateTableHeaderWithItems($columns, "table_lists", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		
 		
@@ -3141,7 +3141,6 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td class='hide-on-low'><a class='edit-ingroup' data-id='".$output->list_id[$i]."'>".$output->list_id[$i]."</td>
 	                    <td>".$output->list_name[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->list_lastcalldate[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->tally[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->campaign_id[$i]."</td>
 	                    <td>".$action."</td>
@@ -4811,7 +4810,7 @@ error_reporting(E_ERROR | E_PARSE);
 	$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass;
-	$postfields["goVarLimit"] = "";
+	$postfields["goVarLimit"] = "500";
 	$postfields["user_id"] = $userName;
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
@@ -4856,10 +4855,10 @@ error_reporting(E_ERROR | E_PARSE);
 	public function GetContacts($userid) {
 	$output = $this->API_GetLeads($userid);
        if($output->result=="success") {
-       	   $columns = array("List ID", "Name", "Phone Number", "Action");
+       	   $columns = array("Lead ID", "Full Name", "Phone Number", "Action");
 	       $hideOnMedium = array("List ID", "Phone Number", "active");
 	       $hideOnLow = array( "List ID", "Phone Number", "active");
-		   $result = $this->generateTableHeaderWithItems($columns, "contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		   $result = $this->generateTableHeaderWithItems($columns, "table_contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
 			for($i=0;$i<=count($output->list_id);$i++){
 		   	//for($i=0;$i<=500;$i++){
@@ -4867,7 +4866,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 				$action = $this->ActionMenuForContacts($output->lead_id[$i]);
 				$result .= '<tr>
-								<td>' .$output->list_id[$i]. '</td> 
+								<td>' .$output->lead_id[$i]. '</td> 
 								<td>' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
 								<td>' .$output->phone_number[$i].'</td>
 								 <td style="width: 200px;">' .$action.'</td>

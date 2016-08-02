@@ -1,5 +1,5 @@
+<?php
 
-<?php	
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -106,7 +106,7 @@
 $lists = $ui->API_goGetAllLists();
 
 $callrecs = $ui->API_getListAllRecordings();
-
+$leads = $ui->API_GetLeads($user->getUserName());
 ?>
                 <!-- Main content -->
                 <section class="content">
@@ -126,11 +126,11 @@ $callrecs = $ui->API_getListAllRecordings();
 											<span class="fa fa-check"></span> Recordings
 										</label>
 										<label class="checkbox-inline c-checkbox" for="search_tickets">
-											<input id="search_tickets" name="table_filter" type="checkbox">
+											<input id="search_tickets" name="table_filter" type="checkbox" disabled>
 											<span class="fa fa-check"></span> Tickets
 										</label>
 										<label class="checkbox-inline c-checkbox" for="search_chats">
-											<input id="search_chats" name="table_filter" type="checkbox">
+											<input id="search_chats" name="table_filter" type="checkbox" disabled>
 											<span class="fa fa-check"></span> Chats
 										</label>
 									</div>
@@ -138,10 +138,48 @@ $callrecs = $ui->API_getListAllRecordings();
 							</div>
 		                	<div class="panel panel-default">
 								<div class="panel-body">
+									<div class="contacts_div">
+									<!-- Contacts panel tab -->
+									<legend>Contacts</legend>
 									
+										<!--==== Contacts ====-->
+										<table class="table table-striped table-bordered table-hover" id="table_contacts">
+										   <thead>
+											  <tr>
+												 <th>Lead ID</th>
+												 <th class='hide-on-medium hide-on-low'>Full Name</th>
+												 <th class='hide-on-medium hide-on-low'>Phone Number</th>
+												 <th class='hide-on-medium hide-on-low'>Status</th>
+												 <th>Action</th>
+											  </tr>
+										   </thead>
+										   <tbody>
+											   	<?php
+											   		for($i=0;$i<=count($leads->list_id);$i++){
+
+												   		if($leads->phone_number[$i] != ""){
+
+														$action_lead = $ui->ActionMenuForContacts($leads->lead_id[$i]);
+
+											   	?>	
+														<tr>
+															<td><?php echo $leads->lead_id[$i];?></a></td>
+															<td class='hide-on-medium hide-on-low'><?php echo $leads->first_name[$i].' '.$leads->middle_initial[$i].' '.$leads->last_name[$i];?></td>
+															<td class='hide-on-medium hide-on-low'><?php echo $leads->phone_number[$i];?></td>
+															<td class='hide-on-medium hide-on-low'><?php echo $leads->status[$i];?></td>
+															<td><?php echo $action_lead;?></td>
+														</tr>
+												<?php
+														}
+													}
+												?>
+										   </tbody>
+										</table>
+									</div>
+
+									<div class="callrecordings_div" style="display:none;">	
 									<!-- Call Recordings panel tab -->
-									<legend>Call Recordings</legend>
-									
+										<legend>Call Recordings</legend>
 
 										<!--==== Call Recordings ====-->
 										<table class="table table-striped table-bordered table-hover" id="table_callrecordings">
@@ -180,6 +218,7 @@ $callrecs = $ui->API_getListAllRecordings();
 												?>
 										   </tbody>
 										</table>
+									</div>
 			               		</div><!-- /.body -->
 		               		</div><!-- /.panel -->
 	               		</div><!-- /.col-lg-9 -->
@@ -209,7 +248,7 @@ $disposition = $ui->API_getAllDispositions();
 		               				<label>Start Date:</label>
 						            <div class="form-group">
 						                <div class='input-group date' id='datetimepicker1'>
-						                    <input type='text' class="form-control" />
+						                    <input type='text' class="form-control" placeholder="<?php echo date("m/d/Y");?>"/>
 						                    <span class="input-group-addon">
 						                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
 												<span class="fa fa-calendar"></span>
@@ -364,6 +403,7 @@ $disposition = $ui->API_getAllDispositions();
 
 			$(document).ready(function() {
 
+				$('#table_contacts').dataTable();
 				$('#table_callrecordings').dataTable();
 
 				//initialize single selecting
@@ -391,6 +431,38 @@ $disposition = $ui->API_getAllDispositions();
 				  } else {
 				    $box.prop("checked", false);
 				  }
+				});
+
+				// shows contacts datatable if Contact tickbox is checked
+				$('#search_contacts').on('change', function() {
+
+					if($('#search_contacts').is(":checked")){
+						$(".contacts_div").show();
+	            	}else{
+	            		$(".contacts_div").hide();
+	            	}
+
+	            	if($('#search_recordings').is(":checked")){
+						$(".callrecordings_div").show();
+	            	}else{
+	            		$(".callrecordings_div").hide();
+	            	}
+				});
+
+				// shows call recordings datatable if Contact tickbox is checked
+				$('#search_recordings').on('change', function() {
+
+					if($('#search_recordings').is(":checked")){
+						$(".callrecordings_div").show();
+	            	}else{
+	            		$(".callrecordings_div").hide();
+	            	}
+
+	            	if($('#search_contacts').is(":checked")){
+						$(".contacts_div").show();
+	            	}else{
+	            		$(".contacts_div").hide();
+	            	}
 				});
 
 				$("#add_filters").change(function(){

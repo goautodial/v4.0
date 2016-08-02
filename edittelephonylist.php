@@ -1,27 +1,31 @@
 <?php
-
+/*
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+*/
 require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
 //require_once('./php/DbHandler.php');
 require_once('./php/LanguageHandler.php');
 require('./php/Session.php');
+require_once('./php/goCRMAPISettings.php');
 
 // initialize structures
 $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
 
-$listid = NULL;
-if (isset($_POST["listid"])) {
-	$listid = $_POST["listid"];
-	
+$modifyid = NULL;
+if (isset($_POST["modifyid"])) {
+	$modifyid = $_POST["modifyid"];
 }
 
 ?>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Edit Telephony Users</title>
+        <title>Edit List</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -46,6 +50,11 @@ if (isset($_POST["listid"])) {
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
         <!-- Creamy App -->
         <script src="js/app.min.js" type="text/javascript"></script>
+
+        	<!-- =============== BOOTSTRAP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+				<!-- =============== APP STYLES ===============-->
+			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
@@ -72,17 +81,16 @@ if (isset($_POST["listid"])) {
             <aside class="right-side">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>
-                        <?php $lh->translateText("telephony"); ?>
-                        <small><?php $lh->translateText("telephony_lists_edition"); ?></small>
+                    <h1 style="font-weight:normal;">
+                        <?php $lh->translateText("lists"); ?>
+                        <small><?php $lh->translateText("List Edit"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
-                        <li> <?php $lh->translateText("telephony"); ?></li>
                         <?php
-							if(isset($_POST["listid"])){
+							if(isset($_POST["modifyid"])){
 						?>	
-							<li><a href="./telephonylistandcallrecording.php"><?php $lh->translateText("list_and_call_recording"); ?></a></li>
+							<li><a href="./telephonylist.php"><?php $lh->translateText("lists"); ?></a></li>
                         <?php
 							}
                         ?>	                    
@@ -90,199 +98,232 @@ if (isset($_POST["listid"])) {
                     </ol>
                 </section>
 
-                <!-- Main content -->
-                <section class="content">
-					<!-- standard custom edition form -->
+						<!-- standard custom edition form -->
 					<?php
-					$userobj = NULL;
 					$errormessage = NULL;
 					
-					if(isset($listid)) {
-						
+					//if(isset($extenid)) {
 						$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
-						$postfields["goUser"] = "admin"; #Username goes here. (required)
-						$postfields["goPass"] = "goautodial"; #Password goes here. (required)
-						$postfields["goAction"] = "goGetListInfo"; #action performed by the [[API:Functions]]. (required)
-						$postfields["responsetype"] = "json"; #json. (required)
-						$postfields["list_id"] = $listid; #Desired list id. (required)
+				        $postfields["goUser"] = goUser; #Username goes here. (required)
+				        $postfields["goPass"] = goPass; #Password goes here. (required)
+				        $postfields["goAction"] = "goGetListInfo"; #action performed by the [[API:Functions]]. (required)
+				        $postfields["responsetype"] = responsetype; #json. (required)
+				        $postfields["list_id"] = $modifyid; #Desired exten ID. (required)
 
-						$ch = curl_init();
-						curl_setopt($ch, CURLOPT_URL, $url);
-						curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-						curl_setopt($ch, CURLOPT_POST, 1);
-						curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-						curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-						$data = curl_exec($ch);
-						curl_close($ch);
-						$output = json_decode($data);
-						
-						// print_r($data);
-						
+				         $ch = curl_init();
+				         curl_setopt($ch, CURLOPT_URL, $url);
+				         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+				         curl_setopt($ch, CURLOPT_POST, 1);
+				         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+				         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+				         $data = curl_exec($ch);
+				         curl_close($ch);
+				         $output = json_decode($data);
+				         //var_dump($output);
 						if ($output->result=="success") {
+							
 						# Result was OK!
 							for($i=0;$i<count($output->list_id);$i++){
-								
-								$hidden_f = $ui->hiddenFormField("modifyid", $listid);
-								
-								$id_f = '<h4>Modify List ID : <b>'.$listid.'</b><h5><i> Last call date : '.$output->list_lastcalldate[$i].'</i></h5></h4>';
-								
-								$name_l = '<h4>Name</h4>';
-								$ph = $lh->translationFor("Name").' ('.$lh->translationFor("mandatory").')';
-								$vl = isset($output->list_name[$i]) ? $output->list_name[$i] : null;
-								$name_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("name", "name", "text", $ph, $vl, "tasks", "required"));
-								
-								$desc_l = '<h4>Description</h4>';
-								$ph = $lh->translationFor("Description").' ('.$lh->translationFor("optional").')';
-								$vl = isset($output->list_description[$i]) ? $output->list_description[$i] : null;
-								$desc_f = $ui->singleInputGroupWithContent($ui->singleFormInputElement("desc", "desc", "text", $ph, $vl, "tasks", "required"));
-								
-								
-								$url2 = "http://69.46.6.35/goAPI/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
-								$postfields2["goUser"] = "goautodial"; #Username goes here. (required)
-								$postfields2["goPass"] = "JUs7g0P455W0rD11214"; #Password goes here. (required)
-								$postfields2["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
-								$postfields2["responsetype"] = "json"; #json. (required)						
-								$ch2 = curl_init();								
-								curl_setopt($ch2, CURLOPT_URL, $url2);								
-								curl_setopt($ch2, CURLOPT_HTTPHEADER, $header2);								
-								curl_setopt($ch2, CURLOPT_POST, 1);								
-								curl_setopt($ch2, CURLOPT_TIMEOUT, 100);								
-								curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);								
-								curl_setopt($ch2, CURLOPT_POSTFIELDS, $postfields2);								
-								$data2 = curl_exec($ch2);								
-								curl_close($ch2);								
-								$output2 = json_decode($data2);
-								
-								$campaign_l = '<h4>Campaign</h4>';
-								$campaign_f = '<select class="form-control" id="campaign" name="campaign" required>';		
-								
-								
-								if ($output2->result=="success") {								
-								# Result was OK!
-								
-									for($a=0;$a<count($output2->campaign_id);$a++){
-										if($output->campaign_id[$i] == $output2->campaign_id[$a]){
-											$campaign_f .= '<option value="'.$output2->campaign_id[$a].'" selected>'.$output2->campaign_name[$a].'</option>';
-										}else{
-											$campaign_f .= '<option value="'.$output2->campaign_id[$a].'" >'.$output2->campaign_name[$a].'</option>';
-										}
-									
-									}
-								} else {
-								# An error occured
-									echo $output2->result;
-								}
-									
-								$campaign_f .= '</select>';
-								$reset_l = '<h4>Reset Lead-Called-Status</h4>';
-								$reset_f = '<select class="form-control" id="reset" name="reset">';
-												
-									if($output->reset_list[$i] == "Y"){
-										$reset_f .= '<option value="Y" selected> YES </option>';
-									}else{
-										$reset_f .= '<option value="Y" > YES </option>';
-									}
-									
-									if($output->reset_list[$i] == "N"){
-										$reset_f .= '<option value="N" selected> NO </option>';
-									}else{
-										$reset_f .= '<option value="N" > NO </option>';
-									}
-									
-								$reset_f .= '</select>';
-								 
-								$status_l = '<h4>Active</h4>';
-								$status_f = '<select class="form-control" id="status" name="status">';
-												
-									if($output->active[$i] == "Y"){
-										$status_f .= '<option value="Y" selected> YES </option>';
-									}else{
-										$status_f .= '<option value="Y" > YES </option>';
-									}
-									
-									if($output->active[$i] == "N"){
-										$status_f .= '<option value="N" selected> NO </option>';
-									}else{
-										$status_f .= '<option value="N" > NO </option>';
-									}
-									
-								$status_f .= '</select>';
-								
-								$reset_status_row = $ui->rowWithVariableContents(array("6", "6","6","6"), array($reset_l, $status_l, $reset_f, $status_f));
-								$rs_f = $ui->singleFormGroupWrapper($reset_status_row);
-								
-								// buttons at bottom (only for writing+ permissions)
-								$buttons = "";
-								if ($user->userHasWritePermission()) {
-									$buttons = $ui->buttonWithLink("modifyT_listDeleteButton", $listid, $lh->translationFor("delete"), "button", "times", CRM_UI_STYLE_DANGER);
-									$buttons .= $ui->buttonWithLink("modifyCustomerOkButton", "", $lh->translationFor("save"), "submit", "check", CRM_UI_STYLE_PRIMARY, "pull-right");
-									$buttons = $ui->singleFormGroupWrapper($buttons);
-								}
-		
-								// generate the form
-								$fields = $hidden_f.$name_l.$name_f.$desc_l.$desc_f.$campaign_l.$campaign_f.$rs_f;
-								
-								// generate form: header
-								$form = $ui->formWithCustomFooterButtons("modifylist", $fields, $buttons, "modifyT_listresult");
-								
-								// generate and show the box
-								//$box = $ui->boxWithForm("modifyuser", , $fields, $lh->translationFor("edit_user"));
-								//print $box;
-								
-								// generate box
-								$boxTitle = $id_f;
-								$formBox = $ui->boxWithContent($boxTitle, $form);
-								// print our modifying customer box.
-								print $formBox;
-								
-							}
-						} else {
-						# An error occured
-							echo $output->result;
-						}
-                        
-					} else {
-			    		$errormessage = $lh->translationFor("some_fields_missing");
-					}
-					
 					?>
-                </section>
+
+            <!-- Main content -->
+            <section class="content">
+				<div class="panel panel-default">
+                    <div class="panel-body">
+						<legend>MODIFY LIST ID : <u><?php echo $modifyid;?></u></legend>
+                    	
+							<form id="modifylist">
+								<input type="hidden" name="modifyid" value="<?php echo $modifyid;?>">
+							
+						<!-- Custom Tabs -->
+						<div role="tabpanel">
+						<!--<div class="nav-tabs-custom">-->
+							<ul role="tablist" class="nav nav-tabs nav-justified">
+								<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
+							</ul>
+			               <!-- Tab panes-->
+			               <div class="tab-content">
+
+				               	<!-- BASIC SETTINGS -->
+				                <div id="tab_1" class="tab-pane fade in active">
+				                	<fieldset>
+										<div class="form-group mt">
+											<label for="group_name" class="col-sm-2 control-label">Name</label>
+											<div class="col-sm-10 mb">
+												<input type="text" class="form-control" name="group_name" id="group_name" placeholder="List Name (Required)" value="<?php echo $output->list_name[$i];?>">
+											</div>
+										</div>
+										<div class="form-group mt">
+											<label for="group_name" class="col-sm-2 control-label">Description</label>
+											<div class="col-sm-10 mb">
+												<input type="text" class="form-control" name="group_name" id="group_name" placeholder="Group Name (Mandatory)" value="<?php echo $output->group_name[$i];?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="forced_timeclock_login" class="col-sm-2 control-label">Campaign</label>
+											<div class="col-sm-10 mb">
+												<select class="form-control" name="forced_timeclock_login" id="forced_timeclock_login">
+												<?php
+													$forced_timeclock_login = NULL;
+													if($output->forced_timeclock_login[$i] == "N"){
+														$forced_timeclock_login .= '<option value="N" selected> NO </option>';
+													}else{
+														$forced_timeclock_login .= '<option value="N" > NO </option>';
+													}
+													
+													if($output->forced_timeclock_login[$i] == "Y"){
+														$forced_timeclock_login .= '<option value="Y" selected> YES </option>';
+													}else{
+														$forced_timeclock_login .= '<option value="Y" > YES </option>';
+													}
+
+													if($output->forced_timeclock_login[$i] == "ADMIN_EXEMPT"){
+														$forced_timeclock_login .= '<option value="ADMIN_EXEMPT" selected> ADMIN EXEMPT </option>';
+													}else{
+														$forced_timeclock_login .= '<option value="ADMIN_EXEMPT" > ADMIN EXEMPT </option>';
+													}
+													echo $forced_timeclock_login;
+												?>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="active" class="col-sm-3 control-label">Reset Lead-Called-Status</label>
+											<div class="col-sm-9 mb">
+												<select class="form-control" name="active" id="active">
+												<?php
+													$active = NULL;
+													if($output->active[$i] == "Y"){
+														$active .= '<option value="Y" selected> YES </option>';
+													}else{
+														$active .= '<option value="Y" > YES </option>';
+													}
+													
+													if($output->active[$i] == "N" || $output->active[$i] == NULL){
+														$active .= '<option value="N" selected> NO </option>';
+													}else{
+														$active .= '<option value="N" > NO </option>';
+													}
+													echo $active;
+												?>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="active" class="col-sm-3 control-label">Active</label>
+											<div class="col-sm-9 mb">
+												<select class="form-control" name="active" id="active">
+												<?php
+													$active = NULL;
+													if($output->active[$i] == "Y"){
+														$active .= '<option value="Y" selected> YES </option>';
+													}else{
+														$active .= '<option value="Y" > YES </option>';
+													}
+													
+													if($output->active[$i] == "N" || $output->active[$i] == NULL){
+														$active .= '<option value="N" selected> NO </option>';
+													}else{
+														$active .= '<option value="N" > NO </option>';
+													}
+													echo $active;
+												?>
+												</select>
+											</div>
+										</div>
+										<div class="form-group mt">
+											<label for="group_name" class="col-sm-2 control-label">Webform</label>
+											<div class="col-sm-10 mb">
+												<input type="text" class="form-control" name="group_name" id="group_name" placeholder="Group Name (Mandatory)" value="<?php echo $output->group_name[$i];?>">
+											</div>
+										</div>
+									</fieldset>
+								</div><!-- tab 1 -->
+
+								
+								<!-- NOTIFICATIONS -->
+			                    <div id="notifications">
+			                        <div class="output-message-success" style="display:none;">
+			                            <div class="alert alert-success alert-dismissible" role="alert">
+			                              <strong>Success!</strong> Phone <?php echo $usergroup_id?> modified !
+			                            </div>
+			                        </div>
+			                        <div class="output-message-error" style="display:none;">
+			                            <div class="alert alert-danger alert-dismissible" role="alert">
+			                              <span id="modifyT_phonesresult"></span>
+			                            </div>
+			                        </div>
+			                    </div>
+
+			                    <!-- FOOTER BUTTONS -->
+			                    <fieldset class="footer-buttons">
+			                        <div class="box-footer">
+			                           <div class="col-sm-3 pull-right">
+												<a href="settingsusergroups.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+			                           	
+			                                	<button type="submit" class="btn btn-primary" id="modifyUserGroupOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+											
+			                           </div>
+			                        </div>
+			                    </fieldset>
+
+				            	</div><!-- end of tab content -->
+	                    	</div><!-- tab panel -->
+	                    </form>
+	                </div><!-- body -->
+	            </div>
+            </section>
+					<?php
+							}
+						}	
+                        
+					?>
+					
 				<!-- /.content -->
             </aside><!-- /.right-side -->
 			
-            <?php print $ui->creamyFooter(); ?>
-			
+			<?php print $ui->creamyFooter(); ?>
+
         </div><!-- ./wrapper -->
 
+  		
+		
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
+		
+		<!-- SLIMSCROLL-->
+   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
 
 		<script type="text/javascript">
-			$(document).ready(function() {				
+			$(document).ready(function() {
+	
 				/** 
 				 * Modifies a telephony list
 			 	 */
-				$("#modifylist").validate({
+				$("#modifyvoicemail").validate({
                 	submitHandler: function() {
 						//submit the form
+							$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+							$('#modifyUserGroupOkButton').prop("disabled", true);
+
 							$("#resultmessage").html();
 							$("#resultmessage").fadeOut();
-							$.post("./php/ModifyTelephonyList.php", //post
-							$("#modifylist").serialize(), 
+							$.post("./php/ModifyUsergroup.php", //post
+							$("#modifyvoicemail").serialize(), 
 								function(data){
 									//if message is sent
-									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-										print $ui->fadingInMessageJS($errorMsg, "modifyT_listresult"); 
-									?>				
+									if (data == 1) {
+										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                                        window.setTimeout(function(){location.reload()},2000)
+                                        $('#update_button').html("<i class='fa fa-check'></i> Update");
+                                        $('#modifyUserGroupOkButton').prop("disabled", false);
 									} else {
 									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data"), false, true);
-										print $ui->fadingInMessageJS($errorMsg, "modifyT_listresult");
+										print $ui->fadingInMessageJS($errorMsg, "modifyT_phonesresult");
 									?>
-									
+									$('#update_button').html("<i class='fa fa-check'></i> Update");
+									$('#modifyUserGroupOkButton').prop("disabled", false);
 									}
 									//
 								});
@@ -290,24 +331,6 @@ if (isset($_POST["listid"])) {
 					}					
 				});
 				
-				/**
-				 * Deletes a telephony list
-				 */
-				 $("#modifyT_listDeleteButton").click(function (e) {
-					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
-					e.preventDefault();
-					if (r == true) {
-						var listid = $(this).attr('href');
-						$.post("./php/DeleteTelephonyList.php", { listid: listid } ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
-								alert("<?php $lh->translateText("list_successfully_deleted"); ?>");
-								window.location = "index.php";
-							}
-							else { alert ("<?php $lh->translateText("unable_delete_list"); ?>: "+data); }
-						});
-					}
-				 });
-				 
 			});
 		</script>
 
