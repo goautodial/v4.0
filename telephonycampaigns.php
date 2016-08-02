@@ -131,17 +131,17 @@ error_reporting(E_ALL);*/
 								 <!-- In-group panel tabs-->
 									 <li role="presentation" class="active">
 										<a href="#T_campaign" aria-controls="T_campaign" role="tab" data-toggle="tab" class="bb0">
-										   <sup><span class="fa fa-dashboard"></span></sup> Campaigns </a>
+										   Campaigns </a>
 									 </li>
 								<!-- IVR panel tab -->
 									 <li role="presentation">
 										<a href="#T_disposition" aria-controls="T_disposition" role="tab" data-toggle="tab" class="bb0">
-										   <sup><span class="fa fa-volume-up"></span></sup> Dispositions </a>
+										   Dispositions </a>
 									 </li>
 								<!-- DID panel tab -->
 									 <li role="presentation">
 										<a href="#T_leadfilter" aria-controls="T_leadfilter" role="tab" data-toggle="tab" class="bb0">
-										   <sup><span class="fa fa-phone-square"></span></sup> Lead Filters </a>
+										   Lead Filters </a>
 									 </li>
 								  </ul>
 								  
@@ -418,7 +418,7 @@ error_reporting(E_ALL);*/
 		    			</div>
 					</div>
 					<div class="wizard-step" onload="alert('step 2');">
-		    			<div class="form-group">
+		    			<!--<div class="form-group">
 		    				<label class="control-label col-lg-4">Lead File:</label>
 		    				<div class="col-lg-8">
 		    					<div class="input-group">
@@ -427,7 +427,7 @@ error_reporting(E_ALL);*/
 									<span class="input-group-btn">
 										<button class="btn btn-default btn-lead-file" type="button">Browse</button>
 									</span>
-								</div><!-- /input-group -->
+								</div>
 		    				</div>
 		    			</div>
 		    			<div class="form-group">
@@ -437,7 +437,7 @@ error_reporting(E_ALL);*/
 		    					<small class="text-green success hide">&nbsp;&nbsp;&nbsp;Leads successfully uploaded...</small>
 		    					<small class="text-red error hide">&nbsp;&nbsp;&nbsp;Error. Something went wrong...</small>
 		    				</div>
-		    			</div>
+		    			</div>-->
 		    			<div class="form-group">
 		    				<label class="control-label col-lg-4">List ID:</label>
 		    				<label class="control-label col-lg-8" style="text-align: left;">

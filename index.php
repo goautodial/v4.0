@@ -369,7 +369,7 @@ $callsperhour = $ui->API_getCallPerHour();
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0">420</div>
-								<div class="text-muted" style="font-size: small;">Average Handling Time (sec)</div>
+								<div class="text-muted" style="font-size: small;">Avg. Handling Time</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><?php echo $inbound_calls;?></div>

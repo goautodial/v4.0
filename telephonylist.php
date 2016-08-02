@@ -1,5 +1,7 @@
-
 <?php	
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);	
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -56,6 +58,10 @@
         <!-- Date Picker -->
         <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
 		<script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+		
+		<!-- SELECT2-->
+   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
 
 	<!-- Bootstrap Player -->
 	<script src="js/bootstrap-player.js" type="text/javascript"></script>
@@ -101,12 +107,88 @@ $lists = $ui->API_goGetAllLists();
 ?>
                 <!-- Main content -->
                 <section class="content">
-                	<div class="panel panel-default">
-						<div class="panel-body">
-							<legend>Lists</legend>
-							<?php print $ui->GetAllLists(); ?>
-               			</div><!-- /.body -->
-               		</div><!-- /.panel -->
+                	<div class="row">
+						<div class="col-lg-9">
+		                	<div class="panel panel-default">
+								<div class="panel-body">
+									<legend>Lists</legend>
+
+									<table class="table table-striped table-bordered table-hover" id="table_lists">
+									   <thead>
+										  <tr>
+											 <th class='hide-on-medium hide-on-low'>List ID</th>
+											 <th>Name</th>
+											 <th class='hide-on-medium hide-on-low'>Status</th>
+											 <th class='hide-on-medium hide-on-low'>Leads Count</th>
+											 <th class='hide-on-medium hide-on-low'>Campaign</th>
+											 <th class='hide-on-medium hide-on-low'>Action</th>
+										  </tr>
+									   </thead>
+									   <tbody>
+										   	<?php
+										   		for($i=0;$i < count($lists->list_id);$i++){				
+												// if no entry in user list
+											
+												if($lists->active[$i] == "Y"){
+													$lists->active[$i] = "Active";
+												}else{
+													$lists->active[$i] = "Inactive";
+												}
+												
+												$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i]);
+											?>
+												<tr>
+								                    <td class='hide-on-low'><a class='edit-ingroup' data-id='<?php echo $output->list_id[$i];?>'><?php echo $lists->list_id[$i];?></td>
+								                    <td><?php echo $lists->list_name[$i];?></td>
+													<td class='hide-on-medium hide-on-low'><?php echo $lists->active[$i];?></td>
+								                    <td class='hide-on-medium hide-on-low'><?php echo $lists->tally[$i];?></td>
+													<td class='hide-on-medium hide-on-low'><?php echo $lists->campaign_id[$i];?></td>
+								                    <td><?php echo $action_list;?></td>
+									            </tr>
+											<?php	
+																			
+												}
+											?>
+									   </tbody>
+									</table>	
+		               			</div><!-- /.body -->
+		               		</div><!-- /.panel -->
+		               	</div><!-- /.col-lg-9 -->
+			            <div class="col-lg-3">
+	           				<h3 class="m0 pb-lg">Upload/Import Leads</h3>
+	           				<form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data">
+								
+								<div class="form-group">
+									<label>List ID:</label>
+									<div class="form-group">
+										<select id="select2-1" class="form-control" name="list_id">
+										<option value="" selected disabled>-- Select List ID --</option>
+											<?php 
+												for($i=0;$i<count($lists->list_id);$i++){
+		                                			echo '<option value="'.$lists->list_id[$i].'">'.$lists->list_id[$i].' - '.$lists->list_name[$i].'</option>';
+		                                		}
+											?>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label>CSV File:</label>
+									<div class="form-group">
+										<div class="input-group">
+									      <input type="text" class="form-control file-name" name="file_name" placeholder="CSV File">
+									      <span class="input-group-btn">
+									        <button type="button" class="btn btn-default browse-btn" type="button">Browse</button>
+									      </span>
+									    </div><!-- /input-group -->
+									    <input type="file" class="file-box hide" name="file_upload">
+									</div>
+								</div>
+								<div class="form-group">
+									<button type="submit" class="btn btn-primary">Submit</button>
+								</div>
+							</form>
+	           			</div><!-- ./upload leads -->
+                	</div>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
@@ -141,7 +223,7 @@ $lists = $ui->API_goGetAllLists();
 					<div class="wizard-step">
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="auto_generate">Auto-generated:</label>
-							<div class="col-sm-9 mb">
+							<div class="col-sm-9 mt mb">
 								<label class="col-sm-2 checkbox-inline c-checkbox" for="auto_generate">
 									<input type="checkbox" id="auto_generate" checked>
 									<span class="fa fa-check"></span>
@@ -251,36 +333,79 @@ $lists = $ui->API_goGetAllLists();
 		<!-- Forms and actions -->
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
-		<!-- SLIMSCROLL-->
-   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+		<!-- SELECT2-->
+   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
    		
 		<script type="text/javascript">
 
 			$(document).ready(function() {
-				$('#table_lists').DataTable( {
-		            deferRender:    true,
-			    	select: true,
-			    	stateSave: true
-				});
+				
+				/*****
+				** Functions for List
+				*****/
 
-				$('#list-modal').wizard();
-				// $('#call-playback-modal').modal('show');
+					// initialize datatable
+					$('#table_lists').DataTable( {
+			            deferRender:    true,
+				    	select: true,
+				    	stateSave: true,
+				    	"processing": true,
+        				"serverSide": true
+					});
 
-				$('#auto_generate').on('change', function() {
-				//  alert( this.value ); // or $(this).val()
-					if($('#auto_generate').is(":checked")){
-	            		$('#list_id').val("<?php echo $next_list;?>");
-	            		$('#list_name').val("<?php echo $next_listname;?>");
-	            		$('#list_desc').val("<?php echo $next_listdesc;?>");
-	            		$('#list_id').prop("disabled", true);
-	            	}
-	            	if(!$('#auto_generate').is(":checked")){
-	            		$('#list_id').val("");
-	            		$('#list_name').val("");
-	            		$('#list_desc').val("");
-	            		$('#list_id').prop("disabled", false);
-	            	}
-				});
+					/**
+					  * Edit user details
+					 */
+					$(document).on('click','.edit-list',function() {
+						var url = './edittelephonylist.php';
+						var id = $(this).attr('data-id');
+						//alert(extenid);
+						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
+						//$('body').append(form);  // This line is not necessary
+						$(form).submit();
+					});
+							
+
+					$('#list-modal').wizard();
+					// $('#call-playback-modal').modal('show');
+
+					$('#auto_generate').on('change', function() {
+					//  alert( this.value ); // or $(this).val()
+						if($('#auto_generate').is(":checked")){
+		            		$('#list_id').val("<?php echo $next_list;?>");
+		            		$('#list_name').val("<?php echo $next_listname;?>");
+		            		$('#list_desc').val("<?php echo $next_listdesc;?>");
+		            		$('#list_id').prop("disabled", true);
+		            	}
+		            	if(!$('#auto_generate').is(":checked")){
+		            		$('#list_id').val("");
+		            		$('#list_name').val("");
+		            		$('#list_desc').val("");
+		            		$('#list_id').prop("disabled", false);
+		            	}
+					});
+
+				/****
+				** Functions for upload leads
+				*****/
+					//initialize single selecting
+					$('#select2-1').select2({
+				        theme: 'bootstrap'
+				    });
+
+					$('.browse-btn').click(function(){
+						$('.file-box').click();
+					});
+
+					$('.file-box').change(function(){
+						var myFile = $(this).prop('files');
+						var Filename = myFile[0].name;
+
+						$('.file-name').val(Filename);
+						console.log($(this).val());
+					});
+
+				//-- end	
 			});
 		</script>
     </body>
