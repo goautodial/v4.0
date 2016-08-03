@@ -130,6 +130,7 @@
 }
 a {
   outline: none !important;
+  cursor: pointer;
 }
 a.text-muted:hover,
 a.text-muted:focus {

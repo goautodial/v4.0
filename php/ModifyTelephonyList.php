@@ -1,15 +1,13 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);	
 
 require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require('Session.php');
 require_once('goCRMAPISettings.php');
 
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
-
 // check required fields
-$reason = $lh->translationFor("unable_modify_list");
+$reason = "Unable to Modify List";
 $validated = 1;
 if (!isset($_POST["modifyid"])) {
 	$validated = 0;
@@ -35,11 +33,6 @@ if ($validated == 1) {
 		$campaign = stripslashes($campaign);
 	}
 	
-     $reset = NULL; if (isset($_POST["reset"])) { 
-		$reset = $_POST["reset"]; 
-		$reset = stripslashes($reset);
-	}
-	
     $status = NULL; if (isset($_POST["status"])) { 
 		$status = $_POST["status"]; 
 		$status = stripslashes($status);
@@ -55,7 +48,6 @@ if ($validated == 1) {
 	$postfields["list_name"] = $name; #Desired value for user (required)
 	$postfields["list_description"] = $desc; #Desired value for user (required)
 	$postfields["campaign_id"] = $campaign; #Desired value for user (required)
-	$postfields["reset_list"] = $reset; #Desired value for user (required)
 	$postfields["active"] = $status; #Desired value for user (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     $ch = curl_init();
