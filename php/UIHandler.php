@@ -5117,6 +5117,18 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    return $output;
 	}
+	
+	protected function getTopbarCallbacksMenu($user) {
+		$headerText = $this->lh->translationFor("you_have").' <span id="callbacks-active">0</span> '.$this->lh->translationFor("active_callbacks");
+		$result = $this->getTopbarMenuHeader("tty", 0, "callbacks", $headerText, null, CRM_UI_STYLE_PRIMARY, false);
+		
+		//foreach ($list as $task) {
+		//	$result .= $this->getTopbarSimpleElementWithDate($task["description"], $task["creation_date"], "clock-o", "tasks.php", CRM_UI_STYLE_WARNING);
+		//}
+		
+		$result .= $this->getTopbarMenuFooter($this->lh->translationFor("see_all_callbacks"), "seeCallbacks.php");
+		return $result;
+   }
 }
 
 ?>
