@@ -126,12 +126,9 @@
 				<form action="CreateTelephonyUser.php" method="POST" id="create_form" class="form-horizontal " role="form">
 				<!-- STEP 1 -->
 					<div class="wizard-step">
-						<div class="row" style="padding-top:10px;padding-bottom:0px;">
-							<p class="col-sm-12"><small><i> - - - All fields with ( </i></small> <b>*</b> <small><i> ) are Required Field.  - - -</i></small></p>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="user_group" style="padding-top:15px;">User Group:</label>
-							<div class="col-sm-8" style="padding-top:10px;">
+						<div class="form-group mt">
+							<label class="col-sm-4 control-label" for="user_group">User Group:</label>
+							<div class="col-sm-8 mb">
 								<select id="user_group" class="form-control" name="user_group">
 									<?php
 										for($i=0;$i<count($user_groups->user_group);$i++){
@@ -144,9 +141,11 @@
 							</div>
 						</div>
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" style="padding-top:15px;">Current Users: </label>
-							<div class="col-sm-8" style="padding-top:10px;">
-								<h4 style="padding-left:20px;"><?php echo count($output->userno); ?></h4>
+							<label class="col-sm-4 control-label">Current Users: </label>
+							<div class="col-sm-8 mb">
+								<div class="row">
+									<h4 style="padding-left:20px;"><?php echo count($output->userno); ?></h4>
+								</div>
 							</div>
 						</div>
 					<!-- ENABLE IF ADD MULTIPLE IS READY --
@@ -167,14 +166,14 @@
 						</div>
 					-->
 						<div class="form-group" id="custom_seats" style="display:none;">
-							<label class="col-sm-4 control-label" for="custom_num_seats" style="padding-top:15px;">Number of Seats: </label>
-							<div class="col-sm-6" style="padding-top:10px;">
+							<label class="col-sm-4 control-label" for="custom_num_seats">Number of Seats: </label>
+							<div class="col-sm-6 mb">
 								<input type="number" name="custom_num_seats" id="custom_num_seats" class="form-control" min="1" max="99" value="1">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="generate_phone_logins" style="padding-top:15px;">Generate Phone Logins: </label>
-							<div class="col-sm-8" style="padding-top:10px;">
+							<label class="col-sm-4 control-label" for="generate_phone_logins">Generate Phone Logins: </label>
+							<div class="col-sm-8 mb">
 								<select id="generate_phone_logins" name="generate_phone_logins" class="form-control">
 									<option value="N" selected>No</option>
 									<option value="Y">Yes</option>
@@ -189,8 +188,8 @@
 							
 						?>
 						<div class="form-group" id="phone_logins_form" style="display:none;">
-							<label class="col-sm-4 control-label" for="phone_logins" style="padding-top:15px;">* Phone Login: </label>
-							<div class="col-sm-8" style="padding-top:10px;">
+							<label class="col-sm-4 control-label" for="phone_logins"> Phone Login: </label>
+							<div class="col-sm-8 mb">
 								<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" value="<?php echo $latest_phone;?>" pattern=".{3,}" title="Minimum of 3 characters" required>
 							</div>
 						</div>
@@ -199,18 +198,14 @@
 			
 				<!-- STEP 2 -->
 					<div class="wizard-step">
-						
-						<div class="row" style="padding-top:10px;padding-bottom:0px;">
-							<p class="col-sm-12"><small><i> - - - All fields with ( </i></small> <b>*</b> <small><i> ) are Required Field.  - - -</i></small></p>
-						</div>
-
-						<div class="row" style="margin-left:0;">
-							<label class="control-label col-sm-4" style="padding-top:15px;">User Group:</label>
-							<div class="col-sm-8" style="padding-top:15px; display: inline-flex;">
+						<!--
+						<div class="form-group mt">
+							<label class="control-label col-sm-4">User Group:</label>
+							<div class="col-sm-8 mb">
 								<span id="display_user_group"></span>
 							</div>
 						</div>
-						
+						-->
 						<?php
 						$max = count($output->userno);
 						$x = 0;
@@ -233,56 +228,57 @@
 						?>
 						
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" style="padding-top:15px;">* Users ID: </label>
-							<div class="col-sm-8 wizard-inline">
-								<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID" value="<?php echo $user_id_for_form;?>" required>
+							<label class="col-sm-4 control-label"> Users ID: </label>
+							<div class="col-sm-8 mb">
+								<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID. This is a required field." value="<?php echo $user_id_for_form;?>" required>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="fullname" style="padding-top:15px;">* Fullname: </label>
-							<div class="col-sm-8 wizard-inline">
-								<input type="text" name="fullname" id="fullname" class="form-control"
+							<label class="col-sm-4 control-label" for="fullname"> Fullname: </label>
+							<div class="col-sm-8 mb">
+								<input type="text" name="fullname" id="fullname" class="form-control" placeholder="FullName. This is a required field."
 									   value="<?php echo $fullname;?>">
 							</div>
 						</div>
-						<div class="row">
-							<p class="col-sm-12" style="padding-top:20px;padding-bottom:0px;"><small><i> - - - Default Password is:</i></small> <b>Go2016</b><small><i> - - - </i></small></p>
-						</div>
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="password" style="padding-top:0px;">* Password: </label>
-							<div class="col-sm-8" style="display:inline-flex;">
-								<input type="password" class="form-control" name="password" id="password" placeholder="Password" value="Go2016" required>
+							<label class="col-sm-4 control-label" for="password"> Password: </label>
+							<div class="col-sm-8 mb">
+								<input type="password" class="form-control" name="password" id="password" placeholder="Default Password is: Go2016. This is a required field." value="Go2016" required>
 								
 							</div> 
 						</div>
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="conf_password" style="padding-top:15px;">* Confirm Password: </label>
-							<div class="col-sm-8 wizard-inline">
-								<input type="password" class="form-control" id="conf_password" placeholder="Password" value="Go2016" required>
+							<label class="col-sm-4 control-label" for="conf_password"> Confirm Password: </label>
+							<div class="col-sm-8 mb">
+								<input type="password" class="form-control" id="conf_password" placeholder="Re-enter password here. This is a required field" value="Go2016" required>
 							</div> 
 						</div>
 						<div class="row">
 							<p class="col-sm-12"><small class="pull-right" style="padding-right:20px;"><i><span id="pass_result"></span></i></small></p>
 						</div>
-
+						<!--
 						<div id="phone_div" style="display:none;">
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="phone_login1" style="padding-top:15px;">* Phone Login: </label>
-								<div class="col-sm-8 wizard-inline">
+								<label class="col-sm-4 control-label" for="phone_login1"> Phone Login: </label>
+								<div class="col-sm-8 mb">
 									<input type="text" readonly name="phone_login1" id="phone_login1" class="form-control">
 								</div>
 							</div>
+						
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="phone_pass" style="padding-top:15px;">* Phone Password: </label>
-								<div class="col-sm-8 wizard-inline">
+								<label class="col-sm-4 control-label" for="phone_pass"> Phone Password: </label>
+								<div class="col-sm-8 mb">
 									<input type="text" name="phone_pass" id="phone_pass" class="form-control" value="Go2016">
 								</div>
 							</div>
+						
 						</div>
+						-->
+						<input type="hidden" name="phone_pass" id="phone_pass" class="form-control">
 
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="status" style="padding-top:15px;">Active: </label>
-							<div class="col-sm-4 wizard-inline">
+							<label class="col-sm-4 control-label" for="status">Active: </label>
+							<div class="col-sm-4 mb">
 								<select name="status" class="form-control">
 									<option value="Y" selected>Yes</option>		
 			
@@ -373,7 +369,7 @@
 			
 			var generate_phone_logins = document.getElementById('generate_phone_logins').value;
 			var phone_logins = document.getElementById('phone_logins').value;
-			var phone_pass = document.getElementById('phone_pass').value;
+			//var phone_pass = document.getElementById('phone_pass').value;
 
 			var password = document.getElementById('password').value;
 			var conf_password = document.getElementById('conf_password').value;
@@ -386,12 +382,12 @@
 					var phone_logins = document.getElementById('phone_logins').value;
 
 					if(generate_phone_logins == "Y"){
-						document.getElementById("phone_login1").value = phone_logins;
+						//document.getElementById("phone_login1").value = phone_logins;
 						$('#phone_div').show();
 					}else{
 						$('#phone_div').hide();
 					}
-
+					/*
 					var user_group = document.getElementById('user_group').value;
 					if(user_group == "AGENTS"){
 						user_group = "GOAUTODIAL AGENTS";
@@ -403,7 +399,7 @@
 						user_group = "SUPERVISOR";
 					}
 					document.getElementById("display_user_group").innerHTML =  user_group;
-
+					*/
 				},
                 onfinish:function(){
                 
@@ -422,6 +418,7 @@
 				var password = document.getElementById('password').value;
 				var conf_password = document.getElementById('conf_password').value;
 
+					/*
 					if(generate_phone_logins == "Y"){
 						if(phone_logins == ""){
 							validate_wizard = 1;
@@ -429,7 +426,9 @@
 						if(phone_pass == ""){
 							validate_wizard = 1;
 						}
-					}
+					}*/
+
+					phone_pass = password; //matches the phone password with the password.
 
 					if(user_form == ""){
 						validate_wizard = 1;
@@ -490,7 +489,7 @@
 		/* user group */
 			$('#user_group').on('change', function() {
 			//  alert( this.value ); // or $(this).val()
-				if(this.value == "AGENTS") {
+				if(this.value == "AGENTS" || this.value == "ADMIN") {
 					document.getElementById('generate_phone_logins').value = "Y";
 					$('#phone_logins_form').show();
 					//$('#generate_phone_logins').val() = "Y";

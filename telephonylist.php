@@ -63,6 +63,10 @@ error_reporting(E_ALL);
    		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
    		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
 
+   		<!-- SWEETALERT-->
+   		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
+		<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+
 	<!-- Bootstrap Player -->
 	<script src="js/bootstrap-player.js" type="text/javascript"></script>
 
@@ -138,7 +142,7 @@ $lists = $ui->API_goGetAllLists();
 												$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i]);
 											?>
 												<tr>
-								                    <td class='hide-on-low'><a class='edit-ingroup' data-id='<?php echo $output->list_id[$i];?>'><?php echo $lists->list_id[$i];?></td>
+								                    <td class='hide-on-low'><a class='edit-list' data-id='<?php echo $lists->list_id[$i];?>'><?php echo $lists->list_id[$i];?></td>
 								                    <td><?php echo $lists->list_name[$i];?></td>
 													<td class='hide-on-medium hide-on-low'><?php echo $lists->active[$i];?></td>
 								                    <td class='hide-on-medium hide-on-low'><?php echo $lists->tally[$i];?></td>
@@ -214,26 +218,28 @@ $lists = $ui->API_goGetAllLists();
 				
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="scripts"><b>Call Recordings Wizard >> Add New Call Recordings</b></h4>
+					<h4 class="modal-title animate-header" id="scripts"><b>List Wizard » Add New List</b></h4>
 				</div>
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
-				<form action="CreateTelephonyUser.php" method="POST" id="create_form" class="form-horizontal " role="form">
+				<form method="POST" id="create_form" class="form-horizontal " role="form">
 				<!-- STEP 1 -->
 					<div class="wizard-step">
-						<div class="form-group">
+						<div class="form-group mt">
 							<label class="col-sm-3 control-label" for="auto_generate">Auto-generated:</label>
-							<div class="col-sm-9 mt mb">
-								<label class="col-sm-2 checkbox-inline c-checkbox" for="auto_generate">
-									<input type="checkbox" id="auto_generate" checked>
-									<span class="fa fa-check"></span>
-								</label>
+							<div class="col-sm-9 mb">
+								<div class="row">
+									<label class="col-sm-3 checkbox-inline c-checkbox" for="auto_generate">
+										<input type="checkbox" id="auto_generate" checked>
+										<span class="fa fa-check"></span>
+									</label>
+								</div>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="list_id">List ID:</label>
+							<label class="col-sm-3 control-label" for="add_list_id">List ID:</label>
 							<div class="col-sm-9 mb">
-								<input type="text" class="form-control" name="list_id" id="list_id" placeholder="List ID" value="<?php echo $next_list;?>" disabled />
+								<input type="text" class="form-control" name="add_list_id" id="add_list_id" placeholder="List ID" value="<?php echo $next_list;?>" disabled />
 							</div>
 						</div>
 						<div class="form-group">
@@ -249,9 +255,9 @@ $lists = $ui->API_goGetAllLists();
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="status">Campaign: </label>
+							<label class="col-sm-3 control-label" for="campaign_select">Campaign: </label>
 							<div class="col-sm-9 mb">
-								<select name="status" class="form-control">
+								<select name="campaign_select" class="form-control">
 									<?php
 										for($i=0; $i < count($campaign->campaign_id);$i++){
 											echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_name[$i]." </option>";
@@ -297,7 +303,7 @@ $lists = $ui->API_goGetAllLists();
 				<div class="modal-footer">
                 <!-- The wizard button will be inserted here. -->
                     <button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
-                    <input type="submit" class="btn btn-primary" id="submit_usergroup" value="Submit" style="display: inline-block;">
+                    <input type="submit" class="btn btn-primary" id="submit_list" value="Submit" style="display: inline-block;">
                 </div>
 			</div>
 		</div>
@@ -348,11 +354,88 @@ $lists = $ui->API_goGetAllLists();
 					$('#table_lists').DataTable( {
 			            deferRender:    true,
 				    	select: true,
-				    	stateSave: true,
-				    	"processing": true,
-        				"serverSide": true
+				    	stateSave: true
 					});
 
+					/**
+					* Add list
+					**/
+					$('#submit_list').click(function(){
+
+	                $('#submit_list').val("Saving, Please Wait.....");
+	                $('#submit_list').prop("disabled", true);
+
+		                swal({   title: "Are you sure?",   
+		                	text: "This action cannot be undone.",   
+		                	type: "warning",   
+		                	showCancelButton: true,   
+		                	confirmButtonColor: "#DD6B55",   
+		                	confirmButtonText: "Yes, submit!",   
+		                	cancelButtonText: "No, cancel please!",   
+		                	closeOnConfirm: false,   
+		                	closeOnCancel: false }, 
+
+		                	function(isConfirm){   
+	                		if (isConfirm) {     
+	                			var validate = 0;
+				                var list_id = $("#add_list_id").val();
+				                var list_name = $("#list_name").val();
+				                var list_desc = $("#list_desc").val();
+				               	
+				               	var form = $("#create_form");
+				               	// Find disabled inputs, and remove the "disabled" attribute
+								var disabled = form.find(':input:disabled').removeAttr('disabled');
+								var serialized = form.serialize();
+
+				                if(list_id == ""){
+				                    validate = 1;
+				                }
+
+				                if(list_name == ""){
+				                    validate = 1;
+				                }
+
+				                if(list_desc == ""){
+				                    validate = 1;
+				                }
+
+				                    if(validate == 0){
+				                    //alert("Validated !");
+				                    
+				                        $.ajax({
+				                            url: "./php/AddTelephonyList.php",
+				                            type: 'POST',
+				                            data: serialized,
+				                            success: function(data) {
+				                              // console.log(data);
+				                                  if(data == 1){
+				                                        swal("Success!", "List Successfully Created!", "success")
+				                                        window.setTimeout(function(){location.reload()},3000)
+				                                        $('#submit_list').val("Loading");
+				                                  }
+				                                  else{
+				                                      sweetAlert("Oops...", "Something went wrong!", "error");
+				                                      $('#submit_list').val("Submit");
+				                                      $('#submit_list').prop("disabled", false);
+				                                  }
+				                            }
+				                        });
+				                    
+				                    }else{
+				                        sweetAlert("Oops...", "Something went wrong!", "error");
+				                        validate = 0;
+				                        $('#submit_list').val("Submit");
+				                        $('#submit_list').prop("disabled", false);
+				                    }
+				                
+	                		} else {     
+	                			swal("Cancelled", "Your imaginary file is safe :)", "error");  
+	                			$('#submit_list').val("Submit");
+		                        $('#submit_list').prop("disabled", false); 
+	                		} 
+		                });
+					}); 
+	                
 					/**
 					  * Edit user details
 					 */
@@ -364,7 +447,52 @@ $lists = $ui->API_goGetAllLists();
 						//$('body').append(form);  // This line is not necessary
 						$(form).submit();
 					});
-							
+					
+					/***
+					** Delete 
+					***/	
+
+		             $(document).on('click','.delete-list',function() {
+		             	var id = $(this).attr('data-id');
+		                swal({   
+		                	title: "Are you sure?",   
+		                	text: "This action cannot be undone.",   
+		                	type: "warning",   
+		                	showCancelButton: true,   
+		                	confirmButtonColor: "#DD6B55",   
+		                	confirmButtonText: "Yes, delete this list!",   
+		                	cancelButtonText: "No, cancel please!",   
+		                	closeOnConfirm: false,   
+		                	closeOnCancel: false 
+		                	}, 
+		                	function(isConfirm){   
+		                		if (isConfirm) {     
+
+		                			$.ajax({
+				                        url: "./php/DeleteTelephonyList.php",
+				                        type: 'POST',
+				                        data: { 
+				                            listid:id,
+				                        },
+				                        success: function(data) {
+				                        console.log(data);
+				                            if(data == 1){
+				                                swal("Deleted!", "List has been successfully deleted.", "success");   
+				                                window.setTimeout(function(){location.reload()},1000)
+				                            }else{
+				                               sweetAlert("Oops...", "Something went wrong!", "error");
+				                            }
+				                        }
+				                    });
+		                			
+		                		} else {     
+		                			swal("Cancelled", "No action has been done :)", "error");   } 
+		                	}
+		                );
+
+		                
+
+		             });
 
 					$('#list-modal').wizard();
 					// $('#call-playback-modal').modal('show');
@@ -372,16 +500,16 @@ $lists = $ui->API_goGetAllLists();
 					$('#auto_generate').on('change', function() {
 					//  alert( this.value ); // or $(this).val()
 						if($('#auto_generate').is(":checked")){
-		            		$('#list_id').val("<?php echo $next_list;?>");
+		            		$('#add_list_id').val("<?php echo $next_list;?>");
 		            		$('#list_name').val("<?php echo $next_listname;?>");
 		            		$('#list_desc').val("<?php echo $next_listdesc;?>");
-		            		$('#list_id').prop("disabled", true);
+		            		$('#add_list_id').prop("disabled", true);
 		            	}
 		            	if(!$('#auto_generate').is(":checked")){
-		            		$('#list_id').val("");
+		            		$('#add_list_id').val("");
 		            		$('#list_name').val("");
 		            		$('#list_desc').val("");
-		            		$('#list_id').prop("disabled", false);
+		            		$('#add_list_id').prop("disabled", false);
 		            	}
 					});
 
