@@ -137,6 +137,7 @@ class GOagent extends Module {
 		$dialNow = $this->lh()->translationFor("dial_now");
 		$previewCall = $this->lh()->translationFor("preview_call");
 		$goBack = $this->lh()->translationFor("go_back");
+		$pauseAgent = $this->lh()->translationFor("pause_agent");
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -322,267 +323,273 @@ EOF;
 
 		if ($useWebRTC) {
 			$str .= <<<EOF
-					<audio id="remoteStream" style="display: none;" autoplay controls></audio>
-					<script type="text/javascript" src="{$goModuleDIR}js/jsSIP.js"></script>
-					<script>
-					var audioElement = document.querySelector('#remoteStream');
-					var localStream;
-					var remoteStream;
-					var globalSession;
-					
-					var configuration = {
-						'ws_servers': '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
-						'uri': 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
-						'password': phone_pass,
-						'session_timers': false,
-					};
-					
-					var rtcninja = JsSIP.rtcninja;
-					var phone = new JsSIP.UA(configuration);
-					
-					phone.on('connected', function(e) {
-						console.log('connected', e);
-					});
-					
-					phone.on('disconnected', function(e) {
-						console.log('disconnected', e);
-					});
-					
-					phone.on('newRTCSession', function(e) {
-						var session = e.session;
-						console.log('newRTCSession: originator', e.originator, 'session', e.session, 'request', e.request);
-					
-						session.on('peerconnection', function (data) {
-							console.log('session::peerconnection', data);
-						});
-					
-						session.on('iceconnectionstatechange', function (data) {
-							console.log('session::iceconnectionstatechange', data);
-						});
-					
-						session.on('connecting', function (data) {
-							console.log('session::connecting', data);
-						});
-					
-						session.on('sending', function (data) {
-							console.log('session::sending', data);
-						});
-					
-						session.on('progress', function (data) {
-							console.log('session::progress', data);
-						});
-					
-						session.on('accepted', function (data) {
-							console.log('session::accepted', data);
-						});
-					
-						session.on('confirmed', function (data) {
-							console.log('session::confirmed', data);
-						});
-					
-						session.on('ended', function (data) {
-							console.log('session::ended', data);
-						});
-					
-						session.on('failed', function (data) {
-							console.log('session::failed', data);
-						});
-					
-						session.on('addstream', function (data) {
-							console.log('session::addstream', data);
-					
-							remoteStream = data.stream;
-							audioElement = document.querySelector('#remoteStream');
-							audioElement.src = window.URL.createObjectURL(remoteStream);
-							
-							globalSession = session;
-						});
-					
-						session.on('removestream', function (data) {
-							console.log('session::removestream', data);
-						});
-					
-						session.on('newDTMF', function (data) {
-							console.log('session::newDTMF', data);
-						});
-					
-						session.on('hold', function (data) {
-							console.log('session::hold', data);
-						});
-					
-						session.on('unhold', function (data) {
-							console.log('session::unhold', data);
-						});
-					
-						session.on('muted', function (data) {
-							console.log('session::muted', data);
-						});
-					
-						session.on('unmuted', function (data) {
-							console.log('session::unmuted', data);
-						});
-					
-						session.on('reinvite', function (data) {
-							console.log('session::reinvite', data);
-						});
-					
-						session.on('update', function (data) {
-							console.log('session::update', data);
-						});
-					
-						session.on('refer', function (data) {
-							console.log('session::refer', data);
-						});
-					
-						session.on('replaces', function (data) {
-							console.log('session::replaces', data);
-						});
-					
-						session.on('sdp', function (data) {
-							console.log('session::sdp', data);
-						});
-					
-						session.answer({
-							mediaConstraints: {
-								audio: true,
-								video: false
-							},
-							mediaStream: localStream
-						});
-					});
-					
-					phone.on('newMessage', function(e) {
-						console.log('newMessage', e);
-					});
-					
-					phone.on('registered', function(e) {
-						var xmlhttp = new XMLHttpRequest();
-						var query = "";
-						
-						query += "SIP_user_DiaL=" + SIP_user_Dial;
-						query += "&session_id=" + session_id;
-						query += "&phone_login=" + phone_login;
-						query += "&phone_pass=" + phone_pass;
-						query += "&VD_campaign=" + campaign;
-						query += "&enable_sipsak=" + enable_sipsak;
-						query += "&campaign_cid=" + campaign_cid;
-						query += "&on_hook_agent=" + on_hook_agent;
-						
-						console.log('registered', e);
-						//xmlhttp.open('GET', 'originate.php?' + query); 
-						//xmlhttp.send(null); 
-						//xmlhttp.onreadystatechange = function() { 
-						//	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-						//		console.log('reply!');
-						//	}
-						//};
-						$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
-					});
-					
-					phone.on('unregistered', function(e) {
-						console.log('unregistered', e);
-					});
-					
-					phone.on('registrationFailed', function(e) {
-						console.log('registrationFailed', e);
-						$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000});
-					});
-					
-					rtcninja.getUserMedia({
-						audio: true,
-						video: false
-					}, function successCb(stream) {
-						localStream = stream;
-					
-						phone.start();
-					}, function failureCb(e) {
-						console.error('getUserMedia failed.', e);
-					});
-					</script>
+<audio id="remoteStream" style="display: none;" autoplay controls></audio>
+<script type="text/javascript" src="{$goModuleDIR}js/jsSIP.js"></script>
+<script>
+	var audioElement = document.querySelector('#remoteStream');
+	var localStream;
+	var remoteStream;
+	var globalSession;
+	
+	var configuration = {
+		'ws_servers': '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
+		'uri': 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
+		'password': phone_pass,
+		'session_timers': false,
+	};
+	
+	var rtcninja = JsSIP.rtcninja;
+	var phone = new JsSIP.UA(configuration);
+	
+	phone.on('connected', function(e) {
+		console.log('connected', e);
+	});
+	
+	phone.on('disconnected', function(e) {
+		console.log('disconnected', e);
+	});
+	
+	phone.on('newRTCSession', function(e) {
+		var session = e.session;
+		console.log('newRTCSession: originator', e.originator, 'session', e.session, 'request', e.request);
+	
+		session.on('peerconnection', function (data) {
+			console.log('session::peerconnection', data);
+		});
+	
+		session.on('iceconnectionstatechange', function (data) {
+			console.log('session::iceconnectionstatechange', data);
+		});
+	
+		session.on('connecting', function (data) {
+			console.log('session::connecting', data);
+		});
+	
+		session.on('sending', function (data) {
+			console.log('session::sending', data);
+		});
+	
+		session.on('progress', function (data) {
+			console.log('session::progress', data);
+		});
+	
+		session.on('accepted', function (data) {
+			console.log('session::accepted', data);
+		});
+	
+		session.on('confirmed', function (data) {
+			console.log('session::confirmed', data);
+		});
+	
+		session.on('ended', function (data) {
+			console.log('session::ended', data);
+		});
+	
+		session.on('failed', function (data) {
+			console.log('session::failed', data);
+		});
+	
+		session.on('addstream', function (data) {
+			console.log('session::addstream', data);
+	
+			remoteStream = data.stream;
+			audioElement = document.querySelector('#remoteStream');
+			audioElement.src = window.URL.createObjectURL(remoteStream);
+			
+			globalSession = session;
+		});
+	
+		session.on('removestream', function (data) {
+			console.log('session::removestream', data);
+		});
+	
+		session.on('newDTMF', function (data) {
+			console.log('session::newDTMF', data);
+		});
+	
+		session.on('hold', function (data) {
+			console.log('session::hold', data);
+		});
+	
+		session.on('unhold', function (data) {
+			console.log('session::unhold', data);
+		});
+	
+		session.on('muted', function (data) {
+			console.log('session::muted', data);
+		});
+	
+		session.on('unmuted', function (data) {
+			console.log('session::unmuted', data);
+		});
+	
+		session.on('reinvite', function (data) {
+			console.log('session::reinvite', data);
+		});
+	
+		session.on('update', function (data) {
+			console.log('session::update', data);
+		});
+	
+		session.on('refer', function (data) {
+			console.log('session::refer', data);
+		});
+	
+		session.on('replaces', function (data) {
+			console.log('session::replaces', data);
+		});
+	
+		session.on('sdp', function (data) {
+			console.log('session::sdp', data);
+		});
+	
+		session.answer({
+			mediaConstraints: {
+				audio: true,
+				video: false
+			},
+			mediaStream: localStream
+		});
+	});
+	
+	phone.on('newMessage', function(e) {
+		console.log('newMessage', e);
+	});
+	
+	phone.on('registered', function(e) {
+		var xmlhttp = new XMLHttpRequest();
+		var query = "";
+		
+		query += "SIP_user_DiaL=" + SIP_user_Dial;
+		query += "&session_id=" + session_id;
+		query += "&phone_login=" + phone_login;
+		query += "&phone_pass=" + phone_pass;
+		query += "&VD_campaign=" + campaign;
+		query += "&enable_sipsak=" + enable_sipsak;
+		query += "&campaign_cid=" + campaign_cid;
+		query += "&on_hook_agent=" + on_hook_agent;
+		
+		console.log('registered', e);
+		//xmlhttp.open('GET', 'originate.php?' + query); 
+		//xmlhttp.send(null); 
+		//xmlhttp.onreadystatechange = function() { 
+		//	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		//		console.log('reply!');
+		//	}
+		//};
+		$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
+	});
+	
+	phone.on('unregistered', function(e) {
+		console.log('unregistered', e);
+	});
+	
+	phone.on('registrationFailed', function(e) {
+		console.log('registrationFailed', e);
+		$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000});
+	});
+	
+	rtcninja.getUserMedia({
+		audio: true,
+		video: false
+	}, function successCb(stream) {
+		localStream = stream;
+	
+		phone.start();
+	}, function failureCb(e) {
+		console.error('getUserMedia failed.', e);
+	});
+</script>
 EOF;
 		}
 
 		$str .= <<<EOF
-					<div id="dialog-custinfo" class="modal fade" tabindex="-1">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4>$custInfoTitle</h4>
-								</div>
-								<div class="modal-body">
-									<form id="formMain" class="form-horizontal">
-										<div class="list-group">
-											<span name="callchannel" id="formMain_callchannel" style="display: none;"></span>
-											<input type="hidden" name="callserverip" id="formMain_callserverip" value="" />
-											<input type="hidden" name="uniqueid" id="formMain_uniqueid" value="" />
-											<input type="hidden" name="lead_id" id="formMain_lead_id" value="" />
-											<input type="hidden" name="list_id" id="formMain_list_id" value="" />
-											<table width="100%" border=0>
-												$labelHTML
-											</table>
-										</div>
-									</form>
-								</div>
-								<div class="modal-footer">
-									<button id="submitForm" class="btn btn-warning" data-dismiss="modal"><span class="fa fa-check-square-o" aria-hidden="true"></span> $submit</button>
-								</div>
-							</div>
-						</div>
+<div id="dialog-custinfo" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4>$custInfoTitle</h4>
+			</div>
+			<div class="modal-body">
+				<form id="formMain" class="form-horizontal">
+					<div class="list-group">
+						<span name="callchannel" id="formMain_callchannel" style="display: none;"></span>
+						<input type="hidden" name="callserverip" id="formMain_callserverip" value="" />
+						<input type="hidden" name="uniqueid" id="formMain_uniqueid" value="" />
+						<input type="hidden" name="lead_id" id="formMain_lead_id" value="" />
+						<input type="hidden" name="list_id" id="formMain_list_id" value="" />
+						<table width="100%" border=0>
+							$labelHTML
+						</table>
 					</div>
-					<div id="select-campaign" class="modal fade" tabindex="-1">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title">$selectACampaign</h4>
-								</div>
-								<div class="modal-body">
-									<div style='text-align: center; padding: 2px 5px;'><select id='select_camp' class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select'></select><label for="select_camp" class="control-label">$availableCampaigns</label></div>
-									<br />
-									<div id="logSpinner" class="text-center hidden"><span style="font-size: 42px;" class="fa fa-spinner fa-pulse"></span></div>
-									<div id="inboundSelection" class="clearfix hidden">
-										<span style="min-width: 48%; margin: 0 5px;" class="text-center bold pull-left">$groupsNotSelected</span>
-										<span style="min-width: 48%; margin: 0 5px;" class="text-center bold pull-right">$selectedGroups</span>
-										<ul id="notSelectedINB" class="connectedINB pull-left"></ul>
-										<ul id="selectedINB" class="connectedINB pull-right"></ul>
-										<br />
-									</div>
-									<p class="text-center hidden" style="padding-top: 5px;"><input type='checkbox' name='closerSelectBlended' id='closerSelectBlended' value='closer' /> $blendedCalling ($outboundActivated)</p>
-									<br />
-									<p id="selectionNote" class="small text-center hidden" style="margin-bottom: 0px;"><b>$note</b>: $selectByDragging</p>
-									<div class="hidden" style="text-align: center;">Use WebRTC: <input type="checkbox" name="use_webrtc" value="1" checked disabled /></div>
-								</div>
-								<div class="modal-footer">
-									<button id="scButton" class="btn btn-link bold hidden">$selectAll</button>
-									<button id="scSubmit" class="btn btn-warning disabled"><span class="fa fa-check-square-o" aria-hidden="true"></span> $submit</button>
-								</div>
-							</div>
-						</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button id="submitForm" class="btn btn-warning" data-dismiss="modal"><span class="fa fa-check-square-o" aria-hidden="true"></span> $submit</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="select-campaign" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">$selectACampaign</h4>
+			</div>
+			<div class="modal-body">
+				<div style='text-align: center; padding: 2px 5px;'><select id='select_camp' class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select'></select><label for="select_camp" class="control-label">$availableCampaigns</label></div>
+				<br />
+				<div id="logSpinner" class="text-center hidden"><span style="font-size: 42px;" class="fa fa-spinner fa-pulse"></span></div>
+				<div id="inboundSelection" class="clearfix hidden">
+					<span style="min-width: 48%; margin: 0 5px;" class="text-center bold pull-left">$groupsNotSelected</span>
+					<span style="min-width: 48%; margin: 0 5px;" class="text-center bold pull-right">$selectedGroups</span>
+					<ul id="notSelectedINB" class="connectedINB pull-left"></ul>
+					<ul id="selectedINB" class="connectedINB pull-right"></ul>
+					<br />
+				</div>
+				<p class="text-center hidden" style="padding-top: 5px;"><input type='checkbox' name='closerSelectBlended' id='closerSelectBlended' value='closer' /> $blendedCalling ($outboundActivated)</p>
+				<br />
+				<p id="selectionNote" class="small text-center hidden" style="margin-bottom: 0px;"><b>$note</b>: $selectByDragging</p>
+				<div class="hidden" style="text-align: center;">Use WebRTC: <input type="checkbox" name="use_webrtc" value="1" checked disabled /></div>
+			</div>
+			<div class="modal-footer">
+				<button id="scButton" class="btn btn-link bold hidden">$selectAll</button>
+				<button id="scSubmit" class="btn btn-warning disabled"><span class="fa fa-check-square-o" aria-hidden="true"></span> $submit</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="select-disposition" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4>$dispositionCall: <span id='DispoSelectPhone'></span></h4>
+			</div>
+			<div class="modal-body">
+				<span id="Dispo3wayMessage"></span>
+				<span id="DispoManualQueueMessage"></span>
+				<span id="PerCallNotesContent"><input type="hidden" name="call_notes_dispo" id="call_notes_dispo" value="" /></span>
+				<div id="DispoSelectContent"> $endOfCallDispositionSelection </div>
+			</div>
+			<div class="modal-footer">
+				<input type="hidden" name="DispoSelection" id="DispoSelection" value="" />
+				<span class="pull-right">
+					<button class="btn btn-default btn-raised" id="btn-dispo-reset">Clear Form</button> 
+					<button class="btn btn-warning btn-raised" id="btn-dispo-submit">Submit</button>
+				</span>
+				<div class="pull-left">
+					<div class="material-switch pull-right">
+						<input type="checkbox" name="DispoSelectStop" id="DispoSelectStop" value="0" />
+						<label for="DispoSelectStop" class="label-primary" style="width: 0px; margin-left: 10px;"></label>
 					</div>
-					<div id="select-disposition" class="modal fade" tabindex="-1">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h4>$dispositionCall: <span id='DispoSelectPhone'></span></h4>
-								</div>
-								<div class="modal-body">
-									<span id="Dispo3wayMessage"></span>
-									<span id="DispoManualQueueMessage"></span>
-									<span id="PerCallNotesContent"><input type="hidden" name="call_notes_dispo" id="call_notes_dispo" value="" /></span>
-									<div id="DispoSelectContent"> $endOfCallDispositionSelection </div>
-								</div>
-								<div class="modal-footer">
-									<input type="hidden" name="DispoSelection" id="DispoSelection" value="" />
-									<span class="pull-left" style="margin-top: 5px;"><label><input type="checkbox" name="DispoSelectStop" id="DispoSelectStop" value="0" style="vertical-align: bottom;" /> &nbsp; Pause Agent</label></span>
-									<span class="pull-right">
-										<button class="btn btn-default btn-raised" id="btn-dispo-reset">Clear Form</button> 
-										<button class="btn btn-warning btn-raised" id="btn-dispo-submit">Submit</button>
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
+					<strong>$pauseAgent</strong>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 EOF;
 		return $str;

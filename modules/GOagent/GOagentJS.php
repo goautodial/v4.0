@@ -2449,8 +2449,9 @@ function CheckForIncoming () {
             var callnum = dialed_number;
             var dial_display_number = phone_number_format(callnum);
             
-            //$("#cust-name").html(this_VDIC_data.first_name+" "+this_VDIC_data.last_name);
-            //$("#cust-phone").html(phone_number_format(dispnum));
+            $("#cust_full_name").html(this_VDIC_data.first_name+" "+this_VDIC_data.middle_initial+" "+this_VDIC_data.last_name);
+            $("#cust_number").html(phone_number_format(dispnum));
+            $("#cust_avatar").prop('src', goGetAvatar(dispnum));
 
             var status_display_content = '';
             if (status_display_CALLID > 0) {status_display_content = status_display_content + "<br><b><?=$lh->translationFor('uid')?>:</b> " + LastCID;}
@@ -3831,6 +3832,11 @@ function DispoSelectSubmit() {
             nocall_dial_flag = 'DISABLED';
             
             $("#SecondsDISP").html('0');
+            
+            $("#cust_full_name").html('');
+            $("#cust_number").html('');
+            $("#cust_avatar").prop('src', goGetAvatar());
+            console.log(goGetAvatar());
     
             //CLEAR ALL SUB FORM VARIABLES
             //$("#subForm").find(':input').each(function()
@@ -4553,6 +4559,12 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     if (status_display_LISTID > 0) {status_display_content = status_display_content + "<br><b><?=$lh->translationFor('list_id')?>:</b> " + $(".formMain input[name='list_id']").val();}
                     
                     $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
+                    
+            
+                    $("#cust_full_name").html(cust_first_name+" "+cust_middle_initial+" "+cust_last_name);
+                    $("#cust_number").html(phone_number_format(dispnum));
+                    $("#cust_avatar").prop('src', goGetAvatar(dispnum));
+                    console.log(goGetAvatar(dispnum));
                     
                     LeadDispo = '';
                     
@@ -5398,6 +5410,35 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
 
 
 // ################################################################################
+// pull the script contents sending the webform variables to the script display script
+function LoadScriptContents() {
+    var new_script_content = null;
+    var postData = {
+        goAction: 'goGetScriptContents',
+        goServerIP: server_ip,
+        goSessionName: session_name,
+        goUser: uName,
+        goPass: uPass,
+        goScrollDIV: 1,
+        goWebFormVars: web_form_vars,
+        responsetype: 'json'
+    };
+    
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json"
+    })
+    .done(function (result) {
+        new_script_content = result.content;
+        $("#ScriptContents").html(new_script_content);
+    });
+}
+
+
+// ################################################################################
 // Finish the wrapup timer early
 function TimerActionRun(taskaction, taskdialalert) {
     var next_action = 0;
@@ -5487,44 +5528,16 @@ function NoneInSession() {
     //still on development
 }
 
-function alertBox(title, text, type) {
-    var options = {};
-    switch(type) {
-        case "warning":
-            options = {
-                title: title,
-                text: text,
-                type: 'warning'
-            };
-            break;
-        
-        case "success":
-            options = {
-                title: title,
-                text: text,
-                type: 'success'
-            };
-            break;
-        
-        case "confirm":
-            options = {
-                title: title,
-                text: text,
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#DD6B55',
-                confirmButtonText: '<?=$lh->translationFor('okay')?>'
-            };
-            break;
-        
-        default:
-            options = {
-                title: title,
-                text: text
-            };
-            break;
+function goGetAvatar(account) {
+    var avatarType = 'wavatar';
+    if (account === undefined || account == '') {
+        var account = 'goagent';
+        avatarType = 'mm';
     }
-    swal(options);
+    var md5hash = $.md5(account);
+    var avatar = "https://www.gravatar.com/avatar/"+md5hash+"?rating=PG&size=96&default="+avatarType;
+    
+    return avatar;
 }
 
 function padlength(what){
