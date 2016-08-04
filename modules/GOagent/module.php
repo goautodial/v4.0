@@ -118,6 +118,7 @@ class GOagent extends Module {
 		$endOfCallDispositionSelection = $this->lh()->translationFor("end_of_call_disposition_selection");
 		$manualDialLead = $this->lh()->translationFor("manual_dial_lead");
 		$availableCampaigns = $this->lh()->translationFor("available_campaigns");
+		$inboundGroups = $this->lh()->translationFor("inbound_groups");
 		$groupsNotSelected = $this->lh()->translationFor("groups_not_selected");
 		$selectedGroups = $this->lh()->translationFor("selected_groups");
 		$blendedCalling = $this->lh()->translationFor("blended_calling");
@@ -543,14 +544,23 @@ EOF;
 				<br />
 				<div id="logSpinner" class="text-center hidden"><span style="font-size: 42px;" class="fa fa-spinner fa-pulse"></span></div>
 				<div id="inboundSelection" class="clearfix hidden">
-					<span style="min-width: 48%; margin: 0 5px;" class="text-center bold pull-left">$groupsNotSelected</span>
-					<span style="min-width: 48%; margin: 0 5px;" class="text-center bold pull-right">$selectedGroups</span>
+					<div class="text-center">
+						<strong>$inboundGroups</strong>
+					</div>
+					<span style="min-width: 46%; margin: 0 5px;" class="text-center bold pull-left">$groupsNotSelected</span>
+					<span style="min-width: 46%; margin: 0 5px;" class="text-center bold pull-right">$selectedGroups</span>
 					<ul id="notSelectedINB" class="connectedINB pull-left"></ul>
 					<ul id="selectedINB" class="connectedINB pull-right"></ul>
 					<br />
 				</div>
-				<p class="text-center hidden" style="padding-top: 5px;"><input type='checkbox' name='closerSelectBlended' id='closerSelectBlended' value='closer' /> $blendedCalling ($outboundActivated)</p>
-				<br />
+				<p class="text-center hidden" style="padding-top: 10px;">
+					<span class="material-switch">
+						<input type="checkbox" name="closerSelectBlended" id="closerSelectBlended" value="closer" />
+						<label for="closerSelectBlended" class="label-primary" style="width: 0px; margin-left: 10px;"></label>
+					</span>
+					<span style="padding-left: 45px;">$blendedCalling ($outboundActivated)</span>
+					<br />
+				</p>
 				<p id="selectionNote" class="small text-center hidden" style="margin-bottom: 0px;"><b>$note</b>: $selectByDragging</p>
 				<div class="hidden" style="text-align: center;">Use WebRTC: <input type="checkbox" name="use_webrtc" value="1" checked disabled /></div>
 			</div>
@@ -576,7 +586,8 @@ EOF;
 			<div class="modal-footer">
 				<input type="hidden" name="DispoSelection" id="DispoSelection" value="" />
 				<span class="pull-right">
-					<button class="btn btn-default btn-raised" id="btn-dispo-reset">Clear Form</button> 
+					<button class="btn btn-default btn-raised hidden-xs" id="btn-dispo-reset-lg">Clear Form</button> 
+					<button class="btn btn-default btn-raised hidden-sm-up" id="btn-dispo-reset-xs">Clear</button> 
 					<button class="btn btn-warning btn-raised" id="btn-dispo-submit">Submit</button>
 				</span>
 				<div class="pull-left">

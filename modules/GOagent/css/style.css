@@ -32,15 +32,15 @@
 	text-shadow: 1px 0 0 #555, -1px 0 0 #555, 0 1px 0 #555, 0 -1px 0 #555, 1px 1px #555, -1px -1px 0 #555, 1px -1px 0 #555, -1px 1px 0 #555;
 }
 .connectedINB {
-    border: 1px solid #ccc;
+    border: 1px dashed #ccc;
     min-height: 100px;
-    min-width: 48%;
+    min-width: 46%;
     list-style-type: none;
     margin: 0;
     padding: 3px 0 0 0;
     margin: 0 5px;
-	height: 125px;
-	overflow-y: scroll;
+    height: 125px;
+    overflow-y: auto;
 }
 .connectedINB li {
     cursor: move;
