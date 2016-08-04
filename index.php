@@ -149,6 +149,12 @@ $campaign = $ui->API_getListAllCampaigns();
 //var_dump($campaign);
 $ingroup = $ui->API_getInGroups();
 
+/*
+ * API for call statistics - Demian
+*/
+ 
+$callsringing = $ui->API_getTotalCalls();
+$answered_calls = $ui->API_goGetTotalAnsweredCalls();
 
 /*
  * get API data for chart from UIHandler.php
@@ -166,7 +172,11 @@ $callsperhour = $ui->API_getCallPerHour();
 	 }
 
 	$outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
-	
+
+	$outbound_calls_today = array_sum($results);
+	//var_dump($outbound_calls_today);
+        //die(dd);
+		
 	$inbound_calls = max($results["Hour8"],$results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
 	
 	$dropped_calls = max($results["Hour8d"],$results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
@@ -183,13 +193,25 @@ $callsperhour = $ui->API_getCallPerHour();
 	if($inbound_calls == NULL || $inbound_calls == 0){
 		$inbound_calls = 0;
 	}
+	if($dropped_calls == NULL || $dropped_calls == 0){
+		$dropped_calls = 0;
+	}
+	if($callsringing == NULL || $callsringing == 0){
+		$callsringing = 0;
+	}
+        if($answered_calls == NULL || $answered_calls == 0){
+		$answered_calls = 0;
+	}
+        if($outbound_calls_today == NULL || $outbound_calls_today == 0){
+		$outbound_calls_today = 0;
+	}	
 
 ?>		
-					<!-- Page title -->
-						<?php
-								$lh->translateText("Dashboard");
-						?>
-							<small class="ng-binding animated fadeInUpShort">Welcome to Goautodial  !</small>
+	<!-- Page title -->
+<?php
+$lh->translateText("Dashboard");
+?>
+<small class="ng-binding animated fadeInUpShort">Welcome to Goautodial  !</small>
 						
 					<!--
                     <ol class="breadcrumb">
@@ -357,15 +379,16 @@ $callsperhour = $ui->API_getCallPerHour();
 	                    </div>
 	                	-->
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info">
-	                		<em class="icon-phone fa-4x"></em>
+	                		<div class="h2 m0"><?php echo $callsringing;?></div>
+								<div class="text">Calls Ringing</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0">32</div>
-								<div class="text-muted">Abandoned Calls</div>
+	                		<div class="h2 m0"><?php echo $dropped_calls;?></div>
+								<div class="text-muted">Dropped Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0">21</div>
-								<div class="text-muted">Answered < 20 sec</div>
+	                		<div class="h2 m0"><?php echo $answered_calls;?></div>
+								<div class="text-muted">Answered Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0">420</div>
@@ -376,7 +399,7 @@ $callsperhour = $ui->API_getCallPerHour();
 								<div class="text-muted">Inbound Calls Today</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes">
-	                		<div class="h2 m0"><?php echo $outbound_calls;?></div>
+	                		<div class="h2 m0"><?php echo $outbound_calls_today;?></div>
 								<div class="text-muted">Outbound Calls Today</div>
 	                	</div>
 	                </div>
