@@ -278,10 +278,12 @@ class DbHandler {
 			$status = $userobj->active;
 			$user_role = $userobj->user_level;
 			$bcrypt = $userobj->bcrypt;
+			$salt = $userobj->salt;
+			$cost = $userobj->cost;
 			//if ($status == 1) { // user is active
 
 			if ($bcrypt > 0) {
-				$pass_hash = exec("{$cwd}/bin/bp.pl --pass=$password");
+				$pass_hash = exec("{$cwd}/bin/bp.pl --pass=$password --salt=$salt --cost=$cost");
 				$pass_hash = preg_replace("/PHASH: |\n|\r|\t| /",'',$pass_hash);
 			} else {$pass_hash = $password;}
 			
