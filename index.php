@@ -47,7 +47,7 @@ try {
 //proper user redirects
 if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 	if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
-		header("location: editcustomer.php");
+		header("location: agent.php");
 	}
 }
 
