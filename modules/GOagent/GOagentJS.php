@@ -315,6 +315,7 @@ $(document).ready(function() {
                 if (live_customer_call < 1) {
                     $("#for_dtmf").addClass('hidden');
                     $('#edit-profile').hide();
+                    $("#reload-script").hide();
                     $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     //toggleStatus('NOLIVE');
@@ -467,6 +468,7 @@ $(document).ready(function() {
                         $("#SecondsDISP").html(live_call_seconds);
                         $("#for_dtmf").removeClass('hidden');
                         $('#edit-profile').show();
+                        $("#reload-script").show();
                         $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
                         $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
                     }
@@ -474,6 +476,7 @@ $(document).ready(function() {
                         XD_live_call_seconds++;
                         $("#xferlength").val(XD_live_call_seconds);
                         $('#edit-profile').show();
+                        $("#reload-script").show();
                     }
                     if (customerparked == 1) {
                         customerparkedcounter++;
@@ -670,7 +673,6 @@ $(document).ready(function() {
             var navConBar = $("header.main-header").innerHeight();
             var minusThis = (parseInt(navConBar) + parseInt(paddingHB));
             var newHeight = parseInt($("body").innerHeight()) - minusThis;
-            console.log(paddingHB, navConBar, minusThis, newHeight);
             $("aside.control-sidebar div.tab-content").css({
                 'height': newHeight
             });
@@ -877,7 +879,6 @@ $(document).ready(function() {
     var navConBar = $("header.main-header").innerHeight();
     var minusThis = (parseInt(navConBar) + parseInt(paddingHB));
     var newHeight = parseInt($("body").innerHeight()) - minusThis;
-    console.log(paddingHB, navConBar, minusThis, newHeight);
     $("aside.control-sidebar div.tab-content").css({
         'height': newHeight
     });
@@ -1243,7 +1244,7 @@ $(document).ready(function() {
         DispoSelectSubmit();
     });
     
-    $("#btn-dispo-reset").click(function() {
+    $("[id^='btn-dispo-reset-']").click(function() {
         DispoSelectContent_create('', 'ReSET');
     });
     
@@ -1325,6 +1326,10 @@ $(document).ready(function() {
             }
         }
         $("aside.content-wrapper").css(options);
+    });
+    
+    $("#reload-script").click(function() {
+        LoadScriptContents();
     });
 });
 
@@ -1420,6 +1425,9 @@ function sendLogout (logMeOut) {
                     $(document).off('keydown', 'body', hotKeysAvailable);
                     $("#popup-hotkeys").fadeOut("fast");
                 }
+                
+                $("#ScriptContents").html('');
+                $("#reload-script").hide();
                 
                 //alert('SUCCESS: You have been logged out of the dialer.');
                 $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; You have logged out from the dialer.", timeout: 5000, htmlAllowed: true});
@@ -2269,7 +2277,7 @@ function CheckForIncoming () {
             var VDCL_group_color                        = this_VDIC_data.group_color;
             var VDCL_fronter_display                    = this_VDIC_data.fronter_display;
                 VDCL_group_id                           = this_VDIC_data.channel_group;
-                Call_Script_id                          = this_VDIC_data.ingroup_script;
+                Call_Script_ID                          = this_VDIC_data.ingroup_script;
                 Call_Auto_Launch                        = this_VDIC_data.get_call_launch;
                 Call_XC_a_DTMF                          = this_VDIC_data.xferconf_a_dtmf;
                 Call_XC_a_Number                        = this_VDIC_data.xferconf_a_number;
@@ -3599,7 +3607,7 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
             dispo_HTML = dispo_HTML + "    });";
             dispo_HTML = dispo_HTML + "});";
             dispo_HTML = dispo_HTML + "</script>";
-            dispo_HTML = dispo_HTML + "<table cellpadding='5' cellspacing='5' width='500px' style='-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; margin: 0 auto;'><tr><td colspan='2'>&nbsp; <b><?=$lh->translationFor('call_dispositions')?></b><br><br></td></tr><tr><td bgcolor='#FFFFFF' height='300px' width='240px' valign='top' class='DispoSelectA'>";
+            dispo_HTML = dispo_HTML + "<table cellpadding='5' cellspacing='5' width='100%' style='-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; margin: 0 auto;'><tr><td colspan='2'>&nbsp; <b><?=$lh->translationFor('call_dispositions')?></b><br><br></td></tr><tr><td bgcolor='#FFFFFF' height='300px' width='auto' valign='top' class='DispoSelectA' style='white-space: nowrap;'>";
         var loop_ct = 0;
         if (hide_dispo_list < 1) {
             while (loop_ct < statuses_count) {
@@ -3610,12 +3618,12 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
                     {CBflag = '';}
                 //console.log(statuses[loop_ct], taskDSgrp);
                 if (taskDSgrp == statuses[loop_ct]) {
-                    dispo_HTML = dispo_HTML + "<span id='dispo-sel-"+statuses[loop_ct]+"' style='background-color:#99FF99;cursor:pointer;color:#77a30a;'>&nbsp; " + statuses[loop_ct] + " - " + statuses_names[loop_ct] + " " + CBflag + " &nbsp;</span><br /><br />";
+                    dispo_HTML = dispo_HTML + "<span id='dispo-sel-"+statuses[loop_ct]+"' style='background-color:#99FF99;cursor:pointer;color:#77a30a;'>&nbsp; <span class='hidden-xs'>" + statuses[loop_ct] + " - " + statuses_names[loop_ct] + "</span><span class='hidden-sm hidden-md hidden-lg'>" + statuses_names[loop_ct] + "</span> " + CBflag + " &nbsp;</span><br /><br />";
                 } else {
-                    dispo_HTML = dispo_HTML + "<span id='dispo-add-"+statuses[loop_ct]+"' style='cursor:pointer;color:#77a30a;'>&nbsp; " + statuses[loop_ct] + " - " + statuses_names[loop_ct] + "</span> " + CBflag + " &nbsp;<br /><br />";
+                    dispo_HTML = dispo_HTML + "<span id='dispo-add-"+statuses[loop_ct]+"' style='cursor:pointer;color:#77a30a;'>&nbsp; <span class='hidden-xs'>" + statuses[loop_ct] + " - " + statuses_names[loop_ct] + "</span><span class='hidden-sm hidden-md hidden-lg'>" + statuses_names[loop_ct] + "</span></span> " + CBflag + " &nbsp;<br /><br />";
                 }
                 if (loop_ct == statuses_ct_half) 
-                    {dispo_HTML = dispo_HTML + "</td><td bgcolor='#FFFFFF' height='300px' width='240px' valign='top' class='DispoSelectB'>";}
+                    {dispo_HTML = dispo_HTML + "</td><td bgcolor='#FFFFFF' height='300px' width='auto' valign='top' class='DispoSelectB' style='white-space: nowrap;'>";}
                 loop_ct++;
             }
         } else {
@@ -4630,7 +4638,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                 delayed_script_load = 'YES';
                                 //RefresHScript('CLEAR');
                             } else {
-                                //load_script_contents();
+                                LoadScriptContents();
                             }
                         }
 
@@ -5420,10 +5428,20 @@ function LoadScriptContents() {
         goUser: uName,
         goPass: uPass,
         goScrollDIV: 1,
-        goWebFormVars: web_form_vars,
         responsetype: 'json'
     };
     
+    var new_vars = {};
+    var new_web_vars = web_form_vars.replace(/^\?/g, '');
+    var web_vars_arr = new_web_vars.split('&');
+    $.each(web_vars_arr, function(idx, val) {
+        if (val.length > 0) {
+            var vars_arr = val.split('=');
+            new_vars[vars_arr[0]] = vars_arr[1];
+        }
+    });
+    
+    postData = $.extend(postData, new_vars);
     $.ajax({
         type: 'POST',
         url: '<?=$goAPI?>/goAgent/goAPI.php',
@@ -5432,8 +5450,10 @@ function LoadScriptContents() {
         dataType: "json"
     })
     .done(function (result) {
-        new_script_content = result.content;
-        $("#ScriptContents").html(new_script_content);
+        if (result.result == 'success') {
+            new_script_content = result.content;
+            $("#ScriptContents").html(new_script_content);
+        }
     });
 }
 

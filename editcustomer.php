@@ -602,9 +602,11 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 										<div id="scripts" role="tabpanel" class="tab-pane">
 											<div class="row">
 												<div class="col-sm-12">
-													<fieldset>
-														<h4>Scripts</h4>
-														<div id="ScriptContents">
+													<fieldset style="padding-bottom: 5px; margin-bottom: 5px;">
+														<h4>
+															<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="reload-script" style="padding: 5px;">Reload Script</a>
+														</h4>
+														<div id="ScriptContents" style="min-height: 100px; border: dashed 1px #c0c0c0; padding: 20px 5px 5px;">
 															<?php echo $output_script;?>
 														</div>
 													</fieldset><!-- /.fieldset -->
