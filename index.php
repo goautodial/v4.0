@@ -89,9 +89,14 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 
 		<!-- javascript -->
         <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>    
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <script src="js/jquery.validate.min.js" type="text/javascript"></script>
+        
+            <!-- dashboard status boxes -->
+        <script src="js/bootstrap-editable.js" type="text/javascript"></script> 
+        <script src="theme_dashboard/moment/min/moment-with-locales.min.js" type="text/javascript"></script>
+        <script src="js/modules/now.js" type="text/javascript"></script>         
 	    <!-- ChartJS 1.0.1 -->
 	    <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
 		
@@ -291,15 +296,22 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 					<div class="panel widget" style="height: 95px;">
 						<div class="row status-box">
 							<div class="col-xs-4 text-center bg-green pv-lg">
-							<!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
-								<div class="text-sm"><?php echo date("F", time());?></div>
-								<div class="h2 mt0"><?php echo date("d", time());?></div>
+							<!-- See formats: https://docs.angularjs.org/api/ng/filter/date -->
+								<!-- <div class="text-sm"><?php echo date("F", time());?></div>
+								<div class="h2 mt0"><?php echo date("d", time());?></div> --> 
+                                                                <div data-now="" data-format="MMMM" class="text-sm"></div>
+                                                                <br>
+                                                                <div data-now="" data-format="D" class="h2 mt0"></div> 
 							</div>
 							<div class="col-xs-8 pv-lg">
-								<div class="text-uppercase"><?php echo date("l", time());?></div>
+                                                                <!-- <div class="text-uppercase"><?php echo date("l", time());?></div>
 								<div class="h3 mt0"><?php echo date("h:i", time());?> 
 									<span class="text-muted text-sm"><?php echo date("A", time());?></span>
-								</div>
+								</div> -->
+                                                                <div data-now="" data-format="dddd" class="text-uppercase"></div>
+                                                                <br>
+                                                                <div data-now="" data-format="h:mm" class="h2 mt0"></div>
+                                                                <div data-now="" data-format="a" class="text-muted text-sm"></div>
 							</div>
 						</div>
 					</div>
@@ -1064,7 +1076,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	
 <!--========== REFRESH DIVS ==============-->
 	<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>
-	<script src="js/load_statusboxes.js"></script>
+	<script src="js/load_statusboxes.js"></script> 
+        <!-- <script src="jsloader.php"></script> -->
 	<script src="js/load_clusterstatus.js"></script>
 
 	<script>
@@ -1314,7 +1327,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
    <script src="theme_dashboard/js/screenfull/dist/screenfull.js"></script>
    <!-- LOCALIZE-->
    <script src="theme_dashboard/js/jquery-localize-i18n/dist/jquery.localize.js"></script>
-   <!-- RTL demo--
+   <!-- RTL demo-->
    <script src="theme_dashboard/js/demo/demo-rtl.js"></script>
    <!-- =============== PAGE VENDOR SCRIPTS ===============-->
    <!-- SPARKLINE-->
