@@ -153,34 +153,38 @@ $ingroup = $ui->API_getInGroups();
  * API for call statistics - Demian
 */
  
-$callsringing = $ui->API_getTotalCalls();
-$answered_calls = $ui->API_goGetTotalAnsweredCalls();
+$calls_ringing = $ui->API_goGetRingingCalls();
+$answered_calls_today = $ui->API_goGetTotalAnsweredCalls();
+$total_calls_today = $ui->API_goGetTotalCalls();
+$dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
+//$dropped_calls_today = ($droppedcallstoday / $droppedcallstoday);
 
+//$x=0;
+			
+//var_dump($dropped_calls_today);
+//die("dd");
 /*
  * get API data for chart from UIHandler.php
 */
 
-$callsperhour = $ui->API_getCallPerHour();
-//var_dump($callsperhour);
-	
+$callsperhour = $ui->API_goGetCallsPerHour();
+
 	$max = 0;
 	
 	$callsperhour = explode(";",trim($callsperhour, ';'));
 	 foreach ($callsperhour AS $temp) {
 	   $temp = explode("=",$temp);
-	   $results[$temp[0]] = $temp[1];
-	 }
+	   $results[$temp[0]] = $temp[1];   
+         }
 
-	$outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
+        $outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
 	$outbound_calls_today = array_sum($outbound_calls);
-	//var_dump($outbound_calls_today);
-        //die(dd);
 		
 	$inbound_calls = max($results["Hour8"],$results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
-	$inbound_calls_today = array_sum($inbound_calls);
+	//$inbound_calls_today = array_sum($inbound_calls);
 	
 	$dropped_calls = max($results["Hour8d"],$results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
-	$dropped_calls_today = array_sum($dropped_calls);
+	//$dropped_calls_today = array_sum($dropped_calls);
 	
 	$max = max($inbound_calls, $outbound_calls, $dropped_calls);
 
@@ -206,13 +210,17 @@ $callsperhour = $ui->API_getCallPerHour();
 	if($dropped_calls_today == NULL || $dropped_calls_today == 0){
 		$dropped_calls_today = 0;
 	}	
-	if($callsringing == NULL || $callsringing == 0){
-		$callsringing = 0;
+	if($calls_ringing == NULL || $calls_ringing == 0){
+		$calls_ringing = 0;
 	}
-        if($answered_calls == NULL || $answered_calls == 0){
-		$answered_calls = 0;
+        if($answered_calls_today == NULL || $answered_calls_today == 0){
+		$answered_calls_today = 0;
 	}	
-
+        if($total_calls_today == NULL || $total_calls_today == 0){
+		$total_calls_today = 0;
+	}
+//print_r($answered_calls_today);
+//die("dd");	
 ?>		
                         <!-- Page title -->
                         <?php
@@ -386,7 +394,7 @@ $callsperhour = $ui->API_getCallPerHour();
 	                    </div>
 	                	-->
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info">
-	                		<div class="h2 m0"><?php echo $callsringing;?></div>
+	                		<div class="h2 m0"><?php echo $calls_ringing;?></div>
 								<div class="text">Calls Ringing</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
@@ -394,20 +402,20 @@ $callsperhour = $ui->API_getCallPerHour();
 								<div class="text-muted">Dropped Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><?php echo $answered_calls;?></div>
+	                		<div class="h2 m0"><?php echo $answered_calls_today;?></div>
 								<div class="text-muted">Answered Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0">420</div>
-								<div class="text-muted" style="font-size: small;">Avg. Handling Time</div>
+	                		<div class="h2 m0"><?php echo $total_calls_today;?></div>
+								<div class="text-muted" style="font-size: small;">Total Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><?php echo $inbound_calls_today;?></div>
-								<div class="text-muted">Inbound Calls Today</div>
+								<div class="text-muted">Inbound Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes">
 	                		<div class="h2 m0"><?php echo $outbound_calls_today;?></div>
-								<div class="text-muted">Outbound Calls Today</div>
+								<div class="text-muted">Outbound Calls</div>
 	                	</div>
 	                </div>
                 </div>
@@ -423,7 +431,7 @@ $callsperhour = $ui->API_getCallPerHour();
 						 </li>
 					  </ul>
 				<?php
-					$cluster = $ui->API_GetClusterStatus();
+					$cluster = $ui->API_goGetClusterStatus();
 				?>
 						<!-- Tab panes-->
 						<div class="tab-content p0 bg-white">
