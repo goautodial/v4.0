@@ -838,7 +838,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 								?>
 						    </select>
 						</span>
-					<!-- == TENANT == -->
+					<!-- == TENANT milo == -->
 						<span class="campaign_filter_agentmonitoring">
 							<!--
 							   <div class="btn-group">
@@ -863,7 +863,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 						</span>
 					</div>
 							<!-- END FILTER list    -->
-					<h4 class="modal-title" id="agent_monitoring">Agent Monitoring</h4>
+					<h4 class="modal-title" id="agent_monitoring">Monitoring</h4>
+					<?php
+						var_dump($_SESSION);
+					?>
 				
 				</div>
 				<div class="modal-body">
