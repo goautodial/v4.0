@@ -4278,10 +4278,11 @@ error_reporting(E_ERROR | E_PARSE);
 			 if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					echo $results["getTotalSales"];
+					return $results["getTotalSales"];
 			 } else {
 			   # An error occurred
-			   echo 0;
+                                        $vars = 0;
+					return $vars;
 			 }
 			
 		}
@@ -4316,10 +4317,11 @@ error_reporting(E_ERROR | E_PARSE);
 			 if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					echo $results["getINSalesPerHour"];
+					return $results["getINSalesPerHour"];
 			 } else {
 			   # An error occurred
-			   echo 0;
+                                        $vars = 0;
+					return $vars;
 			 }
 
 		}
@@ -4355,10 +4357,11 @@ error_reporting(E_ERROR | E_PARSE);
 			 if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					echo $results["getOutSalesPerHour"];
+					return $results["getOutSalesPerHour"];
 			 } else {
 			   # An error occurred
-			   echo 0;
+                                        $vars = 0;
+					return $vars;
 			 }
 		}
 		
@@ -4393,10 +4396,11 @@ error_reporting(E_ERROR | E_PARSE);
 			 if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					echo $results["getTotalAgentsWaitCalls"];
+					return $results["getTotalAgentsWaitCalls"];
 			 } else {
 			   # An error occured
-			   echo 0;
+                                        $vars = 0;
+					return $vars;
 			 }
 		}
 		
@@ -4432,10 +4436,11 @@ error_reporting(E_ERROR | E_PARSE);
 			 if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					echo $results["getTotalAgentsPaused"];
+					return $results["getTotalAgentsPaused"];
 			 } else {
 			   # An error occurred
-			   echo 0;
+                                        $vars = 0;
+					return $vars;
 			 }
 		
 		}
@@ -4471,10 +4476,11 @@ error_reporting(E_ERROR | E_PARSE);
 			 if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					echo $results["getTotalAgentsCall"];
+					return $results["getTotalAgentsCall"];
 			 } else {
 			   # An error occured
-					echo "0";
+                                        $vars = 0;
+					return $vars;
 			 }
 		}
 		
@@ -4549,10 +4555,11 @@ error_reporting(E_ERROR | E_PARSE);
 			 if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					echo $results["getTotalDialableLeads"];
+					return $results["getTotalDialableLeads"];
 			 } else {
 			   # An error occurred
-			   echo 0;
+                                        $vars = 0;
+					return $vars;
 			 }
 		
 		}
@@ -4589,10 +4596,11 @@ error_reporting(E_ERROR | E_PARSE);
 			 if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					echo $results["getTotalActiveLeads"];
+					return $results["getTotalActiveLeads"];
 			 } else {
 			   # An error occurred
-			   echo 0;
+                                        $vars = 0;
+					return $vars;
 			 }
 		}
 		
@@ -4617,7 +4625,6 @@ error_reporting(E_ERROR | E_PARSE);
 			 $data = curl_exec($ch);
 			 curl_close($ch);
 			
-			//var_dump($data);
 			$data = explode(";",$data);
 			foreach ($data AS $temp) {
 			   $temp = explode("=",$temp);
@@ -4627,10 +4634,11 @@ error_reporting(E_ERROR | E_PARSE);
 			if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					echo $results["getRingingCalls"];
+					return $results["getRingingCalls"];
 			} else {
 			   # An error occurred
-					echo 0;
+                                        $vars = 0;
+					return $vars;
 			}
 		
 		}
@@ -4656,7 +4664,6 @@ error_reporting(E_ERROR | E_PARSE);
 			 $data = curl_exec($ch);
 			 curl_close($ch);
 			
-			//var_dump($data);
 			$data = explode(";",$data);
 			foreach ($data AS $temp) {
 			   $temp = explode("=",$temp);
@@ -4664,12 +4671,11 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 			
 			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					echo $results["getTotalCalls"];
+			   # Result was OK!	   
+					return $results["getTotalCalls"];					
 			} else {
-			   # An error occurred
-			   echo 0;
+                                        $vars = 0;
+					return $vars;
 			}
 		}
 		
@@ -4704,10 +4710,11 @@ error_reporting(E_ERROR | E_PARSE);
 			if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					echo $results["getTotalAnsweredCalls"];
+					return $results["getTotalAnsweredCalls"];
 			} else {
 			   # An error occurred
-			   echo 0;
+                                        $vars = 0;
+					return $vars;
 			}
 		}		
                 /*
@@ -4741,10 +4748,10 @@ error_reporting(E_ERROR | E_PARSE);
 			if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					echo $results["getTotalDroppedCalls"];
+					return $results["getTotalDroppedCalls"];
 			} else {
-			   # An error occurred
-			   echo 0;
+                                        $vars = 0;
+					return $vars;
 			}
 		}		
 		/*
@@ -4753,7 +4760,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get live outbound..
 		*/
 
-		public function API_GetLiveOutbound() {
+		public function API_goGetLiveOutbound() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
@@ -4778,10 +4785,11 @@ error_reporting(E_ERROR | E_PARSE);
 			if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					 echo $results["getLiveOutbound"];
+                                        return $results["getLiveOutbound"];
 			} else {
 			   # An error occured
-			   echo 0;
+                                        $vars = 0;
+					return $vars;
 			}
 		
 		}
@@ -4796,7 +4804,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
-			$postfields["goAction"] = "getCallsPerHour"; #action performed by the [[API:Functions]]
+			$postfields["goAction"] = "goGetCallsPerHour"; #action performed by the [[API:Functions]]
 
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
