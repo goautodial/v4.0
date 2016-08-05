@@ -86,7 +86,7 @@
 					header("location: index.php"); // Redirecting To Admin Dashboard
 				}
 				if($_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_AGENT){
-					header("location: editcustomer.php"); // Redirecting to Agent Dashboard
+					header("location: agent.php"); // Redirecting to Agent Dashboard
 				}
 
 			}
