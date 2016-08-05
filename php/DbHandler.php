@@ -301,6 +301,8 @@ class DbHandler {
 					$arr["id"] = $userobj->user_id;
 	                $arr["name"] = $userobj->full_name;
 	                $arr["email"] = $userobj->email;
+	                $arr["phone_login"] = $userobj->phone_login;
+	                $arr["phone_pass"] = $userobj->phone_pass;
 					$arr["role"] = ($user_role == 9 || $user_role == 8 || $user_role == 0) ? 0 : 3;
 					$arr["avatar"] = "";
 	                
