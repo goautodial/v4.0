@@ -286,7 +286,7 @@ class DbHandler {
 				$pass_hash = exec("{$cwd}/bin/bp.pl --pass=$password --salt=$salt --cost=$cost");
 				$pass_hash = preg_replace("/PHASH: |\n|\r|\t| /",'',$pass_hash);
 			} else {$pass_hash = $password;}
-			
+
 			if ( preg_match("/Y/i", $status) ) {
 				//if (\creamy\PassHash::check_password($password_hash, $password)) {
 				if ($password_hash === $pass_hash) {

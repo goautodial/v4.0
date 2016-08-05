@@ -162,8 +162,7 @@ $calls_ringing = $ui->API_goGetRingingCalls();
 $answered_calls_today = $ui->API_goGetTotalAnsweredCalls();
 $total_calls_today = $ui->API_goGetTotalCalls();
 $dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
-//$dropped_calls_today = ($droppedcallstoday / $droppedcallstoday);
-
+$dropped_percentage = $ui->API_goGetDroppedPercentage();
 //$x=0;
 			
 //var_dump($dropped_calls_today);
@@ -528,11 +527,11 @@ $callsperhour = $ui->API_goGetCallsPerHour();
         <!--==== SERVICE LEVEL AGREEMENT ==== -->
 	            		<div class="panel panel-default">
 						   <div class="panel-body">
-								<div class="text-primary">Service Level Agreement</div>
+								<div class="text-primary">Dropped Percentage</div>
 								<center>
 									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 										<input type="text"
-										class="knob" value="95" data-width="150" data-height="150" data-padding="21px"
+										class="knob" value="<?php echo $dropped_percentage; ?>" data-width="150" data-height="150" data-padding="21px"
 										data-fgcolor="#0073b7" data-readonly="true" readonly="readonly"
 										style="
 											width: 49px;
@@ -560,8 +559,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 							   <div class="panel-footer">
 								  <p class="text-muted">
 									 <em class="fa fa-upload fa-fw"></em>
-									 <span>Service Level Agreement Percentage</span>
-									 <span class="text-dark">95%</span>
+									 <span>Total Dropped Percentage</span>
+									 <span class="text-dark"><?php echo $dropped_percentage; ?></span>
 								  </p>
 							   </div>
 							</div>

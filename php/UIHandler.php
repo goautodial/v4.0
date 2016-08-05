@@ -4852,12 +4852,14 @@ error_reporting(E_ERROR | E_PARSE);
 		# Result was OK!
 		//var_dump($results); #to see the returned arrays.
 			 if($results["getDroppedPercentage"] != ""){
-				echo $results["getDroppedPercentage"];
+				return $results["getDroppedPercentage"];
 			 }else{
-				echo 0;
+                                $vars = 0;
+				return $vars;
 			 }
 		}else{
-			echo 0;	
+                                $vars = 0;
+				return $vars;
 		}
 		
 	}
