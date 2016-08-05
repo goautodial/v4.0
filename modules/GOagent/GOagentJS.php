@@ -873,7 +873,7 @@ $(document).ready(function() {
     $("#go_agent_login").append("<li><button id='btnLogMeIn' class='btn btn-warning btn-lg center-block' style='margin-top: 2px;'><i class='fa fa-sign-in'></i> <?=$lh->translationFor('login_on_phone')?></button></li>");
     $("#go_agent_logout").append("<li><button id='btnLogMeOut' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-out'></i> <?=$lh->translationFor('logout_from_phone')?></button></li>");
     
-    $("div.navbar-custom-menu").prepend("<span id='server_date' class='hidden-xs pull-left' style='color: #fff; line-height: 21px; height: 50px; padding: 14px 20px;'></span>");
+    $("div.navbar-custom-menu").prepend("<span id='server_date' class='hidden-xs no-selection pull-left' style='color: #fff; line-height: 21px; height: 50px; padding: 14px 20px;'></span>");
     
     var paddingHB = 100;
     var navConBar = $("header.main-header").innerHeight();
@@ -1335,7 +1335,51 @@ $(document).ready(function() {
     // Hijack links on left menu
     $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks)").on('click', function(e) {
         e.preventDefault();
-        console.log('prevented');
+        var thisLink = $(this).attr('href');
+        var hash = '';
+        if (/customerslist/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('contacts')?>");
+            hash = 'contacts';
+        } else if (/agent/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('contact_information')?>");
+        } else if (/edituser/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('edit_profile')?>");
+            hash = 'editprofile';
+        } else if (/events/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('events')?>");
+            hash = 'events';
+        } else if (/messages/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('messages')?>");
+            hash = 'messages';
+        } else if (/notifications/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('notifications')?>");
+            hash = 'notifications';
+        } else if (/tasks/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('tasks')?>");
+            hash = 'tasks';
+        }
+        
+        if (hash.length > 0) {
+            window.location.hash = hash;
+            
+            var thisContents = $("#loaded-contents div[id^='contents-']");
+            $.each(thisContents, function() {
+                var contentID = $(this).prop('id').replace('contents-', '');
+                if (contentID == hash) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            
+            $("#cust_info").hide();
+            $("#loaded-contents").show();
+        } else {
+            history.pushState('', document.title, window.location.pathname);
+            
+            $("#cust_info").show();
+            $("#loaded-contents").hide();
+        }
     });
 });
 
