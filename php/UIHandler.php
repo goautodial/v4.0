@@ -1605,7 +1605,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$menuActions = '<li class="user-body">
 				<div class="text-center"><a href="" data-toggle="modal" id="change-password-toggle" data-target="#change-password-dialog-modal">'.$this->lh->translationFor("change_password").'</a></div>
 				<div class="text-center"><a href="./messages.php">'.$this->lh->translationFor("messages").'</a></div>
-				<div class="text-center"><a href="./notificationes.php">'.$this->lh->translationFor("notifications").'</a></div>
+				<div class="text-center"><a href="./notifications.php">'.$this->lh->translationFor("notifications").'</a></div>
 				<div class="text-center"><a href="./tasks.php">'.$this->lh->translationFor("tasks").'</a></div>
 			</li>';
 			$changeMyData = '<div class="pull-left"><a href="./edituser.php" class="btn btn-default btn-flat">'.$this->lh->translationFor("my_profile").'</a></div>';
@@ -1696,6 +1696,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$settings = "";
 		$callreports = "";
 		$loadleads = "";
+		$contactsandrecs = "";
 		if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
 			
 			$modulesWithSettings = $mh->modulesWithSettings();
@@ -1733,12 +1734,15 @@ error_reporting(E_ERROR | E_PARSE);
 			$callreports .= '</ul></li>';
 			
 			$loadleads .= $this->getSidebarItem("loadleads.php", "sort-alpha-asc", $this->lh->translationFor("load_leads"));
+			
+			$contactsandrecs .= $this->getSidebarItem("contactsandcallrecordings.php", "phone-square", $this->lh->translationFor("contacts_call_recordings"));
 		}
 		
 		$agentmenu = NULL;
 		if($userrole == CRM_DEFAULTS_USER_ROLE_AGENT){
 			//$agentmenu .= $this-> getSidebarItem("", "book", $this->lh->translationFor("scripts"));
 			//$agentmenu .= $this-> getSidebarItem("", "tasks", $this->lh->translationFor("Custom Form"));
+			$agentmenu .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
 		}
 
 		// get customer types
@@ -1770,14 +1774,14 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= $callreports;
 		$result .= $adminArea;
 		$result .= $loadleads;
+		$result .= $contactsandrecs;
 		// menu for agents
 		$result .= $agentmenu;
 
         // ending: contacts, messages, notifications, tasks, events.
         
         //$result .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
-        $result .= $this-> getSidebarItem("contactsandcallrecordings.php", "phone-square", $this->lh->translationFor("contacts_call_recordings"));
-		$result .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
+		  $result .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
         $result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
 		//$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
         $result .= $this->getSidebarItem("notifications.php", "exclamation", $this->lh->translationFor("notifications"), $numNotifications, "orange");
