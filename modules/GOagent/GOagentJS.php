@@ -1331,6 +1331,12 @@ $(document).ready(function() {
     $("#reload-script").click(function() {
         LoadScriptContents();
     });
+    
+    // Hijack links on left menu
+    $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks)").on('click', function(e) {
+        e.preventDefault();
+        console.log('prevented');
+    });
 });
 
 function btnLogMeIn () {
