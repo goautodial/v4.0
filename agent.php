@@ -71,6 +71,16 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
  $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
  									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
 
+
+if (isset($_GET["folder"])) {
+	$folder = $_GET["folder"];
+} else $folder = MESSAGES_GET_INBOX_MESSAGES;
+if ($folder < 0 || $folder > MESSAGES_MAX_FOLDER) { $folder = MESSAGES_GET_INBOX_MESSAGES; }
+
+if (isset($_GET["message"])) {
+	$message = $_GET["message"];
+} else $message = NULL;
+
 $avatarHash = md5( strtolower( trim( $user->getUserId() ) ) );
 $avatarURL50 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=50&default=wavatar";
 $avatarURL96 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=wavatar";
@@ -118,10 +128,20 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 		<!-- =============== APP STYLES ===============-->
 		<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
+		
+		<!-- DATA TABES SCRIPT -->
+		<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+		<!-- Bootstrap WYSIHTML5 -->
+		<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+		<!-- iCheck -->
+		<script src="js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
 		<!-- SLIMSCROLL-->
 		<script src="theme_dashboard/slimScroll/jquery.slimscroll.min.js"></script>
 		<!-- SWEETALERT-->
 		<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+		<!-- FastClick -->
+		<!--<script src="js/plugins/fastclick/fastclick.min.js" type="text/javascript"></script>-->
 		<!-- MD5 HASH-->
 		<script src="js/jquery.md5.js" type="text/javascript"></script>
 
@@ -252,14 +272,14 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
                 <!-- Content Header (Page header) -->
                 <section class="content-heading">
 					<!-- Page title -->
-                    <?php $lh->translateText("Contact Information"); ?>
-                    <small class="ng-binding animated fadeInUpShort"><?php echo $fullname;?></small>
+                    <?php $lh->translateText("contact_information"); ?>
+                    <small class="ng-binding animated fadeInUpShort hidden"><?php echo $fullname;?></small>
                 </section>
 
                 <!-- Main content -->
                 <section class="content">
 					<!-- standard custom edition form -->
-					<div class="container-custom ng-scope">
+					<div id="cust_info" class="container-custom ng-scope">
 						<div class="card">
 							
 								<div class="card-heading bg-inverse">
@@ -517,18 +537,17 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 																<select id="gender" name="gender" value="<?php echo $gender;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
 																	<?php 
-																		if($gender == "M"){
+																		if ($gender == "M") {
 																	?>
 																		<option selected value="M">Male</option>
 																		<option value="F">Female</option>
 																	<?php
-																		}else
-																		if($gender == "F"){
+																		} else if($gender == "F") {
 																	?>
 																		<option selected value="F">Female</option>
 																		<option value="M">Male</option>
 																	<?php
-																		}else{
+																		} else {
 																	?>
 																		<option selected disabled value=""></option>
 																		<option value="M">Male</option>
@@ -551,7 +570,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 												</form>
 							                <br/>
 							                <!-- NOTIFICATIONS -->
-											<div id="notifications">
+											<div id="notifications_list">
 												<div class="output-message-success" style="display:none;">
 													<div class="alert alert-success alert-dismissible" role="alert">
 													  <strong>Success!</strong> Successfuly updated contact.
@@ -647,6 +666,48 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 						    </div><!-- /.modal -->
 
 						</div>
+					</div>
+					
+					<div id="loaded-contents" class="container-custom ng-scope" style="display: none;">
+						<div id="contents-messages" class="row" style="display: none;">
+							<!-- left side folder list column -->
+							<div class="col-md-3">
+								<a href="composemail.php" class="btn btn-primary btn-block margin-bottom"><?php $lh->translateText("new_message"); ?></a>
+								<div class="box box-solid">
+									<div class="box-header with-border">
+										<h3 class="box-title"><?php print $lh->translationFor("folders"); ?></h3>
+									</div>
+									<div class="box-body no-padding">
+										<?php print $ui->getMessageFoldersAsList($folder); ?>
+									</div><!-- /.box-body -->
+								</div><!-- /. box -->
+							</div><!-- /.col -->
+							
+							<!-- main content right side column -->
+							<div class="col-md-9">
+								<div class="box box-default">
+									<div class="box-header with-border">
+										<h3 class="box-title"><?php $lh->translateText("messages"); ?></h3>
+									</div><!-- /.box-header -->
+									<div class="box-body no-padding">
+										<div class="mailbox-controls">
+											<?php print $ui->getMailboxButtons($folder); ?>
+										</div>
+										<div class="table-responsive mailbox-messages">
+											<?php print $ui->getMessagesFromFolderAsTable($user->getUserId(), $folder); ?>
+										</div><!-- /.mail-box-messages -->
+									</div><!-- /.box-body -->
+									<div class="box-footer no-padding">
+										<div class="mailbox-controls">
+											<div id="messages-message-box">
+												<?php if (!empty($message)) { print $ui->calloutInfoMessage($message); } ?>
+											</div>
+											<?php print $ui->getMailboxButtons($folder); ?>
+										</div>
+									</div>
+								</div><!-- /. box -->
+							</div><!-- /.col -->
+						</div><!-- /.row -->
 					</div>
 					
 					<div id="popup-hotkeys" class="panel clearfix">
@@ -761,7 +822,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 				echo '<li>
 					<div class="text-center"><a href="" data-toggle="modal" id="change-password-toggle" data-target="#change-password-dialog-modal">'.$lh->translationFor("change_password").'</a></div>
 					<div class="text-center"><a href="./messages.php">'.$lh->translationFor("messages").'</a></div>
-					<div class="text-center"><a href="./notificationes.php">'.$lh->translationFor("notifications").'</a></div>
+					<div class="text-center"><a href="./notifications.php">'.$lh->translationFor("notifications").'</a></div>
 					<div class="text-center"><a href="./tasks.php">'.$lh->translationFor("tasks").'</a></div>
 				</li>';
 			}
@@ -793,6 +854,148 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 
 		<!-- AdminLTE App -->
 		<script src="adminlte/js/app.min.js"></script>
+		
+        <!-- Page script -->
+        <script type="text/javascript">
+			var datatable = null;
+			$(document).ready(function() {
+                datatable = $("#messagestable").dataTable( {
+					"bFilter": false,  //Disable search function
+					"bJQueryUI": true, //Enable smooth theme
+					"bPaging": true,
+					"sDom": 't'
+                } );
+            });
+	    </script>
+        <script type="text/javascript">
+			 $(document).ready(function() {
+			 	var folder = <?php print $folder; ?>;
+			 	var selectedAll = false;
+			 	var selectedMessages = [];
+			 
+			     "use strict";
+			
+				 // ------------- Favorites -------------------
+			
+			    //iCheck for checkbox and radio inputs
+		        $('input[type="checkbox"]').iCheck({
+		          checkboxClass: 'icheckbox_minimal-blue',
+		          radioClass: 'iradio_minimal-blue'
+		        });			    
+		        
+			    // check individual message
+				$('input[type=checkbox]').on("ifUnchecked", function(e) {
+					var index = selectedMessages.indexOf(e.currentTarget.value);
+					if (index >= 0) selectedMessages.splice(index, 1);
+				});
+			    
+			    // uncheck individual message
+				$('input[type=checkbox]').on("ifChecked", function(e) {
+					if (e.currentTarget.value != 'on') selectedMessages.push(e.currentTarget.value);
+				});
+
+			    // uncheck/check all messages
+				$(".checkbox-toggle").click(function() {
+					if (selectedAll) { $("input[type='checkbox']", ".mailbox").iCheck("uncheck"); }
+					else { $("input[type='checkbox']", ".mailbox").iCheck("check"); }
+					selectedAll = !selectedAll;
+				});
+
+				// next button for table.
+				$(".mailbox-next").click(function() { datatable.fnPageChange('next'); });
+
+				// previous button for table
+				$(".mailbox-prev").click(function() { datatable.fnPageChange('previous'); });
+
+			    // de-star a starred video / star a de-stared video.
+			    $(".fa-star, .fa-star-o").click(function(e) {
+			        e.preventDefault();
+			        
+			        // Detect type: e.currentTarget.id contains the message id.
+					var starred = $(this).hasClass("fa-star");
+					var favorite = 1;
+					var selectedItem = this;
+					
+					if (starred) { // unmark message as favorite
+						favorite = 0;   
+					} // else mark message as favorite
+					
+					$("#messages-message-box").hide();
+					$.post("./php/MarkMessagesAsFavorite.php", 
+						{ "favorite": favorite, "messageids": [e.currentTarget.id], "folder": folder } ,function(data){
+						if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
+							// toggle visual change.
+				            $(selectedItem).toggleClass("fa-star");
+				            $(selectedItem).toggleClass("fa-star-o");
+						}
+						else {
+							<?php
+								$msg = $ui->calloutErrorMessage($lh->translationFor("message")); 
+								print $ui->fadingInMessageJS($msg, "messages-message-box");
+							?>
+						}
+					});
+			    });
+			
+			    <?php
+			    // mark messages as favorite.
+				$unableFavoriteCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_favorites"));
+				print $ui->mailboxAction(
+					"messages-mark-as-favorite", 											// classname
+					"php/MarkMessagesAsFavorite.php", 										// php to request
+					$ui->reloadLocationJS(), 												// success js
+					$ui->fadingInMessageJS($unableFavoriteCode, "messages-message-box"),	// failure js
+					array("favorite" => 1));												// custom parameters
+					
+				// mark messages as read
+				$unableReadCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_read"));
+				print $ui->mailboxAction(
+					"messages-mark-as-read", 												// classname
+					"php/MarkMessagesAsRead.php", 											// php to request
+					$ui->reloadLocationJS(), 												// success js
+					$ui->fadingInMessageJS($unableReadCode, "messages-message-box")); 		// failure js
+				
+				// mark messages as unread
+				$unableUnreadCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_unread"));
+				print $ui->mailboxAction(
+					"messages-mark-as-unread", 												// classname
+					"php/MarkMessagesAsUnread.php", 										// php to request
+					$ui->reloadLocationJS(), 												// success js
+					$ui->fadingInMessageJS($unableUnreadCode, "messages-message-box")); 	// failure js
+				
+			    // send to junk mail
+				$junkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
+					$lh->translationFor("messages_sent_trash").'"';
+				print $ui->mailboxAction(
+					"messages-send-to-junk",					// classname
+					"php/JunkMessages.php",						// php to request
+					$ui->reloadWithMessageCallJS($junkText));	// result js
+				
+			    // restore mail from junk
+				$unjunkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
+					$lh->translationFor("messages_recovered_trash").'"';
+				print $ui->mailboxAction(
+					"messages-restore-message",					// classname
+					"php/UnjunkMessages.php",					// php to request
+					$ui->reloadWithMessageCallJS($unjunkText));	// result js
+				
+			    // delete messages.
+				$unableDeleteCode = $ui->calloutErrorMessage($lh->translationFor("unable_delete_messages"));
+				print $ui->mailboxAction(
+					"messages-delete-permanently", 											// classname
+					"php/DeleteMessages.php", 												// php to request
+					$ui->reloadLocationJS(), 												// success js
+					$ui->fadingInMessageJS($unableDeleteCode, "messages-message-box")); 	// failure js
+								
+				?>
+
+				// Reload with message function.
+				<?php print $ui->reloadWithMessageFunctionJS(); ?>
+				
+			});
+			// Modules hook for message list footer.
+			<?php print $ui->getMessagesListActionJS($folder); ?>		    
+        </script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -808,39 +1011,9 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 				    //$('input[name="first_name"]').focus();
 				});
 
-				/** 
-				 * Modifies a customer
-			 	
-				$("#modifycustomerform").validate({
-					submitHandler: function() {
-						//submit the form
-							$("#resultmessage").html();
-							$("#resultmessage").fadeOut();
-							$.post("./php/ModifyCustomer.php", //post
-							$("#name_form, #gender_form, #contact_details_form").serialize(), 
-								function(data){
-									//if message is sent
-									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-									<?php 
-									$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-									print $ui->fadingInMessageJS($errorMsg, "modifycustomerresult"); 
-									?>				
-									} else {
-									<?php 
-									$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data"), false, true);
-									print $ui->fadingInMessageJS($errorMsg, "modifycustomerresult"); 
-									?>
-									}
-									//
-								});
-						return false; //don't let the form refresh the page...
-					}					
-				});
-				 */
 				$("#submit_edit_form").click(function(){
 				//alert("User Created!");
-				
-				var validate = 0;
+					var validate = 0;
 
 					if($('#name_form')[0].checkValidity()) {
 					    if($('#gender_form')[0].checkValidity()) {
@@ -855,7 +1028,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 									  // console.log(data);
 										  if(data == 1){
 										  	  $('.output-message-success').show().focus().delay(2000).fadeOut().queue(function(n){$(this).hide(); n();});
-											  window.setTimeout(function(){location.reload()},2000);
+											  window.setTimeout(function(){location.reload();},2000);
 										  }else{
 											  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 										  }
@@ -878,6 +1051,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 					}
 				
 				});
+				
 				/**
 				 * Deletes a customer
 				 */
@@ -904,7 +1078,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 					var thisVal = $(this).val();
 					$(this).parents('.label-floating').toggleClass('focused', (thisVal.length > 0));
 				});
-			});
+			});	
 		</script>
 		<!-- SnackbarJS -->
         <script src="js/snackbar.js" type="text/javascript"></script>
