@@ -75,7 +75,10 @@
 			} else {
 				$_SESSION["userid"] = $result["id"]; 
 				$_SESSION["username"] = $result["name"]; 
-				$_SESSION["userrole"] = $result["role"]; 
+				$_SESSION["userrole"] = $result["role"];
+				$_SESSION["phone_login"] = $result["phone_login"];
+				$_SESSION["phone_pass"] = $result["phone_pass"];
+				
 				if (!empty($result["avatar"])) {
 					$_SESSION['avatar'] = $result["avatar"];
 				} else { // random avatar.
