@@ -645,9 +645,9 @@ $(document).ready(function() {
             //<?=GO_AGENT_DIRECTORY?>/jsSIP.php
             //var GOagentWebRTC = window.open('http://google.com','GOagentWebRTC', 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,left=100000, top=100000, width=10, height=10');
             //opener = GOagentWebRTC;
-            console.log('a new window is opened', opener);
+            //console.log('a new window is opened', opener);
         } else {
-            console.log('window is still open');
+            //console.log('window is still open');
         }
     
         $("aside.control-sidebar").css({
@@ -1480,7 +1480,9 @@ function sendLogout (logMeOut) {
                 $("#reload-script").hide();
                 
                 //alert('SUCCESS: You have been logged out of the dialer.');
-                $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; You have logged out from the dialer.", timeout: 5000, htmlAllowed: true});
+                if (!!$.prototype.functionName) {
+                    $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; You have logged out from the dialer.", timeout: 5000, htmlAllowed: true});
+                }
             } else {
                 refresh_interval = 1000;
                 swal({
@@ -2863,7 +2865,7 @@ function RefreshCallsInQueue(CQcount) {
                 if (result.result == 'success') {
                     $('#callsinqueuelist').html('');
                 } else {
-                    if (result.result == 'error') {
+                    if (result.result == 'error' && (!!$.prototype.snackbar)) {
                         $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
                     }
                 }
@@ -3779,10 +3781,12 @@ function DispoSelectSubmit() {
                     }
                 }
                 
-                if (result.result == 'success') {
-                    $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
-                } else {
-                    $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
+                if (!!$.prototype.snackbar) {
+                    if (result.result == 'success') {
+                        $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
+                    } else {
+                        $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
+                    }
                 }
     
                 waiting_on_dispo = 0;
@@ -4121,7 +4125,9 @@ function ManualDialOnly(taskaltnum) {
     })
     .done(function (result) {
         if (result.result == 'error') {
-            $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; "+result.message+".", timeout: 5000, htmlAllowed: true});
+            if (!!$.prototype.snackbar) {
+                $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; "+result.message+".", timeout: 5000, htmlAllowed: true});
+            }
         } else {
             MDnextCID =		result.data.callerid;
             LastCallCID =	result.data.callerid;

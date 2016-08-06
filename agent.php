@@ -130,12 +130,12 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
 		
 		<!-- DATA TABES SCRIPT -->
-		<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-		<script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+		<!--<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>-->
+		<!--<script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>-->
 		<!-- Bootstrap WYSIHTML5 -->
-		<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+		<!--<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>-->
 		<!-- iCheck -->
-		<script src="js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+		<!--<script src="js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>-->
 		<!-- SLIMSCROLL-->
 		<script src="theme_dashboard/slimScroll/jquery.slimscroll.min.js"></script>
 		<!-- SWEETALERT-->
