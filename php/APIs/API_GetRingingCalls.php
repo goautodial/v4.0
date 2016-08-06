@@ -1,15 +1,15 @@
 <?php
 require_once('../goCRMAPISettings.php');
 /*
-* Displaying Total Answered Calls
-* [[API: Function]] - goGetTotalAnsweredCalls
-* This application is used to get total calls.
+* Displaying Call(s) Ringing
+* [[API: Function]] - goGetRingingCall
+* This application is used to get calls ringing
 */
 
    $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
    $postfields["goUser"] = goUser; #Username goes here. (required)
    $postfields["goPass"] = goPass;
-   $postfields["goAction"] = "goGetTotalAnsweredCalls"; #action performed by the [[API:Functions]]
+   $postfields["goAction"] = "goGetRingingCalls"; #action performed by the [[API:Functions]]
    
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -30,7 +30,7 @@ require_once('../goCRMAPISettings.php');
    if ($results["result"]=="success") {
       # Result was OK!
       //var_dump($results); #to see the returned arrays.
-           echo number_format($results["getTotalAnsweredCalls"]);
+           echo number_format($results["getRingingCalls"]);
    } else {
       # An error occurred
            echo 0;

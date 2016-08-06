@@ -1,8 +1,8 @@
 <?php
 require_once('../goCRMAPISettings.php');
 /*
-* Displaying Call(s) Ringing
-* [[API: Function]] - goGetRingingCall
+* Displaying Call(s) Incoming
+* [[API: Function]] - goGetIncomingCall
 * This application is used to get calls ringing
 */
 $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -31,8 +31,7 @@ $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			echo $results["getIncomingQueue"];
 	} else {
 	   # An error occurred
-                        $vars = 0;
-			echo $vars;
+			echo 0;
 	}
 	
 
