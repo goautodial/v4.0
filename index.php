@@ -277,36 +277,36 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		                        <div class="col-xs-4 text-center bg-gray-dark pv-md animated fadeInUpShort">
 		                           	<em class="icon-hourglass fa-3x"></em>
 		                        </div>
-		                        <div class="col-xs-8 pv-lg" style="padding-top:10px !important;">
+                                                <div class="col-xs-8 pv-lg" style="padding-top:10px !important;">		                        
 		                        	<div class="h2 mt0"><span class="text-lg" id="refresh_totalagentspaused"></span></div>
 									<div class="text-sm">Agent(s) On Paused</div>
 		                        </div>
 		                    </div>
 		                </div>
               		</a>
-               </div>
-				<div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
 					<!-- date widget    -->
-					<div class="panel widget" style="height: 95px;">
-						<div class="row status-box">
-							<div class="col-xs-4 text-center bg-green pv-lg">
-							<!-- See formats: https://docs.angularjs.org/api/ng/filter/date -->
-								<!-- <div class="text-sm"><?php echo date("F", time());?></div>
-								<div class="h2 mt0"><?php echo date("d", time());?></div> --> 
-                                                                <div data-now="" data-format="MMMM" class="text-sm"></div>
-                                                                <br>
-                                                                <div data-now="" data-format="D" class="h2 mt0"></div> 
-							</div>
-							<div class="col-xs-8 pv-lg">
-                                                                <!-- <div class="text-uppercase"><?php echo date("l", time());?></div>
-								<div class="h3 mt0"><?php echo date("h:i", time());?> 
-									<span class="text-muted text-sm"><?php echo date("A", time());?></span>
-								</div> -->
-                                                                <div data-now="" data-format="dddd" class="text-uppercase"></div>
-                                                                <br>
-                                                                <div data-now="" data-format="h:mm" class="h2 mt0"></div>
-                                                                <div data-now="" data-format="a" class="text-muted text-sm"></div>
-							</div>
+                                <div class="panel widget" style="height: 95px;">
+                                        <div class="row status-box">
+                                                <div class="col-xs-4 text-center bg-green pv-lg">
+                                                <!-- See formats: https://docs.angularjs.org/api/ng/filter/date -->
+                                                <!-- <div class="text-sm"><?php echo date("F", time());?></div>
+						<div class="h2 mt0"><?php echo date("d", time());?></div> --> 
+                                                        <div data-now="" data-format="MMMM" class="text-sm"></div>
+                                                        <br>
+                                                        <div data-now="" data-format="D" class="h2 mt0"></div> 
+                                                </div>
+						<div class="col-xs-8 pv-lg">
+                                                <!-- <div class="text-uppercase"><?php echo date("l", time());?></div>
+						<div class="h3 mt0"><?php echo date("h:i", time());?> 
+						<span class="text-muted text-sm"><?php echo date("A", time());?></span>
+						</div> -->
+                                                        <div data-now="" data-format="dddd" class="text-uppercase"></div>
+                                                        <br>
+                                                        <div data-now="" data-format="h:mm" class="h2 mt0"></div>
+                                                        <div data-now="" data-format="a" class="text-muted text-sm"></div>
+                                                        </div>
 						</div>
 					</div>
 					<!-- END date widget    -->
@@ -1073,7 +1073,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	
 <!--========== REFRESH DIVS ==============-->
 	<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>
-	<script src="js/load_statusboxes.js"></script> 
+	<script src="js/load_statusboxes.js"></script>
         <!-- <script src="jsloader.php"></script> -->
 	<script src="js/load_clusterstatus.js"></script>
 
