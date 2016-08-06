@@ -116,7 +116,7 @@ function load_RingingCalls(){
      } 
    });
 }
-function load_IncomingCalls(){
+function load_IncomingQueue(){
    $.ajax({
      url: "./php/APIs/API_GetIncomingQueue.php",
      cache: false,
