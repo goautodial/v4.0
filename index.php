@@ -158,10 +158,6 @@ $ingroup = $ui->API_getInGroups();
  * API for call statistics - Demian
 */
  
-$calls_ringing = $ui->API_goGetRingingCalls();
-$calls_incoming_queue = $ui->API_goGetIncomingQueue();
-$answered_calls_today = $ui->API_goGetTotalAnsweredCalls();
-$total_calls_today = $ui->API_goGetTotalCalls();
 $dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
 $dropped_percentage = $ui->API_goGetDroppedPercentage();
 //$x=0;
@@ -209,15 +205,6 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	if($dropped_calls_today == NULL || $dropped_calls_today == 0){
 		$dropped_calls_today = 0;
 	}	
-	if($calls_ringing == NULL || $calls_ringing == 0){
-		$calls_ringing = 0;
-	}
-        if($answered_calls_today == NULL || $answered_calls_today == 0){
-		$answered_calls_today = 0;
-	}	
-        if($total_calls_today == NULL || $total_calls_today == 0){
-		$total_calls_today = 0;
-	}
 //print_r($answered_calls_today);
 //die("dd");	
 ?>		
@@ -400,23 +387,23 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	                    </div>
 	                	-->
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info">
-	                		<div class="h2 m0"><?php echo $calls_ringing; ?></div>
-								<div class="text">Outgoing Calls</div>
+	                		<div class="h2 m0"><span class="text-lg" id="refresh_RingingCalls"></span></div>
+								<div class="text">Ringing Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><?php echo $calls_incoming_queue; ?></div>
+	                		<div class="h2 m0"><span class="text-lg" id="refresh_IncomingCalls"></span></div>
 								<div class="text-muted">Incoming Calls</div>
 	                	</div>	                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><?php echo number_format($answered_calls_today); ?></div>
+	                		<div class="h2 m0"><span class="text-lg" id="refresh_AnsweredCalls"></span></div>
 								<div class="text-muted">Answered Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><?php echo number_format(round($dropped_calls_today)); ?></div>
+	                		<div class="h2 m0"><span class="text-lg" id="refresh_DroppedCalls"></span></div>
 								<div class="text-muted">Dropped Calls</div>
 	                	</div>	                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><?php echo number_format($total_calls_today); ?></div>
+	                		<div class="h2 m0"><span class="text-lg" id="refresh_TotalCalls"></span></div>
 								<div class="text-muted" style="font-size: small;">Total Calls</div>
 	                	</div>                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes">
@@ -1263,10 +1250,13 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			load_LeadsinHopper();
 			load_TotalDialableLeads();
 		// ---- calls
-			load_Totalcalls();
-			load_RingingCall();
+			load_RingingCalls();
+			load_IncomingCalls();
+			load_AnsweredCalls();
+			load_DroppedCalls();
+			load_TotalCalls();
 			load_LiveOutbound();
-			
+                            
 	// ---- clusterstatus table
 		// ---- server 
 			load_server_id(); 
@@ -1297,8 +1287,11 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		setInterval(load_LeadsinHopper,5000);
 		setInterval(load_TotalDialableLeads,5000);
 		
-		setInterval(load_Totalcalls,5000);
-		setInterval(load_RingingCall,5000);
+		setInterval(load_RingingCalls,5000);
+		setInterval(load_IncomingCalls,5000);
+		setInterval(load_AnsweredCalls,5000);
+		setInterval(load_DroppedCalls,5000);
+		setInterval(load_TotalCalls,5000);
 		setInterval(load_LiveOutbound,5000);
 		
 		// ... cluster status table ...

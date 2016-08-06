@@ -97,26 +97,52 @@ function load_TotalDialableLeads(){
 /*
 * Calls status box 
 */
-function load_Totalcalls(){
+function load_TotalCalls(){
    $.ajax({
-     url: "./php/APIs/API_getTotalcalls.php",
+     url: "./php/APIs/API_GetTotalcalls.php",
      cache: false,
      success: function(data){
-        $("#refresh_Totalcalls").html(data);
+        $("#refresh_TotalCalls").html(data);
      } 
    });
 }
 
-function load_RingingCall(){
+function load_RingingCalls(){
    $.ajax({
-     url: "./php/APIs/API_GetRingingCall.php",
+     url: "./php/APIs/API_GetTotalRingingCalls.php",
      cache: false,
      success: function(data){
-        $("#refresh_RingingCall").html(data);
+        $("#refresh_RingingCalls").html(data);
      } 
    });
 }
-
+function load_IncomingCalls(){
+   $.ajax({
+     url: "./php/APIs/API_GetIncomingCalls.php",
+     cache: false,
+     success: function(data){
+        $("#refresh_IncomingCalls").html(data);
+     } 
+   });
+}
+function load_AnsweredCalls(){
+   $.ajax({
+     url: "./php/APIs/API_GetTotalAnsweredCalls.php",
+     cache: false,
+     success: function(data){
+        $("#refresh_AnsweredCalls").html(data);
+     } 
+   });
+}
+function load_DroppedCalls(){
+   $.ajax({
+     url: "./php/APIs/API_GetTotalDroppedCalls.php",
+     cache: false,
+     success: function(data){
+        $("#refresh_DroppedCalls").html(data);
+     } 
+   });
+}
 function load_LiveOutbound(){
    $.ajax({
      url: "./php/APIs/API_GetLiveOutbound.php",
