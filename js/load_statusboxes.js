@@ -99,7 +99,7 @@ function load_TotalDialableLeads(){
 */
 function load_TotalCalls(){
    $.ajax({
-     url: "./php/APIs/API_GetTotalcalls.php",
+     url: "./php/APIs/API_GetTotalCalls.php",
      cache: false,
      success: function(data){
         $("#refresh_TotalCalls").html(data);
