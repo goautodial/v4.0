@@ -33,7 +33,7 @@ require_once('../goCRMAPISettings.php');
            echo number_format($results["getRingingCalls"]);
    } else {
       # An error occurred
-           echo 0;
+           echo "0";
    }
 
 ?>

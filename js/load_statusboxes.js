@@ -118,10 +118,10 @@ function load_RingingCalls(){
 }
 function load_IncomingCalls(){
    $.ajax({
-     url: "./php/APIs/API_GetIncomingCalls.php",
+     url: "./php/APIs/API_GetIncomingQueue.php",
      cache: false,
      success: function(data){
-        $("#refresh_IncomingCalls").html(data);
+        $("#refresh_IncomingQueue").html(data);
      } 
    });
 }

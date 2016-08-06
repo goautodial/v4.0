@@ -25,7 +25,7 @@ require_once('../goCRMAPISettings.php');
      if ($results["result"]=="success") {
        # Result was OK!
        //var_dump($results); #to see the returned arrays.
-            echo $results["getTotalAgentsCall"];
+            echo number_format($results["getTotalAgentsCall"]);
      } else {
        # An error occured
             echo "0";

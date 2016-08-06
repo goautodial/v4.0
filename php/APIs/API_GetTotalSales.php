@@ -30,10 +30,10 @@ require_once('../goCRMAPISettings.php');
     if ($results["result"]=="success") {
       # Result was OK!
       //var_dump($results); #to see the returned arrays.
-           echo $results["TotalSales"];
+           echo number_format($results["TotalSales"]);
     } else {
       # An error occurred
-      echo 0;
+      echo "0";
     }
    
 ?>

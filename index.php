@@ -160,7 +160,7 @@ $ingroup = $ui->API_getInGroups();
  
 $dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
 $dropped_percentage = $ui->API_goGetDroppedPercentage();
-//$x=0;
+$calls_incoming_queue = $ui->API_goGetIncomingQueue();
 			
 //var_dump($dropped_calls_today);
 //die("dd");
@@ -391,7 +391,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 								<div class="text">Ringing Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg" id="refresh_IncomingCalls"></span></div>
+	                		<div class="h2 m0"><span class="text-lg" id="refresh_IncomingQueue"></span></div>
 								<div class="text-muted">Incoming Calls</div>
 	                	</div>	                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
@@ -1251,7 +1251,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			load_TotalDialableLeads();
 		// ---- calls
 			load_RingingCalls();
-			load_IncomingCalls();
+			load_IncomingQueue();
 			load_AnsweredCalls();
 			load_DroppedCalls();
 			load_TotalCalls();
@@ -1288,7 +1288,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		setInterval(load_TotalDialableLeads,5000);
 		
 		setInterval(load_RingingCalls,5000);
-		setInterval(load_IncomingCalls,5000);
+		setInterval(load_IncomingQueue,5000);
 		setInterval(load_AnsweredCalls,5000);
 		setInterval(load_DroppedCalls,5000);
 		setInterval(load_TotalCalls,5000);

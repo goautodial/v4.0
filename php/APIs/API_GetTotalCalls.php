@@ -33,6 +33,6 @@ if ($results["result"]=="success") {
         echo number_format($results["getTotalCalls"]);
 } else {
    # An error occurred
-   echo 0;
+   echo "0";
 }
 ?>
