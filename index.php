@@ -200,8 +200,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	if($inbound_calls == NULL || $inbound_calls == 0){
 		$inbound_calls = 0;
 	}
-	if($inbound_calls_today == NULL || $inbound_calls_today == 0){
-		$inbound_calls_today = 0;
+	if($calls_incoming_queue == NULL || $calls_incoming_queue == 0){
+		$calls_incoming_queue = 0;
 	}	
 	if($dropped_calls == NULL || $dropped_calls == 0){
 		$dropped_calls = 0;
@@ -401,24 +401,24 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	                	-->
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info">
 	                		<div class="h2 m0"><?php echo $calls_ringing; ?></div>
-								<div class="text">Calls Ringing</div>
+								<div class="text">Outgoing Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><?php echo $calls_incoming_queue; ?></div>
-								<div class="text-muted">Inbound Calls</div>
+								<div class="text-muted">Incoming Calls</div>
 	                	</div>	                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><?php echo $answered_calls_today; ?></div>
+	                		<div class="h2 m0"><?php echo number_format($answered_calls_today); ?></div>
 								<div class="text-muted">Answered Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><?php echo $total_calls_today; ?></div>
-								<div class="text-muted" style="font-size: small;">Total Calls</div>
-	                	</div>
-	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><?php echo $dropped_calls_today; ?></div>
+	                		<div class="h2 m0"><?php echo number_format(round($dropped_calls_today)); ?></div>
 								<div class="text-muted">Dropped Calls</div>
 	                	</div>	                	
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+	                		<div class="h2 m0"><?php echo number_format($total_calls_today); ?></div>
+								<div class="text-muted" style="font-size: small;">Total Calls</div>
+	                	</div>                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes">
 	                		<div class="h2 m0"><?php echo $outbound_calls_today; ?></div>
 								<div class="text-muted">Outbound Calls</div>
