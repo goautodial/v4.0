@@ -3534,14 +3534,17 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function API_getListAllRecordings($search_phone){
+	public function API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter){
 		$url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
-	    $postfields["requestDataPhone"] = $search_phone; #json. (required)
-
+	    $postfields["requestDataPhone"] = $search_phone; 
+	    $postfields["start_filterdate"] = $start_filterdate;
+	    $postfields["end_filterdate"] = $end_filterdate;
+	    $postfields["agent_filter"] = $agent_filter;
+	    
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
 	    // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -3556,8 +3559,8 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllRecordings($goUser, $goPass, $goAction, $responsetype){
-	    $output = $this->API_getListAllRecordings();
+	public function getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter){
+	    $output = $this->API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter);
 
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -4806,7 +4809,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * [[API: Function]] - goGetLeads
 	 * This application is used to get cluster status
 	*/
-	public function API_GetLeads($userName){
+	public function API_GetLeads($userName, $search){
 	$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass;
@@ -4814,7 +4817,8 @@ error_reporting(E_ERROR | E_PARSE);
 	$postfields["user_id"] = $userName;
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
-	
+	$postfields["search"] = $search;
+
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_POST, 1);
@@ -4836,7 +4840,6 @@ error_reporting(E_ERROR | E_PARSE);
         $postfields["goAction"] = "goGetLeadsInfo"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
         $postfields["lead_id"] = $lead_id; #Desired exten ID. (required)
-
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
          curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -4852,12 +4855,12 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 	
 	// get contact list
-	public function GetContacts($userid) {
-	$output = $this->API_GetLeads($userid);
+	public function GetContacts($userid, $search) {
+	$output = $this->API_GetLeads($userid, $search);
        if($output->result=="success") {
-       	   $columns = array("Lead ID", "Full Name", "Phone Number", "Action");
-	       $hideOnMedium = array("List ID", "Phone Number", "active");
-	       $hideOnLow = array( "List ID", "Phone Number", "active");
+       	   $columns = array("Lead ID", "Full Name", "Phone Number", "Status", "Action");
+	       $hideOnMedium = array("Lead ID", "Phone Number", "Status");
+	       $hideOnLow = array( "Lead ID", "Phone Number", "Status");
 		   $result = $this->generateTableHeaderWithItems($columns, "table_contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
 			for($i=0;$i<=count($output->list_id);$i++){
@@ -4866,19 +4869,18 @@ error_reporting(E_ERROR | E_PARSE);
 
 				$action = $this->ActionMenuForContacts($output->lead_id[$i]);
 				$result .= '<tr>
-								<td>' .$output->lead_id[$i]. '</td> 
+								<td class="hide-on-low hide-on-medium">' .$output->lead_id[$i]. '</td> 
 								<td>' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
-								<td>' .$output->phone_number[$i].'</td>
-								 <td style="width: 200px;">' .$action.'</td>
+								<td class="hide-on-low hide-on-medium">' .$output->phone_number[$i].'</td>
+								<td class="hide-on-low hide-on-medium">' .$output->status[$i].'</td>
+								 <td>' .$action.'</td>
 							</tr> ';
 				}
 			}
 			
 			return $result;
        }else{
-			// error getting contacts
-			//return $output->result;
-	       return $this->calloutErrorMessage($this->lh->translationFor("unable_get_user_list"));
+       		//display nothing
        }
 	}
 
