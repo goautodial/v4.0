@@ -4809,7 +4809,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * [[API: Function]] - goGetLeads
 	 * This application is used to get cluster status
 	*/
-	public function API_GetLeads($userName, $search){
+	public function API_GetLeads($userName, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter){
 	$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass;
@@ -4818,6 +4818,11 @@ error_reporting(E_ERROR | E_PARSE);
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
 	$postfields["search"] = $search;
+	$postfields["disposition_filter"] = $disposition_filter;
+	$postfields["list_filter"] = $list_filter;
+	$postfields["address_filter"] = $address_filter;
+	$postfields["city_filter"] = $city_filter;
+	$postfields["state_filter"] = $state_filter;
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -4855,8 +4860,8 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 	
 	// get contact list
-	public function GetContacts($userid, $search) {
-	$output = $this->API_GetLeads($userid, $search);
+	public function GetContacts($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter) {
+	$output = $this->API_GetLeads($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter);
        if($output->result=="success") {
        	   $columns = array("Lead ID", "Full Name", "Phone Number", "Status", "Action");
 	       $hideOnMedium = array("Lead ID", "Phone Number", "Status");
