@@ -1054,7 +1054,7 @@ error_reporting(E_ERROR | E_PARSE);
      * @param $status Int the status of the user (enabled=1, disabled=0)
      * @return String a HTML representation of the action associated with a user in the admin panel.
      */
-    private function ActionMenuForContacts($lead_id) {
+    public function ActionMenuForContacts($lead_id) {
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").' 
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -4959,13 +4959,11 @@ error_reporting(E_ERROR | E_PARSE);
 	$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass;
-	$postfields["goVarLimit"] = "";
+	$postfields["goVarLimit"] = "500";
 	$postfields["user_id"] = $userName;
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
 	$postfields["search"] = $search;
-	$postfields["goVarLimit"] = "500";
-	
 	$postfields["disposition_filter"] = $disposition_filter;
 	$postfields["list_filter"] = $list_filter;
 	$postfields["address_filter"] = $address_filter;
@@ -5007,8 +5005,8 @@ error_reporting(E_ERROR | E_PARSE);
 		 return $output;
 		}
 		
-		// get contact list
-		public function GetContacts($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter) {
+	// get contact list
+	public function GetContacts($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter) {
 		$output = $this->API_GetLeads($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter);
 	       if($output->result=="success") {
 
