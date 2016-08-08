@@ -47,6 +47,7 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
 
 // Settings
 var phone;
+var isMobile = false; //initiate as false
 var is_logged_in = <?=$is_logged_in?>;
 var logoutWarn = true;
 var use_webrtc = <?=$use_webrtc?>;
@@ -654,12 +655,6 @@ $(document).ready(function() {
             'overflow': 'hidden',
             'min-height': $("body").innerHeight()
         });
-    
-        var isMobile = false; //initiate as false
-        // device detection
-        if (parseInt($("body").innerWidth()) < 768) {
-            isMobile = true;
-        }
         
         $(window).resize(function() {
             if (parseInt($("body").innerWidth()) < 768) {
@@ -958,6 +953,11 @@ $(document).ready(function() {
     toggleButtons(dial_method);
     toggleStatus('NOLIVE');
     activateLinks();
+    
+    // device detection
+    if (parseInt($("body").innerWidth()) < 768) {
+        isMobile = true;
+    }
 
     window.addEventListener("beforeunload", function (e) {
         if (is_logged_in) {
@@ -2951,6 +2951,8 @@ function CallBacksCountCheck() {
             //document.getElementById("CBstatusSpan").innerHTML = CBlinkCONTENT;
             $("#callbacks-active").html(CBcount);
             $("#callbacks-today").html(CBcountToday);
+            
+            $("a[href='callbackslist.php'] > small.badge").html(CBcount);
         }
     });
 }
@@ -3674,8 +3676,14 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
                 } else {
                     dispo_HTML = dispo_HTML + "<span id='dispo-add-"+statuses[loop_ct]+"' style='cursor:pointer;color:#77a30a;'>&nbsp; <span class='hidden-xs'>" + statuses[loop_ct] + " - " + statuses_names[loop_ct] + "</span><span class='hidden-sm hidden-md hidden-lg'>" + statuses_names[loop_ct] + "</span></span> " + CBflag + " &nbsp;<br /><br />";
                 }
-                if (loop_ct == statuses_ct_half) 
-                    {dispo_HTML = dispo_HTML + "</td><td bgcolor='#FFFFFF' height='300px' width='auto' valign='top' class='DispoSelectB' style='white-space: nowrap;'>";}
+                if (loop_ct == statuses_ct_half && !isMobile) {
+                    $("#pause_agent").show();
+                    $("#pause_agent_xs").hide();
+                    dispo_HTML = dispo_HTML + "</td><td bgcolor='#FFFFFF' height='300px' width='auto' valign='top' class='DispoSelectB' style='white-space: nowrap;'>";
+                } else {
+                    $("#pause_agent").hide();
+                    $("#pause_agent_xs").show();
+                }
                 loop_ct++;
             }
         } else {
