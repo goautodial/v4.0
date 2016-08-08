@@ -3563,14 +3563,17 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function API_getListAllRecordings($search_phone){
+	public function API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter){
 		$url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
-	    $postfields["requestDataPhone"] = $search_phone; #json. (required)
-
+	    $postfields["requestDataPhone"] = $search_phone; 
+	    $postfields["start_filterdate"] = $start_filterdate;
+	    $postfields["end_filterdate"] = $end_filterdate;
+	    $postfields["agent_filter"] = $agent_filter;
+	    
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
 	    // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -3585,8 +3588,8 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllRecordings($goUser, $goPass, $goAction, $responsetype){
-	    $output = $this->API_getListAllRecordings();
+	public function getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter){
+	    $output = $this->API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter);
 
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -4261,56 +4264,56 @@ error_reporting(E_ERROR | E_PARSE);
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="view_leadfilter" href="#" data-id="'.$id.'">View</a></li>
-			<li><a class="edit_leadfilter" href="#" data-id="'.$id.'">Modify</a></li>
-			<li><a class="delete_leadfilter" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
-		    </ul>
-		</div>';
-	}
-	
-	/*
-	 * <<<<==================== END OF TELEPHONY APIs =====================>>>>
-	 */
-	
-	/*
-	 * APIs for Dashboard
-	 *
-	*/
-		/*
-		 * Displaying Total Sales
-		 * [[API: Function]] - goGetTotalSales
-		 * This application is used to get total number of total sales.
-		*/
+				<li><a class="edit_leadfilter" href="#" data-id="'.$id.'">Modify</a></li>
+				<li><a class="delete_leadfilter" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			    </ul>
+			</div>';
+		}
 		
-		public function API_goGetTotalSales() {
-			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = goUser; #Username goes here. (required)
-			$postfields["goPass"] = goPass;
-			$postfields["goAction"] = "goGetTotalSales"; #action performed by the [[API:Functions]]
+		/*
+		 * <<<<==================== END OF TELEPHONY APIs =====================>>>>
+		 */
+		
+		/*
+		 * APIs for Dashboard
+		 *
+		*/
+			/*
+			 * Displaying Total Sales
+			 * [[API: Function]] - goGetTotalSales
+			 * This application is used to get total number of total sales.
+			*/
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
-			
-			//var_dump($data);
-			 $data = explode(";",$data);
-			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			 }
-			
-			 if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalSales"];
-			 } else {
-			   # An error occurred
-                                        $vars = 0;
-					return $vars;
+			public function API_goGetTotalSales() {
+				$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+				$postfields["goUser"] = goUser; #Username goes here. (required)
+				$postfields["goPass"] = goPass;
+				$postfields["goAction"] = "goGetTotalSales"; #action performed by the [[API:Functions]]
+				
+				 $ch = curl_init();
+				 curl_setopt($ch, CURLOPT_URL, $url);
+				 curl_setopt($ch, CURLOPT_POST, 1);
+				 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+				 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+				 $data = curl_exec($ch);
+				 curl_close($ch);
+				
+				//var_dump($data);
+				 $data = explode(";",$data);
+				 foreach ($data AS $temp) {
+				   $temp = explode("=",$temp);
+				   $results[$temp[0]] = $temp[1];
+				 }
+				
+				 if ($results["result"]=="success") {
+				   # Result was OK!
+				   //var_dump($results); #to see the returned arrays.
+						return $results["getTotalSales"];
+				 } else {
+				   # An error occurred
+						$vars = 0;
+						return $vars;
 			 }
 			
 		}
@@ -4348,7 +4351,7 @@ error_reporting(E_ERROR | E_PARSE);
 					return $results["getINSalesPerHour"];
 			 } else {
 			   # An error occurred
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			 }
 
@@ -4388,7 +4391,7 @@ error_reporting(E_ERROR | E_PARSE);
 					return $results["getOutSalesPerHour"];
 			 } else {
 			   # An error occurred
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			 }
 		}
@@ -4427,7 +4430,7 @@ error_reporting(E_ERROR | E_PARSE);
 					return $results["getTotalAgentsWaitCalls"];
 			 } else {
 			   # An error occured
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			 }
 		}
@@ -4467,7 +4470,7 @@ error_reporting(E_ERROR | E_PARSE);
 					return $results["getTotalAgentsPaused"];
 			 } else {
 			   # An error occurred
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			 }
 		
@@ -4507,7 +4510,7 @@ error_reporting(E_ERROR | E_PARSE);
 					return $results["getTotalAgentsCall"];
 			 } else {
 			   # An error occured
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			 }
 		}
@@ -4586,7 +4589,7 @@ error_reporting(E_ERROR | E_PARSE);
 					return $results["getTotalDialableLeads"];
 			 } else {
 			   # An error occurred
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			 }
 		
@@ -4627,7 +4630,7 @@ error_reporting(E_ERROR | E_PARSE);
 					return $results["getTotalActiveLeads"];
 			 } else {
 			   # An error occurred
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			 }
 		}
@@ -4665,7 +4668,7 @@ error_reporting(E_ERROR | E_PARSE);
 					return $results["getRingingCalls"];
 			} else {
 			   # An error occurred
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			}
 		
@@ -4698,7 +4701,7 @@ error_reporting(E_ERROR | E_PARSE);
 					return $results["getIncomingQueue"];
 			} else {
 			   # An error occurred
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			}
 		
@@ -4735,12 +4738,12 @@ error_reporting(E_ERROR | E_PARSE);
 			   # Result was OK!	   
 					return $results["getTotalCalls"];					
 			} else {
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			}
 		}
 		
-                /*
+		/*
 		 * Displaying Total Answered Calls
 		 * [[API: Function]] - goGetTotalAnsweredCalls
 		 * This application is used to get total calls.
@@ -4774,11 +4777,11 @@ error_reporting(E_ERROR | E_PARSE);
 					return $results["getTotalAnsweredCalls"];
 			} else {
 			   # An error occurred
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			}
 		}		
-                /*
+		/*
 		 * Displaying Total Dropped Calls
 		 * [[API: Function]] - goGetTotalDroppedCalls
 		 * This application is used to get total calls.
@@ -4811,7 +4814,7 @@ error_reporting(E_ERROR | E_PARSE);
 			   //var_dump($results); #to see the returned arrays.
 					return $results["getTotalDroppedCalls"];
 			} else {
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			}
 		}		
@@ -4846,10 +4849,10 @@ error_reporting(E_ERROR | E_PARSE);
 			if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-                                        return $results["getLiveOutbound"];
+					return $results["getLiveOutbound"];
 			} else {
 			   # An error occured
-                                        $vars = 0;
+					$vars = 0;
 					return $vars;
 			}
 		
@@ -4911,11 +4914,11 @@ error_reporting(E_ERROR | E_PARSE);
 			 if($results["getDroppedPercentage"] != ""){
 				return $results["getDroppedPercentage"];
 			 }else{
-                                $vars = 0;
+				$vars = 0;
 				return $vars;
 			 }
 		}else{
-                                $vars = 0;
+				$vars = 0;
 				return $vars;
 		}
 		
@@ -4952,7 +4955,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * [[API: Function]] - goGetLeads
 	 * This application is used to get cluster status
 	*/
-	public function API_GetLeads($userName){
+	public function API_GetLeads($userName, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter){
 	$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass;
@@ -4960,7 +4963,13 @@ error_reporting(E_ERROR | E_PARSE);
 	$postfields["user_id"] = $userName;
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
-	
+	$postfields["search"] = $search;
+	$postfields["disposition_filter"] = $disposition_filter;
+	$postfields["list_filter"] = $list_filter;
+	$postfields["address_filter"] = $address_filter;
+	$postfields["city_filter"] = $city_filter;
+	$postfields["state_filter"] = $state_filter;
+
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_POST, 1);
@@ -4970,61 +4979,60 @@ error_reporting(E_ERROR | E_PARSE);
 	$data = curl_exec($ch);
 	curl_close($ch);
 	$output = json_decode($data); 	
-	 	
+		
 		return $output;
 	}
 
 	// get specific contact info
 	public function API_GetLeadInfo($lead_id){
 		$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
-        $postfields["goUser"] = goUser; #Username goes here. (required)
-        $postfields["goPass"] = goPass; #Password goes here. (required)
-        $postfields["goAction"] = "goGetLeadsInfo"; #action performed by the [[API:Functions]]. (required)
-        $postfields["responsetype"] = responsetype; #json. (required)
-        $postfields["lead_id"] = $lead_id; #Desired exten ID. (required)
+	$postfields["goUser"] = goUser; #Username goes here. (required)
+	$postfields["goPass"] = goPass; #Password goes here. (required)
+	$postfields["goAction"] = "goGetLeadsInfo"; #action performed by the [[API:Functions]]. (required)
+	$postfields["responsetype"] = responsetype; #json. (required)
+	$postfields["lead_id"] = $lead_id; #Desired exten ID. (required)
+	 $ch = curl_init();
+	 curl_setopt($ch, CURLOPT_URL, $url);
+	 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		 curl_setopt($ch, CURLOPT_POST, 1);
+		 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		 $data = curl_exec($ch);
+		 curl_close($ch);
+		 $output = json_decode($data);
 
-         $ch = curl_init();
-         curl_setopt($ch, CURLOPT_URL, $url);
-         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-         curl_setopt($ch, CURLOPT_POST, 1);
-         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-         $data = curl_exec($ch);
-         curl_close($ch);
-         $output = json_decode($data);
+		 return $output;
+		}
+		
+		// get contact list
+		public function GetContacts($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter) {
+		$output = $this->API_GetLeads($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter);
+	       if($output->result=="success") {
 
-         return $output;
-	}
-	
-	// get contact list
-	public function GetContacts($userid) {
-	$output = $this->API_GetLeads($userid);
-       if($output->result=="success") {
-       	   $columns = array("List ID", "Name", "Phone Number", "Action");
-	       $hideOnMedium = array("List ID", "Phone Number", "active");
-	       $hideOnLow = array( "List ID", "Phone Number", "active");
-		   $result = $this->generateTableHeaderWithItems($columns, "contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-			
+       	   $columns = array("Lead ID", "Full Name", "Phone Number", "Status", "Action");
+	       $hideOnMedium = array("Lead ID", "Phone Number", "Status");
+	       $hideOnLow = array( "Lead ID", "Phone Number", "Status");
+		   $result = $this->generateTableHeaderWithItems($columns, "table_contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+
 			for($i=0;$i<=count($output->list_id);$i++){
 		   	//for($i=0;$i<=500;$i++){
 				if($output->phone_number[$i] != ""){
 
 				$action = $this->ActionMenuForContacts($output->lead_id[$i]);
 				$result .= '<tr>
-								<td>' .$output->list_id[$i]. '</td> 
+								<td class="hide-on-low hide-on-medium">' .$output->lead_id[$i]. '</td>
 								<td>' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
-								<td>' .$output->phone_number[$i].'</td>
-								 <td style="width: 200px;">' .$action.'</td>
+								<td class="hide-on-low hide-on-medium">' .$output->phone_number[$i].'</td>
+								<td class="hide-on-low hide-on-medium">' .$output->status[$i].'</td>
+								 <td>' .$action.'</td>
 							</tr> ';
 				}
 			}
 			
 			return $result;
        }else{
-			// error getting contacts
-			//return $output->result;
-	       return $this->calloutErrorMessage($this->lh->translationFor("unable_get_user_list"));
+       		//display nothing
        }
 	}
 

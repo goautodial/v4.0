@@ -80,6 +80,26 @@
 				$(".preloader").fadeOut("slow");
 			})
 		</script>
+		<style>
+		/*
+		* CUSTOM CSS for disable function
+		*/
+			.c-checkbox input[type=checkbox]:disabled + span,
+			.c-radio input[type=checkbox]:disabled + span,
+			.c-checkbox input[type=radio]:disabled + span,
+			.c-radio input[type=radio]:disabled + span {
+				border-color: none !important;
+    			background-color: none !important;
+			}
+			.c-checkbox input[type=checkbox]:checked + span,
+			.c-radio input[type=checkbox]:checked + span,
+			.c-checkbox input[type=radio]:checked + span,
+			.c-radio input[type=radio]:checked + span
+			 {
+				border-color: #3f51b5 !important;
+    			background-color: #3f51b5 !important;
+			}
+		</style>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -104,7 +124,6 @@
                 </section>
 <?php
 $lists = $ui->API_goGetAllLists();
-
 $callrecs = $ui->API_getListAllRecordings();
 $leads = $ui->API_GetLeads($user->getUserName());
 ?>
@@ -113,12 +132,12 @@ $leads = $ui->API_GetLeads($user->getUserName());
                 	<div class="row">
 						<div class="col-lg-9">
 							<div class="form-group mb-xl">
-								<input type="text" placeholder="Search Phone, Agent or Last Name" id="search_general" class="form-control mb">
+								<input type="text" placeholder="Search Phone, Agent or Last Name" id="search" class="form-control mb">
 								<div class="clearfix">
-									<button type="button" class="pull-left btn btn-default">Search</button>
+									<button type="button" class="pull-left btn btn-default" id="search_button"> Search</button>
 									<div class="pull-right">
 										<label class="checkbox-inline c-checkbox" for="search_contacts">
-											<input id="search_contacts" name="table_filter" type="checkbox" checked>
+											<input id="search_contacts" name="table_filter" type="checkbox" checked disabled>
 											<span class="fa fa-check"></span> Contacts
 										</label>
 										<label class="checkbox-inline c-checkbox" for="search_recordings">
@@ -206,6 +225,7 @@ $leads = $ui->API_GetLeads($user->getUserName());
 
 											   	?>	
 														<tr>
+															
 															<td><?php echo $callrecs->end_last_local_call_time[$i];?></a></td>
 															<td class='hide-on-medium hide-on-low'><?php echo $callrecs->full_name[$i];?></td>
 															<td class='hide-on-medium hide-on-low'><?php echo $callrecs->phone_number[$i];?></td>
@@ -223,7 +243,6 @@ $leads = $ui->API_GetLeads($user->getUserName());
 		               		</div><!-- /.panel -->
 	               		</div><!-- /.col-lg-9 -->
 <?php
-$campaign = $ui->API_getListAllCampaigns();
 $lists = $ui->API_goGetAllLists();
 $agents = $ui->API_goGetAllUserLists();
 $disposition = $ui->API_getAllDispositions();
@@ -236,86 +255,43 @@ $disposition = $ui->API_getAllDispositions();
 		                           <label>Add Filters:</label>
 		                           <div class="mb">
 		                              	<select id="add_filters" multiple="multiple" class="select2-3 form-control" style="width:100%;">
-		                                    <option value="filter_campaign">Campaign </option>
-		                                    <option value="filter_list">List ID</option>
-		                                    <option value="filter_address">Address 	</option>
-		                                    <option value="filter_city">City </option>
-		                                    <option value="filter_state">State </option>
+		                                    <option value="filter_disposition" class="contacts_filters">Disposition</option>
+		                                    <option value="filter_list" class="contacts_filters">List ID</option>
+		                                    <option value="filter_address" class="contacts_filters">Address </option>
+		                                    <option value="filter_city" class="contacts_filters">City </option>
+		                                    <option value="filter_state" class="contacts_filters">State </option>
+		                                    <option value="filter_agent" class="callrecordings_filters" disabled>Agent </option>
 		                             	</select>
 		                           </div>
 		                        </div>
-	               				<div class="form-group">
-		               				<label>Start Date:</label>
-						            <div class="form-group">
-						                <div class='input-group date' id='datetimepicker1'>
-						                    <input type='text' class="form-control" placeholder="<?php echo date("m/d/Y");?>"/>
-						                    <span class="input-group-addon">
-						                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
-												<span class="fa fa-calendar"></span>
-						                    </span>
-						                </div>
-						            </div>
-						        </div>
-						        <div class="form-group">
-						            <label>End Date:</label>
-						            <div class="form-group">
-						                <div class='input-group date' id='datetimepicker2'>
-						                    <input type='text' class="form-control" />
-						                    <span class="input-group-addon">
-						                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
-						                        <span class="fa fa-calendar"></span>
-						                    </span>
-						                </div>
-						            </div>
-							    </div>
-							    <div class="form-group">
-									<label>Disposition: </label>
-									<div class="mb">
-										<select name="campaign_filter" class="form-control">
-											<?php
-											//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
-												for($a=0; $a<count($disposition->status); $a++){
-											?>
-													<option value=""><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
-											<?php
-												}
-											?>	
-										</select>
-									</div>
-								</div>
-								<div class="form-group">
-									<label>Agent: </label>
-									<div class="mb">
-										<select name="campaign_filter" class="form-control">
-											<?php
-												for($i=0; $i < count($campaign->campaign_id);$i++){
-													echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_name[$i]." </option>";
-												}
-											?>			
-										</select>
-									</div>
-								</div>
-							<fieldset>
-							    <!-- HIDDEN FILTERS -->
-							    <div class="campaign_filter_div" style="display:none;">
+
+
+		                    <!-- CONTACT FILTERS -->
+		                    <div class="all_contact_filters">
+		                    	<div class="disposition_filter_div" style="display:none;">
 								    <div class="form-group">
-										<label>Campaign: </label>
+										<label>Disposition: </label>
 										<div class="mb">
-											<select name="campaign_filter" class="form-control">
+											<select name="disposition_filter" id="disposition_filter" class="form-control">
+													<option value="">- - - NO DISPOSITION SELECTED - - -</option>
 												<?php
-													for($i=0; $i < count($campaign->campaign_id);$i++){
-														echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_name[$i]." </option>";
+												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
+													for($a=0; $a<count($disposition->status); $a++){
+												?>
+														<option value="<?php echo $disposition->status[$a];?>"><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
+												<?php
 													}
-												?>			
+												?>	
 											</select>
 										</div>
 									</div>
 								</div>
-								<div class="list_filter_div" style="display:none;">
+		                        <div class="list_filter_div" style="display:none;">
 									<div class="form-group">
 										<label>List ID: </label>
 										<div class="mb">
-											<select name="list_filter" class="form-control">
+											<select name="list_filter" id="list_filter" class="form-control">
+													<option value="">- - - NO LIST SELECTED - - -</option>
 												<?php
 													for($i=0; $i < count($lists->list_id);$i++){
 														echo "<option value='".$lists->list_id[$i]."'> ".$lists->list_name[$i]." </option>";
@@ -349,6 +325,75 @@ $disposition = $ui->API_getAllDispositions();
 										</div>
 									</div>
 								</div>
+							</div>
+
+
+							<!-- CALL RECORDINGS FILTER -->
+		                    <div class="all_callrecording_filters">
+		                        <div class="callrecordings_filter_div" style="display:none;">
+		               				<div class="form-group">
+			               				<label>Start Date:</label>
+							            <div class="form-group">
+							                <div class='input-group date' id='datetimepicker1'>
+							                    <input type='text' class="form-control" id="start_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
+							                    <span class="input-group-addon">
+							                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
+													<span class="fa fa-calendar"></span>
+							                    </span>
+							                </div>
+							            </div>
+							        </div>
+							        <div class="form-group">
+							            <label>End Date:</label>
+							            <div class="form-group">
+							                <div class='input-group date' id='datetimepicker2'>
+							                    <input type='text' class="form-control" id="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
+							                    <span class="input-group-addon">
+							                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
+							                        <span class="fa fa-calendar"></span>
+							                    </span>
+							                </div>
+							            </div>
+								    </div>
+								</div>
+
+							    
+								<div class="agent_filter_div" style="display:none;">
+									<div class="form-group">
+										<label>Agent: </label>
+										<div class="mb">
+											<select name="agent_filter" id="agent_filter" class="form-control">
+												<option value="" selected DISABLED> -- SELECT AN AGENT -- </option> 
+												<?php
+													for($i=0; $i < count($agents->user_id);$i++){
+														echo "<option value='".$agents->userno[$i]."'> ".$agents->full_name[$i]." </option>";
+													}
+												?>			
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<fieldset>
+							    <!--
+							    <div class="campaign_filter_div" style="display:none;">
+								    <div class="form-group">
+										<label>Campaign: </label>
+										<div class="mb">
+											<select name="campaign_filter" class="form-control">
+												<?php
+												/*
+													for($i=0; $i < count($campaign->campaign_id);$i++){
+														echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_name[$i]." </option>";
+													}
+												*/
+												?>			
+											</select>
+										</div>
+									</div>
+								</div>
+								-->
 							</fieldset>
 
 							</form>
@@ -402,30 +447,32 @@ $disposition = $ui->API_getAllDispositions();
 		<script type="text/javascript">
 
 			$(document).ready(function() {
+				// Global var for counter
+				var giCount = 2;
 
-				$('#table_contacts').dataTable();
-				$('#table_callrecordings').dataTable();
+				// initialization of datatables
+				var init_contacts_table = $('#table_contacts').DataTable({
+                	"bDestroy" : true
+                });
 
-				//initialize single selecting
+				var init_callrecs_table = $('#table_callrecordings').DataTable({
+                	"bDestroy" : true
+                });
+
+				// initialize single selecting
 				$('#select2-1').select2({
 			        theme: 'bootstrap'
 			    });
-			    //initialize multiple selecting
+			    // initialize multiple selecting
 				$('.select2-3').select2({
 			        theme: 'bootstrap'
 			    });
 
-				// the selector will match all input controls of type :checkbox
-				// and attach a click event handler 
+				// limits checkboxes to single selecting
 				$("input:checkbox").on('click', function() {
-				  // in the handler, 'this' refers to the box clicked on
 				  var $box = $(this);
 				  if ($box.is(":checked")) {
-				    // the name of the box is retrieved using the .attr() method
-				    // as it is assumed and expected to be immutable
 				    var group = "input:checkbox[name='" + $box.attr("name") + "']";
-				    // the checked state of the group/box on the other hand will change
-				    // and the current value is retrieved using .prop() method
 				    $(group).prop("checked", false);
 				    $box.prop("checked", true);
 				  } else {
@@ -433,153 +480,499 @@ $disposition = $ui->API_getAllDispositions();
 				  }
 				});
 
-				// shows contacts datatable if Contact tickbox is checked
-				$('#search_contacts').on('change', function() {
+				/****
+				** Change between Contacts and Recordings
+				****/
+					// shows contacts datatable if Contact tickbox is checked
+					$('#search_contacts').on('change', function() {
+						$("#search_contacts").prop("disabled", true);
+		            	$("#search_recordings").prop("disabled", false);
 
-					if($('#search_contacts').is(":checked")){
-						$(".contacts_div").show();
-	            	}else{
-	            		$(".contacts_div").hide();
-	            	}
+						if($('#search_contacts').is(":checked")){
+							$(".contacts_div").show(); // show contact table
+							$(".callrecordings_div").hide(); // hide table
 
-	            	if($('#search_recordings').is(":checked")){
-						$(".callrecordings_div").show();
-	            	}else{
-	            		$(".callrecordings_div").hide();
-	            	}
-				});
+							$(".all_contact_filters").show(); // hide filter
+							$(".all_callrecording_filters").hide(); // hide filter
 
-				// shows call recordings datatable if Contact tickbox is checked
-				$('#search_recordings').on('change', function() {
+							// hide callrecordings
+							$(".callrecordings_filter_div").hide();
 
-					if($('#search_recordings').is(":checked")){
-						$(".callrecordings_div").show();
-	            	}else{
-	            		$(".callrecordings_div").hide();
-	            	}
+							$(".contacts_filters").prop("disabled", false); // enable contact filters
+							$(".callrecordings_filters").prop("disabled", true); // disable recording filters
+		            	}else{
+		            		$(".contacts_div").hide();
+		            		$(".all_contact_filters").hide();
 
-	            	if($('#search_contacts').is(":checked")){
-						$(".contacts_div").show();
-	            	}else{
-	            		$(".contacts_div").hide();
-	            	}
-				});
-
-				$("#add_filters").change(function(){
-			        $(this).find("option:selected").each(function(){
-			            if($(this).attr("value")=="filter_campaign"){
-			               /* $(".list_filter_div").hide();
-			                $(".address_filter_div").hide();
-			                $(".city_filter_div").hide();
-			                $(".state_filter_div").hide();*/
-
-			                $(".campaign_filter_div").show();
-			            }
-			            else if($(this).attr("value")=="filter_list"){
-			               /* $(".campaign_filter_div").hide();
-			                $(".address_filter_div").hide();
-			                $(".city_filter_div").hide();
-			                $(".state_filter_div").hide();*/
-
-			                $(".list_filter_div").show();
-			            }
-			            else if($(this).attr("value")=="filter_address"){
-			              /*  $(".campaign_filter_div").hide();
-			                $(".list_filter_div").hide();
-			                $(".city_filter_div").hide();
-			                $(".state_filter_div").hide();*/
-
-			                $(".address_filter_div").show();
-			            }
-			            else if($(this).attr("value")=="filter_city"){
-			               /* $(".campaign_filter_div").hide();
-			                $(".list_filter_div").hide();
-			                $(".address_filter_div").hide();
-			                $(".state_filter_div").hide();*/
-
-			                $(".city_filter_div").show();
-			            }
-			            else if($(this).attr("value")=="filter_state"){
-			              /*  $(".campaign_filter_div").hide();
-			                $(".list_filter_div").hide();
-			                $(".address_filter_div").hide();
-			                $(".city_filter_div").hide();*/
-
-			                $(".state_filter_div").show();
-			            }
-			            else{
-			                $(".box").hide();
-			            }
-			        });
-			    }).change();
-
-				$('#datetimepicker1').datetimepicker({
-				icons: {
-                      time: 'fa fa-clock-o',
-                      date: 'fa fa-calendar',
-                      up: 'fa fa-chevron-up',
-                      down: 'fa fa-chevron-down',
-                      previous: 'fa fa-chevron-left',
-                      next: 'fa fa-chevron-right',
-                      today: 'fa fa-crosshairs',
-                      clear: 'fa fa-trash'
-                    }
-				});
-
-                $('#datetimepicker2').datetimepicker({
-                icons: {
-                      time: 'fa fa-clock-o',
-                      date: 'fa fa-calendar',
-                      up: 'fa fa-chevron-up',
-                      down: 'fa fa-chevron-down',
-                      previous: 'fa fa-chevron-left',
-                      next: 'fa fa-chevron-right',
-                      today: 'fa fa-crosshairs',
-                      clear: 'fa fa-trash'
-                    }
-                });
-
-                $(document).on('click','#search_button',function() {
-                //$('#search').click(function(){
-                $('#search_button').prop("disabled", true);
-                	var Asearch_phone = "";
-                	var Asearch_agent = "";
-                	var Asearch_customer = "";
-
-            		if($('#search_phone').is(":checked")){
-	            		Asearch_phone = $('#search_general').val();
-	            	}
-	            	if($('#search_agent').is(":checked")){
-	            		Asearch_agent = $('#search_general').val();
-
-	            	}
-	            	if($('#search_lastname').is(":checked")){
-	            		Asearch_customer = $('#search_general').val();
-	            	}
-                	
-                	//$('#search_form').serialize(),
-				    $.ajax({
-					    url: "search.php",
-					    type: 'POST',
-					    data: {
-					    	search : $('#search_general').val(),
-					    	search_phone : Asearch_phone,
-					    	search_agent : Asearch_agent,
-					    	search_customer : Asearch_customer,
-					    },
-						success: function(data) {
-							$('#search_button').prop("disabled", false);
-							console.log(data);
-							if(data != ""){
-								//window.location.replace("telephonylistandcallrecording.php?search="+data);
-							}else{
-								//window.location.replace("telephonylistandcallrecording.php");
-							}
-						}
+		            		$(".contacts_filters").prop("disabled", true); // disable contact filters
+							$(".callrecordings_filters").prop("disabled", false); // enable recording filters
+		            	}
 					});
-					
-				});
 
+					// shows call recordings datatable if Recordings tickbox is checked
+					$('#search_recordings').on('change', function() {
+						$("#search_contacts").prop("disabled", false);
+		            	$("#search_recordings").prop("disabled", true);
+
+		            	$(".contacts_filters").prop("selected", false); 
+
+						if($('#search_recordings').is(":checked")){
+							$(".callrecordings_div").show(); // show recordings table
+							$(".callrecordings_filter_div").show(); // show recording filter
+
+							// hide contacts
+							$(".contacts_div").hide();
+		            		$(".all_contact_filters").hide();
+
+							$(".all_contact_filters").hide(); // hide filter
+							$(".all_callrecording_filters").show(); // hide filter
+
+							$(".contacts_filters").prop("disabled", true); // disable contact filters
+							$(".callrecordings_filters").prop("disabled", false); // enable recording filters
+							
+		            	}else{
+		            		$(".callrecordings_div").hide();
+		            		$(".all_callrecording_filters").hide();
+
+		            		$(".contacts_filters").prop("disabled", false); // enable contact filters
+							$(".callrecordings_filters").prop("disabled", true); // disable recording filters
+		            	}
+
+					});
+
+				/***
+				** Add Filters
+				***/
+					// add filters
+					$("#add_filters").change(function(){
+				        $(this).find("option:selected").each(function(){
+				        		
+				            if($(this).attr("value")=="filter_campaign"){
+				                $(".campaign_filter_div").show();
+				            }
+
+				            if($(this).attr("value")=="filter_list"){
+				                $(".list_filter_div").show();
+				            }
+
+				            if($(this).attr("value")=="filter_disposition"){
+				                $(".disposition_filter_div").show();
+				            }
+
+				            if($(this).attr("value")=="filter_address"){
+				                $(".address_filter_div").show();
+				            }
+
+				            if($(this).attr("value")=="filter_city"){
+				                $(".city_filter_div").show();
+				            }
+
+				            if($(this).attr("value")=="filter_state"){
+				                $(".state_filter_div").show();
+				            }
+
+				            if($(this).attr("value")=="filter_agent"){
+				                $(".agent_filter_div").show();
+				            }
+
+				        });
+				    }).change();
+				
+				/****
+				** Contact filters
+				****/ 
+
+					// ----- Disposition
+						$('#disposition_filter').on('change', function() {
+		            		var disposition_filter_val = $('#disposition_filter').val();
+		            		var list_filter_val = $('#list_filter').val();
+		            		var address_filter_val = $("#address_filter").val();
+		            		var city_filter_val = $("#city_filter").val();
+		            		var state_filter_val = $("#state_filter").val();
+
+		            		$.ajax({
+							    url: "filter_contacts.php",
+							    type: 'POST',
+							    data: {
+							    	search_contacts : $('#search').val(),
+							    	disposition : disposition_filter_val,
+							    	list : list_filter_val,
+							    	address : address_filter_val,
+							    	city : city_filter_val,
+							    	state : state_filter_val
+							    },
+								success: function(data) {
+
+									console.log(data);
+
+									if(data != ""){
+										$('#table_contacts').html(data);
+										$('#table_contacts').DataTable({
+						                	"bDestroy" : true
+						                });
+									}else{
+										init_contacts_table.fnClearTable();
+									}
+								}
+							});
+							
+						});
+
+					// ----- List ID
+						$('#list_filter').on('change', function() {
+		            		var disposition_filter_val = $('#disposition_filter').val();
+		            		var list_filter_val = $('#list_filter').val();
+		            		var address_filter_val = $("#address_filter").val();
+		            		var city_filter_val = $("#city_filter").val();
+		            		var state_filter_val = $("#state_filter").val();
+
+		            		$.ajax({
+							    url: "filter_contacts.php",
+							    type: 'POST',
+							    data: {
+							    	search_contacts : $('#search').val(),
+							    	disposition : disposition_filter_val,
+							    	list : list_filter_val,
+							    	address : address_filter_val,
+							    	city : city_filter_val,
+							    	state : state_filter_val
+							    },
+								success: function(data) {
+
+									console.log(data);
+
+									if(data != ""){
+								        
+										$('#table_contacts').html(data);
+										$('#table_contacts').DataTable({
+						                	"bDestroy" : true
+						                });
+									}else{
+										init_contacts_table.fnClearTable();
+									}
+								}
+							});
+							
+						});
+
+					// ----- Address
+						$("#address_filter").keyup(function() {
+							clearTimeout($.data(this, 'timer'));
+							var wait = setTimeout(address_filter_ajax, 3000);
+							$(this).data('timer', wait);
+						});
+
+						function address_filter_ajax() {
+						    var disposition_filter_val = $('#disposition_filter').val();
+		            		var list_filter_val = $('#list_filter').val();
+		            		var address_filter_val = $("#address_filter").val();
+		            		var city_filter_val = $("#city_filter").val();
+		            		var state_filter_val = $("#state_filter").val();
+
+						    $.ajax({
+							    url: "filter_contacts.php",
+							    type: 'POST',
+							    data: {
+							    	search_contacts : $('#search').val(),
+							    	disposition : disposition_filter_val,
+							    	list : list_filter_val,
+							    	address : address_filter_val,
+							    	city : city_filter_val,
+							    	state : state_filter_val
+							    },
+								success: function(data) {
+
+									console.log(data);
+
+									if(data != ""){
+										$('#table_contacts').html(data);
+										$('#table_contacts').DataTable({
+						                	"bDestroy" : true
+						                });
+									}else{
+										init_contacts_table.fnClearTable();
+									}
+								}
+							});
+						}
+
+					// ----- City
+						$("#city_filter").keyup(function() {
+							clearTimeout($.data(this, 'timer'));
+							var wait = setTimeout(city_filter_ajax, 3000);
+							$(this).data('timer', wait);
+						});
+
+						function city_filter_ajax() {
+						    var disposition_filter_val = $('#disposition_filter').val();
+		            		var list_filter_val = $('#list_filter').val();
+		            		var address_filter_val = $("#address_filter").val();
+		            		var city_filter_val = $("#city_filter").val();
+		            		var state_filter_val = $("#state_filter").val();
+
+						    $.ajax({
+							    url: "filter_contacts.php",
+							    type: 'POST',
+							    data: {
+							    	search_contacts : $('#search').val(),
+							    	disposition : disposition_filter_val,
+							    	list : list_filter_val,
+							    	address : address_filter_val,
+							    	city : city_filter_val,
+							    	state : state_filter_val
+							    },
+								success: function(data) {
+
+									console.log(data);
+
+									if(data != ""){
+										$('#table_contacts').html(data);
+										$('#table_contacts').DataTable({
+						                	"bDestroy" : true
+						                });
+									}else{
+										init_contacts_table.fnClearTable();
+									}
+								}
+							});
+						}
+
+					// ----- State
+						$("#state_filter").keyup(function() {
+							clearTimeout($.data(this, 'timer'));
+							var wait = setTimeout(state_filter_ajax, 3000);
+							$(this).data('timer', wait);
+						});
+
+						function state_filter_ajax() {
+						    var disposition_filter_val = $('#disposition_filter').val();
+		            		var list_filter_val = $('#list_filter').val();
+		            		var address_filter_val = $("#address_filter").val();
+		            		var city_filter_val = $("#city_filter").val();
+		            		var state_filter_val = $("#state_filter").val();
+
+						    $.ajax({
+							    url: "filter_contacts.php",
+							    type: 'POST',
+							    data: {
+							    	search_contacts : $('#search').val(),
+							    	disposition : disposition_filter_val,
+							    	list : list_filter_val,
+							    	address : address_filter_val,
+							    	city : city_filter_val,
+							    	state : state_filter_val
+							    },
+								success: function(data) {
+
+									console.log(data);
+
+									if(data != ""){
+										$('#table_contacts').html(data);
+										$('#table_contacts').DataTable({
+						                	"bDestroy" : true
+						                });
+									}else{
+										init_contacts_table.fnClearTable();
+									}
+								}
+							});
+						}
+
+				/****
+				** Call Recording filters
+				****/ 
+
+					// ---- DATETIME PICKER INITIALIZATION
+
+						$('#datetimepicker1').datetimepicker({
+						icons: {
+		                      time: 'fa fa-clock-o',
+		                      date: 'fa fa-calendar',
+		                      up: 'fa fa-chevron-up',
+		                      down: 'fa fa-chevron-down',
+		                      previous: 'fa fa-chevron-left',
+		                      next: 'fa fa-chevron-right',
+		                      today: 'fa fa-crosshairs',
+		                      clear: 'fa fa-trash'
+		                    }
+						});
+
+		                $('#datetimepicker2').datetimepicker({
+		                icons: {
+		                      time: 'fa fa-clock-o',
+		                      date: 'fa fa-calendar',
+		                      up: 'fa fa-chevron-up',
+		                      down: 'fa fa-chevron-down',
+		                      previous: 'fa fa-chevron-left',
+		                      next: 'fa fa-chevron-right',
+		                      today: 'fa fa-crosshairs',
+		                      clear: 'fa fa-trash'
+		                    }
+		                });
+
+	                // ---- DATE FILTERS
+
+		                $("#datetimepicker1").on("dp.change", function(e) {
+		                	var start_filterdate_val = $('#start_filterdate').val();
+		                	var end_filterdate_val = $('#end_filterdate').val();
+		                	var agent_filter_val = $('#agent_filter').val();
+
+		                	$.ajax({
+							    url: "filter_callrecs.php",
+							    type: 'POST',
+							    data: {
+							    	search_recordings : $('#search').val(),
+							    	start_filterdate : start_filterdate_val,
+							    	end_filterdate : end_filterdate_val,
+							    	agent_filter : agent_filter_val
+							    },
+								success: function(data) {
+									console.log(data);
+									if(data != ""){
+										$('#table_callrecordings').html(data);
+										$('#table_callrecordings').DataTable({
+						                	"bDestroy" : true
+						                });
+									}else{
+										init_callrecs_table.fnClearTable();
+									}
+								}
+							});
+						});
+
+		                $("#datetimepicker2").on("dp.change", function(e) {
+		                	var start_filterdate_val = $('#start_filterdate').val();
+		                	var end_filterdate_val = $('#end_filterdate').val();
+		                	var agent_filter_val = $('#agent_filter').val();
+		                	$.ajax({
+							    url: "filter_callrecs.php",
+							    type: 'POST',
+							    data: {
+							    	search_recordings : $('#search').val(),
+							    	start_filterdate : start_filterdate_val,
+							    	end_filterdate : end_filterdate_val,
+							    	agent_filter : agent_filter_val
+							    },
+								success: function(data) {
+									console.log(data);
+									if(data != ""){
+										$('#table_callrecordings').html(data);
+										$('#table_callrecordings').DataTable({
+						                	"bDestroy" : true
+						                });
+									}else{
+										init_callrecs_table.fnClearTable();
+									}
+								}
+							});
+						});
+
+		            // AGENT FILTER
+		            	$('#agent_filter').on('change', function() {
+		            		var agent_filter_val = $('#agent_filter').val();
+		            		var start_filterdate_val = $('#start_filterdate').val();
+		                	var end_filterdate_val = $('#end_filterdate').val();
+
+		            		$.ajax({
+							    url: "filter_callrecs.php",
+							    type: 'POST',
+							    data: {
+							    	search_recordings : $('#search').val(),
+							    	start_filterdate : start_filterdate_val,
+							    	end_filterdate : end_filterdate_val,
+							    	agent_filter : agent_filter_val
+							    },
+								success: function(data) {
+									$('#search_button').text("Search");
+	                				$('#search_button').prop("disabled", false)
+									console.log(data);
+									if(data != ""){
+								        
+										$('#table_callrecordings').html(data);
+										$('#table_callrecordings').DataTable({
+						                	"bDestroy" : true
+						                });
+									}else{
+										init_callrecs_table.fnClearTable();
+									}
+								}
+							});
+							
+						});
+
+	                /****
+	                ** Search function
+	                ****/
+		                $(document).on('click','#search_button',function() {
+		                //init_contacts_table.destroy();
+
+		                	if($('#search').val() == ""){
+		                		$('#search_button').prop("disabled", false);
+		                	}else{
+			                	$('#search_button').text("Searching...");
+			                	$('#search_button').prop("disabled", true);
+		                	}
+
+		                	// if contacts is checked
+		                	if($('#search_contacts').is(":checked")){
+								$.ajax({
+								    url: "search.php",
+								    type: 'POST',
+								    data: {
+								    	search_contacts : $('#search').val()
+								    },
+									success: function(data) {
+										$('#search_button').text("Search");
+		                				$('#search_button').prop("disabled", false)
+										console.log(data);
+										if(data != ""){
+									        
+											$('#table_contacts').html(data);
+											$('#table_contacts').DataTable({
+							                	"bDestroy" : true
+							                });
+										}else{
+											init_contacts_table.fnClearTable();
+										}
+									}
+								});
+			            	}
+
+			            	if($('#search_recordings').is(":checked")){
+			            		var start_filterdate_val = $('#start_filterdate').val();
+	                			var end_filterdate_val = $('#end_filterdate').val();
+	                			var agent_filter_val = $('#agent_filter').val();
+
+								$.ajax({
+								    url: "search.php",
+								    type: 'POST',
+								    data: {
+								    	search_recordings : $('#search').val(),
+								    	start_filterdate : start_filterdate_val,
+								    	end_filterdate : end_filterdate_val,
+								    	agent_filter : agent_filter_val
+								    },
+									success: function(data) {
+										$('#search_button').text("Search");
+		                				$('#search_button').prop("disabled", false)
+										console.log(data);
+										if(data != ""){
+											$('#table_callrecordings').html(data);
+											$('#table_callrecordings').DataTable({
+							                	"bDestroy" : true
+							                });
+										}else{
+											init_callrecs_table.fnClearTable();
+										}
+									}
+								});
+			            	}
+							
+						});
+				
+				/*****
+				** For playing Call Recordings
+				*****/
 				$('.play_audio').click(function(){
 					var audioFile = $(this).attr('data-location');
 					
