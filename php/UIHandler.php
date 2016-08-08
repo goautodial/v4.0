@@ -4964,6 +4964,8 @@ error_reporting(E_ERROR | E_PARSE);
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
 	$postfields["search"] = $search;
+	$postfields["goVarLimit"] = "500";
+	
 	$postfields["disposition_filter"] = $disposition_filter;
 	$postfields["list_filter"] = $list_filter;
 	$postfields["address_filter"] = $address_filter;
