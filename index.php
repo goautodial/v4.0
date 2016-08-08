@@ -47,7 +47,7 @@ try {
 //proper user redirects
 if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 	if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
-		header("location: editcustomer.php");
+		header("location: agent.php");
 	}
 }
 
@@ -89,9 +89,14 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 
 		<!-- javascript -->
         <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>    
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <script src="js/jquery.validate.min.js" type="text/javascript"></script>
+        
+            <!-- dashboard status boxes -->
+        <script src="js/bootstrap-editable.js" type="text/javascript"></script> 
+        <script src="theme_dashboard/moment/min/moment-with-locales.min.js" type="text/javascript"></script>
+        <script src="js/modules/now.js" type="text/javascript"></script>         
 	    <!-- ChartJS 1.0.1 -->
 	    <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
 		
@@ -149,30 +154,35 @@ $campaign = $ui->API_getListAllCampaigns();
 //var_dump($campaign);
 $ingroup = $ui->API_getInGroups();
 
-
+/*
+ * API for call statistics - Demian
+*/
+ 
+$dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
+$dropped_percentage = $ui->API_goGetDroppedPercentage();
+$calls_incoming_queue = $ui->API_goGetIncomingQueue();
+			
+//var_dump($dropped_calls_today);
+//die("dd");
 /*
  * get API data for chart from UIHandler.php
 */
 
-$callsperhour = $ui->API_getCallPerHour();
-//var_dump($callsperhour);
-	
+$callsperhour = $ui->API_goGetCallsPerHour();
+
 	$max = 0;
 	
 	$callsperhour = explode(";",trim($callsperhour, ';'));
 	 foreach ($callsperhour AS $temp) {
 	   $temp = explode("=",$temp);
-	   $results[$temp[0]] = $temp[1];
-	 }
+	   $results[$temp[0]] = $temp[1];   
+         }
 
-	$outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
-	
-	$inbound_calls = max($results["Hour8"],$results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
-	
+        $outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);		
+	$inbound_calls = max($results["Hour8"],$results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);	
 	$dropped_calls = max($results["Hour8d"],$results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
 	
 	$max = max($inbound_calls, $outbound_calls, $dropped_calls);
-
 	
 	if($max <= 5){
 		$max = 5;
@@ -180,16 +190,29 @@ $callsperhour = $ui->API_getCallPerHour();
 	if($outbound_calls == NULL || $outbound_calls == 0){
 		$outbound_calls = 0;
 	}
+        if($outbound_calls_today == NULL || $outbound_calls_today == 0){
+		$outbound_calls_today = 0;
+	}	
 	if($inbound_calls == NULL || $inbound_calls == 0){
 		$inbound_calls = 0;
 	}
-
+	if($calls_incoming_queue == NULL || $calls_incoming_queue == 0){
+		$calls_incoming_queue = 0;
+	}	
+	if($dropped_calls == NULL || $dropped_calls == 0){
+		$dropped_calls = 0;
+	}
+	if($dropped_calls_today == NULL || $dropped_calls_today == 0){
+		$dropped_calls_today = 0;
+	}	
+//print_r($answered_calls_today);
+//die("dd");	
 ?>		
-					<!-- Page title -->
-						<?php
-								$lh->translateText("Dashboard");
-						?>
-							<small class="ng-binding animated fadeInUpShort">Welcome to Goautodial  !</small>
+                        <!-- Page title -->
+                        <?php
+                                $lh->translateText("Dashboard");
+                        ?>
+                        <small class="ng-binding animated fadeInUpShort">Welcome to Goautodial  !</small>
 						
 					<!--
                     <ol class="breadcrumb">
@@ -241,29 +264,36 @@ $callsperhour = $ui->API_getCallPerHour();
 		                        <div class="col-xs-4 text-center bg-gray-dark pv-md animated fadeInUpShort">
 		                           	<em class="icon-hourglass fa-3x"></em>
 		                        </div>
-		                        <div class="col-xs-8 pv-lg" style="padding-top:10px !important;">
+                                                <div class="col-xs-8 pv-lg" style="padding-top:10px !important;">		                        
 		                        	<div class="h2 mt0"><span class="text-lg" id="refresh_totalagentspaused"></span></div>
 									<div class="text-sm">Agent(s) On Paused</div>
 		                        </div>
 		                    </div>
 		                </div>
               		</a>
-               </div>
-				<div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
 					<!-- date widget    -->
-					<div class="panel widget" style="height: 95px;">
-						<div class="row status-box">
-							<div class="col-xs-4 text-center bg-green pv-lg">
-							<!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
-								<div class="text-sm"><?php echo date("F", time());?></div>
-								<div class="h2 mt0"><?php echo date("d", time());?></div>
-							</div>
-							<div class="col-xs-8 pv-lg">
-								<div class="text-uppercase"><?php echo date("l", time());?></div>
-								<div class="h3 mt0"><?php echo date("h:i", time());?> 
-									<span class="text-muted text-sm"><?php echo date("A", time());?></span>
-								</div>
-							</div>
+                                <div class="panel widget" style="height: 95px;">
+                                        <div class="row status-box">
+                                                <div class="col-xs-4 text-center bg-green pv-lg">
+                                                <!-- See formats: https://docs.angularjs.org/api/ng/filter/date -->
+                                                <!-- <div class="text-sm"><?php echo date("F", time());?></div>
+						<div class="h2 mt0"><?php echo date("d", time());?></div> --> 
+                                                        <div data-now="" data-format="MMMM" class="text-sm"></div>
+                                                        <br>
+                                                        <div data-now="" data-format="D" class="h2 mt0"></div> 
+                                                </div>
+						<div class="col-xs-8 pv-lg">
+                                                <!-- <div class="text-uppercase"><?php echo date("l", time());?></div>
+						<div class="h3 mt0"><?php echo date("h:i", time());?> 
+						<span class="text-muted text-sm"><?php echo date("A", time());?></span>
+						</div> -->
+                                                        <div data-now="" data-format="dddd" class="text-uppercase"></div>
+                                                        <br>
+                                                        <div data-now="" data-format="h:mm" class="h2 mt0"></div>
+                                                        <div data-now="" data-format="a" class="text-muted text-sm"></div>
+                                                        </div>
 						</div>
 					</div>
 					<!-- END date widget    -->
@@ -357,27 +387,28 @@ $callsperhour = $ui->API_getCallPerHour();
 	                    </div>
 	                	-->
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info">
-	                		<em class="icon-phone fa-4x"></em>
+	                		<div class="h2 m0"><span class="text-lg" id="refresh_RingingCalls"></span></div>
+								<div class="text">Ringing Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0">32</div>
-								<div class="text-muted">Abandoned Calls</div>
+	                		<div class="h2 m0"><span class="text-lg" id="refresh_IncomingQueue"></span></div>
+								<div class="text-muted">Incoming Calls</div>
+	                	</div>	                	
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+	                		<div class="h2 m0"><span class="text-lg" id="refresh_AnsweredCalls"></span></div>
+								<div class="text-muted">Answered Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0">21</div>
-								<div class="text-muted">Answered < 20 sec</div>
-	                	</div>
+	                		<div class="h2 m0"><span class="text-lg" id="refresh_DroppedCalls"></span></div>
+								<div class="text-muted">Dropped Calls</div>
+	                	</div>	                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0">420</div>
-								<div class="text-muted" style="font-size: small;">Avg. Handling Time</div>
-	                	</div>
-	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><?php echo $inbound_calls;?></div>
-								<div class="text-muted">Inbound Calls Today</div>
-	                	</div>
+	                		<div class="h2 m0"><span class="text-lg" id="refresh_TotalCalls"></span></div>
+								<div class="text-muted" style="font-size: small;">Total Calls</div>
+	                	</div>                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes">
-	                		<div class="h2 m0"><?php echo $outbound_calls;?></div>
-								<div class="text-muted">Outbound Calls Today</div>
+	                		<div class="h2 m0"><?php echo $outbound_calls_today; ?></div>
+								<div class="text-muted">Outbound Calls</div>
 	                	</div>
 	                </div>
                 </div>
@@ -393,7 +424,7 @@ $callsperhour = $ui->API_getCallPerHour();
 						 </li>
 					  </ul>
 				<?php
-					$cluster = $ui->API_GetClusterStatus();
+					$cluster = $ui->API_goGetClusterStatus();
 				?>
 						<!-- Tab panes-->
 						<div class="tab-content p0 bg-white">
@@ -478,11 +509,11 @@ $callsperhour = $ui->API_getCallPerHour();
         <!--==== SERVICE LEVEL AGREEMENT ==== -->
 	            		<div class="panel panel-default">
 						   <div class="panel-body">
-								<div class="text-primary">Service Level Agreement</div>
+								<div class="text-primary">Dropped Percentage</div>
 								<center>
 									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 										<input type="text"
-										class="knob" value="95" data-width="150" data-height="150" data-padding="21px"
+										class="knob" value="<?php echo $dropped_percentage; ?>" data-width="150" data-height="150" data-padding="21px"
 										data-fgcolor="#0073b7" data-readonly="true" readonly="readonly"
 										style="
 											width: 49px;
@@ -510,8 +541,8 @@ $callsperhour = $ui->API_getCallPerHour();
 							   <div class="panel-footer">
 								  <p class="text-muted">
 									 <em class="fa fa-upload fa-fw"></em>
-									 <span>Service Level Agreement Percentage</span>
-									 <span class="text-dark">95%</span>
+									 <span>Total Dropped Percentage</span>
+									 <span class="text-dark"><?php echo $dropped_percentage; ?></span>
 								  </p>
 							   </div>
 							</div>
@@ -800,7 +831,7 @@ $callsperhour = $ui->API_getCallPerHour();
 								?>
 						    </select>
 						</span>
-					<!-- == TENANT == -->
+					<!-- == TENANT milo == -->
 						<span class="campaign_filter_agentmonitoring">
 							<!--
 							   <div class="btn-group">
@@ -825,7 +856,10 @@ $callsperhour = $ui->API_getCallPerHour();
 						</span>
 					</div>
 							<!-- END FILTER list    -->
-					<h4 class="modal-title" id="agent_monitoring">Agent Monitoring</h4>
+					<h4 class="modal-title" id="agent_monitoring">Monitoring</h4>
+					<?php
+						var_dump($_SESSION);
+					?>
 				
 				</div>
 				<div class="modal-body">
@@ -1027,6 +1061,7 @@ $callsperhour = $ui->API_getCallPerHour();
 <!--========== REFRESH DIVS ==============-->
 	<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>
 	<script src="js/load_statusboxes.js"></script>
+        <!-- <script src="jsloader.php"></script> -->
 	<script src="js/load_clusterstatus.js"></script>
 
 	<script>
@@ -1215,10 +1250,13 @@ $callsperhour = $ui->API_getCallPerHour();
 			load_LeadsinHopper();
 			load_TotalDialableLeads();
 		// ---- calls
-			load_Totalcalls();
-			load_RingingCall();
+			load_RingingCalls();
+			load_IncomingQueue();
+			load_AnsweredCalls();
+			load_DroppedCalls();
+			load_TotalCalls();
 			load_LiveOutbound();
-			
+                            
 	// ---- clusterstatus table
 		// ---- server 
 			load_server_id(); 
@@ -1249,8 +1287,11 @@ $callsperhour = $ui->API_getCallPerHour();
 		setInterval(load_LeadsinHopper,5000);
 		setInterval(load_TotalDialableLeads,5000);
 		
-		setInterval(load_Totalcalls,5000);
-		setInterval(load_RingingCall,5000);
+		setInterval(load_RingingCalls,5000);
+		setInterval(load_IncomingQueue,5000);
+		setInterval(load_AnsweredCalls,5000);
+		setInterval(load_DroppedCalls,5000);
+		setInterval(load_TotalCalls,5000);
 		setInterval(load_LiveOutbound,5000);
 		
 		// ... cluster status table ...
@@ -1276,7 +1317,7 @@ $callsperhour = $ui->API_getCallPerHour();
    <script src="theme_dashboard/js/screenfull/dist/screenfull.js"></script>
    <!-- LOCALIZE-->
    <script src="theme_dashboard/js/jquery-localize-i18n/dist/jquery.localize.js"></script>
-   <!-- RTL demo--
+   <!-- RTL demo-->
    <script src="theme_dashboard/js/demo/demo-rtl.js"></script>
    <!-- =============== PAGE VENDOR SCRIPTS ===============-->
    <!-- SPARKLINE-->

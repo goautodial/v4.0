@@ -71,6 +71,10 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
  $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
  									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
 
+$avatarHash = md5( strtolower( trim( $user->getUserId() ) ) );
+$avatarURL50 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=50&default=wavatar";
+$avatarURL96 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=wavatar";
+$custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=mm";
 ?>
 
 <html>
@@ -118,6 +122,8 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 		<script src="theme_dashboard/slimScroll/jquery.slimscroll.min.js"></script>
 		<!-- SWEETALERT-->
 		<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+		<!-- MD5 HASH-->
+		<script src="js/jquery.md5.js" type="text/javascript"></script>
 
   		<!-- Theme style -->
   		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
@@ -126,7 +132,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
         <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
-			$(window).ready(function() {
+			$(window).load(function() {
 				$(".preloader").fadeOut("slow", function() {
 					if (use_webrtc) {
 						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000, htmlAllowed: true});
@@ -182,7 +188,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 				-webkit-box-sizing: border-box;
 				   -moz-box-sizing: border-box;
 						box-sizing: border-box;
-				padding-left: 30px;
+				padding-left: 0px;
 			}
 			
 			.form-control[disabled], fieldset[disabled] .form-control{
@@ -238,7 +244,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyAgentHeader($user); ?>
             <!-- Left side column. contains the logo and sidebar -->
-			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
+			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $avatarURL50); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="content-wrapper">
@@ -259,11 +265,11 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 								<div class="card-heading bg-inverse">
 									<div class="row">
 										<div class="col-md-2 text-center visible-md visible-lg">
-											<img src="<?php echo $user->getUserAvatar();?>" alt="Image" class="media-object img-circle thumb96 pull-left">
+											<img src="<?php echo $custDefaultAvatar;?>" id="cust_avatar" alt="Image" class="media-object img-circle thumb96 pull-left">
 										</div>
 										<div class="col-md-10">
-						                <h4><?php echo $user->getUserName();?></h4>
-						                <p class="ng-binding animated fadeInUpShort">Agent</p>
+						                <h4><span id="cust_full_name"></span></h4>
+						                <p class="ng-binding animated fadeInUpShort"><span id="cust_number"></span></p>
 						            </div>
 									</div>
 								</div>
@@ -276,19 +282,23 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 									  <!-- Nav task panel tabs-->
 										 <li role="presentation" class="active">
 											<a href="#profile" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-											   Profile</a>
+												<span class="fa fa-user hidden"></span>
+												<?=$lh->translationFor('contact_information')?></a>
 										 </li>
 										 <li role="presentation">
 											<a href="#comments" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-											   Comments</a>
+												<span class="fa fa-comments-o hidden"></span>
+											    <?=$lh->translationFor('comments')?></a>
 										 </li>
 										 <li role="presentation">
 											<a href="#activity" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-											   Activity</a>
+												<span class="fa fa-calendar hidden"></span>
+												<?=$lh->translationFor('activity')?></a>
 										 </li>
 										 <li role="presentation">
 											<a href="#scripts" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-											   Script</a>
+												<span class="fa fa-file-text-o hidden"></span>
+												<?=$lh->translationFor('script')?></a>
 										 </li>
 									  </ul>
 									</div>
@@ -414,71 +424,71 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 												</div>
 												</form>
 												
-												<!-- phone number & alternative phone number -->
-												<div class="row">
-													<div class="col-sm-6">
-														<div class="mda-form-group label-floating">
-															<span id="phone_numberDISP" class="hidden"></span>
-															<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
-															<input id="phone_number" name="phone_number" type="number" min="0" width="auto" value="<?php echo $phone_number;?>"
-																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled required>
-															<label for="phone_number">Phone Number</label>
-															<!--
-															<span class="mda-input-group-addon">
-																<em class="fa fa-phone fa-lg"></em>
-															</span>-->
-														</div>
-													</div>
-													<div class="col-sm-6">
-														<div class="mda-form-group label-floating">
-															<input id="alt_phone" name="alt_phone" type="number" min="0" width="100" value="<?php echo $alt_phone;?>"
-																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-															<label for="alt_phone">Alternative Phone Number</label>
-														</div>
-													</div>
-												</div>
-												<!-- /.phonenumber & alt phonenumber -->
-												
-												<div class="mda-form-group label-floating">
-													<input id="address1" name="address1" type="text" width="auto" value="<?php echo $address1;?>"
-														class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-													<label for="address1">Address</label> 
-													<!--<span class="mda-input-group-addon">
-														<em class="fa fa-home fa-lg"></em>
-													</span>-->
-												</div>
-												
-												<div class="mda-form-group label-floating">
-													<input id="address2" name="address2" type="text" value="<?php echo $address2;?>"
-														class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-													<label for="address2">Address 2</label>
-												</div>
-												
-												<div class="row">
-													<div class="col-sm-4">
-														<div class="mda-form-group label-floating">
-															<input id="city" name="city" type="text" value="<?php echo $city;?>"
-																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-															<label for="city">City</label>
-														</div>
-													</div>
-													<div class="col-sm-4">
-														<div class="mda-form-group label-floating">
-															<input id="state" name="state" type="text" value="<?php echo $state;?>"
-																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-															<label for="state">State</label>
-														</div>
-													</div>
-													<div class="col-sm-4">
-														<div class="mda-form-group label-floating">
-															<input id="postal_code" name="postal_code" type="text" value="<?php echo $postal_code;?>"
-																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-															<label for="postal_code">Postal Code</label>
-														</div>
-													</div>
-												</div><!-- /.city,state,postalcode -->
-												
 												<form id="contact_details_form" class="formMain">
+													<!-- phone number & alternative phone number -->
+													<div class="row">
+														<div class="col-sm-6">
+															<div class="mda-form-group label-floating">
+																<span id="phone_numberDISP" class="hidden"></span>
+																<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
+																<input id="phone_number" name="phone_number" type="number" min="0" width="auto" value="<?php echo $phone_number;?>"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled required>
+																<label for="phone_number">Phone Number</label>
+																<!--
+																<span class="mda-input-group-addon">
+																	<em class="fa fa-phone fa-lg"></em>
+																</span>-->
+															</div>
+														</div>
+														<div class="col-sm-6">
+															<div class="mda-form-group label-floating">
+																<input id="alt_phone" name="alt_phone" type="number" min="0" width="100" value="<?php echo $alt_phone;?>"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="alt_phone">Alternative Phone Number</label>
+															</div>
+														</div>
+													</div>
+													<!-- /.phonenumber & alt phonenumber -->
+													
+													<div class="mda-form-group label-floating">
+														<input id="address1" name="address1" type="text" width="auto" value="<?php echo $address1;?>"
+															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+														<label for="address1">Address</label> 
+														<!--<span class="mda-input-group-addon">
+															<em class="fa fa-home fa-lg"></em>
+														</span>-->
+													</div>
+													
+													<div class="mda-form-group label-floating">
+														<input id="address2" name="address2" type="text" value="<?php echo $address2;?>"
+															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+														<label for="address2">Address 2</label>
+													</div>
+													
+													<div class="row">
+														<div class="col-sm-4">
+															<div class="mda-form-group label-floating">
+																<input id="city" name="city" type="text" value="<?php echo $city;?>"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="city">City</label>
+															</div>
+														</div>
+														<div class="col-sm-4">
+															<div class="mda-form-group label-floating">
+																<input id="state" name="state" type="text" value="<?php echo $state;?>"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="state">State</label>
+															</div>
+														</div>
+														<div class="col-sm-4">
+															<div class="mda-form-group label-floating">
+																<input id="postal_code" name="postal_code" type="text" value="<?php echo $postal_code;?>"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="postal_code">Postal Code</label>
+															</div>
+														</div>
+													</div><!-- /.city,state,postalcode -->
+												
 													<div class="mda-form-group label-floating">
 														<input id="country" name="country" type="text" value="<?php echo $country;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
@@ -568,7 +578,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 										<div id="comments" role="tabpanel" class="tab-pane">
 											<div class="row">
 												<div class="col-sm-12">
-													<h4>Comments
+													<h4><!--Comments-->
 														<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
 													</h4>
 												
@@ -577,12 +587,9 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 															<p style="padding-right:0px;padding-top: 20px;">Comments:</p> 
 															<button id="ViewCommentButton" onClick="ViewComments('ON');" value="-History-" class="hidden"></button>
 														</div>
-														<div class="mda-form-group mda-input-group label-floating" style="float: left; width:100%;">
+														<div class="mda-form-group label-floating" style="float: left; width:100%;">
 															<textarea rows="5" id="comments" name="comments" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
 															<label for="comments">Comments</label>
-															<span class="mda-input-group-addon">
-																<em class="fa fa-commenting-o fa-lg"></em>
-															</span>
 														</div>
 														<div style="clear:both;"></div>
 														<br>
@@ -595,12 +602,13 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 										<div id="scripts" role="tabpanel" class="tab-pane">
 											<div class="row">
 												<div class="col-sm-12">
-													<fieldset>
-														<h4>Scripts</h4>
-														<p>
-															<br/>- - - Content - - -<br/>
+													<fieldset style="padding-bottom: 5px; margin-bottom: 5px;">
+														<h4>
+															<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="reload-script" style="padding: 5px;">Reload Script</a>
+														</h4>
+														<div id="ScriptContents" style="min-height: 100px; border: dashed 1px #c0c0c0; padding: 20px 5px 5px;">
 															<?php echo $output_script;?>
-														</p>
+														</div>
 													</fieldset><!-- /.fieldset -->
 												</div><!-- /.col-sm-12 -->
 											</div><!-- /.row -->
@@ -638,16 +646,15 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 						        </div><!-- /.modal-dialog -->
 						    </div><!-- /.modal -->
 
-
-
-							<div id="popup-hotkeys" class="panel clearfix">
-								<div class="panel-heading"><b>AVAILABLE HOT KEYS</b></div>
-								<div class="panel-body">No available hotkeys for this campaign.</div>
-								<div class="panel-footer clearfix">
-									<div class="text-danger sidecolor" style="padding-right: 5px; background-color: inherit;">
-										<small><b>NOTE:</b> Pressing the hot keys above will hangup automatically, if you're currently in a call.</small>
-									</div>
-								</div>
+						</div>
+					</div>
+					
+					<div id="popup-hotkeys" class="panel clearfix">
+						<div class="panel-heading"><b><?=$lh->translationFor('available_hotkeys')?></b></div>
+						<div class="panel-body"><?=$lh->translationFor('no_available_hotkeys')?></div>
+						<div class="panel-footer clearfix">
+							<div class="text-danger sidecolor" style="padding-right: 5px; background-color: inherit;">
+								<small><b><?=$lh->translationFor('note')?>:</b> <?=$lh->translationFor('hotkeys_note')?></small>
 							</div>
 						</div>
 					</div>
@@ -712,7 +719,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 			</li>
         </ul>
 		
-        <ul class="control-sidebar-menu" id="go_agent_login" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px; text-align: center;">
+        <ul class="control-sidebar-menu" id="go_agent_login" style="width: 100%; margin: 25px auto 15px; text-align: center;">
 			
         </ul>
 		
@@ -744,7 +751,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 			<li>
 				<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px;">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<img src="<?=$user->getUserAvatar()?>" width="120" height="auto" style="border-color:transparent;" alt="User Image" />
+						<img src="<?=$avatarURL96?>" class="img-circle thumb96" height="auto" style="border-color:transparent; margin: 10px;" alt="User Image" />
 						<p style="color:white;"><?=$user->getUserName()?><br><small><?=$lh->translationFor("nice_to_see_you_again")?></small></p>
 					</a>
 				</div>
@@ -791,7 +798,7 @@ $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 			$(document).ready(function() {
 				$("#edit-profile").click(function(){
 				    $('.input-disabled').prop('disabled', false);
-				    $('.hide_div').show();
+				    //$('.hide_div').show();
 				    $("input:required, select:required").addClass("required_div");
 				    $('#edit-profile').hide();
 				    

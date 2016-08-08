@@ -1,9 +1,42 @@
-/*
-* Agents status box 
-*/
+<?php
+########################################################################################################
+####  Name:             	gadv4_jsloader.php                                                  ####
+####  Version:          	0.9                                                            	    ####
+####  Copyright:        	GOAutoDial Inc. (c) 2011-2016 - GoAutoDial Open Source Community    ####
+####  Written by:	        Demian Lizandro A. Biscocho                                         ####
+####  License:          	AGPLv3                                                              ####
+########################################################################################################
+
+require_once('./php/CRMDefaults.php');
+require_once('./php/UIHandler.php');
+require_once('./php/DbHandler.php');
+require_once('./php/LanguageHandler.php');
+require('./php/Session.php');
+
+## initialize structures
+$ui = \creamy\UIHandler::getInstance();
+$lh = \creamy\LanguageHandler::getInstance();
+$user = \creamy\CreamyUser::currentUser();
+
+?>
+
+<script type="text/javascript">
+
+<?php
+
+$calls_ringing = $ui->API_goGetRingingCalls();
+$answered_calls = $ui->API_goGetTotalAnsweredCalls();
+$total_calls_today = $ui->API_goGetTotalCalls();
+$dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
+$calls_per_hour = $ui->API_goGetCallsPerHour();
+$total_agents_call = $ui->API_goGetTotalAgentsCall();
+//var_dump($total_agents_call);    
+//die(dd);
+?>
+
 function load_totalagentscall(){
    $.ajax({
-     url: "./php/APIs/API_GetTotalAgentsCall.php",
+     url: "<?php echo $total_agents_call; ?>",
      cache: false,
      success: function(data){
         $("#refresh_totalagentscall").html(data);
@@ -97,52 +130,26 @@ function load_TotalDialableLeads(){
 /*
 * Calls status box 
 */
-function load_TotalCalls(){
+function load_Totalcalls(){
    $.ajax({
-     url: "./php/APIs/API_GetTotalCalls.php",
+     url: "./php/APIs/API_getTotalcalls.php",
      cache: false,
      success: function(data){
-        $("#refresh_TotalCalls").html(data);
+        $("#refresh_Totalcalls").html(data);
      } 
    });
 }
 
-function load_RingingCalls(){
+function load_RingingCall(){
    $.ajax({
-     url: "./php/APIs/API_GetTotalRingingCalls.php",
+     url: "./php/APIs/API_GetRingingCall.php",
      cache: false,
      success: function(data){
-        $("#refresh_RingingCalls").html(data);
+        $("#refresh_RingingCall").html(data);
      } 
    });
 }
-function load_IncomingQueue(){
-   $.ajax({
-     url: "./php/APIs/API_GetIncomingQueue.php",
-     cache: false,
-     success: function(data){
-        $("#refresh_IncomingQueue").html(data);
-     } 
-   });
-}
-function load_AnsweredCalls(){
-   $.ajax({
-     url: "./php/APIs/API_GetTotalAnsweredCalls.php",
-     cache: false,
-     success: function(data){
-        $("#refresh_AnsweredCalls").html(data);
-     } 
-   });
-}
-function load_DroppedCalls(){
-   $.ajax({
-     url: "./php/APIs/API_GetTotalDroppedCalls.php",
-     cache: false,
-     success: function(data){
-        $("#refresh_DroppedCalls").html(data);
-     } 
-   });
-}
+
 function load_LiveOutbound(){
    $.ajax({
      url: "./php/APIs/API_GetLiveOutbound.php",
@@ -152,3 +159,4 @@ function load_LiveOutbound(){
      } 
    });
 }
+</script>

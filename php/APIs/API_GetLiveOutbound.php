@@ -30,7 +30,7 @@ foreach ($data AS $temp) {
 if ($results["result"]=="success") {
    # Result was OK!
    //var_dump($results); #to see the returned arrays.
-         echo $results["outbound"];
+         echo number_format($results["getLiveOutbound"]);
 } else {
    # An error occured
    echo 0;

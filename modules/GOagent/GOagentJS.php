@@ -313,7 +313,9 @@ $(document).ready(function() {
                 //}
                 
                 if (live_customer_call < 1) {
-                    $("#edit-profile, #for_dtmf").addClass('hidden');
+                    $("#for_dtmf").addClass('hidden');
+                    $('#edit-profile').hide();
+                    $("#reload-script").hide();
                     $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     //toggleStatus('NOLIVE');
@@ -464,14 +466,17 @@ $(document).ready(function() {
                         live_call_seconds++;
                         $(".formMain input[name='seconds']").val(live_call_seconds);
                         $("#SecondsDISP").html(live_call_seconds);
-                        $("#edit-profile, #for_dtmf").removeClass('hidden');
+                        $("#for_dtmf").removeClass('hidden');
+                        $('#edit-profile').show();
+                        $("#reload-script").show();
                         $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
                         $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
                     }
                     if (XD_live_customer_call == 1) {
                         XD_live_call_seconds++;
                         $("#xferlength").val(XD_live_call_seconds);
-                        $("#edit-profile").removeClass('hidden');
+                        $('#edit-profile').show();
+                        $("#reload-script").show();
                     }
                     if (customerparked == 1) {
                         customerparkedcounter++;
@@ -640,9 +645,9 @@ $(document).ready(function() {
             //<?=GO_AGENT_DIRECTORY?>/jsSIP.php
             //var GOagentWebRTC = window.open('http://google.com','GOagentWebRTC', 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,left=100000, top=100000, width=10, height=10');
             //opener = GOagentWebRTC;
-            console.log('a new window is opened', opener);
+            //console.log('a new window is opened', opener);
         } else {
-            console.log('window is still open');
+            //console.log('window is still open');
         }
     
         $("aside.control-sidebar").css({
@@ -652,9 +657,26 @@ $(document).ready(function() {
     
         var isMobile = false; //initiate as false
         // device detection
-        if (parseInt($("body").innerHeight()) < 768) {
+        if (parseInt($("body").innerWidth()) < 768) {
             isMobile = true;
         }
+        
+        $(window).resize(function() {
+            if (parseInt($("body").innerWidth()) < 768) {
+                isMobile = true;
+                paddingHB = 50;
+            } else {
+                isMobile = false;
+                paddingHB = 100;
+            }
+            
+            var navConBar = $("header.main-header").innerHeight();
+            var minusThis = (parseInt(navConBar) + parseInt(paddingHB));
+            var newHeight = parseInt($("body").innerHeight()) - minusThis;
+            $("aside.control-sidebar div.tab-content").css({
+                'height': newHeight
+            });
+        });
         
         $("[data-toggle='control-sidebar']").on('click', function() {
             var sideBar = '230px';
@@ -848,13 +870,13 @@ $(document).ready(function() {
     
     $("#go_agent_manualdial").append("<li><div class='input-group-vertical center-block'><input type='text' maxlength='18' name='MDPhonENumbeR' id='MDPhonENumbeR' class='form-control col-xs-12 phonenumbers-only' value='' placeholder='<?=$lh->translationFor('enter_phone_number')?>' onkeyup='activateLinks();' onchange='activateLinks();' style='padding: 3px 2px; color: #222; height: 30px;' aria-label='...' /></div><div class='btn-group btn-block' rose='group'><button type='button' class='btn col-xs-10 btn-success btn-raised' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></button><button type='button' class='btn col-xs-2 btn-success dropdown-toggle' data-toggle='dropdown' id='manual-dial-dropdown'>&nbsp;<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span>&nbsp;</button><ul class='dropdown-menu col-lg-12' role='menu'><li><a href='javascript:void(0)' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></a></li><li><a href='javascript:void(0)' id='manual-dial-preview'><?=$lh->translationFor('preview_call')?></a></li></ul></div><input type='hidden' name='MDDiaLCodE' id='MDDiaLCodE' class='digits-only' value='1' /><input type='hidden' name='MDPhonENumbeRHiddeN' id='MDPhonENumbeRHiddeN' value='' /><input type='hidden' name='MDLeadID' id='MDLeadID' value='' /><input type='hidden' name='MDType' id='MDType' value='' /><input type='checkbox' name='LeadLookUP' id='LeadLookUP' size='1' value='0' class='hidden' disabled /><input type='hidden' size='24' maxlength='20' name='MDDiaLOverridE' id='MDDiaLOverridE' class='cust_form' value='' /></li>");
 
-    $("#go_agent_login").append("<li><button id='btnLogMeIn' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-in'></i> <?=$lh->translationFor('login_on_phone')?></button></li>");
+    $("#go_agent_login").append("<li><button id='btnLogMeIn' class='btn btn-warning btn-lg center-block' style='margin-top: 2px;'><i class='fa fa-sign-in'></i> <?=$lh->translationFor('login_on_phone')?></button></li>");
     $("#go_agent_logout").append("<li><button id='btnLogMeOut' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-out'></i> <?=$lh->translationFor('logout_from_phone')?></button></li>");
     
-    $("div.navbar-custom-menu").prepend("<span id='server_date' class='hidden-xs pull-left' style='color: #fff; line-height: 21px; height: 50px; padding: 14px 20px;'></span>");
+    $("div.navbar-custom-menu").prepend("<span id='server_date' class='hidden-xs no-selection pull-left' style='color: #fff; line-height: 21px; height: 50px; padding: 14px 20px;'></span>");
     
     var paddingHB = 100;
-    var navConBar = $("ul.control-sidebar-tabs").innerHeight();
+    var navConBar = $("header.main-header").innerHeight();
     var minusThis = (parseInt(navConBar) + parseInt(paddingHB));
     var newHeight = parseInt($("body").innerHeight()) - minusThis;
     $("aside.control-sidebar div.tab-content").css({
@@ -1222,7 +1244,7 @@ $(document).ready(function() {
         DispoSelectSubmit();
     });
     
-    $("#btn-dispo-reset").click(function() {
+    $("[id^='btn-dispo-reset-']").click(function() {
         DispoSelectContent_create('', 'ReSET');
     });
     
@@ -1284,6 +1306,81 @@ $(document).ready(function() {
     });
     
     $("#popup-hotkeys").drags();
+    
+    $("[data-toggle='control-sidebar']").on('click', function() {
+        var $isOpen = $("aside.control-sidebar").hasClass("control-sidebar-open");
+        var options = {};
+        if ($isOpen) {
+            options = {
+                'margin-right': '0'
+            };
+            if (parseInt($("body").innerWidth()) < 768) {
+                options['margin-left'] = '0';
+            }
+        } else {
+            options = {
+                'margin-right': '230px'
+            };
+            if (parseInt($("body").innerWidth()) < 768) {
+                options['margin-left'] = '-230px';
+            }
+        }
+        $("aside.content-wrapper").css(options);
+    });
+    
+    $("#reload-script").click(function() {
+        LoadScriptContents();
+    });
+    
+    // Hijack links on left menu
+    $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks)").on('click', function(e) {
+        e.preventDefault();
+        var thisLink = $(this).attr('href');
+        var hash = '';
+        if (/customerslist/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('contacts')?>");
+            hash = 'contacts';
+        } else if (/agent/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('contact_information')?>");
+        } else if (/edituser/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('edit_profile')?>");
+            hash = 'editprofile';
+        } else if (/events/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('events')?>");
+            hash = 'events';
+        } else if (/messages/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('messages')?>");
+            hash = 'messages';
+        } else if (/notifications/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('notifications')?>");
+            hash = 'notifications';
+        } else if (/tasks/g.test(thisLink)) {
+            $(".content-heading").html("<?=$lh->translationFor('tasks')?>");
+            hash = 'tasks';
+        }
+        
+        if (hash.length > 0) {
+            window.location.hash = hash;
+            
+            var thisContents = $("#loaded-contents div[id^='contents-']");
+            $.each(thisContents, function() {
+                var contentID = $(this).prop('id').replace('contents-', '');
+                if (contentID == hash) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            
+            $("#cust_info").hide();
+            $("#loaded-contents").show();
+        } else {
+            history.pushState('', document.title, window.location.pathname);
+            
+            $("#cust_info").show();
+            $("#loaded-contents").hide();
+        }
+    });
 });
 
 function btnLogMeIn () {
@@ -1379,8 +1476,13 @@ function sendLogout (logMeOut) {
                     $("#popup-hotkeys").fadeOut("fast");
                 }
                 
+                $("#ScriptContents").html('');
+                $("#reload-script").hide();
+                
                 //alert('SUCCESS: You have been logged out of the dialer.');
-                $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; You have logged out from the dialer.", timeout: 5000, htmlAllowed: true});
+                if (!!$.prototype.functionName) {
+                    $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; You have logged out from the dialer.", timeout: 5000, htmlAllowed: true});
+                }
             } else {
                 refresh_interval = 1000;
                 swal({
@@ -2227,7 +2329,7 @@ function CheckForIncoming () {
             var VDCL_group_color                        = this_VDIC_data.group_color;
             var VDCL_fronter_display                    = this_VDIC_data.fronter_display;
                 VDCL_group_id                           = this_VDIC_data.channel_group;
-                Call_Script_id                          = this_VDIC_data.ingroup_script;
+                Call_Script_ID                          = this_VDIC_data.ingroup_script;
                 Call_Auto_Launch                        = this_VDIC_data.get_call_launch;
                 Call_XC_a_DTMF                          = this_VDIC_data.xferconf_a_dtmf;
                 Call_XC_a_Number                        = this_VDIC_data.xferconf_a_number;
@@ -2407,8 +2509,9 @@ function CheckForIncoming () {
             var callnum = dialed_number;
             var dial_display_number = phone_number_format(callnum);
             
-            //$("#cust-name").html(this_VDIC_data.first_name+" "+this_VDIC_data.last_name);
-            //$("#cust-phone").html(phone_number_format(dispnum));
+            $("#cust_full_name").html(this_VDIC_data.first_name+" "+this_VDIC_data.middle_initial+" "+this_VDIC_data.last_name);
+            $("#cust_number").html(phone_number_format(dispnum));
+            $("#cust_avatar").prop('src', goGetAvatar(dispnum));
 
             var status_display_content = '';
             if (status_display_CALLID > 0) {status_display_content = status_display_content + "<br><b><?=$lh->translationFor('uid')?>:</b> " + LastCID;}
@@ -2762,7 +2865,7 @@ function RefreshCallsInQueue(CQcount) {
                 if (result.result == 'success') {
                     $('#callsinqueuelist').html('');
                 } else {
-                    if (result.result == 'error') {
+                    if (result.result == 'error' && (!!$.prototype.snackbar)) {
                         $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
                     }
                 }
@@ -3556,7 +3659,7 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
             dispo_HTML = dispo_HTML + "    });";
             dispo_HTML = dispo_HTML + "});";
             dispo_HTML = dispo_HTML + "</script>";
-            dispo_HTML = dispo_HTML + "<table cellpadding='5' cellspacing='5' width='500px' style='-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; margin: 0 auto;'><tr><td colspan='2'>&nbsp; <b><?=$lh->translationFor('call_dispositions')?></b><br><br></td></tr><tr><td bgcolor='#FFFFFF' height='300px' width='240px' valign='top' class='DispoSelectA'>";
+            dispo_HTML = dispo_HTML + "<table cellpadding='5' cellspacing='5' width='100%' style='-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; margin: 0 auto;'><tr><td colspan='2'>&nbsp; <b><?=$lh->translationFor('call_dispositions')?></b><br><br></td></tr><tr><td bgcolor='#FFFFFF' height='300px' width='auto' valign='top' class='DispoSelectA' style='white-space: nowrap;'>";
         var loop_ct = 0;
         if (hide_dispo_list < 1) {
             while (loop_ct < statuses_count) {
@@ -3567,12 +3670,12 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
                     {CBflag = '';}
                 //console.log(statuses[loop_ct], taskDSgrp);
                 if (taskDSgrp == statuses[loop_ct]) {
-                    dispo_HTML = dispo_HTML + "<span id='dispo-sel-"+statuses[loop_ct]+"' style='background-color:#99FF99;cursor:pointer;color:#77a30a;'>&nbsp; " + statuses[loop_ct] + " - " + statuses_names[loop_ct] + " " + CBflag + " &nbsp;</span><br /><br />";
+                    dispo_HTML = dispo_HTML + "<span id='dispo-sel-"+statuses[loop_ct]+"' style='background-color:#99FF99;cursor:pointer;color:#77a30a;'>&nbsp; <span class='hidden-xs'>" + statuses[loop_ct] + " - " + statuses_names[loop_ct] + "</span><span class='hidden-sm hidden-md hidden-lg'>" + statuses_names[loop_ct] + "</span> " + CBflag + " &nbsp;</span><br /><br />";
                 } else {
-                    dispo_HTML = dispo_HTML + "<span id='dispo-add-"+statuses[loop_ct]+"' style='cursor:pointer;color:#77a30a;'>&nbsp; " + statuses[loop_ct] + " - " + statuses_names[loop_ct] + "</span> " + CBflag + " &nbsp;<br /><br />";
+                    dispo_HTML = dispo_HTML + "<span id='dispo-add-"+statuses[loop_ct]+"' style='cursor:pointer;color:#77a30a;'>&nbsp; <span class='hidden-xs'>" + statuses[loop_ct] + " - " + statuses_names[loop_ct] + "</span><span class='hidden-sm hidden-md hidden-lg'>" + statuses_names[loop_ct] + "</span></span> " + CBflag + " &nbsp;<br /><br />";
                 }
                 if (loop_ct == statuses_ct_half) 
-                    {dispo_HTML = dispo_HTML + "</td><td bgcolor='#FFFFFF' height='300px' width='240px' valign='top' class='DispoSelectB'>";}
+                    {dispo_HTML = dispo_HTML + "</td><td bgcolor='#FFFFFF' height='300px' width='auto' valign='top' class='DispoSelectB' style='white-space: nowrap;'>";}
                 loop_ct++;
             }
         } else {
@@ -3678,10 +3781,12 @@ function DispoSelectSubmit() {
                     }
                 }
                 
-                if (result.result == 'success') {
-                    $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
-                } else {
-                    $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
+                if (!!$.prototype.snackbar) {
+                    if (result.result == 'success') {
+                        $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
+                    } else {
+                        $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
+                    }
                 }
     
                 waiting_on_dispo = 0;
@@ -3789,6 +3894,11 @@ function DispoSelectSubmit() {
             nocall_dial_flag = 'DISABLED';
             
             $("#SecondsDISP").html('0');
+            
+            $("#cust_full_name").html('');
+            $("#cust_number").html('');
+            $("#cust_avatar").prop('src', goGetAvatar());
+            console.log(goGetAvatar());
     
             //CLEAR ALL SUB FORM VARIABLES
             //$("#subForm").find(':input').each(function()
@@ -4015,7 +4125,9 @@ function ManualDialOnly(taskaltnum) {
     })
     .done(function (result) {
         if (result.result == 'error') {
-            $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; "+result.message+".", timeout: 5000, htmlAllowed: true});
+            if (!!$.prototype.snackbar) {
+                $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; "+result.message+".", timeout: 5000, htmlAllowed: true});
+            }
         } else {
             MDnextCID =		result.data.callerid;
             LastCallCID =	result.data.callerid;
@@ -4512,6 +4624,12 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     
                     $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
                     
+            
+                    $("#cust_full_name").html(cust_first_name+" "+cust_middle_initial+" "+cust_last_name);
+                    $("#cust_number").html(phone_number_format(dispnum));
+                    $("#cust_avatar").prop('src', goGetAvatar(dispnum));
+                    console.log(goGetAvatar(dispnum));
+                    
                     LeadDispo = '';
                     
                     VDIC_web_form_address = web_form_address
@@ -4576,7 +4694,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                 delayed_script_load = 'YES';
                                 //RefresHScript('CLEAR');
                             } else {
-                                //load_script_contents();
+                                LoadScriptContents();
                             }
                         }
 
@@ -5356,6 +5474,47 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
 
 
 // ################################################################################
+// pull the script contents sending the webform variables to the script display script
+function LoadScriptContents() {
+    var new_script_content = null;
+    var postData = {
+        goAction: 'goGetScriptContents',
+        goServerIP: server_ip,
+        goSessionName: session_name,
+        goUser: uName,
+        goPass: uPass,
+        goScrollDIV: 1,
+        responsetype: 'json'
+    };
+    
+    var new_vars = {};
+    var new_web_vars = web_form_vars.replace(/^\?/g, '');
+    var web_vars_arr = new_web_vars.split('&');
+    $.each(web_vars_arr, function(idx, val) {
+        if (val.length > 0) {
+            var vars_arr = val.split('=');
+            new_vars[vars_arr[0]] = vars_arr[1];
+        }
+    });
+    
+    postData = $.extend(postData, new_vars);
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json"
+    })
+    .done(function (result) {
+        if (result.result == 'success') {
+            new_script_content = result.content;
+            $("#ScriptContents").html(new_script_content);
+        }
+    });
+}
+
+
+// ################################################################################
 // Finish the wrapup timer early
 function TimerActionRun(taskaction, taskdialalert) {
     var next_action = 0;
@@ -5445,44 +5604,16 @@ function NoneInSession() {
     //still on development
 }
 
-function alertBox(title, text, type) {
-    var options = {};
-    switch(type) {
-        case "warning":
-            options = {
-                title: title,
-                text: text,
-                type: 'warning'
-            };
-            break;
-        
-        case "success":
-            options = {
-                title: title,
-                text: text,
-                type: 'success'
-            };
-            break;
-        
-        case "confirm":
-            options = {
-                title: title,
-                text: text,
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#DD6B55',
-                confirmButtonText: '<?=$lh->translationFor('okay')?>'
-            };
-            break;
-        
-        default:
-            options = {
-                title: title,
-                text: text
-            };
-            break;
+function goGetAvatar(account) {
+    var avatarType = 'wavatar';
+    if (account === undefined || account == '') {
+        var account = 'goagent';
+        avatarType = 'mm';
     }
-    swal(options);
+    var md5hash = $.md5(account);
+    var avatar = "https://www.gravatar.com/avatar/"+md5hash+"?rating=PG&size=96&default="+avatarType;
+    
+    return avatar;
 }
 
 function padlength(what){

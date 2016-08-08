@@ -9,7 +9,7 @@ require_once('../goCRMAPISettings.php');
 $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 $postfields["goUser"] = goUser; #Username goes here. (required)
 $postfields["goPass"] = goPass;
-$postfields["goAction"] = "getTotalcalls"; #action performed by the [[API:Functions]]
+$postfields["goAction"] = "goGetTotalCalls"; #action performed by the [[API:Functions]]
 
  $ch = curl_init();
  curl_setopt($ch, CURLOPT_URL, $url);
@@ -30,9 +30,9 @@ foreach ($data AS $temp) {
 if ($results["result"]=="success") {
    # Result was OK!
    //var_dump($results); #to see the returned arrays.
-        echo $results["totcalls"];
+        echo number_format($results["getTotalCalls"]);
 } else {
    # An error occurred
-   echo 0;
+   echo "0";
 }
 ?>

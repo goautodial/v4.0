@@ -1,9 +1,7 @@
-
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 /**
 	The MIT License (MIT)
 	
@@ -28,666 +26,920 @@ error_reporting(E_ALL);*/
 	THE SOFTWARE.
 */
 
-// check if Creamy has been installed.
 require_once('./php/CRMDefaults.php');
-if (!file_exists(CRM_INSTALLED_FILE)) { // check if already installed 
-	header("location: ./install.php");
-	die();
-}
-
-// Try to get the authenticated user.
-require_once('./php/Session.php');
-try {
-	$user = \creamy\CreamyUser::currentUser();
-} catch (\Exception $e) {
-	header("location: ./logout.php");
-	die();
-}
-
-// proper user redirects
-if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_AGENT){
-	if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_ADMIN){
-		header("location: index.php");
-	}
-}
-
-// initialize session and DDBB handler
-include_once('./php/UIHandler.php');
-require_once('./php/LanguageHandler.php');
+require_once('./php/UIHandler.php');
 require_once('./php/DbHandler.php');
+require_once('./php/LanguageHandler.php');
+require('./php/Session.php');
+
+// initialize structures
 $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
-$colors = $ui->generateStatisticsColors();
+$user = \creamy\CreamyUser::currentUser();
 
-// calculate number of statistics and customers
-$db = new \creamy\DbHandler();
-$statsOk = $db->weHaveSomeValidStatistics();
-$custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 
+$lead_id = $_GET['lead_id'];
+$output = $ui->API_GetLeadInfo($lead_id);
+$list_id_ct = count($output->list_id);
+
+if ($list_id_ct > 0) {
+	for($i=0;$i < $list_id_ct;$i++){
+		$first_name 	= $output->first_name[$i];
+		$middle_initial = $output->middle_initial[$i];
+		$last_name 		= $output->last_name[$i];
+		
+		$email 			= $output->email[$i];
+		$phone_number 	= $output->phone_number[$i];
+		$alt_phone 		= $output->alt_phone[$i];
+		$address1 		= $output->address1[$i];
+		$address2 		= $output->address2[$i];
+		$address3 		= $output->address3[$i];
+		$city 			= $output->city[$i];
+		$state 			= $output->state[$i];
+		$country 		= $output->country[$i];
+		$gender 		= $output->gender[$i];
+		$date_of_birth 	= $output->date_of_birth[$i];
+		$comments 		= $output->comments[$i];
+		$title 			= $output->title[$i];
+		$call_count 	= $output->call_count[$i];
+		$last_local_call_time = $output->last_local_call_time[$i];
+	}
+}
+$fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
+$date_of_birth = date('Y-m-d', strtotime($date_of_birth));
+//var_dump($output);
+ $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
+ 									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
+
+
+if (isset($_GET["folder"])) {
+	$folder = $_GET["folder"];
+} else $folder = MESSAGES_GET_INBOX_MESSAGES;
+if ($folder < 0 || $folder > MESSAGES_MAX_FOLDER) { $folder = MESSAGES_GET_INBOX_MESSAGES; }
+
+if (isset($_GET["message"])) {
+	$message = $_GET["message"];
+} else $message = NULL;
+
+$avatarHash = md5( strtolower( trim( $user->getUserId() ) ) );
+$avatarURL50 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=50&default=wavatar";
+$avatarURL96 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=wavatar";
+$custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=mm";
 ?>
+
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Dashboard</title>
+        <title>GoAutodial Web Client</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-     
-		<!--<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />-->
-		
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<!-- SnackbarJS -->
+        <link href="css/snackbar/snackbar.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/snackbar/material.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
+        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        <!-- Customized Style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
-
-        <!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-		
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
 
 		<!-- javascript -->
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <script src="js/jquery.validate.min.js" type="text/javascript"></script>
-	    <!-- ChartJS 1.0.1 -->
-	    <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
 		
-        <!-- Creamy App -->
+        <!-- Creamy App 
         <script src="js/app.min.js" type="text/javascript"></script>
+		-->
+        <!-- theme_dashboard folder -->
+		<!-- FONT AWESOME-->
+		<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
+		<!-- SIMPLE LINE ICONS-->
+		<link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">
+		<!-- ANIMATE.CSS-->
+		<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">
+		<!-- WHIRL (spinners)-->
+		<link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
+		<!-- =============== PAGE VENDOR STYLES ===============-->
+		<!-- WEATHER ICONS-->
+		<link rel="stylesheet" href="theme_dashboard/weather-icons/css/weather-icons.min.css">
+		<!-- =============== BOOTSTRAP STYLES ===============-->
+		<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+		<!-- =============== APP STYLES ===============-->
+		<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
 		
-		<!-- Circle Buttons style -->
-		<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+		<!-- DATA TABES SCRIPT -->
+		<!--<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>-->
+		<!--<script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>-->
+		<!-- Bootstrap WYSIHTML5 -->
+		<!--<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>-->
+		<!-- iCheck -->
+		<!--<script src="js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>-->
+		<!-- SLIMSCROLL-->
+		<script src="theme_dashboard/slimScroll/jquery.slimscroll.min.js"></script>
+		<!-- SWEETALERT-->
+		<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+		<!-- FastClick -->
+		<!--<script src="js/plugins/fastclick/fastclick.min.js" type="text/javascript"></script>-->
+		<!-- MD5 HASH-->
+		<script src="js/jquery.md5.js" type="text/javascript"></script>
 
-		<!-- Data Tables -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+  		<!-- Theme style -->
+  		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
 
-         <!-- theme_dashboard folder -->
-					<!-- FONT AWESOME-->
-			<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
-					<!-- SIMPLE LINE ICONS-->
-			<link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">
-					<!-- ANIMATE.CSS-->
-			<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">
-					<!-- WHIRL (spinners)-->
-			<link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
-				<!-- =============== PAGE VENDOR STYLES ===============-->
-					<!-- WEATHER ICONS-->
-			<link rel="stylesheet" href="theme_dashboard/weather-icons/css/weather-icons.min.css">
-				<!-- =============== BOOTSTRAP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
-				<!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-		<!-- fullCalendar 2.2.5-->
-	    <link href="css/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
-	    <link href="css/fullcalendar/fullcalendar.print.css" rel="stylesheet" type="text/css" media='print' />
-	    <!-- fullCalendar 2.2.5 -->
-	    <script src="js/plugins/fullcalendar/moment.min.js" type="text/javascript"></script>
-	    <script src="js/plugins/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
-	    <!-- preloader -->
+        <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			})
+			$(window).load(function() {
+				$(".preloader").fadeOut("slow", function() {
+					if (use_webrtc && (!!$.prototype.snackbar)) {
+						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000, htmlAllowed: true});
+					}
+				});
+			});
 		</script>
+		<style>
+			.nav-tabs > li > a{
+				font-weight: normal;
+				border:0px;
+				border-radius: 3px 3px 0px 0px;
+			}
+			.custom-tabpanel{
+				padding-top: 20px;
+				margin-right: 10px;
+			}
+			h3{
+				font-weight: normal;
+			}
+			.custom-row{
+				padding: 0px 50px;
+				padding-bottom: 50px;
+			}
+			.panel{
+				margin-bottom:0;
+			}
+			.required_div{
+				background: rgba(158,158,158,0.30);
+			}
+			/*
+			input[type=text] {
+			    border: none;
+			    border-bottom: .5px solid #656565;
+			}
+			input[type=number] {
+			    border: none;
+			    border-bottom: .5px solid #656565;
+			}
+			input[type=date] {
+			    border: none;
+			    border-bottom: .5px solid #656565;
+			}
+			.select{
+				border: none;
+    			border-bottom: .5px solid #656565;
+			}
+			*/
+			.textarea{
+				border: none;
+				border-bottom: .5px solid #656565;
+				width: 100%;
+				-webkit-box-sizing: border-box;
+				   -moz-box-sizing: border-box;
+						box-sizing: border-box;
+				padding-left: 0px;
+			}
+			
+			.form-control[disabled], fieldset[disabled] .form-control{
+				cursor: text;
+				background-color: white;
+			}
+			/*
+			label{
+				font-weight: normal;
+				display: inline-flex;
+				width:100%;
+				padding-right: 40px;
+			}
+			label > p {
+				padding-top:10px;
+				width:25%;
+			}*/
+			.edit-profile-button{
+				font-size:14px; 
+				font-weight:normal;
+			}
+			.hide_div{
+				display: none;
+			}
+			.btn.btn-raised {
+				box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+			}
+			button[id^='show-callbacks-']:hover, button[id^='show-callbacks-']:active {
+				text-decoration: none;
+			}
+			#popup-hotkeys {
+				position: absolute;
+				top: 160px;
+				left: 40px;
+				display: none;
+				box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+				min-width: 480px;
+			}
+			#popup-hotkeys .panel-heading {
+				background-color: #2a2a2a;
+				color: #fff;
+			}
+			#popup-hotkeys .panel-body dl {
+				margin-bottom: 0px;
+			}
+			.control-label {
+				padding-top: 0px;
+			}
+		</style>
     </head>
-    <?php print $ui->creamyBody(); ?>
-        <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
-	        <!-- header logo: style can be found in header.less -->
-			<?php print $ui->creamyHeader($user); ?>
-
+    <?php print $ui->creamyAgentBody(); ?>
+    <div class="wrapper">
+        <!-- header logo: style can be found in header.less -->
+		<?php print $ui->creamyAgentHeader($user); ?>
             <!-- Left side column. contains the logo and sidebar -->
-			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
+			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $avatarURL50); ?>
 
-             <!-- Right side column. Contains the navbar and content of the page -->
+            <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="content-wrapper">
+
                 <!-- Content Header (Page header) -->
                 <section class="content-heading">
 					<!-- Page title -->
-                    <?php $lh->translateText("Agent Dashboard"); ?>
-                    <small class="ng-binding animated fadeInUpShort">Welcome to Goautodial !</small>
+                    <?php $lh->translateText("contact_information"); ?>
+                    <small class="ng-binding animated fadeInUpShort hidden"><?php echo $fullname;?></small>
                 </section>
 
                 <!-- Main content -->
                 <section class="content">
-
-					<!-- Update (if needed) -->
-                    <?php
-						require_once('./php/Updater.php');
-						$upd = \creamy\Updater::getInstance();
-						$currentVersion = $upd->getCurrentVersion();
-						if (!$upd->CRMIsUpToDate()) {
-					?>
-                    <div class="row">
-                        <section class="col-lg-12">
-                            <!-- version -->
-                            <div class="box box-danger">
-                                <div class="box-header">
-                                    <i class="fa fa-refresh"></i>
-                                    <h3 class="box-title"><?php print $lh->translationFor("version")." ".number_format($currentVersion, 1); ?></h3>
-                                </div>
-                                <div class="box-body">
-									<?php
-									if ($upd->canUpdateFromVersion($currentVersion)) { // update needed
-										$contentText = $lh->translationFor("you_need_to_update");
-										print $ui->formWithContent(
-											"update_form", 						// form id
-											$contentText, 						// form content
-											$lh->translationFor("update"), 		// submit text
-											CRM_UI_STYLE_DEFAULT,				// submit style
-											CRM_UI_DEFAULT_RESULT_MESSAGE_TAG,	// resulting message tag
-											"update.php");						// form PHP action URL.
-									} else { // we cannot update?
-										$lh->translateText("crm_update_impossible");
-									}
-									?>
-                                </div>
-                            </div>
-                        </section>
-                    </div>   <!-- /.row -->
-					<?php } ?>
-
-                    <!-- Status boxes -->
-					<div class="row">
-						<?php print $ui->dashboardInfoBoxes($user->getUserId()); ?>
-						<div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
-							<!-- date widget    -->
-							<div class="panel widget" style="height: 87px;">
-								<div class="col-xs-4 text-center bg-green pv-lg">
-								<!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
-									<div class="text-sm"><?php echo date("F", time());?></div>
-									<div class="h2 mt0"><?php echo date("d", time());?></div>
-								</div>
-								<div class="col-xs-8 pv-lg">
-									<div class="text-uppercase"><?php echo date("l", time());?></div>
-									<div class="h3 mt0"><?php echo date("h:i", time());?> 
-										<span class="text-muted text-sm"><?php echo date("A", time());?></span>
-									</div>
-								</div>
-							</div>
-							<!-- END date widget    -->
-						</div>
-			        </div><!-- /.row -->                    
-			       
-                     <!-- Statistics -->
-                    <div class="row">
-                        <!-- Left col -->
-                        <section class="col-md-4"> 
-				              <div class="box box-default">
-				                <div class="box-body no-padding">
-				                  <!-- THE CALENDAR -->
-				                  <div id="calendar"></div>
-				                </div><!-- /.box-body -->
-				              </div><!-- /. box -->
-                        </section><!-- /.Left col -->
-						<!-- Left col -->
-                        <section class="col-md-5"> 
-	                    	<!-- Gráfica de clientes -->   
-	                        <div class="box box-default">
-	                            <div class="box-header">
-	                                <i class="fa fa-bar-chart-o"></i>
-	                                <h3 class="box-title"><?php $lh->translateText("New Contacts"); ?></h3>
-	                            </div>
-                                <div class="box-body" id="graph-box">
-		                            <?php if ($custsOk) { ?>
-	                                <div class="row">
-										<div class="col-md-8">
-											<canvas id="pieChart" height="250"></canvas>
-		                            	</div>
-		                            	<div class="col-md-4 chart-legend" id="customers-chart-legend">
-		                            	</div>
-	                                 </div>
-		                            <?php } else { 
-			                        	print $ui->calloutWarningMessage($lh->translationFor("no_customers_yet"));
-			                        	print $ui->simpleLinkButton("no_customers_add_customer", $lh->translationFor("create_new"), "customerslist.php?customer_type=clients_1");
-			                        } ?>
-	                            </div>
-	                        </div>
+					<!-- standard custom edition form -->
+					<div id="cust_info" class="container-custom ng-scope">
+						<div class="card">
 							
-                        </section><!-- /.Left col -->
-						
-                    </div><!-- /.row (main row) -->
-				
-					<?php print $ui->hooksForDashboard(); ?>
-					
-					
-					<div class="bottom-menu skin-blue">
-						<?php print $ui->getCircleButton("calls", "plus"); ?>
-						<div class="fab-div-area" id="fab-div-area">
-								<ul class="fab-ul" style="height: 250px;">
-									<li class="li-style"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaigns_modal"></a></li><br/>
-									<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_users"> </a></li>
-								</ul>
-							</div>
-					</div>
-					<div class="modal fade" id="add_campaigns_modal" name="add_campaigns_modal" tabindex="-1" role="dialog" aria-hidden="true">
-			        <div class="modal-dialog">
-			            <div class="modal-content">
-						
-			                <div class="modal-header">
-			                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                    <h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translateText("Campaign Wizard"); ?></b></h4>
-			                </div>
-
-			                <form action="" method="post" name="" id="">
-			                    <div class="modal-body">
-			                        <div class="form-group">
-										<center><h4><b><?php $lh->translateText("Step 1  » Outbound"); ?> </b></h4></center>
-			                            <label for="campaign_type"><?php $lh->translateText("Campaign Type"); ?></label>
-			                            <input type="text required" class="form-control" id="campaign_type" name="campaign_type" placeholder="<?php $lh->translateText("Campaign Type"); ?>">
-										
-										<label for="campaign_id"><?php $lh->translateText("Campaign ID"); ?></label>
-			                            <input type="text required" class="form-control" id="campaign_id" name="campaign_id" placeholder="<?php $lh->translateText("Campaign ID"); ?>">
-										
-										<label for="campaign_name"><?php $lh->translateText("Campaign Name"); ?></label>
-			                            <input type="text required" class="form-control" id="campaign_name" name="campaign_name" placeholder="<?php $lh->translateText("Campaign Name"); ?>">
-										
-									<hr/>
-										<center><h4><b><?php $lh->translateText("Step 2  » Load Leads"); ?> </b></h4></center>
-										<label for="lead_file"><?php $lh->translateText("Lead File"); ?></label>
-			                            <input type="file" class="form-control" id="lead_file" name="lead_file" placeholder="<?php $lh->translateText("Lead File"); ?>">
-										
-										<label for="list_id"><?php $lh->translateText("List ID"); ?></label>
-			                            <input type="text required" class="form-control" id="list_id" name="list_id" placeholder="<?php $lh->translateText("List ID"); ?>">
-										
-										<label for="country"><?php $lh->translateText("Country"); ?></label>
-			                            <input type="text required" class="form-control" id="country" name="country" placeholder="<?php $lh->translateText("Country"); ?>">
-										
-										<label for="duplicate_check"><?php $lh->translateText("Check For Duplicates"); ?></label>
-			                            <select id="duplicate_check" class="form-control">
-											<option>NO DUPLICATE CHECK</option>
-											<option>CHECK DUPLICATES BY PHONE IN LIST ID</option>
-											<option>CHECK DUPLICATES BY PHONE IN ALL CAMPAIGN LISTS</option>
-										</select><br/>
-										<button type="button" class="btn"> U P L O A D   L E A D S</button>
-										
-									<hr/>
-										<center><h4><b><?php $lh->translateText("Step 3  » Information"); ?> </b></h4></center>
-										<label for="dial_method"><?php $lh->translateText("Dial Method"); ?></label>
-										<select id="dial_method" class="form-control">
-											<option>MANUAL</option>
-											<option>AUTO DIAL</option>
-											<option>PREDICTIVE</option>
-											<option>INBOUND MAN</option>
-										</select>	
-											
-										<label for="autodial_lvl"><?php $lh->translateText("AutoDial Level"); ?></label>
-										<select id="autodial_lvl" class="form-control">
-											<option>OFF</option>
-											<option>SLOW</option>
-											<option>NORMAL</option>
-											<option>HIGH</option>
-											<option>MAX</option>
-											<option>MAX PREDICTIVE</option>
-										</select>
-										<label for="carrier_for_campaign"><?php $lh->translateText("Carrier to use for this Campaign"); ?></label>
-										<select id="carrier_for_campaign" >
-											<option>CUSTOM DIAL PREFIX</option>
-										</select>
-										<input type="number">
-										<br/>
-										<label for="answering_machine"><?php $lh->translateText("Answering Machine Detection"); ?></label>
-										<select id="answering_machine" class="form-control">
-											<option>ON</option>
-											<option>OFF</option>
-										</select>
+								<div class="card-heading bg-inverse">
+									<div class="row">
+										<div class="col-md-2 text-center visible-sm visible-md visible-lg">
+											<img src="<?php echo $custDefaultAvatar;?>" id="cust_avatar" alt="Image" class="media-object img-circle thumb96 pull-left">
+										</div>
+										<div class="col-md-10">
+						                <h4><span id="cust_full_name"></span></h4>
+						                <p class="ng-binding animated fadeInUpShort"><span id="cust_number"></span></p>
+						            </div>
 									</div>
-			                    </div>
-			                    <div class="modal-footer clearfix">
-			                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal" id="changetaskCancelButton"><i class="fa fa-times"></i> <?php $lh->translateText("cancel"); ?></button>
-			                        <button type="submit" class="btn btn-primary pull-right" id="changeeventsOkButton"><i class="fa fa-check"></i> <?php $lh->translateText("Add New Campaign"); ?></button>
 								</div>
+							<!-- /.card heading -->
 								
-			                </form>
-							
-			            </div><!-- /.modal-content -->
-			        </div><!-- /.modal-dialog -->
-			    </div><!-- /.modal -->	
-				
-				
-				<!-- USERS MODAL -->
-				<div class="modal fade" id="add_users" name="add_users" tabindex="-1" role="dialog" aria-hidden="true">
-			        <div class="modal-dialog">
-			            <div class="modal-content">
+							<!-- Card body -->
+						        <div class="card-body custom-tabpanel">
+				                	<div role="tabpanel" class="panel panel-transparent">
+									  <ul role="tablist" class="nav nav-tabs nav-justified">
+									  <!-- Nav task panel tabs-->
+										 <li role="presentation" class="active">
+											<a href="#profile" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+												<span class="fa fa-user hidden"></span>
+												<?=$lh->translationFor('contact_information')?></a>
+										 </li>
+										 <li role="presentation">
+											<a href="#comments" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+												<span class="fa fa-comments-o hidden"></span>
+											    <?=$lh->translationFor('comments')?></a>
+										 </li>
+										 <li role="presentation">
+											<a href="#activity" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+												<span class="fa fa-calendar hidden"></span>
+												<?=$lh->translationFor('activity')?></a>
+										 </li>
+										 <li role="presentation">
+											<a href="#scripts" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+												<span class="fa fa-file-text-o hidden"></span>
+												<?=$lh->translationFor('script')?></a>
+										 </li>
+									  </ul>
+									</div>
+									<!-- Tab panes-->
+									<div class="tab-content bg-white">
+										<div id="activity" role="tabpanel" class="tab-pane">
+											<table class="table table-striped">
+							                    <tr>
+							                    	<td>
+							                    		<center>
+							                    		<em class="fa fa-user fa-fw"></em>
+							                    		</center>
+							                    	</td>
+							                        <td>
+							                           <div>1238: Outbound call to + 1650233332342</div>
+							                           <div class="text-muted">
+							                           		<small>March 10, 2015</small>
+							                           </div>
+							                        </td>
+							                        <td class="text-muted text-center hidden-xs hidden-sm">
+							                           <strong>254</strong>
+							                        </td>
+							                        <td class="hidden-xs hidden-sm"><a href="">Arnold Gray</a>
+							                           <br>
+							                           <small>March 10, 2015</small>
+							                        </td>
+							                    </tr>
+							                    <tr>
+							                    	<td>
+							                    		<center>
+							                    		<em class="fa fa-user fa-fw"></em>
+							                    		</center>
+							                    	</td>
+							                        <td>
+							                           <div>1238: Call missed from + 1273934031</div>
+							                           <div class="text-muted">
+							                           		<small>March 10, 2015</small>
+							                           </div>
+							                        </td>
+							                        <td class="text-muted text-center hidden-xs hidden-sm">
+							                           <strong>28</strong>
+							                        </td>
+							                        <td class="hidden-xs hidden-sm"><a href="">Erika Mckinney</a>
+							                           <br>
+							                           <small>March 10, 2015</small>
+							                        </td>
+							                    </tr>
+							                    <tr>
+							                    	<td>
+							                    		<center>
+							                    		<em class="fa fa-user fa-fw"></em>
+							                    		</center>
+							                    	</td>
+							                        <td>
+							                           <div>Latest udpates and news about this forum</div>
+							                           <div class="text-muted">
+							                           		<small>March 10, 2015</small>
+							                           </div>
+							                        </td>
+							                        <td class="text-muted text-center hidden-xs hidden-sm">
+							                           <strong>561</strong>
+							                        </td>
+							                        <td class="hidden-xs hidden-sm"><a href="">Annette Ruiz</a>
+							                           <br>
+							                           <small>March 10, 2015</small>
+							                        </td>
+							                    </tr>
+								            </table>
+										</div>
+									
+										<div id="profile" role="tabpanel" class="tab-pane active">
 
-			                <div class="modal-header">
-			                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			                    <h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translateText("User Wizard"); ?></b></h4>
-			                </div>
+											<fieldset>
+												<h4>
+													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
+												</h4>
+												<br/>
+												<form role="form" id="name_form" class="formMain form-inline" >
+												
+												<!--LEAD ID-->
+												<input type="hidden" value="<?php echo $lead_id;?>" name="lead_id">
+												<!--LIST ID-->
+												<input type="hidden" value="<?php echo $list_id;?>" name="list_id">
+												<!--ENTRY LIST ID-->
+												<input type="hidden" value="<?php echo $entry_list_id;?>" name="entry_list_id">
+												<!--VENDOR ID-->
+												<input type="hidden" value="<?php echo $vendor_lead_code;?>" name="vendor_lead_code">
+												<!--GMT OFFSET-->
+												<input type="hidden" value="<?php echo $gmt_offset_now;?>" name="gmt_offset_now">
+												<!--SECURITY PHRASE-->
+												<input type="hidden" value="<?php echo $security_phrase;?>" name="security_phrase">
+												<!--RANK-->
+												<input type="hidden" value="<?php echo $rank;?>" name="rank">
+												<!--CALLED COUNT-->
+												<input type="hidden" value="<?php echo $call_count;?>" name="called_count">
+												<!--UNIQUEID-->
+												<input type="hidden" value="<?php echo $uniqueid;?>" name="uniqueid">
+												<!--SECONDS-->
+												<input type="hidden" value="" name="seconds">
+												
+												<div class="row">
+													<div class="col-sm-4">
+														<div class="mda-form-group label-floating">
+															<input id="first_name" name="first_name" type="text" maxlength="30"  value="<?php echo $first_name;?>"
+																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled required>
+															<label for="first_name">First Name</label>
+														</div>
+													</div>
+													<div class="col-sm-4">
+														<div class="mda-form-group label-floating">
+															<input id="middle_initial" name="middle_initial" type="text" maxlength="1" value="<?php echo $middle_initial;?>"
+																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+															<label for="middle_initial">Middle Name</label>
+														</div>
+													</div>
+													<div class="col-sm-4">
+														<div class="mda-form-group label-floating">
+															<input id="last_name" name="last_name" type="text" maxlength="30" value="<?php echo $last_name;?>"
+																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled required>
+															<label for="last_name">Last Name</label>
+														</div>
+													</div>
+												</div>
+												</form>
+												
+												<form id="contact_details_form" class="formMain">
+													<!-- phone number & alternative phone number -->
+													<div class="row">
+														<div class="col-sm-6">
+															<div class="mda-form-group label-floating">
+																<span id="phone_numberDISP" class="hidden"></span>
+																<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
+																<input id="phone_number" name="phone_number" type="number" min="0" width="auto" value="<?php echo $phone_number;?>"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled required>
+																<label for="phone_number">Phone Number</label>
+																<!--
+																<span class="mda-input-group-addon">
+																	<em class="fa fa-phone fa-lg"></em>
+																</span>-->
+															</div>
+														</div>
+														<div class="col-sm-6">
+															<div class="mda-form-group label-floating">
+																<input id="alt_phone" name="alt_phone" type="number" min="0" width="100" value="<?php echo $alt_phone;?>"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="alt_phone">Alternative Phone Number</label>
+															</div>
+														</div>
+													</div>
+													<!-- /.phonenumber & alt phonenumber -->
+													
+													<div class="mda-form-group label-floating">
+														<input id="address1" name="address1" type="text" width="auto" value="<?php echo $address1;?>"
+															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+														<label for="address1">Address</label> 
+														<!--<span class="mda-input-group-addon">
+															<em class="fa fa-home fa-lg"></em>
+														</span>-->
+													</div>
+													
+													<div class="mda-form-group label-floating">
+														<input id="address2" name="address2" type="text" value="<?php echo $address2;?>"
+															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+														<label for="address2">Address 2</label>
+													</div>
+													
+													<div class="row">
+														<div class="col-sm-4">
+															<div class="mda-form-group label-floating">
+																<input id="city" name="city" type="text" value="<?php echo $city;?>"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="city">City</label>
+															</div>
+														</div>
+														<div class="col-sm-4">
+															<div class="mda-form-group label-floating">
+																<input id="state" name="state" type="text" value="<?php echo $state;?>"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="state">State</label>
+															</div>
+														</div>
+														<div class="col-sm-4">
+															<div class="mda-form-group label-floating">
+																<input id="postal_code" name="postal_code" type="text" value="<?php echo $postal_code;?>"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="postal_code">Postal Code</label>
+															</div>
+														</div>
+													</div><!-- /.city,state,postalcode -->
+												
+													<div class="mda-form-group label-floating">
+														<input id="country" name="country" type="text" value="<?php echo $country;?>"
+															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+														<label for="country">Country</label>
+													</div>
+													<div class="mda-form-group label-floating"><!-- add "mda-input-group" if with image -->
+														<input id="email" name="email" type="text" width="auto" value="<?php echo $email;?>"
+															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+														<label for="email">E-mail Address</label>
+														<!--<span class="mda-input-group-addon">
+															<em class="fa fa-at fa-lg"></em>
+														</span>-->
+													</div>
+												</form> 
+												<form role="form" id="gender_form" class="formMain form-inline" >
+													<div class="row">
+														<div class="col-sm-3">
+															<div class="mda-form-group label-floating">
+																<input id="title" name="title" type="text" maxlength="4" value="<?php echo $title;?>"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="title">Title</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="mda-form-group label-floating">
+																<select id="gender" name="gender" value="<?php echo $gender;?>"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
+																	<?php 
+																		if ($gender == "M") {
+																	?>
+																		<option selected value="M">Male</option>
+																		<option value="F">Female</option>
+																	<?php
+																		} else if($gender == "F") {
+																	?>
+																		<option selected value="F">Female</option>
+																		<option value="M">Male</option>
+																	<?php
+																		} else {
+																	?>
+																		<option selected disabled value=""></option>
+																		<option value="M">Male</option>
+																		<option value="F">Female</option>
+																	<?php
+																		}
+																	?>
+																</select>
+																<label for="gender" class="control-label">Gender</label>
+															</div>
+														</div>
+														<div class="col-sm-6">
+															<div class="mda-form-group label-floating">
+																<input type="date" id="date_of_birth" value="<?php echo $date_of_birth;?>" name="date_of_birth"
+																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="date">Date Of Birth</label>
+															</div>
+														</div>
+													</div><!-- /.gender & title -->                   
+												</form>
+							                <br/>
+							                <!-- NOTIFICATIONS -->
+											<div id="notifications_list">
+												<div class="output-message-success" style="display:none;">
+													<div class="alert alert-success alert-dismissible" role="alert">
+													  <strong>Success!</strong> Successfuly updated contact.
+													</div>
+												</div>
+												<div class="output-message-error" style="display:none;">
+													<div class="alert alert-danger alert-dismissible" role="alert">
+													  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
+													</div>
+												</div>
+												<div class="output-message-incomplete" style="display:none;">
+													<div class="alert alert-danger alert-dismissible" role="alert">
+													  Please fill-up all the fields correctly and do not leave any highlighted fields blank.
+													</div>
+												</div>
+											</div>
+
+							                <div class="hide_div">
+							                	<button type="submit" name="submit" id="submit_edit_form" class="btn btn-primary btn-block btn-flat">Submit</button>
+							                </div>
+							               </fieldset>
+										</div><!--End of Profile-->
+										
+										<div id="comments" role="tabpanel" class="tab-pane">
+											<div class="row">
+												<div class="col-sm-12">
+													<h4><!--Comments-->
+														<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
+													</h4>
+												
+													<form role="form" id="comment_form" class="formMain form-inline" >
+														<div class="mda-form-group hidden">
+															<p style="padding-right:0px;padding-top: 20px;">Comments:</p> 
+															<button id="ViewCommentButton" onClick="ViewComments('ON');" value="-History-" class="hidden"></button>
+														</div>
+														<div class="mda-form-group label-floating" style="float: left; width:100%;">
+															<textarea rows="5" id="comments" name="comments" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
+															<label for="comments">Comments</label>
+														</div>
+														<div style="clear:both;"></div>
+														<br>
+													</form>
+												</div>
+											</div>
+										</div>
+										
+										<!-- Scripts -->
+										<div id="scripts" role="tabpanel" class="tab-pane">
+											<div class="row">
+												<div class="col-sm-12">
+													<fieldset style="padding-bottom: 5px; margin-bottom: 5px;">
+														<h4>
+															<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="reload-script" style="padding: 5px;">Reload Script</a>
+														</h4>
+														<div id="ScriptContents" style="min-height: 100px; border: dashed 1px #c0c0c0; padding: 20px 5px 5px;">
+															<?php echo $output_script;?>
+														</div>
+													</fieldset><!-- /.fieldset -->
+												</div><!-- /.col-sm-12 -->
+											</div><!-- /.row -->
+										</div>
+										<!-- End of Scripts -->
+									</div>
+								</div>
+
+					<!-- SCRIPT MODAL -->
+							<div class="modal fade" id="script" name="script" tabindex="-1" role="dialog" aria-hidden="true">
+						        <div class="modal-dialog">
+						            <div class="modal-content">
+									
+						                <div class="modal-header">
+						                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						                    <h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translateText("Script"); ?></b></h4>
+						                </div>
+
+						                    <div class="modal-body">
+						                        
+											</div>
+										
+						            </div><!-- /.modal-content -->
+						        </div><!-- /.modal-dialog -->
+						    </div><!-- /.modal -->
+
+					<!-- WEBFORM MODAL -->
+							<div class="modal fade" id="webform" name="webform" tabindex="-1" role="dialog" aria-hidden="true">
+						        <div class="modal-dialog">
+						            <div class="modal-content">
+										<br/>
+										<center><h2>Ok!</h2></center>
+										<br/>
+						            </div><!-- /.modal-content -->
+						        </div><!-- /.modal-dialog -->
+						    </div><!-- /.modal -->
+
+						</div>
+					</div>
+					
+					<div id="loaded-contents" class="container-custom ng-scope" style="display: none;">
+						<div id="contents-messages" class="row" style="display: none;">
+							<!-- left side folder list column -->
+							<div class="col-md-3">
+								<a href="composemail.php" class="btn btn-primary btn-block margin-bottom"><?php $lh->translateText("new_message"); ?></a>
+								<div class="box box-solid">
+									<div class="box-header with-border">
+										<h3 class="box-title"><?php print $lh->translationFor("folders"); ?></h3>
+									</div>
+									<div class="box-body no-padding">
+										<?php //print $ui->getMessageFoldersAsList($folder); ?>
+									</div><!-- /.box-body -->
+								</div><!-- /. box -->
+							</div><!-- /.col -->
 							
-			                <form action="" method="post" name="" id="">
-			                    <div class="modal-body">
-									<div class="form-group">
-										<center><h4><b><?php $lh->translateText("Step 1  » Add New User"); ?> </b></h4></center>
-			                        
-									<div class="progress">
-										<div class="progress-bar" role="progressbar" aria-valuenow="0"
-										aria-valuemin="0" aria-valuemax="100" style="width:0%">
-										  0%
+							<!-- main content right side column -->
+							<div class="col-md-9">
+								<div class="box box-default">
+									<div class="box-header with-border">
+										<h3 class="box-title"><?php $lh->translateText("messages"); ?></h3>
+									</div><!-- /.box-header -->
+									<div class="box-body no-padding">
+										<div class="mailbox-controls">
+											<?php //print $ui->getMailboxButtons($folder); ?>
+										</div>
+										<div class="table-responsive mailbox-messages">
+											<?php //print $ui->getMessagesFromFolderAsTable($user->getUserId(), $folder); ?>
+										</div><!-- /.mail-box-messages -->
+									</div><!-- /.box-body -->
+									<div class="box-footer no-padding">
+										<div class="mailbox-controls">
+											<div id="messages-message-box">
+												<?php //if (!empty($message)) { print $ui->calloutInfoMessage($message); } ?>
+											</div>
+											<?php //print $ui->getMailboxButtons($folder); ?>
 										</div>
 									</div>
-									</div>
-			                    </div>
-			                    <div class="modal-footer clearfix">
-			                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal" id="changetaskCancelButton"><i class="fa fa-times"></i> <?php $lh->translateText("cancel"); ?></button>
-			                        <button type="submit" class="btn btn-primary pull-right" id="changeeventsOkButton"><i class="fa fa-check"></i> <?php $lh->translateText("Add New Campaign"); ?></button>
-								</div>
-								
-			                </form>
-							
-			            </div><!-- /.modal-content -->
-			        </div><!-- /.modal-dialog -->
-			    </div><!-- /.modal -->
-				
-				
+								</div><!-- /. box -->
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div>
+					
+					<div id="popup-hotkeys" class="panel clearfix">
+						<div class="panel-heading"><b><?=$lh->translationFor('available_hotkeys')?></b></div>
+						<div class="panel-body"><?=$lh->translationFor('no_available_hotkeys')?></div>
+						<div class="panel-footer clearfix">
+							<div class="text-danger sidecolor" style="padding-right: 5px; background-color: inherit;">
+								<small><b><?=$lh->translationFor('note')?>:</b> <?=$lh->translationFor('hotkeys_note')?></small>
+							</div>
+						</div>
+					</div>
                 </section><!-- /.content -->
-				
             </aside><!-- /.right-side -->
-			
+
             <?php //print $ui->creamyFooter(); ?>
+
+            <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+      <li id="dialer-tab" class="active"><a href="#control-sidebar-dialer-tab" data-toggle="tab"><i class="fa fa-phone"></i></a></li>
+      <li id="agents-tab" class="hidden"><a href="#control-sidebar-agents-tab" data-toggle="tab"><i class="fa fa-users"></i></a></li>
+      <li id="settings-tab"><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content" style="border-width:0; overflow-y: hidden; padding-bottom: 30px;">
+      <!-- Home tab content -->
+      <div class="tab-pane active" id="control-sidebar-dialer-tab">
+        <ul class="control-sidebar-menu" id="go_agent_dialer">
+			
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+        <ul class="control-sidebar-menu" id="go_agent_status" style="margin: 0 0 15px;padding: 0 0 10px;">
+			
+        </ul>
+		
+        <ul class="control-sidebar-menu" id="go_agent_manualdial" style="margin-top: -10px;padding: 0 15px;">
+			
+        </ul>
+
+        <ul class="control-sidebar-menu hidden-xs" id="go_agent_dialpad" style="margin-top: 15px;padding: 0 15px;">
+			
+        </ul>
+
+        <ul class="control-sidebar-menu hidden-xs" id="go_agent_other_buttons" style="margin-top: 15px;padding: 0 15px;">
+			<li style="padding: 0 5px 15px 0; display: none;">
+				<div class="material-switch pull-right">
+					<input id="LeadPreview" name="LeadPreview" value="0" type="checkbox"/>
+					<label for="LeadPreview" class="label-primary"></label>
+				</div>
+				<div style="font-weight: bold;"><?=$lh->translateText('LEAD PREVIEW')?></div>
+			</li>
+			<li style="font-size: 5px;">
+				&nbsp;
+			</li>
+			<li id="toggleHotkeys" style="padding: 0 5px 15px;">
+				<div class="material-switch pull-right">
+					<input id="enableHotKeys" name="enableHotKeys" type="checkbox"/>
+					<label for="enableHotKeys" class="label-primary"></label>
+				</div>
+				<div style="font-weight: bold;"><?=$lh->translateText('ENABLE HOT KEYS')?></div>
+			</li>
+			<li style="font-size: 5px;">
+				&nbsp;
+			</li>
+			<li>
+				<button type="button" id="show-callbacks-active" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Active Callback(s)')?> <span id="callbacks-today" class='badge pull-right bg-red'>0</span></button>
+				<button type="button" id="show-callbacks-today" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Callbacks For Today')?> <span id="callbacks-active" class='badge pull-right bg-red'>0</span></button>
+			</li>
+        </ul>
+		
+        <ul class="control-sidebar-menu" id="go_agent_login" style="width: 100%; margin: 25px auto 15px; text-align: center;">
+			
+        </ul>
+		
+        <ul class="control-sidebar-menu" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px; text-align: center;">
+			<li>
+				<p><strong><?=$lh->translateText("Call Duration")?>:</strong> <span id="SecondsDISP">0</span> <?=$lh->translationFor('second')?></p>
+				<span id="session_id" class="hidden"></span>
+				<span id="callchannel" class="hidden"></span>
+				<input type="hidden" id="callserverip" value="" />
+				<span id="custdatetime" class="hidden"></span>
+			</li>
+			
+        </ul>
+        <!-- /.control-sidebar-menu -->
+
+      </div>
+      <!-- /.tab-pane -->
+      <!-- Agents View tab content -->
+      <div class="tab-pane" id="control-sidebar-agents-tab">
+		<h4><?=$lh->translationFor('other_agent_status')?></h4>
+		<ul class="control-sidebar-menu" id="go_agent_view_list" style="padding: 0px 15px;">
+			<li><div class="text-center"><?=$lh->translationFor('loading_agents')?>...</div></li>
+		</ul>
+	  </div>
+      <!-- /.tab-pane -->
+      <!-- Settings tab content -->
+      <div class="tab-pane" id="control-sidebar-settings-tab">
+		<ul class="control-sidebar-menu" id="go_agent_profile">
+			<li>
+				<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px;">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<img src="<?=$avatarURL96?>" class="img-circle thumb96" height="auto" style="border-color:transparent; margin: 10px;" alt="User Image" />
+						<p style="color:white;"><?=$user->getUserName()?><br><small><?=$lh->translationFor("nice_to_see_you_again")?></small></p>
+					</a>
+				</div>
+			</li>
+			<?php
+			if ($user->userHasBasicPermission()) {
+				echo '<li>
+					<div class="text-center"><a href="" data-toggle="modal" id="change-password-toggle" data-target="#change-password-dialog-modal">'.$lh->translationFor("change_password").'</a></div>
+					<div class="text-center"><a href="./messages.php">'.$lh->translationFor("messages").'</a></div>
+					<div class="text-center"><a href="./notifications.php">'.$lh->translationFor("notifications").'</a></div>
+					<div class="text-center"><a href="./tasks.php">'.$lh->translationFor("tasks").'</a></div>
+				</li>';
+			}
+			?>
+		</ul>
+		
+        <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+			<li>
+				<div class="center-block" style="text-align: center">
+					<a href="./edituser.php" class="btn btn-warning"><i class='fa fa-user'></i> <?=$lh->translationFor("my_profile")?></a>
+					 &nbsp; 
+					<a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class='fa fa-sign-out'></i> <?=$lh->translationFor("exit")?></a>
+				</div>
+			</li>
+        </ul>
+      </div>
+      <!-- /.tab-pane -->
+    </div>
+  </aside>
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg" style="position: fixed; height: auto;"></div>
+
         </div><!-- ./wrapper -->
-		
-		
-	<script>
-		$(document).ready(function(){
-			$(".bottom-menu").on('mouseenter mouseleave', function () {
-			  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
-			});
-		});
-	</script>
-	<!-- Page specific script -->
-	    <script type="text/javascript">
-	      $(function () {
-	
-	        /* initialize the external events
-	         -----------------------------------------------------------------*/
-	        function ini_events(ele) {
-	          ele.each(function () {
-	
-	            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-	            // it doesn't need to have a start or end
-	            var eventObject = {
-	              title: $.trim($(this).text()) // use the element's text as the event title
-	            };
-	
-	            // store the Event Object in the DOM element so we can get to it later
-	            $(this).data('eventObject', eventObject);
-	
-	            // make the event draggable using jQuery UI
-	            $(this).draggable({
-	              zIndex: 1070,
-	              revert: true, // will cause the event to go back to its
-	              revertDuration: 0  //  original position after the drag
-	            });
-	
-	          });
-	        }
-	        ini_events($('#external-events div.external-event'));
-	
-	        /* initialize the calendar
-	         -----------------------------------------------------------------*/
-	        //Date for the calendar events (dummy data)
-	        var date = new Date();
-	        var d = date.getDate(),
-	                m = date.getMonth(),
-	                y = date.getFullYear();
-	        $('#calendar').fullCalendar({
-			  timeFormat: 'HH(:mm)',
- 	          header: {
-	            left: 'prev,next today',
-	            center: 'title',
-	            right: 'month,agendaWeek,agendaDay'
-	          },
-	          <?php
-	          if (!empty($_GET["initial_date"])) {
-		          $initialDate = $_GET["initial_date"];
-		          print "defaultDate: moment('$initialDate'), defaultView: 'agendaDay',";
-	          } 
-			  ?>
-		      defaultTimedEventDuration: '01:00:00',
-		      forceEventDuration: true,
-	          buttonText: {
-	            today: '<?php $lh->translateText("today"); ?>',
-	            month: '<?php $lh->translateText("month"); ?>',
-	            week: '<?php $lh->translateText("week"); ?>',
-	            day: '<?php $lh->translateText("day"); ?>'
-	          },
-	          //Random default events
-	          <?php print $ui->getAssignedEventsListForCalendar($user->getUserId()); ?>,
-	          <?php print $ui->getTimezoneForCalendar(); ?>,
-	          editable: true,
-	          ignoreTimezone: false,
-	          droppable: true, // this allows things to be dropped onto the calendar !!!
-	          drop: function (date, allDay, jsEvent, ui) { // this function is called when something is dropped
-	            // retrieve the dropped element's stored Event Object
-	            var originalEventObject = $(this).data('eventObject');
-	            var eventId = $(this).attr("event-id");
-                var eventUrl = $(this).attr("event-url");
-				var endDate = date + 3600000; // 1 hour in milliseconds
-				var jsObject = $(this);
-	
-				// request the update first.
-				  $.post("./php/ModifyEvent.php", //post
-				  {"start_date": date+"", "end_date": endDate+"", "event_id": eventId, "all_day": !date.hasTime()}, 
-				  function(data) { // result is new event id or 0 if something went wrong.
-					if (data != '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') { // error
-						<?php print $ui->showCustomErrorMessageAlertJS($lh->translationFor("unable_modify_event")); ?>
-					} else { // move the new configured event in the calendar.
-			            // we need to copy it, so that multiple events don't have a reference to the same object
-			            var copiedEventObject = $.extend({}, originalEventObject);
-			            copiedEventObject.id = eventId;
-						copiedEventObject.url = eventUrl;
-			
-			            // assign it the date that was reported
-			            copiedEventObject.start = date;
-			            copiedEventObject.allDay = !date.hasTime();
-			            copiedEventObject.backgroundColor = jsObject.css("background-color");
-			            copiedEventObject.borderColor = jsObject.css("border-color");
-		
-			            // render the event on the calendar
-			            // the last `true` argument determines if the event "sticks" 
-			            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-						jsObject.remove(); // remove the element from the "Draggable Events" list
-					}
-				  });
-	
-	          },
-	          eventResize: function( event, delta, revertFunc, jsEvent, ui, view ) {
-			  	changeEventOrRevert(event, revertFunc);
-	          },
-	          dayClick: function (date, jsEvent, ui) { // Go to a day view by clicking on a day.
-		          	$('#calendar').fullCalendar( 'changeView', 'agendaDay' );
-				  	$('#calendar').fullCalendar( 'gotoDate', date );
-	          },
-	          eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) { // drag/move an event.
-			  	changeEventOrRevert(event, revertFunc);
-	          },
-			  eventDragStop: function (event, jsEvent) {
-	  				var trashEl = jQuery('#delete-event-trash');
-    				var ofs = trashEl.offset();
-    				var x1 = ofs.left;
-					var x2 = ofs.left + trashEl.outerWidth(true);
-    				var y1 = ofs.top;
-    				var y2 = ofs.top + trashEl.outerHeight(true);
 
-					// dropped to trash?
-    				if (jsEvent.pageX >= x1 && jsEvent.pageX<= x2 && jsEvent.pageY>= y1 && jsEvent.pageY <= y2) {
-    					 // try to delete the event.
-						 $.post("./php/DeleteEvent.php", //post
-						 {"eventid": event.id}, 
-						 function(data) { // result is new event id or 0 if something went wrong.
-							  if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') { // success
-		         				$('#calendar').fullCalendar('removeEvents', event.id);
-							  } else { // error
-									<?php print $ui->showCustomErrorMessageAlertJS($lh->translationFor("unable_modify_event")); ?>
-							  }
-						  });
-    				}
-	          }
-	        });
-	        
-	        function changeEventOrRevert(event, revertFunc) {
-				// request an event modification.
-				$.post("./php/ModifyEvent.php", //post
-				{"start_date": event.start+"", "end_date": event.end+"", "event_id": event.id, "all_day": event.allDay}, 
-				function(data) { // result is new event id or 0 if something went wrong.
-				if (data != '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') { // error
-					<?php print $ui->showCustomErrorMessageAlertJS($lh->translationFor("unable_modify_event")); ?>
-					revertFunc();
-				}
-				});
-	        }
-	
-	        /* ADDING EVENTS */
-	        var currColor = "#3c8dbc"; //blue by default
-	        //Color chooser button
-	        var colorChooser = $("#color-chooser-btn");
-	        $("#color-chooser > li > a").click(function (e) {
-	          e.preventDefault();
-	          //Save color
-	          currColor = $(this).css("color");
-	          //Add color effect to button
-	          $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
-	        });
-	        $("#add-new-event").click(function (e) {
-	          e.preventDefault();
-	          //Get value and make sure it is not null
-	          var val = $("#new-event").val();
-	          if (val.length == 0) {
-	            return;
-	          }
-	          // loading spinner
-	          var spinnerOverlay = '<?php print $ui->spinnerOverlay("creating-event-spinner"); ?>';
-	          $('#new-event-box-body').after(spinnerOverlay);
-
-			  // ajax call
-	          var eventId = 0;
-			  var color = currColor;
-			  if ((/^rgb/).test(color)) { color = rgb2hex(color); }
-			  $.post("./php/CreateEvent.php", //post
-			  {"title": val, "color": rgb2hex(currColor)}, 
-			  function(data) { // result is new event id or 0 if something went wrong.
-					$("#creating-event-spinner").remove();
-					if (data == '0') { // error
-						<?php print $ui->showCustomErrorMessageAlertJS($lh->translationFor("unable_create_event")); ?>
-					} else { // we have a new event id!
-			          //Create events
-			          eventId = data;
-			          var event = $("<div />");
-			          event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
-			          event.html(val);
-			          event.attr("event-id", eventId);
-			          $('#external-events').prepend(event);
-			
-			          //Add draggable funtionality
-			          ini_events(event);
-			
-			          //Remove event from text input
-			          $("#new-event").val("");
-					}
-				});
-	        });
-	      });
-/** EDIT EVENTS **/
-
-			/**
-			 * Show the edit events dialog, filling the edit fields properly.
-			 */
-			$(".edit-events-action").click(function(e) {
-				// Set ID of the events to edit
-				e.preventDefault();
-		        var ele = $(this).parents("li").first();
-				var events_id = ele.attr("id"); // events ID is contained in the ID element of the li object.
-				$('#edit-events-eventsid').val(events_id);
-				
-				// set the previous description of events.
-				var current_text = $('.text', ele);
-				$('#edit-events-title').val(current_text.text());
-			});
-		
-			/**
-			 * Edit the title of an events
-			 */
-			$("#edit-events-form").validate({
-				submitHandler: function() {
-					//submit the form
-						$("#resultmessage").html();
-						$("#resultmessage").fadeOut();
-						$.post("./php/EditEvent.php", //post
-						$("#edit-events-form").serialize(), 
-							function(data){
-								//if message is sent
-								if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-									location.reload();
-								} else {
-									$("#resultmessage").html('<div class="alert alert-danger alert-dismissable"><i class="fa fa-ban"></i><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><b><?php $lh->translateText("oups"); ?></b> <?php $lh->translateText("unable_modify_task"); ?>: '+ data);
-									$("#resultmessage").fadeIn(); //show confirmation message
-								}
-								//
-							});
-					return false; //don't let the form refresh the page...
-				}					
-			});
-
-
-	      /** Auxiliary functions */
-	      var hexDigits = new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"); 
-	      //Function to convert hex format to a rgb color
-	      function rgb2hex(rgb) {
-		      rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-		      if (rgb == null) { return "<?php print CRM_UI_COLOR_DEFAULT_HEX; ?>"; }
-			  return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-		  }
-		
-		function hex(x) { return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16]; }
-	</script>
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
-		<?php if ($custsOk) { ?>
+		<!-- AdminLTE App -->
+		<script src="adminlte/js/app.min.js"></script>
+		
 		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#edit-profile").click(function(){
+				    $('.input-disabled').prop('disabled', false);
+				    //$('.hide_div').show();
+				    $("input:required, select:required").addClass("required_div");
+				    $('#edit-profile').hide();
+				    
+				    var txtBox=document.getElementById("first_name" );
+					txtBox.focus();
+				    //$("#submit_div").focus(function() { $(this).select(); } );
+				    //$('input[name="first_name"]').focus();
+				});
 
-        //-------------
-        //- PIE CHART -
-        //-------------
-        // Get context with jQuery - using jQuery's .get() method.
-        var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-        var PieData = [
-          <?php print $ui->generatePieChartStatisticsData($colors); ?>
-        ];
-        var pieOptions = {
-          //Boolean - Whether we should show a stroke on each segment
-          segmentShowStroke: true,
-          //String - The colour of each segment stroke
-          segmentStrokeColor: "#fff",
-          //Number - The width of each segment stroke
-          segmentStrokeWidth: 2,
-          //Number - The percentage of the chart that we cut out of the middle
-          percentageInnerCutout: 50, // This is 0 for Pie charts
-          //Number - Amount of animation steps
-          animationSteps: 100,
-          //String - Animation easing effect
-          animationEasing: "easeOutBounce",
-          //Boolean - Whether we animate the rotation of the Doughnut
-          animateRotate: true,
-          //Boolean - Whether we animate scaling the Doughnut from the centre
-          animateScale: false,
-          //Boolean - whether to make the chart responsive to window resizing
-          responsive: true,
-          // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-          maintainAspectRatio: false,
-          //String - A legend template
-          legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\" style=\"list-style-type: none;\"><% for (var i=0; i<segments.length; i++){%><li><i class=\"fa fa-circle-o\" style=\"color:<%=segments[i].fillColor%>\"> </i><%if(segments[i].label){%>  <%=segments[i].label%><%}%></li><%}%></ul>"
-        };
-        var pieChart = new Chart(pieChartCanvas).Doughnut(PieData, pieOptions);
-		$('#customers-chart-legend').html(pieChart.generateLegend());
+				$("#submit_edit_form").click(function(){
+				//alert("User Created!");
+					var validate = 0;
 
+					if($('#name_form')[0].checkValidity()) {
+					    if($('#gender_form')[0].checkValidity()) {
+					    	if($('#contact_details_form')[0].checkValidity()) {
+								
+								//alert("Form Submitted!");
+								$.ajax({
+									url: "./php/ModifyCustomer.php",
+									type: 'POST',
+									data: $("#name_form, #gender_form, #contact_details_form, #comment_form").serialize(),
+									success: function(data) {
+									  // console.log(data);
+										  if(data == 1){
+										  	  $('.output-message-success').show().focus().delay(2000).fadeOut().queue(function(n){$(this).hide(); n();});
+											  window.setTimeout(function(){location.reload();},2000);
+										  }else{
+											  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+										  }
+									}
+								});
+
+							}else{
+								validate = 1;
+							}
+						}else{
+							validate = 1;
+						}
+					}else{
+						validate = 1;
+					}
+
+					if(validate == 1){
+						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+						validate = 0;
+					}
+				
+				});
+				
+				/**
+				 * Deletes a customer
+				 */
+				 $("#modifyCustomerDeleteButton").click(function (e) {
+					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
+					e.preventDefault();
+					if (r === true) {
+						var customerid = $(this).attr('href');
+						$.post("./php/DeleteContact.php", $("#modifycustomerform").serialize() ,function(data){
+							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
+								alert("<?php $lh->translateText("Contact Successfully Deleted"); ?>");
+								window.location = "index.php";
+							}
+							else { alert ("<?php $lh->translateText("Unable to Delete Contact"); ?>: "+data); }
+						});
+					}
+				 });
+				
+				$('.form-control').on('focus blur', function (e) {
+					$(this).parents('.label-floating').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+				}).trigger('blur');
+				
+				$('.label-floating .form-control').change(function() {
+					var thisVal = $(this).val();
+					$(this).parents('.label-floating').toggleClass('focused', (thisVal.length > 0));
+				});
+			});	
 		</script>
-		<?php } ?>
+		<!-- SnackbarJS -->
+        <script src="js/snackbar.js" type="text/javascript"></script>
+
     </body>
 </html>

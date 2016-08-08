@@ -278,13 +278,15 @@ class DbHandler {
 			$status = $userobj->active;
 			$user_role = $userobj->user_level;
 			$bcrypt = $userobj->bcrypt;
+			$salt = $userobj->salt;
+			$cost = $userobj->cost;
 			//if ($status == 1) { // user is active
 
 			if ($bcrypt > 0) {
-				$pass_hash = exec("{$cwd}/bin/bp.pl --pass=$password");
+				$pass_hash = exec("{$cwd}/bin/bp.pl --pass=$password --salt=$salt --cost=$cost");
 				$pass_hash = preg_replace("/PHASH: |\n|\r|\t| /",'',$pass_hash);
 			} else {$pass_hash = $password;}
-			
+
 			if ( preg_match("/Y/i", $status) ) {
 				//if (\creamy\PassHash::check_password($password_hash, $password)) {
 				if ($password_hash === $pass_hash) {
@@ -299,6 +301,8 @@ class DbHandler {
 					$arr["id"] = $userobj->user_id;
 	                $arr["name"] = $userobj->full_name;
 	                $arr["email"] = $userobj->email;
+	                $arr["phone_login"] = $userobj->phone_login;
+	                $arr["phone_pass"] = $userobj->phone_pass;
 					$arr["role"] = ($user_role == 9 || $user_role == 8 || $user_role == 0) ? 0 : 3;
 					$arr["avatar"] = "";
 	                

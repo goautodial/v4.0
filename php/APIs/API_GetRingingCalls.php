@@ -1,16 +1,16 @@
 <?php
 require_once('../goCRMAPISettings.php');
 /*
-* Displaying Total Active Leads
-* [[API: Function]] - goGetTotalActiveLeads
-* This application is used to get total number of active leads
+* Displaying Call(s) Ringing
+* [[API: Function]] - goGetRingingCall
+* This application is used to get calls ringing
 */
-   
+
    $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
    $postfields["goUser"] = goUser; #Username goes here. (required)
    $postfields["goPass"] = goPass;
-   $postfields["goAction"] = "goGetTotalActiveLeads"; #action performed by the [[API:Functions]]
-
+   $postfields["goAction"] = "goGetRingingCalls"; #action performed by the [[API:Functions]]
+   
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -21,18 +21,19 @@ require_once('../goCRMAPISettings.php');
     curl_close($ch);
    
    //var_dump($data);
-    $data = explode(";",$data);
-    foreach ($data AS $temp) {
+   $data = explode(";",$data);
+   foreach ($data AS $temp) {
       $temp = explode("=",$temp);
       $results[$temp[0]] = $temp[1];
-    }
+   }
    
-    if ($results["result"]=="success") {
+   if ($results["result"]=="success") {
       # Result was OK!
       //var_dump($results); #to see the returned arrays.
-           echo number_format($results["getTotalActiveLeads"]);
-    } else {
+           echo number_format($results["getRingingCalls"]);
+   } else {
       # An error occurred
-      echo "0";
-    }
+           echo "0";
+   }
+
 ?>

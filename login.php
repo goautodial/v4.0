@@ -75,7 +75,10 @@
 			} else {
 				$_SESSION["userid"] = $result["id"]; 
 				$_SESSION["username"] = $result["name"]; 
-				$_SESSION["userrole"] = $result["role"]; 
+				$_SESSION["userrole"] = $result["role"];
+				$_SESSION["phone_login"] = $result["phone_login"];
+				$_SESSION["phone_pass"] = $result["phone_pass"];
+				
 				if (!empty($result["avatar"])) {
 					$_SESSION['avatar'] = $result["avatar"];
 				} else { // random avatar.
@@ -86,7 +89,7 @@
 					header("location: index.php"); // Redirecting To Admin Dashboard
 				}
 				if($_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_AGENT){
-					header("location: editcustomer.php"); // Redirecting to Agent Dashboard
+					header("location: agent.php"); // Redirecting to Agent Dashboard
 				}
 
 			}
@@ -112,7 +115,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js" type="text/javascript"></script>
     </head>
-  <body class="login-page">
+  <body class="login-page" style="overflow: hidden;">
     <div class="login-box" id="login-box">
 	  <div class="margin text-center">
 		<img src="img/logo.png" width="auto" height="64">
