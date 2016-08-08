@@ -8,6 +8,7 @@ require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
 //require_once('./php/DbHandler.php');
 require_once('./php/LanguageHandler.php');
+require('./php/Session.php');
 require_once('./php/goCRMAPISettings.php');
 
 // initialize structures
