@@ -1743,6 +1743,7 @@ error_reporting(E_ERROR | E_PARSE);
 			//$agentmenu .= $this-> getSidebarItem("", "book", $this->lh->translationFor("scripts"));
 			//$agentmenu .= $this-> getSidebarItem("", "tasks", $this->lh->translationFor("Custom Form"));
 			$agentmenu .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
+			$agentmenu .= $this->getSidebarItem("callbackslist.php", "tty", $this->lh->translationFor("active_callbacks"), "0", "blue");
 		}
 
 		// get customer types
@@ -1775,13 +1776,15 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= $adminArea;
 		$result .= $loadleads;
 		$result .= $contactsandrecs;
-		// menu for agents
-		$result .= $agentmenu;
 
         // ending: contacts, messages, notifications, tasks, events.
         
         //$result .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
 		  $result .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
+		
+		// menu for agents
+		$result .= $agentmenu;
+		
         $result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
 		//$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
         $result .= $this->getSidebarItem("notifications.php", "exclamation", $this->lh->translationFor("notifications"), $numNotifications, "orange");
