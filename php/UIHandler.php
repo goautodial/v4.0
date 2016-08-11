@@ -1413,7 +1413,11 @@ error_reporting(E_ERROR | E_PARSE);
 		                    	'.$this->getTopbarNotificationsMenu($user).'
 		                    	'.$this->getTopbarTasksMenu($user).'
 		                    	<li>
-			                    	<a href="#" data-toggle="control-sidebar"><i class="fa fa-cogs"></i></a>
+			                    	<a href="#" class="visible-xs" data-toggle="control-sidebar" style="padding-top: 17px; padding-bottom: 18px; margin-right: -15px;"><i class="fa fa-cogs"></i></a>
+										<a href="#" class="hidden-xs" data-toggle="control-sidebar" style="padding-top: 14px; padding-bottom: 14px; margin-right: -15px;">
+											<img src="'.$user->getUserAvatar().'" width="12" height="auto"  class="user-image img-circle" alt="User Image" style="padding-bottom: 3px;" />
+											<span> '.$user->getUserName().' <i class="caret"></i></span>
+										</a>
 				               </li>
 	                    </ul>
 	                </div>
@@ -1421,7 +1425,9 @@ error_reporting(E_ERROR | E_PARSE);
 	        </header>
 	        <div class="preloader">
     			<center>
-    					<img src="'.$logo.'"/>
+    					<img src="'.$logo.'" class="img-responsive" style="display: inline-block;"/>
+						<br class="visible-xs">
+						<br class="visible-xs">
     					<span class="dots">
     					<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
     					</span>
@@ -1697,6 +1703,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$callreports = "";
 		$loadleads = "";
 		$contactsandrecs = "";
+		$eventsArea = "";
 		if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
 			
 			$modulesWithSettings = $mh->modulesWithSettings();
@@ -1735,6 +1742,8 @@ error_reporting(E_ERROR | E_PARSE);
 			
 			$loadleads .= $this->getSidebarItem("loadleads.php", "sort-alpha-asc", $this->lh->translationFor("load_leads"));
 			
+			$eventsArea .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
+			
 			$contactsandrecs .= $this->getSidebarItem("contactsandcallrecordings.php", "phone-square", $this->lh->translationFor("contacts_call_recordings"));
 		}
 		
@@ -1743,7 +1752,7 @@ error_reporting(E_ERROR | E_PARSE);
 			//$agentmenu .= $this-> getSidebarItem("", "book", $this->lh->translationFor("scripts"));
 			//$agentmenu .= $this-> getSidebarItem("", "tasks", $this->lh->translationFor("Custom Form"));
 			$agentmenu .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
-			$agentmenu .= $this->getSidebarItem("callbackslist.php", "tty", $this->lh->translationFor("active_callbacks"), "0", "blue");
+			$agentmenu .= $this->getSidebarItem("events.php", "calendar", $this->lh->translationFor("events"), "0", "blue");
 		}
 
 		// get customer types
@@ -1776,11 +1785,11 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= $adminArea;
 		$result .= $loadleads;
 		$result .= $contactsandrecs;
+		$result .= $eventsArea;
 
         // ending: contacts, messages, notifications, tasks, events.
         
         //$result .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
-		  $result .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
 		
 		// menu for agents
 		$result .= $agentmenu;
