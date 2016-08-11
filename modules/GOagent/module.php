@@ -142,6 +142,8 @@ class GOagent extends Module {
 		$previewCall = $this->lh()->translationFor("preview_call");
 		$goBack = $this->lh()->translationFor("go_back");
 		$pauseAgent = $this->lh()->translationFor("pause_agent");
+		$pauseAgentXS = $this->lh()->translationFor("pause");
+		$transferConference = $this->lh()->translationFor("transfer_conference_functions");
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -494,7 +496,7 @@ EOF;
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4>$custInfoTitle</h4>
+				<h4 class="modal-title">$custInfoTitle</h4>
 			</div>
 			<div class="modal-body">
 				<form id="formMain" class="form-horizontal">
@@ -559,7 +561,7 @@ EOF;
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4>$dispositionCall: <span id='DispoSelectPhone'></span></h4>
+				<h4 class="modal-title">$dispositionCall: <span id='DispoSelectPhone'></span></h4>
 			</div>
 			<div class="modal-body">
 				<span id="Dispo3wayMessage"></span>
@@ -579,7 +581,46 @@ EOF;
 						<input type="checkbox" name="DispoSelectStop" id="DispoSelectStop" value="0" />
 						<label for="DispoSelectStop" class="label-primary" style="width: 0px; margin-left: 10px;"></label>
 					</div>
-					<strong>$pauseAgent</strong>
+					<strong><span id="pause_agent">$pauseAgent</span><span id="pause_agent_xs" style="display: none;">$pauseAgentXS</span></strong>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="transfer-conference" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">$transferConference</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-4">dropdown</div>
+					<div class="col-md-2"><button class="btn btn-primary btn-sm">LOCAL CLOSER</button></div>
+					<div class="col-md-3"></div>
+					<div class="col-md-3"><button class="btn btn-default btn-sm">HANGUP XFER LINE</button></div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						<div class="mda-form-group label-floating">
+							<label for="transfer-seconds">SECONDS</label>
+							<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="transfer-seconds" disabled>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mda-form-group label-floating">
+							<label for="transfer-channel">CHANNEL</label>
+							<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="transfer-channel" disabled>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<label class="checkbox-inline c-checkbox">
+							<input type="checkbox" id="transfer-consultative" value="1">
+							CONSULTATIVE
+						</label>
+					</div>
+					<div class="col-md-3"><button class="btn btn-default btn-sm">HANGUP XFER LINE</button></div>
 				</div>
 			</div>
 		</div>

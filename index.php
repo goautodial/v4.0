@@ -161,7 +161,11 @@ $ingroup = $ui->API_getInGroups();
 $dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
 $dropped_percentage = $ui->API_goGetDroppedPercentage();
 $calls_incoming_queue = $ui->API_goGetIncomingQueue();
-			
+//if(is_null($ui->API_getRealtimeAgent()) {
+	//$realtimeAgents = "";
+//} else {
+	$realtimeAgents = $ui->API_getRealtimeAgent();
+//}
 //var_dump($dropped_calls_today);
 //die("dd");
 /*
@@ -818,21 +822,21 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 					<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
 					
 				<!--===== FILTER LIST =======-->
-					<div class="agent_monitor_filter pull-right">
-						<small>Filter: </small>
+					<!--<div class="agent_monitor_filter pull-right">
+						<small>Filter: </small> -->
 					<!-- == INGROUP == -->
-						<span class="tenant_filter_agentmonitoring">
+						<!--<span class="tenant_filter_agentmonitoring">
 						    <select id="tenant_dropdown_agent_monitoring">
-						   			<option selected> --- All Tenants --- </option>
+						   			<option selected> --- All Tenants --- </option> -->
 						   		<?php
-								 	for($i=0;$i < count($ingroup->group_id);$i++){
-								 		echo "<option>".$ingroup->group_name[$i]."</option>";
-								 	}
+							//	 	for($i=0;$i < count($ingroup->group_id);$i++){
+							//	 		echo "<option>".$ingroup->group_name[$i]."</option>";
+							//	 	}
 								?>
-						    </select>
-						</span>
+						    <!-- </select>
+						</span> -->
 					<!-- == TENANT milo == -->
-						<span class="campaign_filter_agentmonitoring">
+						<!-- <span class="campaign_filter_agentmonitoring"> -->
 							<!--
 							   <div class="btn-group">
 								  <button type="button" data-toggle="dropdown" id="campaign_dropdown" class="btn btn-default"> - - - All Campaigns - - - </button>
@@ -845,21 +849,29 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 								  </ul>
 							   </div>
 							-->
-							<select id="campaign_dropdown_agentmonitoring">
-						   			<option selected> --- All Campaigns --- </option>
+							<!-- <select id="campaign_dropdown_agentmonitoring">
+						   			<option selected> --- All Campaigns --- </option> -->
 						   		<?php
-								 	for($i=0;$i < count($campaign->campaign_id);$i++){
-									 	echo "<option>".$campaign->campaign_name[$i]."</option>";
-									}
+					//			 	for($i=0;$i < count($campaign->campaign_id);$i++){
+						//			 	echo "<option>".$campaign->campaign_name[$i]."</option>";
+							//		}
 								?>
-						    </select>
+						    <!--</select>
 						</span>
-					</div>
-							<!-- END FILTER list    -->
+					</div> -->
+							<!-- END FILTER list milo   -->
 					<h4 class="modal-title" id="agent_monitoring">Monitoring</h4>
 					<?php
-						var_dump($_SESSION);
+						//var_dump($_SESSION);
+						//var_dump($realtimeAgents);
+						
+						/* for($i=0;$i < count($realtimeAgents->session_id);$i++){
+							$goconf_exten = $realtimeAgents->session_id[$i];
+							$goconf_server = $realtimeAgents->server_ip[$i];
+						}
+						echo $goconf_exten.'----'.$goconf_server; */
 					?>
+
 				
 				</div>
 				<div class="modal-body">
@@ -867,125 +879,51 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 						<thead>
 							<tr>
 								<th>Agent</th>
-								<th>Campaign</th>
+								<th>Status</th>
 								<th>MM:SS</th>
 							</tr>
 						</thead>
 						<tbody>
+							<?php
+							
+							if(is_null($realtimeAgents->session_id)) {
+							?>
+							<tr>
+								<td>No Agents Live</td>
+							</tr>
+							<?php
+							
+							} else {
+								for($i=0;$i < count($realtimeAgents->session_id);$i++){
+								
+							?>
 							<tr>
 								<td>
 								  <!-- START list group item-->
 									<div class="media-box">
-										<div class="pull-left">
-										   <img src="<?php echo $_SESSION['avatar'];?>" alt="Image" class="media-box-object img-circle thumb32">
-										</div>
+										<!-- <div class="pull-left">
+										   <img src="<?php //echo $_SESSION['avatar'];?>" alt="Image" class="media-box-object img-circle thumb32">
+										</div> -->
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
-											  <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis</strong>
+											  <span class="circle circle-success circle-lg text-left"></span><?php echo $realtimeAgents->user[$i]; ?></strong>
 										</div>
 									</div>
 								</td>
 								
 								<td>
-									CS HOTLINE
+									<?php echo $realtimeAgents->status[$i]; ?>
 								</td>
 
 								<td>
-									01:49
+									<?php echo $realtimeAgents->last_state_change[$i]; ?>
 								</td>
 							</tr>
+							<?php
+								} //end for
+							} //end if
+							?>
 
-							<tr>
-								<td>
-								  <!-- START list group item-->
-									 <div class="media-box">
-										<div class="pull-left">
-										   <img src="theme_dashboard/img/user/03.jpg" alt="Image" class="media-box-object img-circle thumb32">
-										</div>
-										<div class="media-box-body clearfix">
-										   <strong class="media-box-heading text-primary">
-											  <span class="circle circle-success circle-lg text-left"></span>Jessica Silva</strong>
-										</div>
-									 </div>
-								</td>
-
-								<td>
-									CS HOTLINE
-								</td>
-
-								<td>
-									01:49
-								</td>
-							</tr>
-
-							<tr>
-								<td>
-								  <!-- START list group item-->
-									 <div class="media-box">
-										<div class="pull-left">
-										   <img src="theme_dashboard/img/user/02.jpg" alt="Image" class="media-box-object img-circle thumb32">
-										</div>
-										<div class="media-box-body clearfix">
-										   <strong class="media-box-heading text-primary">
-											  <span class="circle circle-danger circle-lg text-left"></span>Jessie Wells</strong>
-										</div>
-									 </div>
-								</td>
-
-								<td>
-									CS HOTLINE
-								</td>
-
-								<td>
-									01:49
-								</td>
-							</tr>
-
-							<tr>
-								<td>
-								  <!-- START list group item-->
-									 <div class="media-box">
-										<div class="pull-left">
-										   <img src="theme_dashboard/img/user/12.jpg" alt="Image" class="media-box-object img-circle thumb32">
-										</div>
-										<div class="media-box-body clearfix">
-										   <strong class="media-box-heading text-primary">
-											  <span class="circle circle-danger circle-lg text-left"></span>Rosa Burke</strong>
-										</div>
-									 </div>
-								</td>
-
-								<td>
-									CS HOTLINE
-								</td>
-
-								<td>
-									01:49
-								</td>
-							</tr>
-
-							<tr>
-								<td>
-								  <!-- START list group item-->
-									 <div class="media-box">
-										<div class="pull-left">
-										   <img src="theme_dashboard/img/user/10.jpg" alt="Image" class="media-box-object img-circle thumb32">
-										</div>
-										<div class="media-box-body clearfix">
-										   <strong class="media-box-heading text-primary">
-											  <span class="circle circle-danger circle-lg text-left"></span>Michelle Lane</strong>
-										</div>
-									 </div>
-								</td>
-
-								<td>
-									CS HOTLINE
-								</td>
-
-								<td>
-									01:49
-								</td>
-							</tr>
 						</tbody>
 					</table>
 				</div> <!-- end of modal body -->
