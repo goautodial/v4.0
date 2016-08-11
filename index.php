@@ -158,9 +158,15 @@ $ingroup = $ui->API_getInGroups();
  * API for call statistics - Demian
 */
  
+
 $dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
 $dropped_percentage = $ui->API_goGetDroppedPercentage();
 $calls_incoming_queue = $ui->API_goGetIncomingQueue();
+
+
+//<<<<<<< HEAD
+
+//=======
 //if(is_null($ui->API_getRealtimeAgent()) {
 	//$realtimeAgents = "";
 //} else {
@@ -171,6 +177,7 @@ $calls_incoming_queue = $ui->API_goGetIncomingQueue();
 /*
  * get API data for chart from UIHandler.php
 */
+//>>>>>>> 787a99cc6b9f5c49bbfae4e43ee10ad9623028dd
 
 $callsperhour = $ui->API_goGetCallsPerHour();
 
@@ -179,7 +186,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	$callsperhour = explode(";",trim($callsperhour, ';'));
 	 foreach ($callsperhour AS $temp) {
 	   $temp = explode("=",$temp);
-	   $results[$temp[0]] = $temp[1];   
+	   $results[$temp[0]] = $temp[1];  
+
          }
 
         $outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);		
@@ -391,8 +399,12 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	                    </div>
 	                	-->
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info">
+	                		<div class="h2 m0"></div>
+								
+	                	</div>
+	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><span class="text-lg" id="refresh_RingingCalls"></span></div>
-								<div class="text">Ringing Calls</div>
+								<div class="text-muted">Ringing Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><span class="text-lg" id="refresh_IncomingQueue"></span></div>
@@ -409,10 +421,6 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><span class="text-lg" id="refresh_TotalCalls"></span></div>
 								<div class="text-muted" style="font-size: small;">Total Calls</div>
-	                	</div>                	
-	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes">
-	                		<div class="h2 m0"><?php echo $outbound_calls_today; ?></div>
-								<div class="text-muted">Outbound Calls</div>
 	                	</div>
 	                </div>
                 </div>
@@ -578,7 +586,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		                        </div>
 		                        <!-- END list group item-->
 		                        <!-- START list group item-->
-		                        <div class="list-group-item">
+		                        <!--<div class="list-group-item">
 		                           <div class="media-box">
 		                              <div class="pull-left">
 		                                 <span class="fa-stack">
@@ -596,10 +604,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		                                 </p>
 		                              </div>
 		                           </div>
-		                        </div>
+		                        </div>-->
 		                        <!-- END list group item-->
 		                        <!-- START list group item-->
-		                        <div class="list-group-item">
+		                        <!--<div class="list-group-item">
 		                           <div class="media-box">
 		                              <div class="pull-left">
 		                                 <span class="fa-stack">
@@ -615,10 +623,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		                                 </p>
 		                              </div>
 		                           </div>
-		                        </div>
+		                        </div>-->
 		                        <!-- END list group item-->
 		                        <!-- START list group item-->
-		                        <div class="list-group-item">
+		                        <!--<div class="list-group-item">
 		                           <div class="media-box">
 		                              <div class="pull-left">
 		                                 <span class="fa-stack">
@@ -637,10 +645,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		                                 </p>
 		                              </div>
 		                           </div>
-		                        </div>
+		                        </div>-->
 		                        <!-- END list group item-->
 		                        <!-- START list group item-->
-		                        <div class="list-group-item">
+		                        <!--<div class="list-group-item">
 		                           <div class="media-box">
 		                              <div class="pull-left">
 		                                 <span class="fa-stack">
@@ -659,13 +667,14 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		                                 </div>
 		                              </div>
 		                           </div>
-		                        </div>
+		                        </div>-->
 		                     </div>
+		                     </span>
 		                     <div class="panel-footer clearfix">
 		                        <a href="#" class="pull-left">
 		                           <small>Load more</small>
 		                        </a>
-		                     </div>
+		                     </div>		                     
 		                </div>
             	</aside><!-- END OF COLUMN 3 -->
 
@@ -1207,8 +1216,11 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			load_db_time();
 			
         // ---- hopper leads warning
-                        load_campaign_name();			
+                        load_campaign_name();
+                        //load_calls_today();
+                
 		});
+
 		
 	//Refresh functions() after 5000 millisecond
 		// ... status boxes ...
@@ -1243,7 +1255,9 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		setInterval(load_db_time,5000);
 		
 		// ... hopper leads warning ...
-		setInterval(load_campaign_name,5000);		
+		setInterval(load_campaign_name,5000);
+		//setInterval(load_calls_today,5000);
+		
 	</script>
 	
     <!-- =============== VENDOR SCRIPTS ===============-->
