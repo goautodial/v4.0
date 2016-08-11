@@ -30,9 +30,20 @@ $total_calls_today = $ui->API_goGetTotalCalls();
 $dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
 $calls_per_hour = $ui->API_goGetCallsPerHour();
 $total_agents_call = $ui->API_goGetTotalAgentsCall();
+$realtimeAgents = $ui->API_getRealtimeAgent();
 //var_dump($total_agents_call);    
 //die(dd);
 ?>
+
+function load_realtimemonitoring(){
+   $.ajax({
+     url: "<?php echo $realtimeAgents; ?>",
+     cache: false,
+     success: function(data){
+        $("#agent_monitoring_table").html(data);
+     } 
+   });
+}
 
 function load_totalagentscall(){
    $.ajax({
