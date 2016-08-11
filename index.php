@@ -556,9 +556,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			<!-- ==== TASK ACTIVITIES ===== -->
 						<div class="panel panel-default">
 		                     <div class="panel-heading">
-		                        <div class="panel-title">Latest activities</div>
-		                     </div>
+		                        <div class="panel-title">Campaigns Resources</div>
+		                     </div>         
 		                     <!-- START list group-->
+		                     <span id="refresh_db_time">
 		                     <div class="list-group">
 		                        <!-- START list group item-->
 		                        <div class="list-group-item">
@@ -568,16 +569,11 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		                                    <em class="fa fa-circle fa-stack-2x text-purple"></em>
 		                                    <em class="fa fa-cloud-upload fa-stack-1x fa-inverse text-white"></em>
 		                                 </span>
-		                              </div>
+		                              </div>                                           
 		                              <div class="media-box-body clearfix">
-		                                 <small class="text-muted pull-right ml">15m</small>
-		                                 <div class="media-box-heading"><a href="#" class="text-purple m0">NEW FILE</a>
-		                                 </div>
-		                                 <p class="m0">
-		                                    <small><a href="#">Bootstrap.xls</a>
-		                                    </small>
-		                                 </p>
-		                              </div>
+		                              <span id="refresh_campaign_name">                                            
+                                              </span>
+                                              </div>
 		                           </div>
 		                        </div>
 		                        <!-- END list group item-->
@@ -999,7 +995,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 <!--========== REFRESH DIVS ==============-->
 	<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>
 	<script src="js/load_statusboxes.js"></script>
-        <!-- <script src="jsloader.php"></script> -->
+        <script src="js/load_hopperleadswarning.js"></script>
 	<script src="js/load_clusterstatus.js"></script>
 
 	<script>
@@ -1209,6 +1205,9 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			load_php_time();
 		// ---- DB TIME
 			load_db_time();
+			
+        // ---- hopper leads warning
+                        load_campaign_name();			
 		});
 		
 	//Refresh functions() after 5000 millisecond
@@ -1242,6 +1241,9 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		setInterval(load_disk_usage,5000);
 		setInterval(load_php_time,5000);
 		setInterval(load_db_time,5000);
+		
+		// ... hopper leads warning ...
+		setInterval(load_campaign_name,5000);		
 	</script>
 	
     <!-- =============== VENDOR SCRIPTS ===============-->

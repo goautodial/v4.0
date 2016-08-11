@@ -4527,6 +4527,32 @@ error_reporting(E_ERROR | E_PARSE);
 					return $vars;
 			 }
 		}
+		/*
+		 * Displaying Hopper Leads Warning
+		 * [[API: Function]] - goGetHopperLeadsWarning
+		 * This application is used to get the list of campaigns < 100
+		*/
+
+		public function API_goGetHopperLeadsWarning() {
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
+			$postfields["goAction"] = "goGetHopperLeadsWarning"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			 
+			 $output = json_decode($data);
+			 
+			 return $output;
+		}
 		
 		/*
 		 * Displaying Leads in hopper
