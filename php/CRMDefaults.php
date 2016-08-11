@@ -200,5 +200,8 @@ define ('CRM_SETTING_TYPE_PASS', "password");
 
 // misc constants
 define ('CRM_DEFAULT_SUCCESS_RESPONSE', "success");
+define ('CRM_GOADMIN_TITLE', "GOautodial Admin");
+define ('CRM_GOAGENT_TITLE', "GOagent Web Client");
+define ('CRM_GO_VERSION', "v4.0");
 
 ?>
