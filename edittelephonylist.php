@@ -229,7 +229,7 @@ if (isset($_POST["modifyid"])) {
 			                    <fieldset class="footer-buttons">
 			                        <div class="box-footer">
 			                           <div class="col-sm-3 pull-right">
-												<a href="telephonylist.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+												<a href="telephonylist.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
 			                           	
 			                                	<button type="submit" class="btn btn-primary" id="modifyListOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 											
@@ -273,6 +273,10 @@ if (isset($_POST["modifyid"])) {
 				//$("#modifylist").validate({
                 //	submitHandler: function() {
 					
+					$(document).on('click', '#cancel', function(){
+						swal("Cancelled", "No action has been done :)", "error");
+					});
+
 					$(document).on('click','#modifyListOkButton',function() {
 						//submit the form
 							$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");

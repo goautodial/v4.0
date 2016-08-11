@@ -259,7 +259,7 @@
 							
 						<div class="bottom-menu skin-blue">
 							<div class="action-button-circle" data-toggle="modal">
-								<?php print $ui->getCircleButton("calls", "plus"); ?>
+								<?php print $ui->getCircleButton("inbound", "plus"); ?>
 							</div>
 							<div class="fab-div-area" id="fab-div-area">
 								<ul class="fab-ul" style="height: 250px;">
@@ -964,8 +964,6 @@
 
         <!-- wizard -->
 		<script src="js/easyWizard.js" type="text/javascript"></script>
-		<!-- SLIMSCROLL-->
-  		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
 	    <!-- bootstrap color picker -->
 		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
 

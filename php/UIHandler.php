@@ -3459,11 +3459,11 @@ error_reporting(E_ERROR | E_PARSE);
 	    
 	    // this will be the output html
 	    $button = "";
+	    $button .= '<a button-area add-'.$page.'">';
 	    $button .= '<div class="circle-button skin-'.$theme.'">';
-	    $button .= '<a class="fa fa-'.$icon.' button-area add-'.$page.'">';
-	    $button .= '</a>';
+	    $button .= '<em class="fa fa-'.$icon.' button-area add-'.$page.'"></em>';
 	    $button .= '</div>';
-	    
+	    $button .= '</a>';
 	    return $button;
 	}
 
@@ -3912,6 +3912,10 @@ error_reporting(E_ERROR | E_PARSE);
 
 	        for($i=0;$i<count($output->call_time_id);$i++){
 		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i], $output->call_time_name[$i]);
+            
+            $output->ct_default_start[$i] = date('H:i A', strtotime($output->ct_default_start[$i]));
+            $output->ct_default_stop[$i] = date('H:i A', strtotime($output->ct_default_stop[$i]));
+
                     $result .= "<tr>
 	                    <td class ='hide-on-medium hide-on-low'><a class='edit-calltime' data-id='".$output->call_time_id[$i]."'>".$output->call_time_id[$i]."</a></td>
 	                    <td>".$output->call_time_name[$i]."</td>

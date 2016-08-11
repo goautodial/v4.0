@@ -1,4 +1,7 @@
 <?php
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
 
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
@@ -225,7 +228,6 @@ $leads = $ui->API_GetLeads($user->getUserName());
 
 											   	?>	
 														<tr>
-															
 															<td><?php echo $callrecs->end_last_local_call_time[$i];?></a></td>
 															<td class='hide-on-medium hide-on-low'><?php echo $callrecs->full_name[$i];?></td>
 															<td class='hide-on-medium hide-on-low'><?php echo $callrecs->phone_number[$i];?></td>

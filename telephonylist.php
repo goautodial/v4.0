@@ -280,25 +280,6 @@ $lists = $ui->API_goGetAllLists();
 				</form>
 		
 				</div> <!-- end of modal body -->
-				
-				<!-- NOTIFICATIONS -->
-				<div id="notifications">
-					<div class="output-message-success" style="display:none;">
-						<div class="alert alert-success alert-dismissible" role="alert">
-						  <strong>Success!</strong> New Agent added.
-						</div>
-					</div>
-					<div class="output-message-error" style="display:none;">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
-						</div>
-					</div>
-					<div class="output-message-incomplete" style="display:none;">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  Please fill-up all the fields correctly and do not leave any fields with (<strong> * </strong>) blank.
-						</div>
-					</div>
-				</div>
 
 				<div class="modal-footer">
                 <!-- The wizard button will be inserted here. -->
@@ -365,75 +346,56 @@ $lists = $ui->API_goGetAllLists();
 	                $('#submit_list').val("Saving, Please Wait.....");
 	                $('#submit_list').prop("disabled", true);
 
-		                swal({   title: "Are you sure?",   
-		                	text: "This action cannot be undone.",   
-		                	type: "warning",   
-		                	showCancelButton: true,   
-		                	confirmButtonColor: "#DD6B55",   
-		                	confirmButtonText: "Yes, submit!",   
-		                	cancelButtonText: "No, cancel please!",   
-		                	closeOnConfirm: false,   
-		                	closeOnCancel: false }, 
+        			var validate = 0;
+	                var list_id = $("#add_list_id").val();
+	                var list_name = $("#list_name").val();
+	                var list_desc = $("#list_desc").val();
+	               	
+	               	var form = $("#create_form");
+	               	// Find disabled inputs, and remove the "disabled" attribute
+					var disabled = form.find(':input:disabled').removeAttr('disabled');
+					var serialized = form.serialize();
 
-		                	function(isConfirm){   
-	                		if (isConfirm) {     
-	                			var validate = 0;
-				                var list_id = $("#add_list_id").val();
-				                var list_name = $("#list_name").val();
-				                var list_desc = $("#list_desc").val();
-				               	
-				               	var form = $("#create_form");
-				               	// Find disabled inputs, and remove the "disabled" attribute
-								var disabled = form.find(':input:disabled').removeAttr('disabled');
-								var serialized = form.serialize();
+	                if(list_id == ""){
+	                    validate = 1;
+	                }
 
-				                if(list_id == ""){
-				                    validate = 1;
-				                }
+	                if(list_name == ""){
+	                    validate = 1;
+	                }
 
-				                if(list_name == ""){
-				                    validate = 1;
-				                }
+	                if(list_desc == ""){
+	                    validate = 1;
+	                }
 
-				                if(list_desc == ""){
-				                    validate = 1;
-				                }
-
-				                    if(validate == 0){
-				                    //alert("Validated !");
-				                    
-				                        $.ajax({
-				                            url: "./php/AddTelephonyList.php",
-				                            type: 'POST',
-				                            data: serialized,
-				                            success: function(data) {
-				                              // console.log(data);
-				                                  if(data == 1){
-				                                        swal("Success!", "List Successfully Created!", "success")
-				                                        window.setTimeout(function(){location.reload()},3000)
-				                                        $('#submit_list').val("Loading");
-				                                  }
-				                                  else{
-				                                      sweetAlert("Oops...", "Something went wrong!", "error");
-				                                      $('#submit_list').val("Submit");
-				                                      $('#submit_list').prop("disabled", false);
-				                                  }
-				                            }
-				                        });
-				                    
-				                    }else{
-				                        sweetAlert("Oops...", "Something went wrong!", "error");
-				                        validate = 0;
-				                        $('#submit_list').val("Submit");
-				                        $('#submit_list').prop("disabled", false);
-				                    }
-				                
-	                		} else {     
-	                			swal("Cancelled", "Your imaginary file is safe :)", "error");  
-	                			$('#submit_list').val("Submit");
-		                        $('#submit_list').prop("disabled", false); 
-	                		} 
-		                });
+	                    if(validate == 0){
+	                    //alert("Validated !");
+	                    
+	                        $.ajax({
+	                            url: "./php/AddTelephonyList.php",
+	                            type: 'POST',
+	                            data: serialized,
+	                            success: function(data) {
+	                              // console.log(data);
+	                                  if(data == 1){
+	                                        swal("Success!", "List Successfully Created!", "success")
+	                                        window.setTimeout(function(){location.reload()},3000)
+	                                        $('#submit_list').val("Loading");
+	                                  }
+	                                  else{
+	                                      sweetAlert("Oops...", "Something went wrong!", "error");
+	                                      $('#submit_list').val("Submit");
+	                                      $('#submit_list').prop("disabled", false);
+	                                  }
+	                            }
+	                        });
+	                    
+	                    }else{
+	                        sweetAlert("Oops...", "Something went wrong!", "error");
+	                        validate = 0;
+	                        $('#submit_list').val("Submit");
+	                        $('#submit_list').prop("disabled", false);
+	                    }
 					}); 
 	                
 					/**
@@ -486,7 +448,8 @@ $lists = $ui->API_goGetAllLists();
 				                    });
 		                			
 		                		} else {     
-		                			swal("Cancelled", "No action has been done :)", "error");   } 
+		                			swal("Cancelled", "No action has been done :)", "error");   
+		                		} 
 		                	}
 		                );
 

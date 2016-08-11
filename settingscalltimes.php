@@ -27,6 +27,9 @@
         <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
         <!-- Wizard Form style -->
         <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
+        <!-- Wizard Form style -->
+    	<link rel="stylesheet" href="css/easyWizard.css">
+
         <link href="css/style.css" rel="stylesheet" type="text/css" />
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
@@ -49,6 +52,18 @@
         <!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+
+        <!-- datetime picker --> 
+		<link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+
+		<!-- Date Picker -->
+        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
+		<script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+		<!-- SWEETALERT-->
+   		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
+		<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+
 	<!-- Bootstrap Player -->
 	<script src="js/bootstrap-player.js" type="text/javascript"></script>
 
@@ -108,225 +123,218 @@
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 		<div class="bottom-menu skin-blue">
-			<div class="action-button-circle" data-toggle="modal">
+			<div class="action-button-circle" data-toggle="modal" data-target="#view-calltime-modal">
 				<?php print $ui->getCircleButton("calltimes", "plus"); ?>
 			</div>
 		</div>
+
+<?php
+	$user_groups = $ui->API_goGetUserGroupsList();
+
+?>
 	<!-- Modal -->
-	<div id="view-calltime-modal" class="modal fade" role="dialog">
-	  <div class="modal-dialog" style="width: 800px;">
+
+	<div id="view-calltime-modal" class="modal fade">
+	  <div class="modal-dialog">
 
 	    <!-- Modal content-->
-	    <div class="modal-content">
+	    <div class="modal-content" style="border-radius:5px;">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Call Time Details</b></h4>
+	        <h4 class="modal-title animate-header"><b>Call Time Details</b></h4>
 	      </div>
-	      <div class="modal-body">
+	      <div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 			<div class="form-horizontal">
 				<form id="form_calltimes" class="">
-					<div class="message_box"></div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">Call Time ID:</label>
-						<div class="col-lg-8">
-							<label class="control-label call-time-id hide"></label>
-							<input type="text" class="form-control call-time-id-textbox" name="call_time_id">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">Call Time Name:</label>
-						<div class="col-lg-8">
-							<input type="text" class="form-control call-time-name" name="call_time_name">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">Call Time Comments:</label>
-						<div class="col-lg-8">
-							<input type="text" class="form-control call-time-comments" name="call_time_comments">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">User Group:</label>
-						<div class="col-lg-8">
-							<select class="form-control call-time-user-group" name="call_time_user_group">
-								<!-- <option value="ALL">ALL USER GROUPS</option> -->
-								<option value="ADMIN">ADMIN - GOAUTODIAL ADMINISTRATORS</option>
-								<option value="AGENTS">AGENTS - GOAUTODIAL AGENTS</option>
-								<!-- <option value="SUPERVISOR">SUPERVISOR - SUPERVISOR</option> -->
-							</select>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">&nbsp;</label>
-						<div class="col-lg-8">
-							<div class="row">
-								<label class="control-label col-lg-3">Start</label>
-								<label class="control-label col-lg-3">Stop</label>
-								<label class="control-label col-lg-3">After Hours Audio</label>
-								<div class="control-label col-lg-3">&nbsp;</div>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">Dafault:</label>
-						<div class="col-lg-8">
-							<div class="row">
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="start_default" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="stop_default" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="audio_default">
-								</div>
-								<div class="control-label col-lg-3">
-									<a href="#">[audio chooser]</a>
+
+					<div class="wizard-step" style="display: block;">
+
+						<div class="message_box"></div>
+						<fieldset>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Call Time ID:</label>
+								<div class="col-lg-7 mb">
+									<label class="control-label call-time-id hide"></label>
+									<input type="text" class="form-control call-time-id-textbox" name="call_time_id">
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">Sunday:</label>
-						<div class="col-lg-8">
-							<div class="row">
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="start_sunday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="stop_sunday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="audio_sunday">
-								</div>
-								<div class="control-label col-lg-3">
-									<a href="#">[audio chooser]</a>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Call Time Name:</label>
+								<div class="col-lg-7 mb">
+									<input type="text" class="form-control call-time-name" name="call_time_name">
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">Monday:</label>
-						<div class="col-lg-8">
-							<div class="row">
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="start_monday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="stop_monday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="audio_monday">
-								</div>
-								<div class="control-label col-lg-3">
-									<a href="#">[audio chooser]</a>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Call Time Comments:</label>
+								<div class="col-lg-7 mb">
+									<input type="text" class="form-control call-time-comments" name="call_time_comments">
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">Tuesday:</label>
-						<div class="col-lg-8">
-							<div class="row">
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="start_tuesday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="stop_tuesday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="audio_tuesday">
-								</div>
-								<div class="control-label col-lg-3">
-									<a href="#">[audio chooser]</a>
+							<div class="form-group">
+								<label class="control-label col-lg-4">User Group:</label>
+								<div class="col-lg-7 mb">
+									<select class="form-control call-time-user-group" name="call_time_user_group">
+										<!--<option value="ALL"> ALL USER GROUPS </option>-->
+											<?php
+												for($i=0;$i<count($user_groups->user_group);$i++){
+											?>
+												<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
+											<?php
+												}
+											?>
+									</select>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">Wednesday:</label>
-						<div class="col-lg-8">
-							<div class="row">
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="start_wednesday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="stop_wednesday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="audio_wednesday">
-								</div>
-								<div class="control-label col-lg-3">
-									<a href="#">[audio chooser]</a>
+						</fieldset>
+						<fieldset>
+							<div class="form-group mt">
+								<label class="control-label col-lg-2">&nbsp;</label>
+								<div class="col-lg-10">
+									<div class="row">
+										<label class="col-lg-3">Start</label>
+										<label class="col-lg-3">Stop</label>
+										<label class="col-lg-6">After Hours Audio</label>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">Thrusday:</label>
-						<div class="col-lg-8">
-							<div class="row">
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="start_thursday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="stop_thursday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="audio_thursday">
-								</div>
-								<div class="control-label col-lg-3">
-									<a href="#">[audio chooser]</a>
+							<div class="form-group">
+								<label class="control-label col-lg-2">Dafault:</label>
+								<div class="col-lg-10 mb">
+									<div class="row">
+										<div class="col-lg-3">
+											<input type="text" class="form-control start_time" name="start_default" value="0">
+										</div>
+										<div class="col-lg-3">
+											<input type="text" class="form-control end_time" name="stop_default" value="0">
+										</div>
+										<div class="col-lg-6">
+											<input type="text" class="form-control" name="audio_default">
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">Friday:</label>
-						<div class="col-lg-8">
-							<div class="row">
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="start_friday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="stop_friday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="audio_friday">
-								</div>
-								<div class="control-label col-lg-3">
-									<a href="#">[audio chooser]</a>
+							<div class="form-group">
+								<label class="control-label col-lg-2">Sunday:</label>
+								<div class="col-lg-10 mb">
+									<div class="row">
+										<div class="col-lg-3">
+											<input type="text" class="form-control start_time" name="start_sunday" value="0">
+										</div>
+										<div class="col-lg-3">
+											<input type="text" class="form-control end_time" name="stop_sunday" value="0">
+										</div>
+										<div class="col-lg-6">
+											<input type="text" class="form-control" name="audio_sunday">
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4">Saturday:</label>
-						<div class="col-lg-8">
-							<div class="row">
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="start_saturday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="stop_saturday" value="0">
-								</div>
-								<div class="col-lg-3">
-									<input type="text" class="form-control" name="audio_saturday">
-								</div>
-								<div class="control-label col-lg-3">
-									<a href="#">[audio chooser]</a>
+							<div class="form-group">
+								<label class="control-label col-lg-2">Monday:</label>
+								<div class="col-lg-10 mb">
+									<div class="row">
+										<div class="col-lg-3">
+											<input type="text" class="form-control start_time" name="start_monday" value="0">
+										</div>
+										<div class="col-lg-3">
+											<input type="text" class="form-control end_time" name="stop_monday" value="0">
+										</div>
+										<div class="col-lg-6">
+											<input type="text" class="form-control" name="audio_monday">
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
+							<div class="form-group">
+								<label class="control-label col-lg-2">Tuesday:</label>
+								<div class="col-lg-10 mb">
+									<div class="row">
+										<div class="col-lg-3">
+											<input type="text" class="form-control start_time" name="start_tuesday" value="0">
+										</div>
+										<div class="col-lg-3">
+											<input type="text" class="form-control end_time" name="stop_tuesday" value="0">
+										</div>
+										<div class="col-lg-6">
+											<input type="text" class="form-control" name="audio_tuesday">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-2">Wednesday:</label>
+								<div class="col-lg-10 mb">
+									<div class="row">
+										<div class="col-lg-3">
+											<input type="text" class="form-control start_time" name="start_wednesday" value="0">
+										</div>
+										<div class="col-lg-3">
+											<input type="text" class="form-control end_time" name="stop_wednesday" value="0">
+										</div>
+										<div class="col-lg-6">
+											<input type="text" class="form-control" name="audio_wednesday">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-2">Thursday:</label>
+								<div class="col-lg-10 mb">
+									<div class="row">
+										<div class="col-lg-3">
+											<input type="text" class="form-control start_time" name="start_thursday" value="0">
+										</div>
+										<div class="col-lg-3">
+											<input type="text" class="form-control end_time" name="stop_thursday" value="0">
+										</div>
+										<div class="col-lg-6">
+											<input type="text" class="form-control" name="audio_thursday">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-2">Friday:</label>
+								<div class="col-lg-10 mb">
+									<div class="row">
+										<div class="col-lg-3">
+											<input type="text" class="form-control start_time" name="start_friday" value="0">
+										</div>
+										<div class="col-lg-3">
+											<input type="text" class="form-control end_time" name="stop_friday" value="0">
+										</div>
+										<div class="col-lg-6">
+											<input type="text" class="form-control" name="audio_friday">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-2">Saturday:</label>
+								<div class="col-lg-10 mb">
+									<div class="row">
+										<div class="col-lg-3">
+											<input type="text" class="form-control start_time" name="start_saturday" value="0">
+										</div>
+										<div class="col-lg-3">
+											<input type="text" class="form-control end_time" name="stop_saturday" value="0">
+										</div>
+										<div class="col-lg-6">
+											<input type="text" class="form-control" name="audio_saturday">
+										</div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
 					</div>
 				</form>
 			</div>
 	      </div>
 	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-primary btn-save-calltime">Save</button>
-			<button type="button" class="btn btn-primary btn-update-calltime hide" data-id="">Modify</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	      </div>
+			<!-- The wizard button will be inserted here. -->
+			<button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
+			<input type="submit" class="btn btn-primary add-calltimes" id="submit_calltime" value="Submit" style="display: inline-block;">
+		  </div>
 	    </div>
 	    <!-- End of modal content -->
 	  </div>
@@ -382,72 +390,61 @@
 
 		<!-- Forms and actions -->
 		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
-		<!-- SLIMSCROLL-->
-        <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+		<!-- wizard -->
+		<script src="js/easyWizard.js" type="text/javascript"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
 				// $('#view-calltime-modal').modal('show');
 				$('#calltimes').dataTable();
 
-				$('.add-calltimes').click(function(){
-					$('.call-time-id').text('');
-					$('.call-time-name').val('');
-					$('.call-time-comments').val('');
-					$('.call-time-user-group option[value="ADMIN"]').attr('selected','selected');
+				//initialize wizard
+				$("#view-calltime-modal").wizard();
 
-					$('.call-time-id').addClass('hide');
-					$('.call-time-id-textbox').removeClass('hide');
-					$('.btn-save-calltime').removeClass('hide');
-					$('.btn-update-calltime').addClass('hide');
-				    $('#view-calltime-modal').modal('show');
-				});
+				//initialize timepicker
+				$('.start_time').datetimepicker({
+                    format: 'LT'
+                });
+                $('.end_time').datetimepicker({
+                    format: 'LT'
+                });
 				
-				$('.btn-save-calltime').click(function(){
+				$('#submit_calltime').click(function(){
+					$('#submit_calltime').val("Saving, Please Wait.....");
+	                $('#submit_calltime').prop("disabled", true);
+
 					var form_data = $('#form_calltimes').serialize();
 
 					$.ajax({
 						url: "./php/AddCalltime.php",
 						type: 'POST',
-						data: { 
-						      form_data : form_data,
-						},
-						dataType: 'json',
+						data: $('#form_calltimes').serialize(),
 						success: function(data) {
-						    console.log(data.result);
-						    if(data.result == "success"){
-						    	window.location.href = "http://localhost/CreamCRM/settingscalltimes.php";
+						    console.log(data);
+						    if(data == 1){
+						    	swal("Success!", "Call Times Successfully Created!", "success")
+                                window.setTimeout(function(){location.reload()},3000)
+                                $('#submit_calltime').val("Loading");
+						    }else{
+						    	sweetAlert("Oops...", "Something went wrong!", "error");
+		                        $('#submit_calltime').val("Submit");
+		                        $('#submit_calltime').prop("disabled", false);
 						    }
 						}
 					});
 					
 				});
-
-				$('.edit-calltime').click(function(){
-					var call_time_id = $(this).attr('data-id');
-					
-					$.ajax({
-						url: "./php/ViewCalltime.php",
-						type: 'POST',
-						data: { 
-						      call_time_id : call_time_id,
-						},
-						dataType: 'json',
-						success: function(data) {
-						    // console.log(data);
-						    $('.call-time-id').text(data.call_time_id);
-							$('.call-time-name').val(data.call_time_name);
-							$('.call-time-comments').val();
-							$('.call-time-user-group option[value='+ data.user_group +']').attr('selected','selected');
-
-							$('.call-time-id').removeClass('hide');
-							$('.call-time-id-textbox').addClass('hide');
-							$('.btn-save-calltime').addClass('hide');
-							$('.btn-update-calltime').removeClass('hide');
-							$('.btn-update-calltime').attr('data-id', data.call_time_id);
-						    $('#view-calltime-modal').modal('show');
-						}
-					});
+				
+				/**
+				  * Edit call time details
+				 */
+				$(document).on('click','.edit-calltime',function() {
+					var url = './editsettingscalltimes.php';
+					var id = $(this).attr('data-id');
+					//alert(extenid);
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="cid" value="'+id+'" /></form>');
+					//$('body').append(form);  // This line is not necessary
+					$(form).submit();
 				});
 				
 				/**
