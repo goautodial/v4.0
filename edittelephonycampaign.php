@@ -1513,7 +1513,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 			}
 
 			function dialPrefix(value){
-				if(value == "--CUSTOM--"){
+				if(value == "CUSTOM"){
 					$('#custom_prefix').removeClass('hide');
 				}else{
 					$('#custom_prefix').addClass('hide');

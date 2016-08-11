@@ -3536,8 +3536,7 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="view-campaign" href="#" data-id="'.$id.'">View Info</a></li>
-			<li><a class="edit-campaign" href="#" data-id="'.$id.'">Modify</a></li>
+			<li><a class="edit-campaign" href="#" data-id="'.$id.'">Details</a></li>
 			<li><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
