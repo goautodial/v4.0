@@ -1337,6 +1337,7 @@ $(document).ready(function() {
         e.preventDefault();
         var thisLink = $(this).attr('href');
         var hash = '';
+        var origHash = window.location.hash.replace("#","");
         if (/customerslist/g.test(thisLink)) {
             $(".content-heading").html("<?=$lh->translationFor('contacts')?>");
             hash = 'contacts';
@@ -1346,7 +1347,7 @@ $(document).ready(function() {
             $(".content-heading").html("<?=$lh->translationFor('edit_profile')?>");
             hash = 'editprofile';
         } else if (/events/g.test(thisLink)) {
-            $(".content-heading").html("<?=$lh->translationFor('events')?>");
+            $(".content-heading").html("<?=$lh->translationFor('events')?> <?=$lh->translateText('and')?> <?=$lh->translationFor('callbacks')?>");
             hash = 'events';
         } else if (/messages/g.test(thisLink)) {
             $(".content-heading").html("<?=$lh->translationFor('messages')?>");
@@ -1357,6 +1358,10 @@ $(document).ready(function() {
         } else if (/tasks/g.test(thisLink)) {
             $(".content-heading").html("<?=$lh->translationFor('tasks')?>");
             hash = 'tasks';
+        }
+        
+        if (origHash !== hash) {
+            $(".preloader").fadeIn('fast');
         }
         
         if (hash.length > 0) {
@@ -1379,6 +1384,10 @@ $(document).ready(function() {
             
             $("#cust_info").show();
             $("#loaded-contents").hide();
+        }
+        
+        if (origHash !== hash) {
+            $(".preloader").fadeOut('slow');
         }
     });
 });
