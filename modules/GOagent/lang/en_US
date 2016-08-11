@@ -154,3 +154,4 @@ hotkeys_note = "Pressing the hot keys above will hangup automatically, if you're
 contact_information = "Contact Information"
 edit_profile = "Edit Profile"
 transfer_conference_functions = "Transfer Conference Functions"
+events_callbacks = "Events and Callbacks"

@@ -1749,7 +1749,7 @@ error_reporting(E_ERROR | E_PARSE);
 			//$agentmenu .= $this-> getSidebarItem("", "book", $this->lh->translationFor("scripts"));
 			//$agentmenu .= $this-> getSidebarItem("", "tasks", $this->lh->translationFor("Custom Form"));
 			$agentmenu .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
-			$agentmenu .= $this->getSidebarItem("events.php", "calendar", $this->lh->translationFor("events"), "0", "blue");
+			$agentmenu .= $this->getSidebarItem("events.php", "calendar", $this->lh->translationFor("events_callbacks"), "0", "blue");
 		}
 
 		// get customer types
@@ -3532,8 +3532,7 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="view-campaign" href="#" data-id="'.$id.'">View Info</a></li>
-			<li><a class="edit-campaign" href="#" data-id="'.$id.'">Modify</a></li>
+			<li><a class="edit-campaign" href="#" data-id="'.$id.'">Details</a></li>
 			<li><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
@@ -4522,6 +4521,32 @@ error_reporting(E_ERROR | E_PARSE);
 					$vars = 0;
 					return $vars;
 			 }
+		}
+		/*
+		 * Displaying Hopper Leads Warning
+		 * [[API: Function]] - goGetHopperLeadsWarning
+		 * This application is used to get the list of campaigns < 100
+		*/
+
+		public function API_goGetHopperLeadsWarning() {
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
+			$postfields["goAction"] = "goGetHopperLeadsWarning"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			 
+			 $output = json_decode($data);
+			 
+			 return $output;
 		}
 		
 		/*
