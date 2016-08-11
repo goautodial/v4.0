@@ -82,15 +82,15 @@ if (isset($_GET["message"])) {
 } else $message = NULL;
 
 $avatarHash = md5( strtolower( trim( $user->getUserId() ) ) );
-$avatarURL50 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=50&default=wavatar";
-$avatarURL96 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=wavatar";
+$avatarURL = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=wavatar";
 $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=mm";
+$_SESSION['avatar'] = $avatarURL;
 ?>
 
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>GoAutodial Web Client</title>
+        <title><?=CRM_GOAGENT_TITLE?> - <?=$lh->translateText('GOautodial')." ".CRM_GO_VERSION?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 		<!-- SnackbarJS -->
@@ -152,6 +152,8 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
         <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
+			history.pushState('', document.title, window.location.pathname);
+			
 			$(window).load(function() {
 				$(".preloader").fadeOut("slow", function() {
 					if (use_webrtc && (!!$.prototype.snackbar)) {
@@ -264,7 +266,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyAgentHeader($user); ?>
             <!-- Left side column. contains the logo and sidebar -->
-			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $avatarURL50); ?>
+			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="content-wrapper">
@@ -812,7 +814,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 			<li>
 				<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px;">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<img src="<?=$avatarURL96?>" class="img-circle thumb96" height="auto" style="border-color:transparent; margin: 10px;" alt="User Image" />
+						<img src="<?=$user->getUserAvatar()?>" class="img-circle thumb96" height="auto" style="border-color:transparent; margin: 10px;" alt="User Image" />
 						<p style="color:white;"><?=$user->getUserName()?><br><small><?=$lh->translationFor("nice_to_see_you_again")?></small></p>
 					</a>
 				</div>
