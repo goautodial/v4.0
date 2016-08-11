@@ -1752,7 +1752,7 @@ error_reporting(E_ERROR | E_PARSE);
 			//$agentmenu .= $this-> getSidebarItem("", "book", $this->lh->translationFor("scripts"));
 			//$agentmenu .= $this-> getSidebarItem("", "tasks", $this->lh->translationFor("Custom Form"));
 			$agentmenu .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
-			$agentmenu .= $this->getSidebarItem("events.php", "calendar", $this->lh->translationFor("events"), "0", "blue");
+			$agentmenu .= $this->getSidebarItem("events.php", "calendar", $this->lh->translationFor("events_callbacks"), "0", "blue");
 		}
 
 		// get customer types
