@@ -1062,10 +1062,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                	<li><a class="view-contact" href="#" data-id="'.$lead_id.'">'.$this->lh->translationFor("View").'</a></li>
-	                    <li><a class="edit-contact" href="'.$lead_id.'">'.$this->lh->translationFor("Modify").'</a></li>
+	                    <li><a class="edit-contact" data-id="'.$lead_id.'">'.$this->lh->translationFor("Contact Details").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-contact" href="'.$lead_id.'">'.$this->lh->translationFor("Delete").'</a></li>
+	                    <li><a class="delete-contact" data-id="'.$lead_id.'">'.$this->lh->translationFor("Delete").'</a></li>
 	                </ul>
 	            </div>';
 	}
@@ -1740,8 +1739,6 @@ error_reporting(E_ERROR | E_PARSE);
 			$callreports .= $this-> getSidebarItem("./callreports.php", "bar-chart", $this->lh->translationFor("reports_and_go_analytics"));
 			$callreports .= '</ul></li>';
 			
-			$loadleads .= $this->getSidebarItem("loadleads.php", "sort-alpha-asc", $this->lh->translationFor("load_leads"));
-			
 			$eventsArea .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
 			
 			$contactsandrecs .= $this->getSidebarItem("contactsandcallrecordings.php", "phone-square", $this->lh->translationFor("contacts_call_recordings"));
@@ -1783,7 +1780,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= $settings;
 		$result .= $callreports;
 		$result .= $adminArea;
-		$result .= $loadleads;
 		$result .= $contactsandrecs;
 		$result .= $eventsArea;
 

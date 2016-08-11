@@ -52,7 +52,7 @@ if ($validated == 1) {
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_TIMEOUT, 100);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -63,14 +63,12 @@ if ($validated == 1) {
     
     if ($output->result=="success") {
     # Result was OK!
-        ob_clean();
 		echo "success";
     } else {
     # An error occured
-        ob_clean();
 		echo $output->result;
         //$lh->translateText("unable_modify_list");
     }
     
-} else { ob_clean(); print $reason; }
+} else { print $reason; }
 ?>
