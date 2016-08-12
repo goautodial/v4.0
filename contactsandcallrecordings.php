@@ -1,8 +1,18 @@
 <?php
+
+	###################################################
+	### Name: contactsandcallrecordings.php 		###
+	### Functions: Display, Search and Filter  		###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
+	### Version: 4.0 								###
+	### Written by: Alexander Jim H. Abenoja		###
+	### License: AGPLv2								###
+	###################################################
+/*
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
-
+*/
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -17,16 +27,10 @@
         <meta charset="UTF-8">
         <title>Goautodial Contacts & Call Recordings</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
-        <!-- Circle Buttons style -->
-        <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+
+   		<!-- Call for standardized css -->
+   		<?php print $ui->standardizedThemeCSS();?>
+
         <!-- Wizard Form style -->
         <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css" rel="stylesheet" type="text/css" />
@@ -37,20 +41,8 @@
 		<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
-        <!-- datetime picker --> 
+        <!-- Datetime picker --> 
 		<link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
 
         <!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
@@ -65,18 +57,6 @@
    		<!-- SELECT2-->
    		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
    		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
-
-	<!-- Bootstrap Player -->
-	<script src="js/bootstrap-player.js" type="text/javascript"></script>
-
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-
-        <!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -135,7 +115,7 @@ $leads = $ui->API_GetLeads($user->getUserName());
                 	<div class="row">
 						<div class="col-lg-9">
 							<div class="form-group mb-xl">
-								<input type="text" placeholder="Search Phone, Agent or Last Name" id="search" class="form-control mb">
+								<input type="text" placeholder="Search Phone Number, First or Last Name" id="search" class="form-control mb">
 								<div class="clearfix">
 									<button type="button" class="pull-left btn btn-default" id="search_button"> Search</button>
 									<div class="pull-right">
@@ -467,8 +447,10 @@ $disposition = $ui->API_getAllDispositions();
 	  </div>
 	</div>
 	<!-- End of modal -->
-		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+
+
+		<?php print $ui->standardizedThemeJS();?>
+
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
 		<!-- CHOSEN-->
    		<script src="theme_dashboard/chosen_v1.2.0/chosen.jquery.min.js"></script>
@@ -478,8 +460,13 @@ $disposition = $ui->API_getAllDispositions();
 		<script type="text/javascript">
 
 			$(document).ready(function() {
-				// Global var for counter
-				var giCount = 2;
+
+				$('body').on('keypress', '#search', function(args) {
+				    if (args.keyCode == 13) {
+				        $("#search_button").click();
+				        return false;
+				    }
+				});
 
 				// initialization of datatables
 				var init_contacts_table = $('#table_contacts').DataTable({
@@ -1038,5 +1025,7 @@ $disposition = $ui->API_getAllDispositions();
 				
 			});
 		</script>
+
+		<?php print $ui->creamyFooter();?>
     </body>
 </html>

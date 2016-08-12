@@ -100,6 +100,7 @@ $title = $_POST['title'];
 	// date_of_birth
 	$date_of_birth = NULL; if (isset($_POST["date_of_birth"])) { 
 		$date_of_birth = $_POST["date_of_birth"]; 
+		$date_of_birth = date('Y-m-d h:i:s', strtotime($date_of_birth));
 		$date_of_birth = stripslashes($date_of_birth);
 	}
 
@@ -160,15 +161,13 @@ $title = $_POST['title'];
     $data = curl_exec($ch);
     curl_close($ch);
     $output = json_decode($data);
-    var_dump($data);
-
-    // ERROR: API RETURNS NULL
+    
 	// return result
-	/*
+	
 	if ($output->result == "success") {
 		echo 1;
 	}else{
 		echo $output->result;
 	}
-	*/
+	
 ?>
