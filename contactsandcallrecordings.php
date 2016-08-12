@@ -139,6 +139,10 @@ $leads = $ui->API_GetLeads($user->getUserName());
 								<div class="clearfix">
 									<button type="button" class="pull-left btn btn-default" id="search_button"> Search</button>
 									<div class="pull-right">
+										<label class="checkbox-inline c-checkbox" for="search_customer">
+											<input id="search_customer" name="table_filter" type="checkbox" disabled>
+											<span class="fa fa-check"></span> Customers
+										</label>
 										<label class="checkbox-inline c-checkbox" for="search_contacts">
 											<input id="search_contacts" name="table_filter" type="checkbox" checked disabled>
 											<span class="fa fa-check"></span> Contacts
@@ -327,6 +331,31 @@ $disposition = $ui->API_getAllDispositions();
 										</div>
 									</div>
 								</div>
+	               				
+	               				<div class="form-group">
+		               				<label>Start Date:</label>
+						            <div class="form-group">
+						                <div class='input-group date' id='datetimepicker1'>
+						                    <input type='text' class="form-control" id="start_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
+						                    <span class="input-group-addon">
+						                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
+												<span class="fa fa-calendar"></span>
+						                    </span>
+						                </div>
+						            </div>
+						        </div>
+						        <div class="form-group">
+						            <label>End Date:</label>
+						            <div class="form-group">
+						                <div class='input-group date' id='datetimepicker2'>
+						                    <input type='text' class="form-control" id="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
+						                    <span class="input-group-addon">
+						                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
+						                        <span class="fa fa-calendar"></span>
+						                    </span>
+						                </div>
+						            </div>
+							    </div>
 							</div>
 
 
@@ -972,6 +1001,18 @@ $disposition = $ui->API_getAllDispositions();
 							
 						});
 				
+				/*****
+				*** Edit functions
+				*****/
+				$(document).on('click','.edit-contact',function() {
+					var url = './editcontacts.php';
+					var id = $(this).attr('data-id');
+					//alert(extenid);
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
+					//$('body').append(form);  // This line is not necessary
+					$(form).submit();
+				});
+
 				/*****
 				** For playing Call Recordings
 				*****/
