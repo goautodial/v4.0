@@ -13,46 +13,21 @@
         <meta charset="UTF-8">
         <title>Goautodial Users</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        
+        <?php print $ui->standardizedThemeCSS(); ?>
+
         <?php print $ui->creamyThemeCSS(); ?>
-		<!-- Circle Buttons style -->
-    	<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+
 		<!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+
     	<!-- Wizard Form style -->
 		<link href="css/style.css" rel="stylesheet" type="text/css" />
     	<link rel="stylesheet" href="css/easyWizard.css">
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
-
-        	<!-- =============== BOOTSTRAP STYLES ===============--
-			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
-				<!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -60,7 +35,9 @@
 			})
 		</script>
     </head>
+
     <?php print $ui->creamyBody(); ?>
+
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
@@ -86,10 +63,12 @@
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
                     <div class="panel panel-default">
-                        <div class="panel-body table" id="users_table">
-                        <legend><?php $lh->translateText("users"); ?></legend>
-							<?php print $ui->goGetAllUserList(); ?>
-                        </div><!-- /.box-body -->
+                    	<div class="panel-body">
+	                        <div class="table" id="users_table">
+	                        <legend><?php $lh->translateText("users"); ?></legend>
+								<?php print $ui->goGetAllUserList(); ?>
+	                        </div>
+	                    </div><!-- /.box-body -->
                     </div><!-- /.box -->
 				<!-- /fila con acciones, formularios y demás -->
 				<?php
@@ -97,7 +76,6 @@
 						print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					}
 				?>
-					</script>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
@@ -290,25 +268,6 @@
 				</form>
 		
 				</div> <!-- end of modal body -->
-				
-				<!-- NOTIFICATIONS -->
-				<div id="notifications">
-					<div class="output-message-success" style="display:none;">
-						<div class="alert alert-success alert-dismissible" role="alert">
-						  <strong>Success!</strong> New Agent added.
-						</div>
-					</div>
-					<div class="output-message-error" style="display:none;">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
-						</div>
-					</div>
-					<div class="output-message-incomplete" style="display:none;">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  Please fill-up all the fields correctly and do not leave any fields with (<strong> * </strong>) blank.
-						</div>
-					</div>
-				</div>
 
 				<div class="modal-footer wizard-buttons">
 					<!-- The wizard button will be inserted here. -->
@@ -317,33 +276,7 @@
 		</div>
 	</div><!-- end of modal -->
 
-	<!-- DELETE VALIDATION MODAL -->
-	<div id="delete_validation_modal" class="modal modal-warning fade">
-    	<div class="modal-dialog">
-            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-				<div class="modal-header">
-					<h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
-				</div>
-				<div class="modal-body" style="background:#fff;">
-					<p>This action cannot be undone.</p>
-					<p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
-				</div>
-				<div class="modal-footer" style="background:#fff;">
-					<button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
-               		<button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-              </div>
-			</div>
-		</div>
-	</div>
-
-	<!-- DELETE NOTIFICATION MODAL -->
-	<div id="delete_notification" style="display:none;">
-		<?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
-	</div>
-
-
-		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<?php print $ui->standardizedThemeJS();?>
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
 		
 	<script type="text/javascript">
@@ -578,5 +511,7 @@
 			});
 			
 		</script>
+
+		<?php print $ui->creamyFooter();?>
     </body>
 </html>

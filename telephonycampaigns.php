@@ -17,49 +17,25 @@ error_reporting(E_ALL);*/
         <meta charset="UTF-8">
         <title>Goautodial Campaigns</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+        
+        <?php print $ui->standardizedThemeCSS(); ?>
+
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
-        <!-- Circle Buttons style -->
-    	<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+        
     	<!-- iCheck for checkboxes and radio inputs -->
   		<link rel="stylesheet" href="css/iCheck/all.css">
+    	
     	<!-- Wizard Form style -->
     	<link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
     	<link href="css/style.css" rel="stylesheet" type="text/css" />
     	<link rel="stylesheet" href="css/easyWizard.css">
+        
         <?php print $ui->creamyThemeCSS(); ?>
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-        
-        <!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -201,8 +177,6 @@ error_reporting(E_ALL);*/
 												?>
 										   </tbody>
 										</table>
-										<br/>
-									<div class="panel-footer text-right">&nbsp;</div>
 								 </div>
 								
 								<!--==== Disposition ====-->
@@ -708,25 +682,6 @@ error_reporting(E_ALL);*/
 
                 </div> <!-- end of modal body -->
 
-                <!-- NOTIFICATIONS -->
-                <div id="notifications">
-                    <div class="output-message-success" style="display:none;">
-                        <div class="alert alert-success alert-dismissible" role="alert">
-                          <strong>Success!</strong> New Disposition added !
-                        </div>
-                    </div>
-                    <div class="output-message-error" style="display:none;">
-                        <div class="alert alert-danger alert-dismissible" role="alert">
-                          <span id="disposition_result"></span>
-                        </div>
-                    </div>
-                    <div class="output-message-incomplete" style="display:none;">
-                        <div class="alert alert-danger alert-dismissible" role="alert">
-                          Please fill-up all the fields correctly and do not leave any fields with (<strong> * </strong>) blank.
-                        </div>
-                    </div>
-                </div>
-
                 <div class="modal-footer">
                     <!-- The wizard button will be inserted here. -->
                     <button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
@@ -736,56 +691,66 @@ error_reporting(E_ALL);*/
         </div>
     </div><!-- end of modal -->
 
-	<!-- Modal --
-	<div id="confirmation-delete-modal" class="modal fade" role="dialog">
+	<!-- Modal -->
+	<div id="view-campaign-modal" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
 
-	    <!-- Modal content--
+	    <!-- Modal content-->
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Confirmation Box</b></h4>
+	        <h4 class="modal-title"><b>Campaign Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
 	      </div>
 	      <div class="modal-body">
-	      	<p>Are you sure you want to delete Campaign ID: <span class="camp-id-delete-label" data-id=""></span></p>
+	      	<div class="output-message-no-result hide">
+		      	<div class="alert alert-warning alert-dismissible" role="alert">
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				  <strong>Notice!</strong> There was an error retrieving details. Either error or no result.
+				</div>
+			</div>
+	        <div id="content" class="view-form hide">
+			    <div class="form-horizontal">
+			    	<div class="form-group">
+			    		<label class="control-label col-lg-5">Campaign ID:</label>
+			    		<span class="info-camp-id control-label align-left col-lg-7"></span>
+			    	</div>
+			    	<div class="form-group">
+			    		<label class="control-label col-lg-5">Campaign Name:</label>
+			    		<span class="info-camp-name control-label align-left col-lg-7"></span>
+			    	</div>
+			    	<div class="form-group">
+			    		<label class="control-label col-lg-5">Campaign Description:</label>
+			    		<span class="info-camp-desc control-label align-left col-lg-7"></span>
+			    	</div>
+			    	<div class="form-group">
+			    		<label class="control-label col-lg-5">Allowed Inbound and Blended:</label>
+			    		<span class="info-allowed control-label align-left col-lg-7"></span>
+			    	</div>
+			    	<div class="form-group">
+			    		<label class="control-label col-lg-5">Dial Method:</label>
+			    		<span class="info-dial-method control-label align-left col-lg-7"></span>
+			    	</div>
+			    	<div class="form-group">
+			    		<label class="control-label col-lg-5">AutoDial Level:</label>
+			    		<span class="info-autodial-level control-label align-left col-lg-7"></span>
+			    	</div>
+			    	<div class="form-group">
+			    		<label class="control-label col-lg-5">Answering Machine Detection:</label>
+			    		<span class="info-ans-mach control-label align-left col-lg-7"></span>
+			    	</div>
+			    </div>
+			</div>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" id="delete-campaign-btn" data-id="">Yes</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	      </div>
 	    </div>
-	    <!-- End of modal content --
+	    <!-- End of modal content -->
 	  </div>
 	</div>
 	<!-- End of modal -->
 
-	<!-- DELETE VALIDATION MODAL -->
-    <div id="delete_validation_modal" class="modal modal-warning fade">
-        <div class="modal-dialog">
-            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-                <div class="modal-header">
-                    <h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
-                </div>
-                <div class="modal-body" style="background:#fff;">
-                    <p>This action cannot be undone.</p>
-                    <p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
-                </div>
-                <div class="modal-footer" style="background:#fff;">
-                    <button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-              </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- DELETE NOTIFICATION MODAL -->
-    <div id="delete_notification" style="display:none;">
-        <?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
-    </div>
-   
-	
-
-	<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+	<?php print $ui->standardizedThemeJS(); ?>
 	<script src="js/easyWizard.js" type="text/javascript"></script> 
 	
     <!-- iCheck 1.0.1 -->
@@ -1238,5 +1203,6 @@ error_reporting(E_ALL);*/
             $(".textarea").wysihtml5();
 	</script>
 
+		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

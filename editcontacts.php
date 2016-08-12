@@ -43,7 +43,7 @@ if ($list_id_ct > 0) {
 	}
 }
 $fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
-$date_of_birth = date('Y-m-d', strtotime($date_of_birth));
+$date_of_birth = date('m/d/Y', strtotime($date_of_birth));
 //var_dump($output);
  $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
  									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
@@ -59,58 +59,21 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
         <meta charset="UTF-8">
         <title>Contact Details</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-		<!-- SnackbarJS -->
-        <link href="css/snackbar/snackbar.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/snackbar/material.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+
+		<!-- Call for standardized css -->
+        <?php print $ui->standardizedThemeCSS();?>
+
         <!-- Customized Style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
-		<!-- javascript -->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="js/jquery.validate.min.js" type="text/javascript"></script>
-		
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-		
-        <!-- theme_dashboard folder -->
-		<!-- FONT AWESOME-->
-		<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
-		<!-- SIMPLE LINE ICONS-->
-		<link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">
-		<!-- ANIMATE.CSS-->
-		<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">
-		<!-- WHIRL (spinners)-->
-		<link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
-		<!-- =============== PAGE VENDOR STYLES ===============-->
-		<!-- WEATHER ICONS-->
-		<link rel="stylesheet" href="theme_dashboard/weather-icons/css/weather-icons.min.css">
-		<!-- =============== BOOTSTRAP STYLES ===============-->
-		<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
-		
-		<!-- datetime picker --> 
+		<!-- Datetime picker CSS --> 
 		<link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 
-		<!-- Date Picker -->
+		<!-- DateTime Picker JS -->
         <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
 		<script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
-		<!-- =============== APP STYLES ===============-->
-		<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-		
-		<!-- SWEETALERT-->
-		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
-		<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
-
-  		
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
 			$(window).load(function() {
@@ -163,7 +126,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
                 <section class="content-heading">
 					<!-- Page title -->
                     <?php $lh->translateText("Contact Information"); ?>
-                    <small class="ng-binding animated fadeInUpShort"><?php echo "LEAD ID: ".$lead_id;?></small>
+                    <small class="ng-binding animated fadeInUpShort"></small>
                 </section>
 
                 <!-- Main content -->
@@ -181,9 +144,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 											<div class="row">
 												<div class="col-md-6">
 						                			<h4><span id="heading_full_name"></span></h4>
-						                		</div>
-						                		<div class="col-md-6">
-						                			<h4 class="pull-right">Lead ID: <u><span id="heading_lead_id"></span></u></h4>
+						                			<small class="ng-binding animated fadeInUpShort"><?php echo $phone_number;?></small>
 						                		</div>
 						                		<p class="ng-binding animated fadeInUpShort"><span id="cust_number"></span></p>
 						            		</div>
@@ -321,7 +282,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 													</div>
 													<div class="col-sm-4">
 														<div class="mda-form-group label-floating">
-															<input id="middle_initial" name="middle_initial" type="text" maxlength="1" value="<?php echo $middle_initial;?>"
+															<input id="middle_initial" name="middle_initial" type="text" maxlength="2" value="<?php echo $middle_initial;?>"
 																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
 															<label for="middle_initial">Middle Name</label>
 														</div>
@@ -451,7 +412,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 																		}
 																	?>
 																</select>
-																<label for="gender" class="control-label">Gender</label>
+																<label for="gender">Gender</label>
 															</div>
 														</div>
 														<div class="col-sm-6">
@@ -464,33 +425,17 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 													</div><!-- /.gender & title -->                   
 												</form>
 							                <br/>
-							                <!-- NOTIFICATIONS -->
-											<div id="notifications">
-												<div class="output-message-success" style="display:none;">
-													<div class="alert alert-success alert-dismissible" role="alert">
-													  <strong>Success!</strong> Successfuly updated contact.
-													</div>
-												</div>
-												<div class="output-message-error" style="display:none;">
-													<div class="alert alert-danger alert-dismissible" role="alert">
-													  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
-													</div>
-												</div>
-												<div class="output-message-incomplete" style="display:none;">
-													<div class="alert alert-danger alert-dismissible" role="alert">
-													  Please fill-up all the fields correctly and do not leave any highlighted fields blank.
-													</div>
-												</div>
-											</div>
 
-											<div class="row">
-												<div class="col-lg-6">
-							                		<a href="contactsandcallrecordings.php" type="button" class="btn btn-danger btn-block btn-flat">Cancel</a>
-							                	</div>
-												<div class="col-lg-6">
-							                		<button type="submit" name="submit" id="submit_edit_form" class="btn btn-primary btn-block btn-flat">Submit</button>
-							                	</div>
 							               </fieldset>
+							               <!-- FOOTER BUTTONS -->
+						                    <fieldset class="footer-buttons">
+					                           <div class="col-sm-3 pull-right">
+														<a href="contactsandcallrecordings.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
+					                           	
+					                                	<button type="submit" class="btn btn-primary" name="submit" id="submit_edit_form"> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+													
+					                           </div>
+						                    </fieldset>
 										</div><!--End of Profile-->
 										
 										<div id="comments" role="tabpanel" class="tab-pane">
@@ -561,6 +506,9 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 
         </div><!-- ./wrapper -->
 
+        <!-- call for standardized JS -->
+        <?php print $ui->standardizedThemeJS();?>
+
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
@@ -573,12 +521,14 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 
 	            $('#date_of_birth').datetimepicker({
 	                viewMode: 'years',
-	                format: 'MM/YYYY'
+	                format: 'MM/DD/YYYY'
 	            });
 
 				$("#submit_edit_form").click(function(){
 				//alert("User Created!");
-				
+					$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+					$('#submit_edit_form').prop("disabled", true);
+
 				var validate = 0;
 
 					if($('#name_form')[0].checkValidity()) {
@@ -593,10 +543,14 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 									success: function(data) {
 									  // console.log(data);
 										  if(data == 1){
-										  	  $('.output-message-success').show().focus().delay(2000).fadeOut().queue(function(n){$(this).hide(); n();});
+										  	 swal("Success!", "Contact Successfully Updated!", "success");
 											  window.setTimeout(function(){location.reload()},2000);
+											 	$('#update_button').html("<i class='fa fa-check'></i> Update");
+	                                        	$('#submit_edit_form').prop("disabled", false);
 										  }else{
-											  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+											  sweetAlert("Oops...", "Something went wrong!", "error");
+											  	$('#update_button').html("<i class='fa fa-check'></i> Update");
+	                                        	$('#submit_edit_form').prop("disabled", false);
 										  }
 									}
 								});
@@ -612,28 +566,11 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 					}
 
 					if(validate == 1){
-						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+						sweetAlert("Oops...", "Incomplete!", "error");
 						validate = 0;
 					}
 				
 				});
-				/**
-				 * Deletes a customer
-				 */
-				 $("#modifyCustomerDeleteButton").click(function (e) {
-					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
-					e.preventDefault();
-					if (r === true) {
-						var customerid = $(this).attr('href');
-						$.post("./php/DeleteContact.php", $("#modifycustomerform").serialize() ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
-								alert("<?php $lh->translateText("Contact Successfully Deleted"); ?>");
-								window.location = "index.php";
-							}
-							else { alert ("<?php $lh->translateText("Unable to Delete Contact"); ?>: "+data); }
-						});
-					}
-				 });
 				
 				$('.form-control').on('focus blur', function (e) {
 					$(this).parents('.label-floating').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
@@ -645,8 +582,6 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 				});
 			});
 		</script>
-		<!-- SnackbarJS -->
-        <script src="js/snackbar.js" type="text/javascript"></script>
-
+		<?php print $ui->creamyFooter();?>
     </body>
 </html>
