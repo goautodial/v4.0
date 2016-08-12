@@ -99,6 +99,7 @@ if ($output == NULL){
 for($i=0;$i < count($output->agent_full_name);$i++){
     $campname = $output->campaign[$i];
     $status = $output->status[$i];
+    $userid = $output->user_id[$i];
     $agentname =  $output->agent_full_name[$i];
     $last_call_time = $output->last_call_time[$i];
     $last_state_change = $output->last_state_change[$i];

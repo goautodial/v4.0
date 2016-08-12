@@ -17,7 +17,8 @@ $data = curl_exec($ch);
 curl_close($ch);
 
 $output = json_decode($data);
-
+//echo "<pre>";
+//print_r($output);die;
 if ($output == NULL){
     echo '<small class="text-muted pull-right ml" style="padding-right:20px;"></small>
                 <div class="media-box-heading"><div class="media-box-heading"><strong>
@@ -34,10 +35,10 @@ for($i=0;$i < count($output->campaign_id);$i++){
     $leadscount = $output->mycnt[$i];
     $campid =  $output->campaign_id[$i];
     
+    
    if ($leadscount == 0){   
         echo '<div class="media-box-heading"><div class="media-box-heading"><strong>
-                <a href="#" class="text-danger m0">'.$campname.'</a></strong></div>
-                </span>
+                <a class="text-danger m0 link-campid" data-campaign-id="'.$campid.'">'.$campname.'</a></strong></div>
                 <p class="m0">
                 <small ><strong><a href="#" class="text">'.$campid.'</a></strong>
                 </small>
@@ -46,8 +47,8 @@ for($i=0;$i < count($output->campaign_id);$i++){
     }
     if ($leadscount > 0){ 
         echo '<div class="media-box-heading"><div class="media-box-heading"><strong>
-                <a href="#" class="text-warning m0">'.$campname.'</a></strong></div>
-                </span>
+                <a data-toggle="modal" data-target=".view-campaign-modal" class="text-warning m0">'.$campname.'</a></strong>
+                </div>
                 <p class="m0">
                 <small><strong><a href="#" class="text">'.$campid.'</a></strong>
                 </small>
