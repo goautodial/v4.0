@@ -17,11 +17,89 @@ $data = curl_exec($ch);
 curl_close($ch);
 
 $output = json_decode($data);
-     
+
+
+if ($output == NULL){
+    echo '<strong class="media-box-heading text-primary">
+    <span class="circle circle-danger circle-lg text-left"></span>There are no available agents.
+    </strong>
+    <br/>
+    <strong class=""style="padding-left:20px;"></strong>
+    <small class="text-muted pull-right ml" style="padding-right:20px;"></small>
+    </p>';
+    echo 'Showing sample data:<br>
+	<a href="#" class="list-group-item">
+		<div class="media-box">
+			 <div class="pull-left">
+			 <img src="theme_dashboard/img/user/03.jpg" alt="Image" class="media-box-object img-circle thumb32">
+			 </div>
+			 <div class="media-box-body clearfix">
+                                <strong class="media-box-heading text-primary">
+				<span class="circle circle-success circle-lg text-left"></span>Jackie "Baby boy" Alfonso</strong>
+			 	<br/>
+			 	<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+			 	<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
+			 </div>
+		</div>
+	</a>
+	<!-- END list group item-->
+	<!-- START list group item-->
+	<a href="#" class="list-group-item">
+		<div class="media-box">
+			 <div class="pull-left">
+			 <img src="theme_dashboard/img/user/09.jpg" alt="Image" class="media-box-object img-circle thumb32">
+			 </div>
+			 <div class="media-box-body clearfix">
+			 <strong class="media-box-heading text-primary">
+				<span class="circle circle-danger circle-lg text-left"></span>Kim Takahashi</strong>
+			 	<br/>
+			 	<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+			 	<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
+			 </div>
+		</div>
+	</a>
+	<!-- END list group item-->
+	<!-- START list group item-->
+	<a href="#" class="list-group-item">
+		<div class="media-box">
+			 <div class="pull-left">
+			 <img src="theme_dashboard/img/user/12.jpg" alt="Image" class="media-box-object img-circle thumb32">
+			 </div>
+			 <div class="media-box-body clearfix">
+			 <strong class="media-box-heading text-primary">
+				<span class="circle circle-danger circle-lg text-left"></span>Khristel Tonolete</strong>
+			 	<br/>
+			 	<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+			 	<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
+			 </div>
+		</div>
+	</a>
+	<!-- END list group item-->
+	<!-- START list group item-->
+	<a href="#" class="list-group-item">
+		<div class="media-box">
+			 <div class="pull-left">
+			 <img src="theme_dashboard/img/user/10.jpg" alt="Image" class="media-box-object img-circle thumb32">
+			 </div>
+			 <div class="media-box-body clearfix">
+			 <strong class="media-box-heading text-primary">
+				<span class="circle circle-danger circle-lg text-left"></span>Andrew Gwaltney</strong>
+			 	<br/>
+			 	<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
+			 	<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
+			 </div>
+		</div>
+	</a>
+	<!-- END list group item-->
+        </div>';
+}
+//var_dump($output);
+//die("dd");
 //milo
 for($i=0;$i < count($output->agent_full_name);$i++){
     $campname = $output->campaign[$i];
     $status = $output->status[$i];
+    $userid = $output->user_id[$i];
     $agentname =  $output->agent_full_name[$i];
     $last_call_time = $output->last_call_time[$i];
     $last_state_change = $output->last_state_change[$i];
@@ -70,6 +148,5 @@ for($i=0;$i < count($output->agent_full_name);$i++){
     <small class="text-muted pull-right ml" style="padding-right:20px;">'.$call_time_MS.'</small>
     </p>';    
 }
-    
            
 ?>
