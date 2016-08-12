@@ -11,3 +11,12 @@ function load_campaign_name(){
    });
 }
 
+function load_online_agents(){
+   $.ajax({
+     url: "./php/APIs/API_GetOnlineAgents.php",
+     cache: false,
+     success: function(data){
+        $("#refresh_online_agents").html(data);
+     } 
+   });
+}
