@@ -464,7 +464,9 @@ EOF;
 	
 	phone.on('registered', function(e) {
 		console.log('registered', e);
-		$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
+		if ( !!$.prototype.snackbar ) {
+			$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
+		}
 	});
 	
 	phone.on('unregistered', function(e) {
@@ -473,7 +475,9 @@ EOF;
 	
 	phone.on('registrationFailed', function(e) {
 		console.log('registrationFailed', e);
-		$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000});
+		if ( !!$.prototype.snackbar ) {
+			$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000});
+		}
 	});
 	
 	rtcninja.getUserMedia({
@@ -595,23 +599,37 @@ EOF;
 				<h4 class="modal-title">$transferConference</h4>
 			</div>
 			<div class="modal-body">
+				<div class="row" style="padding-left: 10px; padding-right: 10px;">
+					<div class="col-md-12">
+						<div class="mda-form-group label-floating">
+							<select id="transfer-local-closer" name="transfer-local-closer" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
+								<option></option>
+							</select>
+							<label for="transfer-local-closer">Transfer Groups</label>
+						</div>
+					</div>
+				</div>
 				<div class="row">
-					<div class="col-md-4">dropdown</div>
-					<div class="col-md-2"><button class="btn btn-primary btn-sm">LOCAL CLOSER</button></div>
-					<div class="col-md-3"></div>
-					<div class="col-md-3"><button class="btn btn-default btn-sm">HANGUP XFER LINE</button></div>
+					<div class="col-md-12">
+						<div class="mda-form-group label-floating">
+							<select id="transfer-local-closer" name="transfer-local-closer" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
+								<option></option>
+							</select>
+							<label for="transfer-local-closer">Transfer Groups</label>
+						</div>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-2">
 						<div class="mda-form-group label-floating">
+							<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="transfer-seconds" name="transfer-seconds" disabled>
 							<label for="transfer-seconds">SECONDS</label>
-							<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="transfer-seconds" disabled>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="mda-form-group label-floating">
+							<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="transfer-channel" name="transfer-channel" disabled>
 							<label for="transfer-channel">CHANNEL</label>
-							<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="transfer-channel" disabled>
 						</div>
 					</div>
 					<div class="col-md-3">

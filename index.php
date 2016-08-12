@@ -720,7 +720,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 									 </div>
 								  </a>
 								  <!-- END list group item-->
-								  <a href="#" class="list-group-item">
+								  <!-- <a href="#" class="list-group-item">
 									 <div class="media-box">
 										<div class="pull-left">
 										   <img src="theme_dashboard/img/user/03.jpg" alt="Image" class="media-box-object img-circle thumb32">
@@ -733,10 +733,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
-								  </a>
+								  </a>-->
 								  <!-- END list group item-->
 								  <!-- START list group item-->
-								  <a href="#" class="list-group-item">
+								  <!-- <a href="#" class="list-group-item">
 									 <div class="media-box">
 										<div class="pull-left">
 										   <img src="theme_dashboard/img/user/09.jpg" alt="Image" class="media-box-object img-circle thumb32">
@@ -749,10 +749,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
-								  </a>
+								  </a>-->
 								  <!-- END list group item-->
 								  <!-- START list group item-->
-								  <a href="#" class="list-group-item">
+								  <!-- <a href="#" class="list-group-item">
 									 <div class="media-box">
 										<div class="pull-left">
 										   <img src="theme_dashboard/img/user/12.jpg" alt="Image" class="media-box-object img-circle thumb32">
@@ -765,10 +765,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
-								  </a>
+								  </a> -->
 								  <!-- END list group item-->
 								  <!-- START list group item-->
-								  <a href="#" class="list-group-item">
+								  <!-- <a href="#" class="list-group-item">
 									 <div class="media-box">
 										<div class="pull-left">
 										   <img src="theme_dashboard/img/user/10.jpg" alt="Image" class="media-box-object img-circle thumb32">
@@ -781,7 +781,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
 										</div>
 									 </div>
-								  </a>
+								  </a> -->
 								  <!-- END list group item-->
 							   </div>
 							   <!-- END list group-->
