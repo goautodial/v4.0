@@ -1484,6 +1484,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$version = $this->db->getSettingValueForKey(CRM_SETTING_CRM_VERSION);
 		if (empty($version)) { $version = "unknown"; }
 		$version = "4.0";
+
 		return '<footer class="main-footer">
 
 			<div class="pull-right hidden-xs">
@@ -3008,6 +3009,29 @@ error_reporting(E_ERROR | E_PARSE);
 		 $output = json_decode($data);
 		 
 		 return $output;
+	}
+
+	// get user info
+	public function goGetUserInfo($userid){
+		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "goGetUserInfo"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["user_id"] = $userid; #Desired User ID (required)
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+		 
+		return $output;
 	}
 	
 	// get user list
@@ -5419,6 +5443,44 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    return $output;
 	}
+
+	/**
+	 * Returns the standardized theme css for all pages.
+	 */
+	public function standardizedThemeCSS() {
+		$css = "";
+		$css .= '<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />'; // bootstrap basic css
+		$css .= '<link href="css/creamycrm.css" rel="stylesheet" type="text/css" />'; // creamycrm css
+    	$css .= '<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />'; // circle buttons css
+		$css .= '<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />'; // ionicons
+		$css .= '<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />'; // bootstrap3 css
+		$css .= '<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">'; // font-awesome css
+		$css .= '<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">'; // animate css
+		//$css .= '<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css 
+		$css .= '<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">'; // app css
+		$css .= '<link rel="stylesheet" href="css/customizedLoader.css">'; // preloader css
+		$css .= '<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'; // sweetalert
+		/* JS that needs to be declared first */
+		$css .= '<script src="js/jquery.min.js"></script>'; // required JS
+		$css .= '<script src="js/bootstrap.min.js" type="text/javascript"></script>'; // required JS
+		$css .= '<script src="js/jquery-ui.min.js" type="text/javascript"></script>'; // required JS
+
+		return $css;
+	}
+
+	/**
+	 * Returns the standardized theme js for all pages.
+	 */
+	public function standardizedThemeJS() {
+		$js = '';
+		$js .= '<script src="js/jquery.validate.min.js" type="text/javascript"></script>'; // forms and action js
+		$js .= '<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>'; // sweetalert js 
+		$js .= '<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>'; // bootstrap 3 js
+		$js .= '<script src="js/app.min.js" type="text/javascript"></script>'; // creamy app js
+
+		return $js;
+	}
+
 }
 
 ?>
