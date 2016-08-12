@@ -1062,10 +1062,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                	<li><a class="view-contact" href="#" data-id="'.$lead_id.'">'.$this->lh->translationFor("View").'</a></li>
-	                    <li><a class="edit-contact" href="'.$lead_id.'">'.$this->lh->translationFor("Modify").'</a></li>
+	                    <li><a class="edit-contact" data-id="'.$lead_id.'">'.$this->lh->translationFor("Contact Details").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-contact" href="'.$lead_id.'">'.$this->lh->translationFor("Delete").'</a></li>
+	                    <li><a class="delete-contact" data-id="'.$lead_id.'">'.$this->lh->translationFor("Delete").'</a></li>
 	                </ul>
 	            </div>';
 	}
@@ -1803,8 +1802,6 @@ error_reporting(E_ERROR | E_PARSE);
 			$callreports .= $this-> getSidebarItem("./callreports.php", "bar-chart", $this->lh->translationFor("reports_and_go_analytics"));
 			$callreports .= '</ul></li>';
 			
-			$loadleads .= $this->getSidebarItem("loadleads.php", "sort-alpha-asc", $this->lh->translationFor("load_leads"));
-			
 			$eventsArea .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
 			
 			$contactsandrecs .= $this->getSidebarItem("contactsandcallrecordings.php", "phone-square", $this->lh->translationFor("contacts_call_recordings"));
@@ -1815,7 +1812,7 @@ error_reporting(E_ERROR | E_PARSE);
 			//$agentmenu .= $this-> getSidebarItem("", "book", $this->lh->translationFor("scripts"));
 			//$agentmenu .= $this-> getSidebarItem("", "tasks", $this->lh->translationFor("Custom Form"));
 			$agentmenu .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
-			$agentmenu .= $this->getSidebarItem("events.php", "calendar", $this->lh->translationFor("events"), "0", "blue");
+			$agentmenu .= $this->getSidebarItem("events.php", "calendar", $this->lh->translationFor("events_callbacks"), "0", "blue");
 		}
 
 		// get customer types
@@ -1846,7 +1843,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= $settings;
 		$result .= $callreports;
 		$result .= $adminArea;
-		$result .= $loadleads;
 		$result .= $contactsandrecs;
 		$result .= $eventsArea;
 
@@ -4589,32 +4585,6 @@ error_reporting(E_ERROR | E_PARSE);
 					return $vars;
 			 }
 		}
-		/*
-		 * Displaying Hopper Leads Warning
-		 * [[API: Function]] - goGetHopperLeadsWarning
-		 * This application is used to get the list of campaigns < 100
-		*/
-
-		public function API_goGetHopperLeadsWarning() {
-			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = goUser; #Username goes here. (required)
-			$postfields["goPass"] = goPass;
-			$postfields["goAction"] = "goGetHopperLeadsWarning"; #action performed by the [[API:Functions]]
-			$postfields["responsetype"] = responsetype; 
-			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
-			 
-			 $output = json_decode($data);
-			 
-			 return $output;
-		}
 		
 		/*
 		 * Displaying Leads in hopper
@@ -4735,6 +4705,30 @@ error_reporting(E_ERROR | E_PARSE);
 					return $vars;
 			 }
 		}
+
+		/*
+		 * Displaying Total Active Campaigns
+		 * [[API: Function]] - goGetActiveCampaignsToday
+		 * This application is used to get total number of active leads
+		*/
+
+		public function API_goGetActiveCampaignsToday(){
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
+			$postfields["goAction"] = "goGetActiveCampaignsToday"; #action performed by the [[API:Functions]]
+
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+                        return($data);
+		}
 		
 		/*
 		 * Displaying Call(s) Ringing
@@ -4775,6 +4769,60 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		}
 
+		/*
+		 * Displaying Hopper Leads Warning
+		 * [[API: Function]] - goGetHopperLeadsWarning
+		 * This application is used to get the list of campaigns < 100
+		*/
+
+		public function API_goGetHopperLeadsWarning() {
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
+			$postfields["goAction"] = "goGetHopperLeadsWarning"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			 
+			 $output = json_decode($data);
+			 
+			 return $output;
+		}
+		
+		/*
+		 * Displaying Online Agents Statuses
+		 * [[API: Function]] - goGetOnlineAgents
+		 * This application is used to get the list online agents
+		*/
+
+		public function API_goGetOnlineAgents() {
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
+			$postfields["goAction"] = "goGetOnlineAgents"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			 
+			 $output = json_decode($data);
+			 
+			 return $output;
+		}		
+		
 		public function API_goGetIncomingQueue() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -4908,6 +4956,8 @@ error_reporting(E_ERROR | E_PARSE);
 			foreach ($data AS $temp) {
 			   $temp = explode("=",$temp);
 			   $results[$temp[0]] = $temp[1];
+                           //var_dump($results);
+			   //die("dd");
 			}
 			
 			if ($results["result"]=="success") {

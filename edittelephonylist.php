@@ -210,21 +210,6 @@ if (isset($_POST["modifyid"])) {
 									</fieldset>
 								</div><!-- tab 1 -->
 
-								
-								<!-- NOTIFICATIONS -->
-			                    <div id="notifications">
-			                        <div class="output-message-success" style="display:none;">
-			                            <div class="alert alert-success alert-dismissible" role="alert">
-			                              <strong>Success!</strong> Phone <?php echo $modify?> modified !
-			                            </div>
-			                        </div>
-			                        <div class="output-message-error" style="display:none;">
-			                            <div class="alert alert-danger alert-dismissible" role="alert">
-			                              <span id="modifylistresult"></span>
-			                            </div>
-			                        </div>
-			                    </div>
-
 			                    <!-- FOOTER BUTTONS -->
 			                    <fieldset class="footer-buttons">
 			                        <div class="box-footer">
@@ -260,9 +245,6 @@ if (isset($_POST["modifyid"])) {
 		
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-		
-		<!-- SLIMSCROLL-->
-   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -282,45 +264,26 @@ if (isset($_POST["modifyid"])) {
 							$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
 							$('#modifyListOkButton').prop("disabled", true);
 
-							swal({   title: "Are you sure?",   
-		                	text: "This action cannot be undone.",   
-		                	type: "warning",   
-		                	showCancelButton: true,   
-		                	confirmButtonColor: "#DD6B55",   
-		                	confirmButtonText: "Yes, submit!",   
-		                	cancelButtonText: "No, cancel please!",   
-		                	closeOnConfirm: false,   
-		                	closeOnCancel: false }, 
-
-			                	function(isConfirm){   
-			                		if (isConfirm) {     
-
-			                			$.ajax({
-				                            url: "./php/ModifyTelephonyList.php",
-				                            type: 'POST',
-				                            data: $("#modifylist").serialize(),
-				                            success: function(data) {
-				                              // console.log(data);
-				                                  if(data == "success"){
-				                                        swal("Success!", "List Successfully Updated!", "success")
-				                                        window.setTimeout(function(){location.reload()},2000)
-				                                        $('#update_button').html("<i class='fa fa-check'></i> Update");
-				                                        $('#modifyListOkButton').prop("disabled", false);
-				                                  }
-				                                  else{
-				                                      	sweetAlert("Oops...", "Something went wrong!", "error");
-														$('#update_button').html("<i class='fa fa-check'></i> Update");
-														$('#modifyListOkButton').prop("disabled", false);
-				                                  }
-				                            }
-				                        });
-									} else { 
-										swal("Cancelled", "No changes were done.", "error");  
-										$('#update_button').html("<i class='fa fa-check'></i> Update");
-										$('#modifyListOkButton').prop("disabled", false);
-									}
-								}
-							);
+                			$.ajax({
+	                            url: "./php/ModifyTelephonyList.php",
+	                            type: 'POST',
+	                            data: $("#modifylist").serialize(),
+	                            success: function(data) {
+	                              // console.log(data);
+	                                  if(data == "success"){
+	                                        swal("Success!", "List Successfully Updated!", "success")
+	                                        window.setTimeout(function(){location.reload()},2000)
+	                                        $('#update_button').html("<i class='fa fa-check'></i> Update");
+	                                        $('#modifyListOkButton').prop("disabled", false);
+	                                  }
+	                                  else{
+	                                      	sweetAlert("Oops...", "Something went wrong!", "error");
+											$('#update_button').html("<i class='fa fa-check'></i> Update");
+											$('#modifyListOkButton').prop("disabled", false);
+	                                  }
+	                            }
+	                        });
+							
 					//return false; //don't let the form refresh the page...					
 				});
 				
