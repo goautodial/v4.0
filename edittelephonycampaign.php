@@ -172,8 +172,8 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 								<div role="tabpanel">
 								<!--<div class="nav-tabs-custom">-->
 									<ul role="tablist" class="nav nav-tabs nav-justified">
-										<li class="active"><a href="#tab_1" data-toggle="tab"><em class="fa fa-gear fa-lg"></em> Basic Settings</a></li>
-										<li><a href="#tab_2" data-toggle="tab"><em class="fa fa-gears fa-lg"></em> Advanced Settings</a></li>
+										<li class="active"><a href="#tab_1" data-toggle="tab">Basic Settings</a></li>
+										<li><a href="#tab_2" data-toggle="tab">Advanced Settings</a></li>
 									</ul>
 					               		<!-- Tab contents-->
 					               		<div class="tab-content">
