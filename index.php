@@ -714,12 +714,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 										   <img src="<?php echo $_SESSION['avatar'];?>" alt="Image" class="media-box-object img-circle thumb32">
 										</div>
 										<div class="media-box-body clearfix">
-										    <strong class="media-box-heading text-primary">
-											  <span class="circle circle-success circle-lg text-left"></span>Catherine Ellis
-											</strong>
-											<br/>
-											<strong class=""style="padding-left:20px;">CS HOTLINE</strong>
-											<small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
+                                                                                <span id="refresh_online_agents">
+                                                                                </span>
 										</div>
 									 </div>
 								  </a>
@@ -1215,9 +1211,9 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		// ---- DB TIME
 			load_db_time();
 			
-        // ---- hopper leads warning
+        // ---- agent and campaign resources
                         load_campaign_name();
-                        //load_calls_today();
+                        load_online_agents();
                 
 		});
 
@@ -1254,9 +1250,9 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		setInterval(load_php_time,5000);
 		setInterval(load_db_time,5000);
 		
-		// ... hopper leads warning ...
+		// ... agent and campaign resources ...
 		setInterval(load_campaign_name,5000);
-		//setInterval(load_calls_today,5000);
+		setInterval(load_online_agents,5000);
 		
 	</script>
 	

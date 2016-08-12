@@ -1485,7 +1485,70 @@ error_reporting(E_ERROR | E_PARSE);
 		if (empty($version)) { $version = "unknown"; }
 		$version = "4.0";
 
-		return '<footer class="main-footer"><div class="pull-right hidden-xs"><b>Version</b> '.$version.'</div><strong>Copyright &copy; '.date("Y").' <a href="http://www.goautodial.com/">GoAutoDial Inc.</a> All rights reserved.</footer>';
+		return '<footer class="main-footer">
+
+			<div class="pull-right hidden-xs">
+				<b>Version</b> '.$version.'</div><strong>Copyright &copy; '.date("Y").' <a href="http://www.goautodial.com/">GoAutoDial Inc.</a> All rights reserved.
+			</div>
+			<!-- Modal -->
+			<div id="view-campaign-modal" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+
+			    <!-- Modal content-->
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        <h4 class="modal-title"><b>Campaign Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
+			      </div>
+			      <div class="modal-body">
+			      	<div class="output-message-no-result hide">
+				      	<div class="alert alert-warning alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong>Notice!</strong> There was an error retrieving details. Either error or no result.
+						</div>
+					</div>
+			        <div id="content" class="view-form hide">
+					    <div class="form-horizontal">
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Campaign ID:</label>
+					    		<span class="info-camp-id control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Campaign Name:</label>
+					    		<span class="info-camp-name control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Campaign Description:</label>
+					    		<span class="info-camp-desc control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Allowed Inbound and Blended:</label>
+					    		<span class="info-allowed control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Dial Method:</label>
+					    		<span class="info-dial-method control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">AutoDial Level:</label>
+					    		<span class="info-autodial-level control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Answering Machine Detection:</label>
+					    		<span class="info-ans-mach control-label align-left col-lg-7"></span>
+					    	</div>
+					    </div>
+					</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			    <!-- End of modal content -->
+			  </div>
+			</div>
+			<!-- End of modal -->
+			</footer>';
 	}
 	
 	/** Topbar Menu elements */
@@ -3556,7 +3619,7 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-campaign" href="#" data-id="'.$id.'">Details</a></li>
+			<li><a class="edit-campaign" href="#" data-id="'.$id.'">View Details</a></li>
 			<li><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
@@ -4546,32 +4609,6 @@ error_reporting(E_ERROR | E_PARSE);
 					return $vars;
 			 }
 		}
-		/*
-		 * Displaying Hopper Leads Warning
-		 * [[API: Function]] - goGetHopperLeadsWarning
-		 * This application is used to get the list of campaigns < 100
-		*/
-
-		public function API_goGetHopperLeadsWarning() {
-			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = goUser; #Username goes here. (required)
-			$postfields["goPass"] = goPass;
-			$postfields["goAction"] = "goGetHopperLeadsWarning"; #action performed by the [[API:Functions]]
-			$postfields["responsetype"] = responsetype; 
-			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
-			 
-			 $output = json_decode($data);
-			 
-			 return $output;
-		}
 		
 		/*
 		 * Displaying Leads in hopper
@@ -4692,6 +4729,30 @@ error_reporting(E_ERROR | E_PARSE);
 					return $vars;
 			 }
 		}
+
+		/*
+		 * Displaying Total Active Campaigns
+		 * [[API: Function]] - goGetActiveCampaignsToday
+		 * This application is used to get total number of active leads
+		*/
+
+		public function API_goGetActiveCampaignsToday(){
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
+			$postfields["goAction"] = "goGetActiveCampaignsToday"; #action performed by the [[API:Functions]]
+
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			
+                        return($data);
+		}
 		
 		/*
 		 * Displaying Call(s) Ringing
@@ -4732,6 +4793,60 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		}
 
+		/*
+		 * Displaying Hopper Leads Warning
+		 * [[API: Function]] - goGetHopperLeadsWarning
+		 * This application is used to get the list of campaigns < 100
+		*/
+
+		public function API_goGetHopperLeadsWarning() {
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
+			$postfields["goAction"] = "goGetHopperLeadsWarning"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			 
+			 $output = json_decode($data);
+			 
+			 return $output;
+		}
+		
+		/*
+		 * Displaying Online Agents Statuses
+		 * [[API: Function]] - goGetOnlineAgents
+		 * This application is used to get the list online agents
+		*/
+
+		public function API_goGetOnlineAgents() {
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
+			$postfields["goAction"] = "goGetOnlineAgents"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			 
+			 $output = json_decode($data);
+			 
+			 return $output;
+		}		
+		
 		public function API_goGetIncomingQueue() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -4865,6 +4980,8 @@ error_reporting(E_ERROR | E_PARSE);
 			foreach ($data AS $temp) {
 			   $temp = explode("=",$temp);
 			   $results[$temp[0]] = $temp[1];
+                           //var_dump($results);
+			   //die("dd");
 			}
 			
 			if ($results["result"]=="success") {

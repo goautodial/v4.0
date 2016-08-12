@@ -25,24 +25,24 @@ for($i=0;$i < count($output->campaign_id);$i++){
     $campid =  $output->campaign_id[$i];
     
    if ($leadscount == 0){   
-        echo '<small class="text pull-right ml">'.$leadscount.'</small>
+        echo '<small class="text-muted pull-right ml">'.$leadscount.'</small>
                 <div class="media-box-heading"><div class="media-box-heading"><strong>
                 <a href="#" class="text-danger m0">'.$campname.'</a></strong></div>
                 </span>
                 <p class="m0">
-                <small ><a href="#" class="text">'.$campid.'</a>
+                <small ><strong><a href="#" class="text">'.$campid.'</a></strong>
                 </small>
-                </p><br>';
+                </p>';
     }
     if ($leadscount > 0){ 
-        echo '<small class="text pull-right ml">'.$leadscount.'</small>
+        echo '<small class="text-muted pull-right ml">'.$leadscount.'</small>
                 <div class="media-box-heading"><div class="media-box-heading"><strong>
-                <a href="#" class="text-info m0">'.$campname.'</a></strong></div>
+                <a href="#" class="text-warning m0">'.$campname.'</a></strong></div>
                 </span>
                 <p class="m0">
-                <small><a href="#" class="text">'.$campid.'</a>
+                <small><strong><a href="#" class="text">'.$campid.'</a></strong>
                 </small>
-                </p> <br>';
+                </p>';
     }
 }
     
