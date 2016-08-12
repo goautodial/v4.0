@@ -21,3 +21,26 @@ function load_online_agents(){
    });
 }
 
+function getAgentInfo(userid){
+   $.ajax({
+     type: 'POST',
+     url: "./php/ViewUserInfo.php",
+     data: {userid: das_userID},
+     cache: false,
+     success: function(data){
+        $("#refresh_getAgentInfo").html(data);
+     } 
+   });
+}
+
+function getCampaignInfo(campid){
+   $.ajax({
+     type: 'POST',
+     url: "./php/ViewUserInfo.php",
+     data: {userid: das_userID},
+     cache: false,
+     success: function(data){
+        $("#refresh_getCampaignInfo").html(data);
+     } 
+   });
+}

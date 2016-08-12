@@ -38,7 +38,8 @@ for($i=0;$i < count($output->campaign_id);$i++){
     
    if ($leadscount == 0){   
         echo '<div class="media-box-heading"><div class="media-box-heading"><strong>
-                <a class="text-danger m0 link-campid" data-campaign-id="'.$campid.'">'.$campname.'</a></strong></div>
+                <a data-toggle="modal" data-target="#view-campaign-modal" class="text-danger m0">'.$campname.'</a></strong></div>
+                </span>
                 <p class="m0">
                 <small ><strong><a href="#" class="text">'.$campid.'</a></strong>
                 </small>
@@ -47,7 +48,7 @@ for($i=0;$i < count($output->campaign_id);$i++){
     }
     if ($leadscount > 0){ 
         echo '<div class="media-box-heading"><div class="media-box-heading"><strong>
-                <a data-toggle="modal" data-target=".view-campaign-modal" class="text-warning m0">'.$campname.'</a></strong>
+                <a data-toggle="modal" data-target="#view-campaign-modal" class="text-warning m0">'.$campname.'</a></strong>
                 </div>
                 <p class="m0">
                 <small><strong><a href="#" class="text">'.$campid.'</a></strong>
