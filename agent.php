@@ -108,9 +108,9 @@ $_SESSION['avatar'] = $avatarURL;
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <script src="js/jquery.validate.min.js" type="text/javascript"></script>
 		
-        <!-- Creamy App 
-        <script src="js/app.min.js" type="text/javascript"></script>
-		-->
+        <!-- Creamy App -->
+        <!--<script src="js/app.min.js" type="text/javascript"></script>-->
+		
         <!-- theme_dashboard folder -->
 		<!-- FONT AWESOME-->
 		<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
