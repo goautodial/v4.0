@@ -1490,127 +1490,6 @@ error_reporting(E_ERROR | E_PARSE);
 			<div class="pull-right hidden-xs">
 				<b>Version</b> '.$version.'</div><strong>Copyright &copy; '.date("Y").' <a href="http://www.goautodial.com/">GoAutoDial Inc.</a> All rights reserved.
 			</div>
-			<!-- Modal -->
-			<!-- View Campaign -->
-			<div id="view-campaign-modal" class="modal fade" role="dialog">
-			  <div class="modal-dialog">
-
-			    <!-- Modal content-->
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><b>Campaign Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
-			      </div>
-			      <div class="modal-body">
-			      	<div class="output-message-no-result hide">
-				      	<div class="alert alert-warning alert-dismissible" role="alert">
-						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>Notice!</strong> There was an error retrieving details. Either error or no result.
-						</div>
-					</div>
-			        <div id="content" class="view-form hide">
-					    <div class="form-horizontal">
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign ID:</label>
-					    		<span class="info-camp-id control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign Name:</label>
-					    		<span class="info-camp-name control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign Description:</label>
-					    		<span class="info-camp-desc control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Allowed Inbound and Blended:</label>
-					    		<span class="info-allowed control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Dial Method:</label>
-					    		<span class="info-dial-method control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">AutoDial Level:</label>
-					    		<span class="info-autodial-level control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Answering Machine Detection:</label>
-					    		<span class="info-ans-mach control-label align-left col-lg-7"></span>
-					    	</div>
-					    </div>
-					</div>
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			      </div>
-			    </div>
-			    <!-- End of modal content -->
-			  </div>
-			</div>
-			<!-- End of View Campaign -->
-			
-			<!-- View Agent -->
-			<div id="view-agent-modal" class="modal fade" role="dialog">
-			  <div class="modal-dialog">
-
-			    <!-- Modal content-->
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><b>Agent Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
-			      </div>
-			      <div class="modal-body">
-			      	<div class="output-message-no-result hide">
-				      	<div class="alert alert-warning alert-dismissible" role="alert">
-						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>Notice!</strong> There was an error retrieving details. Either error or no result.
-						</div>
-					</div>
-			        <div id="content" class="view-form hide">
-					    <div class="form-horizontal">
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Agent ID:</label>
-					    		<span class="info-camp-id control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Agent Name:</label>
-					    		<span class="info-camp-name control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign Description:</label>
-					    		<span class="info-camp-desc control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Allowed Inbound and Blended:</label>
-					    		<span class="info-allowed control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Dial Method:</label>
-					    		<span class="info-dial-method control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">AutoDial Level:</label>
-					    		<span class="info-autodial-level control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Answering Machine Detection:</label>
-					    		<span class="info-ans-mach control-label align-left col-lg-7"></span>
-					    	</div>
-					    </div>
-					</div>
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			      </div>
-			    </div>
-			    <!-- End of modal content -->
-			  </div>
-			</div>
-			<!-- End of View Agent -->			
-			
-			
-			<!-- End of modal -->
 			</footer>';
 	}
 	
@@ -3131,7 +3010,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       // print suffix
 	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	      
-			return $result.'</table>';
+			return $result;
        }else{
 			// error getting contacts
 			//return $output->result;
@@ -3246,7 +3125,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result.'</table>';
+			return $result; 
 			
 		} else {		
 		# An error occured		
@@ -3313,7 +3192,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 			}
 			
-			return $result.'</table>';
+			return $result; 
 			
 		} else {		
 		# An error occured		
@@ -3450,7 +3329,7 @@ error_reporting(E_ERROR | E_PARSE);
 					*/
 			}
 			
-			return $result.'</table>';
+			return $result; 
 			
 		} else {		
 			return $output->result;
@@ -3510,7 +3389,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result.'</table>'; 
+			return $result; 
 			
 		} else {		
 		# An error occured		
@@ -3578,7 +3457,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result.'</table>';
+			return $result; 
 			
 		}else{
 			// if no entry in voicemails
@@ -3768,7 +3647,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 				</tr>";
 	    }
-		return $result.'</table>';
+		return $result;
 	    } else {
 		# An error occured
 		return $output->result;
@@ -3860,7 +3739,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 				</tr>";
 	    }
-		return $result.'</table>';
+		return $result;
 	}
 	
 	private function getUserActionMenuForMusicOnHold($id, $name) {
@@ -3929,7 +3808,7 @@ error_reporting(E_ERROR | E_PARSE);
 			<td>".$action."</td>
 		    </tr>";
 	    }
-		return $result.'</table>';
+		return $result;
 	    } else {
 		# An error occured
 		return $output->result;
@@ -4011,7 +3890,8 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 			    </tr>";
 		    }
-			return $result.'</table>';
+			return $result;
+
 	    } else {
 		# An error occured
 		return $output->result;
@@ -4082,7 +3962,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </tr>";
             }
 
-		   return $result.'</table>';
+		    return $result;
     
 	    } else {
 	       # An error occured
@@ -4163,7 +4043,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </tr>";
             }
 
-		    return $result.'</table>';
+		    return $result;
     
 	    } else {
 	       # An error occured
@@ -4904,7 +4784,7 @@ error_reporting(E_ERROR | E_PARSE);
 			 $data = curl_exec($ch);
 			 curl_close($ch);
 			 
-			 $output = json_decode($data);
+			 //$output = json_decode($data);
 			 
 			 return $output;
 		}		
@@ -5267,7 +5147,7 @@ error_reporting(E_ERROR | E_PARSE);
 				}
 			}
 			
-			return $result.'</table>';
+			return $result;
        }else{
        		//display nothing
        }

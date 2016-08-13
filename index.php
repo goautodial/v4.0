@@ -153,6 +153,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 $campaign = $ui->API_getListAllCampaigns();
 //var_dump($campaign);
 $ingroup = $ui->API_getInGroups();
+//$usersinfo = $ui->API_goGetUserInfo($user_id);
 
 /*
  * API for call statistics - Demian
@@ -933,6 +934,134 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		</div>
 	</div>
 	<!-- End of modal -->
+			<!-- Modal -->
+			<!-- View Campaign -->
+			<div id="view-campaign-modal" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+
+			    <!-- Modal content-->
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        <h4 class="modal-title"><b>Campaign Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
+			      </div>
+			      <div class="modal-body">
+			      	<div class="output-message-no-result hide">
+				      	<div class="alert alert-warning alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong>Notice!</strong> There was an error retrieving details. Either error or no result.
+						</div>
+					</div>
+			        <div id="content" class="view-form ">
+					    <div class="form-horizontal">
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Campaign ID:</label>
+					    		<span class="info-camp-id control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Campaign Name:</label>
+					    		<span class="info-camp-name control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Campaign Description:</label>
+					    		<span class="info-camp-desc control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Allowed Inbound and Blended:</label>
+					    		<span class="info-allowed control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Dial Method:</label>
+					    		<span class="info-dial-method control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">AutoDial Level:</label>
+					    		<span class="info-autodial-level control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Answering Machine Detection:</label>
+					    		<span class="info-ans-mach control-label align-left col-lg-7"></span>
+					    	</div>
+					    </div>
+					</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			    <!-- End of modal content -->
+			  </div>
+			</div>
+			<!-- End of View Campaign -->
+			
+			<!-- View Agent -->
+			<div id="view-agent-modal" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+
+			    <!-- Modal content-->
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        <h4 class="modal-title"><b>Agent Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
+			      </div>
+			      <div class="modal-body">
+			      	<div class="output-message-no-result hide">
+				      	<div class="alert alert-warning alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong>Notice!</strong> There was an error retrieving details. Either error or no result.
+						</div>
+					</div>
+			        <div id="content" class="view-form ">
+					    <div class="form-horizontal">
+                                                <div class="form-group">
+					    		<label class="control-label col-lg-5">Agent ID:</label>
+					    		<span id="modal-userid" class="control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Agent Name:</label>
+					    		<span id="modal-user" class="control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">User Level:</label>
+					    		<span id="modal-userlevel" class="control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">User Group:</label>
+					    		<span id="modal-usergroup" class="control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Status:</label>
+					    		<span id="modal-active" class="control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Email:</label>
+					    		<span id="modal-email" class="control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Voicemail:</label>
+					    		<span id="modal-voicemail" class="control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Phone Login:</label>
+					    		<span id="modal-phonelogin" class="control-label align-left col-lg-7"></span>
+					    	</div>
+					    	<div class="form-group">
+					    		<label class="control-label col-lg-5">Phone Password:</label>
+					    		<span id="modal-phonepass" class="control-label align-left col-lg-7"></span>					    	
+                                                </div>
+                                            </div>
+                                </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			    <!-- End of modal content -->
+			  </div>
+			</div>
+			<!-- End of View Agent -->			
+			
+			
+			<!-- End of modal -->
 
 
 <?php
@@ -1164,8 +1293,28 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			});
 		})(window, document, window.jQuery);
 		
-		
+		//demian
 		$(document).ready(function(){
+		
+                    // Get user information 
+                    $(document).on('click','#onclick-userinfo',function(){
+                        var id = $(this).attr('data-id');
+                        $.ajax({
+                            type: 'POST',
+                            url: "./php/ViewUserInfo.php",
+                            data: {user_id: id},
+                            cache: false,
+                            dataType: 'json',
+                                success: function(data){ 
+                                    alert(data[20]);
+                                    //for (var index in data) {
+                                    // Show value in alert dialog:
+                                    //alert( data[index] );
+                                    console.log(data);
+                                    //}
+                                }
+                        });                
+                    });		
 
 	// ---- loads datatable functions
 				$('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
@@ -1252,7 +1401,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		
 		// ... agent and campaign resources ...
 		setInterval(load_campaign_name,5000);
-		setInterval(load_online_agents,5000);
+		setInterval(load_online_agents,5000);				
 		
 	</script>
 	
@@ -1290,5 +1439,6 @@ $callsperhour = $ui->API_goGetCallsPerHour();
    <!-- =============== APP SCRIPTS ===============-->
     <script src="theme_dashboard/js/app.js"></script>
 	<script src="theme_dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
+
     </body>
 </html>
