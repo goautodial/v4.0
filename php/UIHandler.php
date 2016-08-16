@@ -1499,7 +1499,7 @@ error_reporting(E_ERROR | E_PARSE);
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><b>Campaign Resources</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
+			        <h4 class="modal-title"><b>Campaign Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
 			      </div>
 			      <div class="modal-body">
 			      	<div class="output-message-no-result hide">
@@ -3992,9 +3992,9 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    if ($output->result=="success") {
 	    # Result was OK!
-	    $columns = array("Script ID", "Script Name", "Status", "User Group", "Actions");
-	    	$hideOnMedium = array("Script ID", "Status", "User Group");
-	    $hideOnLow = array( "Script ID", "Status", "User Group");
+	    $columns = array("Script ID", "Script Name", "Status", "Type", "User Group", "Actions");
+	    	$hideOnMedium = array("Script ID", "Type", "Status", "User Group");
+	    $hideOnLow = array( "Script ID", "Type", "Status", "User Group");
 
 		    $result = $this->generateTableHeaderWithItems($columns, "scripts_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
 
@@ -4011,6 +4011,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td class='hide-on-low'><a class='edit-T_user' data-id='.$output->script_id[$i].'>".$output->script_id[$i]."</td>
 				<td>".$output->script_name[$i]."</td>
 				<td class='hide-on-medium hide-on-low'>".$active."</td>
+				<td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
 				<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
 				<td>".$action."</td>
 			    </tr>";

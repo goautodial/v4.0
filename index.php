@@ -522,7 +522,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
         <!--==== SERVICE LEVEL AGREEMENT ==== -->
 	            		<div class="panel panel-default">
 						   <div class="panel-body">
-								<div class="text-primary">Dropped Percentage</div>
+								<div class="text-primary">Dropped Calls Percentage</div>
 								<center>
 									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 										<input type="text"
@@ -565,7 +565,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			<!-- ==== TASK ACTIVITIES ===== -->
 						<div class="panel panel-default">
 		                     <div class="panel-heading">
-		                        <div class="panel-title">Campaigns Resources</div>
+		                        <div class="panel-title">Campaign Leads Resources</div>
 		                     </div>         
 		                     <!-- START list group-->
 		                     <!--<span id="refresh_db_time">-->
