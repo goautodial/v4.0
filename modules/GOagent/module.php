@@ -599,46 +599,55 @@ EOF;
 				<h4 class="modal-title">$transferConference</h4>
 			</div>
 			<div class="modal-body">
-				<div class="row" style="padding-left: 10px; padding-right: 10px;">
-					<div class="col-md-12">
-						<div class="mda-form-group label-floating">
-							<select id="transfer-local-closer" name="transfer-local-closer" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
-								<option></option>
-							</select>
-							<label for="transfer-local-closer">Transfer Groups</label>
-						</div>
-					</div>
-				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="mda-form-group label-floating">
-							<select id="transfer-local-closer" name="transfer-local-closer" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
+							<select id="transfer-selection" name="transfer-selection" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select">
 								<option></option>
+								<option value="AGENT">Transfer to Agent</option>
+								<option value="REGULAR">Regular 3-Way</option>
 							</select>
-							<label for="transfer-local-closer">Transfer Groups</label>
+							<label for="transfer-selection">Transfer Selection</label>
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-2">
-						<div class="mda-form-group label-floating">
-							<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="transfer-seconds" name="transfer-seconds" disabled>
-							<label for="transfer-seconds">SECONDS</label>
+				<div id="transfer-agent" class="hidden">
+					<div class="row">
+						<div class="col-md-9">
+							<div class="mda-form-group label-floating">
+								<select id="transfer-local-closer" name="transfer-local-closer" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
+									<option></option>
+								</select>
+								<label for="transfer-local-closer">Transfer Groups</label>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<button class="btn btn-primary btn-lg"> LOCAL CLOSER </button>
 						</div>
 					</div>
-					<div class="col-md-4">
-						<div class="mda-form-group label-floating">
-							<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="transfer-channel" name="transfer-channel" disabled>
-							<label for="transfer-channel">CHANNEL</label>
+				</div>
+				<div id="transfer-regular" class="hidden">
+					<div class="row">
+						<div class="col-md-2">
+							<div class="mda-form-group label-floating">
+								<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="transfer-seconds" name="transfer-seconds" disabled>
+								<label for="transfer-seconds">SECONDS</label>
+							</div>
 						</div>
+						<div class="col-md-4">
+							<div class="mda-form-group label-floating">
+								<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="transfer-channel" name="transfer-channel" disabled>
+								<label for="transfer-channel">CHANNEL</label>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<label class="checkbox-inline c-checkbox">
+								<input type="checkbox" id="transfer-consultative" value="1">
+								CONSULTATIVE
+							</label>
+						</div>
+						<div class="col-md-3"><button class="btn btn-default btn-sm">HANGUP XFER LINE</button></div>
 					</div>
-					<div class="col-md-3">
-						<label class="checkbox-inline c-checkbox">
-							<input type="checkbox" id="transfer-consultative" value="1">
-							CONSULTATIVE
-						</label>
-					</div>
-					<div class="col-md-3"><button class="btn btn-default btn-sm">HANGUP XFER LINE</button></div>
 				</div>
 			</div>
 		</div>
