@@ -105,23 +105,23 @@ function GetOnlineAgents(){
         $lead_id = $output->lead_id[$i];
         $STARTtime = date("U");
     
-        if (eregi("READY|CLOSER",$status)){
+        if (preg_match("/READY|CLOSER/",$status)){
             $last_call_time=$last_state_change;
             $class = "circle circle-warning circle-lg text-left";
                 if ($lead_id>0){ 
                     $status="DISPO";
                 }
         }
-        if (eregi("PAUSED",$status)){
+        if (preg_match("/PAUSED/",$status)){
             $class = "circle circle-danger circle-lg text-left";
                 if ($lead_id>0){ 
                     $status="DISPO";
                 }
         }    
-        if (!eregi("INCALL|QUEUE|PARK|3-WAY",$status)){
+        if (!preg_match("/INCALL|QUEUE|PARK|3-WAY/",$status)){
             $call_time_S = ($STARTtime - $last_state_change);
         }
-        else if (eregi("3-WAY",$status)){
+        else if (preg_match("/3-WAY/",$status)){
             $call_time_S = ($STARTtime - $call_mostrecent);
         }
         else{
