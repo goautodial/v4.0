@@ -12,12 +12,12 @@
 
 require_once('goCRMAPISettings.php');
 
-$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 $postfields["goUser"] = goUser; #Username goes here. (required)
 $postfields["goPass"] = goPass; #Password goes here. (required)
-$postfields["goAction"] = "getCampaignInfo"; #action performed by the [[API:Functions]]
-$postfields["responsetype"] = responsetype; #json (required)
-$postfields["campaign_id"] = $_POST['campaign_id']; #Desired campaign id (required)
+$postfields["goAction"] = "goGetUserInfo"; #action performed by the [[API:Functions]]. (required)
+$postfields["responsetype"] = responsetype; #json. (required)
+$postfields["user_id"] = $_POST['user_id']; #User ID (required)
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);

@@ -568,7 +568,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		                        <div class="panel-title">Campaigns Resources</div>
 		                     </div>         
 		                     <!-- START list group-->
-		                     <span id="refresh_db_time">
+		                     <!--<span id="refresh_db_time">-->
 		                     <div class="list-group">
 		                        <!-- START list group item-->
 		                        <div class="list-group-item">
@@ -670,7 +670,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		                           </div>
 		                        </div>-->
 		                     </div>
-		                     </span>
+		                     <!--</span>-->
 		                     <div class="panel-footer clearfix">
 		                        <a href="#" class="pull-left">
 		                           <small>Load more</small>
@@ -934,135 +934,6 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		</div>
 	</div>
 	<!-- End of modal -->
-			<!-- Modal -->
-			<!-- View Campaign -->
-			<div id="view-campaign-modal" class="modal fade" role="dialog">
-			  <div class="modal-dialog">
-
-			    <!-- Modal content-->
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><b>Campaign Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
-			      </div>
-			      <div class="modal-body">
-			      	<div class="output-message-no-result hide">
-				      	<div class="alert alert-warning alert-dismissible" role="alert">
-						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>Notice!</strong> There was an error retrieving details. Either error or no result.
-						</div>
-					</div>
-			        <div id="content" class="view-form ">
-					    <div class="form-horizontal">
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign ID:</label>
-					    		<span class="info-camp-id control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign Name:</label>
-					    		<span class="info-camp-name control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign Description:</label>
-					    		<span class="info-camp-desc control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Allowed Inbound and Blended:</label>
-					    		<span class="info-allowed control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Dial Method:</label>
-					    		<span class="info-dial-method control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">AutoDial Level:</label>
-					    		<span class="info-autodial-level control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Answering Machine Detection:</label>
-					    		<span class="info-ans-mach control-label align-left col-lg-7"></span>
-					    	</div>
-					    </div>
-					</div>
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			      </div>
-			    </div>
-			    <!-- End of modal content -->
-			  </div>
-			</div>
-			<!-- End of View Campaign -->
-			
-			<!-- View Agent -->
-			<div id="view-agent-modal" class="modal fade" role="dialog">
-			  <div class="modal-dialog">
-
-			    <!-- Modal content-->
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><b>Agent Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
-			      </div>
-			      <div class="modal-body">
-			      	<div class="output-message-no-result hide">
-				      	<div class="alert alert-warning alert-dismissible" role="alert">
-						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>Notice!</strong> There was an error retrieving details. Either error or no result.
-						</div>
-					</div>
-			        <div id="content" class="view-form ">
-					    <div class="form-horizontal">
-                                                <div class="form-group">
-					    		<label class="control-label col-lg-5">Agent ID:</label>
-					    		<span id="modal-userid" class="control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Agent Name:</label>
-					    		<span id="modal-user" class="control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">User Level:</label>
-					    		<span id="modal-userlevel" class="control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">User Group:</label>
-					    		<span id="modal-usergroup" class="control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Status:</label>
-					    		<span id="modal-active" class="control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Email:</label>
-					    		<span id="modal-email" class="control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Voicemail:</label>
-					    		<span id="modal-voicemail" class="control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Phone Login:</label>
-					    		<span id="modal-phonelogin" class="control-label align-left col-lg-7"></span>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Phone Password:</label>
-					    		<span id="modal-phonepass" class="control-label align-left col-lg-7"></span>					    	
-                                                </div>
-                                            </div>
-                                </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			      </div>
-			    </div>
-			    <!-- End of modal content -->
-			  </div>
-			</div>
-			<!-- End of View Agent -->			
-			
-			
-			<!-- End of modal -->
-
 
 <?php
 	/*
@@ -1292,30 +1163,96 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 					$.plot(chartv3, datav3, options);
 			});
 		})(window, document, window.jQuery);
-		
+
+// Clear user information
+function clear_agent_form(){
+    $('#modal-userid').html("");
+    $('#modal-user').html("");
+    $('#modal-active').html("");
+    $('#modal-email').html("");
+    $('#modal-usergroup').html("");     
+    $('#modal-userlevel').html("");
+    $('#modal-phonelogin').html("");
+    $('#modal-phonepass').html("");
+    $('#modal-voicemail').html("");   
+}
+
+// Clear campaign information
+ function clear_campaign_form(){
+    $('#modal-campaignid').html("");
+    $('#modal-campaignname').html("");
+    $('#modal-campaigndesc').html("");
+    $('#modal-callrecordings').html("");
+    //$('#modal-amd').html("");
+    $('#modal-campaigncid').html("");
+    $('#modal-localcalltime').html("");
+}
 		//demian
 		$(document).ready(function(){
 		
-                    // Get user information 
+                    // Clear previous agent info
+                    $('#view-agent-modal').on('hidden.bs.modal', function () {
+                        clear_agent_form();
+                    });
+                    // Get user information                     
                     $(document).on('click','#onclick-userinfo',function(){
-                        var id = $(this).attr('data-id');
+                        var userid = $(this).attr('data-id');
                         $.ajax({
                             type: 'POST',
                             url: "./php/ViewUserInfo.php",
-                            data: {user_id: id},
-                            cache: false,
-                            dataType: 'json',
+                            data: {user_id: userid},
+                            cache: true,
+                            //dataType: 'json',
                                 success: function(data){ 
-                                    alert(data[20]);
-                                    //for (var index in data) {
-                                    // Show value in alert dialog:
-                                    //alert( data[index] );
-                                    console.log(data);
-                                    //}
+                                    //console.log(data);
+                                    var JSONString = data;
+                                    var JSONObject = JSON.parse(JSONString);
+                                    //var JSONObject = $.parseJSON(JSONString);
+                                    console.log(JSONObject);      // Dump all data of the Object in the console
+                                        $('#modal-userid').append(JSONObject.data.user);
+                                        $('#modal-user').append(JSONObject.data.full_name);
+                                        $('#modal-active').append(JSONObject.data.active);
+                                        $('#modal-email').append(JSONObject.data.email);
+                                        $('#modal-usergroup').append(JSONObject.data.user_group);     
+                                        $('#modal-userlevel').append(JSONObject.data.user_level);                                        
+                                        $('#modal-phonelogin').append(JSONObject.data.phone_login);
+                                        $('#modal-phonepass').append(JSONObject.data.phone_pass);
+                                        $('#modal-voicemail').append(JSONObject.data.voicemail_id);                                    
                                 }
-                        });                
-                    });		
+                        });
+                    });
 
+                    // Clear previous agent info
+                    $('#view-campaign-modal').on('hidden.bs.modal', function () {
+                        clear_campaign_form();
+                    });
+                    
+                    // Get campaign information 
+                    $(document).on('click','#onclick-campaigninfo',function(){
+                        var campid = $(this).attr('data-id');
+                        $.ajax({
+                            type: 'POST',
+                            url: "./php/ViewCampaign.php",
+                            data: {campaign_id: campid},
+                            cache: true,
+                            //dataType: 'json',
+                                success: function(campaigndata){ 
+                                    //console.log(campaigndata);
+                                    var JSONStringcampaign = campaigndata;
+                                    var JSONObjectcampaign = JSON.parse(JSONStringcampaign);
+                                    //console.log(JSONObjectcampaign);      // Dump all campaigndata of the Object in the console
+                                    console.log(JSONObjectcampaign.data.campaign_id);
+                                    console.log(JSONObjectcampaign);
+                                        $('#modal-campaignid').append(JSONObjectcampaign.data.campaign_id);
+                                        $('#modal-campaignname').append(JSONObjectcampaign.data.campaign_name);
+                                        $('#modal-campaigndesc').append(JSONObjectcampaign.data.campaign_description);
+                                        $('#modal-callrecordings').append(JSONObjectcampaign.data.campaign_recording);
+                                        $('#modal-campaigncid').append(JSONObjectcampaign.data.campaign_cid);                                        
+                                        $('#modal-localcalltime').append(JSONObjectcampaign.data.local_call_time);                                       
+                                }
+                         });                        
+                     });
+                 
 	// ---- loads datatable functions
 				$('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
 
