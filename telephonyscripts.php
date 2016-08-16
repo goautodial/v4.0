@@ -14,45 +14,22 @@
         <meta charset="UTF-8">
         <title>Scripts</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
-        <!-- Circle Buttons style -->
-    	<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+        
+        <!-- Call for standardized css -->
+        <?php print $ui->standardizedThemeCSS();?>
+
     	<!-- Wizard Form style -->
 		<link href="css/style.css" rel="stylesheet" type="text/css" />
     	<link rel="stylesheet" href="css/easyWizard.css">
+
         <?php print $ui->creamyThemeCSS(); ?>
+
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-
-        <!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -60,7 +37,9 @@
 			})
 		</script>
     </head>
+
      <?php print $ui->creamyBody(); ?>
+
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
@@ -118,16 +97,13 @@
 				
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="scripts"><b>Script Wizard >> Add New Script</b></h4>
+					<h4 class="modal-title animate-header" id="scripts"><b>Script Wizard » Add New Script</b></h4>
 				</div>
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
-				<form action="CreateTelephonyUser.php" method="POST" id="create_form" class="form-horizontal " role="form">
+				<form method="POST" id="create_form" class="form-horizontal " role="form">
 				<!-- STEP 1 -->
 					<div class="wizard-step">
-						<div class="row" style="padding-top:10px;padding-bottom:0px;">
-							<p class="col-sm-12"><small><i> - - - All fields with ( </i></small> <b>*</b> <small><i> ) are Required Field.  - - -</i></small></p>
-						</div>
 					<?php
 						$max = count($scripts->script_id);
 						$x = 0;
@@ -140,7 +116,6 @@
 								$x = $x+1;
 							}
 						}
-
 						$script_num = $get_last + 1;
 
 						$num_padded = sprintf("%03d", $script_num);
@@ -149,286 +124,142 @@
 						$script_id_for_form = "script".$num_padded;
 					?>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="script_id" style="padding-top:15px;">Script ID:</label>
-							<div class="col-sm-8" style="padding-top:10px;">
+							<label class="col-sm-3 control-label" for="script_id">Script ID:</label>
+							<div class="col-sm-9 mb">
 								<input type="text" class="form-control" name="script_id" id="script_id" value="<?php echo $script_id_for_form;?>" disabled />
+								<input type="hidden" name="user" value="<?php echo $user->getUserName();?>">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="script_name" style="padding-top:15px;">Script Name:</label>
-							<div class="col-sm-8" style="padding-top:10px;">
+							<label class="col-sm-3 control-label" for="script_name">Script Name:</label>
+							<div class="col-sm-9 mb">
 								<input type="text" class="form-control" name="script_name" id="script_name" placeholder="Script Name" />
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="script_comments" style="padding-top:15px;">Script Comments:</label>
-							<div class="col-sm-8" style="padding-top:10px;">
+							<label class="col-sm-3 control-label" for="script_comments">Script Comments:</label>
+							<div class="col-sm-9 mb">
 								<input type="text" class="form-control" name="script_comments" id="script_comments" placeholder="Script Comments" />
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="status" style="padding-top:15px;">Active: </label>
-							<div class="col-sm-4 wizard-inline">
+							<label class="col-sm-3 control-label" for="status">Active: </label>
+							<div class="col-sm-9 mb">
 								<select name="status" class="form-control">
 									<option value="Y" selected>Yes</option>
 									<option value="N" >No</option>						
 								</select>
 							</div>
 						</div>
-					</div>
-				
-			
-				<!-- STEP 2 -->
-					<div class="wizard-step">
-						
-						<div class="row" style="padding-top:10px;padding-bottom:0px;">
-							<p class="col-sm-12"><small><i> - - - All fields with ( </i></small> <b>*</b> <small><i> ) are Required Field.  - - -</i></small></p>
-						</div>
-
-						<div class="row" style="margin-left:0;">
-							<label class="control-label col-sm-4" style="padding-top:15px;">User Group:</label>
-							<div class="col-sm-8" style="padding-top:15px; display: inline-flex;">
-								<span id="display_user_group"></span>
-							</div>
-						</div>
-						
-						<?php
-						$max = count($output->userno);
-						$x = 0;
-						for($i=0; $i < $max; $i++){
-							//echo $max-$x;
-							$agent = substr($output->userno[$max-$x], 0, 5);
-							if($agent == "agent"){
-								$get_last = substr($output->userno[$max-$x], -2);
-							}else{
-								$x = $x+1;
-							}
-						}
-
-						$agent_num = $get_last + 1;
-
-						$num_padded = sprintf("%03d", $agent_num);
-						
-						$fullname = "Agent ".$num_padded;
-						$user_id_for_form = "agent".$num_padded;
-						?>
-						
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" style="padding-top:15px;">* Users ID: </label>
-							<div class="col-sm-8 wizard-inline">
-								<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID" value="<?php echo $user_id_for_form;?>" required>
-							</div>
-						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="fullname" style="padding-top:15px;">* Fullname: </label>
-							<div class="col-sm-8 wizard-inline">
-								<input type="text" name="fullname" id="fullname" class="form-control"
-									   value="<?php echo $fullname;?>">
-							</div>
-						</div>
-						<div class="row">
-							<p class="col-sm-12" style="padding-top:20px;padding-bottom:0px;"><small><i> - - - Default Password is:</i></small> <b>Go2016</b><small><i> - - - </i></small></p>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="password" style="padding-top:0px;">* Password: </label>
-							<div class="col-sm-8" style="display:inline-flex;">
-								<input type="password" class="form-control" name="password" id="password" placeholder="Password" value="Go2016" required>
-								
-							</div> 
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="conf_password" style="padding-top:15px;">* Confirm Password: </label>
-							<div class="col-sm-8 wizard-inline">
-								<input type="password" class="form-control" id="conf_password" placeholder="Password" value="Go2016" required>
-							</div> 
-						</div>
-						<div class="row">
-							<p class="col-sm-12"><small class="pull-right" style="padding-right:20px;"><i><span id="pass_result"></span></i></small></p>
-						</div>
-
-						<div id="phone_div" style="display:none;">
-							<div class="form-group">
-								<label class="col-sm-4 control-label" for="phone_login1" style="padding-top:15px;">* Phone Login: </label>
-								<div class="col-sm-8 wizard-inline">
-									<input type="text" readonly name="phone_login1" id="phone_login1" class="form-control">
+							<label for="script_text" class="col-sm-3 control-label">Script Text</label>
+							<div class="col-sm-9 mb">
+								<div class="row">
+									<div class="col-sm-12 mb">
+										<div class="input-group">
+											<span class="input-group-btn">
+												<button type="button" class="btn btn-default" onClick="addtext();">Insert!</button>
+											</span>
+											<select class="form-control" name="script_text_dropdown" id="script_text_dropdown">
+												<option value="fullname">Agent Name</option>
+												<option value="vendor_lead_code">vendor_lead_code</option>
+												<option value="source_id">source_id</option>
+												<option value="list_id">list_id</option>
+												<option value="gmt_offset_now">gmt_offset_now</option>
+												<option value="called_since_last_reset">called_since_last_reset</option>
+												<option value="phone_code">phone_code</option>
+												<option value="phone_number">phone_number</option>
+												<option value="title">title</option>
+												<option value="first_name">first_name</option>
+												<option value="middle_initial">middle_initial</option>
+												<option value="last_name">last_name</option>
+												<option value="address1">address1</option>
+												<option value="address2">address2</option>
+												<option value="address3">address3</option>
+												<option value="city">city</option>
+												<option value="state">state</option>
+												<option value="province">province</option>
+												<option value="postal_code">postal_code</option>
+												<option value="country_code">country_code</option>
+												<option value="gender">gender</option>
+												<option value="date_of_birth">date_of_birth</option>
+												<option value="alt_phone">alt_phone</option>
+												<option value="email">email</option>
+												<option value="security_phrase">security_phrase</option>
+												<option value="comments">comments</option>
+												<option value="lead_id">lead_id</option>
+												<option value="campaign">campaign</option>
+												<option value="phone_login">phone_login</option>
+												<option value="group">group</option>
+												<option value="channel_group">channel_group</option>
+												<option value="SQLdate">SQLdate</option>
+												<option value="epoch">epoch</option>
+												<option value="uniqueid">uniqueid</option>
+												<option value="customer_zap_channel">customer_zap_channel</option>
+												<option value="server_ip">server_ip</option>
+												<option value="SIPexten">SIPexten</option>
+												<option value="session_id">session_id</option>
+												<option value="dialed_number">dialed_number</option>
+												<option value="dialed_label">dialed_label</option>
+												<option value="rank">rank</option>
+												<option value="owner">owner</option>
+												<option value="camp_script">camp_script</option>
+												<option value="in_script">in_script</option>
+												<option value="script_width">script_width</option>
+												<option value="script_height">script_height</option>
+												<option value="recording_filename">recording_filename</option>
+												<option value="recording_id">recording_id</option>
+												<option value="user_custom_one">user_custom_one</option>
+												<option value="user_custom_two">user_custom_two</option>
+												<option value="user_custom_three">user_custom_three</option>
+												<option value="user_custom_four">user_custom_four</option>
+												<option value="user_custom_five">user_custom_five</option>
+												<option value="preset_number_a">preset_number_a</option>
+												<option value="preset_number_b">preset_number_b</option>
+												<option value="preset_number_c">preset_number_c</option>
+												<option value="preset_number_d">preset_number_d</option>
+												<option value="preset_number_e">preset_number_e</option>
+												<option value="preset_number_f">preset_number_f</option>
+												<option value="preset_dtmf_a">preset_dtmf_a</option>
+												<option value="preset_dtmf_b">preset_dtmf_b</option>
+												<option value="did_id">did_id</option>
+												<option value="did_extension">did_extension</option>
+												<option value="did_pattern">did_pattern</option>
+												<option value="did_description">did_description</option>
+												<option value="closecallid">closecallid</option>
+												<option value="xfercallid">xfercallid</option>
+												<option value="agent_log_id">agent_log_id</option>
+												<option value="entry_list_id">entry_list_id</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-12">
+										<div class="panel">
+											<div class="panel-body">
+												<textarea rows="3" class="form-control note-editor" id="script_text" name="script_text"></textarea>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label" for="phone_pass" style="padding-top:15px;">* Phone Password: </label>
-								<div class="col-sm-8 wizard-inline">
-									<input type="text" name="phone_pass" id="phone_pass" class="form-control" value="Go2016">
-								</div>
-							</div>
 						</div>
+					</div>
 
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="status" style="padding-top:15px;">Active: </label>
-							<div class="col-sm-4 wizard-inline">
-								<select name="status" class="form-control">
-									<option value="Y" selected>Yes</option>		
+					</form>
 			
-									<option value="N" >No</option>						
-								</select>
-							</div>
-						</div>
-					</div><!--end of step2 -->
-				</form>
-		
-				</div> <!-- end of modal body -->
-				
-				<!-- NOTIFICATIONS -->
-				<div id="notifications">
-					<div class="output-message-success" style="display:none;">
-						<div class="alert alert-success alert-dismissible" role="alert">
-						  <strong>Success!</strong> New Agent added.
-						</div>
-					</div>
-					<div class="output-message-error" style="display:none;">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
-						</div>
-					</div>
-					<div class="output-message-incomplete" style="display:none;">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  Please fill-up all the fields correctly and do not leave any fields with (<strong> * </strong>) blank.
-						</div>
-					</div>
-				</div>
+					</div> <!-- end of modal body -->
 
-				<div class="modal-footer wizard-buttons">
+				<div class="modal-footer">
 					<!-- The wizard button will be inserted here. -->
+					<button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
+                    <input type="submit" class="btn btn-primary" id="submit_script" value="Submit" style="display: inline-block;">
 				</div>
 			</div>
 		</div>
 	</div><!-- end of modal -->
 
-	<!-- Modal -->
-	<div id="script-form-modal" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
-
-	    <!-- Modal content-->
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Script Information</b></h4>
-	      </div>
-	      <div class="modal-body">
-		<div class="form-horizontal">
-			<div class="form-group">
-				<label class="control-label col-lg-3">Script ID:</label>
-				<div class="col-lg-9">
-					<input type="text" class="script_id form-control" disabled>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-lg-3">Script Name:</label>
-				<div class="col-lg-9">
-					<input type="text" class="form-control script_name">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-lg-3">Script Comments:</label>
-				<div class="col-lg-9">
-					<input type="text" class="form-control script_comments">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-lg-3">Active:</label>
-				<div class="col-lg-9">
-					<select class="form-control script_status"></select>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-lg-3">Script Text:</label>
-				<div class="col-lg-9">
-					<input type="text" class="form-control script_text">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-lg-3">&nbsp;</label>
-				<div class="col-lg-9">
-					<textarea class="form-control"></textarea>
-				</div>
-			</div>
-		</div>
-	      </div>
-	      <div class="modal-footer">
-		<button type="button" class="btn btn-default btn-update-script">Update</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	      </div>
-	    </div>
-	    <!-- End of modal content -->
-	  </div>
-	</div>
-	<!-- End of modal -->
-	
-	<!-- Modal --
-	<div id="confirmation-delete-modal" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
-
-	    <!-- Modal content--
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Confirmation Box</b></h4>
-	      </div>
-	      <div class="modal-body">
-		<div class="message-box hide">
-			<div class="alert alert-success hide">
-				<strong>Success!</strong> Script has been succsfully deleted.
-			</div>
-			
-			<div class="alert alert-danger hide">
-				<strong>Error!</strong> Something went wrong while deleting record.
-			</div>
-		</div>
-	      	<p>Are you sure you want to delete Script ID: <span class="script-id-delete-label" data-id=""></span></p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" id="delete-script-btn" data-id="">Yes</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-	      </div>
-	    </div>
-	    <!-- End of modal content --
-	  </div>
-	</div>
-	<!-- End of modal -->
-	
-	<!-- DELETE VALIDATION MODAL -->
-	<div id="delete_validation_modal" class="modal modal-warning fade">
-    	<div class="modal-dialog">
-            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-				<div class="modal-header">
-					<h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
-				</div>
-				<div class="modal-body" style="background:#fff;">
-					<p>This action cannot be undone.</p>
-					<p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
-				</div>
-				<div class="modal-footer" style="background:#fff;">
-					<button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
-               		<button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-              </div>
-			</div>
-		</div>
-	</div>
-
-	<!-- DELETE NOTIFICATION MODAL -->
-	<div id="delete_notification" style="display:none;">
-		<?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
-	</div>
-
-
-		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<?php print $ui->standardizedThemeJS();?>
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
-	<!-- SLIMSCROLL-->
-   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
-
-    <script>
-        	// load data.
-            $(".textarea").wysihtml5();
-	</script>
 	
 	<script>
 		$(document).ready(function(){
@@ -438,140 +269,97 @@
 
 			});
 			//$('#script-form-modal').modal('show');
-			
-			$('.edit_script').click(function(){
-				var id = $(this).attr('data-id');
-				$.ajax({
-				  url: "./php/ViewScript.php",
-				  type: 'POST',
-				  data: { 
-				  	script_id : id
-				  },
-				  dataType: 'json',
-				  success: function(data) {
-				  	console.log(data);
 
-					$('.script_id').val(data.script_id);
-					$('.script_name').val(data.script_name);
-					$('.script_comments').val();
-					
-					if (data.active == "Y"){
-						var option = '<option value="Y" selected>Yes</option>';
-						    option += '<option value="N">No</option>';
-					}else{
-						var option = '<option value="Y">Yes</option>';
-						    option += '<option value="N" selected>No</option>';
-					}
-					$('.script_status').append(option);
-					
-					$('.script_text').val();
-					
-					$('#script-form-modal').modal('show');
-				  }
-				});
-			});
 			
-			$('.btn-update-script').click(function(){
+			$(document).on('click','#submit_script',function() {
+				$('#submit_script').val("Loading.....");
+				$('#submit_script').prop("disabled", true);
+				$('#script_id').prop("disabled", false);
 				$.ajax({
-				  url: "./php/UpdateScript.php",
+				  url: "./php/AddScript.php",
 				  type: 'POST',
-				  data: { 
-				  	script_id : $('.script_id').val(),
-					script_name : $('.script_name').val(),
-					script_comments : $('.script_comments').val(),
-					script_text : $('.script_text').val(),
-					active : $('.script_status').val(),
-				  },
+				  data: $("#create_form").serialize(),
 				  //dataType: 'json',
 				  success: function(data) {
-				  	console.log(data);
-				  }
-				});
-			});
-			
-
-
-/*
-			$('.delete_script').click(function(){
-				var id = $(this).attr('data-id');
-				$('.script-id-delete-label').text(id);
-				$('.script-id-delete-label').attr( "data-id", id );
-				$('#confirmation-delete-modal').modal('show');
-			});
-			
-			$('#delete-script-btn').click(function(){
-				var id = $('.script-id-delete-label').attr( "data-id");
-
-				$.ajax({
-				  url: "./php/DeleteScript.php",
-				  type: 'POST',
-				  data: { 
-				  	script_id : id
-				  },
-				  dataType: 'json',
-				  success: function(data) {
-				  	//console.log(data);
-					
-					if (data.result == "success") {
-						$('.message-box, .alert-success').removeClass('hide');
-						$('#delete-script-btn').addClass('hide');
-					}else{
-						$('.message-box, .alert-danger').removeClass('hide');
+				  	if (data == "success") {
+						swal("Success!", "Script has been successfully added.", "success");   
+                        window.setTimeout(function(){location.reload()},2000)
+                        $('#submit_script').val("Submit");
+                        $('#submit_script').prop("disabled", false);
+					} else {
+						sweetAlert("Oops...", data, "error");
+						$('#submit_script').val("Submit");
+						$('#submit_script').prop("disabled", false);
+						$('#script_id').prop("disabled", true);
 					}
+				  	
 				  }
 				});
 			});
-*/
+			/**
+			  * Edit script details
+			 */
+			$(document).on('click','.edit_script',function() {
+				var url = './edittelephonyscript.php';
+				var id = $(this).attr('data-id');
+				//alert(extenid);
+				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="script_id" value="'+id+'" /></form>');
+				//$('body').append(form);  // This line is not necessary
+				$(form).submit();
+			});
 
 			/**
 			 * Delete validation modal
 			 */
 			 $(document).on('click','.delete_script',function() {
-			 	
 			 	var id = $(this).attr('data-id');
-			 	var name = $(this).attr('data-name');
-			 	var action = "Script";
-
-			 	$('.id-delete-label').attr("data-id", id);
-				$('.id-delete-label').attr("data-action", action);
-
-			 	$(".delete_extension").text(name);
-				$(".action_validation").text(action);
-
-			 	$('#delete_validation_modal').modal('show');
+			 	swal({   
+	            	title: "Are you sure?",   
+	            	text: "This action cannot be undone.",   
+	            	type: "warning",   
+	            	showCancelButton: true,   
+	            	confirmButtonColor: "#DD6B55",   
+	            	confirmButtonText: "Yes, delete this script!",   
+	            	cancelButtonText: "No, cancel please!",   
+	            	closeOnConfirm: false,   
+	            	closeOnCancel: false 
+	            	}, 
+	            	function(isConfirm){   
+	            		if (isConfirm) { 
+	            			$.ajax({
+								url: "./php/DeleteScript.php",
+								type: 'POST',
+								data: { 
+									script_id:id,
+								},
+								success: function(data) {
+								console.log(data);
+							  		if(data == 1){
+							  			swal("Deleted!", "Script has been successfully deleted.", "success");   
+		                                window.setTimeout(function(){location.reload()},1000)
+									}else{
+										sweetAlert("Oops...", data, "error");
+									}
+								}
+							});
+						} else {     
+		                	swal("Cancelled", "No action has been done :)", "error");   
+		                } 
+                	}
+                );
 			 });
 
-			 $(document).on('click','#delete_yes',function() {
-			 	
-			 	var id = $(this).attr('data-id');
-			 	var action = $(this).attr('data-action');
-
-			 	$('#id_span').html(id);
-
-					$.ajax({
-						url: "./php/DeleteScript.php",
-						type: 'POST',
-						data: { 
-							script_id:id,
-						},
-						success: function(data) {
-						console.log(data);
-					  		if(data == 1){
-					  			$('#result_span').text(data);
-					  			$('#delete_notification').show();
-							 	$('#delete_notification_modal').modal('show');
-							 	//window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-								window.setTimeout(function(){location.reload()},1000)
-							}else{
-								$('#result_span').html(data);
-                                $('#delete_notification').show();
-                                $('#delete_notification_modal_fail').modal('show');
-							 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-							}
-						}
-					});
-			 });
 		});
+		
+		function addtext() {
+			var script_text = document.getElementById('script_text');
+			var script_text_dropdown = document.getElementById('script_text_dropdown');
+			var addtext = "";
+
+			addtext = "--A--"+script_text_dropdown.value+"--B--";
+
+			script_text.value = script_text.value  + addtext;
+		}
 	</script>
     </body>
 </html>
