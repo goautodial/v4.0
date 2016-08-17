@@ -1,9 +1,4 @@
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL)
-*/
 /**
 	The MIT License (MIT)
 	
@@ -171,7 +166,7 @@ $calls_incoming_queue = $ui->API_goGetIncomingQueue();
 //if(is_null($ui->API_getRealtimeAgent()) {
 	//$realtimeAgents = "";
 //} else {
-	$realtimeAgents = $ui->API_getRealtimeAgent();
+//milo	$realtimeAgents = $ui->API_getRealtimeAgent();
 //}
 //var_dump($dropped_calls_today);
 //die("dd");
@@ -369,40 +364,14 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	            </div>
 	            <!-- END widget-->
 
-	<!--===== INFOBOXES WITH BLUE WHITE SUN =======--> 
+	<!--===== Today's Phone Calls =======--> 
 	            <div class="row">
 	            	<div class="col-lg-12" style="padding: 0px;">
-	            		<!--
-	                    <div class="panel widget" style="height:17%">
-							<div class="col-md-2 col-sm-3 col-xs-6 text-center bg-info pv-xl">
-								<em class="wi wi-day-sunny fa-4x"></em>
-							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes animated fadeInUpShort">
-								<div class="h2 m0">32</div>
-								<div class="text-muted">Abandoned Calls</div>
-							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes animated fadeInUpShort">
-								<div class="h2 m0">21</div>
-								<div class="text-muted">Answered < 20 sec</div>
-							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes animated fadeInUpShort">
-								<div class="h2 m0">420</div>
-								<div class="text-muted" style="font-size: small;">Average Handling Time (sec)</div>
-							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center br info_sun_boxes animated fadeInUpShort">
-								<div class="h2 m0"><?php echo $inbound_calls;?></div>
-								<div class="text-muted">Inbound Calls Today</div>
-							</div>
-							<div class="col-md-2 col-sm-3 col-xs-6 pv-xl text-center info_sun_boxes animated fadeInUpShort">
-								<div class="h2 m0"><?php echo $outbound_calls;?></div>
-								<div class="text-muted">Outbound Calls Today</div>
-							</div>
-	                    </div>
-	                	-->
-	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info">
-	                		<div class="h2 m0"></div>
-								
-	                	</div>
+	                	<!-- demian -->                	
+				<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info pv-xl info_sun_boxes">
+					<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
+                                                                <div class="text">Today's Phone Calls</div>
+                                </div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><span class="text-lg" id="refresh_RingingCalls"></span></div>
 								<div class="text-muted">Ringing Calls</div>
@@ -887,16 +856,16 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 						</thead>
 						<tbody>
 							<?php
-							
-							if(is_null($realtimeAgents->session_id)) {
+							//milo
+							//if(is_null($realtimeAgents->session_id)) {
 							?>
 							<tr>
 								<td>No Agents Live</td>
 							</tr>
 							<?php
 							
-							} else {
-								for($i=0;$i < count($realtimeAgents->session_id);$i++){
+							//} else {
+							//	for($i=0;$i < count($realtimeAgents->session_id);$i++){
 								
 							?>
 							<tr>
@@ -908,22 +877,22 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 										</div> -->
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
-											  <span class="circle circle-success circle-lg text-left"></span><?php echo $realtimeAgents->user[$i]; ?></strong>
+											  <span class="circle circle-success circle-lg text-left">xx</span><?php //echo $realtimeAgents->user[$i]; ?></strong>
 										</div>
 									</div>
 								</td>
 								
-								<td>
-									<?php echo $realtimeAgents->status[$i]; ?>
+								<td>xx
+									<?php //echo $realtimeAgents->status[$i]; ?>
 								</td>
 
-								<td>
-									<?php echo $realtimeAgents->last_state_change[$i]; ?>
+								<td>xx
+									<?php //echo $realtimeAgents->last_state_change[$i]; ?>
 								</td>
 							</tr>
 							<?php
-								} //end for
-							} //end if
+							//	} //end for
+							//} //end if
 							?>
 
 						</tbody>
@@ -1165,7 +1134,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		})(window, document, window.jQuery);
 
 // Clear user information
-function clear_agent_form(){
+function clear_agent_form(){
+
     $('#modal-userid').html("");
     $('#modal-user').html("");
     $('#modal-active').html("");
@@ -1178,7 +1148,8 @@ function clear_agent_form(){
 }
 
 // Clear campaign information
- function clear_campaign_form(){
+ function clear_campaign_form(){
+
     $('#modal-campaignid').html("");
     $('#modal-campaignname').html("");
     $('#modal-campaigndesc').html("");
@@ -1191,8 +1162,10 @@ function clear_agent_form(){
 		$(document).ready(function(){
 		
                     // Clear previous agent info
-                    $('#view-agent-modal').on('hidden.bs.modal', function () {
-                        clear_agent_form();
+                    $('#view-agent-modal').on('hidden.bs.modal', function () {
+
+                        clear_agent_form();
+
                     });
                     // Get user information                     
                     $(document).on('click','#onclick-userinfo',function(){
@@ -1223,8 +1196,10 @@ function clear_agent_form(){
                     });
 
                     // Clear previous agent info
-                    $('#view-campaign-modal').on('hidden.bs.modal', function () {
-                        clear_campaign_form();
+                    $('#view-campaign-modal').on('hidden.bs.modal', function () {
+
+                        clear_campaign_form();
+
                     });
                     
                     // Get campaign information 
@@ -1253,8 +1228,8 @@ function clear_agent_form(){
                          });                        
                      });
                  
-	// ---- loads datatable functions
-				$('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
+	// ---- loads datatable functions milo
+//				$('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
 
 	// ---- Fixed Action Button
 			$(".bottom-menu").on('mouseenter mouseleave', function () {

@@ -144,6 +144,7 @@ class GOagent extends Module {
 		$pauseAgent = $this->lh()->translationFor("pause_agent");
 		$pauseAgentXS = $this->lh()->translationFor("pause");
 		$transferConference = $this->lh()->translationFor("transfer_conference_functions");
+		$callbackDateSelection = $this->lh()->translationFor("callback_datepicker");
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -604,25 +605,25 @@ EOF;
 						<div class="mda-form-group label-floating">
 							<select id="transfer-selection" name="transfer-selection" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select">
 								<option></option>
-								<option value="AGENT">Transfer to Agent</option>
+								<option value="CLOSER">Transfer to Agent / Closer Group</option>
 								<option value="REGULAR">Regular 3-Way</option>
 							</select>
 							<label for="transfer-selection">Transfer Selection</label>
 						</div>
 					</div>
 				</div>
-				<div id="transfer-agent" class="hidden">
+				<div id="transfer-closer" class="hidden">
 					<div class="row">
 						<div class="col-md-9">
 							<div class="mda-form-group label-floating">
-								<select id="transfer-local-closer" name="transfer-local-closer" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
+								<select id="transfer-local-closer" name="transfer-local-closer" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select">
 									<option></option>
 								</select>
-								<label for="transfer-local-closer">Transfer Groups</label>
+								<label for="transfer-local-closer">Closer Groups</label>
 							</div>
 						</div>
-						<div class="col-md-3">
-							<button class="btn btn-primary btn-lg"> LOCAL CLOSER </button>
+						<div class="col-md-3" style="padding: 10px;">
+							<button class="btn btn-primary"> LOCAL CLOSER </button>
 						</div>
 					</div>
 				</div>
@@ -647,6 +648,31 @@ EOF;
 							</label>
 						</div>
 						<div class="col-md-3"><button class="btn btn-default btn-sm">HANGUP XFER LINE</button></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="callback-datepicker" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">$callbackDateSelection</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="well well-sm">
+							<p class="m0">
+								Selected Date and Time: <em id="date_selected"></em>
+							</p>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div id="cb-datepicker"></div>
 					</div>
 				</div>
 			</div>

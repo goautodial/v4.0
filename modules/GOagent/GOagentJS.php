@@ -689,6 +689,11 @@ $(document).ready(function() {
                 });
             }
         });
+        
+        $("#cb-datepicker").datetimepicker({
+            inline: true,
+            useCurrent: false
+        });
     });
 
     var logoutRegX = new RegExp("logout\.php", "ig");
