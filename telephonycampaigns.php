@@ -496,7 +496,7 @@ error_reporting(E_ALL);*/
 		    				</div>
 		    			</div>
 		    			<?php $carriers = $ui->getCarriers(); ?>
-		    			<div class="form-group">
+		    			<div class="form-group carrier-to-use">
 		    				<label class="control-label col-lg-4">Carrier to use for this campaign:</label>
 		    				<div class="col-lg-8">
 								<select name="dial_prefix" id="dial_prefix" class="form-control">
@@ -929,30 +929,35 @@ error_reporting(E_ALL);*/
 					$('.survey').addClass('hide');
 					$('.copy-from').addClass('hide');
 					$('.inbound').removeClass('hide');
+					$('.carrier-to-use').addClass('hide');
 				}else if(selectedTypeVal == 'survey'){
 					$('.outbound').addClass('hide');
 					$('.blended').addClass('hide');
 					$('.inbounce').addClass('hide');
 					$('.copy-from').addClass('hide');
 					$('.survey').removeClass('hide');
+					$('.carrier-to-use').addClass('hide');
 				}else if(selectedTypeVal == 'copy'){
 					$('.outbound').addClass('hide');
 					$('.blended').addClass('hide');
 					$('.survey').addClass('hide');
 					$('.inbound').addClass('hide');
 					$('.copy-from').removeClass('hide');
+					$('.carrier-to-use').addClass('hide');
 				}else if(selectedTypeVal == 'blended'){
 					$('.outbound').addClass('hide');
 					$('.inbound').addClass('hide');
 					$('.survey').addClass('hide');
 					$('.copy-from').addClass('hide');
 					$('.blended').removeClass('hide');
+					$('.carrier-to-use').removeClass('hide');
 				}else if(selectedTypeVal == 'outbound'){
 					$('.inbound').addClass('hide');
 					$('.blended').addClass('hide');
 					$('.survey').addClass('hide');
 					$('.copy-from').addClass('hide');
 					$('.outbound').removeClass('hide');
+					$('.carrier-to-use').removeClass('hide');
 				}
 			});
 
