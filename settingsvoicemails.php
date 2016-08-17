@@ -1,5 +1,14 @@
-
 <?php	
+
+    ###################################################
+    ### Name: settingsvoicemails.php                ###
+    ### Functions: Manage Voicemails                ###
+    ### Copyright: GOAutoDial Ltd. (c) 2011-2016    ###
+    ### Version: 4.0                                ###
+    ### Written by: Alexander Jim H. Abenoja        ###
+    ### License: AGPLv2                             ###
+    ###################################################
+
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -12,47 +21,21 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Voicemails</title>
+        <title>Voicemails</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        
+        <?php print $ui->standardizedThemeCSS(); ?> 
+
         <?php print $ui->creamyThemeCSS(); ?>
-        <!-- Circle Buttons style -->
-        <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+        
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <!-- Wizard Form style -->
         <link href="css/style.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="css/easyWizard.css">
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
         <!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-
-        <!-- =============== APP STYLES ===============-->
-            <link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
             $(window).ready(function() {
@@ -119,38 +102,34 @@
                 <!-- Header -->
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title animate-header" id="ingroup_modal"><b>Voice Mail Wizard » Add New User Group</b></h4>
+                        <h4 class="modal-title animate-header" id="ingroup_modal"><b>Voice Mail Wizard » Add New Voice Mail</b></h4>
                     </div>
                     <div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
                     
                     <form action="" method="POST" id="create_voicemail" name="create_voicemail" class="form-horizontal " role="form">
                     <!-- STEP 1 -->
                         <div class="wizard-step">
-                            <div class="row" style="padding-top:10px;padding-bottom:10px;">
-                                <p class="col-sm-12"><small><i> - - - All fields with ( </i></small> <b>*</b> <small><i> ) are Required Field.  - - -</i></small></p>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label" for="voicemail_id" style="padding-top:10px;">* Voicemail ID:</label>
-                                <div class="col-sm-7">
-                                    <input type="number" name="voicemail_id" id="voicemail_id" class="form-control" placeholder="Voicemail ID">
-                                    <span  class="text-red"><small><i>* Minimum of 2 numbers..</i></small></span>
+                            <div class="form-group mt">
+                                <label class="col-sm-3 control-label" for="voicemail_id">Voicemail ID</label>
+                                <div class="col-sm-9 mb">
+                                    <input type="number" name="voicemail_id" id="voicemail_id" class="form-control" placeholder="Voicemail ID. This is a required field. Minimum of 2 numbers">
                                 </div>
                             </div>
                             <div class="form-group">        
-                                <label class="col-sm-4 control-label" for="password" style="padding-top:15px;">* Password: </label>
-                                <div class="col-sm-7" style="padding-top:10px;">
-                                    <input type="text" name="password" id="password" class="form-control" placeholder="Password">
+                                <label class="col-sm-3 control-label" for="password">Password: </label>
+                                <div class="col-sm-9 mb">
+                                    <input type="text" name="password" id="password" class="form-control" placeholder="Password. This is a required field.">
                                 </div>
                             </div>
                             <div class="form-group">        
-                                <label class="col-sm-4 control-label" for="name" style="padding-top:15px;">* Name: </label>
-                                <div class="col-sm-7" style="padding-top:10px;">
-                                    <input type="text" name="name" id="name" class="form-control" placeholder="Name">
+                                <label class="col-sm-3 control-label" for="name">Name </label>
+                                <div class="col-sm-9 mb">
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Name. This is a required field.">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label" for="active" style="padding-top:15px;">Active: </label>
-                                <div class="col-sm-5" style="padding-top:10px;">
+                                <label class="col-sm-3 control-label" for="active">Active </label>
+                                <div class="col-sm-9 mb">
                                     <select name="active" id="active" class="form-control">
                                         <option value="N" selected>No</option>
                                         <option value="Y">Yes</option>
@@ -158,14 +137,14 @@
                                 </div>
                             </div>
                             <div class="form-group">        
-                                <label class="col-sm-4 control-label" for="email" style="padding-top:15px;">* Email: </label>
-                                <div class="col-sm-7" style="padding-top:10px;">
+                                <label class="col-sm-3 control-label" for="email">Email </label>
+                                <div class="col-sm-9 mb">
                                     <input type="email" name="email" id="email" class="form-control" placeholder="Email">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label" for="user_group" style="padding-top:15px;">User Group: </label>
-                                <div class="col-sm-7" style="padding-top:10px;">
+                                <label class="col-sm-3 control-label" for="user_group">User Group </label>
+                                <div class="col-sm-9 mb">
                                     <select id="user_group" class="form-control" name="user_group">
                                         <?php
                                             for($i=0;$i<count($user_groups->user_group);$i++){
@@ -183,25 +162,6 @@
 
                     </div> <!-- end of modal body -->
 
-                    <!-- NOTIFICATIONS -->
-                    <div id="notifications">
-                        <div class="output-message-success" style="display:none;">
-                            <div class="alert alert-success alert-dismissible" role="alert">
-                              <strong>Success!</strong> New Voice Mail added !
-                            </div>
-                        </div>
-                        <div class="output-message-error" style="display:none;">
-                            <div class="alert alert-danger alert-dismissible" role="alert">
-                              <span id="voicemail_result"></span>
-                            </div>
-                        </div>
-                        <div class="output-message-incomplete" style="display:none;">
-                            <div class="alert alert-danger alert-dismissible" role="alert">                            
-                              Please fill-up all the fields <u>correctly</u>, <u>input a valid email address</u> and do not leave any fields with (<strong> * </strong>) blank.
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="modal-footer">
                         <!-- The wizard button will be inserted here. -->
                         <button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
@@ -210,33 +170,9 @@
                 </div>
             </div>
         </div><!-- end of modal -->
-
-        <!-- DELETE VALIDATION MODAL -->
-        <div id="delete_validation_modal" class="modal modal-warning fade">
-            <div class="modal-dialog">
-                <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-                    <div class="modal-header">
-                        <h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
-                    </div>
-                    <div class="modal-body" style="background:#fff;">
-                        <p>This action cannot be undone.</p>
-                        <p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
-                    </div>
-                    <div class="modal-footer" style="background:#fff;">
-                        <button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-                  </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DELETE NOTIFICATION MODAL -->
-        <div id="delete_notification" style="display:none;">
-            <?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
-        </div>
         
     <!-- Forms and actions -->
-        <script src="js/jquery.validate.min.js" type="text/javascript"></script>
+        <?php print $ui->standardizedThemeJS(); ?>
         <script src="js/easyWizard.js" type="text/javascript"></script> 
 
     <script>
@@ -288,13 +224,12 @@
                             success: function(data) {
                               // console.log(data);
                                   if(data == 1){
-                                        $('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                                        swal("Success!", "Voicemail Successfully Created!", "success");
                                         window.setTimeout(function(){location.reload()},3000)
                                         $('#submit_voicemail').val("Loading...");
                                   }
                                   else{
-                                      $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-                                      $("#voicemail_result").html(data);
+                                      sweetAlert("Oops...", "Something went wrong! "+data, "error");
                                       $('#submit_voicemail').val("Submit");
                                       $('#submit_voicemail').prop("disabled", false);
                                   }
@@ -302,7 +237,7 @@
                         });
                     
                     }else{
-                        $('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                        sweetAlert("Oops...", "Something went wrong!", "error");
                         validate_usergroup = 0;
                         $('#submit_voicemail').val("Submit");
                         $('#submit_voicemail').prop("disabled", false);
@@ -323,52 +258,46 @@
             /**
              * Delete validation modal
              */
-             $(document).on('click','.delete-voicemail',function() {
-                
-                var voicemail_id = $(this).attr('data-id');
-                var voicemail_name = $(this).attr('data-name');
-                var action = "Voice Mail";
-
-                $('.id-delete-label').attr("data-id", voicemail_id);
-                $('.id-delete-label').attr("data-action", action);
-
-                $(".delete_extension").text(voicemail_name);
-                $(".action_validation").text(action);
-
-                $('#delete_validation_modal').modal('show');
-             });
-
-             $(document).on('click','#delete_yes',function() {
-                
+            $(document).on('click','.delete-voicemail',function() {
                 var id = $(this).attr('data-id');
-                var action = $(this).attr('data-action');
-
-                $('#id_span').html(id);
-
-                    $.ajax({
-                        url: "./php/DeleteVoicemail.php",
-                        type: 'POST',
-                        data: { 
-                            voicemail_id:id,
-                        },
-                        success: function(data) {
-                        console.log(data);
-                            if(data == 1){
-                                $('#result_span').text(data);
-                                $('#delete_notification').show();
-                                $('#delete_notification_modal').modal('show');
-                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-                                window.setTimeout(function(){location.reload()},1000)
-                            }else{
-                                $('#result_span').html(data);
-                                $('#delete_notification').show();
-                                $('#delete_notification_modal_fail').modal('show');
-                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-                            }
+                    swal({   
+                        title: "Are you sure?",   
+                        text: "This action cannot be undone.",   
+                        type: "warning",   
+                        showCancelButton: true,   
+                        confirmButtonColor: "#DD6B55",   
+                        confirmButtonText: "Yes, delete this voicemail!",   
+                        cancelButtonText: "No, cancel please!",   
+                        closeOnConfirm: false,   
+                        closeOnCancel: false 
+                        }, 
+                        function(isConfirm){   
+                            if (isConfirm) { 
+                                $.ajax({
+                                    url: "./php/DeleteVoicemail.php",
+                                    type: 'POST',
+                                    data: { 
+                                        voicemail_id:id,
+                                    },
+                                    success: function(data) {
+                                    console.log(data);
+                                        if(data == 1){
+                                            swal("Success!", "Usergroup Successfully Deleted!", "success");
+                                            window.setTimeout(function(){location.reload()},1000)
+                                        }else{
+                                            sweetAlert("Oops...", "Something went wrong! "+data, "error");
+                                        }
+                                    }
+                                });
+                            } else {     
+                                    swal("Cancelled", "No action has been done :)", "error");   
+                            } 
                         }
-                    });
-             });
+                    );
+            });
         });
     </script>
+    
+        <?php print $ui->creamyFooter();?>
     </body>
 </html>

@@ -1,16 +1,25 @@
 <?php
 
-require_once('./php/CRMDefaults.php');
-require_once('./php/UIHandler.php');
-//require_once('./php/DbHandler.php');
-require_once('./php/LanguageHandler.php');
-require('./php/Session.php');
-require_once('./php/goCRMAPISettings.php');
+	###########################################################
+	### Name: edittelephonyuser.php 						###
+	### Functions: Edit Users 								###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016			###
+	### Version: 4.0 										###
+	### Written by: Alexander Abenoja & Noel Umandap		###
+	### License: AGPLv2										###
+	###########################################################
 
-// initialize structures
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
+	require_once('./php/CRMDefaults.php');
+	require_once('./php/UIHandler.php');
+	//require_once('./php/DbHandler.php');
+	require_once('./php/LanguageHandler.php');
+	require('./php/Session.php');
+	require_once('./php/goCRMAPISettings.php');
+
+	// initialize structures
+	$ui = \creamy\UIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
 
 $userid = NULL;
 if (isset($_POST["userid"])) {
@@ -350,7 +359,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								   	<fieldset class="footer-buttons">
 				                        <div class="box-footer">
 				                           <div class="col-sm-3 pull-right">
-													<a href="telephonyusers.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+													<a href="telephonyusers.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 				                           	
 				                                	<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 												
@@ -390,6 +399,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 		<script type="text/javascript">
 			$(document).ready(function() {
+
 
 				function checkPasswordMatch() {
 				    var password = $("#password").val();
@@ -480,20 +490,14 @@ $user_groups = $ui->API_goGetUserGroupsList();
                             success: function(data) {
                               // console.log(data);
                                 if (data == 1) {
-								<?php 
-									$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-									print $ui->fadingInMessageJS($errorMsg, "modifyUSERresult"); 
-								?>
-								$('#update_button').html("<i class='fa fa-check'></i> Update");
-								$('#modifyUserOkButton').prop("disabled", false);
-								window.setTimeout(function(){location.replace("./telephonyusers.php")},2000);
+									swal("Success!", "User Successfully Updated!", "success")
+									$('#update_button').html("<i class='fa fa-check'></i> Update");
+									$('#modifyUserOkButton').prop("disabled", false);
+									window.setTimeout(function(){location.replace("./telephonyusers.php")},2000);
 								} else {
-								<?php 
-									$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data"), false, true);
-									print $ui->fadingInMessageJS($errorMsg, "modifyUSERresult");
-								?>
-								$('#update_button').html("<i class='fa fa-check'></i> Update");
-								$('#modifyUserOkButton').prop("disabled", false);	
+									sweetAlert("Oops...", "Something went wrong! " + data, "error");
+									$('#update_button').html("<i class='fa fa-check'></i> Update");
+									$('#modifyUserOkButton').prop("disabled", false);	
 								}
                             }
                         });

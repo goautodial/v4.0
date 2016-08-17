@@ -1,4 +1,14 @@
 <?php	
+
+	###################################################
+	### Name: telephonyvoicefiles.php 				###
+	### Functions: Manage Voicefiles 		 		###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
+	### Version: 4.0 								###
+	### Written by: Noel Umandap 					###
+	### License: AGPLv2								###
+	###################################################
+
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -11,53 +21,26 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Voicefiles</title>
+        <title>Voicefiles</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
-        <!-- Circle Buttons style -->
-        <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+        
+        <?php print $ui->standardizedThemeCSS(); ?>
+
         <!-- Wizard Form style -->
         <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css" rel="stylesheet" type="text/css" />
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-	<!-- Bootstrap Player -->
-	<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
+		<!-- Bootstrap Player -->
+		<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
+        
         <?php print $ui->creamyThemeCSS(); ?>
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
 
         <!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-	<!-- Bootstrap Player -->
-	<script src="js/bootstrap-player.js" type="text/javascript"></script>
-
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-
-        <!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
+		<!-- Bootstrap Player -->
+		<script src="js/bootstrap-player.js" type="text/javascript"></script>
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -65,7 +48,9 @@
 			})
 		</script>
     </head>
+
     <?php print $ui->creamyBody(); ?>
+
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
@@ -136,9 +121,7 @@
 	
 	
 		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
-		<!-- SLIMSCROLL-->
-   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+		<?php print $ui->standardizedThemeJS(); ?>
    		
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -165,5 +148,7 @@
 				});
 			});
 		</script>
+
+		<?php print $ui->creamyFooter();?>
     </body>
 </html>

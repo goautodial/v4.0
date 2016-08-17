@@ -1,4 +1,14 @@
 <?php	
+
+    ###################################################
+    ### Name: settingsusergroups.php                ###
+    ### Functions: Manage Usergroups                ###
+    ### Copyright: GOAutoDial Ltd. (c) 2011-2016    ###
+    ### Version: 4.0                                ###
+    ### Written by: Alexander Jim H. Abenoja        ###
+    ### License: AGPLv2                             ###
+    ###################################################
+
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -13,45 +23,20 @@
         <meta charset="UTF-8">
         <title>User Groups</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        
+        <?php print $ui->standardizedThemeCSS(); ?> 
+
         <?php print $ui->creamyThemeCSS(); ?>
-        <!-- Circle Buttons style -->
-        <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+        
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <!-- Wizard Form style -->
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="css/easyWizard.css">
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
         <!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-
-        <!-- =============== APP STYLES ===============-->
-            <link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
             $(window).ready(function() {
@@ -185,36 +170,10 @@
                 </div>
             </div>
         </div><!-- end of modal -->
-
-        <!-- DELETE VALIDATION MODAL -->
-        <div id="delete_validation_modal" class="modal modal-warning fade">
-            <div class="modal-dialog">
-                <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-                    <div class="modal-header">
-                        <h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
-                    </div>
-                    <div class="modal-body" style="background:#fff;">
-                        <p>This action cannot be undone.</p>
-                        <p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
-                    </div>
-                    <div class="modal-footer" style="background:#fff;">
-                        <button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-                  </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DELETE NOTIFICATION MODAL -->
-        <div id="delete_notification" style="display:none;">
-            <?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
-        </div>
         
     <!-- Forms and actions -->
-        <script src="js/jquery.validate.min.js" type="text/javascript"></script>
+        <?php print $ui->standardizedThemeJS(); ?> 
         <script src="js/easyWizard.js" type="text/javascript"></script> 
-    <!-- SLIMSCROLL-->
-        <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
 
         <script>
             $(document).ready(function() {
@@ -249,13 +208,12 @@
                             success: function(data) {
                               // console.log(data);
                                   if(data == 1){
-                                        $('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                                        swal("Success!", "Usergroup Successfully Created!", "success");
                                         window.setTimeout(function(){location.reload()},3000)
                                         $('#submit_usergroup').val("Loading");
                                   }
                                   else{
-                                      $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-                                      $("#usergroup_result").html(data);
+                                      sweetAlert("Oops...", "Something went wrong! "+data, "error");
                                       $('#submit_usergroup').val("Submit");
                                       $('#submit_usergroup').prop("disabled", false);
                                   }
@@ -263,7 +221,7 @@
                         });
                     
                     }else{
-                        $('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                        sweetAlert("Oops...", "Something went wrong!", "error");
                         validate_usergroup = 0;
                         $('#submit_usergroup').val("Submit");
                         $('#submit_usergroup').prop("disabled", false);
@@ -277,7 +235,8 @@
                     var url = './editsettingsusergroup.php';
                     var id = $(this).attr('data-id');
                     //alert(extenid);
-                    var form = $('<form action="' + url + '" method="post"><input type="hidden" name="usergroup_id" value="'+id+'" /></form>');
+                    var form = 
+                    $('<form action="' + url + '" method="post"><input type="hidden" name="usergroup_id" value="'+id+'" /></form>');
                     //$('body').append(form);  // This line is not necessary
                     $(form).submit();
                 });
@@ -286,51 +245,45 @@
                  * Delete validation modal
                  */
                  $(document).on('click','.delete-usergroup',function() {
-                    
-                    var usergroup_id = $(this).attr('data-id');
-                    var usergroup_name = $(this).attr('data-name');
-                    var action = "User Group";
-
-                    $('.id-delete-label').attr("data-id", usergroup_id);
-                    $('.id-delete-label').attr("data-action", action);
-
-                    $(".delete_extension").text(usergroup_name);
-                    $(".action_validation").text(action);
-
-                    $('#delete_validation_modal').modal('show');
-                 });
-
-                 $(document).on('click','#delete_yes',function() {
-                    
                     var id = $(this).attr('data-id');
-                    var action = $(this).attr('data-action');
-
-                    $('#id_span').html(id);
-
-                        $.ajax({
-                            url: "./php/DeleteUserGroup.php",
-                            type: 'POST',
-                            data: { 
-                                usergroup_id:id,
-                            },
-                            success: function(data) {
-                            console.log(data);
-                                if(data == 1){
-                                    $('#result_span').text(data);
-                                    $('#delete_notification').show();
-                                    $('#delete_notification_modal').modal('show');
-                                    //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-                                    window.setTimeout(function(){location.reload()},1000)
-                                }else{
-                                    $('#result_span').html(data);
-                                    $('#delete_notification').show();
-                                    $('#delete_notification_modal_fail').modal('show');
-                                    window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+                    swal({   
+                        title: "Are you sure?",   
+                        text: "This action cannot be undone.",   
+                        type: "warning",   
+                        showCancelButton: true,   
+                        confirmButtonColor: "#DD6B55",   
+                        confirmButtonText: "Yes, delete this usergroup!",   
+                        cancelButtonText: "No, cancel please!",   
+                        closeOnConfirm: false,   
+                        closeOnCancel: false 
+                        }, 
+                        function(isConfirm){   
+                            if (isConfirm) { 
+                                $.ajax({
+                                url: "./php/DeleteUserGroup.php",
+                                type: 'POST',
+                                data: { 
+                                    usergroup_id:id,
+                                },
+                                success: function(data) {
+                                console.log(data);
+                                    if(data == 1){
+                                        swal("Success!", "Usergroup Successfully Deleted!", "success");
+                                        window.setTimeout(function(){location.reload()},1000)
+                                    }else{
+                                        sweetAlert("Oops...", "Something went wrong! "+data, "error");
+                                    }
                                 }
-                            }
-                        });
-                 });
+                            });
+                        } else {     
+                                    swal("Cancelled", "No action has been done :)", "error");   
+                            } 
+                        }
+                    );
+                });
             });
         </script>
+
+        <?php print $ui->creamyFooter();?>
     </body>
 </html>

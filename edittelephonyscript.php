@@ -1,20 +1,25 @@
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-*/
-require_once('./php/CRMDefaults.php');
-require_once('./php/UIHandler.php');
-//require_once('./php/DbHandler.php');
-require_once('./php/LanguageHandler.php');
-require('./php/Session.php');
-require_once('./php/goCRMAPISettings.php');
 
-// initialize structures
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
+	###################################################
+	### Name: edittelephonyscript.php 				###
+	### Functions: Edit Scripts 					###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
+	### Version: 4.0 								###
+	### Written by: Alexander Jim H. Abenoja		###
+	### License: AGPLv2								###
+	###################################################
+
+	require_once('./php/CRMDefaults.php');
+	require_once('./php/UIHandler.php');
+	//require_once('./php/DbHandler.php');
+	require_once('./php/LanguageHandler.php');
+	require('./php/Session.php');
+	require_once('./php/goCRMAPISettings.php');
+
+	// initialize structures
+	$ui = \creamy\UIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
 
 $script_id = NULL;
 if (isset($_POST["script_id"])) {
@@ -315,7 +320,7 @@ if (isset($_POST["script_id"])) {
 	                            $('#update_button').html("<i class='fa fa-check'></i> Update");
 	                            $('#modifyOkButton').prop("disabled", false);
 							} else {
-								sweetAlert("Oops...", data, "error");
+								sweetAlert("Oops...","Something went wrong! " + data, "error");
 								$('#update_button').html("<i class='fa fa-check'></i> Update");
 								$('#modifyOkButton').prop("disabled", false);
 							}

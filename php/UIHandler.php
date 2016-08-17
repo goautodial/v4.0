@@ -3136,7 +3136,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       // print suffix
 	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	      
-			return $result;
+			return $result."</table>";
        }else{
 			// error getting contacts
 			//return $output->result;
@@ -3251,7 +3251,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result; 
+			return $result."</table>"; 
 			
 		} else {		
 		# An error occured		
@@ -3318,7 +3318,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 			}
 			
-			return $result; 
+			return $result."</table>"; 
 			
 		} else {		
 		# An error occured		
@@ -3455,7 +3455,7 @@ error_reporting(E_ERROR | E_PARSE);
 					*/
 			}
 			
-			return $result; 
+			return $result."</table>"; 
 			
 		} else {		
 			return $output->result;
@@ -3515,7 +3515,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result; 
+			return $result."</table>"; 
 			
 		} else {		
 		# An error occured		
@@ -3583,7 +3583,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result; 
+			return $result."</table>"; 
 			
 		}else{
 			// if no entry in voicemails
@@ -3773,7 +3773,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 				</tr>";
 	    }
-		return $result;
+		return $result."</table>";
 	    } else {
 		# An error occured
 		return $output->result;
@@ -3865,7 +3865,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 				</tr>";
 	    }
-		return $result;
+		return $result."</table>";
 	}
 	
 	private function getUserActionMenuForMusicOnHold($id, $name) {
@@ -3934,7 +3934,7 @@ error_reporting(E_ERROR | E_PARSE);
 			<td>".$action."</td>
 		    </tr>";
 	    }
-		return $result;
+		return $result."</table>";
 	    } else {
 		# An error occured
 		return $output->result;
@@ -4016,7 +4016,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 			    </tr>";
 		    }
-			return $result;
+			return $result."</table>";
 
 	    } else {
 		# An error occured
@@ -4088,7 +4088,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </tr>";
             }
 
-		    return $result;
+		    return $result."</table>";
     
 	    } else {
 	       # An error occured
@@ -4169,7 +4169,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </tr>";
             }
 
-		    return $result;
+		    return $result."</table>";
     
 	    } else {
 	       # An error occured
@@ -5273,7 +5273,7 @@ error_reporting(E_ERROR | E_PARSE);
 				}
 			}
 			
-			return $result;
+			return $result."</table>";
        }else{
        		//display nothing
        }

@@ -1,9 +1,14 @@
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-*/
+
+    ###########################################################
+    ### Name: telephonymusiconhold.php                      ###
+    ### Functions: Manage MOH                               ###
+    ### Copyright: GOAutoDial Ltd. (c) 2011-2016            ###
+    ### Version: 4.0                                        ###
+    ### Written by: Alexander Abenoja & Noel Umandap        ###
+    ### License: AGPLv2                                     ###
+    ###########################################################
+
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -16,18 +21,11 @@ error_reporting(E_ALL);
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Music On Hold</title>
+        <title>Music On Hold</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
-        <!-- Circle Buttons style -->
-        <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+        
+        <?php print $ui->standardizedThemeCSS(); ?>
+
         <!-- Wizard Form style -->
 		<link href="css/style.css" rel="stylesheet" type="text/css" />
     	<link rel="stylesheet" href="css/easyWizard.css">
@@ -36,36 +34,16 @@ error_reporting(E_ALL);
         <link href="css/style.css" rel="stylesheet" type="text/css" />
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-	<!-- Bootstrap Player -->
-	<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
+	    <!-- Bootstrap Player -->
+	    <link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
+        
         <?php print $ui->creamyThemeCSS(); ?>
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
 
         <!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-	<!-- Bootstrap Player -->
-	<script src="js/bootstrap-player.js" type="text/javascript"></script>
-
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-
-        <!-- =============== APP STYLES ===============-->
-            <link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
+	    <!-- Bootstrap Player -->
+	    <script src="js/bootstrap-player.js" type="text/javascript"></script>
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -205,25 +183,22 @@ error_reporting(E_ALL);
                 <form action="" method="POST" id="create_moh" name="create_moh" class="form-horizontal " role="form">
                 <!-- STEP 1 -->
                     <div class="wizard-step">
-                        <div class="row" style="padding-top:10px;padding-bottom:10px;">
-                            <p class="col-sm-12"><small><i> - - - All fields with ( </i></small> <b>*</b> <small><i> ) are Required Field.  - - -</i></small></p>
-                        </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label" for="moh_id" style="padding-top:10px;">* Music On Hold ID:</label>
-                            <div class="col-sm-7">
-                                <input type="text" name="moh_id" id="moh_id" class="form-control" placeholder="Music on Hold ID">
+                            <label class="col-sm-4 control-label" for="moh_id">Music On Hold ID:</label>
+                            <div class="col-sm-7 mb">
+                                <input type="text" name="moh_id" id="moh_id" class="form-control" placeholder="Music on Hold ID. This is a required field.">
                                 <span  class="text-red"><small><i>* Minimum of 3 characters..</i></small></span>
                             </div>
                         </div>
                         <div class="form-group">        
-                            <label class="col-sm-4 control-label" for="moh_name" style="padding-top:15px;">* Music On Hold Name: </label>
-                            <div class="col-sm-7" style="padding-top:10px;">
-                                <input type="text" name="moh_name" id="moh_name" class="form-control" placeholder="Music On Hold Name">
+                            <label class="col-sm-4 control-label" for="moh_name">Music On Hold Name: </label>
+                            <div class="col-sm-7 mb">
+                                <input type="text" name="moh_name" id="moh_name" class="form-control" placeholder="Music On Hold Name. This is a required field.">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label" for="active" style="padding-top:15px;">Status: </label>
-                            <div class="col-sm-5" style="padding-top:10px;">
+                            <label class="col-sm-4 control-label" for="active">Status: </label>
+                            <div class="col-sm-5 mb">
                                 <select name="active" id="active" class="form-control">
                                     <option value="N" selected>INACTIVE</option>
                                     <option value="Y">ACTIVE</option>
@@ -232,7 +207,7 @@ error_reporting(E_ALL);
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label" for="user_group" style="padding-top:15px;">User Group: </label>
-                            <div class="col-sm-7" style="padding-top:10px;">
+                            <div class="col-sm-7 mb">
                                 <select id="user_group" class="form-control" name="user_group">
                                 	<!--<option value="---ALL---">  ALL USER GROUPS  </option>-->
                                     <?php
@@ -246,8 +221,8 @@ error_reporting(E_ALL);
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label" for="random" style="padding-top:15px;">Random Order: </label>
-                            <div class="col-sm-5" style="padding-top:10px;">
+                            <label class="col-sm-4 control-label" for="random">Random Order: </label>
+                            <div class="col-sm-5 mb">
                                 <select name="random" id="random" class="form-control">
                                     <option value="N" selected>NO</option>
                                     <option value="Y">YES</option>
@@ -261,25 +236,6 @@ error_reporting(E_ALL);
 
                 </div> <!-- end of modal body -->
 
-                <!-- NOTIFICATIONS -->
-                <div id="notifications">
-                    <div class="output-message-success" style="display:none;">
-                        <div class="alert alert-success alert-dismissible" role="alert">
-                          <strong>Success!</strong> New Music On Hold added !
-                        </div>
-                    </div>
-                    <div class="output-message-error" style="display:none;">
-                        <div class="alert alert-danger alert-dismissible" role="alert">
-                          <span id="voicemail_result"></span>
-                        </div>
-                    </div>
-                    <div class="output-message-incomplete" style="display:none;">
-                        <div class="alert alert-danger alert-dismissible" role="alert">                            
-                          Please fill-up all the fields <u>correctly</u> and do not leave any fields with (<strong> * </strong>) blank.
-                        </div>
-                    </div>
-                </div>
-
                 <div class="modal-footer">
                     <!-- The wizard button will be inserted here. -->
                     <button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
@@ -289,64 +245,35 @@ error_reporting(E_ALL);
         </div>
     </div><!-- end of modal -->
 
-    <!-- DELETE VALIDATION MODAL -->
-    <div id="delete_validation_modal" class="modal modal-warning fade">
-        <div class="modal-dialog">
-            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-                <div class="modal-header">
-                    <h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
-                </div>
-                <div class="modal-body" style="background:#fff;">
-                    <p>This action cannot be undone.</p>
-                    <p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
-                </div>
-                <div class="modal-footer" style="background:#fff;">
-                    <button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-              </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- DELETE NOTIFICATION MODAL -->
-    <div id="delete_notification" style="display:none;">
-        <?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
-    </div>
-
 		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+        <?php print $ui->standardizedThemeJS(); ?>
 		<script src="js/easyWizard.js" type="text/javascript"></script>
-		<!-- SLIMSCROLL-->
-   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('#music-on-hold_table').dataTable();
 				$('#moh-wizard').wizard();
-				//$('#view-moh-modal').modal('show');
 
 			// ADD FUNCTION
                 $('#submit_moh').click(function(){
                 
-                $('#submit_moh').val("Saving, Please Wait.....");
-                $('#submit_moh').prop("disabled", true);
+                    $('#submit_moh').val("Saving, Please Wait.....");
+                    $('#submit_moh').prop("disabled", true);
 
-                var validate = 0;
+                    var validate = 0;
 
-                var moh_id = $("#moh_id").val();
-                var moh_name = $("#moh_name").val();
+                    var moh_id = $("#moh_id").val();
+                    var moh_name = $("#moh_name").val();
 
-                if(moh_id == ""){
-                    validate = 1;
-                }
+                    if(moh_id == ""){
+                        validate = 1;
+                    }
 
-                if(moh_name == ""){
-                    validate = 1;
-                }
+                    if(moh_name == ""){
+                        validate = 1;
+                    }
 
                     if(validate == 0){
-                    //alert("Validated !");
-                    
                         $.ajax({
                             url: "./php/AddMOH.php",
                             type: 'POST',
@@ -354,14 +281,13 @@ error_reporting(E_ALL);
                             success: function(data) {
                               // console.log(data);
                                   if(data == 1){
-                                        $('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                                        swal("Success!", "Music On Hold Successfully Created!", "success");
                                         window.setTimeout(function(){location.reload()},3000)
                                         $('#submit_moh').val("Submit");
                                         $('#submit_moh').prop("disabled", false);
                                   }
                                   else{
-                                      $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-                                      $("#voicemail_result").html(data); 
+                                      sweetAlert("Oops...", "Something went wrong!"+data, "error");
                                       $('#submit_moh').val("Submit");
                                       $('#submit_moh').prop("disabled", false);
                                   }
@@ -369,7 +295,7 @@ error_reporting(E_ALL);
                         });
                     
                     }else{
-                        $('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                        sweetAlert("Oops...", "Something went wrong!", "error");
                         validate_usergroup = 0;
                         $('#submit_moh').val("Submit");
                         $('#submit_moh').prop("disabled", false);
@@ -416,21 +342,13 @@ error_reporting(E_ALL);
 						dataType: 'json',
 						success: function(data) {
 						      if (data.result == "success") {
-							var message = '<div class="alert alert-success">';
-							    message += '<strong>Success!</strong> Record successfully updated.';
-							    message += '</div>';
-                                $('.message_box').html(message);
-                                $('.message_box').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+							    swal("Success!", "Music On Hold Successfully Updated!", "success");
                                 window.setTimeout(function(){location.reload()},2000)   
                                 
                                 $('#update_button').html("<i class='fa fa-check'></i> Update");
                                 $('.btn-update-moh-info').attr("disabled", false);
 						      } else {
-							var message = '<div class="alert alert-danger">';
-							    message += '<strong>Error!</strong> Something went wrong with the update.';
-							    message += '</div>';
-                                $('.message_box').html(message);
-                                $('.message_box').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+    							sweetAlert("Oops...", "Something went wrong! "+data, "error");
                                 
                                 $('#update_button').html("<i class='fa fa-check'></i> Update");
                                 $('.btn-update-moh-info').attr("disabled", false);
@@ -445,53 +363,46 @@ error_reporting(E_ALL);
 				 * Delete validation modal
 				 */
 				 $(document).on('click','.delete-moh',function() {
-				 	
 				 	var id = $(this).attr('data-id');
-				 	var name = $(this).attr('data-name');
-				 	var action = "Music On Hold";
+                    swal({   
+                        title: "Are you sure?",   
+                        text: "This action cannot be undone.",   
+                        type: "warning",   
+                        showCancelButton: true,   
+                        confirmButtonColor: "#DD6B55",   
+                        confirmButtonText: "Yes, delete this moh!",   
+                        cancelButtonText: "No, cancel please!",   
+                        closeOnConfirm: false,   
+                        closeOnCancel: false 
+                        }, 
+                        function(isConfirm){   
+                            if (isConfirm) { 
+                                $.ajax({
+                                    url: "./php/DeleteMOH.php",
+                                    type: 'POST',
+                                    data: { 
+                                        moh_id:id,
+                                    },
+                                    success: function(data) {
+                                    console.log(data);
+                                        if(data == 1){
+                                           swal("Success!", "Music On Hold Successfully Deleted!", "success");
+                                           window.setTimeout(function(){location.reload()},1000)
+                                        }else{
+                                            sweetAlert("Oops...", "Something went wrong! "+data, "error");
+                                        }
+                                    }
+                                });
+                            } else {     
+                                    swal("Cancelled", "No action has been done :)", "error");   
+                            } 
+                        }
+                    );
+				});
 
-				 	$('.id-delete-label').attr("data-id", id);
-					$('.id-delete-label').attr("data-action", action);
-
-				 	$(".delete_extension").text(name);
-					$(".action_validation").text(action);
-
-				 	$('#delete_validation_modal').modal('show');
-				 });
-
-				 $(document).on('click','#delete_yes',function() {
-				 	
-				 	var id = $(this).attr('data-id');
-				 	var action = $(this).attr('data-action');
-
-				 	$('#id_span').html(id);
-				 	//alert(id);
-				 		
-						$.ajax({
-							url: "./php/DeleteMOH.php",
-							type: 'POST',
-							data: { 
-								moh_id:id,
-							},
-							success: function(data) {
-							console.log(data);
-						  		if(data == 1){
-						  			$('#result_span').text(data);
-						  			$('#delete_notification').show();
-								 	$('#delete_notification_modal').modal('show');
-								 	//window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-									window.setTimeout(function(){location.reload()},1000)
-								}else{
-									$('#result_span').html(data);
-	                                $('#delete_notification').show();
-	                                $('#delete_notification_modal_fail').modal('show');
-								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-								}
-							}
-						});
-						
-				 });	
 			});
 		</script>
+
+        <?php print $ui->creamyFooter(); ?>
     </body>
 </html>

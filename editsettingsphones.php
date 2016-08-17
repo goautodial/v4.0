@@ -1,9 +1,14 @@
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-*/
+
+	###################################################
+	### Name: editsettingsphones.php 				###
+	### Functions: Edit Phones 				 		###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
+	### Version: 4.0 								###
+	### Written by: Alexander Jim H. Abenoja		###
+	### License: AGPLv2								###
+	###################################################
+
 require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
 //require_once('./php/DbHandler.php');
@@ -27,37 +32,10 @@ if (isset($_POST["extenid"])) {
         <meta charset="UTF-8">
         <title>Edit Phone Extension</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+       
+       	<?php print $ui->standardizedThemeCSS(); ?>       
+
         <?php print $ui->creamyThemeCSS(); ?>
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-
-        	<!-- =============== BOOTSTRAP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
-				<!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -286,24 +264,10 @@ if (isset($_POST["extenid"])) {
 		                			
 		                			</div><!-- body -->
 
-					                <!-- NOTIFICATIONS -->
-				                    <div id="notifications">
-				                        <div class="output-message-success" style="display:none;">
-				                            <div class="alert alert-success alert-dismissible" role="alert">
-				                              <strong>Success!</strong> Phone <?php echo $extenid?> modified !
-				                            </div>
-				                        </div>
-				                        <div class="output-message-error" style="display:none;">
-				                            <div class="alert alert-danger alert-dismissible" role="alert">
-				                              <span id="modifyT_phonesresult"></span>
-				                            </div>
-				                        </div>
-				                    </div>
-
 									<fieldset>
 				                        <div class="box-footer">
 				                           <div class="col-sm-3 pull-right">
-													<a href="settingsphones.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+													<a href="settingsphones.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 				                           	
 				                                	<button type="submit" class="btn btn-primary" id="update_phones" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 												
@@ -325,20 +289,20 @@ if (isset($_POST["extenid"])) {
                 </section>
 				<!-- /.content -->
             </aside><!-- /.right-side -->
-			
-            <?php print $ui->creamyFooter(); ?>
-			
         </div><!-- ./wrapper -->
 
 		<!-- Modal Dialogs -->
+		<?php print $ui->standardizedThemeJS(); ?>       
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-		
-		<!-- SLIMSCROLL-->
-   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
-	
+				
+				// for cancelling
+				$(document).on('click', '#cancel', function(){
+					swal("Cancelled", "No action has been done :)", "error");
+				});
+
 				/** 
 				 * Modifies a telephony list
 			 	 */
@@ -355,15 +319,13 @@ if (isset($_POST["extenid"])) {
 								function(data){
 									//if message is sent
 									if (data == 1) {
-										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+										swal("Updated!", "Phone has been successfully updated.", "success");
                                         window.setTimeout(function(){location.replace('settingsphones.php')},2000)
 
                                         ('#update_button').html("<i class='fa fa-check'></i> Update");
 										$('#update_phones').prop("disabled", false);		
 									} else {
-									<?php 
-										print $ui->fadingInMessageJS($errorMsg, "modifyT_phonesresult");
-									?>
+										sweetAlert("Oops...","Something went wrong! " + data, "error");
 										('#update_button').html("<i class='fa fa-check'></i> Update");
 										$('#update_phones').prop("disabled", false);	
 									}
@@ -378,5 +340,6 @@ if (isset($_POST["extenid"])) {
 			});
 		</script>
 
+		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

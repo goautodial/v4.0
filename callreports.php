@@ -1,4 +1,3 @@
-
 <?php	
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
@@ -12,46 +11,29 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial</title>
+        <title>Call Reports</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        
+        <!-- Call for standardized css -->
+        <?php print $ui->standardizedThemeCSS();?>
+
         <?php print $ui->creamyThemeCSS(); ?>
-        <!-- Theme style -->
-        <link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
 
-        <!-- Select2 -->
-        <link rel="stylesheet" href="adminlte/select2/select2.min.css">
-        <!-- DATETIMEPICKER-->
+            <!-- Daterang picker CSS --
+            <link rel="stylesheet" type="text/css" media="all" href="theme_dashboard/bootstrap-daterangepicker/daterangepicker.css" />
+            <!-- Daterange Picker JS --
+            <script type="text/javascript" src="theme_dashboard/bootstrap-daterangepicker/moment.js"></script>
+            <script type="text/javascript" src="theme_dashboard/bootstrap-daterangepicker/daterangepicker.js"></script>
+        
+        <!-- Datetime picker --> 
         <link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+        <!-- Date Picker -->
+        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
+        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-            
-            <!-- =============== BOOTSTRAP STYLES ===============-->
-            <link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
-                <!-- =============== APP STYLES ===============-->
-            <link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- Creamy App --
-        <script src="js/app.min.js" type="text/javascript"></script>
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
+        <!-- SELECT2 CSS -->
+        <link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+        <link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
 
         <script type="text/javascript">
             $(window).ready(function() {
@@ -89,46 +71,87 @@
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
                     <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box box-default">
-                                <div class="box-header">
-                                    <div class="pull-left">
-                                        <select class="form-control select2">
-                                            <option>Statistical Report</option>
-                                            <option>Agent Time Detail</option>
-                                            <option>Agent Performance Detail</option>
-                                            <option>Dial Statuses Summary</option>
-                                            <option>Sales Per Agent</option>
-                                            <option>Sales Tracker</option>
-                                            <option>Inbound Call Report</option>
-                                            <option>Export Call Report</option>
-                                            <option>Dashboard</option>
-                                            <option>Call History (CDRs)</option>
-                                        </select>
-                                        <select class="form-control select2">
-                                            <?php
-                                                for($i=0; $i < count($campaigns->campaign_id);$i++){
-                                            ?>
-                                                <option><?php echo $campaigns->campaign_name[$i];?></option>
-                                            <?php
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="pull-right">
-                                        <!--<button class="btn datetimepicker1"><i class="fa fa-calendar"></i></button>-->
-                                        <div id="datetimepicker1" class="input-group date">
-                                             <input type="text" class="form-control">
-                                             <span class="input-group-addon">
+                        <div class="col-lg-9">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            
+                                        </div>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body table" id="">
+
+                                    </div><!-- /.box-body -->
+                                </div><!-- /.panel-body -->
+                            </div><!--/.panel-->
+                        </div>
+                        <div class="col-lg-3">
+                            <h3 class="m0 pb-lg">Filters</h3>
+                            <form id="search_form">
+                                <div class="form-group">
+                                    <label for="filter_type">Type</label>
+                                    <select class="form-control select2" id="filter_type" style="width:100%;">
+                                        <option>Statistical Report</option>
+                                        <option>Agent Time Detail</option>
+                                        <option>Agent Performance Detail</option>
+                                        <option>Dial Statuses Summary</option>
+                                        <option>Sales Per Agent</option>
+                                        <option>Sales Tracker</option>
+                                        <option>Inbound Call Report</option>
+                                        <option>Export Call Report</option>
+                                        <option>Dashboard</option>
+                                        <option>Call History (CDRs)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="campaign">Campaign</label>
+                                    <select class="form-control select2" id="campaign" style="width:100%;">
+                                        <?php
+                                            for($i=0; $i < count($campaigns->campaign_id);$i++){
+                                        ?>
+                                            <option><?php echo $campaigns->campaign_name[$i];?></option>
+                                        <?php
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                                    <!-- USING DATERANGE
+                                    <div class="form-group">
+                                        <button class="btn datetimepicker1"><i class="fa fa-calendar"></i></button>
+                                        <div class='input-group date'>
+                                            <input type='text' class="form-control" id="date_range"/>
+                                            <span class="input-group-addon">
                                                 <span class="fa fa-calendar"></span>
-                                             </span>
+                                            </span>
+                                        </div>
+                                        
+                                    </div>
+                                    -->
+                                <div class="form-group">
+                                    <label>Start Date:</label>
+                                    <div class="form-group">
+                                        <div class='input-group date' id='datetimepicker1'>
+                                            <input type='text' class="form-control" id="start_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
+                                            <span class="input-group-addon">
+                                                <!-- <span class="glyphicon glyphicon-calendar"></span>-->
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
                                         </div>
                                     </div>
-                                </div><!-- /.box-header -->
-                                <div class="box-body table" id="">
-
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box -->
+                                </div>
+                                <div class="form-group">
+                                    <label>End Date:</label>
+                                    <div class="form-group">
+                                        <div class='input-group date' id='datetimepicker2'>
+                                            <input type='text' class="form-control" id="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
+                                            <span class="input-group-addon">
+                                                <!-- <span class="glyphicon glyphicon-calendar"></span>-->
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -140,37 +163,42 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
-        <!-- Select2 -->
-        <script src="adminlte/select2/select2.full.min.js"></script>
-        <!-- DATETIMEPICKER-->
-        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+        
+        <?php print $ui->standardizedThemeJS();?>
+
+        <!-- SELECT2-->
+        <script src="theme_dashboard/select2/dist/js/select2.js"></script>
 
         <script>
             $(function () {
                 //Initialize Select2 Elements
-                $(".select2").select2();
-
-                // DATETIMEPICKER
-                $('#datetimepicker1').datetimepicker({
-                  icons: {
-                      time: 'fa fa-clock-o',
-                      date: 'fa fa-calendar',
-                      up: 'fa fa-chevron-up',
-                      down: 'fa fa-chevron-down',
-                      previous: 'fa fa-chevron-left',
-                      next: 'fa fa-chevron-right',
-                      today: 'fa fa-crosshairs',
-                      clear: 'fa fa-trash'
-                    }
+                $('.select2').select2({
+                    theme: 'bootstrap'
                 });
 
-                // WYSIWYG
-                // ----------------------------------- 
+                $('#datetimepicker1').datetimepicker({
+                    format: 'DD/MM/YYYY'
+                });
+                $('#datetimepicker2').datetimepicker({
+                    useCurrent: false, //Important! See issue #1075
+                    format: 'DD/MM/YYYY'
+                });
+                $("#datetimepicker1").on("dp.change", function (e) {
+                    $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
+                });
+                $("#datetimepicker1").on("dp.change", function (e) {
+                    $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+                });
 
-                $('.wysiwyg').wysiwyg();
+                    /* Daterange
+                    $('#date_range').daterangepicker({
+                        "autoApply": true,
+                        "endDate": "08/17/2016"
+                    }, function(start, end, label) {
+                      console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+                    });
+                    */
             });
         </script>
-        <!-- =============== APP SCRIPTS ===============-->
-        <script src="theme_dashboard/js/app.js"></script>
     </body>
 </html>

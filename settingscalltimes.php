@@ -1,6 +1,14 @@
-
-
 <?php	
+	
+	###################################################
+	### Name: settingscalltimes.php 				###
+	### Functions: Manage Calltimes 				###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
+	### Version: 4.0 								###
+	### Written by: Alexander Jim H. Abenoja		###
+	### License: AGPLv2								###
+	###################################################
+
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -15,39 +23,18 @@
         <meta charset="UTF-8">
         <title>Call Times</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
-        <!-- Circle Buttons style -->
-        <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+        
+        <?php print $ui->standardizedThemeCSS(); ?>
+
         <!-- Wizard Form style -->
         <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
         <!-- Wizard Form style -->
     	<link rel="stylesheet" href="css/easyWizard.css">
-
         <link href="css/style.css" rel="stylesheet" type="text/css" />
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-	<!-- Bootstrap Player -->
-	<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
-        <?php print $ui->creamyThemeCSS(); ?>
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+        <?php print $ui->creamyThemeCSS(); ?>
 
         <!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
@@ -59,22 +46,6 @@
 		<!-- Date Picker -->
         <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
 		<script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-
-		<!-- SWEETALERT-->
-   		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
-		<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
-
-	<!-- Bootstrap Player -->
-	<script src="js/bootstrap-player.js" type="text/javascript"></script>
-
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-
-        <!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -130,7 +101,7 @@
 
 <?php
 	$user_groups = $ui->API_goGetUserGroupsList();
-
+	$voicefiles = $ui->API_GetVoiceFilesList();
 ?>
 	<!-- Modal -->
 
@@ -141,7 +112,7 @@
 	    <div class="modal-content" style="border-radius:5px;">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title animate-header"><b>Call Time Details</b></h4>
+	        <h4 class="modal-title animate-header"><b>Call Time Wizard » Add New Call Time</b></h4>
 	      </div>
 	      <div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 			<div class="form-horizontal">
@@ -155,19 +126,19 @@
 								<label class="control-label col-lg-4">Call Time ID:</label>
 								<div class="col-lg-7 mb">
 									<label class="control-label call-time-id hide"></label>
-									<input type="text" class="form-control call-time-id-textbox" name="call_time_id">
+									<input type="text" class="form-control call-time-id-textbox" name="call_time_id" placeholder="Call Time ID. This is a required field.">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-lg-4">Call Time Name:</label>
 								<div class="col-lg-7 mb">
-									<input type="text" class="form-control call-time-name" name="call_time_name">
+									<input type="text" class="form-control call-time-name" name="call_time_name" placeholder="Call Time Name. This is a required field.">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-lg-4">Call Time Comments:</label>
 								<div class="col-lg-7 mb">
-									<input type="text" class="form-control call-time-comments" name="call_time_comments">
+									<input type="text" class="form-control call-time-comments" name="call_time_comments" placeholder="Call Time ID. This is a required field.">
 								</div>
 							</div>
 							<div class="form-group">
@@ -208,7 +179,16 @@
 											<input type="text" class="form-control end_time" name="stop_default" value="0">
 										</div>
 										<div class="col-lg-6">
-											<input type="text" class="form-control" name="audio_default">
+											<select class="form-control" name="audio_default">
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<?php
+													for($i=0;$i<count($voicefiles->file_name);$i++){
+												?>
+													<option value="<?php echo $voicefiles->file_name[$i];?>">  <?php echo $voicefiles->file_name[$i];?>  </option>
+												<?php
+													}
+												?>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -224,7 +204,16 @@
 											<input type="text" class="form-control end_time" name="stop_sunday" value="0">
 										</div>
 										<div class="col-lg-6">
-											<input type="text" class="form-control" name="audio_sunday">
+											<select class="form-control" name="audio_sunday">
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<?php
+													for($i=0;$i<count($voicefiles->file_name);$i++){
+												?>
+													<option value="<?php echo $voicefiles->file_name[$i];?>">  <?php echo $voicefiles->file_name[$i];?>  </option>
+												<?php
+													}
+												?>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -240,7 +229,16 @@
 											<input type="text" class="form-control end_time" name="stop_monday" value="0">
 										</div>
 										<div class="col-lg-6">
-											<input type="text" class="form-control" name="audio_monday">
+											<select class="form-control" name="audio_monday">
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<?php
+													for($i=0;$i<count($voicefiles->file_name);$i++){
+												?>
+													<option value="<?php echo $voicefiles->file_name[$i];?>">  <?php echo $voicefiles->file_name[$i];?>  </option>
+												<?php
+													}
+												?>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -256,7 +254,16 @@
 											<input type="text" class="form-control end_time" name="stop_tuesday" value="0">
 										</div>
 										<div class="col-lg-6">
-											<input type="text" class="form-control" name="audio_tuesday">
+											<select class="form-control" name="audio_tuesday">
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<?php
+													for($i=0;$i<count($voicefiles->file_name);$i++){
+												?>
+													<option value="<?php echo $voicefiles->file_name[$i];?>">  <?php echo $voicefiles->file_name[$i];?>  </option>
+												<?php
+													}
+												?>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -272,7 +279,16 @@
 											<input type="text" class="form-control end_time" name="stop_wednesday" value="0">
 										</div>
 										<div class="col-lg-6">
-											<input type="text" class="form-control" name="audio_wednesday">
+											<select class="form-control" name="audio_wednesday">
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<?php
+													for($i=0;$i<count($voicefiles->file_name);$i++){
+												?>
+													<option value="<?php echo $voicefiles->file_name[$i];?>">  <?php echo $voicefiles->file_name[$i];?>  </option>
+												<?php
+													}
+												?>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -288,7 +304,16 @@
 											<input type="text" class="form-control end_time" name="stop_thursday" value="0">
 										</div>
 										<div class="col-lg-6">
-											<input type="text" class="form-control" name="audio_thursday">
+											<select class="form-control" name="audio_thursday">
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<?php
+													for($i=0;$i<count($voicefiles->file_name);$i++){
+												?>
+													<option value="<?php echo $voicefiles->file_name[$i];?>">  <?php echo $voicefiles->file_name[$i];?>  </option>
+												<?php
+													}
+												?>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -304,7 +329,16 @@
 											<input type="text" class="form-control end_time" name="stop_friday" value="0">
 										</div>
 										<div class="col-lg-6">
-											<input type="text" class="form-control" name="audio_friday">
+											<select class="form-control" name="audio_friday">
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<?php
+													for($i=0;$i<count($voicefiles->file_name);$i++){
+												?>
+													<option value="<?php echo $voicefiles->file_name[$i];?>">  <?php echo $voicefiles->file_name[$i];?>  </option>
+												<?php
+													}
+												?>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -320,7 +354,16 @@
 											<input type="text" class="form-control end_time" name="stop_saturday" value="0">
 										</div>
 										<div class="col-lg-6">
-											<input type="text" class="form-control" name="audio_saturday">
+											<select class="form-control" name="audio_saturday">
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<?php
+													for($i=0;$i<count($voicefiles->file_name);$i++){
+												?>
+													<option value="<?php echo $voicefiles->file_name[$i];?>">  <?php echo $voicefiles->file_name[$i];?>  </option>
+												<?php
+													}
+												?>
+											</select>
 										</div>
 									</div>
 								</div>
@@ -340,56 +383,9 @@
 	  </div>
 	</div>
 	<!-- End of modal -->
-	
-	<!-- Modal --
-	<div id="confirmation-delete-modal" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
-
-	    <!-- Modal content--
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Confirmation Box</b></h4>
-	      </div>
-	      <div class="modal-body">
-	      	<p>Are you sure you want to delete Call Time ID: <span class="calltime-id-delete-label" data-id=""></span></p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" id="delete-calltime-btn" data-id="">Yes</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-	      </div>
-	    </div>
-	    <!-- End of modal content --
-	  </div>
-	</div>
-	<!-- End of modal -->
-
-	<!-- DELETE VALIDATION MODAL -->
-        <div id="delete_validation_modal" class="modal modal-warning fade">
-            <div class="modal-dialog">
-                <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-                    <div class="modal-header">
-                        <h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
-                    </div>
-                    <div class="modal-body" style="background:#fff;">
-                        <p>This action cannot be undone.</p>
-                        <p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
-                    </div>
-                    <div class="modal-footer" style="background:#fff;">
-                        <button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-                  </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DELETE NOTIFICATION MODAL -->
-        <div id="delete_notification" style="display:none;">
-            <?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
-        </div>
 
 		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<?php print $ui->standardizedThemeJS(); ?>
 		<!-- wizard -->
 		<script src="js/easyWizard.js" type="text/javascript"></script>
 
@@ -426,7 +422,7 @@
                                 window.setTimeout(function(){location.reload()},3000)
                                 $('#submit_calltime').val("Loading");
 						    }else{
-						    	sweetAlert("Oops...", "Something went wrong!", "error");
+						    	sweetAlert("Oops...", "Something went wrong! " + data, "error");
 		                        $('#submit_calltime').val("Submit");
 		                        $('#submit_calltime').prop("disabled", false);
 						    }
@@ -451,53 +447,46 @@
                  * Delete validation modal
                  */
                  $(document).on('click','.delete-calltime',function() {
-                    
-                    var calltime_id = $(this).attr('data-id');
-                    var calltime_name = $(this).attr('data-name');
-                    var action = "Call Time";
-
-                    $('.id-delete-label').attr("data-id", calltime_id);
-                    $('.id-delete-label').attr("data-action", action);
-
-                    $(".delete_extension").text(calltime_name);
-                    $(".action_validation").text(action);
-
-                    $('#delete_validation_modal').modal('show');
-                 });
-
-                 $(document).on('click','#delete_yes',function() {
-                    
                     var id = $(this).attr('data-id');
-                    var action = $(this).attr('data-action');
-
-                    $('#id_span').html(id);
-                    	//alert(id);
-                        $.ajax({
-                            url: "./php/DeleteCallTime.php",
-                            type: 'POST',
-                            data: { 
-                                call_time_id:id,
-                            },
-                            success: function(data) {
-                            console.log(data);
-                                if(data == 1){
-                                    $('#result_span').text(data);
-                                    $('#delete_notification').show();
-                                    $('#delete_notification_modal').modal('show');
-                                    //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-                                    window.setTimeout(function(){location.reload()},1000)
-                                }else{
-                                	$('#result_span').html(data);
-                                    $('#delete_notification').show();
-                                    $('#delete_notification_modal_fail').modal('show');
-                                    window.setTimeout(function(){$('#delete_notification_modal_fail').modal('hide');}, 3000);
-                                }
-                            }
-                        });
-                 });
-
-				
+                    swal({   
+                        title: "Are you sure?",   
+                        text: "This action cannot be undone.",   
+                        type: "warning",   
+                        showCancelButton: true,   
+                        confirmButtonColor: "#DD6B55",   
+                        confirmButtonText: "Yes, delete this call time!",   
+                        cancelButtonText: "No, cancel please!",   
+                        closeOnConfirm: false,   
+                        closeOnCancel: false 
+                        }, 
+                        function(isConfirm){   
+                            if (isConfirm) { 
+                            	$.ajax({
+		                            url: "./php/DeleteCallTime.php",
+		                            type: 'POST',
+		                            data: { 
+		                                call_time_id:id,
+		                            },
+		                            success: function(data) {
+		                            console.log(data);
+		                                if(data == 1){
+		                                    swal("Success!", "Call Time Successfully Deleted!", "success");
+		                                    window.setTimeout(function(){location.reload()},1000)
+		                                }else{
+		                                	sweetAlert("Oops...", "Something went wrong! "+data, "error");
+		                                    window.setTimeout(function(){$('#delete_notification_modal_fail').modal('hide');}, 3000);
+		                                }
+		                            }
+		                        });
+							} else {     
+                                    swal("Cancelled", "No action has been done :)", "error");   
+                            } 
+                        }
+                    );
+				});
 			});
 		</script>
+
+		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

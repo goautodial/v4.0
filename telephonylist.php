@@ -1,7 +1,14 @@
 <?php	
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);	
+
+	###########################################################
+	### Name: telephonylist.php 							###
+	### Functions: Manage List and Upload Leads 			###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016			###
+	### Version: 4.0 										###
+	### Written by: Alexander Abenoja & Noel Umandap		###
+	### License: AGPLv2										###
+	###########################################################
+
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -14,7 +21,7 @@ error_reporting(E_ALL);
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Lists</title>
+        <title>Lists</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!-- Call for standardized css -->
@@ -27,9 +34,6 @@ error_reporting(E_ALL);
 
         <!-- DATA TABLES CSS -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-
-		<!-- Bootstrap Player -->
-		<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
 
         <?php print $ui->creamyThemeCSS(); ?>
 
@@ -47,11 +51,6 @@ error_reporting(E_ALL);
 		<!-- SELECT2 CSS -->
    		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
    		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
-
-		<!-- Bootstrap Player JS -->
-		<script src="js/bootstrap-player.js" type="text/javascript"></script>
-
-		
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -172,6 +171,21 @@ error_reporting(E_ALL);
 									<button type="submit" class="btn btn-primary">Submit</button>
 								</div>
 							</form>
+							<?php 
+                        		if(isset($_GET['message'])){
+                        			echo '<div class="col-lg-12" style="margin-top: 10px;">';
+                        			if($_GET['message'] == "Success"){
+                        				echo '<div class="alert alert-success">
+										  <strong>Success!</strong> Upload of leads was successful.
+										</div>';
+                        			}else{
+                        				echo '<div class="alert alert-danger">
+										  <strong>Error!</strong> Failed to upload file.
+										</div>';
+                        			}
+                        			echo '</div>';
+                        		}
+                        	?>
 	           			</div><!-- ./upload leads -->
                 	</div>
                 </section><!-- /.content -->
