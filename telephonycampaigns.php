@@ -495,11 +495,22 @@ error_reporting(E_ALL);*/
 		    					</select>
 		    				</div>
 		    			</div>
+		    			<?php $carriers = $ui->getCarriers(); ?>
 		    			<div class="form-group">
 		    				<label class="control-label col-lg-4">Carrier to use for this campaign:</label>
 		    				<div class="col-lg-8">
-		    					<input id="carrier-to-use" name="carrier_to_use" type="text" class="form-control">
-		    				</div>
+								<select name="dial_prefix" id="dial_prefix" class="form-control">
+									<option value="CUSTOM" selected="selected">CUSTOM DIAL PREFIX</option>
+									<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
+										<?php if(!empty($carriers->carrier_id[$i])) { ?>
+											<option value="<?php echo $carriers->carrier_id[$i]; ?>" <?php if($campaign->data->dial_prefix == $carriers->carrier_id[$i]) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
+										<?php } ?>
+									<?php } ?>
+								</select>
+							</div>
+							<div class="col-lg-8 custom-prefix" style="margin-top: 10px;">
+								<input type="text" class="form-control" id="custom_prefix" name="custom_prefix" value="9">
+							</div>
 		    			</div>
 		    			<!-- <div class="form-group">
 		    				<label class="control-label col-lg-4">Description:</label>
@@ -777,6 +788,15 @@ error_reporting(E_ALL);*/
 		}
 
 		$(document).ready(function(){
+			$('#dial_prefix').change(function(){
+				var dial_prefix = $(this).val();
+
+				if(dial_prefix == "CUSTOM"){
+					$('.custom-prefix').removeClass('hide');
+				}else{
+					$('.custom-prefix').addClass('hide');
+				}
+			});
 			
 			$('#campaign-name').keyup(function(){
 				var text = $(this).val();
