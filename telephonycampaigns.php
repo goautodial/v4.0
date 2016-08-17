@@ -352,7 +352,7 @@ error_reporting(E_ALL);*/
 		    			<div class="form-group">
 		    				<label class="control-label col-lg-4">Campaign Name:</label>
 		    				<div class="col-lg-8">
-		    					<input id="campaign-name" name="campaign_name" type="text" class="form-control">
+		    					<input id="campaign-name" name="campaign_name" type="text" class="form-control" title="Must be 6 to 40 characters in length.">
 		    				</div>
 		    			</div>
 		    			<div class="form-group inbound blended hide">
@@ -777,6 +777,21 @@ error_reporting(E_ALL);*/
 		}
 
 		$(document).ready(function(){
+			
+			$('#campaign-name').keyup(function(){
+				var text = $(this).val();
+
+				if(text.length < 6){
+					$(this).attr('required', true);
+					$('button.wizard-button-next').addClass('hide');
+					$(this).parent().addClass('has-error');
+				}else{
+					$(this).attr('required', false);
+					$('button.wizard-button-next').removeClass('hide');
+					$(this).parent().removeClass('has-error');
+				}
+			});
+
 			//Flat red color scheme for iCheck
 		    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
 		      checkboxClass: 'icheckbox_flat-green',
@@ -786,6 +801,10 @@ error_reporting(E_ALL);*/
 		    //reloads page when modal closes
 				$('#add_campaign').on('hidden.bs.modal', function () {
 					location.reload();
+				});
+
+				$('#add_campaign').on('shown.bs.modal', function () {
+				   $('#campaign-name').keyup();
 				});
 
 				$('#add_disposition').on('hidden.bs.modal', function () {
@@ -849,8 +868,6 @@ error_reporting(E_ALL);*/
 					if(campaignType == null || campaignType == "" && campaign_name == null || campaign_name == ""){
 					  alert("Please Fill All Required Field");
 					  return false;
-						
-						
 					}
 				},
                 onfinish:function(){
