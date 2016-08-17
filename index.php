@@ -171,7 +171,7 @@ $calls_incoming_queue = $ui->API_goGetIncomingQueue();
 //if(is_null($ui->API_getRealtimeAgent()) {
 	//$realtimeAgents = "";
 //} else {
-	$realtimeAgents = $ui->API_getRealtimeAgent();
+//milo	$realtimeAgents = $ui->API_getRealtimeAgent();
 //}
 //var_dump($dropped_calls_today);
 //die("dd");
@@ -887,16 +887,16 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 						</thead>
 						<tbody>
 							<?php
-							
-							if(is_null($realtimeAgents->session_id)) {
+							//milo
+							//if(is_null($realtimeAgents->session_id)) {
 							?>
 							<tr>
 								<td>No Agents Live</td>
 							</tr>
 							<?php
 							
-							} else {
-								for($i=0;$i < count($realtimeAgents->session_id);$i++){
+							//} else {
+							//	for($i=0;$i < count($realtimeAgents->session_id);$i++){
 								
 							?>
 							<tr>
@@ -908,22 +908,22 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 										</div> -->
 										<div class="media-box-body clearfix">
 										   <strong class="media-box-heading text-primary">
-											  <span class="circle circle-success circle-lg text-left"></span><?php echo $realtimeAgents->user[$i]; ?></strong>
+											  <span class="circle circle-success circle-lg text-left">xx</span><?php //echo $realtimeAgents->user[$i]; ?></strong>
 										</div>
 									</div>
 								</td>
 								
-								<td>
-									<?php echo $realtimeAgents->status[$i]; ?>
+								<td>xx
+									<?php //echo $realtimeAgents->status[$i]; ?>
 								</td>
 
-								<td>
-									<?php echo $realtimeAgents->last_state_change[$i]; ?>
+								<td>xx
+									<?php //echo $realtimeAgents->last_state_change[$i]; ?>
 								</td>
 							</tr>
 							<?php
-								} //end for
-							} //end if
+							//	} //end for
+							//} //end if
 							?>
 
 						</tbody>
@@ -1253,8 +1253,8 @@ function clear_agent_form(){
                          });                        
                      });
                  
-	// ---- loads datatable functions
-				$('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
+	// ---- loads datatable functions milo
+//				$('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
 
 	// ---- Fixed Action Button
 			$(".bottom-menu").on('mouseenter mouseleave', function () {
