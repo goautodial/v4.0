@@ -399,10 +399,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 							</div>
 	                    </div>
 	                	-->
-	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 text-center info_sun_boxes bg-info">
-	                		<div class="h2 m0"></div>
-								
-	                	</div>
+				<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info pv-xl info_sun_boxes">
+					<em class="wi wi-day-sunny fa-4x"></em><div class="h2 m0"><span class="text-lg"></span></div>
+                                                                <div class="text">Today's Phone Calls</div>
+                                </div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><span class="text-lg" id="refresh_RingingCalls"></span></div>
 								<div class="text-muted">Ringing Calls</div>

@@ -1,5 +1,14 @@
 <?php
 
+####################################################
+#### Name: goGetHopperLeadsWarning.php          ####
+#### Type: API for dashboard php encode         ####
+#### Version: 0.9                               ####
+#### Copyright: GOAutoDial Inc. (c) 2011-2016   ####
+#### Written by: Demian Lizandro Biscocho       ####
+#### License: AGPLv2                            ####
+####################################################
+
 require_once('../goCRMAPISettings.php');
 $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -17,8 +26,7 @@ $data = curl_exec($ch);
 curl_close($ch);
 
 $output = json_decode($data);
-//echo "<pre>";
-//print_r($output);die;
+
 if ($output == NULL){
     echo '<small class="text-muted pull-right ml" style="padding-right:20px;"></small>
                 <div class="media-box-heading"><div class="media-box-heading"><strong>
@@ -28,14 +36,17 @@ if ($output == NULL){
                 <small ><strong><a href="#" class="text"></a></strong>
                 </small>
                 </p>';
-}    
-//milo
-for($i=0;$i < count($output->campaign_id);$i++){
-    $campname = $output->campaign_name[$i];
-    $leadscount = $output->mycnt[$i];
-    $campid =  $output->campaign_id[$i];
+}
+
+//echo "<pre>";
+//print_r($output);
+foreach ($output->data as $key => $value) {
     
-    
+    $campname = $value->campaign_name;
+    //var_dump ($campname);
+    $leadscount = $value->mycnt;
+    $campid =  $value->campaign_id;
+  
    if ($leadscount == 0){   
         echo '<div class="media-box-heading"><div class="media-box-heading"><strong>
                 <a id="onclick-campaigninfo" data-toggle="modal" data-target="#view-campaign-modal" data-id="'.$campid.'" class="text-danger m0">'.$campname.'</a></strong>
@@ -56,7 +67,7 @@ for($i=0;$i < count($output->campaign_id);$i++){
                 <small class="text-muted pull-right ml" style="padding-right:20px;">'.$leadscount.'</small>
                 </p>';
     }
-}
+
     
-           
+}           
 ?>
