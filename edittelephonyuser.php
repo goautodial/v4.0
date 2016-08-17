@@ -359,7 +359,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								   	<fieldset class="footer-buttons">
 				                        <div class="box-footer">
 				                           <div class="col-sm-3 pull-right">
-													<a href="telephonyusers.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+													<a href="telephonyusers.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 				                           	
 				                                	<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 												

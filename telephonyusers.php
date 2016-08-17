@@ -306,6 +306,11 @@
 			$(document).ready(function() {
 				$('#T_users').dataTable();
 
+			// for cancelling
+				$(document).on('click', '#cancel', function(){
+					swal("Cancelled", "No action has been done :)", "error");
+				});
+
 		// for easy wizard 
 			var form = document.getElementById('create_form');
 			var validate_wizard = 0;

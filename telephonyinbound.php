@@ -296,28 +296,26 @@
 				<!-- STEP 1 -->
 					<div class="wizard-step">
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="groupid">Group ID:</label>
-							<div class="col-sm-7">
-								<input type="text" name="groupid" id="groupid" class="form-control" placeholder="Group ID. This is a required field." maxlength="20" minlength="2">
-								<span  style="color:red;"><small><i>* No Spaces. 2-20 characters in length.</i></small></span>
+							<label class="col-sm-3 control-label" for="groupid">Group ID:</label>
+							<div class="col-sm-9">
+								<input type="text" name="groupid" id="groupid" class="form-control" placeholder="Group ID. This is a required field. No Spaces. 2-20 characters in length." maxlength="20" minlength="2">
 							</div>
 						</div>
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="groupname">* Group Name: </label>
-							<div class="col-sm-7">
-								<input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name. This is a required field." maxlength="20" minlength="2">
-								<span  style="color:red;"><small><i>* 2-20 characters in length</i></small></span>
+							<label class="col-sm-3 control-label" for="groupname">Group Name: </label>
+							<div class="col-sm-9">
+								<input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name. This is a required field. 2-20 characters in length." maxlength="20" minlength="2">
 							</div>
 						</div>
 						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="color">Group Color: </label>
-							<div class="col-sm-7">
+							<label class="col-sm-3 control-label" for="color">Group Color: </label>
+							<div class="col-sm-9">
 					            <input type="text" class="form-control colorpicker" name="color" id="color" value="#fffff">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="user_group">User Group: </label>
-							<div class="col-sm-7">
+							<label class="col-sm-3 control-label" for="user_group">User Group: </label>
+							<div class="col-sm-9">
 								<select id="user_group" class="form-control" name="user_group">
 									<?php
 										for($i=0;$i<count($user_groups->user_group);$i++){
@@ -330,8 +328,8 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="active">Active: </label>
-							<div class="col-sm-2">
+							<label class="col-sm-3 control-label" for="active">Active: </label>
+							<div class="col-sm-9">
 								<select name="active" id="active" class="form-control">
 									<option value="Y" selected>Yes</option>
 									<option value="N">No</option>
@@ -339,14 +337,14 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="web_form">Web Form: </label>
-							<div class="col-sm-7">
+							<label class="col-sm-3 control-label" for="web_form">Web Form: </label>
+							<div class="col-sm-9">
 								<input type="url" name="web_form" id="web_form" class="form-control" placeholder="Place a valid URL here... ">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="ingroup_voicemail">Voicemail: </label>
-							<div class="col-sm-7">	
+							<label class="col-sm-3 control-label" for="ingroup_voicemail">Voicemail: </label>
+							<div class="col-sm-9">	
 								<select name="ingroup_voicemail" id="ingroup_voicemail" class="form-control">
 									<?php
 										if($voicemails == NULL){
@@ -367,8 +365,8 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="next_agent_call">Next Agent Call: </label>
-							<div class="col-sm-4">	
+							<label class="col-sm-3 control-label" for="next_agent_call">Next Agent Call: </label>
+							<div class="col-sm-9">	
 								<select name="next_agent_call" id="next_agent_call" class="form-control">
 										<option value="random"> Random </option>
 										<option value="oldest_call_start"> Oldest Call Start </option>
@@ -384,8 +382,8 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="display">Fronter Display: </label>
-							<div class="col-sm-2">
+							<label class="col-sm-3 control-label" for="display">Fronter Display: </label>
+							<div class="col-sm-9">
 								<select name="display" id="display" class="form-control">
 									<option value="N" selected>No</option>
 									<option value="Y">Yes</option>
@@ -393,8 +391,8 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="script">Script: </label>
-							<div class="col-sm-5">	
+							<label class="col-sm-3 control-label" for="script">Script: </label>
+							<div class="col-sm-9">	
 								<select name="script" id="script" class="form-control">
 									<option value="NONE">--- NONE --- </option>
 									<?php
@@ -410,8 +408,8 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="call_launch">Get Call Launch: </label>
-							<div class="col-sm-3">	
+							<label class="col-sm-3 control-label" for="call_launch">Get Call Launch: </label>
+							<div class="col-sm-9">	
 								<select name="call_launch" id="call_launch" class="form-control">
 										<option value="NONE"> NONE </option>
 										<option value="SCRIPT"> SCRIPT </option>

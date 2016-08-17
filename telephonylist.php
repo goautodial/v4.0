@@ -1,7 +1,14 @@
 <?php	
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);	
+
+	###########################################################
+	### Name: telephonylist.php 							###
+	### Functions: Manage List and Upload Leads 			###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016			###
+	### Version: 4.0 										###
+	### Written by: Alexander Abenoja & Noel Umandap		###
+	### License: AGPLv2										###
+	###########################################################
+
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -28,9 +35,6 @@ error_reporting(E_ALL);
         <!-- DATA TABLES CSS -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 
-		<!-- Bootstrap Player -->
-		<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
-
         <?php print $ui->creamyThemeCSS(); ?>
 
         <!-- Datetime picker CSS --> 
@@ -47,11 +51,6 @@ error_reporting(E_ALL);
 		<!-- SELECT2 CSS -->
    		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
    		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
-
-		<!-- Bootstrap Player JS -->
-		<script src="js/bootstrap-player.js" type="text/javascript"></script>
-
-		
 
         <script type="text/javascript">
 			$(window).ready(function() {

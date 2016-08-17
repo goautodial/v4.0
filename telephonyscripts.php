@@ -1,5 +1,14 @@
 <?php	
 
+	###################################################
+	### Name: telephonylist.php 					###
+	### Functions: Manage List and Upload Leads 	###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
+	### Version: 4.0 								###
+	### Written by: Alexander Jim H. Abenoja		###
+	### License: AGPLv2								###
+	###################################################
+
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -361,5 +370,7 @@
 			script_text.value = script_text.value  + addtext;
 		}
 	</script>
+
+		<?php print $ui->creamyFooter();?>
     </body>
 </html>

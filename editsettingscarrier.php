@@ -1,20 +1,25 @@
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-*/
-require_once('./php/CRMDefaults.php');
-require_once('./php/UIHandler.php');
-//require_once('./php/DbHandler.php');
-require_once('./php/LanguageHandler.php');
-require('./php/Session.php');
-require_once('./php/goCRMAPISettings.php');
 
-// initialize structures
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
+	###################################################
+	### Name: editsettingscarrier.php 				###
+	### Functions: Edit Carrier 			 		###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
+	### Version: 4.0 								###
+	### Written by: Alexander Jim H. Abenoja		###
+	### License: AGPLv2								###
+	###################################################
+
+	require_once('./php/CRMDefaults.php');
+	require_once('./php/UIHandler.php');
+	//require_once('./php/DbHandler.php');
+	require_once('./php/LanguageHandler.php');
+	require('./php/Session.php');
+	require_once('./php/goCRMAPISettings.php');
+
+	// initialize structures
+	$ui = \creamy\UIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
 
 $cid = NULL;
 if (isset($_POST["cid"])) {
@@ -351,9 +356,6 @@ if (isset($_POST["cid"])) {
 					
 				<!-- /.content -->
             </aside><!-- /.right-side -->
-			
-			<?php //print $ui->creamyFooter(); ?>
-
         </div><!-- ./wrapper -->
 
   		
@@ -420,5 +422,6 @@ if (isset($_POST["cid"])) {
 			});
 		</script>
 
+		<?php print $ui->creamyFooter();?>
     </body>
 </html>

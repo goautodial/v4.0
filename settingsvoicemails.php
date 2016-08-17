@@ -297,5 +297,7 @@
             });
         });
     </script>
+    
+        <?php print $ui->creamyFooter();?>
     </body>
 </html>
