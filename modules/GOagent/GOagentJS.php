@@ -1031,6 +1031,21 @@ $(document).ready(function() {
             $("#scSubmit").addClass('disabled');
         }
     });
+    
+    $("#transfer-selection").change(function() {
+        var transfer_selected = $(this).val();
+        $("#transfer-agent, #transfer-regular").addClass('hidden');
+        //$("#closerSelectBlended").closest('p').addClass('hidden');
+        if (transfer_selected.length > 0) {
+            var thisSelected = transfer_selected.toLowerCase();
+            //$("#scSubmit").removeClass('disabled');
+
+            $("#transfer-"+thisSelected).removeClass('hidden');
+            //$("#closerSelectBlended").closest('p').removeClass('hidden');
+        } else {
+            //$("#scSubmit").addClass('disabled');
+        }
+    });
 
     $("#scButton").click(function() {
         var content = $(this).text();
