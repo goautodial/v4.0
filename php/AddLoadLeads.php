@@ -37,7 +37,7 @@
     
     $output = json_decode($data);
 
-    $home = BASE_URL."/loadleads.php";
+    $home = "../telephonylist.php";
    
     if ($output->result == "success") {
     	// echo "Success";

@@ -1,4 +1,14 @@
 <?php	
+
+	###################################################
+	### Name: telephonyusers.php 					###
+	### Functions: Manage Users 			 		###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
+	### Version: 4.0 								###
+	### Written by: Alexander Jim H. Abenoja		###
+	### License: AGPLv2								###
+	###################################################
+
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -11,7 +21,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Users</title>
+        <title>Users</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -168,7 +178,7 @@
 						<div class="form-group" id="phone_logins_form" style="display:none;">
 							<label class="col-sm-4 control-label" for="phone_logins"> Phone Login: </label>
 							<div class="col-sm-8 mb">
-								<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" value="<?php echo $latest_phone;?>" pattern=".{3,}" title="Minimum of 3 characters" required>
+								<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="Phone Login. This is a required field" value="<?php echo $latest_phone;?>" pattern=".{3,}" title="Minimum of 3 characters" required>
 							</div>
 						</div>
 					</div>
@@ -384,10 +394,11 @@
 							success: function(data) {
 							  // console.log(data);
 								  if(data == 1){
-								  	  $('.output-message-success').show().focus().delay(2000);
+								  	  swal("Success!", "User Successfully Created!", "success")
 									  window.setTimeout(function(){location.reload()},1000)
 									  $('#add_button').val("Loading...");
 								  }else{
+								  	  sweetAlert("Oops...", "Something went wrong. "+data, "error");
 								  	  $('#add_button').val("Submit");
         							  $('#add_button').attr("disabled", false);
 									  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
@@ -395,6 +406,7 @@
 							}
 						});
 					}else{
+						sweetAlert("Oops...", "Something went wrong", "error");
 						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 						validate_wizard = 0;
 					}
@@ -458,56 +470,46 @@
 				 });
 				
 				/**
-				 * Delete validation modal
+				 * Delete function
 				 */
 				 $(document).on('click','.delete-T_user',function() {
-				 	
-				 	var user_id = $(this).attr('data-id');
-				 	var user_name = $(this).attr('data-name');
-				 	var action = "User";
-
-				 	$('.id-delete-label').attr("data-id", user_id);
-					$('.id-delete-label').attr("data-action", action);
-
-				 	$(".delete_extension").text(user_name);
-					$(".action_validation").text(action);
-
-				 	$('#delete_validation_modal').modal('show');
-				 });
-
-				 $(document).on('click','#delete_yes',function() {
-				 	
 				 	var id = $(this).attr('data-id');
-				 	var action = $(this).attr('data-action');
-
-				 	$('#id_span').html(id);
-
-						$.ajax({
-							url: "./php/DeleteTelephonyUser.php",
-							type: 'POST',
-							data: { 
-								userid:id,
-							},
-							success: function(data) {
-							console.log(data);
-						  		if(data == 1){
-						  			$('#result_span').text(data);
-						  			$('#delete_notification').show();
-								 	$('#delete_notification_modal').modal('show');
-								 	//window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-									window.setTimeout(function(){location.reload()},1000)
-								}else{
-									$('#result_span').html(data);
-                                    $('#delete_notification').show();
-                                    $('#delete_notification_modal_fail').modal('show');
-								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-								}
-							}
-						});
+		                swal({   
+		                	title: "Are you sure?",   
+		                	text: "This action cannot be undone.",   
+		                	type: "warning",   
+		                	showCancelButton: true,   
+		                	confirmButtonColor: "#DD6B55",   
+		                	confirmButtonText: "Yes, delete this user!",   
+		                	cancelButtonText: "No, cancel please!",   
+		                	closeOnConfirm: false,   
+		                	closeOnCancel: false 
+		                	}, 
+		                	function(isConfirm){   
+		                		if (isConfirm) { 
+		                			$.ajax({
+										url: "./php/DeleteTelephonyUser.php",
+										type: 'POST',
+										data: { 
+											userid:id,
+										},
+										success: function(data) {
+										console.log(data);
+									  		if(data == 1){
+									  			swal("Success!", "User Successfully Deleted!", "success");
+									  			window.setTimeout(function(){location.reload()},1000)
+											}else{
+												sweetAlert("Oops...", "Something went wrong! "+data, "error");
+											 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+											}
+										}
+									});
+								} else {     
+		                			swal("Cancelled", "No action has been done :)", "error");   
+		                		} 
+		                	}
+		                );
 				 });
-				
-				
-				
 			});
 			
 		</script>

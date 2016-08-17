@@ -1,19 +1,25 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-require_once('./php/CRMDefaults.php');
-require_once('./php/UIHandler.php');
-//require_once('./php/DbHandler.php');
-require_once('./php/LanguageHandler.php');
-require('./php/Session.php');
-require_once('./php/goCRMAPISettings.php');
+	###########################################################
+	### Name: edittelephonycampaigns.php					###
+	### Functions: Edit Campaings, Disposition 				###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016			###
+	### Version: 4.0 										###
+	### Written by: Alexander Abenoja & Noel Umandap		###
+	### License: AGPLv2										###
+	###########################################################
 
-// initialize structures
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
+	require_once('./php/CRMDefaults.php');
+	require_once('./php/UIHandler.php');
+	//require_once('./php/DbHandler.php');
+	require_once('./php/LanguageHandler.php');
+	require('./php/Session.php');
+	require_once('./php/goCRMAPISettings.php');
+
+	// initialize structures
+	$ui = \creamy\UIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
 
 $campaign_id = NULL;
 if (isset($_POST["campaign"])) {
@@ -58,38 +64,13 @@ $voicefiles = $ui->API_GetVoiceFilesList();
         	?>
         </title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        
+        <!-- Call for standardized css -->
+        <?php print $ui->standardizedThemeCSS();?>
+
         <?php print $ui->creamyThemeCSS(); ?>
         <!-- iCheck for checkboxes and radio inputs -->
   		<link rel="stylesheet" href="css/iCheck/all.css">
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-
-        	<!-- =============== BOOTSTRAP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
-				<!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -1131,10 +1112,10 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 										   	<div id="modifyUSERresult"></div>
 
 										   	<!-- FOOTER BUTTONS -->
-						                    <fieldset>
+						                    <fieldset class="footer-buttons">
 						                        <div class="box-footer">
-						                           <div class="col-sm-4 col-sm-offset-2 pull-right">
-															<a href="telephonycampaigns.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+						                           <div class="col-sm-3 pull-right">
+															<a href="telephonycampaigns.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 						                           	
 						                                	<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 						                           </div>
@@ -1284,35 +1265,24 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 
 									</tbody>
 					              </table>
+					              	
+					              	<div class="box-footer pull-right">
+										<a href="telephonycampaigns.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-remove"></i> Cancel</a>
+									</div>
 					            </div>
 
-					            <!-- NOTIFICATIONS -->
-				                <div id="notifications">
-				                    <div class="output-message-success" style="display:none;">
-				                        <div class="alert alert-success alert-dismissible" role="alert">
-				                          <strong>Success!</strong> New Disposition added !
-				                        </div>
-				                    </div>
-				                    <div class="output-message-error" style="display:none;">
-				                        <div class="alert alert-danger alert-dismissible" role="alert">
-				                          <span id="disposition_result"></span>
-				                        </div>
-				                    </div>
-				                    <div class="output-message-incomplete" style="display:none;">
-				                        <div class="alert alert-danger alert-dismissible" role="alert">
-				                          Please do not leave <u>status</u> and <u>status name</u> blank.
-				                        </div>
-				                    </div>
-				                </div>
-
-
-					            <div class="box-footer pull-right">
-									<a href="telephonycampaigns.php" type="button" id="" class="btn btn-danger"><i class="fa fa-remove"></i> Cancel</a>
-								</div>
+					            
 								<!-- /.box-footer -->
 							<?php
 								} else { 
-								echo $disposition->result; 
+							?>
+								 <script>
+								    $(function(){
+								        empty_statuses();
+								    });
+								 </script>
+							<?php
+									 
 								}
 								
 							}
@@ -1333,8 +1303,6 @@ $voicefiles = $ui->API_GetVoiceFilesList();
                 </section>
 				<!-- /.content -->
             </aside><!-- /.right-side -->
-			
-            <?php print $ui->creamyFooter(); ?>
 			
         </div><!-- ./wrapper -->
 
@@ -1402,24 +1370,11 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 	                </div>
 	            	</form>
                 </div>
-                <!-- NOTIFICATIONS -->
-                <div id="edit_notifications">
-                    <div class="output-message-success_edit" style="display:none;">
-                        <div class="alert alert-success alert-dismissible" role="alert">
-                          Successfully modified data!
-                        </div>
-                    </div>
-                    <div class="output-message-error" style="display:none;">
-                        <div class="alert alert-danger alert-dismissible" role="alert">
-                          <span id="disposition_result"></span>
-                        </div>
-                    </div>
-                </div>
                 <div class="modal-footer">
                 	<div class="col-sm-3 pull-right">
                 		
                     	<button type="button" class="btn btn-primary" id="modify_disposition"><span id="update_button"><i class='fa fa-check'></i> Update</span></button>
-                    	<button type="button" class="btn btn-danger pull-left" data-dismiss="modal"><i class='fa fa-remove'></i> Cancel</button>
+                    	<button type="button" class="btn btn-danger pull-left" id="cancel" data-dismiss="modal"><i class='fa fa-remove'></i> Cancel</button>
               		</div>
               	</div>
               	
@@ -1427,29 +1382,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
         </div>
     </div>
 
-    <!-- DELETE VALIDATION MODAL -->
-    <div id="delete_validation_modal" class="modal modal-warning fade">
-        <div class="modal-dialog">
-            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-                <div class="modal-header">
-                    <h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
-                </div>
-                <div class="modal-body" style="background:#fff;">
-                    <p>This action cannot be undone.</p>
-                    <p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
-                </div>
-                <div class="modal-footer" style="background:#fff;">
-                    <button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-              </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- DELETE NOTIFICATION MODAL -->
-    <div id="delete_notification" style="display:none;">
-        <?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
-    </div>
+    	<?php print $ui->standardizedThemeJS();?>
 
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
@@ -1458,6 +1391,12 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 		<script src="js/plugins/iCheck/icheck.min.js"></script>
 
 		<script type="text/javascript">
+			function empty_statuses(){
+			 	console.log();
+			 	swal({   title: "Oops...",   text: "This campaign has no existing disposition. You are going to be redirected after a few seconds!",   timer: 4000,   showConfirmButton: false });
+				window.setTimeout(function(){location.replace("./telephonycampaigns.php")},4000); 
+			}
+
 			function setElements(type){
 				if(type == 'inbound'){
 					$('.outbound').addClass('hide');
@@ -1631,13 +1570,13 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 		                    success: function(data) {
 		                      // console.log(data);
 		                          if(data == 1){
-		                                $('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+		                                swal("Success!", "New Status Successfully Added!", "success");
 		                                $('#add_button').html("<i class='fa fa-plus'></i> New Status");
 										$('#add_new_status').attr("disabled", false);
 		                                window.setTimeout(function(){location.reload()},1000)
 		                          }
 		                          else{
-		                              $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+		                              sweetAlert("Oops...", "Something went wrong! " + data, "error");
 		                              $("#disposition_result").html(data); 
 		                          	  $('#add_button').html("<i class='fa fa-plus'></i> New Status");
 									  $('#add_new_status').attr("disabled", false);
@@ -1646,7 +1585,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 		                });
 		            	
 		            }else{
-		                $('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+		                sweetAlert("Oops...", "Something went wrong!", "error");
 		                $('#add_button').html("<i class='fa fa-plus'></i> New Status");
 						$('#add_new_status').attr("disabled", false);
 		                validate = 0;
@@ -1745,15 +1684,9 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 								function(data){
 									//if message is sent
 									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-										print $ui->fadingInMessageJS($errorMsg, "modifyCAMPAIGNresult"); 
-									?>				
+										swal("Success!", "Campaign Successfully Updated!", "success");
 									} else {
-									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data<br/>"), false, true);
-										print $ui->fadingInMessageJS($errorMsg, "modifyCAMPAIGNresult");
-									?>
+										sweetAlert("Oops...", "Something went wrong! " + data, "error");
 									}
 									//
 								});
@@ -1761,7 +1694,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 					}					
 				});
 				
-				//LEADFILTER
+				//disposition
 				$(document).on('click','#modify_disposition',function() {
 
 				$('#update_button').html("<i class='fa fa-edit'></i> Updating...");
@@ -1819,10 +1752,10 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 	                    success: function(data) {
 	                    console.log(data);
 	                        if(data == 1){
-                                $('.output-message-success_edit').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                                swal("Success!", "Disposition Successfully Updated!", "success")
                                 $('#update_button').html("<i class='fa fa-check'></i> Update");
 								$('#modify_disposition').attr("disabled", false);
-                                window.setTimeout(function(){location.reload()},1000)
+                                window.setTimeout(function(){location.reload()},2000)
 	                        }else{
 	                            $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 	                            $("#disposition_result").html(data);
@@ -1844,15 +1777,9 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 								function(data){
 									//if message is sent
 									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-										print $ui->fadingInMessageJS($errorMsg, "modifyLEADFILTERresult"); 
-									?>				
+										swal("Success!", "Lead Filter Successfully Updated!", "success");			
 									} else {
-									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data<br/>"), false, true);
-										print $ui->fadingInMessageJS($errorMsg, "modifyLEADFILTERresult");
-									?>
+										sweetAlert("Oops...", "Something went wrong! "+ data, "error");
 									}
 									//
 								});
@@ -1860,144 +1787,13 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 					}					
 				});
 				
-				/**
-		         * Delete validation modal
-		         */
-		         // CAMPAIGN
-		         $(document).on('click','.delete-campaign',function() {
-		            
-		            var id = $(this).attr('data-id');
-		            var name = $(this).attr('data-name');
-		            var action = "Campaign";
-
-		            $('.id-delete-label').attr("data-id", id);
-		            $('.id-delete-label').attr("data-action", action);
-
-		            $(".delete_extension").text(name);
-		            $(".action_validation").text(action);
-
-		            $('#delete_validation_modal').modal('show');
-		         });
-		         // DISPOSITION
-		         $(document).on('click','.delete_disposition',function() {
-		            
-		            var id = $(this).attr('data-id');
-		            var status = $(this).attr('data-status');
-		            var name = $(this).attr('data-name');
-		            var action = "STATUS";
-
-		            $('.id-delete-label').attr("data-id", id);
-		            $('.id-delete-label').attr("data-status", status);
-		            $('.id-delete-label').attr("data-action", action);
-
-		            $(".delete_extension").text(name);
-		            $(".action_validation").text(action);
-
-		            $('#delete_validation_modal').modal('show');
-		         });
-		         // LEAD FILTER
-		         $(document).on('click','.delete_leadfilter',function() {
-		            
-		            var id = $(this).attr('data-id');
-		            var name = $(this).attr('data-name');
-		            var action = "LEAD FILTER";
-
-		            $('.id-delete-label').attr("data-id", id);
-		            $('.id-delete-label').attr("data-action", action);
-
-		            $(".delete_extension").text(name);
-		            $(".action_validation").text(action);
-
-		            $('#delete_validation_modal').modal('show');
-		         });
-
-		        $(document).on('click','#delete_yes',function() {
-                
-	                var id = $(this).attr('data-id');
-	                var status_id = $(this).attr('data-status');
-	                var action = $(this).attr('data-action');
-
-	                $('#id_span').html(status_id);
-
-	                	if(action == "CAMPAIGN"){
-	                		$.ajax({
-		                        url: "./php/DeleteCampaign.php",
-		                        type: 'POST',
-		                        data: { 
-		                            campaign_id:id,
-		                        },
-		                        success: function(data) {
-		                        console.log(data);
-		                            if(data == 1){
-		                                $('#result_span').text(data);
-		                                $('#delete_notification').show();
-		                                $('#delete_notification_modal').modal('show');
-		                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-		                                window.setTimeout(function(){location.reload()},1000)
-		                            }else{
-		                                $('#result_span').html(data);
-		                                $('#delete_notification').show();
-		                                $('#delete_notification_modal_fail').modal('show');
-		                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-		                            }
-		                        }
-		                    });
-	                	}
-	                	if(action == "STATUS"){
-	                		$.ajax({
-		                        url: "./php/DeleteDisposition.php",
-		                        type: 'POST',
-		                        data: { 
-		                            disposition_id:id,
-		                            status:status_id,
-		                        },
-		                        success: function(data) {
-		                        console.log(data);
-		                            if(data == 1){
-		                                $('#result_span').text(data);
-		                                $('#delete_notification').show();
-		                                $('#delete_notification_modal').modal('show');
-		                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-		                                window.setTimeout(function(){location.reload()},1000)
-		                            }else{
-		                                $('#result_span').html(data);
-		                                $('#delete_notification').show();
-		                                $('#delete_notification_modal_fail').modal('show');
-		                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-		                            }
-		                        }
-		                    });
-	                	}
-	                	if(action == "LEAD FILTER"){
-	                		$.ajax({
-		                        url: "./php/DeleteLeadFilter.php",
-		                        type: 'POST',
-		                        data: { 
-		                            leadfilter_id:id,
-		                        },
-		                        success: function(data) {
-		                        console.log(data);
-		                            if(data == 1){
-		                                $('#result_span').text(data);
-		                                $('#delete_notification').show();
-		                                $('#delete_notification_modal').modal('show');
-		                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-		                                window.setTimeout(function(){location.reload()},1000)
-		                            }else{
-		                                $('#result_span').html(data);
-		                                $('#delete_notification').show();
-		                                $('#delete_notification_modal_fail').modal('show');
-		                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-		                            }
-		                        }
-		                    });
-	                	}
-	            });
-			
+				$(document).on('click', '#cancel', function(){
+					swal("Cancelled", "No action has been done :)", "error");
+				});
 			});
 		</script>
 
-
+		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>
 

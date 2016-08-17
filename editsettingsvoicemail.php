@@ -1,18 +1,24 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-require_once('./php/CRMDefaults.php');
-require_once('./php/UIHandler.php');
-require_once('./php/LanguageHandler.php');
-require('./php/Session.php');
-require_once('./php/goCRMAPISettings.php');
+	###################################################
+	### Name: editsettingsvoicemail.php 			###
+	### Functions: Edit Voicemail 			 		###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
+	### Version: 4.0 								###
+	### Written by: Alexander Jim H. Abenoja		###
+	### License: AGPLv2								###
+	###################################################
 
-// initialize structures
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
+	require_once('./php/CRMDefaults.php');
+	require_once('./php/UIHandler.php');
+	require_once('./php/LanguageHandler.php');
+	require('./php/Session.php');
+	require_once('./php/goCRMAPISettings.php');
+
+	// initialize structures
+	$ui = \creamy\UIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
 
 $vmid = NULL;
 if (isset($_POST["vmid"])) {
@@ -27,31 +33,10 @@ if (isset($_POST["vmid"])) {
         <meta charset="UTF-8">
         <title>Edit Voicemail</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+       	
+       	<?php print $ui->standardizedThemeCSS(); ?> 
+
         <?php print $ui->creamyThemeCSS(); ?>
-
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-
-        	<!-- =============== BOOTSTRAP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
-				<!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -64,6 +49,7 @@ if (isset($_POST["vmid"])) {
     		font-weight: normal;
     	}
     </style>
+
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
@@ -138,7 +124,7 @@ if (isset($_POST["vmid"])) {
 						<div role="tabpanel">
 						<!--<div class="nav-tabs-custom">-->
 							<ul role="tablist" class="nav nav-tabs nav-justified">
-								<li class="active"><a href="#tab_1" data-toggle="tab"><em class="fa fa-gear fa-lg"></em> Basic Settings</a></li>
+								<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
 							</ul>
 			               <!-- Tab panes-->
 			               <div class="tab-content">
@@ -222,25 +208,11 @@ if (isset($_POST["vmid"])) {
 									</fieldset>
 								</div><!-- end tab1 -->
 
-							<!-- NOTIFICATIONS -->
-		                    <div id="notifications">
-		                        <div class="output-message-success" style="display:none;">
-		                            <div class="alert alert-success alert-dismissible" role="alert">
-		                              <strong>Success!</strong> Voicemail <?php echo $vmid?> modified !
-		                            </div>
-		                        </div>
-		                        <div class="output-message-error" style="display:none;">
-		                            <div class="alert alert-danger alert-dismissible" role="alert">
-		                              <span id="modifyVoicemailresult"></span>
-		                            </div>
-		                        </div>
-		                    </div>
-
 						<!-- FOOTER BUTTONS -->
 		                    <fieldset class="footer-buttons">
 		                        <div class="box-footer">
 		                           <div class="col-sm-3 pull-right">
-											<a href="settingsvoicemails.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+											<a href="settingsvoicemails.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 		                           	
 		                                	<button type="submit" class="btn btn-primary" id="modifyVoicemailOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 										
@@ -263,44 +235,21 @@ if (isset($_POST["vmid"])) {
 					
 				<!-- /.content -->
             </aside><!-- /.right-side -->
-			
-            <?php print $ui->creamyFooter(); ?>
-			
         </div><!-- ./wrapper -->
 
-        <!-- DELETE VALIDATION MODAL -->
-        <div id="delete_validation_modal" class="modal modal-warning fade">
-            <div class="modal-dialog">
-                <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-                    <div class="modal-header">
-                        <h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
-                    </div>
-                    <div class="modal-body" style="background:#fff;">
-                        <p>This action cannot be undone.</p>
-                        <p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
-                    </div>
-                    <div class="modal-footer" style="background:#fff;">
-                        <button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-                  </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- DELETE NOTIFICATION MODAL -->
-        <div id="delete_notification" style="display:none;">
-            <?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
-        </div>
-
 		<!-- Modal Dialogs -->
+		<?php print $ui->standardizedThemeJS(); ?> 
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 		
-		<!-- SLIMSCROLL-->
-   		<script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
-	
+				
+				// for cancelling
+				$(document).on('click', '#cancel', function(){
+					swal("Cancelled", "No action has been done :)", "error");
+				});
+
 				/** 
 				 * Modifies a telephony list
 			 	 */
@@ -318,12 +267,12 @@ if (isset($_POST["vmid"])) {
 								function(data){
 									//if message is sent
 									if (data == 1) {
-										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+										swal("Success!", "Voicemail Successfully Updated!", "success");
                                         window.setTimeout(function(){location.replace("settingsvoicemails.php")},2000)
                                         $('#update_button').html("<i class='fa fa-check'></i> Update");
                                         $('#modifyVoicemailOkButton').prop("disabled", false);
 									} else {
-										$('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+										sweetAlert("Oops...", "Something went wrong! "+data, "error");
 										$('#update_button').html("<i class='fa fa-check'></i> Update");
 										$('#modifyVoicemailOkButton').prop("disabled", false);
 									}
@@ -337,5 +286,6 @@ if (isset($_POST["vmid"])) {
 			});
 		</script>
 
+		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

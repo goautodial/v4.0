@@ -14,7 +14,7 @@ error_reporting(E_ALL);
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Lists</title>
+        <title>Lists</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!-- Call for standardized css -->
@@ -172,6 +172,21 @@ error_reporting(E_ALL);
 									<button type="submit" class="btn btn-primary">Submit</button>
 								</div>
 							</form>
+							<?php 
+                        		if(isset($_GET['message'])){
+                        			echo '<div class="col-lg-12" style="margin-top: 10px;">';
+                        			if($_GET['message'] == "Success"){
+                        				echo '<div class="alert alert-success">
+										  <strong>Success!</strong> Upload of leads was successful.
+										</div>';
+                        			}else{
+                        				echo '<div class="alert alert-danger">
+										  <strong>Error!</strong> Failed to upload file.
+										</div>';
+                        			}
+                        			echo '</div>';
+                        		}
+                        	?>
 	           			</div><!-- ./upload leads -->
                 	</div>
                 </section><!-- /.content -->

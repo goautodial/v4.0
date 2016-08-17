@@ -1,20 +1,25 @@
 <?php
+	
+	###################################################
+	### Name: settingscalltimes.php 				###
+	### Functions: Manage Calltimes 				###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
+	### Version: 4.0 								###
+	### Written by: Alexander Jim H. Abenoja		###
+	### License: AGPLv2								###
+	###################################################
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+	require_once('./php/CRMDefaults.php');
+	require_once('./php/UIHandler.php');
+	//require_once('./php/DbHandler.php');
+	require_once('./php/LanguageHandler.php');
+	require('./php/Session.php');
+	require_once('./php/goCRMAPISettings.php');
 
-require_once('./php/CRMDefaults.php');
-require_once('./php/UIHandler.php');
-//require_once('./php/DbHandler.php');
-require_once('./php/LanguageHandler.php');
-require('./php/Session.php');
-require_once('./php/goCRMAPISettings.php');
-
-// initialize structures
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
+	// initialize structures
+	$ui = \creamy\UIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
 
 $cid = NULL;
 if (isset($_POST["cid"])) {
@@ -27,29 +32,10 @@ if (isset($_POST["cid"])) {
         <meta charset="UTF-8">
         <title>Edit Call Times</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
-        <?php print $ui->creamyThemeCSS(); ?>
+        
+        <?php print $ui->standardizedThemeCSS(); ?>
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
+        <?php print $ui->creamyThemeCSS(); ?>
 
         <!-- datetime picker --> 
 		<link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
@@ -57,16 +43,6 @@ if (isset($_POST["cid"])) {
 		<!-- Date Picker -->
         <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
 		<script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-
-		<!-- SWEETALERT-->
-   		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
-		<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
-
-				<!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -140,6 +116,7 @@ if (isset($_POST["cid"])) {
 							if ($output->result=="success") {
 							
 							$user_groups = $ui->API_goGetUserGroupsList();
+							$voicefiles = $ui->API_GetVoiceFilesList();
 
 							# Result was OK!
 								for($i=0;$i<count($output->call_time_id);$i++){
@@ -278,7 +255,16 @@ if (isset($_POST["cid"])) {
 														<input type="text" class="form-control end_time" name="stop_default" value="<?php echo $stop_default;?>">
 													</div>
 													<div class="col-lg-6">
-														<input type="text" class="form-control" name="audio_default">
+														<select class="form-control" name="audio_default">
+															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<?php
+																for($a=0;$a<count($voicefiles->file_name);$a++){
+															?>
+																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+															<?php
+																}
+															?>
+														</select>
 													</div>
 												</div>
 											</div>
@@ -294,7 +280,16 @@ if (isset($_POST["cid"])) {
 														<input type="text" class="form-control end_time" name="stop_sunday" value="<?php echo $stop_sunday;?>">
 													</div>
 													<div class="col-lg-6">
-														<input type="text" class="form-control" name="audio_sunday">
+														<select class="form-control" name="audio_sunday">
+															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<?php
+																for($a=0;$a<count($voicefiles->file_name);$a++){
+															?>
+																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+															<?php
+																}
+															?>
+														</select>
 													</div>
 												</div>
 											</div>
@@ -310,7 +305,16 @@ if (isset($_POST["cid"])) {
 														<input type="text" class="form-control end_time" name="stop_monday" value="<?php echo $stop_monday;?>">
 													</div>
 													<div class="col-lg-6">
-														<input type="text" class="form-control" name="audio_monday">
+														<select class="form-control" name="audio_monday">
+															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<?php
+																for($a=0;$a<count($voicefiles->file_name);$a++){
+															?>
+																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+															<?php
+																}
+															?>
+														</select>
 													</div>
 												</div>
 											</div>
@@ -326,7 +330,16 @@ if (isset($_POST["cid"])) {
 														<input type="text" class="form-control end_time" name="stop_tuesday" value="<?php echo $stop_tuesday;?>">
 													</div>
 													<div class="col-lg-6">
-														<input type="text" class="form-control" name="audio_tuesday">
+														<select class="form-control" name="audio_tuesday">
+															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<?php
+																for($a=0;$a<count($voicefiles->file_name);$a++){
+															?>
+																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+															<?php
+																}
+															?>
+														</select>
 													</div>
 												</div>
 											</div>
@@ -342,7 +355,16 @@ if (isset($_POST["cid"])) {
 														<input type="text" class="form-control end_time" name="stop_wednesday" value="<?php echo $stop_wednesday;?>">
 													</div>
 													<div class="col-lg-6">
-														<input type="text" class="form-control" name="audio_wednesday">
+														<select class="form-control" name="audio_wednesday">
+															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<?php
+																for($a=0;$a<count($voicefiles->file_name);$a++){
+															?>
+																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+															<?php
+																}
+															?>
+														</select>
 													</div>
 												</div>
 											</div>
@@ -358,7 +380,16 @@ if (isset($_POST["cid"])) {
 														<input type="text" class="form-control end_time" name="stop_thursday" value="<?php echo $stop_thursday;?>">
 													</div>
 													<div class="col-lg-6">
-														<input type="text" class="form-control" name="audio_thursday">
+														<select class="form-control" name="audio_thursday">
+															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<?php
+																for($a=0;$a<count($voicefiles->file_name);$a++){
+															?>
+																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+															<?php
+																}
+															?>
+														</select>
 													</div>
 												</div>
 											</div>
@@ -374,7 +405,16 @@ if (isset($_POST["cid"])) {
 														<input type="text" class="form-control end_time" name="stop_friday" value="<?php echo $stop_friday;?>">
 													</div>
 													<div class="col-lg-6">
-														<input type="text" class="form-control" name="audio_friday">
+														<select class="form-control" name="audio_friday">
+															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<?php
+																for($a=0;$a<count($voicefiles->file_name);$a++){
+															?>
+																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+															<?php
+																}
+															?>
+														</select>
 													</div>
 												</div>
 											</div>
@@ -390,7 +430,16 @@ if (isset($_POST["cid"])) {
 														<input type="text" class="form-control end_time" name="stop_saturday" value="<?php echo $stop_saturday;?>">
 													</div>
 													<div class="col-lg-6">
-														<input type="text" class="form-control" name="audio_saturday">
+														<select class="form-control" name="audio_saturday">
+															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<?php
+																for($a=0;$a<count($voicefiles->file_name);$a++){
+															?>
+																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+															<?php
+																}
+															?>
+														</select>
 													</div>
 												</div>
 											</div>
@@ -424,14 +473,10 @@ if (isset($_POST["cid"])) {
 					
 				<!-- /.content -->
             </aside><!-- /.right-side -->
-			
-			<?php //print $ui->creamyFooter(); ?>
-
         </div><!-- ./wrapper -->
 
-  		
-		
 		<!-- Modal Dialogs -->
+		<?php print $ui->standardizedThemeJS(); ?>
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
 		<script type="text/javascript">
@@ -480,5 +525,6 @@ if (isset($_POST["cid"])) {
 			});
 		</script>
 
+		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

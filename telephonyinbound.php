@@ -1,4 +1,14 @@
-<?php	
+<?php
+
+	###################################################
+	### Name: telephonyinbound.php 					###
+	### Functions: Manage Inbound, IVR & DID  		###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
+	### Version: 4.0 								###
+	### Written by: Alexander Jim H. Abenoja		###
+	### License: AGPLv2								###
+	###################################################
+
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -11,50 +21,25 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Inbound</title>
+        <title>Inbound</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+        
+        <?php print $ui->standardizedThemeCSS(); ?>
+    	
     	<!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+       
         <?php print $ui->creamyThemeCSS(); ?>
-		<!-- Circle Buttons style -->
-    	<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+		
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
 		<!-- Wizard Form style -->
     	<link rel="stylesheet" href="css/easyWizard.css">
 		
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
         
-        <!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
-
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
@@ -62,7 +47,9 @@
 		</script>
 
     </head>
+    
     <?php print $ui->creamyBody(); ?>
+
         <div class="wrapper">	
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
@@ -308,20 +295,17 @@
 				<form action="AddTelephonyIngroup.php" method="POST" id="create_ingroup" class="form-horizontal " role="form">
 				<!-- STEP 1 -->
 					<div class="wizard-step">
-						<div class="row" style="padding-top:10px;padding-bottom:10px;">
-							<p class="col-sm-12"><small><i> - - - All fields with ( </i></small> <b>*</b> <small><i> ) are Required Field.  - - -</i></small></p>
-						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="groupid">* Group ID:</label>
+							<label class="col-sm-4 control-label" for="groupid">Group ID:</label>
 							<div class="col-sm-7">
-								<input type="text" name="groupid" id="groupid" class="form-control" placeholder="Group ID" maxlength="20" minlength="2">
+								<input type="text" name="groupid" id="groupid" class="form-control" placeholder="Group ID. This is a required field." maxlength="20" minlength="2">
 								<span  style="color:red;"><small><i>* No Spaces. 2-20 characters in length.</i></small></span>
 							</div>
 						</div>
 						<div class="form-group">		
 							<label class="col-sm-4 control-label" for="groupname">* Group Name: </label>
 							<div class="col-sm-7">
-								<input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name" maxlength="20" minlength="2">
+								<input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name. This is a required field." maxlength="20" minlength="2">
 								<span  style="color:red;"><small><i>* 2-20 characters in length</i></small></span>
 							</div>
 						</div>
@@ -355,7 +339,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-4 control-label" for="web_form">* Web Form: </label>
+							<label class="col-sm-4 control-label" for="web_form">Web Form: </label>
 							<div class="col-sm-7">
 								<input type="url" name="web_form" id="web_form" class="form-control" placeholder="Place a valid URL here... ">
 							</div>
@@ -962,6 +946,7 @@
 		<?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
 	</div>
 
+		<?php print $ui->standardizedThemeJS(); ?>
         <!-- wizard -->
 		<script src="js/easyWizard.js" type="text/javascript"></script>
 	    <!-- bootstrap color picker -->
@@ -1065,13 +1050,10 @@
 							success: function(data) {
 							  // console.log(data);
 								  if(data == "success"){
-									  $('.output-message-success').removeClass('hide');
-									  $('.output-message-error').addClass('hide');
+									  swal("Success!", "IVR Successfully Created!", "success");
 								  }
 								  else{
-									  $('.output-message-error').removeClass('hide');
-									  $("#ivr_result").html(data); 
-									  $('.output-message-success').addClass('hide');
+									  sweetAlert("Oops...", "Something went wrong!"+data, "error");
 								  }
 							}
 						});
@@ -1082,25 +1064,25 @@
 
 				// ajax commands for modals -
 				$('#submit_ingroup').click(function(){
-				$('#submit_ingroup').val("Saving, Please Wait.....");
-				$('#submit_ingroup').prop("disabled", true);
+					$('#submit_ingroup').val("Saving, Please Wait.....");
+					$('#submit_ingroup').prop("disabled", true);
 
-				var validate_ingroup = 0;
-				var groupid = $("#groupid").val();
-				var groupname = $("#groupname").val();
-				var web_form = $("#web_form").val();
-				
-				if(groupid == ""){
-					validate_ingroup = 1;
-				}
+					var validate_ingroup = 0;
+					var groupid = $("#groupid").val();
+					var groupname = $("#groupname").val();
+					var web_form = $("#web_form").val();
+					
+					if(groupid == ""){
+						validate_ingroup = 1;
+					}
 
-				if(groupname == ""){
-					validate_ingroup = 1;
-				}
+					if(groupname == ""){
+						validate_ingroup = 1;
+					}
 
-				if(web_form == ""){
-					validate_ingroup = 1;
-				}
+					if(web_form == ""){
+						validate_ingroup = 1;
+					}
 
 					if(validate_ingroup == 0){
 					//alert("Validated !");
@@ -1112,14 +1094,13 @@
 							success: function(data) {
 							  // console.log(data);
 								  if(data == "success"){
-										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-								  		window.setTimeout(function(){location.reload()},1000)
+										swal("Success!", "Ingroup Successfully Created!", "success");
+								  		window.setTimeout(function(){location.reload()},1000);
 								  		$('#submit_ingroup').val("Submit");
 										$('#submit_ingroup').prop("disabled", false);
 								  }
 								  else{
-									  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-									  $("#ingroup_result").html(data);
+									  sweetAlert("Oops...", "Something went wrong!"+data, "error");
 									  $('#submit_ingroup').val("Submit");
 									  $('#submit_ingroup').prop("disabled", false);
 								  }
@@ -1127,7 +1108,7 @@
 						});
 					
 					}else{
-						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+						sweetAlert("Oops...", "Something went wrong!", "error");
 						validate_ingroup = 0;
 						$('#submit_ingroup').val("Submit");
 						$('#submit_ingroup').prop("disabled", false);
@@ -1172,20 +1153,19 @@
 							success: function(data) {
 							  // console.log(data);
 								  if(data == 1){
-										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+										swal("Success!", "Phone Number Successfully Created!", "success");
 								  		window.setTimeout(function(){location.reload()},1000)
 								  		$('#submit_did').val("Submit");
 										$('#submit_did').prop("disabled", false);
 								  }else{
-										$('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-										$("#phonenumber_result").html(data);
+										sweetAlert("Oops...", "Something went wrong! "+data, "error");
 										$('#submit_did').val("Submit");
 										$('#submit_did').prop("disabled", false);
 								  }
 							}
 						});
 					}else{
-						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+						sweetAlert("Oops...", "Something went wrong!", "error");
 						validate_did = 0;
 						$('#submit_did').val("Submit");
 						$('#submit_did').prop("disabled", false);
@@ -1223,146 +1203,125 @@
 
 
 			/****
-			** DELETE Validation Popup
+			** DELETE Functions
 			*****/
 
 			//DELETE INGROUPS
 				 $(document).on('click','.delete-ingroup',function() {
-				 	var groupid = $(this).attr('data-id');
-				 	var action = "In-group";
-
-				 	$('.id-delete-label').attr("data-id", groupid);
-					$('.id-delete-label').attr("data-action", action);
-
-				 	$(".delete_extension").text(groupid);
-					$(".action_validation").text(action);
-
-				 	$('#delete_validation_modal').modal('show');
+				 	var id = $(this).attr('data-id');
+	                swal({   
+	                	title: "Are you sure?",   
+	                	text: "This action cannot be undone.",   
+	                	type: "warning",   
+	                	showCancelButton: true,   
+	                	confirmButtonColor: "#DD6B55",   
+	                	confirmButtonText: "Yes, delete this inbound!",   
+	                	cancelButtonText: "No, cancel please!",   
+	                	closeOnConfirm: false,   
+	                	closeOnCancel: false 
+	                	}, 
+	                	function(isConfirm){   
+	                		if (isConfirm) { 
+	                			$.ajax({
+									url: "./php/DeleteTelephonyInbound.php",
+									type: 'POST',
+									data: { 
+										groupid:id,
+									},
+									success: function(data) {
+									console.log(data);
+								  		if(data == 1){
+								  			swal("Success!", "Inbound Successfully Deleted!", "success");
+											window.setTimeout(function(){location.reload()},3000)
+										}else{
+											sweetAlert("Oops...", "Something went wrong! "+data, "error");
+										}
+									}
+								});
+							} else {     
+		                			swal("Cancelled", "No action has been done :)", "error");   
+		                	} 
+	                	}
+	                );
 				 });
 			//DELETE IVR
 				 $(document).on('click','.delete-ivr',function() {
-				 	var menu_id = $(this).attr('data-id');
-				 	var desc = $(this).attr('data-desc');
-				 	var action = "Interactive Voice Response";
-
-				 	$('.id-delete-label').attr("data-id", menu_id);
-					$('.id-delete-label').attr("data-action", action);
-				 	
-				 	$(".delete_extension").text(desc);
-				 	$(".action_validation").text(action);
-
-					$('#delete_validation_modal').modal('show');
+				 	var id = $(this).attr('data-id');
+	                swal({   
+	                	title: "Are you sure?",   
+	                	text: "This action cannot be undone.",   
+	                	type: "warning",   
+	                	showCancelButton: true,   
+	                	confirmButtonColor: "#DD6B55",   
+	                	confirmButtonText: "Yes, delete this IVR!",   
+	                	cancelButtonText: "No, cancel please!",   
+	                	closeOnConfirm: false,   
+	                	closeOnCancel: false 
+	                	}, 
+	                	function(isConfirm){   
+	                		if (isConfirm) { 
+	                			$.ajax({
+									url: "./php/DeleteTelephonyInbound.php",
+									type: 'POST',
+									data: { 
+										ivr:id,
+									},
+									success: function(data) {
+									console.log(data);
+								  		if(data == 1){
+								  			swal("Success!", "IVR Successfully Deleted!", "success");
+											//window.setTimeout(function(){location.reload()},3000)
+										}else{
+											sweetAlert("Oops...", "Something went wrong! "+data, "error");
+										}
+									}
+								});
+							} else {     
+		                			swal("Cancelled", "No action has been done :)", "error");   
+		                	} 
+	                	}
+	                );
 				 });
 			//DELETE PHONENUMBER/DID
 				 $(document).on('click','.delete-phonenumber',function() {
-				 	var did = $(this).attr('data-id');
-				 	var desc = $(this).attr('data-desc');
-				 	var action = "Phonenumber/DID";
-				 	
-				 	$('.id-delete-label').attr("data-id", did);
-					$('.id-delete-label').attr("data-action", action);
-				 	
-				 	$(".delete_extension").text(desc);
-					$(".action_validation").text(action);
-					
-				 	$('#delete_validation_modal').modal('show');
-				 });
-
-			/****
-			** DELETE ACTIONS
-			****/
-				$(document).on('click','#delete_yes',function() {
-				 	
 				 	var id = $(this).attr('data-id');
-				 	var action = $(this).attr('data-action');
-
-				 	var success = "success";
-				 	var failed = "";
-
-
-				 	$('#id_span').html(id);
-
-				// Delete Ingroup AJAX
-				 	if(action == "In-group"){
-						$.ajax({
-							url: "./php/DeleteTelephonyInbound.php",
-							type: 'POST',
-							data: { 
-								groupid:id,
-							},
-							success: function(data) {
-							console.log(data);
-						  		if(data == 1){
-						  			$('#result_span').html(success);
-						  			$('#delete_notification').show();
-								 	$('#delete_notification_modal').modal('show');
-								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-									//window.setTimeout(function(){location.reload()},3000)
-								}else{
-									$('#result_span').html(data);
-                                    $('#delete_notification').show();
-                                    $('#delete_notification_modal_fail').modal('show');
-								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 4000);
-								}
-							}
-						});
-					}	
-				// Delete Interactive Voice Response AJAX
-				 	if(action == "Interactive Voice Response"){
-						$.ajax({
-							url: "./php/DeleteTelephonyInbound.php",
-							type: 'POST',
-							data: { 
-								ivr:id,
-							},
-							success: function(data) {
-							console.log(data);
-						  		if(data == 1){
-						  			$('#result_span').html(success);
-						  			$('#delete_notification').show();
-								 	$('#delete_notification_modal').modal('show');
-								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-									//window.setTimeout(function(){location.reload()},3000)
-								}else{
-									$('#result_span').html(data);
-                                    $('#delete_notification').show();
-                                    $('#delete_notification_modal_fail').modal('show');
-								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 4000);
-								}
-							}
-						});
-					}	
-				// Delete Phonenumber AJAX
-				 	if(action == "Phonenumber/DID"){
-				 		//alert(id);
-				 		
-						$.ajax({
-							url: "./php/DeleteTelephonyInbound.php",
-							type: 'POST',
-							data: { 
-								modify_did:id,
-							},
-							
-							success: function(data) {
-							//console.log(modify_did);
-							console.log(data);
-						  		if(data == 1){
-						  			$('#result_span').html(success);
-						  			$('#delete_notification').show();
-								 	$('#delete_notification_modal').modal('show');
-								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-									//window.setTimeout(function(){location.reload()},3000)
-								}else{
-									$('#result_span').html(data);
-                                    $('#delete_notification').show();
-                                    $('#delete_notification_modal_fail').modal('show');
-								 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 4000);
-								}
-							}
-						});
-					}	
-					
-				});
+	                swal({   
+	                	title: "Are you sure?",   
+	                	text: "This action cannot be undone.",   
+	                	type: "warning",   
+	                	showCancelButton: true,   
+	                	confirmButtonColor: "#DD6B55",   
+	                	confirmButtonText: "Yes, delete this phonenumber!",   
+	                	cancelButtonText: "No, cancel please!",   
+	                	closeOnConfirm: false,   
+	                	closeOnCancel: false 
+	                	}, 
+	                	function(isConfirm){   
+	                		if (isConfirm) { 
+	                			$.ajax({
+									url: "./php/DeleteTelephonyInbound.php",
+									type: 'POST',
+									data: { 
+										modify_did:id,
+									},
+									
+									success: function(data) {
+									//console.log(modify_did);
+									console.log(data);
+								  		if(data == 1){
+								  			swal("Success!", "Phonenumber Successfully Deleted!", "success");
+											//window.setTimeout(function(){location.reload()},3000)
+										}else{
+											sweetAlert("Oops...", "Something went wrong! "+data, "error");
+										}
+									}
+								});
+	                		} else {     
+		                			swal("Cancelled", "No action has been done :)", "error");   
+		                	} 
+	                	}
+	                );
+				 });
 
 				$('.add-option').click(function(){
 					var toClone = $('.to-clone-opt').clone();
@@ -1383,5 +1342,7 @@
 				
 			});
 		</script>
+
+		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

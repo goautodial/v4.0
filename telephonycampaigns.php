@@ -1,4 +1,14 @@
 <?php	
+
+	###########################################################
+	### Name: telephonycampaigns.php 						###
+	### Functions: Manage Campaigns, Disposition			###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016			###
+	### Version: 4.0 										###
+	### Written by: Alexander Abenoja & Noel Umandap		###
+	### License: AGPLv2										###
+	###########################################################
+
 /*
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -15,7 +25,7 @@ error_reporting(E_ALL);*/
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Campaigns</title>
+        <title>Campaigns</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -607,74 +617,78 @@ error_reporting(E_ALL);*/
                 <form action="" method="POST" id="create_disposition" class="form-horizontal " role="form">
                 <!-- STEP 1 -->
                     <div class="wizard-step">
-                        <div class="row" style="padding-bottom:10px;">
-                            <p class="col-sm-12"><small><i> - - - All fields with ( </i></small> <b>*</b> <small><i> ) are Required Field.  - - -</i></small></p>
-                        </div>
-                        <div class="row"> 
-                        	<div class="col-lg-12">       
-	                            <label class="col-sm-4 control-label" for="campaign" style="padding-top:15px;">Campaign: </label>
-	                            <div class="col-sm-7" style="padding-top:10px;">
-	                                <select id="campaign" name="campaign" class="form-control">
-	                                		<option> - - - ALL CAMPAIGNS - - - </option>
-	                                   <?php
-	                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
-	                                   			echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
-	                                   		}
-	                                   ?>
-	                                </select>
-	                            </div>
+                    	<div class="form-group mt">       
+                            <label class="col-sm-3 control-label" for="campaign">Campaign: </label>
+                            <div class="col-sm-9 mb">
+                                <select id="campaign" name="campaign" class="form-control">
+                                		<option value="ALL"> - - - ALL CAMPAIGNS - - - </option>
+                                   <?php
+                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
+                                   			echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
+                                   		}
+                                   ?>
+                                </select>
                             </div>
-                            <div class="col-lg-12" style="padding-top:10px;"> 
-	                            <label class="col-sm-4 control-label" for="status">* Status:</label>
-	                            <div class="col-sm-7">
-	                                <input type="text" name="status" id="status" class="form-control" placeholder="Status" minlength="3" maxlenght="6">
-	                                <span  class="text-red"><small><i>* For example: New</i></small></span>
-	                            </div>
-	                        </div>
-                            <div class="col-lg-12" style="padding-top:10px;">
-	                            <label class="col-sm-4 control-label" for="status_name">* Status Name: </label>
-	                            <div class="col-sm-7">
-	                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="Status Name">
-	                            </div>
-	                        </div>
-                            <div class="col-lg-12" style="padding-top:10px;">        
-			                        <!--<label class="col-sm-2 control-label" for="grouplevel" style="padding-top:15px;"> </label>-->
-		                		<label class="col-sm-3" for="selectable">
-					                  <input type="checkbox" id="selectable" name="selectable" class="flat-red">
-					                  Selectable
-				                </label>
-				                <label class="col-sm-4" for="human_answered">
-					                  <input type="checkbox" id="human_answered" name="human_answered" class="flat-red">
-					                  Human Answered
-						        </label>
-						        <label class="col-sm-3" for="sale">
-					                  <input type="checkbox" id="sale" name="sale" class="flat-red">
-					                  Sale
-					            </label>
-					            <label class="col-sm-3" for="dnc">
-					                  <input type="checkbox" id="dnc" name="dnc" class="flat-red">
-					                  DNC
-					            </label>
-						          
-				                <label class="col-sm-4" for="customer_contact">
-					                  <input type="checkbox" id="customer_contact" name="customer_contact" class="flat-red">
-					                  Customer Contact
-				                </label>
-				                <label class="col-sm-4" for="not_interested">
-					                  <input type="checkbox" id="not_interested" name="not_interested" class="flat-red">
-					                  Not Interested
-				                </label>
-				                <label class="col-sm-3" for="unworkable">
-					                  <input type="checkbox" id="unworkable" name="unworkable" class="flat-red">
-					                  Unworkable
-				                </label>
-				                <label class="col-sm-4" for="scheduled_callback">
-					                  <input type="checkbox" id="scheduled_callback" name="scheduled_callback" class="flat-red">
-					                  Scheduled Callback
-				                </label>
-			                       
-		                    </div>
                         </div>
+                        <div class="form-group"> 
+                            <label class="col-sm-3 control-label" for="status">Status</label>
+                            <div class="col-sm-9 mb">
+                                <input type="text" name="status" id="status" class="form-control" placeholder="Status. This is a required field" minlength="3" maxlenght="6">
+                                <span  class="text-red"><small><i>* For example: New</i></small></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="status_name">Status Name </label>
+                            <div class="col-sm-9 mb">
+                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="Status Name. This is a required field">
+                            </div>
+                        </div>
+                        <div class="form-group">        
+		                        <!--<label class="col-sm-2 control-label" for="grouplevel" style="padding-top:15px;"> </label>-->
+		                    <div class="col-lg-1">
+		                   	</div>
+		                    <div class="col-lg-11">
+		                    	<div class="row">
+			                		<label class="col-sm-3 checkbox-inline" for="selectable">
+						                  <input type="checkbox" id="selectable" name="selectable" checked class="flat-red">
+						                  Selectable
+					                </label>
+					                <label class="col-sm-4 checkbox-inline" for="human_answered">
+						                  <input type="checkbox" id="human_answered" name="human_answered" class="flat-red">
+						                  Human Answered
+							        </label>
+							        <label class="col-sm-3 checkbox-inline" for="sale">
+						                  <input type="checkbox" id="sale" name="sale" class="flat-red">
+						                  Sale
+						            </label>
+						        </div>
+						        <div class="row">
+						            <label class="col-sm-3 checkbox-inline" for="dnc">
+						                  <input type="checkbox" id="dnc" name="dnc" class="flat-red">
+						                  DNC
+						            </label>
+							          
+					                <label class="col-sm-4 checkbox-inline" for="customer_contact">
+						                  <input type="checkbox" id="customer_contact" name="customer_contact" class="flat-red">
+						                  Customer Contact
+					                </label>
+					                <label class="col-sm-4 checkbox-inline" for="not_interested">
+						                  <input type="checkbox" id="not_interested" name="not_interested" class="flat-red">
+						                  Not Interested
+					                </label>
+					            </div>
+						        <div class="row">
+					                <label class="col-sm-3 checkbox-inline" for="unworkable">
+						                  <input type="checkbox" id="unworkable" name="unworkable" class="flat-red">
+						                  Unworkable
+					                </label>
+					                <label class="col-sm-4 checkbox-inline" for="scheduled_callback">
+						                  <input type="checkbox" id="scheduled_callback" name="scheduled_callback" class="flat-red">
+						                  Scheduled Callback
+					                </label>
+					            </div>
+		                    </div>
+	                    </div>
                         
                     </div><!-- end of step -->
                 
@@ -771,11 +785,11 @@ error_reporting(E_ALL);*/
 
 		    //reloads page when modal closes
 				$('#add_campaign').on('hidden.bs.modal', function () {
-					window.location = window.location.href;
+					location.reload();
 				});
 
 				$('#add_disposition').on('hidden.bs.modal', function () {
-					window.location = window.location.href;
+					location.reload();
 				});
 
 				//$('#add_phonenumbers').on('hidden.bs.modal', function () {
@@ -964,35 +978,35 @@ error_reporting(E_ALL);*/
 
                 if(validate == 0){
 							var selectable = "Y";
-		            	if(!$('#add_selectable').is(":checked")){
+		            	if(!$('#selectable').is(":checked")){
 		            		selectable = "N";
 		            	}
 		            		var human_answered = "Y";
-		            	if(!$('#add_human_answered').is(":checked")){
+		            	if(!$('#human_answered').is(":checked")){
 		            		human_answered = "N";
 		            	}
 		            		var sale = "Y";
-		            	if(!$('#add_sale').is(":checked")){
+		            	if(!$('#sale').is(":checked")){
 		            		sale = "N";
 		            	}
 		            		var dnc = "Y";
-		            	if(!$('#add_dnc').is(":checked")){
+		            	if(!$('#dnc').is(":checked")){
 		            		dnc = "N";
 		            	}
 		            		var scheduled_callback = "Y";
-		            	if(!$('#add_scheduled_callback').is(":checked")){
+		            	if(!$('#scheduled_callback').is(":checked")){
 		            		scheduled_callback = "N";
 		            	}
 		            		var customer_contact = "Y";
-		            	if(!$('#add_customer_contact').is(":checked")){
+		            	if(!$('#customer_contact').is(":checked")){
 		            		customer_contact = "N";
 		            	}
 		            		var not_interested = "Y";
-		            	if(!$('#add_not_interested').is(":checked")){
+		            	if(!$('#not_interested').is(":checked")){
 		            		not_interested = "N";
 		            	}
 		            		var unworkable = "Y";
-		            	if(!$('#add_unworkable').is(":checked")){
+		            	if(!$('#unworkable').is(":checked")){
 		            		unworkable = "N";
 		            	}
                     $.ajax({
@@ -1000,8 +1014,8 @@ error_reporting(E_ALL);*/
                         type: 'POST',
                         data: {
 		                    	campaign : $('#campaign').val(),
-		                    	status : $('#add_status').val(),
-					    		status_name : $('#add_status_name').val(),
+		                    	status : $('#status').val(),
+					    		status_name : $('#status_name').val(),
 					   			selectable : selectable,
 					    		human_answered : human_answered,
 					    		sale : sale,
@@ -1014,13 +1028,12 @@ error_reporting(E_ALL);*/
                         success: function(data) {
                           // console.log(data);
                               if(data == 1){
-                                    $('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                                    swal("Success!", "Disposition Statuses Successfully Created!", "success")
                                     window.setTimeout(function(){location.reload()},3000)
                                     $('#submit_disposition').val("Loading...");
                               }
                               else{
-                                  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-                                  $("#disposition_result").html(data);
+                                  sweetAlert("Oops...", "Something went wrong!"+data, "error");
                                   $('#submit_disposition').val("Submit");
 								  $('#submit_disposition').prop("disabled", false);
                               }
@@ -1028,7 +1041,7 @@ error_reporting(E_ALL);*/
                     });
                 	
                 }else{
-                    $('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+                    sweetAlert("Oops...", "Something went wrong!", "error");
                     validate = 0;
                     $('#submit_disposition').val("Submit");
 					$('#submit_disposition').prop("disabled", false);
@@ -1067,133 +1080,121 @@ error_reporting(E_ALL);*/
              */
              // CAMPAIGN
              $(document).on('click','.delete-campaign',function() {
-                
                 var id = $(this).attr('data-id');
-                var name = $(this).attr('data-name');
-                var action = "Campaign";
-
-                $('.id-delete-label').attr("data-id", id);
-                $('.id-delete-label').attr("data-action", action);
-
-                $(".delete_extension").text(name);
-                $(".action_validation").text(action);
-
-                $('#delete_validation_modal').modal('show');
+	                swal({   
+	                	title: "Are you sure?",   
+	                	text: "This action cannot be undone.",   
+	                	type: "warning",   
+	                	showCancelButton: true,   
+	                	confirmButtonColor: "#DD6B55",   
+	                	confirmButtonText: "Yes, delete this campaign!",   
+	                	cancelButtonText: "No, cancel please!",   
+	                	closeOnConfirm: false,   
+	                	closeOnCancel: false 
+	                	}, 
+	                	function(isConfirm){   
+	                		if (isConfirm) { 
+	                			$.ajax({
+			                        url: "./php/DeleteCampaign.php",
+			                        type: 'POST',
+			                        data: { 
+			                            campaign_id:id,
+			                        },
+			                        success: function(data) {
+			                        console.log(data);
+			                            if(data == 1){
+			                                swal("Success!", "Campaign Successfully Deleted!", "success");
+			                                window.setTimeout(function(){location.reload()},1000)
+			                            }else{
+			                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
+			                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+			                            }
+			                        }
+			                    });
+							} else {     
+		                			swal("Cancelled", "No action has been done :)", "error");   
+		                	} 
+	                	}
+	                );
              });
              // DISPOSITION
              $(document).on('click','.delete_disposition',function() {
-                
                 var id = $(this).attr('data-id');
-                var name = $(this).attr('data-name');
-                var action = "DISPOSITION";
-
-                $('.id-delete-label').attr("data-id", id);
-                $('.id-delete-label').attr("data-action", action);
-
-                $(".delete_extension").text(name);
-                $(".action_validation").text(action);
-
-                $('#delete_validation_modal').modal('show');
+	                swal({   
+	                	title: "Are you sure?",   
+	                	text: "This action cannot be undone.",   
+	                	type: "warning",   
+	                	showCancelButton: true,   
+	                	confirmButtonColor: "#DD6B55",   
+	                	confirmButtonText: "Yes, delete this disposition!",   
+	                	cancelButtonText: "No, cancel please!",   
+	                	closeOnConfirm: false,   
+	                	closeOnCancel: false 
+	                	}, 
+	                	function(isConfirm){   
+	                		if (isConfirm) { 
+	                			$.ajax({
+			                        url: "./php/DeleteDisposition.php",
+			                        type: 'POST',
+			                        data: { 
+			                            disposition_id:id,
+			                        },
+			                        success: function(data) {
+			                        console.log(data);
+			                            if(data == 1){
+			                                swal("Success!", "Disposition Successfully Deleted!", "success");
+			                                window.setTimeout(function(){location.reload()},1000)
+			                            }else{
+			                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
+			                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+			                            }
+			                        }
+			                    });
+							} else {     
+		                			swal("Cancelled", "No action has been done :)", "error");   
+		                	} 
+	                	}
+	                );
              });
              // LEAD FILTER
              $(document).on('click','.delete_leadfilter',function() {
-                
                 var id = $(this).attr('data-id');
-                var name = $(this).attr('data-name');
-                var action = "LEAD FILTER";
-
-                $('.id-delete-label').attr("data-id", id);
-                $('.id-delete-label').attr("data-action", action);
-
-                $(".delete_extension").text(name);
-                $(".action_validation").text(action);
-
-                $('#delete_validation_modal').modal('show');
-             });
-
-
-             $(document).on('click','#delete_yes',function() {
-                
-                var id = $(this).attr('data-id');
-                var action = $(this).attr('data-action');
-
-                $('#id_span').html(id);
-
-                	if(action == "CAMPAIGN"){
-                		$.ajax({
-	                        url: "./php/DeleteCampaign.php",
-	                        type: 'POST',
-	                        data: { 
-	                            campaign_id:id,
-	                        },
-	                        success: function(data) {
-	                        console.log(data);
-	                            if(data == 1){
-	                                $('#result_span').text(data);
-	                                $('#delete_notification').show();
-	                                $('#delete_notification_modal').modal('show');
-	                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-	                                window.setTimeout(function(){location.reload()},1000)
-	                            }else{
-	                                $('#result_span').html(data);
-	                                $('#delete_notification').show();
-	                                $('#delete_notification_modal_fail').modal('show');
-	                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-	                            }
-	                        }
-	                    });
-                	}
-                	if(action == "DISPOSITION"){
-                		$.ajax({
-	                        url: "./php/DeleteDisposition.php",
-	                        type: 'POST',
-	                        data: { 
-	                            disposition_id:id,
-	                        },
-	                        success: function(data) {
-	                        console.log(data);
-	                            if(data == 1){
-	                                $('#result_span').text(data);
-	                                $('#delete_notification').show();
-	                                $('#delete_notification_modal').modal('show');
-	                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-	                                window.setTimeout(function(){location.reload()},1000)
-	                            }else{
-	                                $('#result_span').html(data);
-	                                $('#delete_notification').show();
-	                                $('#delete_notification_modal_fail').modal('show');
-	                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-	                            }
-	                        }
-	                    });
-                	}
-                	if(action == "LEAD FILTER"){
-                		$.ajax({
-	                        url: "./php/DeleteLeadFilter.php",
-	                        type: 'POST',
-	                        data: { 
-	                            leadfilter_id:id,
-	                        },
-	                        success: function(data) {
-	                        console.log(data);
-	                            if(data == 1){
-	                                $('#result_span').text(data);
-	                                $('#delete_notification').show();
-	                                $('#delete_notification_modal').modal('show');
-	                                //window.setTimeout(function(){$('#delete_notification_modal').modal('hide');location.reload();}, 2000);
-	                                window.setTimeout(function(){location.reload()},1000)
-	                            }else{
-	                                $('#result_span').html(data);
-	                                $('#delete_notification').show();
-	                                $('#delete_notification_modal_fail').modal('show');
-	                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-	                            }
-	                        }
-	                    });
-                	}
-                    
-             });
-			
+	                swal({   
+	                	title: "Are you sure?",   
+	                	text: "This action cannot be undone.",   
+	                	type: "warning",   
+	                	showCancelButton: true,   
+	                	confirmButtonColor: "#DD6B55",   
+	                	confirmButtonText: "Yes, delete this leadfilter!",   
+	                	cancelButtonText: "No, cancel please!",   
+	                	closeOnConfirm: false,   
+	                	closeOnCancel: false 
+	                	}, 
+	                	function(isConfirm){   
+	                		if (isConfirm) { 
+	                			$.ajax({
+			                        url: "./php/DeleteLeadFilter.php",
+			                        type: 'POST',
+			                        data: { 
+			                            leadfilter_id:id,
+			                        },
+			                        success: function(data) {
+			                        console.log(data);
+			                            if(data == 1){
+			                               	swal("Success!", "Lead Filter Successfully Deleted!", "success");
+			                                window.setTimeout(function(){location.reload()},1000)
+			                            }else{
+			                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
+			                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+			                            }
+			                        }
+			                    });
+							} else {     
+		                			swal("Cancelled", "No action has been done :)", "error");   
+		                	} 
+	                	}
+	                );
+            });
 		});
 	</script>
 	<!-- End of script -->

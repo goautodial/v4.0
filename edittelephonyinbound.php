@@ -1,20 +1,25 @@
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-*/
-require_once('./php/CRMDefaults.php');
-require_once('./php/UIHandler.php');
-//require_once('./php/DbHandler.php');
-require_once('./php/LanguageHandler.php');
-require('./php/Session.php');
-require_once('./php/goCRMAPISettings.php');
 
-// initialize structures
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
+	###################################################
+	### Name: edittelephonyinbound.php 				###
+	### Functions: Edit Inbound, IVR & DID  		###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
+	### Version: 4.0 								###
+	### Written by: Alexander Jim H. Abenoja		###
+	### License: AGPLv2								###
+	###################################################
+
+	require_once('./php/CRMDefaults.php');
+	require_once('./php/UIHandler.php');
+	//require_once('./php/DbHandler.php');
+	require_once('./php/LanguageHandler.php');
+	require('./php/Session.php');
+	require_once('./php/goCRMAPISettings.php');
+
+	// initialize structures
+	$ui = \creamy\UIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
 
 $groupid = NULL;
 if (isset($_POST["groupid"])) {
@@ -43,38 +48,13 @@ if (isset($_POST["did"])) {
         	?>
         </title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+       
+       <!-- Call for standardized css -->
+        <?php print $ui->standardizedThemeCSS();?>
+
         <?php print $ui->creamyThemeCSS(); ?>
         <!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-        	<!-- =============== BOOTSTRAP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
-				<!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -164,17 +144,17 @@ if (isset($_POST["did"])) {
 								 <!-- Settings panel tabs-->
 									 <li role="presentation" class="active">
 										<a href="#settings" data-toggle="tab">
-										<span class="fa fa-gear"></span> Basic Settings</a>
+										Basic Settings</a>
 									 </li>
 								<!-- Advanced settings tab -->
 									 <li role="presentation">
 										<a href="#advanced_settings" data-toggle="tab">
-										<span class="fa fa-gears"></span> Advanced Settings </a>
+										Advanced Settings </a>
 									 </li>
 								<!-- Agents tab -->
 									 <li role="presentation">
 										<a href="#agents" data-toggle="tab">
-										<span class="fa fa-users"></span> Agents </a>
+										Agents </a>
 									 </li>
 								</ul>		
 
@@ -508,7 +488,7 @@ if (isset($_POST["did"])) {
 				                    <fieldset class="footer-buttons">
 				                        <div class="box-footer">
 				                           <div class="col-sm-3 pull-right">
-													<a href="telephonyinbound.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+													<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 				                           	
 				                                	<button type="submit" class="btn btn-primary" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 												
@@ -580,7 +560,7 @@ if (isset($_POST["did"])) {
 								<div class="col-lg-12">
 									<!-- Custom Tabs -->
 									<div class="nav-tabs-custom">
-										<ul class="nav nav-tabs">
+										<ul class="nav nav-tabs nav-justified">
 											<li class="active"><a href="#tab_1" data-toggle="tab">Basic</a></li>
 											<li><a href="#tab_2" data-toggle="tab">Options</a></li>
 											<li><a href="#tab_3" data-toggle="tab">Advance Settings</a></li>
@@ -763,7 +743,7 @@ if (isset($_POST["did"])) {
 											<fieldset>
 						                        <div class="box-footer">
 						                           <div class="col-sm-3 pull-right">
-															<a href="telephonyinbound.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+															<a href="telephonyinbound.php" type="button"  id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 						                           	
 						                                	<button type="submit" class="btn btn-primary" id="modifyIVROkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 														
@@ -893,9 +873,9 @@ if (isset($_POST["did"])) {
 							<!-- Custom Tabs -->
 							<div role="tabpanel">
 							<!--<div class="nav-tabs-custom">-->
-								<ul role="tablist" class="nav nav-tabs">
-									<li class="active"><a href="#tab_1" data-toggle="tab"><em class="fa fa-gear fa-lg"></em> Basic Settings</a></li>
-									<li><a href="#tab_2" data-toggle="tab"><em class="fa fa-gears fa-lg"></em> Advanced Settings</a></li>
+								<ul role="tablist" class="nav nav-tabs nav-justified">
+									<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
+									<li><a href="#tab_2" data-toggle="tab"> Advanced Settings</a></li>
 								</ul>
 				               <!-- Tab panes-->
 				               <div class="tab-content">
@@ -1223,7 +1203,7 @@ if (isset($_POST["did"])) {
 				                    <fieldset class="footer-buttons">
 				                        <div class="box-footer">
 				                           <div class="col-sm-3 pull-right">
-													<a href="telephonyinbound.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+													<a href="telephonyinbound.php" type="button"  id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 				                           	
 				                                	<button type="submit" class="btn btn-primary" id="modifyDIDOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 												
@@ -1249,21 +1229,21 @@ if (isset($_POST["did"])) {
 					}
 					
 					?>
-			
-           
-			
         </div><!-- ./wrapper -->
-         <?php print $ui->creamyFooter(); ?>
+         
+         <?php print $ui->standardizedThemeJS();?>
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-
-	<!-- SLIMSCROLL-->
-    <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
-    <!-- bootstrap color picker -->
-	<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
+    	<!-- bootstrap color picker -->
+		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
+
+			// for cancelling
+			$(document).on('click', '#cancel', function(){
+				swal("Cancelled", "No action has been done :)", "error");
+			});
 
 			//Colorpicker
     		$(".colorpicker").colorpicker();
@@ -1354,9 +1334,10 @@ if (isset($_POST["did"])) {
 				
 			});
 
-				/** 
-				 * Modifies 
-			 	 */
+			/****** 
+			** MODIFY Functions 
+		 	******/
+
 				//an ingroup
 				$('#modifyInboundOkButton').click(function(){
 					$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
@@ -1371,24 +1352,19 @@ if (isset($_POST["did"])) {
                         success: function(data) {
                           //if message is sent
 							if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-							<?php 
-								$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-								print $ui->fadingInMessageJS($errorMsg, "modifyINGROUPresult"); 
-							?>
-							window.setTimeout(function(){location.replace("./telephonyinbound.php")},2000);
+								swal("Updated!", "Inbound has been successfully updated.", "success");
+								window.setTimeout(function(){location.replace("./telephonyinbound.php")},2000);
 							} else {
-							<?php 
-								$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data<br/>"), false, true);
-								print $ui->fadingInMessageJS($errorMsg, "modifyINGROUPresult");
-							?>
-							$('#update_button').html("<i class='fa fa-check'></i> Update");
-							$('#modifyInboundOkButton').prop("disabled", false);	
+								sweetAlert("Oops...","Something went wrong! " + data, "error");
+								$('#update_button').html("<i class='fa fa-check'></i> Update");
+								$('#modifyInboundOkButton').prop("disabled", false);	
 							}
 							//
                         }
                     });		
 					return false; //don't let the form refresh the page...		
 				});
+
 				//IVR
 				$("#modifyivr").validate({
                 	submitHandler: function() {
@@ -1400,22 +1376,17 @@ if (isset($_POST["did"])) {
 								function(data){
 									//if message is sent
 									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-										print $ui->fadingInMessageJS($errorMsg, "modifyIVRresult"); 
-									?>				
+										swal("Updated!", "IVR has been successfully updated.", "success");			
 									} else {
-									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data<br/>"), false, true);
-										print $ui->fadingInMessageJS($errorMsg, "modifyIVRresult");
-									?>
+										sweetAlert("Oops...","Something went wrong! " + data, "error");
 									}
 									//
 								});
 						return false; //don't let the form refresh the page...
 					}					
 				});
-				//a phone number / DID
+
+				// phone number / DID
 				$("#modifydid").validate({
                 	submitHandler: function() {
 						//submit the form
@@ -1429,20 +1400,14 @@ if (isset($_POST["did"])) {
 								function(data){
 									//if message is sent
 									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-										print $ui->fadingInMessageJS($errorMsg, "modifyDIDresult"); 
-									?>
-									$('#update_button').html("<i class='fa fa-check'></i> Update");
-									$('#modifyDIDOkButton').prop("disabled", false);
-									window.setTimeout(function(){location.replace("./telephonyinbound.php")},2000);
+										swal("Updated!", "DID has been successfully updated.", "success");
+										$('#update_button').html("<i class='fa fa-check'></i> Update");
+										$('#modifyDIDOkButton').prop("disabled", false);
+										window.setTimeout(function(){location.replace("./telephonyinbound.php")},2000);
 									} else {
-									<?php 
-										$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data<br/>"), false, true);
-										print $ui->fadingInMessageJS($errorMsg, "modifyDIDresult");
-									?>
-									$('#update_button').html("<i class='fa fa-check'></i> Update");
-									$('#modifyDIDOkButton').prop("disabled", false);	
+										sweetAlert("Oops...","Something went wrong! " + data, "error");
+										$('#update_button').html("<i class='fa fa-check'></i> Update");
+										$('#modifyDIDOkButton').prop("disabled", false);	
 									}
 									//
 								});
@@ -1468,5 +1433,6 @@ if (isset($_POST["did"])) {
 			});
 		</script>
 
+		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

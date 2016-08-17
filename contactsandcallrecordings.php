@@ -8,11 +8,7 @@
 	### Written by: Alexander Jim H. Abenoja		###
 	### License: AGPLv2								###
 	###################################################
-/*
-	ini_set('display_errors', 1);
-	ini_set('display_startup_errors', 1);
-	error_reporting(E_ALL);
-*/
+
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -25,7 +21,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Contacts & Call Recordings</title>
+        <title>Contacts & Call Recordings</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
    		<!-- Call for standardized css -->

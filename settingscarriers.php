@@ -1,5 +1,14 @@
-
 <?php	
+
+    ###########################################################
+    ### Name: telephonymusiconhold.php                      ###
+    ### Functions: Manage MOH                               ###
+    ### Copyright: GOAutoDial Ltd. (c) 2011-2016            ###
+    ### Version: 4.0                                        ###
+    ### Written by: Alexander Abenoja & Noel Umandap        ###
+    ### License: AGPLv2                                     ###
+    ###########################################################
+
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -13,18 +22,11 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Carriers</title>
+        <title>Carriers</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
-        <!-- Circle Buttons style -->
-        <link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />
+       
+        <?php print $ui->standardizedThemeCSS(); ?>
+
         <!-- Wizard Form style -->
         <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css" rel="stylesheet" type="text/css" />
@@ -33,44 +35,22 @@
 
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-	<!-- Bootstrap Player -->
-	<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
-        <?php print $ui->creamyThemeCSS(); ?>
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+        <?php print $ui->creamyThemeCSS(); ?>
 
         <!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-	<!-- Bootstrap Player -->
-	<script src="js/bootstrap-player.js" type="text/javascript"></script>
-
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-
-        <!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
-
+	
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
 			})
 		</script>
     </head>
+
     <?php print $ui->creamyBody(); ?>
+
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
@@ -128,7 +108,7 @@
 				
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="T_User"><b>Carrier Wizard » Add New Carrier</b></h4>
+					<h4 class="modal-title animate-header"><b>Carrier Wizard » Add New Carrier</b></h4>
 				</div>
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
@@ -451,32 +431,9 @@
 	  </div>
 	</div>
 	<!-- End of modal -->
-	
-	<!-- Modal -->
-	<div id="confirmation-delete-modal" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
-
-	    <!-- Modal content-->
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Confirmation Box</b></h4>
-	      </div>
-	      <div class="modal-body">
-	      	<p>Are you sure you want to delete Carrier ID: <span class="carrier-id-delete-label" data-id=""></span></p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" id="delete-carrier-btn" data-id="">Yes</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-	      </div>
-	    </div>
-	    <!-- End of modal content -->
-	  </div>
-	</div>
-	<!-- End of modal -->
 		
 		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+		<?php print $ui->standardizedThemeJS(); ?>
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
 
 		<script type="text/javascript">
@@ -573,24 +530,24 @@
 						if(validate_wizard == 0){
 							//alert("User Created!");
 							$.ajax({
-								url: "./php/CreateTelephonyUser.php",
+								//url: "./php/CreateTelephonyUser.php",
 								type: 'POST',
 								data: $("#create_form").serialize(),
 								success: function(data) {
 								  // console.log(data);
 									  if(data == 1){
-									  	  $('.output-message-success').show().focus().delay(2000);
+									  	  swal("Success!", "Carrier Successfully Added!", "success");
 										  window.setTimeout(function(){location.reload()},1000)
 										  $('#add_button').val("Loading...");
 									  }else{
 									  	  $('#add_button').val("Submit");
 	        							  $('#add_button').attr("disabled", false);
-										  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+										  sweetAlert("Oops...", "Something went wrong! "+data, "error");
 									  }
 								}
 							});
 						}else{
-							$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+							sweetAlert("Oops...", "Something went wrong! ", "error");
 							validate_wizard = 0;
 						}
 
@@ -612,34 +569,42 @@
 				 });
 
 				$('.delete-carrier').click(function(){
-					var carrier_id = $(this).attr('data-id');
-					$('.carrier-id-delete-label').text(carrier_id);
-					$('.carrier-id-delete-label').attr( "data-id", carrier_id);
-					$('#confirmation-delete-modal').modal('show');
-				});
-				
-				$('#delete-carrier-btn').click(function(){
-					var carrier_id = $('.carrier-id-delete-label').attr('data-id');
-					$.ajax({
-						url: "./php/DeleteCarrier.php",
-						type: 'POST',
-						data: { 
-						      carrier_id : carrier_id,
-						},
-						dataType: 'json',
-						success: function(data) {
-							if(data == 1){
-								var table = $('#carriers').DataTable({
-									"sAjaxSource": ""
+					var id = $(this).attr('data-id');
+                    swal({   
+                        title: "Are you sure?",   
+                        text: "This action cannot be undone.",   
+                        type: "warning",   
+                        showCancelButton: true,   
+                        confirmButtonColor: "#DD6B55",   
+                        confirmButtonText: "Yes, delete this carrier!",   
+                        cancelButtonText: "No, cancel please!",   
+                        closeOnConfirm: false,   
+                        closeOnCancel: false 
+                        }, 
+                        function(isConfirm){   
+                            if (isConfirm) { 
+                            	$.ajax({
+									url: "./php/DeleteCarrier.php",
+									type: 'POST',
+									data: { 
+									      carrier_id : id,
+									},
+									dataType: 'json',
+									success: function(data) {
+										if(data == 1){
+											swal("Success!", "Music On Hold Successfully Deleted!", "success");
+                                            window.setTimeout(function(){location.reload()},1000)
+										}else{
+											sweetAlert("Oops...", "Something went wrong! "+data, "error");
+										}
+									}
 								});
-								alert('Success');
-								$('#confirmation-delete-modal').modal('hide');
-								table.fnDraw();
-							}else{
-								alert('Error');
-							}
-						}
-					});
+								
+							 } else {     
+                                swal("Cancelled", "No action has been done :)", "error");   
+                            } 
+                        }
+                    );
 				});
 			});
 		</script>
