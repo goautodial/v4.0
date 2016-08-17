@@ -128,6 +128,8 @@ $_SESSION['avatar'] = $avatarURL;
 		<!-- =============== APP STYLES ===============-->
 		<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
+		<!-- Datetime picker --> 
+        <link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 		
 		<!-- DATA TABES SCRIPT -->
 		<!--<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>-->
@@ -144,6 +146,9 @@ $_SESSION['avatar'] = $avatarURL;
 		<!--<script src="js/plugins/fastclick/fastclick.min.js" type="text/javascript"></script>-->
 		<!-- MD5 HASH-->
 		<script src="js/jquery.md5.js" type="text/javascript"></script>
+        <!-- Date Picker -->
+        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
+        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
   		<!-- Theme style -->
   		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
