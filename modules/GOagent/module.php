@@ -578,7 +578,7 @@ EOF;
 				<input type="hidden" name="DispoSelection" id="DispoSelection" value="" />
 				<span class="pull-right">
 					<button class="btn btn-default btn-raised hidden-xs" id="btn-dispo-reset-lg">Clear Form</button> 
-					<button class="btn btn-default btn-raised hidden-sm-up" id="btn-dispo-reset-xs">Clear</button> 
+					<button class="btn btn-default btn-raised visible-xs" id="btn-dispo-reset-xs">Clear</button> 
 					<button class="btn btn-warning btn-raised" id="btn-dispo-submit">Submit</button>
 				</span>
 				<div class="pull-left">
@@ -663,16 +663,49 @@ EOF;
 				<h4 class="modal-title">$callbackDateSelection</h4>
 			</div>
 			<div class="modal-body">
+				<input type="hidden" id="callback-date" value="" />
 				<div class="row">
 					<div class="col-md-12">
-						<div class="well well-sm">
+						<div class="well well-sm bg-info-dark">
 							<p class="m0">
-								Selected Date and Time: <em id="date_selected"></em>
+								<span class="hidden-xs">Selected Date and Time:</span> <em id="date-selected"></em>
+								<i id="show-cb-calendar" class="fa fa-calendar pull-right" style="cursor: pointer;"></i>
 							</p>
 						</div>
 					</div>
+				</div>
+				<div id="cb-container" class="row" style="display: none;">
 					<div class="col-md-12">
-						<div id="cb-datepicker"></div>
+						<div id="cb-datepicker" class="well well-sm"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="mda-form-group label-floating">
+							<textarea id="callback-comments" name="callback-comments" rows="5" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea" style="resize:none; width: 100%;"></textarea>
+							<label for="callback-comments">Comments</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col-md-4">
+						<p class="pull-left">
+							My Callback Only
+						</p>
+						<div class="material-switch pull-right">
+							<input type="checkbox" name="CallBackOnlyMe" id="CallBackOnlyMe" value="0" />
+							<label for="CallBackOnlyMe" class="label-primary" style="width: 0px;"></label>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<button id="submitCBDate" type="button" class="btn btn-labeled btn-primary">
+							<span class="btn-label">
+								<i class="fa fa-check"></i>
+							</span>
+							$submit
+						</button>
 					</div>
 				</div>
 			</div>
