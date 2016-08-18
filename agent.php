@@ -190,24 +190,6 @@ $_SESSION['avatar'] = $avatarURL;
 			.required_div{
 				background: rgba(158,158,158,0.30);
 			}
-			/*
-			input[type=text] {
-			    border: none;
-			    border-bottom: .5px solid #656565;
-			}
-			input[type=number] {
-			    border: none;
-			    border-bottom: .5px solid #656565;
-			}
-			input[type=date] {
-			    border: none;
-			    border-bottom: .5px solid #656565;
-			}
-			.select{
-				border: none;
-    			border-bottom: .5px solid #656565;
-			}
-			*/
 			.textarea{
 				border: none;
 				border-bottom: .5px solid #656565;
@@ -222,17 +204,6 @@ $_SESSION['avatar'] = $avatarURL;
 				cursor: text;
 				background-color: white;
 			}
-			/*
-			label{
-				font-weight: normal;
-				display: inline-flex;
-				width:100%;
-				padding-right: 40px;
-			}
-			label > p {
-				padding-top:10px;
-				width:25%;
-			}*/
 			.edit-profile-button{
 				font-size:14px; 
 				font-weight:normal;
