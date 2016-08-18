@@ -1517,6 +1517,7 @@ function sendLogout (logMeOut) {
             goExtContext: ext_context,
             goAgentLogID: agent_log_id,
             responsetype: 'json',
+            goUseWebRTC: use_webrtc
         };
     
         $.ajax({
