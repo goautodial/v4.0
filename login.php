@@ -73,7 +73,8 @@
 			if ($result == NULL) { // login failed
 				$error = $lh->translationFor("invalid_login_password");
 			} else {
-				$_SESSION["userid"] = $result["id"]; 
+				$_SESSION["user"] = $username;
+				$_SESSION["userid"] = $result["id"];
 				$_SESSION["username"] = $result["name"]; 
 				$_SESSION["userrole"] = $result["role"];
 				$_SESSION["phone_login"] = $result["phone_login"];
