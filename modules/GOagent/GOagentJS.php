@@ -2521,7 +2521,7 @@ function CheckForIncoming () {
             $(".formMain input[name='security_phrase']").val(this_VDIC_data.security);
             var REGcommentsNL = new RegExp("!N","g");
             var thisComments = this_VDIC_data.comments;
-            if (thisComments.length > 0) {
+            if (typeof thisComments !== 'undefined') {
                 thisComments = thisComments.replace(REGcommentsNL, "\n");
             }
             $(".formMain input[name='comments']").val(thisComments).trigger('change');
@@ -3143,7 +3143,7 @@ function UpdateFieldsData() {
             if (fields_list.match(regUDcomments)) {
                 var REGcommentsNL = new RegExp("!N","g");
                 var UDfieldComments = UDfieldsData.comments;
-                if (UDfieldComments.length > 0) {
+                if (typeof UDfieldComments !== 'undefined') {
                     UDfieldComments = UDfieldComments.replace(REGcommentsNL, "\n");
                 }
                 $(".formMain input[name='comments']").val(UDfieldComments);
@@ -4658,7 +4658,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='email']").val(cust_email).trigger('change');
                     $(".formMain input[name='security_phrase']").val(MDnextResponse_array[25]);
                     var REGcommentsNL = new RegExp("!N","g");
-                    if (MDnextResponse_array[26].length > 0) {
+                    if (typeof MDnextResponse_array[26] !== 'undefined') {
                         MDnextResponse_array[26] = MDnextResponse_array[26].replace(REGcommentsNL, "\n");
                     }
                     $(".formMain input[name='comments']").val(MDnextResponse_array[26]).trigger('change');
