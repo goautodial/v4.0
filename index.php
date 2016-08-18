@@ -762,7 +762,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 							   <!-- END list group-->
 							   <!-- START panel footer-->
 							   <div class="panel-footer clearfix">
-								  	<a href="#" data-toggle="modal" data-target="#agent_monitoring" class="pull-right">
+								  	<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" class="pull-right">
 		                           		<medium>View more</medium> <em class="fa fa-arrow-right"></em>
 		                        	</a>
 							   </div>
@@ -789,28 +789,16 @@ $callsperhour = $ui->API_goGetCallsPerHour();
         </div><!-- ./wrapper -->
 
 <!--================= MODALS =====================-->
-	<!-- agents monitoring -->
+	<!-- Realtime agents monitoring -->
+
 	<div class="modal fade" id="agent_monitoring" tabindex="-1" aria-labelledby="agent_monitoring">
-        <div class="modal-dialog" role="document">
+        <div class="modal-lg modal-dialog" role="document">
             <div class="modal-content">
 			<!-- Header -->
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
 					
 				<!--===== FILTER LIST =======-->
-					<!--<div class="agent_monitor_filter pull-right">
-						<small>Filter: </small> -->
-					<!-- == INGROUP == -->
-						<!--<span class="tenant_filter_agentmonitoring">
-						    <select id="tenant_dropdown_agent_monitoring">
-						   			<option selected> --- All Tenants --- </option> -->
-						   		<?php
-							//	 	for($i=0;$i < count($ingroup->group_id);$i++){
-							//	 		echo "<option>".$ingroup->group_name[$i]."</option>";
-							//	 	}
-								?>
-						    <!-- </select>
-						</span> -->
 					<!-- == TENANT milo == -->
 						<!-- <span class="campaign_filter_agentmonitoring"> -->
 							<!--
@@ -847,6 +835,16 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 						}
 						echo $goconf_exten.'----'.$goconf_server; */
 					?>
+                                        <div class="form-group">
+                                        <label class="control-label col-lg-5">Agent:</label>                                            
+                                                <span id="refresh_agents_monitoring">                                            
+                                                </span>
+                                        </div>
+					<div class="form-group">
+                                        <label class="control-label col-lg-5">Campaign ID:</label>                                            
+                                                <span id="refresh_agents_monitoring">                                            
+                                                </span>
+                                        </div>					
 
 				
 				</div>
@@ -1186,6 +1184,7 @@ function clear_agent_form(){
                                     var JSONString = data;
                                     var JSONObject = JSON.parse(JSONString);
                                     //var JSONObject = $.parseJSON(JSONString);
+                                    console.log(JSONObject.data.user);
                                     console.log(JSONObject);      // Dump all data of the Object in the console
                                         $('#modal-userid').append(JSONObject.data.user);
                                         $('#modal-user').append(JSONObject.data.full_name);
@@ -1232,9 +1231,27 @@ function clear_agent_form(){
                                 }
                          });                        
                      });
-                 
-	// ---- loads datatable functions
-				$('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
+                    
+                    $('#realtime_agent_monitoring').on('shown.bs.modal', function(){ 
+                                    // initialize realtime monitoring table
+                                    $('#monitoring_table').dataTable();
+                                    $.ajax({
+                                        url: "./php/APIs/API_GetAgentsMonitoring.php",
+                                        cache: false,
+                                        success: function(data){
+                                        var JSONStringrealtime = data;
+                                        var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+                                        console.log(JSONStringrealtime);
+                                        console.log(JSONObjectrealtime);      // Dump all data of the Object in the console
+                                            $('#modal-realtime-user').append(JSONObjectrealtime.data.full_name);
+                                            $('#modal-realtime-active').append(JSONObjectrealtime.data.active);
+                                            $('#modal-realtime-campaignname').append(JSONObjectrealtime.data.campaign_name);
+                                            
+                                        } 
+                                });                                
+                    });        
+	// ---- loads datatable functions	
+                        $('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
 
 	// ---- Fixed Action Button
 			$(".bottom-menu").on('mouseenter mouseleave', function () {
@@ -1280,6 +1297,9 @@ function clear_agent_form(){
         // ---- agent and campaign resources
                         load_campaign_name();
                         load_online_agents();
+                        
+        // ---- realtime agent monitoring
+                        load_realtime_agents_monitoring();
                 
 		});
 
@@ -1318,7 +1338,10 @@ function clear_agent_form(){
 		
 		// ... agent and campaign resources ...
 		setInterval(load_campaign_name,5000);
-		setInterval(load_online_agents,5000);				
+		setInterval(load_online_agents,5000);
+		
+		// ... realtime agents monitoring ...
+		setInterval(load_realtime_agents_monitoring,5000);
 		
 	</script>
 	

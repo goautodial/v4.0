@@ -34,3 +34,13 @@ function load_agent_info(){
      } 
    });
 }
+
+function load_realtime_agents_monitoring(){
+   $.ajax({
+     url: "./php/APIs/API_GetAgentsMonitoring.php",
+     cache: false,
+     success: function(data){
+        $("#refresh_agents_monitoring").html(data);
+     } 
+   });
+}

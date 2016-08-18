@@ -1,7 +1,7 @@
 <?php
 
 ####################################################
-#### Name: goGetHopperLeadsWarning.php          ####
+#### Name: goGetOnlineAgents.php                ####
 #### Type: API for dashboard php encode         ####
 #### Version: 0.9                               ####
 #### Copyright: GOAutoDial Inc. (c) 2011-2016   ####

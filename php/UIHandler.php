@@ -1612,8 +1612,41 @@ error_reporting(E_ERROR | E_PARSE);
 			 </div>
 			</div>
 			<!-- End of View Agent -->			
+			<!-- Realtime Agent Monitoring -->
 			
-			
+                        <div class="modal fade" id="realtime_agents_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-lg modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4>Realtime Agent Monitoring</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row table-responsive">
+                                    <div class="col-sm-12">
+                                        <table class="table table-striped table-hover" id="monitoring_table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Agent Name</th>                                                    
+                                                    <th>Group</th>
+                                                    <th>Status</th>
+                                                    <th>Dialed Number</th>
+                                                    <th>MM:SS</th>
+                                                    <th>Campaign</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th><span id="refresh_realtime_agents_monitoring"></span></th> 
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>			
+                        
+			<!-- End of Realtime Agent Monitoring -->
 			<!-- End of modal -->
                 ';
 		return $footer;
@@ -3097,6 +3130,7 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		$data = curl_exec($ch);
 		curl_close($ch);
+		
 		$output = json_decode($data);
 		 
 		return $output;
@@ -3136,7 +3170,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       // print suffix
 	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	      
-			return $result."</table>";
+			return $result;
        }else{
 			// error getting contacts
 			//return $output->result;
@@ -3251,7 +3285,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result."</table>"; 
+			return $result; 
 			
 		} else {		
 		# An error occured		
@@ -3318,7 +3352,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 			}
 			
-			return $result."</table>"; 
+			return $result; 
 			
 		} else {		
 		# An error occured		
@@ -3455,7 +3489,7 @@ error_reporting(E_ERROR | E_PARSE);
 					*/
 			}
 			
-			return $result."</table>"; 
+			return $result; 
 			
 		} else {		
 			return $output->result;
@@ -3515,7 +3549,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result."</table>"; 
+			return $result; 
 			
 		} else {		
 		# An error occured		
@@ -3583,7 +3617,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result."</table>"; 
+			return $result; 
 			
 		}else{
 			// if no entry in voicemails
@@ -3773,7 +3807,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 				</tr>";
 	    }
-		return $result."</table>";
+		return $result;
 	    } else {
 		# An error occured
 		return $output->result;
@@ -3865,7 +3899,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 				</tr>";
 	    }
-		return $result."</table>";
+		return $result;
 	}
 	
 	private function getUserActionMenuForMusicOnHold($id, $name) {
@@ -3934,7 +3968,7 @@ error_reporting(E_ERROR | E_PARSE);
 			<td>".$action."</td>
 		    </tr>";
 	    }
-		return $result."</table>";
+		return $result;
 	    } else {
 		# An error occured
 		return $output->result;
@@ -4016,7 +4050,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 			    </tr>";
 		    }
-			return $result."</table>";
+			return $result;
 
 	    } else {
 		# An error occured
@@ -4088,7 +4122,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </tr>";
             }
 
-		    return $result."</table>";
+		    return $result;
     
 	    } else {
 	       # An error occured
@@ -4169,7 +4203,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </tr>";
             }
 
-		    return $result."</table>";
+		    return $result;
     
 	    } else {
 	       # An error occured
@@ -4910,9 +4944,38 @@ error_reporting(E_ERROR | E_PARSE);
 			 $data = curl_exec($ch);
 			 curl_close($ch);
 			 
-			 //$output = json_decode($data);
+			 $output = json_decode($data);
 			 
 			 return $output;
+		}
+		
+		/*
+		 * Displaying Online Agents Statuses
+		 * [[API: Function]] - goGetOnlineAgents
+		 * This application is used to get the list online agents
+		 * for realtime monitoring
+		*/
+
+		public function API_goGetAgentsMonitoring() {
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
+			$postfields["goAction"] = "goGetAgentsMonitoring"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			 
+			 $output = json_decode($data);
+			 
+			 return $output;
+			 
 		}		
 		
 		public function API_goGetIncomingQueue() {
@@ -5273,7 +5336,7 @@ error_reporting(E_ERROR | E_PARSE);
 				}
 			}
 			
-			return $result."</table>";
+			return $result;
        }else{
        		//display nothing
        }
