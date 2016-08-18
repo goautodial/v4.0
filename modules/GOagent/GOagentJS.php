@@ -23,6 +23,7 @@ ini_set('display_errors', 'on');
 error_reporting(E_ALL);
 
 $result = get_user_info($_SESSION['user']);
+var_dump($result);
 $default_settings = $result->default_settings;
 $agent = $result->user_info;
 $phone = $result->phone_info;
