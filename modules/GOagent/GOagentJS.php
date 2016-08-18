@@ -6407,7 +6407,8 @@ function get_user_info($user) {
         'goPass' => goPass,
         'responsetype' => 'json',
         'goUserID' => $user,
-        'goCampaign' => $camp
+        'goCampaign' => $camp,
+        'bcrypt' => 0
     );
     
     //url-ify the data for the POST
