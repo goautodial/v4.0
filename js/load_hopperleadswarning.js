@@ -39,8 +39,24 @@ function load_realtime_agents_monitoring(){
    $.ajax({
      url: "./php/APIs/API_GetAgentsMonitoring.php",
      cache: false,
-     success: function(data){
-        $("#refresh_agents_monitoring").html(data);
+     dataType: 'json',
+     success: function(values){
+        //$("#refresh_realtime_agents_monitoring").html(values);
+            var JSONStringrealtime = values;
+            var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+            //console.log(JSONStringrealtime);
+            //console.log(JSONObjectrealtime); 
+            var table = $('#monitoring_table').dataTable({ 
+                            data:JSONObjectrealtime,
+                            "destroy":true
+                         });
+            table.destroy();
+            
+                         $('#monitoring_table').dataTable({ 
+                            data:JSONObjectrealtime,
+                            "destroy":true
+                         });        
+                         //console.log(values);
      } 
    });
 }

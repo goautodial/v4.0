@@ -144,6 +144,7 @@ class GOagent extends Module {
 		$pauseAgent = $this->lh()->translationFor("pause_agent");
 		$pauseAgentXS = $this->lh()->translationFor("pause");
 		$transferConference = $this->lh()->translationFor("transfer_conference_functions");
+		$callbackDateSelection = $this->lh()->translationFor("callback_datepicker");
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -577,7 +578,7 @@ EOF;
 				<input type="hidden" name="DispoSelection" id="DispoSelection" value="" />
 				<span class="pull-right">
 					<button class="btn btn-default btn-raised hidden-xs" id="btn-dispo-reset-lg">Clear Form</button> 
-					<button class="btn btn-default btn-raised hidden-sm-up" id="btn-dispo-reset-xs">Clear</button> 
+					<button class="btn btn-default btn-raised visible-xs" id="btn-dispo-reset-xs">Clear</button> 
 					<button class="btn btn-warning btn-raised" id="btn-dispo-submit">Submit</button>
 				</span>
 				<div class="pull-left">
@@ -604,25 +605,25 @@ EOF;
 						<div class="mda-form-group label-floating">
 							<select id="transfer-selection" name="transfer-selection" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select">
 								<option></option>
-								<option value="AGENT">Transfer to Agent</option>
+								<option value="CLOSER">Transfer to Agent / Closer Group</option>
 								<option value="REGULAR">Regular 3-Way</option>
 							</select>
 							<label for="transfer-selection">Transfer Selection</label>
 						</div>
 					</div>
 				</div>
-				<div id="transfer-agent" class="hidden">
+				<div id="transfer-closer" class="hidden">
 					<div class="row">
 						<div class="col-md-9">
 							<div class="mda-form-group label-floating">
-								<select id="transfer-local-closer" name="transfer-local-closer" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
+								<select id="transfer-local-closer" name="transfer-local-closer" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select">
 									<option></option>
 								</select>
-								<label for="transfer-local-closer">Transfer Groups</label>
+								<label for="transfer-local-closer">Closer Groups</label>
 							</div>
 						</div>
-						<div class="col-md-3">
-							<button class="btn btn-primary btn-lg"> LOCAL CLOSER </button>
+						<div class="col-md-3" style="padding: 10px;">
+							<button class="btn btn-primary"> LOCAL CLOSER </button>
 						</div>
 					</div>
 				</div>
@@ -647,6 +648,64 @@ EOF;
 							</label>
 						</div>
 						<div class="col-md-3"><button class="btn btn-default btn-sm">HANGUP XFER LINE</button></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="callback-datepicker" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">$callbackDateSelection</h4>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="callback-date" value="" />
+				<div class="row">
+					<div class="col-md-12">
+						<div class="well well-sm bg-info-dark">
+							<p class="m0">
+								<span class="hidden-xs">Selected Date and Time:</span> <em id="date-selected"></em>
+								<i id="show-cb-calendar" class="fa fa-calendar pull-right" style="cursor: pointer;"></i>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div id="cb-container" class="row" style="display: none;">
+					<div class="col-md-12">
+						<div id="cb-datepicker" class="well well-sm"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="mda-form-group label-floating">
+							<textarea id="callback-comments" name="callback-comments" rows="5" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea" style="resize:none; width: 100%;"></textarea>
+							<label for="callback-comments">Comments</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col-md-4">
+						<p class="pull-left">
+							My Callback Only
+						</p>
+						<div class="material-switch pull-right">
+							<input type="checkbox" name="CallBackOnlyMe" id="CallBackOnlyMe" value="0" />
+							<label for="CallBackOnlyMe" class="label-primary" style="width: 0px;"></label>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<button id="submitCBDate" type="button" class="btn btn-labeled btn-primary">
+							<span class="btn-label">
+								<i class="fa fa-check"></i>
+							</span>
+							$submit
+						</button>
 					</div>
 				</div>
 			</div>

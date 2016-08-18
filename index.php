@@ -104,8 +104,9 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <script src="js/app.min.js" type="text/javascript"></script>
 		
 		<!-- Data Tables -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+        <!-- <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script> -->
+        <script src="js/plugins/datatables/FROMjquery.dataTables.js" type="text/javascript"></script>
 
          <!-- theme_dashboard folder -->
 					<!-- FONT AWESOME-->
@@ -171,7 +172,7 @@ $calls_incoming_queue = $ui->API_goGetIncomingQueue();
 //if(is_null($ui->API_getRealtimeAgent()) {
 	//$realtimeAgents = "";
 //} else {
-	$realtimeAgents = $ui->API_getRealtimeAgent();
+//	$realtimeAgents = $ui->API_getRealtimeAgent();
 //}
 //var_dump($dropped_calls_today);
 //die("dd");
@@ -241,7 +242,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	<!--====== STATUS BOXES =======-->
 			<div class="row">
 				<div class="col-lg-3 col-sm-6 animated fadeInUpShort">
-					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="" style="text-decoration : none">
+					<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" data-id="" style="text-decoration : none">
 						<div class="panel widget bg-purple" style="height: 95px;">
 							<div class="row status-box">
 								<div class="col-xs-4 text-center bg-purple-dark pv-md animated fadeInUpShort">
@@ -256,7 +257,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 					</a>
 				</div>
 				<div class="col-lg-3 col-md-6 animated fadeInUpShort">
-					<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="" style="text-decoration : none">
+					<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" data-id="" style="text-decoration : none">
 						<div class="panel widget bg-purple" style="height: 95px;">
 							<div class="row status-box">
 								<div class="col-xs-4 text-center bg-purple-dark pv-md animated fadeInUpShort">
@@ -271,7 +272,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 					</a>
 				</div>
                <div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
-                  	<a href="#" data-toggle="modal" data-target="#agent_monitoring" data-id="" style="text-decoration : none">
+                  	<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" data-id="" style="text-decoration : none">
 		                <div class="panel widget bg-green" style="height: 95px;">
 		                	<div class="row status-box">
 		                        <div class="col-xs-4 text-center bg-gray-dark pv-md animated fadeInUpShort">
@@ -789,8 +790,40 @@ $callsperhour = $ui->API_goGetCallsPerHour();
         </div><!-- ./wrapper -->
 
 <!--================= MODALS =====================-->
-	<!-- Realtime agents monitoring -->
-
+			<!-- Realtime Agent Monitoring -->
+			
+                        <div class="modal fade" id="realtime_agents_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-lg modal-dialog" style="width: 75%">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4>Realtime Agent Monitoring</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row table-responsive" style="min-height: 35%">
+                                    <div class="col-sm-12">
+                                        <table class="table table-striped table-hover" id="monitoring_table" style="width: 100%">
+                                            <thead>
+                                                
+                                                    <th style="width: 30%">Agent Name</th>                                                    
+                                                    <th style="width: 15%">Group</th>
+                                                    <th>Status</th>
+                                                    <th style="width: 15%">Dialed Number</th>
+                                                    <th>MM:SS</th>
+                                                    <th style="width: 25%">Campaign</th>
+                                                
+                                            </thead>
+                                            <tbody>                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>	
+                        </div>
+                        
+			<!-- End of Realtime Agent Monitoring -->
 	<div class="modal fade" id="agent_monitoring" tabindex="-1" aria-labelledby="agent_monitoring">
         <div class="modal-lg modal-dialog" role="document">
             <div class="modal-content">
@@ -1232,26 +1265,9 @@ function clear_agent_form(){
                          });                        
                      });
                     
-                    $('#realtime_agent_monitoring').on('shown.bs.modal', function(){ 
-                                    // initialize realtime monitoring table
-                                    $('#monitoring_table').dataTable();
-                                    $.ajax({
-                                        url: "./php/APIs/API_GetAgentsMonitoring.php",
-                                        cache: false,
-                                        success: function(data){
-                                        var JSONStringrealtime = data;
-                                        var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
-                                        console.log(JSONStringrealtime);
-                                        console.log(JSONObjectrealtime);      // Dump all data of the Object in the console
-                                            $('#modal-realtime-user').append(JSONObjectrealtime.data.full_name);
-                                            $('#modal-realtime-active').append(JSONObjectrealtime.data.active);
-                                            $('#modal-realtime-campaignname').append(JSONObjectrealtime.data.campaign_name);
-                                            
-                                        } 
-                                });                                
-                    });        
-	// ---- loads datatable functions	
-                        $('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
+        
+	// ---- loads datatable functions
+                        //$('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
 
 	// ---- Fixed Action Button
 			$(".bottom-menu").on('mouseenter mouseleave', function () {

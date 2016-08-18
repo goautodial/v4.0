@@ -1512,27 +1512,27 @@ error_reporting(E_ERROR | E_PARSE);
 					    <div class="form-horizontal">
                                                 <div class="form-group">
 					    		<label class="control-label col-lg-5">Campaign ID:</label>
-					    		<span id="modal-campaignid" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaignid"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Campaign Name:</label>
-					    		<span id="modal-campaignname" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaignname"></span></b>
 					    	</div>
 					    	<div class="output-message-no-result hide form-group">
 					    		<label class="control-label col-lg-5">Campaign Description:</label>
-					    		<span id="modal-campaigndesc" class="col-lg-7"></span>
-					    	</div>					    	
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaigndesc"></span></b>
+                                                </div>					    	
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Call Recordings:</label>
-					    		<span id="modal-callrecordings" class="col-lg-7"></span>                                                        
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-callrecordings"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Campaign Caller ID:</label>
-					    		<span id="modal-campaigncid" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaigncid"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Local Call Time:</label>
-					    		<span id="modal-localcalltime" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-localcalltime"></span></b>
                                                 </div>                                             
                                             </div>
                                 </div>
@@ -1567,39 +1567,39 @@ error_reporting(E_ERROR | E_PARSE);
 					    <div class="form-horizontal">
                                                 <div class="form-group">
 					    		<label class="control-label col-lg-5">Agent ID:</label>
-					    		<span id="modal-userid" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-userid"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Agent Name:</label>
-					    		<span id="modal-user" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-user"></span></b>
 					    	</div>
 					    	<div class="output-message-no-result hide form-group">
 					    		<label class="control-label col-lg-5">Email:</label>
-					    		<span id="modal-email" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-email"></span></b>
 					    	</div>					    	
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">User Group:</label>
-					    		<span id="modal-usergroup" class="col-lg-7"></span>                                                        
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-usergroup"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">User Level:</label>
-					    		<span id="modal-userlevel" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-userlevel"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Active:</label>
-					    		<span id="modal-active" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-active"></span></b>
                                                 </div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Phone Login:</label>
-					    		<span id="modal-phonelogin" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-phonelogin"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Phone Password:</label>
-					    		<span id="modal-phonepass" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-phonepass"></span></b>
                                                 </div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Voicemail:</label>
-					    		<span id="modal-voicemail" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-voicemail"></span></b>
 					    	</div>                                                
                                             </div>
                                 </div>
@@ -1612,41 +1612,6 @@ error_reporting(E_ERROR | E_PARSE);
 			 </div>
 			</div>
 			<!-- End of View Agent -->			
-			<!-- Realtime Agent Monitoring -->
-			
-                        <div class="modal fade" id="realtime_agents_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-lg modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4>Realtime Agent Monitoring</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row table-responsive">
-                                    <div class="col-sm-12">
-                                        <table class="table table-striped table-hover" id="monitoring_table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Agent Name</th>                                                    
-                                                    <th>Group</th>
-                                                    <th>Status</th>
-                                                    <th>Dialed Number</th>
-                                                    <th>MM:SS</th>
-                                                    <th>Campaign</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th><span id="refresh_realtime_agents_monitoring"></span></th> 
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>			
-                        
-			<!-- End of Realtime Agent Monitoring -->
 			<!-- End of modal -->
                 ';
 		return $footer;
@@ -5574,6 +5539,11 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    return $output;
 	}
+	
+        public function getSessionAvatar() {
+                $sessionAvatar = $_SESSION['avatar'];
+                return $sessionAvatar;
+        }	
 
 	/**
 	 * Returns the standardized theme css for all pages.

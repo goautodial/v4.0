@@ -41,7 +41,8 @@
 	$postfields['check_for_duplicates'] 		= $_POST['check_for_duplicates'];
 	$postfields['dial_method'] 					= $_POST['dial_method'];
 	$postfields['auto_dial_level'] 				= $_POST['auto_dial_level'];
-	$postfields['carrier_to_use'] 				= $_POST['carrier_to_use'];
+	$postfields['dial_prefix']					= (!isset($_POST['dial_prefix']))? 9:$_POST['dial_prefix'];
+	$postfields['custom_dial_prefix']			= ($postfields['dial_prefix'] == "CUSTOM")? $_POST['custom_prefix']:0;
 	$postfields['description'] 					= $_POST['description'];
 	$postfields['status'] 						= $_POST['status'];
 	$postfields['call_recordings'] 				= $_POST['call_recordings'];

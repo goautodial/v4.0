@@ -53,6 +53,12 @@ if (isset($_POST["did"])) {
         <?php print $ui->standardizedThemeCSS();?>
 
         <?php print $ui->creamyThemeCSS(); ?>
+        
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+		<!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
         <!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
 
@@ -355,6 +361,16 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 									    </fieldset>
+									    <fieldset class="footer-buttons">
+					                        <div class="box-footer">
+					                           <div class="col-sm-3 pull-right">
+														<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+					                           	
+					                                	<button type="submit" class="btn btn-primary" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+													
+					                           </div>
+					                        </div>
+					                    </fieldset>
 									</div>
 
 									<!-- ADVANCED SETTINGS -->
@@ -447,55 +463,111 @@ if (isset($_POST["did"])) {
 												</div>
 							       			</div>
 							       		</fieldset>
+							       		<fieldset class="footer-buttons">
+					                        <div class="box-footer">
+					                           <div class="col-sm-3 pull-right">
+														<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+					                           	
+					                                	<button type="submit" class="btn btn-primary" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+													
+					                           </div>
+					                        </div>
+					                    </fieldset>
 									</div>
 
-									<!--==== Agents ====-->
+									<!--==== Agent Rank Table ====-->
 									<div id="agents" class="tab-pane fade in">
-										<table class="table table-striped table-bordered table-hover" id="table_ivr">
+										<?php
+											$agents_rank = $ui->API_goGetAllAgentRank($user->getUserId(), $groupid);
+										?>
+										<table class="table table-striped table-bordered table-hover" id="agent_rank_table">
 										   <thead>
 											  <tr>
-												 <th>Menu ID</th>
-												 <th>Descriptions</th>
-												 <th>Prompt</th>
-												 <th class='hide-on-medium hide-on-low'>Timeout</th>
-												 <th>Action</th>
+												 <th>User</th>
+												 <th>User Group</th>
+												 <th>Selected</th>
+												 <th>Rank</th>
+												 <th>Grade</th>
+												 <th>Calls Today</th>
 											  </tr>
 										   </thead>
 										   <tbody>
 											   	<?php
-											   		for($i=0;$i < count($ivr->menu_id);$i++){
+											   		$count = count($agents_rank->user);
+											   		//var_dump($agents_rank->dropdown_rankdefvalues[0]);
 
-													$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i]);
 
+											   		for($a=0; $a < $count; $a++){
+											   			
+											   			$checkbox_fields = $agents_rank->checkbox_fields[$a];
+											   			$ischecked = $agents_rank->checkbox_ischecked[$a];
+											   			
+											   			$rank_fields = $agents_rank->rank_fields[$a];
+											   			$rank_value = $agents_rank->values_rank[$a];
+
+											   			$grade_fields = $agents_rank->grade_fields[$a];
+											   			$grade_value = $agents_rank->values_grade[$a];
+											   			
 											   	?>	
 													<tr>
-														<td><?php echo $ivr->menu_id[$i];?></td>
-														<td><a class=''><?php echo $ivr->menu_name[$i];?></a></td>
-														<td><?php echo $ivr->menu_prompt[$i];?></td>
-														<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_timeout[$i];?></td>
-														<td><?php echo $action_IVR;?></td>
+														<td><?php echo $agents_rank->user[$a].' - '.$agents_rank->full_name[$a];?></td>
+														<td><?php echo $agents_rank->user_group[$a];?></td>
+														<td>
+															<center>
+																<label class="c-checkbox" for="<?php echo $checkbox_fields;?>">
+																	<input type="checkbox" id="<?php echo $checkbox_fields;?>" name="checkbox" <?php echo $ischecked;?> />
+																	<span class="fa fa-check"></span>
+																</label>
+															</center>
+														</td>
+														<td>
+															<select class="form-control" name="<?php echo $rank_fields;?>">
+																<?php
+																$b = 9;
+																	while($b >= -9){
+																?>
+																	<option value="<?php echo $rank_value;?>" <?php if($rank_value == $b){ echo "selected";}?>> <?php echo $b;?></option>
+																<?php
+																	$b--;
+																	}
+																?>
+															</select>
+														</td>
+														<td>
+															<select class="form-control" name="<?php echo $grade_fields;?>">
+																<?php
+																$c = 10;
+																	while($c >= 0){
+																?>
+																	<option value="<?php echo $grade_value;?>" <?php if($grade_value == $c){ echo "selected";}?>> <?php echo $c;?></option>
+																<?php
+																	$c--;
+																	}
+																?>
+															</select>
+														</td>
+														<td><?php echo $agents_rank->call_today[$a];?></td>
 													</tr>
 												<?php
 													}
 												?>
 										   </tbody>
 										</table>
+										<fieldset class="footer-buttons">
+					                        <div class="box-footer">
+					                           <div class="col-sm-3 pull-right">
+														<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+					                           	
+					                                	<button type="submit" class="btn btn-primary" id="submit_agent_rank" href=""> <span id="submit_button"><i class="fa fa-check"></i> Submit</span></button>
+													
+					                           </div>
+					                        </div>
+					                    </fieldset>
 									</div>
 
 									<!-- FOOTER BUTTONS -->
 								   	<div id="modifyINGROUPresult"></div>
 								   	
-				                    <fieldset class="footer-buttons">
-				                        <div class="box-footer">
-				                           <div class="col-sm-3 pull-right">
-													<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-				                           	
-				                                	<button type="submit" class="btn btn-primary" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-												
-				                           </div>
-				                        </div>
-				                    </fieldset>
-
 
 								</div><!-- END tab content-->
 							</div><!-- END of tabpanel -->
@@ -1240,15 +1312,16 @@ if (isset($_POST["did"])) {
 		<script type="text/javascript">
 			$(document).ready(function() {
 
+			// init datatables
+				$('#agent_rank_table').dataTable();
+
 			// for cancelling
-			$(document).on('click', '#cancel', function(){
-				swal("Cancelled", "No action has been done :)", "error");
-			});
+				$(document).on('click', '#cancel', function(){
+					swal("Cancelled", "No action has been done :)", "error");
+				});
 
 			//Colorpicker
-    		$(".colorpicker").colorpicker();
-			
-			//  alert( this.value ); // or $(this).val()
+    			$(".colorpicker").colorpicker();
 
 			$('#route_unavail').on('change', function() {
 				//  alert( this.value ); // or $(this).val()

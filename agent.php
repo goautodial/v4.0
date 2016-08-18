@@ -128,6 +128,8 @@ $_SESSION['avatar'] = $avatarURL;
 		<!-- =============== APP STYLES ===============-->
 		<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
+		<!-- Datetime picker --> 
+        <link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 		
 		<!-- DATA TABES SCRIPT -->
 		<!--<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>-->
@@ -144,6 +146,9 @@ $_SESSION['avatar'] = $avatarURL;
 		<!--<script src="js/plugins/fastclick/fastclick.min.js" type="text/javascript"></script>-->
 		<!-- MD5 HASH-->
 		<script src="js/jquery.md5.js" type="text/javascript"></script>
+        <!-- Date Picker -->
+        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
+        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
   		<!-- Theme style -->
   		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
@@ -185,24 +190,6 @@ $_SESSION['avatar'] = $avatarURL;
 			.required_div{
 				background: rgba(158,158,158,0.30);
 			}
-			/*
-			input[type=text] {
-			    border: none;
-			    border-bottom: .5px solid #656565;
-			}
-			input[type=number] {
-			    border: none;
-			    border-bottom: .5px solid #656565;
-			}
-			input[type=date] {
-			    border: none;
-			    border-bottom: .5px solid #656565;
-			}
-			.select{
-				border: none;
-    			border-bottom: .5px solid #656565;
-			}
-			*/
 			.textarea{
 				border: none;
 				border-bottom: .5px solid #656565;
@@ -217,17 +204,6 @@ $_SESSION['avatar'] = $avatarURL;
 				cursor: text;
 				background-color: white;
 			}
-			/*
-			label{
-				font-weight: normal;
-				display: inline-flex;
-				width:100%;
-				padding-right: 40px;
-			}
-			label > p {
-				padding-top:10px;
-				width:25%;
-			}*/
 			.edit-profile-button{
 				font-size:14px; 
 				font-weight:normal;
