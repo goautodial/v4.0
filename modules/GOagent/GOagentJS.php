@@ -1516,7 +1516,7 @@ function sendLogout (logMeOut) {
             goSessionName: session_name,
             goExtContext: ext_context,
             goAgentLogID: agent_log_id,
-            responsetype: 'json'
+            responsetype: 'json',
         };
     
         $.ajax({
