@@ -6433,7 +6433,6 @@ function get_user_info($user) {
     //close connection
     curl_close($ch);
     
-    var_dump($result);
     return $result->data;
 }
 ?>
