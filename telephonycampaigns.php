@@ -478,7 +478,7 @@ error_reporting(E_ALL);*/
 		    				<div class="col-lg-8">
 		    					<select class="form-control" id="dial-method" name="dial_method">
 		    						<option value="MANUAL">MANUAL</option>
-		    						<option value="RATIO">AUTODIAL</option>
+		    						<option value="AUTO_DIAL">AUTODIAL</option>
 		    						<option value="ADAPT_TAPERED">PREDICTIVE</option>
 		    					</select>
 		    				</div>
@@ -488,10 +488,10 @@ error_reporting(E_ALL);*/
 		    				<div class="col-lg-8">
 		    					<select class="form-control" id="auto-dial-level" name="auto_dial_level">
 		    						<option value="0">OFF</option>
-		    						<option value="1: 1 RATIO">CONSERVATIVE</option>
-		    						<option VALUE="1: 2 RATIO">MODERATE</option>
-		    						<option VALUE="3: 1 RATIO">AGGRESIVE</option>
-		    						<option value="CUSTOM DIAL LEVEL RATIO">CUSTOM</option>
+		    						<option value="1.0">CONSERVATIVE</option>
+		    						<option VALUE="2.0">MODERATE</option>
+		    						<option VALUE="4.0">AGGRESIVE</option>
+		    						<!-- <option value="CUSTOM">CUSTOM</option> -->
 		    					</select>
 		    				</div>
 		    			</div>
@@ -531,9 +531,9 @@ error_reporting(E_ALL);*/
 		    				<label class="control-label col-lg-4">Call Recordings:</label>
 		    				<div class="col-lg-8">
 		    					<select class="form-control" id="call-recordings" name="call_recordings">
-		    						<option VALUE="ON">ON</option>
-		    						<option value="OFF">OFF</option>
-		    						<option value="ON-DEMAND">ON-DEMAND</option>
+		    						<option VALUE="NEVER">ON</option>
+		    						<option value="ALLFORCE">OFF</option>
+		    						<option value="ONDEMAND">ON-DEMAND</option>
 		    					</select>
 		    				</div>
 		    			</div>
@@ -547,8 +547,8 @@ error_reporting(E_ALL);*/
 		    				<label class="control-label col-lg-4">Answering machine detection:</label>
 		    				<div class="col-lg-8">
 		    					<select class="form-control" id="answering-machine-detection" name="answering_machine_detection">
-		    						<option value="ON">ON</option>
-		    						<option value="OFF">OFF</option>
+		    						<option value="8369">ON</option>
+		    						<option value="8368">OFF</option>
 		    					</select>
 		    				</div>
 		    			</div>
@@ -787,7 +787,27 @@ error_reporting(E_ALL);*/
 
 		}
 
+		function dialMethod(value){
+			if(value == "AUTO_DIAL"){
+				$('#auto-dial-level').prop('disabled', false);
+				$('#auto-dial-level option[value=SLOW]').prop('selected', true);
+			}else if(value == "ADAPT_TAPERED"){
+				$('#auto-dial-level').prop('disabled', true);
+				$('#auto-dial-level option[value=OFF]').prop('selected', true);
+			}else{
+				$('#auto-dial-level').prop('disabled', true);
+				$('#auto-dial-level option[value=OFF]').prop('selected', true);
+			}
+		}
+
 		$(document).ready(function(){
+			var dial_method = $('#dial-method').val();
+			dialMethod(dial_method);
+
+			$('#dial-method').change(function(){
+				dialMethod($(this).val());
+			});
+
 			$('#dial_prefix').change(function(){
 				var dial_prefix = $(this).val();
 
