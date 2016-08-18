@@ -307,8 +307,8 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 														<label class="col-sm-2 control-label">Answer Machine Detection:</label>
 														<div class="col-sm-10 mb">
 															<select id="campaign_vdad_exten" name="campaign_vdad_exten" class="form-control">
-																<option value="8368" <?php if ($campaign->data->campaign_vdad_exten == "8368") echo "selected"; ?>>OFF</option>
-																<option value="8369" <?php if ($campaign->data->campaign_vdad_exten == "8369") echo "selected"; ?>>ON</option>
+																<option value="<?php if($campaign->campaign_type == "SURVEY"){ echo '8366';}else{ echo '8368';} ?>" <?php if ($campaign->data->campaign_vdad_exten == "8368" || $campaign->data->campaign_vdad_exten == "8366") echo "selected"; ?>>OFF</option>
+																<option value="<?php if($campaign->campaign_type == "SURVEY"){ echo '8373';}else{ echo '8369';}  ?>" <?php if ($campaign->data->campaign_vdad_exten == "8369" || $campaign->data->campaign_vdad_exten == "8373") echo "selected"; ?>>ON</option>
 															</select>
 														</div>
 													</div>
