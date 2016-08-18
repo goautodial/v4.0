@@ -2513,7 +2513,7 @@ function CheckForIncoming () {
             $(".formMain input[name='postal_code']").val(this_VDIC_data.postal_code).trigger('change');
             $(".formMain input[name='country_code']").val(this_VDIC_data.country_code).trigger('change');
             $(".formMain input[name='gender']").val(this_VDIC_data.gender).trigger('change');
-            var dateOfBirth = this_VDIC_data.date_of_birth.toString();
+            var dateOfBirth = this_VDIC_data.date_of_birth;
             $(".formMain input[name='date_of_birth']").val(dateOfBirth);
             $(".formMain input[name='alt_phone']").val(this_VDIC_data.alt_phone).trigger('change');
             $(".formMain input[name='email']").val(this_VDIC_data.email).trigger('change');
@@ -3123,7 +3123,7 @@ function UpdateFieldsData() {
             }
             var regUDdate_of_birth = new RegExp("date_of_birth,","ig");
             if (fields_list.match(regUDdate_of_birth)) {
-                var dateOfBirth = UDfieldsData.date_of_birth.toString();
+                var dateOfBirth = UDfieldsData.date_of_birth;
                 $(".formMain input[name='date_of_birth']").val(dateOfBirth);
             }
             var regUDalt_phone = new RegExp("alt_phone,","ig");
@@ -4645,7 +4645,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='postal_code']").val(MDnextResponse_array[19]).trigger('change');
                     $(".formMain input[name='country_code']").val(MDnextResponse_array[20]).trigger('change');
                     $(".formMain input[name='gender']").val(MDnextResponse_array[21]).trigger('change');
-                    var dateOfBirth = MDnextResponse_array[22].toString();
+                    var dateOfBirth = MDnextResponse_array[22];
                     $(".formMain input[name='date_of_birth']").val(dateOfBirth);
                     $(".formMain input[name='alt_phone']").val(MDnextResponse_array[23]).trigger('change');
                     cust_email                              = MDnextResponse_array[24];
