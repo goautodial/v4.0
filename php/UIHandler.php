@@ -1512,27 +1512,27 @@ error_reporting(E_ERROR | E_PARSE);
 					    <div class="form-horizontal">
                                                 <div class="form-group">
 					    		<label class="control-label col-lg-5">Campaign ID:</label>
-					    		<span id="modal-campaignid" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaignid"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Campaign Name:</label>
-					    		<span id="modal-campaignname" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaignname"></span></b>
 					    	</div>
 					    	<div class="output-message-no-result hide form-group">
 					    		<label class="control-label col-lg-5">Campaign Description:</label>
-					    		<span id="modal-campaigndesc" class="col-lg-7"></span>
-					    	</div>					    	
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaigndesc"></span></b>
+                                                </div>					    	
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Call Recordings:</label>
-					    		<span id="modal-callrecordings" class="col-lg-7"></span>                                                        
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-callrecordings"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Campaign Caller ID:</label>
-					    		<span id="modal-campaigncid" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaigncid"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Local Call Time:</label>
-					    		<span id="modal-localcalltime" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-localcalltime"></span></b>
                                                 </div>                                             
                                             </div>
                                 </div>
@@ -1567,39 +1567,39 @@ error_reporting(E_ERROR | E_PARSE);
 					    <div class="form-horizontal">
                                                 <div class="form-group">
 					    		<label class="control-label col-lg-5">Agent ID:</label>
-					    		<span id="modal-userid" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-userid"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Agent Name:</label>
-					    		<span id="modal-user" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-user"></span></b>
 					    	</div>
 					    	<div class="output-message-no-result hide form-group">
 					    		<label class="control-label col-lg-5">Email:</label>
-					    		<span id="modal-email" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-email"></span></b>
 					    	</div>					    	
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">User Group:</label>
-					    		<span id="modal-usergroup" class="col-lg-7"></span>                                                        
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-usergroup"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">User Level:</label>
-					    		<span id="modal-userlevel" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-userlevel"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Active:</label>
-					    		<span id="modal-active" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-active"></span></b>
                                                 </div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Phone Login:</label>
-					    		<span id="modal-phonelogin" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-phonelogin"></span></b>
 					    	</div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Phone Password:</label>
-					    		<span id="modal-phonepass" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-phonepass"></span></b>
                                                 </div>
 					    	<div class="form-group">
 					    		<label class="control-label col-lg-5">Voicemail:</label>
-					    		<span id="modal-voicemail" class="col-lg-7"></span>
+					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-voicemail"></span></b>
 					    	</div>                                                
                                             </div>
                                 </div>
@@ -1612,8 +1612,6 @@ error_reporting(E_ERROR | E_PARSE);
 			 </div>
 			</div>
 			<!-- End of View Agent -->			
-			
-			
 			<!-- End of modal -->
                 ';
 		return $footer;
@@ -3097,6 +3095,7 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		$data = curl_exec($ch);
 		curl_close($ch);
+		
 		$output = json_decode($data);
 		 
 		return $output;
@@ -3136,7 +3135,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       // print suffix
 	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	      
-			return $result."</table>";
+			return $result;
        }else{
 			// error getting contacts
 			//return $output->result;
@@ -3251,7 +3250,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result."</table>"; 
+			return $result; 
 			
 		} else {		
 		# An error occured		
@@ -3318,7 +3317,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 			}
 			
-			return $result."</table>"; 
+			return $result; 
 			
 		} else {		
 		# An error occured		
@@ -3397,31 +3396,6 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 		
 	}
-
-	public function API_goGetAllAgentRank($user_id, $group_id) {
-		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "goGetAllAgentRank"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["user_id"] = $user_id;
-		$postfields["group_id"] = $group_id;
-		//$postfields["goVarLimit"] = 10;
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);		
-		curl_setopt($ch, CURLOPT_POST, 1);		
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);		
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);		
-		$data = curl_exec($ch);
-		curl_close($ch);		
-		$output = json_decode($data);		 
-		
-		return $output;
-		
-	}
 	
 	/*
 	 *
@@ -3480,7 +3454,7 @@ error_reporting(E_ERROR | E_PARSE);
 					*/
 			}
 			
-			return $result."</table>"; 
+			return $result; 
 			
 		} else {		
 			return $output->result;
@@ -3540,7 +3514,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result."</table>"; 
+			return $result; 
 			
 		} else {		
 		# An error occured		
@@ -3608,7 +3582,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result."</table>"; 
+			return $result; 
 			
 		}else{
 			// if no entry in voicemails
@@ -3798,7 +3772,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 				</tr>";
 	    }
-		return $result."</table>";
+		return $result;
 	    } else {
 		# An error occured
 		return $output->result;
@@ -3890,7 +3864,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 				</tr>";
 	    }
-		return $result."</table>";
+		return $result;
 	}
 	
 	private function getUserActionMenuForMusicOnHold($id, $name) {
@@ -3959,7 +3933,7 @@ error_reporting(E_ERROR | E_PARSE);
 			<td>".$action."</td>
 		    </tr>";
 	    }
-		return $result."</table>";
+		return $result;
 	    } else {
 		# An error occured
 		return $output->result;
@@ -4041,7 +4015,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 			    </tr>";
 		    }
-			return $result."</table>";
+			return $result;
 
 	    } else {
 		# An error occured
@@ -4113,7 +4087,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </tr>";
             }
 
-		    return $result."</table>";
+		    return $result;
     
 	    } else {
 	       # An error occured
@@ -4194,7 +4168,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </tr>";
             }
 
-		    return $result."</table>";
+		    return $result;
     
 	    } else {
 	       # An error occured
@@ -4935,9 +4909,38 @@ error_reporting(E_ERROR | E_PARSE);
 			 $data = curl_exec($ch);
 			 curl_close($ch);
 			 
-			 //$output = json_decode($data);
+			 $output = json_decode($data);
 			 
 			 return $output;
+		}
+		
+		/*
+		 * Displaying Online Agents Statuses
+		 * [[API: Function]] - goGetOnlineAgents
+		 * This application is used to get the list online agents
+		 * for realtime monitoring
+		*/
+
+		public function API_goGetAgentsMonitoring() {
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
+			$postfields["goAction"] = "goGetAgentsMonitoring"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
+			
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			 
+			 $output = json_decode($data);
+			 
+			 return $output;
+			 
 		}		
 		
 		public function API_goGetIncomingQueue() {
@@ -5298,7 +5301,7 @@ error_reporting(E_ERROR | E_PARSE);
 				}
 			}
 			
-			return $result."</table>";
+			return $result;
        }else{
        		//display nothing
        }
@@ -5536,6 +5539,11 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    return $output;
 	}
+	
+        public function getSessionAvatar() {
+                $sessionAvatar = $_SESSION['avatar'];
+                return $sessionAvatar;
+        }	
 
 	/**
 	 * Returns the standardized theme css for all pages.
