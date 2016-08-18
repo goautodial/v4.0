@@ -6427,11 +6427,13 @@ function get_user_info($user) {
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     
     //execute post
-    $result = json_decode(curl_exec($ch));
+    $data = curl_exec($ch);
+    $result = json_decode($data);
     
     //close connection
     curl_close($ch);
     
+    var_dump($result);
     return $result->data;
 }
 ?>
