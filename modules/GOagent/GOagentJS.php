@@ -2520,7 +2520,10 @@ function CheckForIncoming () {
             $(".formMain input[name='email']").val(this_VDIC_data.email).trigger('change');
             $(".formMain input[name='security_phrase']").val(this_VDIC_data.security);
             var REGcommentsNL = new RegExp("!N","g");
-            var thisComments = this_VDIC_data.comments.replace(REGcommentsNL, "\n");
+            var thisComments = this_VDIC_data.comments;
+            if (thisComments.length > 0) {
+                thisComments = thisComments.replace(REGcommentsNL, "\n");
+            }
             $(".formMain input[name='comments']").val(thisComments).trigger('change');
             $(".formMain input[name='called_count']").val(this_VDIC_data.called_count);
             CBentry_time                                = this_VDIC_data.CBentry_time;
@@ -3140,7 +3143,9 @@ function UpdateFieldsData() {
             if (fields_list.match(regUDcomments)) {
                 var REGcommentsNL = new RegExp("!N","g");
                 var UDfieldComments = UDfieldsData.comments;
-                UDfieldComments = UDfieldComments.replace(REGcommentsNL, "\n");
+                if (UDfieldComments.length > 0) {
+                    UDfieldComments = UDfieldComments.replace(REGcommentsNL, "\n");
+                }
                 $(".formMain input[name='comments']").val(UDfieldComments);
             }
             var regUDrank = new RegExp("rank,","ig");
@@ -4653,7 +4658,9 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='email']").val(cust_email).trigger('change');
                     $(".formMain input[name='security_phrase']").val(MDnextResponse_array[25]);
                     var REGcommentsNL = new RegExp("!N","g");
-                    MDnextResponse_array[26] = MDnextResponse_array[26].replace(REGcommentsNL, "\n");
+                    if (MDnextResponse_array[26].length > 0) {
+                        MDnextResponse_array[26] = MDnextResponse_array[26].replace(REGcommentsNL, "\n");
+                    }
                     $(".formMain input[name='comments']").val(MDnextResponse_array[26]).trigger('change');
                     called_count                            = MDnextResponse_array[27];
                     $(".formMain input[name='called_count']").val(called_count);
