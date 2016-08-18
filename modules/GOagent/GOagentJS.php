@@ -19,7 +19,7 @@ $NOW_TIME = date("Y-m-d H:i:s");
 $tsNOW_TIME = date("YmdHis");
 $StarTtimE = date("U");
 
-$result = get_user_info($_SESSION['userid']);
+$result = get_user_info($_SESSION['user']);
 $default_settings = $result->default_settings;
 $agent = $result->user_info;
 $phone = $result->phone_info;
@@ -690,9 +690,29 @@ $(document).ready(function() {
             }
         });
         
+        var d = new Date();
+        var currDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() + 30);
         $("#cb-datepicker").datetimepicker({
             inline: true,
-            useCurrent: false
+            sideBySide: true,
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar'
+            },
+            minDate: currDate
+        });
+        
+        var selectedDate = moment(currDate).format('YYYY-MM-DD HH:mm:00');
+        $("#date-selected").html(moment(currDate).format('dddd, MMMM Do YYYY, h:mm a'));
+        $("#callback-date").val(selectedDate);
+        $("#cb-datepicker").on("dp.change", function (e) {
+            selectedDate = moment(e.date).format('YYYY-MM-DD HH:mm:00');
+            $("#date-selected").html(moment(e.date).format('dddd, MMMM Do YYYY, h:mm a'));
+            $("#callback-date").val(selectedDate);
+        });
+        
+        $("#show-cb-calendar").click(function() {
+            $("#cb-container").slideToggle('slow');
         });
     });
 
@@ -1127,6 +1147,10 @@ $(document).ready(function() {
                                     cValue = (cValue == 'Y') ? 1 : 0;
                                 }
                                 
+                                if (cKey == 'scheduled_callbacks') {
+                                    cKey = 'camp_scheduled_callbacks';
+                                }
+                                
                                 var rec_patt = /^(campaign_rec_filename|default_group_alias)$/g;
                                 if (rec_patt.test(cKey)) {
                                     $.globalEval("LIVE_"+cKey+" = '"+cValue+"';");
@@ -1409,6 +1433,10 @@ $(document).ready(function() {
         if (origHash !== hash) {
             $(".preloader").fadeOut('slow');
         }
+    });
+    
+    $("#submitCBDate").click(function() {
+        CallBackDateSubmit();
     });
 });
 
@@ -3767,8 +3795,14 @@ function DispoSelectSubmit() {
         }
     
         var regCBstatus = new RegExp(' ' + DispoChoice + ' ',"ig");
+        console.log((VARCBstatusesLIST.match(regCBstatus)), (DispoChoice.length > 0), scheduled_callbacks, (DispoChoice != 'CBHOLD'));
         if ((VARCBstatusesLIST.match(regCBstatus)) && (DispoChoice.length > 0) && (scheduled_callbacks > 0) && (DispoChoice != 'CBHOLD')) {
             console.info("Open Callback Selection Box");
+            $("#select-disposition").modal('hide');
+            $("#callback-datepicker").modal({
+                backdrop: 'static',
+                show: true
+            });
         } else {
             var postData = {
                 goServerIP: server_ip,
@@ -5550,6 +5584,30 @@ function LoadScriptContents() {
     });
 }
 
+// ################################################################################
+// Submitting the callback date and time to the system
+function CallBackDateSubmit() {
+    CallBackLeadStatus = $("#DispoSelection").val();
+    CallBackDateTime = $("#callback-date").val();
+    CallBackComments = $("#callback-comments").val();
+
+    if ($("#CallBackOnlyMe").prop('checked')) {
+        CallBackRecipient = 'USERONLY';
+    } else {
+        CallBackRecipient = 'ANYONE';
+    }
+    
+    $("#CallBackOnlyMe").prop('checked', false);
+    if (my_callback_option == 'CHECKED')
+        {$("#CallBackOnlyMe").prop('checked', true);}
+    $("#callback-date").val('');
+    $("#callback-comments").val('');
+    
+    $("#DispoSelection").val('CBHOLD');
+    $("#callback-datepicker").modal('hide');
+    DispoSelectSubmit();
+}
+
 
 // ################################################################################
 // Finish the wrapup timer early
@@ -6336,7 +6394,7 @@ String.prototype.toUpperFirst = function() {
     }
 }
 
-function get_user_info($user_id) {
+function get_user_info($user) {
     //set variables
     $camp = (isset($_SESSION['campaign_id'])) ? $_SESSION['campaign_id'] : null;
     $url = gourl.'/goAgent/goAPI.php';
@@ -6345,7 +6403,7 @@ function get_user_info($user_id) {
         'goUser' => goUser,
         'goPass' => goPass,
         'responsetype' => responsetype,
-        'goUserID' => $user_id,
+        'goUserID' => $user,
         'goCampaign' => $camp
     );
     
