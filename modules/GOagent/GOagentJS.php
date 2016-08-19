@@ -19,7 +19,10 @@ $NOW_TIME = date("Y-m-d H:i:s");
 $tsNOW_TIME = date("YmdHis");
 $StarTtimE = date("U");
 
-$result = get_user_info($_SESSION['userid']);
+//ini_set('display_errors', 'on');
+//error_reporting(E_ALL);
+
+$result = get_user_info($_SESSION['user']);
 $default_settings = $result->default_settings;
 $agent = $result->user_info;
 $phone = $result->phone_info;
@@ -690,9 +693,29 @@ $(document).ready(function() {
             }
         });
         
+        var d = new Date();
+        var currDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() + 30);
         $("#cb-datepicker").datetimepicker({
             inline: true,
-            useCurrent: false
+            sideBySide: true,
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar'
+            },
+            minDate: currDate
+        });
+        
+        var selectedDate = moment(currDate).format('YYYY-MM-DD HH:mm:00');
+        $("#date-selected").html(moment(currDate).format('dddd, MMMM Do YYYY, h:mm a'));
+        $("#callback-date").val(selectedDate);
+        $("#cb-datepicker").on("dp.change", function (e) {
+            selectedDate = moment(e.date).format('YYYY-MM-DD HH:mm:00');
+            $("#date-selected").html(moment(e.date).format('dddd, MMMM Do YYYY, h:mm a'));
+            $("#callback-date").val(selectedDate);
+        });
+        
+        $("#show-cb-calendar").click(function() {
+            $("#cb-container").slideToggle('slow');
         });
     });
 
@@ -1127,6 +1150,10 @@ $(document).ready(function() {
                                     cValue = (cValue == 'Y') ? 1 : 0;
                                 }
                                 
+                                if (cKey == 'scheduled_callbacks') {
+                                    cKey = 'camp_scheduled_callbacks';
+                                }
+                                
                                 var rec_patt = /^(campaign_rec_filename|default_group_alias)$/g;
                                 if (rec_patt.test(cKey)) {
                                     $.globalEval("LIVE_"+cKey+" = '"+cValue+"';");
@@ -1410,6 +1437,10 @@ $(document).ready(function() {
             $(".preloader").fadeOut('slow');
         }
     });
+    
+    $("#submitCBDate").click(function() {
+        CallBackDateSubmit();
+    });
 });
 
 function btnLogMeIn () {
@@ -1485,7 +1516,8 @@ function sendLogout (logMeOut) {
             goSessionName: session_name,
             goExtContext: ext_context,
             goAgentLogID: agent_log_id,
-            responsetype: 'json'
+            responsetype: 'json',
+            goUseWebRTC: use_webrtc
         };
     
         $.ajax({
@@ -2482,13 +2514,16 @@ function CheckForIncoming () {
             $(".formMain input[name='postal_code']").val(this_VDIC_data.postal_code).trigger('change');
             $(".formMain input[name='country_code']").val(this_VDIC_data.country_code).trigger('change');
             $(".formMain input[name='gender']").val(this_VDIC_data.gender).trigger('change');
-            var dateOfBirth = this_VDIC_data.date_of_birth.toString('yyyy-MM-dd');
+            var dateOfBirth = this_VDIC_data.date_of_birth;
             $(".formMain input[name='date_of_birth']").val(dateOfBirth);
             $(".formMain input[name='alt_phone']").val(this_VDIC_data.alt_phone).trigger('change');
             $(".formMain input[name='email']").val(this_VDIC_data.email).trigger('change');
             $(".formMain input[name='security_phrase']").val(this_VDIC_data.security);
             var REGcommentsNL = new RegExp("!N","g");
-            var thisComments = this_VDIC_data.comments.replace(REGcommentsNL, "\n");
+            var thisComments = this_VDIC_data.comments;
+            if (typeof thisComments !== 'undefined') {
+                thisComments = thisComments.replace(REGcommentsNL, "\n");
+            }
             $(".formMain input[name='comments']").val(thisComments).trigger('change');
             $(".formMain input[name='called_count']").val(this_VDIC_data.called_count);
             CBentry_time                                = this_VDIC_data.CBentry_time;
@@ -3092,7 +3127,7 @@ function UpdateFieldsData() {
             }
             var regUDdate_of_birth = new RegExp("date_of_birth,","ig");
             if (fields_list.match(regUDdate_of_birth)) {
-                var dateOfBirth = UDfieldsData.date_of_birth.toString('yyyy-MM-dd');
+                var dateOfBirth = UDfieldsData.date_of_birth;
                 $(".formMain input[name='date_of_birth']").val(dateOfBirth);
             }
             var regUDalt_phone = new RegExp("alt_phone,","ig");
@@ -3108,7 +3143,9 @@ function UpdateFieldsData() {
             if (fields_list.match(regUDcomments)) {
                 var REGcommentsNL = new RegExp("!N","g");
                 var UDfieldComments = UDfieldsData.comments;
-                UDfieldComments = UDfieldComments.replace(REGcommentsNL, "\n");
+                if (typeof UDfieldComments !== 'undefined') {
+                    UDfieldComments = UDfieldComments.replace(REGcommentsNL, "\n");
+                }
                 $(".formMain input[name='comments']").val(UDfieldComments);
             }
             var regUDrank = new RegExp("rank,","ig");
@@ -3767,8 +3804,14 @@ function DispoSelectSubmit() {
         }
     
         var regCBstatus = new RegExp(' ' + DispoChoice + ' ',"ig");
+        console.log((VARCBstatusesLIST.match(regCBstatus)), (DispoChoice.length > 0), scheduled_callbacks, (DispoChoice != 'CBHOLD'));
         if ((VARCBstatusesLIST.match(regCBstatus)) && (DispoChoice.length > 0) && (scheduled_callbacks > 0) && (DispoChoice != 'CBHOLD')) {
             console.info("Open Callback Selection Box");
+            $("#select-disposition").modal('hide');
+            $("#callback-datepicker").modal({
+                backdrop: 'static',
+                show: true
+            });
         } else {
             var postData = {
                 goServerIP: server_ip,
@@ -4608,14 +4651,16 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='postal_code']").val(MDnextResponse_array[19]).trigger('change');
                     $(".formMain input[name='country_code']").val(MDnextResponse_array[20]).trigger('change');
                     $(".formMain input[name='gender']").val(MDnextResponse_array[21]).trigger('change');
-                    var dateOfBirth = MDnextResponse_array[22].toString('yyyy-MM-dd');
+                    var dateOfBirth = MDnextResponse_array[22];
                     $(".formMain input[name='date_of_birth']").val(dateOfBirth);
                     $(".formMain input[name='alt_phone']").val(MDnextResponse_array[23]).trigger('change');
                     cust_email                              = MDnextResponse_array[24];
                     $(".formMain input[name='email']").val(cust_email).trigger('change');
                     $(".formMain input[name='security_phrase']").val(MDnextResponse_array[25]);
                     var REGcommentsNL = new RegExp("!N","g");
-                    MDnextResponse_array[26] = MDnextResponse_array[26].replace(REGcommentsNL, "\n");
+                    if (typeof MDnextResponse_array[26] !== 'undefined') {
+                        MDnextResponse_array[26] = MDnextResponse_array[26].replace(REGcommentsNL, "\n");
+                    }
                     $(".formMain input[name='comments']").val(MDnextResponse_array[26]).trigger('change');
                     called_count                            = MDnextResponse_array[27];
                     $(".formMain input[name='called_count']").val(called_count);
@@ -5550,6 +5595,30 @@ function LoadScriptContents() {
     });
 }
 
+// ################################################################################
+// Submitting the callback date and time to the system
+function CallBackDateSubmit() {
+    CallBackLeadStatus = $("#DispoSelection").val();
+    CallBackDateTime = $("#callback-date").val();
+    CallBackComments = $("#callback-comments").val();
+
+    if ($("#CallBackOnlyMe").prop('checked')) {
+        CallBackRecipient = 'USERONLY';
+    } else {
+        CallBackRecipient = 'ANYONE';
+    }
+    
+    $("#CallBackOnlyMe").prop('checked', false);
+    if (my_callback_option == 'CHECKED')
+        {$("#CallBackOnlyMe").prop('checked', true);}
+    $("#callback-date").val('');
+    $("#callback-comments").val('');
+    
+    $("#DispoSelection").val('CBHOLD');
+    $("#callback-datepicker").modal('hide');
+    DispoSelectSubmit();
+}
+
 
 // ################################################################################
 // Finish the wrapup timer early
@@ -6336,7 +6405,7 @@ String.prototype.toUpperFirst = function() {
     }
 }
 
-function get_user_info($user_id) {
+function get_user_info($user) {
     //set variables
     $camp = (isset($_SESSION['campaign_id'])) ? $_SESSION['campaign_id'] : null;
     $url = gourl.'/goAgent/goAPI.php';
@@ -6344,12 +6413,14 @@ function get_user_info($user_id) {
         'goAction' => 'goGetLoginInfo',
         'goUser' => goUser,
         'goPass' => goPass,
-        'responsetype' => responsetype,
-        'goUserID' => $user_id,
-        'goCampaign' => $camp
+        'responsetype' => 'json',
+        'goUserID' => $user,
+        'goCampaign' => $camp,
+        'bcrypt' => 0
     );
     
     //url-ify the data for the POST
+    $fields_string = "";
     foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
     rtrim($fields_string, '&');
     
@@ -6365,7 +6436,8 @@ function get_user_info($user_id) {
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     
     //execute post
-    $result = json_decode(curl_exec($ch));
+    $data = curl_exec($ch);
+    $result = json_decode($data);
     
     //close connection
     curl_close($ch);
