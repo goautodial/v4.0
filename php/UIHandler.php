@@ -3776,32 +3776,38 @@ error_reporting(E_ERROR | E_PARSE);
 	    $output = $this->API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter);
 
 	    if ($output->result=="success") {
-	    # Result was OK!
-	    // $columns = array("Name", "Status", "Start Call Date", "End Call Date", "Actions");
-	    $columns = array("Date", "Customer", "Phone Number", "Agent", "Duration", "Actions");
-		    $result = $this->generateTableHeaderWithItems($columns, "recordings", "table-bordered table-striped", true, false); 
 
-	    for($i=0;$i<count($output->list_id);$i++){
-			$action = $this->getUserActionMenuForCallRecording($output->uniqueid[$i], $output->location[$i]);
+	    	$columns = array("Date", "Customer", "Phone Number", "Agent", "Duration", "Action");
+	    	$hideOnMedium = array("Customer", "Phone Number", "Agent", "Duration");
+	    	$hideOnLow = array("Customer", "Phone Number", "Agent", "Duration");
+			$result = $this->generateTableHeaderWithItems($columns, "table_callrecordings", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
+
+			//$result .= "<tr><td colspan='6'>".$output->query."</tr>";
+	    
+	    for($i=0; $i < count($output->list_id); $i++){
+			$action_Call = $this->getUserActionMenuForCallRecording($output->uniqueid[$i], $output->location[$i]);
 
 			$d1 = strtotime($output->start_last_local_call_time[$i]);
 			$d2 = strtotime($output->end_last_local_call_time[$i]);
 
 			$diff = abs($d2 - $d1);
-			
+			$duration = gmdate('H:i:s', $diff);
+
 			$result .= "<tr>
 				<td>".$output->end_last_local_call_time[$i]."</td>
-				<td>".$output->full_name[$i]."</td>
-				<td>".$output->phone_number[$i]."</td>
-				<td>".$output->users[$i]."</td>
-				<td>".gmdate('H:i:s', $diff)."</td>
-				<td>".$action."</td>
+				<td class='hide-on-medium hide-on-low'>".$output->full_name[$i]."</td>
+				<td class='hide-on-medium hide-on-low'>".$output->phone_number[$i]."</td>
+				<td class='hide-on-medium hide-on-low'>".$output->users[$i]."</td>
+				<td class='hide-on-medium hide-on-low'>".$duration."</td>
+				<td>".$action_Call."</td>
 				</tr>";
+	    	
 	    }
-		return $result."</table>";
+			return $result."</table>";
+
 	    } else {
 		# An error occured
-		return $output->result;
+			return $output->result;
 
 	    }
 	}
@@ -5223,11 +5229,16 @@ error_reporting(E_ERROR | E_PARSE);
 	 * [[API: Function]] - goGetLeads
 	 * This application is used to get cluster status
 	*/
-	public function API_GetLeads($userName, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter){
+	public function API_GetLeads($userName, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit){
 	$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass;
-	$postfields["goVarLimit"] = "500";
+	if($limit != NULL){
+		$postfields["goVarLimit"] = "";
+	}else{
+		$postfields["goVarLimit"] = "50";
+	}
+	
 	$postfields["user_id"] = $userName;
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
@@ -5275,7 +5286,8 @@ error_reporting(E_ERROR | E_PARSE);
 		
 	// get contact list
 	public function GetContacts($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter) {
-		$output = $this->API_GetLeads($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter);
+		$limit = "search";
+		$output = $this->API_GetLeads($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit);
 	       if($output->result=="success") {
 
        	   $columns = array("Lead ID", "Full Name", "Phone Number", "Status", "Action");
@@ -5293,7 +5305,7 @@ error_reporting(E_ERROR | E_PARSE);
 								<td>' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
 								<td class="hide-on-low hide-on-medium">' .$output->phone_number[$i].'</td>
 								<td class="hide-on-low hide-on-medium">' .$output->status[$i].'</td>
-								 <td>' .$action.'</td>
+								<td>' .$action.'</td>
 							</tr> ';
 				}
 			}
