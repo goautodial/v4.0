@@ -3135,7 +3135,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       // print suffix
 	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	      
-			return $result;
+			return $result.'</table>';
        }else{
 			// error getting contacts
 			//return $output->result;
@@ -3250,7 +3250,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result; 
+			return $result.'</table>'; 
 			
 		} else {		
 		# An error occured		
@@ -3317,7 +3317,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 			}
 			
-			return $result; 
+			return $result.'</table>'; 
 			
 		} else {		
 		# An error occured		
@@ -3443,18 +3443,9 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td>".$output->user[$i]."</td>
 	                    <td><a class=''>".$output->ip_address[$i]."</a></td>
 						<td>".$output->event_date[$i]."</td>";
-					/*
-	                    <td class='hide-on-medium hide-on-low'>".$output->[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->[$i]."</td>
-						<td class='hide-on-medium hide-on-low'>".$output->fullname[$i]."</td>
-						<td class='hide-on-medium hide-on-low'>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>
-						<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
-	                    <td>".$action."</td>
-	                </tr>";
-					*/
 			}
 			
-			return $result; 
+			return $result.'</table>'; 
 			
 		} else {		
 			return $output->result;
@@ -3514,7 +3505,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result; 
+			return $result.'</table>'; 
 			
 		} else {		
 		# An error occured		
@@ -3582,7 +3573,7 @@ error_reporting(E_ERROR | E_PARSE);
 				
 			}
 			
-			return $result; 
+			return $result.'</table>'; 
 			
 		}else{
 			// if no entry in voicemails
@@ -3871,7 +3862,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 				</tr>";
 	    }
-		return $result;
+		return $result.'</table>';
 	}
 	
 	private function getUserActionMenuForMusicOnHold($id, $name) {
@@ -3940,7 +3931,7 @@ error_reporting(E_ERROR | E_PARSE);
 			<td>".$action."</td>
 		    </tr>";
 	    }
-		return $result;
+		return $result.'</table>';
 	    } else {
 		# An error occured
 		return $output->result;
@@ -4022,7 +4013,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td>".$action."</td>
 			    </tr>";
 		    }
-			return $result;
+			return $result.'</table>';
 
 	    } else {
 		# An error occured
@@ -4094,7 +4085,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </tr>";
             }
 
-		    return $result;
+		    return $result.'</table>';
     
 	    } else {
 	       # An error occured
@@ -4175,7 +4166,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </tr>";
             }
 
-		    return $result;
+		    return $result.'</table>';
     
 	    } else {
 	       # An error occured
@@ -5314,7 +5305,7 @@ error_reporting(E_ERROR | E_PARSE);
 				}
 			}
 			
-			return $result;
+			return $result.'</table>';
        }else{
        		//display nothing
        }
@@ -5400,55 +5391,6 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 		}
 		return '<select name="'.$name.'" id="'.$id.'" class="form-control '.$requiredCode.'">'.$optionList.'</select></div>';
-	}
-
-	public function deleteValidateModal($action, $id){
-		return '
-		<div id="delete_notification_modal" class="modal modal-warning fade">
-        	<div class="modal-dialog">
-	            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-					<div class="modal-header">
-						<h4 class="modal-title">Delete '.$action.' ?</h4>
-					</div>
-					<div class="modal-body">
-						Are you sure you want to delete '.$action.': '.$id.' ?
-					</div>
-				</div>
-			</div>
-		</div>
-		';
-	}
-
-	public function deleteNotificationModal($action, $id, $result, $name){
-		//var_dump($id);
-		return '
-		<div id="delete_notification_modal" class="modal modal-success fade">
-        	<div class="modal-dialog">
-	            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-					<div class="modal-header">
-						<h4 class="modal-title">Successfully Deleted '.$action.' !</h4>
-					</div>
-					<div class="modal-body" style="background:#fff;">
-						You have successfully deleted <b>'.$id.'</b>. 
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<div id="delete_notification_modal_fail" class="modal modal-danger fade">
-        	<div class="modal-dialog">
-	            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-					<div class="modal-header">
-						<h4 class="modal-title">Failed to Delete '.$action.' !</h4>
-					</div>
-					<div class="modal-body" style="background:#fff;">
-						<p>'.$result.'<br/><br/>
-						Please Try again. </p>
-					</div>
-				</div>
-			</div>
-		</div>
-		';
 	}
 
 	public function getCountryCodes(){
