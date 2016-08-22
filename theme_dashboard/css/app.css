@@ -8864,4 +8864,33 @@ md-tabs.md-default-theme,
 md-tabs .md-tab.md-focused md-icon {
   color: #3f51b5 !important;
 }
->>>>>>> c62bdab564915de8f799a06c139f5cee28c2cf15
+/****
+* Input Text Clear button
+*****/
+.has-clear {
+    position: relative;
+}
+
+.form-control-feedback {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    display: block;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    pointer-events: none;
+}
+
+::-ms-clear {
+  display: none;
+}
+
+.form-control-clear {
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
+  color: #dddddd;
+}

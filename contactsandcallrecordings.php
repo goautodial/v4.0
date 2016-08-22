@@ -111,7 +111,10 @@ $leads = $ui->API_GetLeads($user->getUserName());
                 	<div class="row">
 						<div class="col-lg-9">
 							<div class="form-group mb-xl">
-								<input type="text" placeholder="Search Phone Number, First or Last Name" id="search" class="form-control mb">
+								<div class="has-clear">
+									<input type="text" placeholder="Search Phone Number, First or Last Name" id="search" class="form-control mb">
+									<span class="form-control-clear fa fa-close form-control-feedback"></span>
+								</div>
 								<div class="clearfix">
 									<button type="button" class="pull-left btn btn-default" id="search_button"> Search</button>
 									<div class="pull-right">
@@ -205,14 +208,14 @@ $leads = $ui->API_GetLeads($user->getUserName());
 														$diff = abs($d2 - $d1);
 
 														$action_Call = $ui->getUserActionMenuForCallRecording($callrecs->uniqueid[$i], $callrecs->location[$i]);
-
+														//echo $callrecs->result;
 											   	?>	
 														<tr>
-															<td><?php echo $callrecs->end_last_local_call_time[$i];?></a></td>
+															<td><?php echo $callrecs->end_last_local_call_time[$i];?></td>
 															<td class='hide-on-medium hide-on-low'><?php echo $callrecs->full_name[$i];?></td>
 															<td class='hide-on-medium hide-on-low'><?php echo $callrecs->phone_number[$i];?></td>
 															<td class='hide-on-medium hide-on-low'><?php echo $callrecs->users[$i];?></td>
-															<td><?php echo gmdate('H:i:s', $diff); ?></td>
+															<td class='hide-on-medium hide-on-low'><?php echo gmdate('H:i:s', $diff); ?></td>
 															<td><?php echo $action_Call;?></td>
 														</tr>
 												<?php
@@ -286,24 +289,27 @@ $disposition = $ui->API_getAllDispositions();
 								<div class="address_filter_div" style="display:none;">
 									<div class="form-group">
 										<label>Address: </label>
-										<div class="mb">
+										<div class="mb has-clear">
 											<input type="text" class="form-control" id="address_filter" name="address_filter" placeholder="Address" />
+											<span class="form-control-clear fa fa-close form-control-feedback"></span>
 										</div>
 									</div>
 								</div>
 								<div class="city_filter_div" style="display:none;">
-									<div class="form-group">
+									<div class="form-group has-clear">
 										<label>City: </label>
-										<div class="mb">
+										<div class="mb has-clear">
 											<input type="text" class="form-control" id="city_filter" name="city_filter" placeholder="City" />
+											<span class="form-control-clear fa fa-close form-control-feedback"></span>
 										</div>
 									</div>
 								</div>
 								<div class="state_filter_div" style="display:none;">
-									<div class="form-group">
+									<div class="form-group has-clear">
 										<label>State: </label>
-										<div class="mb">
+										<div class="mb has-clear">
 											<input type="text" class="form-control" id="state_filter" name="state_filter" placeholder="State" />
+											<span class="form-control-clear fa fa-close form-control-feedback"></span>
 										</div>
 									</div>
 								</div>
@@ -312,7 +318,7 @@ $disposition = $ui->API_getAllDispositions();
 		               				<label>Start Date:</label>
 						            <div class="form-group">
 						                <div class='input-group date' id='datetimepicker1'>
-						                    <input type='text' class="form-control" id="start_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
+						                    <input type='text' class="form-control" id="start_contact_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
 						                    <span class="input-group-addon">
 						                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
 												<span class="fa fa-calendar"></span>
@@ -324,7 +330,7 @@ $disposition = $ui->API_getAllDispositions();
 						            <label>End Date:</label>
 						            <div class="form-group">
 						                <div class='input-group date' id='datetimepicker2'>
-						                    <input type='text' class="form-control" id="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
+						                    <input type='text' class="form-control" id="end_contact_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
 						                    <span class="input-group-addon">
 						                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
 						                        <span class="fa fa-calendar"></span>
@@ -341,7 +347,7 @@ $disposition = $ui->API_getAllDispositions();
 		               				<div class="form-group">
 			               				<label>Start Date:</label>
 							            <div class="form-group">
-							                <div class='input-group date' id='datetimepicker1'>
+							                <div class='input-group date' id='datetimepicker3'>
 							                    <input type='text' class="form-control" id="start_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
 							                    <span class="input-group-addon">
 							                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
@@ -353,7 +359,7 @@ $disposition = $ui->API_getAllDispositions();
 							        <div class="form-group">
 							            <label>End Date:</label>
 							            <div class="form-group">
-							                <div class='input-group date' id='datetimepicker2'>
+							                <div class='input-group date' id='datetimepicker4'>
 							                    <input type='text' class="form-control" id="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
 							                    <span class="input-group-addon">
 							                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
@@ -798,7 +804,7 @@ $disposition = $ui->API_getAllDispositions();
 
 					// ---- DATETIME PICKER INITIALIZATION
 
-						$('#datetimepicker1').datetimepicker({
+						$('#datetimepicker3').datetimepicker({
 						icons: {
 		                      time: 'fa fa-clock-o',
 		                      date: 'fa fa-calendar',
@@ -811,7 +817,7 @@ $disposition = $ui->API_getAllDispositions();
 		                    }
 						});
 
-		                $('#datetimepicker2').datetimepicker({
+		                $('#datetimepicker4').datetimepicker({
 		                icons: {
 		                      time: 'fa fa-clock-o',
 		                      date: 'fa fa-calendar',
@@ -826,7 +832,7 @@ $disposition = $ui->API_getAllDispositions();
 
 	                // ---- DATE FILTERS
 
-		                $("#datetimepicker1").on("dp.change", function(e) {
+		                $("#datetimepicker3").on("dp.change", function(e) {
 		                	var start_filterdate_val = $('#start_filterdate').val();
 		                	var end_filterdate_val = $('#end_filterdate').val();
 		                	var agent_filter_val = $('#agent_filter').val();
@@ -854,7 +860,7 @@ $disposition = $ui->API_getAllDispositions();
 							});
 						});
 
-		                $("#datetimepicker2").on("dp.change", function(e) {
+		                $("#datetimepicker4").on("dp.change", function(e) {
 		                	var start_filterdate_val = $('#start_filterdate').val();
 		                	var end_filterdate_val = $('#end_filterdate').val();
 		                	var agent_filter_val = $('#agent_filter').val();
@@ -929,11 +935,22 @@ $disposition = $ui->API_getAllDispositions();
 
 		                	// if contacts is checked
 		                	if($('#search_contacts').is(":checked")){
+		                		var disposition_filter_val = $('#disposition_filter').val();
+			            		var list_filter_val = $('#list_filter').val();
+			            		var address_filter_val = $("#address_filter").val();
+			            		var city_filter_val = $("#city_filter").val();
+			            		var state_filter_val = $("#state_filter").val();
+
 								$.ajax({
 								    url: "search.php",
 								    type: 'POST',
 								    data: {
-								    	search_contacts : $('#search').val()
+								    	search_contacts : $('#search').val(),
+								    	disposition : disposition_filter_val,
+								    	list : list_filter_val,
+								    	address : address_filter_val,
+								    	city : city_filter_val,
+								    	state : state_filter_val
 								    },
 									success: function(data) {
 										$('#search_button').text("Search");
@@ -967,8 +984,6 @@ $disposition = $ui->API_getAllDispositions();
 								    	agent_filter : agent_filter_val
 								    },
 									success: function(data) {
-										$('#search_button').text("Search");
-		                				$('#search_button').prop("disabled", false)
 										console.log(data);
 										if(data != ""){
 											$('#table_callrecordings').html(data);

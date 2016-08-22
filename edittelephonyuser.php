@@ -25,6 +25,7 @@ $userid = NULL;
 if (isset($_POST["userid"])) {
 	$userid = $_POST["userid"];
 }
+
 if(isset($_POST["role"])){
 	$userrole = $_POST["role"];
 }
@@ -99,14 +100,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 						$output = $ui->goGetUserInfo($userid);
 						
+
 						if ($output->result=="success") {
 						# Result was OK!
-							for($i=0;$i<count($output->userno);$i++){
-					
 						?>
 
 						<div class="panel-body">
-						<legend>MODIFY USER : <u><?php echo $output->userno[$i];?></u></legend>
+						<legend>MODIFY USER : <u><?php echo $output->data->user;?></u></legend>
 
 							<form id="modifyuser">
 
@@ -129,13 +129,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 											<div class="form-group mt">
 												<label for="fullname" class="col-sm-2 control-label">Fullname</label>
 												<div class="col-sm-10 mb">
-													<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->full_name[$i];?>" placeholder="Fullname">
+													<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->data->full_name;?>" placeholder="Fullname">
 												</div>
 											</div>
 											<div class="form-group">
 												<label for="email" class="col-sm-2 control-label">Email</label>
 												<div class="col-sm-10 mb">
-													<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->email[$i];?>" placeholder="Email">
+													<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->data->email;?>" placeholder="Email">
 													<small><span id="email_check"></span></small>
 												</div>
 											</div>
@@ -146,7 +146,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														<?php
 															for($a=0;$a<count($user_groups->user_group);$a++){
 														?>
-															<option value="<?php echo $user_groups->user_group[$a];?>" <?php if($output->user_group[$i] == $user_groups->user_group[$a]){echo "selected";}?> >  
+															<option value="<?php echo $user_groups->user_group[$a];?>" <?php if($output->data->user_group == $user_groups->user_group[$a]){echo "selected";}?> >  
 																<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>  
 															</option>
 														<?php
@@ -161,13 +161,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<select class="form-control" name="status" id="status">
 													<?php
 														$status = NULL;
-														if($output->active[$i] == "Y"){
+														if($output->data->active == "Y"){
 															$status .= '<option value="Y" selected> Active </option>';
 														}else{
 															$status .= '<option value="Y" > Active </option>';
 														}
 														
-														if($output->active[$i] == "N" || $output->active[$i] == NULL){
+														if($output->data->active == "N" || $output->data->active == NULL){
 															$status .= '<option value="N" selected> Inactive </option>';
 														}else{
 															$status .= '<option value="N" > Inactive </option>';
@@ -183,47 +183,47 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<select class="form-control" name="userlevel" id="userlevel">
 													<?php
 														$userlevel = NULL;
-															if($output->user_level[$i] == "1"){
+															if($output->data->user_level == "1"){
 																$userlevel .= '<option value="1" selected> 1 </option>';
 															}else{
 																$userlevel .= '<option value="1" > 1 </option>';
 															}
-															if($output->user_level[$i] == "2"){
+															if($output->data->user_level == "2"){
 																$userlevel .= '<option value="2" selected> 2 </option>';
 															}else{
 																$userlevel .= '<option value="2" > 2 </option>';
 															}
-															if($output->user_level[$i] == "3"){
+															if($output->data->user_level == "3"){
 																$userlevel .= '<option value="3" selected> 3 </option>';
 															}else{
 																$userlevel .= '<option value="3" > 3 </option>';
 															}
-															if($output->user_level[$i] == "4"){
+															if($output->data->user_level == "4"){
 																$userlevel .= '<option value="4" selected> 4 </option>';
 															}else{
 																$userlevel .= '<option value="4" > 4 </option>';
 															}
-															if($output->user_level[$i] == "5"){
+															if($output->data->user_level == "5"){
 																$userlevel .= '<option value="5" selected> 5 </option>';
 															}else{
 																$userlevel .= '<option value="5" > 5 </option>';
 															}
-															if($output->user_level[$i] == "6"){
+															if($output->data->user_level == "6"){
 																$userlevel .= '<option value="6" selected> 6 </option>';
 															}else{
 																$userlevel .= '<option value="6" > 6 </option>';
 															}
-															if($output->user_level[$i] == "7"){
+															if($output->data->user_level == "7"){
 																$userlevel .= '<option value="7" selected> 7 </option>';
 															}else{
 																$userlevel .= '<option value="7" > 7 </option>';
 															}
-															if($output->user_level[$i] == "8"){
+															if($output->data->user_level == "8"){
 																$userlevel .= '<option value="8" selected> 8 </option>';
 															}else{
 																$userlevel .= '<option value="8" > 8 </option>';
 															}
-															if($output->user_level[$i] == "9"){
+															if($output->data->user_level == "9"){
 																$userlevel .= '<option value="9" selected> 9 </option>';
 															}else{
 																$userlevel .= '<option value="9" > 9 </option>';
@@ -239,13 +239,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 											<div class="form-group">
 												<label for="phone_login" class="col-sm-2 control-label">Phone Login</label>
 												<div class="col-sm-10 mb">
-													<input type="text" class="form-control" name="phone_login" id="phone_login" value="<?php echo $output->phone_login[$i];?>" placeholder="Phone Login">
+													<input type="text" class="form-control" name="phone_login" id="phone_login" value="<?php echo $output->data->phone_login;?>" placeholder="Phone Login">
 												</div>
 											</div>
 											<div class="form-group">
 												<label for="phone_password" class="col-sm-2 control-label">Phone Password</label>
 												<div class="col-sm-10 mb">
-													<input type="text" class="form-control" name="phone_password" id="phone_password" value="<?php echo $output->phone_pass[$i];?>" placeholder="Phone Password">
+													<input type="text" class="form-control" name="phone_password" id="phone_password" value="<?php echo $output->data->phone_pass;?>" placeholder="Phone Password">
 												</div>
 											</div>									
 											<div class="form-group">
@@ -260,7 +260,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 															}else{
 															for($a=0;$a<count($voicemails->voicemail_id);$a++){
 														?>
-																<option value="<?php echo $voicemails->voicemail_id[$i];?>" <?php if($output->voicemail_id[$i] == $voicemails->voicemail_id[$a]){echo "selected";}?> >
+																<option value="<?php echo $voicemails->voicemail_id;?>" <?php if($output->data->voicemail_id == $voicemails->voicemail_id[$a]){echo "selected";}?> >
 																	<?php echo $voicemails->voicemail_id[$a].' - '.$voicemails->fullname[$a];?>
 																</option>									
 														<?php
@@ -282,7 +282,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 											<div class="form-group form_password" style="display:none;">
 												<label for="password" class="col-sm-2 control-label">Password</label>
 												<div class="col-sm-10 mb">
-													<input type="password" class="form-control" name="password" id="password" value="<?php echo $output->password[$i];?>" placeholder="Password">
+													<input type="password" class="form-control" name="password" id="password" value="<?php echo $output->data->password;?>" placeholder="Password">
 													<small><i><span id="pass_result"></span></i></small>
 												</div>
 											</div>
@@ -310,13 +310,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<select class="form-control" name="hotkeys" id="hotkeys">
 													<?php
 														$status = NULL;
-														if($output->hot_keys[$i] == "0"){
+														if($output->data->hot_keys == "0"){
 															$status .= '<option value="Y" selected> Active </option>';
 														}else{
 															$status .= '<option value="Y" > Active </option>';
 														}
 														
-														if($output->hot_keys[$i] == "1" || $output->hot_keys[$i] == NULL){
+														if($output->data->hot_keys == "1" || $output->data->hot_keys == NULL){
 															$status .= '<option value="N" selected> Inactive </option>';
 														}else{
 															$status .= '<option value="N" > Inactive </option>';
@@ -373,10 +373,10 @@ $user_groups = $ui->API_goGetUserGroupsList();
 	                    	</div><!-- tab panel -->
 
 						<?php
-							}
+							
 						} else {
 						# An error occured
-							echo $output->result;
+							echo $output->data->result;
 						}
                 	}
                 }
@@ -399,6 +399,11 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 		<script type="text/javascript">
 			$(document).ready(function() {
+
+				// for cancelling
+				$(document).on('click', '#cancel', function(){
+					swal("Cancelled", "No action has been done :)", "error");
+				});
 
 
 				function checkPasswordMatch() {

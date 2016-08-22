@@ -1,8 +1,8 @@
 <?php	
 
 	###################################################
-	### Name: telephonylist.php 					###
-	### Functions: Manage List and Upload Leads 	###
+	### Name: telephonyscripts.php 					###
+	### Functions: Manage Scripts 				 	###
 	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
 	### Version: 4.0 								###
 	### Written by: Alexander Jim H. Abenoja		###
@@ -136,7 +136,7 @@
 							<label class="col-sm-3 control-label" for="script_id">Script ID:</label>
 							<div class="col-sm-9 mb">
 								<input type="text" class="form-control" name="script_id" id="script_id" value="<?php echo $script_id_for_form;?>" disabled />
-								<input type="hidden" name="user" value="<?php echo $user->getUserName();?>">
+								<input type="hidden" name="script_user" value="<?php echo $user->getUserName();?>">
 							</div>
 						</div>
 						<div class="form-group">
@@ -296,7 +296,7 @@
                         $('#submit_script').val("Submit");
                         $('#submit_script').prop("disabled", false);
 					} else {
-						sweetAlert("Oops...", data, "error");
+						sweetAlert("Oops...", "Something went wrong! "+data, "error");
 						$('#submit_script').val("Submit");
 						$('#submit_script').prop("disabled", false);
 						$('#script_id').prop("disabled", true);

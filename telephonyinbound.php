@@ -1098,7 +1098,7 @@
 										$('#submit_ingroup').prop("disabled", false);
 								  }
 								  else{
-									  sweetAlert("Oops...", "Something went wrong!"+data, "error");
+									  sweetAlert("Oops...", "Something went wrong! "+data, "error");
 									  $('#submit_ingroup').val("Submit");
 									  $('#submit_ingroup').prop("disabled", false);
 								  }
