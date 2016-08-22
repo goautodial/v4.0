@@ -3114,7 +3114,7 @@ error_reporting(E_ERROR | E_PARSE);
 			
 			
 	       // iterate through all users
-	       for($i=0;$i<count($output->userno);$i++){
+	       for($i=0;$i<count($output->user_id);$i++){
 				if($output->active[$i] == "Y"){
 					$output->active[$i] = "Active";
 				 }else{
@@ -3124,7 +3124,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       	   $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i]); 
 	       	        
 		        $result .= "<tr>
-	                     <td class='hide-on-low'><a class='edit-T_user' data-id=".$output->user_id[$i].">".$output->userno[$i]."</a></td>
+	                     <td class='hide-on-low'><a class='edit-T_user' data-id=".$output->user_id[$i].">".$output->user[$i]."</a></td>
 						 <td>".$output->full_name[$i]."</td>";
 	             $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
 	                     <td class='hide-on-low'>".$output->active[$i]."</td>
