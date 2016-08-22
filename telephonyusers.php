@@ -132,7 +132,7 @@
 							<label class="col-sm-4 control-label">Current Users: </label>
 							<div class="col-sm-8 mb">
 								<div class="row">
-									<h4 style="padding-left:20px;"><?php echo count($output->userno); ?></h4>
+									<h4 style="padding-left:20px;"><?php echo count($output->user); ?></h4>
 								</div>
 							</div>
 						</div>
@@ -195,13 +195,13 @@
 						</div>
 						-->
 						<?php
-						$max = count($output->userno);
+						$max = count($output->user);
 						$x = 0;
 						for($i=0; $i < $max; $i++){
 							//echo $max-$x;
-							$agent = substr($output->userno[$max-$x], 0, 5);
+							$agent = substr($output->user[$max-$x], 0, 5);
 							if($agent == "agent"){
-								$get_last = substr($output->userno[$max-$x], -2);
+								$get_last = substr($output->user[$max-$x], -2);
 							}else{
 								$x = $x+1;
 							}
