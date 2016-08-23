@@ -1,62 +1,62 @@
 /*
 * campaign id
 */
-function load_campaign_name(){
-   $.ajax({
-     url: "./php/APIs/API_GetHopperLeadsWarning.php",
-     cache: false,
-     success: function(data){
-        $("#refresh_campaign_name").html(data);
-     } 
-   });
-}
+    function load_campaigns_resources(){
+    $.ajax({
+        url: "./php/APIs/API_GetCampaignsResources.php",
+        cache: false,
+        success: function(data){
+            $("#refresh_campaigns_resources").html(data);
+        } 
+    });
+    }
 
-function load_online_agents(){
-   $.ajax({
-     url: "./php/APIs/API_GetOnlineAgents.php",
-     cache: false,
-     success: function(data){
-        $("#refresh_online_agents").html(data);
-     } 
-   });
-}
+    function load_online_agents(){
+    $.ajax({
+        url: "./php/APIs/API_GetOnlineAgents.php",
+        cache: false,
+        success: function(data){
+            //console.log(data);
+            $("#refresh_online_agents").html(data);
+        } 
+    });
+    }
 
+//    Moved to index.php - onclick-userinfo
+//    function load_view_agent_information(){
+//    $.ajax({
+//        url: "./php/ViewUserInfo.php",
+//        data: {user_id: userid},
+//        cache: false,
+//        success: function(data){
+//            console.log(data);
+//            $("#refresh_view_agent_information").html(data);
+//        } 
+//    });
+//    }    
 
-
-function load_agent_info(){
-   $.ajax({
-     type: 'POST',
-     url: "./php/ViewUserInfo.php",
-     data: {userid: id},
-     cache: false,
-     success: function(data){
-        $("#refresh_agent_info").html(data);
-     } 
-   });
-}
-
-function load_realtime_agents_monitoring(){
-   $.ajax({
-     url: "./php/APIs/API_GetAgentsMonitoring.php",
-     cache: false,
-     dataType: 'json',
-     success: function(values){
-        //$("#refresh_realtime_agents_monitoring").html(values);
-            var JSONStringrealtime = values;
-            var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
-            //console.log(JSONStringrealtime);
-            //console.log(JSONObjectrealtime); 
-            var table = $('#monitoring_table').dataTable({ 
-                            data:JSONObjectrealtime,
-                            "destroy":true
-                         });
-            table.destroy();
-            
-                         $('#monitoring_table').dataTable({ 
-                            data:JSONObjectrealtime,
-                            "destroy":true
-                         });        
-                         //console.log(values);
-     } 
-   });
-}
+    function load_realtime_agents_monitoring(){
+    $.ajax({
+        url: "./php/APIs/API_GetRealtimeAgentsMonitoring.php",
+        cache: false,
+        dataType: 'json',
+        success: function(values){
+            //$("#refresh_realtime_agents_monitoring").html(values);
+                var JSONStringrealtime = values;
+                var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+                //console.log(JSONStringrealtime);
+                //console.log(JSONObjectrealtime); 
+                //var table = $('#monitoring_table').dataTable({ 
+                                //data:JSONObjectrealtime,
+                                //"destroy":true
+                            //});
+                //table.destroy();
+                
+                            $('#monitoring_table').dataTable({ 
+                                data:JSONObjectrealtime,
+                                "destroy":true
+                            });        
+                            //console.log(values);
+        } 
+    });
+    }
