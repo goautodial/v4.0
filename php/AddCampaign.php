@@ -40,7 +40,7 @@
 	$postfields['country'] 						= $_POST['country'];
 	$postfields['check_for_duplicates'] 		= $_POST['check_for_duplicates'];
 	$postfields['dial_method'] 					= $_POST['dial_method'];
-	$postfields['auto_dial_level'] 				= $_POST['auto_dial_level'];
+	$postfields['auto_dial_level'] 				= (!isset($_POST['auto_dial_level']))? 0:$_POST['auto_dial_level'];
 	$postfields['dial_prefix']					= (!isset($_POST['dial_prefix']))? 9:$_POST['dial_prefix'];
 	$postfields['custom_dial_prefix']			= ($postfields['dial_prefix'] == "CUSTOM")? $_POST['custom_prefix']:0;
 	$postfields['description'] 					= $_POST['description'];

@@ -5,37 +5,32 @@ include('./php/Session.php');
 $ui = \creamy\UIHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
 
-if($_POST['search_contacts'] != ""){
+if(isset($_POST['search_contacts'])){
 
     $output = $ui->GetContacts($user->getUserName(), $_POST['search_contacts'], $_POST['disposition'], $_POST['list'], $_POST['address'], $_POST['city'], $_POST['state']);
     echo $output;
-}else if($_POST['search_contacts'] == ""){
-
-  $output = $ui->GetContacts($user->getUserName(), NULL, $_POST['disposition'], $_POST['list'], $_POST['address'], $_POST['city'], $_POST['state']);
-  echo $output;
-
 }
 
-if($_POST['search_recordings'] != ""){
+if(isset($_POST['search_recordings'])){
+  
+  $agent_filter = "";
+  $start = "";
+  $end = "";
 
-  if($_POST['start_filterdate'] != "" && $_POST['end_filterdate'] != ""){
-    $start =  date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));
-    $end = date('Y-m-d H:i:s', strtotime($_POST['end_filterdate']));
-    $output = $ui->getListAllRecordings($_POST['search_recordings'], $start, $end);
-  }else{
-    $output = $ui->getListAllRecordings($_POST['search_recordings']);
+  if(isset($_POST['agent_filter'])){
+    $agent_filter = $_POST['agent_filter'];
   }
 
-  echo $output;
-
-}else if($_POST['search_recordings'] == "" && $_POST['start_filterdate'] != "" && $_POST['end_filterdate'] != ""){
-
-  if($_POST['start_filterdate'] != "" && $_POST['end_filterdate'] != ""){
-    $start =  date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));
-    $end = date('Y-m-d H:i:s', strtotime($_POST['end_filterdate']));
-    $output = $ui->getListAllRecordings(NULL, $start, $end);
+  if(isset($_POST['start_filterdate'])){
+    $start = date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));;
   }
-  echo $output;
+
+  if(isset($_POST['end_filterdate'])){
+    $end = date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));;
+  }
+
+  $table_list = $ui->getListAllRecordings($_POST['search_recordings'], $start, $end, $agent_filter);
+  echo $table_list;
 
 }
 

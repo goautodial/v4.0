@@ -422,7 +422,7 @@ error_reporting(E_ALL);*/
 		    					<small class="text-red error hide">&nbsp;&nbsp;&nbsp;Error. Something went wrong...</small>
 		    				</div>
 		    			</div>-->
-		    			<div class="form-group">
+		    			<!--<div class="form-group">
 		    				<label class="control-label col-lg-4">List ID:</label>
 		    				<label class="control-label col-lg-8" style="text-align: left;">
 		    					<?php 
@@ -434,17 +434,14 @@ error_reporting(E_ALL);*/
 		    			<div class="form-group">
 		    				<label class="control-label col-lg-4">Country:</label>
 		    				<div class="col-lg-8">
-		    					<!-- <input id="country" name="country" type="text" class="form-control"> -->
 		    					<select id="country" name="country" class="form-control select2">
 		    						<?php if ($country_codes->result=="success") { ?>
-									<!-- # Result was OK! -->
 										<?php for($i=0;$i < count($country_codes->country);$i++){ ?>
 											<option value="<?php echo $country_codes->country_code[$i]?>">
 												<?php echo $country_codes->country_code[$i]?> >> <?php echo $country_codes->country[$i]?>
 											</option>
 										<?php } ?>
 									<?php } else { ?>
-									<!-- # An error occured -->
 										No record found.
 									<?php } ?>
 		    					</select>
@@ -453,14 +450,13 @@ error_reporting(E_ALL);*/
 		    			<div class="form-group">
 		    				<label class="control-label col-lg-4">Check for duplicates:</label>
 		    				<div class="col-lg-8">
-		    					<!-- <input id="check-for-duplicates" name="check_for_duplicates" type="text" class="form-control"> -->
 		    					<select id="check-for-duplicates" name="check_for_duplicates" class="form-control">
 		    						<option value="NONE">NO DUPLICATE CHECK</option>
 		    						<option value="CHECKLIST">CHECK FOR DUPLICATES BY PHONE IN LIST ID</option>
 		    						<option value="CHECKCAMP">CHECK FOR DUPLICATES BY PHONE IN ALL CAMPAIGN LISTS</option>
 		    					</select>
 		    				</div>
-		    			</div>
+		    			</div>-->
 		    			<!-- <div class="form-group">
 		    				<label class="control-label col-lg-4">Upload Leads:</label>
 		    				<div class="col-lg-8">
@@ -483,12 +479,12 @@ error_reporting(E_ALL);*/
 		    					</select>
 		    				</div>
 		    			</div>
-		    			<div class="form-group">
+		    			<div class="form-group auto-dial-level hide">
 		    				<label class="control-label col-lg-4">Auto Dial Level:</label>
 		    				<div class="col-lg-8">
 		    					<select class="form-control" id="auto-dial-level" name="auto_dial_level">
 		    						<option value="0">OFF</option>
-		    						<option value="1.0">CONSERVATIVE</option>
+		    						<option value="1.0">NORMAL</option>
 		    						<option VALUE="2.0">MODERATE</option>
 		    						<option VALUE="4.0">AGGRESIVE</option>
 		    						<!-- <option value="CUSTOM">CUSTOM</option> -->
@@ -790,13 +786,16 @@ error_reporting(E_ALL);*/
 		function dialMethod(value){
 			if(value == "AUTO_DIAL"){
 				$('#auto-dial-level').prop('disabled', false);
-				$('#auto-dial-level option[value=SLOW]').prop('selected', true);
+				$('#auto-dial-level option[value="1.0"]').prop('selected', true);
+				$('div.auto-dial-level').removeClass('hide');
 			}else if(value == "ADAPT_TAPERED"){
 				$('#auto-dial-level').prop('disabled', true);
-				$('#auto-dial-level option[value=OFF]').prop('selected', true);
+				$('#auto-dial-level option[value="0"]').prop('selected', true);
+				$('div.auto-dial-level').addClass('hide');
 			}else{
 				$('#auto-dial-level').prop('disabled', true);
-				$('#auto-dial-level option[value=OFF]').prop('selected', true);
+				$('#auto-dial-level option[value="0"]').prop('selected', true);
+				$('div.auto-dial-level').addClass('hide');
 			}
 		}
 

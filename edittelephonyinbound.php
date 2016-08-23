@@ -362,14 +362,12 @@ if (isset($_POST["did"])) {
 											</div>
 									    </fieldset>
 									    <fieldset class="footer-buttons">
-					                        <div class="box-footer">
 					                           <div class="col-sm-3 pull-right">
 														<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 					                           	
 					                                	<button type="submit" class="btn btn-primary" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 													
 					                           </div>
-					                        </div>
 					                    </fieldset>
 									</div>
 
@@ -474,9 +472,13 @@ if (isset($_POST["did"])) {
 					                        </div>
 					                    </fieldset>
 									</div>
+								</form>
 
+								
 									<!--==== Agent Rank Table ====-->
 									<div id="agents" class="tab-pane fade in">
+
+									<form id="agentrankform" class="form-horizontal">
 										<?php
 											$agents_rank = $ui->API_goGetAllAgentRank($user->getUserId(), $groupid);
 										?>
@@ -488,7 +490,7 @@ if (isset($_POST["did"])) {
 												 <th>Selected</th>
 												 <th>Rank</th>
 												 <th>Grade</th>
-												 <th>Calls Today</th>
+												 <!--<th>Calls Today</th>-->
 											  </tr>
 										   </thead>
 										   <tbody>
@@ -515,7 +517,7 @@ if (isset($_POST["did"])) {
 														<td>
 															<center>
 																<label class="c-checkbox" for="<?php echo $checkbox_fields;?>">
-																	<input type="checkbox" id="<?php echo $checkbox_fields;?>" name="checkbox" <?php echo $ischecked;?> />
+																	<input type="checkbox" id="<?php echo $checkbox_fields;?>" name="<?php echo $checkbox_fields;?>" value="YES" <?php echo $ischecked;?> />
 																	<span class="fa fa-check"></span>
 																</label>
 															</center>
@@ -546,7 +548,7 @@ if (isset($_POST["did"])) {
 																?>
 															</select>
 														</td>
-														<td><?php echo $agents_rank->call_today[$a];?></td>
+														<!--<td><?php echo $agents_rank->call_today[$a];?></td>-->
 													</tr>
 												<?php
 													}
@@ -564,21 +566,18 @@ if (isset($_POST["did"])) {
 					                        </div>
 					                    </fieldset>
 									</div>
-
+								</form>
 									<!-- FOOTER BUTTONS -->
 								   	<div id="modifyINGROUPresult"></div>
 								   	
 
 								</div><!-- END tab content-->
 							</div><!-- END of tabpanel -->
-							</form>
+							
 						</div><!-- body -->
 					</div><!-- body -->
                 </section>
-					<?php			
-								/*
-									INSERT OLD CODE HERE
-								*/
+					<?php		
 							}
 						} else {
 						# An error occured
@@ -1277,7 +1276,7 @@ if (isset($_POST["did"])) {
 				                           <div class="col-sm-3 pull-right">
 													<a href="telephonyinbound.php" type="button"  id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 				                           	
-				                                	<button type="submit" class="btn btn-primary" id="modifyDIDOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+				                                	<button type="submit" class="btn btn-primary" id="modifyDIDOkButton" data-id="<?php echo $groupid;?>" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 												
 				                           </div>
 				                        </div>
@@ -1406,7 +1405,7 @@ if (isset($_POST["did"])) {
 				}
 				
 			});
-
+	
 			/****** 
 			** MODIFY Functions 
 		 	******/
@@ -1416,8 +1415,6 @@ if (isset($_POST["did"])) {
 					$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
 					$('#modifyInboundOkButton').prop("disabled", true);
 
-					$("#resultmessage").html();
-					$("#resultmessage").fadeOut();
 					$.ajax({
                         url: "./php/ModifyTelephonyInbound.php",
                         type: 'POST',
@@ -1437,13 +1434,17 @@ if (isset($_POST["did"])) {
                     });		
 					return false; //don't let the form refresh the page...		
 				});
+				
+				// agent rank form submit
+				$('#submit_agent_rank').click(function(){
+					var id = $(this).attr('data-id');
+					checkdatas(id);
+				});
 
 				//IVR
 				$("#modifyivr").validate({
                 	submitHandler: function() {
 						//submit the form
-							$("#resultmessage").html();
-							$("#resultmessage").fadeOut();
 							$.post("./php/ModifyTelephonyInbound.php", //post
 							$("#modifyivr").serialize(), 
 								function(data){
@@ -1466,8 +1467,6 @@ if (isset($_POST["did"])) {
 							$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
 							$('#modifyDIDOkButton').prop("disabled", true);
 							
-							$("#resultmessage").html();
-							$("#resultmessage").fadeOut();
 							$.post("./php/ModifyTelephonyInbound.php", //post
 							$("#modifydid").serialize(), 
 								function(data){
@@ -1504,6 +1503,51 @@ if (isset($_POST["did"])) {
 					row.remove();
 				});
 			});
+
+			function checkdatas(groupID) {
+			        if (groupID != undefined) {
+			                var itemdatas = $('#agentrankform').serialize();
+			                $('input:checkbox[id^="CHECK"]').each(function() {
+			                        if (!this.checked) {
+			                                itemdatas += '&'+this.name+'=NO';
+			                        }
+			                });
+			                
+			                $.ajax({
+							    url: "php/ModifyAgentRank.php",
+							    type: 'POST',
+							    data: {
+							    	itemrank: itemdatas,
+							    	idgroup: groupID
+							    },
+								success: function(data) {
+									$('#submit_button').html("<i class='fa fa-check'></i> Submit");
+	                				$('#submit_button').prop("disabled", false)
+									console.log(data);
+									if(data == "success"){
+										swal("Success!", "Agent Rank for this inbound Successfully Updated!", "success");
+									}else{
+										sweetAlert("Oops...", "Something went wrong! "+data, "error");
+									}
+								}
+							});
+			        } 
+			        /*else {
+			                if ($("#selectAllAgents").is(':checked'))
+			                {
+		                        $('input:checkbox[id^="CHECK"]').each(function() {
+		                                        $(this).attr('checked',true);
+		                        });
+			                }
+			                else
+			                {
+		                        $('input:checkbox[id^="CHECK"]').each(function() {
+		                                        $(this).removeAttr('checked');
+		                        });
+			                }
+			        }*/
+			    return false;
+			}
 		</script>
 
 		<?php print $ui->creamyFooter(); ?>
