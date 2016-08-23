@@ -11,13 +11,13 @@
     });
     }
 
-    function load_online_agents(){
+    function load_agents_monitoring_summary(){
     $.ajax({
-        url: "./php/APIs/API_GetOnlineAgents.php",
+        url: "./php/APIs/API_GetAgentsMonitoringSummary.php",
         cache: false,
         success: function(data){
             //console.log(data);
-            $("#refresh_online_agents").html(data);
+            $("#refresh_agents_monitoring_summary").html(data);
         } 
     });
     }
