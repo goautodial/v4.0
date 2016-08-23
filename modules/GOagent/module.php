@@ -753,7 +753,7 @@ EOF;
 		$phone_login = $_SESSION['phone_login'];
 		$phone_pass = $_SESSION['phone_pass'];
 		
-		if ($useWebRTC) {
+		if ($useWebRTC && strlen($phone_login) > 0) {
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
 <script type="text/javascript" src="{$goModuleDIR}js/jsSIP.js"></script>
