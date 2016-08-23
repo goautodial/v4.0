@@ -474,7 +474,7 @@ error_reporting(E_ALL);*/
 		    				<div class="col-lg-8">
 		    					<select class="form-control" id="dial-method" name="dial_method">
 		    						<option value="MANUAL">MANUAL</option>
-		    						<option value="AUTO_DIAL">AUTODIAL</option>
+		    						<option value="RATIO">AUTODIAL</option>
 		    						<option value="ADAPT_TAPERED">PREDICTIVE</option>
 		    					</select>
 		    				</div>
@@ -784,7 +784,7 @@ error_reporting(E_ALL);*/
 		}
 
 		function dialMethod(value){
-			if(value == "AUTO_DIAL"){
+			if(value == "RATIO"){
 				$('#auto-dial-level').prop('disabled', false);
 				$('#auto-dial-level option[value="1.0"]').prop('selected', true);
 				$('div.auto-dial-level').removeClass('hide');
