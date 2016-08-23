@@ -136,7 +136,7 @@
 								</div>
 							</div>
 						</div>
-					<!-- ENABLE IF ADD MULTIPLE IS READY --
+					<!-- ENABLE IF ADD MULTIPLE IS AVAILABLE --
 						<div class="form-group">		
 							<label class="col-sm-4 control-label" style="padding-top:15px;">Additional Seat(s): </label>
 							<div class="col-sm-8" style="padding-top:10px;">
@@ -186,14 +186,6 @@
 			
 				<!-- STEP 2 -->
 					<div class="wizard-step">
-						<!--
-						<div class="form-group mt">
-							<label class="control-label col-sm-4">User Group:</label>
-							<div class="col-sm-8 mb">
-								<span id="display_user_group"></span>
-							</div>
-						</div>
-						-->
 						<?php
 						$max = count($output->user);
 						$x = 0;
@@ -244,24 +236,6 @@
 						<div class="row">
 							<p class="col-sm-12"><small class="pull-right" style="padding-right:20px;"><i><span id="pass_result"></span></i></small></p>
 						</div>
-						<!--
-						<div id="phone_div" style="display:none;">
-							<div class="form-group">
-								<label class="col-sm-4 control-label" for="phone_login1"> Phone Login: </label>
-								<div class="col-sm-8 mb">
-									<input type="text" readonly name="phone_login1" id="phone_login1" class="form-control">
-								</div>
-							</div>
-						
-							<div class="form-group">
-								<label class="col-sm-4 control-label" for="phone_pass"> Phone Password: </label>
-								<div class="col-sm-8 mb">
-									<input type="text" name="phone_pass" id="phone_pass" class="form-control" value="Go2016">
-								</div>
-							</div>
-						
-						</div>
-						-->
 						<input type="hidden" name="phone_pass" id="phone_pass" class="form-control">
 
 						<div class="form-group">
