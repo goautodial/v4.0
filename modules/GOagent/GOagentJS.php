@@ -1517,6 +1517,7 @@ function sendLogout (logMeOut) {
             goExtContext: ext_context,
             goAgentLogID: agent_log_id,
             responsetype: 'json',
+            goUseWebRTC: use_webrtc
         };
     
         $.ajax({
@@ -2513,13 +2514,16 @@ function CheckForIncoming () {
             $(".formMain input[name='postal_code']").val(this_VDIC_data.postal_code).trigger('change');
             $(".formMain input[name='country_code']").val(this_VDIC_data.country_code).trigger('change');
             $(".formMain input[name='gender']").val(this_VDIC_data.gender).trigger('change');
-            var dateOfBirth = this_VDIC_data.date_of_birth.toString('yyyy-MM-dd');
+            var dateOfBirth = this_VDIC_data.date_of_birth;
             $(".formMain input[name='date_of_birth']").val(dateOfBirth);
             $(".formMain input[name='alt_phone']").val(this_VDIC_data.alt_phone).trigger('change');
             $(".formMain input[name='email']").val(this_VDIC_data.email).trigger('change');
             $(".formMain input[name='security_phrase']").val(this_VDIC_data.security);
             var REGcommentsNL = new RegExp("!N","g");
-            var thisComments = this_VDIC_data.comments.replace(REGcommentsNL, "\n");
+            var thisComments = this_VDIC_data.comments;
+            if (typeof thisComments !== 'undefined') {
+                thisComments = thisComments.replace(REGcommentsNL, "\n");
+            }
             $(".formMain input[name='comments']").val(thisComments).trigger('change');
             $(".formMain input[name='called_count']").val(this_VDIC_data.called_count);
             CBentry_time                                = this_VDIC_data.CBentry_time;
@@ -3123,7 +3127,7 @@ function UpdateFieldsData() {
             }
             var regUDdate_of_birth = new RegExp("date_of_birth,","ig");
             if (fields_list.match(regUDdate_of_birth)) {
-                var dateOfBirth = UDfieldsData.date_of_birth.toString('yyyy-MM-dd');
+                var dateOfBirth = UDfieldsData.date_of_birth;
                 $(".formMain input[name='date_of_birth']").val(dateOfBirth);
             }
             var regUDalt_phone = new RegExp("alt_phone,","ig");
@@ -3139,7 +3143,9 @@ function UpdateFieldsData() {
             if (fields_list.match(regUDcomments)) {
                 var REGcommentsNL = new RegExp("!N","g");
                 var UDfieldComments = UDfieldsData.comments;
-                UDfieldComments = UDfieldComments.replace(REGcommentsNL, "\n");
+                if (typeof UDfieldComments !== 'undefined') {
+                    UDfieldComments = UDfieldComments.replace(REGcommentsNL, "\n");
+                }
                 $(".formMain input[name='comments']").val(UDfieldComments);
             }
             var regUDrank = new RegExp("rank,","ig");
@@ -4645,14 +4651,16 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='postal_code']").val(MDnextResponse_array[19]).trigger('change');
                     $(".formMain input[name='country_code']").val(MDnextResponse_array[20]).trigger('change');
                     $(".formMain input[name='gender']").val(MDnextResponse_array[21]).trigger('change');
-                    var dateOfBirth = MDnextResponse_array[22].toString('yyyy-MM-dd');
+                    var dateOfBirth = MDnextResponse_array[22];
                     $(".formMain input[name='date_of_birth']").val(dateOfBirth);
                     $(".formMain input[name='alt_phone']").val(MDnextResponse_array[23]).trigger('change');
                     cust_email                              = MDnextResponse_array[24];
                     $(".formMain input[name='email']").val(cust_email).trigger('change');
                     $(".formMain input[name='security_phrase']").val(MDnextResponse_array[25]);
                     var REGcommentsNL = new RegExp("!N","g");
-                    MDnextResponse_array[26] = MDnextResponse_array[26].replace(REGcommentsNL, "\n");
+                    if (typeof MDnextResponse_array[26] !== 'undefined') {
+                        MDnextResponse_array[26] = MDnextResponse_array[26].replace(REGcommentsNL, "\n");
+                    }
                     $(".formMain input[name='comments']").val(MDnextResponse_array[26]).trigger('change');
                     called_count                            = MDnextResponse_array[27];
                     $(".formMain input[name='called_count']").val(called_count);

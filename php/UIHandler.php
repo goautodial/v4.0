@@ -1490,130 +1490,15 @@ error_reporting(E_ERROR | E_PARSE);
 				<b>Version</b> '.$version.'</div><strong>Copyright &copy; '.date("Y").' <a href="http://www.goautodial.com/">GoAutoDial Inc.</a> All rights reserved.
 			</div>
 			</footer>';
-		$footer .= '			<!-- Modal -->
-			<!-- View Campaign -->
-			<div id="view-campaign-modal" class="modal fade" role="dialog">
-			  <div class="modal-dialog">
-
-			    <!-- Modal content-->
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><b>Campaign Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
-			      </div>
-			      <div class="modal-body">
-			      	<div class="output-message-no-result hide">
-				      	<div class="alert alert-warning alert-dismissible" role="alert">
-						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>Notice!</strong> There was an error retrieving details. Either error or no result.
-						</div>
-					</div>
-			        <div id="content" class="view-form ">
-					    <div class="form-horizontal">
-                                                <div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign ID:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaignid"></span></b>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign Name:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaignname"></span></b>
-					    	</div>
-					    	<div class="output-message-no-result hide form-group">
-					    		<label class="control-label col-lg-5">Campaign Description:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaigndesc"></span></b>
-                                                </div>					    	
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Call Recordings:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-callrecordings"></span></b>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign Caller ID:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaigncid"></span></b>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Local Call Time:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-localcalltime"></span></b>
-                                                </div>                                             
-                                            </div>
-                                </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			      </div>
-			    </div>
-			    <!-- End of modal content -->
-                           </div>
-                         </div>
-                        </div>
-			<!-- End of View Campaign -->
-			
-			<!-- View Agent -->
-			<div id="view-agent-modal" class="modal fade" role="dialog">
-			  <div class="modal-dialog">
-
-			    <!-- Modal content-->
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><b>Agent Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
-			      </div>
-			      <div class="modal-body">
-			      	<div class="output-message-no-result hide">
-				      	<div class="alert alert-warning alert-dismissible" role="alert">
-						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>Notice!</strong> There was an error retrieving details. Either error or no result.
-						</div>
-					</div>
-			        <div id="content" class="view-form ">
-					    <div class="form-horizontal">
-                                                <div class="form-group">
-					    		<label class="control-label col-lg-5">Agent ID:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-userid"></span></b>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Agent Name:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-user"></span></b>
-					    	</div>
-					    	<div class="output-message-no-result hide form-group">
-					    		<label class="control-label col-lg-5">Email:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-email"></span></b>
-					    	</div>					    	
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">User Group:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-usergroup"></span></b>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">User Level:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-userlevel"></span></b>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Active:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-active"></span></b>
-                                                </div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Phone Login:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-phonelogin"></span></b>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Phone Password:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-phonepass"></span></b>
-                                                </div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Voicemail:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-voicemail"></span></b>
-					    	</div>                                                
-                                            </div>
-                                </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			      </div>
-			    </div>
-			    <!-- End of modal content -->
-			  </div>
-			 </div>
-			</div>
-			<!-- End of View Agent -->			
-			<!-- End of modal -->
-                ';
+//		$footer .= '			<!-- Modal -->
+//
+//			
+//			<!-- View Agent -->
+//
+//			<!-- End of View Agent -->
+//			
+//			<!-- End of modal -->
+//                ';
 		return $footer;
 	}
 	
@@ -3076,30 +2961,6 @@ error_reporting(E_ERROR | E_PARSE);
 		 
 		 return $output;
 	}
-
-	// get user info
-	public function goGetUserInfo($userid){
-		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "goGetUserInfo"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["user_id"] = $userid; #Desired User ID (required)
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		
-		$output = json_decode($data);
-		 
-		return $output;
-	}
 	
 	// get user list
 	public function goGetAllUserList() {
@@ -3692,6 +3553,30 @@ error_reporting(E_ERROR | E_PARSE);
 		</div>';
 	}
 
+	// get user info
+	public function goGetUserInfo($userid){
+		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "goGetUserInfo"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["user_id"] = $userid; #Desired User ID (required)
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		//var_dump($data);
+		$output = json_decode($data);
+		//var_dump($output);
+		return $output;
+	}
+	
 	public function API_getCampaignInfo($campid){
 		$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -4862,15 +4747,15 @@ error_reporting(E_ERROR | E_PARSE);
 
 		/*
 		 * Displaying Hopper Leads Warning
-		 * [[API: Function]] - goGetHopperLeadsWarning
+		 * [[API: Function]] - goGetCampaignsResources
 		 * This application is used to get the list of campaigns < 100
 		*/
 
-		public function API_goGetHopperLeadsWarning() {
+		public function API_goGetCampaignsResources() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
-			$postfields["goAction"] = "goGetHopperLeadsWarning"; #action performed by the [[API:Functions]]
+			$postfields["goAction"] = "goGetCampaignsResources"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype; 
 			
 			 $ch = curl_init();
@@ -4889,15 +4774,15 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		/*
 		 * Displaying Online Agents Statuses
-		 * [[API: Function]] - goGetOnlineAgents
+		 * [[API: Function]] - goGetAgentsMonitoringSummary
 		 * This application is used to get the list online agents
 		*/
 
-		public function API_goGetOnlineAgents() {
+		public function API_goGetAgentsMonitoringSummary() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
-			$postfields["goAction"] = "goGetOnlineAgents"; #action performed by the [[API:Functions]]
+			$postfields["goAction"] = "goGetAgentsMonitoringSummary"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype; 
 			
 			 $ch = curl_init();
@@ -4916,16 +4801,16 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		/*
 		 * Displaying Online Agents Statuses
-		 * [[API: Function]] - goGetOnlineAgents
+		 * [[API: Function]] - goGetRealtimeAgentsMonitoring
 		 * This application is used to get the list online agents
 		 * for realtime monitoring
 		*/
 
-		public function API_goGetAgentsMonitoring() {
+		public function API_goGetRealtimeAgentsMonitoring() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
-			$postfields["goAction"] = "goGetAgentsMonitoring"; #action performed by the [[API:Functions]]
+			$postfields["goAction"] = "goGetRealtimeAgentsMonitoring"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype; 
 			
 			 $ch = curl_init();
