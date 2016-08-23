@@ -4887,15 +4887,15 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		/*
 		 * Displaying Online Agents Statuses
-		 * [[API: Function]] - goGetOnlineAgents
+		 * [[API: Function]] - gogoGetAgentsMonitoringSummary
 		 * This application is used to get the list online agents
 		*/
 
-		public function API_goGetOnlineAgents() {
+		public function API_goGetAgentsMonitoringSummary() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
-			$postfields["goAction"] = "goGetOnlineAgents"; #action performed by the [[API:Functions]]
+			$postfields["goAction"] = "goGetAgentsMonitoringSummary"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype; 
 			
 			 $ch = curl_init();
@@ -4914,16 +4914,16 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		/*
 		 * Displaying Online Agents Statuses
-		 * [[API: Function]] - goGetOnlineAgents
+		 * [[API: Function]] - goGetRealtimeAgentsMonitoring
 		 * This application is used to get the list online agents
 		 * for realtime monitoring
 		*/
 
-		public function API_goGetAgentsMonitoring() {
+		public function API_goGetRealtimeAgentsMonitoring() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
-			$postfields["goAction"] = "goGetAgentsMonitoring"; #action performed by the [[API:Functions]]
+			$postfields["goAction"] = "goGetRealtimeAgentsMonitoring"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype; 
 			
 			 $ch = curl_init();

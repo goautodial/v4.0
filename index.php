@@ -680,7 +680,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 							   <div data-height="230" data-scrollable="yes" class="list-group">
 								  <!-- START list group item-->
 
-                                                                                <span id="refresh_online_agents"></span> 
+                                                                                <span id="refresh_agents_monitoring_summary"></span> 
 
 								  <!-- END list group item-->
 							   </div>
@@ -1135,7 +1135,7 @@ function clear_agent_form(){
                                         $('#modal-phonelogin').html(JSONObject.data["0"].vu_phone_login);
                                         $('#modal-custphone').html(JSONObject.data["0"].vl_phone_number);
                                         
-                                        $('#modalUserID').val(JSONObject.data["0"].vla_user);
+                                        //$('#modalUserID').val(JSONObject.data["0"].vla_user);
                                         //$('#modal-voicemail').append(JSONObject.data.voicemail_id);                                    
                                 }
                         });                        
@@ -1221,7 +1221,7 @@ function clear_agent_form(){
 			
         // ---- agent and campaign resources
                         load_campaigns_resources();
-                        load_online_agents();
+                        load_agents_monitoring_summary();
                         
         // ---- realtime agent monitoring
                         load_realtime_agents_monitoring();
@@ -1265,7 +1265,7 @@ function clear_agent_form(){
 		
 		// ... agent and campaign resources ...
 		//setInterval(load_campaigns_resources,5000);
-		setInterval(load_online_agents,5000);
+		setInterval(load_agents_monitoring_summary,5000);
 		
 		// ... realtime agents monitoring ...
                 setInterval(load_realtime_agents_monitoring,5000);

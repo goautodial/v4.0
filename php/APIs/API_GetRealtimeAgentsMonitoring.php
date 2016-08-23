@@ -8,7 +8,7 @@
     #### License: AGPLv2                            ####
     ####################################################
 
-    // initialize session and DDBB handler
+    //initialize session and DDBB handler
     include_once('../UIHandler.php');
     require_once('../LanguageHandler.php');
     require_once('../DbHandler.php');
@@ -208,9 +208,9 @@
  
 }
 
-    $barracks = rtrim($barracks, ",");
-    
+    $barracks = rtrim($barracks, ",");    
     $barracks .= ']';
+    
     echo json_encode($barracks);
     
     //echo $barracks;
