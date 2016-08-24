@@ -3020,11 +3020,8 @@ function RefreshCallsInQueue(CQcount) {
 function CallBacksCountCheck() {
     var postData = {
         goAction: 'goGetCallbackCount',
-        goServerIP: server_ip,
-        goSessionName: session_name,
         goUser: uName,
         goPass: uPass,
-        goCampaign: campaign,
         responsetype: 'json'
     };
 
@@ -3102,7 +3099,7 @@ function CallBacksCountCheck() {
             $("#topbar-callbacks ul li div.slimScrollDiv ul.menu").empty();
             $.each(CBallToday, function(key, value) {
                 if (cntCB < maxCBtoday) {
-                    var appendThis = '<li><a href="events.php" title="'+value.cust_name+'" style="padding: 0px 10px;"><h4 style="margin-top: 9.5px;"><p class="pull-left"><i class="fa fa-phone"></i> <b>'+phone_number_format(value.phone_number)+'</b></p><small class="label label-<?=CRM_UI_STYLE_WARNING?> pull-right" title="'+value.long_callback_time+'"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</small></h4></a></li>';
+                    var appendThis = '<li><a href="events.php" title="'+value.cust_name+'" style="padding: 0px 10px;"><h4 style="margin-top: 9.5px;"><p class="pull-left"><i class="fa fa-phone"></i> <b>'+phone_number_format(value.phone_number)+'</b><br><small style="margin-left:20px; font-size: 12px; line-height: 18px;"><em>Campaign: '+value.campaign_name+'</em></small></p><small class="label label-<?=CRM_UI_STYLE_WARNING?> pull-right" title="'+value.long_callback_time+'"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</small></h4></a></li>';
                     $("#topbar-callbacks ul li div.slimScrollDiv ul.menu").append(appendThis);
                 }
                 cntCB++;
