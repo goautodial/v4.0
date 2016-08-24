@@ -286,9 +286,9 @@ error_reporting(E_ALL);*/
 			</div>
 			<div class="fab-div-area" id="fab-div-area">
 				<ul class="fab-ul" style="height: 250px;">
-					<li class="li-style"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaign"></a></li><br/>
-					<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_disposition"></a></li><br/>
-					<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers"> </a></li>
+					<li class="li-style"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaign" title="Add Campaign"></a></li><br/>
+					<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_disposition" title="Add Disposition"></a></li><br/>
+					<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers" title="Add Phone Numbers"> </a></li>
 				</ul>
 			</div>
 		</div>
