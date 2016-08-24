@@ -396,30 +396,17 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	                </div>
                 </div>
         <!-- ====== CLUSTER STATUS ======= -->
-                <div class="row">
-                	<div role="tabpanel" class="panel panel-transparent">
-					  <ul role="tablist" class="nav nav-tabs nav-justified">
-					  
-					  <!-- Nav task panel tabs-->
-						 <li role="presentation" class="active">
-							<a href="#cluster_status" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-							   <em class="fa fa-bar-chart-o fa-fw"></em>Cluster Status</a>
-						 </li>
-					  </ul>
-				<?php
-					$cluster = $ui->API_goGetClusterStatus();
-				?>
-						<!-- Tab panes-->
-						<div class="tab-content p0 bg-white">
-						   <div id="cluster_status" role="tabpanel" class="tab-pane active">
-							<!-- Cluster Status -->
-							<div class="table-responsive">
-								<table class="table table-striped table-bordered table-hover">
+							
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading"><h4>Cluster Status</h4></div>
+                                                            <!-- START table-responsive-->
+                                                            <div class="table-responsive">
+                                                                <table id="cluster-status" class="table table-striped table-hover">
 								   <thead>
 									  <tr>
 										 <th>SERVER ID</th>
 										 <th>SERVER IP</th>
-										 <th>STATUS</th>
+										 <th>ACTIVE</th>
 										 <th>LOAD</th>
 										 <th>CHANNELS</th>
 										 <th>DISK</th>
@@ -427,62 +414,12 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 									  </tr>
 								   </thead>
 								   <tbody>
-										<?php
-											for($i=0;$i < count($cluster->server_id);$i++){
-												if($cluster->active[$i] == "Y"){
-													$cluster->active[$i] = "<font color='green'><i>Active</i></font>";
-												}else{
-													$cluster->active[$i] = "<font color='red'><i>Inactive</i></font>";
-												}
-										?>
-										<tr>
-											<td><?php echo $cluster->server_id[$i];?></td>
-											<td><?php echo $cluster->server_ip[$i];?></td>
-											<td><?php echo $cluster->active[$i];?></td>
-											<td><?php echo $cluster->sysload[$i]."% - ".$cluster->cpu[$i];?></td>
-											<td style="padding-left:20px;"><?php echo $cluster->channel[$i];?></td>
-											<td><?php echo $cluster->disk_usage[$i]."%";?></td>
-											<td><?php echo $cluster->systemtime[$i];?></td>
-										</tr>
-									<!--
-										<tr>
-											<td><span id="refresh_server_id"></span></td>
-											<td><span id="refresh_server_ip"></span></td>
-											<td><span id="refresh_active"></td>
-											<td><span id="refresh_sysload"></span> - <span id="refresh_cpu"></span></td>
-											<td><center><span id="refresh_channels_total"></span></center></td>
-											<td><center><span id="refresh_disk_usage"></span></center></td>
-											<td><span id="refresh_s_time"></span></td>
-										</tr>
-									-->
-										<?php
-											}
-										?>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
-											<td><b>PHP Time</b></td>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
-											<td><span id="refresh_php_time"></span></td>
-										</tr>
-										<tr>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
-											<td><b>DB Time</b></td>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
-											<td><span id="refresh_db_time"></span></td>
-										</tr>
+
 								   </tbody>
 								</table>
-							</div>
+                                                            </div>
 							<div class="panel-footer text-right">&nbsp;</div>
-						 	</div>
-						</div>
-					</div>
-                </div>
+                                                    </div>
 
             	</div><!-- END OF COLUMN 9 -->
 
@@ -542,18 +479,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		                     <div class="list-group">
 		                        <!-- START list group item-->
 		                        <div class="list-group-item">
-		                           <div class="media-box">
-		                              <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-purple"></em>
-		                                    <em class="fa fa-cloud-upload fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>                                           
-		                              <div class="media-box-body clearfix">
+
 		                              <span id="refresh_campaigns_resources">                                            
                                               </span>
-                                              </div>
-		                           </div>
+
 		                        </div>
 		                        <!-- END list group item-->
 		                        <!-- START list group item-->
@@ -760,7 +689,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
             <div class="modal-content"> 
                 <div class="modal-header"> 
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button> 
-                    <h4 class="modal-title" id="view_agent_information-modal">More about <span id="modal-user">:</span></h4> 
+                    <h4 class="modal-title" id="view_agent_information-modal">More about <span id="modal-userid">:</span></h4> 
                     <input type="hidden" value="" id="modalUserID">
                 </div> 
                     <div class="modal-body"> 
@@ -1135,7 +1064,7 @@ function clear_agent_form(){
                                         $('#modal-phonelogin').html(JSONObject.data["0"].vu_phone_login);
                                         $('#modal-custphone').html(JSONObject.data["0"].vl_phone_number);
                                         
-                                        //$('#modalUserID').val(JSONObject.data["0"].vla_user);
+                                        $('#modalUserID').val(JSONObject.data["0"].vla_user);
                                         //$('#modal-voicemail').append(JSONObject.data.voicemail_id);                                    
                                 }
                         });                        
@@ -1155,7 +1084,7 @@ function clear_agent_form(){
                             type: 'POST',
                             url: "./php/ViewCampaign.php",
                             data: {campaign_id: campid},
-                            cache: true,
+                            cache: false,
                             //dataType: 'json',
                                 success: function(campaigndata){ 
                                     //console.log(campaigndata);
@@ -1163,12 +1092,12 @@ function clear_agent_form(){
                                     var JSONObjectcampaign = JSON.parse(JSONStringcampaign);
                                     //console.log(JSONObjectcampaign.data.campaign_id);
                                     console.log(JSONObjectcampaign);
-                                        $('#modal-campaignid').append(JSONObjectcampaign.data.campaign_id);
-                                        $('#modal-campaignname').append(JSONObjectcampaign.data.campaign_name);
-                                        $('#modal-campaigndesc').append(JSONObjectcampaign.data.campaign_description);
-                                        $('#modal-callrecordings').append(JSONObjectcampaign.data.campaign_recording);
-                                        $('#modal-camptype').append(JSONObjectcampaign.data.campaign_type);
-                                        $('#modal-campaigncid').append(JSONObjectcampaign.data.campaign_cid);                                        
+                                        $('#modal-campaignid').html(JSONObjectcampaign.data.campaign_id);
+                                        $('#modal-campaignname').html(JSONObjectcampaign.data.campaign_name);
+                                        $('#modal-campaigndesc').html(JSONObjectcampaign.data.campaign_description);
+                                        $('#modal-callrecordings').html(JSONObjectcampaign.data.campaign_recording);
+                                        $('#modal-camptype').html(JSONObjectcampaign.data.campaign_type);
+                                        $('#modal-campaigncid').html(JSONObjectcampaign.data.campaign_cid);                                        
                                         $('#modal-localcalltime').append(JSONObjectcampaign.data.local_call_time);                                       
                                 }
                          });                        
@@ -1205,19 +1134,7 @@ function clear_agent_form(){
 			load_LiveOutbound();
                             
 	// ---- clusterstatus table
-		// ---- server 
-			load_server_id(); 
-			load_server_ip();
-			load_active();
-			load_sysload();
-			load_cpu();
-			load_channels_total();
-			load_disk_usage();
-			load_s_time();
-		// ---- PHP TIME
-			load_php_time();
-		// ---- DB TIME
-			load_db_time();
+                        load_cluster_status();
 			
         // ---- agent and campaign resources
                         load_campaigns_resources();
@@ -1253,18 +1170,10 @@ function clear_agent_form(){
 		setInterval(load_LiveOutbound,5000);
 		
 		// ... cluster status table ...
-		setInterval(load_server_id,5000);
-		setInterval(load_server_ip,5000);
-		setInterval(load_active,5000);
-		setInterval(load_sysload,5000);
-		setInterval(load_cpu,5000);
-		setInterval(load_channels_total,5000);
-		setInterval(load_disk_usage,5000);
-		setInterval(load_php_time,5000);
-		setInterval(load_db_time,5000);
+		setInterval(load_cluster_status,60000);
 		
 		// ... agent and campaign resources ...
-		//setInterval(load_campaigns_resources,5000);
+		setInterval(load_campaigns_resources,60000);
 		setInterval(load_agents_monitoring_summary,5000);
 		
 		// ... realtime agents monitoring ...
