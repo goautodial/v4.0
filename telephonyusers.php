@@ -187,19 +187,12 @@
 				<!-- STEP 2 -->
 					<div class="wizard-step">
 						<?php
-						$max = count($output->user);
-						$x = 0;
-						for($i=0; $i < $max; $i++){
-							//echo $max-$x;
-							$agent = substr($output->user[$max-$x], 0, 5);
-							if($agent == "agent"){
-								$get_last = substr($output->user[$max-$x], -2);
-							}else{
-								$x = $x+1;
-							}
-						}
+						$agent_num = $output->last_count;
 
-						$agent_num = $get_last + 1;
+						$num_padded = sprintf("%03d", $agent_num);
+						
+						$fullname = "Agent ".$num_padded;
+						$user_id_for_form = "agent".$num_padded;
 
 						$num_padded = sprintf("%03d", $agent_num);
 						
