@@ -410,7 +410,6 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                                                 <tr>
                                                                                         <th>SERVER ID</th>
                                                                                         <th>SERVER IP</th>
-                                                                                        <!-- <th>ACTIVE</th> -->
                                                                                         <th>LOAD</th>
                                                                                         <th>CHANNELS</th>
                                                                                         <th>DISK</th>
@@ -495,90 +494,6 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                               </span>
 
 		                        </div>
-		                        <!-- END list group item-->
-		                        <!-- START list group item-->
-		                        <!--<div class="list-group-item">
-		                           <div class="media-box">
-		                              <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-info"></em>
-		                                    <em class="fa fa-file-text-o fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>
-		                              <div class="media-box-body clearfix">
-		                                 <small class="text-muted pull-right ml">2h</small>
-		                                 <div class="media-box-heading"><a href="#" class="text-info m0">NEW DOCUMENT</a>
-		                                 </div>
-		                                 <p class="m0">
-		                                    <small><a href="#">Bootstrap.doc</a>
-		                                    </small>
-		                                 </p>
-		                              </div>
-		                           </div>
-		                        </div>-->
-		                        <!-- END list group item-->
-		                        <!-- START list group item-->
-		                        <!--<div class="list-group-item">
-		                           <div class="media-box">
-		                              <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-danger"></em>
-		                                    <em class="fa fa-exclamation fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>
-		                              <div class="media-box-body clearfix">
-		                                 <small class="text-muted pull-right ml">5h</small>
-		                                 <div class="media-box-heading"><a href="#" class="text-danger m0">BROADCAST</a>
-		                                 </div>
-		                                 <p class="m0"><a href="#">Read</a>
-		                                 </p>
-		                              </div>
-		                           </div>
-		                        </div>-->
-		                        <!-- END list group item-->
-		                        <!-- START list group item-->
-		                        <!--<div class="list-group-item">
-		                           <div class="media-box">
-		                              <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-success"></em>
-		                                    <em class="fa fa-clock-o fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>
-		                              <div class="media-box-body clearfix">
-		                                 <small class="text-muted pull-right ml">15h</small>
-		                                 <div class="media-box-heading"><a href="#" class="text-success m0">NEW MEETING</a>
-		                                 </div>
-		                                 <p class="m0">
-		                                    <small>On
-		                                       <em>10/12/2015 09:00 am</em>
-		                                    </small>
-		                                 </p>
-		                              </div>
-		                           </div>
-		                        </div>-->
-		                        <!-- END list group item-->
-		                        <!-- START list group item-->
-		                        <!--<div class="list-group-item">
-		                           <div class="media-box">
-		                              <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-warning"></em>
-		                                    <em class="fa fa-tasks fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>
-		                              <div class="media-box-body clearfix">
-		                                 <small class="text-muted pull-right ml">1w</small>
-		                                 <div class="media-box-heading"><a href="#" class="text-warning m0">TASKS COMPLETION</a>
-		                                 </div>
-		                                 <div class="progress progress-xs m0">
-		                                    <div role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" style="width: 22%" class="progress-bar progress-bar-warning progress-bar-striped">
-		                                       <span class="sr-only">22% Complete</span>
-		                                    </div>
-		                                 </div>
-		                              </div>
-		                           </div>
-		                        </div>-->
 		                     </div>
 		                     <!--</span>-->
 		                     <div class="panel-footer clearfix">
@@ -700,27 +615,41 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                             <div class="modal-content"> 
                                 <div class="modal-header"> 
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button> 
-                                    <h4 class="modal-title" id="view_agent_information-modal">More about <span id="modal-userid">:</span></h4> 
-                                    <input type="hidden" value="" id="modalUserID">
+                                    <h4 class="modal-title">More about <span id="modal-username"></span>:</h4> 
+                                    <!-- <input type="hidden" value="" id="modalUserID"> -->
                                 </div> 
                                     <div class="modal-body"> 
                                         <center> <img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle"></a> 
-                                            <h3 class="media-heading"><span id="modal-fullname"></span> <small><?php echo $call_time_MS;?></small></h3> 
+                                            <h3 class="media-heading"><span id="modal-fullname"></span> <small></small></h3> 
                                             <span><strong>Logged-in to:</strong></span> 
                                             <span class="label label-warning" id="modal-campaign"></span> 
                                             <span class="label label-info" id="modal-usergroup"></span> 
                                             <span class="label label-info" id="modal-userlevel"></span> 
-                                            <span class="label label-success" id="modal-status" ></span>
+                                            <span class="label label-success" id="modal-phonelogin"></span>
                                         </center> <hr> 
-                                        <center> 
-                                            <p class="text-left"><strong>Phone login: </strong><span id="modal-phonelogin"></span></p>
-                                            <p class="text-left"><strong>Agent ID: </strong><span id="modal-userid"></span></p> <br> 
-                                        </center> 
+                                            <div class="table-responsive">
+                                                    <table class="table table-striped table-hover" id="view_agent_information_table" style="width: 100%">
+                                                        <thead>
+                                                                <th>Agent ID</th>                                                    
+                                                                <th>Status</th>
+                                                                <th>User Group</th>
+                                                                <th>Cust Phone</th>
+                                                                <th>MM:SS</th>
+                                                   
+                                                        </thead>
+                                                        <tbody>
+                                                        
+                                                        </tbody>
+                                                    </table>
+                                            </div>
                                     </div> 
                                         <div class="modal-footer"> 
-                                            <center> 
+                                            <a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" class="pull-right text-danger">
+                                                <small>Emergency Logout</small> <em class="fa fa-arrow-right"></em>
+                                            </a>                                        
+                                            <!-- <center> 
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">I'm done</button> 
-                                            </center> 
+                                            </center> -->
                                         </div> 
                                 </div> 
                             </div> 
@@ -1018,7 +947,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 function clear_agent_form(){
 
     $('#modal-userid').html("");
-    $('#modal-user').html("");
+    $('#modal-username').html("");
     $('#modal-fullname').html("");
     $('#modal-status').html("");
     $('#modal-campaign').html("");
@@ -1062,21 +991,21 @@ function clear_agent_form(){
                                     //console.log(data);
                                     var JSONString = data;
                                     var JSONObject = JSON.parse(JSONString);
-                                    //var JSONObject = $.parseJSON(JSONString);
                                     //console.log(JSONString);
                                     console.log(JSONObject);      // Dump all data of the Object in the console
-                                        $('#modal-userid').html(JSONObject.data["0"].vu_user_id);
-                                        $('#modal-user').html(JSONObject.data["0"].vla_user);
-                                        $('#modal-fullname').html(JSONObject.data["0"].vu_full_name);
-                                        $('#modal-status').html(JSONObject.data["0"].vla_status);
-                                        $('#modal-campaign').html(JSONObject.data["0"].vla_campaign_id);
-                                        $('#modal-usergroup').html(JSONObject.data["0"].vu_user_group);     
-                                        $('#modal-userlevel').html(JSONObject.data["0"].vu_user_level);                                        
-                                        $('#modal-phonelogin').html(JSONObject.data["0"].vu_phone_login);
-                                        $('#modal-custphone').html(JSONObject.data["0"].vl_phone_number);
+                                    console.log(JSONObject.data[1].phone_login);
+                                        //$('#modal-userid').html(JSONObject.data["0"].vu_user_id);
+                                        $('#modal-username').html(JSONObject.data[1].user);
+                                        $('#modal-fullname').html(JSONObject.data[0].vu_full_name);
+                                        $('#modal-status').html(JSONObject.data[0].vla_status);
+                                        $('#modal-campaign').html(JSONObject.data[0].vla_campaign_id);
+                                        $('#modal-usergroup').html(JSONObject.data[0].vu_user_group);     
+                                        $('#modal-userlevel').html(JSONObject.data[0].vu_user_level);                                        
+                                        $('#modal-phonelogin').html(JSONObject.data[1].phone_login);
+                                        $('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
                                         
-                                        $('#modalUserID').val(JSONObject.data["0"].vla_user);
-                                        //$('#modal-voicemail').append(JSONObject.data.voicemail_id);                                    
+                                        //$('#modalUserID').val(JSONObject.data["0"].vla_user);
+                                        
                                 }
                         });                        
                     });
@@ -1155,7 +1084,7 @@ function clear_agent_form(){
                         load_realtime_agents_monitoring();
                         
         // ---- view agent information modal
-                        //load_view_agent_information();
+                        load_view_agent_information();
                 
 		});
 
@@ -1191,7 +1120,7 @@ function clear_agent_form(){
                 setInterval(load_realtime_agents_monitoring,5000);
 		
 		// ... view agent information modal  ...
-		//setInterval(load_view_agent_information,5000);
+		setInterval(load_view_agent_information,10000);
 		
 	</script>
 	

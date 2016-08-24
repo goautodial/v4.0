@@ -26,7 +26,7 @@
 
     $output = json_decode($data);
 
-    if ($output == NULL){
+    if (count($output->data) < 1){
         echo   		                    '<div class="media-box">
 		                              <div class="pull-left">
 		                                 <span class="fa-stack">
@@ -45,65 +45,65 @@
 		                                 </p>
 		                              </div>
 		                           </div>';
-    }
+
+    } else {
 
     //echo "<pre>";
     //print_r($output);
-    foreach ($output->data as $key => $value) {
+        foreach ($output->data as $key => $value) {
+            
+            $campname = $value->campaign_name;
+            $leadscount = $value->mycnt;
+            $campid =  $value->campaign_id;
+            $campdesc = $value->campaign_description;
+            $callrecordings = $value->campaign_recording;
+            $campaigncid = $value->campaign_cid;
+            $localcalltime = $value->local_call_time;
+            $camptype = $value->campaign_type;      
+            
+        if ($leadscount == 0){   
         
-        $campname = $value->campaign_name;
-        $leadscount = $value->mycnt;
-        $campid =  $value->campaign_id;
-        $campdesc = $value->campaign_description;
-        $callrecordings = $value->campaign_recording;
-        $campaigncid = $value->campaign_cid;
-        $localcalltime = $value->local_call_time;
-        $camptype = $value->campaign_type;      
-        
-    if ($leadscount == 0){   
-    
-            echo                            '<div class="media-box">
-                                                <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-danger"></em>
-		                                    <em class="fa fa-exclamation fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>
-		                              <div class="media-box-body clearfix">
-		                                 <small class="text-muted pull-right ml">'.$leadscount.'</small>
-		                                 <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-danger m0">'.$campname.'</strong></a>
-		                                 </div>
-		                                 <p class="m0">
-		                                    <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text">'.$campid.'</strong></a>
-		                                    </small>
-		                                 </p>
-		                              </div>
-                                            </div>';
-                                            
-    }
-        if ($leadscount > 0){ 
-
-             echo                           '<div class="media-box">
-                                                <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-info"></em>
-		                                    <em class="fa fa-file-text-o fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>
-		                              <div class="media-box-body clearfix">
-		                                 <small class="text-muted pull-right ml">'.$leadscount.'</small>
-		                                 <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-warning m0">'.$campname.'</strong></a>
-		                                 </div>
-		                                 <p class="m0">
-		                                    <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text">'.$campid.'</strong></a>
-		                                    </small>
-		                                 </p>
-		                              </div>
-                                            </div>';
+                echo                            '<div class="media-box">
+                                                    <div class="pull-left">
+                                                    <span class="fa-stack">
+                                                        <em class="fa fa-circle fa-stack-2x text-danger"></em>
+                                                        <em class="fa fa-exclamation fa-stack-1x fa-inverse text-white"></em>
+                                                    </span>
+                                                </div>
+                                                <div class="media-box-body clearfix">
+                                                    <small class="text-muted pull-right ml">'.$leadscount.'</small>
+                                                    <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-danger m0">'.$campname.'</strong></a>
+                                                    </div>
+                                                    <p class="m0">
+                                                        <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text">'.$campid.'</strong></a>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                </div>';
+                                                
         }
+            if ($leadscount > 0){ 
 
-        
-    }  
+                echo                           '<div class="media-box">
+                                                    <div class="pull-left">
+                                                    <span class="fa-stack">
+                                                        <em class="fa fa-circle fa-stack-2x text-info"></em>
+                                                        <em class="fa fa-file-text-o fa-stack-1x fa-inverse text-white"></em>
+                                                    </span>
+                                                </div>
+                                                <div class="media-box-body clearfix">
+                                                    <small class="text-muted pull-right ml">'.$leadscount.'</small>
+                                                    <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-warning m0">'.$campname.'</strong></a>
+                                                    </div>
+                                                    <p class="m0">
+                                                        <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text">'.$campid.'</strong></a>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                </div>';
+            }        
+        }
+    }
     
     
 ?>

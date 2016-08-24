@@ -40,7 +40,7 @@
     
     $sessionAvatar = $ui->getSessionAvatar();
     
-    if ($output->data.length == 0){
+    if (count($output->data) < 1){
     
     echo '<a href="#" class="list-group-item">
             <div class="media-box">
@@ -129,10 +129,8 @@
             <!-- END list group item-->
             </div>';
 
-    }
-
-     if ($output->data.length == 0){
-     
+    } else {
+        
         foreach ($output->data as $key => $value) {
         
             $userid = $value->vu_user_id;
@@ -207,7 +205,7 @@
                             <small class="text-muted pull-right ml" style="padding-right:20px;">'.$call_time_MS.'</small>
                         </div>
                     </div>
-                </a>'; 
+                </a>';
 
         }
     }
