@@ -40,7 +40,7 @@
     
     $sessionAvatar = $ui->getSessionAvatar();
     
-    if ($output == NULL){
+    if ($output->data.length == 0){
     
     echo '<a href="#" class="list-group-item">
             <div class="media-box">
@@ -130,7 +130,9 @@
             </div>';
 
     }
-    
+
+     if ($output->data.length == 0){
+     
         foreach ($output->data as $key => $value) {
         
             $userid = $value->vu_user_id;
@@ -208,5 +210,5 @@
                 </a>'; 
 
         }
-
+    }
 ?>
