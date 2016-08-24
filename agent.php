@@ -167,44 +167,46 @@ if (isset($_GET["message"])) {
 			});
 			
 			$(function() {
-				$("#cust_full_name a[id='first_name']").editable({
-					type: 'text',
-					name: 'first_name',
-					placeholder: 'Enter First Name',
-					emptytext: '&nbsp;',
-					unsavedclass: null,
-					savenochange: true
-				});
-				$("#cust_full_name a[id='middle_initial']").editable({
-					type: 'text',
-					name: 'middle_initial',
-					placeholder: 'Enter Middle Initial',
-					emptytext: '&nbsp;',
-					unsavedclass: null,
-					savenochange: true
-				});
-				$("#cust_full_name a[id='last_name']").editable({
-					type: 'text',
-					name: 'last_name',
-					placeholder: 'Enter Last Name',
-					emptytext: '&nbsp;',
-					unsavedclass: null,
-					savenochange: true
-				});
-				
-				$('#cust_full_name a').on('hidden', function() {
+				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('hidden', function() {
 					var thisID = $(this).attr('id');
 					$('#'+thisID+'_label').addClass('hidden');
 				});
 				
-				$('#cust_full_name a').on('shown', function() {
+				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('shown', function() {
 					var thisID = $(this).attr('id');
-					if ($(this).html() != '&nbsp;') {
-						$('div.editable-input input').val($(this).text());
+					var oldValue = $(this).editable('getValue', true);
+					console.log(oldValue);
+					if ($(this).html() !== '&nbsp;') {
+						//$('div.editable-input input').val($(this).text());
+						//$(this).editable('setValue', oldValue, true);
 					} else {
-						$('div.editable-input input').val('');
+						//$('div.editable-input input').val('');
+						//$(this).editable('setValue', '', true);
 					}
 					$('#'+thisID+'_label').removeClass('hidden');
+				});
+				
+				$("a[id='first_name']").editable({
+					type: 'text',
+					title: 'Enter First Name',
+					placeholder: 'Enter First Name',
+					emptytext: '&nbsp;',
+					unsavedclass: null
+				});
+				$("a[id='middle_initial']").editable({
+					type: 'text',
+					title: 'Enter Middle Initial',
+					placeholder: 'Enter Middle Initial',
+					emptytext: '&nbsp;',
+					unsavedclass: null
+				});
+				$("a[id='last_name']").editable({
+					type: 'text',
+					value: '',
+					title: 'Enter Last Name',
+					placeholder: 'Enter Last Name',
+					emptytext: '&nbsp;',
+					unsavedclass: null
 				});
 			});
 			
@@ -287,6 +289,12 @@ if (isset($_GET["message"])) {
 			.control-label {
 				padding-top: 0px;
 			}
+			.popover-title {
+				font-size: 16px;
+				font-weight: bold;
+				color: #555;
+				background-color: #f0f0f0;
+			}
 		</style>
     </head>
     <?php print $ui->creamyAgentBody(); ?>
@@ -314,10 +322,10 @@ if (isset($_GET["message"])) {
 							
 								<div class="card-heading bg-inverse">
 									<div class="row">
-										<div id="cust_avatar" class="col-lg-1 col-md-2 col-sm-2 text-center hidden-xs" style="height: 64px;">
+										<div id="cust_avatar" class="col-lg-1 col-md-1 col-sm-2 text-center hidden-xs" style="height: 64px;">
 											<avatar username="Dialed Client" src="<?php echo CRM_DEFAULTS_USER_AVATAR;?>" :size="64"></avatar>
 										</div>
-										<div class="col-lg-9 col-md-8 col-sm-8">
+										<div class="col-lg-11 col-md-11 col-sm-10">
 						                <h4 id="cust_full_name" class="hidden">
 											<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
 										</h4>
@@ -842,9 +850,9 @@ if (isset($_GET["message"])) {
       <div class="tab-pane" id="control-sidebar-settings-tab">
 		<ul class="control-sidebar-menu" id="go_agent_profile">
 			<li>
-				<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px;">
+				<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px; padding-top: 10px;">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<img src="<?=$user->getUserAvatar()?>" class="img-circle thumb96" height="auto" style="border-color:transparent; margin: 10px;" alt="User Image" />
+						<p><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 96, false, true, false)?></p>
 						<p style="color:white;"><?=$user->getUserName()?><br><small><?=$lh->translationFor("nice_to_see_you_again")?></small></p>
 					</a>
 				</div>

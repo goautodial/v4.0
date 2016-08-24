@@ -133,6 +133,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				$(".preloader").fadeOut("slow");
 			})
 		</script>
+	<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'; // sweetalert
+	<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>'; // sweetalert js
     </head>
     <?php print $ui->creamyBody(); ?>
         <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
@@ -629,7 +631,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             </div>
                                     </div> 
                                         <div class="modal-footer"> 
-                                            <a href="#" data-toggle="modal" data-target="#" class="pull-right text-danger">
+                                            <a href="#" data-toggle="modal" data-target="#" class="pull-right text-danger" onClick="goGetModalUsernameValue();">
                                                 <small>Emergency Logout</small> <em class="fa fa-arrow-right"></em>
                                             </a>                                        
                                             <!-- <center> 
@@ -954,6 +956,27 @@ function clear_agent_form(){
     $('#modal-campaigncid').html("");
     $('#modal-localcalltime').html("");
 }
+
+function goGetModalUsernameValue(){
+   
+   var goModalUsername = document.getElementById("modal-username").innerText;
+
+   $.ajax({
+       type: 'POST',
+       url: "./php/APIs/API_EmergencyLogout.php",
+       data: {goUserAgent: goModalUsername},
+       cache: false,
+       //dataType: 'json',
+       success: function(data){
+	  clear_agent_form();
+	  sweetAlert("Emergency Logout",data, "warning");
+	  $('#view_agent_information').modal('hide');
+       }
+   }); 
+
+}
+
+
 		//demian
 		$(document).ready(function(){
 		
@@ -1143,6 +1166,36 @@ function clear_agent_form(){
    <!-- =============== APP SCRIPTS ===============-->
     <script src="theme_dashboard/js/app.js"></script>
     <script src="theme_dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
+			
+	<!-- Vue Avatar -->
+	<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>
+	<script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>
+	<script type='text/javascript'>
+		var goOptions = {
+			el: 'body',
+			components: {
+				'avatar': Avatar.Avatar,
+				'rules': {
+					props: ['items'],
+					template: 'For example:' +
+						'<ul id="example-1">' +
+						'<li v-for="item in items"><b>{{ item.username }}</b> becomes <b>{{ item.initials }}</b></li>' +
+						'</ul>'
+				}
+			},
+	
+			data: {
+				items: []
+			},
+	
+			methods: {
+				initials: function(username, initials) {
+					this.items.push({username: username, initials: initials});
+				}
+			}
+		};
+		var goAvatar = new Vue(goOptions);
+	</script>
 
     </body>
 </html>

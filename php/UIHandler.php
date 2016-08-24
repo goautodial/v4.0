@@ -1398,6 +1398,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$name = $this->creamyHeaderName();
 			//<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="32"> '.$name.'</a>
 		// return header
+		// old img element : <img src="'.$user->getUserAvatar().'" width="12" height="auto"  class="user-image img-circle" alt="User Image" style="padding-bottom: 3px;" />
+		$avatarElement = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 22, true);
 		return '<header class="main-header">
 				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
 	            <nav class="navbar navbar-static-top" role="navigation">
@@ -1414,7 +1416,7 @@ error_reporting(E_ERROR | E_PARSE);
 		                    	<li>
 			                    	<a href="#" class="visible-xs" data-toggle="control-sidebar" style="padding-top: 17px; padding-bottom: 18px; margin-right: -15px;"><i class="fa fa-cogs"></i></a>
 										<a href="#" class="hidden-xs" data-toggle="control-sidebar" style="padding-top: 14px; padding-bottom: 14px; margin-right: -15px;">
-											<img src="'.$user->getUserAvatar().'" width="12" height="auto"  class="user-image img-circle" alt="User Image" style="padding-bottom: 3px;" />
+											'.$avatarElement.'
 											<span> '.$user->getUserName().' <i class="caret"></i></span>
 										</a>
 				               </li>
@@ -1744,16 +1746,20 @@ error_reporting(E_ERROR | E_PARSE);
 				<div class="text-center"><a href="./tasks.php">'.$this->lh->translationFor("tasks").'</a></div>
 			</li>';
 			$changeMyData = '<div class="pull-left"><a href="./edituser.php" class="btn btn-default btn-flat">'.$this->lh->translationFor("my_profile").'</a></div>';
-		} 
-		
+		}  
+ 		
+		// old img element : <img src="'.$user->getUserAvatar().'" style="border-color:transparent;" alt="User Image" />
+		// <img src="'.$user->getUserAvatar().'" width="auto" height="auto"  class="user-image" alt="User Image" />
+		$avatarElement1 = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 22, true);
+		$avatarElement2 = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 96, false, true, false);
 		return '<li class="dropdown user user-menu">
 	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-	                    <img src="'.$user->getUserAvatar().'" width="auto" height="auto"  class="user-image" alt="User Image" />
+	                    '.$avatarElement1.'
 	                    <span>'.$user->getUserName().' <i class="caret"></i></span>
 	                </a>
 	                <ul class="dropdown-menu">
 	                    <li class="user-header bg-light-blue"">
-	                        <img src="'.$user->getUserAvatar().'" style="border-color:transparent;" alt="User Image" />
+	                        '.$avatarElement2.'
 	                        <p>'.$user->getUserName().'<small>'.$this->lh->translationFor("nice_to_see_you_again").'</small></p>
 	                    </li>'.$menuActions.'
 	                    <li class="user-footer">'.$changeMyData.'
@@ -1886,10 +1892,12 @@ error_reporting(E_ERROR | E_PARSE);
 		$customerTypes = $this->db->getCustomerTypes();
 		
 		// prefix: structure and home link
+		// old img element : <img src="'.$avatar.'" class="img-circle" alt="User Image" />
+		$avatarElement = $this->getVueAvatar($username, $avatar, 40);
 		$result = '<aside class="main-sidebar" sidebar-offcanvas"><section class="sidebar">
 	            <div class="user-panel">
 	                <div class="pull-left image">
-	                    <a href="edituser.php"><img src="'.$avatar.'" class="img-circle" alt="User Image" /></a>
+	                    <a href="edituser.php">'.$avatarElement.'</a>
 	                </div>
 	                <div class="pull-left info">
 	                    <p>'.$this->lh->translationFor("hello").', '.$username.'</p>
@@ -5218,6 +5226,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 
 		 return $output;
 	}
+
 	
 // <<<=================== END OF DASHBOARD APIs =============>>>
 	
@@ -5557,8 +5566,58 @@ error_reporting(E_ERROR | E_PARSE);
 		$js .= '<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>'; // sweetalert js 
 		$js .= '<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>'; // bootstrap 3 js
 		$js .= '<script src="js/app.min.js" type="text/javascript"></script>'; // creamy app js
+		$js .= '<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>';
+		$js .= '<script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>';
+		$js .= "<script type='text/javascript'>
+			var goOptions = {
+				el: 'body',
+				components: {
+					'avatar': Avatar.Avatar,
+					'rules': {
+						props: ['items'],
+						template: 'For example:' +
+							'<ul id=\"example-1\">' +
+							'<li v-for=\"item in items\"><b>{{ item.username }}</b> becomes <b>{{ item.initials }}</b></li>' +
+							'</ul>'
+					}
+				},
+		
+				data: {
+					items: []
+				},
+		
+				methods: {
+					initials: function(username, initials) {
+						this.items.push({username: username, initials: initials});
+					}
+				}
+			};
+			var goAvatar = new Vue(goOptions);
+		</script>";
 
 		return $js;
+	}
+	
+	/**
+	 * Returns an Vue Avatar
+	 */
+	public function getVueAvatar($username, $avatar, $size, $topBar = false, $sideBar = false, $rounded = true) {
+		$showAvatar = '';
+		$initials = '';
+		if (isset($avatar)) {
+			if (preg_match("/(agent|goautodial)/i", $username) && preg_match("/defaultAvatar/i", $avatar)) {
+				$showAvatar = '';
+				$initials = 'initials="GO"';
+			} else {
+				$showAvatar = 'src="'.$avatar.'"';
+				$initials = '';
+			}
+		}
+		$topBarStyle = ($topBar) ? 'style="float: left; padding-right: 5px;"' : '';
+		$sideBarStyle = ($sideBar) ? 'style="width: 100%; text-align: center;" display="inline-block"' : '';
+		$roundedImg = (!$rounded) ? ':rounded="false"' : '';
+		
+		return '<avatar username="'.$username.'" '.$showAvatar.' '.$initials.' '.$topBarStyle.' '.$sideBarStyle.' '.$roundedImg.' :size="'.$size.'"></avatar>';
 	}
 
 }

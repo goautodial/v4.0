@@ -2571,13 +2571,13 @@ function CheckForIncoming () {
             $(".formMain input[name='phone_number']").val(this_VDIC_data.phone_number).trigger('change');
             $(".formMain input[name='title']").val(this_VDIC_data.title).trigger('change');
             if (this_VDIC_data.first_name !== '') {
-                $("#cust_full_name a[id='first_name']").text(this_VDIC_data.first_name);
+                $("#cust_full_name a[id='first_name']").editable('setValue', this_VDIC_data.first_name, true);
             }
             if (this_VDIC_data.middle_initial !== '') {
-                $("#cust_full_name a[id='middle_initial']").text(this_VDIC_data.middle_initial);
+                $("#cust_full_name a[id='middle_initial']").editable('setValue', this_VDIC_data.middle_initial, true);
             }
             if (this_VDIC_data.last_name !== '') {
-                $("#cust_full_name a[id='last_name']").text(this_VDIC_data.last_name);
+                $("#cust_full_name a[id='last_name']").editable('setValue', this_VDIC_data.last_name, true);
             }
             $(".formMain input[name='address1']").val(this_VDIC_data.address1).trigger('change');
             $(".formMain input[name='address2']").val(this_VDIC_data.address2).trigger('change');
@@ -3171,13 +3171,13 @@ function UpdateFieldsData() {
                 {$(".formMain input[name='title']").val(UDfieldsData.title);}
             var regUDfirst_name = new RegExp("first_name,","ig");
             if (fields_list.match(regUDfirst_name))
-                {$("#cust_full_name a[id='first_name']").text(UDfieldsData.first_name);}
+                {$("#cust_full_name a[id='first_name']").editable('setValue', UDfieldsData.first_name, true);}
             var regUDmiddle_initial = new RegExp("middle_initial,","ig");
             if (fields_list.match(regUDmiddle_initial))
-                {$("#cust_full_name a[id='middle_initial']").text(UDfieldsData.middle_initial);}
+                {$("#cust_full_name a[id='middle_initial']").editable('setValue', UDfieldsData.middle_initial, true);}
             var regUDlast_name = new RegExp("last_name,","ig");
             if (fields_list.match(regUDlast_name))
-                {$("#cust_full_name a[id='last_name']").text(UDfieldsData.last_name);}
+                {$("#cust_full_name a[id='last_name']").editable('setValue', UDfieldsData.last_name, true);}
             var regUDaddress1 = new RegExp("address1,","ig");
             if (fields_list.match(regUDaddress1))
                 {$(".formMain input[name='address1']").val(UDfieldsData.address1);}
@@ -3977,9 +3977,9 @@ function DispoSelectSubmit() {
             }
             $(".formMain input[name='phone_number']").val('').trigger('change');
             $(".formMain input[name='title']").val('').trigger('change');
-            $("#cust_full_name a[id='first_name']").html('&nbsp;');
-            $("#cust_full_name a[id='middle_initial']").html('&nbsp;');
-            $("#cust_full_name a[id='last_name']").html('&nbsp;');
+            $("#cust_full_name a[id='first_name']").editable('setValue', '', true);
+            $("#cust_full_name a[id='middle_initial']").editable('setValue', '', true);
+            $("#cust_full_name a[id='last_name']").editable('setValue', '', true);
             $(".formMain input[name='address1']").val('').trigger('change');
             $(".formMain input[name='address2']").val('').trigger('change');
             $(".formMain input[name='address3']").val('').trigger('change');
@@ -4161,9 +4161,9 @@ function CustomerData_update() {
         goVendorLeadCode: $(".formMain input[name='vendor_lead_code']").val(),
         goPhoneNumber: $(".formMain input[name='phone_number']").val(),
         goTitle: $(".formMain input[name='title']").val(),
-        goFirstName: $("#cust_full_name a[id='first_name']").text(),
-        goMiddleInitial: $("#cust_full_name a[id='middle_initial']").text(),
-        goLastName: $("#cust_full_name a[id='last_name']").text(),
+        goFirstName: $("#cust_full_name a[id='first_name']").editable('getValue', true),
+        goMiddleInitial: $("#cust_full_name a[id='middle_initial']").editable('getValue', true),
+        goLastName: $("#cust_full_name a[id='last_name']").editable('getValue', true),
         goAddress1: $(".formMain input[name='address1']").val(),
         goAddress2: $(".formMain input[name='address2']").val(),
         goAddress3: $(".formMain input[name='address3']").val(),
@@ -4732,15 +4732,15 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='title']").val(MDnextResponse_array[9]).trigger('change');
                     cust_first_name                         = MDnextResponse_array[10];
                     if (cust_first_name !== '') {
-                        $("#cust_full_name a[id='first_name']").text(cust_first_name);
+                        $("#cust_full_name a[id='first_name']").editable('setValue', cust_first_name, true);
                     }
                     cust_middle_initial                     = MDnextResponse_array[11];
                     if (cust_middle_initial != '') {
-                        $("#cust_full_name a[id='middle_initial']").text(cust_middle_initial);
+                        $("#cust_full_name a[id='middle_initial']").editable('setValue', cust_middle_initial, true);
                     }
                     cust_last_name                          = MDnextResponse_array[12];
                     if (cust_last_name !== '') {
-                        $("#cust_full_name a[id='last_name']").text(cust_last_name);
+                        $("#cust_full_name a[id='last_name']").editable('setValue', cust_last_name, true);
                     }
                     $(".formMain input[name='address1']").val(MDnextResponse_array[13]).trigger('change');
                     $(".formMain input[name='address2']").val(MDnextResponse_array[14]).trigger('change');
@@ -5891,11 +5891,11 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 	encoded = utf8_decode(xtest);
 
 	if (urlschema == 'DEFAULT') {
-        var getFirstName = $("#cust_full_name a[id='first_name']").text();
+        var getFirstName = $("#cust_full_name a[id='first_name']").editable('getValue', true);
             getFirstName = (getFirstName !== ' ') ? getFirstName : '';
-        var getMiddleName = $("#cust_full_name a[id='middle_initial']").text();
+        var getMiddleName = $("#cust_full_name a[id='middle_initial']").editable('getValue', true);
             getMiddleName = (getMiddleName !== ' ') ? getMiddleName : '';
-        var getLastName = $("#cust_full_name a[id='last_name']").text();
+        var getLastName = $("#cust_full_name a[id='last_name']").editable('getValue', true);
             getLastName = (getLastName !== ' ') ? getLastName : '';
 		web_form_varsX = 
 		"&lead_id=" + $(".formMain input[name='lead_id']").val() + 
@@ -6097,11 +6097,11 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 			{web_form_vars = web_form_varsX;}
 		if (webformnumber == '2')
 			{web_form_vars_two = web_form_varsX;}
-        var getFirstName = $("#cust_full_name a[id='first_name']").text();
+        var getFirstName = $("#cust_full_name a[id='first_name']").editable('getValue', true);
             getFirstName = (getFirstName !== ' ') ? getFirstName : '';
-        var getMiddleName = $("#cust_full_name a[id='middle_initial']").text();
+        var getMiddleName = $("#cust_full_name a[id='middle_initial']").editable('getValue', true);
             getMiddleName = (getMiddleName !== ' ') ? getMiddleName : '';
-        var getLastName = $("#cust_full_name a[id='last_name']").text();
+        var getLastName = $("#cust_full_name a[id='last_name']").editable('getValue', true);
             getLastName = (getLastName !== ' ') ? getLastName : '';
 
 		var SCvendor_lead_code = $(".formMain input[name='vendor_lead_code']").val();
