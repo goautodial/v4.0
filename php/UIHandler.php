@@ -1399,7 +1399,7 @@ error_reporting(E_ERROR | E_PARSE);
 			//<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="32"> '.$name.'</a>
 		// return header
 		// old img element : <img src="'.$user->getUserAvatar().'" width="12" height="auto"  class="user-image img-circle" alt="User Image" style="padding-bottom: 3px;" />
-		$avatarElement = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 16, true);
+		$avatarElement = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 22, true);
 		return '<header class="main-header">
 				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
 	            <nav class="navbar navbar-static-top" role="navigation">
@@ -1748,16 +1748,18 @@ error_reporting(E_ERROR | E_PARSE);
 			$changeMyData = '<div class="pull-left"><a href="./edituser.php" class="btn btn-default btn-flat">'.$this->lh->translationFor("my_profile").'</a></div>';
 		}  
  		
-+		// old img element : <img src="'.$user->getUserAvatar().'" style="border-color:transparent;" alt="User Image" />
-+		$avatarElement = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 96, false, true);
+		// old img element : <img src="'.$user->getUserAvatar().'" style="border-color:transparent;" alt="User Image" />
+		// <img src="'.$user->getUserAvatar().'" width="auto" height="auto"  class="user-image" alt="User Image" />
+		$avatarElement1 = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 22, true);
+		$avatarElement2 = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 96, false, true);
 		return '<li class="dropdown user user-menu">
 	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-	                    <img src="'.$user->getUserAvatar().'" width="auto" height="auto"  class="user-image" alt="User Image" />
+	                    '.$avatarElement1.'
 	                    <span>'.$user->getUserName().' <i class="caret"></i></span>
 	                </a>
 	                <ul class="dropdown-menu">
 	                    <li class="user-header bg-light-blue"">
-	                        '.$avatarElement.'
+	                        '.$avatarElement2.'
 	                        <p>'.$user->getUserName().'<small>'.$this->lh->translationFor("nice_to_see_you_again").'</small></p>
 	                    </li>'.$menuActions.'
 	                    <li class="user-footer">'.$changeMyData.'
@@ -5640,7 +5642,7 @@ error_reporting(E_ERROR | E_PARSE);
 				$initials = '';
 			}
 		}
-		$topBarStyle = ($topBar) ? 'style="float: left; padding-top: 3px; padding-right: 5px;"' : '';
+		$topBarStyle = ($topBar) ? 'style="float: left; padding-right: 5px;"' : '';
 		$sideBarStyle = ($sideBar) ? 'style="width: 100%; text-align: center;" display="inline-block"' : '';
 		
 		return '<avatar username="'.$username.'" '.$showAvatar.' '.$initials.' '.$topBarStyle.' '.$sideBarStyle.' :size="'.$size.'"></avatar>';
