@@ -1392,7 +1392,7 @@ error_reporting(E_ERROR | E_PARSE);
 	public function creamyAgentHeader($user) {
 		// module topbar elements
 		$mh = \creamy\ModuleHandler::getInstance();
-		$moduleTopbarElements = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_TOPBAR, null, CRM_MODULE_MERGING_STRATEGY_APPEND);
+		$moduleTopbarElements = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_TOPBAR_AGENT, null, CRM_MODULE_MERGING_STRATEGY_APPEND);
 		// header elements
 		$logo = $this->creamyHeaderLogo();
 		$name = $this->creamyHeaderName();

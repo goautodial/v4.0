@@ -645,6 +645,14 @@ $(document).ready(function() {
                         toggleButton('DialHangup', 'dial');
                     }
                 }
+                
+                if (agentonly_callbacks == '1')
+                    {CB_count_check++;}
+                
+                if ( (CB_count_check > 19) && (agentonly_callbacks == '1') ) {
+                    CallBacksCountCheck();
+                    CB_count_check = 0;
+                }
             }
         }, refresh_interval);
         
@@ -724,8 +732,6 @@ $(document).ready(function() {
         $("#show-cb-calendar").click(function() {
             $("#cb-container").slideToggle('slow');
         });
-        
-        CallBacksCountCheck();
     });
 
     var logoutRegX = new RegExp("logout\.php", "ig");
@@ -1390,68 +1396,70 @@ $(document).ready(function() {
     });
     
     // Hijack links on left menu
-    $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks)").on('click', function(e) {
-        e.preventDefault();
-        var thisLink = $(this).attr('href');
-        var hash = '';
-        var origHash = window.location.hash.replace("#","");
-        if (/customerslist/g.test(thisLink)) {
-            $(".content-heading").html("<?=$lh->translationFor('contacts')?>");
-            hash = 'contacts';
-        } else if (/agent/g.test(thisLink)) {
-            $(".content-heading").html("<?=$lh->translationFor('contact_information')?>");
-        } else if (/edituser/g.test(thisLink)) {
-            $(".content-heading").html("<?=$lh->translationFor('edit_profile')?>");
-            hash = 'editprofile';
-        } else if (/events/g.test(thisLink)) {
-            $(".content-heading").html("<?=$lh->translationFor('events')?> <?=$lh->translateText('and')?> <?=$lh->translationFor('callbacks')?>");
-            hash = 'events';
-        } else if (/messages/g.test(thisLink)) {
-            $(".content-heading").html("<?=$lh->translationFor('messages')?>");
-            hash = 'messages';
-        } else if (/notifications/g.test(thisLink)) {
-            $(".content-heading").html("<?=$lh->translationFor('notifications')?>");
-            hash = 'notifications';
-        } else if (/tasks/g.test(thisLink)) {
-            $(".content-heading").html("<?=$lh->translationFor('tasks')?>");
-            hash = 'tasks';
-        }
-        
-        if (origHash !== hash) {
-            $(".preloader").fadeIn('fast');
-        }
-        
-        if (hash.length > 0) {
-            window.location.hash = hash;
-            
-            var thisContents = $("#loaded-contents div[id^='contents-']");
-            $.each(thisContents, function() {
-                var contentID = $(this).prop('id').replace('contents-', '');
-                if (contentID == hash) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
-            
-            $("#cust_info").hide();
-            $("#loaded-contents").show();
-        } else {
-            history.pushState('', document.title, window.location.pathname);
-            
-            $("#cust_info").show();
-            $("#loaded-contents").hide();
-        }
-        
-        if (origHash !== hash) {
-            $(".preloader").fadeOut('slow');
-        }
-    });
+    $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks)").on('click', hijackThisLink);
     
     $("#submitCBDate").click(function() {
         CallBackDateSubmit();
     });
 });
+
+function hijackThisLink(e) {
+    e.preventDefault();
+    var thisLink = $(this).attr('href');
+    var hash = '';
+    var origHash = window.location.hash.replace("#","");
+    if (/customerslist/g.test(thisLink)) {
+        $(".content-heading").html("<?=$lh->translationFor('contacts')?>");
+        hash = 'contacts';
+    } else if (/agent/g.test(thisLink)) {
+        $(".content-heading").html("<?=$lh->translationFor('contact_information')?>");
+    } else if (/edituser/g.test(thisLink)) {
+        $(".content-heading").html("<?=$lh->translationFor('edit_profile')?>");
+        hash = 'editprofile';
+    } else if (/events/g.test(thisLink)) {
+        $(".content-heading").html("<?=$lh->translationFor('events')?> <?=$lh->translateText('and')?> <?=$lh->translationFor('callbacks')?>");
+        hash = 'events';
+    } else if (/messages/g.test(thisLink)) {
+        $(".content-heading").html("<?=$lh->translationFor('messages')?>");
+        hash = 'messages';
+    } else if (/notifications/g.test(thisLink)) {
+        $(".content-heading").html("<?=$lh->translationFor('notifications')?>");
+        hash = 'notifications';
+    } else if (/tasks/g.test(thisLink)) {
+        $(".content-heading").html("<?=$lh->translationFor('tasks')?>");
+        hash = 'tasks';
+    }
+    
+    if (origHash !== hash) {
+        $(".preloader").fadeIn('fast');
+    }
+    
+    if (hash.length > 0) {
+        window.location.hash = hash;
+        
+        var thisContents = $("#loaded-contents div[id^='contents-']");
+        $.each(thisContents, function() {
+            var contentID = $(this).prop('id').replace('contents-', '');
+            if (contentID == hash) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+        
+        $("#cust_info").hide();
+        $("#loaded-contents").show();
+    } else {
+        history.pushState('', document.title, window.location.pathname);
+        
+        $("#cust_info").show();
+        $("#loaded-contents").hide();
+    }
+    
+    if (origHash !== hash) {
+        $(".preloader").fadeOut('slow');
+    }
+}
 
 function btnLogMeIn () {
     var postData = {
@@ -3085,21 +3093,22 @@ function CallBacksCountCheck() {
             $("#callbacks-today").html(CBcountToday);
             
             $("a[href='events.php'] small.badge").html(CBcount);
-            $("li.notifications-menu a span.label").html(CBcountToday);
-            $("li.notifications-menu ul li.header").html('You have '+CBcountToday+' Notifications');
+            $("#topbar-callbacks a span.label").html(CBcountToday);
+            $("#topbar-callbacks ul li.header").html('<?=$lh->translationFor("you_have")?> '+CBcountToday+' <?=$lh->translationFor("callbacks_for_today")?>');
             
             var CBallToday = CBdata.today_callbacks;
             var maxCBtoday = 5;
             var cntCB = 0;
-            $("li.notifications-menu ul li div.slimScrollDiv ul.menu").empty();
+            $("#topbar-callbacks ul li div.slimScrollDiv ul.menu").empty();
             $.each(CBallToday, function(key, value) {
                 if (cntCB < maxCBtoday) {
-                    var appendThis = '<li><a title="'+value.cust_name+'"><h4><p class="pull-left"><b>'+value.phone_number+'</b></p><small class="label label-<?=CRM_UI_STYLE_DEFAULT?> pull-right"><i class="fa fa-calendar-o"></i> '+value.callback_time+'</small></h4></a></li>';
-                    $("li.notifications-menu ul li div.slimScrollDiv ul.menu").append(appendThis);
+                    var appendThis = '<li><a href="events.php" title="'+value.cust_name+'" style="padding: 0px 10px;"><h4 style="margin-top: 9.5px;"><p class="pull-left"><i class="fa fa-phone"></i> <b>'+phone_number_format(value.phone_number)+'</b></p><small class="label label-<?=CRM_UI_STYLE_WARNING?> pull-right" title="'+value.long_callback_time+'"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</small></h4></a></li>';
+                    $("#topbar-callbacks ul li div.slimScrollDiv ul.menu").append(appendThis);
                 }
                 cntCB++;
             });
-            $("li.notifications-menu ul li div.slimScrollDiv ul.menu li a").css('padding', '0px 10px');
+            
+            $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks)").off('click', hijackThisLink).on('click', hijackThisLink);
         }
     });
 }
