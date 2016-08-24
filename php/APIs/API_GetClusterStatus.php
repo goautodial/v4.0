@@ -57,19 +57,30 @@
         }
 
     $diskusage = $disk;
-
+    
+    if ($diskusage < 60){
+        $textclass = "text-success";
+    }
+    
+    if ($diskusage >= 60){
+        $textclass = "text-warning";
+    }
+    
+     if ($diskusage >= 80){
+        $textclass = "text-danger";
+    }
+    
     $cluster .='[';       
     $cluster .= '"'.$serverid.'",';   
     $cluster .= '"'.$serverip.'",';   
     //$cluster .= '"'.$status.'",';    
     $cluster .= '"'.$load.'%",';    
     $cluster .= '"'.$channels.'",';
-    //$cluster .= '"<b data-label=\"'.$diskusage.'\" class=\"radial-bar radial-bar-'.$diskusage.' radial-bar-xs\"></b>",';
-    $cluster .= '"'.$diskusage.'%",';
+    $cluster .= '"<div data-label=\"'.$diskusage.'%\" class=\"radial-bar radial-bar-'.$diskusage.' radial-bar-xs\"></div>",';
+    //$cluster .= '"'.$diskusage.'%",';
     $cluster .= '"'.$time.'"';
     $cluster .='],';
   
-    
 }
 
     $cluster = rtrim($cluster, ",");    
