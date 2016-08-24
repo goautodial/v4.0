@@ -24,8 +24,8 @@
     curl_close($ch);
 
     $output = json_decode($data);
-    echo "<pre>";
-    print_r($output);
+    //echo "<pre>";
+    //print_r($output);
     
     $cluster = '[';
      
@@ -61,11 +61,11 @@
     $cluster .='[';       
     $cluster .= '"'.$serverid.'",';   
     $cluster .= '"'.$serverip.'",';   
-    $cluster .= '"'.$status.'",';    
-    $cluster .= '"'.$load.'",';    
+    //$cluster .= '"'.$status.'",';    
+    $cluster .= '"'.$load.'%",';    
     $cluster .= '"'.$channels.'",';
     //$cluster .= '"<b data-label=\"'.$diskusage.'\" class=\"radial-bar radial-bar-'.$diskusage.' radial-bar-xs\"></b>",';
-    $cluster .= '"'.$diskusage.'",';
+    $cluster .= '"'.$diskusage.'%",';
     $cluster .= '"'.$time.'"';
     $cluster .='],';
   

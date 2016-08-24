@@ -375,7 +375,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                 </div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><span class="text-lg" id="refresh_RingingCalls"></span></div>
-								<div class="text-muted">Ringing Calls</div>
+								<div class="text-muted">Outgoing Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><span class="text-lg" id="refresh_IncomingQueue"></span></div>
@@ -396,30 +396,41 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	                </div>
                 </div>
         <!-- ====== CLUSTER STATUS ======= -->
-							
-                                                    <div class="panel panel-default">
-                                                        <div class="panel-heading"><h4>Cluster Status</h4></div>
+   
+                                                <div class="row">	
+                                                    <div class="panel panel-default" tabindex="-1">
+                                                        <div class="panel-heading">
+                                                            <div class="panel-title"><h4>Active Servers</h4></div>
+                                                        </div>
                                                             <!-- START table-responsive-->
                                                             <div class="table-responsive">
-                                                                <table id="cluster-status" class="table table-striped table-hover">
-								   <thead>
-									  <tr>
-										 <th>SERVER ID</th>
-										 <th>SERVER IP</th>
-										 <th>ACTIVE</th>
-										 <th>LOAD</th>
-										 <th>CHANNELS</th>
-										 <th>DISK</th>
-										 <th>TIME</th>
-									  </tr>
-								   </thead>
-								   <tbody>
-
-								   </tbody>
-								</table>
+                                                                <div class="col-sm-12">
+                                                                    <table id="cluster-status" class="table table-striped table-hover" style="width: 100%">
+                                                                        <thead>
+                                                                                <tr>
+                                                                                        <th>SERVER ID</th>
+                                                                                        <th>SERVER IP</th>
+                                                                                        <!-- <th>ACTIVE</th> -->
+                                                                                        <th>LOAD</th>
+                                                                                        <th>CHANNELS</th>
+                                                                                        <th>DISK</th>
+                                                                                        <th>TIME</th>
+                                                                                </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <!-- data is in API_GetClusterStatus.php -->
+                                                                        </tbody>
+                                                                    </table>
+								</div>
+                                                                <div class="panel-footer clearfix">
+                                                                    <a href="#" class="pull-left">
+                                                                        <small></small>
+                                                                    </a>
+                                                                </div>								
                                                             </div>
-							<div class="panel-footer text-right">&nbsp;</div>
-                                                    </div>
+                                                        </div>
+                                                </div>
+                                                
 
             	</div><!-- END OF COLUMN 9 -->
 
@@ -427,7 +438,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
             	<aside class="col-lg-3">
 
         <!--==== SERVICE LEVEL AGREEMENT ==== -->
-	            		<div class="panel panel-default">
+                                                <div class="panel panel-default">
 						   <div class="panel-body">
 								<div class="text-primary">Dropped Calls Percentage</div>
 								<center>
@@ -470,7 +481,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 						</div>
 
 			<!-- ==== TASK ACTIVITIES ===== -->
-						<div class="panel panel-default">
+                                    <div class="panel panel-default">
 		                     <div class="panel-heading">
 		                        <div class="panel-title">Campaign Leads Resources</div>
 		                     </div>         
@@ -598,7 +609,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 							</div>
 							-->
 
-					<div class="row">
+                                        <div class="row">
 						<!-- Agent Monitoring Summary -->
 						<div class="col-lg-3">
 							<div class="panel panel-default">
@@ -684,36 +695,36 @@ $callsperhour = $ui->API_goGetCallsPerHour();
             </center> 
         </div> -->
     <!-- Modal --> 
-    <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-labelledby="view_agent_information-modal" aria-hidden="true"> 
-        <div class="modal-dialog"> 
-            <div class="modal-content"> 
-                <div class="modal-header"> 
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button> 
-                    <h4 class="modal-title" id="view_agent_information-modal">More about <span id="modal-userid">:</span></h4> 
-                    <input type="hidden" value="" id="modalUserID">
-                </div> 
-                    <div class="modal-body"> 
-                        <center> <img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle"></a> 
-                            <h3 class="media-heading"><span id="modal-fullname"></span> <small><?php echo $call_time_MS;?></small></h3> 
-                            <span><strong>Logged-in to:</strong></span> 
-                            <span class="label label-warning" id="modal-campaign"></span> 
-                            <span class="label label-info" id="modal-usergroup"></span> 
-                            <span class="label label-info" id="modal-userlevel"></span> 
-                            <span class="label label-success" id="modal-status" ></span>
-                        </center> <hr> 
-                        <center> 
-                            <p class="text-left"><strong>Phone login: </strong><span id="modal-phonelogin"></span></p>
-                            <p class="text-left"><strong>Agent ID: </strong><span id="modal-userid"></span></p> <br> 
-                        </center> 
-                    </div> 
-                        <div class="modal-footer"> 
-                            <center> 
-                                <button type="button" class="btn btn-default" data-dismiss="modal">I'm done</button> 
-                            </center> 
+                    <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-labelledby="view_agent_information-modal" aria-hidden="true"> 
+                        <div class="modal-dialog"> 
+                            <div class="modal-content"> 
+                                <div class="modal-header"> 
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button> 
+                                    <h4 class="modal-title" id="view_agent_information-modal">More about <span id="modal-userid">:</span></h4> 
+                                    <input type="hidden" value="" id="modalUserID">
+                                </div> 
+                                    <div class="modal-body"> 
+                                        <center> <img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle"></a> 
+                                            <h3 class="media-heading"><span id="modal-fullname"></span> <small><?php echo $call_time_MS;?></small></h3> 
+                                            <span><strong>Logged-in to:</strong></span> 
+                                            <span class="label label-warning" id="modal-campaign"></span> 
+                                            <span class="label label-info" id="modal-usergroup"></span> 
+                                            <span class="label label-info" id="modal-userlevel"></span> 
+                                            <span class="label label-success" id="modal-status" ></span>
+                                        </center> <hr> 
+                                        <center> 
+                                            <p class="text-left"><strong>Phone login: </strong><span id="modal-phonelogin"></span></p>
+                                            <p class="text-left"><strong>Agent ID: </strong><span id="modal-userid"></span></p> <br> 
+                                        </center> 
+                                    </div> 
+                                        <div class="modal-footer"> 
+                                            <center> 
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">I'm done</button> 
+                                            </center> 
+                                        </div> 
+                                </div> 
+                            </div> 
                         </div> 
-                </div> 
-            </div> 
-        </div> 
    <!-- </div>	-->
 			<!-- View Campaign -->
 			<div id="view_campaign_information" class="modal fade" role="dialog">
@@ -1217,7 +1228,7 @@ function clear_agent_form(){
    
    <!-- =============== APP SCRIPTS ===============-->
     <script src="theme_dashboard/js/app.js"></script>
-	<script src="theme_dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
+    <script src="theme_dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
 
     </body>
 </html>

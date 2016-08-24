@@ -39,7 +39,7 @@
                                 "paging":   false,
                                 "bPaginate": false,
                                 "searching": false,
-                                "bInfo" : false,
+                                //"bInfo" : false,
                                 "destroy":true
                                 
                             });
@@ -71,16 +71,16 @@
                 var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
                 //console.log(JSONStringrealtime);
                 //console.log(JSONObjectrealtime); 
-                //var table = $('#monitoring_table').dataTable({ 
-                                //data:JSONObjectrealtime,
-                                //"destroy":true
-                            //});
-                //table.destroy();
-                
-                            $('#monitoring_table').dataTable({ 
+                var table = $('#monitoring_table').dataTable({ 
                                 data:JSONObjectrealtime,
                                 "destroy":true
-                            });        
+                            });
+                //table.destroy();
+                
+                            //$('#monitoring_table').dataTable({ 
+                                //data:JSONObjectrealtime,
+                                //"destroy":true
+                            //});        
                             //console.log(values);
         } 
     });
