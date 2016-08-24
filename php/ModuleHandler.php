@@ -53,6 +53,7 @@ define ('CRM_MODULE_HOOK_EVENTS_LIST_HOVER', 'eventListHoverHook');
 define ('CRM_MODULE_HOOK_EVENTS_LIST_ACTION', 'eventListActionHook');
 define ('CRM_MODULE_HOOK_NOTIFICATIONS', 'notificationsHook');
 define ('CRM_MODULE_HOOK_TOPBAR', 'topBarHook');
+define ('CRM_MODULE_HOOK_TOPBAR_AGENT', 'topBarHookAgent');
 
 // hook parameters
 define ('CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_FIELDS', 'fields');

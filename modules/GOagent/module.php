@@ -974,6 +974,80 @@ EOF;
 		return $result->data;
 	}
 	
+	//public function taskListHoverHook($taskid) {
+	//	$this->db()->where("id", $taskid);
+	//	$task = $this->db()->getOne(CRM_TASKS_TABLE_NAME);
+	//	if (isset($task)) { 
+	//		$text = $task["description"]; 
+	//		$url = $this->searchQuoteURL($text);
+	//	} else { $url = "http://duckduckgo.com"; }
+	//	return $this->ui()->hoverActionButton("quote_task_action", "quote-left", $url);
+	//}
+	
+	public function topBarHookAgent() {
+		$callbacks = $this->getCallbacks();
+		$numberOfCallbacks = count($callbacks);
+		$header = $this->getTopbarMenuHeader("phone-square", $numberOfCallbacks, CRM_UI_TOPBAR_MENU_STYLE_SIMPLE, "callbacks", $this->lh()->translationFor("callbacks_for_today"), null, "primary", false);
+		
+		$elements = "";
+		foreach ($callbacks as $key => $cbinfo) {
+			//$elements .= $this->getTopbarSimpleElement($cbinfo["quote"]." -- ".$quote["author"], "quote-right", $this->mainPageViewURL(array("author_number" => $quote["author_number"])));
+			$elements .= $this->getTopbarSimpleElementWithDate($cbinfo["phone_number"], $cbinfo["callback_time"], "clock-o", "events.php", CRM_UI_STYLE_WARNING, $cbinfo["cust_name"], true);
+		}
+		$footer = $this->getTopbarMenuFooter($this->lh()->translationFor("see_all_callbacks"), "events.php");
+		return $this->ui()->getTopbarCustomMenu($header, $elements, $footer);
+	}
+	
+	private function getCallbacks($number = 5, $cb_type = "today_callbacks") {
+		$callbacks_array = $this->getUserInfo($_SESSION['user']);
+		$callbacks = [];
+		foreach ($callbacks_array->$cb_type as $key => $value) {
+			if ($key < $number) {
+				$callbacks[$key] = array("phone_number" => $value->phone_number, "cust_name" => $value->cust_name, "callback_time" => $value->short_callback_time);
+			} else {
+				break;
+			}
+		}
+		
+		return $callbacks;
+	}
+
+	private function getTopbarMenuFooter($footerText, $footerLink = null) {
+		$linkPrefix = isset($footerLink) ? '<a href="'.$footerLink.'">' : '';
+		$linkSuffix = isset($footerLink) ? '</a>' : '';
+		return '</ul></li><li class="footer">'.$linkPrefix.$footerText.$linkSuffix.'</li></ul></li>';
+	}
+	
+	private function getTopbarSimpleElement($text, $icon, $link, $tint = "aqua") {
+		$shortText = strlen($text) > 40 ? substr($text,0,40)."..." : $text;
+		return '<li style="text-align: left; !important;"><a href="'.$link.'"><i class="fa fa-'.$icon.' text-'.$tint.'"></i><b>'.$shortText.'</b></a></li>';
+	}
+	
+	private function getTopbarSimpleElementWithDate($text, $date, $icon, $link, $tint = CRM_UI_STYLE_DEFAULT, $title, $isPhone = false) {
+	    $shortText = strlen($text) > 25 ? substr($text,0,25)."..." : $text;
+		//$relativeTime = $this->ui()->relativeTime($date, 1);
+		$relativeTime = $date;
+		$showTitle = strlen($title) > 0 ? " title='$title'" : '';
+		$showIcon = ($isPhone) ? '<i class="fa fa-phone"></i> ' : '';
+		return '<li><a href="'.$link.'"'.$showTitle.' style="padding: 0px 10px;"><h4 style="margin-top: 9.5px;"><p class="pull-left">'.$showIcon.'<b>'.$shortText.'</b></p><small class="label label-'.$tint.' pull-right"><i class="fa fa-'.$icon.'"></i> '.$relativeTime.'</small></h4></a></li>';
+	}
+
+	private function getTopbarMenuHeader($icon, $badge, $menuStyle, $menuId = null, $headerText = null, $headerLink = null, $badgeStyle = CRM_UI_STYLE_DEFAULT, $hideForLowResolution = true) {
+		// header text and link
+		if (!empty($headerText)) {
+			$linkPrefix = isset($headerLink) ? '<a href="'.$headerLink.'">' : '';
+			$linkSuffix = isset($headerLink) ? '</a>' : '';
+			$headerText = $this->lh()->translationFor('you_have')." ".$badge." ".$headerText;
+			$headerCode = '<li class="header">'.$linkPrefix.$headerText.$linkSuffix.'</li>';
+		} else { $headerCode = ""; }
+		$hideCode = $hideForLowResolution? "hide-on-low" : "";
+		$menuName = isset($menuId) ? 'id="topbar-'.$menuId.'" ' : '';
+		
+		// return the topbar menu header
+		return '<li '.$menuName.'class="dropdown '.$menuStyle.'-menu '.$hideCode.'"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-'.$icon.'"></i><span class="label label-'.$badgeStyle.'">'.$badge.'</span></a>
+			<ul class="dropdown-menu">'.$headerCode.'<li><ul class="menu">';
+	}
+	
 	// settings
 	public function moduleSettings() {
 		$options = array('', 'asterisk', 'kamailio');
@@ -995,6 +1069,45 @@ EOF;
 			"GO_agent_sip_server_info" => CRM_SETTING_TYPE_LABEL
 		);
 		return $moduleSettings;
+	}
+	
+	public function getUserInfo($user) {
+		//set variables
+		$camp = (isset($_SESSION['campaign_id'])) ? $_SESSION['campaign_id'] : null;
+		$url = gourl.'/goAgent/goAPI.php';
+		$fields = array(
+			'goAction' => 'goGetCallbackCount',
+			'goUser' => goUser,
+			'goPass' => goPass,
+			'responsetype' => responsetype,
+			'goCampaign' => $camp,
+			'goUserID' => $user
+		);
+		
+		//url-ify the data for the POST
+		$fields_string = "";
+		foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+		rtrim($fields_string, '&');
+		
+		//open connection
+		$ch = curl_init();
+		
+		//set the url, number of POST vars, POST data
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, count($fields));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		
+		//execute post
+		$data = curl_exec($ch);
+		$result = json_decode($data);
+		
+		//close connection
+		curl_close($ch);
+		
+		return $result->data;
 	}
 }
 
