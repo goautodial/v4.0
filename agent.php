@@ -596,7 +596,7 @@ if (isset($_GET["message"])) {
 																		}
 																	?>
 																</select>
-																<label for="gender" class="control-label">Gender</label>
+																<label for="gender">Gender</label>
 															</div>
 														</div>
 														<div class="col-sm-6">
