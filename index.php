@@ -133,6 +133,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				$(".preloader").fadeOut("slow");
 			})
 		</script>
+	<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'; // sweetalert
+	<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>'; // sweetalert js
     </head>
     <?php print $ui->creamyBody(); ?>
         <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
@@ -164,22 +166,6 @@ $ingroup = $ui->API_getInGroups();
 $dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
 $dropped_percentage = $ui->API_goGetDroppedPercentage();
 $calls_incoming_queue = $ui->API_goGetIncomingQueue();
-
-
-//<<<<<<< HEAD
-
-//=======
-//if(is_null($ui->API_getRealtimeAgent()) {
-	//$realtimeAgents = "";
-//} else {
-//	$realtimeAgents = $ui->API_getRealtimeAgent();
-//}
-//var_dump($dropped_calls_today);
-//die("dd");
-/*
- * get API data for chart from UIHandler.php
-*/
-//>>>>>>> 787a99cc6b9f5c49bbfae4e43ee10ad9623028dd
 
 $callsperhour = $ui->API_goGetCallsPerHour();
 
@@ -375,7 +361,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                 </div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><span class="text-lg" id="refresh_RingingCalls"></span></div>
-								<div class="text-muted">Ringing Calls</div>
+								<div class="text-muted">Outgoing Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><span class="text-lg" id="refresh_IncomingQueue"></span></div>
@@ -396,93 +382,41 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	                </div>
                 </div>
         <!-- ====== CLUSTER STATUS ======= -->
-                <div class="row">
-                	<div role="tabpanel" class="panel panel-transparent">
-					  <ul role="tablist" class="nav nav-tabs nav-justified">
-					  
-					  <!-- Nav task panel tabs-->
-						 <li role="presentation" class="active">
-							<a href="#cluster_status" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-							   <em class="fa fa-bar-chart-o fa-fw"></em>Cluster Status</a>
-						 </li>
-					  </ul>
-				<?php
-					$cluster = $ui->API_goGetClusterStatus();
-				?>
-						<!-- Tab panes-->
-						<div class="tab-content p0 bg-white">
-						   <div id="cluster_status" role="tabpanel" class="tab-pane active">
-							<!-- Cluster Status -->
-							<div class="table-responsive">
-								<table class="table table-striped table-bordered table-hover">
-								   <thead>
-									  <tr>
-										 <th>SERVER ID</th>
-										 <th>SERVER IP</th>
-										 <th>STATUS</th>
-										 <th>LOAD</th>
-										 <th>CHANNELS</th>
-										 <th>DISK</th>
-										 <th>TIME</th>
-									  </tr>
-								   </thead>
-								   <tbody>
-										<?php
-											for($i=0;$i < count($cluster->server_id);$i++){
-												if($cluster->active[$i] == "Y"){
-													$cluster->active[$i] = "<font color='green'><i>Active</i></font>";
-												}else{
-													$cluster->active[$i] = "<font color='red'><i>Inactive</i></font>";
-												}
-										?>
-										<tr>
-											<td><?php echo $cluster->server_id[$i];?></td>
-											<td><?php echo $cluster->server_ip[$i];?></td>
-											<td><?php echo $cluster->active[$i];?></td>
-											<td><?php echo $cluster->sysload[$i]."% - ".$cluster->cpu[$i];?></td>
-											<td style="padding-left:20px;"><?php echo $cluster->channel[$i];?></td>
-											<td><?php echo $cluster->disk_usage[$i]."%";?></td>
-											<td><?php echo $cluster->systemtime[$i];?></td>
-										</tr>
-									<!--
-										<tr>
-											<td><span id="refresh_server_id"></span></td>
-											<td><span id="refresh_server_ip"></span></td>
-											<td><span id="refresh_active"></td>
-											<td><span id="refresh_sysload"></span> - <span id="refresh_cpu"></span></td>
-											<td><center><span id="refresh_channels_total"></span></center></td>
-											<td><center><span id="refresh_disk_usage"></span></center></td>
-											<td><span id="refresh_s_time"></span></td>
-										</tr>
-									-->
-										<?php
-											}
-										?>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
-											<td><b>PHP Time</b></td>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
-											<td><span id="refresh_php_time"></span></td>
-										</tr>
-										<tr>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
-											<td><b>DB Time</b></td>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
-											<td>&nbsp;</td>
-											<td><span id="refresh_db_time"></span></td>
-										</tr>
-								   </tbody>
-								</table>
-							</div>
-							<div class="panel-footer text-right">&nbsp;</div>
-						 	</div>
-						</div>
-					</div>
-                </div>
+   
+                                                <div class="row">	
+                                                    <div class="panel panel-default" tabindex="-1">
+                                                        <div class="panel-heading">
+                                                            <div class="panel-title"><h4>Cluster Status</h4></div>
+                                                        </div>
+                                                            <!-- START table-responsive-->
+                                                            <div class="table-responsive">
+                                                                <div class="col-sm-12">
+                                                                    <table id="cluster-status" class="table table-striped table-hover" style="width: 100%">
+                                                                        <thead>
+                                                                                <tr>
+                                                                                        <th>Server ID</th>
+                                                                                        <th>Server IP</th>
+                                                                                        <th>Active</th>
+                                                                                        <th>Load</th>
+                                                                                        <th>Channels</th>
+                                                                                        <th>Disk</th>
+                                                                                        <th>Time</th>
+                                                                                </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <!-- data is in API_GetClusterStatus.php -->
+                                                                        </tbody>
+                                                                    </table>
+								</div>
+                                                                <div class="panel-footer clearfix">
+                                                                    <a href="#" class="pull-left">
+                                                                        <small></small>
+                                                                    </a>
+                                                                </div>								
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                
 
             	</div><!-- END OF COLUMN 9 -->
 
@@ -490,7 +424,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
             	<aside class="col-lg-3">
 
         <!--==== SERVICE LEVEL AGREEMENT ==== -->
-	            		<div class="panel panel-default">
+                                                <div class="panel panel-default">
 						   <div class="panel-body">
 								<div class="text-primary">Dropped Calls Percentage</div>
 								<center>
@@ -533,7 +467,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 						</div>
 
 			<!-- ==== TASK ACTIVITIES ===== -->
-						<div class="panel panel-default">
+                                    <div class="panel panel-default">
 		                     <div class="panel-heading">
 		                        <div class="panel-title">Campaign Leads Resources</div>
 		                     </div>         
@@ -542,103 +476,11 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		                     <div class="list-group">
 		                        <!-- START list group item-->
 		                        <div class="list-group-item">
-		                           <div class="media-box">
-		                              <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-purple"></em>
-		                                    <em class="fa fa-cloud-upload fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>                                           
-		                              <div class="media-box-body clearfix">
+
 		                              <span id="refresh_campaigns_resources">                                            
                                               </span>
-                                              </div>
-		                           </div>
+
 		                        </div>
-		                        <!-- END list group item-->
-		                        <!-- START list group item-->
-		                        <!--<div class="list-group-item">
-		                           <div class="media-box">
-		                              <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-info"></em>
-		                                    <em class="fa fa-file-text-o fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>
-		                              <div class="media-box-body clearfix">
-		                                 <small class="text-muted pull-right ml">2h</small>
-		                                 <div class="media-box-heading"><a href="#" class="text-info m0">NEW DOCUMENT</a>
-		                                 </div>
-		                                 <p class="m0">
-		                                    <small><a href="#">Bootstrap.doc</a>
-		                                    </small>
-		                                 </p>
-		                              </div>
-		                           </div>
-		                        </div>-->
-		                        <!-- END list group item-->
-		                        <!-- START list group item-->
-		                        <!--<div class="list-group-item">
-		                           <div class="media-box">
-		                              <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-danger"></em>
-		                                    <em class="fa fa-exclamation fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>
-		                              <div class="media-box-body clearfix">
-		                                 <small class="text-muted pull-right ml">5h</small>
-		                                 <div class="media-box-heading"><a href="#" class="text-danger m0">BROADCAST</a>
-		                                 </div>
-		                                 <p class="m0"><a href="#">Read</a>
-		                                 </p>
-		                              </div>
-		                           </div>
-		                        </div>-->
-		                        <!-- END list group item-->
-		                        <!-- START list group item-->
-		                        <!--<div class="list-group-item">
-		                           <div class="media-box">
-		                              <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-success"></em>
-		                                    <em class="fa fa-clock-o fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>
-		                              <div class="media-box-body clearfix">
-		                                 <small class="text-muted pull-right ml">15h</small>
-		                                 <div class="media-box-heading"><a href="#" class="text-success m0">NEW MEETING</a>
-		                                 </div>
-		                                 <p class="m0">
-		                                    <small>On
-		                                       <em>10/12/2015 09:00 am</em>
-		                                    </small>
-		                                 </p>
-		                              </div>
-		                           </div>
-		                        </div>-->
-		                        <!-- END list group item-->
-		                        <!-- START list group item-->
-		                        <!--<div class="list-group-item">
-		                           <div class="media-box">
-		                              <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-warning"></em>
-		                                    <em class="fa fa-tasks fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>
-		                              <div class="media-box-body clearfix">
-		                                 <small class="text-muted pull-right ml">1w</small>
-		                                 <div class="media-box-heading"><a href="#" class="text-warning m0">TASKS COMPLETION</a>
-		                                 </div>
-		                                 <div class="progress progress-xs m0">
-		                                    <div role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" style="width: 22%" class="progress-bar progress-bar-warning progress-bar-striped">
-		                                       <span class="sr-only">22% Complete</span>
-		                                    </div>
-		                                 </div>
-		                              </div>
-		                           </div>
-		                        </div>-->
 		                     </div>
 		                     <!--</span>-->
 		                     <div class="panel-footer clearfix">
@@ -669,7 +511,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 							</div>
 							-->
 
-					<div class="row">
+                                        <div class="row">
 						<!-- Agent Monitoring Summary -->
 						<div class="col-lg-3">
 							<div class="panel panel-default">
@@ -722,12 +564,12 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4>Realtime Agent Monitoring</h4>
+                                    <h4>Realtime Agents Monitoring</h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="table-responsive" style="min-height: 40%">
                                     <div class="col-sm-12">
-                                        <table class="table table-striped table-hover" id="monitoring_table" style="width: 100%">
+                                        <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
                                             <thead>
                                                     <th>Agent Name</th>                                                    
                                                     <th>Group</th>
@@ -755,36 +597,50 @@ $callsperhour = $ui->API_goGetCallsPerHour();
             </center> 
         </div> -->
     <!-- Modal --> 
-    <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-labelledby="view_agent_information-modal" aria-hidden="true"> 
-        <div class="modal-dialog"> 
-            <div class="modal-content"> 
-                <div class="modal-header"> 
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button> 
-                    <h4 class="modal-title" id="view_agent_information-modal">More about <span id="modal-user">:</span></h4> 
-                    <input type="hidden" value="" id="modalUserID">
-                </div> 
-                    <div class="modal-body"> 
-                        <center> <img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle"></a> 
-                            <h3 class="media-heading"><span id="modal-fullname"></span> <small><?php echo $call_time_MS;?></small></h3> 
-                            <span><strong>Logged-in to:</strong></span> 
-                            <span class="label label-warning" id="modal-campaign"></span> 
-                            <span class="label label-info" id="modal-usergroup"></span> 
-                            <span class="label label-info" id="modal-userlevel"></span> 
-                            <span class="label label-success" id="modal-status" ></span>
-                        </center> <hr> 
-                        <center> 
-                            <p class="text-left"><strong>Phone login: </strong><span id="modal-phonelogin"></span></p>
-                            <p class="text-left"><strong>Agent ID: </strong><span id="modal-userid"></span></p> <br> 
-                        </center> 
-                    </div> 
-                        <div class="modal-footer"> 
-                            <center> 
-                                <button type="button" class="btn btn-default" data-dismiss="modal">I'm done</button> 
-                            </center> 
+                    <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-labelledby="view_agent_information-modal" aria-hidden="true"> 
+                        <div class="modal-dialog"> 
+                            <div class="modal-content"> 
+                                <div class="modal-header"> 
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button> 
+                                    <h4 class="modal-title">More about <span id="modal-username"></span>:</h4> 
+                                    <!-- <input type="hidden" value="" id="modalUserID"> -->
+                                </div> 
+                                    <div class="modal-body"> 
+                                        <center> <img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle"></a> 
+                                            <h3 class="media-heading"><span id="modal-fullname"></span> <small></small></h3> 
+                                            <span><strong>Logged-in to:</strong></span> 
+                                            <span class="label label-warning" id="modal-campaign"></span> 
+                                            <span class="label label-info" id="modal-usergroup"></span> 
+                                            <span class="label label-info" id="modal-userlevel"></span> 
+                                            <span class="label label-success" id="modal-status"></span>
+                                        </center> <hr> 
+                                            <div class="table-responsive">
+                                                    <table class="table table-striped table-hover" id="view_agent_information_table" style="width: 100%">
+                                                        <thead>
+                                                                <th>Agent ID</th> 
+                                                                <th>Agent Phone</th>
+                                                                <th>Status</th>                                                                
+                                                                <th>Cust Phone</th>
+                                                                <th>MM:SS</th>
+                                                   
+                                                        </thead>
+                                                        <tbody>
+                                                        
+                                                        </tbody>
+                                                    </table>
+                                            </div>
+                                    </div> 
+                                        <div class="modal-footer"> 
+                                            <a href="#" data-toggle="modal" data-target="#" class="pull-right text-danger" onClick="goGetModalUsernameValue();">
+                                                <small>Emergency Logout</small> <em class="fa fa-arrow-right"></em>
+                                            </a>                                        
+                                            <!-- <center> 
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">I'm done</button> 
+                                            </center> -->
+                                        </div> 
+                                </div> 
+                            </div> 
                         </div> 
-                </div> 
-            </div> 
-        </div> 
    <!-- </div>	-->
 			<!-- View Campaign -->
 			<div id="view_campaign_information" class="modal fade" role="dialog">
@@ -1078,7 +934,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 function clear_agent_form(){
 
     $('#modal-userid').html("");
-    $('#modal-user').html("");
+    $('#modal-username').html("");
     $('#modal-fullname').html("");
     $('#modal-status').html("");
     $('#modal-campaign').html("");
@@ -1100,6 +956,27 @@ function clear_agent_form(){
     $('#modal-campaigncid').html("");
     $('#modal-localcalltime').html("");
 }
+
+function goGetModalUsernameValue(){
+   
+   var goModalUsername = document.getElementById("modal-username").innerText;
+
+   $.ajax({
+       type: 'POST',
+       url: "./php/APIs/API_EmergencyLogout.php",
+       data: {goUserAgent: goModalUsername},
+       cache: false,
+       //dataType: 'json',
+       success: function(data){
+	  clear_agent_form();
+	  sweetAlert("Emergency Logout",data, "warning");
+	  $('#view_agent_information').modal('hide');
+       }
+   }); 
+
+}
+
+
 		//demian
 		$(document).ready(function(){
 		
@@ -1122,21 +999,21 @@ function clear_agent_form(){
                                     //console.log(data);
                                     var JSONString = data;
                                     var JSONObject = JSON.parse(JSONString);
-                                    //var JSONObject = $.parseJSON(JSONString);
                                     //console.log(JSONString);
                                     console.log(JSONObject);      // Dump all data of the Object in the console
-                                        $('#modal-userid').html(JSONObject.data["0"].vu_user_id);
-                                        $('#modal-user').html(JSONObject.data["0"].vla_user);
-                                        $('#modal-fullname').html(JSONObject.data["0"].vu_full_name);
-                                        $('#modal-status').html(JSONObject.data["0"].vla_status);
-                                        $('#modal-campaign').html(JSONObject.data["0"].vla_campaign_id);
-                                        $('#modal-usergroup').html(JSONObject.data["0"].vu_user_group);     
-                                        $('#modal-userlevel').html(JSONObject.data["0"].vu_user_level);                                        
-                                        $('#modal-phonelogin').html(JSONObject.data["0"].vu_phone_login);
-                                        $('#modal-custphone').html(JSONObject.data["0"].vl_phone_number);
+                                    console.log(JSONObject.data[1].phone_login);
+                                        //$('#modal-userid').html(JSONObject.data["0"].vu_user_id);
+                                        $('#modal-username').html(JSONObject.data[1].user);
+                                        $('#modal-fullname').html(JSONObject.data[0].vu_full_name);
+                                        $('#modal-status').html(JSONObject.data[0].vla_status);
+                                        $('#modal-campaign').html(JSONObject.data[0].vla_campaign_id);
+                                        $('#modal-usergroup').html(JSONObject.data[0].vu_user_group);     
+                                        $('#modal-userlevel').html(JSONObject.data[0].vu_user_level);                                        
+                                        $('#modal-phonelogin').html(JSONObject.data[1].phone_login);
+                                        $('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
                                         
                                         //$('#modalUserID').val(JSONObject.data["0"].vla_user);
-                                        //$('#modal-voicemail').append(JSONObject.data.voicemail_id);                                    
+                                        
                                 }
                         });                        
                     });
@@ -1155,7 +1032,7 @@ function clear_agent_form(){
                             type: 'POST',
                             url: "./php/ViewCampaign.php",
                             data: {campaign_id: campid},
-                            cache: true,
+                            cache: false,
                             //dataType: 'json',
                                 success: function(campaigndata){ 
                                     //console.log(campaigndata);
@@ -1163,12 +1040,12 @@ function clear_agent_form(){
                                     var JSONObjectcampaign = JSON.parse(JSONStringcampaign);
                                     //console.log(JSONObjectcampaign.data.campaign_id);
                                     console.log(JSONObjectcampaign);
-                                        $('#modal-campaignid').append(JSONObjectcampaign.data.campaign_id);
-                                        $('#modal-campaignname').append(JSONObjectcampaign.data.campaign_name);
-                                        $('#modal-campaigndesc').append(JSONObjectcampaign.data.campaign_description);
-                                        $('#modal-callrecordings').append(JSONObjectcampaign.data.campaign_recording);
-                                        $('#modal-camptype').append(JSONObjectcampaign.data.campaign_type);
-                                        $('#modal-campaigncid').append(JSONObjectcampaign.data.campaign_cid);                                        
+                                        $('#modal-campaignid').html(JSONObjectcampaign.data.campaign_id);
+                                        $('#modal-campaignname').html(JSONObjectcampaign.data.campaign_name);
+                                        $('#modal-campaigndesc').html(JSONObjectcampaign.data.campaign_description);
+                                        $('#modal-callrecordings').html(JSONObjectcampaign.data.campaign_recording);
+                                        $('#modal-camptype').html(JSONObjectcampaign.data.campaign_type);
+                                        $('#modal-campaigncid').html(JSONObjectcampaign.data.campaign_cid);                                        
                                         $('#modal-localcalltime').append(JSONObjectcampaign.data.local_call_time);                                       
                                 }
                          });                        
@@ -1205,19 +1082,7 @@ function clear_agent_form(){
 			load_LiveOutbound();
                             
 	// ---- clusterstatus table
-		// ---- server 
-			load_server_id(); 
-			load_server_ip();
-			load_active();
-			load_sysload();
-			load_cpu();
-			load_channels_total();
-			load_disk_usage();
-			load_s_time();
-		// ---- PHP TIME
-			load_php_time();
-		// ---- DB TIME
-			load_db_time();
+                        load_cluster_status();
 			
         // ---- agent and campaign resources
                         load_campaigns_resources();
@@ -1227,7 +1092,7 @@ function clear_agent_form(){
                         load_realtime_agents_monitoring();
                         
         // ---- view agent information modal
-                        //load_view_agent_information();
+                        load_view_agent_information();
                 
 		});
 
@@ -1253,25 +1118,17 @@ function clear_agent_form(){
 		setInterval(load_LiveOutbound,5000);
 		
 		// ... cluster status table ...
-		setInterval(load_server_id,5000);
-		setInterval(load_server_ip,5000);
-		setInterval(load_active,5000);
-		setInterval(load_sysload,5000);
-		setInterval(load_cpu,5000);
-		setInterval(load_channels_total,5000);
-		setInterval(load_disk_usage,5000);
-		setInterval(load_php_time,5000);
-		setInterval(load_db_time,5000);
+		setInterval(load_cluster_status,60000);
 		
 		// ... agent and campaign resources ...
-		//setInterval(load_campaigns_resources,5000);
+		setInterval(load_campaigns_resources,60000);
 		setInterval(load_agents_monitoring_summary,5000);
 		
 		// ... realtime agents monitoring ...
                 setInterval(load_realtime_agents_monitoring,5000);
 		
 		// ... view agent information modal  ...
-		//setInterval(load_view_agent_information,5000);
+		setInterval(load_view_agent_information,10000);
 		
 	</script>
 	
@@ -1308,7 +1165,37 @@ function clear_agent_form(){
    
    <!-- =============== APP SCRIPTS ===============-->
     <script src="theme_dashboard/js/app.js"></script>
-	<script src="theme_dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
+    <script src="theme_dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
+			
+	<!-- Vue Avatar -->
+	<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>
+	<script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>
+	<script type='text/javascript'>
+		var goOptions = {
+			el: 'body',
+			components: {
+				'avatar': Avatar.Avatar,
+				'rules': {
+					props: ['items'],
+					template: 'For example:' +
+						'<ul id="example-1">' +
+						'<li v-for="item in items"><b>{{ item.username }}</b> becomes <b>{{ item.initials }}</b></li>' +
+						'</ul>'
+				}
+			},
+	
+			data: {
+				items: []
+			},
+	
+			methods: {
+				initials: function(username, initials) {
+					this.items.push({username: username, initials: initials});
+				}
+			}
+		};
+		var goAvatar = new Vue(goOptions);
+	</script>
 
     </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
     ####################################################
-    #### Name: goGetRealtimeAgentsMonitoring.php    ####
+    #### Name: goGetAgentsMonitoringSummary.php     ####
     #### Type: API for dashboard php encode         ####
     #### Version: 0.9                               ####
     #### Copyright: GOAutoDial Inc. (c) 2011-2016   ####
@@ -8,7 +8,7 @@
     #### License: AGPLv2                            ####
     ####################################################
 
-    //initialize session and DDBB handler
+    // initialize session and DDBB handler
     include_once('../UIHandler.php');
     require_once('../LanguageHandler.php');
     require_once('../DbHandler.php');
@@ -16,13 +16,13 @@
     $lh = \creamy\LanguageHandler::getInstance();
     //$colors = $ui->generateStatisticsColors();
 
-    require_once('../Session.php');    
-    require_once('../goCRMAPISettings.php');
+    require_once('../Session.php');
+    require_once('../goCRMAPISettings.php');    
 
     $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass;
-    $postfields["goAction"] = "goGetRealtimeAgentsMonitoring"; #action performed by the [[API:Functions]]
+    $postfields["goAction"] = "goGetAgentsMonitoringSummary"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; 
 
     $ch = curl_init();
@@ -37,32 +37,22 @@
     $output = json_decode($data);
     //echo "<pre>";
     //print_r($output);
+    
+    $sessionAvatar = $ui->getSessionAvatar();    
 
-    $sessionAvatar = $ui->getSessionAvatar();
-
-    if ($output == NULL){
-        echo '<strong class="media-box-heading text-primary">
-                <span class="circle circle-danger circle-lg text-left"></span>There are no available agents.
-                </strong>
-                <br/>
-                <strong class=""style="padding-left:20px;"></strong>
-                <small class="text-muted pull-right ml" style="padding-right:20px;"></small>
-                </p>';
-
-    }
-
-    $barracks = '[';
+    $agentinformation = '[';
 
     foreach ($output->data as $key => $value) {
-   
+
     $userid = $value->vu_user_id;
-    $agentid = $value->vla_user;
+    $agentid = $value->vu_user;
     $agentname =  $value->vu_full_name;
     $campname = $value->vla_campaign_id;    
     $station = $value->vla_extension;
     $user_group = $value->vu_user_group;
     $sessionid = $value->vla_conf_exten;
     $status = $value->vla_status;
+    $agentphone = $value->vu_phone_login;
     $call_type = $value->vla_comments;
     $server_ip = $value->vla_server_ip;
     $call_server_ip = $value->vla_call_server_ip;
@@ -197,22 +187,21 @@
     if ( preg_match("DEAD",$status) ) {
         $textclass = "text-danger";
         }
-    
-    $barracks .='[';       
-    $barracks .= '"<img src=\"'.$sessionAvatar.'\" class=\"img-circle thumb48\"> <b class=\"text-blue\">'.$agentname.'</b>",';    
-    $barracks .= '"'.$user_group.'",';    
-    $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
-    $barracks .= '"'.$cust_phone.'",';    
-    $barracks .= '"'.$call_time_MS.'",';    
-    $barracks .= '"'.$campname.'"';    
-    $barracks .='],';
- 
-}
+        
 
-    $barracks = rtrim($barracks, ",");    
-    $barracks .= ']';
-    
-    echo json_encode($barracks);
-    
-    //echo $barracks;
+    $agentinformation .='[';       
+    $agentinformation .= '"'.$userid.'",';       
+    $agentinformation .= '"'.$agentphone.'",';   
+    $agentinformation .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';      
+    $agentinformation .= '"'.$cust_phone.'",';      
+    $agentinformation .= '"'.$call_time_MS.'"';
+    $agentinformation .='],';
+
+    }
+
+    $agentinformation = rtrim($agentinformation, ",");    
+    $agentinformation .= ']';
+
+    echo json_encode($agentinformation);
+
 ?>

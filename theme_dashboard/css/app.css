@@ -5223,31 +5223,37 @@ body .bootstrap-tagsinput .tag {
   position: relative;
   display: block;
   width: 100%;
+  margin-left: 5%;
 }
 .wizard > .steps .number {
   font-size: 1.429em;
 }
 .wizard > .steps > ul > li {
-  width: 25%;
+  width: 33.33%;
+  /* width: auto; */
 }
 .wizard > .content {
   background: #fff;
   display: block;
-  margin: 0.5em;
-  min-height: 300px;
-  overflow: hidden;
   position: relative;
-  width: auto;
+  /* margin: 1.3em; */
+  min-height: 370px;
+  overflow: hidden;
+  overflow-y: auto;
+  width: 100%;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
 .wizard > .content > .body {
   float: left;
-  position: absolute;
+   position: absolute;
   width: 100%;
-  height: 95%;
+  /* height: 95%; */
   padding: 2.5% 0;
+}
+.wizard fieldset {
+  border: none;
 }
 .wizard > .content > .body ul {
   list-style: disc !important;
@@ -5264,19 +5270,17 @@ body .bootstrap-tagsinput .tag {
   display: block;
 }
 .wizard > .content > .body input.error {
-  background: #fbe3e4;
-  border: 1px solid #fbc2c4;
-  color: #8a1f11;
+  border-color: #4caf50;
 }
 .wizard > .content > .body label {
   display: inline-block;
   margin-bottom: 0.5em;
 }
 .wizard > .content > .body label.error {
-  color: #f05050;
-  display: block !important;
-  margin-left: 1.5em;
-  padding: 0;
+  color: #f44336;
+  font-weight: normal;
+  position: relative;
+  margin-bottom: 0;
 }
 .wizard > .actions {
   position: relative;
@@ -5318,13 +5322,16 @@ body .bootstrap-tagsinput .tag {
 .wizard > .steps > ul > li,
 .wizard > .actions > ul > li {
   float: left;
+  min-height: 50px;
+  /* padding-top: 15px; */
+  /* padding-bottom: 15px; */
 }
 .wizard > .steps a,
 .wizard > .steps a:hover,
 .wizard > .steps a:active {
   display: block;
   width: auto;
-  margin: 0 0.5em 0.5em;
+  /* margin: 0 0.5em 0.5em; */
   padding: 1em 1em;
   text-decoration: none;
   -webkit-border-radius: 5px;
@@ -5349,7 +5356,7 @@ body .bootstrap-tagsinput .tag {
 .wizard > .steps .current a,
 .wizard > .steps .current a:hover,
 .wizard > .steps .current a:active {
-  background: #5d9cec;
+  background: #3f51b5;
   color: #fff;
   cursor: default;
 }
@@ -5379,8 +5386,8 @@ body .bootstrap-tagsinput .tag {
   border-radius: 3px;
   text-decoration: none;
   color: #ffffff;
-  background-color: #5d9cec;
-  border-color: #5d9cec;
+  background-color: #3f51b5;
+  border-color: #3f51b5;
 }
 .wizard > .actions a:focus,
 .wizard > .actions a:hover:focus,
@@ -5396,8 +5403,8 @@ body .bootstrap-tagsinput .tag {
 .wizard > .actions a:hover:hover,
 .wizard > .actions a:active:hover {
   color: #ffffff;
-  background-color: #4b91ea;
-  border-color: #3886e8;
+  background-color: #3f51b5;
+  border-color: #3f51b5;
 }
 .wizard > .actions a:active,
 .wizard > .actions a:hover:active,
@@ -8009,6 +8016,13 @@ ADDED FROM MATERIAL
   text-align: right;
   margin-bottom: 0;
   padding-top: 7px;
+}
+.reverse_control_label{
+  text-align: left;
+  margin-bottom: 0;
+  padding-top: 7px;
+  font-style: oblique;
+  font-size: larger;
 }
 
 /* ========================================================================
