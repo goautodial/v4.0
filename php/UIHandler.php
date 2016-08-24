@@ -1751,7 +1751,7 @@ error_reporting(E_ERROR | E_PARSE);
 		// old img element : <img src="'.$user->getUserAvatar().'" style="border-color:transparent;" alt="User Image" />
 		// <img src="'.$user->getUserAvatar().'" width="auto" height="auto"  class="user-image" alt="User Image" />
 		$avatarElement1 = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 22, true);
-		$avatarElement2 = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 96, false, true);
+		$avatarElement2 = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 96, false, true, false);
 		return '<li class="dropdown user user-menu">
 	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 	                    '.$avatarElement1.'
@@ -5630,7 +5630,7 @@ error_reporting(E_ERROR | E_PARSE);
 	/**
 	 * Returns an Vue Avatar
 	 */
-	public function getVueAvatar($username, $avatar, $size, $topBar = false, $sideBar = false) {
+	public function getVueAvatar($username, $avatar, $size, $topBar = false, $sideBar = false, $rounded = true) {
 		$showAvatar = '';
 		$initials = '';
 		if (isset($avatar)) {
@@ -5644,8 +5644,9 @@ error_reporting(E_ERROR | E_PARSE);
 		}
 		$topBarStyle = ($topBar) ? 'style="float: left; padding-right: 5px;"' : '';
 		$sideBarStyle = ($sideBar) ? 'style="width: 100%; text-align: center;" display="inline-block"' : '';
+		$roundedImg = (!$rounded) ? ':rounded="false"' : '';
 		
-		return '<avatar username="'.$username.'" '.$showAvatar.' '.$initials.' '.$topBarStyle.' '.$sideBarStyle.' :size="'.$size.'"></avatar>';
+		return '<avatar username="'.$username.'" '.$showAvatar.' '.$initials.' '.$topBarStyle.' '.$sideBarStyle.' '.$roundedImg.' :size="'.$size.'"></avatar>';
 	}
 
 }
