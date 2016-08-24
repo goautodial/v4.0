@@ -33,7 +33,6 @@
 
     	<!-- Wizard Form style -->
 		<link href="css/style.css" rel="stylesheet" type="text/css" />
-    	<link rel="stylesheet" href="css/easyWizard.css">
 
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
@@ -107,337 +106,288 @@
 				
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="T_User"><b>User Wizard » Add New User</b></h4>
+					<h4 class="modal-title animate-header" id="T_User">
+						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create users."></i> 
+						<b>User Wizard » Add New User</b></h4>
 				</div>
-				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				<div class="modal-body" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
-				<form action="CreateTelephonyUser.php" method="POST" id="create_form" class="form-horizontal " role="form">
-				<!-- STEP 1 -->
-					<div class="wizard-step">
-						<div class="form-group mt">
-							<label class="col-sm-4 control-label" for="user_group">User Group:</label>
-							<div class="col-sm-8 mb">
-								<select id="user_group" class="form-control" name="user_group">
+				<!--<form action="CreateTelephonyUser.php" method="POST" id="create_form" class="form-horizontal " role="form">-->
+				<form id="wizard_form" action="#">
+					<div class="row">
+                        <h4>Getting Started
+                           <br>
+                           <small>Assign User to a Usergroup</small>
+                        </h4>
+                        <fieldset>
+                           <div class="form-group mt">
+								<label class="col-sm-5 control-label" for="user_group">User Group</label>
+								<div class="col-sm-7 mb">
+									<select id="user_group" class="form-control" name="user_group">
+										<?php
+											for($i=0;$i<count($user_groups->user_group);$i++){
+										?>
+											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
+										<?php
+											}
+										?>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">		
+								<label class="col-sm-5 control-label">Current Users </label>
+								<div class="col-sm-7 mb">
+									<div class="row">
+										<h4 style="padding-left:20px;"><?php echo count($output->user); ?></h4>
+									</div>
+								</div>
+							</div>
+						<!-- ENABLE IF ADD MULTIPLE IS AVAILABLE 
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" style="padding-top:15px;">Additional Seat(s): </label>
+								<div class="col-sm-8" style="padding-top:10px;">
+									<select name="seats" id="seats" class="form-control">
 									<?php
-										for($i=0;$i<count($user_groups->user_group);$i++){
+										for($i=1; $i <= 9; $i++){ 
 									?>
-										<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
+										<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 									<?php
 										}
 									?>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label">Current Users: </label>
-							<div class="col-sm-8 mb">
-								<div class="row">
-									<h4 style="padding-left:20px;"><?php echo count($output->user); ?></h4>
+										<option value="custom_seats">Custom</option>
+									</select>
 								</div>
 							</div>
-						</div>
-					<!-- ENABLE IF ADD MULTIPLE IS AVAILABLE --
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" style="padding-top:15px;">Additional Seat(s): </label>
-							<div class="col-sm-8" style="padding-top:10px;">
-								<select name="seats" id="seats" class="form-control">
-								<?php
-									for($i=1; $i <= 9; $i++){ 
-								?>
-									<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-								<?php
-									}
-								?>
-									<option value="custom_seats">Custom</option>
-								</select>
+							<div class="form-group" id="custom_seats" style="display:none;">
+								<label class="col-sm-4 control-label" for="custom_num_seats">Number of Seats: </label>
+								<div class="col-sm-6 mb">
+									<input type="number" name="custom_num_seats" id="custom_num_seats" class="form-control" min="1" max="99" value="1">
+								</div>
 							</div>
-						</div>
-					-->
-						<div class="form-group" id="custom_seats" style="display:none;">
-							<label class="col-sm-4 control-label" for="custom_num_seats">Number of Seats: </label>
-							<div class="col-sm-6 mb">
-								<input type="number" name="custom_num_seats" id="custom_num_seats" class="form-control" min="1" max="99" value="1">
+						-->
+							<div class="form-group">
+								<label class="col-sm-5 control-label" for="generate_phone_logins">Generate Phone Logins </label>
+								<div class="col-sm-7 mb">
+									<select id="generate_phone_logins" name="generate_phone_logins" class="form-control">
+										<option value="N" selected>No</option>
+										<option value="Y">Yes</option>
+									</select>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="generate_phone_logins">Generate Phone Logins: </label>
-							<div class="col-sm-8 mb">
-								<select id="generate_phone_logins" name="generate_phone_logins" class="form-control">
-									<option value="N" selected>No</option>
-									<option value="Y">Yes</option>
-								</select>
-							</div>
-						</div>
-						<?php
-							$latest_phone = max($phones->extension);
-							//var_dump($latest_phone);
-							//var_dump($phones->extension);
-							$latest_phone = $latest_phone + 1;
+                        </fieldset>
+                        <h4>Account Details
+                           <br>
+                           <small>Account and Login Details</small>
+                        </h4>
+                        <fieldset>
+                           <?php
+							$agent_num = $output->last_count;
+
+							$num_padded = sprintf("%03d", $agent_num);
 							
-						?>
-						<div class="form-group" id="phone_logins_form" style="display:none;">
-							<label class="col-sm-4 control-label" for="phone_logins"> Phone Login: </label>
-							<div class="col-sm-8 mb">
-								<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="Phone Login. This is a required field" value="<?php echo $latest_phone;?>" pattern=".{3,}" title="Minimum of 3 characters" required>
+							$fullname = "Agent ".$num_padded;
+							$user_id_for_form = "agent".$num_padded;
+							?>
+							
+							<div class="form-group">		
+								<label class="col-sm-4 control-label"> Users ID </label>
+								<div class="col-sm-8 mb">
+									<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID (Mandatory)" value="<?php echo $user_id_for_form;?>" required>
+								</div>
 							</div>
-						</div>
-					</div>
-				
-			
-				<!-- STEP 2 -->
-					<div class="wizard-step">
-						<?php
-						$max = count($output->user);
-						$x = 0;
-						for($i=0; $i < $max; $i++){
-							//echo $max-$x;
-							$agent = substr($output->user[$max-$x], 0, 5);
-							if($agent == "agent"){
-								$get_last = substr($output->user[$max-$x], -2);
-							}else{
-								$x = $x+1;
-							}
-						}
-
-						$agent_num = $get_last + 1;
-
-						$num_padded = sprintf("%03d", $agent_num);
-						
-						$fullname = "Agent ".$num_padded;
-						$user_id_for_form = "agent".$num_padded;
-						?>
-						
-						<div class="form-group">		
-							<label class="col-sm-4 control-label"> Users ID: </label>
-							<div class="col-sm-8 mb">
-								<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID. This is a required field." value="<?php echo $user_id_for_form;?>" required>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="fullname"> Fullname: </label>
-							<div class="col-sm-8 mb">
-								<input type="text" name="fullname" id="fullname" class="form-control" placeholder="FullName. This is a required field."
-									   value="<?php echo $fullname;?>">
-							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="password"> Password: </label>
-							<div class="col-sm-8 mb">
-								<input type="password" class="form-control" name="password" id="password" placeholder="Default Password is: Go2016. This is a required field." value="Go2016" required>
+							<?php
+								$latest_phone = max($phones->extension);
+								$latest_phone = $latest_phone + 1;
 								
-							</div> 
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="conf_password"> Confirm Password: </label>
-							<div class="col-sm-8 mb">
-								<input type="password" class="form-control" id="conf_password" placeholder="Re-enter password here. This is a required field" value="Go2016" required>
-							</div> 
-						</div>
-						<div class="row">
-							<p class="col-sm-12"><small class="pull-right" style="padding-right:20px;"><i><span id="pass_result"></span></i></small></p>
-						</div>
-						<input type="hidden" name="phone_pass" id="phone_pass" class="form-control">
-
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="status">Active: </label>
-							<div class="col-sm-4 mb">
-								<select name="status" class="form-control">
-									<option value="Y" selected>Yes</option>		
-			
-									<option value="N" >No</option>						
-								</select>
+							?>
+							<div class="form-group" id="phone_logins_form" style="display:none;">
+								<label class="col-sm-4 control-label" for="phone_logins"> Phone Login </label>
+								<div class="col-sm-8 mb">
+									<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="Phone Login (Mandatory)" value="<?php echo $latest_phone;?>" pattern=".{3,}" title="Minimum of 3 characters" required>
+								</div>
 							</div>
-						</div>
-					</div><!--end of step2 -->
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="fullname"> Fullname </label>
+								<div class="col-sm-8 mb">
+									<input type="text" name="fullname" id="fullname" class="form-control" placeholder="FullName (Mandatory)"
+										   value="<?php echo $fullname;?>" required>
+								</div>
+							</div>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="password"> Password </label>
+								<div class="col-sm-8 mb">
+									<input type="password" class="form-control" name="password" id="password" placeholder="Default Password is: Go2016 (Mandatory)" value="Go2016" required>
+									
+								</div> 
+							</div>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="confirm"> Confirm Password </label>
+								<div class="col-sm-8 mb">
+									<input type="password" class="form-control" id="confirm" name="confirm" placeholder="Re-enter password here (Mandatory)" value="Go2016" required>
+								</div> 
+							</div>
+							<!--
+							<div class="row">
+								<p class="col-sm-12"><small class="pull-right" style="padding-right:20px;"><i><span id="pass_result" class="control-label"></span></i></small></p>
+							</div>-->
+							<input type="hidden" name="phone_pass" id="phone_pass" class="form-control">
+
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="status">Active </label>
+								<div class="col-sm-8 mb">
+									<select name="status" id="status" class="form-control">
+										<option value="Y" selected>Yes</option>
+										<option value="N" >No</option>						
+									</select>
+								</div>
+							</div>
+                        </fieldset>
+                        <h4>Review & Submit
+                           <br>
+                           <small>Review Details Before Saving</small>
+                        </h4>
+                        <fieldset>
+                        	<div class="form-group">
+                           		<label class="col-lg-6 control-label">User Group: </label>
+                           		<div class="col-lg-6 reverse_control_label mb">
+                           			<span id="submit-usergroup"></span>
+                           		</div>
+                           	</div>
+                           	<div class="form-group">
+                           		<label class="col-lg-6 control-label">User ID: </label>
+                           		<div class="col-lg-6 reverse_control_label mb">
+                           			<span id="submit-userid"></span>
+                           		</div>
+                           	</div>
+                           	<div class="form-group">
+                           		<label class="col-lg-6 control-label">Full Name: </label>
+                           		<div class="col-lg-6 reverse_control_label mb">
+                           			<span id="submit-fullname"></span>
+                           		</div>
+                           	</div>
+                           	<div class="form-group">
+                           		<label class="col-lg-6 control-label">Phone Login: </label>
+                           		<div class="col-lg-6 reverse_control_label mb">
+                           			<span id="submit-phonelogin"></span>
+                           		</div>
+                           	</div>
+                           	<div class="form-group">
+                           		<label class="col-lg-6 control-label">Password: </label>
+                           		<div class="col-lg-6 reverse_control_label mb">
+                           			<span id="submit-password"></span>
+                           		</div>
+                           	</div>
+                           	<div class="form-group">
+                           		<label class="col-lg-6 control-label">Active: </label>
+                           		<div class="col-lg-6 reverse_control_label mb">
+                           			<span id="submit-active"></span>
+                           		</div>
+                           	</div>
+
+                        </fieldset>
+                     </div>
 				</form>
 		
-				</div> <!-- end of modal body -->
+				</div> <!-- end of modal body
 
 				<div class="modal-footer wizard-buttons">
-					<!-- The wizard button will be inserted here. -->
-				</div>
+					<!-- The wizard button will be inserted here. 
+				</div>-->
 			</div>
 		</div>
 	</div><!-- end of modal -->
 
 		<?php print $ui->standardizedThemeJS();?>
-		<script src="js/easyWizard.js" type="text/javascript"></script> 
+		<!-- JQUERY STEPS-->
+  		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 		
-	<script type="text/javascript">
+<script type="text/javascript">
 
-		function checkPasswordMatch() {
-		    var password = $("#password").val();
-		    var confirmPassword = $("#conf_password").val();
+	$(document).ready(function() {
+		
+		// initialize data table
+		$('#T_users').dataTable();
 
-		    if (password != confirmPassword)
-		        $("#pass_result").html("<font color='red'>Passwords Do Not Match! <font size='5'>✖</font> </font>");
-		    else
-		    	 $("#pass_result").html("<font color='green'>Passwords Match! <font size='5'>✔</font> </font>");
-		}
+		/*********
+		** Add Wizard
+		*********/
+		    var form = $("#wizard_form"); // init form wizard 
 
-	//-------------------------
+		    form.validate({
+		        errorPlacement: function errorPlacement(error, element) { element.after(error); },
+		        rules: {
+		            confirm: {
+		                equalTo: "#password"
+		            }
+		        }
+		    });
 
-			$(document).ready(function() {
-				$('#T_users').dataTable();
+		    form.children("div").steps({
+		        headerTag: "h4",
+		        bodyTag: "fieldset",
+		        transitionEffect: "slideLeft",
+		        onStepChanging: function (event, currentIndex, newIndex)
+		        {
+		        	// Allways allow step back to the previous step even if the current step is not valid!
+			        if (currentIndex > newIndex) {
+			            return true;
+			        }
 
-			// for cancelling
-				$(document).on('click', '#cancel', function(){
-					swal("Cancelled", "No action has been done :)", "error");
-				});
+			        // check duplicates
+			        	//validate_user();
+			       		//validate_phone_login();
 
-		// for easy wizard 
-			var form = document.getElementById('create_form');
-			var validate_wizard = 0;
-			
-			var generate_phone_logins = document.getElementById('generate_phone_logins').value;
-			var phone_logins = document.getElementById('phone_logins').value;
-			//var phone_pass = document.getElementById('phone_pass').value;
+			        // form review
+					show_form_review();
 
-			var password = document.getElementById('password').value;
-			var conf_password = document.getElementById('conf_password').value;
+					// Clean up if user went backward before
+				    if (currentIndex < newIndex)
+				    {
+				        // To remove error styles
+				        $(".body:eq(" + newIndex + ") label.error", form).remove();
+				        $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+				    }
 
-			$("#wizard-modal").wizard({
+		            form.validate().settings.ignore = ":disabled,:hidden";
+		            return form.valid();
+		        },
+		        onFinishing: function (event, currentIndex)
+		        {
+		            form.validate().settings.ignore = ":disabled";
+		            return form.valid();
+		        },
+		        onFinished: function (event, currentIndex)
+		        {
 
-				onnext:function(){		
+		        	$('#finish').text("Loading...");
+		        	$('#finish').attr("disabled", true);
 
-					var generate_phone_logins = document.getElementById('generate_phone_logins').value;
-					var phone_logins = document.getElementById('phone_logins').value;
-
-					if(generate_phone_logins == "Y"){
-						//document.getElementById("phone_login1").value = phone_logins;
-						$('#phone_div').show();
-					}else{
-						$('#phone_div').hide();
-					}
-					/*
-					var user_group = document.getElementById('user_group').value;
-					if(user_group == "AGENTS"){
-						user_group = "GOAUTODIAL AGENTS";
-					}
-					if(user_group == "ADMIN"){
-						user_group = "GOAUTODIAL ADMINISTRATORS";
-					}
-					if(user_group == "SUPERVISOR"){
-						user_group = "SUPERVISOR";
-					}
-					document.getElementById("display_user_group").innerHTML =  user_group;
-					*/
-				},
-                onfinish:function(){
-                
-                /* validate required fields
-					- phone_logins if generate_phone_logins = Y
-					- phone_password if generate_phone_logins = Y
-					- password and conf_password confirmation are equal
-					- 
-				*/
-				var generate_phone_logins = document.getElementById('generate_phone_logins').value;
-				var phone_logins = document.getElementById('phone_logins').value;
-				var phone_pass = document.getElementById('phone_pass').value;
-
-				var user_form = document.getElementById('user_form').value;
-				var fullname = document.getElementById('fullname').value;
-				var password = document.getElementById('password').value;
-				var conf_password = document.getElementById('conf_password').value;
-
-					/*
-					if(generate_phone_logins == "Y"){
-						if(phone_logins == ""){
-							validate_wizard = 1;
+		            // Submit form via ajax
+		            $.ajax({
+						url: "./php/CreateTelephonyUser.php",
+						type: 'POST',
+						data: $("#wizard_form").serialize(),
+						success: function(data) {
+						  // console.log(data);
+							  if(data == 1){
+							  	  swal("Success!", "User Successfully Created!", "success");
+								  window.setTimeout(function(){location.reload()},2000);
+							  }else{
+							  	  sweetAlert("Oops...", "Something went wrong. "+data, "error");
+							  	  $('#finish').val("Submit");
+    							  $('#finish').attr("disabled", false);
+							  }
 						}
-						if(phone_pass == ""){
-							validate_wizard = 1;
-						}
-					}*/
+					});
+		        }
+		    });
 
-					phone_pass = password; //matches the phone password with the password.
+	//--------------------
 
-					if(user_form == ""){
-						validate_wizard = 1;
-					}
+		/*********
+		** Edit user details
+		*********/
 
-					if(fullname == ""){
-						validate_wizard = 1;
-					}
-					
-					if(password != conf_password || password == ""){
-						validate_wizard = 1;
-					}
-
-					if(validate_wizard == 0){
-						//alert("User Created!");
-						$.ajax({
-							url: "./php/CreateTelephonyUser.php",
-							type: 'POST',
-							data: $("#create_form").serialize(),
-							success: function(data) {
-							  // console.log(data);
-								  if(data == 1){
-								  	  swal("Success!", "User Successfully Created!", "success")
-									  window.setTimeout(function(){location.reload()},1000)
-									  $('#add_button').val("Loading...");
-								  }else{
-								  	  sweetAlert("Oops...", "Something went wrong. "+data, "error");
-								  	  $('#add_button').val("Submit");
-        							  $('#add_button').attr("disabled", false);
-									  $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-								  }
-							}
-						});
-					}else{
-						sweetAlert("Oops...", "Something went wrong", "error");
-						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-						validate_wizard = 0;
-					}
-
-                }
-				
-            });
-		
-		
-		/* password confirmation */
-		$("#password").keyup(checkPasswordMatch);
-		$("#conf_password").keyup(checkPasswordMatch);
-
-		/* additional number custom */
-			$('#seats').on('change', function() {
-			//  alert( this.value ); // or $(this).val()
-				if(this.value == "custom_seats") {
-				  $('#custom_seats').show();
-				}
-				if(this.value != "custom_seats") {
-				  $('#custom_seats').hide();
-				}
-			});
-
-		/* user group */
-			$('#user_group').on('change', function() {
-			//  alert( this.value ); // or $(this).val()
-				if(this.value == "AGENTS" || this.value == "ADMIN") {
-					document.getElementById('generate_phone_logins').value = "Y";
-					$('#phone_logins_form').show();
-					//$('#generate_phone_logins').val() = "Y";
-				}else{
-					document.getElementById('generate_phone_logins').value = "N";
-					$('#phone_logins_form').hide();
-					//$('#generate_phone_logins').val() = "N";
-				}
-			});
-		
-		/* generate phone logins*/
-			$('#generate_phone_logins').on('change', function() {
-			//  alert( this.value ); // or $(this).val()
-				if(this.value == "Y") {
-				  $('#phone_logins_form').show();
-				}
-				if(this.value == "N") {
-				  $('#phone_logins_form').hide();
-				}
-			});
-
-				/**
-				  * Edit user details
-				 */
 				$(document).on('click','.edit-T_user',function() {
 					var url = 'edittelephonyuser.php';
 					var userid = $(this).attr('data-id');
@@ -447,10 +397,13 @@
 					//$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				 });
+
+	// ------------------
 				
-				/**
-				 * Delete function
-				 */
+		/*********
+		** Delete function
+		*********/
+
 				 $(document).on('click','.delete-T_user',function() {
 				 	var id = $(this).attr('data-id');
 		                swal({   
@@ -489,9 +442,109 @@
 		                	}
 		                );
 				 });
+
+	// -------------------------
+
+		/*********
+		** validations
+		*********/
+
+		function validate_user(){
+			var user_form_value = $('#user_form').val();
+	        if(user_form_value != ""){
+			    $.ajax({
+				    url: "php/checkUser.php",
+				    type: 'POST',
+				    data: {
+				    	user : user_form_value
+				    },
+					success: function(data) {
+						console.log(data);
+						if(data != "success"){
+							sweetAlert("Oops...", "Something went wrong. "+data, "error");
+							return false;
+						}
+					}
+				});
+			}
+		}
+
+		function validate_phone_login(){
+			var phone_logins_value = $('#phone_logins').val();
+	        if(phone_logins_value != ""){
+			    $.ajax({
+				    url: "php/checkUser.php",
+				    type: 'POST',
+				    data: {
+				    	phone_login : phone_logins_value
+				    },
+					success: function(data) {
+						console.log(data);
+						if(data != "success"){
+							sweetAlert("Oops...", "Something went wrong. "+data, "error");
+							return false;
+						}
+					}
+				});
+			}
+		}
+
+	// -------------------------
+
+		// form review
+		function show_form_review(){
+			$('#submit-usergroup').text($('#user_group').val());
+			$('#submit-userid').text($('#user_form').val());
+			$('#submit-fullname').text($('#fullname').val());
+			$('#submit-phonelogin').text($('#phone_logins').val());
+			$('#submit-password').text("******");
+
+			if($('#status').val() == "Y"){
+				$('#submit-active').text("YES");
+			}else{
+				$('#submit-active').text("NO");
+			}
+		}
+
+	// -------------------------
+
+		/*********
+		** On Action Events
+		*********/
+
+		/* additional number custom */
+			$('#seats').on('change', function() {
+				if(this.value == "custom_seats") {
+				  $('#custom_seats').show();
+				}
+				if(this.value != "custom_seats") {
+				  $('#custom_seats').hide();
+				}
 			});
-			
-		</script>
+
+		/* user group */
+			$('#user_group').on('change', function() {
+				if(this.value == "AGENTS" || this.value == "ADMIN") {
+					document.getElementById('generate_phone_logins').value = "Y";
+					$('#phone_logins_form').show();
+				}else{
+					document.getElementById('generate_phone_logins').value = "N";
+					$('#phone_logins_form').hide();
+				}
+			});
+		
+		/* generate phone logins*/
+			$('#generate_phone_logins').on('change', function() {
+				if(this.value == "Y") {
+				  $('#phone_logins_form').show();
+				}
+				if(this.value == "N") {
+				  $('#phone_logins_form').hide();
+				}
+			});
+	});
+	
+</script>
 
 		<?php print $ui->creamyFooter();?>
     </body>
