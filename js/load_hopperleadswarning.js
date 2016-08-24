@@ -22,6 +22,31 @@
     });
     }
     
+    function load_view_agent_information(){
+    $.ajax({
+        url: "./php/APIs/API_GetAgentInformation.php",
+        cache: false,
+        dataType: 'json',
+        success: function(values){
+            //console.log(data);
+            //$("#refresh_agents_monitoring_summary").html(data);
+                var JSONStringrealtime = values;
+                var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+                //console.log(JSONStringrealtime);
+                //console.log(JSONObjectrealtime); 
+                var table = $('#view_agent_information_table').dataTable({ 
+                                data:JSONObjectrealtime,
+                                "paging":   false,
+                                "bPaginate": false,
+                                "searching": false,
+                                "bInfo" : false,
+                                "destroy":true
+                                
+                            });            
+        } 
+    });
+    }    
+    
     function load_cluster_status(){
     $.ajax({
         url: "./php/APIs/API_GetClusterStatus.php",
@@ -39,26 +64,13 @@
                                 "paging":   false,
                                 "bPaginate": false,
                                 "searching": false,
-                                //"bInfo" : false,
+                                "bInfo" : false,
                                 "destroy":true
                                 
                             });
         } 
     });
-    }    
-
-//    Moved to index.php - onclick-userinfo
-//    function load_view_agent_information(){
-//    $.ajax({
-//        url: "./php/ViewUserInfo.php",
-//        data: {user_id: userid},
-//        cache: false,
-//        success: function(data){
-//            console.log(data);
-//            $("#refresh_view_agent_information").html(data);
-//        } 
-//    });
-//    }    
+    }  
 
     function load_realtime_agents_monitoring(){
     $.ajax({
