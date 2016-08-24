@@ -342,7 +342,7 @@ error_reporting(E_ALL);*/
 		    				<label class="control-label col-lg-4">Campaign ID:</label>
 		    				<div class="col-lg-8">
 		    					<div class="input-group">
-							      <input id="campaign-id" name="campaign_id" type="text" class="form-control" placeholder="" value="<?php echo str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT); ?>" readonly>
+							      <input id="campaign-id" name="campaign_id" type="number" class="form-control" placeholder="" value="<?php echo str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT); ?>" readonly>
 							      <span class="input-group-btn">
 							        <button id="campaign-id-edit-btn" class="btn btn-default" type="button"><i class="fa fa-pencil"></i></button>
 							      </span>
@@ -474,7 +474,7 @@ error_reporting(E_ALL);*/
 		    				<div class="col-lg-8">
 		    					<select class="form-control" id="dial-method" name="dial_method">
 		    						<option value="MANUAL">MANUAL</option>
-		    						<option value="AUTO_DIAL">AUTODIAL</option>
+		    						<option value="RATIO">AUTODIAL</option>
 		    						<option value="ADAPT_TAPERED">PREDICTIVE</option>
 		    					</select>
 		    				</div>
@@ -784,7 +784,7 @@ error_reporting(E_ALL);*/
 		}
 
 		function dialMethod(value){
-			if(value == "AUTO_DIAL"){
+			if(value == "RATIO"){
 				$('#auto-dial-level').prop('disabled', false);
 				$('#auto-dial-level option[value="1.0"]').prop('selected', true);
 				$('div.auto-dial-level').removeClass('hide');

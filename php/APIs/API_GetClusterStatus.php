@@ -1,79 +1,82 @@
 <?php
-
-require_once('../goCRMAPISettings.php');
+    ####################################################
+    #### Name: goGetClusterStatus.php               ####
+    #### Type: API for dashboard php encode         ####
+    #### Version: 0.9               ####
+    #### Copyright: GOAutoDial Inc. (c) 2011-2016   ####
+    #### Written by: Demian Lizandro Biscocho       ####
+    #### License: AGPLv2            ####
+    ####################################################
+    
+    require_once('../goCRMAPISettings.php');
     $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetClusterStatus"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; 
-     $ch = curl_init();
-     curl_setopt($ch, CURLOPT_URL, $url);
-     curl_setopt($ch, CURLOPT_POST, 1);
-     curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-     curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-     $data = curl_exec($ch);
-     curl_close($ch);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+    $data = curl_exec($ch);
+    curl_close($ch);
 
-     $output = json_decode($data);
+    $output = json_decode($data);
+    //echo "<pre>";
+    //print_r($output);
+    
+    $cluster = '[';
      
-     /*
-     $data = explode(";",$data);
-    foreach ($data AS $temp) {
-      $temp = explode("=",$temp);
-      $cluster[$temp[0]] = $temp[1];
-    }
-    */
+    foreach ($output->data as $key => $value) {
+    
+    $serverid = $value->server_id;
+    $serverdesc = $value->server_description;
+    $serverip = $value->server_ip;
+    $status =  $value->active;
+    $load = $value->sysload;    
+    $channels = $value->channels_total;
+    $cpuidlepercent = $value->cpu_idle_percent;
+    $diskusage = $value->disk_usage;
+    $time = "";
+    
+        $disk_ary = explode('|', $diskusage);
+        $disk_ary_ct = count($disk_ary);
 
-    if($output->result=="success"){
-      for($i=0;$i < count($output->server_id);$i++){
+        $k = 0;
 
-        if(isset($_POST['api1'])){
-          echo $output->server_id[$i];
-        }
-        
-        if(isset($_POST['api2'])){
-          echo $output->server_ip[$i];
-        }
-        
-        if(isset($_POST['api3'])){
-          echo $output->active[$i];
-        }
-        
-        if(isset($_POST['api4'])){
-          echo $output->sysload[$i]."%";
-        }
-        
-        if(isset($_POST['api5'])){
-          echo $output->cpu[$i];
-        }
-        
-        if(isset($_POST['api6'])){
-          echo $output->channel[$i];
-        }
-        
-        if(isset($_POST['api7'])){
-          echo $output->disk_usage[$i]."%";
-        }
-        
-        if(isset($_POST['api8'])){
-          echo $output->cpu[$i];
-        }
-      
-       }
-
-        if(isset($_POST['api9'])){
-          echo $output->phptime;
-        }
-        
-        if(isset($_POST['api10'])){
-          echo $output->dbtime;
+        while($k < $disk_ary_ct){
+                $disk_ary[$k] = preg_replace("/^\d* /","",$disk_ary[$k]);
+                //print_r($disk_ary);
+                if($k<1) {$disk = "$disk_ary[$k]";}
+                else{
+        if($disk_ary[$k] > $disk) {$disk = "$disk_ary[$k]";}
+                }
+                $k++;
         }
 
-     
+    $diskusage = $disk;
 
-    }else{
-      echo " --- ";
-    }
+    $cluster .='[';       
+    $cluster .= '"'.$serverid.'",';   
+    $cluster .= '"'.$serverip.'",';   
+    //$cluster .= '"'.$status.'",';    
+    $cluster .= '"'.$load.'%",';    
+    $cluster .= '"'.$channels.'",';
+    //$cluster .= '"<b data-label=\"'.$diskusage.'\" class=\"radial-bar radial-bar-'.$diskusage.' radial-bar-xs\"></b>",';
+    $cluster .= '"'.$diskusage.'%",';
+    $cluster .= '"'.$time.'"';
+    $cluster .='],';
+  
+    
+}
+
+    $cluster = rtrim($cluster, ",");    
+    $cluster .= ']';
+    
+    echo json_encode($cluster);     
+    
+
 
 ?>

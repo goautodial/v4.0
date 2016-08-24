@@ -112,7 +112,6 @@
 				</div>
 				<div class="modal-body" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
-				<!--<form action="CreateTelephonyUser.php" method="POST" id="create_form" class="form-horizontal " role="form">-->
 				<form id="wizard_form" action="#">
 					<div class="row">
                         <h4>Getting Started
@@ -217,8 +216,7 @@
 								<label class="col-sm-4 control-label" for="password"> Password </label>
 								<div class="col-sm-8 mb">
 									<input type="password" class="form-control" name="password" id="password" placeholder="Default Password is: Go2016 (Mandatory)" value="Go2016" required>
-									
-								</div> 
+								</div>
 							</div>
 							<div class="form-group">		
 								<label class="col-sm-4 control-label" for="confirm"> Confirm Password </label>
@@ -288,11 +286,7 @@
                      </div>
 				</form>
 		
-				</div> <!-- end of modal body
-
-				<div class="modal-footer wizard-buttons">
-					<!-- The wizard button will be inserted here. 
-				</div>-->
+				</div> <!-- end of modal body -->
 			</div>
 		</div>
 	</div><!-- end of modal -->

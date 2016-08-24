@@ -21,6 +21,31 @@
         } 
     });
     }
+    
+    function load_cluster_status(){
+    $.ajax({
+        url: "./php/APIs/API_GetClusterStatus.php",
+        cache: false,
+        dataType: 'json',
+        success: function(values){
+            //console.log(data);
+            //$("#refresh_cluster_status").html(values);
+                var JSONStringrealtime = values;
+                var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+                //console.log(JSONStringrealtime);
+                //console.log(JSONObjectrealtime); 
+                var table = $('#cluster-status').dataTable({ 
+                                data:JSONObjectrealtime,
+                                "paging":   false,
+                                "bPaginate": false,
+                                "searching": false,
+                                //"bInfo" : false,
+                                "destroy":true
+                                
+                            });
+        } 
+    });
+    }    
 
 //    Moved to index.php - onclick-userinfo
 //    function load_view_agent_information(){
@@ -46,16 +71,16 @@
                 var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
                 //console.log(JSONStringrealtime);
                 //console.log(JSONObjectrealtime); 
-                //var table = $('#monitoring_table').dataTable({ 
-                                //data:JSONObjectrealtime,
-                                //"destroy":true
-                            //});
-                //table.destroy();
-                
-                            $('#monitoring_table').dataTable({ 
+                var table = $('#monitoring_table').dataTable({ 
                                 data:JSONObjectrealtime,
                                 "destroy":true
-                            });        
+                            });
+                //table.destroy();
+                
+                            //$('#monitoring_table').dataTable({ 
+                                //data:JSONObjectrealtime,
+                                //"destroy":true
+                            //});        
                             //console.log(values);
         } 
     });
