@@ -50,6 +50,7 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
 
 // Settings
 var phone;
+var check_if_logged_out = 1;
 var isMobile = false; //initiate as false
 var is_logged_in = <?=$is_logged_in?>;
 var logoutWarn = true;
@@ -322,6 +323,7 @@ $(document).ready(function() {
                     $("#reload-script").hide();
                     $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
+                    $("#btnLogMeOut").removeClass("disabled");
                     //toggleStatus('NOLIVE');
                     
                     if (dialingINprogress < 1) {
@@ -475,12 +477,14 @@ $(document).ready(function() {
                         $("#reload-script").show();
                         $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
                         $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
+                        $("#btnLogMeOut").addClass("disabled");
                     }
                     if (XD_live_customer_call == 1) {
                         XD_live_call_seconds++;
                         $("#xferlength").val(XD_live_call_seconds);
                         $('#edit-profile').show();
                         $("#reload-script").show();
+                        $("#btnLogMeOut").addClass("disabled");
                     }
                     if (customerparked == 1) {
                         customerparkedcounter++;
@@ -609,6 +613,9 @@ $(document).ready(function() {
                             {consult_custom_wait++;}
                     }
                 }
+                
+                //Check if Agent is still logged in
+                checkIfStillLoggedIn(check_if_logged_out);
             } else {
                 updateButtons();
                 
@@ -717,6 +724,8 @@ $(document).ready(function() {
         $("#show-cb-calendar").click(function() {
             $("#cb-container").slideToggle('slow');
         });
+        
+        CallBacksCountCheck();
     });
 
     var logoutRegX = new RegExp("logout\.php", "ig");
@@ -891,7 +900,7 @@ $(document).ready(function() {
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-undo' class='btn btn-default btn-lg btn-raised' style='padding: 12.5px 22.6px; margin: 0 0 5px 0; font-size: 16px; font-family: monospace;' title='<?=$lh->translationFor('undo')?>'> <i class='fa fa-undo'></i> </button>");
     $("#AgentDialPad").append("<span id='for_dtmf' class='hidden'><small>(<?=$lh->translationFor('for_dtmf')?>)</small></span>");
     
-    $("#go_agent_manualdial").append("<li><div class='input-group-vertical center-block'><input type='text' maxlength='18' name='MDPhonENumbeR' id='MDPhonENumbeR' class='form-control col-xs-12 phonenumbers-only' value='' placeholder='<?=$lh->translationFor('enter_phone_number')?>' onkeyup='activateLinks();' onchange='activateLinks();' style='padding: 3px 2px; color: #222; height: 30px;' aria-label='...' /></div><div class='btn-group btn-block' rose='group'><button type='button' class='btn col-xs-10 btn-success btn-raised' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></button><button type='button' class='btn col-xs-2 btn-success dropdown-toggle' data-toggle='dropdown' id='manual-dial-dropdown'>&nbsp;<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span>&nbsp;</button><ul class='dropdown-menu col-lg-12' role='menu'><li><a href='javascript:void(0)' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></a></li><li><a href='javascript:void(0)' id='manual-dial-preview'><?=$lh->translationFor('preview_call')?></a></li></ul></div><input type='hidden' name='MDDiaLCodE' id='MDDiaLCodE' class='digits-only' value='1' /><input type='hidden' name='MDPhonENumbeRHiddeN' id='MDPhonENumbeRHiddeN' value='' /><input type='hidden' name='MDLeadID' id='MDLeadID' value='' /><input type='hidden' name='MDType' id='MDType' value='' /><input type='checkbox' name='LeadLookUP' id='LeadLookUP' size='1' value='0' class='hidden' disabled /><input type='hidden' size='24' maxlength='20' name='MDDiaLOverridE' id='MDDiaLOverridE' class='cust_form' value='' /></li>");
+    $("#go_agent_manualdial").append("<li><div class='input-group-vertical center-block'><input type='text' maxlength='18' name='MDPhonENumbeR' id='MDPhonENumbeR' class='form-control col-xs-12 phonenumbers-only' value='' placeholder='<?=$lh->translationFor('enter_phone_number')?>' onkeyup='activateLinks();' onchange='activateLinks();' onkeydown='enableDialOnEnter(event);' style='padding: 3px 2px; color: #222; height: 30px;' aria-label='...' /></div><div class='btn-group btn-block' rose='group'><button type='button' class='btn col-xs-10 btn-success btn-raised' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></button><button type='button' class='btn col-xs-2 btn-success dropdown-toggle' data-toggle='dropdown' id='manual-dial-dropdown'>&nbsp;<span class='caret'></span><span class='sr-only'>Toggle Dropdown</span>&nbsp;</button><ul class='dropdown-menu col-lg-12' role='menu'><li><a href='javascript:void(0)' id='manual-dial-now'><?=$lh->translationFor('dial_now')?></a></li><li><a href='javascript:void(0)' id='manual-dial-preview'><?=$lh->translationFor('preview_call')?></a></li></ul></div><input type='hidden' name='MDDiaLCodE' id='MDDiaLCodE' class='digits-only' value='1' /><input type='hidden' name='MDPhonENumbeRHiddeN' id='MDPhonENumbeRHiddeN' value='' /><input type='hidden' name='MDLeadID' id='MDLeadID' value='' /><input type='hidden' name='MDType' id='MDType' value='' /><input type='checkbox' name='LeadLookUP' id='LeadLookUP' size='1' value='0' class='hidden' disabled /><input type='hidden' size='24' maxlength='20' name='MDDiaLOverridE' id='MDDiaLOverridE' class='cust_form' value='' /></li>");
 
     $("#go_agent_login").append("<li><button id='btnLogMeIn' class='btn btn-warning btn-lg center-block' style='margin-top: 2px;'><i class='fa fa-sign-in'></i> <?=$lh->translationFor('login_on_phone')?></button></li>");
     $("#go_agent_logout").append("<li><button id='btnLogMeOut' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-out'></i> <?=$lh->translationFor('logout_from_phone')?></button></li>");
@@ -1122,6 +1131,7 @@ $(document).ready(function() {
                 
                 refresh_interval = 1000;
                 is_logged_in = 1;
+                check_if_logged_out = 1;
                 logout_stop_timeouts = 0;
                 
                 $.each(result.data, function(key, value) {
@@ -1486,6 +1496,7 @@ function btnLogMeIn () {
 
 function btnLogMeOut () {
     refresh_interval = 730000;
+    check_if_logged_out = 0;
     if (logoutWarn) {
         swal({
             title: "<?=$lh->translationFor('sure_to_logout')?>",
@@ -1592,6 +1603,21 @@ function btnResumePause () {
     }
 }
 
+function enableDialOnEnter(e) {
+    if (e.keyCode != 13) {
+        return;
+    }
+    
+    if (live_customer_call < 1) {
+        var phoneNumber = $('#MDPhonENumbeR').val();
+    
+        if (phoneNumber.length > 5) {
+            NewManualDialCall('NOW');
+            activateLinks();
+        }
+    }
+}
+
 function activateLinks() {
     if (AutoDialReady > 0 || live_customer_call > 0) {
         $('#MDPhonENumbeR').val('');
@@ -1630,7 +1656,7 @@ function hotKeysAvailable(e) {
         return;
     }
     
-    console.log('keydown: '+hotkeys[e.key], event);
+    //console.log('keydown: '+hotkeys[e.key], event);
     if (live_customer_call || MD_ring_seconds > 4) {
         var HKdispo = hotkeys[e.key];
         var HKstatus = hotkeys_content[HKdispo];
@@ -1832,6 +1858,40 @@ function toggleStatus (status) {
     }
 
     $("#livecall h3").attr({'class': statusClass, 'title': statusLabel}).html(statusLabel);
+}
+
+function checkIfStillLoggedIn(logged_out) {
+    if (logged_out) {
+        var postData = {
+            goAction: 'goCheckIfLoggedIn',
+            goUser: uName,
+            goPass: uPass,
+            responsetype: 'json'
+        };
+    
+        $.ajax({
+            type: 'POST',
+            url: '<?=$goAPI?>/goAgent/goAPI.php',
+            processData: true,
+            data: postData,
+            dataType: "json"
+        })
+        .done(function (result) {
+            if (result.result == 'success') {
+                if (!result.logged_in) {
+                    sendLogout(true);
+                    swal({
+                        title: "<?=$lh->translationFor('logged_out')?>",
+                        text: result.message,
+                        type: 'warning'
+                    });
+                }
+                return;
+            } else {
+                swal(result.message);
+            }
+        });
+    }
 }
 
 function CheckForConfCalls (confnum, force) {
@@ -2502,9 +2562,15 @@ function CheckForIncoming () {
             $(".formMain input[name='phone_code']").val(this_VDIC_data.phone_code);
             $(".formMain input[name='phone_number']").val(this_VDIC_data.phone_number).trigger('change');
             $(".formMain input[name='title']").val(this_VDIC_data.title).trigger('change');
-            $(".formMain input[name='first_name']").val(this_VDIC_data.first_name).trigger('change');
-            $(".formMain input[name='middle_initial']").val(this_VDIC_data.middle_initial).trigger('change');
-            $(".formMain input[name='last_name']").val(this_VDIC_data.last_name).trigger('change');
+            if (this_VDIC_data.first_name !== '') {
+                $("#cust_full_name a[id='first_name']").text(this_VDIC_data.first_name);
+            }
+            if (this_VDIC_data.middle_initial !== '') {
+                $("#cust_full_name a[id='middle_initial']").text(this_VDIC_data.middle_initial);
+            }
+            if (this_VDIC_data.last_name !== '') {
+                $("#cust_full_name a[id='last_name']").text(this_VDIC_data.last_name);
+            }
             $(".formMain input[name='address1']").val(this_VDIC_data.address1).trigger('change');
             $(".formMain input[name='address2']").val(this_VDIC_data.address2).trigger('change');
             $(".formMain input[name='address3']").val(this_VDIC_data.address3).trigger('change');
@@ -2573,9 +2639,11 @@ function CheckForIncoming () {
             var callnum = dialed_number;
             var dial_display_number = phone_number_format(callnum);
             
-            $("#cust_full_name").html(this_VDIC_data.first_name+" "+this_VDIC_data.middle_initial+" "+this_VDIC_data.last_name);
+            //$("#cust_full_name").html(this_VDIC_data.first_name+" "+this_VDIC_data.middle_initial+" "+this_VDIC_data.last_name);
+            $("#cust_full_name").removeClass('hidden');
             $("#cust_number").html(phone_number_format(dispnum));
-            $("#cust_avatar").prop('src', goGetAvatar(dispnum));
+            $("#cust_avatar").html(goGetAvatar(this_VDIC_data.first_name+" "+this_VDIC_data.last_name));
+            goAvatar._init(goOptions);
 
             var status_display_content = '';
             if (status_display_CALLID > 0) {status_display_content = status_display_content + "<br><b><?=$lh->translationFor('uid')?>:</b> " + LastCID;}
@@ -3016,7 +3084,22 @@ function CallBacksCountCheck() {
             $("#callbacks-active").html(CBcount);
             $("#callbacks-today").html(CBcountToday);
             
-            $("a[href='callbackslist.php'] > small.badge").html(CBcount);
+            $("a[href='events.php'] small.badge").html(CBcount);
+            $("li.notifications-menu a span.label").html(CBcountToday);
+            $("li.notifications-menu ul li.header").html('You have '+CBcountToday+' Notifications');
+            
+            var CBallToday = CBdata.today_callbacks;
+            var maxCBtoday = 5;
+            var cntCB = 0;
+            $("li.notifications-menu ul li div.slimScrollDiv ul.menu").empty();
+            $.each(CBallToday, function(key, value) {
+                if (cntCB < maxCBtoday) {
+                    var appendThis = '<li><a title="'+value.cust_name+'"><h4><p class="pull-left"><b>'+value.phone_number+'</b></p><small class="label label-<?=CRM_UI_STYLE_DEFAULT?> pull-right"><i class="fa fa-calendar-o"></i> '+value.callback_time+'</small></h4></a></li>';
+                    $("li.notifications-menu ul li div.slimScrollDiv ul.menu").append(appendThis);
+                }
+                cntCB++;
+            });
+            $("li.notifications-menu ul li div.slimScrollDiv ul.menu li a").css('padding', '0px 10px');
         }
     });
 }
@@ -3079,13 +3162,13 @@ function UpdateFieldsData() {
                 {$(".formMain input[name='title']").val(UDfieldsData.title);}
             var regUDfirst_name = new RegExp("first_name,","ig");
             if (fields_list.match(regUDfirst_name))
-                {$(".formMain input[name='first_name']").val(UDfieldsData.first_name);}
+                {$("#cust_full_name a[id='first_name']").text(UDfieldsData.first_name);}
             var regUDmiddle_initial = new RegExp("middle_initial,","ig");
             if (fields_list.match(regUDmiddle_initial))
-                {$(".formMain input[name='middle_initial']").val(UDfieldsData.middle_initial);}
+                {$("#cust_full_name a[id='middle_initial']").text(UDfieldsData.middle_initial);}
             var regUDlast_name = new RegExp("last_name,","ig");
             if (fields_list.match(regUDlast_name))
-                {$(".formMain input[name='last_name']").val(UDfieldsData.last_name);}
+                {$("#cust_full_name a[id='last_name']").text(UDfieldsData.last_name);}
             var regUDaddress1 = new RegExp("address1,","ig");
             if (fields_list.match(regUDaddress1))
                 {$(".formMain input[name='address1']").val(UDfieldsData.address1);}
@@ -3804,7 +3887,7 @@ function DispoSelectSubmit() {
         }
     
         var regCBstatus = new RegExp(' ' + DispoChoice + ' ',"ig");
-        console.log((VARCBstatusesLIST.match(regCBstatus)), (DispoChoice.length > 0), scheduled_callbacks, (DispoChoice != 'CBHOLD'));
+        //console.log((VARCBstatusesLIST.match(regCBstatus)), (DispoChoice.length > 0), scheduled_callbacks, (DispoChoice != 'CBHOLD'));
         if ((VARCBstatusesLIST.match(regCBstatus)) && (DispoChoice.length > 0) && (scheduled_callbacks > 0) && (DispoChoice != 'CBHOLD')) {
             console.info("Open Callback Selection Box");
             $("#select-disposition").modal('hide');
@@ -3885,9 +3968,9 @@ function DispoSelectSubmit() {
             }
             $(".formMain input[name='phone_number']").val('').trigger('change');
             $(".formMain input[name='title']").val('').trigger('change');
-            $(".formMain input[name='first_name']").val('').trigger('change');
-            $(".formMain input[name='middle_initial']").val('').trigger('change');
-            $(".formMain input[name='last_name']").val('').trigger('change');
+            $("#cust_full_name a[id='first_name']").html('&nbsp;');
+            $("#cust_full_name a[id='middle_initial']").html('&nbsp;');
+            $("#cust_full_name a[id='last_name']").html('&nbsp;');
             $(".formMain input[name='address1']").val('').trigger('change');
             $(".formMain input[name='address2']").val('').trigger('change');
             $(".formMain input[name='address3']").val('').trigger('change');
@@ -3975,10 +4058,12 @@ function DispoSelectSubmit() {
             
             $("#SecondsDISP").html('0');
             
-            $("#cust_full_name").html('');
-            $("#cust_number").html('');
-            $("#cust_avatar").prop('src', goGetAvatar());
-            console.log(goGetAvatar());
+            //$("#cust_full_name").html('');
+            $("#cust_full_name").addClass('hidden');
+            $("#cust_number").empty();
+            $("#cust_avatar").html(goGetAvatar());
+            goAvatar._init(goOptions);
+            //console.log(goGetAvatar());
     
             //CLEAR ALL SUB FORM VARIABLES
             //$("#subForm").find(':input').each(function()
@@ -4067,9 +4152,9 @@ function CustomerData_update() {
         goVendorLeadCode: $(".formMain input[name='vendor_lead_code']").val(),
         goPhoneNumber: $(".formMain input[name='phone_number']").val(),
         goTitle: $(".formMain input[name='title']").val(),
-        goFirstName: $(".formMain input[name='first_name']").val(),
-        goMiddleInitial: $(".formMain input[name='middle_initial']").val(),
-        goLastName: $(".formMain input[name='last_name']").val(),
+        goFirstName: $("#cust_full_name a[id='first_name']").text(),
+        goMiddleInitial: $("#cust_full_name a[id='middle_initial']").text(),
+        goLastName: $("#cust_full_name a[id='last_name']").text(),
         goAddress1: $(".formMain input[name='address1']").val(),
         goAddress2: $(".formMain input[name='address2']").val(),
         goAddress3: $(".formMain input[name='address3']").val(),
@@ -4637,11 +4722,17 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='phone_number']").val(cust_phone_number).trigger('change');
                     $(".formMain input[name='title']").val(MDnextResponse_array[9]).trigger('change');
                     cust_first_name                         = MDnextResponse_array[10];
-                    $(".formMain input[name='first_name']").val(cust_first_name).trigger('change');
+                    if (cust_first_name !== '') {
+                        $("#cust_full_name a[id='first_name']").text(cust_first_name);
+                    }
                     cust_middle_initial                     = MDnextResponse_array[11];
-                    $(".formMain input[name='middle_initial']").val(cust_middle_initial).trigger('change');
+                    if (cust_middle_initial != '') {
+                        $("#cust_full_name a[id='middle_initial']").text(cust_middle_initial);
+                    }
                     cust_last_name                          = MDnextResponse_array[12];
-                    $(".formMain input[name='last_name']").val(cust_last_name).trigger('change');
+                    if (cust_last_name !== '') {
+                        $("#cust_full_name a[id='last_name']").text(cust_last_name);
+                    }
                     $(".formMain input[name='address1']").val(MDnextResponse_array[13]).trigger('change');
                     $(".formMain input[name='address2']").val(MDnextResponse_array[14]).trigger('change');
                     $(".formMain input[name='address3']").val(MDnextResponse_array[15]).trigger('change');
@@ -4707,10 +4798,12 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
                     
             
-                    $("#cust_full_name").html(cust_first_name+" "+cust_middle_initial+" "+cust_last_name);
+                    //$("#cust_full_name").html(cust_first_name+" "+cust_middle_initial+" "+cust_last_name);
+                    $("#cust_full_name").removeClass('hidden');
                     $("#cust_number").html(phone_number_format(dispnum));
-                    $("#cust_avatar").prop('src', goGetAvatar(dispnum));
-                    console.log(goGetAvatar(dispnum));
+                    $("#cust_avatar").html(goGetAvatar(cust_first_name+" "+cust_last_name));
+                    goAvatar._init(goOptions);
+                    //console.log(goGetAvatar(dispnum));
                     
                     LeadDispo = '';
                     
@@ -5711,13 +5804,14 @@ function NoneInSession() {
 }
 
 function goGetAvatar(account) {
-    var avatarType = 'wavatar';
+    var defaultAvatar = '';
+    var avatarInitials = 'initials';
     if (account === undefined || account == '') {
-        var account = 'goagent';
-        avatarType = 'mm';
+        var account = 'Dialed Client';
+        defaultAvatar = 'src="<?php echo CRM_DEFAULTS_USER_AVATAR;?>"';
+        avatarInitials = 'username';
     }
-    var md5hash = $.md5(account);
-    var avatar = "https://www.gravatar.com/avatar/"+md5hash+"?rating=PG&size=96&default="+avatarType;
+    var avatar = "<avatar username='"+account+"' "+defaultAvatar+" :size='64'></avatar>";
     
     return avatar;
 }
@@ -5788,6 +5882,12 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 	encoded = utf8_decode(xtest);
 
 	if (urlschema == 'DEFAULT') {
+        var getFirstName = $("#cust_full_name a[id='first_name']").text();
+            getFirstName = (getFirstName !== ' ') ? getFirstName : '';
+        var getMiddleName = $("#cust_full_name a[id='middle_initial']").text();
+            getMiddleName = (getMiddleName !== ' ') ? getMiddleName : '';
+        var getLastName = $("#cust_full_name a[id='last_name']").text();
+            getLastName = (getLastName !== ' ') ? getLastName : '';
 		web_form_varsX = 
 		"&lead_id=" + $(".formMain input[name='lead_id']").val() + 
 		"&vendor_id=" + $(".formMain input[name='vendor_lead_code']").val() + 
@@ -5796,9 +5896,9 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 		"&phone_code=" + $(".formMain input[name='phone_code']").val() + 
 		"&phone_number=" + $(".formMain input[name='phone_number']").val() + 
 		"&title=" + $(".formMain input[name='title']").val() + 
-		"&first_name=" + $(".formMain input[name='first_name']").val() + 
-		"&middle_initial=" + $(".formMain input[name='middle_initial']").val() + 
-		"&last_name=" + $(".formMain input[name='last_name']").val() + 
+		"&first_name=" + getFirstName + 
+		"&middle_initial=" + getMiddleName + 
+		"&last_name=" + getLastName + 
 		"&address1=" + $(".formMain input[name='address1']").val() + 
 		"&address2=" + $(".formMain input[name='address2']").val() + 
 		"&address3=" + $(".formMain input[name='address3']").val() + 
@@ -5988,6 +6088,12 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 			{web_form_vars = web_form_varsX;}
 		if (webformnumber == '2')
 			{web_form_vars_two = web_form_varsX;}
+        var getFirstName = $("#cust_full_name a[id='first_name']").text();
+            getFirstName = (getFirstName !== ' ') ? getFirstName : '';
+        var getMiddleName = $("#cust_full_name a[id='middle_initial']").text();
+            getMiddleName = (getMiddleName !== ' ') ? getMiddleName : '';
+        var getLastName = $("#cust_full_name a[id='last_name']").text();
+            getLastName = (getLastName !== ' ') ? getLastName : '';
 
 		var SCvendor_lead_code = $(".formMain input[name='vendor_lead_code']").val();
 		var SCsource_id = source_id;
@@ -5997,9 +6103,9 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 		var SCphone_code = $(".formMain input[name='phone_code']").val();
 		var SCphone_number = $(".formMain input[name='phone_number']").val();
 		var SCtitle = $(".formMain input[name='title']").val();
-		var SCfirst_name = $(".formMain input[name='first_name']").val();
-		var SCmiddle_initial = $(".formMain input[name='middle_initial']").val();
-		var SClast_name = $(".formMain input[name='last_name']").val();
+		var SCfirst_name = getFirstName;
+		var SCmiddle_initial = getMiddleName;
+		var SClast_name = getLastName;
 		var SCaddress1 = $(".formMain input[name='address1']").val();
 		var SCaddress2 = $(".formMain input[name='address2']").val();
 		var SCaddress3 = $(".formMain input[name='address3']").val();
