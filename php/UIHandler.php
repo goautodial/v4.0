@@ -5604,13 +5604,17 @@ error_reporting(E_ERROR | E_PARSE);
 	public function getVueAvatar($username, $avatar, $size, $topBar = false, $sideBar = false, $rounded = true) {
 		$showAvatar = '';
 		$initials = '';
-		if (isset($avatar)) {
-			if (preg_match("/(agent|goautodial)/i", $username) && preg_match("/defaultAvatar/i", $avatar)) {
+		if (isset($avatar) && !preg_match("/defaultAvatar/i", $avatar)) {
+			if (preg_match("/(agent|goautodial)/i", $username)) {
 				$showAvatar = '';
 				$initials = 'initials="GO"';
 			} else {
 				$showAvatar = 'src="'.$avatar.'"';
 				$initials = '';
+			}
+		} else {
+			if (preg_match("/(agent|goautodial)/i", $username)) {
+				$initials = 'initials="GO"';
 			}
 		}
 		$topBarStyle = ($topBar) ? 'style="float: left; padding-right: 5px;"' : '';
