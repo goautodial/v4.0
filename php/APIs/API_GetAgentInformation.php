@@ -52,6 +52,7 @@
     $user_group = $value->vu_user_group;
     $sessionid = $value->vla_conf_exten;
     $status = $value->vla_status;
+    $agentphone = $value->vu_phone_login;
     $call_type = $value->vla_comments;
     $server_ip = $value->vla_server_ip;
     $call_server_ip = $value->vla_call_server_ip;
@@ -70,7 +71,7 @@
     $CM = "";
     $textclass = "text-info";
     
-    if (preg_match("/INCALL/",$status)){
+    if ($status == "INCALL"){
         $last_call_time = $last_state_change;
         $textclass = "text-success";
         
@@ -85,14 +86,15 @@
                 //$last_call_time=$last_state_change;
                 //$status = "Hungup";
             //}
-            if ((preg_match("/AUTO/",$call_type)) or (strlen($call_type)<1)){
+            if ($call_type == "AUTO"){
                 $CM="[A]";
             }
-            if (preg_match("/INBOUND/",$call_type)){
+            if ($call_type == "INBOUND"){
                 $CM="[I]";
             }
-            $CM = "[M]";
-
+            if ($call_type == "MANUAL"){
+                $CM="[M]";
+            }
     }
     
     if (preg_match("/READY|PAUSED|CLOSER/",$status)){
@@ -189,9 +191,8 @@
 
     $agentinformation .='[';       
     $agentinformation .= '"'.$userid.'",';       
-    //$agentinformation .= '"'.$status.'",';   
+    $agentinformation .= '"'.$agentphone.'",';   
     $agentinformation .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';      
-    $agentinformation .= '"'.$user_group.'",';
     $agentinformation .= '"'.$cust_phone.'",';      
     $agentinformation .= '"'.$call_time_MS.'"';
     $agentinformation .='],';

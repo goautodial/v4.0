@@ -70,14 +70,17 @@
         $textclass = "text-danger";
     }
     
+    $diskvalue01 = (100 - $diskusage);
+    //$diskvalue02 = ($diskvalue01 + $diskusage);
+    
     $cluster .='[';       
     $cluster .= '"'.$serverid.'",';   
-    $cluster .= '"'.$serverip.'",';   
-    //$cluster .= '"'.$status.'",';    
+    $cluster .= '"'.$serverip.'",';  
+    $cluster .= '"'.$status.'",';
     $cluster .= '"'.$load.'%",';    
     $cluster .= '"'.$channels.'",';
     $cluster .= '"<div data-label=\"'.$diskusage.'%\" class=\"radial-bar radial-bar-'.$diskusage.' radial-bar-xs\"></div>",';
-    //$cluster .= '"'.$diskusage.'%",';
+    //$cluster .= '"<span sparkline=\"widget.sparkOptionPie\" values=\"'.$diskusage.','.$diskvalue01.'\"></span>",';
     $cluster .= '"'.$time.'"';
     $cluster .='],';
   

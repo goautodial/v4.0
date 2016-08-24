@@ -165,22 +165,6 @@ $dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
 $dropped_percentage = $ui->API_goGetDroppedPercentage();
 $calls_incoming_queue = $ui->API_goGetIncomingQueue();
 
-
-//<<<<<<< HEAD
-
-//=======
-//if(is_null($ui->API_getRealtimeAgent()) {
-	//$realtimeAgents = "";
-//} else {
-//	$realtimeAgents = $ui->API_getRealtimeAgent();
-//}
-//var_dump($dropped_calls_today);
-//die("dd");
-/*
- * get API data for chart from UIHandler.php
-*/
-//>>>>>>> 787a99cc6b9f5c49bbfae4e43ee10ad9623028dd
-
 $callsperhour = $ui->API_goGetCallsPerHour();
 
 	$max = 0;
@@ -400,7 +384,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                 <div class="row">	
                                                     <div class="panel panel-default" tabindex="-1">
                                                         <div class="panel-heading">
-                                                            <div class="panel-title"><h4>Active Servers</h4></div>
+                                                            <div class="panel-title"><h4>Cluster Status</h4></div>
                                                         </div>
                                                             <!-- START table-responsive-->
                                                             <div class="table-responsive">
@@ -408,12 +392,13 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                                     <table id="cluster-status" class="table table-striped table-hover" style="width: 100%">
                                                                         <thead>
                                                                                 <tr>
-                                                                                        <th>SERVER ID</th>
-                                                                                        <th>SERVER IP</th>
-                                                                                        <th>LOAD</th>
-                                                                                        <th>CHANNELS</th>
-                                                                                        <th>DISK</th>
-                                                                                        <th>TIME</th>
+                                                                                        <th>Server ID</th>
+                                                                                        <th>Server IP</th>
+                                                                                        <th>Active</th>
+                                                                                        <th>Load</th>
+                                                                                        <th>Channels</th>
+                                                                                        <th>Disk</th>
+                                                                                        <th>Time</th>
                                                                                 </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -577,12 +562,12 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4>Realtime Agent Monitoring</h4>
+                                    <h4>Realtime Agents Monitoring</h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="table-responsive" style="min-height: 40%">
                                     <div class="col-sm-12">
-                                        <table class="table table-striped table-hover" id="monitoring_table" style="width: 100%">
+                                        <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
                                             <thead>
                                                     <th>Agent Name</th>                                                    
                                                     <th>Group</th>
@@ -625,14 +610,14 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             <span class="label label-warning" id="modal-campaign"></span> 
                                             <span class="label label-info" id="modal-usergroup"></span> 
                                             <span class="label label-info" id="modal-userlevel"></span> 
-                                            <span class="label label-success" id="modal-phonelogin"></span>
+                                            <span class="label label-success" id="modal-status"></span>
                                         </center> <hr> 
                                             <div class="table-responsive">
                                                     <table class="table table-striped table-hover" id="view_agent_information_table" style="width: 100%">
                                                         <thead>
-                                                                <th>Agent ID</th>                                                    
-                                                                <th>Status</th>
-                                                                <th>User Group</th>
+                                                                <th>Agent ID</th> 
+                                                                <th>Agent Phone</th>
+                                                                <th>Status</th>                                                                
                                                                 <th>Cust Phone</th>
                                                                 <th>MM:SS</th>
                                                    
@@ -644,7 +629,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             </div>
                                     </div> 
                                         <div class="modal-footer"> 
-                                            <a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" class="pull-right text-danger">
+                                            <a href="#" data-toggle="modal" data-target="#" class="pull-right text-danger">
                                                 <small>Emergency Logout</small> <em class="fa fa-arrow-right"></em>
                                             </a>                                        
                                             <!-- <center> 
