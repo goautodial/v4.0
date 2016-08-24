@@ -80,11 +80,6 @@ if ($folder < 0 || $folder > MESSAGES_MAX_FOLDER) { $folder = MESSAGES_GET_INBOX
 if (isset($_GET["message"])) {
 	$message = $_GET["message"];
 } else $message = NULL;
-
-$avatarHash = md5( strtolower( trim( $user->getUserId() ) ) );
-$avatarURL = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=wavatar";
-$custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=mm";
-$_SESSION['avatar'] = $avatarURL;
 ?>
 
 <html>
@@ -149,6 +144,10 @@ $_SESSION['avatar'] = $avatarURL;
         <!-- Date Picker -->
         <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
         <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+		
+        <!-- X-Editable -->
+        <link rel="stylesheet" href="theme_dashboard/x-editable/dist/css/bootstrap-editable.css">
+        <script type="text/javascript" src="theme_dashboard/x-editable/dist/js/bootstrap-editable.min.js"></script>
 
   		<!-- Theme style -->
   		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
@@ -166,6 +165,59 @@ $_SESSION['avatar'] = $avatarURL;
 					}
 				});
 			});
+			
+			$(function() {
+				$("#cust_full_name a[id='first_name']").editable({
+					type: 'text',
+					name: 'first_name',
+					placeholder: 'Enter First Name',
+					emptytext: '&nbsp;',
+					unsavedclass: null,
+					savenochange: true
+				});
+				$("#cust_full_name a[id='middle_initial']").editable({
+					type: 'text',
+					name: 'middle_initial',
+					placeholder: 'Enter Middle Initial',
+					emptytext: '&nbsp;',
+					unsavedclass: null,
+					savenochange: true
+				});
+				$("#cust_full_name a[id='last_name']").editable({
+					type: 'text',
+					name: 'last_name',
+					placeholder: 'Enter Last Name',
+					emptytext: '&nbsp;',
+					unsavedclass: null,
+					savenochange: true
+				});
+				
+				$('#cust_full_name a').on('hidden', function() {
+					var thisID = $(this).attr('id');
+					$('#'+thisID+'_label').addClass('hidden');
+				});
+				
+				$('#cust_full_name a').on('shown', function() {
+					var thisID = $(this).attr('id');
+					if ($(this).html() != '&nbsp;') {
+						$('div.editable-input input').val($(this).text());
+					} else {
+						$('div.editable-input input').val('');
+					}
+					$('#'+thisID+'_label').removeClass('hidden');
+				});
+			});
+			
+			//turn to inline mode
+			$.fn.editable.defaults.mode = 'inline';    //buttons
+			$.fn.editableform.buttons =
+				'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
+					'<i class="fa fa-check"></i>'+
+				'</button>'+
+				'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
+					'<i class="fa fa-remove"></i>'+
+				'</button>';
+
 		</script>
 		<style>
 			.nav-tabs > li > a{
@@ -262,11 +314,13 @@ $_SESSION['avatar'] = $avatarURL;
 							
 								<div class="card-heading bg-inverse">
 									<div class="row">
-										<div class="col-md-2 text-center visible-sm visible-md visible-lg">
-											<img src="<?php echo $custDefaultAvatar;?>" id="cust_avatar" alt="Image" class="media-object img-circle thumb96 pull-left">
+										<div id="cust_avatar" class="col-lg-1 col-md-2 col-sm-2 text-center hidden-xs" style="height: 64px;">
+											<avatar username="Dialed Client" src="<?php echo CRM_DEFAULTS_USER_AVATAR;?>" :size="64"></avatar>
 										</div>
-										<div class="col-md-10">
-						                <h4><span id="cust_full_name"></span></h4>
+										<div class="col-lg-9 col-md-8 col-sm-8">
+						                <h4 id="cust_full_name" class="hidden">
+											<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
+										</h4>
 						                <p class="ng-binding animated fadeInUpShort"><span id="cust_number"></span></p>
 						            </div>
 									</div>
@@ -397,7 +451,7 @@ $_SESSION['avatar'] = $avatarURL;
 												<!--SECONDS-->
 												<input type="hidden" value="" name="seconds">
 												
-												<div class="row">
+												<!--<div class="row">
 													<div class="col-sm-4">
 														<div class="mda-form-group label-floating">
 															<input id="first_name" name="first_name" type="text" maxlength="30"  value="<?php echo $first_name;?>"
@@ -419,7 +473,7 @@ $_SESSION['avatar'] = $avatarURL;
 															<label for="last_name">Last Name</label>
 														</div>
 													</div>
-												</div>
+												</div>-->
 												</form>
 												
 												<form id="contact_details_form" class="formMain">
@@ -752,9 +806,9 @@ $_SESSION['avatar'] = $avatarURL;
 			<li style="font-size: 5px;">
 				&nbsp;
 			</li>
-			<li>
-				<button type="button" id="show-callbacks-active" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Active Callback(s)')?> <span id="callbacks-today" class='badge pull-right bg-red'>0</span></button>
-				<button type="button" id="show-callbacks-today" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Callbacks For Today')?> <span id="callbacks-active" class='badge pull-right bg-red'>0</span></button>
+			<li class="hidden">
+				<button type="button" id="show-callbacks-active" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Active Callback(s)')?> <span id="callbacks-active" class='badge pull-right bg-red'>0</span></button>
+				<button type="button" id="show-callbacks-today" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Callbacks For Today')?> <span id="callbacks-today" class='badge pull-right bg-red'>0</span></button>
 			</li>
         </ul>
 		
@@ -918,6 +972,34 @@ $_SESSION['avatar'] = $avatarURL;
 		</script>
 		<!-- SnackbarJS -->
         <script src="js/snackbar.js" type="text/javascript"></script>
-
+		<!-- Vue Avatar -->
+        <script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>
+        <script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>
+		<script type='text/javascript'>
+			var goOptions = {
+				el: 'body',
+				components: {
+					'avatar': Avatar.Avatar,
+					'rules': {
+						props: ['items'],
+						template: 'For example:' +
+							'<ul id="example-1">' +
+							'<li v-for="item in items"><b>{{ item.username }}</b> becomes <b>{{ item.initials }}</b></li>' +
+							'</ul>'
+					}
+				},
+		
+				data: {
+					items: []
+				},
+		
+				methods: {
+					initials: function(username, initials) {
+						this.items.push({username: username, initials: initials});
+					}
+				}
+			};
+			var goAvatar = new Vue(goOptions);
+		</script>
     </body>
 </html>
