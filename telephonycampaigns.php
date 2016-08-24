@@ -286,9 +286,9 @@ error_reporting(E_ALL);*/
 			</div>
 			<div class="fab-div-area" id="fab-div-area">
 				<ul class="fab-ul" style="height: 250px;">
-					<li class="li-style"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaign"></a></li><br/>
-					<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_disposition"></a></li><br/>
-					<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers"> </a></li>
+					<li class="li-style"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaign" title="Add Campaign"></a></li><br/>
+					<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_disposition" title="Add Disposition"></a></li><br/>
+					<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers" title="Add Phone Numbers"> </a></li>
 				</ul>
 			</div>
 		</div>
@@ -352,13 +352,13 @@ error_reporting(E_ALL);*/
 		    			<div class="form-group">
 		    				<label class="control-label col-lg-4">Campaign Name:</label>
 		    				<div class="col-lg-8">
-		    					<input id="campaign-name" name="campaign_name" type="text" class="form-control" title="Must be 6 to 40 characters in length.">
+		    					<input id="campaign-name" name="campaign_name" type="text" class="form-control" title="Must be 6 to 40 characters in length." required>
 		    				</div>
 		    			</div>
 		    			<div class="form-group inbound blended hide">
 		    				<label class="control-label col-lg-4">DID/TFN Extension:</label>
 		    				<div class="col-lg-8">
-		    					<input id="did-tfn-extension" name="did_tfn_extension" type="text" class="form-control">
+		    					<input id="did-tfn-extension" name="did_tfn_extension" type="number" class="form-control" required>
 		    				</div>
 		    			</div>
 		    			<div class="form-group inbound blended hide">
@@ -391,7 +391,7 @@ error_reporting(E_ALL);*/
 		    			<div class="form-group survey hide">
 		    				<label class="control-label col-lg-4">Number of Channels:</label>
 		    				<div class="col-lg-8">
-		    					<input id="no-channels" name="no_channels" type="text" class="form-control">
+		    					<input id="no-channels" name="no_channels" type="number" class="form-control">
 		    				</div>
 		    			</div>
 		    			<div class="form-group copy-from hide">
@@ -505,7 +505,7 @@ error_reporting(E_ALL);*/
 								</select>
 							</div>
 							<div class="col-lg-8 custom-prefix" style="margin-top: 10px;">
-								<input type="text" class="form-control" id="custom_prefix" name="custom_prefix" value="9">
+								<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="9" required>
 							</div>
 		    			</div>
 		    			<!-- <div class="form-group">

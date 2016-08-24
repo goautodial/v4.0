@@ -192,17 +192,14 @@
 								<label class="col-sm-4 control-label"> Users ID </label>
 								<div class="col-sm-8 mb">
 									<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID (Mandatory)" value="<?php echo $user_id_for_form;?>" required>
+									<label id="user-duplicate-error"></label>
 								</div>
 							</div>
-							<?php
-								$latest_phone = max($phones->extension);
-								$latest_phone = $latest_phone + 1;
-								
-							?>
 							<div class="form-group" id="phone_logins_form" style="display:none;">
 								<label class="col-sm-4 control-label" for="phone_logins"> Phone Login </label>
 								<div class="col-sm-8 mb">
-									<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="Phone Login (Mandatory)" value="<?php echo $latest_phone;?>" pattern=".{3,}" title="Minimum of 3 characters" required>
+									<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="Phone Login (Mandatory)" value="<?php echo $output->last_phone_login;?>" pattern=".{3,}" title="Minimum of 3 characters" required>
+									<label id="phone_login-duplicate-error"></label>
 								</div>
 							</div>
 							<div class="form-group">
@@ -298,7 +295,8 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
-		
+		var checker = 0;
+
 		// initialize data table
 		$('#T_users').dataTable();
 
@@ -327,9 +325,12 @@
 			            return true;
 			        }
 
-			        // check duplicates
-			        	//validate_user();
-			       		//validate_phone_login();
+			        console.log(checker);
+			        // Disable next if there are duplicates
+			        if(checker > 0){
+				        $(".body:eq(" + newIndex + ") .error", form).addClass("error");
+			        	return false;
+			        }
 
 			        // form review
 					show_form_review();
@@ -436,54 +437,61 @@
 		                	}
 		                );
 				 });
+		
 
 	// -------------------------
-
 		/*********
 		** validations
 		*********/
+		// check duplicates
+			$("#user_form").keyup(function() {
+				clearTimeout($.data(this, 'timer'));
+				var wait = setTimeout(validate_user, 500);
+				$(this).data('timer', wait);
+			});
+			$("#phone_logins").keyup(function() {
+				clearTimeout($.data(this, 'timer'));
+				var wait = setTimeout(validate_user, 500);
+				$(this).data('timer', wait);
+			});
 
-		function validate_user(){
-			var user_form_value = $('#user_form').val();
-	        if(user_form_value != ""){
-			    $.ajax({
-				    url: "php/checkUser.php",
-				    type: 'POST',
-				    data: {
-				    	user : user_form_value
-				    },
-					success: function(data) {
-						console.log(data);
-						if(data != "success"){
-							sweetAlert("Oops...", "Something went wrong. "+data, "error");
-							return false;
+			function validate_user(){
+				var user_form_value = $('#user_form').val();
+				var phone_logins_value = $('#phone_logins').val();
+		        if(user_form_value != ""){
+				    $.ajax({
+					    url: "php/checkUser.php",
+					    type: 'POST',
+					    data: {
+					    	user : user_form_value,
+					    	phone_login : phone_logins_value
+					    },
+						success: function(data) {
+							console.log(data);
+							if(data == "success"){
+								checker = 0;
+								$( "#user_form" ).removeClass("error");
+								$( "#user-duplicate-error" ).text( "User ID is available." ).removeClass("error").addClass("avail");
+								
+								$( "#phone_logins" ).removeClass( "error" );
+								$( "#phone_login-duplicate-error" ).text( "Phone Login is available." ).removeClass("error").addClass("avail");
+							}else{
+								if(data == "user"){
+									$( "#user_form" ).removeClass("valid").addClass( "error" );
+									$( "#user-duplicate-error" ).text( "There are 1 or more users with this User ID." ).removeClass("avail").addClass("error");
+								}
+									
+								if(data == "phone_login"){
+									$( "#phone_logins" ).removeClass( "valid" ).addClass( "error" );
+									$( "#phone_login-duplicate-error" ).text( "There are 1 or more users with this Phone Login." ).removeClass("avail").addClass( "error" );
+								}
+									
+								checker = 1;
+							}
 						}
-					}
-				});
+					});
+				}
 			}
-		}
-
-		function validate_phone_login(){
-			var phone_logins_value = $('#phone_logins').val();
-	        if(phone_logins_value != ""){
-			    $.ajax({
-				    url: "php/checkUser.php",
-				    type: 'POST',
-				    data: {
-				    	phone_login : phone_logins_value
-				    },
-					success: function(data) {
-						console.log(data);
-						if(data != "success"){
-							sweetAlert("Oops...", "Something went wrong. "+data, "error");
-							return false;
-						}
-					}
-				});
-			}
-		}
-
-	// -------------------------
 
 		// form review
 		function show_form_review(){

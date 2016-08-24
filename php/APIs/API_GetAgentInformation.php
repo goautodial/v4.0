@@ -82,10 +82,6 @@
             if (!is_null($parked_channel)){
                 $status = "PARK";
             }
-            //if ($vla_callerid != $vac_callerid){
-                //$last_call_time=$last_state_change;
-                //$status = "Hungup";
-            //}
             if ($call_type == "AUTO"){
                 $CM="[A]";
             }
@@ -95,6 +91,10 @@
             if ($call_type == "MANUAL"){
                 $CM="[M]";
             }
+            //if ($vla_callerid != $vac_callerid){
+                //$last_call_time=$last_state_change;
+                //$status = "HANGUP";
+            //}             
     }
     
     if (preg_match("/READY|PAUSED|CLOSER/",$status)){

@@ -187,7 +187,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 														<div class="col-sm-10 mb">
 															<select name="dial_method" id="dial_method" class="form-control" name="dial_method">
 																<option value="MANUAL" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?>>MANUAL</option>
-																<option value="AUTO_DIAL" <?php if($campaign->data->dial_method == "AUTO_DIAL") echo "selected";?>>AUTO DIAL</option>
+																<option value="RATIO" <?php if($campaign->data->dial_method == "RATIO") echo "selected";?>>AUTO DIAL</option>
 																<option value="PREDICTIVE" <?php if($campaign->data->dial_method == "PREDICTIVE") echo "selected";?>>PREDICTIVE</option>
 																<option value="INBOUND_MAN" <?php if($campaign->data->dial_method == "INBOUND_MAN") echo "selected";?>>INBOUND MAN</option>
 															</select>
@@ -1432,7 +1432,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 			}
 
 			function dialMethod(value){
-				if(value == "AUTO_DIAL"){
+				if(value == "RATIO"){
 					$('#auto_dial_level').prop('disabled', false);
 					$('#auto_dial_level option[value=SLOW]').prop('selected', true);
 					$('#auto_dial_level_adv').removeClass('hide');

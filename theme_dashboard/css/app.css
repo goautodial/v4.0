@@ -5282,6 +5282,12 @@ body .bootstrap-tagsinput .tag {
   position: relative;
   margin-bottom: 0;
 }
+.wizard > .content > .body label.avail {
+  color: #6ba26b;
+  font-weight: normal;
+  position: relative;
+  margin-bottom: 0;
+}
 .wizard > .actions {
   position: relative;
   display: block;
