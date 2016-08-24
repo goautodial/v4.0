@@ -5226,35 +5226,6 @@ error_reporting(E_ERROR | E_PARSE);
 		 
 		 return $output;
 	}
- 
-	/*
-	 * Emergency logout
-	 * [[API: Function ]] - goEmergencyLogout
-	 * This application is to logout specific agent 
-	 */
-
-	public function API_goEmergencyLogout($userID){
-		$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass;
-		$postfields["goAction"] = "goEmergencyLogout"; #action performed by the [[API:Functions]]
-		$postfields["responsetype"] = responsetype;
-		$postfields["goUserAgent"] = $userID;
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		$data = curl_exec($ch);
-		curl_close($ch);
-
-		$output = json_decode($data);
-
-		return $output;
-	}
-
 
 	
 // <<<=================== END OF DASHBOARD APIs =============>>>

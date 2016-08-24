@@ -133,6 +133,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				$(".preloader").fadeOut("slow");
 			})
 		</script>
+	<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'; // sweetalert
+	<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>'; // sweetalert js
     </head>
     <?php print $ui->creamyBody(); ?>
         <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
@@ -967,10 +969,9 @@ function goGetModalUsernameValue(){
        //dataType: 'json',
        success: function(data){
 	  clear_agent_form();
-	  $('#view_agent_information_table').html(data); 
-          //console.log(data);
+	  sweetAlert("Emergency Logout",data, "warning");
+	  $('#view_agent_information').modal('hide');
        }
-       
    }); 
 
 }
