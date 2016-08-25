@@ -236,6 +236,9 @@ hr {
 select.input-sm {
   height: 31px;
 }
+input.error{
+  border-color: #4caf50;
+}
 fieldset {
   padding-bottom: 20px;
   border-bottom: 1px dashed #eee;
@@ -7571,6 +7574,14 @@ body .jvectormap-zoomout {
 .label-purple[href]:hover,
 .label-purple[href]:focus {
   background-color: #564aa3;
+}
+label.error{
+  color: #f44336;
+  font-weight: normal;
+}
+label.avail{
+  color: #6ba26b;
+  font-weight: normal;
 }
 .alert-purple {
   background-color: #7266ba;

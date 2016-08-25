@@ -43,7 +43,7 @@
 		if($output->user != NULL){
 			echo $output->result;
 		}
-		if($output->result != NULL){
+		if($output->result == "fail"){
 			echo $output->phone_login;
 		}
 	}
