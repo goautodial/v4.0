@@ -1,6 +1,6 @@
 <?php
     ####################################################
-    #### Name: goGetAgentsMonitoringSummary.php     ####
+    #### Name: GetAgentInformation.php              ####
     #### Type: API for dashboard php encode         ####
     #### Version: 0.9                               ####
     #### Copyright: GOAutoDial Inc. (c) 2011-2016   ####
@@ -19,11 +19,12 @@
     require_once('../Session.php');
     require_once('../goCRMAPISettings.php');    
 
-    $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+    $url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass;
-    $postfields["goAction"] = "goGetAgentsMonitoringSummary"; #action performed by the [[API:Functions]]
+    $postfields["goAction"] = "goGetUserInfo"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; 
+    $postfields["user_id"] = $_POST['user_id']; #User ID (required)
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -37,6 +38,7 @@
     $output = json_decode($data);
     //echo "<pre>";
     //print_r($output);
+    //var_dump($output);
     
     $sessionAvatar = $ui->getSessionAvatar();    
 

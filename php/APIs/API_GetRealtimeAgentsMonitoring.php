@@ -38,7 +38,8 @@
     //echo "<pre>";
     //print_r($output);
 
-    $sessionAvatar = $ui->getSessionAvatar();
+    $creamyAvatar = $ui->getSessionAvatar();
+    //$sessionAvatar = $ui->getVueAvatar($agentname, $creamyAvatar, 32);
 
     if ($output == NULL){
         echo '<strong class="media-box-heading text-primary">
@@ -80,6 +81,7 @@
     $STARTtime = date("U");
     $CM = "";
     $textclass = "text-info";
+    
     
     if ($status == "INCALL"){
         $last_call_time = $last_state_change;
@@ -198,8 +200,11 @@
         $textclass = "text-danger";
         }
     
-    $barracks .='[';       
-    $barracks .= '"<img src=\"'.$sessionAvatar.'\" class=\"img-circle thumb48\"> <b class=\"text-blue\">'.$agentname.'</b>",';    
+    $sessionAvatar = "<avatar username='$agentname' src='$creamyAvatar' :size='32'></avatar>";
+    
+    $barracks .='[';
+    $barracks .= '"'.$sessionAvatar.'",'; 
+    $barracks .= '"<b class=\"text-blue\">'.$agentname.'</b>",';    
     $barracks .= '"'.$user_group.'",';    
     $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
     $barracks .= '"'.$cust_phone.'",';    

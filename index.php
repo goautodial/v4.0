@@ -571,6 +571,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                     <div class="col-sm-12">
                                         <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
                                             <thead>
+                                                    <th style="width: 4%; color: white;">Pic</th>
                                                     <th>Agent Name</th>                                                    
                                                     <th>Group</th>
                                                     <th>Status</th>
@@ -986,6 +987,10 @@ function goGetModalUsernameValue(){
                         clear_agent_form();
 
                     });
+                    
+                    //global varible
+                    var global_userid = "";
+                    
                     // Get user information and post results in view_agent_information modal
                     $(document).on('click','#onclick-userinfo',function(){
                         var userid = $(this).attr('data-id');
@@ -1001,21 +1006,24 @@ function goGetModalUsernameValue(){
                                     var JSONObject = JSON.parse(JSONString);
                                     //console.log(JSONString);
                                     console.log(JSONObject);      // Dump all data of the Object in the console
-                                    console.log(JSONObject.data[1].phone_login);
-                                        //$('#modal-userid').html(JSONObject.data["0"].vu_user_id);
-                                        $('#modal-username').html(JSONObject.data[1].user);
+                                    console.log(JSONObject.data[0].vu_user_id);
+                                        $('#modal-userid').html(JSONObject.data[0].vu_user_id);
+                                        //global_userid = JSONObject.data[0].vu_user_id;
+                                        //console.log(global_userid);
+                                        $('#modal-username').html(JSONObject.data[0].vla_user);
                                         $('#modal-fullname').html(JSONObject.data[0].vu_full_name);
                                         $('#modal-status').html(JSONObject.data[0].vla_status);
                                         $('#modal-campaign').html(JSONObject.data[0].vla_campaign_id);
                                         $('#modal-usergroup').html(JSONObject.data[0].vu_user_group);     
                                         $('#modal-userlevel').html(JSONObject.data[0].vu_user_level);                                        
-                                        $('#modal-phonelogin').html(JSONObject.data[1].phone_login);
+                                        $('#modal-phonelogin').html(JSONObject.data[0].vu_phone_login);
                                         $('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
                                         
                                         //$('#modalUserID').val(JSONObject.data["0"].vla_user);
                                         
                                 }
                         });                        
+                        load_view_agent_information(userid);
                     });
 
                     // Clear previous agent info
@@ -1092,7 +1100,7 @@ function goGetModalUsernameValue(){
                         load_realtime_agents_monitoring();
                         
         // ---- view agent information modal
-                        load_view_agent_information();
+                        load_view_agent_information(global_userid);
                 
 		});
 
