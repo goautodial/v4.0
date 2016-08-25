@@ -125,10 +125,12 @@ if (isset($_GET["message"])) {
 		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
 		<!-- Datetime picker --> 
         <link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+		<!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		
 		<!-- DATA TABES SCRIPT -->
-		<!--<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>-->
-		<!--<script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>-->
+		<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 		<!-- Bootstrap WYSIHTML5 -->
 		<!--<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>-->
 		<!-- iCheck -->
@@ -164,6 +166,10 @@ if (isset($_GET["message"])) {
 						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000, htmlAllowed: true});
 					}
 				});
+				
+				$('#callback-list')
+					.removeClass( 'display' )
+					.addClass('table table-striped table-bordered');
 			});
 			
 			$(function() {
@@ -208,6 +214,8 @@ if (isset($_GET["message"])) {
 					emptytext: '&nbsp;',
 					unsavedclass: null
 				});
+				
+				$("#callback-list").DataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets": [ 4 ] }] });
 			});
 			
 			//turn to inline mode
@@ -219,7 +227,6 @@ if (isset($_GET["message"])) {
 				'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
 					'<i class="fa fa-remove"></i>'+
 				'</button>';
-
 		</script>
 		<style>
 			.nav-tabs > li > a{
@@ -294,6 +301,12 @@ if (isset($_GET["message"])) {
 				font-weight: bold;
 				color: #555;
 				background-color: #f0f0f0;
+			}
+			.dataTables_empty {
+				text-align: center;
+			}
+			.table > thead > tr > th {
+				padding: 8px;
 			}
 		</style>
     </head>
@@ -747,6 +760,36 @@ if (isset($_GET["message"])) {
 									</div>
 								</div><!-- /. box -->
 							</div><!-- /.col -->
+						</div><!-- /.row -->
+						
+						
+						<div id="contents-callbacks" class="row" style="display: none;">
+							<div class="card col-md-12" style="padding: 15px;">
+								<table id="callback-list" class="display" style="border: 1px solid #f4f4f4">
+									<thead>
+										<tr>
+											<th>
+												Customer Name
+											</th>
+											<th>
+												Phone Number
+											</th>
+											<th>
+												Callback Time
+											</th>
+											<th>
+												Campaign
+											</th>
+											<th>
+												Action
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										
+									</tbody>
+								</table>
+							</div>
 						</div><!-- /.row -->
 					</div>
 					
