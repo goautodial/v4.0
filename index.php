@@ -601,7 +601,9 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                     <h4 class="modal-title">More about <span id="modal-username"></span>:</h4> 
                                 </div> 
                                     <div class="modal-body"> 
-                                        <center> <img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle">
+                                        <center> 
+                                            <div id="modal-avatar"></div>
+                                            <!--<img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle">-->
                                             <h3 class="media-heading"><span id="modal-fullname"></span> <small></small></h3> 
                                             <span><strong>Logged-in to:</strong></span> 
                                             <span class="label label-warning" id="modal-campaign"></span> 
@@ -1012,6 +1014,9 @@ function goGetModalUsernameValue(){
                                         $('#modal-userlevel').html(JSONObject.data[0].vu_user_level);                                        
                                         $('#modal-phonelogin').html(JSONObject.data[0].vu_phone_login);
                                         $('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
+                                        
+                                        var avatar = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" :size="160"></avatar>';
+                                        $('#modal-avatar').html(avatar);
 
                                 }
                         });                        
@@ -1128,7 +1133,7 @@ function goGetModalUsernameValue(){
                 setInterval(load_realtime_agents_monitoring,3000);
 		
 		// ... view agent information modal  ...
-		setInterval(load_view_agent_information,2000);
+		setInterval(load_view_agent_information,3000);
 		
 	</script>
 	

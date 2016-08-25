@@ -39,7 +39,7 @@
     //print_r($output);
     
     $creamyAvatar = $ui->getSessionAvatar();
-    //$sessionAvatar = $ui->getVueAvatar();
+    //$creamyAvatar = $ui->getVueAvatar();
     
     if (count($output->data) < 1){
     
@@ -83,19 +83,7 @@
                     </div>
                 </div>
             </a>
-            <!-- END list group item-->            <a href="#" class="list-group-item">
-                <div class="media-box">
-                    <div class="pull-left">
-                        <img src="theme_dashboard/img/user/09.jpg" alt="Image" class="media-box-object img-circle thumb32">
-                    </div>
-                    <div class="media-box-body clearfix">
-                        <strong class="media-box-heading text-primary">
-                        <span class="circle circle-danger circle-lg text-left"></span>Kim Takahashi</strong><br/>
-                        <strong class=""style="padding-left:20px;">CS HOTLINE</strong>
-                        <small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
-                    </div>
-                </div>
-            </a>
+            <!-- END list group item-->
             <!-- START list group item-->
             <a href="#" class="list-group-item">
             <div class="media-box">
