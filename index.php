@@ -571,7 +571,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                     <div class="col-sm-12">
                                         <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
                                             <thead>
-                                                    <th style="width: 4%; color: white;">Pic</th>
+                                                    <th style="width: 3%; color: white;">Pic</th>
                                                     <th>Agent Name</th>                                                    
                                                     <th>Group</th>
                                                     <th>Status</th>
@@ -591,12 +591,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                     </div>
                         
 			<!-- End of Realtime Agent Monitoring -->
-   <!-- <div class="container"> -->
-        <!-- <div class="span3 well"> 
-            <center> <a href="#aboutModal" data-toggle="modal" data-target="#view_agent_information"><img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R" name="aboutme" width="140" height="140" class="img-circle"></a> 
-                <h3>Joe Sixpack</h3> <em>click my face for more</em> 
-            </center> 
-        </div> -->
+
     <!-- Modal --> 
                     <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-labelledby="view_agent_information-modal" aria-hidden="true"> 
                         <div class="modal-dialog"> 
@@ -604,10 +599,9 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                 <div class="modal-header"> 
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button> 
                                     <h4 class="modal-title">More about <span id="modal-username"></span>:</h4> 
-                                    <!-- <input type="hidden" value="" id="modalUserID"> -->
                                 </div> 
                                     <div class="modal-body"> 
-                                        <center> <img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle"></a> 
+                                        <center> <img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle">
                                             <h3 class="media-heading"><span id="modal-fullname"></span> <small></small></h3> 
                                             <span><strong>Logged-in to:</strong></span> 
                                             <span class="label label-warning" id="modal-campaign"></span> 
@@ -1006,7 +1000,7 @@ function goGetModalUsernameValue(){
                                     var JSONObject = JSON.parse(JSONString);
                                     //console.log(JSONString);
                                     console.log(JSONObject);      // Dump all data of the Object in the console
-                                    console.log(JSONObject.data[0].vu_user_id);
+                                    //console.log(JSONObject.data[0].vu_user_id);
                                         $('#modal-userid').html(JSONObject.data[0].vu_user_id);
                                         //global_userid = JSONObject.data[0].vu_user_id;
                                         //console.log(global_userid);
@@ -1018,12 +1012,10 @@ function goGetModalUsernameValue(){
                                         $('#modal-userlevel').html(JSONObject.data[0].vu_user_level);                                        
                                         $('#modal-phonelogin').html(JSONObject.data[0].vu_phone_login);
                                         $('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
-                                        
-                                        //$('#modalUserID').val(JSONObject.data["0"].vla_user);
-                                        
+
                                 }
                         });                        
-                        load_view_agent_information(userid);
+                       // load_view_agent_information(userid);
                     });
 
                     // Clear previous agent info
@@ -1100,7 +1092,7 @@ function goGetModalUsernameValue(){
                         load_realtime_agents_monitoring();
                         
         // ---- view agent information modal
-                        load_view_agent_information(global_userid);
+                        load_view_agent_information();
                 
 		});
 
@@ -1133,10 +1125,10 @@ function goGetModalUsernameValue(){
 		setInterval(load_agents_monitoring_summary,5000);
 		
 		// ... realtime agents monitoring ...
-                setInterval(load_realtime_agents_monitoring,5000);
+                setInterval(load_realtime_agents_monitoring,3000);
 		
 		// ... view agent information modal  ...
-		setInterval(load_view_agent_information,10000);
+		setInterval(load_view_agent_information,2000);
 		
 	</script>
 	

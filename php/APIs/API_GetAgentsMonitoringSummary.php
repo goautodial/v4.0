@@ -39,14 +39,14 @@
     //print_r($output);
     
     $creamyAvatar = $ui->getSessionAvatar();
-    $sessionAvatar = $ui->getVueAvatar($agentname, $creamyAvatar, 30);
+    //$sessionAvatar = $ui->getVueAvatar();
     
     if (count($output->data) < 1){
     
     echo '<a href="#" class="list-group-item">
             <div class="media-box">
                     <div class="pull-left">
-                        '.$sessionAvatar.'
+                        <img src="'.$creamyAvatar.'" alt="Image" class="media-box-object img-circle thumb32">
                     </div>
                     <div class="media-box-body clearfix">
                         <strong class="media-box-heading text-primary">
@@ -159,6 +159,7 @@
             $STARTtime = date("U");
             
             $sessionAvatar = $ui->getVueAvatar($agentname, $creamyAvatar, 32);
+            //$sessionAvatar = "<avatar username='$agentname' :size='32'></avatar>";
             
         if (preg_match("/READY|CLOSER/",$status)){
             $last_call_time=$last_state_change;
@@ -202,7 +203,7 @@
                         </div>            
                         <div class="media-box-body clearfix">
                             <strong class="media-box-heading text-primary">
-                            <b id="onclick-userinfo" data-toggle="modal" data-target="#view_agent_information" data-id="'.$userid.'"><span class="'.$class.'"></span>'.$agentname.'</b>
+                            <b id="onclick-userinfo" data-toggle="modal" data-target="#view_agent_information" data-id="'.$agentid.'"><span class="'.$class.'"></span>'.$agentname.'</b>
                             </strong><br/>
                             <strong style="padding-left:20px;">'.$campname.'</strong>
                             <small class="text-muted pull-right ml" style="padding-right:20px;">'.$call_time_MS.'</small>
