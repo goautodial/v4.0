@@ -23,12 +23,14 @@
     });
     }
     
-    function load_view_agent_information(userid_val){
-    var userid = userid_val;
+    function load_view_agent_information(){
+        
+    var agentiformationid = document.getElementById("modal-username").innerText;
+    
     $.ajax({        
         type: 'POST',
         url: "./php/APIs/API_GetAgentInformation.php",
-        data: {user_id: userid},
+        data: {user_id: agentiformationid},
         cache: false,
         dataType: 'json',
         success: function(values){

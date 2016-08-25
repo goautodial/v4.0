@@ -24,7 +24,7 @@
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetUserInfo"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; 
-    $postfields["user_id"] = $_POST['user_id']; #User ID (required)
+    $postfields["user_id"] = $_REQUEST['user_id']; #User ID (required)
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

@@ -571,7 +571,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                     <div class="col-sm-12">
                                         <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
                                             <thead>
-                                                    <th style="width: 4%; color: white;">Pic</th>
+                                                    <!-- <th style="width: 4%; color: white;">Pic</th> -->
                                                     <th>Agent Name</th>                                                    
                                                     <th>Group</th>
                                                     <th>Status</th>
@@ -1006,7 +1006,7 @@ function goGetModalUsernameValue(){
                                     var JSONObject = JSON.parse(JSONString);
                                     //console.log(JSONString);
                                     console.log(JSONObject);      // Dump all data of the Object in the console
-                                    console.log(JSONObject.data[0].vu_user_id);
+                                    //console.log(JSONObject.data[0].vu_user_id);
                                         $('#modal-userid').html(JSONObject.data[0].vu_user_id);
                                         //global_userid = JSONObject.data[0].vu_user_id;
                                         //console.log(global_userid);
@@ -1018,12 +1018,10 @@ function goGetModalUsernameValue(){
                                         $('#modal-userlevel').html(JSONObject.data[0].vu_user_level);                                        
                                         $('#modal-phonelogin').html(JSONObject.data[0].vu_phone_login);
                                         $('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
-                                        
-                                        //$('#modalUserID').val(JSONObject.data["0"].vla_user);
-                                        
+
                                 }
                         });                        
-                        load_view_agent_information(userid);
+                       // load_view_agent_information(userid);
                     });
 
                     // Clear previous agent info
@@ -1100,7 +1098,7 @@ function goGetModalUsernameValue(){
                         load_realtime_agents_monitoring();
                         
         // ---- view agent information modal
-                        load_view_agent_information(global_userid);
+                        load_view_agent_information();
                 
 		});
 
@@ -1133,10 +1131,10 @@ function goGetModalUsernameValue(){
 		setInterval(load_agents_monitoring_summary,5000);
 		
 		// ... realtime agents monitoring ...
-                setInterval(load_realtime_agents_monitoring,5000);
+                setInterval(load_realtime_agents_monitoring,3000);
 		
 		// ... view agent information modal  ...
-		setInterval(load_view_agent_information,10000);
+		setInterval(load_view_agent_information,2000);
 		
 	</script>
 	
