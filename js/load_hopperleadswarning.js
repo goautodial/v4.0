@@ -18,17 +18,21 @@
         success: function(data){
             //console.log(data);
             $("#refresh_agents_monitoring_summary").html(data);
+            goAvatar._init(goOptions);
         } 
     });
     }
     
-    function load_view_agent_information(){
-    $.ajax({
+    function load_view_agent_information(userid_val){
+    var userid = userid_val;
+    $.ajax({        
+        type: 'POST',
         url: "./php/APIs/API_GetAgentInformation.php",
+        data: {user_id: userid},
         cache: false,
         dataType: 'json',
         success: function(values){
-            //console.log(data);
+            console.log(values);
             //$("#refresh_agents_monitoring_summary").html(data);
                 var JSONStringrealtime = values;
                 var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
@@ -42,7 +46,7 @@
                                 "bInfo" : false,
                                 "destroy":true
                                 
-                            });            
+                });            
         } 
     });
     }    

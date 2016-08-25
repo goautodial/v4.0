@@ -38,14 +38,15 @@
     //echo "<pre>";
     //print_r($output);
     
-    $sessionAvatar = $ui->getSessionAvatar();
+    $creamyAvatar = $ui->getSessionAvatar();
+    $sessionAvatar = $ui->getVueAvatar($agentname, $creamyAvatar, 30);
     
     if (count($output->data) < 1){
     
     echo '<a href="#" class="list-group-item">
             <div class="media-box">
                     <div class="pull-left">
-                        <img src="'.$sessionAvatar.'" alt="Image" class="media-box-object img-circle thumb32">
+                        '.$sessionAvatar.'
                     </div>
                     <div class="media-box-body clearfix">
                         <strong class="media-box-heading text-primary">
@@ -156,7 +157,9 @@
             $pausecode = "";
             $parked_channel = $value->pc_channel;
             $STARTtime = date("U");
-
+            
+            $sessionAvatar = $ui->getVueAvatar($agentname, $creamyAvatar, 32);
+            
         if (preg_match("/READY|CLOSER/",$status)){
             $last_call_time=$last_state_change;
             $class = "circle circle-warning circle-lg text-left";
@@ -195,7 +198,7 @@
         echo    '<a class="list-group-item">
                     <div class="media-box">
                         <div class="pull-left">
-                            <img src="'.$sessionAvatar.'" alt="Image" class="media-box-object img-circle thumb32">
+                            '.$sessionAvatar.'
                         </div>            
                         <div class="media-box-body clearfix">
                             <strong class="media-box-heading text-primary">
