@@ -3089,7 +3089,7 @@ function CallBacksCountCheck() {
             $("#callbacks-active").html(CBcount);
             $("#callbacks-today").html(CBcountToday);
             
-            $("a[href='events.php'] small.badge").html(CBcount);
+            $("a[href='callbackslist.php'] small.badge").html(CBcount);
             $("#topbar-callbacks a span.label").html(CBcountToday);
             $("#topbar-callbacks ul li.header").html('<?=$lh->translationFor("you_have")?> '+CBcountToday+' <?=$lh->translationFor("callbacks_for_today")?>');
             
@@ -3105,7 +3105,7 @@ function CallBacksCountCheck() {
                 cntCB++;
             });
             
-            $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks)").off('click', hijackThisLink).on('click', hijackThisLink);
+            $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
         }
     });
 }
