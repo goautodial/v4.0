@@ -34,7 +34,7 @@
         cache: false,
         dataType: 'json',
         success: function(values){
-            //console.log(values);
+            console.log(values);
             //$("#refresh_agents_monitoring_summary").html(data);
                 var JSONStringrealtime = values;
                 var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
