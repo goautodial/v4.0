@@ -395,14 +395,33 @@ $user_groups = $ui->API_goGetUserGroupsList();
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
-		<script type="text/javascript">
-			$(document).ready(function() {
+<script type="text/javascript">
+	$(document).ready(function() {
 
-				// for cancelling
-				$(document).on('click', '#cancel', function(){
-					swal("Cancelled", "No action has been done :)", "error");
-				});
+		// for cancelling
+		$(document).on('click', '#cancel', function(){
+			swal("Cancelled", "No action has been done :)", "error");
+		});
 
+		/*********
+		** validations
+		*********/
+
+			// password
+			$("#password").keyup(checkPasswordMatch);
+			$("#conf_password").keyup(checkPasswordMatch);
+
+			// phone login
+			$("#phone_login").keyup(function() {
+				clearTimeout($.data(this, 'timer'));
+				var wait = setTimeout(validate_user, 1000);
+				$(this).data('timer', wait);
+			});
+
+			/**************
+			** password validation
+			**************/
+				
 
 				function checkPasswordMatch() {
 				    var password = $("#password").val();
@@ -413,62 +432,95 @@ $user_groups = $ui->API_goGetUserGroupsList();
 				    else
 				    	 $("#pass_result").html("<font color='green'>Passwords Match! <font size='5'>✔</font> </font>");
 				}
-
 				$('#change_pass').on('change', function() {
 				//  alert( this.value ); // or $(this).val()
-					if(this.value == "Y") {
+					if(this.value == "Y") 
 					  $('.form_password').show();
-					}
-					if(this.value == "N") {
+					
+					if(this.value == "N") 
 					  $('.form_password').hide();
-					}
+					
 				});
 
-				/* password confirmation */
-				$("#password").keyup(checkPasswordMatch);
-				$("#conf_password").keyup(checkPasswordMatch);
-
-				/** 
-				 * Modifies a telephony user
-			 	 */
-				
-				$('#modifyUserOkButton').click(function(){
-					
-					$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
-					$('#modifyUserOkButton').prop("disabled", true);
-
-					var validate_password = 0;
-
-					var change_pass = document.getElementById('change_pass').value;
-					var password = document.getElementById('password').value;
-					var conf_password = document.getElementById('conf_password').value;
-
-					if(change_pass == "Y"){
-						if(password != conf_password){
-							validate_password = 1;
-						}
-						if(password == ""){
-							validate_password = 2;
-						}
+			
+			/*********
+			** phone_login validations
+			*********/
+				function validate_user(){
+					var user_form_value = "";
+					var phone_logins_value = $('#phone_login').val();
+			        if(user_form_value != ""){
+					    $.ajax({
+						    url: "php/checkUser.php",
+						    type: 'POST',
+						    data: {
+						    	user : user_form_value,
+						    	phone_login : phone_logins_value
+						    },
+							success: function(data) {
+								console.log(data);
+								if(data == "success"){
+									checker = 0;
+									$( "#user_form" ).removeClass("error");
+									$( "#user-duplicate-error" ).text( "User ID is available." ).removeClass("error").addClass("avail");
+								}else{
+									if(data == "user"){
+										$( "#user_form" ).removeClass("valid").addClass( "error" );
+										$( "#user-duplicate-error" ).text( "There are 1 or more users with this User ID." ).removeClass("avail").addClass("error");
+									}
+									
+									checker = 1;
+								}
+							}
+						});
 					}
-					
+				}
 
-					var validate_email = 0;
-					var email = document.getElementById('email').value;
+	// ------------------------
 
-	                var x = document.forms["modifyuser"]["email"].value;
-	                var atpos = x.indexOf("@");
-	                var dotpos = x.lastIndexOf(".");
-	                if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
-	                    validate_email = 1;
-	                }else{
-	                	validate_email = 0;
-	                }
+		/******* 
+		** EDIT FUNCTION
+	 	*******/
+			
+		$('#modifyUserOkButton').click(function(){ // on click submit
+				
+			$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+			$('#modifyUserOkButton').prop("disabled", true);
 
-	                if(email == ""){
-                		validate_email = 0;
-                	}
+			// variables for check password
+			var validate_password = 0;
+			var change_pass = document.getElementById('change_pass').value;
+			var password = document.getElementById('password').value;
+			var conf_password = document.getElementById('conf_password').value;
+			
+			// variables for check valid email
+			var validate_email = 0;
+			var email = document.getElementById('email').value;
+            var x = document.forms["modifyuser"]["email"].value;
+            var atpos = x.indexOf("@");
+            var dotpos = x.lastIndexOf(".");
 
+            	// conditional statements
+				if(change_pass == "Y"){
+					if(password != conf_password){
+						validate_password = 1;
+					}
+					if(password == ""){
+						validate_password = 2;
+					}
+				}
+				
+                if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
+                    validate_email = 1;
+                }else{
+                	validate_email = 0;
+                }
+
+                if(email == ""){
+            		validate_email = 0;
+            	}
+
+            		// validate results
 	                if(validate_email == 1){
 	                	$('#update_button').html("<i class='fa fa-check'></i> Update");
 						$('#modifyUserOkButton').prop("disabled", false);	
@@ -485,14 +537,15 @@ $user_groups = $ui->API_goGetUserGroupsList();
 						$('#modifyUserOkButton').prop("disabled", false);	
 	                }
 
+	                // validations
 	                if(validate_email == 0 && validate_password == 0){
 	                	$.ajax({
-                            url: "./php/ModifyTelephonyUser.php",
-                            type: 'POST',
-                            data: $("#modifyuser").serialize(),
-                            success: function(data) {
-                              // console.log(data);
-                                if (data == 1) {
+	                        url: "./php/ModifyTelephonyUser.php",
+	                        type: 'POST',
+	                        data: $("#modifyuser").serialize(),
+	                        success: function(data) {
+	                          // console.log(data);
+	                            if (data == 1) {
 									swal("Success!", "User Successfully Updated!", "success")
 									$('#update_button').html("<i class='fa fa-check'></i> Update");
 									$('#modifyUserOkButton').prop("disabled", false);
@@ -502,14 +555,14 @@ $user_groups = $ui->API_goGetUserGroupsList();
 									$('#update_button').html("<i class='fa fa-check'></i> Update");
 									$('#modifyUserOkButton').prop("disabled", false);	
 								}
-                            }
-                        });
+	                        }
+	                    });
 					}
 				return false;
-				});
-				 
 			});
-		</script>
+
+	});
+</script>
 
 		<?php print $ui->creamyFooter(); ?>
     </body>

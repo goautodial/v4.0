@@ -5229,8 +5229,8 @@ body .bootstrap-tagsinput .tag {
   font-size: 1.429em;
 }
 .wizard > .steps > ul > li {
-  width: 33.33%;
-  /* width: auto; */
+  /* width: 33.33%; */
+  width: 50%;
 }
 .wizard > .content {
   background: #fff;

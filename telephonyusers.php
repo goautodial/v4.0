@@ -110,29 +110,17 @@
 						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create users."></i> 
 						<b>User Wizard » Add New User</b></h4>
 				</div>
-				<div class="modal-body" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				<div class="modal-body" style="min-height: 50%; overflow-y:auto; overflow-x:hidden; padding-top:0px;">
 				
 				<form id="wizard_form" action="#">
 					<div class="row">
+						<!--
                         <h4>Getting Started
                            <br>
                            <small>Assign User to a Usergroup</small>
                         </h4>
                         <fieldset>
-                           <div class="form-group mt">
-								<label class="col-sm-5 control-label" for="user_group">User Group</label>
-								<div class="col-sm-7 mb">
-									<select id="user_group" class="form-control" name="user_group">
-										<?php
-											for($i=0;$i<count($user_groups->user_group);$i++){
-										?>
-											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
-										<?php
-											}
-										?>
-									</select>
-								</div>
-							</div>
+						
 							<div class="form-group">		
 								<label class="col-sm-5 control-label">Current Users </label>
 								<div class="col-sm-7 mb">
@@ -141,6 +129,7 @@
 									</div>
 								</div>
 							</div>
+						-->
 						<!-- ENABLE IF ADD MULTIPLE IS AVAILABLE 
 							<div class="form-group">		
 								<label class="col-sm-4 control-label" style="padding-top:15px;">Additional Seat(s): </label>
@@ -164,19 +153,10 @@
 								</div>
 							</div>
 						-->
-							<div class="form-group">
-								<label class="col-sm-5 control-label" for="generate_phone_logins">Generate Phone Logins </label>
-								<div class="col-sm-7 mb">
-									<select id="generate_phone_logins" name="generate_phone_logins" class="form-control">
-										<option value="N" selected>No</option>
-										<option value="Y">Yes</option>
-									</select>
-								</div>
-							</div>
                         </fieldset>
                         <h4>Account Details
                            <br>
-                           <small>Account and Login Details</small>
+                           <small>Assign then Enter Account and Login Details</small>
                         </h4>
                         <fieldset>
                            <?php
@@ -195,6 +175,20 @@
 									<label id="user-duplicate-error"></label>
 								</div>
 							</div>
+							<div class="form-group mt">
+								<label class="col-sm-4 control-label" for="user_group">User Group</label>
+								<div class="col-sm-8 mb">
+									<select id="user_group" class="form-control" name="user_group">
+										<?php
+											for($i=0;$i<count($user_groups->user_group);$i++){
+										?>
+											<option value="<?php echo $user_groups->user_group[$i];?>" <?php if($user_groups->user_group[$i] == "AGENT"){echo "selected";}?>>  <?php echo $user_groups->group_name[$i];?>  </option>
+										<?php
+											}
+										?>
+									</select>
+								</div>
+							</div>
 							<div class="form-group" id="phone_logins_form" style="display:none;">
 								<label class="col-sm-4 control-label" for="phone_logins"> Phone Login </label>
 								<div class="col-sm-8 mb">
@@ -209,10 +203,11 @@
 										   value="<?php echo $fullname;?>" required>
 								</div>
 							</div>
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="password"> Password </label>
+							<div class="form-group">	
+								<label class="col-sm-4 control-label" for="password" title="Default Password is: Go<?php echo date('Y');?>"> Password <br/></label>
+								
 								<div class="col-sm-8 mb">
-									<input type="password" class="form-control" name="password" id="password" placeholder="Default Password is: Go2016 (Mandatory)" value="Go2016" required>
+									<input type="password" class="form-control" name="password" id="password" placeholder="Password (Mandatory)"  title="Default Password is: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" required>
 								</div>
 							</div>
 							<div class="form-group">		
@@ -258,12 +253,6 @@
                            		<label class="col-lg-6 control-label">Full Name: </label>
                            		<div class="col-lg-6 reverse_control_label mb">
                            			<span id="submit-fullname"></span>
-                           		</div>
-                           	</div>
-                           	<div class="form-group">
-                           		<label class="col-lg-6 control-label">Phone Login: </label>
-                           		<div class="col-lg-6 reverse_control_label mb">
-                           			<span id="submit-phonelogin"></span>
                            		</div>
                            	</div>
                            	<div class="form-group">
@@ -322,6 +311,7 @@
 		        {
 		        	// Allways allow step back to the previous step even if the current step is not valid!
 			        if (currentIndex > newIndex) {
+			        	checker = 0;
 			            return true;
 			        }
 
@@ -449,15 +439,10 @@
 				var wait = setTimeout(validate_user, 500);
 				$(this).data('timer', wait);
 			});
-			$("#phone_logins").keyup(function() {
-				clearTimeout($.data(this, 'timer'));
-				var wait = setTimeout(validate_user, 500);
-				$(this).data('timer', wait);
-			});
 
 			function validate_user(){
 				var user_form_value = $('#user_form').val();
-				var phone_logins_value = $('#phone_logins').val();
+				var phone_logins_value = "";
 		        if(user_form_value != ""){
 				    $.ajax({
 					    url: "php/checkUser.php",
@@ -472,20 +457,12 @@
 								checker = 0;
 								$( "#user_form" ).removeClass("error");
 								$( "#user-duplicate-error" ).text( "User ID is available." ).removeClass("error").addClass("avail");
-								
-								$( "#phone_logins" ).removeClass( "error" );
-								$( "#phone_login-duplicate-error" ).text( "Phone Login is available." ).removeClass("error").addClass("avail");
 							}else{
 								if(data == "user"){
 									$( "#user_form" ).removeClass("valid").addClass( "error" );
 									$( "#user-duplicate-error" ).text( "There are 1 or more users with this User ID." ).removeClass("avail").addClass("error");
 								}
-									
-								if(data == "phone_login"){
-									$( "#phone_logins" ).removeClass( "valid" ).addClass( "error" );
-									$( "#phone_login-duplicate-error" ).text( "There are 1 or more users with this Phone Login." ).removeClass("avail").addClass( "error" );
-								}
-									
+								
 								checker = 1;
 							}
 						}
@@ -498,7 +475,6 @@
 			$('#submit-usergroup').text($('#user_group').val());
 			$('#submit-userid').text($('#user_form').val());
 			$('#submit-fullname').text($('#fullname').val());
-			$('#submit-phonelogin').text($('#phone_logins').val());
 			$('#submit-password').text("******");
 
 			if($('#status').val() == "Y"){
@@ -521,27 +497,6 @@
 				}
 				if(this.value != "custom_seats") {
 				  $('#custom_seats').hide();
-				}
-			});
-
-		/* user group */
-			$('#user_group').on('change', function() {
-				if(this.value == "AGENTS" || this.value == "ADMIN") {
-					document.getElementById('generate_phone_logins').value = "Y";
-					$('#phone_logins_form').show();
-				}else{
-					document.getElementById('generate_phone_logins').value = "N";
-					$('#phone_logins_form').hide();
-				}
-			});
-		
-		/* generate phone logins*/
-			$('#generate_phone_logins').on('change', function() {
-				if(this.value == "Y") {
-				  $('#phone_logins_form').show();
-				}
-				if(this.value == "N") {
-				  $('#phone_logins_form').hide();
 				}
 			});
 	});
