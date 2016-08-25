@@ -571,7 +571,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                     <div class="col-sm-12">
                                         <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
                                             <thead>
-                                                    <!-- <th style="width: 4%; color: white;">Pic</th> -->
+                                                    <th style="width: 4%; color: white;">Pic</th>
                                                     <th>Agent Name</th>                                                    
                                                     <th>Group</th>
                                                     <th>Status</th>
@@ -1131,7 +1131,7 @@ function goGetModalUsernameValue(){
 		setInterval(load_agents_monitoring_summary,5000);
 		
 		// ... realtime agents monitoring ...
-                setInterval(load_realtime_agents_monitoring,3000);
+                //setInterval(load_realtime_agents_monitoring,3000);
 		
 		// ... view agent information modal  ...
 		setInterval(load_view_agent_information,2000);

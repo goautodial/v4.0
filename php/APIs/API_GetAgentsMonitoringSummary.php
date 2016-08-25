@@ -46,7 +46,7 @@
     echo '<a href="#" class="list-group-item">
             <div class="media-box">
                     <div class="pull-left">
-                        <img src="'.$sessionAvatar.'" alt="Image" class="media-box-object img-circle thumb32">
+                        <img src="'.$creamyAvatar.'" alt="Image" class="media-box-object img-circle thumb32">
                     </div>
                     <div class="media-box-body clearfix">
                         <strong class="media-box-heading text-primary">

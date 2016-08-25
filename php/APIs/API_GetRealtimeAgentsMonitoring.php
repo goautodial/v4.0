@@ -38,8 +38,9 @@
     //echo "<pre>";
     //print_r($output);
 
-    $sessionAvatar = $ui->getSessionAvatar();
-
+    $creamyAvatar = $ui->getSessionAvatar();
+    $sessionAvatar ="<avatar username='$agentname' src='$creamyAvatar' :size='36'></avatar>";
+    
     if ($output == NULL){
         echo '<strong class="media-box-heading text-primary">
                 <span class="circle circle-danger circle-lg text-left"></span>There are no available agents.
@@ -80,6 +81,7 @@
     $STARTtime = date("U");
     $CM = "";
     $textclass = "text-info";
+    
     
     if ($status == "INCALL"){
         $last_call_time = $last_state_change;
@@ -198,8 +200,11 @@
         $textclass = "text-danger";
         }
     
+    
     $barracks .='[';       
-    $barracks .= '"<img src=\"'.$sessionAvatar.'\" class=\"img-circle thumb48\"> <b class=\"text-blue\">'.$agentname.'</b>",';    
+    //$barracks .= '"<img src=\"'.$sessionAvatar.'\" class=\"img-circle thumb48\"> <b class=\"text-blue\">'.$agentname.'</b>",';
+    $barracks .= '"'.$sessionAvatar.'",';
+    $barracks .= '"'.$agentname.'",'; 
     $barracks .= '"'.$user_group.'",';    
     $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
     $barracks .= '"'.$cust_phone.'",';    
