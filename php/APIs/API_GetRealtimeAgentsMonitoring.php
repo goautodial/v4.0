@@ -37,9 +37,8 @@
     $output = json_decode($data);
     //echo "<pre>";
     //print_r($output);
-
+                        
     $creamyAvatar = $ui->getSessionAvatar();
-    $sessionAvatar ="<avatar username='$agentname' src='$creamyAvatar' :size='36'></avatar>";
     
     if ($output == NULL){
         echo '<strong class="media-box-heading text-primary">
@@ -82,6 +81,7 @@
     $CM = "";
     $textclass = "text-info";
     
+    $sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='40'></avatar></div>";
     
     if ($status == "INCALL"){
         $last_call_time = $last_state_change;
@@ -204,7 +204,7 @@
     $barracks .='[';       
     //$barracks .= '"<img src=\"'.$sessionAvatar.'\" class=\"img-circle thumb48\"> <b class=\"text-blue\">'.$agentname.'</b>",';
     $barracks .= '"'.$sessionAvatar.'",';
-    $barracks .= '"'.$agentname.'",'; 
+    $barracks .= '"<b class=\"text-blue\">'.$agentname.'</b>",'; 
     $barracks .= '"'.$user_group.'",';    
     $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
     $barracks .= '"'.$cust_phone.'",';    

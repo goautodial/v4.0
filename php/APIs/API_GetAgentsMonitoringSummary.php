@@ -159,6 +159,7 @@
             $STARTtime = date("U");
             
             $sessionAvatar = $ui->getVueAvatar($agentname, $creamyAvatar, 32);
+            //$sessionAvatar = "<avatar username='$agentname' :size='32'></avatar>";
             
         if (preg_match("/READY|CLOSER/",$status)){
             $last_call_time=$last_state_change;
