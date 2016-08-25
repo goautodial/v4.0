@@ -81,7 +81,8 @@
     $CM = "";
     $textclass = "text-info";
     
-    $sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='40'></avatar></div>";
+    //$sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='40'></avatar></div>";
+    $sessionAvatar = "<div class='media'><avatar username='$agentname' :size='40'></avatar></div>";
     
     if ($status == "INCALL"){
         $last_call_time = $last_state_change;
