@@ -16,7 +16,11 @@
 	$postfields["goPass"] = goPass; #Password goes here. (required)
 	$postfields["goAction"] = "goCheckUser"; #action performed by the [[API:Functions]]. (required)
 	$postfields["responsetype"] = responsetype; #json. (required)
-	$postfields["user"] = $_POST['user'];
+
+	if(isset($_POST['user'])){
+		$postfields["user"] = $_POST['user'];
+	}
+	
 
 	if(isset($_POST['phone_login'])){
 		$postfields["phone_login"] = $_POST['phone_login']; 
@@ -39,8 +43,8 @@
 		if($output->user != NULL){
 			echo $output->result;
 		}
-		if($output->phone_login != NULL){
-			echo $output->result;
+		if($output->result != NULL){
+			echo $output->phone_login;
 		}
 	}
 
