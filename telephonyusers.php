@@ -171,7 +171,8 @@
 							<div class="form-group">		
 								<label class="col-sm-4 control-label"> Users ID </label>
 								<div class="col-sm-8 mb">
-									<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID (Mandatory)" value="<?php echo $user_id_for_form;?>" required>
+									<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID (Mandatory)" 
+										value="<?php echo $user_id_for_form;?>" title="Please enter alphanumeric characters only" maxlength="20" required>
 									<label id="user-duplicate-error"></label>
 								</div>
 							</div>
@@ -192,7 +193,8 @@
 							<div class="form-group" id="phone_logins_form" style="display:none;">
 								<label class="col-sm-4 control-label" for="phone_logins"> Phone Login </label>
 								<div class="col-sm-8 mb">
-									<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="Phone Login (Mandatory)" value="<?php echo $output->last_phone_login;?>" pattern=".{3,}" title="Minimum of 3 characters" required>
+									<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="Phone Login (Mandatory)" 
+										value="<?php echo $output->last_phone_login;?>" pattern=".{3,}" title="Minimum of 3 characters" maxlength="20" required>
 									<label id="phone_login-duplicate-error"></label>
 								</div>
 							</div>
@@ -200,14 +202,14 @@
 								<label class="col-sm-4 control-label" for="fullname"> Fullname </label>
 								<div class="col-sm-8 mb">
 									<input type="text" name="fullname" id="fullname" class="form-control" placeholder="FullName (Mandatory)"
-										   value="<?php echo $fullname;?>" required>
+										   value="<?php echo $fullname;?>" title="Please enter alphanumeric characters only" maxlength="50" required>
 								</div>
 							</div>
 							<div class="form-group">	
 								<label class="col-sm-4 control-label" for="password" title="Default Password is: Go<?php echo date('Y');?>"> Password <br/></label>
 								
 								<div class="col-sm-8 mb">
-									<input type="password" class="form-control" name="password" id="password" placeholder="Password (Mandatory)"  title="Default Password is: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" required>
+									<input type="password" class="form-control" name="password" id="password" placeholder="Password (Mandatory)"  title="Default Password is: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" maxlength="20" required>
 								</div>
 							</div>
 							<div class="form-group">		
@@ -430,6 +432,27 @@
 		
 
 	// -------------------------
+
+		// disable special characters on User ID
+		$('#user_form').bind('keypress', function (event) {
+		    var regex = new RegExp("^[a-zA-Z0-9]+$");
+		    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+		    if (!regex.test(key)) {
+		       event.preventDefault();
+		       return false;
+		    }
+		});
+
+		// disable special characters and allow spaces on full name
+		$('#fullname').bind('keypress', function (event) {
+		    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+		    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+		    if (!regex.test(key)) {
+		       event.preventDefault();
+		       return false;
+		    }
+		});
+
 		/*********
 		** validations
 		*********/

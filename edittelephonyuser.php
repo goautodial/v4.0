@@ -127,13 +127,15 @@ $user_groups = $ui->API_goGetUserGroupsList();
 											<div class="form-group mt">
 												<label for="fullname" class="col-sm-2 control-label">Fullname</label>
 												<div class="col-sm-10 mb">
-													<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->data[0]->full_name;?>" placeholder="Fullname">
+													<input type="text" class="form-control" name="fullname" id="fullname" 
+														value="<?php echo $output->data[0]->full_name;?>" maxlength="50" placeholder="Fullname" />
 												</div>
 											</div>
 											<div class="form-group">
 												<label for="email" class="col-sm-2 control-label">Email</label>
 												<div class="col-sm-10 mb">
-													<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->data[0]->email;?>" placeholder="Email">
+													<input type="text" class="form-control" name="email" id="email" 
+														value="<?php echo $output->data[0]->email;?>"  maxlength="100" placeholder="Email" />
 													<small><span id="email_check"></span></small>
 												</div>
 											</div>
@@ -144,7 +146,8 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														<?php
 															for($a=0;$a<count($user_groups->user_group);$a++){
 														?>
-															<option value="<?php echo $user_groups->user_group[$a];?>" <?php if($output->data[0]->user_group == $user_groups->user_group[$a]){echo "selected";}?> >  
+															<option value="<?php echo $user_groups->user_group[$a];?>" 
+																	<?php if($output->data[0]->user_group == $user_groups->user_group[$a]){echo "selected";}?> />  
 																<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>  
 															</option>
 														<?php
@@ -237,13 +240,16 @@ $user_groups = $ui->API_goGetUserGroupsList();
 											<div class="form-group">
 												<label for="phone_login" class="col-sm-2 control-label">Phone Login</label>
 												<div class="col-sm-10 mb">
-													<input type="text" class="form-control" name="phone_login" id="phone_login" value="<?php echo $output->data[0]->phone_login;?>" placeholder="Phone Login">
+													<input type="text" class="form-control" name="phone_login" id="phone_login" 
+														value="<?php echo $output->data[0]->phone_login;?>" maxlength="20" placeholder="Phone Login" />
+													<label id="phone_login-error"></label>
 												</div>
 											</div>
 											<div class="form-group">
 												<label for="phone_password" class="col-sm-2 control-label">Phone Password</label>
 												<div class="col-sm-10 mb">
-													<input type="text" class="form-control" name="phone_password" id="phone_password" value="<?php echo $output->data[0]->phone_pass;?>" placeholder="Phone Password">
+													<input type="text" class="form-control" name="phone_password" id="phone_password" 
+														value="<?php echo $output->data[0]->phone_pass;?>" maxlength="20" placeholder="Phone Password" />
 												</div>
 											</div>									
 											<div class="form-group">
@@ -258,7 +264,8 @@ $user_groups = $ui->API_goGetUserGroupsList();
 															}else{
 															for($a=0;$a<count($voicemails->voicemail_id);$a++){
 														?>
-																<option value="<?php echo $voicemails->voicemail_id;?>" <?php if($output->data[0]->voicemail_id == $voicemails->voicemail_id[$a]){echo "selected";}?> >
+																<option value="<?php echo $voicemails->voicemail_id;?>" 
+																		<?php if($output->data[0]->voicemail_id == $voicemails->voicemail_id[$a]){echo "selected";}?> />
 																	<?php echo $voicemails->voicemail_id[$a].' - '.$voicemails->fullname[$a];?>
 																</option>									
 														<?php
@@ -280,14 +287,15 @@ $user_groups = $ui->API_goGetUserGroupsList();
 											<div class="form-group form_password" style="display:none;">
 												<label for="password" class="col-sm-2 control-label">Password</label>
 												<div class="col-sm-10 mb">
-													<input type="password" class="form-control" name="password" id="password" value="<?php echo $output->data[0]->password;?>" placeholder="Password">
+													<input type="password" class="form-control" name="password" id="password" 
+														value="<?php echo $output->data[0]->password;?>" maxlength="20" placeholder="Password" />
 													<small><i><span id="pass_result"></span></i></small>
 												</div>
 											</div>
 											<div class="form-group form_password" style="display:none;">		
 												<label for="conf_password" class="col-sm-2 control-label">Confirm Password: </label>
 												<div class="col-sm-10 mb">
-													<input type="password" class="form-control" id="conf_password" placeholder="Confirm Password" required>
+													<input type="password" class="form-control" id="conf_password" placeholder="Confirm Password" required />
 													<span id="pass_result"></span></i></small>
 												</div> 
 											</div>
@@ -406,6 +414,15 @@ $user_groups = $ui->API_goGetUserGroupsList();
 		/*********
 		** validations
 		*********/
+			$('#change_pass').on('change', function() {
+			//  alert( this.value ); // or $(this).val()
+				if(this.value == "Y") 
+				  $('.form_password').show();
+				
+				if(this.value == "N") 
+				  $('.form_password').hide();
+				
+			});
 
 			// password
 			$("#password").keyup(checkPasswordMatch);
@@ -414,67 +431,9 @@ $user_groups = $ui->API_goGetUserGroupsList();
 			// phone login
 			$("#phone_login").keyup(function() {
 				clearTimeout($.data(this, 'timer'));
-				var wait = setTimeout(validate_user, 1000);
+				var wait = setTimeout(validate_user, 500);
 				$(this).data('timer', wait);
 			});
-
-			/**************
-			** password validation
-			**************/
-				
-
-				function checkPasswordMatch() {
-				    var password = $("#password").val();
-				    var confirmPassword = $("#conf_password").val();
-
-				    if (password != confirmPassword)
-				        $("#pass_result").html("<font color='red'>Passwords Do Not Match! <font size='5'>✖</font> </font>");
-				    else
-				    	 $("#pass_result").html("<font color='green'>Passwords Match! <font size='5'>✔</font> </font>");
-				}
-				$('#change_pass').on('change', function() {
-				//  alert( this.value ); // or $(this).val()
-					if(this.value == "Y") 
-					  $('.form_password').show();
-					
-					if(this.value == "N") 
-					  $('.form_password').hide();
-					
-				});
-
-			
-			/*********
-			** phone_login validations
-			*********/
-				function validate_user(){
-					var user_form_value = "";
-					var phone_logins_value = $('#phone_login').val();
-			        if(user_form_value != ""){
-					    $.ajax({
-						    url: "php/checkUser.php",
-						    type: 'POST',
-						    data: {
-						    	user : user_form_value,
-						    	phone_login : phone_logins_value
-						    },
-							success: function(data) {
-								console.log(data);
-								if(data == "success"){
-									checker = 0;
-									$( "#user_form" ).removeClass("error");
-									$( "#user-duplicate-error" ).text( "User ID is available." ).removeClass("error").addClass("avail");
-								}else{
-									if(data == "user"){
-										$( "#user_form" ).removeClass("valid").addClass( "error" );
-										$( "#user-duplicate-error" ).text( "There are 1 or more users with this User ID." ).removeClass("avail").addClass("error");
-									}
-									
-									checker = 1;
-								}
-							}
-						});
-					}
-				}
 
 	// ------------------------
 
@@ -561,7 +520,72 @@ $user_groups = $ui->API_goGetUserGroupsList();
 				return false;
 			});
 
+		// disable special characters and allow spaces on full name
+		$('#fullname').bind('keypress', function (event) {
+		    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+		    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+		    if (!regex.test(key)) {
+		       event.preventDefault();
+		       return false;
+		    }
+		});
+
+		// allow only numbers in phone_login
+		$('#phone_login').bind('keypress', function (event) {
+		    var regex = new RegExp("^[0-9]+$");
+		    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+		    if (!regex.test(key)) {
+		       event.preventDefault();
+		       return false;
+		    }
+		});
 	});
+
+	/*********
+	** phone_login validations
+	*********/
+		function validate_user(){
+			var user_form_value = "";
+			var phone_logins_value = $('#phone_login').val();
+	        if(phone_logins_value != ""){
+			    $.ajax({
+				    url: "php/checkUser.php",
+				    type: 'POST',
+				    data: {
+				    	user : user_form_value,
+				    	phone_login : phone_logins_value
+				    },
+					success: function(data) {
+						console.log(data);
+						if(data == "success"){
+							checker = 0;
+							$( "#phone_login" ).removeClass("error");
+							$( "#phone_login-error" ).text( "Phone Login is available." ).removeClass("error").addClass("avail");
+							$('#modifyUserOkButton').prop("disabled", false);
+						}else{
+							$( "#phone_login" ).addClass( "error" );
+							$( "#phone_login-error" ).text( data ).removeClass("avail").addClass("error");
+							$('#modifyUserOkButton').prop("disabled", true);
+							
+							checker = 1;
+						}
+					}
+				});
+			}
+		}
+
+	/**************
+	** password validation
+	**************/
+		function checkPasswordMatch() {
+		    var password = $("#password").val();
+		    var confirmPassword = $("#conf_password").val();
+
+		    if (password != confirmPassword)
+		        $("#pass_result").html("<font color='red'>Passwords Do Not Match! <font size='5'>✖</font> </font>");
+		    else
+		    	 $("#pass_result").html("<font color='green'>Passwords Match! <font size='5'>✔</font> </font>");
+		}
 </script>
 
 		<?php print $ui->creamyFooter(); ?>
