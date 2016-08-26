@@ -152,12 +152,12 @@
                 var JSONStringrealtimecalls = values;
                 var JSONObjectrealtimecalls = JSON.parse(JSONStringrealtimecalls);
                 //console.log(JSONStringrealtime);
-                console.log(JSONObjectrealtimecalls); 
+                //console.log(JSONObjectrealtimecalls); 
                 var table = $('#realtime_calls_monitoring_table').dataTable({ 
                                 data:JSONObjectrealtimecalls,
                                 "destroy":true,
                                 "searching": false,
-//                                stateSave: true,
+                                stateSave: true,
                                 drawCallback: function(settings) {
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                                     pagination.toggle(this.api().page.info().pages > 1);

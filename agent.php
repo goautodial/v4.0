@@ -159,6 +159,7 @@ if (isset($_GET["message"])) {
 
         <script type="text/javascript">
 			history.pushState('', document.title, window.location.pathname);
+			var CBtable;
 			
 			$(window).load(function() {
 				$(".preloader").fadeOut("slow", function() {
@@ -215,7 +216,7 @@ if (isset($_GET["message"])) {
 					unsavedclass: null
 				});
 				
-				$("#callback-list").DataTable({"aoColumnDefs": [{ "bSortable": false, "aTargets": [ 4 ] }] });
+				$("#callback-list").DataTable({"bDestroy": true, "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5 ] }, { "bSearchable": false, "aTargets": [ 2, 5 ] }] });
 			});
 			
 			//turn to inline mode
@@ -307,6 +308,12 @@ if (isset($_GET["message"])) {
 			}
 			.table > thead > tr > th {
 				padding: 8px;
+			}
+			.modal-body {
+				min-height: inherit;
+				overflow-x: inherit;
+				overflow-y: inherit;
+				padding-top: 15px;
 			}
 		</style>
     </head>
@@ -768,17 +775,20 @@ if (isset($_GET["message"])) {
 								<table id="callback-list" class="display" style="border: 1px solid #f4f4f4">
 									<thead>
 										<tr>
-											<th>
+											<th class="hidden-xs">
 												Customer Name
 											</th>
 											<th>
 												Phone Number
 											</th>
-											<th>
+											<th class="hidden-xs">
 												Callback Time
 											</th>
-											<th>
+											<th class="hidden-xs">
 												Campaign
+											</th>
+											<th class="hidden-xs hidden-md">
+												Comments
 											</th>
 											<th>
 												Action
