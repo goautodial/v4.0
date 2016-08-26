@@ -102,7 +102,7 @@
 
     <div class="modal fade" id="wizard-modal" tabindex="-1"aria-labelledby="T_User" >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius:5px;">
+            <div class="modal-content">
 				
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -110,7 +110,7 @@
 						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create users."></i> 
 						<b>User Wizard » Add New User</b></h4>
 				</div>
-				<div class="modal-body" style="min-height: 50%; overflow-y:auto; overflow-x:hidden; padding-top:0px;">
+				<div class="modal-body">
 				
 				<form id="wizard_form" action="#">
 					<div class="row">
@@ -357,8 +357,16 @@
 						success: function(data) {
 						  // console.log(data);
 							  if(data == 1){
-							  	  swal("Success!", "User Successfully Created!", "success");
-								  window.setTimeout(function(){location.reload()},2000);
+							  	  swal(
+									{
+										title: "Success",
+										text: "User Successfully Created!",
+										type: "success"
+									},
+									function(){
+										window.location.href = 'telephonyusers.php';
+									}
+								  );
 							  }else{
 							  	  sweetAlert("Oops...", "Something went wrong. "+data, "error");
 							  	  $('#finish').val("Submit");
@@ -372,7 +380,7 @@
 	//--------------------
 
 		/*********
-		** Edit user details
+		** Edit Event
 		*********/
 
 				$(document).on('click','.edit-T_user',function() {
@@ -388,7 +396,7 @@
 	// ------------------
 				
 		/*********
-		** Delete function
+		** Delete Event
 		*********/
 
 				 $(document).on('click','.delete-T_user',function() {
@@ -415,8 +423,16 @@
 										success: function(data) {
 										console.log(data);
 									  		if(data == 1){
-									  			swal("Success!", "User Successfully Deleted!", "success");
-									  			window.setTimeout(function(){location.reload()},1000)
+									  			swal(
+													{
+														title: "Success",
+														text: "User Successfully Deleted!",
+														type: "success"
+													},
+													function(){
+														window.location.href = 'telephonyusers.php';
+													}
+												);
 											}else{
 												sweetAlert("Oops...", "Something went wrong! "+data, "error");
 											 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);

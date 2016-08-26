@@ -505,10 +505,18 @@ $user_groups = $ui->API_goGetUserGroupsList();
 	                        success: function(data) {
 	                          // console.log(data);
 	                            if (data == 1) {
-									swal("Success!", "User Successfully Updated!", "success")
 									$('#update_button').html("<i class='fa fa-check'></i> Update");
 									$('#modifyUserOkButton').prop("disabled", false);
-									window.setTimeout(function(){location.replace("./telephonyusers.php")},2000);
+									swal(
+										{
+											title: "Success",
+											text: "User Successfully Updated!",
+											type: "success"
+										},
+										function(){
+											location.replace("./telephonyusers.php");
+										}
+									);
 								} else {
 									sweetAlert("Oops...", "Something went wrong! " + data, "error");
 									$('#update_button').html("<i class='fa fa-check'></i> Update");

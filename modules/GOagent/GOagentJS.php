@@ -1396,7 +1396,7 @@ $(document).ready(function() {
     });
     
     // Hijack links on left menu
-    $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks)").on('click', hijackThisLink);
+    $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks|callbackslist)").on('click', hijackThisLink);
     
     $("#submitCBDate").click(function() {
         CallBackDateSubmit();
@@ -1416,9 +1416,9 @@ function hijackThisLink(e) {
     } else if (/edituser/g.test(thisLink)) {
         $(".content-heading").html("<?=$lh->translationFor('edit_profile')?>");
         hash = 'editprofile';
-    } else if (/events/g.test(thisLink)) {
-        $(".content-heading").html("<?=$lh->translationFor('events')?> <?=$lh->translateText('and')?> <?=$lh->translationFor('callbacks')?>");
-        hash = 'events';
+    } else if (/events|callbackslist/g.test(thisLink)) {
+        $(".content-heading").html("<?=$lh->translationFor('list_of_callbacks')?>");
+        hash = 'callbacks';
     } else if (/messages/g.test(thisLink)) {
         $(".content-heading").html("<?=$lh->translationFor('messages')?>");
         hash = 'messages';
@@ -3089,7 +3089,7 @@ function CallBacksCountCheck() {
             $("#callbacks-active").html(CBcount);
             $("#callbacks-today").html(CBcountToday);
             
-            $("a[href='events.php'] small.badge").html(CBcount);
+            $("a[href='callbackslist.php'] small.badge").html(CBcount);
             $("#topbar-callbacks a span.label").html(CBcountToday);
             $("#topbar-callbacks ul li.header").html('<?=$lh->translationFor("you_have")?> '+CBcountToday+' <?=$lh->translationFor("callbacks_for_today")?>');
             
@@ -3105,7 +3105,7 @@ function CallBacksCountCheck() {
                 cntCB++;
             });
             
-            $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks)").off('click', hijackThisLink).on('click', hijackThisLink);
+            $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
         }
     });
 }

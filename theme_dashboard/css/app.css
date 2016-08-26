@@ -5335,6 +5335,11 @@ body .bootstrap-tagsinput .tag {
   /* padding-top: 15px; */
   /* padding-bottom: 15px; */
 }
+.wizard > .steps > ul > li.first.last {
+  float: left;
+  width:100%;
+}
+
 .wizard > .steps a,
 .wizard > .steps a:hover,
 .wizard > .steps a:active {
@@ -8924,4 +8929,15 @@ md-tabs .md-tab.md-focused md-icon {
   pointer-events: auto;
   cursor: pointer;
   color: #dddddd;
+}
+
+.modal-body{
+  min-height: 50%; 
+  overflow-y:auto; 
+  overflow-x:hidden; 
+  padding-top:0px;
+}
+
+.modal-content{
+  border-radius:5px;
 }
