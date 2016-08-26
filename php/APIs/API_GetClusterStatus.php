@@ -79,7 +79,8 @@
     $cluster .= '"'.$status.'",';
     $cluster .= '"'.$load.'%",';    
     $cluster .= '"'.$channels.'",';
-    $cluster .= '"<div data-label=\"'.$diskusage.'%\" class=\"radial-bar radial-bar-'.$diskusage.' radial-bar-xs\"></div>",';
+    $cluster .= '"'.$diskusage.'%",';
+    //$cluster .= '"<div data-label=\"'.$diskusage.'%\" class=\"radial-bar radial-bar-'.$diskusage.' radial-bar-xs\"></div>",';
     //$cluster .= '"<span sparkline=\"widget.sparkOptionPie\" values=\"'.$diskusage.','.$diskvalue01.'\"></span>",';
     $cluster .= '"'.$time.'"';
     $cluster .='],';

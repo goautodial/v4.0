@@ -359,7 +359,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                         
 					<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
                                             <a href="#" data-toggle="modal" data-target="#realtime_calls_monitoring">
-                                                                <div class="text">Today's Phone Calls</div></a>                                        
+                                                                <div class="text-white">Realtime Calls Monitoring</div></a>                                        
                                 </div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><span class="text-lg" id="refresh_RingingCalls"></span></div>
