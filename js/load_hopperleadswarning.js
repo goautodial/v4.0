@@ -26,8 +26,12 @@
                 //console.log(JSONObjectrealtime); 
                 var table = $('#campaigns_monitoring_table').dataTable({ 
                                 data:JSONObjectrealtime,
-                                "destroy":true
-                                
+                                "destroy":true,    
+                                stateSave: true,
+                                drawCallback: function(settings) {
+                                    var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                                    pagination.toggle(this.api().page.info().pages > 1);
+                                }                              
                 });
                 goAvatar._init(goOptions);
         } 
@@ -115,16 +119,25 @@
                 //console.log(JSONObjectrealtime); 
                 var table = $('#realtime_agents_monitoring_table').dataTable({ 
                                 data:JSONObjectrealtime,
-                                "destroy":true
-                            });
+                                "destroy":true,
+                                "searching": false,
+                                stateSave: true,
+                                drawCallback: function(settings) {
+                                    var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                                    pagination.toggle(this.api().page.info().pages > 1);
+                                },                                
+                                "oLanguage": {
+                                        "sLengthMenu": "",
+                                        "sEmptyTable": "No Agents Available",
+                                        "oPaginate": {
+                                            "sPrevious": "Prev",
+                                            "sNext": "Next"
+                                        }
+                                },
+                                "bFilter": false,
+                                "bInfo": false                             
+                });
                 goAvatar._init(goOptions);
-                //table.destroy();
-                
-                            //$('#monitoring_table').dataTable({ 
-                                //data:JSONObjectrealtime,
-                                //"destroy":true
-                            //});        
-                            //console.log(values);
         } 
     });
     }
@@ -136,22 +149,38 @@
         dataType: 'json',
         success: function(values){
             //$("#refresh_realtime_agents_monitoring").html(values);
-                var JSONStringrealtime = values;
-                var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+                var JSONStringrealtimecalls = values;
+                var JSONObjectrealtimecalls = JSON.parse(JSONStringrealtimecalls);
                 //console.log(JSONStringrealtime);
-                //console.log(JSONObjectrealtime); 
+                console.log(JSONObjectrealtimecalls); 
                 var table = $('#realtime_calls_monitoring_table').dataTable({ 
-                                data:JSONObjectrealtime,
-                                "destroy":true
-                            });
+                                data:JSONObjectrealtimecalls,
+                                "destroy":true,
+                                "searching": false,
+                                stateSave: true,
+                                drawCallback: function(settings) {
+                                    var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                                    pagination.toggle(this.api().page.info().pages > 1);
+                                },                                 
+                                "oLanguage": {
+                                        "sLengthMenu": "",
+                                        "sEmptyTable": "No Calls Available",
+                                        "oPaginate": {
+                                            "sPrevious": "Prev",
+                                            "sNext": "Next"
+                                        }
+                                },
+                                "bFilter": false,
+                                "bInfo": false,                                                               
+                                "columnDefs": [
+                                    {
+                                        "targets": [ 6 ],
+                                        "visible": false,
+                                        "searchable": false
+                                    }
+                                ]
+                });
                 goAvatar._init(goOptions);
-                //table.destroy();
-                
-                            //$('#monitoring_table').dataTable({ 
-                                //data:JSONObjectrealtime,
-                                //"destroy":true
-                            //});        
-                            //console.log(values);
         } 
     });
     }    

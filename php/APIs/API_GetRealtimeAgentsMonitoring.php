@@ -39,18 +39,6 @@
     //print_r($output);
                         
     $creamyAvatar = $ui->getSessionAvatar();
-    
-    if ($output == NULL){
-        echo '<strong class="media-box-heading text-primary">
-                <span class="circle circle-danger circle-lg text-left"></span>There are no available agents.
-                </strong>
-                <br/>
-                <strong class=""style="padding-left:20px;"></strong>
-                <small class="text-muted pull-right ml" style="padding-right:20px;"></small>
-                </p>';
-
-    }
-
     $barracks = '[';
 
     foreach ($output->data as $key => $value) {

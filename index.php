@@ -356,8 +356,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	            	<div class="col-lg-12" style="padding: 0px;">
 	                	<!-- demian -->                	
 				<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info pv-xl info_sun_boxes">
+                                        
 					<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
-                                                                <div class="text">Today's Phone Calls</div>
+                                            <a href="#" data-toggle="modal" data-target="#realtime_calls_monitoring">
+                                                                <div class="text">Today's Phone Calls</div></a>                                        
                                 </div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><span class="text-lg" id="refresh_RingingCalls"></span></div>
@@ -599,40 +601,6 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4>Realtime Campaigns Monitoring</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="table-responsive" style="min-height: 40%">
-                                    <div class="col-sm-12">
-                                        <table class="table table-striped table-hover" id="realtime_calls_monitoring_table" style="width: 100%">
-                                            <thead>
-                                                    <th style="color: white;">Pic</th>
-                                                    <th>Status</th>                                                    
-                                                    <th>Phone Number </th>
-                                                    <th>Call Type</th>
-                                                    <th>MM:SS</th>
-                                                    <th>Campaign/Ingroup</th>                                                    
-                                                    <th>Group ID</th>                                                    
-                                            </thead>
-                                            <tbody>
-                                            
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>	
-                    </div>
-                    
-                        <!-- End of Realtime Calls Monitoring -->
-			<!-- Realtime Calls Monitoring -->
-
-                    <div class="modal fade" id="realtime_calls_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-lg modal-dialog" style="min-width: 75%">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                     <h4>Realtime Calls Monitoring</h4>
                                 </div>
                                 <div class="modal-body">
@@ -640,6 +608,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                     <div class="col-sm-12">
                                         <table class="table table-striped table-hover" id="realtime_calls_monitoring_table" style="width: 100%">
                                             <thead>
+                                                    <th style="color: white;">Pic</th>
                                                     <th>Status</th>                                                    
                                                     <th>Phone Number </th>
                                                     <th>Call Type</th>
@@ -658,7 +627,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                         </div>	
                     </div>
                     
-                        <!-- End of Realtime Calls Monitoring -->    
+                        <!-- End of Realtime Calls Monitoring -->
 			<!-- Campaigns Monitoring -->
 
                     <div class="modal fade" id="campaigns_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
@@ -1200,6 +1169,7 @@ function goGetModalUsernameValue(){
                         
         // ---- realtime agent monitoring
                         load_realtime_agents_monitoring();
+                        load_realtime_calls_monitoring();
                         
         // ---- view agent information modal
                         load_view_agent_information();
@@ -1237,6 +1207,7 @@ function goGetModalUsernameValue(){
 		
 		// ... realtime agents monitoring ...
                 setInterval(load_realtime_agents_monitoring,3000);
+                setInterval(load_realtime_calls_monitoring,3000);
 		
 		// ... view agent information modal  ...
 		setInterval(load_view_agent_information,2000);
