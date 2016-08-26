@@ -467,7 +467,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 						</div>
 
 			<!-- ==== TASK ACTIVITIES ===== -->
-                                    <div class="panel panel-default">
+			
+                                <div class="panel panel-default">
 		                     <div class="panel-heading">
 		                        <div class="panel-title">Campaign Leads Resources</div>
 		                     </div>         
@@ -481,14 +482,14 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                               </span>
 
 		                        </div>
-		                     </div>
-		                     <!--</span>-->
-		                     <div class="panel-footer clearfix">
-		                        <a href="#" class="pull-left">
-		                           <small>Load more</small>
-		                        </a>
-		                     </div>		                     
+		                     </div>                     
+                                    <div class="panel-footer clearfix">
+                                        <a href="#" data-toggle="modal" data-target="#campaigns_monitoring" class="pull-right">
+                                            <medium>View more</medium> <em class="fa fa-arrow-right"></em>
+                                        </a>
+                                    </div>		                     
 		                </div>
+		                
             	</aside><!-- END OF COLUMN 3 -->
 
 
@@ -571,7 +572,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                     <div class="col-sm-12">
                                         <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
                                             <thead>
-                                                    <th style="width: 3%; color: white;">Pic</th>
+                                                    <th style="color: white;">Pic</th>
                                                     <th>Agent Name</th>                                                    
                                                     <th>Group</th>
                                                     <th>Status</th>
@@ -591,8 +592,108 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                     </div>
                         
 			<!-- End of Realtime Agent Monitoring -->
+			<!-- Realtime Calls Monitoring -->
 
-    <!-- Modal --> 
+                    <div class="modal fade" id="realtime_calls_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-lg modal-dialog" style="min-width: 75%">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4>Realtime Campaigns Monitoring</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="table-responsive" style="min-height: 40%">
+                                    <div class="col-sm-12">
+                                        <table class="table table-striped table-hover" id="realtime_calls_monitoring_table" style="width: 100%">
+                                            <thead>
+                                                    <th style="color: white;">Pic</th>
+                                                    <th>Status</th>                                                    
+                                                    <th>Phone Number </th>
+                                                    <th>Call Type</th>
+                                                    <th>MM:SS</th>
+                                                    <th>Campaign/Ingroup</th>                                                    
+                                                    <th>Group ID</th>                                                    
+                                            </thead>
+                                            <tbody>
+                                            
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>	
+                    </div>
+                    
+                        <!-- End of Realtime Calls Monitoring -->
+			<!-- Realtime Calls Monitoring -->
+
+                    <div class="modal fade" id="realtime_calls_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-lg modal-dialog" style="min-width: 75%">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4>Realtime Calls Monitoring</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="table-responsive" style="min-height: 40%">
+                                    <div class="col-sm-12">
+                                        <table class="table table-striped table-hover" id="realtime_calls_monitoring_table" style="width: 100%">
+                                            <thead>
+                                                    <th>Status</th>                                                    
+                                                    <th>Phone Number </th>
+                                                    <th>Call Type</th>
+                                                    <th>MM:SS</th>
+                                                    <th>Campaign/Ingroup</th>                                                    
+                                                    <th>User Group</th>                                                    
+                                            </thead>
+                                            <tbody>
+                                            
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>	
+                    </div>
+                    
+                        <!-- End of Realtime Calls Monitoring -->    
+			<!-- Campaigns Monitoring -->
+
+                    <div class="modal fade" id="campaigns_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-lg modal-dialog" style="min-width: 75%">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4>Campaigns Monitoring</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="table-responsive" style="min-height: 40%">
+                                    <div class="col-sm-12">
+                                        <table class="table table-striped table-hover" id="campaigns_monitoring_table" style="width: 100%">
+                                            <thead>
+                                                    <th style="color: white;">Pic</th>
+                                                    <th>Campaign ID</th>                                                    
+                                                    <th>Campaign Name</th>
+                                                    <th>Leads on Hopper</th>
+                                                    <th>Call Times</th>                                                  
+                                                    <th>User Group</th>                                                    
+                                            </thead>
+                                            <tbody>
+                                            
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>	
+                    </div>
+                    
+                        <!-- End of Campaigns Monitoring -->                        
+                        <!-- Agent Information -->
+                        
                     <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-labelledby="view_agent_information-modal" aria-hidden="true"> 
                         <div class="modal-dialog"> 
                             <div class="modal-content"> 
@@ -638,8 +739,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                 </div> 
                             </div> 
                         </div> 
-   <!-- </div>	-->
+                        
+                        <!-- End of Agent Information -->
 			<!-- View Campaign -->
+			
 			<div id="view_campaign_information" class="modal fade" role="dialog">
 			  <div class="modal-dialog">
 
@@ -696,6 +799,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                            </div>
                          </div>
                         </div>
+                        
 			<!-- End of View Campaign -->
                         
 <?php
@@ -1091,6 +1195,7 @@ function goGetModalUsernameValue(){
 			
         // ---- agent and campaign resources
                         load_campaigns_resources();
+                        load_campaigns_monitoring();
                         load_agents_monitoring_summary();
                         
         // ---- realtime agent monitoring
@@ -1126,14 +1231,15 @@ function goGetModalUsernameValue(){
 		setInterval(load_cluster_status,60000);
 		
 		// ... agent and campaign resources ...
-		setInterval(load_campaigns_resources,60000);
+		setInterval(load_campaigns_resources,30000);
+		setInterval(load_campaigns_monitoring,30000);
 		setInterval(load_agents_monitoring_summary,5000);
 		
 		// ... realtime agents monitoring ...
                 setInterval(load_realtime_agents_monitoring,3000);
 		
 		// ... view agent information modal  ...
-		setInterval(load_view_agent_information,3000);
+		setInterval(load_view_agent_information,2000);
 		
 	</script>
 	

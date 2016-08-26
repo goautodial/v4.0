@@ -50,8 +50,14 @@
 
     //echo "<pre>";
     //print_r($output);
+  
+    $max = 0;
+        
+        
         foreach ($output->data as $key => $value) {
-            
+        
+        if(++$max > 6) break; 
+        
             $campname = $value->campaign_name;
             $leadscount = $value->mycnt;
             $campid =  $value->campaign_id;
@@ -59,50 +65,52 @@
             $callrecordings = $value->campaign_recording;
             $campaigncid = $value->campaign_cid;
             $localcalltime = $value->local_call_time;
+            $usergroup = $value->user_group;
             $camptype = $value->campaign_type;      
-            
+  
         if ($leadscount == 0){   
         
+             $sessionAvatar = "<avatar username='$campname' background-color='#f44336' :size='32'></avatar>";
+             
                 echo                            '<div class="media-box">
                                                     <div class="pull-left">
-                                                    <span class="fa-stack">
-                                                        <em class="fa fa-circle fa-stack-2x text-danger"></em>
-                                                        <em class="fa fa-exclamation fa-stack-1x fa-inverse text-white"></em>
-                                                    </span>
-                                                </div>
-                                                <div class="media-box-body clearfix">
-                                                    <small class="text-muted pull-right ml">'.$leadscount.'</small>
-                                                    <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-danger m0">'.$campname.'</strong></a>
+                                                        '.$sessionAvatar.'
+                                                    </div>                                                
+                                                        <div class="media-box-body clearfix">
+                                                            <small class="text-muted pull-right ml">'.$leadscount.'</small>
+                                                            <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
+                                                            </div>
+                                                                <p class="m0">
+                                                                    <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
+                                                                    </small>
+                                                                </p>
+                                                        </div>
                                                     </div>
-                                                    <p class="m0">
-                                                        <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text">'.$campid.'</strong></a>
-                                                        </small>
-                                                    </p>
-                                                </div>
                                                 </div>';
                                                 
         }
             if ($leadscount > 0){ 
-
-                echo                           '<div class="media-box">
+            
+                 $sessionAvatar = "<avatar username='$campname' background-color='#ff5722' :size='32'></avatar>";
+                 
+                echo                            '<div class="media-box">
                                                     <div class="pull-left">
-                                                    <span class="fa-stack">
-                                                        <em class="fa fa-circle fa-stack-2x text-info"></em>
-                                                        <em class="fa fa-file-text-o fa-stack-1x fa-inverse text-white"></em>
-                                                    </span>
-                                                </div>
-                                                <div class="media-box-body clearfix">
-                                                    <small class="text-muted pull-right ml">'.$leadscount.'</small>
-                                                    <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-warning m0">'.$campname.'</strong></a>
+                                                        '.$sessionAvatar.'
+                                                    </div>                                                
+                                                        <div class="media-box-body clearfix">
+                                                            <small class="text-muted pull-right ml">'.$leadscount.'</small>
+                                                            <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
+                                                            </div>
+                                                                <p class="m0">
+                                                                    <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
+                                                                    </small>
+                                                                </p>
+                                                        </div>
                                                     </div>
-                                                    <p class="m0">
-                                                        <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text">'.$campid.'</strong></a>
-                                                        </small>
-                                                    </p>
-                                                </div>
                                                 </div>';
             }        
         }
+        
     }
     
     

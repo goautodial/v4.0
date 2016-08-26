@@ -7,9 +7,32 @@
         cache: false,
         success: function(data){
             $("#refresh_campaigns_resources").html(data);
+            goAvatar._init(goOptions);
         } 
     });
     }
+    
+    function load_campaigns_monitoring(){
+    $.ajax({        
+        url: "./php/APIs/API_GetCampaignsMonitoring.php",
+        cache: false,
+        dataType: 'json',
+        success: function(values){
+            //console.log(values);
+            //$("#refresh_agents_monitoring_summary").html(data);
+                var JSONStringrealtime = values;
+                var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+                //console.log(JSONStringrealtime);
+                //console.log(JSONObjectrealtime); 
+                var table = $('#campaigns_monitoring_table').dataTable({ 
+                                data:JSONObjectrealtime,
+                                "destroy":true
+                                
+                });
+                goAvatar._init(goOptions);
+        } 
+    });
+    }    
 
     function load_agents_monitoring_summary(){
     $.ajax({
@@ -34,7 +57,8 @@
         cache: false,
         dataType: 'json',
         success: function(values){
-            console.log(values);
+            //console.log(values);
+            goAvatar._init(goOptions);
             //$("#refresh_agents_monitoring_summary").html(data);
                 var JSONStringrealtime = values;
                 var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
@@ -48,7 +72,7 @@
                                 "bInfo" : false,
                                 "destroy":true
                                 
-                });            
+                });                 
         } 
     });
     }    
@@ -104,3 +128,30 @@
         } 
     });
     }
+
+    function load_realtime_calls_monitoring(){
+    $.ajax({
+        url: "./php/APIs/API_GetRealtimeCallsMonitoring.php",
+        cache: false,
+        dataType: 'json',
+        success: function(values){
+            //$("#refresh_realtime_agents_monitoring").html(values);
+                var JSONStringrealtime = values;
+                var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+                //console.log(JSONStringrealtime);
+                //console.log(JSONObjectrealtime); 
+                var table = $('#realtime_calls_monitoring_table').dataTable({ 
+                                data:JSONObjectrealtime,
+                                "destroy":true
+                            });
+                goAvatar._init(goOptions);
+                //table.destroy();
+                
+                            //$('#monitoring_table').dataTable({ 
+                                //data:JSONObjectrealtime,
+                                //"destroy":true
+                            //});        
+                            //console.log(values);
+        } 
+    });
+    }    
