@@ -57,12 +57,11 @@
     $.ajax({        
         type: 'POST',
         url: "./php/APIs/API_GetAgentInformation.php",
-        data: {user_id: agentiformationid},
+        data: {user: agentiformationid},
         cache: false,
         dataType: 'json',
         success: function(values){
-            //console.log(values);
-            goAvatar._init(goOptions);
+            //console.log(values);            
             //$("#refresh_agents_monitoring_summary").html(data);
                 var JSONStringrealtime = values;
                 var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
@@ -76,7 +75,8 @@
                                 "bInfo" : false,
                                 "destroy":true
                                 
-                });                 
+                });
+                goAvatar._init(goOptions);
         } 
     });
     }    
@@ -157,7 +157,7 @@
                                 data:JSONObjectrealtimecalls,
                                 "destroy":true,
                                 "searching": false,
-                                stateSave: true,
+//                                stateSave: true,
                                 drawCallback: function(settings) {
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                                     pagination.toggle(this.api().page.info().pages > 1);
@@ -171,14 +171,14 @@
                                         }
                                 },
                                 "bFilter": false,
-                                "bInfo": false,                                                               
-                                "columnDefs": [
-                                    {
-                                        "targets": [ 6 ],
-                                        "visible": false,
-                                        "searchable": false
-                                    }
-                                ]
+                                "bInfo": false                                                               
+//                                "columnDefs": [
+//                                    {
+//                                        "targets": [ 6 ],
+//                                        "visible": false,
+//                                        "searchable": false
+//                                    }
+//                                ]
                 });
                 goAvatar._init(goOptions);
         } 

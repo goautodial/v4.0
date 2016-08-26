@@ -390,8 +390,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                         <div class="panel-heading">
                                                             <div class="panel-title"><h4>Cluster Status</h4></div>
                                                         </div>
-                                                            <!-- START table-responsive-->
-                                                            <div class="table-responsive">
+                                                            <!-- START responsive-->
+                                                            <div class="responsive">
                                                                 <div class="col-sm-12">
                                                                     <table id="cluster-status" class="table table-striped table-hover" style="width: 100%">
                                                                         <thead>
@@ -563,15 +563,15 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			<!-- Realtime Agent Monitoring -->
 			
                     <div class="modal fade" id="realtime_agents_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-lg modal-dialog" style="min-width: 75%">
+                        <div class="modal-lg modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                     <h4>Realtime Agents Monitoring</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="table-responsive" style="min-height: 40%">
-                                    <div class="col-sm-12">
+                                    <div class="responsive">
+                                    <!-- <div class="col-sm-12">-->
                                         <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
                                             <thead>
                                                     <th style="color: white;">Pic</th>
@@ -586,7 +586,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             
                                             </tbody>
                                         </table>
-                                    </div>
+                                    <!--</div>-->
                                     </div>
                                 </div>
                             </div>
@@ -597,15 +597,15 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			<!-- Realtime Calls Monitoring -->
 
                     <div class="modal fade" id="realtime_calls_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-lg modal-dialog" style="min-width: 75%">
+                        <div class="modal-lg modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                     <h4>Realtime Calls Monitoring</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="table-responsive" style="min-height: 40%">
-                                    <div class="col-sm-12">
+                                    <div class="responsive">
+                                    <!-- <div class="col-sm-12">-->
                                         <table class="table table-striped table-hover" id="realtime_calls_monitoring_table" style="width: 100%">
                                             <thead>
                                                     <th style="color: white;">Pic</th>
@@ -620,7 +620,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             
                                             </tbody>
                                         </table>
-                                    </div>
+                                    <!--</div>-->
                                     </div>
                                 </div>
                             </div>
@@ -631,15 +631,15 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			<!-- Campaigns Monitoring -->
 
                     <div class="modal fade" id="campaigns_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-lg modal-dialog" style="min-width: 75%">
+                        <div class="modal-lg modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                     <h4>Campaigns Monitoring</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="table-responsive" style="min-height: 40%">
-                                    <div class="col-sm-12">
+                                    <div class="responsive">
+                                    <!-- <div class="col-sm-12">-->
                                         <table class="table table-striped table-hover" id="campaigns_monitoring_table" style="width: 100%">
                                             <thead>
                                                     <th style="color: white;">Pic</th>
@@ -653,7 +653,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             
                                             </tbody>
                                         </table>
-                                    </div>
+                                    <!--</div>-->
                                     </div>
                                 </div>
                             </div>
@@ -663,11 +663,11 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                         <!-- End of Campaigns Monitoring -->                        
                         <!-- Agent Information -->
                         
-                    <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-labelledby="view_agent_information-modal" aria-hidden="true"> 
+                    <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-hidden="true"> 
                         <div class="modal-dialog"> 
                             <div class="modal-content"> 
                                 <div class="modal-header"> 
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button> 
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
                                     <h4 class="modal-title">More about <span id="modal-username"></span>:</h4> 
                                 </div> 
                                     <div class="modal-body"> 
@@ -677,11 +677,11 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             <h3 class="media-heading"><span id="modal-fullname"></span> <small></small></h3> 
                                             <span><strong>Logged-in to:</strong></span> 
                                             <span class="label label-warning" id="modal-campaign"></span> 
-                                            <span class="label label-info" id="modal-usergroup"></span> 
+                                            <span class="label label-info" id="modal-status"></span> 
                                             <span class="label label-info" id="modal-userlevel"></span> 
-                                            <span class="label label-success" id="modal-status"></span>
+                                            <span class="label label-success" id="modal-usergroup"></span>
                                         </center> <hr> 
-                                            <div class="table-responsive">
+                                            <div class="responsive">
                                                     <table class="table table-striped table-hover" id="view_agent_information_table" style="width: 100%">
                                                         <thead>
                                                                 <th>Agent ID</th> 
@@ -1049,7 +1049,7 @@ function goGetModalUsernameValue(){
 
 		//demian
 		$(document).ready(function(){
-		
+                    
                     // Clear previous agent info
                     $('#view_agent_information').on('hidden.bs.modal', function () {
 
@@ -1066,7 +1066,7 @@ function goGetModalUsernameValue(){
                         $.ajax({                            
                             type: 'POST',
                             url: "./php/ViewUserInfo.php",
-                            data: {user_id: userid},
+                            data: {user: userid},
                             cache: false,
                             //dataType: 'json',
                                 success: function(data){ 
@@ -1131,7 +1131,6 @@ function goGetModalUsernameValue(){
                     
         
 	// ---- loads datatable functions
-                        //$('#agent_monitoring_table').dataTable({bFilter: false, bInfo: false});
 
 	// ---- Fixed Action Button
 			$(".bottom-menu").on('mouseenter mouseleave', function () {
