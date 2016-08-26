@@ -106,7 +106,7 @@
 				
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="T_User">
+					<h4 class="modal-title animated bounceInRight" id="T_User">
 						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create users."></i> 
 						<b>User Wizard » Add New User</b></h4>
 				</div>
