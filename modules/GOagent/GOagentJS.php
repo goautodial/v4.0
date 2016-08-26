@@ -3105,6 +3105,23 @@ function CallBacksCountCheck() {
                 cntCB++;
             });
             
+            if (!$("#contents-callbacks").is(':visible')) {
+                var CBallList = CBdata.all_callbacks;
+                $("#callback-list").dataTable().fnDestroy();
+                $("#callback-list tbody").empty();
+                $.each(CBallList, function(key, value) {
+                    var appendThis = '<tr data-id="'+value.callback_id+'"><td class="hidden-xs">'+value.cust_name+'</td><td>'+value.phone_number+'</td><td class="hidden-xs"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td class="hidden-xs">'+value.campaign_name+'</td><td class="hidden-xs hidden-md">'+value.comments+'</td><td class="text-center"><button class="btn btn-success btn-sm"><i class="fa fa-phone"></i></button> <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button></td></tr>';
+                    $("#callback-list tbody").append(appendThis);
+                });
+                $("#callback-list").css('width', '100%');
+                $("#callback-list").DataTable({"bDestroy": true, "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5 ] }, { "bSearchable": false, "aTargets": [ 2, 5 ] }] });
+                $("#callback-list_filter").parent('div').attr('class', 'col-md-6 hidden-xs');
+                $("#callback-list_length").parent('div').attr('class', 'col-xs-12 col-md-6');
+                $("#contents-callbacks").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-md-6');
+                $("#contents-callbacks").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-md-6');
+                
+            }
+            
             $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
         }
     });
