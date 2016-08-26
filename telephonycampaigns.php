@@ -931,8 +931,16 @@ error_reporting(E_ALL);*/
 					                        success: function(data) {
 					                        console.log(data);
 					                            if(data == 1){
-					                                swal("Success!", "Campaign Successfully Deleted!", "success");
-					                                window.setTimeout(function(){location.reload()},1000);
+					                            	swal(
+														{
+															title: "Success",
+															text: "Campaign Successfully Deleted!",
+															type: "success"
+														},
+														function(){
+															window.location.href = 'telephonycampaigns.php';
+														}
+													);
 					                            }else{
 					                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
 					                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);

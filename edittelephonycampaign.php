@@ -162,15 +162,15 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 						                	<div id="tab_1" class="tab-pane fade in active">
 												<fieldset>
 													<div class="form-group mt">
-														<label class="col-sm-2 control-label">Campaign Name:</label>
+														<label class="col-sm-2 control-label" for="campaign_name">Campaign Name:</label>
 														<div class="col-sm-10 mb">
-															<input type="text" class="form-control" name="campaign_name" value="<?php echo $campaign->data->campaign_name; ?>">
+															<input type="text" class="form-control" name="campaign_name" id="campaign_name" value="<?php echo $campaign->data->campaign_name; ?>" title="Must be 6 to 40 characters in length." minlength="6" maxlength="40" required>
 														</div>
 													</div>
 													<div class="form-group">
-														<label class="col-sm-2 control-label">Campaign Description:</label>
+														<label class="col-sm-2 control-label" for="campaign_desc">Campaign Description:</label>
 														<div class="col-sm-10 mb">
-															<input type="text" class="form-control" name="campaign_desc" value="<?php echo $campaign->data->campaign_name; ?>">
+															<input type="text" class="form-control" name="campaign_desc" id="campaign_desc" value="<?php echo $campaign->data->campaign_name; ?>" >
 														</div>
 													</div>
 													<div class="form-group">
@@ -269,7 +269,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 																	</select>
 																</div>
 																<div class="col-lg-3">
-																	<input type="text" class="form-control" id="custom_prefix" name="custom_prefix">
+																	<input type="number" class="form-control" id="custom_prefix" min="0" max="15" name="custom_prefix">
 																</div>
 															</div>
 														</div>
@@ -1229,6 +1229,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 									<tr style="border-top: 1px solid #f4f4f4;">
 										<td>
 											<input type="text" name="add_status" id="add_status" class="" placeholder="Status">
+											<br/><small><label id="status-duplicate-error"></label></small>
 										</td>
 										<td>
 											<input type="text" name="add_status_name" id="add_status_name" class="" placeholder="Status Name">
@@ -1267,7 +1268,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 					              </table>
 					              	
 					              	<div class="box-footer pull-right">
-										<a href="telephonycampaigns.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-remove"></i> Cancel</a>
+										<a href="#" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-remove"></i> Cancel</a>
 									</div>
 					            </div>
 
@@ -1316,65 +1317,75 @@ $voicefiles = $ui->API_GetVoiceFilesList();
                 </div>
                 <div class="modal-body" style="background:#fff;">
                 	<form id="modifydisposition_form">
-	                <div class="row">
-	                	<input type="hidden" name="edit_campaign" id="edit_campaign">
-	                    <div class="col-lg-12">
-	                        <label class="col-sm-4 control-label" for="status">* Status:</label>
-	                        <div class="col-sm-7">
-	                            <input type="text" name="edit_status" id="edit_status" class="form-control" placeholder="Status" minlength="3" maxlenght="6" disabled>
+                		<div class="form-group mt mb">
+                			<div class="row">&nbsp;</div>
+                		</div>
+	                	<div class="form-group mt">
+		                	<input type="hidden" name="edit_campaign" id="edit_campaign">
+	                		
+	                		<label class="col-sm-3 control-label" for="status">Status:</label>
+	                        <div class="col-sm-9">
+	                            <input type="text" name="edit_status" id="edit_status" class="form-control" placeholder="Status" minlength="3" maxlenght="6" required>
+	                            <br/><small><label id="status-duplicate-error"></label></small>
+	                    	</div>
+		                </div>
+		                <div class="form-group">
+		                	<label class="col-sm-3 control-label" for="status_name"> Status Name: </label>
+	                        <div class="col-sm-9 mb">
+	                            <input type="text" name="edit_status_name" id="edit_status_name" class="form-control" placeholder="Status Name" maxlenght="30" required>
 	                        </div>
-	                    </div>
-	                    <div class="col-lg-12" style="padding-top:10px;">        
-	                        <label class="col-sm-4 control-label" for="status_name">* Status Name: </label>
-	                        <div class="col-sm-7">
-	                            <input type="text" name="edit_status_name" id="edit_status_name" class="form-control" placeholder="Status Name">
-	                        </div>
-	                    </div>
-	                    <div class="col-lg-12" style="padding-top:10px;">        
-		                        <!--<label class="col-sm-2 control-label" for="grouplevel" style="padding-top:15px;"> </label>-->
-	                		<label class="col-sm-3" for="selectable">
-				                  <input type="checkbox" id="edit_selectable" name="edit_selectable" class="flat-red">
-				                  Selectable
-			                </label>
-			                <label class="col-sm-4" for="human_answered">
-				                  <input type="checkbox" id="edit_human_answered" name="edit_human_answered" class="flat-red">
-				                  Human Answered
-					        </label>
-					        <label class="col-sm-3" for="sale">
-				                  <input type="checkbox" id="edit_sale" name="edit_sale" class="flat-red">
-				                  Sale
-				            </label>
-				            <label class="col-sm-3" for="dnc">
-				                  <input type="checkbox" id="edit_dnc" name="edit_dnc" class="flat-red">
-				                  DNC
-				            </label>
-					          
-			                <label class="col-sm-4" for="customer_contact">
-				                  <input type="checkbox" id="edit_customer_contact" name="edit_customer_contact" class="flat-red">
-				                  Customer Contact
-			                </label>
-			                <label class="col-sm-4" for="not_interested">
-				                  <input type="checkbox" id="edit_not_interested" name="edit_not_interested" class="flat-red">
-				                  Not Interested
-			                </label>
-			                <label class="col-sm-3" for="unworkable">
-				                  <input type="checkbox" id="edit_unworkable" name="edit_unworkable" class="flat-red">
-				                  Unworkable
-			                </label>
-			                <label class="col-sm-4" for="scheduled_callback">
-				                  <input type="checkbox" id="edit_scheduled_callback" name="edit_scheduled_callback" class="flat-red">
-				                  Scheduled Callback
-			                </label>
-		                       
-	                    </div>
-	                </div>
+		                </div>
+		                <div class="form-group mt">
+		                	<div class="col-lg-1">
+		                   	</div>
+		                    <div class="col-lg-11 mt">
+		                    	<div class="row mb">
+			                		<label class="col-sm-3 checkbox-inline" for="selectable">
+						                  <input type="checkbox" id="edit_selectable" name="edit_selectable" checked class="flat-red">
+						                  Selectable
+					                </label>
+					                <label class="col-sm-4 checkbox-inline" for="human_answered">
+						                  <input type="checkbox" id="edit_human_answered" name="edit_human_answered" class="flat-red">
+						                  Human Answered
+							        </label>
+							        <label class="col-sm-3 checkbox-inline" for="sale">
+						                  <input type="checkbox" id="edit_sale" name="edit_sale" class="flat-red">
+						                  Sale
+						            </label>
+						        </div>
+						        <div class="row mb">
+						            <label class="col-sm-3 checkbox-inline" for="dnc">
+						                  <input type="checkbox" id="edit_dnc" name="edit_dnc" class="flat-red">
+						                  DNC
+						            </label>
+							          
+					                <label class="col-sm-4 checkbox-inline" for="customer_contact">
+						                  <input type="checkbox" id="edit_customer_contact" name="edit_customer_contact" class="flat-red">
+						                  Customer Contact
+					                </label>
+					                <label class="col-sm-4 checkbox-inline" for="not_interested">
+						                  <input type="checkbox" id="edit_not_interested" name="edit_not_interested" class="flat-red">
+						                  Not Interested
+					                </label>
+					            </div>
+						        <div class="row mb">
+					                <label class="col-sm-3 checkbox-inline" for="unworkable">
+						                  <input type="checkbox" id="edit_unworkable" name="edit_unworkable" class="flat-red">
+						                  Unworkable
+					                </label>
+					                <label class="col-sm-4 checkbox-inline" for="scheduled_callback">
+						                  <input type="checkbox" id="edit_scheduled_callback" name="edit_scheduled_callback" class="flat-red">
+						                  Scheduled Callback
+					                </label>
+					            </div>
+		                    </div>
+		                </div>
 	            	</form>
                 </div>
                 <div class="modal-footer">
-                	<div class="col-sm-3 pull-right">
-                		
+                	<div class="col-sm-5 pull-right">
+                		<button type="button" class="btn btn-danger" id="cancel_edit" data-dismiss="modal"><i class='fa fa-remove'></i> Cancel</button>
                     	<button type="button" class="btn btn-primary" id="modify_disposition"><span id="update_button"><i class='fa fa-check'></i> Update</span></button>
-                    	<button type="button" class="btn btn-danger pull-left" id="cancel" data-dismiss="modal"><i class='fa fa-remove'></i> Cancel</button>
               		</div>
               	</div>
               	
@@ -1391,6 +1402,409 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 		<script src="js/plugins/iCheck/icheck.min.js"></script>
 
 		<script type="text/javascript">
+			$(document).ready(function() {
+
+				/**************
+				** Init
+				**************/
+
+					//init cancel msg
+						$(document).on('click', '#cancel_edit', function(){
+							swal("Cancelled", "No action has been done :)", "error");   
+						});
+						$(document).on('click', '#cancel', function(){
+							swal({title: "Cancelled",text: "No action has been done :)",type: "error"},function(){window.location.href = 'telephonycampaigns.php';});
+						});
+
+					//Flat red color scheme for iCheck
+					    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+					      checkboxClass: 'icheckbox_flat-green',
+					      radioClass: 'iradio_flat-green'
+					    });
+
+				/*************
+				** Campaign Events
+				*************/
+
+					//edit campaign
+						$('#modifyCampaignButton').click(function(){
+							$('#campaign_form_edit').submit();
+						});
+
+						$('.am_message_chooser').hide();
+						$('.show_am_message_chooser').on('click', function(event) {        
+					        $('.am_message_chooser').toggle('show');
+					    });
+
+						var dial_method = $('#dial_method').val();
+						dialMethod(dial_method);
+
+						$('#dial_method').change(function(){
+							dialMethod($(this).val());
+						});
+
+						var dial_prefix = $('#dial_prefix').val();
+						dialPrefix(dial_prefix);
+
+						$('#dial_prefix').change(function(){
+							dialPrefix($(this).val());
+						});
+
+						
+					    var campaign_type = $('#campaignType').find("option:selected").val();
+					    setElements(campaign_type);
+
+					    $('#campaignType').change(function(){
+							var selectedTypeText = $(this).find("option:selected").text();
+							var selectedTypeVal = $(this).find("option:selected").val();
+							setElements(selectedTypeVal);
+						});
+
+				/*************
+				** Disposition Events
+				*************/
+
+			   		//Add Status
+				        $('#add_new_status').click(function(){
+
+					        $('#add_button').html("<i class='fa fa-check'></i> Saving, Please Wait.....");
+							$('#add_new_status').attr("disabled", true);
+
+					        var validate = 0;
+					        var status = $("#add_status").val();
+					        var status_name = $("#add_status_name").val();
+					        
+					        if(status == ""){
+					            validate = 1;
+					        }
+
+					        if(status_name == ""){
+					            validate = 1;
+					        }
+					       
+					            if(validate == 0){
+					            		var selectable = "Y";
+					            	if(!$('#add_selectable').is(":checked")){
+					            		selectable = "N";
+					            	}
+					            		var human_answered = "Y";
+					            	if(!$('#add_human_answered').is(":checked")){
+					            		human_answered = "N";
+					            	}
+					            		var sale = "Y";
+					            	if(!$('#add_sale').is(":checked")){
+					            		sale = "N";
+					            	}
+					            		var dnc = "Y";
+					            	if(!$('#add_dnc').is(":checked")){
+					            		dnc = "N";
+					            	}
+					            		var scheduled_callback = "Y";
+					            	if(!$('#add_scheduled_callback').is(":checked")){
+					            		scheduled_callback = "N";
+					            	}
+					            		var customer_contact = "Y";
+					            	if(!$('#add_customer_contact').is(":checked")){
+					            		customer_contact = "N";
+					            	}
+					            		var not_interested = "Y";
+					            	if(!$('#add_not_interested').is(":checked")){
+					            		not_interested = "N";
+					            	}
+					            		var unworkable = "Y";
+					            	if(!$('#add_unworkable').is(":checked")){
+					            		unworkable = "N";
+					            	}
+					                $.ajax({
+					                    url: "./php/AddDisposition.php",
+					                    type: 'POST',
+					                    data: {
+					                    	campaign : $(this).attr('data-id'),
+					                    	status : $('#add_status').val(),
+								    		status_name : $('#add_status_name').val(),
+								   			selectable : selectable,
+								    		human_answered : human_answered,
+								    		sale : sale,
+								    		dnc : dnc,
+								    		scheduled_callback : scheduled_callback,
+								    		customer_contact : customer_contact,
+								    		not_interested : not_interested,
+								    		unworkable : unworkable,
+					                    },
+					                    success: function(data) {
+					                      // console.log(data);
+					                          if(data == 1){
+					                                swal("Success!", "New Status Successfully Added!", "success");
+					                                $('#add_button').html("<i class='fa fa-plus'></i> New Status");
+													$('#add_new_status').attr("disabled", false);
+					                                window.setTimeout(function(){location.reload()},1000)
+					                          }
+					                          else{
+					                              sweetAlert("Oops...", "Something went wrong! " + data, "error");
+					                              $("#disposition_result").html(data); 
+					                          	  $('#add_button').html("<i class='fa fa-plus'></i> New Status");
+												  $('#add_new_status').attr("disabled", false);
+					                          }
+					                    }
+					                });
+					            	
+					            }else{
+					                sweetAlert("Oops...", "Something went wrong!", "error");
+					                $('#add_button').html("<i class='fa fa-plus'></i> New Status");
+									$('#add_new_status').attr("disabled", false);
+					                validate = 0;
+					            }
+				        });
+				
+					// GET DETAILS FOR EDIT DISPOSITION
+						$(document).on('click','.edit_disposition',function() {
+							var id = $(this).attr('data-id');
+							var status = $(this).attr('data-status');
+
+							$.ajax({
+							  url: "./php/ViewDisposition.php",
+							  type: 'POST',
+							  data: { 
+							  	campaign_id : id,
+							  	status : status
+							  },
+							  dataType: 'json',
+							  success: function(data) {
+							  	console.log(data);
+							  	
+							  	$('#status_id_edit').text(data.status);
+							  	$('#campaign_id_edit').text(data.campaign_id);
+							  	$('#edit_campaign').val(data.campaign_id);
+
+							  	$('#edit_campaign_id').val(data.campaign_id);
+							  	$('#edit_status').val(data.status);
+							  	$('#edit_status_name').val(data.status_name);
+
+							  	$('#edit_selectable').val(data.selectable);
+							  	$('#edit_human_answered').val(data.human_answered);
+							  	$('#edit_sale').val(data.sale);
+							  	$('#edit_dnc').val(data.dnc);
+							  	$('#edit_scheduled_callback').val(data.scheduled_callback);
+							  	$('#edit_customer_contact').val(data.customer_contact);
+							  	$('#edit_not_interested').val(data.not_interested);
+							  	$('#edit_unworkable').val(data.unworkable);
+
+							  	if(data.selectable == "Y"){
+							  		$('#edit_selectable').iCheck('check'); 
+							  	}else{
+							  		$('#edit_selectable').iCheck('uncheck'); 
+							  	}
+							  	if(data.human_answered == "Y"){
+							  		$('#edit_human_answered').iCheck('check'); 
+							  	}else{
+							  		$('#edit_human_answered').iCheck('uncheck'); 
+							  	}
+							  	if(data.sale == "Y"){
+							  		$('#edit_sale').iCheck('check'); 
+							  	}else{
+							  		$('#edit_sale').iCheck('uncheck'); 
+							  	}
+							  	if(data.dnc == "Y"){
+							  		$('#edit_dnc').iCheck('check'); 
+							  	}else{
+							  		$('#edit_dnc').iCheck('uncheck'); 
+							  	}
+							  	if(data.scheduled_callback == "Y"){
+							  		$('#edit_scheduled_callback').iCheck('check'); 
+							  	}else{
+							  		$('#edit_scheduled_callback').iCheck('uncheck'); 
+							  	}
+							  	if(data.customer_contact == "Y"){
+							  		$('#edit_customer_contact').iCheck('check'); 
+							  	}else{
+							  		$('#edit_customer_contact').iCheck('uncheck'); 
+							  	}
+							  	if(data.not_interested == "Y"){
+							  		$('#edit_not_interested').iCheck('check'); 
+							  	}else{
+							  		$('#edit_not_interested').iCheck('uncheck'); 
+							  	}
+							  	if(data.unworkable == "Y"){
+							  		$('#edit_unworkable').iCheck('check'); 
+							  	}else{
+							  		$('#edit_unworkable').iCheck('uncheck'); 
+							  	}
+							  }
+							});
+						});
+
+					//edit disposition
+						$(document).on('click','#modify_disposition',function() {
+							$('#update_button').html("<i class='fa fa-edit'></i> Updating...");
+							$('#modify_disposition').attr("disabled", true);
+
+								var selectable = "Y";
+				            	if(!$('#edit_selectable').is(":checked")){
+				            		selectable = "N"
+				            	}
+				            		var human_answered = "Y";
+				            	if(!$('#edit_human_answered').is(":checked")){
+				            		human_answered = "N";
+				            	}
+				            		var sale = "Y";
+				            	if(!$('#edit_sale').is(":checked")){
+				            		sale = "N";
+				            	}
+				            		var dnc = "Y";
+				            	if(!$('#edit_dnc').is(":checked")){
+				            		dnc = "N";
+				            	}
+				            		var scheduled_callback = "Y";
+				            	if(!$('#edit_scheduled_callback').is(":checked")){
+				            		scheduled_callback = "N";
+				            	}
+				            		var customer_contact = "Y";
+				            	if(!$('#edit_customer_contact').is(":checked")){
+				            		customer_contact = "N";
+				            	}
+				            		var not_interested = "Y";
+				            	if(!$('#edit_not_interested').is(":checked")){
+				            		not_interested = "N";
+				            	}
+				            		var unworkable = "Y"
+				            	if(!$('#edit_unworkable').is(":checked")){
+				            		unworkable = "N";
+				            	}
+
+			                	$.ajax({
+				                    url: "./php/ModifyTelephonyCampaign.php",
+				                    type: 'POST',
+				                    data: { 
+				                    	disposition : $('#edit_campaign').val(),
+				                        status : $('#edit_status').val(),
+							    		status_name : $('#edit_status_name').val(),
+							   			selectable : selectable,
+							    		human_answered : human_answered,
+							    		sale : sale,
+							    		dnc : dnc,
+							    		scheduled_callback : scheduled_callback,
+							    		customer_contact : customer_contact,
+							    		not_interested : not_interested,
+							    		unworkable : unworkable,
+				                    },
+				                    success: function(data) {
+				                    console.log(data);
+				                        if(data == 1){
+			                                swal("Success!", "Disposition Successfully Updated!", "success")
+			                                $('#update_button').html("<i class='fa fa-check'></i> Update");
+											$('#modify_disposition').attr("disabled", false);
+			                                window.setTimeout(function(){location.reload()},2000)
+				                        }else{
+				                            $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+				                            $("#disposition_result").html(data);
+				                            $('#update_button').html("<i class='fa fa-check'></i> Update");
+											$('#modify_disposition').attr("disabled", false);
+				                        }
+			                    }
+			                });			
+						});
+				
+				/*************
+				** Lead Filter Events
+				*************/
+					//LEADFILTER
+						$("#modifyleadfilter").validate({
+		                	submitHandler: function() {
+								//submit the form
+									$("#resultmessage").html();
+									$("#resultmessage").fadeOut();
+									$.post("./php/ModifyTelephonyCampaign.php", //post
+									$("#modifyleadfilter").serialize(), 
+										function(data){
+											//if message is sent
+											if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
+												swal("Success!", "Lead Filter Successfully Updated!", "success");			
+											} else {
+												sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+											}
+											//
+										});
+								return false; //don't let the form refresh the page...
+							}					
+						});
+				
+				/***********
+				** Form Filters
+				***********/
+					/*** CAMPAIGNS ***/
+
+						// disable special characters on Campaign Name
+							$('#campaign_name').bind('keypress', function (event) {
+							    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+							    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+							    if (!regex.test(key)) {
+							       event.preventDefault();
+							       return false;
+							    }
+							});
+						// disable special characters on Campaign Desc
+							$('#campaign_desc').bind('keypress', function (event) {
+							    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+							    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+							    if (!regex.test(key)) {
+							       event.preventDefault();
+							       return false;
+							    }
+							});
+					/*** end campaign ***/
+
+					/*** DISPOSITION ***/
+
+						// check duplicates
+							$("#add_status").keyup(function() {
+								clearTimeout($.data(this, 'timer'));
+								var wait = setTimeout(duplicate_status_check($("#add_status").val(), "add"), 500);
+								$(this).data('timer', wait);
+							});
+						// check duplicates
+							$("#edit_status").keyup(function() {
+								clearTimeout($.data(this, 'timer'));
+								var wait = setTimeout(duplicate_status_check($("#edit_status").val(), "edit"), 500);
+								$(this).data('timer', wait);
+							});
+						// disable special characters on User ID
+							$('#add_status').bind('keypress', function (event) {
+							    var regex = new RegExp("^[a-zA-Z0-9]+$");
+							    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+							    if (!regex.test(key)) {
+							       event.preventDefault();
+							       return false;
+							    }
+							});
+							$('#add_status_name').bind('keypress', function (event) {
+							    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+							    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+							    if (!regex.test(key)) {
+							       event.preventDefault();
+							       return false;
+							    }
+							});
+							$('#edit_status').bind('keypress', function (event) {
+							    var regex = new RegExp("^[a-zA-Z0-9]+$");
+							    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+							    if (!regex.test(key)) {
+							       event.preventDefault();
+							       return false;
+							    }
+							});
+							$('#edit_status_name').bind('keypress', function (event) {
+							    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+							    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+							    if (!regex.test(key)) {
+							       event.preventDefault();
+							       return false;
+							    }
+							});
+					/*** end of disposition filters ***/
+
+				
+			});// end of document ready
+
 			function empty_statuses(){
 			 	console.log();
 			 	swal({   title: "Oops...",   text: "This campaign has no existing disposition. You are going to be redirected after a few seconds!",   timer: 4000,   showConfirmButton: false });
@@ -1459,338 +1873,45 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 				}
 			}
 
-			$(document).ready(function() {
-				$('#modifyCampaignButton').click(function(){
-					$('#campaign_form_edit').submit();
-				});
+			function duplicate_status_check(status_id, addoredit){ 
+				console.log(status_id);
+				var status_form_value = status_id;
+				var campaign_form_value = "<?php if(isset($did)){echo $did;}else{echo "";}?>";
+		        if(status_form_value != ""){
+				    $.ajax({
+					    url: "php/checkCampaign.php",
+					    type: 'POST',
+					    data: {
+					    	status : status_form_value,
+					    	campaign_id : campaign_form_value
+					    },
+						success: function(data) {
+							if(data == "success"){
 
-				$('.am_message_chooser').hide();
-				$('.show_am_message_chooser').on('click', function(event) {        
-			        $('.am_message_chooser').toggle('show');
-			    });
+									if(addoredit == "add")
+										$("#add_new_status").attr("disabled", false);
+									
+									if(addoredit == "edit")
+										$("#modify_disposition").attr("disabled", false);
 
-				var dial_method = $('#dial_method').val();
-				dialMethod(dial_method);
+								$( "#status" ).removeClass("error");
+								$( "#status-duplicate-error" ).text( "Status is available." ).removeClass("error").addClass("avail");
 
-				$('#dial_method').change(function(){
-					dialMethod($(this).val());
-				});
+							}else{
 
-				var dial_prefix = $('#dial_prefix').val();
-				dialPrefix(dial_prefix);
+									if(addoredit == "add")
+										$("#add_new_status").attr("disabled", true);
+									if(addoredit == "edit")
+										$("#modify_disposition").attr("disabled", true);
 
-				$('#dial_prefix').change(function(){
-					dialPrefix($(this).val());
-				});
-
-				//Flat red color scheme for iCheck
-			    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-			      checkboxClass: 'icheckbox_flat-green',
-			      radioClass: 'iradio_flat-green'
-			    });
-
-			    var campaign_type = $('#campaignType').find("option:selected").val();
-			    setElements(campaign_type);
-
-			    $('#campaignType').change(function(){
-					var selectedTypeText = $(this).find("option:selected").text();
-					var selectedTypeVal = $(this).find("option:selected").val();
-					
-
-					setElements(selectedTypeVal);
-				});
-
-			   //Add Status
-		        $('#add_new_status').click(function(){
-
-		        $('#add_button').html("<i class='fa fa-check'></i> Saving, Please Wait.....");
-				$('#add_new_status').attr("disabled", true);
-
-		        var validate = 0;
-		        var status = $("#add_status").val();
-		        var status_name = $("#add_status_name").val();
-		        
-		        if(status == ""){
-		            validate = 1;
-		        }
-
-		        if(status_name == ""){
-		            validate = 1;
-		        }
-		       
-		            if(validate == 0){
-		            		var selectable = "Y";
-		            	if(!$('#add_selectable').is(":checked")){
-		            		selectable = "N";
-		            	}
-		            		var human_answered = "Y";
-		            	if(!$('#add_human_answered').is(":checked")){
-		            		human_answered = "N";
-		            	}
-		            		var sale = "Y";
-		            	if(!$('#add_sale').is(":checked")){
-		            		sale = "N";
-		            	}
-		            		var dnc = "Y";
-		            	if(!$('#add_dnc').is(":checked")){
-		            		dnc = "N";
-		            	}
-		            		var scheduled_callback = "Y";
-		            	if(!$('#add_scheduled_callback').is(":checked")){
-		            		scheduled_callback = "N";
-		            	}
-		            		var customer_contact = "Y";
-		            	if(!$('#add_customer_contact').is(":checked")){
-		            		customer_contact = "N";
-		            	}
-		            		var not_interested = "Y";
-		            	if(!$('#add_not_interested').is(":checked")){
-		            		not_interested = "N";
-		            	}
-		            		var unworkable = "Y";
-		            	if(!$('#add_unworkable').is(":checked")){
-		            		unworkable = "N";
-		            	}
-		                $.ajax({
-		                    url: "./php/AddDisposition.php",
-		                    type: 'POST',
-		                    data: {
-		                    	campaign : $(this).attr('data-id'),
-		                    	status : $('#add_status').val(),
-					    		status_name : $('#add_status_name').val(),
-					   			selectable : selectable,
-					    		human_answered : human_answered,
-					    		sale : sale,
-					    		dnc : dnc,
-					    		scheduled_callback : scheduled_callback,
-					    		customer_contact : customer_contact,
-					    		not_interested : not_interested,
-					    		unworkable : unworkable,
-		                    },
-		                    success: function(data) {
-		                      // console.log(data);
-		                          if(data == 1){
-		                                swal("Success!", "New Status Successfully Added!", "success");
-		                                $('#add_button').html("<i class='fa fa-plus'></i> New Status");
-										$('#add_new_status').attr("disabled", false);
-		                                window.setTimeout(function(){location.reload()},1000)
-		                          }
-		                          else{
-		                              sweetAlert("Oops...", "Something went wrong! " + data, "error");
-		                              $("#disposition_result").html(data); 
-		                          	  $('#add_button').html("<i class='fa fa-plus'></i> New Status");
-									  $('#add_new_status').attr("disabled", false);
-		                          }
-		                    }
-		                });
-		            	
-		            }else{
-		                sweetAlert("Oops...", "Something went wrong!", "error");
-		                $('#add_button').html("<i class='fa fa-plus'></i> New Status");
-						$('#add_new_status').attr("disabled", false);
-		                validate = 0;
-		            }
-		        });
-				
-
-				// GET DETAILS FOR EDIT DISPOSITION
-				$(document).on('click','.edit_disposition',function() {
-					var id = $(this).attr('data-id');
-					var status = $(this).attr('data-status');
-
-					$.ajax({
-					  url: "./php/ViewDisposition.php",
-					  type: 'POST',
-					  data: { 
-					  	campaign_id : id,
-					  	status : status
-					  },
-					  dataType: 'json',
-					  success: function(data) {
-					  	console.log(data);
-					  	
-					  	$('#status_id_edit').text(data.status);
-					  	$('#campaign_id_edit').text(data.campaign_id);
-					  	$('#edit_campaign').val(data.campaign_id);
-
-					  	$('#edit_campaign_id').val(data.campaign_id);
-					  	$('#edit_status').val(data.status);
-					  	$('#edit_status_name').val(data.status_name);
-
-					  	$('#edit_selectable').val(data.selectable);
-					  	$('#edit_human_answered').val(data.human_answered);
-					  	$('#edit_sale').val(data.sale);
-					  	$('#edit_dnc').val(data.dnc);
-					  	$('#edit_scheduled_callback').val(data.scheduled_callback);
-					  	$('#edit_customer_contact').val(data.customer_contact);
-					  	$('#edit_not_interested').val(data.not_interested);
-					  	$('#edit_unworkable').val(data.unworkable);
-
-					  	if(data.selectable == "Y"){
-					  		$('#edit_selectable').iCheck('check'); 
-					  	}else{
-					  		$('#edit_selectable').iCheck('uncheck'); 
-					  	}
-					  	if(data.human_answered == "Y"){
-					  		$('#edit_human_answered').iCheck('check'); 
-					  	}else{
-					  		$('#edit_human_answered').iCheck('uncheck'); 
-					  	}
-					  	if(data.sale == "Y"){
-					  		$('#edit_sale').iCheck('check'); 
-					  	}else{
-					  		$('#edit_sale').iCheck('uncheck'); 
-					  	}
-					  	if(data.dnc == "Y"){
-					  		$('#edit_dnc').iCheck('check'); 
-					  	}else{
-					  		$('#edit_dnc').iCheck('uncheck'); 
-					  	}
-					  	if(data.scheduled_callback == "Y"){
-					  		$('#edit_scheduled_callback').iCheck('check'); 
-					  	}else{
-					  		$('#edit_scheduled_callback').iCheck('uncheck'); 
-					  	}
-					  	if(data.customer_contact == "Y"){
-					  		$('#edit_customer_contact').iCheck('check'); 
-					  	}else{
-					  		$('#edit_customer_contact').iCheck('uncheck'); 
-					  	}
-					  	if(data.not_interested == "Y"){
-					  		$('#edit_not_interested').iCheck('check'); 
-					  	}else{
-					  		$('#edit_not_interested').iCheck('uncheck'); 
-					  	}
-					  	if(data.unworkable == "Y"){
-					  		$('#edit_unworkable').iCheck('check'); 
-					  	}else{
-					  		$('#edit_unworkable').iCheck('uncheck'); 
-					  	}
-					  }
+								$( "#status" ).addClass( "error" );
+								$( "#status-duplicate-error" ).text( data ).removeClass("avail").addClass("error");
+								
+							}
+						}
 					});
-				});
-
-				/* 
-				 * Modifies 
-			 	 */
-				//CAMPAIGN
-				$("#modifycampaign").validate({
-                	submitHandler: function() {
-						//submit the form
-							$("#resultmessage").html();
-							$("#resultmessage").fadeOut();
-							$.post("./php/ModifyTelephonyCampaign.php", //post
-							$("#modifycampaign").serialize(), 
-								function(data){
-									//if message is sent
-									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-										swal("Success!", "Campaign Successfully Updated!", "success");
-									} else {
-										sweetAlert("Oops...", "Something went wrong! " + data, "error");
-									}
-									//
-								});
-						return false; //don't let the form refresh the page...
-					}					
-				});
-				
-				//disposition
-				$(document).on('click','#modify_disposition',function() {
-
-				$('#update_button').html("<i class='fa fa-edit'></i> Updating...");
-				$('#modify_disposition').attr("disabled", true);
-
-					var selectable = "Y";
-	            	if(!$('#edit_selectable').is(":checked")){
-	            		selectable = "N"
-	            	}
-	            		var human_answered = "Y";
-	            	if(!$('#edit_human_answered').is(":checked")){
-	            		human_answered = "N";
-	            	}
-	            		var sale = "Y";
-	            	if(!$('#edit_sale').is(":checked")){
-	            		sale = "N";
-	            	}
-	            		var dnc = "Y";
-	            	if(!$('#edit_dnc').is(":checked")){
-	            		dnc = "N";
-	            	}
-	            		var scheduled_callback = "Y";
-	            	if(!$('#edit_scheduled_callback').is(":checked")){
-	            		scheduled_callback = "N";
-	            	}
-	            		var customer_contact = "Y";
-	            	if(!$('#edit_customer_contact').is(":checked")){
-	            		customer_contact = "N";
-	            	}
-	            		var not_interested = "Y";
-	            	if(!$('#edit_not_interested').is(":checked")){
-	            		not_interested = "N";
-	            	}
-	            		var unworkable = "Y"
-	            	if(!$('#edit_unworkable').is(":checked")){
-	            		unworkable = "N";
-	            	}
-
-                	$.ajax({
-	                    url: "./php/ModifyTelephonyCampaign.php",
-	                    type: 'POST',
-	                    data: { 
-	                    	disposition : $('#edit_campaign').val(),
-	                        status : $('#edit_status').val(),
-				    		status_name : $('#edit_status_name').val(),
-				   			selectable : selectable,
-				    		human_answered : human_answered,
-				    		sale : sale,
-				    		dnc : dnc,
-				    		scheduled_callback : scheduled_callback,
-				    		customer_contact : customer_contact,
-				    		not_interested : not_interested,
-				    		unworkable : unworkable,
-	                    },
-	                    success: function(data) {
-	                    console.log(data);
-	                        if(data == 1){
-                                swal("Success!", "Disposition Successfully Updated!", "success")
-                                $('#update_button').html("<i class='fa fa-check'></i> Update");
-								$('#modify_disposition').attr("disabled", false);
-                                window.setTimeout(function(){location.reload()},2000)
-	                        }else{
-	                            $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-	                            $("#disposition_result").html(data);
-	                            $('#update_button').html("<i class='fa fa-check'></i> Update");
-								$('#modify_disposition').attr("disabled", false);
-	                        }
-                    }
-                });			
-				});
-
-				//LEADFILTER
-				$("#modifyleadfilter").validate({
-                	submitHandler: function() {
-						//submit the form
-							$("#resultmessage").html();
-							$("#resultmessage").fadeOut();
-							$.post("./php/ModifyTelephonyCampaign.php", //post
-							$("#modifyleadfilter").serialize(), 
-								function(data){
-									//if message is sent
-									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-										swal("Success!", "Lead Filter Successfully Updated!", "success");			
-									} else {
-										sweetAlert("Oops...", "Something went wrong! "+ data, "error");
-									}
-									//
-								});
-						return false; //don't let the form refresh the page...
-					}					
-				});
-				
-				$(document).on('click', '#cancel', function(){
-					swal("Cancelled", "No action has been done :)", "error");
-				});
-			});
+				}
+			}
 		</script>
 
 		<?php print $ui->creamyFooter(); ?>
