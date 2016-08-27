@@ -75,8 +75,7 @@
                                 "bInfo" : false,
                                 "destroy":true
                                 
-                });
-                goAvatar._init(goOptions);
+                });                
         } 
     });
     }    
@@ -161,17 +160,17 @@
                                 drawCallback: function(settings) {
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                                     pagination.toggle(this.api().page.info().pages > 1);
-                                },                                 
-                                "oLanguage": {
-                                        "sLengthMenu": "",
-                                        "sEmptyTable": "No Calls Available",
-                                        "oPaginate": {
-                                            "sPrevious": "Prev",
-                                            "sNext": "Next"
-                                        }
-                                },
-                                "bFilter": false,
-                                "bInfo": false                                                               
+                                }                                
+//                                "oLanguage": {
+//                                        "sLengthMenu": "",
+//                                        "sEmptyTable": "No Calls Available",
+//                                        "oPaginate": {
+//                                            "sPrevious": "Prev",
+//                                            "sNext": "Next"
+//                                        }
+//                                },
+//                                "bFilter": false
+//                                "bInfo": false                                                               
 //                                "columnDefs": [
 //                                    {
 //                                        "targets": [ 6 ],

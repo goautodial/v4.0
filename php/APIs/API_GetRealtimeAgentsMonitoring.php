@@ -69,18 +69,18 @@
     $CM = "";
     $textclass = "text-info";
     
-    //$sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='40'></avatar></div>";
-    $sessionAvatar = "<div class='media'><avatar username='$agentname' :size='36'></avatar></div>";
+    $sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='36'></avatar></div>";
+    //$sessionAvatar = "<div class='media'><avatar username='$agentname' :size='36'></avatar></div>";
     
     if ($status == "INCALL"){
         $last_call_time = $last_state_change;
         $textclass = "text-success";
         
-            if ($call_time_M_int >= 3) {
+            if ($call_time_M_int >= 3){
                 $textclass = "text-warning";
             }        
         
-            if (!is_null($parked_channel)){
+            if ($parked_channel != NULL){
                 $status = "PARK";
             }
             if ($call_type == "AUTO"){
@@ -111,11 +111,11 @@
         $call_time_S = ($STARTtime - $last_state_change);
         $textclass = "text-info";
                     
-            if ($call_time_M_int >= 3) {
+            if ($call_time_M_int >= 3){
                 $textclass = "text-warning";
             }
             
-            if ($call_time_M_int >= 5) {
+            if ($call_time_M_int >= 5){
                 $textclass = "text-danger";
             }
         
@@ -145,51 +145,50 @@
     $G = "";
     $EG = "";
     
-    if ($status=="PAUSED") {
+    if ($status=="PAUSED"){
         $circleclass = "circle circle-warning circle-lg text-left";
         $textclass = "text-warning";
         
-            if ($call_time_S >= 10) {
+            if ($call_time_S >= 10){
                 $textclass = "text-warning";
             }
-            if ($call_time_M_int >= 1) {
+            if ($call_time_M_int >= 1){
                 $textclass = "text-warning";
             }
-            if ($call_time_M_int >= 5) {
+            if ($call_time_M_int >= 5){
                 $textclass = "text-danger";
             }
-            if ($call_time_M_int >= 15) {
+            if ($call_time_M_int >= 15){
                 $textclass = "text";
             }            
         }
     
-    if ($status=="READY") {                
+    if ($status == "READY"){                
             $textclass = "text-info";
             
-            if ($call_time_M_int >= 3) {
+            if ($call_time_M_int >= 3){
                 $textclass = "text-warning";
             }            
-            if ($call_time_M_int >= 5) {
+            if ($call_time_M_int >= 5){
                 $textclass = "text-danger";
             }            
         }  
         
-    if ($status=="DISPO") {                
+    if ($status == "DISPO"){                
             $textclass = "text-warning";
             
-            if ($call_time_M_int >= 3) {
+            if ($call_time_M_int >= 3){
                 $textclass = "text-danger";
             }            
-            if ($call_time_M_int >= 5) {
+            if ($call_time_M_int >= 5){
                 $textclass = "text";
             }            
         }         
     
-    if ( preg_match("DEAD",$status) ) {
+    if ($status == "DEAD"){
         $textclass = "text-danger";
-        }
-    
-    
+    }
+        
     $barracks .='[';       
     //$barracks .= '"<img src=\"'.$sessionAvatar.'\" class=\"img-circle thumb48\"> <b class=\"text-blue\">'.$agentname.'</b>",';
     $barracks .= '"'.$sessionAvatar.'",';
@@ -208,5 +207,4 @@
     
     echo json_encode($barracks);
     
-    //echo $barracks;
 ?>

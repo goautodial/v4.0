@@ -57,7 +57,7 @@
         $STARTtime = date("U");
         $textclass = "text-info";
         
-        $sessionAvatar = "<div class='media'><avatar username='$campname' :size=36'></avatar></div>";
+        $sessionAvatar = "<div class='media'><avatar username='$campname' :size='36'></avatar></div>";
 
         //$call_time_S = ($STARTtime - $last_call_time);         
         $call_time_S = ($STARTtime - $call_time);
@@ -88,10 +88,10 @@
         $barracks .= '"'.$sessionAvatar.'",';
         $barracks .= '"<b class=\"text-blue\">'.$status.'</b>",'; 
         $barracks .= '"'.$cust_phone.'",';    
-        $barracks .= '"<b class=\"'.$textclass.'\">'.$calltype.'</b>",';       
-        $barracks .= '"'.$call_time_MS.'",';    
-        $barracks .= '"'.$campname.'",';   
-        $barracks .= '"'.$user_group.'"';     
+        $barracks .= '"<b class=\"'.$textclass.'\">'.$calltype.'</b>",';                   
+        $barracks .= '"'.$campname.'",';
+        $barracks .= '"'.$call_time_MS.'"';
+        //$barracks .= '"'.$user_group.'"';     
         $barracks .='],';
  
     }
