@@ -342,7 +342,7 @@ error_reporting(E_ALL);*/
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title animate-header">
+		        <h4 class="modal-title animated bounceInRight">
 		        	<i class="fa fa-info-circle" title="A step by step wizard that allows you to create campaigns."></i> 
 		        	<b>Campaign Wizard » <span class="wizard-type">Outbound</span></b>
 		       	</h4>
@@ -652,7 +652,7 @@ error_reporting(E_ALL);*/
 	            <!-- Header -->
 	                <div class="modal-header">
 	                    <button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
-	                    <h4 class="modal-title animate-header" id="ingroup_modal"><b>Status Wizard » Create New Status</b></h4>
+	                    <h4 class="modal-title animated bounceInRight" id="ingroup_modal"><b>Status Wizard » Create New Status</b></h4>
 	                </div>
 	                <div class="modal-body" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;padding-top:0px;">
 	                
@@ -931,8 +931,16 @@ error_reporting(E_ALL);*/
 					                        success: function(data) {
 					                        console.log(data);
 					                            if(data == 1){
-					                                swal("Success!", "Campaign Successfully Deleted!", "success");
-					                                window.setTimeout(function(){location.reload()},1000);
+					                            	swal(
+														{
+															title: "Success",
+															text: "Campaign Successfully Deleted!",
+															type: "success"
+														},
+														function(){
+															window.location.href = 'telephonycampaigns.php';
+														}
+													);
 					                            }else{
 					                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
 					                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
