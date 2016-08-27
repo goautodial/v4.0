@@ -563,7 +563,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			<!-- Realtime Agent Monitoring -->
 			
                     <div class="modal fade" id="realtime_agents_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-lg modal-dialog">
+                        <div class="modal-lg modal-dialog" style="min-width: 75%">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -597,7 +597,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			<!-- Realtime Calls Monitoring -->
 
                     <div class="modal fade" id="realtime_calls_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-lg modal-dialog">
+                        <div class="modal-lg modal-dialog" style="min-width: 75%">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -611,10 +611,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                     <th style="color: white;">Pic</th>
                                                     <th>Status</th>                                                    
                                                     <th>Phone Number </th>
-                                                    <th>Call Type</th>
+                                                    <th>Call Type</th>                                                    
+                                                    <th>Campaign</th>
                                                     <th>MM:SS</th>
-                                                    <th>Campaign/Ingroup</th>                                                    
-                                                    <th>User Group</th>                                                    
+                                                    <!-- <th>User Group</th> -->
                                             </thead>
                                             <tbody>
                                             
@@ -631,7 +631,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			<!-- Campaigns Monitoring -->
 
                     <div class="modal fade" id="campaigns_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-lg modal-dialog">
+                        <div class="modal-lg modal-dialog" style="min-width: 75%">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -1090,7 +1090,7 @@ function goGetModalUsernameValue(){
                                         
                                         var avatar = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" :size="160"></avatar>';
                                         $('#modal-avatar').html(avatar);
-
+                                        goAvatar._init(goOptions);
                                 }
                         });                        
                        // load_view_agent_information(userid);
