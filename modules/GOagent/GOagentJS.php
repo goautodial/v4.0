@@ -1147,6 +1147,10 @@ $(document).ready(function() {
                             if (patt.test(cKey)) {
                                 $.globalEval("campaign_"+cKey+" = '"+cValue+"';");
                             } else {
+                                if (cValue === undefined || cValue === null) {
+                                    cValue = "";
+                                }
+                                
                                 if (cKey == 'campaign_id') {
                                     $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN', 'campaign_id': cValue});
                                 }
