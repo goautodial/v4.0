@@ -216,7 +216,7 @@ if (isset($_GET["message"])) {
 					unsavedclass: null
 				});
 				
-				$("#callback-list").DataTable({"bDestroy": true, "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5 ] }, { "bSearchable": false, "aTargets": [ 2, 5 ] }] });
+				//$("#callback-list").DataTable({"bDestroy": true, "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5 ] }, { "bSearchable": false, "aTargets": [ 2, 5 ] }] });
 			});
 			
 			//turn to inline mode
@@ -254,7 +254,7 @@ if (isset($_GET["message"])) {
 			}
 			.textarea{
 				border: none;
-				border-bottom: .5px solid #656565;
+				border-bottom: .5px solid #dde6e9;
 				width: 100%;
 				-webkit-box-sizing: border-box;
 				   -moz-box-sizing: border-box;
@@ -451,7 +451,7 @@ if (isset($_GET["message"])) {
 									
 										<div id="profile" role="tabpanel" class="tab-pane active">
 
-											<fieldset>
+											<fieldset style="padding-bottom: 0px; margin-bottom: 0px;">
 												<h4>
 													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
 												</h4>
@@ -628,7 +628,7 @@ if (isset($_GET["message"])) {
 														</div>
 													</div><!-- /.gender & title -->                   
 												</form>
-							                <br/>
+											
 							                <!-- NOTIFICATIONS -->
 											<div id="notifications_list">
 												<div class="output-message-success" style="display:none;">
@@ -670,8 +670,6 @@ if (isset($_GET["message"])) {
 															<textarea rows="5" id="comments" name="comments" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
 															<label for="comments">Comments</label>
 														</div>
-														<div style="clear:both;"></div>
-														<br>
 													</form>
 												</div>
 											</div>
@@ -784,10 +782,10 @@ if (isset($_GET["message"])) {
 											<th class="hidden-xs">
 												Callback Time
 											</th>
-											<th class="hidden-xs">
+											<th class="hidden-xs hidden-sm">
 												Campaign
 											</th>
-											<th class="hidden-xs hidden-md">
+											<th class="hidden-xs visible-lg">
 												Comments
 											</th>
 											<th>
