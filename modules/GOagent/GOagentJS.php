@@ -2600,8 +2600,8 @@ function CheckForIncoming () {
             $(".formMain input[name='state']").val(this_VDIC_data.state).trigger('change');
             $(".formMain input[name='province']").val(this_VDIC_data.province).trigger('change');
             $(".formMain input[name='postal_code']").val(this_VDIC_data.postal_code).trigger('change');
-            $(".formMain input[name='country_code']").val(this_VDIC_data.country_code).trigger('change');
-            $(".formMain input[name='gender']").val(this_VDIC_data.gender).trigger('change');
+            $(".formMain select[name='country_code']").val(this_VDIC_data.country_code).trigger('change');
+            $(".formMain select[name='gender']").val(this_VDIC_data.gender).trigger('change');
             var dateOfBirth = this_VDIC_data.date_of_birth;
             $(".formMain input[name='date_of_birth']").val(dateOfBirth);
             $(".formMain input[name='alt_phone']").val(this_VDIC_data.alt_phone).trigger('change');
@@ -3255,7 +3255,7 @@ function UpdateFieldsData() {
                 {$(".formMain input[name='postal_code']").val(UDfieldsData.postal_code);}
             var regUDcountry_code = new RegExp("country_code,","ig");
             if (fields_list.match(regUDcountry_code))
-                {$(".formMain input[name='country_code']").val(UDfieldsData.country_code);}
+                {$(".formMain select[name='country_code']").val(UDfieldsData.country_code);}
             var regUDgender = new RegExp("gender,","ig");
             if (fields_list.match(regUDgender)) {
                 $(".formMain select[name='gender']").val(UDfieldsData.gender);
@@ -4041,8 +4041,8 @@ function DispoSelectSubmit() {
             $(".formMain input[name='state']").val('').trigger('change');
             $(".formMain input[name='province']").val('').trigger('change');
             $(".formMain input[name='postal_code']").val('').trigger('change');
-            $(".formMain input[name='country_code']").val('').trigger('change');
-            $(".formMain input[name='gender']").val('').trigger('change');
+            $(".formMain select[name='country_code']").val('').trigger('change');
+            $(".formMain select[name='gender']").val('').trigger('change');
             $(".formMain input[name='date_of_birth']").val('');
             $(".formMain input[name='alt_phone']").val('').trigger('change');
             $(".formMain input[name='email']").val('').trigger('change');
@@ -4225,8 +4225,8 @@ function CustomerData_update() {
         goState: $(".formMain input[name='state']").val(),
         goProvince: $(".formMain input[name='province']").val(),
         goPostalCode: $(".formMain input[name='postal_code']").val(),
-        goCountryCode: $(".formMain input[name='country_code']").val(),
-        goGender: $(".formMain input[name='gender']").val(),
+        goCountryCode: $(".formMain select[name='country_code']").val(),
+        goGender: $(".formMain select[name='gender']").val(),
         goDateOfBirth: $(".formMain input[name='date_of_birth']").val(),
         goALTPhone: $(".formMain input[name='alt_phone']").val(),
         goEmail: $(".formMain input[name='email']").val(),
@@ -4801,8 +4801,8 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='state']").val(MDnextResponse_array[17]).trigger('change');
                     $(".formMain input[name='province']").val(MDnextResponse_array[18]).trigger('change');
                     $(".formMain input[name='postal_code']").val(MDnextResponse_array[19]).trigger('change');
-                    $(".formMain input[name='country_code']").val(MDnextResponse_array[20]).trigger('change');
-                    $(".formMain input[name='gender']").val(MDnextResponse_array[21]).trigger('change');
+                    $(".formMain select[name='country_code']").val(MDnextResponse_array[20]).trigger('change');
+                    $(".formMain select[name='gender']").val(MDnextResponse_array[21]).trigger('change');
                     var dateOfBirth = MDnextResponse_array[22];
                     $(".formMain input[name='date_of_birth']").val(dateOfBirth);
                     $(".formMain input[name='alt_phone']").val(MDnextResponse_array[23]).trigger('change');
@@ -5967,8 +5967,8 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 		"&state=" + $(".formMain input[name='state']").val() + 
 		"&province=" + $(".formMain input[name='province']").val() + 
 		"&postal_code=" + $(".formMain input[name='postal_code']").val() + 
-		"&country_code=" + $(".formMain input[name='country_code']").val() + 
-		"&gender=" + $(".formMain input[name='gender']").val() + 
+		"&country_code=" + $(".formMain select[name='country_code']").val() + 
+		"&gender=" + $(".formMain select[name='gender']").val() + 
 		"&date_of_birth=" + $(".formMain input[name='date_of_birth']").val() + 
 		"&alt_phone=" + $(".formMain input[name='alt_phone']").val() + 
 		"&email=" + $(".formMain input[name='email']").val() + 
@@ -6174,8 +6174,8 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 		var SCstate = $(".formMain input[name='state']").val();
 		var SCprovince = $(".formMain input[name='province']").val();
 		var SCpostal_code = $(".formMain input[name='postal_code']").val();
-		var SCcountry_code = $(".formMain input[name='country_code']").val();
-		var SCgender = $(".formMain input[name='gender']").val();
+		var SCcountry_code = $(".formMain select[name='country_code']").val();
+		var SCgender = $(".formMain select[name='gender']").val();
 		var SCdate_of_birth = $(".formMain input[name='date_of_birth']").val();
 		var SCalt_phone = $(".formMain input[name='alt_phone']").val();
 		var SCemail = $(".formMain input[name='email']").val();
