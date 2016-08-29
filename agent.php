@@ -159,7 +159,6 @@ if (isset($_GET["message"])) {
 
         <script type="text/javascript">
 			history.pushState('', document.title, window.location.pathname);
-			var CBtable;
 			
 			$(window).load(function() {
 				$(".preloader").fadeOut("slow", function() {
@@ -171,6 +170,10 @@ if (isset($_GET["message"])) {
 				$('#callback-list')
 					.removeClass( 'display' )
 					.addClass('table table-striped table-bordered');
+				
+				$.each(country_codes, function(key, value) {
+					$("#country_code").append('<option value="'+key+'">'+value+'</option>');
+				});
 			});
 			
 			$(function() {
@@ -570,9 +573,11 @@ if (isset($_GET["message"])) {
 													</div><!-- /.city,state,postalcode -->
 												
 													<div class="mda-form-group label-floating">
-														<input id="country" name="country" type="text" value="<?php echo $country;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="country">Country</label>
+														<select id="country_code" name="country_code" type="text" maxlength="3"
+															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
+															<option value=""></option>
+														</select>
+														<label for="country">Country Code</label>
 													</div>
 													<div class="mda-form-group label-floating"><!-- add "mda-input-group" if with image -->
 														<input id="email" name="email" type="text" width="auto" value="<?php echo $email;?>"
