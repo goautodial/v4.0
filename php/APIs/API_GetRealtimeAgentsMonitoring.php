@@ -193,15 +193,14 @@
     
     $barracks .='[';       
     //$barracks .= '"<img src=\"'.$sessionAvatar.'\" class=\"img-circle thumb48\"> <b class=\"text-blue\">'.$agentname.'</b>",';
-    $barracks .= '"'.$sessionAvatar.'",';
-    $barracks .= '"<b class='.$textclass.'>'.$agentname.'</b>",'; 
+    $barracks .= '"<b id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class='.$textclass.'>'.$sessionAvatar.'</b>",';
+    $barracks .= '"<b id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class='.$textclass.'>'.$agentname.'</b>",'; 
     $barracks .= '"'.$user_group.'",';    
     $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
     $barracks .= '"'.$cust_phone.'",';    
     $barracks .= '"<b class=\"'.$textclass.'\">'.$call_time_MS.'</b>",';    
     $barracks .= '"'.$campname.'"';    
     $barracks .='],';
- 
 }
 
     $barracks = rtrim($barracks, ",");    
