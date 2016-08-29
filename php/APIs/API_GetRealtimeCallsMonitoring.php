@@ -76,12 +76,9 @@
 
         if ($call_type == "IN"){
                 $calltype = "INBOUND";
-                $bgcolor="#F9F57A";
-                $color="black";
+
         }else{
                 $calltype = "OUTBOUND";
-                $bgcolor="#BAEE62";
-                $color="black";
         }    
             
         $barracks .='[';       

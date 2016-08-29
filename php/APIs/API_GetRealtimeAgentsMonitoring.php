@@ -194,7 +194,7 @@
     $barracks .='[';       
     //$barracks .= '"<img src=\"'.$sessionAvatar.'\" class=\"img-circle thumb48\"> <b class=\"text-blue\">'.$agentname.'</b>",';
     $barracks .= '"'.$sessionAvatar.'",';
-    $barracks .= '"<b class='.$nametextclass.'>'.$agentname.'</b>",'; 
+    $barracks .= '"<b class='.$textclass.'>'.$agentname.'</b>",'; 
     $barracks .= '"'.$user_group.'",';    
     $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
     $barracks .= '"'.$cust_phone.'",';    
