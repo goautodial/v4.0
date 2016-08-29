@@ -57,7 +57,7 @@
         $STARTtime = date("U");
         $textclass = "text-info";
         
-        $sessionAvatar = "<div class='media'><avatar username='$campname' :size='36'></avatar></div>";
+        $sessionAvatar = "<div class='media'><avatar username='$calltype' :size='36'></avatar></div>";
 
         //$call_time_S = ($STARTtime - $last_call_time);         
         $call_time_S = ($STARTtime - $call_time);

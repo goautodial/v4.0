@@ -54,6 +54,15 @@
         $disk_ary = explode('|', $diskusage);
         $disk_ary_ct = count($disk_ary);
 
+        if ($status == "Y"){
+            $status = "ACTIVE";
+            $statustextclass = "text-success";
+        }
+        
+        if ($status == "N"){
+            $status = "INACTIVE";
+            $statustextclass = "text-danger";
+        }
         $k = 0;
 
         while($k < $disk_ary_ct){
@@ -66,18 +75,30 @@
                 $k++;
         }
 
+        if ($load < 60){
+            $loadtextclass = "text-info";
+        }
+        
+        if ($load >= 60){
+            $loadtextclass = "text-warning";
+        }
+        
+        if ($load >= 80){
+            $loadtextclass = "text-danger";
+        }
+        
         $diskusage = $disk;
         
         if ($diskusage < 60){
-            $textclass = "text-success";
+            $disktextclass = "text-info";
         }
         
         if ($diskusage >= 60){
-            $textclass = "text-warning";
+            $disktextclass = "text-warning";
         }
         
         if ($diskusage >= 80){
-            $textclass = "text-danger";
+            $disktextclass = "text-danger";
         }
         
         $diskvalue01 = (100 - $diskusage);
@@ -89,10 +110,10 @@
         $cluster .= '"'.$sessionAvatar.'",';        
         $cluster .= '"'.$serverid.'",';   
         $cluster .= '"'.$serverip.'",';  
-        $cluster .= '"'.$status.'",';
-        $cluster .= '"'.$load.'%",';    
+        $cluster .= '"<b class=\"'.$statustextclass.'\">'.$status.'</b>",';
+        $cluster .= '"<b class=\"'.$loadtextclass.'\">'.$load.'%</b>",';    
         $cluster .= '"'.$channels.'",';
-        $cluster .= '"'.$diskusage.'%",';
+        $cluster .= '"<b class=\"'.$disktextclass.'\">'.$diskusage.'%</b>",';
         //$cluster .= '"<div data-label=\"'.$diskusage.'%\" class=\"radial-bar radial-bar-'.$diskusage.' radial-bar-xs\"></div>",';
         //$cluster .= '"'.$radial.'",';
         $cluster .= '"'.$stime.'"';

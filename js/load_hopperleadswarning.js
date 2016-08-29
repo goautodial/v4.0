@@ -108,7 +108,7 @@
                                 "columnDefs": [
                                     {
                                         className: "hidden-xs", 
-                                        "targets": [ 2, 3, 5 ] 
+                                        "targets": [ 1, 2, 3, 5 ] 
                                     }
                                 ]                                                                 
                 });
@@ -183,7 +183,7 @@
                                 "columnDefs": [
                                     {
                                         className: "hidden-xs", 
-                                        "targets": [ 1, 4 ] 
+                                        "targets": [ 1, 3, 4 ] 
                                     }
                                 ]                                 
 //                                "oLanguage": {
