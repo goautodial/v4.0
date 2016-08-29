@@ -4603,12 +4603,10 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
             } else {
                 auto_dial_level = starting_dial_level;
             }
-            //document.getElementById("DiaLControl").innerHTML = "<img src=\"./images/pause_OFF.png\" border=\"0\" alt=\" <?=$lang['pause']?> \" /><br /><img src=\"./images/resume_OFF.png\" border=\"0\" title=\"<?=$lang['resume']?>\" alt=\"<?=$lang['resume']?>\" /><small>&nbsp;</small><img src=\"./images/dialnext_OFF.png\" border=\"0\" title=\"<?=$lang['dial_next']?>\" alt=\"<?=$lang['dial_next']?>\" />";
             toggleButton('ResumePause', 'off');
             toggleButton('DialHangup', 'off');
         } else {
             if (active_ingroup_dial.length < 1) {
-                //document.getElementById("DiaLControl").innerHTML = "<img src=\"./images/dialnext_OFF.png\" border=\"0\" title=\"<?=$lang['dial_next']?>\" alt=\"<?=$lang['dial_next']?>\" />";
                 toggleButton('DialHangup', 'off');
                 toggleButton('ResumePause', 'hide');
             }
