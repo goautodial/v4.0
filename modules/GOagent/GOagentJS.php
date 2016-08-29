@@ -1463,10 +1463,7 @@ function hijackThisLink(e) {
         $("#cust_info").hide();
         $("#loaded-contents").show();
     } else {
-        history.pushState('', document.title, window.location.pathname);
-        
-        $("#cust_info").show();
-        $("#loaded-contents").hide();
+        MainPanelToFront();
     }
     
     if (origHash !== hash) {
@@ -3169,6 +3166,31 @@ function CallBacksCountCheck() {
 
 
 // ################################################################################
+// Open up a callback customer record as manual dial preview mode
+function NewCallbackCall(taskCBid, taskLEADid, taskCBalt) {
+    if (waiting_on_dispo > 0) {
+        swal({
+            title: "<?=$lh->translationFor('system_delay_try_again')?>",
+            text: "<?=$lh->translationFor('code')?>: " + agent_log_id + " - " + waiting_on_dispo,
+            type: 'error'
+        });
+    } else {
+        //alt_phone_dialing = 1;
+        LastCallbackViewed = 1;
+        LastCallbackCount = (LastCallbackCount - 1);
+        auto_dial_level = 0;
+        manual_dial_in_progress = 1;
+        MainPanelToFront();
+        //if (alt_phone_dialing == 1)
+        //    {buildDiv('DiaLDiaLAltPhonE');}
+        $("#LeadPreview").prop('checked', true);
+        //$("#DiaLAltPhonE").prop('checked', true);
+        ManualDialNext(taskCBid,taskLEADid,'','','','0','',taskCBalt);
+    }
+}
+
+
+// ################################################################################
 // Update Agent screen with values from vicidial_list record
 function UpdateFieldsData() {
     var fields_list = update_fields_data + ',';
@@ -3529,7 +3551,7 @@ function NewManualDialCall(tempDiaLnow) {
                 manual_dial_in_progress = 1;
                 agent_dialed_number = 1;
             }
-            //MainPanelToFront();
+            MainPanelToFront();
 
             if ( (tempDiaLnow == 'PREVIEW') && (active_ingroup_dial.length < 1) ) {
                 //alt_phone_dialing = 1;
@@ -3585,7 +3607,7 @@ function NewManualDialCallFast() {
             //alt_phone_dialing = 1;
             auto_dial_level = 0;
             manual_dial_in_progress = 1;
-            //MainPanelToFront();
+            MainPanelToFront();
             //buildDiv('DiaLLeaDPrevieW');
             //if (alt_phone_dialing == 1)
             //    {buildDiv('DiaLDiaLAltPhonE');}
@@ -3601,7 +3623,7 @@ function NewManualDialCallFast() {
 function ManualDialFinished() {
     alt_phone_dialing = starting_alt_phone_dialing;
     auto_dial_level = starting_dial_level;
-    //MainPanelToFront();
+    MainPanelToFront();
     CallBacksCountCheck();
     manual_dial_in_progress = 0;
 }
@@ -5875,6 +5897,13 @@ function goGetAvatar(account) {
     var avatar = "<avatar username='"+account+"' "+defaultAvatar+" :size='64'></avatar>";
     
     return avatar;
+}
+
+function MainPanelToFront() {
+    history.pushState('', document.title, window.location.pathname);
+    
+    $("#cust_info").show();
+    $("#loaded-contents").hide();
 }
 
 function padlength(what){

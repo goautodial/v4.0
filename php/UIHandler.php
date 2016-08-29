@@ -1857,6 +1857,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$telephonyArea .= $this-> getSidebarItem("./telephonylist.php", "list", $this->lh->translationFor("lists"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "comment", $this->lh->translationFor("scripts"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
+			$telephonyArea .= $this-> getSidebarItem("./audiofiles.php", "headphones", $this->lh->translationFor("audiofiles"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonymusiconhold.php", "music", $this->lh->translationFor("music_on_hold"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyvoicefiles.php", "files-o", $this->lh->translationFor("voice_files"));
 			$telephonyArea .= '</ul></li>';

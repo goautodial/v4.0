@@ -423,16 +423,7 @@
 										success: function(data) {
 										console.log(data);
 									  		if(data == 1){
-									  			swal(
-													{
-														title: "Success",
-														text: "User Successfully Deleted!",
-														type: "success"
-													},
-													function(){
-														window.location.href = 'telephonyusers.php';
-													}
-												);
+									  			swal({title: "Deleted",text: "User Successfully Deleted!",type: "success"},function(){window.location.href = 'telephonyusers.php';});
 											}else{
 												sweetAlert("Oops...", "Something went wrong! "+data, "error");
 											 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);

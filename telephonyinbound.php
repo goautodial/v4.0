@@ -248,9 +248,9 @@
 							</div>
 							<div class="fab-div-area" id="fab-div-area">
 								<ul class="fab-ul" style="height: 250px;">
-									<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_ingroups"></a></li><br/>
-									<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_ivr"></a></li><br/>
-									<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers"> </a></li>
+									<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_ingroups" title="Create an Ingroup"></a></li><br/>
+									<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_ivr" title="Add an Interactive Voice Recording"></a></li><br/>
+									<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers" title="Add a Phone Number / DID / TFN"> </a></li>
 								</ul>
 							</div>
 						</div>
@@ -660,21 +660,21 @@
 				<form action="AddTelephonyPhonenumber.php" method="POST" id="create_phonenumber" role="form">
 					<div class="row">
 						<!-- STEP 1 -->
-						<h4>Account Details
+						<h4>DID Details
                            <br>
-                           <small>Assign then Enter Account and Login Details</small>
+                           <small>Enter the basic details of your DID then assign it to a user group</small>
                         </h4>
                         <fieldset>
 							<div class="form-group mt">
 								<label class="col-sm-4 control-label" for="did_exten">DID Extention:</label>
 								<div class="col-sm-8 mb">
-									<input type="text" name="did_exten" id="did_exten" class="form-control" placeholder="DID Extention (Mandatory)" maxlength="20" minlength="2" required title="No Spaces. 2-20 characters in length." />
+									<input type="text" name="did_exten" id="did_exten" class="form-control" placeholder="DID Extention (Mandatory)" maxlength="20" minlength="2" required title="Must be 2-20 characters in length." />
 								</div>
 							</div>
 							<div class="form-group">		
 								<label class="col-sm-4 control-label" for="desc">DID Description</label>
 								<div class="col-sm-8 mb">
-									<input type="text" name="desc" id="desc" class="form-control" placeholder="DID Description (Mandatory)" maxlength="20" minlength="2"title="2-20 characters in length"  required />
+									<input type="text" name="desc" id="desc" class="form-control" placeholder="DID Description (Mandatory)" maxlength="20" minlength="2" title="Must be  2-20 characters in length"  required />
 								</div>
 							</div>
 							
@@ -715,9 +715,9 @@
 								</div>
 							</div>
 						</fieldset>
-						<h4>Account Details
+						<h4>Route Settings
                            <br>
-                           <small>Assign then Enter Account and Login Details</small>
+                           <small>Fill up details needed for the chosen route.</small>
                         </h4>
                         <fieldset>
 						<!-- IF DID ROUTE = AGENT-->
@@ -990,13 +990,13 @@
 										  		window.setTimeout(function(){location.reload()},1000);
 
 										  		$('#finish').text("Submit");
-												$('#finish').prop("disabled", false);
+												$('#finish').attr("disabled", false);
 										  }
 										  else{
 											  sweetAlert("Oops...", "Something went wrong! "+data, "error");
 
 											  $('#finish').text("Submit");
-											  $('#finish').prop("disabled", false);
+											  $('#finish').attr("disabled", false);
 										  }
 									}
 								});
@@ -1113,7 +1113,7 @@
 						sweetAlert("Oops...", "NO ADD FUNCTION YET. Sorry for the inconvenience, but this function is still under construction", "error");
 
 						$('#finish').text("Submit");
-						$('#finish').prop("disabled", false);
+						$('#finish').attr("disabled", false);
 							
 			        }
 			    }); // end of wizard
@@ -1234,11 +1234,11 @@
 											swal("Success!", "Phone Number Successfully Created!", "success");
 									  		window.setTimeout(function(){location.reload()},1000)
 									  		$('#submit_did').val("Submit");
-											$('#submit_did').prop("disabled", false);
+											$('#submit_did').attr("disabled", false);
 									  }else{
 											sweetAlert("Oops...", "Something went wrong! "+data, "error");
 											$('#submit_did').val("Submit");
-											$('#submit_did').prop("disabled", false);
+											$('#submit_did').attr("disabled", false);
 									  }
 								}
 							});
