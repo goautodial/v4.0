@@ -27,6 +27,7 @@ $default_settings = $result->default_settings;
 $agent = $result->user_info;
 $phone = $result->phone_info;
 $system = $result->system_info;
+$country_codes = $result->country_codes;
 if (isset($result->camp_info)) {
     $camp_info = $result->camp_info;
 }
@@ -284,6 +285,12 @@ var group = '<?=$camp_info->campaign_id?>';         // same value as campaign va
         echo "var campaign_recording = '{$campaign_recording}';\n";
         echo "var LIVE_campaign_recording = '{$campaign_recording}';\n";
     }
+    
+    $country_code_list = '{}';
+    if (isset($country_codes)) {
+        $country_code_list = stripslashes(json_encode($country_codes));
+    }
+    echo "var country_codes = $country_code_list;\n";
 ?>
 
 $(document).ready(function() {
@@ -319,8 +326,8 @@ $(document).ready(function() {
                 
                 if (live_customer_call < 1) {
                     $("#for_dtmf").addClass('hidden');
-                    $('#edit-profile').hide();
-                    $("#reload-script").hide();
+                    $('#edit-profile').addClass('hidden');
+                    $("#reload-script").addClass('hidden');
                     $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     $("#btnLogMeOut").removeClass("disabled");
@@ -473,8 +480,8 @@ $(document).ready(function() {
                         $(".formMain input[name='seconds']").val(live_call_seconds);
                         $("#SecondsDISP").html(live_call_seconds);
                         $("#for_dtmf").removeClass('hidden');
-                        $('#edit-profile').show();
-                        $("#reload-script").show();
+                        $('#edit-profile').removeClass('hidden');
+                        $("#reload-script").removeClass('hidden');
                         $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
                         $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
                         $("#btnLogMeOut").addClass("disabled");
@@ -482,8 +489,8 @@ $(document).ready(function() {
                     if (XD_live_customer_call == 1) {
                         XD_live_call_seconds++;
                         $("#xferlength").val(XD_live_call_seconds);
-                        $('#edit-profile').show();
-                        $("#reload-script").show();
+                        $('#edit-profile').removeClass('hidden');
+                        $("#reload-script").removeClass('hidden');
                         $("#btnLogMeOut").addClass("disabled");
                     }
                     if (customerparked == 1) {
