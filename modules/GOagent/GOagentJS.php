@@ -1270,6 +1270,8 @@ $(document).ready(function() {
                 
                 updateHotKeys();
                 updateButtons();
+                toggleButtons(dial_method);
+                CallBacksCountCheck();
             } else {
                 refresh_interval = 730000;
                 is_logged_in = 0;
@@ -1562,6 +1564,7 @@ function sendLogout (logMeOut) {
                 
                 $("#ScriptContents").html('');
                 $("#reload-script").hide();
+                CallBacksCountCheck();
                 
                 //alert('SUCCESS: You have been logged out of the dialer.');
                 if (!!$.prototype.functionName) {
@@ -3120,7 +3123,7 @@ function CallBacksCountCheck() {
                         commentTitle = ' title="'+thisComments+'"';
                         thisComments = thisComments.substring(0, 20) + "...";
                     }
-                    var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td class="hidden-sm">'+value.campaign_name+'</td><td class="visible-lg"'+commentTitle+'>'+thisComments+'</td><td class="text-center"><button class="btn btn-success btn-sm"><i class="fa fa-phone"></i></button> <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button></td></tr>';
+                    var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td class="hidden-sm">'+value.campaign_name+'</td><td class="visible-lg"'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" class="btn btn-primary btn-sm"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button></td></tr>';
                     $("#callback-list tbody").append(appendThis);
                 });
                 $("#callback-list").css('width', '100%');
@@ -3141,7 +3144,15 @@ function CallBacksCountCheck() {
                 $("#callback-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 $("#contents-callbacks").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 $("#contents-callbacks").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
-                
+                if (!is_logged_in) {
+                    $("button[id^='dial-cb-']").addClass('hidden');
+                }
+            } else {
+                if (!is_logged_in) {
+                    $("button[id^='dial-cb-']").addClass('hidden');
+                } else {
+                    $("button[id^='dial-cb-']").removeClass('hidden');
+                }
             }
             
             $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
@@ -4599,7 +4610,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
             if (active_ingroup_dial.length < 1) {
                 //document.getElementById("DiaLControl").innerHTML = "<img src=\"./images/dialnext_OFF.png\" border=\"0\" title=\"<?=$lang['dial_next']?>\" alt=\"<?=$lang['dial_next']?>\" />";
                 toggleButton('DialHangup', 'off');
-                toggleButton('ResumePause', 'off');
+                toggleButton('ResumePause', 'hide');
             }
         }
 
