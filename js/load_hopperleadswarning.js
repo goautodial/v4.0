@@ -131,7 +131,7 @@
                 var table = $('#realtime_agents_monitoring_table').dataTable({
                                 data:JSONObjectrealtime,
                                 "destroy":true,
-                                "searching": false,
+                                //"searching": false,
                                 stateSave: true,
                                 drawCallback: function(settings) {
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -145,8 +145,8 @@
                                             "sNext": "Next"
                                         }
                                 },
-                                "bFilter": false,
-                                "bInfo": false,
+                                //"bFilter": false,
+                                //"bInfo": false,
                                 "columnDefs": [
                                     {
                                         className: "hidden-xs", 
@@ -174,7 +174,7 @@
                 var table = $('#realtime_calls_monitoring_table').dataTable({ 
                                 data:JSONObjectrealtimecalls,
                                 "destroy":true,
-                                "searching": false,
+                                //"searching": false,
                                 stateSave: true,
                                 drawCallback: function(settings) {
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
