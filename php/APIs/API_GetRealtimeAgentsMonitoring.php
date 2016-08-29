@@ -39,6 +39,7 @@
     //print_r($output);
                         
     $creamyAvatar = $ui->getSessionAvatar();
+
     $barracks = '[';
 
     foreach ($output->data as $key => $value) {
@@ -69,8 +70,8 @@
     $CM = "";
     $textclass = "text-info";
     
-    $sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='36'></avatar></div>";
-    //$sessionAvatar = "<div class='media'><avatar username='$agentname' :size='36'></avatar></div>";
+    //$sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='36'></avatar></div>";
+    $sessionAvatar = "<div class='media'><avatar username='$agentname' :size='36'></avatar></div>";
     
     if ($status == "INCALL"){
         $last_call_time = $last_state_change;
@@ -148,6 +149,7 @@
     if ($status=="PAUSED"){
         $circleclass = "circle circle-warning circle-lg text-left";
         $textclass = "text-warning";
+        $nametextclass = "text-warning";
         
             if ($call_time_S >= 10){
                 $textclass = "text-warning";
@@ -188,15 +190,15 @@
     if ($status == "DEAD"){
         $textclass = "text-danger";
     }
-        
+    
     $barracks .='[';       
     //$barracks .= '"<img src=\"'.$sessionAvatar.'\" class=\"img-circle thumb48\"> <b class=\"text-blue\">'.$agentname.'</b>",';
     $barracks .= '"'.$sessionAvatar.'",';
-    $barracks .= '"<b class=\"text-blue\">'.$agentname.'</b>",'; 
+    $barracks .= '"<b class='.$nametextclass.'>'.$agentname.'</b>",'; 
     $barracks .= '"'.$user_group.'",';    
     $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
     $barracks .= '"'.$cust_phone.'",';    
-    $barracks .= '"'.$call_time_MS.'",';    
+    $barracks .= '"<b class=\"'.$textclass.'\">'.$call_time_MS.'</b>",';    
     $barracks .= '"'.$campname.'"';    
     $barracks .='],';
  
