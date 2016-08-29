@@ -354,13 +354,12 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	<!--===== Today's Phone Calls =======--> 
 	            <div class="row">
 	            	<div class="col-lg-12" style="padding: 0px;">
-	                	<!-- demian -->                	
-				<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info pv-xl info_sun_boxes">
-                                        
-					<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
-                                            <a href="#" data-toggle="modal" data-target="#realtime_calls_monitoring">
+	                	<!-- demian -->
+	                	<a href="#" data-toggle="modal" data-target="#realtime_calls_monitoring">
+                                    <div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info pv-xl info_sun_boxes">                                        
+					<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>                                            
                                                                 <div class="text-white">Realtime Calls Monitoring</div></a>                                        
-                                </div>
+                                    </div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 	                		<div class="h2 m0"><span class="text-lg" id="refresh_RingingCalls"></span></div>
 								<div class="text-muted">Outgoing Calls</div>
@@ -429,7 +428,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
         <!--==== SERVICE LEVEL AGREEMENT ==== -->
                                                 <div class="panel panel-default">
 						   <div class="panel-body">
-								<div class="text-primary">Dropped Calls Percentage</div>
+								<div class="panel-title">Dropped Calls Percentage</div>
 								<center>
 									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 										<input type="text"

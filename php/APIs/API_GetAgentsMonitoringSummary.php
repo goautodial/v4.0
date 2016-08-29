@@ -50,8 +50,8 @@
                     </div>
                     <div class="media-box-body clearfix">
                         <strong class="media-box-heading text-primary">
-                        <span class="circle circle-danger circle-lg text-left"></span>There are no available agents.</strong><br/>
-                        <strong class=""style="padding-left:20px;">Showing sample data.</strong>
+                        <span class="circle circle-danger circle-lg text-left"></span>There are no available agents</strong><br/>
+                        <strong class=""style="padding-left:20px;">Showing sample data</strong>
                     </div>
                 </div>
             </a>            
