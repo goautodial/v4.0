@@ -396,6 +396,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                                     <table id="cluster-status" class="table table-striped table-hover" style="width: 100%">
                                                                         <thead>
                                                                                 <tr>
+                                                                                        <th style="color: white;">Pic</th>
                                                                                         <th>Server ID</th>
                                                                                         <th>Server IP</th>
                                                                                         <th>Active</th>
@@ -573,7 +574,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                     <div class="responsive">
                                     <!-- <div class="col-sm-12">-->
                                         <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
-                                            <thead>
+                                            <thead>                                            
                                                     <th style="color: white;">Pic</th>
                                                     <th>Agent Name</th>                                                    
                                                     <th>Group</th>
@@ -583,7 +584,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                     <th>Campaign</th>                                                    
                                             </thead>
                                             <tbody>
-                                            
+
                                             </tbody>
                                         </table>
                                     <!--</div>-->
@@ -1197,11 +1198,11 @@ function goGetModalUsernameValue(){
 		setInterval(load_LiveOutbound,5000);
 		
 		// ... cluster status table ...
-		setInterval(load_cluster_status,60000);
+		setInterval(load_cluster_status,10000);
 		
 		// ... agent and campaign resources ...
-		setInterval(load_campaigns_resources,30000);
-		setInterval(load_campaigns_monitoring,30000);
+		setInterval(load_campaigns_resources,10000);
+		setInterval(load_campaigns_monitoring,10000);
 		setInterval(load_agents_monitoring_summary,5000);
 		
 		// ... realtime agents monitoring ...
@@ -1209,7 +1210,7 @@ function goGetModalUsernameValue(){
                 setInterval(load_realtime_calls_monitoring,3000);
 		
 		// ... view agent information modal  ...
-		setInterval(load_view_agent_information,2000);
+		setInterval(load_view_agent_information,3000);
 		
 	</script>
 	

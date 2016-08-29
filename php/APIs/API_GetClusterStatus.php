@@ -7,6 +7,13 @@
     #### Written by: Demian Lizandro Biscocho       ####
     #### License: AGPLv2                            ####
     ####################################################
+
+    //initialize session and DDBB handler
+    include_once('../UIHandler.php');
+    require_once('../LanguageHandler.php');
+    require_once('../DbHandler.php');
+    $ui = \creamy\UIHandler::getInstance();
+    $lh = \creamy\LanguageHandler::getInstance();
     
     require_once('../goCRMAPISettings.php');
     
@@ -76,8 +83,10 @@
         $diskvalue01 = (100 - $diskusage);
         //$diskvalue02 = ($diskvalue01 + $diskusage);
         $radial = "<canvas classyloader='' data-percentage='.$diskusage.' data-speed='20' data-font-size='20px' data-diameter='30' data-line-color='#f35839' data-remaining-line-color='#edf2f6' data-line-width='40' width=''40'' height='40' class='js-is-in-view'></canvas>";
+        $sessionAvatar = "<div class='media'><avatar username='$serverid' :size='36'></avatar></div>";
         
-        $cluster .='[';       
+        $cluster .='[';
+        $cluster .= '"'.$sessionAvatar.'",';        
         $cluster .= '"'.$serverid.'",';   
         $cluster .= '"'.$serverip.'",';  
         $cluster .= '"'.$status.'",';

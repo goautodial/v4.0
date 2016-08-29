@@ -31,7 +31,13 @@
                                 drawCallback: function(settings) {
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                                     pagination.toggle(this.api().page.info().pages > 1);
-                                }                              
+                                },
+                                "columnDefs": [
+                                    {
+                                        className: "hidden-xs", 
+                                        "targets": [ 1, 4, 5 ] 
+                                    }
+                                ]                                
                 });
                 goAvatar._init(goOptions);
         } 
@@ -98,9 +104,15 @@
                                 "bPaginate": false,
                                 "searching": false,
                                 "bInfo" : false,
-                                "destroy":true
-                                
-                            });
+                                "destroy":true,
+                                "columnDefs": [
+                                    {
+                                        className: "hidden-xs", 
+                                        "targets": [ 2, 3, 5 ] 
+                                    }
+                                ]                                                                 
+                });
+                goAvatar._init(goOptions);
         } 
     });
     }  
@@ -116,7 +128,7 @@
                 var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
                 //console.log(JSONStringrealtime);
                 //console.log(JSONObjectrealtime); 
-                var table = $('#realtime_agents_monitoring_table').dataTable({ 
+                var table = $('#realtime_agents_monitoring_table').dataTable({
                                 data:JSONObjectrealtime,
                                 "destroy":true,
                                 "searching": false,
@@ -134,7 +146,14 @@
                                         }
                                 },
                                 "bFilter": false,
-                                "bInfo": false                             
+                                "bInfo": false,
+                                "columnDefs": [
+                                    {
+                                        className: "hidden-xs", 
+                                        "targets": [ 2, 3, 4 ] 
+                                    }
+                                ]    
+                                
                 });
                 goAvatar._init(goOptions);
         } 
@@ -160,7 +179,13 @@
                                 drawCallback: function(settings) {
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                                     pagination.toggle(this.api().page.info().pages > 1);
-                                }                                
+                                },
+                                "columnDefs": [
+                                    {
+                                        className: "hidden-xs", 
+                                        "targets": [ 1, 4 ] 
+                                    }
+                                ]                                 
 //                                "oLanguage": {
 //                                        "sLengthMenu": "",
 //                                        "sEmptyTable": "No Calls Available",
