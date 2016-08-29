@@ -911,7 +911,7 @@ $(document).ready(function() {
     $("#go_agent_login").append("<li><button id='btnLogMeIn' class='btn btn-warning btn-lg center-block' style='margin-top: 2px;'><i class='fa fa-sign-in'></i> <?=$lh->translationFor('login_on_phone')?></button></li>");
     $("#go_agent_logout").append("<li><button id='btnLogMeOut' class='btn btn-warning center-block' style='margin-top: 2px; padding: 5px 12px;'><i class='fa fa-sign-out'></i> <?=$lh->translationFor('logout_from_phone')?></button></li>");
     
-    $("div.navbar-custom-menu").prepend("<span id='server_date' class='hidden-xs no-selection pull-left' style='color: #fff; line-height: 21px; height: 50px; padding: 14px 20px;'></span>");
+    $("div.navbar-custom-menu").prepend("<span id='server_date' class='hidden-xs hidden-sm no-selection pull-left' style='color: #fff; line-height: 21px; height: 50px; padding: 14px 20px;'></span>");
     
     var paddingHB = 100;
     var navConBar = $("header.main-header").innerHeight();
@@ -3114,15 +3114,33 @@ function CallBacksCountCheck() {
                 $("#callback-list").dataTable().fnDestroy();
                 $("#callback-list tbody").empty();
                 $.each(CBallList, function(key, value) {
-                    var appendThis = '<tr data-id="'+value.callback_id+'"><td class="hidden-xs">'+value.cust_name+'</td><td>'+value.phone_number+'</td><td class="hidden-xs"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td class="hidden-xs">'+value.campaign_name+'</td><td class="hidden-xs hidden-md">'+value.comments+'</td><td class="text-center"><button class="btn btn-success btn-sm"><i class="fa fa-phone"></i></button> <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button></td></tr>';
+                    var thisComments = value.comments;
+                    var commentTitle = '';
+                    if (thisComments.length > 20) {
+                        commentTitle = ' title="'+thisComments+'"';
+                        thisComments = thisComments.substring(0, 20) + "...";
+                    }
+                    var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td class="hidden-sm">'+value.campaign_name+'</td><td class="visible-lg"'+commentTitle+'>'+thisComments+'</td><td class="text-center"><button class="btn btn-success btn-sm"><i class="fa fa-phone"></i></button> <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button></td></tr>';
                     $("#callback-list tbody").append(appendThis);
                 });
                 $("#callback-list").css('width', '100%');
-                $("#callback-list").DataTable({"bDestroy": true, "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5 ] }, { "bSearchable": false, "aTargets": [ 2, 5 ] }] });
-                $("#callback-list_filter").parent('div').attr('class', 'col-md-6 hidden-xs');
-                $("#callback-list_length").parent('div').attr('class', 'col-xs-12 col-md-6');
-                $("#contents-callbacks").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-md-6');
-                $("#contents-callbacks").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-md-6');
+                $("#callback-list").DataTable({
+                    "bDestroy": true,
+                    "aoColumnDefs": [{
+                        "bSortable": false,
+                        "aTargets": [ 5 ],
+                    }, {
+                        "bSearchable": false,
+                        "aTargets": [ 2, 5 ]
+                    }, {
+                        "sClass": "hidden-xs",
+                        "aTargets": [ 0, 2, 3, 4 ]
+                    }]
+                });
+                $("#callback-list_filter").parent('div').attr('class', 'col-sm-6 hidden-xs');
+                $("#callback-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
+                $("#contents-callbacks").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
+                $("#contents-callbacks").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 
             }
             
