@@ -37,19 +37,8 @@
     $output = json_decode($data);
     //echo "<pre>";
     //print_r($output);
-
-    $sessionAvatar = $ui->getSessionAvatar();
-
-    if ($output == NULL){
-        echo '<strong class="media-box-heading text-primary">
-                <span class="circle circle-danger circle-lg text-left"></span>There are no available agents.
-                </strong>
-                <br/>
-                <strong class=""style="padding-left:20px;"></strong>
-                <small class="text-muted pull-right ml" style="padding-right:20px;"></small>
-                </p>';
-
-    }
+                        
+    $creamyAvatar = $ui->getSessionAvatar();
 
     $barracks = '[';
 
@@ -81,21 +70,20 @@
     $CM = "";
     $textclass = "text-info";
     
+    //$sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='36'></avatar></div>";
+    $sessionAvatar = "<div class='media'><avatar username='$agentname' :size='36'></avatar></div>";
+    
     if ($status == "INCALL"){
         $last_call_time = $last_state_change;
         $textclass = "text-success";
         
-            if ($call_time_M_int >= 3) {
+            if ($call_time_M_int >= 3){
                 $textclass = "text-warning";
             }        
         
-            if (!is_null($parked_channel)){
+            if ($parked_channel != NULL){
                 $status = "PARK";
             }
-            //if ($vla_callerid != $vac_callerid){
-                //$last_call_time=$last_state_change;
-                //$status = "Hungup";
-            //}
             if ($call_type == "AUTO"){
                 $CM="[A]";
             }
@@ -105,6 +93,10 @@
             if ($call_type == "MANUAL"){
                 $CM="[M]";
             }
+            //if ($vla_callerid != $vac_callerid){
+                //$last_call_time=$last_state_change;
+                //$status = "HANGUP";
+            //}            
     }
     
     if (preg_match("/READY|PAUSED|CLOSER/",$status)){
@@ -120,11 +112,11 @@
         $call_time_S = ($STARTtime - $last_state_change);
         $textclass = "text-info";
                     
-            if ($call_time_M_int >= 3) {
+            if ($call_time_M_int >= 3){
                 $textclass = "text-warning";
             }
             
-            if ($call_time_M_int >= 5) {
+            if ($call_time_M_int >= 5){
                 $textclass = "text-danger";
             }
         
@@ -154,59 +146,61 @@
     $G = "";
     $EG = "";
     
-    if ($status=="PAUSED") {
+    if ($status=="PAUSED"){
         $circleclass = "circle circle-warning circle-lg text-left";
         $textclass = "text-warning";
+        $nametextclass = "text-warning";
         
-            if ($call_time_S >= 10) {
+            if ($call_time_S >= 10){
                 $textclass = "text-warning";
             }
-            if ($call_time_M_int >= 1) {
+            if ($call_time_M_int >= 1){
                 $textclass = "text-warning";
             }
-            if ($call_time_M_int >= 5) {
+            if ($call_time_M_int >= 5){
                 $textclass = "text-danger";
             }
-            if ($call_time_M_int >= 15) {
+            if ($call_time_M_int >= 15){
                 $textclass = "text";
             }            
         }
     
-    if ($status=="READY") {                
+    if ($status == "READY"){                
             $textclass = "text-info";
             
-            if ($call_time_M_int >= 3) {
+            if ($call_time_M_int >= 3){
                 $textclass = "text-warning";
             }            
-            if ($call_time_M_int >= 5) {
+            if ($call_time_M_int >= 5){
                 $textclass = "text-danger";
             }            
         }  
         
-    if ($status=="DISPO") {                
+    if ($status == "DISPO"){                
             $textclass = "text-warning";
             
-            if ($call_time_M_int >= 3) {
+            if ($call_time_M_int >= 3){
                 $textclass = "text-danger";
             }            
-            if ($call_time_M_int >= 5) {
+            if ($call_time_M_int >= 5){
                 $textclass = "text";
             }            
         }         
     
-    if ( preg_match("DEAD",$status) ) {
+    if ($status == "DEAD"){
         $textclass = "text-danger";
-        }
+    }
     
     $barracks .='[';       
-    $barracks .= '"<img src=\"'.$sessionAvatar.'\" class=\"img-circle thumb48\"> <b class=\"text-blue\">'.$agentname.'</b>",';    
+    //$barracks .= '"<img src=\"'.$sessionAvatar.'\" class=\"img-circle thumb48\"> <b class=\"text-blue\">'.$agentname.'</b>",';
+    $barracks .= '"<b id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class='.$textclass.'>'.$sessionAvatar.'</b>",';
+    $barracks .= '"<b id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class='.$textclass.'>'.$agentname.'</b>",'; 
     $barracks .= '"'.$user_group.'",';    
     $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
     $barracks .= '"'.$cust_phone.'",';    
-    $barracks .= '"'.$call_time_MS.'",';    
+    $barracks .= '"<b class=\"'.$textclass.'\">'.$call_time_MS.'</b>",';    
     $barracks .= '"'.$campname.'"';    
     $barracks .='],';
- 
 }
 
     $barracks = rtrim($barracks, ",");    
@@ -214,5 +208,4 @@
     
     echo json_encode($barracks);
     
-    //echo $barracks;
 ?>

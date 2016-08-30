@@ -38,19 +38,20 @@
     //echo "<pre>";
     //print_r($output);
     
-    $sessionAvatar = $ui->getSessionAvatar();
+    $creamyAvatar = $ui->getSessionAvatar();
+    //$creamyAvatar = $ui->getVueAvatar();
     
     if (count($output->data) < 1){
     
     echo '<a href="#" class="list-group-item">
             <div class="media-box">
                     <div class="pull-left">
-                        <img src="'.$sessionAvatar.'" alt="Image" class="media-box-object img-circle thumb32">
+                        <img src="'.$creamyAvatar.'" alt="Image" class="media-box-object img-circle thumb32">
                     </div>
                     <div class="media-box-body clearfix">
                         <strong class="media-box-heading text-primary">
-                        <span class="circle circle-danger circle-lg text-left"></span>There are no available agents.</strong><br/>
-                        <strong class=""style="padding-left:20px;">Showing sample data.</strong>
+                        <span class="circle circle-danger circle-lg text-left"></span>There are no available agents</strong><br/>
+                        <strong class=""style="padding-left:20px;">Showing sample data</strong>
                     </div>
                 </div>
             </a>            
@@ -82,19 +83,7 @@
                     </div>
                 </div>
             </a>
-            <!-- END list group item-->            <a href="#" class="list-group-item">
-                <div class="media-box">
-                    <div class="pull-left">
-                        <img src="theme_dashboard/img/user/09.jpg" alt="Image" class="media-box-object img-circle thumb32">
-                    </div>
-                    <div class="media-box-body clearfix">
-                        <strong class="media-box-heading text-primary">
-                        <span class="circle circle-danger circle-lg text-left"></span>Kim Takahashi</strong><br/>
-                        <strong class=""style="padding-left:20px;">CS HOTLINE</strong>
-                        <small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
-                    </div>
-                </div>
-            </a>
+            <!-- END list group item-->
             <!-- START list group item-->
             <a href="#" class="list-group-item">
             <div class="media-box">
@@ -156,7 +145,10 @@
             $pausecode = "";
             $parked_channel = $value->pc_channel;
             $STARTtime = date("U");
-
+            
+            //$sessionAvatar = $ui->getVueAvatar($agentname, $creamyAvatar, 32);
+            $sessionAvatar = "<avatar username='$agentname' :size='32'></avatar>";
+            
         if (preg_match("/READY|CLOSER/",$status)){
             $last_call_time=$last_state_change;
             $class = "circle circle-warning circle-lg text-left";
@@ -195,11 +187,11 @@
         echo    '<a class="list-group-item">
                     <div class="media-box">
                         <div class="pull-left">
-                            <img src="'.$sessionAvatar.'" alt="Image" class="media-box-object img-circle thumb32">
+                            '.$sessionAvatar.'
                         </div>            
                         <div class="media-box-body clearfix">
                             <strong class="media-box-heading text-primary">
-                            <b id="onclick-userinfo" data-toggle="modal" data-target="#view_agent_information" data-id="'.$userid.'"><span class="'.$class.'"></span>'.$agentname.'</b>
+                            <b id="onclick-userinfo" data-toggle="modal" data-target="#view_agent_information" data-id="'.$agentid.'"><span class="'.$class.'"></span>'.$agentname.'</b>
                             </strong><br/>
                             <strong style="padding-left:20px;">'.$campname.'</strong>
                             <small class="text-muted pull-right ml" style="padding-right:20px;">'.$call_time_MS.'</small>

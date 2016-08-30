@@ -125,10 +125,12 @@ if (isset($_GET["message"])) {
 		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
 		<!-- Datetime picker --> 
         <link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+		<!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		
 		<!-- DATA TABES SCRIPT -->
-		<!--<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>-->
-		<!--<script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>-->
+		<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 		<!-- Bootstrap WYSIHTML5 -->
 		<!--<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>-->
 		<!-- iCheck -->
@@ -163,6 +165,14 @@ if (isset($_GET["message"])) {
 					if (use_webrtc && (!!$.prototype.snackbar)) {
 						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000, htmlAllowed: true});
 					}
+				});
+				
+				$('#callback-list')
+					.removeClass( 'display' )
+					.addClass('table table-striped table-bordered');
+				
+				$.each(country_codes, function(key, value) {
+					$("#country_code").append('<option value="'+key+'">'+value+'</option>');
 				});
 			});
 			
@@ -208,6 +218,8 @@ if (isset($_GET["message"])) {
 					emptytext: '&nbsp;',
 					unsavedclass: null
 				});
+				
+				//$("#callback-list").DataTable({"bDestroy": true, "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5 ] }, { "bSearchable": false, "aTargets": [ 2, 5 ] }] });
 			});
 			
 			//turn to inline mode
@@ -219,7 +231,6 @@ if (isset($_GET["message"])) {
 				'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
 					'<i class="fa fa-remove"></i>'+
 				'</button>';
-
 		</script>
 		<style>
 			.nav-tabs > li > a{
@@ -246,7 +257,7 @@ if (isset($_GET["message"])) {
 			}
 			.textarea{
 				border: none;
-				border-bottom: .5px solid #656565;
+				border-bottom: .5px solid #dde6e9;
 				width: 100%;
 				-webkit-box-sizing: border-box;
 				   -moz-box-sizing: border-box;
@@ -294,6 +305,18 @@ if (isset($_GET["message"])) {
 				font-weight: bold;
 				color: #555;
 				background-color: #f0f0f0;
+			}
+			.dataTables_empty {
+				text-align: center;
+			}
+			.table > thead > tr > th {
+				padding: 8px;
+			}
+			.modal-body {
+				min-height: inherit;
+				overflow-x: inherit;
+				overflow-y: inherit;
+				padding-top: 15px;
 			}
 		</style>
     </head>
@@ -431,7 +454,7 @@ if (isset($_GET["message"])) {
 									
 										<div id="profile" role="tabpanel" class="tab-pane active">
 
-											<fieldset>
+											<fieldset style="padding-bottom: 0px; margin-bottom: 0px;">
 												<h4>
 													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
 												</h4>
@@ -550,9 +573,11 @@ if (isset($_GET["message"])) {
 													</div><!-- /.city,state,postalcode -->
 												
 													<div class="mda-form-group label-floating">
-														<input id="country" name="country" type="text" value="<?php echo $country;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="country">Country</label>
+														<select id="country_code" name="country_code" type="text" maxlength="3"
+															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
+															<option value=""></option>
+														</select>
+														<label for="country">Country Code</label>
 													</div>
 													<div class="mda-form-group label-floating"><!-- add "mda-input-group" if with image -->
 														<input id="email" name="email" type="text" width="auto" value="<?php echo $email;?>"
@@ -596,7 +621,7 @@ if (isset($_GET["message"])) {
 																		}
 																	?>
 																</select>
-																<label for="gender" class="control-label">Gender</label>
+																<label for="gender">Gender</label>
 															</div>
 														</div>
 														<div class="col-sm-6">
@@ -608,7 +633,7 @@ if (isset($_GET["message"])) {
 														</div>
 													</div><!-- /.gender & title -->                   
 												</form>
-							                <br/>
+											
 							                <!-- NOTIFICATIONS -->
 											<div id="notifications_list">
 												<div class="output-message-success" style="display:none;">
@@ -650,8 +675,6 @@ if (isset($_GET["message"])) {
 															<textarea rows="5" id="comments" name="comments" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
 															<label for="comments">Comments</label>
 														</div>
-														<div style="clear:both;"></div>
-														<br>
 													</form>
 												</div>
 											</div>
@@ -747,6 +770,39 @@ if (isset($_GET["message"])) {
 									</div>
 								</div><!-- /. box -->
 							</div><!-- /.col -->
+						</div><!-- /.row -->
+						
+						
+						<div id="contents-callbacks" class="row" style="display: none;">
+							<div class="card col-md-12" style="padding: 15px;">
+								<table id="callback-list" class="display" style="border: 1px solid #f4f4f4">
+									<thead>
+										<tr>
+											<th class="hidden-xs">
+												Customer Name
+											</th>
+											<th>
+												Phone Number
+											</th>
+											<th class="hidden-xs">
+												Callback Time
+											</th>
+											<th class="hidden-xs hidden-sm">
+												Campaign
+											</th>
+											<th class="hidden-xs visible-lg">
+												Comments
+											</th>
+											<th>
+												Action
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										
+									</tbody>
+								</table>
+							</div>
 						</div><!-- /.row -->
 					</div>
 					

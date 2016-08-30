@@ -236,6 +236,9 @@ hr {
 select.input-sm {
   height: 31px;
 }
+input.error{
+  border-color: #4caf50;
+}
 fieldset {
   padding-bottom: 20px;
   border-bottom: 1px dashed #eee;
@@ -5229,28 +5232,31 @@ body .bootstrap-tagsinput .tag {
   font-size: 1.429em;
 }
 .wizard > .steps > ul > li {
-  width: 33.33%;
-  /* width: auto; */
+  /* width: 33.33%; */
+  width: 50%;
 }
 .wizard > .content {
   background: #fff;
   display: block;
   position: relative;
   /* margin: 1.3em; */
-  min-height: 370px;
+  min-height: 400px;
   overflow: hidden;
   overflow-y: auto;
-  width: 100%;
+  /* width: 100%; */
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+  /* margin-bottom: 20px; */
+  /* padding-right: 50px; */
+  /* margin-right: 10px; */
 }
 .wizard > .content > .body {
   float: left;
-   position: absolute;
+  position: absolute;
   width: 100%;
   /* height: 95%; */
-  padding: 2.5% 0;
+  /* padding: 2.5% 0; */
 }
 .wizard fieldset {
   border: none;
@@ -5282,11 +5288,18 @@ body .bootstrap-tagsinput .tag {
   position: relative;
   margin-bottom: 0;
 }
+.wizard > .content > .body label.avail {
+  color: #6ba26b;
+  font-weight: normal;
+  position: relative;
+  margin-bottom: 0;
+}
 .wizard > .actions {
   position: relative;
   display: block;
   text-align: right;
   width: 100%;
+  /* padding-right: 25px; */
 }
 .wizard > .actions > ul {
   display: inline-block;
@@ -5326,6 +5339,11 @@ body .bootstrap-tagsinput .tag {
   /* padding-top: 15px; */
   /* padding-bottom: 15px; */
 }
+.wizard > .steps > ul > li.first.last {
+  float: left;
+  width:100%;
+}
+
 .wizard > .steps a,
 .wizard > .steps a:hover,
 .wizard > .steps a:active {
@@ -7566,6 +7584,14 @@ body .jvectormap-zoomout {
 .label-purple[href]:focus {
   background-color: #564aa3;
 }
+label.error{
+  color: #f44336;
+  font-weight: normal;
+}
+label.avail{
+  color: #6ba26b;
+  font-weight: normal;
+}
 .alert-purple {
   background-color: #7266ba;
   border-color: #7266ba;
@@ -8907,4 +8933,15 @@ md-tabs .md-tab.md-focused md-icon {
   pointer-events: auto;
   cursor: pointer;
   color: #dddddd;
+}
+
+.modal-body{
+  min-height: 50%;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding-top:0px;
+}
+
+.modal-content{
+  border-radius:5px;
 }

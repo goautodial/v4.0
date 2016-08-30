@@ -7,9 +7,42 @@
         cache: false,
         success: function(data){
             $("#refresh_campaigns_resources").html(data);
+            goAvatar._init(goOptions);
         } 
     });
     }
+    
+    function load_campaigns_monitoring(){
+    $.ajax({        
+        url: "./php/APIs/API_GetCampaignsMonitoring.php",
+        cache: false,
+        dataType: 'json',
+        success: function(values){
+            //console.log(values);
+            //$("#refresh_agents_monitoring_summary").html(data);
+                var JSONStringrealtime = values;
+                var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+                //console.log(JSONStringrealtime);
+                //console.log(JSONObjectrealtime); 
+                var table = $('#campaigns_monitoring_table').dataTable({ 
+                                data:JSONObjectrealtime,
+                                "destroy":true,    
+                                stateSave: true,
+                                drawCallback: function(settings) {
+                                    var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                                    pagination.toggle(this.api().page.info().pages > 1);
+                                },
+                                "columnDefs": [
+                                    {
+                                        className: "hidden-xs", 
+                                        "targets": [ 1, 4, 5 ] 
+                                    }
+                                ]                                
+                });
+                goAvatar._init(goOptions);
+        } 
+    });
+    }    
 
     function load_agents_monitoring_summary(){
     $.ajax({
@@ -18,17 +51,23 @@
         success: function(data){
             //console.log(data);
             $("#refresh_agents_monitoring_summary").html(data);
+            goAvatar._init(goOptions);
         } 
     });
     }
     
     function load_view_agent_information(){
-    $.ajax({
+        
+    var agentiformationid = document.getElementById("modal-username").innerText;
+    
+    $.ajax({        
+        type: 'POST',
         url: "./php/APIs/API_GetAgentInformation.php",
+        data: {user: agentiformationid},
         cache: false,
         dataType: 'json',
         success: function(values){
-            //console.log(data);
+            //console.log(values);            
             //$("#refresh_agents_monitoring_summary").html(data);
                 var JSONStringrealtime = values;
                 var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
@@ -42,7 +81,7 @@
                                 "bInfo" : false,
                                 "destroy":true
                                 
-                            });            
+                });                
         } 
     });
     }    
@@ -65,9 +104,15 @@
                                 "bPaginate": false,
                                 "searching": false,
                                 "bInfo" : false,
-                                "destroy":true
-                                
-                            });
+                                "destroy":true,
+                                "columnDefs": [
+                                    {
+                                        className: "hidden-xs", 
+                                        "targets": [ 1, 2, 3, 5 ] 
+                                    }
+                                ]                                                                 
+                });
+                goAvatar._init(goOptions);
         } 
     });
     }  
@@ -83,17 +128,83 @@
                 var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
                 //console.log(JSONStringrealtime);
                 //console.log(JSONObjectrealtime); 
-                var table = $('#realtime_agents_monitoring_table').dataTable({ 
+                var table = $('#realtime_agents_monitoring_table').dataTable({
                                 data:JSONObjectrealtime,
-                                "destroy":true
-                            });
-                //table.destroy();
-                
-                            //$('#monitoring_table').dataTable({ 
-                                //data:JSONObjectrealtime,
-                                //"destroy":true
-                            //});        
-                            //console.log(values);
+                                "destroy":true,
+                                //"searching": false,
+                                stateSave: true,
+                                drawCallback: function(settings) {
+                                    var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                                    pagination.toggle(this.api().page.info().pages > 1);
+                                },                                
+                                "oLanguage": {
+                                        "sLengthMenu": "",
+                                        "sEmptyTable": "No Agents Available",
+                                        "oPaginate": {
+                                            "sPrevious": "Prev",
+                                            "sNext": "Next"
+                                        }
+                                },
+                                //"bFilter": false,
+                                //"bInfo": false,
+                                "columnDefs": [
+                                    {
+                                        className: "hidden-xs", 
+                                        "targets": [ 2, 3, 4 ] 
+                                    }
+                                ]    
+                                
+                });
+                goAvatar._init(goOptions);
         } 
     });
     }
+
+    function load_realtime_calls_monitoring(){
+    $.ajax({
+        url: "./php/APIs/API_GetRealtimeCallsMonitoring.php",
+        cache: false,
+        dataType: 'json',
+        success: function(values){
+            //$("#refresh_realtime_agents_monitoring").html(values);
+                var JSONStringrealtimecalls = values;
+                var JSONObjectrealtimecalls = JSON.parse(JSONStringrealtimecalls);
+                //console.log(JSONStringrealtime);
+                //console.log(JSONObjectrealtimecalls); 
+                var table = $('#realtime_calls_monitoring_table').dataTable({ 
+                                data:JSONObjectrealtimecalls,
+                                "destroy":true,
+                                //"searching": false,
+                                stateSave: true,
+                                drawCallback: function(settings) {
+                                    var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                                    pagination.toggle(this.api().page.info().pages > 1);
+                                },
+                                "columnDefs": [
+                                    {
+                                        className: "hidden-xs", 
+                                        "targets": [ 1, 3, 4 ] 
+                                    }
+                                ]                                 
+//                                "oLanguage": {
+//                                        "sLengthMenu": "",
+//                                        "sEmptyTable": "No Calls Available",
+//                                        "oPaginate": {
+//                                            "sPrevious": "Prev",
+//                                            "sNext": "Next"
+//                                        }
+//                                },
+//                                "bFilter": false
+//                                "bInfo": false                                                               
+//                                "columnDefs": [
+//                                    {
+//                                        "targets": [ 6 ],
+//                                        "visible": false,
+//                                        "searchable": false
+//                                    }
+//                                ]
+                });
+                goAvatar._init(goOptions);
+        } 
+    });
+    }    

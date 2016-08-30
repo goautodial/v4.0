@@ -102,37 +102,25 @@
 
     <div class="modal fade" id="wizard-modal" tabindex="-1"aria-labelledby="T_User" >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius:5px;">
+            <div class="modal-content">
 				
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="T_User">
+					<h4 class="modal-title animated bounceInRight" id="T_User">
 						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create users."></i> 
 						<b>User Wizard » Add New User</b></h4>
 				</div>
-				<div class="modal-body" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				<div class="modal-body">
 				
 				<form id="wizard_form" action="#">
 					<div class="row">
+						<!--
                         <h4>Getting Started
                            <br>
                            <small>Assign User to a Usergroup</small>
                         </h4>
                         <fieldset>
-                           <div class="form-group mt">
-								<label class="col-sm-5 control-label" for="user_group">User Group</label>
-								<div class="col-sm-7 mb">
-									<select id="user_group" class="form-control" name="user_group">
-										<?php
-											for($i=0;$i<count($user_groups->user_group);$i++){
-										?>
-											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
-										<?php
-											}
-										?>
-									</select>
-								</div>
-							</div>
+						
 							<div class="form-group">		
 								<label class="col-sm-5 control-label">Current Users </label>
 								<div class="col-sm-7 mb">
@@ -141,6 +129,7 @@
 									</div>
 								</div>
 							</div>
+						-->
 						<!-- ENABLE IF ADD MULTIPLE IS AVAILABLE 
 							<div class="form-group">		
 								<label class="col-sm-4 control-label" style="padding-top:15px;">Additional Seat(s): </label>
@@ -164,19 +153,10 @@
 								</div>
 							</div>
 						-->
-							<div class="form-group">
-								<label class="col-sm-5 control-label" for="generate_phone_logins">Generate Phone Logins </label>
-								<div class="col-sm-7 mb">
-									<select id="generate_phone_logins" name="generate_phone_logins" class="form-control">
-										<option value="N" selected>No</option>
-										<option value="Y">Yes</option>
-									</select>
-								</div>
-							</div>
                         </fieldset>
                         <h4>Account Details
                            <br>
-                           <small>Account and Login Details</small>
+                           <small>Assign then Enter Account and Login Details</small>
                         </h4>
                         <fieldset>
                            <?php
@@ -191,31 +171,45 @@
 							<div class="form-group">		
 								<label class="col-sm-4 control-label"> Users ID </label>
 								<div class="col-sm-8 mb">
-									<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID (Mandatory)" value="<?php echo $user_id_for_form;?>" required>
+									<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID (Mandatory)" 
+										value="<?php echo $user_id_for_form;?>" title="Please enter alphanumeric characters only" maxlength="20" required>
+									<label id="user-duplicate-error"></label>
 								</div>
 							</div>
-							<?php
-								$latest_phone = max($phones->extension);
-								$latest_phone = $latest_phone + 1;
-								
-							?>
+							<div class="form-group mt">
+								<label class="col-sm-4 control-label" for="user_group">User Group</label>
+								<div class="col-sm-8 mb">
+									<select id="user_group" class="form-control" name="user_group">
+										<?php
+											for($i=0;$i<count($user_groups->user_group);$i++){
+										?>
+											<option value="<?php echo $user_groups->user_group[$i];?>" <?php if($user_groups->user_group[$i] == "AGENT"){echo "selected";}?>>  <?php echo $user_groups->group_name[$i];?>  </option>
+										<?php
+											}
+										?>
+									</select>
+								</div>
+							</div>
 							<div class="form-group" id="phone_logins_form" style="display:none;">
 								<label class="col-sm-4 control-label" for="phone_logins"> Phone Login </label>
 								<div class="col-sm-8 mb">
-									<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="Phone Login (Mandatory)" value="<?php echo $latest_phone;?>" pattern=".{3,}" title="Minimum of 3 characters" required>
+									<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="Phone Login (Mandatory)" 
+										value="<?php echo $output->last_phone_login;?>" pattern=".{3,}" title="Minimum of 3 characters" maxlength="20" required>
+									<label id="phone_login-duplicate-error"></label>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="fullname"> Fullname </label>
 								<div class="col-sm-8 mb">
 									<input type="text" name="fullname" id="fullname" class="form-control" placeholder="FullName (Mandatory)"
-										   value="<?php echo $fullname;?>" required>
+										   value="<?php echo $fullname;?>" title="Please enter alphanumeric characters only" maxlength="50" required>
 								</div>
 							</div>
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="password"> Password </label>
+							<div class="form-group">	
+								<label class="col-sm-4 control-label" for="password" title="Default Password is: Go<?php echo date('Y');?>"> Password <br/></label>
+								
 								<div class="col-sm-8 mb">
-									<input type="password" class="form-control" name="password" id="password" placeholder="Default Password is: Go2016 (Mandatory)" value="Go2016" required>
+									<input type="password" class="form-control" name="password" id="password" placeholder="Password (Mandatory)"  title="Default Password is: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" maxlength="20" required>
 								</div>
 							</div>
 							<div class="form-group">		
@@ -264,12 +258,6 @@
                            		</div>
                            	</div>
                            	<div class="form-group">
-                           		<label class="col-lg-6 control-label">Phone Login: </label>
-                           		<div class="col-lg-6 reverse_control_label mb">
-                           			<span id="submit-phonelogin"></span>
-                           		</div>
-                           	</div>
-                           	<div class="form-group">
                            		<label class="col-lg-6 control-label">Password: </label>
                            		<div class="col-lg-6 reverse_control_label mb">
                            			<span id="submit-password"></span>
@@ -298,7 +286,8 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
-		
+		var checker = 0;
+
 		// initialize data table
 		$('#T_users').dataTable();
 
@@ -324,12 +313,16 @@
 		        {
 		        	// Allways allow step back to the previous step even if the current step is not valid!
 			        if (currentIndex > newIndex) {
+			        	checker = 0;
 			            return true;
 			        }
 
-			        // check duplicates
-			        	//validate_user();
-			       		//validate_phone_login();
+			        console.log(checker);
+			        // Disable next if there are duplicates
+			        if(checker > 0){
+				        $(".body:eq(" + newIndex + ") .error", form).addClass("error");
+			        	return false;
+			        }
 
 			        // form review
 					show_form_review();
@@ -364,8 +357,16 @@
 						success: function(data) {
 						  // console.log(data);
 							  if(data == 1){
-							  	  swal("Success!", "User Successfully Created!", "success");
-								  window.setTimeout(function(){location.reload()},2000);
+							  	  swal(
+									{
+										title: "Success",
+										text: "User Successfully Created!",
+										type: "success"
+									},
+									function(){
+										window.location.href = 'telephonyusers.php';
+									}
+								  );
 							  }else{
 							  	  sweetAlert("Oops...", "Something went wrong. "+data, "error");
 							  	  $('#finish').val("Submit");
@@ -379,7 +380,7 @@
 	//--------------------
 
 		/*********
-		** Edit user details
+		** Edit Event
 		*********/
 
 				$(document).on('click','.edit-T_user',function() {
@@ -395,7 +396,7 @@
 	// ------------------
 				
 		/*********
-		** Delete function
+		** Delete Event
 		*********/
 
 				 $(document).on('click','.delete-T_user',function() {
@@ -422,8 +423,7 @@
 										success: function(data) {
 										console.log(data);
 									  		if(data == 1){
-									  			swal("Success!", "User Successfully Deleted!", "success");
-									  			window.setTimeout(function(){location.reload()},1000)
+									  			swal({title: "Deleted",text: "User Successfully Deleted!",type: "success"},function(){window.location.href = 'telephonyusers.php';});
 											}else{
 												sweetAlert("Oops...", "Something went wrong! "+data, "error");
 											 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
@@ -436,61 +436,75 @@
 		                	}
 		                );
 				 });
+		
 
 	// -------------------------
+
+		// disable special characters on User ID
+		$('#user_form').bind('keypress', function (event) {
+		    var regex = new RegExp("^[a-zA-Z0-9]+$");
+		    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+		    if (!regex.test(key)) {
+		       event.preventDefault();
+		       return false;
+		    }
+		});
+
+		// disable special characters and allow spaces on full name
+		$('#fullname').bind('keypress', function (event) {
+		    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+		    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+		    if (!regex.test(key)) {
+		       event.preventDefault();
+		       return false;
+		    }
+		});
 
 		/*********
 		** validations
 		*********/
+		// check duplicates
+			$("#user_form").keyup(function() {
+				clearTimeout($.data(this, 'timer'));
+				var wait = setTimeout(validate_user, 500);
+				$(this).data('timer', wait);
+			});
 
-		function validate_user(){
-			var user_form_value = $('#user_form').val();
-	        if(user_form_value != ""){
-			    $.ajax({
-				    url: "php/checkUser.php",
-				    type: 'POST',
-				    data: {
-				    	user : user_form_value
-				    },
-					success: function(data) {
-						console.log(data);
-						if(data != "success"){
-							sweetAlert("Oops...", "Something went wrong. "+data, "error");
-							return false;
+			function validate_user(){
+				var user_form_value = $('#user_form').val();
+				var phone_logins_value = "";
+		        if(user_form_value != ""){
+				    $.ajax({
+					    url: "php/checkUser.php",
+					    type: 'POST',
+					    data: {
+					    	user : user_form_value,
+					    	phone_login : phone_logins_value
+					    },
+						success: function(data) {
+							console.log(data);
+							if(data == "success"){
+								checker = 0;
+								$( "#user_form" ).removeClass("error");
+								$( "#user-duplicate-error" ).text( "User ID is available." ).removeClass("error").addClass("avail");
+							}else{
+								if(data == "user"){
+									$( "#user_form" ).removeClass("valid").addClass( "error" );
+									$( "#user-duplicate-error" ).text( "There are 1 or more users with this User ID." ).removeClass("avail").addClass("error");
+								}
+								
+								checker = 1;
+							}
 						}
-					}
-				});
+					});
+				}
 			}
-		}
-
-		function validate_phone_login(){
-			var phone_logins_value = $('#phone_logins').val();
-	        if(phone_logins_value != ""){
-			    $.ajax({
-				    url: "php/checkUser.php",
-				    type: 'POST',
-				    data: {
-				    	phone_login : phone_logins_value
-				    },
-					success: function(data) {
-						console.log(data);
-						if(data != "success"){
-							sweetAlert("Oops...", "Something went wrong. "+data, "error");
-							return false;
-						}
-					}
-				});
-			}
-		}
-
-	// -------------------------
 
 		// form review
 		function show_form_review(){
 			$('#submit-usergroup').text($('#user_group').val());
 			$('#submit-userid').text($('#user_form').val());
 			$('#submit-fullname').text($('#fullname').val());
-			$('#submit-phonelogin').text($('#phone_logins').val());
 			$('#submit-password').text("******");
 
 			if($('#status').val() == "Y"){
@@ -513,27 +527,6 @@
 				}
 				if(this.value != "custom_seats") {
 				  $('#custom_seats').hide();
-				}
-			});
-
-		/* user group */
-			$('#user_group').on('change', function() {
-				if(this.value == "AGENTS" || this.value == "ADMIN") {
-					document.getElementById('generate_phone_logins').value = "Y";
-					$('#phone_logins_form').show();
-				}else{
-					document.getElementById('generate_phone_logins').value = "N";
-					$('#phone_logins_form').hide();
-				}
-			});
-		
-		/* generate phone logins*/
-			$('#generate_phone_logins').on('change', function() {
-				if(this.value == "Y") {
-				  $('#phone_logins_form').show();
-				}
-				if(this.value == "N") {
-				  $('#phone_logins_form').hide();
 				}
 			});
 	});

@@ -33,8 +33,6 @@
 		
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
-		<!-- Wizard Form style -->
-    	<link rel="stylesheet" href="css/easyWizard.css">
 		
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
@@ -250,9 +248,9 @@
 							</div>
 							<div class="fab-div-area" id="fab-div-area">
 								<ul class="fab-ul" style="height: 250px;">
-									<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_ingroups"></a></li><br/>
-									<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_ivr"></a></li><br/>
-									<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers"> </a></li>
+									<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_ingroups" title="Create an Ingroup"></a></li><br/>
+									<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_ivr" title="Add an Interactive Voice Recording"></a></li><br/>
+									<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers" title="Add a Phone Number / DID / TFN"> </a></li>
 								</ul>
 							</div>
 						</div>
@@ -283,173 +281,162 @@
 	<!-- ADD INGROUP MODAL -->
 		<div class="modal fade" id="add_ingroups" tabindex="-1" aria-labelledby="ingroup_modal" >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius:5px;">
+            <div class="modal-content">
 
 			<!-- Header -->
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="ingroup_modal"><b>In-Group Wizard » Create New Ingroup</b></h4>
+					<h4 class="modal-title animated bounceInRight" id="ingroup_modal">
+						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create ingroups."></i> 
+						<b>In-Group Wizard » Create New Ingroup</b>
+					</h4>
 				</div>
-				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				<div class="modal-body wizard-content">
 				
-				<form action="AddTelephonyIngroup.php" method="POST" id="create_ingroup" class="form-horizontal " role="form">
-				<!-- STEP 1 -->
-					<div class="wizard-step">
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="groupid">Group ID:</label>
-							<div class="col-sm-9">
-								<input type="text" name="groupid" id="groupid" class="form-control" placeholder="Group ID. This is a required field. No Spaces. 2-20 characters in length." maxlength="20" minlength="2">
+				<form action="AddTelephonyIngroup.php" method="POST" id="create_ingroup" role="form">
+					<div class="row">
+						<h4>Group Details
+                           <br>
+                           <small>Fill up group details then assign to a user group.</small>
+                        </h4>
+                        <fieldset>
+							<div class="form-group mt">
+								<label class="col-sm-3 control-label" for="groupid">Group ID:</label>
+								<div class="col-sm-9 mb">
+									<input type="text" name="groupid" id="groupid" class="form-control" placeholder="Group ID (Mandatory)" title="Must be 2-20 characters in length." maxlength="20" minlength="2" required>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-3 control-label" for="groupname">Group Name: </label>
-							<div class="col-sm-9">
-								<input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name. This is a required field. 2-20 characters in length." maxlength="20" minlength="2">
+							<div class="form-group">		
+								<label class="col-sm-3 control-label" for="groupname">Group Name</label>
+								<div class="col-sm-9 mb">
+									<input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name (Mandatory)" title="Must be 2-20 characters in length." maxlength="20" minlength="2" required>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-3 control-label" for="color">Group Color: </label>
-							<div class="col-sm-9">
-					            <input type="text" class="form-control colorpicker" name="color" id="color" value="#fffff">
+							<div class="form-group">		
+								<label class="col-sm-3 control-label" for="color">Group Color</label>
+								<div class="col-sm-9 mb">
+						            <input type="text" class="form-control colorpicker" name="color" id="color" value="#fffff">
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="user_group">User Group: </label>
-							<div class="col-sm-9">
-								<select id="user_group" class="form-control" name="user_group">
-									<?php
-										for($i=0;$i<count($user_groups->user_group);$i++){
-									?>
-										<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
-									<?php
-										}
-									?>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="active">Active: </label>
-							<div class="col-sm-9">
-								<select name="active" id="active" class="form-control">
-									<option value="Y" selected>Yes</option>
-									<option value="N">No</option>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="web_form">Web Form: </label>
-							<div class="col-sm-9">
-								<input type="url" name="web_form" id="web_form" class="form-control" placeholder="Place a valid URL here... ">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="ingroup_voicemail">Voicemail: </label>
-							<div class="col-sm-9">	
-								<select name="ingroup_voicemail" id="ingroup_voicemail" class="form-control">
-									<?php
-										if($voicemails == NULL){
-									?>
-										<option value="" selected>--No Voicemails Available--</option>
-									<?php
-										}else{
-										for($i=0;$i<count($voicemails->voicemail_id);$i++){
-									?>
-											<option value="<?php echo $voicemails->voicemail_id[$i];?>">
-												<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
-											</option>									
-									<?php
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="user_group">User Group</label>
+								<div class="col-sm-9 mb">
+									<select id="user_group" class="form-control" name="user_group">
+										<?php
+											for($i=0;$i<count($user_groups->user_group);$i++){
+										?>
+											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
+										<?php
 											}
-										}
-									?>
-								</select>
+										?>
+									</select>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="next_agent_call">Next Agent Call: </label>
-							<div class="col-sm-9">	
-								<select name="next_agent_call" id="next_agent_call" class="form-control">
-										<option value="random"> Random </option>
-										<option value="oldest_call_start"> Oldest Call Start </option>
-										<option value="oldest_call_finish"> Oldest Call Finish </option>
-										<option value="overall_user_level"> Overall User Lever </option>
-										<option value="inbound_group_rank"> Inbound Group Rank </option>
-										<option value="campaign_rank"> Campaign Rank </option>
-										<option value="fewest_calls"> Fewest Calls </option>
-										<option value="fewest_calls_campaign"> Fewest Calls Campaign </option>
-										<option value="longest_wait_time"> Longest Wait Time </option>
-										<option value="ring_all"> Ring All </option>
-								</select>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="active">Active</label>
+								<div class="col-sm-9 mb">
+									<select name="active" id="active" class="form-control">
+										<option value="Y" selected>Yes</option>
+										<option value="N">No</option>
+									</select>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="display">Fronter Display: </label>
-							<div class="col-sm-9">
-								<select name="display" id="display" class="form-control">
-									<option value="N" selected>No</option>
-									<option value="Y">Yes</option>
-								</select>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="web_form">Web Form</label>
+								<div class="col-sm-9 mb">
+									<input type="url" name="web_form" id="web_form" class="form-control" placeholder="Place a valid URL here... ">
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="script">Script: </label>
-							<div class="col-sm-9">	
-								<select name="script" id="script" class="form-control">
-									<option value="NONE">--- NONE --- </option>
-									<?php
-										for($i=0;$i<count($scripts->script_id);$i++){
-									?>
-										<option value="<?php echo $scripts->script_id[$i];?>">
-											<?php echo $scripts->script_id[$i].' - '.$scripts->script_name[$i];?>
-										</option>									
-									<?php
-										}
-									?>
-								</select>
+						</fieldset>
+						<h4>Other Settings
+                           <br>
+                           <small>Settings for the created group</small>
+                        </h4>
+                        <fieldset>
+							<div class="form-group mt">
+								<label class="col-sm-3 control-label" for="ingroup_voicemail">Voicemail</label>
+								<div class="col-sm-9 mb">	
+									<select name="ingroup_voicemail" id="ingroup_voicemail" class="form-control">
+										<?php
+											if($voicemails == NULL){
+										?>
+											<option value="" selected>--No Voicemails Available--</option>
+										<?php
+											}else{
+											for($i=0;$i<count($voicemails->voicemail_id);$i++){
+										?>
+												<option value="<?php echo $voicemails->voicemail_id[$i];?>">
+													<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
+												</option>									
+										<?php
+												}
+											}
+										?>
+									</select>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="call_launch">Get Call Launch: </label>
-							<div class="col-sm-9">	
-								<select name="call_launch" id="call_launch" class="form-control">
-										<option value="NONE"> NONE </option>
-										<option value="SCRIPT"> SCRIPT </option>
-										<option value="WEBFORM"> WEBFORM </option>
-										<option value="WEBFORMTWO"> WEBFORMTWO </option>
-										<option value="FORM"> FORM </option>
-										<option value="EMAIL"> EMAIL </option>
-								</select>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="next_agent_call">Next Agent Call</label>
+								<div class="col-sm-9 mb">	
+									<select name="next_agent_call" id="next_agent_call" class="form-control">
+											<option value="random"> Random </option>
+											<option value="oldest_call_start"> Oldest Call Start </option>
+											<option value="oldest_call_finish"> Oldest Call Finish </option>
+											<option value="overall_user_level"> Overall User Lever </option>
+											<option value="inbound_group_rank"> Inbound Group Rank </option>
+											<option value="campaign_rank"> Campaign Rank </option>
+											<option value="fewest_calls"> Fewest Calls </option>
+											<option value="fewest_calls_campaign"> Fewest Calls Campaign </option>
+											<option value="longest_wait_time"> Longest Wait Time </option>
+											<option value="ring_all"> Ring All </option>
+									</select>
+								</div>
 							</div>
-						</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="display">Fronter Display</label>
+								<div class="col-sm-9 mb">
+									<select name="display" id="display" class="form-control">
+										<option value="N" selected>No</option>
+										<option value="Y">Yes</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="script">Script</label>
+								<div class="col-sm-9 mb">	
+									<select name="script" id="script" class="form-control">
+										<option value="NONE">--- NONE --- </option>
+										<?php
+											for($i=0;$i<count($scripts->script_id);$i++){
+										?>
+											<option value="<?php echo $scripts->script_id[$i];?>">
+												<?php echo $scripts->script_id[$i].' - '.$scripts->script_name[$i];?>
+											</option>									
+										<?php
+											}
+										?>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="call_launch">Get Call Launch</label>
+								<div class="col-sm-9 mb">	
+									<select name="call_launch" id="call_launch" class="form-control">
+											<option value="NONE"> NONE </option>
+											<option value="SCRIPT"> SCRIPT </option>
+											<option value="WEBFORM"> WEBFORM </option>
+											<option value="WEBFORMTWO"> WEBFORMTWO </option>
+											<option value="FORM"> FORM </option>
+											<option value="EMAIL"> EMAIL </option>
+									</select>
+								</div>
+							</div>
+						</fieldset>
 					</div><!-- end of step -->
 				
 				</form>
 
 				</div> <!-- end of modal body -->
-
-				<!-- NOTIFICATIONS -->
-				<div id="notifications">
-					<div class="output-message-success" style="display:none;">
-						<div class="alert alert-success alert-dismissible" role="alert">
-						  <strong>Success!</strong> New Ingroup added !
-						</div>
-					</div>
-					<div class="output-message-error" style="display:none;">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  <span id="ingroup_result"></span>
-						</div>
-					</div>
-					<div class="output-message-incomplete" style="display:none;">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  Please fill-up all the fields correctly and do not leave any fields with (<strong> * </strong>) blank.
-						</div>
-					</div>
-				</div>
-
-				<div class="modal-footer">
-					<!-- The wizard button will be inserted here. -->
-					<button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
-					<input type="submit" class="btn btn-primary" id="submit_ingroup" value="Submit" style="display: inline-block;">
-				</div>
 			</div>
 		</div>
 	</div><!-- end of modal -->
@@ -457,207 +444,199 @@
 	<!-- ADD IVR MODAL -->
 		<div class="modal fade" id="add_ivr" tabindex="-1" aria-labelledby="ivr_modal" >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius:5px;">
+            <div class="modal-content">
 					
 				<div class="modal-header">					
 					<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="ivr_modal"><b>Call Menu Wizard » Create New Call Menu</b></h4>
+					<h4 class="modal-title animated bounceInRight" id="ivr_modal">
+						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create IVR."></i> 
+						<b>Call Menu Wizard » Create New Call Menu</b>
+					</h4>
 				</div>
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
-				<form action="AddTelephonyIVR.php" method="POST" id="create_ivr" class="form-horizontal " role="form">
-				<!-- STEP 1 -->
-					<div class="wizard-step" style="display: block;">
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="menu_id">Menu ID:</label>
-							<div class="col-sm-6">
-								<input type="text" name="menu_id" id="menu_id" class="form-control" placeholder="Menu ID" minlength="4" required title="No Spaces. Minimum of 4 characters">
-							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="menu_name">Menu Name: </label>
-							<div class="col-sm-6">
-								<input type="text" name="menu_name" id="menu_name" class="form-control" placeholder="Menu Name" required>
-							</div>
-						</div>
-						
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="menu_prompt">Menu Greeting: </label>
-							<div class="col-sm-7">
-								<select name="menu_prompt" id="menu_prompt" class="form-control">
-									<option value="goWelcomeIVR" selected>-- Default Value --</option>
-									<?php
-										for($i=0;$i<count($voicefiles->file_name);$i++){
-											$file = substr($voicefiles->file_name[$i], 0, -4);
-									?>
-										<option value="<?php echo $file;?>"><?php echo $file;?></option>		
-									<?php
-										}
-									?>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="menu_timeout">Menu Timeout: </label>
-							<div class="col-sm-4">
-								<input type="number" name="menu_timeout" id="menu_timeout" class="form-control" value="10" min="0" required>
-							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="menu_timeout_prompt">Menu Timeout Greeting: </label>
-							<div class="col-sm-6">
-								<select name="menu_timeout_prompt " id="menu_timeout_prompt" class="form-control">
-									<option value="" selected>-- Default Value --</option>
-									<?php
-										for($i=0;$i<count($voicefiles->file_name);$i++){
-											$file = substr($voicefiles->file_name[$i], 0, -4);
-									?>
-										<option value="<?php echo $file;?>"><?php echo $file;?></option>		
-									<?php
-										}
-									?>				
-								</select>
-							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="menu_invalid_prompt">Menu Invalid Greeting: </label>
-							<div class="col-sm-7">
-								<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control">
-									<option value="" selected>-- Default Value --</option>	
-									<?php
-										for($i=0;$i<count($voicefiles->file_name);$i++){
-											$file = substr($voicefiles->file_name[$i], 0, -4);
-									?>
-										<option value="<?php echo $file;?>"><?php echo $file;?></option>		
-									<?php
-										}
-									?>				
-								</select>
-							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="menu_repeat">Menu Repeat: </label>
-							<div class="col-sm-7">
-								<input type="number" name="menu_repeat" id="menu_repeat" class="form-control" value="1" min="0" required>
-							</div>
-						</div>
-						
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="menu_time_check">Menu Time Check: </label>
-							<div class="col-sm-5">
-								<select name="menu_time_check" id="menu_time_check" class="form-control">
-									<option value="ADMIN" > Select Menu Time Check </option>		
-								</select>
-							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="call_time">Call Time: </label>
-							<div class="col-sm-5">
-								<select name="call_time" id="call_time" class="form-control">
-									<option value="ADMIN" > Select Call Time </option>		
-								</select>
-							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="menu_repeat">Track call in realtime report: </label>
-							<div class="col-sm-5"> 
-								<select name="call_time" id="call_time" class="form-control">
-									<option value="ADMIN" > Select Track Call </option>		
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="tracking_group">Tracking Group: </label>
-							<div class="col-sm-7">
-								<select name="tracking_group" id="tracking_group" class="form-control">
-								<?php
-									for($i=0;$i<count($ingroups->group_id);$i++){
-								?>
-									<option value="<?php echo $ingroups->group_id[$i];?>">
-										<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
-									</option>									
-								<?php
-									}
-								?>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="user_groups">User Groups: </label>
-							<div class="col-sm-5">
-								<select name="user_groups" id="user_groups" class="form-control">
-									<?php
-										for($i=0;$i<count($user_groups->user_group);$i++){
-									?>
-										<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
-									<?php
-										}
-									?>		
-								</select>
-							</div>
-						</div>
-					</div><!-- End of Step -->
-
-				<!-- STEP 2 -->
-					<div class="wizard-step" style="display: block;">
-						<div class="form-group">
-							<div class="col-lg-12">
-								<div class="pull-right">
-									<button type="button" class="btn btn-primary add-option">Add Option</button>
+				<form action="AddTelephonyIVR.php" method="POST" id="create_ivr" role="form">
+					<div class="row">
+						<h4>Account Details
+                           <br>
+                           <small>Assign then Enter Account and Login Details</small>
+                        </h4>
+                        <fieldset>
+							<div class="form-group mt">
+								<label class="col-sm-4 control-label" for="menu_id">Menu ID:</label>
+								<div class="col-sm-8 mb">
+									<input type="text" name="menu_id" id="menu_id" class="form-control" placeholder="Menu ID (Mandatory)" minlength="4" title="Minimum of 4 characters" required>
 								</div>
 							</div>
-						</div>
-						<div class="form-group to-clone-opt">
-							<label class="col-sm-3 control-label" for="">Default Call Menu Entry:</label>
-							<div class="col-lg-2">
-								Option:
-								<select class="form-control">
-									<option selected>TIMEOUT</option>
-								</select>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="menu_name">Menu Name</label>
+								<div class="col-sm-8 mb">
+									<input type="text" name="menu_name" id="menu_name" class="form-control" placeholder="Menu Name (Mandatory)" required>
+								</div>
 							</div>
-							<div class="col-lg-2">
-								Desription: 
-								<input type="text" name="" id="" class="form-control" placeholder="Description" required value="Hangup">
+							
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="menu_prompt">Menu Greeting</label>
+								<div class="col-sm-8 mb">
+									<select name="menu_prompt" id="menu_prompt" class="form-control">
+										<option value="goWelcomeIVR" selected>-- Default Value --</option>
+										<?php
+											for($i=0;$i<count($voicefiles->file_name);$i++){
+												$file = substr($voicefiles->file_name[$i], 0, -4);
+										?>
+											<option value="<?php echo $file;?>"><?php echo $file;?></option>		
+										<?php
+											}
+										?>
+									</select>
+								</div>
 							</div>
-							<div class="col-lg-2">
-								Route:
-								<select class="form-control">
-									<option selected>Hangup</option>
-								</select>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="menu_timeout">Menu Timeout</label>
+								<div class="col-sm-8 mb">
+									<input type="number" name="menu_timeout" id="menu_timeout" class="form-control" value="10" min="0" required>
+								</div>
 							</div>
-							<div class="col-lg-2">
-								Audio File:
-								<input type="text" name="" id="" class="form-control" placeholder="Description" required value="vm-goodbye">
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="menu_timeout_prompt">Menu Timeout Greeting</label>
+								<div class="col-sm-8 mb">
+									<select name="menu_timeout_prompt " id="menu_timeout_prompt" class="form-control">
+										<option value="" selected>-- Default Value --</option>
+										<?php
+											for($i=0;$i<count($voicefiles->file_name);$i++){
+												$file = substr($voicefiles->file_name[$i], 0, -4);
+										?>
+											<option value="<?php echo $file;?>"><?php echo $file;?></option>		
+										<?php
+											}
+										?>				
+									</select>
+								</div>
 							</div>
-							<div class="col-lg-1 btn-remove"></div>
-						</div>
-						<div class="cloning-area"></div>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="menu_invalid_prompt">Menu Invalid Greeting</label>
+								<div class="col-sm-8 mb">
+									<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control">
+										<option value="" selected>-- Default Value --</option>	
+										<?php
+											for($i=0;$i<count($voicefiles->file_name);$i++){
+												$file = substr($voicefiles->file_name[$i], 0, -4);
+										?>
+											<option value="<?php echo $file;?>"><?php echo $file;?></option>		
+										<?php
+											}
+										?>				
+									</select>
+								</div>
+							</div>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="menu_repeat">Menu Repeat</label>
+								<div class="col-sm-8 mb">
+									<input type="number" name="menu_repeat" id="menu_repeat" class="form-control" value="1" min="0" required>
+								</div>
+							</div>
+							
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="menu_time_check">Menu Time Check</label>
+								<div class="col-sm-8 mb">
+									<select name="menu_time_check" id="menu_time_check" class="form-control">
+										<option value="ADMIN" > Select Menu Time Check </option>		
+									</select>
+								</div>
+							</div>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="call_time">Call Time</label>
+								<div class="col-sm-8 mb">
+									<select name="call_time" id="call_time" class="form-control">
+										<option value="ADMIN" > Select Call Time </option>		
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="user_groups">User Groups</label>
+								<div class="col-sm-8 mb">
+									<select name="user_groups" id="user_groups" class="form-control">
+										<?php
+											for($i=0;$i<count($user_groups->user_group);$i++){
+										?>
+											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
+										<?php
+											}
+										?>		
+									</select>
+								</div>
+							</div>
+							<div class="form-group">		
+								<label class="col-sm-5 control-label" for="menu_repeat">Track call in realtime report</label>
+								<div class="col-sm-7 mb"> 
+									<select name="call_time" id="call_time" class="form-control">
+										<option value="ADMIN" > Select Track Call </option>		
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-5 control-label" for="tracking_group">Tracking Group</label>
+								<div class="col-sm-7 mb">
+									<select name="tracking_group" id="tracking_group" class="form-control">
+									<?php
+										for($i=0;$i<count($ingroups->group_id);$i++){
+									?>
+										<option value="<?php echo $ingroups->group_id[$i];?>">
+											<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+										</option>									
+									<?php
+										}
+									?>
+									</select>
+								</div>
+							</div>
+							
+						</fieldset>
+
+				<!-- STEP 2 -->
+						<h4>Account Details
+	                       <br>
+	                       <small>Assign then Enter Account and Login Details</small>
+	                    </h4>
+	                    <fieldset>
+							<div class="form-group">
+								<div class="col-lg-12">
+									<div class="pull-right">
+										<button type="button" class="btn btn-primary add-option">Add Option</button>
+									</div>
+								</div>
+							</div>
+							<div class="form-group to-clone-opt">
+								<label class="col-sm-3 control-label" for="">Default Call Menu Entry:</label>
+								<div class="col-lg-2">
+									Option:
+									<select class="form-control">
+										<option selected>TIMEOUT</option>
+									</select>
+								</div>
+								<div class="col-lg-2">
+									Desription: 
+									<input type="text" name="" id="" class="form-control" placeholder="Description" required value="Hangup">
+								</div>
+								<div class="col-lg-2">
+									Route:
+									<select class="form-control">
+										<option selected>Hangup</option>
+									</select>
+								</div>
+								<div class="col-lg-2">
+									Audio File:
+									<input type="text" name="" id="" class="form-control" placeholder="Description" required value="vm-goodbye">
+								</div>
+								<div class="col-lg-1 btn-remove"></div>
+							</div>
+							<div class="cloning-area"></div>
+						</fieldset>
 					</div><!-- End of Step -->
 				
 
 				</div> <!-- end of modal body -->
 				</form>
-
-				<!-- NOTIFICATIONS -->
-					<div class="output-message-success hide">
-						<div class="alert alert-success alert-dismissible" role="alert">
-						  <strong>Success!</strong> New Call Menu added.
-						</div>
-					</div>
-					<div class="output-message-error hide">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  <strong><span id="ivr_result"></span></strong> Something went wrong, please see input data on form or if agent already exists.
-						</div>
-					</div>
-					<div class="output-message-incomplete hide">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  <strong>Incomplete!</strong> Something went wrong, please complete all the fields below.
-						</div>
-					</div>
-
-				<div class="modal-footer wizard-buttons">
-					<!-- The wizard button will be inserted here. -->
-				</div>
 				
 				
 			</div>
@@ -666,300 +645,269 @@
 
 	
 	<!-- ADD DID MODAL -->
-		<div class="modal fade" id="add_phonenumbers" tabindex="-1" aria-labelledby="did_modal" >
+	<div class="modal fade" id="add_phonenumbers" tabindex="-1" aria-labelledby="did_modal" >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius:5px;">
+            <div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="did_modal"><b>DID Wizard » Create new DID</b></h4>
+					<h4 class="modal-title animated bounceInRight" id="did_modal">
+						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create DID/TFN."></i> 
+						<b>DID Wizard » Create new DID</b>
+					</h4>
 				</div>
-				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				<div class="modal-body wizard-content">
 				
-				<form action="AddTelephonyPhonenumber.php" method="POST" id="create_phonenumber" class="form-horizontal " role="form">
-				<!-- STEP 1 -->
-					<div class="wizard-step" style="display: block;">
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="did_exten">DID Extention:</label>
-							<div class="col-sm-7">
-								<input type="text" name="did_exten" id="did_exten" class="form-control" placeholder="DID Extention" maxlength="20" minlength="2" required title="No Spaces. 2-20 characters in length.">
+				<form action="AddTelephonyPhonenumber.php" method="POST" id="create_phonenumber" role="form">
+					<div class="row">
+						<!-- STEP 1 -->
+						<h4>DID Details
+                           <br>
+                           <small>Enter the basic details of your DID then assign it to a user group</small>
+                        </h4>
+                        <fieldset>
+							<div class="form-group mt">
+								<label class="col-sm-4 control-label" for="did_exten">DID Extention:</label>
+								<div class="col-sm-8 mb">
+									<input type="text" name="did_exten" id="did_exten" class="form-control" placeholder="DID Extention (Mandatory)" maxlength="20" minlength="2" required title="Must be 2-20 characters in length." />
+								</div>
 							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="desc">DID Description: </label>
-							<div class="col-sm-7">
-								<input type="text" name="desc" id="desc" class="form-control" placeholder="DID Description" maxlength="20" minlength="2" required title="2-20 characters in length">
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="desc">DID Description</label>
+								<div class="col-sm-8 mb">
+									<input type="text" name="desc" id="desc" class="form-control" placeholder="DID Description (Mandatory)" maxlength="20" minlength="2" title="Must be  2-20 characters in length"  required />
+								</div>
 							</div>
-						</div>
+							
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="active">Active</label>
+								<div class="col-sm-8 mb">
+									<select name="active" id="active" class="form-control">
+										<option value="Y" selected>Yes</option>
+										<option value="N">No</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="route" >DID Route</label>
+								<div class="col-sm-8 mb">
+									<select class="form-control" id="route" name="route">
+										<option value="AGENT"> Agent </option>
+										<option value="IN_GROUP"> In-group </option>
+										<option value="PHONE"> Phone </option>
+										<option value="CALLMENU"> Call Menu / IVR </option>
+										<option value="VOICEMAIL"> Voicemail </option>
+										<option value="EXTEN"> Custom Extension </option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="user_groups">User Groups</label>
+								<div class="col-sm-8 mb">
+									<select name="user_groups" id="user_groups" class="form-control">
+										<?php
+											for($i=0;$i<count($user_groups->user_group);$i++){
+										?>
+											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
+										<?php
+											}
+										?>
+									</select>
+								</div>
+							</div>
+						</fieldset>
+						<h4>Route Settings
+                           <br>
+                           <small>Fill up details needed for the chosen route.</small>
+                        </h4>
+                        <fieldset>
+						<!-- IF DID ROUTE = AGENT-->
+
+							<div id="form_route_agent">
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="route_agentid">Agent ID</label>
+									<div class="col-sm-8 mb">	
+										<select name="route_agentid" id="route_agentid" class="form-control">
+											<option value="" > -- NONE -- </option>
+											<?php
+												for($i=0;$i<count($users->userno);$i++){
+											?>
+												<option value="<?php echo $users->userno[$i];?>">
+													<?php echo $users->userno[$i].' - '.$users->full_name[$i];?>
+												</option>									
+											<?php
+												}
+											?>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="route_unavail">Agent Unavailable Action</label>
+									<div class="col-sm-8 mb">	
+										<select name="route_unavail" id="route_unavail" class="form-control">
+											<option value="VOICEMAIL" > Voicemail </option>
+											<option value="PHONE" > Phone </option>
+											<option value="IN_GROUP" > In-group </option>
+											<option value="EXTEN" > Custom Extension </option>
+										</select>
+									</div>
+								</div>
+							</div><!-- end of div agent-->
+							
+						<!-- IF DID ROUTE = IN-GROUP-->
 						
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="active">Active: </label>
-							<div class="col-sm-5">
-								<select name="active" id="active" class="form-control">
-									<option value="Y" selected>Yes</option>
-									<option value="N">No</option>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="route" >DID Route: </label>
-							<div class="col-sm-6">
-								<select class="form-control" id="route" name="route">
-									<option value="AGENT"> Agent </option>
-									<option value="IN_GROUP"> In-group </option>
-									<option value="PHONE"> Phone </option>
-									<option value="CALLMENU"> Call Menu / IVR </option>
-									<option value="VOICEMAIL"> Voicemail </option>
-									<option value="EXTEN"> Custom Extension </option>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="user_groups">User Groups: </label>
-							<div class="col-sm-7">
-								<select name="user_groups" id="user_groups" class="form-control">
-									<?php
-										for($i=0;$i<count($user_groups->user_group);$i++){
-									?>
-										<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
-									<?php
-										}
-									?>
-								</select>
-							</div>
-						</div>
-						
-				<!-- IF DID ROUTE = AGENT-->
+							<div id="form_route_ingroup" style="display: none;">
+								<label class="col-sm-4 control-label" for="route_ingroupid">In-Group ID</label>
+								<div class="col-sm-8 mb">	
+									<select name="route_ingroupid" id="route_ingroupid" class="form-control">
+										<?php
+											for($i=0;$i<count($ingroups->group_id);$i++){
+										?>
+											<option value="<?php echo $ingroups->group_id[$i];?>">
+												<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+											</option>									
+										<?php
+											}
+										?>
+									</select>
+								</div>
+							</div><!-- end of ingroup div -->
+							
+						<!-- IF DID ROUTE = PHONE -->
 
-					<div id="form_route_agent">
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="route_agentid">Agent ID: </label>
-							<div class="col-sm-7">	
-								<select name="route_agentid" id="route_agentid" class="form-control">
-									<option value="" > -- NONE -- </option>
-									<?php
-										for($i=0;$i<count($users->userno);$i++){
-									?>
-										<option value="<?php echo $users->userno[$i];?>">
-											<?php echo $users->userno[$i].' - '.$users->full_name[$i];?>
-										</option>									
-									<?php
-										}
-									?>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="route_unavail">Agent Unavailable Action: </label>
-							<div class="col-sm-7">	
-								<select name="route_unavail" id="route_unavail" class="form-control">
-									<option value="VOICEMAIL" > Voicemail </option>
-									<option value="PHONE" > Phone </option>
-									<option value="IN_GROUP" > In-group </option>
-									<option value="EXTEN" > Custom Extension </option>
-								</select>
-							</div>
-						</div>
-					</div><!-- end of div agent-->
-					
-				<!-- IF DID ROUTE = IN-GROUP-->
-				
-					<div id="form_route_ingroup" style="display: none;">
-						<label class="col-sm-4 control-label" for="route_ingroupid">In-Group ID: </label>
-						<div class="col-sm-8">	
-							<select name="route_ingroupid" id="route_ingroupid" class="form-control">
-								<?php
-									for($i=0;$i<count($ingroups->group_id);$i++){
-								?>
-									<option value="<?php echo $ingroups->group_id[$i];?>">
-										<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
-									</option>									
-								<?php
-									}
-								?>
-							</select>
-						</div>
-					</div><!-- end of ingroup div -->
-					
-				<!-- IF DID ROUTE = PHONE -->
+							<div id="form_route_phone" style="display: none;">
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="route_phone_exten">Phone Extension</label>
+									<div class="col-sm-8 mb">	
+										<select name="route_phone_exten" id="route_phone_exten" class="form-control">
+											<?php
+												for($i=0;$i<count($phones->extension);$i++){
+											?>
+												<option value="<?php echo $phones->extension[$i];?>">
+													<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
+												</option>									
+											<?php
+												}
+											?>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="route_phone_server">Server IP</label>
+									<div class="col-sm-8 mb">	
+										<select name="route_phone_server" id="route_phone_server" class="form-control">
+											<option value="" > -- NONE -- </option>
+											<?php
+												for($i=0;$i < 1;$i++){
+											?>
+												<option value="<?php echo $phones->server_ip[$i];?>">
+													<?php echo 'GOautodial - '.$phones->server_ip[$i];?>
+												</option>									
+											<?php
+												}
+											?>
+										</select>
+									</div>
+								</div>
+							</div><!-- end of phone div -->
+							
+						<!-- IF DID ROUTE = IVR -->
 
-					<div id="form_route_phone" style="display: none;">
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="route_phone_exten">Phone Extension: </label>
-							<div class="col-sm-7">	
-								<select name="route_phone_exten" id="route_phone_exten" class="form-control">
-									<?php
-										for($i=0;$i<count($phones->extension);$i++){
-									?>
-										<option value="<?php echo $phones->extension[$i];?>">
-											<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
-										</option>									
-									<?php
-										}
-									?>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="route_phone_server">Server IP: </label>
-							<div class="col-sm-7">	
-								<select name="route_phone_server" id="route_phone_server" class="form-control">
-									<option value="" > -- NONE -- </option>
-									<?php
-										for($i=0;$i < 1;$i++){
-									?>
-										<option value="<?php echo $phones->server_ip[$i];?>">
-											<?php echo 'GOautodial - '.$phones->server_ip[$i];?>
-										</option>									
-									<?php
-										}
-									?>
-								</select>
-							</div>
-						</div>
-					</div><!-- end of phone div -->
-					
-				<!-- IF DID ROUTE = IVR -->
+							<div id="form_route_callmenu" style="display: none;">
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="route_ivr">Call Menu</label>
+									<div class="col-sm-8 mb">	
+										<select name="route_ivr" id="route_ivr" class="form-control">
+											<?php
+											if(count($ivr->menu_id) > 0){
+												for($i=0;$i<count($ivr->menu_id);$i++){
+											?>
+												<option value="<?php echo $ivr->menu_id[$i];?>">
+													<?php echo $ivr->menu_id[$i].' - '.$ivr->menu_name[$i];?>
+												</option>									
+											<?php
+												}
+											}else{
+											?>
+												<option value="">- - - No Available Call Menu - - - </option>
+											<?php
+											}
+											?>
+										</select>
+									</div>
+								</div>
+							</div><!-- end of ivr div -->
+							
+						<!-- IF DID ROUTE = VoiceMail -->
 
-					<div id="form_route_callmenu" style="display: none;">
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="route_ivr">Call Menu: </label>
-							<div class="col-sm-7">	
-								<select name="route_ivr" id="route_ivr" class="form-control">
-									<?php
-									if(count($ivr->menu_id) > 0){
-										for($i=0;$i<count($ivr->menu_id);$i++){
-									?>
-										<option value="<?php echo $ivr->menu_id[$i];?>">
-											<?php echo $ivr->menu_id[$i].' - '.$ivr->menu_name[$i];?>
-										</option>									
-									<?php
-										}
-									}else{
-									?>
-										<option value="">- - - No Available Call Menu - - - </option>
-									<?php
-									}
-									?>
-								</select>
-							</div>
-						</div>
-					</div><!-- end of ivr div -->
-					
-				<!-- IF DID ROUTE = VoiceMail -->
+							<div id="form_route_voicemail" style="display: none;">
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="route_voicemail">Voicemail Box</label>
+									<div class="col-sm-8 mb">	
+										<select name="route_voicemail" id="route_voicemail" class="form-control">
+											
+											<?php
+												for($i=0;$i<count($voicemails->voicemail_id);$i++){
+											?>
+												<option value="<?php echo $voicemails->voicemail_id[$i];?>">
+													<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
+												</option>									
+											<?php
+												}
+											?>
+											
+										</select>
+									</div>
+								</div>
+							</div><!-- end of voicemail div -->
+							
+							<!-- IF DID ROUTE = Custom Extension -->
 
-					<div id="form_route_voicemail" style="display: none;">
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="route_voicemail">Voicemail Box: </label>
-							<div class="col-sm-7">	
-								<select name="route_voicemail" id="route_voicemail" class="form-control">
-									
-									<?php
-										for($i=0;$i<count($voicemails->voicemail_id);$i++){
-									?>
-										<option value="<?php echo $voicemails->voicemail_id[$i];?>">
-											<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
-										</option>									
-									<?php
-										}
-									?>
-									
-								</select>
-							</div>
-						</div>
-					</div><!-- end of voicemail div -->
-					
-					<!-- IF DID ROUTE = Custom Extension -->
-
-					<div id="form_route_exten" style="display: none;">
-						<div class="form-group">
-							<label class="col-sm-4 control-label" for="route_exten">Extension: </label>
-							<div class="col-sm-7">
-								<input type="text" name="route_exten" id="route_exten" placeholder="Extension" class="form-control" required>
-							</div>
-							<label class="col-sm-4 control-label" for="route_exten_context">Extension Context: </label>
-							<div class="col-sm-7">
-								<input type="text" name="route_exten_context" id="route_exten_context" placeholder="Extension Context" class="form-control" required>
-							</div>
-						</div>
-					</div><!-- end of custom extension div -->
-					
+							<div id="form_route_exten" style="display: none;">
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="route_exten">Extension</label>
+									<div class="col-sm-8 mb">
+										<input type="text" name="route_exten" id="route_exten" placeholder="Extension" class="form-control" required>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="route_exten_context">Extension Context</label>
+									<div class="col-sm-8 mb">
+										<input type="text" name="route_exten_context" id="route_exten_context" placeholder="Extension Context" class="form-control" required>
+									</div>
+								</div>
+							</div><!-- end of custom extension div -->
+						</fieldset>
 					</div><!-- End of Step -->
 				
 				
 
 				</div> <!-- end of modal body -->
 				</form>
-
-				<!-- NOTIFICATIONS -->
-
-				<div class="output-message-success" style="display:none;">
-					<div class="alert alert-success alert-dismissible" role="alert">
-					  <strong>Success!</strong> New Phone Number added.
-					</div>
-				</div>
-				<div class="output-message-error" style="display:none;">
-					<div class="alert alert-danger alert-dismissible" role="alert">
-						<span id="phonenumber_result"></span></strong> 
-					</div>
-				</div>
-				<div class="output-message-incomplete" style="display:none;">
-					<div class="alert alert-danger alert-dismissible" role="alert">
-					  <strong>Incomplete!</strong> Something went wrong, please complete all the fields below.
-					</div>
-				</div>
-				
-				<div class="modal-footer">
-					<!-- The wizard button will be inserted here. -->
-					<button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
-					<input type="submit" class="btn btn-primary" id="submit_did" value="Submit" style="display: inline-block;">
-					
-				</div>
 			</div>
 		</div>
 	</div><!-- end of modal -->
 
 <!-- END OF TELEPHONY INBOUND MODALS -->
 
-	<!-- DELETE VALIDATION MODAL -->
-	<div id="delete_validation_modal" class="modal modal-warning fade">
-    	<div class="modal-dialog">
-            <div class="modal-content" style="border-radius:5px;margin-top: 40%;">
-				<div class="modal-header">
-					<h4 class="modal-title"><b>WARNING!</b>  You are about to <b><u>DELETE</u></b> a <span class="action_validation"></span>... </h4>
-				</div>
-				<div class="modal-body" style="background:#fff;">
-					<p>This action cannot be undone.</p>
-					<p>Are you sure you want to delete <span class="action_validation"></span>: <i><b style="font-size:20px;"><span class="delete_extension"></span></b></i> ?</p>
-				</div>
-				<div class="modal-footer" style="background:#fff;">
-					<button type="button" class="btn btn-primary id-delete-label" id="delete_yes">Yes</button>
-               		<button type="button" class="btn btn-default pull-left" data-dismiss="modal">No</button>
-              </div>
-			</div>
-		</div>
-	</div>
-
-	<!-- DELETE NOTIFICATION MODAL -->
-	<div id="delete_notification" style="display:none;">
-		<?php echo $ui->deleteNotificationModal('<span class="action_validation">','<span id="id_span"></span>', '<span id="result_span"></span>');?>
-	</div>
-
 		<?php print $ui->standardizedThemeJS(); ?>
-        <!-- wizard -->
-		<script src="js/easyWizard.js" type="text/javascript"></script>
+        <!-- JQUERY STEPS-->
+  		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 	    <!-- bootstrap color picker -->
 		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
 
- 		<script type="text/javascript">
-			$(document).ready(function() {
+ <script type="text/javascript">
+	$(document).ready(function() {
 
+		/*******************
+		** INITIALIZATIONS
+		*******************/
 			// loads the fixed action button
 				$(".bottom-menu").on('mouseenter mouseleave', function () {
 				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 				});
 
 			//loads colorpicker
-    		$(".colorpicker").colorpicker();
+    			$("#colorpicker").colorpicker();
 
 			//loads datatable functions
 				$('#table_ingroup').dataTable();
@@ -967,6 +915,7 @@
 				$('#table_did').dataTable();
 
 			//reloads page when modal closes
+			/*
 				$('#add_ingroups').on('hidden.bs.modal', function () {
 					window.location = window.location.href;
 				});
@@ -978,234 +927,101 @@
 				$('#add_phonenumbers').on('hidden.bs.modal', function () {
 					window.location = window.location.href;
 				});
+			*/
 			//-----------
-				
-				$('#route').on('change', function() {
-					//  alert( this.value ); // or $(this).val()
-					if(this.value == "AGENT") {
-					  $('#form_route_agent').show();
-					  
-					  $('#form_route_ingroup').hide();
-					  $('#form_route_phone').hide();
-					  $('#form_route_callmenu').hide();
-					  $('#form_route_voicemail').hide();
-					  $('#form_route_exten').hide();
-					}if(this.value == "IN_GROUP") {
-					  $('#form_route_ingroup').show();
-					  
-					  $('#form_route_agent').hide();
-					  $('#form_route_phone').hide();
-					  $('#form_route_callmenu').hide();
-					  $('#form_route_voicemail').hide();
-					  $('#form_route_exten').hide();
-					}if(this.value == "PHONE") {
-					  $('#form_route_phone').show();
-					  
-					  $('#form_route_agent').hide();
-					  $('#form_route_ingroup').hide();
-					  $('#form_route_callmenu').hide();
-					  $('#form_route_voicemail').hide();
-					  $('#form_route_exten').hide();
-					}if(this.value == "CALLMENU") {
-					  $('#form_route_callmenu').show();
-					  
-					  $('#form_route_agent').hide();
-					  $('#form_route_ingroup').hide();
-					  $('#form_route_phone').hide();
-					  $('#form_route_voicemail').hide();
-					  $('#form_route_exten').hide();
-					}if(this.value == "VOICEMAIL") {
-					  $('#form_route_voicemail').show();
-					  
-					  $('#form_route_agent').hide();
-					  $('#form_route_ingroup').hide();
-					  $('#form_route_phone').hide();
-					  $('#form_route_callmenu').hide();
-					  $('#form_route_exten').hide();
-					}if(this.value == "EXTEN") {
-					  $('#form_route_exten').show();
-					  
-					  $('#form_route_agent').hide();
-					  $('#form_route_ingroup').hide();
-					  $('#form_route_phone').hide();
-					  $('#form_route_voicemail').hide();
-					  $('#form_route_callmenu').hide();
-					}
-					
-				});
-	
-				// for easy wizard -
-				$("#add_ingroups").wizard();
-				$("#add_phonenumbers").wizard();
-				$("#add_ivr").wizard({
-					onfinish:function(){
-						console.log("Call Menu Added!");
+		
+		/*******************
+		** INBOUND EVENTS
+		*******************/
 
-						$.ajax({
-							url: "./php/AddTelephonyIVR.php",
-							type: 'POST',
-							data: $("#create_ivr").serialize(),
-							success: function(data) {
-							  // console.log(data);
-								  if(data == "success"){
-									  swal("Success!", "IVR Successfully Created!", "success");
-								  }
-								  else{
-									  sweetAlert("Oops...", "Something went wrong!"+data, "error");
-								  }
-							}
-						});
-					}
-				});
+			/*********
+			** INIT WIZARD
+			*********/
+				var ingroup_form = $("#create_ingroup"); // init form wizard 
 
-				
+			    ingroup_form.validate({
+			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
+			    });
+			    ingroup_form.children("div").steps({
+			        headerTag: "h4",
+			        bodyTag: "fieldset",
+			        transitionEffect: "slideLeft",
+			        onStepChanging: function (event, currentIndex, newIndex)
+			        {
+			        	// Allways allow step back to the previous step even if the current step is not valid!
+				        if (currentIndex > newIndex) {
+				            return true;
+				        }
 
-				// ajax commands for modals -
-				$('#submit_ingroup').click(function(){
-					$('#submit_ingroup').val("Saving, Please Wait.....");
-					$('#submit_ingroup').prop("disabled", true);
+						// Clean up if user went backward before
+					    if (currentIndex < newIndex)
+					    {
+					        // To remove error styles
+					        $(".body:eq(" + newIndex + ") label.error", ingroup_form).remove();
+					        $(".body:eq(" + newIndex + ") .error", ingroup_form).removeClass("error");
+					    }
 
-					var validate_ingroup = 0;
-					var groupid = $("#groupid").val();
-					var groupname = $("#groupname").val();
-					var web_form = $("#web_form").val();
-					
-					if(groupid == ""){
-						validate_ingroup = 1;
-					}
+			            ingroup_form.validate().settings.ignore = ":disabled,:hidden";
+			            return ingroup_form.valid();
+			        },
+			        onFinishing: function (event, currentIndex)
+			        {
+			            ingroup_form.validate().settings.ignore = ":disabled";
+			            return ingroup_form.valid();
+			        },
+			        onFinished: function (event, currentIndex)
+			        {
 
-					if(groupname == ""){
-						validate_ingroup = 1;
-					}
+			        	$('#finish').text("Loading...");
+			        	$('#finish').attr("disabled", true);
 
-					if(web_form == ""){
-						validate_ingroup = 1;
-					}
+			        	/*********
+						** ADD EVENT 
+						*********/
+				            // Submit form via ajax
+					            $.ajax({
+									url: "./php/AddTelephonyIngroup.php",
+									type: 'POST',
+									data: $("#create_ingroup").serialize(),
+									success: function(data) {
+									  // console.log(data);
+										  if(data == "success"){
+												swal("Success!", "Ingroup Successfully Created!", "success");
+										  		window.setTimeout(function(){location.reload()},1000);
 
-					if(validate_ingroup == 0){
-					//alert("Validated !");
-					
-						$.ajax({
-							url: "./php/AddTelephonyIngroup.php",
-							type: 'POST',
-							data: $("#create_ingroup").serialize(),
-							success: function(data) {
-							  // console.log(data);
-								  if(data == "success"){
-										swal("Success!", "Ingroup Successfully Created!", "success");
-								  		window.setTimeout(function(){location.reload()},1000);
-								  		$('#submit_ingroup').val("Submit");
-										$('#submit_ingroup').prop("disabled", false);
-								  }
-								  else{
-									  sweetAlert("Oops...", "Something went wrong! "+data, "error");
-									  $('#submit_ingroup').val("Submit");
-									  $('#submit_ingroup').prop("disabled", false);
-								  }
-							}
-						});
-					
-					}else{
-						sweetAlert("Oops...", "Something went wrong!", "error");
-						validate_ingroup = 0;
-						$('#submit_ingroup').val("Submit");
-						$('#submit_ingroup').prop("disabled", false);
-					}
-				});
-				
-				$('#submit_did').click(function(){
+										  		$('#finish').text("Submit");
+												$('#finish').attr("disabled", false);
+										  }
+										  else{
+											  sweetAlert("Oops...", "Something went wrong! "+data, "error");
 
-				$('#submit_did').val("Saving, Please Wait.....");
-				$('#submit_did').prop("disabled", true);
+											  $('#finish').text("Submit");
+											  $('#finish').attr("disabled", false);
+										  }
+									}
+								});
+			        }
+			    }); // end of wizard
+			
+			//------------------------
 
-				var validate_did = 0;
+			/*********
+			** EDIT INGROUP
+			*********/
 
-				var did_exten = $("#did_exten").val();
-				var desc = $("#desc").val();
-
-				var route = $("#route").val();
-				var route_exten = $("#route_exten").val();
-				var route_exten_context = $("#route_exten_context").val();
-
-					if(did_exten == ""){
-						validate_did = 1;
-					}
-					if(desc == ""){
-						validate_did = 1;
-					}
-
-					if(route == "EXTEN"){
-						if(route_exten == ""){
-							validate_did = 1;
-						}
-						if(route_exten_context == ""){
-							validate_did = 1;
-						}
-					}
-
-					if(validate_did == 0){
-						$.ajax({
-							url: "./php/AddTelephonyPhonenumber.php",
-							type: 'POST',
-							data: $("#create_phonenumber").serialize(),
-							success: function(data) {
-							  // console.log(data);
-								  if(data == 1){
-										swal("Success!", "Phone Number Successfully Created!", "success");
-								  		window.setTimeout(function(){location.reload()},1000)
-								  		$('#submit_did').val("Submit");
-										$('#submit_did').prop("disabled", false);
-								  }else{
-										sweetAlert("Oops...", "Something went wrong! "+data, "error");
-										$('#submit_did').val("Submit");
-										$('#submit_did').prop("disabled", false);
-								  }
-							}
-						});
-					}else{
-						sweetAlert("Oops...", "Something went wrong!", "error");
-						validate_did = 0;
-						$('#submit_did').val("Submit");
-						$('#submit_did').prop("disabled", false);
-					}
-
-				});
-
-			/****
-			 ** EDIT ACTIONS
-			 ****/
-
-				//EDIT INGROUP
-				 $(".edit-ingroup").click(function(e) {
+				$(".edit-ingroup").click(function(e) {
 					e.preventDefault();
 					var url = './edittelephonyinbound.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="groupid" value="' + $(this).attr('data-id') + '" /></form>');
 					//$('body').append(form);  // This line is not necessary
 					$(form).submit();
-				 });
-				 //EDIT IVR
-				 $(".edit-ivr").click(function(e) {
-					e.preventDefault();
-					var url = './edittelephonyinbound.php';
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="ivr" value="' + $(this).attr('data-id') + '" /></form>');
-					//$('body').append(form);  // This line is not necessary
-					$(form).submit();
-				 });
-				 //EDIT PHONENUMBER/DID
-				 $(document).on('click','.edit-phonenumber',function() {
-					var url = './edittelephonyinbound.php';
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="did" value="' + $(this).attr('data-id') + '" /></form>');
-					//$('body').append(form);  // This line is not necessary
-					$(form).submit();
-				 });
+				});
 
-
-			/****
-			** DELETE Functions
-			*****/
-
-			//DELETE INGROUPS
-				 $(document).on('click','.delete-ingroup',function() {
+			/*********
+			** DELETE INGROUP
+			*********/
+				//DELETE INGROUPS
+				$(document).on('click','.delete-ingroup',function() {
 				 	var id = $(this).attr('data-id');
 	                swal({   
 	                	title: "Are you sure?",   
@@ -1241,9 +1057,86 @@
 		                	} 
 	                	}
 	                );
-				 });
-			//DELETE IVR
-				 $(document).on('click','.delete-ivr',function() {
+				});
+		
+		//-------------------- end of main ingroup events
+
+		/*******************
+		** IVR EVENTS
+		*******************/
+
+			/*********
+			** INIT WIZARD
+			*********/
+				var ivr_form = $("#create_ivr"); // init form wizard 
+
+			    ivr_form.validate({
+			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
+			    });
+			    ivr_form.children("div").steps({
+			        headerTag: "h4",
+			        bodyTag: "fieldset",
+			        transitionEffect: "slideLeft",
+			        onStepChanging: function (event, currentIndex, newIndex)
+			        {
+			        	// Allways allow step back to the previous step even if the current step is not valid!
+				        if (currentIndex > newIndex) {
+				            return true;
+				        }
+
+						// Clean up if user went backward before
+					    if (currentIndex < newIndex)
+					    {
+					        // To remove error styles
+					        $(".body:eq(" + newIndex + ") label.error", ivr_form).remove();
+					        $(".body:eq(" + newIndex + ") .error", ivr_form).removeClass("error");
+					    }
+
+			            ivr_form.validate().settings.ignore = ":disabled,:hidden";
+			            return ivr_form.valid();
+			        },
+			        onFinishing: function (event, currentIndex)
+			        {
+			            ivr_form.validate().settings.ignore = ":disabled";
+			            return ivr_form.valid();
+			        },
+			        onFinished: function (event, currentIndex)
+			        {
+
+			        	$('#finish').text("Loading...");
+			        	$('#finish').attr("disabled", true);
+
+			        	/*********
+						** ADD EVENT 
+						*********/
+				            
+						sweetAlert("Oops...", "NO ADD FUNCTION YET. Sorry for the inconvenience, but this function is still under construction", "error");
+
+						$('#finish').text("Submit");
+						$('#finish').attr("disabled", false);
+							
+			        }
+			    }); // end of wizard
+			
+			//------------------------
+
+			/*********
+			** EDIT IVR
+			*********/
+
+				$(".edit-ivr").click(function(e) {
+					e.preventDefault();
+					var url = './edittelephonyinbound.php';
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="ivr" value="' + $(this).attr('data-id') + '" /></form>');
+					//$('body').append(form);  // This line is not necessary
+					$(form).submit();
+				});
+
+			/*********
+			** DELETE IVR
+			*********/
+
+				$(document).on('click','.delete-ivr',function() {
 				 	var id = $(this).attr('data-id');
 	                swal({   
 	                	title: "Are you sure?",   
@@ -1279,9 +1172,98 @@
 		                	} 
 	                	}
 	                );
-				 });
-			//DELETE PHONENUMBER/DID
-				 $(document).on('click','.delete-phonenumber',function() {
+				});
+		
+		//-------------------- end of main ivr events
+
+		/*******************
+		** DID EVENTS
+		*******************/
+
+			/*********
+			** DID WIZARD
+			*********/
+				var did_form = $("#create_phonenumber"); // init form wizard 
+
+			    did_form.validate({
+			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
+			    });
+			    did_form.children("div").steps({
+			        headerTag: "h4",
+			        bodyTag: "fieldset",
+			        transitionEffect: "slideLeft",
+			        onStepChanging: function (event, currentIndex, newIndex)
+			        {
+			        	// Allways allow step back to the previous step even if the current step is not valid!
+				        if (currentIndex > newIndex) {
+				            return true;
+				        }
+
+						// Clean up if user went backward before
+					    if (currentIndex < newIndex)
+					    {
+					        // To remove error styles
+					        $(".body:eq(" + newIndex + ") label.error", did_form).remove();
+					        $(".body:eq(" + newIndex + ") .error", did_form).removeClass("error");
+					    }
+
+			            did_form.validate().settings.ignore = ":disabled,:hidden";
+			            return did_form.valid();
+			        },
+			        onFinishing: function (event, currentIndex)
+			        {
+			            did_form.validate().settings.ignore = ":disabled";
+			            return did_form.valid();
+			        },
+			        onFinished: function (event, currentIndex)
+			        {
+
+			        	$('#finish').text("Loading...");
+			        	$('#finish').attr("disabled", true);
+
+			        	/*********
+						** ADD EVENT 
+						*********/
+				            $.ajax({
+								url: "./php/AddTelephonyPhonenumber.php",
+								type: 'POST',
+								data: $("#create_phonenumber").serialize(),
+								success: function(data) {
+								  // console.log(data);
+									  if(data == 1){
+											swal("Success!", "Phone Number Successfully Created!", "success");
+									  		window.setTimeout(function(){location.reload()},1000)
+									  		$('#submit_did').val("Submit");
+											$('#submit_did').attr("disabled", false);
+									  }else{
+											sweetAlert("Oops...", "Something went wrong! "+data, "error");
+											$('#submit_did').val("Submit");
+											$('#submit_did').attr("disabled", false);
+									  }
+								}
+							});
+							
+			        }
+			    }); // end of wizard
+			
+			//------------------------
+
+			/*********
+			** EDIT DID
+			*********/
+
+				$(document).on('click','.edit-phonenumber',function() {
+					var url = './edittelephonyinbound.php';
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="did" value="' + $(this).attr('data-id') + '" /></form>');
+					//$('body').append(form);  // This line is not necessary
+					$(form).submit();
+				});
+
+			/*********
+			** DELETE DID
+			*********/
+
+				$(document).on('click','.delete-phonenumber',function() {
 				 	var id = $(this).attr('data-id');
 	                swal({   
 	                	title: "Are you sure?",   
@@ -1319,27 +1301,128 @@
 		                	} 
 	                	}
 	                );
-				 });
-
-				$('.add-option').click(function(){
-					var toClone = $('.to-clone-opt').clone();
-
-					toClone.removeClass('to-clone-opt');
-					toClone.find('label.control-label').text('');
-					toClone.find('.btn-remove').append('<span class="fa fa-remove fa-2x text-red remove-row"></span>');
-
-					$('.cloning-area').append(toClone);
 				});
+		
+		//-------------------- end of main did events
 
-				$(document).on('click', '.remove-row', function(){
-					var row = $(this).parent().parent();
-					
-					row.remove();
-				});
+		/*******************
+		** OTHER TRIGGER EVENTS and FILTERS
+		*******************/
+			/*** INGROUP ***/
+				// disable special characters on Ingroup ID
+					$('#groupid').bind('keypress', function (event) {
+					    var regex = new RegExp("^[a-zA-Z0-9]+$");
+					    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+					    if (!regex.test(key)) {
+					       event.preventDefault();
+					       return false;
+					    }
+					});
+				// disable special characters on Ingroup Name
+					$('#groupname').bind('keypress', function (event) {
+					    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+					    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+					    if (!regex.test(key)) {
+					       event.preventDefault();
+					       return false;
+					    }
+					});
 
-				
-			});
-		</script>
+			/*** IVR ***/
+				//add option
+					$('.add-option').click(function(){
+						var toClone = $('.to-clone-opt').clone();
+
+						toClone.removeClass('to-clone-opt');
+						toClone.find('label.control-label').text('');
+						toClone.find('.btn-remove').append('<span class="fa fa-remove fa-2x text-red remove-row"></span>');
+
+						$('.cloning-area').append(toClone);
+					});
+
+				//remove option
+					$(document).on('click', '.remove-row', function(){
+						var row = $(this).parent().parent();
+						
+						row.remove();
+					});
+
+			/*** DID ***/
+				// disable special characters on DID Exten
+					$('#did_exten').bind('keypress', function (event) {
+					    var regex = new RegExp("^[a-zA-Z0-9]+$");
+					    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+					    if (!regex.test(key)) {
+					       event.preventDefault();
+					       return false;
+					    }
+					});
+				// disable special characters on DID Desc
+					$('#desc').bind('keypress', function (event) {
+					    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+					    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+					    if (!regex.test(key)) {
+					       event.preventDefault();
+					       return false;
+					    }
+					});
+
+				//route change
+					$('#route').on('change', function() {
+						if(this.value == "AGENT") {
+						  $('#form_route_agent').show();
+						  
+						  $('#form_route_ingroup').hide();
+						  $('#form_route_phone').hide();
+						  $('#form_route_callmenu').hide();
+						  $('#form_route_voicemail').hide();
+						  $('#form_route_exten').hide();
+						}if(this.value == "IN_GROUP") {
+						  $('#form_route_ingroup').show();
+						  
+						  $('#form_route_agent').hide();
+						  $('#form_route_phone').hide();
+						  $('#form_route_callmenu').hide();
+						  $('#form_route_voicemail').hide();
+						  $('#form_route_exten').hide();
+						}if(this.value == "PHONE") {
+						  $('#form_route_phone').show();
+						  
+						  $('#form_route_agent').hide();
+						  $('#form_route_ingroup').hide();
+						  $('#form_route_callmenu').hide();
+						  $('#form_route_voicemail').hide();
+						  $('#form_route_exten').hide();
+						}if(this.value == "CALLMENU") {
+						  $('#form_route_callmenu').show();
+						  
+						  $('#form_route_agent').hide();
+						  $('#form_route_ingroup').hide();
+						  $('#form_route_phone').hide();
+						  $('#form_route_voicemail').hide();
+						  $('#form_route_exten').hide();
+						}if(this.value == "VOICEMAIL") {
+						  $('#form_route_voicemail').show();
+						  
+						  $('#form_route_agent').hide();
+						  $('#form_route_ingroup').hide();
+						  $('#form_route_phone').hide();
+						  $('#form_route_callmenu').hide();
+						  $('#form_route_exten').hide();
+						}if(this.value == "EXTEN") {
+						  $('#form_route_exten').show();
+						  
+						  $('#form_route_agent').hide();
+						  $('#form_route_ingroup').hide();
+						  $('#form_route_phone').hide();
+						  $('#form_route_voicemail').hide();
+						  $('#form_route_callmenu').hide();
+						}
+						
+					});	 
+
+	});
+</script>
 
 		<?php print $ui->creamyFooter(); ?>
     </body>

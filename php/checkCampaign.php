@@ -1,8 +1,9 @@
 <?php
 
 	###################################################
-	### Name: checkUser.php 						###
-	### Functions: Check Add/Edit User Details 		###
+	### Name: checkCampaign.php 					###
+	### Functions: Check Add/Edit Campaign			###
+	###           Disposition & Lead Filter Details ###
 	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
 	### Version: 4.0 								###
 	### Written by: Alexander Jim H. Abenoja		###
@@ -11,21 +12,16 @@
 
 	require_once('goCRMAPISettings.php');
 
-	$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
+	$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass; #Password goes here. (required)
-	$postfields["goAction"] = "goCheckUser"; #action performed by the [[API:Functions]]. (required)
+	$postfields["goAction"] = "goCheckCampaign"; #action performed by the [[API:Functions]]. (required)
 	$postfields["responsetype"] = responsetype; #json. (required)
+	$postfields["campaign_id"] = $_POST['campaign_id']; 
 
-	if(isset($_POST['user'])){
-		$postfields["user"] = $_POST['user'];
+	if(isset($_POST['status'])){
+		$postfields["status"] = $_POST['status'];
 	}
-	
-
-	if(isset($_POST['phone_login'])){
-		$postfields["phone_login"] = $_POST['phone_login']; 
-	}
-	
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -40,11 +36,8 @@
 	if($output->result == "success"){
 		echo $output->result;
 	}else{
-		if($output->user != NULL){
-			echo $output->result;
-		}
 		if($output->result == "fail"){
-			echo $output->phone_login;
+			echo $output->status;
 		}
 	}
 
