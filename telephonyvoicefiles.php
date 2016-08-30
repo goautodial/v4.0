@@ -1,4 +1,4 @@
-<?php	
+<?php
 
 	###################################################
 	### Name: telephonyvoicefiles.php 				###
@@ -23,7 +23,7 @@
         <meta charset="UTF-8">
         <title>Voicefiles</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
+
         <?php print $ui->standardizedThemeCSS(); ?>
 
         <!-- Wizard Form style -->
@@ -33,7 +33,7 @@
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		<!-- Bootstrap Player -->
 		<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
-        
+
         <?php print $ui->creamyThemeCSS(); ?>
 
         <!-- Data Tables -->
@@ -89,8 +89,18 @@
 				?>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
+            <div class="bottom-menu skin-blue">
+				<div class="action-button-circle" data-toggle="modal">
+					<?php print $ui->getCircleButton("voicefiles", "plus"); ?>
+				</div>
+				<div class="fab-div-area" id="fab-div-area">
+					<ul class="fab-ul" style="">
+						<li class="li-style"><a class="fa fa-volume-up fab-div-item" id="add_voicefiles" title="Add Voicefile"></a></li><br/>
+					</ul>
+				</div>
+			</div>
         </div><!-- ./wrapper -->
-	
+
 	<!-- Modal -->
 	<div id="voice-playback-modal" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
@@ -118,34 +128,114 @@
 	  </div>
 	</div>
 	<!-- End of modal -->
-	
-	
+
+	<!-- Modal -->
+	<div id="form-voicefiles-modal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title"><b>Upload Voice Files</b></h4>
+	      </div>
+        <form action="./php/AddVoiceFiles.php" method="POST" enctype="multipart/form-data">
+  	      <div class="modal-body clearfix">
+    				<div class="form-horizontal col-lg-12">
+    					<div class="form-group" style="margin-bottom: 0px;">
+    						<div class="input-group">
+    							<input type="file" name="voice_file" class="hide" id="voice_file" accept="audio/*">
+    					      	<input type="text" class="form-control voice_file_holder" placeholder="Choose a file">
+    					      	<span class="input-group-btn">
+    					        	<button class="btn btn-default btn-browse-file" type="button">Browse...</button>
+    					     	</span>
+    					    </div><!-- /input-group -->
+    					</div>
+    				</div>
+  	      </div>
+  	      <div class="modal-footer">
+  	      	<button type="submit" class="btn btn-primary btn-save-voicefiles">Save</button>
+  	        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+  	      </div>
+        </form>
+	    </div>
+	    <!-- End of modal content -->
+	  </div>
+	</div>
+	<!-- End of modal -->
+
+
+
+
 		<!-- Forms and actions -->
 		<?php print $ui->standardizedThemeJS(); ?>
-   		
+
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('#voicefiles').dataTable();
-				
+
 				$('.play_voice_file').click(function(){
 					var audioFile = $(this).attr('data-location');
-					
+
 					var sourceFile = '<audio class="audio_file" controls>';
 					    sourceFile += '<source src="'+ audioFile +'" type="audio/mpeg" download="true"/>';
 					    sourceFile += '</audio>';
-					    
+
 					$('.download-audio-file').attr('href', audioFile);
 					$('.voice-player').html(sourceFile);
-					$('#call-playback-modal').modal('show');
-					
+					$('#voice-playback-modal').modal('show');
+
 					var aud = $('.audio_file').get(0);
 					aud.play();
 				});
-				
+
 				$('#voice-playback-modal').on('hidden.bs.modal', function () {
 					var aud = $('.audio_file').get(0);
 					aud.pause();
 				});
+
+				// FAB HOVER
+				$(".bottom-menu").on('mouseenter mouseleave', function () {
+				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
+				});
+
+				$('#add_voicefiles').click(function(){
+					$('#form-voicefiles-modal').modal('show');
+				});
+
+				$('.btn-browse-file').click(function(){
+					$('#voice_file').click();
+				});
+
+				$('#voice_file').change(function(){
+					var myFile = $(this).prop('files');
+					var Filename = myFile[0].name;
+          var filesize = myFile[0].size  / 1024;
+              filesize = (Math.round(filesize * 100) / 100)
+
+          if(filesize > 16000){
+            alert("The voice file you are trying to upload exceeds the required file size. Maximum file size is up to 16MB only.");
+            $('#voice_file').val('');
+            $('.voice_file_holder').val();
+          }else{
+            $('.voice_file_holder').val(Filename);
+          }
+
+				});
+
+        $('.voice_file_holder').change(function(){
+          var holderVal = $(this).val();
+          var file = $('#voice_file').val();
+
+          if(holderVal != file){
+            $('#voice_file').val('');
+          }
+        });
+
+        $('#form-voicefiles-modal').on('hidden.bs.modal', function () {
+            $('#voice_file').val('');
+            $('.voice_file_holder').val();
+        });
 			});
 		</script>
 
