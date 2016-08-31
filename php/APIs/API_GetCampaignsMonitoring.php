@@ -61,19 +61,19 @@
         
         if ($leadscount == 0){ 
             $textclass = "text-blue";
-            $sessionAvatar = "<div class='media'><avatar username='$campname' background-color='#f44336' :size='36'></avatar></div>";
+            $sessionAvatar = "<div class='media'><avatar username='$campname' :size='36'></avatar></div>";
             
         } 
         
         if ($leadscount > 0){ 
             $textclass = "text-blue";
-            $sessionAvatar = "<div class='media'><avatar username='$campname' background-color='#ff5722' :size='36'></avatar></div>";
+            $sessionAvatar = "<div class='media'><avatar username='$campname' :size='36'></avatar></div>";
             
         } 
         $campaignsmonitoring .='[';
         $campaignsmonitoring .= '"'.$sessionAvatar.'",';
-        $campaignsmonitoring .= '"'.$campid.'",';        
-        $campaignsmonitoring .= '"<b class=\"'.$textclass.'\">'.$campname.'</b>",'; 
+        $campaignsmonitoring .= '"<b class=\"'.$textclass.'\">'.$campid.'</b>",';        
+        $campaignsmonitoring .= '"'.$campname.'",'; 
         $campaignsmonitoring .= '"'.$leadscount.'",';      
         $campaignsmonitoring .= '"'.$localcalltime.'",';      
         $campaignsmonitoring .= '"'.$usergroup.'"';

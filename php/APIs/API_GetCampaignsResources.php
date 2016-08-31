@@ -70,7 +70,7 @@
   
         if ($leadscount == 0){   
         
-             $sessionAvatar = "<avatar username='$campname' background-color='#f44336' :size='32'></avatar>";
+             $sessionAvatar = "<avatar username='$campname' :size='32'></avatar>";
              
                 echo                            '<div class="media-box">
                                                     <div class="pull-left">
@@ -91,7 +91,7 @@
         }
             if ($leadscount > 0){ 
             
-                 $sessionAvatar = "<avatar username='$campname' background-color='#ff5722' :size='32'></avatar>";
+                 $sessionAvatar = "<avatar username='$campname' :size='32'></avatar>";
                  
                 echo                            '<div class="media-box">
                                                     <div class="pull-left">

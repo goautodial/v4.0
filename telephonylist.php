@@ -92,7 +92,7 @@
                 <!-- Main content -->
                 <section class="content">
                 	<div class="row">
-						<div class="col-lg-9">
+                                <div class="col-lg-9">
 		                	<div class="panel panel-default">
 								<div class="panel-body">
 									<legend>Lists</legend>
