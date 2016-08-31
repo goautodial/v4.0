@@ -1857,9 +1857,9 @@ error_reporting(E_ERROR | E_PARSE);
 			$telephonyArea .= $this-> getSidebarItem("./telephonylist.php", "list", $this->lh->translationFor("lists"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "comment", $this->lh->translationFor("scripts"));
 			$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
-			$telephonyArea .= $this-> getSidebarItem("./audiofiles.php", "headphones", $this->lh->translationFor("audiofiles"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonymusiconhold.php", "music", $this->lh->translationFor("music_on_hold"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonyvoicefiles.php", "files-o", $this->lh->translationFor("voice_files"));
+			$telephonyArea .= $this-> getSidebarItem("./audiofiles.php", "music", $this->lh->translationFor("audiofiles"));
+			//$telephonyArea .= $this-> getSidebarItem("./telephonymusiconhold.php", "music", $this->lh->translationFor("music_on_hold"));
+			//$telephonyArea .= $this-> getSidebarItem("./telephonyvoicefiles.php", "files-o", $this->lh->translationFor("voice_files"));
 			$telephonyArea .= '</ul></li>';
 			
 			$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';	
@@ -3132,10 +3132,10 @@ error_reporting(E_ERROR | E_PARSE);
 			   
 	       	    $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i]); 
 	       	    $sessionAvatar = "<avatar username='".$output->full_name[$i]."' :size='36'></avatar>";
-	       	    
+
 		        $result .= "<tr>
 		        		 <td>".$sessionAvatar."</td>
-	                     <td class='hide-on-low'><a class='edit-T_user' data-id=".$output->user_id[$i].">".$output->user[$i]."</a></td>
+	                     <td class='hide-on-low'><strong><a class='edit-T_user' data-id=".$output->user_id[$i].">".$output->user[$i]."</a></strong></td>
 						 <td>".$output->full_name[$i]."</td>";
 	            $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
 	                     <td class='hide-on-low'>".$output->active[$i]."</td>

@@ -307,35 +307,66 @@
 	</div>
 	<!-- End of modal -->
 
-	<!-- Voice Files Modal -->
+	<!-- Upload Voice Files Modal -->
 	<div id="form-voicefiles-modal" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
 
 	    <!-- Modal content-->
 	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title animated bounceInRight"><b>Upload Voice Files</b></h4>
-	      </div>
-        <form action="./php/AddVoiceFiles.php" method="POST" enctype="multipart/form-data">
-  	      <div class="modal-body clearfix">
-    				<div class="col-lg-12">
-    					<div class="form-group mt">
-    						<div class="input-group">
-    							<input type="file" name="voice_file" class="hide" id="voice_file" accept="audio/*">
-    					      	<input type="text" class="form-control voice_file_holder" placeholder="Choose a file">
-    					      	<span class="input-group-btn">
-    					        	<button class="btn btn-default btn-browse-file" type="button">Browse...</button>
-    					     	</span>
-    					    </div><!-- /input-group -->
-    					</div>
-    				</div>
-  	      </div>
-  	      <div class="modal-footer">
-  	      	<button type="submit" class="btn btn-primary btn-save-voicefiles">Save</button>
-  	        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-  	      </div>
-        </form>
+	      	<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	       		<h4 class="modal-title animated bounceInRight"><b>Upload Voice Files</b></h4>
+	      	</div>
+		    <div class="modal-body clearfix">
+		        <form action="./php/AddVoiceFiles.php" method="POST" id="voicefile_form" enctype="multipart/form-data">
+		  	      	<div class="row">
+		  	      		<h4>
+		  	      			Upload a Voice File<br/>
+		  	      			<small>Browse for the file and click on Submit.</small>
+		  	      		</h4>
+		  	      		<fieldset>
+		    				<div class="col-lg-12">
+		    					<div class="form-group mt">
+		    						<div class="input-group">
+		    					      	<input type="text" class="form-control voice_file_holder" placeholder="Choose a file" required>
+		    					      	<span class="input-group-btn">
+		    					        	<button class="btn btn-default btn-browse-file" type="button">Browse...</button>
+		    					     	</span>
+		    					    </div><!-- /input-group -->
+		    					    <input type="file" name="voice_file" class="hide" id="voice_file" accept="audio/*">
+		    					</div>
+		    				</div>
+		    				<div class="form-group">
+		    					<div class="upload-loader" style="display:none;">
+					    			<center>
+					    				<div class="fl spinner2" style="position: absolute;">
+					    					<div class="spinner-container container1">
+					    						<div class="circle1"></div>
+					    						<div class="circle2"></div>
+					    						<div class="circle3"></div>
+					    						<div class="circle4"></div>
+					    					</div>
+					    					<div class="spinner-container container2">
+					    						<div class="circle1"></div>
+					    						<div class="circle2"></div>
+					    						<div class="circle3"></div>
+					    						<div class="circle4"></div>
+					    					</div>
+					    					<div class="spinner-container container3">
+					    						<div class="circle1"></div>
+					    						<div class="circle2"></div>
+					    						<div class="circle3"></div>
+					    						<div class="circle4"></div>
+					    					</div>
+					    					<h4 class="upload-text"><b>Uploading...</b></h4>
+					    				</div>
+					    			</center>
+					    		</div>
+		    				</div>
+		    			</fieldset>
+		    		</div>
+		        </form>
+		    </div>
 	    </div>
 	    <!-- End of modal content -->
 	  </div>
@@ -353,6 +384,7 @@
 		/*******************
 		** INITIALIZATIONS
 		*******************/
+
 			// loads the fixed action button
 				$(".bottom-menu").on('mouseenter mouseleave', function () {
 				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
@@ -545,6 +577,87 @@
 		** VOICEFILES EVENTS
 		*******************/
 
+			/********
+			** INIT WIZARD
+			*******/
+				var voicefile_form = $("#voicefile_form"); // init form wizard 
+
+			    voicefile_form.validate({
+			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
+			    });
+			    voicefile_form.children("div").steps({
+			        headerTag: "h4",
+			        bodyTag: "fieldset",
+			        transitionEffect: "slideLeft",
+			        onStepChanging: function (event, currentIndex, newIndex)
+			        {
+			        	// Allways allow step back to the previous step even if the current step is not valid!
+				        if (currentIndex > newIndex) {
+				            return true;
+				        }
+
+						// Clean up if user went backward before
+					    if (currentIndex < newIndex)
+					    {
+					        // To remove error styles
+					        $(".body:eq(" + newIndex + ") label.error", moh_form).remove();
+					        $(".body:eq(" + newIndex + ") .error", moh_form).removeClass("error");
+					    }
+
+			            voicefile_form.validate().settings.ignore = ":disabled,:hidden";
+			            return voicefile_form.valid();
+			        },
+			        onFinishing: function (event, currentIndex)
+			        {
+			            voicefile_form.validate().settings.ignore = ":disabled";
+			            return voicefile_form.valid();
+			        },
+			        onFinished: function (event, currentIndex)
+			        {
+
+			        	$('#finish').text("Loading...");
+			        	$('#finish').attr("disabled", true);
+			        	$('.upload-loader').show();
+
+			        	/*********
+						** ADD EVENT 
+						*********/
+				            // submit form
+				            	voicefile_form.submit();
+			        }
+			    }); // end of wizard
+
+			// upload result
+				<?php 
+					if($_GET['upload_result'] == "success") {
+				?>
+						swal(
+							{
+								title: "Success",
+								text: "Voice File Successfully Uploaded!",
+								type: "success"
+							},
+							function(){
+								window.location.href = 'audiofiles.php';
+							}
+						);
+				<?php
+					}elseif($_GET['upload_result'] == "error"){
+				?>
+						swal(
+							{
+								title: "Oops...",
+								text: "Something went wrong.",
+								type: "error"
+							},
+							function(){
+								window.location.href = 'audiofiles.php';
+							}
+						);
+				<?php
+					} 
+				?>
+			
 			// On play
 				$('.play_voice_file').click(function(){
 					var audioFile = $(this).attr('data-location');
@@ -603,8 +716,7 @@
 		            $('#voice_file').val('');
 		            $('.voice_file_holder').val();
 		        });
-
-		
+			
 		//-------------------- end of main voice files events
 
 		/*******************

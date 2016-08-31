@@ -74,14 +74,12 @@
                         <div class="col-lg-9">
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            
-                                        </div>
-                                    </div><!-- /.box-header -->
-                                    <div class="box-body table" id="">
+                                    <legend><?php $lh->translateText("call_reports"); ?></legend>
 
+                                    <div class="box-body table" id="table">
+                                        </table>
                                     </div><!-- /.box-body -->
+
                                 </div><!-- /.panel-body -->
                             </div><!--/.panel-->
                         </div>
@@ -91,21 +89,21 @@
                                 <div class="form-group">
                                     <label for="filter_type">Type</label>
                                     <select class="form-control select2" id="filter_type" style="width:100%;">
-                                        <option>Statistical Report</option>
-                                        <option>Agent Time Detail</option>
-                                        <option>Agent Performance Detail</option>
-                                        <option>Dial Statuses Summary</option>
-                                        <option>Sales Per Agent</option>
-                                        <option>Sales Tracker</option>
-                                        <option>Inbound Call Report</option>
-                                        <option>Export Call Report</option>
-                                        <option>Dashboard</option>
-                                        <option>Call History (CDRs)</option>
+                                        <option value="stats">Statistical Report</option>
+                                        <option value="agent_detail">Agent Time Detail</option>
+                                        <option value="agent_pdetail">Agent Performance Detail</option>
+                                        <option value="dispo">Dial Statuses Summary</option>
+                                        <option value="sales_agent">Sales Per Agent</option>
+                                        <option value="sales_tracker">Sales Tracker</option>
+                                        <option value="inbound_report">Inbound Call Report</option>
+                                        <option value="call_export_report">Export Call Report</option>
+                                        <option value="dashboard">Dashboard</option>
+                                        <option value="cdr">Call History (CDRs)</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="campaign">Campaign</label>
-                                    <select class="form-control select2" id="campaign" style="width:100%;">
+                                    <label for="campaign_id">Campaign</label>
+                                    <select class="form-control select2" id="campaign_id" style="width:100%;">
                                         <?php
                                             for($i=0; $i < count($campaigns->campaign_id);$i++){
                                         ?>
@@ -127,6 +125,7 @@
                                         
                                     </div>
                                     -->
+
                                 <div class="form-group">
                                     <label>Start Date:</label>
                                     <div class="form-group">
@@ -139,6 +138,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- /.start date -->
+
                                 <div class="form-group">
                                     <label>End Date:</label>
                                     <div class="form-group">
@@ -151,6 +152,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- /.end date -->
+
                             </form>
                         </div>
                     </div>
@@ -188,6 +191,34 @@
                 });
                 $("#datetimepicker1").on("dp.change", function (e) {
                     $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+                });
+
+                 /* changing reports */
+                $('#filter_type').on('change', function() {
+
+                        $.ajax({
+                            url: "reports.php",
+                            type: 'POST',
+                            data: {
+                                pageTitle : this.value,
+                                campaignID : $("#campaign_id").val(),
+                                request : $("#request").val(),
+                                userID : $("#userID").val(),
+                                userGroup : $("#userGroup").val(),
+                                fromDate : $("#start_filterdate").val(),
+                                toDate : $("#end_filterdate").val()
+                            },
+                            success: function(data) {
+                                console.log(data);
+
+                                if(data != ""){
+                                    $('#table').html(data);
+                                }else{
+                                    $('#table').html("NO DATA");
+                                }
+                            }
+                        });
+
                 });
 
                     /* Daterange
