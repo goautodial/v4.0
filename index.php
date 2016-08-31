@@ -402,7 +402,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                                                         <th>Load</th>
                                                                                         <th>Channels</th>
                                                                                         <th>Disk</th>
-                                                                                        <th>Time</th>
+                                                                                        <th>Date and Time</th>
                                                                                 </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -835,9 +835,9 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	
 <!--========== REFRESH DIVS ==============-->
 	<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>
-	<script src="js/load_statusboxes.js"></script>
-        <script src="js/load_hopperleadswarning.js"></script>
-	<script src="js/load_clusterstatus.js"></script>
+	<!-- <script src="js/load_statusboxes.js"></script> -->
+        <script src="js/dashboardv4.js"></script>
+	<!-- <script src="js/load_clusterstatus.js"></script> -->
 
 	<script>
 	/*
