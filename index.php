@@ -402,7 +402,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                                                         <th>Load</th>
                                                                                         <th>Channels</th>
                                                                                         <th>Disk</th>
-                                                                                        <th>Time</th>
+                                                                                        <th>Date and Time</th>
                                                                                 </tr>
                                                                         </thead>
                                                                         <tbody>

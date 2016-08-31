@@ -118,6 +118,7 @@
 								<table class="table table-striped table-bordered table-hover" id="table_ingroup">
 								   <thead>
 									  <tr>
+                                                                                 <th style="color: white;">Pic</th>
 										 <th>In-Group</th>
 										 <th class='hide-on-low hide-on-medium'>Descriptions</th>
 										 <th class='hide-on-low hide-on-medium'>Priority</th>
@@ -140,7 +141,8 @@
 
 									   	?>	
 											<tr>
-												<td><a class='edit-ingroup' data-id="<?php echo $ingroup->group_id[$i];?>"><?php echo $ingroup->group_id[$i];?></a></td>
+                                                                                                <td><avatar username='<?php echo $ingroup->group_name[$i];?>' :size='36'></avatar></td>
+												<td><strong><a class='edit-ingroup' data-id="<?php echo $ingroup->group_id[$i];?>"><?php echo $ingroup->group_id[$i];?></a></strong></td>
 												<td class='hide-on-low hide-on-medium'><?php echo $ingroup->group_name[$i];?></td>
 												<td class='hide-on-low hide-on-medium'><?php echo $ingroup->queue_priority[$i];?></td>
 												<td class='hide-on-low'><?php echo $ingroup->active[$i];?></td>
@@ -159,6 +161,7 @@
 								<table class="table table-striped table-bordered table-hover" id="table_ivr">
 								   <thead>
 									  <tr>
+                                                                                 <th style="color: white;">Pic</th>
 										 <th>Menu ID</th>
 										 <th class='hide-on-medium hide-on-low'>Descriptions</th>
 										 <th class='hide-on-medium hide-on-low'>Prompt</th>
@@ -174,7 +177,8 @@
 
 									   	?>	
 											<tr>
-												<td><a class='edit-ivr' data-id="<?php echo $ivr->menu_id[$i];?>"><?php echo $ivr->menu_id[$i];?></a></td>
+                                                                                                <td><avatar username='<?php echo $ivr->menu_name[$i];?>' :size='36'></avatar></td>
+												<td><strong><a class='edit-ivr' data-id="<?php echo $ivr->menu_id[$i];?>"><?php echo $ivr->menu_id[$i];?></a></strong></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_name[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_prompt[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_timeout[$i];?></td>
@@ -192,6 +196,7 @@
 								<table class="table table-striped table-bordered table-hover" id="table_did">
 								   <thead>
 									  <tr>
+                                                                                 <th style="color: white;">Pic</th>
 										 <th>Phone Numbers</th>
 										 <th class='hide-on-medium hide-on-low'>Description</th>
 										 <th class='hide-on-medium hide-on-low'>Status</th>
@@ -220,7 +225,8 @@
 
 									   	?>	
 											<tr>
-												<td><a class='edit-phonenumber' data-id="<?php echo $phonenumber->did_id[$i];?>"><?php echo $phonenumber->did_pattern[$i];?></a></td>
+                                                                                                <td><avatar username='<?php echo $phonenumber->did_description[$i];?>' :size='36'></avatar></td>
+												<td><strong><a class='edit-phonenumber' data-id="<?php echo $phonenumber->did_id[$i];?>"><?php echo $phonenumber->did_pattern[$i];?></a></strong></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->did_description[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->active[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->did_route[$i];?></td>
