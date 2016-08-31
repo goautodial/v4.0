@@ -3116,7 +3116,7 @@ error_reporting(E_ERROR | E_PARSE);
 	$output = $this->API_goGetAllUserLists();
 	
        if($output->result=="success") {
-       	   $columns = array("Agent ID", "Agent Name", "Group", "Status", "Action");
+       	   $columns = array("     ", "Agent ID", "Agent Name", "Group", "Status", "Action");
 	       $hideOnMedium = array("Agent ID", "Group", "Status");
 	       $hideOnLow = array( "Agent ID", "Group", "Status");
 		   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
@@ -3130,12 +3130,14 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = "Inactive";
 				 }
 			   
-	       	   $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i]); 
-	       	        
+	       	    $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i]); 
+	       	    $sessionAvatar = "<avatar username='".$output->full_name[$i]."' :size='36'></avatar>";
+	       	    
 		        $result .= "<tr>
+		        		 <td>".$sessionAvatar."</td>
 	                     <td class='hide-on-low'><a class='edit-T_user' data-id=".$output->user_id[$i].">".$output->user[$i]."</a></td>
 						 <td>".$output->full_name[$i]."</td>";
-	             $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
+	            $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
 	                     <td class='hide-on-low'>".$output->active[$i]."</td>
 	                     <td>".$action."</td>
 				         </tr>";

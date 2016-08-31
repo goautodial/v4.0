@@ -26,6 +26,9 @@
         
         <?php print $ui->standardizedThemeCSS(); ?>
     	
+    	<!-- Wizard Form style -->
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+        
     	<!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
        
@@ -117,9 +120,9 @@
 								<?php print $ui->getCircleButton("inbound", "plus"); ?>
 							</div>
 							<div class="fab-div-area" id="fab-div-area">
-								<ul class="fab-ul" style="height: 250px;">
-									<li class="li-style"><a class="fa fa-music fab-div-item" data-toggle="modal" data-target="#add_moh" title="Add a Music On-hold"></a></li><br/>
-									<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_voicefile" title="Add a Voice File"></a></li><br/>
+								<ul class="fab-ul" style="height: 170px;">
+									<li class="li-style"><a class="fa fa-music fab-div-item" data-toggle="modal" data-target="#moh-wizard" title="Add a Music On-hold"></a></li><br/>
+									<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#form-voicefiles-modal" title="Add a Voice File"></a></li><br/>
 								</ul>
 							</div>
 						</div>
@@ -129,6 +132,216 @@
         </section><!-- /.content -->
     </aside><!-- /.right-side -->
 </div><!-- ./wrapper -->
+
+<?php
+ /*
+  * APIs needed for form
+  */
+   $user_groups = $ui->API_goGetUserGroupsList();
+?>
+<!-- MOH MODALS -->
+	<!-- Modal -->
+	<div id="view-moh-modal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title"><b>Music On Hold Details</b></h4>
+	      </div>
+	      <div class="modal-body">
+		<div class="form-horizontal">
+			
+			<div class="form-group">
+				<label class="control-label col-lg-4">Music on Hold Name:</label>
+				<div class="col-lg-7">
+					<input type="text" class="form-control moh_name">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-4">Status:</label>
+				<div class="col-lg-5">
+					<select class="form-control moh_status">
+						<option value="Y">Active</option>
+						<option value="N">Inactive</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-4">User Group:</label>
+				<div class="col-lg-7">
+					<select class="form-control moh_user_group">
+						<?php
+                            for($i=0;$i<count($user_groups->user_group);$i++){
+                        ?>
+                            <option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i].' - '.$user_groups->group_name[$i];?>  </option>
+                        <?php
+                            }
+                        ?>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-4">Random Order:</label>
+				<div class="col-lg-5">
+					<select class="form-control moh_rand_order">
+						<option value="Y">Yes</option>
+						<option value="N">No</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	      </div>
+          <div class="message_box"></div>
+	      <div class="modal-footer">
+	           <button type="button" class="btn btn-primary btn-update-moh-info" data-id=""><span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+	           <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+	      </div>
+	    </div>
+	    <!-- End of modal content -->
+	  </div>
+	</div>
+	<!-- End of modal -->
+
+	<!-- ADD USER GROUP MODAL -->
+    <div class="modal fade" id="moh-wizard" tabindex="-1" aria-labelledby="moh-wizard" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+            <!-- Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title animated bounceInRight"><b>Music On Hold Wizard » Add New Music On Hold</b></h4>
+                </div>
+                <div class="modal-body wizard-content">
+                
+                <form action="" method="POST" id="create_moh" name="create_moh" role="form">
+                    <div class="row">
+                    	<h4>Music On-Hold<br/>
+                    	<small>Music On-Hold details and assign to a user group.</small>
+                    	</h4>
+                    	<fieldset>
+	                        <div class="form-group">
+	                            <label class="col-sm-4 control-label" for="moh_id">Music On Hold ID:</label>
+	                            <div class="col-sm-8 mb">
+	                                <input type="text" name="moh_id" id="moh_id" class="form-control" placeholder="Music on Hold ID (Mandatory)" required />
+	                            </div>
+	                        </div>
+	                        <div class="form-group">        
+	                            <label class="col-sm-4 control-label" for="moh_name">Music On Hold Name: </label>
+	                            <div class="col-sm-8 mb">
+	                                <input type="text" name="moh_name" id="moh_name" class="form-control" placeholder="Music On Hold Name (Mandatory)" required />
+	                            </div>
+	                        </div>
+	                        <div class="form-group">
+	                            <label class="col-sm-4 control-label" for="active">Status: </label>
+	                            <div class="col-sm-8 mb">
+	                                <select name="active" id="active" class="form-control">
+	                                    <option value="N" selected>INACTIVE</option>
+	                                    <option value="Y">ACTIVE</option>
+	                                </select>
+	                            </div>
+	                        </div>
+	                        <div class="form-group">
+	                            <label class="col-sm-4 control-label" for="user_group">User Group: </label>
+	                            <div class="col-sm-8 mb">
+	                                <select id="user_group" class="form-control" name="user_group">
+	                                	<!--<option value="---ALL---">  ALL USER GROUPS  </option>-->
+	                                    <?php
+	                                        for($i=0;$i<count($user_groups->user_group);$i++){
+	                                    ?>
+	                                        <option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i].' - '.$user_groups->group_name[$i];?>  </option>
+	                                    <?php
+	                                        }
+	                                    ?>
+	                                </select>
+	                            </div>
+	                        </div>
+	                        <div class="form-group">
+	                            <label class="col-sm-4 control-label" for="random">Random Order: </label>
+	                            <div class="col-sm-8 mb">
+	                                <select name="random" id="random" class="form-control">
+	                                    <option value="N" selected>NO</option>
+	                                    <option value="Y">YES</option>
+	                                </select>
+	                            </div>
+	                        </div>
+                        </fieldset>
+                    </div><!-- end of step -->
+                
+                </form>
+
+                </div> <!-- end of modal body -->
+            </div>
+        </div>
+    </div><!-- end of modal -->
+<!-- end of MOH Modals -->
+
+<!-- VOICE FILES MODALS -->
+	<!-- Playback Modal -->
+	<div id="voice-playback-modal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title"><b>Voice Files Playback</b></h4>
+	      </div>
+	      <div class="modal-body">
+		<div class="voice-player"></div>
+	      	<!-- <audio controls>
+			<source src="http://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
+			<source src="http://www.w3schools.com/html/horse.mp3" type="audio/mpeg" />
+			<a href="http://www.w3schools.com/html/horse.mp3">horse</a>
+		</audio> -->
+	      </div>
+	      <div class="modal-footer">
+		<a href="" class="btn btn-primary download-audio-file" download>Download File</a>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	    <!-- End of modal content -->
+	  </div>
+	</div>
+	<!-- End of modal -->
+
+	<!-- Voice Files Modal -->
+	<div id="form-voicefiles-modal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title animated bounceInRight"><b>Upload Voice Files</b></h4>
+	      </div>
+        <form action="./php/AddVoiceFiles.php" method="POST" enctype="multipart/form-data">
+  	      <div class="modal-body clearfix">
+    				<div class="col-lg-12">
+    					<div class="form-group mt">
+    						<div class="input-group">
+    							<input type="file" name="voice_file" class="hide" id="voice_file" accept="audio/*">
+    					      	<input type="text" class="form-control voice_file_holder" placeholder="Choose a file">
+    					      	<span class="input-group-btn">
+    					        	<button class="btn btn-default btn-browse-file" type="button">Browse...</button>
+    					     	</span>
+    					    </div><!-- /input-group -->
+    					</div>
+    				</div>
+  	      </div>
+  	      <div class="modal-footer">
+  	      	<button type="submit" class="btn btn-primary btn-save-voicefiles">Save</button>
+  	        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+  	      </div>
+        </form>
+	    </div>
+	    <!-- End of modal content -->
+	  </div>
+	</div>
+	<!-- End of modal -->
+<!-- End of VOICE FILE Modals -->
 
 		<?php print $ui->standardizedThemeJS(); ?>
         <!-- JQUERY STEPS-->
@@ -151,17 +364,18 @@
 		
 		/*******************
 		** MOH EVENTS
-		*******************/
-
+		*******************/                
+				
 			/*********
 			** INIT WIZARD
 			*********/
-				var ingroup_form = $("#create_ingroup"); // init form wizard 
+			
+				var moh_form = $("#create_moh"); // init form wizard 
 
-			    ingroup_form.validate({
+			    moh_form.validate({
 			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
 			    });
-			    ingroup_form.children("div").steps({
+			    moh_form.children("div").steps({
 			        headerTag: "h4",
 			        bodyTag: "fieldset",
 			        transitionEffect: "slideLeft",
@@ -176,17 +390,17 @@
 					    if (currentIndex < newIndex)
 					    {
 					        // To remove error styles
-					        $(".body:eq(" + newIndex + ") label.error", ingroup_form).remove();
-					        $(".body:eq(" + newIndex + ") .error", ingroup_form).removeClass("error");
+					        $(".body:eq(" + newIndex + ") label.error", moh_form).remove();
+					        $(".body:eq(" + newIndex + ") .error", moh_form).removeClass("error");
 					    }
 
-			            ingroup_form.validate().settings.ignore = ":disabled,:hidden";
-			            return ingroup_form.valid();
+			            moh_form.validate().settings.ignore = ":disabled,:hidden";
+			            return moh_form.valid();
 			        },
 			        onFinishing: function (event, currentIndex)
 			        {
-			            ingroup_form.validate().settings.ignore = ":disabled";
-			            return ingroup_form.valid();
+			            moh_form.validate().settings.ignore = ":disabled";
+			            return moh_form.valid();
 			        },
 			        onFinished: function (event, currentIndex)
 			        {
@@ -199,332 +413,223 @@
 						*********/
 				            // Submit form via ajax
 					            $.ajax({
-									url: "./php/AddTelephonyIngroup.php",
-									type: 'POST',
-									data: $("#create_ingroup").serialize(),
-									success: function(data) {
-									  // console.log(data);
-										  if(data == "success"){
-												swal("Success!", "Ingroup Successfully Created!", "success");
-										  		window.setTimeout(function(){location.reload()},1000);
-
-										  		$('#finish').text("Submit");
-												$('#finish').attr("disabled", false);
-										  }
-										  else{
-											  sweetAlert("Oops...", "Something went wrong! "+data, "error");
-
-											  $('#finish').text("Submit");
-											  $('#finish').attr("disabled", false);
-										  }
-									}
-								});
+		                            url: "./php/AddMOH.php",
+		                            type: 'POST',
+		                            data: $("#create_moh").serialize(),
+		                            success: function(data) {
+		                              // console.log(data);
+		                                  if(data == 1){
+		                                        swal("Success!", "Music On Hold Successfully Created!", "success");
+		                                        window.setTimeout(function(){location.reload()},3000)
+		                                        $('#submit_moh').val("Submit");
+		                                        $('#submit_moh').prop("disabled", false);
+		                                  }
+		                                  else{
+		                                      sweetAlert("Oops...", "Something went wrong!"+data, "error");
+		                                      $('#submit_moh').val("Submit");
+		                                      $('#submit_moh').prop("disabled", false);
+		                                  }
+		                            }
+		                        });
 			        }
 			    }); // end of wizard
 			
 			//------------------------
 
 			/*********
-			** EDIT INGROUP
+			** EDIT MOH
 			*********/
 
-				$(".edit-ingroup").click(function(e) {
-					e.preventDefault();
-					var url = './edittelephonyinbound.php';
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="groupid" value="' + $(this).attr('data-id') + '" /></form>');
-					//$('body').append(form);  // This line is not necessary
-					$(form).submit();
+				$(document).on('click','.edit-moh',function() {
+
+					var moh_id = $(this).attr('data-id');
+
+					$.ajax({
+						url: "./php/ViewMOH.php",
+						type: 'POST',
+						data: { 
+						      moh_id : moh_id,
+						},
+						dataType: 'json',
+						success: function(data) {
+						      $('.btn-update-moh-info').attr('data-id', data.moh_id);
+						      $('.moh_name').val(data.moh_name);
+						      $('.moh_status option[value="' + data.active + '"]').attr('selected','selected');
+						      $('.moh_user_group option[value="' + data.user_group + '"]').attr('selected','selected');
+						      $('.moh_rand_order option[value="' + data.random + '"]').attr('selected','selected');
+						  
+                              $('#view-moh-modal').modal('show');
+						}
+					});
+				});
+				
+				$('.btn-update-moh-info').click(function(){
+                    $('#update_button').html("<i class='fa fa-edit'></i> Updating...");
+                    $('.btn-update-moh-info').attr("disabled", true);
+
+					$.ajax({
+						url: "./php/UpdateMOH.php",
+						type: 'POST',
+						data: { 
+						      moh_id : $(this).attr('data-id'),
+						      moh_name : $('.moh_name').val(),
+						      user_group : $('.mog_user_group').val(),
+						      active : $('.moh_status').val(),
+						      random : $('.moh_rand_order').val(),
+						},
+						dataType: 'json',
+						success: function(data) {
+						      if (data.result == "success") {
+							    swal("Success!", "Music On Hold Successfully Updated!", "success");
+                                window.setTimeout(function(){location.reload()},2000)   
+                                
+                                $('#update_button').html("<i class='fa fa-check'></i> Update");
+                                $('.btn-update-moh-info').attr("disabled", false);
+						      } else {
+    							sweetAlert("Oops...", "Something went wrong! "+data, "error");
+                                
+                                $('#update_button').html("<i class='fa fa-check'></i> Update");
+                                $('.btn-update-moh-info').attr("disabled", false);
+						      }
+						      
+						      
+						}
+					});
 				});
 
 			/*********
-			** DELETE INGROUP
+			** DELETE MOH
 			*********/
-				//DELETE INGROUPS
-				$(document).on('click','.delete-ingroup',function() {
-				 	var id = $(this).attr('data-id');
-	                swal({   
-	                	title: "Are you sure?",   
-	                	text: "This action cannot be undone.",   
-	                	type: "warning",   
-	                	showCancelButton: true,   
-	                	confirmButtonColor: "#DD6B55",   
-	                	confirmButtonText: "Yes, delete this inbound!",   
-	                	cancelButtonText: "No, cancel please!",   
-	                	closeOnConfirm: false,   
-	                	closeOnCancel: false 
-	                	}, 
-	                	function(isConfirm){   
-	                		if (isConfirm) { 
-	                			$.ajax({
-									url: "./php/DeleteTelephonyInbound.php",
-									type: 'POST',
-									data: { 
-										groupid:id,
-									},
-									success: function(data) {
-									console.log(data);
-								  		if(data == 1){
-								  			swal("Success!", "Inbound Successfully Deleted!", "success");
-											window.setTimeout(function(){location.reload()},3000)
-										}else{
-											sweetAlert("Oops...", "Something went wrong! "+data, "error");
-										}
-									}
-								});
-							} else {     
-		                			swal("Cancelled", "No action has been done :)", "error");   
-		                	} 
-	                	}
-	                );
-				});
+				// delete click
+					$(document).on('click','.delete-moh',function() {
+					 	var id = $(this).attr('data-id');
+	                    swal({   
+	                        title: "Are you sure?",   
+	                        text: "This action cannot be undone.",   
+	                        type: "warning",   
+	                        showCancelButton: true,   
+	                        confirmButtonColor: "#DD6B55",   
+	                        confirmButtonText: "Yes, delete this moh!",   
+	                        cancelButtonText: "No, cancel please!",   
+	                        closeOnConfirm: false,   
+	                        closeOnCancel: false 
+	                        }, 
+	                        function(isConfirm){   
+	                            if (isConfirm) { 
+	                                $.ajax({
+	                                    url: "./php/DeleteMOH.php",
+	                                    type: 'POST',
+	                                    data: { 
+	                                        moh_id:id,
+	                                    },
+	                                    success: function(data) {
+	                                    console.log(data);
+	                                        if(data == 1){
+	                                           swal("Success!", "Music On Hold Successfully Deleted!", "success");
+	                                           window.setTimeout(function(){location.reload()},1000)
+	                                        }else{
+	                                            sweetAlert("Oops...", "Something went wrong! "+data, "error");
+	                                        }
+	                                    }
+	                                });
+	                            } else {     
+	                                    swal("Cancelled", "No action has been done :)", "error");   
+	                            } 
+	                        }
+	                    );
+					});
 		
-		//-------------------- end of main ingroup events
+		//-------------------- end of main moh events
 
 		/*******************
 		** VOICEFILES EVENTS
 		*******************/
 
-			/*********
-			** DID WIZARD
-			*********/
-				var did_form = $("#create_phonenumber"); // init form wizard 
+			// On play
+				$('.play_voice_file').click(function(){
+					var audioFile = $(this).attr('data-location');
 
-			    did_form.validate({
-			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
-			    });
-			    did_form.children("div").steps({
-			        headerTag: "h4",
-			        bodyTag: "fieldset",
-			        transitionEffect: "slideLeft",
-			        onStepChanging: function (event, currentIndex, newIndex)
-			        {
-			        	// Allways allow step back to the previous step even if the current step is not valid!
-				        if (currentIndex > newIndex) {
-				            return true;
-				        }
+					var sourceFile = '<audio class="audio_file" controls>';
+					    sourceFile += '<source src="'+ audioFile +'" type="audio/mpeg" download="true"/>';
+					    sourceFile += '</audio>';
 
-						// Clean up if user went backward before
-					    if (currentIndex < newIndex)
-					    {
-					        // To remove error styles
-					        $(".body:eq(" + newIndex + ") label.error", did_form).remove();
-					        $(".body:eq(" + newIndex + ") .error", did_form).removeClass("error");
-					    }
+					$('.download-audio-file').attr('href', audioFile);
+					$('.voice-player').html(sourceFile);
+					$('#voice-playback-modal').modal('show');
 
-			            did_form.validate().settings.ignore = ":disabled,:hidden";
-			            return did_form.valid();
-			        },
-			        onFinishing: function (event, currentIndex)
-			        {
-			            did_form.validate().settings.ignore = ":disabled";
-			            return did_form.valid();
-			        },
-			        onFinished: function (event, currentIndex)
-			        {
+					var aud = $('.audio_file').get(0);
+					aud.play();
+				});
 
-			        	$('#finish').text("Loading...");
-			        	$('#finish').attr("disabled", true);
+			// pause
+				$('#voice-playback-modal').on('hidden.bs.modal', function () {
+					var aud = $('.audio_file').get(0);
+					aud.pause();
+				});
 
-			        	/*********
-						** ADD EVENT 
-						*********/
-				            $.ajax({
-								url: "./php/AddTelephonyPhonenumber.php",
-								type: 'POST',
-								data: $("#create_phonenumber").serialize(),
-								success: function(data) {
-								  // console.log(data);
-									  if(data == 1){
-											swal("Success!", "Phone Number Successfully Created!", "success");
-									  		window.setTimeout(function(){location.reload()},1000)
-									  		$('#submit_did').val("Submit");
-											$('#submit_did').attr("disabled", false);
-									  }else{
-											sweetAlert("Oops...", "Something went wrong! "+data, "error");
-											$('#submit_did').val("Submit");
-											$('#submit_did').attr("disabled", false);
-									  }
-								}
-							});
-							
+			// browse
+				$('.btn-browse-file').click(function(){
+					$('#voice_file').click();
+				});
+
+			//voice_file
+				$('#voice_file').change(function(){
+					var myFile = $(this).prop('files');
+					var Filename = myFile[0].name;
+			        var filesize = myFile[0].size  / 1024;
+			        filesize = (Math.round(filesize * 100) / 100)
+
+			        if(filesize > 16000){
+			            alert("The voice file you are trying to upload exceeds the required file size. Maximum file size is up to 16MB only.");
+			            $('#voice_file').val('');
+			            $('.voice_file_holder').val();
+			        }else{
+			            $('.voice_file_holder').val(Filename);
 			        }
-			    }); // end of wizard
-			
-			//------------------------
-
-			/*********
-			** EDIT DID
-			*********/
-
-				$(document).on('click','.edit-phonenumber',function() {
-					var url = './edittelephonyinbound.php';
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="did" value="' + $(this).attr('data-id') + '" /></form>');
-					//$('body').append(form);  // This line is not necessary
-					$(form).submit();
 				});
 
-			/*********
-			** DELETE DID
-			*********/
+			//voice_file_holder
+		        $('.voice_file_holder').change(function(){
+		          var holderVal = $(this).val();
+		          var file = $('#voice_file').val();
 
-				$(document).on('click','.delete-phonenumber',function() {
-				 	var id = $(this).attr('data-id');
-	                swal({   
-	                	title: "Are you sure?",   
-	                	text: "This action cannot be undone.",   
-	                	type: "warning",   
-	                	showCancelButton: true,   
-	                	confirmButtonColor: "#DD6B55",   
-	                	confirmButtonText: "Yes, delete this phonenumber!",   
-	                	cancelButtonText: "No, cancel please!",   
-	                	closeOnConfirm: false,   
-	                	closeOnCancel: false 
-	                	}, 
-	                	function(isConfirm){   
-	                		if (isConfirm) { 
-	                			$.ajax({
-									url: "./php/DeleteTelephonyInbound.php",
-									type: 'POST',
-									data: { 
-										modify_did:id,
-									},
-									
-									success: function(data) {
-									//console.log(modify_did);
-									console.log(data);
-								  		if(data == 1){
-								  			swal("Success!", "Phonenumber Successfully Deleted!", "success");
-											//window.setTimeout(function(){location.reload()},3000)
-										}else{
-											sweetAlert("Oops...", "Something went wrong! "+data, "error");
-										}
-									}
-								});
-	                		} else {     
-		                			swal("Cancelled", "No action has been done :)", "error");   
-		                	} 
-	                	}
-	                );
-				});
+		          if(holderVal != file){
+		            $('#voice_file').val('');
+		          }
+		        });
+
+		    // clear form
+		        $('#form-voicefiles-modal').on('hidden.bs.modal', function () {
+		            $('#voice_file').val('');
+		            $('.voice_file_holder').val();
+		        });
+
 		
-		//-------------------- end of main did events
+		//-------------------- end of main voice files events
 
 		/*******************
-		** OTHER TRIGGER EVENTS and FILTERS
+		** FILTERS
 		*******************/
-			/*** INGROUP ***/
-				// disable special characters on Ingroup ID
-					$('#groupid').bind('keypress', function (event) {
-					    var regex = new RegExp("^[a-zA-Z0-9]+$");
-					    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-					    if (!regex.test(key)) {
-					       event.preventDefault();
-					       return false;
-					    }
-					});
-				// disable special characters on Ingroup Name
-					$('#groupname').bind('keypress', function (event) {
-					    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
-					    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-					    if (!regex.test(key)) {
-					       event.preventDefault();
-					       return false;
-					    }
-					});
 
-			/*** IVR ***/
-				//add option
-					$('.add-option').click(function(){
-						var toClone = $('.to-clone-opt').clone();
+			// disable special characters on Script ID
+				$('#moh_id').bind('keypress', function (event) {
+				    var regex = new RegExp("^[a-zA-Z0-9]+$");
+				    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+				    if (!regex.test(key)) {
+				       event.preventDefault();
+				       return false;
+				    }
+				});
 
-						toClone.removeClass('to-clone-opt');
-						toClone.find('label.control-label').text('');
-						toClone.find('.btn-remove').append('<span class="fa fa-remove fa-2x text-red remove-row"></span>');
-
-						$('.cloning-area').append(toClone);
-					});
-
-				//remove option
-					$(document).on('click', '.remove-row', function(){
-						var row = $(this).parent().parent();
-						
-						row.remove();
-					});
-
-			/*** DID ***/
-				// disable special characters on DID Exten
-					$('#did_exten').bind('keypress', function (event) {
-					    var regex = new RegExp("^[a-zA-Z0-9]+$");
-					    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-					    if (!regex.test(key)) {
-					       event.preventDefault();
-					       return false;
-					    }
-					});
-				// disable special characters on DID Desc
-					$('#desc').bind('keypress', function (event) {
-					    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
-					    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-					    if (!regex.test(key)) {
-					       event.preventDefault();
-					       return false;
-					    }
-					});
-
-				//route change
-					$('#route').on('change', function() {
-						if(this.value == "AGENT") {
-						  $('#form_route_agent').show();
-						  
-						  $('#form_route_ingroup').hide();
-						  $('#form_route_phone').hide();
-						  $('#form_route_callmenu').hide();
-						  $('#form_route_voicemail').hide();
-						  $('#form_route_exten').hide();
-						}if(this.value == "IN_GROUP") {
-						  $('#form_route_ingroup').show();
-						  
-						  $('#form_route_agent').hide();
-						  $('#form_route_phone').hide();
-						  $('#form_route_callmenu').hide();
-						  $('#form_route_voicemail').hide();
-						  $('#form_route_exten').hide();
-						}if(this.value == "PHONE") {
-						  $('#form_route_phone').show();
-						  
-						  $('#form_route_agent').hide();
-						  $('#form_route_ingroup').hide();
-						  $('#form_route_callmenu').hide();
-						  $('#form_route_voicemail').hide();
-						  $('#form_route_exten').hide();
-						}if(this.value == "CALLMENU") {
-						  $('#form_route_callmenu').show();
-						  
-						  $('#form_route_agent').hide();
-						  $('#form_route_ingroup').hide();
-						  $('#form_route_phone').hide();
-						  $('#form_route_voicemail').hide();
-						  $('#form_route_exten').hide();
-						}if(this.value == "VOICEMAIL") {
-						  $('#form_route_voicemail').show();
-						  
-						  $('#form_route_agent').hide();
-						  $('#form_route_ingroup').hide();
-						  $('#form_route_phone').hide();
-						  $('#form_route_callmenu').hide();
-						  $('#form_route_exten').hide();
-						}if(this.value == "EXTEN") {
-						  $('#form_route_exten').show();
-						  
-						  $('#form_route_agent').hide();
-						  $('#form_route_ingroup').hide();
-						  $('#form_route_phone').hide();
-						  $('#form_route_voicemail').hide();
-						  $('#form_route_callmenu').hide();
-						}
-						
-					});	 
-
+			// disable special characters on MOH Name
+				$('#moh_name').bind('keypress', function (event) {
+				    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+				    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+				    if (!regex.test(key)) {
+				       event.preventDefault();
+				       return false;
+				    }
+				});
 	});
 </script>
 
