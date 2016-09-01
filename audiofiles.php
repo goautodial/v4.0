@@ -103,7 +103,7 @@
 							</div>
 
 							<!--==== Voicefiles ====-->
-							<div id="voicefiles_tab" class="tab-pane Active">
+							<div id="voicefiles_tab" role="tabpanel" class="tab-pane active">
 								<?php print $ui->getListAllVoiceFiles(); ?>
 							</div>
 
