@@ -81,28 +81,29 @@
 						
 						<ul role="tablist" class="nav nav-tabs nav-justified">
 
-						 <!-- MOH panel tabs-->
-							 <li role="presentation" class="active">
-								<a href="#moh_tab" aria-controls="moh_tab" role="tab" data-toggle="tab" class="bb0">
-								    Music On-Hold</a>
-							 </li>
 						<!-- Voicefiles panel tab -->
-							 <li role="presentation">
+							 <li role="presentation" class="active">
 								<a href="#voicefiles_tab" aria-controls="voicefiles_tab" role="tab" data-toggle="tab" class="bb0">
 								    Voice Files </a>
 							 </li>
+						 <!-- MOH panel tabs-->
+							 <li role="presentation" >
+								<a href="#moh_tab" aria-controls="moh_tab" role="tab" data-toggle="tab" class="bb0">
+								    Music On-Hold</a>
+							 </li>
+						
 						  </ul>
 						  
 						<!-- Tab panes-->
 						<div class="tab-content bg-white">
 
 							<!--==== MOH ====-->
-							<div id="moh_tab" role="tabpanel" class="tab-pane active">
+							<div id="moh_tab" role="tabpanel" class="tab-pane">
 								<?php print $ui->getListAllMusicOnHold(); ?>
 							</div>
 
 							<!--==== Voicefiles ====-->
-							<div id="voicefiles_tab" class="tab-pane">
+							<div id="voicefiles_tab" class="tab-pane Active">
 								<?php print $ui->getListAllVoiceFiles(); ?>
 							</div>
 
@@ -121,8 +122,8 @@
 							</div>
 							<div class="fab-div-area" id="fab-div-area">
 								<ul class="fab-ul" style="height: 170px;">
-									<li class="li-style"><a class="fa fa-music fab-div-item" data-toggle="modal" data-target="#moh-wizard" title="Add a Music On-hold"></a></li><br/>
 									<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#form-voicefiles-modal" title="Add a Voice File"></a></li><br/>
+									<li class="li-style"><a class="fa fa-music fab-div-item" data-toggle="modal" data-target="#moh-wizard" title="Add a Music On-hold"></a></li><br/>
 								</ul>
 							</div>
 						</div>
