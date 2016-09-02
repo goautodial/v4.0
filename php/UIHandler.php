@@ -3252,8 +3252,8 @@ error_reporting(E_ERROR | E_PARSE);
 				$action = $this->ActionMenuForUserGroups($output->user_group[$i], $output->group_name[$i]);
 				
 				$result = $result."<tr>
-	                    <td class='hide-on-low'><a class='edit-usergroup' data-id='".$output->user_group[$i]."'>".$output->user_group[$i]."</td>
-	                    <td>".$output->group_name[$i]."</a></td>
+	                    <td class='hide-on-low'><a class='edit-usergroup' data-id='".$output->user_group[$i]."'>".$output->user_group[$i]."</a></td>
+	                    <td>".$output->group_name[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->group_type[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->forced_timeclock_login[$i]."</td>
 	                    <td>".$action."</td>
@@ -3504,6 +3504,13 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = "Inactive";
 				}
 				
+				if($output->messages[$i] == NULL){
+					$output->messages[$i] = 0;
+				}
+				if($output->old_messages[$i] == NULL){
+					$output->old_messages[$i] = 0;
+				}
+
 				$action = $this->getUserActionMenuForPhones($output->extension[$i]);
 				
 				$result = $result."<tr>
@@ -4085,6 +4092,10 @@ error_reporting(E_ERROR | E_PARSE);
             
             $output->ct_default_start[$i] = date('H:i A', strtotime($output->ct_default_start[$i]));
             $output->ct_default_stop[$i] = date('H:i A', strtotime($output->ct_default_stop[$i]));
+
+            if($output->user_group[$i] == "---ALL---"){
+            	$output->user_group[$i] = "All Usergroups";
+            }
 
                     $result .= "<tr>
 	                    <td class ='hide-on-medium hide-on-low'><a class='edit-calltime' data-id='".$output->call_time_id[$i]."'>".$output->call_time_id[$i]."</a></td>

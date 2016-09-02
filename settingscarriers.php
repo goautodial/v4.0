@@ -108,9 +108,9 @@
 				
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header"><b>Carrier Wizard » Add New Carrier</b></h4>
+					<h4 class="modal-title animated bounceInRight"><b>Carrier Wizard » Add New Carrier</b></h4>
 				</div>
-				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				<div class="modal-body">
 				
 				<form id="create_form" role="form">
 				<!-- STEP 1 -->
@@ -129,10 +129,6 @@
 				
 				<!-- STEP 2 -->
 					<div class="wizard-step">
-						<!-- IF JustGoVoIP -->
-						<div class="justGo_div" style="display:none;">
-
-						</div>
 						<!-- IF MANUAL / COPY -->
 						<div class="manual_copy_div" style="display:none;">
 							<div class="form-group mt">
@@ -347,52 +343,198 @@
 						<div class="justgo_div" style="display:none;">
 							<style type="text/css">
 								.welcome-header{width:100%;text-align:center;}
-								.sales-email{float:right;text-align:left;font-size:12px;margin-top:5px; margin-right: 30px}
+								.sales-email{float:right;text-align:left;font-size:12px;margin-right: 30px}
 							</style>
-							<div class="welcome-header">
-	                          <span>Welcome to</span><br class="clear"><br class="clear">
-	                          <span><a href="https://webrtc.goautodial.com/justgocloud/" target="_new"><img src="https://webrtc.goautodial.com/img/goautodial_logo.png"></a></span><br class="clear"><br class="clear">
-	                          <span>GoAutoDial Cloud Call Center Cloud Call Center</span><br>
-	                          <br>
-	                          <span align="center" style="padding-left: 100px;">
+							<fieldset>
+								<div class="form-group mb">
+									<div class="welcome-header">
+			                          <span>Welcome to</span><br class="clear"><br class="clear">
+			                          <span><a href="https://webrtc.goautodial.com/justgocloud/" target="_new"><img src="https://webrtc.goautodial.com/img/goautodial_logo.png"></a></span><br class="clear"><br class="clear">
+			                          <span>GoAutoDial Cloud Call Center Cloud Call Center</span><br>
+			                          <br>
+			                          <span align="center" style="padding-left: 100px;">
 
-							<p style="width: 90%; padding-left: 40px; line-height: 17px;" align="justify">	GoAutoDial Cloud Call Center is an easy to set up and easy to use, do it yourself (DIY) cloud based telephony solution for any type of organization in wherever country you conduct your sales, marketing, service and support activites. Designed for large enterprise-grade call center companies but priced to fit the budget of the Small Business Owner, GoAutoDial Cloud Call Center uses intuitive graphical user interfaces so that deployment is quick and hassle-free, among its dozens of hot features. </p><br>
-							<p style="width: 90%; padding-left: 40px; line-height: 17px;" align="justify">Using secure cloud infrastructures certified by international standards, GoAutoDial Cloud Call Center is a "Use Anywhere, Anytime" web app so that you can create more customers for life – in the office, at home or at the beach. </p>
-	                          </span>
-	                          <br>
-	                          <br>
-	                          <span class="sales-email">  **Email <a href="mailto:sales@goautodial.com">sales@goautodial.com</a> to get 120 free minutes (US, UK and Canada calls only).</span><br>
-	                       </div>
+									<p style="width: 90%; padding-left: 40px; line-height: 17px;" align="justify">	GoAutoDial Cloud Call Center is an easy to set up and easy to use, do it yourself (DIY) cloud based telephony solution for any type of organization in wherever country you conduct your sales, marketing, service and support activites. Designed for large enterprise-grade call center companies but priced to fit the budget of the Small Business Owner, GoAutoDial Cloud Call Center uses intuitive graphical user interfaces so that deployment is quick and hassle-free, among its dozens of hot features. </p><br>
+									<p style="width: 90%; padding-left: 40px; line-height: 17px;" align="justify">Using secure cloud infrastructures certified by international standards, GoAutoDial Cloud Call Center is a "Use Anywhere, Anytime" web app so that you can create more customers for life – in the office, at home or at the beach. </p>
+			                          </span>
+			                          <br>
+			                          <span class="sales-email">  **Email <a href="mailto:sales@goautodial.com">sales@goautodial.com</a> to get 120 free minutes (US, UK and Canada calls only).</span><br>
+			                       	</div>
+			                    </div>
+			                </fieldset>
+		                    <fieldset>
+		                    	<div class="form-group">
+		                       		<div class="col-sm-12 mb">
+		                       			<center class="mb text-muted">Please fill out the information below:</center>
+		                       		</div>
+		                       	</div>
+		                        <div class="form-group">
+		                        	<label for="company" class="col-sm-3 control-label">Company</label>
+									<div class="col-sm-9 mb">
+										<input type="text" class="form-control" id="company" name="company" placeholder="Company. This field is required." >
+									</div>
+		                        </div>
+		                        <div class="form-group">
+		                        	<label for="company" class="col-sm-3 control-label">First Name</label>
+									<div class="col-sm-9 mb">
+										<input type="text" class="form-control" id="company" name="company" placeholder="First Name. This field is required." >
+									</div>
+		                        </div>
+		                        <div class="form-group">
+		                        	<label for="company" class="col-sm-3 control-label">Last Name</label>
+									<div class="col-sm-9 mb">
+										<input type="text" class="form-control" id="company" name="company" placeholder="Last Name. This field is required." >
+									</div>
+		                        </div>
+		                        <div class="form-group">
+		                        	<label for="company" class="col-sm-3 control-label">Address</label>
+									<div class="col-sm-9 mb">
+										<input type="text" class="form-control" id="company" name="company" placeholder="Address. This field is required." >
+									</div>
+		                        </div>
+		                        <div class="form-group">
+		                        	<label for="company" class="col-sm-3 control-label">City</label>
+									<div class="col-sm-9 mb">
+										<input type="text" class="form-control" id="company" name="company" placeholder="City. This field is required." >
+									</div>
+		                        </div>
+		                        <div class="form-group">
+		                        	<label for="company" class="col-sm-3 control-label">State</label>
+									<div class="col-sm-9 mb">
+										<input type="text" class="form-control" id="company" name="company" placeholder="State. This field is required." >
+									</div>
+		                        </div>
+		                        <div class="form-group">
+		                        	<label for="company" class="col-sm-3 control-label">Postal Code</label>
+									<div class="col-sm-9 mb">
+										<input type="text" class="form-control" id="company" name="company" placeholder="Postal Code. This field is required." >
+									</div>
+		                        </div>
+		                        <div class="form-group">
+		                        	<label for="company" class="col-sm-3 control-label">Country</label>
+									<div class="col-sm-9 mb">
+										<input type="text" class="form-control" id="company" name="company" placeholder="Country. This field is required." >
+									</div>
+		                        </div>
+		                        <div class="form-group">
+		                        	<label for="company" class="col-sm-3 control-label">Time Zone</label>
+									<div class="col-sm-9 mb">
+										<input type="text" class="form-control" id="company" name="company" placeholder="Time Zone. This field is required." >
+									</div>
+		                        </div>
+		                        <div class="form-group">
+		                        	<label for="company" class="col-sm-3 control-label">Phone</label>
+									<div class="col-sm-9 mb">
+										<input type="text" class="form-control" id="company" name="company" placeholder="Phone. This field is required." >
+									</div>
+		                        </div>
+		                        <div class="form-group">
+		                        	<label for="company" class="col-sm-3 control-label">Mobile Phone</label>
+									<div class="col-sm-9 mb">
+										<input type="text" class="form-control" id="company" name="company" placeholder="Mobile Phone. This field is required." >
+									</div>
+		                        </div>
+		                        <div class="form-group">
+		                        	<label for="company" class="col-sm-3 control-label">Email</label>
+									<div class="col-sm-9 mb">
+										<input type="text" class="form-control" id="company" name="company" placeholder="Email. This field is required." >
+									</div>
+		                        </div>
+		                    </fieldset>
+	                        <fieldset>
+		                       	<div class="form-group">
+		                       		<div class="col-lg-12 mb">
+		                       			<label class="col-sm-6">Terms and Condition</label>
+		                       		</div>
+		                       		<div class="col-lg-12 pull-right">
+		                       			<div class="boxviewnew form-control text-muted" style="height:250px;overflow-y:scroll; overflow-x:hidden; text-align: justify;">
+
+	                                      <table cellpadding="0" cellspacing="0">
+												<tbody><tr>
+													<td><p style="font-size: 14px;">
+													    This site is owned and operated by GoAutoDial, Inc. ("we", "us", "our" or "GoAutoDial").
+							                                                    GoAutoDial, Inc.provides its services to you ("Customer", "you" or "end user") 
+									  subject to the following conditions 
+							                                                    .<br>
+							                                                    If you visit or shop at our website or any other affiliated 
+							                                                    <a href="http://reversephonelookuppages.com/" class="faqlinka" style="color: green;">reverse phone lookup</a> websites,
+							                  you affirmatively accept the following conditions.
+							                  Continued use of the site and any of
+							                     				    GoAutoDial's services constitute the affirmative agreement to these terms and conditions.                                                    <br>
+
+							                                                    GoAutoDial reserves the right to change the terms, conditions and notices under which the                                                    GoAutoDial sites and services are offered,including but not limited to the charges associated with the use of the                                                    GoAutoDialsites and services. 
+													    </p>
+													</td>
+												</tr>
+												<tr><td><br><p style="font-size: 14px;"><b>1. Electronic Communications</b></p></td></tr>
+												<tr><td><p style="font-size: 14px;">1.1. When you visit GoAutoDial's websites or send Email to us, you are communicating with us electronically. You consent to receive communications from us electronically. We will communicate with you by Email or by posting notices on this site. You agree that all agreements, notices, disclosures and other communications that we provide to you electronically satisfy any legal requirement that such communications be in writing</p></td></tr>
+												<tr><td><br><p style="font-size: 14px;"><b>Trademarks and Copyright</b></p></td></tr>
+												<tr><td><p style="font-size: 14px;">2.1. All content on this site, such as text, graphics, logos, button icons, images, trademarks or copyrights are the property of their respective owners. Nothing in this site should be construed as granting any right or license to use any Trademark without the written permission of its owner.</p></td></tr>
+												<tr><td><br><p style="font-size: 14px;"><b>3. Services &amp; Conditions</b></p></td></tr>
+												<tr><td><p style="font-size: 14px;">3.1. GoAutoDial shall not be held liable for any delay or failure to provide service(s) at any time. In no event shall GoAutoDial, its officers, Directors, Employees, Shareholders, Affiliates, Agents or Providers who furnishes services to customer in connection with this agreement or the service be liable for any direct, incident, indirect, special, punitive, exemplary or consequential damages, including but not limited to loss of data, lost of revenue, profits or anticipated profits, or damages arising out of or in connection to the use or inability to use the service. The limitations set forth herein apply to the claimed founded in Breach of Contract, Breach of Warranty, Product Liability and any and all other liability and apply weather or not GoAutoDial was informed of the likely hood of any particular type of damage.</p></td></tr>
+												<tr><td><p style="font-size: 14px;">3.2. GoAutoDial makes no warranties of any kind, written or implied, to the service in which it provides.</p></td></tr>
+												<tr><td><p style="font-size: 14px;">3.3. GoAutoDialprovides prepaid services only. You must keep a positive balance to retain services with GoAutoDial.You must pay all negative balances immediately. Customer agrees to keep a positive balance in customer's account at all times and agrees to pay the rate in which the customer signed up for any destinations. Customer agrees to pay any and all charges that customer incurs while using GoAutoDial's service.</p></td></tr>
+												<tr><td><p style="font-size: 14px;">3.4. GoAutoDial'sVOIP and Cloud services are not intended for use as a primary telephone source for business or residential users.  GoAutoDialdoes not provide e911 service. </p></td></tr>
+												<tr><td><p style="font-size: 14px;">3.5. All calls placed through GoAutoDial's VOIP network to US48 destinations are billed at 6 second increments unless otherwise stated.</p></td></tr>
+												<tr><td><p style="font-size: 14px;">3.6. Customer agrees to the exclusive jurisdiction of the courts of Pasig City in the Republic of the Philippines for any and all legal matters.</p></td></tr>
+												<tr><td><p style="font-size: 14px;">3.7. Violation of any state or federal laws or laws for any other competent jurisdiction may result in immediate account termination and/or disconnection of the offending service.</p></td></tr>
+												<tr><td><p style="font-size: 14px;">3.8. GoAutoDial reserves the right to terminate service at any time with or without notice; especially if Customer is found to be in violation ofGoAutoDial'sTerms &amp; Conditions. You agree that  GoAutoDial Due to the nature of this industry and high credit card fraud rate,</p></td></tr>
+												<tr><td><p style="font-size: 14px;">3.9.Due to the nature of this industry and high credit card fraud rate,  GoAutoDial reserves the right to request the following documentation for verification purposes; A copy of the credit card used to establish the account along with valid photo identification such as a Passport, Drivers License or other Government issued identification.</p></td>
+												</tr><tr><td><p style="font-size: 14px;">3.10 DID and TFN (Toll Free Numbers ) Services and Subscriptions Activation and Deactivation</p></td>
+												</tr><tr><td><p style="font-size: 14px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.10.1 DID/TFN monthly service fee shall be automatically deducted or debited from the customer's account balance or credits with or without prior notice; prior to activation of service its subscriptions agreement.</p></td>
+												</tr><tr><td><p style="font-size: 14px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.10.2 Auto-debit of monthly payment shall commence once DID/TFN has been activated. </p></td>
+												</tr><tr><td><p style="font-size: 14px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.10.3 Failure to pay the agreed DID/TFN monthly services and monthly subscription fee (having one [1] month unpaid bill) shall be subject to DID/TFN deactivation.</p></td>
+												</tr><tr><td><p style="font-size: 14px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.10.4 A maximum one 1 month grace period shall be given to the customer to settle his/her account before DID/TFN deactivation and/or deletion. </p></td></tr>
+												<tr><td><br><p style="font-size: 14px;"><b>4. Technical Support</b></p></td></tr>
+												<tr><td><p style="font-size: 14px;">4.1. GoAutoDial Technical Support is available Mondays to Fridays 09:00 to 24:00 24/5 EST, all support concerns should be filed at GoAutoDial's ticketing system <a href="https://www.goautodial.com/supporttickets.php" class="faqlinka" style="color: green;">https://www.goautodial.com/supporttickets.php</a>.</p></td></tr>
+												<tr><td><br><p style="font-size: 14px;"><b>4.2. Monthly Technical Support</b></p></td></tr>
+												<tr><td><p style="font-size: 14px;">4.2.1. GoAutoDial'smonthly support subscriptions covers the configurations and troubleshooting for the following issues: </p></td><td></td></tr>
+												<tr><td><p style="font-size: 14px; margin-left: 20px;">Campaigns – outbound, inbound and blended campaign creation and configurations
+							                    Lists/Leads – creation of lists and loading of leads.
+							                    Statuses/Dispositions configuration
+							                    Call Times configuration
+							                    IVR – Basic configuration (one level only)
+							                    Basic tutorial for Campaign and Leads management.    									    
+							    									    
+							    									    
+							    									    
+							    									    </p></td></tr>
+												<tr><td><br><p style="font-size: 14px;">4.2.2.All advance configurations not listed above will be charged with the regular hourly support rate of $80 per hour. </p></td></tr>
+												<tr><td><br><p style="font-size: 14px;">4.2.3.We provide limited support and provide samples configurations for IP Phones/Softphones. It is the end users responsibility to properly configure their workstations and devices for use with GoAutoDial'sservices. </p></td></tr>
+												<tr><td><br><p style="font-size: 14px;">4.2.4. Leads Management, Campaign Management, Agent Monitoring and Reports Generation are end users responsibility.</p></td></tr>
+												<tr><td><br><b><p style="font-size: 14px;">4.3. Emergency Technical Support</p></b></td></tr>
+												<tr><td><p style="font-size: 14px;">4.3.1. Emergency technical support outside the regular coverage of Monday to Friday 9:00 to 24:00 EST will be charged $80 per hour.</p></td></tr>
+												<tr><td><br><p style="font-size: 14px;">4.3.2. Emergency technical support for Weekend and Holidays will be charged $160 per hour.</p></td></tr>
+												<tr><td><br><b><p style="font-size: 14px;">5. Refund Policy</p></b></td></tr>
+												<tr><td><p style="font-size: 14px;">5.1. VoIP and Cloud Services: We offer full refunds on remaining pre-paid balance on VoIP and Cloud services upon request for all payments made within 7 days.</p></td></tr>
+												<tr><td><br><p style="font-size: 14px;">5.2. Monthly Subscriptions: We do not offer refunds for monthly subscriptions such as Hosted Dialer, DID's or Toll Free numbers</p></td></tr>
+												<tr><td><br><p style="font-size: 14px;">5.3. Prepaid Technical Support and Consulting Services: We offer refunds only if no technical support or consulting service and has been rendered.</p></td></tr>
+												<tr><td><br><p style="font-size: 14px;">5.4. There will be no refunds for one-time/setup fees</p></td></tr>
+												<tr><td><br><b><p style="font-size: 14px;">6. Site Policies, Modification &amp; Severability</p></b></td></tr>
+												<tr><td><p style="font-size: 14px;">6.1. We reserve the right to make changes to our site, policies, and these Terms &amp; Conditions at any time. If any of these conditions shall be deemed invalid, void, or for any reason unenforceable, that condition shall be deemed severable and shall not affect the validity and enforceability of any remaining condition.</p></td></tr>
+												<tr><td><br><p style="font-size: 14px;"><b>7. General Complaints</b></p></td></tr>
+												<tr><td><p style="font-size: 14px;">7.1. Please send reports of activity in violation of these Terms &amp; Conditions to <a href="mailto:cloud@goautodial.com">cloud@goautodial.com</a>. GoAutoDial will reasonably investigate incidents involving such violations. GoAutoDial may involve and will cooperate with law enforcement officials if any criminal activity is suspected. Violations may involve criminal and civil liability</p></td></tr>
+												<tr><td><br><b><p style="font-size: 14px;">8. Paypal Payments</p></b></td></tr>
+												<tr><td><p style="font-size: 14px;">8.1 In case of payment via PayPal.com, customer fully understands that there will be no tangible product shipping to any address. The customer understands that they are purchasing services for which GoAutoDialprovides online Call History (CDR) for VOIP/Cloud usage and/or outbound/inbound reports for the Dialer. In case of PayPal disputes the customer agrees to abide by  GoAutoDial’sonline Call History (CDR) for VOIP/Cloud usage and/or outbound/inbound reports for delivered service totaling the PayPal.com payment. </p></td></tr>
+												<tr><td><br><b><p style="font-size: 14px;">9. Limitation of Liabilities</p></b></td></tr>
+												<tr><td><p style="font-size: 14px;">9.1. In no event shall GoAutoDial, Inc.be liable to any party for any direct, indirect, incidental, special, exemplary or consequential damages of any type whatsoever related to or arising from this website or any use of this website, or any site or resource linked to, referenced, or access throught this website, or for the use or downloading of, or access to, any materials, information, products, or services, including withouth limitation, any lost profits, business interruption, lost savings or loss of programs or other data, even if  GoAutoDial, Inc.is expressly advised of the possiblity of such damages. </p></td></tr>
+												<tr><td><br><b><p style="font-size: 14px;">10. Call Compliance</p></b></td></tr>
+												<tr><td><p style="font-size: 14px;">10.1. GoAutoDial has full USA, UK and Canada regulatory compliance. Customer fully understands that it is their responsibility to follow these regulations. Failure to do so may result in immediate account suspension and/or disconnection.</p></td></tr>
+
+							                                      </tbody></table>
+							                                  </div>
+		                       		</div>
+		                       	</div>
+		                    </fieldset>
 						</div>
 						<!-- ./justgo -->
+
 					</div><!--end of step2 -->
 					
-					<!-- STEP 3 -->
-					<div class="wizard-step" style="display:none;">
-
-					</div>
+					
 				</form>
 		
 				</div> <!-- end of modal body -->
-				
-				<!-- NOTIFICATIONS -->
-				<div id="notifications">
-					<div class="output-message-success" style="display:none;">
-						<div class="alert alert-success alert-dismissible" role="alert">
-						  <strong>Success!</strong> New Agent added.
-						</div>
-					</div>
-					<div class="output-message-error" style="display:none;">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  <strong>Error!</strong> Something went wrong please see input data on form or if agent already exists.
-						</div>
-					</div>
-					<div class="output-message-incomplete" style="display:none;">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-						  Please fill-up all the fields correctly and do not leave any fields with (<strong> * </strong>) blank.
-						</div>
-					</div>
-				</div>
 
 				<div class="modal-footer wizard-buttons">
 					<!-- The wizard button will be inserted here. -->
@@ -487,13 +629,10 @@
 
 						if(carrier_type == "justgo"){
 							$('.justgo_div').show();
-							document.getElementById("container-element").className = "wizard-step";
 						}else{
 							$('.justgo_div').hide();
-							document.getElementById("container-element").className = "";
 						}
 						
-
 					},
 	                onfinish:function(){
 	                

@@ -29,8 +29,6 @@
 		<!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
-		<!-- Wizard Form style -->
-    	<link rel="stylesheet" href="css/easyWizard.css">
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
@@ -104,7 +102,8 @@
 				<form name="create_form" id="create_form" role="form">
 					<div class="row">
 						<h4>
-							<small></small>
+							Add Phones
+							<small>Specify a number of phones to be added</small>
 						</h4>
 						<fieldset>
 							<div class="form-group mt">
@@ -120,7 +119,7 @@
 									</select>
 								</div>
 								<div class="col-sm-2" id="custom_seats" style="display:none;">
-									<input type="number" class="form-control" name="custom_seats" value="1" min="1" max="99" style="padding:5px;" required>
+									<input type="number" class="form-control" name="custom_seats" value="1" min="1" max="99" required>
 								</div>
 							</div>
 							<div class="form-group">		
@@ -139,7 +138,7 @@
 							<div class="form-group mt">
 								<label class="col-sm-4 control-label" for="phone_ext">Phone Extension/Login</label>
 								<div class="col-sm-8 mb">
-									<input text="text" name="phone_ext" id="phone_ext" class="form-control" placeholder="Phone Login (Mandatory)" title="Must be 3 - 20 characters and contains only numerical values." minlength="3" maxlength="20" required/>
+									<input text="number" name="phone_ext" id="phone_ext" class="form-control" placeholder="Phone Login (Mandatory)" title="Must be 3 - 20 characters and contains only numerical values." minlength="3" maxlength="20" required/>
 								</div>
 							</div>
 							<div class="form-group">		
@@ -352,7 +351,7 @@
                     type: "warning",   
                     showCancelButton: true,   
                     confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Yes, delete this moh!",   
+                    confirmButtonText: "Yes, delete this phones!",   
                     cancelButtonText: "No, cancel please!",   
                     closeOnConfirm: false,   
                     closeOnCancel: false 
@@ -381,6 +380,30 @@
                     }
                 );
 			});
+		
+		/*********************
+		** FILTERS
+		*********************/	
+
+			// disable special characters on Fullname
+				$('#phone_ext').bind('keypress', function (event) {
+				    var regex = new RegExp("^[0-9]+$");
+				    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+				    if (!regex.test(key)) {
+				       event.preventDefault();
+				       return false;
+				    }
+				});
+
+			// disable special characters on Fullname
+				$('#fullname').bind('keypress', function (event) {
+				    var regex = new RegExp("^[a-zA-Z0-9]+$");
+				    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+				    if (!regex.test(key)) {
+				       event.preventDefault();
+				       return false;
+				    }
+				});
 	});
 </script>
 

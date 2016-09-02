@@ -30,9 +30,6 @@
         
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        <!-- Wizard Form style -->
-        <link href="css/style.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="css/easyWizard.css">
         <!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
@@ -97,156 +94,159 @@
     <!-- ADD USER GROUP MODAL -->
         <div class="modal fade" id="addvoicemail-modal" tabindex="-1" aria-labelledby="addvoicemail-modal" >
             <div class="modal-dialog" role="document">
-                <div class="modal-content" style="border-radius:5px;">
+                <div class="modal-content">
 
                 <!-- Header -->
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title animate-header" id="ingroup_modal"><b>Voice Mail Wizard » Add New Voice Mail</b></h4>
+                        <h4 class="modal-title animated bounceInRight" id="ingroup_modal"><b>Voice Mail Wizard » Add New Voice Mail</b></h4>
                     </div>
-                    <div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+                    <div class="modal-body">
                     
-                    <form action="" method="POST" id="create_voicemail" name="create_voicemail" class="form-horizontal " role="form">
+                    <form action="" method="POST" id="create_voicemail" name="create_voicemail" role="form">
+                        <div class="row">
                     <!-- STEP 1 -->
-                        <div class="wizard-step">
-                            <div class="form-group mt">
-                                <label class="col-sm-3 control-label" for="voicemail_id">Voicemail ID</label>
-                                <div class="col-sm-9 mb">
-                                    <input type="number" name="voicemail_id" id="voicemail_id" class="form-control" placeholder="Voicemail ID. This is a required field. Minimum of 2 numbers">
+                            <h4>
+                                <small></small>
+                            </h4>
+                            <fieldset>
+                                <div class="form-group mt">
+                                    <label class="col-sm-3 control-label" for="voicemail_id">Voicemail ID</label>
+                                    <div class="col-sm-9 mb">
+                                        <input type="number" name="voicemail_id" id="voicemail_id" class="form-control" placeholder="Voicemail ID (Mandatory)" minlength="2" maxlength="10">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">        
-                                <label class="col-sm-3 control-label" for="password">Password: </label>
-                                <div class="col-sm-9 mb">
-                                    <input type="text" name="password" id="password" class="form-control" placeholder="Password. This is a required field.">
+                                <div class="form-group">        
+                                    <label class="col-sm-3 control-label" for="password">Password: </label>
+                                    <div class="col-sm-9 mb">
+                                        <input type="text" name="password" id="password" class="form-control" placeholder="Password (Mandatory)" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">        
-                                <label class="col-sm-3 control-label" for="name">Name </label>
-                                <div class="col-sm-9 mb">
-                                    <input type="text" name="name" id="name" class="form-control" placeholder="Name. This is a required field.">
+                                <div class="form-group">        
+                                    <label class="col-sm-3 control-label" for="name">Name </label>
+                                    <div class="col-sm-9 mb">
+                                        <input type="text" name="name" id="name" class="form-control" placeholder="Name (Mandatory)" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="active">Active </label>
-                                <div class="col-sm-9 mb">
-                                    <select name="active" id="active" class="form-control">
-                                        <option value="N" selected>No</option>
-                                        <option value="Y">Yes</option>
-                                    </select>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="active">Active </label>
+                                    <div class="col-sm-9 mb">
+                                        <select name="active" id="active" class="form-control">
+                                            <option value="N" selected>No</option>
+                                            <option value="Y">Yes</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">        
-                                <label class="col-sm-3 control-label" for="email">Email </label>
-                                <div class="col-sm-9 mb">
-                                    <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+                                <div class="form-group">        
+                                    <label class="col-sm-3 control-label" for="email">Email </label>
+                                    <div class="col-sm-9 mb">
+                                        <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="user_group">User Group </label>
-                                <div class="col-sm-9 mb">
-                                    <select id="user_group" class="form-control" name="user_group">
-                                        <?php
-                                            for($i=0;$i<count($user_groups->user_group);$i++){
-                                        ?>
-                                            <option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i].' - '.$user_groups->group_name[$i];?>  </option>
-                                        <?php
-                                            }
-                                        ?>
-                                    </select>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="user_group">User Group </label>
+                                    <div class="col-sm-9 mb">
+                                        <select id="user_group" class="form-control" name="user_group">
+                                            <?php
+                                                for($i=0;$i<count($user_groups->user_group);$i++){
+                                            ?>
+                                                <option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i].' - '.$user_groups->group_name[$i];?>  </option>
+                                            <?php
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            </fieldset>
                         </div><!-- end of step -->
                     
                     </form>
 
                     </div> <!-- end of modal body -->
-
-                    <div class="modal-footer">
-                        <!-- The wizard button will be inserted here. -->
-                        <button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
-                        <input type="submit" class="btn btn-primary" id="submit_voicemail" value="Submit" style="display: inline-block;">
-                    </div>
                 </div>
             </div>
         </div><!-- end of modal -->
         
     <!-- Forms and actions -->
         <?php print $ui->standardizedThemeJS(); ?>
-        <script src="js/easyWizard.js" type="text/javascript"></script> 
+        <!-- JQUERY STEPS-->
+        <script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            $('#voicemails_table').dataTable();
-            $("#addvoicemail-modal").wizard();
+<script>
+    $(document).ready(function() {
 
-            // ADD FUNCTION
-                $('#submit_voicemail').click(function(){
-                $('#submit_voicemail').val("Saving, Please Wait.....");
-                $('#submit_voicemail').prop("disabled", true);
+        /*********************
+        ** INITIALIZATION
+        *********************/
 
-                var validate_voicemail = 0;
-                var voicemail_id = $("#voicemail_id").val();
-                var name = $("#name").val();
-                var password = $("#password").val();
-                var email = $("#email").val();
+            // init data table
+                $('#voicemails_table').dataTable();
 
-                if(voicemail_id == ""){
-                    validate_voicemail = 1;
-                }
+            // init form wizard 
+                var form = $("#create_voicemail"); 
+                form.validate({
+                    errorPlacement: function errorPlacement(error, element) { element.after(error); }
+                });
 
-                if(name == ""){
-                    validate_voicemail = 1;
-                }
+            /*********
+            ** Init Wizard
+            *********/
+                form.children("div").steps({
+                    headerTag: "h4",
+                    bodyTag: "fieldset",
+                    transitionEffect: "slideLeft",
+                    onStepChanging: function (event, currentIndex, newIndex)
+                    {
+                        // Allways allow step back to the previous step even if the current step is not valid!
+                        if (currentIndex > newIndex) {
+                            return true;
+                        }
 
-                if(password == ""){
-                    validate_voicemail = 1;
-                }
+                        // Clean up if user went backward before
+                        if (currentIndex < newIndex)
+                        {
+                            // To remove error styles
+                            $(".body:eq(" + newIndex + ") label.error", form).remove();
+                            $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+                        }
 
-                if(email == ""){
-                    validate_voicemail = 1;
-                }
+                        form.validate().settings.ignore = ":disabled,:hidden";
+                        return form.valid();
+                    },
+                    onFinishing: function (event, currentIndex)
+                    {
+                        form.validate().settings.ignore = ":disabled";
+                        return form.valid();
+                    },
+                    onFinished: function (event, currentIndex)
+                    {
+                        $('#finish').text("Loading...");
+                        $('#finish').attr("disabled", true);
 
-                var x = document.forms["create_voicemail"]["email"].value;
-                var atpos = x.indexOf("@");
-                var dotpos = x.lastIndexOf(".");
-                if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
-                    validate_voicemail = 1;
-                }
-
-                    if(validate_voicemail == 0){
-                    //alert("Validated !");
-                    
-                        $.ajax({
-                            url: "./php/AddVoicemail.php",
-                            type: 'POST',
-                            data: $("#create_voicemail").serialize(),
-                            success: function(data) {
-                              // console.log(data);
-                                  if(data == 1){
-                                        swal("Success!", "Voicemail Successfully Created!", "success");
-                                        window.setTimeout(function(){location.reload()},3000)
-                                        $('#submit_voicemail').val("Loading...");
-                                  }
-                                  else{
-                                      sweetAlert("Oops...", "Something went wrong! "+data, "error");
-                                      $('#submit_voicemail').val("Submit");
-                                      $('#submit_voicemail').prop("disabled", false);
-                                  }
-                            }
-                        });
-                    
-                    }else{
-                        sweetAlert("Oops...", "Something went wrong!", "error");
-                        validate_usergroup = 0;
-                        $('#submit_voicemail').val("Submit");
-                        $('#submit_voicemail').prop("disabled", false);
+                        // Submit form via ajax
+                            $.ajax({
+                                url: "./php/AddVoicemail.php",
+                                type: 'POST',
+                                data: $("#create_voicemail").serialize(),
+                                success: function(data) {
+                                  // console.log(data);
+                                      if(data == 1){
+                                            swal({title: "Success",text: "Voicemail Successfully Created!",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
+                                            $('#finish').val("Submit");
+                                      }
+                                      else{
+                                          sweetAlert("Oops...", "Something went wrong! "+data, "error");
+                                          $('#finish').val("Submit");
+                                          $('#finish').prop("disabled", false);
+                                      }
+                                }
+                            });
                     }
                 });
-            
-            /**
-              * Edit user details
-             */
+ 
+        /*********************
+        ** EDIT EVENT
+        *********************/
             $(document).on('click','.edit-voicemail',function() {
                 var url = './editsettingsvoicemail.php';
                 var vmid = $(this).attr('data-id');
@@ -255,9 +255,9 @@
                 $(form).submit();
             });
 
-            /**
-             * Delete validation modal
-             */
+        /*********************
+        ** DELETE EVENT
+        *********************/  
             $(document).on('click','.delete-voicemail',function() {
                 var id = $(this).attr('data-id');
                     swal({   
@@ -282,8 +282,7 @@
                                     success: function(data) {
                                     console.log(data);
                                         if(data == 1){
-                                            swal("Success!", "Usergroup Successfully Deleted!", "success");
-                                            window.setTimeout(function(){location.reload()},1000)
+                                            swal({title: "Deleted",text: "Voicemail Successfully Deleted!",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
                                         }else{
                                             sweetAlert("Oops...", "Something went wrong! "+data, "error");
                                         }
@@ -295,8 +294,31 @@
                         }
                     );
             });
-        });
-    </script>
+        /*********************
+        ** FILTERS
+        *********************/  
+
+            // disable special characters on Usergroup ID   
+                $('#voicemail_id').bind('keypress', function (event) {
+                    var regex = new RegExp("^[ A-Za-z0-9]+$");
+                    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                    if (!regex.test(key)) {
+                       event.preventDefault();
+                       return false;
+                    }
+                });
+
+            // disable special characters on Usergroup Name
+                $('#name').bind('keypress', function (event) {
+                    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+                    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                    if (!regex.test(key)) {
+                       event.preventDefault();
+                       return false;
+                    }
+                });
+    });
+</script>
     
         <?php print $ui->creamyFooter();?>
     </body>

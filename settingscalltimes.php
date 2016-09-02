@@ -93,6 +93,8 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
+
+        <!-- Fixed Action Button -->
 		<div class="bottom-menu skin-blue">
 			<div class="action-button-circle" data-toggle="modal" data-target="#view-calltime-modal">
 				<?php print $ui->getCircleButton("calltimes", "plus"); ?>
@@ -109,41 +111,40 @@
 	  <div class="modal-dialog">
 
 	    <!-- Modal content-->
-	    <div class="modal-content" style="border-radius:5px;">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title animate-header"><b>Call Time Wizard » Add New Call Time</b></h4>
-	      </div>
-	      <div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
-			<div class="form-horizontal">
-				<form id="form_calltimes" class="">
-
-					<div class="wizard-step" style="display: block;">
-
-						<div class="message_box"></div>
+	    <div class="modal-content">
+	      	<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	       		<h4 class="modal-title animated bounceInRight"><b>Call Time Wizard » Add New Call Time</b></h4>
+	      	</div>
+	      	<div class="modal-body">
+				<form id="form_calltimes">
+					<div class="row">
+						<h4>
+							<small></small>
+						</h4>
 						<fieldset>
-							<div class="form-group">
-								<label class="control-label col-lg-4">Call Time ID:</label>
-								<div class="col-lg-7 mb">
+							<div class="form-group mt">
+								<label class="control-label col-lg-4">Call Time ID</label>
+								<div class="col-lg-8 mb">
 									<label class="control-label call-time-id hide"></label>
-									<input type="text" class="form-control call-time-id-textbox" name="call_time_id" placeholder="Call Time ID. This is a required field.">
+									<input type="text" class="form-control call-time-id-textbox" name="call_time_id" id="call_time_id" placeholder="Call Time ID (Mandatory)" title="Must be 3-10 characters only." minlength="3" maxlength="10" required>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-4">Call Time Name:</label>
-								<div class="col-lg-7 mb">
-									<input type="text" class="form-control call-time-name" name="call_time_name" placeholder="Call Time Name. This is a required field.">
+								<label class="control-label col-lg-4">Call Time Name</label>
+								<div class="col-lg-8 mb">
+									<input type="text" class="form-control call-time-name" name="call_time_name" id="call_time_name" placeholder="Call Time Name (Mandatory)" maxlength="30" required>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-4">Call Time Comments:</label>
-								<div class="col-lg-7 mb">
-									<input type="text" class="form-control call-time-comments" name="call_time_comments" placeholder="Call Time ID. This is a required field.">
+								<label class="control-label col-lg-4">Call Time Comments</label>
+								<div class="col-lg-8 mb">
+									<input type="text" class="form-control call-time-comments" name="call_time_comments" id="call_time_comments" placeholder="Call Time Comments (Mandatory)" maxlength="255" required>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-4">User Group:</label>
-								<div class="col-lg-7 mb">
+								<label class="control-label col-lg-4">User Group</label>
+								<div class="col-lg-8 mb">
 									<select class="form-control call-time-user-group" name="call_time_user_group">
 										<!--<option value="ALL"> ALL USER GROUPS </option>-->
 											<?php
@@ -157,10 +158,13 @@
 								</div>
 							</div>
 						</fieldset>
+						<h4>
+							<small></small>
+						</h4>
 						<fieldset>
 							<div class="form-group mt">
 								<label class="control-label col-lg-2">&nbsp;</label>
-								<div class="col-lg-10">
+								<div class="col-lg-10 mb">
 									<div class="row">
 										<label class="col-lg-3">Start</label>
 										<label class="col-lg-3">Stop</label>
@@ -169,7 +173,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Dafault:</label>
+								<label class="control-label col-lg-2">Dafault</label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -194,7 +198,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Sunday:</label>
+								<label class="control-label col-lg-2">Sunday</label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -219,7 +223,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Monday:</label>
+								<label class="control-label col-lg-2">Monday</label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -244,7 +248,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Tuesday:</label>
+								<label class="control-label col-lg-2">Tuesday</label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -269,7 +273,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Wednesday:</label>
+								<label class="control-label col-lg-2">Wednesday</label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -294,7 +298,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Thursday:</label>
+								<label class="control-label col-lg-2">Thursday</label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -319,7 +323,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Friday:</label>
+								<label class="control-label col-lg-2">Friday</label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -344,7 +348,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Saturday:</label>
+								<label class="control-label col-lg-2">Saturday</label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -371,13 +375,7 @@
 						</fieldset>
 					</div>
 				</form>
-			</div>
-	      </div>
-	      <div class="modal-footer">
-			<!-- The wizard button will be inserted here. -->
-			<button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
-			<input type="submit" class="btn btn-primary add-calltimes" id="submit_calltime" value="Submit" style="display: inline-block;">
-		  </div>
+	      	</div>
 	    </div>
 	    <!-- End of modal content -->
 	  </div>
@@ -386,66 +384,102 @@
 
 		<!-- Forms and actions -->
 		<?php print $ui->standardizedThemeJS(); ?>
-		<!-- wizard -->
-		<script src="js/easyWizard.js" type="text/javascript"></script>
+		<!-- JQUERY STEPS-->
+  		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 
-		<script type="text/javascript">
-			$(document).ready(function() {
-				// $('#view-calltime-modal').modal('show');
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		/*********************
+		** INITIALIZATION
+		*********************/
+			// $('#view-calltime-modal').modal('show');
 				$('#calltimes').dataTable();
 
-				//initialize wizard
-				$("#view-calltime-modal").wizard();
-
-				//initialize timepicker
+			//initialize timepicker
 				$('.start_time').datetimepicker({
-                    format: 'LT'
-                });
-                $('.end_time').datetimepicker({
-                    format: 'LT'
-                });
-				
-				$('#submit_calltime').click(function(){
-					$('#submit_calltime').val("Saving, Please Wait.....");
-	                $('#submit_calltime').prop("disabled", true);
+                format: 'LT'
+            });
+           	$('.end_time').datetimepicker({
+                format: 'LT'
+            });
+			
+			// init form wizard 
+				var form = $("#form_calltimes"); 
+			    form.validate({
+			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
+			    });
 
-					var form_data = $('#form_calltimes').serialize();
+            /*********
+			** Init Wizard
+			*********/
+			    form.children("div").steps({
+			        headerTag: "h4",
+			        bodyTag: "fieldset",
+			        transitionEffect: "slideLeft",
+			        onStepChanging: function (event, currentIndex, newIndex)
+			        {
+			        	// Allways allow step back to the previous step even if the current step is not valid!
+				        if (currentIndex > newIndex) {
+				            return true;
+				        }
 
-					$.ajax({
-						url: "./php/AddCalltime.php",
-						type: 'POST',
-						data: $('#form_calltimes').serialize(),
-						success: function(data) {
-						    console.log(data);
-						    if(data == 1){
-						    	swal("Success!", "Call Times Successfully Created!", "success")
-                                window.setTimeout(function(){location.reload()},3000)
-                                $('#submit_calltime').val("Loading");
-						    }else{
-						    	sweetAlert("Oops...", "Something went wrong! " + data, "error");
-		                        $('#submit_calltime').val("Submit");
-		                        $('#submit_calltime').prop("disabled", false);
-						    }
-						}
-					});
-					
-				});
-				
-				/**
-				  * Edit call time details
-				 */
+						// Clean up if user went backward before
+					    if (currentIndex < newIndex)
+					    {
+					        // To remove error styles
+					        $(".body:eq(" + newIndex + ") label.error", form).remove();
+					        $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+					    }
+
+			            form.validate().settings.ignore = ":disabled,:hidden";
+			            return form.valid();
+			        },
+			        onFinishing: function (event, currentIndex)
+			        {
+			            form.validate().settings.ignore = ":disabled";
+			            return form.valid();
+			        },
+			        onFinished: function (event, currentIndex)
+			        {
+			        	$('#finish').text("Loading...");
+			        	$('#finish').attr("disabled", true);
+
+			            // Submit form via ajax
+				            $.ajax({
+								url: "./php/AddCalltime.php",
+								type: 'POST',
+								data: $('#form_calltimes').serialize(),
+								success: function(data) {
+								    console.log(data);
+								    if(data == 1){
+								    	swal({title: "Success",text: "Call Times Successfully Created!",type: "success"},function(){window.location.href = 'settingscalltimes.php';});
+		                                $('#finish').val("Submit");
+		                                $('#finish').prop("disabled", false);
+								    }else{
+								    	sweetAlert("Oops...", "Something went wrong! " + data, "error");
+				                        $('#finish').val("Submit");
+				                        $('#finish').prop("disabled", false);
+								    }
+								}
+							});
+			        }
+			    });
+		
+		/*********************
+		** EDIT EVENT
+		*********************/
 				$(document).on('click','.edit-calltime',function() {
 					var url = './editsettingscalltimes.php';
 					var id = $(this).attr('data-id');
-					//alert(extenid);
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="cid" value="'+id+'" /></form>');
 					//$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				});
 				
-				/**
-                 * Delete validation modal
-                 */
+		/*********************
+		** DELETE EVENT
+		*********************/	
                  $(document).on('click','.delete-calltime',function() {
                     var id = $(this).attr('data-id');
                     swal({   
@@ -470,22 +504,44 @@
 		                            success: function(data) {
 		                            console.log(data);
 		                                if(data == 1){
-		                                    swal("Success!", "Call Time Successfully Deleted!", "success");
-		                                    window.setTimeout(function(){location.reload()},1000)
+		                                	swal({title: "Deleted",text: "Call Time Successfully Deleted!",type: "success"},function(){window.location.href = 'settingscalltimes.php';});
 		                                }else{
 		                                	sweetAlert("Oops...", "Something went wrong! "+data, "error");
-		                                    window.setTimeout(function(){$('#delete_notification_modal_fail').modal('hide');}, 3000);
 		                                }
 		                            }
 		                        });
 							} else {     
                                     swal("Cancelled", "No action has been done :)", "error");   
-                            } 
+                            }
                         }
                     );
 				});
-			});
-		</script>
+		
+		/*********************
+		** FILTERS
+		*********************/	
+
+			// disable special characters on Fullname
+				$('#call_time_id').bind('keypress', function (event) {
+				    var regex = new RegExp("^[ A-Za-z0-9_-]*$");
+				    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+				    if (!regex.test(key)) {
+				       event.preventDefault();
+				       return false;
+				    }
+				});
+
+			// disable special characters on Fullname
+				$('#call_time_name').bind('keypress', function (event) {
+				    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+				    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+				    if (!regex.test(key)) {
+				       event.preventDefault();
+				       return false;
+				    }
+				});
+	}); // end of document ready
+</script>
 
 		<?php print $ui->creamyFooter(); ?>
     </body>

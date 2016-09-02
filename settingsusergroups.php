@@ -30,10 +30,6 @@
         
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        <!-- Wizard Form style -->
-        <link href="css/style.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="css/easyWizard.css">
-
         <!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
@@ -70,7 +66,7 @@
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
                     <div class="panel panel-default">
-                        <div class="panel-body table" id="scripts_table">
+                        <div class="panel-body table" id="table_usergroups">
                             <legend><?php $lh->translateText("user_groups"); ?></legend>
 							<?php print $ui->goGetUserGroupsList(); ?>
                         </div>
@@ -82,9 +78,17 @@
 					}
 				?>
                 </section><!-- /.content -->
+
+               
             </aside><!-- /.right-side -->
+
         </div><!-- ./wrapper -->
 
+
+        <?php print $ui->creamyFooter(); ?>
+            
+
+        <!-- Fixed Action Button -->
         <div class="action-button-circle" data-toggle="modal" data-target="#addusergroup-modal">
             <?php print $ui->getCircleButton("calls", "user-plus"); ?>
         </div>
@@ -92,37 +96,37 @@
     <!-- ADD USER GROUP MODAL -->
         <div class="modal fade" id="addusergroup-modal" tabindex="-1" aria-labelledby="addusergroup-modal" >
             <div class="modal-dialog" role="document">
-                <div class="modal-content" style="border-radius:5px;">
+                <div class="modal-content">
 
                 <!-- Header -->
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title animate-header" id="ingroup_modal"><b>User Group Wizard » Add New User Group</b></h4>
+                        <h4 class="modal-title animated bounceInRight" id="ingroup_modal"><b>User Group Wizard » Add New User Group</b></h4>
                     </div>
-                    <div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+                    <div class="modal-body">
                     
-                    <form action="" method="POST" id="create_usergroup" class="form-horizontal " role="form">
+                    <form action="" method="POST" id="create_usergroup" role="form">
+                        <div class="row">
                     <!-- STEP 1 -->
-                        <div class="wizard-step">
-                            <div class="row" style="padding-top:10px;padding-bottom:10px;">
-                                <p class="col-sm-12"><small><i> - - - All fields with ( </i></small> <b>*</b> <small><i> ) are Required Field.  - - -</i></small></p>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label" for="usergroup_id">* User Group:</label>
-                                <div class="col-sm-7">
-                                    <input type="text" name="usergroup_id" id="usergroup_id" class="form-control" placeholder="User Group" minlength="3">
-                                    <span  class="text-red"><small><i>* Minimum of 3 characters..</i></small></span>
+                            <h4>
+                                <small></small>
+                            </h4>
+                            <fieldset>
+                            <div class="form-group mt">
+                                <label class="col-sm-3 control-label" for="usergroup_id">User Group</label>
+                                <div class="col-sm-9 mb">
+                                    <input type="text" name="usergroup_id" id="usergroup_id" class="form-control" placeholder="User Group" minlength="3" maxlength="20" title="Must be 3-40 alphanumeric characters." required>
                                 </div>
                             </div>
                             <div class="form-group">        
-                                <label class="col-sm-4 control-label" for="groupname">* Group Name: </label>
-                                <div class="col-sm-7">
-                                    <input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name">
+                                <label class="col-sm-3 control-label" for="groupname">Group Name</label>
+                                <div class="col-sm-9 mb">
+                                    <input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name" minlength="3" maxlength="40" title="Must be 3-40 alphanumeric characters." required>
                                 </div>
                             </div>
                             <div class="form-group">        
-                                <label class="col-sm-4 control-label" for="grouplevel" style="padding-top:15px;">Group Level: </label>
-                                <div class="col-sm-3" style="padding-top:10px;">
+                                <label class="col-sm-3 control-label" for="grouplevel">Group Level</label>
+                                <div class="col-sm-9 mb">
                                     <select id="grouplevel" name="grouplevel" class="form-control">
                                         <option value="1"> 1 </option>
                                         <option value="2"> 2 </option> 
@@ -136,101 +140,94 @@
                                     </select>
                                 </div>
                             </div>
-                            
-                        </div><!-- end of step -->
-                    
+                            <!-- end of step -->
+                        </fieldset><!-- end of row -->
                     </form>
 
                     </div> <!-- end of modal body -->
-
-                    <!-- NOTIFICATIONS -->
-                    <div id="notifications">
-                        <div class="output-message-success" style="display:none;">
-                            <div class="alert alert-success alert-dismissible" role="alert">
-                              <strong>Success!</strong> New User Group added !
-                            </div>
-                        </div>
-                        <div class="output-message-error" style="display:none;">
-                            <div class="alert alert-danger alert-dismissible" role="alert">
-                              <span id="usergroup_result"></span>
-                            </div>
-                        </div>
-                        <div class="output-message-incomplete" style="display:none;">
-                            <div class="alert alert-danger alert-dismissible" role="alert">
-                              Please fill-up all the fields correctly and do not leave any fields with (<strong> * </strong>) blank.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <!-- The wizard button will be inserted here. -->
-                        <button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
-                        <input type="submit" class="btn btn-primary" id="submit_usergroup" value="Submit" style="display: inline-block;">
-                    </div>
                 </div>
             </div>
         </div><!-- end of modal -->
         
     <!-- Forms and actions -->
         <?php print $ui->standardizedThemeJS(); ?> 
-        <script src="js/easyWizard.js" type="text/javascript"></script> 
+        <!-- JQUERY STEPS-->
+        <script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 
-        <script>
-            $(document).ready(function() {
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        /*********************
+        ** INITIALIZATION
+        *********************/
+            // init data table
                 $('#usergroups_table').dataTable();
-                $("#addusergroup-modal").wizard({});
 
-                // ajax commands for modals -
-                $('#submit_usergroup').click(function(){
-                $('#submit_usergroup').val("Saving, Please Wait.....");
-                $('#submit_usergroup').prop("disabled", true);
+            // init form wizard 
+                var form = $("#create_usergroup"); 
+                form.validate({
+                    errorPlacement: function errorPlacement(error, element) { element.after(error); }
+                });
 
-                var validate_usergroup = 0;
-                var usergroup_id = $("#usergroup_id").val();
-                var groupname = $("#groupname").val();
-                var group = $("#grouplevel").val();
-                
-                if(usergroup_id == ""){
-                    validate_usergroup = 1;
-                }
+            /*********
+            ** Init Wizard
+            *********/
+                form.children("div").steps({
+                    headerTag: "h4",
+                    bodyTag: "fieldset",
+                    transitionEffect: "slideLeft",
+                    onStepChanging: function (event, currentIndex, newIndex)
+                    {
+                        // Allways allow step back to the previous step even if the current step is not valid!
+                        if (currentIndex > newIndex) {
+                            return true;
+                        }
 
-                if(groupname == ""){
-                    validate_usergroup = 1;
-                }
+                        // Clean up if user went backward before
+                        if (currentIndex < newIndex)
+                        {
+                            // To remove error styles
+                            $(".body:eq(" + newIndex + ") label.error", form).remove();
+                            $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+                        }
 
-                    if(validate_usergroup == 0){
-                    //alert("Validated !");
-                    
-                        $.ajax({
-                            url: "./php/AddUserGroup.php",
-                            type: 'POST',
-                            data: $("#create_usergroup").serialize(),
-                            success: function(data) {
-                              // console.log(data);
-                                  if(data == 1){
-                                        swal("Success!", "Usergroup Successfully Created!", "success");
-                                        window.setTimeout(function(){location.reload()},3000)
-                                        $('#submit_usergroup').val("Loading");
-                                  }
-                                  else{
-                                      sweetAlert("Oops...", "Something went wrong! "+data, "error");
-                                      $('#submit_usergroup').val("Submit");
-                                      $('#submit_usergroup').prop("disabled", false);
-                                  }
-                            }
-                        });
-                    
-                    }else{
-                        sweetAlert("Oops...", "Something went wrong!", "error");
-                        validate_usergroup = 0;
-                        $('#submit_usergroup').val("Submit");
-                        $('#submit_usergroup').prop("disabled", false);
+                        form.validate().settings.ignore = ":disabled,:hidden";
+                        return form.valid();
+                    },
+                    onFinishing: function (event, currentIndex)
+                    {
+                        form.validate().settings.ignore = ":disabled";
+                        return form.valid();
+                    },
+                    onFinished: function (event, currentIndex)
+                    {
+                        $('#finish').text("Loading...");
+                        $('#finish').attr("disabled", true);
+
+                        // Submit form via ajax
+                            $.ajax({
+                                url: "./php/AddUserGroup.php",
+                                type: 'POST',
+                                data: $("#create_usergroup").serialize(),
+                                success: function(data) {
+                                  // console.log(data);
+                                      if(data == 1){
+                                            swal({title: "Success",text: "Usergroup Successfully Created!",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
+                                            $('#finish').val("Submit");
+                                      }
+                                      else{
+                                          sweetAlert("Oops...", "Something went wrong! "+data, "error");
+                                          $('#finish').val("Submit");
+                                          $('#finish').prop("disabled", false);
+                                      }
+                                }
+                            });
                     }
                 });
                 
-                /**
-                  * Edit user group details
-                 */
+        /*********************
+        ** EDIT EVENT
+        *********************/
                 $(document).on('click','.edit-usergroup',function() {
                     var url = './editsettingsusergroup.php';
                     var id = $(this).attr('data-id');
@@ -241,9 +238,9 @@
                     $(form).submit();
                 });
 
-                /**
-                 * Delete validation modal
-                 */
+        /*********************
+        ** DELETE EVENT
+        *********************/  
                  $(document).on('click','.delete-usergroup',function() {
                     var id = $(this).attr('data-id');
                     swal({   
@@ -268,8 +265,8 @@
                                 success: function(data) {
                                 console.log(data);
                                     if(data == 1){
-                                        swal("Success!", "Usergroup Successfully Deleted!", "success");
-                                        window.setTimeout(function(){location.reload()},1000)
+                                        swal({title: "Deleted",text: "Usergroup Successfully Deleted!",type: "success"},function(){window.location.href = 'settingsusergroups.php';});
+                                        
                                     }else{
                                         sweetAlert("Oops...", "Something went wrong! "+data, "error");
                                     }
@@ -281,9 +278,33 @@
                         }
                     );
                 });
-            });
-        </script>
 
-        <?php print $ui->creamyFooter();?>
+        /*********************
+        ** FILTERS
+        *********************/  
+
+            // disable special characters on Usergroup ID   
+                $('#usergroup_id').bind('keypress', function (event) {
+                    var regex = new RegExp("^[ A-Za-z0-9]+$");
+                    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                    if (!regex.test(key)) {
+                       event.preventDefault();
+                       return false;
+                    }
+                });
+
+            // disable special characters on Usergroup Name
+                $('#groupname').bind('keypress', function (event) {
+                    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+                    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                    if (!regex.test(key)) {
+                       event.preventDefault();
+                       return false;
+                    }
+                });
+    }); // end of document ready
+</script>
+
+        
     </body>
 </html>
