@@ -63,6 +63,11 @@ if ($validated == 1) {
 		$phone_pass = stripslashes($phone_pass);
 	}
 	
+	$vdc_agent_api_access = NULL; if (isset($_POST["api_access"])) { 
+		$vdc_agent_api_access = $_POST["api_access"]; 
+		$vdc_agent_api_access = stripslashes($vdc_agent_api_access);
+	}
+
 	$url = gourl."/goUsers/goAPI.php"; # URL to GoAutoDial API file
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -79,7 +84,7 @@ if ($validated == 1) {
     $postfields["phone_pass"] = $phone_pass;
     $postfields["hotkeys_active"] = $hotkeys_active;
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-    
+    $postfields["vdc_agent_api_access"] = $vdc_agent_api_access;
 	
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
