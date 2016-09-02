@@ -1810,8 +1810,12 @@ function toggleButtons (taskaction, taskivr, taskrequeue) {
                 toggleButton('DialHangup', 'dial');
                 toggleButton('ResumePause', 'hide');
                 break;
-            default:
+            case "inbound_man":
                 toggleButton('DialHangup', 'dial');
+                toggleButton('ResumePause', 'show');
+                break;
+            default:
+                toggleButton('DialHangup', 'dial', false);
                 toggleButton('ResumePause', 'show');
         }
         
@@ -5038,7 +5042,7 @@ function AutoDial_Resume_Pause(taskaction, taskagentlog, taskwrapup, taskstatusc
             toggleButton('DialHangup', 'dial');
         } else {
             toggleButton('ResumePause', 'resume');
-            toggleButton('DialHangup', 'dial');
+            toggleButton('DialHangup', 'dial', false);
         }
 
         if ( (agent_pause_codes_active=='FORCE') && (temp_reason != 'LOGOUT') && (temp_reason != 'REQUEUE') && (temp_reason != 'DIALNEXT') && (temp_auto != '1') ) {

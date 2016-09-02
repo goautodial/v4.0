@@ -40,7 +40,7 @@ if (isset($_POST["leadfilter"])) {
 
 /*
  * APIs for forms
- */ 
+ */
 $campaign = $ui->API_getCampaignInfo($campaign_id);
 $disposition = $ui->API_getDispositionInfo($did);
 
@@ -56,15 +56,15 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Edit 
-        	<?php 
+        <title>Goautodial Edit
+        	<?php
         		if($campaign_id != NULL){echo "Campaign";}
         		if($did != NULL){echo "Disposition";}
         		if($lf_id != NULL){echo "Lead Filter";}
         	?>
         </title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
+
         <!-- Call for standardized css -->
         <?php print $ui->standardizedThemeCSS();?>
 
@@ -96,8 +96,8 @@ $voicefiles = $ui->API_GetVoiceFilesList();
                 <section class="content-header">
                     <h1 style="font-weight:normal;">
                         <?php $lh->translateText("telephony"); ?>
-                        <small>Edit 
-                        	<?php 
+                        <small>Edit
+                        	<?php
 				        		if($campaign_id != NULL){echo "Campaign";}
 				        		if($did != NULL){echo "Disposition";}
 				        		if($leadfilter != NULL){echo "Lead Filter";}
@@ -109,11 +109,11 @@ $voicefiles = $ui->API_GetVoiceFilesList();
                         <li> <?php $lh->translateText("telephony"); ?></li>
                         <?php
 							if($campaign_id != NULL || $did != NULL || $lf_id != NULL){
-						?>	
+						?>
 							<li><a href="./telephonycampaigns.php"><?php $lh->translateText("Campaign"); ?></a></li>
                         <?php
 							}
-                        ?>	                    
+                        ?>
                         <li class="active"><?php $lh->translateText("modify"); ?></li>
                     </ol>
                 </section>
@@ -121,8 +121,8 @@ $voicefiles = $ui->API_GetVoiceFilesList();
                 <!-- Main content -->
                 <section class="content">
 					<div class="panel panel-default">
-						
-						<?php 
+
+						<?php
 	                		if(isset($_GET['message'])){
 	                			echo '<div class="col-lg-12" style="margin-top: 10px;">';
 	                			if($_GET['message'] == "Success"){
@@ -143,8 +143,8 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 
 						<!-- IF CAMPAIGN -->
 							<?php
-							if($campaign_id != NULL) { 
-								if ($campaign->result=="success") { 
+							if($campaign_id != NULL) {
+								if ($campaign->result=="success") {
 							?>
 							<div class="panel-body">
 								<legend>MODIFY CAMPAIGN ID : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u></legend>
@@ -188,7 +188,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 															<select name="dial_method" id="dial_method" class="form-control" name="dial_method">
 																<option value="MANUAL" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?>>MANUAL</option>
 																<option value="RATIO" <?php if($campaign->data->dial_method == "RATIO") echo "selected";?>>AUTO DIAL</option>
-																<option value="PREDICTIVE" <?php if($campaign->data->dial_method == "PREDICTIVE") echo "selected";?>>PREDICTIVE</option>
+																<option value="ADAPT_TAPERED" <?php if($campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?>>PREDICTIVE</option>
 																<option value="INBOUND_MAN" <?php if($campaign->data->dial_method == "INBOUND_MAN") echo "selected";?>>INBOUND MAN</option>
 															</select>
 														</div>
@@ -199,12 +199,10 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 															<div class="row">
 																<div class="col-lg-8">
 																	<select id="auto_dial_level" class="form-control" name="auto_dial_level">
-																		<option value="OFF" <?php if($campaign->data->auto_dial_level == 0) echo "selected";?>>OFF</option>
-																		<option value="SLOW" <?php if($campaign->data->auto_dial_level == 1) echo "selected";?>>SLOW</option>
-																		<option value="NORMAL" <?php if($campaign->data->auto_dial_level == 2) echo "selected";?>>NORMAL</option>
-																		<option value="HIGH" <?php if($campaign->data->auto_dial_level == 4) echo "selected";?>>HIGH</option>
-																		<option value="MAX" <?php if($campaign->data->auto_dial_level == 6) echo "selected";?>>MAX</option>
-																		<option value="MAX_PREDICTIVE" <?php if($campaign->data->auto_dial_level == 10) echo "selected";?>>MAX PREDICTIVE</option>
+																		<option value="0" <?php if($campaign->data->auto_dial_level == 0) echo "selected";?>>OFF</option>
+										    						<option value="1.0"<?php if($campaign->data->auto_dial_level == 1) echo "selected";?>>NORMAL</option>
+										    						<option VALUE="2.0" <?php if($campaign->data->auto_dial_level == 2) echo "selected";?>>MODERATE</option>
+										    						<option VALUE="4.0"<?php if($campaign->data->auto_dial_level == 4) echo "selected";?>>AGGRESIVE</option>
 																		<option value="ADVANCE">ADVANCE</option>
 																	</select>
 																</div>
@@ -1116,7 +1114,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 						                        <div class="box-footer">
 						                           <div class="col-sm-3 pull-right">
 															<a href="telephonycampaigns.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-						                           	
+
 						                                	<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 						                           </div>
 						                        </div>
@@ -1132,16 +1130,16 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 								 	<?php echo $campaign->result; ?>
 								<?php } ?>
 							<?php } ?>
-							
-							<?php 
+
+							<?php
 							// ---- IF DID
 							if($did != NULL){
 								//var_dump($disposition->result);
-								
+
 								//var_dump($did);
 								if ($disposition->result == "success") {
 							?>
-					          
+
 					            <!-- /.box-header -->
 					            <div class="box-body table-responsive no-padding">
 					              <table class="table table-hover">
@@ -1220,7 +1218,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 											</center>
 										</td>
 									</tr>
-									
+
 								<?php
 										}
 								?>
@@ -1266,16 +1264,16 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 
 									</tbody>
 					              </table>
-					              	
+
 					              	<div class="box-footer pull-right">
 										<a href="#" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-remove"></i> Cancel</a>
 									</div>
 					            </div>
 
-					            
+
 								<!-- /.box-footer -->
 							<?php
-								} else { 
+								} else {
 							?>
 								 <script>
 								    $(function(){
@@ -1283,28 +1281,28 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 								    });
 								 </script>
 							<?php
-									 
+
 								}
-								
+
 							}
 							/*
 					// ---- IF LEADFILTER
 							if($lf_id != NULL){
 								echo "Under Construction";
-							}else { 
+							}else {
 									echo $errormessage = $lh->translationFor("some_fields_missing");
-							} 
+							}
 								*/
 							?>
-						
-						
+
+
 						</form>
 
-					</div>			
+					</div>
                 </section>
 				<!-- /.content -->
             </aside><!-- /.right-side -->
-			
+
         </div><!-- ./wrapper -->
 
     <!-- EDIT DISPOSITION MODAL -->
@@ -1322,7 +1320,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
                 		</div>
 	                	<div class="form-group mt">
 		                	<input type="hidden" name="edit_campaign" id="edit_campaign">
-	                		
+
 	                		<label class="col-sm-3 control-label" for="status">Status:</label>
 	                        <div class="col-sm-9">
 	                            <input type="text" name="edit_status" id="edit_status" class="form-control" placeholder="Status" minlength="3" maxlenght="6" required>
@@ -1358,7 +1356,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 						                  <input type="checkbox" id="edit_dnc" name="edit_dnc" class="flat-red">
 						                  DNC
 						            </label>
-							          
+
 					                <label class="col-sm-4 checkbox-inline" for="customer_contact">
 						                  <input type="checkbox" id="edit_customer_contact" name="edit_customer_contact" class="flat-red">
 						                  Customer Contact
@@ -1388,7 +1386,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
                     	<button type="button" class="btn btn-primary" id="modify_disposition"><span id="update_button"><i class='fa fa-check'></i> Update</span></button>
               		</div>
               	</div>
-              	
+
             </div>
         </div>
     </div>
@@ -1410,7 +1408,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 
 					//init cancel msg
 						$(document).on('click', '#cancel_edit', function(){
-							swal("Cancelled", "No action has been done :)", "error");   
+							swal("Cancelled", "No action has been done :)", "error");
 						});
 						$(document).on('click', '#cancel', function(){
 							swal({title: "Cancelled",text: "No action has been done :)",type: "error"},function(){window.location.href = 'telephonycampaigns.php';});
@@ -1432,7 +1430,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 						});
 
 						$('.am_message_chooser').hide();
-						$('.show_am_message_chooser').on('click', function(event) {        
+						$('.show_am_message_chooser').on('click', function(event) {
 					        $('.am_message_chooser').toggle('show');
 					    });
 
@@ -1450,7 +1448,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 							dialPrefix($(this).val());
 						});
 
-						
+
 					    var campaign_type = $('#campaignType').find("option:selected").val();
 					    setElements(campaign_type);
 
@@ -1473,7 +1471,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 					        var validate = 0;
 					        var status = $("#add_status").val();
 					        var status_name = $("#add_status_name").val();
-					        
+
 					        if(status == ""){
 					            validate = 1;
 					        }
@@ -1481,7 +1479,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 					        if(status_name == ""){
 					            validate = 1;
 					        }
-					       
+
 					            if(validate == 0){
 					            		var selectable = "Y";
 					            	if(!$('#add_selectable').is(":checked")){
@@ -1541,13 +1539,13 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 					                          }
 					                          else{
 					                              sweetAlert("Oops...", "Something went wrong! " + data, "error");
-					                              $("#disposition_result").html(data); 
+					                              $("#disposition_result").html(data);
 					                          	  $('#add_button').html("<i class='fa fa-plus'></i> New Status");
 												  $('#add_new_status').attr("disabled", false);
 					                          }
 					                    }
 					                });
-					            	
+
 					            }else{
 					                sweetAlert("Oops...", "Something went wrong!", "error");
 					                $('#add_button').html("<i class='fa fa-plus'></i> New Status");
@@ -1555,7 +1553,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 					                validate = 0;
 					            }
 				        });
-				
+
 					// GET DETAILS FOR EDIT DISPOSITION
 						$(document).on('click','.edit_disposition',function() {
 							var id = $(this).attr('data-id');
@@ -1564,14 +1562,14 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 							$.ajax({
 							  url: "./php/ViewDisposition.php",
 							  type: 'POST',
-							  data: { 
+							  data: {
 							  	campaign_id : id,
 							  	status : status
 							  },
 							  dataType: 'json',
 							  success: function(data) {
 							  	console.log(data);
-							  	
+
 							  	$('#status_id_edit').text(data.status);
 							  	$('#campaign_id_edit').text(data.campaign_id);
 							  	$('#edit_campaign').val(data.campaign_id);
@@ -1590,44 +1588,44 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 							  	$('#edit_unworkable').val(data.unworkable);
 
 							  	if(data.selectable == "Y"){
-							  		$('#edit_selectable').iCheck('check'); 
+							  		$('#edit_selectable').iCheck('check');
 							  	}else{
-							  		$('#edit_selectable').iCheck('uncheck'); 
+							  		$('#edit_selectable').iCheck('uncheck');
 							  	}
 							  	if(data.human_answered == "Y"){
-							  		$('#edit_human_answered').iCheck('check'); 
+							  		$('#edit_human_answered').iCheck('check');
 							  	}else{
-							  		$('#edit_human_answered').iCheck('uncheck'); 
+							  		$('#edit_human_answered').iCheck('uncheck');
 							  	}
 							  	if(data.sale == "Y"){
-							  		$('#edit_sale').iCheck('check'); 
+							  		$('#edit_sale').iCheck('check');
 							  	}else{
-							  		$('#edit_sale').iCheck('uncheck'); 
+							  		$('#edit_sale').iCheck('uncheck');
 							  	}
 							  	if(data.dnc == "Y"){
-							  		$('#edit_dnc').iCheck('check'); 
+							  		$('#edit_dnc').iCheck('check');
 							  	}else{
-							  		$('#edit_dnc').iCheck('uncheck'); 
+							  		$('#edit_dnc').iCheck('uncheck');
 							  	}
 							  	if(data.scheduled_callback == "Y"){
-							  		$('#edit_scheduled_callback').iCheck('check'); 
+							  		$('#edit_scheduled_callback').iCheck('check');
 							  	}else{
-							  		$('#edit_scheduled_callback').iCheck('uncheck'); 
+							  		$('#edit_scheduled_callback').iCheck('uncheck');
 							  	}
 							  	if(data.customer_contact == "Y"){
-							  		$('#edit_customer_contact').iCheck('check'); 
+							  		$('#edit_customer_contact').iCheck('check');
 							  	}else{
-							  		$('#edit_customer_contact').iCheck('uncheck'); 
+							  		$('#edit_customer_contact').iCheck('uncheck');
 							  	}
 							  	if(data.not_interested == "Y"){
-							  		$('#edit_not_interested').iCheck('check'); 
+							  		$('#edit_not_interested').iCheck('check');
 							  	}else{
-							  		$('#edit_not_interested').iCheck('uncheck'); 
+							  		$('#edit_not_interested').iCheck('uncheck');
 							  	}
 							  	if(data.unworkable == "Y"){
-							  		$('#edit_unworkable').iCheck('check'); 
+							  		$('#edit_unworkable').iCheck('check');
 							  	}else{
-							  		$('#edit_unworkable').iCheck('uncheck'); 
+							  		$('#edit_unworkable').iCheck('uncheck');
 							  	}
 							  }
 							});
@@ -1674,7 +1672,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 			                	$.ajax({
 				                    url: "./php/ModifyTelephonyCampaign.php",
 				                    type: 'POST',
-				                    data: { 
+				                    data: {
 				                    	disposition : $('#edit_campaign').val(),
 				                        status : $('#edit_status').val(),
 							    		status_name : $('#edit_status_name').val(),
@@ -1701,9 +1699,9 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 											$('#modify_disposition').attr("disabled", false);
 				                        }
 			                    }
-			                });			
+			                });
 						});
-				
+
 				/*************
 				** Lead Filter Events
 				*************/
@@ -1714,20 +1712,20 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 									$("#resultmessage").html();
 									$("#resultmessage").fadeOut();
 									$.post("./php/ModifyTelephonyCampaign.php", //post
-									$("#modifyleadfilter").serialize(), 
+									$("#modifyleadfilter").serialize(),
 										function(data){
 											//if message is sent
 											if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-												swal("Success!", "Lead Filter Successfully Updated!", "success");			
+												swal("Success!", "Lead Filter Successfully Updated!", "success");
 											} else {
 												sweetAlert("Oops...", "Something went wrong! "+ data, "error");
 											}
 											//
 										});
 								return false; //don't let the form refresh the page...
-							}					
+							}
 						});
-				
+
 				/***********
 				** Form Filters
 				***********/
@@ -1801,14 +1799,21 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 							    }
 							});
 					/*** end of disposition filters ***/
+					$('#auto_dial_level').change(function(){
+						if($(this).val() == 'ADVANCE'){
+							$('#auto_dial_level_adv').removeClass('hide');
+						}else{
+							$('#auto_dial_level_adv').addClass('hide');
+						}
+					});
 
-				
+
 			});// end of document ready
 
 			function empty_statuses(){
 			 	console.log();
 			 	swal({   title: "Oops...",   text: "This campaign has no existing disposition. You are going to be redirected after a few seconds!",   timer: 4000,   showConfirmButton: false });
-				window.setTimeout(function(){location.replace("./telephonycampaigns.php")},4000); 
+				window.setTimeout(function(){location.replace("./telephonycampaigns.php")},4000);
 			}
 
 			function setElements(type){
@@ -1849,19 +1854,18 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 				if(value == "RATIO"){
 					$('#auto_dial_level').prop('disabled', false);
 					$('#auto_dial_level option[value=SLOW]').prop('selected', true);
-					$('#auto_dial_level_adv').removeClass('hide');
 				}else if(value == "PREDICTIVE"){
 					$('#auto_dial_level').prop('disabled', true);
 					$('#auto_dial_level option[value=OFF]').prop('selected', true);
-					$('#auto_dial_level_adv').addClass('hide');
+					// $('#auto_dial_level_adv').addClass('hide');
 				}else if(value == "INBOUND_MAN"){
 					$('#auto_dial_level').prop('disabled', true);
 					$('#auto_dial_level option[value=OFF]').prop('selected', true);
-					$('#auto_dial_level_adv').addClass('hide');
+					// $('#auto_dial_level_adv').addClass('hide');
 				}else{
 					$('#auto_dial_level').prop('disabled', true);
 					$('#auto_dial_level option[value=OFF]').prop('selected', true);
-					$('#auto_dial_level_adv').addClass('hide');
+					// $('#auto_dial_level_adv').addClass('hide');
 				}
 			}
 
@@ -1873,7 +1877,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 				}
 			}
 
-			function duplicate_status_check(status_id, addoredit){ 
+			function duplicate_status_check(status_id, addoredit){
 				console.log(status_id);
 				var status_form_value = status_id;
 				var campaign_form_value = "<?php if(isset($did)){echo $did;}else{echo "";}?>";
@@ -1890,7 +1894,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 
 									if(addoredit == "add")
 										$("#add_new_status").attr("disabled", false);
-									
+
 									if(addoredit == "edit")
 										$("#modify_disposition").attr("disabled", false);
 
@@ -1906,7 +1910,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 
 								$( "#status" ).addClass( "error" );
 								$( "#status-duplicate-error" ).text( data ).removeClass("avail").addClass("error");
-								
+
 							}
 						}
 					});
