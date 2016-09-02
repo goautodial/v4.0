@@ -1,12 +1,12 @@
 <?php	
 
 	###########################################################
-	### Name: telephonylist.php 							###
-	### Functions: Manage List and Upload Leads 			###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016			###
-	### Version: 4.0 										###
-	### Written by: Alexander Abenoja & Noel Umandap		###
-	### License: AGPLv2										###
+	### Name: telephonylist.php                             ###
+	### Functions: Manage List and Upload Leads             ###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016            ###
+	### Version: 4.0                                        ###
+	### Written by: Alexander Abenoja & Noel Umandap        ###
+	### License: AGPLv2                                     ###
 	###########################################################
 
 	require_once('./php/UIHandler.php');
