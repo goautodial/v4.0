@@ -263,8 +263,9 @@ $user_groups = $ui->API_goGetUserGroupsList();
 															<?php
 																}else{
 																for($a=0;$a<count($voicemails->voicemail_id);$a++){
+
 															?>
-																	<option value="<?php echo $voicemails->voicemail_id;?>" 
+																	<option value="<?php echo $voicemails->voicemail_id[$a];?>" 
 																			<?php if($output->data->voicemail_id == $voicemails->voicemail_id[$a]){echo "selected";}?> />
 																		<?php echo $voicemails->voicemail_id[$a].' - '.$voicemails->fullname[$a];?>
 																	</option>									
@@ -311,48 +312,70 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 							       			<fieldset>
 							       				<div class="form-group mt">
-													<label for="hotkeys" class="col-sm-2 control-label">HotKeys</label>
-													<div class="col-sm-10 mb">
+													<label for="hotkeys" class="col-sm-3 control-label">HotKeys</label>
+													<div class="col-sm-9 mb">
 														<select class="form-control" name="hotkeys" id="hotkeys">
 														<?php
-															$status = NULL;
-															if($output->data->hot_keys == "0"){
-																$status .= '<option value="Y" selected> Active </option>';
+															$hotkeys = NULL;
+															if($output->data->hotkeys_active == "0"){
+																$hotkeys .= '<option value="0" selected> Active </option>';
 															}else{
-																$status .= '<option value="Y" > Active </option>';
+																$hotkeys .= '<option value="0" > Active </option>';
 															}
 															
-															if($output->data->hot_keys == "1" || $output->data->hot_keys == NULL){
-																$status .= '<option value="N" selected> Inactive </option>';
+															if($output->data->hotkeys_active == "1" || $output->data->hotkeys_active == NULL){
+																$hotkeys .= '<option value="1" selected> Inactive </option>';
 															}else{
-																$status .= '<option value="N" > Inactive </option>';
+																$hotkeys .= '<option value="1" > Inactive </option>';
 															}
-															echo $status;
+															echo $hotkeys;
 														?>
 														</select>
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="agent_recordings" class="col-sm-2 control-label">Agent Recordings</label>
-													<div class="col-sm-10 mb">
+													<label for="agent_recordings" class="col-sm-3 control-label">Agent Recordings</label>
+													<div class="col-sm-9 mb">
 														<select class="form-control" name="agent_recordings" id="agent_recordings">
 															<option value="0"> 0 </option>
 														</select>
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="agent_transfers" class="col-sm-2 control-label">Agent Transfers</label>
-													<div class="col-sm-10 mb">
+													<label for="agent_transfers" class="col-sm-3 control-label">Agent Transfers</label>
+													<div class="col-sm-9 mb">
 														<select class="form-control" name="agent_transfers" id="agent_transfers">
 															<option value="1"> 1 </option>
 														</select>
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="closer_default_blended" class="col-sm-2 control-label">Closer Default Blended</label>
-													<div class="col-sm-10 mb">
+													<label for="closer_default_blended" class="col-sm-3 control-label">Closer Default Blended</label>
+													<div class="col-sm-9 mb">
 														<select class="form-control" name="closer_default_blended" id="closer_default_blended">
 															<option value="1"> 1 </option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="api_access" class="col-sm-3 control-label">Allow API Access</label>
+													<div class="col-sm-9 mb">
+														<select class="form-control" name="api_access" id="api_access">
+															<?php
+																$api_access = NULL;
+																if($output->data->vdc_agent_api_access == "1"){
+																	$api_access .= '<option value="1" selected> Enabled </option>';
+																}else{
+																	$api_access .= '<option value="1" > Enable </option>';
+																}
+																
+																if($output->data->vdc_agent_api_access == "0" || $output->data->vdc_agent_api_access == NULL){
+																	$api_access .= '<option value="0" selected> Disabled </option>';
+																}else{
+																	$api_access .= '<option value="0" > Disable </option>';
+																}
+																echo $api_access;
+															?>
 														</select>
 													</div>
 												</div>
@@ -364,7 +387,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 									   	<fieldset class="footer-buttons">
 					                        <div class="box-footer">
-					                           <div class="col-sm-3 pull-right">
+					                           <div class="col-sm-4 pull-right">
 														<a href="telephonyusers.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 					                           	
 					                                	<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>

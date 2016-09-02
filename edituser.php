@@ -35,7 +35,7 @@
     $lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
      
-    if (isset($_POST["userid"])) { $userid = $_POST["userid"]; }
+    if (isset($_POST["user_id"])) { $userid = $_POST["user_id"]; }
     else { $userid = $user->getUserId(); }
     
     
@@ -45,30 +45,10 @@
         <meta charset="UTF-8">
         <title>Creamy</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        
+		<?php print $ui->standardizedThemeCSS(); ?>
+		
         <?php print $ui->creamyThemeCSS(); ?>
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <!-- Javascript -->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -106,7 +86,7 @@
 						if (!empty($userid)) {
 							if (($user->getUserId() == $userid) || ($user->userHasAdminPermission())) { 
 				    			// if it's the same user or we have admin privileges.
-				    			$userobj = $db->getDataForUser($userid);
+				    			$userobj = $ui->goGetUserInfo($userid);
 							} else {
 				    			$errormessage = $lh->translationFor("not_permission_edit_user_information");
 							}
@@ -114,34 +94,41 @@
 				    		$errormessage = $lh->translationFor("unknown_error");
 						}
 						
-						if (!empty($userobj)) {							
+						if (!empty($userobj) && $userobj->result == 'success') {
+							$userdata = $userobj->data;
 							// build fields
 							// modify id (hidden).
 							$hidden_f = $ui->hiddenFormField("modifyid", $userid);
 							// name
 							// $name_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("name", "name", "text", $lh->translationFor("name"), $userobj["name"], "user", true));
-							$name_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("name", "name", "text", $lh->translationFor("name"), $userobj["user"], "user", true));
+							$name_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("name", "name", "text", $lh->translationFor("name"), $userdata->user, "user", true, true));
 							// email
-							$email_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("email", "email", "text", $lh->translationFor("email"), $userobj["email"], "envelope", false));
+							$email_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("email", "email", "email", $lh->translationFor("email"), $userdata->email, "envelope-square", false));
+							// old password 
+							$old_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("old_password", "old_password", "password", $lh->translationFor("insert_old_password"), null, "lock", true));
+							// new password 
+							$new1_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("new_password_1", "new_password_1", "password", $lh->translationFor("insert_new_password"), null, "lock", true));
+							// new password (again)
+							$new2_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("new_password_2", "new_password_2", "password", $lh->translationFor("insert_new_password_again"), null, "lock", true));
 							// phone 
-							$phone_text = $lh->translationFor("phone").' ('.$lh->translationFor("optional").')';
+							//$phone_text = $lh->translationFor("phone").' ('.$lh->translationFor("optional").')';
 							// $phone_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("phone", "phone", "text", $phone_text, $userobj["phone"], "phone"));
-							$phone_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("phone", "phone", "text", $phone_text, $userobj["phone_login"], "phone"));
+							//$phone_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("phone", "phone", "text", $phone_text, $userdata->phone_login, "phone"));
 							// avatar (optional)
 							// $currentUserAvatar = empty($userobj["avatar"]) ? "" : $ui->imageWithData($userobj["avatar"], "img-circle", array("width" => 100, "height" => 100), "User image");
 							// $avatar_l = $lh->translationFor("user_avatar").' ('.$lh->translationFor("optional").')';
 							// $avatar_b = $lh->translationFor("choose_image");
 							// $avatar_f = $ui->singleFormGroupWithFileUpload("avatar", "avatar", $currentUserAvatar, $avatar_l, $avatar_b);
 							// if requesting user is admin, we can change the user role
-							$setUserRoleCode = "";
-							if ($user->userHasAdminPermission()) {
-								// $userRolesAsFormSelect = $ui->getUserRolesAsFormSelect($userobj["role"]);
-								$userRolesAsFormSelect = $ui->getUserRolesAsFormSelect($userobj["user_level"]);
-								$setUserRoleCode = $ui->singleFormGroupWrapper($userRolesAsFormSelect, $lh->translationFor("user_role"));
-							}	
+							//$setUserRoleCode = "";
+							//if ($user->userHasAdminPermission()) {
+							//	// $userRolesAsFormSelect = $ui->getUserRolesAsFormSelect($userobj["role"]);
+							//	$userRolesAsFormSelect = $ui->getUserRolesAsFormSelect($userobj["user_level"]);
+							//	$setUserRoleCode = $ui->singleFormGroupWrapper($userRolesAsFormSelect, $lh->translationFor("user_role"));
+							//}	
 
 							// generate the form
-							$fields = $hidden_f.$name_f.$email_f.$phone_f.$avatar_f.$setUserRoleCode;
+							$fields = $hidden_f.$name_f.$email_f.$old_f.$new1_f.$new2_f;
 							// generate and show the box
 							$box = $ui->boxWithForm("modifyuser", $lh->translationFor("insert_new_data"), $fields, $lh->translationFor("edit_user"));
 							print $box;
@@ -153,6 +140,8 @@
             </aside><!-- /.right-side -->
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
+		
+		<?php print $ui->standardizedThemeJS();?>
 
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
