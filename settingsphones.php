@@ -94,157 +94,167 @@
 <!-- MODAL -->
     <div class="modal fade" id="wizard-modal" tabindex="-1"aria-labelledby="T_Phones" >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="border-radius:5px;">
+            <div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="T_Phones"><b>Phone Wizard » Add New Phone</b></h4>
+					<h4 class="modal-title animated bounceInRight" id="T_Phones"><b>Phone Wizard » Add New Phone</b></h4>
 				</div>
-				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				<div class="modal-body wizard-content">
 				
-				<form class="form-horizontal" name="create_form" id="create_form" role="form">
-				<!-- STEP 1 -->
-					<div class="wizard-step">
-						<div class="form-group mt">
-							<label class="col-sm-4 control-label" for="add_phones">Additional Phone(s):</label>
-							<div class="col-sm-6 mb">
-								<select class="form-control" name="add_phones" id="add_phones">
-									<option value="1"> 1 </option>
-									<option value="2"> 2 </option>
-									<option value="3"> 3 </option>
-									<option value="4"> 4 </option>
-									<option value="5"> 5 </option>
-									<option value="CUSTOM">CUSTOM</option>
-								</select>
+				<form name="create_form" id="create_form" role="form">
+					<div class="row">
+						<h4>
+							<small></small>
+						</h4>
+						<fieldset>
+							<div class="form-group mt">
+								<label class="col-sm-4 control-label" for="add_phones">Additional Phone(s):</label>
+								<div class="col-sm-6 mb">
+									<select class="form-control" name="add_phones" id="add_phones">
+										<option value="1"> 1 </option>
+										<option value="2"> 2 </option>
+										<option value="3"> 3 </option>
+										<option value="4"> 4 </option>
+										<option value="5"> 5 </option>
+										<option value="CUSTOM">CUSTOM</option>
+									</select>
+								</div>
+								<div class="col-sm-2" id="custom_seats" style="display:none;">
+									<input type="number" class="form-control" name="custom_seats" value="1" min="1" max="99" style="padding:5px;" required>
+								</div>
 							</div>
-							<div class="col-sm-2" id="custom_seats" style="display:none;">
-								<input type="number" class="form-control" name="custom_seats" value="1" min="1" max="99" style="padding:5px;">
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="start_ext">Starting Extension</label>
+								<div class="col-sm-8 mb">
+									<input type="number" name="start_ext" id="start_ext" placeholder="e.g. 8001" value="<?php echo $suggested_extension;?>" class="form-control" required>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="start_ext">Starting Extension</label>
-							<div class="col-sm-8 mb">
-								<input type="number" name="start_ext" id="start_ext" placeholder="e.g. 8001" value="<?php echo $suggested_extension;?>" class="form-control" required>
-							</div>
-						</div>
-					</div>
+						</fieldset>
 				<!-- end of step 1-->
 				<!-- STEP 2 -->
-					<div class="wizard-step">
-						<div class="form-group mt">
-							<label class="col-sm-4 control-label" for="phone_ext">Phone Extension/Login</label>
-							<div class="col-sm-8 mb">
-								<input text="text" name="phone_ext" id="phone_ext" placeholder="Phone Login. This is a required field." class="form-control" required/>
+						<h4>
+							<small></small>
+						</h4>
+						<fieldset>
+							<div class="form-group mt">
+								<label class="col-sm-4 control-label" for="phone_ext">Phone Extension/Login</label>
+								<div class="col-sm-8 mb">
+									<input text="text" name="phone_ext" id="phone_ext" class="form-control" placeholder="Phone Login (Mandatory)" title="Must be 3 - 20 characters and contains only numerical values." minlength="3" maxlength="20" required/>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="phone_pass">Phone Login Password</label>
-							<div class="col-sm-8 mb">
-								<input type="text" value="G016gO" name="phone_pass" id="phone_pass" class="form-control"  placeholder="Phone Password. This is a required field." required>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="phone_pass">Phone Login Password</label>
+								<div class="col-sm-8 mb">
+									<input type="text" value="G016gO" name="phone_pass" id="phone_pass" class="form-control"  placeholder="Phone Password (Mandatory)" title="Default Password is: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" maxlength="20" required>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="start_ext">User Group</label>
-							<div class="col-sm-8 mb">
-								<select name="user_group" id="user_group" class="form-control" required>
-									<option value="ALL">ALL USER GROUPS</option>
-									<?php
-										for($i=0; $i < count($user_groups->user_group); $i++){
-									?>
-										<option value="<?php echo $user_groups->user_group[$i];?>"> <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i]; ?></option>
-									<?php
-										}
-									?>
-								</select>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="start_ext">User Group</label>
+								<div class="col-sm-8 mb">
+									<select name="user_group" id="user_group" class="form-control" required>
+										<option value="ALL">ALL USER GROUPS</option>
+										<?php
+											for($i=0; $i < count($user_groups->user_group); $i++){
+										?>
+											<option value="<?php echo $user_groups->user_group[$i];?>"> <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i]; ?></option>
+										<?php
+											}
+										?>
+									</select>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="ip">Server IP	</label>
-							<div class="col-sm-8 mb">
-								<select name="ip" id="ip" class="form-control" required>
-									<option value="69.46.6.35">
-										<?php echo $_SERVER['REMOTE_ADDR'];?>
-									</option>
-								</select>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="ip">Server IP	</label>
+								<div class="col-sm-8 mb">
+									<select name="ip" id="ip" class="form-control" required>
+										<option value="69.46.6.35">
+											<?php echo $_SERVER['REMOTE_ADDR'];?>
+										</option>
+									</select>
+								</div>
 							</div>
-						</div>
 
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="fullname">Full Name</label>
-							<div class="col-sm-8 mb">
-								<input type="text" name="fullname" id="fullname" placeholder="Full Name" class="form-control" required>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="fullname">Full Name</label>
+								<div class="col-sm-8 mb">
+									<input type="text" name="fullname" id="fullname" placeholder="Full Name (Mandatory)" class="form-control" required>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">		
-							<label class="col-sm-4 control-label" for="gmt">Local GMT	</label>
-							<div class="col-sm-8 mb">
-								<div class="row">
-									<div class="col-sm-6">
-										<select name="gmt" id="gmt" class="form-control" required>
-											<option value="12:75"> 12:75 </option>
-											<option value="12:00"> 12:00 </option>
-											<option value="11:00"> 11:00 </option>
-											<option value="10:00"> 10:00 </option>
-											<option value="9:50"> 9:50 </option>
-											<option value="9:00"> 9:00 </option>
-											<option value="8:00"> 8:00 </option>
-											<option value="7:00"> 7:00 </option>
-											<option value="6:50"> 6:50 </option>
-											<option value="6:00"> 6:00 </option>
-											<option value="5:75"> 5:75 </option>
-											<option value="5:50"> 5:50 </option>
-											<option value="5:00"> 5:00 </option>
-											<option value="4:50"> 4:50 </option>
-											<option value="4:00"> 4:00 </option>
-											<option value="3:50"> 3:50 </option>
-											<option value="3:00"> 3:00 </option>
-											<option value="2:00"> 2:00 </option>
-											<option value="1:00"> 1:00 </option>
-											<option value="0:00"> 0:00 </option>
-											<option value="-1:00"> -1:00 </option>
-											<option value="-2:00"> -2:00 </option>
-											<option value="-3:00"> -3:00 </option>
-											<option value="-4:00"> -4:00 </option>
-											<option value="-5:00" selected> -5:00 </option>
-											<option value="-6:00"> -6:00 </option>
-											<option value="-7:00"> -7:00 </option>
-											<option value="-8:00"> -8:00 </option>	
-											<option value="-9:00"> -9:00 </option>
-											<option value="-10:00"> -10:00 </option>
-											<option value="-11:00"> -11:00 </option>
-											<option value="-12:00"> -12:00 </option>
-										</select>
-									</div>
-									<div class="col-sm-6">
-										<p class="text-muted">( Do NOT adjust for DST)</p>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="gmt">Local GMT	</label>
+								<div class="col-sm-8 mb">
+									<div class="row">
+										<div class="col-sm-6">
+											<select name="gmt" id="gmt" class="form-control" required>
+												<option value="12:75"> 12:75 </option>
+												<option value="12:00"> 12:00 </option>
+												<option value="11:00"> 11:00 </option>
+												<option value="10:00"> 10:00 </option>
+												<option value="9:50"> 9:50 </option>
+												<option value="9:00"> 9:00 </option>
+												<option value="8:00"> 8:00 </option>
+												<option value="7:00"> 7:00 </option>
+												<option value="6:50"> 6:50 </option>
+												<option value="6:00"> 6:00 </option>
+												<option value="5:75"> 5:75 </option>
+												<option value="5:50"> 5:50 </option>
+												<option value="5:00"> 5:00 </option>
+												<option value="4:50"> 4:50 </option>
+												<option value="4:00"> 4:00 </option>
+												<option value="3:50"> 3:50 </option>
+												<option value="3:00"> 3:00 </option>
+												<option value="2:00"> 2:00 </option>
+												<option value="1:00"> 1:00 </option>
+												<option value="0:00"> 0:00 </option>
+												<option value="-1:00"> -1:00 </option>
+												<option value="-2:00"> -2:00 </option>
+												<option value="-3:00"> -3:00 </option>
+												<option value="-4:00"> -4:00 </option>
+												<option value="-5:00" selected> -5:00 </option>
+												<option value="-6:00"> -6:00 </option>
+												<option value="-7:00"> -7:00 </option>
+												<option value="-8:00"> -8:00 </option>	
+												<option value="-9:00"> -9:00 </option>
+												<option value="-10:00"> -10:00 </option>
+												<option value="-11:00"> -11:00 </option>
+												<option value="-12:00"> -12:00 </option>
+											</select>
+										</div>
+										<div class="col-sm-6">
+											<p class="text-muted">( Do NOT adjust for DST)</p>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				<!-- end of step 2-->
+						</fieldset><!-- end of step 2-->
+					</div><!-- end of row -->
 				</form>
 
 				</div> <!-- end of modal body -->
-				
-				<div class="modal-footer wizard-buttons">
-					<!-- The wizard button will be inserted here. -->
-				</div>
-			</div>
-		</div>
+			</div> <!-- end of modal content -->
+		</div> <!-- end of modal dialog -->
 	</div><!-- end of modal -->
 		
 		<?php print $ui->standardizedThemeJS(); ?>
-		<!-- for wizard -->
-		<script src="js/easyWizard.js" type="text/javascript"></script>
-		<script type="text/javascript">
-			$(document).ready(function() {
+		<!-- JQUERY STEPS-->
+  		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
+		
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		/*********************
+		** INITIALIZATION
+		*********************/
+
+			var checker = 0;
+
+			/* init data tables */
 				$('#T_phones').dataTable({
 					stateSave: true
 				});
 				
-				/* additional number custom */
+			/* additional number custom */
 				$('#add_phones').on('change', function() {
-				//  alert( this.value ); // or $(this).val()
 					if(this.value == "CUSTOM") {
 					  $('#custom_seats').show();
 					}
@@ -253,115 +263,126 @@
 					}
 				});
 
+			/*********
+			** init Wizard
+			*********/
+			    var form = $("#create_form"); // init form wizard 
 
-				$("#wizard-modal").wizard({
-					onnext:function(){
-						
-						var ext = document.getElementById('start_ext').value;
-						document.getElementById("phone_ext").value = ext;
-						document.getElementById("fullname").value = ext;
-						
-					},
-					onfinish:function(){
+			    form.validate({
+			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
+			    });
 
-					var validate_wizard = 0;
+			    form.children("div").steps({
+			        headerTag: "h4",
+			        bodyTag: "fieldset",
+			        transitionEffect: "slideLeft",
+			        onStepChanging: function (event, currentIndex, newIndex)
+			        {
 
-						var phone_ext = document.getElementById('phone_ext').value;
-						var fullname = document.getElementById('fullname').value;
-						var phone_pass = document.getElementById('phone_pass').value;
+						// Clean up if user went backward before
+					    if (currentIndex < newIndex)
+					    {
+					        // To remove error styles
+					        $(".body:eq(" + newIndex + ") label.error", form).remove();
+					        $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+					    }
 
-					if(phone_ext == ""){
-						validate_wizard = 1;
-					}
-					if(fullname == ""){
-						validate_wizard = 1;
-					}
-					if(phone_pass == ""){
-						validate_wizard = 1;
-					}
+			            form.validate().settings.ignore = ":disabled,:hidden";
+			            return form.valid();
+			        },
+			        onFinishing: function (event, currentIndex)
+			        {
+			            form.validate().settings.ignore = ":disabled";
+			            return form.valid();
+			        },
+			        onFinished: function (event, currentIndex)
+			        {
 
-						if(validate_wizard == 0){
-							$.ajax({
+			        	$('#finish').text("Loading...");
+			        	$('#finish').attr("disabled", true);
+
+			        	/*********
+			        	** ADD EVENT
+			        	*********/
+
+			            // Submit form via ajax
+				            $.ajax({
 								url: "./php/AddSettingsPhones.php",
 								type: 'POST',
 								data: $("#create_form").serialize(),
 								success: function(data) {
 								  // console.log(data);
 									  if(data == 1){
-										  swal("Success!", "Phone Successfully Created!", "success");
-										  window.setTimeout(function(){location.reload()},3000)
-										  $('#add_button').val("Loading...");
+											swal({title: "Success",text: "Phone Successfully Created!",type: "success"},function(){window.location.href = 'settingsphones.php';});
+											$('#finish').val("Submit");
+											$('#finish').attr("disabled", false);
 									  }else{
 										  sweetAlert("Oops...", "Something went wrong! "+data, "error");
-									  	  $('#add_button').val("Submit");
-        							  	  $('#add_button').attr("disabled", false);
+									  	  $('#finish').val("Submit");
+									  	  $('#finish').attr("disabled", false);
 									  }
 								}
 							});
-						}else{
-							sweetAlert("Oops...", "Something went wrong!", "error");
-							validate_wizard = 0;
-							$('#add_button').val("Submit");
-        					$('#add_button').attr("disabled", false);
-						}
-					}
-				});
-				
-				/**
-				  * Edit user details
-				 */
-				$(document).on('click','.edit-phone',function() {
-					var url = './editsettingsphones.php';
-					var extenid = $(this).attr('data-id');
-					//alert(extenid);
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="extenid" value="'+extenid+'" /></form>');
-					//$('body').append(form);  // This line is not necessary
-					$(form).submit();
-				});
+			        }
+			    });
+
+		//--------------------
+		
+		/*********************
+		** EDIT EVENT
+		*********************/	
+			$(document).on('click','.edit-phone',function() {
+				var url = './editsettingsphones.php';
+				var extenid = $(this).attr('data-id');
+				//alert(extenid);
+				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="extenid" value="'+extenid+'" /></form>');
+				//$('body').append(form);  // This line is not necessary
+				$(form).submit();
+			});
 						
 				
-				/**
-				 * Delete phones.
-				 */
-				$(document).on('click','.delete-phone',function() {
-				 	var id = $(this).attr('data-id');
-                    swal({   
-                        title: "Are you sure?",   
-                        text: "This action cannot be undone.",   
-                        type: "warning",   
-                        showCancelButton: true,   
-                        confirmButtonColor: "#DD6B55",   
-                        confirmButtonText: "Yes, delete this moh!",   
-                        cancelButtonText: "No, cancel please!",   
-                        closeOnConfirm: false,   
-                        closeOnCancel: false 
-                        }, 
-                        function(isConfirm){   
-                            if (isConfirm) { 
-                            	$.ajax({
-								  url: "./php/DeleteSettingsPhones.php",
-								  type: 'POST',
-								  data: { 
-								  	exten_id :id,
-								  },
-								  success: function(data) {
-								  		// console.log(data);
-								  		if(data == 1){
-								  			swal("Success!", "Phone Successfully Deleted!", "success");
-											window.setTimeout(function(){location.reload()},3000)
-										}else{
-											sweetAlert("Oops...", "Something went wrong!"+data, "error");
-										}
-								    }
-								});
-                            } else {     
-                                    swal("Cancelled", "No action has been done :)", "error");   
-                            } 
-                        }
-                    );
-				});
+		/*********************
+		** DELETE EVENT
+		*********************/	
+			$(document).on('click','.delete-phone',function() {
+			 	var id = $(this).attr('data-id');
+                swal({   
+                    title: "Are you sure?",   
+                    text: "This action cannot be undone.",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Yes, delete this moh!",   
+                    cancelButtonText: "No, cancel please!",   
+                    closeOnConfirm: false,   
+                    closeOnCancel: false 
+                    }, 
+                    function(isConfirm){   
+                        if (isConfirm) { 
+                        	$.ajax({
+							  url: "./php/DeleteSettingsPhones.php",
+							  type: 'POST',
+							  data: { 
+							  	exten_id :id,
+							  },
+							  success: function(data) {
+							  		// console.log(data);
+							  		if(data == 1){
+							  			swal("Success!", "Phone Successfully Deleted!", "success");
+										window.setTimeout(function(){location.reload()},3000)
+									}else{
+										sweetAlert("Oops...", "Something went wrong!"+data, "error");
+									}
+							    }
+							});
+                        } else {     
+                                swal("Cancelled", "No action has been done :)", "error");   
+                        } 
+                    }
+                );
 			});
-		</script>
+	});
+</script>
 
 		<?php print $ui->creamyFooter(); ?>
     </body>

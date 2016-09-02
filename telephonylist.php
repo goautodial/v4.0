@@ -253,12 +253,12 @@
 			/****
 			** API to get data of tables
 			****/
-			$lists = $ui->API_goGetAllLists();
+			$lists = $ui->API_goGetAllLists();			
 		?>
                 <!-- Main content -->
                 <section class="content">
                 	<div class="row">
-						<div class="col-lg-9">
+                                <div class="col-lg-9">
 		                	<div class="panel panel-default">
 								<div class="panel-body">
 									<legend>Lists</legend>
@@ -266,6 +266,7 @@
 									<table class="table table-striped table-bordered table-hover" id="table_lists">
 									   <thead>
 										  <tr>
+                                                                                         <th style="color: white;">Pic</th>
 											 <th class='hide-on-medium hide-on-low'>List ID</th>
 											 <th>Name</th>
 											 <th class='hide-on-medium hide-on-low'>Status</th>
@@ -288,7 +289,8 @@
 												$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i]);
 											?>
 												<tr>
-								                    <td class='hide-on-low'><a class='edit-list' data-id='<?php echo $lists->list_id[$i];?>'><?php echo $lists->list_id[$i];?></td>
+                                                                                    <td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>
+								                    <td class='hide-on-low'><strong><a class='edit-list' data-id='<?php echo $lists->list_id[$i];?>'><?php echo $lists->list_id[$i];?></strong></td>
 								                    <td><?php echo $lists->list_name[$i];?></td>
 													<td class='hide-on-medium hide-on-low'><?php echo $lists->active[$i];?></td>
 								                    <td class='hide-on-medium hide-on-low'><?php echo $lists->tally[$i];?></td>

@@ -140,9 +140,9 @@
 	        <h4 class="modal-title"><b>Upload Voice Files</b></h4>
 	      </div>
         <form action="./php/AddVoiceFiles.php" method="POST" enctype="multipart/form-data">
-  	      <div class="modal-body clearfix">
+  	      <div class="modal-body" style="min-height: 15%;">
     				<div class="form-horizontal col-lg-12">
-    					<div class="form-group" style="margin-bottom: 0px;">
+    					<div class="form-group" style="margin-bottom: 0px; margin-top: 10px;">
     						<div class="input-group">
     							<input type="file" name="voice_file" class="hide" id="voice_file" accept="audio/*">
     					      	<input type="text" class="form-control voice_file_holder" placeholder="Choose a file">

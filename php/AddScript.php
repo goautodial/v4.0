@@ -1,9 +1,5 @@
 <?php
 
-	/** Telephony Users API - Add a new Telephony User */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 */
 require_once('goCRMAPISettings.php');	
 
 	$url = gourl."/goScripts/goAPI.php"; # URL to GoAutoDial API file
@@ -11,14 +7,13 @@ require_once('goCRMAPISettings.php');
 	$postfields["goPass"] 			= goPass; #Password goes here. (required)
 	$postfields["goAction"] 		= "goAddScript"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] 	= responsetype; #json (required)
-	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
 	
 	$postfields["script_id"] 			= $_POST['script_id']; 
 	$postfields["script_name"] 			= $_POST['script_name']; 
 	$postfields["script_comments"] 		= $_POST['script_comments'];
 	$postfields["script_text"] 			= $_POST['script_text']; 
 	$postfields["active"] 				= $_POST['status'];
-	$postfields["user"]					= $_POST['user'];
+	$postfields["user"]					= $_POST['script_user'];
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -35,11 +30,8 @@ require_once('goCRMAPISettings.php');
 	if ($output->result=="success") {
 		# Result was OK!
 		$status = "success";
-		//$return['msg'] = "New User has been successfully saved.";
 	} else {
 		# An error occured
-		//$status = 0;
-		// $return['msg'] = "Something went wrong please see input data on form.";
         $status = $output->result;
 	}
 

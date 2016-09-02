@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 	/** Campaigns API - Update Campaign */
 	/**
 	 * Generates action circle buttons for different pages/module
-	 * @param form data 
+	 * @param form data
 	 */
 
 	require_once('goCRMAPISettings.php');+
@@ -58,7 +58,7 @@
 	} else {
 		$postfields["inbound_man"] 					= "";
 	}
-	
+
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -74,7 +74,7 @@
 	curl_close($ch);
 
 	$output = json_decode($data);
-	
+	// echo "<pre>";
 	// print_r($output);die;
 	$home = $_SERVER['HTTP_REFERER'];
 	if ($output->result == "success") {

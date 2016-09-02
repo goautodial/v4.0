@@ -20,7 +20,7 @@
    $postfields["goAction"]       = "goAddVoiceFiles"; #action performed by the [[API:Functions]]. (required)
    $postfields["responsetype"]   = responsetype; #json. (required)
    $postfields["hostname"]       = $_SERVER['REMOTE_ADDR']; #Default value
-   $postfields["files"]      = curl_file_create($_FILES['voice_file']['tmp_name'], $_FILES['voice_file']['type'], $_FILES["voice_file"]["name"]);
+   $postfields["files"]          = curl_file_create($_FILES['voice_file']['tmp_name'], $_FILES['voice_file']['type'], $_FILES["voice_file"]["name"]);
    $postfields["stage"]          = "upload";
 
    $ch = curl_init();
@@ -34,6 +34,4 @@
 
    $output = json_decode($data);
 
-   print_r($output);
-
-?>
+   header("location: ../audiofiles.php?upload_result=".$output->result);
