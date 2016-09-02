@@ -118,7 +118,7 @@ error_reporting(E_ALL);*/
 										<table class="table table-striped table-bordered table-hover" id="table_campaign">
 										   <thead>
 											  <tr>
-                                                                                                 <th style="color: white;">Pic</th>
+                                                 <th style="color: white;">Pic</th>
 												 <th class='hide-on-medium hide-on-low'>Campaign ID</th>
 												 <th >Campaign Name</th>
 												 <th class='hide-on-medium hide-on-low'>Dial Method</th>
@@ -156,7 +156,7 @@ error_reporting(E_ALL);*/
 
 											   	?>	
 													<tr>
-                                                                                                                <td><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='36'></avatar></td>
+                                                        <td><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='36'></avatar></td>
 														<td class='hide-on-medium hide-on-low'><strong><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></a></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $campaign->dial_method[$i];?></td>
@@ -190,7 +190,7 @@ error_reporting(E_ALL);*/
 
 											   	?>	
 													<tr>
-                                                                                                                <td><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='36'></avatar></td>
+                                                        <td><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='36'></avatar></td>
 														<td class='hide-on-medium hide-on-low'><strong><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></a></td>
 														<td class='hide-on-medium hide-on-low'>
@@ -227,7 +227,7 @@ error_reporting(E_ALL);*/
 										<table class="table table-striped table-bordered table-hover" id="table_leadfilter">
 										   <thead>
 											  <tr>
-                                                                                                 <th style="color: white;">Pic</th>
+                                                 <th style="color: white;">Pic</th>
 												 <th>Filter ID</th>
 												 <th>Filter Name</th>
 												 <th>Action</th>
@@ -241,7 +241,7 @@ error_reporting(E_ALL);*/
 
 											   	?>	
 													<tr>
-                                                                                                                <td><avatar username='<?php echo $leadfilter->lead_filter_name[$i];?>' :size='36'></avatar></td>
+                                                        <td><avatar username='<?php echo $leadfilter->lead_filter_name[$i];?>' :size='36'></avatar></td>
 														<td><?php echo $leadfilter->lead_filter_id[$i];?></td>
 														<td><strong><a class=''><?php echo $leadfilter->lead_filter_name[$i];?></a></strong></td>
 														<td><?php echo $action_LEADFILTER;?></td>
@@ -1230,8 +1230,9 @@ error_reporting(E_ALL);*/
 						<?php
 							}elseif($_GET['message'] == "error"){
 						?>
-						<?php
 								sweetAlert("Oops...", "Something went wrong.", "error");
+						<?php
+								
 							} 
 						?>
 					//name
