@@ -868,7 +868,7 @@ if (isset($_GET["message"])) {
 				<div style="font-weight: bold;"><?=$lh->translateText('ENABLE HOT KEYS')?></div>
 			</li>
 			<li style="font-size: 5px;">
-				&nbsp;
+				<div id="GOdebug" class="material-switch pull-right">&nbsp;</div>
 			</li>
 			<li class="hidden">
 				<button type="button" id="show-callbacks-active" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Active Callback(s)')?> <span id="callbacks-active" class='badge pull-right bg-red'>0</span></button>
