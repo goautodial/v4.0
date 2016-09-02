@@ -34,6 +34,4 @@
 
    $output = json_decode($data);
 
-   print_r($output);
-
-?>
+   header("location: ../audiofiles.php?upload_result=".$output->result);
