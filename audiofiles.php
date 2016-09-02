@@ -23,21 +23,21 @@
         <meta charset="UTF-8">
         <title>Audio Files</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
+
         <?php print $ui->standardizedThemeCSS(); ?>
-    	
+
     	<!-- Wizard Form style -->
         <link href="css/style.css" rel="stylesheet" type="text/css" />
-        
+
     	<!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-       
+
         <?php print $ui->creamyThemeCSS(); ?>
-		
+
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-        
+
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
@@ -45,10 +45,10 @@
 		</script>
 
     </head>
-    
+
     <?php print $ui->creamyBody(); ?>
 
-        <div class="wrapper">	
+        <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
             <!-- Left side column. contains the logo and sidebar -->
@@ -78,7 +78,7 @@
 					<legend>Audio Files </legend>
 
 		            <div role="tabpanel">
-						
+
 						<ul role="tablist" class="nav nav-tabs nav-justified">
 
 						<!-- Voicefiles panel tab -->
@@ -91,9 +91,9 @@
 								<a href="#moh_tab" aria-controls="moh_tab" role="tab" data-toggle="tab" class="bb0">
 								    Music On-Hold</a>
 							 </li>
-						
+
 						  </ul>
-						  
+
 						<!-- Tab panes-->
 						<div class="tab-content bg-white">
 
@@ -115,7 +115,7 @@
 									print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								}
 							?>
-							
+
 						<div class="bottom-menu skin-blue">
 							<div class="action-button-circle" data-toggle="modal">
 								<?php print $ui->getCircleButton("inbound", "plus"); ?>
@@ -153,7 +153,7 @@
 	      </div>
 	      <div class="modal-body">
 		<div class="form-horizontal">
-			
+
 			<div class="form-group">
 				<label class="control-label col-lg-4">Music on Hold Name:</label>
 				<div class="col-lg-7">
@@ -216,7 +216,7 @@
                     <h4 class="modal-title animated bounceInRight"><b>Music On Hold Wizard » Add New Music On Hold</b></h4>
                 </div>
                 <div class="modal-body wizard-content">
-                
+
                 <form action="" method="POST" id="create_moh" name="create_moh" role="form">
                     <div class="row">
                     	<h4>Music On-Hold<br/>
@@ -229,7 +229,7 @@
 	                                <input type="text" name="moh_id" id="moh_id" class="form-control" placeholder="Music on Hold ID (Mandatory)" required />
 	                            </div>
 	                        </div>
-	                        <div class="form-group">        
+	                        <div class="form-group">
 	                            <label class="col-sm-4 control-label" for="moh_name">Music On Hold Name: </label>
 	                            <div class="col-sm-8 mb">
 	                                <input type="text" name="moh_name" id="moh_name" class="form-control" placeholder="Music On Hold Name (Mandatory)" required />
@@ -270,7 +270,7 @@
 	                        </div>
                         </fieldset>
                     </div><!-- end of step -->
-                
+
                 </form>
 
                 </div> <!-- end of modal body -->
@@ -394,16 +394,16 @@
 			//loads datatable functions
 				$('#music-on-hold_table').dataTable();
 				$('#voicefiles').dataTable();
-		
+
 		/*******************
 		** MOH EVENTS
-		*******************/                
-				
+		*******************/
+
 			/*********
 			** INIT WIZARD
 			*********/
-			
-				var moh_form = $("#create_moh"); // init form wizard 
+
+				var moh_form = $("#create_moh"); // init form wizard
 
 			    moh_form.validate({
 			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
@@ -442,7 +442,7 @@
 			        	$('#finish').attr("disabled", true);
 
 			        	/*********
-						** ADD EVENT 
+						** ADD EVENT
 						*********/
 				            // Submit form via ajax
 					            $.ajax({
@@ -466,7 +466,7 @@
 		                        });
 			        }
 			    }); // end of wizard
-			
+
 			//------------------------
 
 			/*********
@@ -480,7 +480,7 @@
 					$.ajax({
 						url: "./php/ViewMOH.php",
 						type: 'POST',
-						data: { 
+						data: {
 						      moh_id : moh_id,
 						},
 						dataType: 'json',
@@ -490,12 +490,18 @@
 						      $('.moh_status option[value="' + data.active + '"]').attr('selected','selected');
 						      $('.moh_user_group option[value="' + data.user_group + '"]').attr('selected','selected');
 						      $('.moh_rand_order option[value="' + data.random + '"]').attr('selected','selected');
-						  
+
                               $('#view-moh-modal').modal('show');
 						}
 					});
 				});
-				
+
+
+				$('#form-voicefiles-modal').on('hidden.bs.modal', function () {
+					$('.voice_file_holder').val('');
+					$('#voice_file').val('');
+				});
+
 				$('.btn-update-moh-info').click(function(){
                     $('#update_button').html("<i class='fa fa-edit'></i> Updating...");
                     $('.btn-update-moh-info').attr("disabled", true);
@@ -503,7 +509,7 @@
 					$.ajax({
 						url: "./php/UpdateMOH.php",
 						type: 'POST',
-						data: { 
+						data: {
 						      moh_id : $(this).attr('data-id'),
 						      moh_name : $('.moh_name').val(),
 						      user_group : $('.mog_user_group').val(),
@@ -514,18 +520,18 @@
 						success: function(data) {
 						      if (data.result == "success") {
 							    swal("Success!", "Music On Hold Successfully Updated!", "success");
-                                window.setTimeout(function(){location.reload()},2000)   
-                                
+                                window.setTimeout(function(){location.reload()},2000)
+
                                 $('#update_button').html("<i class='fa fa-check'></i> Update");
                                 $('.btn-update-moh-info').attr("disabled", false);
 						      } else {
     							sweetAlert("Oops...", "Something went wrong! "+data, "error");
-                                
+
                                 $('#update_button').html("<i class='fa fa-check'></i> Update");
                                 $('.btn-update-moh-info').attr("disabled", false);
 						      }
-						      
-						      
+
+
 						}
 					});
 				});
@@ -536,23 +542,23 @@
 				// delete click
 					$(document).on('click','.delete-moh',function() {
 					 	var id = $(this).attr('data-id');
-	                    swal({   
-	                        title: "Are you sure?",   
-	                        text: "This action cannot be undone.",   
-	                        type: "warning",   
-	                        showCancelButton: true,   
-	                        confirmButtonColor: "#DD6B55",   
-	                        confirmButtonText: "Yes, delete this moh!",   
-	                        cancelButtonText: "No, cancel please!",   
-	                        closeOnConfirm: false,   
-	                        closeOnCancel: false 
-	                        }, 
-	                        function(isConfirm){   
-	                            if (isConfirm) { 
+	                    swal({
+	                        title: "Are you sure?",
+	                        text: "This action cannot be undone.",
+	                        type: "warning",
+	                        showCancelButton: true,
+	                        confirmButtonColor: "#DD6B55",
+	                        confirmButtonText: "Yes, delete this moh!",
+	                        cancelButtonText: "No, cancel please!",
+	                        closeOnConfirm: false,
+	                        closeOnCancel: false
+	                        },
+	                        function(isConfirm){
+	                            if (isConfirm) {
 	                                $.ajax({
 	                                    url: "./php/DeleteMOH.php",
 	                                    type: 'POST',
-	                                    data: { 
+	                                    data: {
 	                                        moh_id:id,
 	                                    },
 	                                    success: function(data) {
@@ -565,13 +571,13 @@
 	                                        }
 	                                    }
 	                                });
-	                            } else {     
-	                                    swal("Cancelled", "No action has been done :)", "error");   
-	                            } 
+	                            } else {
+	                                    swal("Cancelled", "No action has been done :)", "error");
+	                            }
 	                        }
 	                    );
 					});
-		
+
 		//-------------------- end of main moh events
 
 		/*******************
@@ -581,7 +587,7 @@
 			/********
 			** INIT WIZARD
 			*******/
-				var voicefile_form = $("#voicefile_form"); // init form wizard 
+				var voicefile_form = $("#voicefile_form"); // init form wizard
 
 			    voicefile_form.validate({
 			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
@@ -621,7 +627,7 @@
 			        	$('.upload-loader').show();
 
 			        	/*********
-						** ADD EVENT 
+						** ADD EVENT
 						*********/
 				            // submit form
 				            	voicefile_form.submit();
@@ -629,7 +635,7 @@
 			    }); // end of wizard
 
 			// upload result
-				<?php 
+				<?php
 					if($_GET['upload_result'] == "success") {
 				?>
 						swal(
@@ -656,9 +662,9 @@
 							}
 						);
 				<?php
-					} 
+					}
 				?>
-			
+
 			// On play
 				$('.play_voice_file').click(function(){
 					var audioFile = $(this).attr('data-location');
@@ -717,7 +723,7 @@
 		            $('#voice_file').val('');
 		            $('.voice_file_holder').val();
 		        });
-			
+
 		//-------------------- end of main voice files events
 
 		/*******************
