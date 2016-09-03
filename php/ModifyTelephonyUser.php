@@ -52,6 +52,11 @@ if ($validated == 1) {
 		$hotkeys_active = $_POST["hotkeys"]; 
 		$hotkeys_active = stripslashes($hotkeys_active);
 	}
+	
+	$pass = NULL; if (isset($_POST["password"])) { 
+		$pass = $_POST["password"]; 
+		$pass = stripslashes($pass);
+	}
 
 	$phone_login = NULL; if (isset($_POST["phone_login"])) { 
 		$phone_login = $_POST["phone_login"]; 
@@ -80,6 +85,7 @@ if ($validated == 1) {
 	$postfields["active"] = $status; #Desired value for user (required)
 	$postfields["voicemail"] = $voicemail; #Desired value for user (required)
     $postfields["email"] = $email;
+    $postfields["pass"] = $pass;
     $postfields["phone_login"] = $phone_login;
     $postfields["phone_pass"] = $phone_pass;
     $postfields["hotkeys_active"] = $hotkeys_active;
