@@ -45,9 +45,13 @@
     //echo "<pre>";
     //print_r($output);
 
+    $max = 0;
+    
     $campaignsmonitoring = '['; 
     
         foreach ($output->data as $key => $value) {
+        
+        if(++$max > 50) break;
 
         $campname = $value->campaign_name;
         $leadscount = $value->mycnt;
