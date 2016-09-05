@@ -1422,6 +1422,10 @@ $(document).ready(function() {
     $("#submitCBDate").click(function() {
         CallBackDateSubmit();
     });
+    
+    $("#openWebForm").click(function() {
+        window.open(TEMP_VDIC_web_form_address, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
+    });
 });
 
 function hijackThisLink(e) {
