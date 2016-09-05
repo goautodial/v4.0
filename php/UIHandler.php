@@ -1392,7 +1392,7 @@ error_reporting(E_ERROR | E_PARSE);
 
     			setTimeout( function(){ 
 				    $(".close-preloader").fadeIn("slow");
-				}, 5000 );
+				}, 10000 );
 
 	    		$(window).ready(function() {
 					$(".preloader").fadeOut("slow");
