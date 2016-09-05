@@ -18,6 +18,11 @@
   width: auto;
 }
 
+.close-preloader{
+  color: white;
+  padding: 20px;
+}
+
 .dots {
   width: 10%;
   height: 5%;

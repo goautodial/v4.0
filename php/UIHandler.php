@@ -1377,13 +1377,33 @@ error_reporting(E_ERROR | E_PARSE);
 	            </nav>
 	        </header>
 	        <div class="preloader">
+	        	<div class="pull-right close-preloader" style="display:none">
+    				<a type="button" class="close-preloader-button" aria-label="Close" style="color:white;"><i class="fa fa-close fa-lg"></i></a>
+    			</div>
     			<center>
     					<img src="'.$logo.'"/>
     					<span class="dots">
     					<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
     					</span>
     			</center>
-    		</div>';
+    		</div>
+
+    		<script type="text/javascript">
+
+    			setTimeout( function(){ 
+				    $(".close-preloader").fadeIn("slow");
+				}, 5000 );
+
+	    		$(window).ready(function() {
+					$(".preloader").fadeOut("slow");
+				})
+				
+	    		$(document).on("click", ".close-preloader-button", function(){
+					$(".preloader").fadeOut("slow");
+				});
+
+			</script>
+			';
 	}
 	
     /**
@@ -5583,6 +5603,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$js .= '<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>';
 		$js .= '<script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>';
 		$js .= "<script type='text/javascript'>
+			
 			var goOptions = {
 				el: 'body',
 				components: {
