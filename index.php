@@ -107,6 +107,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <!-- <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script> -->
         <script src="js/plugins/datatables/FROMjquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/fnProcessingIndicator.js" type="text/javascript"></script>
 
          <!-- theme_dashboard folder -->
 					<!-- FONT AWESOME-->
