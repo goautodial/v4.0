@@ -24,7 +24,13 @@
   text-align: center;
   padding-top: 25%;
 }
+@media only screen and (max-width: 842px) {
+  .preloader img{
+    height: auto;
+    width: 60%;
+  }
 
+}
 .dots > div {
   background-color: #fff;
   height: 15px;

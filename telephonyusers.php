@@ -73,10 +73,40 @@
                 <?php if ($user->userHasAdminPermission()) { ?>
                     <div class="panel panel-default">
                     	<div class="panel-body">
-	                        <div class="table" id="users_table">
-	                        <legend><?php $lh->translateText("users"); ?></legend>
-								<?php print $ui->goGetAllUserList(); ?>
-	                        </div>
+                    		<div role="tabpanel">
+								<ul role="tablist" class="nav nav-tabs nav-justified">
+
+								<!-- Users panel tab -->
+									 <li role="presentation" class="active">
+										<a href="#users_tab" aria-controls="users_tab" role="tab" data-toggle="tab" class="bb0">
+										    Users </a>
+									 </li>
+								 <!-- Phones panel tabs-->
+									 <li role="presentation" >
+										<a href="#phone_tab" aria-controls="phone_tab" role="tab" data-toggle="tab" class="bb0">
+										    Phones</a>
+									 </li>
+
+								  </ul>
+
+								<!-- Tab panes-->
+								<div class="tab-content bg-white">
+
+									<!--==== users ====-->
+									<div id="users_tab" role="tabpanel" class="tab-pane active">
+			                        <legend><?php $lh->translateText("users"); ?></legend>
+										<?php print $ui->goGetAllUserList(); ?>
+			                        </div>
+
+									<!--==== Phones ====-->
+									<div id="phone_tab" role="tabpanel" class="tab-pane">
+			                            <legend><?php $lh->translateText("phones"); ?></legend>
+										<?php print $ui->getPhonesList(); ?>
+			                        </div>
+
+								</div><!-- END tab content-->
+
+							</div><!-- end of tabpanel -->
 	                    </div><!-- /.box-body -->
                     </div><!-- /.box -->
 				<!-- /fila con acciones, formularios y demás -->
@@ -88,215 +118,404 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
+    
+    <!-- FIXED ACTION BUTTON --> 
+		<div class="bottom-menu skin-blue">
+			<div class="action-button-circle" data-toggle="modal">
+				<?php print $ui->getCircleButton("users", "plus"); ?>
+			</div>
+			<div class="fab-div-area" id="fab-div-area">
+				<ul class="fab-ul" style="height: 170px;">
+					<li class="li-style"><a class="fa fa-user-plus fab-div-item" data-toggle="modal" data-target="#user-wizard-modal" title="Add User"></a></li><br/>
+					<li class="li-style"><a class="fa fa-phone fab-div-item" data-toggle="modal" data-target="#phone-wizard-modal" title="Add Phone"></a></li><br/>
+				</ul>
+			</div>
+		</div>
 	
-	<div class="action-button-circle" data-toggle="modal" data-target="#wizard-modal">
-		<?php print $ui->getCircleButton("calls", "user-plus"); ?>
-	</div>
-	
-<!-- MODAL -->
+<!-- MODALS -->
 <?php
 	$output = $ui->API_goGetAllUserLists();
 	$user_groups = $ui->API_goGetUserGroupsList();
 	$phones = $ui->API_getPhonesList();
+	$max = max($phones->extension);
+	$suggested_extension = $max + 1;
 ?>
-
-    <div class="modal fade" id="wizard-modal" tabindex="-1"aria-labelledby="T_User" >
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-				
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animated bounceInRight" id="T_User">
-						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create users."></i> 
-						<b>User Wizard » Add New User</b></h4>
-				</div>
-				<div class="modal-body">
-				
-				<form id="wizard_form" action="#">
-					<div class="row">
-						<!--
-                        <h4>Getting Started
-                           <br>
-                           <small>Assign User to a Usergroup</small>
-                        </h4>
-                        <fieldset>
+	<!-- ADD USER MODAL -->
+	    <div class="modal fade" id="user-wizard-modal" tabindex="-1"aria-labelledby="T_User" >
+	        <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+					
+					<div class="modal-header">
 						
-							<div class="form-group">		
-								<label class="col-sm-5 control-label">Current Users </label>
-								<div class="col-sm-7 mb">
-									<div class="row">
-										<h4 style="padding-left:20px;"><?php echo count($output->user); ?></h4>
+						<h4 class="modal-title animated bounceInRight" id="T_User">
+							<i class="fa fa-info-circle" title="A step by step wizard that allows you to create users."></i> 
+							<b>User Wizard » Add New User</b>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						</h4>
+					</div>
+					<div class="modal-body">
+					
+					<form id="wizard_form" action="#">
+						<div class="row">
+							<!--
+	                        <h4>Getting Started
+	                           <br>
+	                           <small>Assign User to a Usergroup</small>
+	                        </h4>
+	                        <fieldset>
+							
+								<div class="form-group">		
+									<label class="col-sm-5 control-label">Current Users </label>
+									<div class="col-sm-7 mb">
+										<div class="row">
+											<h4 style="padding-left:20px;"><?php echo count($output->user); ?></h4>
+										</div>
 									</div>
 								</div>
-							</div>
-						-->
-						<!-- ENABLE IF ADD MULTIPLE IS AVAILABLE 
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" style="padding-top:15px;">Additional Seat(s): </label>
-								<div class="col-sm-8" style="padding-top:10px;">
-									<select name="seats" id="seats" class="form-control">
-									<?php
-										for($i=1; $i <= 9; $i++){ 
-									?>
-										<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-									<?php
-										}
-									?>
-										<option value="custom_seats">Custom</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group" id="custom_seats" style="display:none;">
-								<label class="col-sm-4 control-label" for="custom_num_seats">Number of Seats: </label>
-								<div class="col-sm-6 mb">
-									<input type="number" name="custom_num_seats" id="custom_num_seats" class="form-control" min="1" max="99" value="1">
-								</div>
-							</div>
-						-->
-                        </fieldset>
-                        <h4>Account Details
-                           <br>
-                           <small>Assign then Enter Account and Login Details</small>
-                        </h4>
-                        <fieldset>
-                           <?php
-							$agent_num = $output->last_count;
-
-							$num_padded = sprintf("%03d", $agent_num);
-							
-							$fullname = "Agent ".$num_padded;
-							$user_id_for_form = "agent".$num_padded;
-							?>
-							
-							<div class="form-group">		
-								<label class="col-sm-4 control-label"> Users ID </label>
-								<div class="col-sm-8 mb">
-									<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID (Mandatory)" 
-										value="<?php echo $user_id_for_form;?>" title="Please enter alphanumeric characters only" maxlength="20" required>
-									<label id="user-duplicate-error"></label>
-								</div>
-							</div>
-							<div class="form-group mt">
-								<label class="col-sm-4 control-label" for="user_group">User Group</label>
-								<div class="col-sm-8 mb">
-									<select id="user_group" class="form-control" name="user_group">
+							-->
+							<!-- ENABLE IF ADD MULTIPLE IS AVAILABLE 
+								<div class="form-group">		
+									<label class="col-sm-4 control-label" style="padding-top:15px;">Additional Seat(s): </label>
+									<div class="col-sm-8" style="padding-top:10px;">
+										<select name="seats" id="seats" class="form-control">
 										<?php
-											for($i=0;$i<count($user_groups->user_group);$i++){
+											for($i=1; $i <= 9; $i++){ 
 										?>
-											<option value="<?php echo $user_groups->user_group[$i];?>" <?php if($user_groups->user_group[$i] == "AGENT"){echo "selected";}?>>  <?php echo $user_groups->group_name[$i];?>  </option>
+											<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 										<?php
 											}
 										?>
-									</select>
+											<option value="custom_seats">Custom</option>
+										</select>
+									</div>
 								</div>
-							</div>
-							<div class="form-group" id="phone_logins_form" style="display:none;">
-								<label class="col-sm-4 control-label" for="phone_logins"> Phone Login </label>
-								<div class="col-sm-8 mb">
-									<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="Phone Login (Mandatory)" 
-										value="<?php echo $output->last_phone_login;?>" pattern=".{3,}" title="Minimum of 3 characters" maxlength="20" required>
-									<label id="phone_login-duplicate-error"></label>
+								<div class="form-group" id="custom_seats" style="display:none;">
+									<label class="col-sm-4 control-label" for="custom_num_seats">Number of Seats: </label>
+									<div class="col-sm-6 mb">
+										<input type="number" name="custom_num_seats" id="custom_num_seats" class="form-control" min="1" max="99" value="1">
+									</div>
 								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label" for="fullname"> Fullname </label>
-								<div class="col-sm-8 mb">
-									<input type="text" name="fullname" id="fullname" class="form-control" placeholder="FullName (Mandatory)"
-										   value="<?php echo $fullname;?>" title="Please enter alphanumeric characters only" maxlength="50" required>
-								</div>
-							</div>
-							<div class="form-group">	
-								<label class="col-sm-4 control-label" for="password" title="Default Password is: Go<?php echo date('Y');?>"> Password <br/></label>
+							-->
+	                        </fieldset>
+	                        <h4>Account Details
+	                           <br>
+	                           <small>Assign then Enter Account and Login Details</small>
+	                        </h4>
+	                        <fieldset>
+	                           <?php
+								$agent_num = $output->last_count;
+
+								$num_padded = sprintf("%03d", $agent_num);
 								
-								<div class="col-sm-8 mb">
-									<input type="password" class="form-control" name="password" id="password" placeholder="Password (Mandatory)"  title="Default Password is: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" maxlength="20" required>
+								$fullname = "Agent ".$num_padded;
+								$user_id_for_form = "agent".$num_padded;
+								?>
+								
+								<div class="form-group">		
+									<label class="col-sm-4 control-label"> Users ID </label>
+									<div class="col-sm-8 mb">
+										<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID (Mandatory)" 
+											value="<?php echo $user_id_for_form;?>" title="Please enter alphanumeric characters only" maxlength="20" required>
+										<label id="user-duplicate-error"></label>
+									</div>
 								</div>
-							</div>
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="confirm"> Confirm Password </label>
-								<div class="col-sm-8 mb">
-									<input type="password" class="form-control" id="confirm" name="confirm" placeholder="Re-enter password here (Mandatory)" value="Go2016" required>
-								</div> 
-							</div>
-							<!--
-							<div class="row">
-								<p class="col-sm-12"><small class="pull-right" style="padding-right:20px;"><i><span id="pass_result" class="control-label"></span></i></small></p>
-							</div>-->
-							<input type="hidden" name="phone_pass" id="phone_pass" class="form-control">
-
-							<div class="form-group">
-								<label class="col-sm-4 control-label" for="status">Active </label>
-								<div class="col-sm-8 mb">
-									<select name="status" id="status" class="form-control">
-										<option value="Y" selected>Yes</option>
-										<option value="N" >No</option>						
-									</select>
+								<div class="form-group mt">
+									<label class="col-sm-4 control-label" for="user_group">User Group</label>
+									<div class="col-sm-8 mb">
+										<select id="user_group" class="form-control" name="user_group">
+											<?php
+												for($i=0;$i<count($user_groups->user_group);$i++){
+											?>
+												<option value="<?php echo $user_groups->user_group[$i];?>" <?php if($user_groups->user_group[$i] == "AGENT"){echo "selected";}?>>  <?php echo $user_groups->group_name[$i];?>  </option>
+											<?php
+												}
+											?>
+										</select>
+									</div>
 								</div>
-							</div>
-                        </fieldset>
-                        <h4>Review & Submit
-                           <br>
-                           <small>Review Details Before Saving</small>
-                        </h4>
-                        <fieldset>
-                        	<div class="form-group">
-                           		<label class="col-lg-6 control-label">User Group: </label>
-                           		<div class="col-lg-6 reverse_control_label mb">
-                           			<span id="submit-usergroup"></span>
-                           		</div>
-                           	</div>
-                           	<div class="form-group">
-                           		<label class="col-lg-6 control-label">User ID: </label>
-                           		<div class="col-lg-6 reverse_control_label mb">
-                           			<span id="submit-userid"></span>
-                           		</div>
-                           	</div>
-                           	<div class="form-group">
-                           		<label class="col-lg-6 control-label">Full Name: </label>
-                           		<div class="col-lg-6 reverse_control_label mb">
-                           			<span id="submit-fullname"></span>
-                           		</div>
-                           	</div>
-                           	<div class="form-group">
-                           		<label class="col-lg-6 control-label">Password: </label>
-                           		<div class="col-lg-6 reverse_control_label mb">
-                           			<span id="submit-password"></span>
-                           		</div>
-                           	</div>
-                           	<div class="form-group">
-                           		<label class="col-lg-6 control-label">Active: </label>
-                           		<div class="col-lg-6 reverse_control_label mb">
-                           			<span id="submit-active"></span>
-                           		</div>
-                           	</div>
+								<div class="form-group" id="phone_logins_form" style="display:none;">
+									<label class="col-sm-4 control-label" for="phone_logins"> Phone Login </label>
+									<div class="col-sm-8 mb">
+										<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="Phone Login (Mandatory)" 
+											value="<?php echo $output->last_phone_login;?>" pattern=".{3,}" title="Minimum of 3 characters" maxlength="20" required>
+										<label id="phone_login-duplicate-error"></label>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="fullname"> Fullname </label>
+									<div class="col-sm-8 mb">
+										<input type="text" name="fullname" id="fullname" class="form-control" placeholder="FullName (Mandatory)"
+											   value="<?php echo $fullname;?>" title="Please enter alphanumeric characters only" maxlength="50" required>
+									</div>
+								</div>
+								<div class="form-group">	
+									<label class="col-sm-4 control-label" for="password" title="Default Password is: Go<?php echo date('Y');?>"> Password <br/></label>
+									
+									<div class="col-sm-8 mb">
+										<input type="password" class="form-control" name="password" id="password" placeholder="Password (Mandatory)"  title="Default Password is: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" maxlength="20" required>
+									</div>
+								</div>
+								<div class="form-group">		
+									<label class="col-sm-4 control-label" for="confirm"> Confirm Password </label>
+									<div class="col-sm-8 mb">
+										<input type="password" class="form-control" id="confirm" name="confirm" placeholder="Re-enter password here (Mandatory)" value="Go2016" required>
+									</div> 
+								</div>
+								<!--
+								<div class="row">
+									<p class="col-sm-12"><small class="pull-right" style="padding-right:20px;"><i><span id="pass_result" class="control-label"></span></i></small></p>
+								</div>-->
+								<input type="hidden" name="phone_pass" id="phone_pass" class="form-control">
 
-                        </fieldset>
-                     </div>
-				</form>
-		
-				</div> <!-- end of modal body -->
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="status">Active </label>
+									<div class="col-sm-8 mb">
+										<select name="status" id="status" class="form-control">
+											<option value="Y" selected>Yes</option>
+											<option value="N" >No</option>						
+										</select>
+									</div>
+								</div>
+	                        </fieldset>
+	                        <h4>Review & Submit
+	                           <br>
+	                           <small>Review Details Before Saving</small>
+	                        </h4>
+	                        <fieldset>
+	                        	<div class="form-group">
+	                           		<label class="col-lg-6 control-label">User Group: </label>
+	                           		<div class="col-lg-6 reverse_control_label mb">
+	                           			<span id="submit-usergroup"></span>
+	                           		</div>
+	                           	</div>
+	                           	<div class="form-group">
+	                           		<label class="col-lg-6 control-label">User ID: </label>
+	                           		<div class="col-lg-6 reverse_control_label mb">
+	                           			<span id="submit-userid"></span>
+	                           		</div>
+	                           	</div>
+	                           	<div class="form-group">
+	                           		<label class="col-lg-6 control-label">Full Name: </label>
+	                           		<div class="col-lg-6 reverse_control_label mb">
+	                           			<span id="submit-fullname"></span>
+	                           		</div>
+	                           	</div>
+	                           	<div class="form-group">
+	                           		<label class="col-lg-6 control-label">Password: </label>
+	                           		<div class="col-lg-6 reverse_control_label mb">
+	                           			<span id="submit-password"></span>
+	                           		</div>
+	                           	</div>
+	                           	<div class="form-group">
+	                           		<label class="col-lg-6 control-label">Active: </label>
+	                           		<div class="col-lg-6 reverse_control_label mb">
+	                           			<span id="submit-active"></span>
+	                           		</div>
+	                           	</div>
+
+	                        </fieldset>
+	                     </div>
+					</form>
+			
+					</div> <!-- end of modal body -->
+				</div>
 			</div>
 		</div>
-	</div><!-- end of modal -->
+	<!-- end of add user modal -->
+
+	<!-- ADD PHONE MODAL -->
+	    <div class="modal fade" id="phone-wizard-modal" tabindex="-1"aria-labelledby="T_Phones" >
+	        <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+					<div class="modal-header">
+						
+						<h4 class="modal-title animated bounceInRight" id="T_Phones">
+							<i class="fa fa-info-circle" title="A step by step wizard that allows you to create phones."></i> 
+							<b>Phone Wizard » Add New Phone</b>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						</h4>
+					</div>
+					<div class="modal-body wizard-content">
+					
+					<form name="create_form" id="create_form" role="form">
+						<div class="row">
+							<h4>
+								Add Phones <br/>
+								<small>Specify a number of phones to be added</small>
+							</h4>
+							<fieldset>
+								<div class="form-group mt">
+									<label class="col-sm-4 control-label" for="add_phones">Additional Phone(s):</label>
+									<div class="col-sm-6 mb">
+										<select class="form-control" name="add_phones" id="add_phones">
+											<option value="1"> 1 </option>
+											<option value="2"> 2 </option>
+											<option value="3"> 3 </option>
+											<option value="4"> 4 </option>
+											<option value="5"> 5 </option>
+											<option value="CUSTOM">CUSTOM</option>
+										</select>
+									</div>
+									<div class="col-sm-2" id="custom_seats" style="display:none;">
+										<input type="number" class="form-control" name="custom_seats" value="1" min="1" max="99" required>
+									</div>
+								</div>
+								<div class="form-group">		
+									<label class="col-sm-4 control-label" for="start_ext">Starting Extension</label>
+									<div class="col-sm-8 mb">
+										<input type="number" name="start_ext" id="start_ext" placeholder="Starting Phone Extension" value="<?php echo $output->last_phone_login;?>" class="form-control">
+									</div>
+								</div>
+							</fieldset>
+					<!-- end of step 1-->
+					<!-- STEP 2 -->
+							<h4>
+								<small></small>
+							</h4>
+							<fieldset>
+								<div class="form-group mt">
+									<label class="col-sm-4 control-label" for="phone_ext">Phone Extension/Login</label>
+									<div class="col-sm-8 mb">
+										<input text="number" name="phone_ext" id="phone_ext" class="form-control" placeholder="Phone Login (Mandatory)" title="Must be 3 - 20 characters and contains only numerical values." minlength="3" maxlength="20" required/>
+									</div>
+								</div>
+								<div class="form-group">		
+									<label class="col-sm-4 control-label" for="phone_pass">Phone Login Password</label>
+									<div class="col-sm-8 mb">
+										<input type="text" value="G016gO" name="phone_pass" id="phone_pass" class="form-control"  placeholder="Phone Password (Mandatory)" title="Default Password is: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" maxlength="20" required>
+									</div>
+								</div>
+								<div class="form-group">		
+									<label class="col-sm-4 control-label" for="start_ext">User Group</label>
+									<div class="col-sm-8 mb">
+										<select name="user_group" id="user_group" class="form-control" required>
+											<option value="ALL">ALL USER GROUPS</option>
+											<?php
+												for($i=0; $i < count($user_groups->user_group); $i++){
+											?>
+												<option value="<?php echo $user_groups->user_group[$i];?>"> <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i]; ?></option>
+											<?php
+												}
+											?>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">		
+									<label class="col-sm-4 control-label" for="ip">Server IP	</label>
+									<div class="col-sm-8 mb">
+										<select name="ip" id="ip" class="form-control" required>
+											<option value="69.46.6.35">
+												<?php echo $_SERVER['REMOTE_ADDR'];?>
+											</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="form-group">		
+									<label class="col-sm-4 control-label" for="fullname">Full Name</label>
+									<div class="col-sm-8 mb">
+										<input type="text" name="fullname" id="fullname" placeholder="Full Name (Mandatory)" class="form-control" required>
+									</div>
+								</div>
+								<div class="form-group">		
+									<label class="col-sm-4 control-label" for="gmt">Local GMT	</label>
+									<div class="col-sm-8 mb">
+										<div class="row">
+											<div class="col-sm-6">
+												<select name="gmt" id="gmt" class="form-control" required>
+													<option value="12:75"> 12:75 </option>
+													<option value="12:00"> 12:00 </option>
+													<option value="11:00"> 11:00 </option>
+													<option value="10:00"> 10:00 </option>
+													<option value="9:50"> 9:50 </option>
+													<option value="9:00"> 9:00 </option>
+													<option value="8:00"> 8:00 </option>
+													<option value="7:00"> 7:00 </option>
+													<option value="6:50"> 6:50 </option>
+													<option value="6:00"> 6:00 </option>
+													<option value="5:75"> 5:75 </option>
+													<option value="5:50"> 5:50 </option>
+													<option value="5:00"> 5:00 </option>
+													<option value="4:50"> 4:50 </option>
+													<option value="4:00"> 4:00 </option>
+													<option value="3:50"> 3:50 </option>
+													<option value="3:00"> 3:00 </option>
+													<option value="2:00"> 2:00 </option>
+													<option value="1:00"> 1:00 </option>
+													<option value="0:00"> 0:00 </option>
+													<option value="-1:00"> -1:00 </option>
+													<option value="-2:00"> -2:00 </option>
+													<option value="-3:00"> -3:00 </option>
+													<option value="-4:00"> -4:00 </option>
+													<option value="-5:00" selected> -5:00 </option>
+													<option value="-6:00"> -6:00 </option>
+													<option value="-7:00"> -7:00 </option>
+													<option value="-8:00"> -8:00 </option>	
+													<option value="-9:00"> -9:00 </option>
+													<option value="-10:00"> -10:00 </option>
+													<option value="-11:00"> -11:00 </option>
+													<option value="-12:00"> -12:00 </option>
+												</select>
+											</div>
+											<div class="col-sm-6">
+												<p class="text-muted">( Do NOT adjust for DST)</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</fieldset><!-- end of step 2-->
+						</div><!-- end of row -->
+					</form>
+
+					</div> <!-- end of modal body -->
+				</div> <!-- end of modal content -->
+			</div> <!-- end of modal dialog -->
+		</div>
+	<!-- end of add phone modal -->
+<!-- end of modals -->
 
 		<?php print $ui->standardizedThemeJS();?>
 		<!-- JQUERY STEPS-->
   		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-		
+
 <script type="text/javascript">
-
 	$(document).ready(function() {
-		var checker = 0;
+		
+		/*********************
+		** INITIALIZATION
+		*********************/
 
-		// initialize data table
-		$('#T_users').dataTable();
+			var checker = 0;
+
+			/* init data tables */
+
+				//users
+				$('#T_users').dataTable({
+					stateSave: true
+				});
+				//phones
+				$('#T_phones').dataTable({
+					stateSave: true
+				});
+
+			/* init wizards */
+				var uform = $("#wizard_form"); // init user form wizard 
+				var pform = $("#create_form"); // init phone form wizard 
+
+			/* enable on hover event for FAB */
+				// loads the fixed action button
+				$(".bottom-menu").on('mouseenter mouseleave', function () {
+				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
+				});
 
 		/*********
 		** Add Wizard
 		*********/
-		    var form = $("#wizard_form"); // init form wizard 
 
-		    form.validate({
+
+
+			//users form validate
+		    uform.validate({
 		        errorPlacement: function errorPlacement(error, element) { element.after(error); },
 		        rules: {
 		            confirm: {
@@ -305,7 +524,13 @@
 		        }
 		    });
 
-		    form.children("div").steps({
+		    //phones form validate
+		    pform.validate({
+		        errorPlacement: function errorPlacement(error, element) { element.after(error); }
+		    });
+
+		    //users
+		    uform.children("div").steps({
 		        headerTag: "h4",
 		        bodyTag: "fieldset",
 		        transitionEffect: "slideLeft",
@@ -320,7 +545,7 @@
 			        console.log(checker);
 			        // Disable next if there are duplicates
 			        if(checker > 0){
-				        $(".body:eq(" + newIndex + ") .error", form).addClass("error");
+				        $(".body:eq(" + newIndex + ") .error", uform).addClass("error");
 			        	return false;
 			        }
 
@@ -331,17 +556,17 @@
 				    if (currentIndex < newIndex)
 				    {
 				        // To remove error styles
-				        $(".body:eq(" + newIndex + ") label.error", form).remove();
-				        $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+				        $(".body:eq(" + newIndex + ") label.error", uform).remove();
+				        $(".body:eq(" + newIndex + ") .error", uform).removeClass("error");
 				    }
 
-		            form.validate().settings.ignore = ":disabled,:hidden";
-		            return form.valid();
+		            uform.validate().settings.ignore = ":disabled,:hidden";
+		            return uform.valid();
 		        },
 		        onFinishing: function (event, currentIndex)
 		        {
-		            form.validate().settings.ignore = ":disabled";
-		            return form.valid();
+		            uform.validate().settings.ignore = ":disabled";
+		            return uform.valid();
 		        },
 		        onFinished: function (event, currentIndex)
 		        {
@@ -376,13 +601,73 @@
 					});
 		        }
 		    });
+			
+			//phones
+			pform.children("div").steps({
+		        headerTag: "h4",
+		        bodyTag: "fieldset",
+		        transitionEffect: "slideLeft",
+		        onStepChanging: function (event, currentIndex, newIndex)
+		        {
+		        	$("#phone_ext").val($("#start_ext").val());
 
+		        	// Allways allow step back to the previous step even if the current step is not valid!
+			        if (currentIndex > newIndex) {
+			            return true;
+			        }
+
+					// Clean up if user went backward before
+				    if (currentIndex < newIndex)
+				    {
+				        // To remove error styles
+				        $(".body:eq(" + newIndex + ") label.error", pform).remove();
+				        $(".body:eq(" + newIndex + ") .error", pform).removeClass("error");
+				    }
+
+		            pform.validate().settings.ignore = ":disabled,:hidden";
+		            return pform.valid();
+		        },
+		        onFinishing: function (event, currentIndex)
+		        {
+		            pform.validate().settings.ignore = ":disabled";
+		            return pform.valid();
+		        },
+		        onFinished: function (event, currentIndex)
+		        {
+
+		        	$('#finish').text("Loading...");
+		        	$('#finish').attr("disabled", true);
+
+		        	/*********
+		        	** ADD EVENT
+		        	*********/
+
+		            // Submit form via ajax
+			            $.ajax({
+							url: "./php/AddSettingsPhones.php",
+							type: 'POST',
+							data: $("#create_form").serialize(),
+							success: function(data) {
+							  // console.log(data);
+								  if(data == 1){
+										swal({title: "Success",text: "Phone Successfully Created!",type: "success"},function(){window.location.href = 'settingsphones.php';});
+										$('#finish').val("Submit");
+										$('#finish').attr("disabled", false);
+								  }else{
+									  sweetAlert("Oops...", "Something went wrong! "+data, "error");
+								  	  $('#finish').val("Submit");
+								  	  $('#finish').attr("disabled", false);
+								  }
+							}
+						});
+		        }
+		    });
 	//--------------------
 
 		/*********
 		** Edit Event
 		*********/
-
+			//user edit event
 				$(document).on('click','.edit-T_user',function() {
 					var url = 'edittelephonyuser.php';
 					var userid = $(this).attr('data-id');
@@ -392,13 +677,21 @@
 					//$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				 });
-
+			//phone edit event
+				$(document).on('click','.edit-phone',function() {
+					var url = './editsettingsphones.php';
+					var extenid = $(this).attr('data-id');
+					//alert(extenid);
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="extenid" value="'+extenid+'" /></form>');
+					//$('body').append(form);  // This line is not necessary
+					$(form).submit();
+				});
 	// ------------------
 				
 		/*********
 		** Delete Event
 		*********/
-
+			//delete user 
 				 $(document).on('click','.delete-T_user',function() {
 				 	var id = $(this).attr('data-id');
 		                swal({   
@@ -436,9 +729,49 @@
 		                	}
 		                );
 				 });
-		
+			
+			//delete phone
+				$(document).on('click','.delete-phone',function() {
+				 	var id = $(this).attr('data-id');
+	                swal({   
+	                    title: "Are you sure?",   
+	                    text: "This action cannot be undone.",   
+	                    type: "warning",   
+	                    showCancelButton: true,   
+	                    confirmButtonColor: "#DD6B55",   
+	                    confirmButtonText: "Yes, delete this phones!",   
+	                    cancelButtonText: "No, cancel please!",   
+	                    closeOnConfirm: false,   
+	                    closeOnCancel: false 
+	                    }, 
+	                    function(isConfirm){   
+	                        if (isConfirm) { 
+	                        	$.ajax({
+								  url: "./php/DeleteSettingsPhones.php",
+								  type: 'POST',
+								  data: { 
+								  	exten_id :id,
+								  },
+								  success: function(data) {
+								  		// console.log(data);
+								  		if(data == 1){
+								  			swal("Success!", "Phone Successfully Deleted!", "success");
+											window.setTimeout(function(){location.reload()},3000)
+										}else{
+											sweetAlert("Oops...", "Something went wrong!"+data, "error");
+										}
+								    }
+								});
+	                        } else {     
+	                                swal("Cancelled", "No action has been done :)", "error");   
+	                        } 
+	                    }
+	                );
+				});
 
 	// -------------------------
+		
+		//
 
 		// disable special characters on User ID
 		$('#user_form').bind('keypress', function (event) {
@@ -459,6 +792,26 @@
 		       return false;
 		    }
 		});
+
+		// disable special characters on Fullname
+			$('#phone_ext').bind('keypress', function (event) {
+			    var regex = new RegExp("^[0-9]+$");
+			    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+			    if (!regex.test(key)) {
+			       event.preventDefault();
+			       return false;
+			    }
+			});
+
+		// disable special characters on Fullname
+			$('#fullname').bind('keypress', function (event) {
+			    var regex = new RegExp("^[a-zA-Z0-9]+$");
+			    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+			    if (!regex.test(key)) {
+			       event.preventDefault();
+			       return false;
+			    }
+			});
 
 		/*********
 		** validations
