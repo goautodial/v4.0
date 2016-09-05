@@ -53,7 +53,7 @@
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
-			})
+			});
 		</script>
     </head>
     <?php print $ui->creamyBody(); ?>
@@ -103,7 +103,7 @@
 							// $name_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("name", "name", "text", $lh->translationFor("name"), $userobj["name"], "user", true));
 							$name_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("name", "name", "text", $lh->translationFor("name"), $userdata->user, "user", true, true));
 							// email
-							$email_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("email", "email", "email", $lh->translationFor("email"), $userdata->email, "envelope-square", false));
+							$email_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("email", "email", "email", $lh->translationFor("email") . " (" . $lh->translationFor("optional") . ")", $userdata->email, "envelope-square", false));
 							// old password 
 							$old_f = $ui->singleFormGroupWithInputGroup($ui->singleFormInputElement("old_password", "old_password", "password", $lh->translationFor("insert_old_password"), null, "lock", true));
 							// new password 

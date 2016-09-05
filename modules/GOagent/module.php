@@ -424,10 +424,12 @@ EOF;
 	
 		session.on('muted', function (data) {
 			console.log('session::muted', data);
+            $.snackbar({content: "<i class='fa fa-microphone-slash fa-lg text-danger' aria-hidden='true'></i>&nbsp; You have turned off your microphone.", timeout: 5000, htmlAllowed: true});
 		});
 	
 		session.on('unmuted', function (data) {
 			console.log('session::unmuted', data);
+            $.snackbar({content: "<i class='fa fa-microphone fa-lg text-success' aria-hidden='true'></i>&nbsp; You have turned on your microphone.", timeout: 5000, htmlAllowed: true});
 		});
 	
 		session.on('reinvite', function (data) {

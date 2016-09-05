@@ -374,14 +374,14 @@ if (isset($_GET["message"])) {
 											    <?=$lh->translationFor('comments')?></a>
 										 </li>
 										 <li role="presentation">
-											<a href="#activity" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-												<span class="fa fa-calendar hidden"></span>
-												<?=$lh->translationFor('activity')?></a>
-										 </li>
-										 <li role="presentation">
 											<a href="#scripts" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
 												<span class="fa fa-file-text-o hidden"></span>
 												<?=$lh->translationFor('script')?></a>
+										 </li>
+										 <li role="presentation">
+											<a href="#activity" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+												<span class="fa fa-calendar hidden"></span>
+												<?=$lh->translationFor('activity')?></a>
 										 </li>
 									  </ul>
 									</div>
@@ -866,6 +866,13 @@ if (isset($_GET["message"])) {
 					<label for="enableHotKeys" class="label-primary"></label>
 				</div>
 				<div style="font-weight: bold;"><?=$lh->translateText('ENABLE HOT KEYS')?></div>
+			</li>
+			<li id="toggleMute" style="padding: 0 5px 15px;">
+				<div class="material-switch pull-right">
+					<input id="muteMicrophone" name="muteMicrophone" type="checkbox" checked/>
+					<label for="muteMicrophone" class="label-primary"></label>
+				</div>
+				<div style="font-weight: bold;"><?=$lh->translateText('MICROPHONE')?></div>
 			</li>
 			<li style="font-size: 5px;">
 				<div id="GOdebug" class="material-switch pull-right">&nbsp;</div>
