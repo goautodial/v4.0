@@ -1046,8 +1046,8 @@ $(document).ready(function() {
             $("#scSubmit").removeClass('disabled');
             var postData = {
                 goAction: 'goGetInboundGroups',
-                goUser: user,
-                goPass: pass,
+                goUser: uName,
+                goPass: uPass,
                 goCampaign: $(this).val(),
                 responsetype: 'json'
             };
@@ -1122,8 +1122,8 @@ $(document).ready(function() {
         });
         var postData = {
             goAction: 'goLoginUser',
-            goUser: user,
-            goPass: pass,
+            goUser: uName,
+            goPass: uPass,
             goCampaign: $("#select_camp").val(),
             goIngroups: inbArray,
             responsetype: 'json',
@@ -1381,6 +1381,14 @@ $(document).ready(function() {
         }
     });
     
+    $("#muteMicrophone").on('change', function() {
+        if ($(this).is(':checked')) {
+            globalSession.unmute();
+        } else {
+            globalSession.mute();
+        }
+    });
+    
     $("#popup-hotkeys").drags();
     
     $("[data-toggle='control-sidebar']").on('click', function() {
@@ -1474,8 +1482,8 @@ function hijackThisLink(e) {
 function btnLogMeIn () {
     var postData = {
         goAction: 'goGetAllowedCampaigns',
-        goUser: user,
-        goPass: pass,
+        goUser: uName,
+        goPass: uPass,
         responsetype: 'json'
     };
 
@@ -1536,8 +1544,8 @@ function sendLogout (logMeOut) {
     if (logMeOut) {
         var postData = {
             goAction: 'goLogoutUser',
-            goUser: user,
-            goPass: pass,
+            goUser: uName,
+            goPass: uPass,
             goSIPserver: SIPserver,
             goNoDeleteSession: no_delete_sessions,
             goLogoutKickAll: LogoutKickAll,
@@ -4344,8 +4352,8 @@ function ManualDialOnly(taskaltnum) {
 
     var postData = {
         goAction: "goManualDialOnly",
-        goUser: user,
-        goPass: pass,
+        goUser: uName,
+        goPass: uPass,
         goServerIP: server_ip,
         goSessionName: session_name,
         goConfExten: session_id,
@@ -6007,8 +6015,8 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 		"&email=" + $(".formMain input[name='email']").val() + 
 		"&security_phrase=" + $(".formMain input[name='security_phrase']").val() + 
 		"&comments=" + $(".formMain input[name='comments']").val() + 
-		"&user=" + user + 
-		"&pass=" + pass + 
+		"&user=" + uName + 
+		"&pass=" + uPass + 
 		"&campaign=" + campaign + 
 		"&phone_login=" + phone_login + 
 		"&original_phone_login=" + original_phone_login +
@@ -6216,8 +6224,8 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 		var SCcomments = $(".formMain input[name='comments']").val();
 		var SCfullname = LOGfullname;
 		var SCfronter = fronter;
-		var SCuser = user;
-		var SCpass = pass;
+		var SCuser = uName;
+		var SCpass = uPass;
 		var SClead_id = $(".formMain input[name='lead_id']").val();
 		var SCcampaign = campaign;
 		var SCphone_login = phone_login;

@@ -39,6 +39,7 @@
                                     }
                                 ]                                
                 });
+                table.fnProcessingIndicator();
                 goAvatar._init(goOptions);
         } 
     });
@@ -81,7 +82,8 @@
                                 "bInfo" : false,
                                 "destroy":true
                                 
-                });                
+                });
+                table.fnProcessingIndicator();
         } 
     });
     }    
@@ -113,6 +115,7 @@
                                 ]                                                                 
                 });
                 goAvatar._init(goOptions);
+                table.fnProcessingIndicator();
         } 
     });
     }  
@@ -156,6 +159,7 @@
                                 
                 });
                 goAvatar._init(goOptions);
+                table.fnProcessingIndicator();
         } 
     });
     }
@@ -205,6 +209,7 @@
 //                                ]
                 });
                 goAvatar._init(goOptions);
+                table.fnProcessingIndicator();
         } 
     });
     }    
