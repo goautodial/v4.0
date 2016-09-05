@@ -579,7 +579,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                     <th>Agent Name</th>                                                    
                                                     <th>Group</th>
                                                     <th>Status</th>
-                                                    <th>Dialed Number</th>
+                                                    <th>Phone Number</th>
                                                     <th>MM:SS</th>
                                                     <th>Campaign</th>                                                    
                                             </thead>
