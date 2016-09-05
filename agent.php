@@ -318,6 +318,47 @@ if (isset($_GET["message"])) {
 				overflow-y: inherit;
 				padding-top: 15px;
 			}
+			.form-group {
+			  position: relative;
+			  padding: 18px 0 24px 0;
+			}
+			.form-control {
+			  position: relative;
+			  z-index: 5;
+			  width: 100%;
+			  height: 34px;
+			  padding: 2px;
+			  color: inherit;
+			  border: 0;
+			  border-bottom: 1px solid #dde6e9;
+			  border-radius: 0;
+			  box-shadow: none;
+			}
+			.form-control:focus,
+			.form-control.focus {
+				padding-bottom: 1px;
+				border-color: #3f51b5;
+				border-bottom-width: 2px;
+			}
+			.form-control:focus ~ label,
+			.form-control.focus ~ label {
+				top: 0!important;
+				font-size: .85em!important;
+				color: #3f51b5;
+				opacity: 1;
+			}
+			.form-control ~ label {
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 0;
+				display: inline-block;
+				font-size: .85em;
+				opacity: .5;
+				-webkit-transition: all 0.2s ease;
+				-o-transition: all 0.2s ease;
+				transition: all 0.2s ease;
+			}
 		</style>
     </head>
     <?php print $ui->creamyAgentBody(); ?>
@@ -671,8 +712,8 @@ if (isset($_GET["message"])) {
 															<p style="padding-right:0px;padding-top: 20px;">Comments:</p> 
 															<button id="ViewCommentButton" onClick="ViewComments('ON');" value="-History-" class="hidden"></button>
 														</div>
-														<div class="mda-form-group label-floating" style="float: left; width:100%;">
-															<textarea rows="5" id="comments" name="comments" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
+														<div class="form-group" style="float: left; width:100%;">
+															<textarea rows="10" id="comments" name="comments" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled note-editor note-editor-margin" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
 															<label for="comments">Comments</label>
 														</div>
 													</form>
@@ -713,17 +754,6 @@ if (isset($_GET["message"])) {
 						                        
 											</div>
 										
-						            </div><!-- /.modal-content -->
-						        </div><!-- /.modal-dialog -->
-						    </div><!-- /.modal -->
-
-					<!-- WEBFORM MODAL -->
-							<div class="modal fade" id="webform" name="webform" tabindex="-1" role="dialog" aria-hidden="true">
-						        <div class="modal-dialog">
-						            <div class="modal-content">
-										<br/>
-										<center><h2>Ok!</h2></center>
-										<br/>
 						            </div><!-- /.modal-content -->
 						        </div><!-- /.modal-dialog -->
 						    </div><!-- /.modal -->
@@ -850,6 +880,9 @@ if (isset($_GET["message"])) {
         </ul>
 
         <ul class="control-sidebar-menu hidden-xs" id="go_agent_other_buttons" style="margin-top: 15px;padding: 0 15px;">
+			<li id="toggleWebForms" style="padding: 0 5px 15px;">
+				<button type="button" name="openWebForm" id="openWebForm" class="btn btn-warning btn-block"><i class="fa fa-external-link"></i> <?=$lh->translationFor('webform')?></button>
+			</li>
 			<li style="padding: 0 5px 15px 0; display: none;">
 				<div class="material-switch pull-right">
 					<input id="LeadPreview" name="LeadPreview" value="0" type="checkbox"/>
