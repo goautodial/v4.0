@@ -20,6 +20,19 @@
     $lh = \creamy\LanguageHandler::getInstance();
     $user = \creamy\CreamyUser::currentUser();
     
+    //$userid = NULL;
+    $userid = "1359";
+    if (isset($_POST["userid"])) {
+            $userid = $_POST["userid"];
+    }
+
+    if(isset($_POST["role"])){
+            $userrole = $_POST["role"];
+    }
+
+    $voicemails = $ui->API_goGetVoiceMails();
+    $user_groups = $ui->API_goGetUserGroupsList();
+
 ?>
 
 <html>
@@ -84,12 +97,35 @@
 
          <!-- Page content-->
          <div class="content-wrapper" style="margin-left: -1">
+<?php
+            $userobj = NULL;
+            $errormessage = NULL;
+
+            $output = $ui->goGetUserInfo($userid, $userrole);
+            echo ("pre");
+            print_r($output);
+
+            $userid = $output->data->user_id;
+            $agentid = $output->data->user;
+            $agentname =  $output->data->full_name;
+            $email = $output->data->email;
+            $user_group = $output->data->user_group;
+            $status = $output->data->active;
+            
+            if ($status == "Y"){
+                $status = "ACTIVE";
+            }
+            if ($status == "N"){
+                $status = "INACTIVE";
+            }            
+    
+?>
             <div class="unwrap">
                <div style="background-image: url(img/profile-bg.jpg)" class="bg-cover">
                   <div class="p-xl text-center text-white">
                      <img src="img/avatars/demian_avatar.jpg" alt="Image" class="img-thumbnail img-circle thumb128">
-                     <h3 class="m0">Demian Biscocho</h3>
-                     <p>Lead director</p>
+                     <h3 class="m0"><?php echo $agentname; ?></h3>
+                     <p><?php echo $agentid; ?></p>
                      <p>User Group: AGENTS, User Level: 1, Status: Active, Modules: Telephony, Helpdesk & Livechat.</p>
                   </div>
                </div>
@@ -337,7 +373,7 @@
                                           <div class="col">
                                              <p class="m0">
                                                 <a href="#" class="text-muted">
-                                                   <strong>Demian Biscocho</strong>
+                                                   <strong><?php echo $agentname; ?></strong>
                                                 </a>assigned
                                                 <a href="#" class="text-muted">
                                                    <strong>Dennis Green</strong>
@@ -396,18 +432,18 @@
                         <div class="panel panel-default">
                            <div class="panel-body">
                               <div class="text-center">
-                                 <h3 class="mt0">Demian Biscocho</h3>
-                                 <p>Lead director</p>
+                                 <h3 class="mt0"><?php echo $agentname; ?></h3>
+                                 <p><?php echo $agentid; ?></p>
                               </div>
                               <hr>
                               <ul class="list-unstyled ph-xl">
                                  <li>
-                                    <em class="fa fa-home fa-fw mr-lg"></em>Somewhere, Neverland</li>
+                                    <em class="fa fa-home fa-fw mr-lg"></em>User Group: <?php echo $user_group; ?></li>
                                  <li>
-                                    <em class="fa fa-briefcase fa-fw mr-lg"></em><a href="#">Themicon.co</a>
+                                    <em class="fa fa-briefcase fa-fw mr-lg"></em><a href="mailto:<?php echo $email; ?>">Email: <?php echo $email; ?></a>
                                  </li>
                                  <li>
-                                    <em class="fa fa-graduation-cap fa-fw mr-lg"></em>Master Designer</li>
+                                    <em class="fa fa-graduation-cap fa-fw mr-lg"></em>Status: <?php echo $status; ?></li>
                               </ul>
                            </div>
                         </div>
