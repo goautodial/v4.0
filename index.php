@@ -229,7 +229,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	<!--====== STATUS BOXES =======-->
 			<div class="row">
 				<div class="col-lg-3 col-sm-6 animated fadeInUpShort">
-					<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" data-id="" style="text-decoration : none">
+					<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" data-status="ACTIVE" data-id="" style="text-decoration : none">
 						<div class="panel widget bg-purple" style="height: 95px;">
 							<div class="row status-box">
 								<div class="col-xs-4 text-center bg-purple-dark pv-md animated fadeInUpShort">
@@ -259,7 +259,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 					</a>
 				</div>
                                 <div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
-                                        <a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" data-id="" style="text-decoration : none">
+                                        <a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" data-status="PAUSED" data-id="" style="text-decoration : none">
                                                 <div class="panel widget bg-green" style="height: 95px;">
                                                         <div class="row status-box">
                                                                 <div class="col-xs-4 text-center bg-gray-dark pv-md animated fadeInUpShort">

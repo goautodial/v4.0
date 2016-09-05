@@ -102,8 +102,8 @@
             $errormessage = NULL;
 
             $output = $ui->goGetUserInfo($userid, $userrole);
-            echo ("pre");
-            print_r($output);
+            //echo ("pre");
+            //print_r($output);
 
             $userid = $output->data->user_id;
             $agentid = $output->data->user;
@@ -111,6 +111,17 @@
             $email = $output->data->email;
             $user_group = $output->data->user_group;
             $status = $output->data->active;
+            $outcallstoday = $output->data->outcallstoday;
+            $incallstoday = $output->data->incallstoday;
+            
+            if ($outcallstoday == NULL){
+                $outcallstoday = "0";
+            }
+            if ($incallstoday == NULL){
+                $incallstoday = "0";
+            }             
+            
+            $totalcallstoday = ($outcallstoday + $incallstoday);
             
             if ($status == "Y"){
                 $status = "ACTIVE";
@@ -132,12 +143,19 @@
                <div class="text-center bg-gray-dark p-lg mb-xl">
                   <div class="row row-table" style="height: 7%">
                      <div class="col-xs-4 br">
-                        <h3 class="m0">400</h3>
+                        <h3 class="m0"><?php echo $outcallstoday; ?></h3>
                         <p class="m0">
-                           <span class="hidden-xs">Calls Today</span>
+                           <span class="hidden-xs">Outbound Calls</span>
                            <!-- <span>Views</span> -->
                         </p>
                      </div>
+                     <div class="col-xs-4 br">
+                        <h3 class="m0"><?php echo $incallstoday; ?></h3>
+                        <p class="m0">
+                           <span class="hidden-xs">Inbound Calls</span>
+                           <!-- <span>Views</span> -->
+                        </p>
+                     </div>                     
                      <div class="col-xs-4 br">
                         <h3 class="m0">25</h3>
                         <p class="m0">Sales Today</p>
@@ -594,7 +612,7 @@
     <!-- LOCALIZE-->
     <script src="./vendor/jquery-localize-i18n/dist/jquery.localize.js"></script>
     <!-- RTL demo-->
-    <script src="js/demo/demo-rtl.js"></script>
+    <!-- <script src="js/demo/demo-rtl.js"></script> -->
     <!-- =============== PAGE VENDOR SCRIPTS ===============-->
     <!-- GOOGLE MAPS-->
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
