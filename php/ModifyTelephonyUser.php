@@ -85,12 +85,16 @@ if ($validated == 1) {
 	$postfields["active"] = $status; #Desired value for user (required)
 	$postfields["voicemail"] = $voicemail; #Desired value for user (required)
     $postfields["email"] = $email;
-    $postfields["pass"] = $pass;
+    if($_POST["password"]){
+    	$postfields["pass"] = $pass;
+    }
     $postfields["phone_login"] = $phone_login;
     $postfields["phone_pass"] = $phone_pass;
     $postfields["hotkeys_active"] = $hotkeys_active;
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-    $postfields["vdc_agent_api_access"] = $vdc_agent_api_access;
+    if (isset($_POST["api_access"])) { 
+    	$postfields["vdc_agent_api_access"] = $vdc_agent_api_access;
+	}
 	
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
