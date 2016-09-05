@@ -76,29 +76,42 @@
 										<a href="#users_tab" aria-controls="users_tab" role="tab" data-toggle="tab" class="bb0">
 										    Users </a>
 									 </li>
-								 <!-- Phones panel tabs-->
+									 <?php
+										 if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){
+									 ?>
+									 
+									 <!-- Phones panel tabs-->
 									 <li role="presentation" >
 										<a href="#phone_tab" aria-controls="phone_tab" role="tab" data-toggle="tab" class="bb0">
 										    Phones</a>
 									 </li>
+									 
+									 <?php	
+										}
+									 ?>
+								
 
 								  </ul>
 
 								<!-- Tab panes-->
 								<div class="tab-content bg-white">
-
 									<!--==== users ====-->
 									<div id="users_tab" role="tabpanel" class="tab-pane active">
 			                        <legend><?php $lh->translateText("users"); ?></legend>
 										<?php print $ui->goGetAllUserList(); ?>
 			                        </div>
-
+									
+									<?php
+										if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){
+									?>
 									<!--==== Phones ====-->
 									<div id="phone_tab" role="tabpanel" class="tab-pane">
 			                            <legend><?php $lh->translateText("phones"); ?></legend>
 										<?php print $ui->getPhonesList(); ?>
 			                        </div>
-
+									<?php
+										}
+									?>
 								</div><!-- END tab content-->
 
 							</div><!-- end of tabpanel -->
@@ -113,7 +126,9 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
-    
+<?php
+	if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){
+?>
     <!-- FIXED ACTION BUTTON --> 
 		<div class="bottom-menu skin-blue">
 			<div class="action-button-circle" data-toggle="modal">
@@ -126,6 +141,15 @@
 				</ul>
 			</div>
 		</div>
+<?php
+	}else{
+?>
+	<div class="action-button-circle" data-toggle="modal" data-target="#user-wizard-modal">
+		<?php print $ui->getCircleButton("calls", "user-plus"); ?>
+	</div>
+<?php
+	}
+?>
 	
 <!-- MODALS -->
 <?php
@@ -318,6 +342,9 @@
 		</div>
 	<!-- end of add user modal -->
 
+ <?php
+	if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){
+?>
 	<!-- ADD PHONE MODAL -->
 	    <div class="modal fade" id="phone-wizard-modal" tabindex="-1"aria-labelledby="T_Phones" >
 	        <div class="modal-dialog" role="document">
@@ -467,6 +494,9 @@
 			</div> <!-- end of modal dialog -->
 		</div>
 	<!-- end of add phone modal -->
+<?php
+	}
+?>
 <!-- end of modals -->
 
 		<?php print $ui->standardizedThemeJS();?>
