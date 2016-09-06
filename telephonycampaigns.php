@@ -1,4 +1,4 @@
-<?php	
+<?php
 
 	###########################################################
 	### Name: telephonycampaigns.php 						###
@@ -27,18 +27,18 @@ error_reporting(E_ALL);*/
         <meta charset="UTF-8">
         <title>Campaigns</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
+
         <?php print $ui->standardizedThemeCSS(); ?>
 
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        
+
     	<!-- iCheck for checkboxes and radio inputs -->
   		<link rel="stylesheet" href="css/iCheck/all.css">
-    	
+
     	<!-- Wizard Form style -->
     	<link href="css/style.css" rel="stylesheet" type="text/css" />
-        
+
         <?php print $ui->creamyThemeCSS(); ?>
 
 		<!-- Data Tables -->
@@ -89,7 +89,7 @@ error_reporting(E_ALL);*/
 	$leadfilter = $ui->API_getAllLeadFilters();
 	$country_codes = $ui->getCountryCodes();
 	$list = $ui->API_goGetAllLists();
-?>			
+?>
 							 <div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
 
@@ -109,7 +109,7 @@ error_reporting(E_ALL);*/
 										   Lead Filters </a>
 									 </li>
 								  </ul>
-								  
+
 								<!-- Tab panes-->
 								<div class="tab-content bg-white">
 
@@ -129,7 +129,7 @@ error_reporting(E_ALL);*/
 										   <tbody>
 											   	<?php
 											   		for($i=0;$i < count($campaign->campaign_id);$i++){
-									
+
 														if($campaign->active[$i] == "Y"){
 															$campaign->active[$i] = "Active";
 														}else{
@@ -139,11 +139,11 @@ error_reporting(E_ALL);*/
 														if($campaign->dial_method[$i] == "RATIO"){
 															$campaign->dial_method[$i] = "AUTO DIAL";
 														}
-														
+
 														if($campaign->dial_method[$i] == "MANUAL"){
 															$campaign->dial_method[$i] = "MANUAL";
 														}
-														
+
 														if($campaign->dial_method[$i] == "ADAPT_TAPERED"){
 															$campaign->dial_method[$i] = "PREDICTIVE";
 														}
@@ -154,7 +154,7 @@ error_reporting(E_ALL);*/
 
 													$action_CAMPAIGN = $ui->ActionMenuForCampaigns($campaign->campaign_id[$i], $campaign->campaign_name[$i]);
 
-											   	?>	
+											   	?>
 													<tr>
                                                         <td><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='36'></avatar></td>
 														<td class='hide-on-medium hide-on-low'><strong><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></strong></td>
@@ -169,7 +169,7 @@ error_reporting(E_ALL);*/
 										   </tbody>
 										</table>
 								 </div>
-								
+
 								<!--==== Disposition ====-->
 								  <div id="T_disposition" role="tabpanel" class="tab-pane">
 										<table class="table table-striped table-bordered table-hover" id="table_disposition">
@@ -188,7 +188,7 @@ error_reporting(E_ALL);*/
 
 													$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i]);
 
-											   	?>	
+											   	?>
 													<tr>
                                                         <td><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='36'></avatar></td>
 														<td class='hide-on-medium hide-on-low'><strong><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></strong></td>
@@ -197,9 +197,9 @@ error_reporting(E_ALL);*/
 												<?php
 												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
 													for($a=0; $a<count($disposition->status); $a++){
-													
+
 													if($disposition->campaign_id[$a] == $campaign->campaign_id[$i]){
-													
+
 												?>
 														<?php echo "<i>".$disposition->status[$a]."</i>";?>
 												<?php
@@ -239,7 +239,7 @@ error_reporting(E_ALL);*/
 
 													$action_LEADFILTER = $ui->ActionMenuForLeadFilters($leadfilter->lead_filter_id[$i], $leadfilter->lead_filter_name[$i]);
 
-											   	?>	
+											   	?>
 													<tr>
                                                         <td><avatar username='<?php echo $leadfilter->lead_filter_name[$i];?>' :size='36'></avatar></td>
 														<td><?php echo $leadfilter->lead_filter_id[$i];?></td>
@@ -264,7 +264,7 @@ error_reporting(E_ALL);*/
 					</div><!-- /.panel -->
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
-		
+
         <div class="bottom-menu skin-blue">
 			<div class="action-button-circle" data-toggle="modal">
 				<?php print $ui->getCircleButton("campaigns", "plus"); ?>
@@ -347,14 +347,18 @@ error_reporting(E_ALL);*/
 		    <!-- Modal content-->
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
 		        <h4 class="modal-title animated bounceInRight">
-		        	<i class="fa fa-info-circle" title="A step by step wizard that allows you to create campaigns."></i> 
+		        	<i class="fa fa-info-circle" title="A step by step wizard that allows you to create campaigns."></i>
 		        	<b>Campaign Wizard » <span class="wizard-type">Outbound</span></b>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
 		       	</h4>
 		      </div>
 		      <div class="modal-body">
 		        <div id="content">
+							<div class="alert alert-danger campaign-checker-message hide">
+							  <strong>Error!</strong> Campaign ID already exist. Eneter a new Campaign ID.
+							</div>
 					<!-- Custom Tabs (Pulled to the right) -->
 					<form id="campaign_form" method="POST" action="./php/AddCampaign.php" enctype="multipart/form-data">
 						<div class="row">
@@ -468,9 +472,9 @@ error_reporting(E_ALL);*/
 			    			<!--<div class="form-group">
 			    				<label class="control-label col-lg-4">List ID:</label>
 			    				<label class="control-label col-lg-8" style="text-align: left;">
-			    					<?php 
+			    					<?php
 			    						$list_id = end($list->list_id) + 1;
-			    						echo $list_id." >> List ".$list_id; 
+			    						echo $list_id." >> List ".$list_id;
 			    					?>
 			    				</label>
 			    			</div>
@@ -661,7 +665,7 @@ error_reporting(E_ALL);*/
 	                    <h4 class="modal-title animated bounceInRight" id="ingroup_modal"><b>Status Wizard » Create New Status</b></h4>
 	                </div>
 	                <div class="modal-body" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;padding-top:0px;">
-	                
+
 	                <form action="#" method="POST" id="create_disposition" role="form">
 	                    <div class="row">
 	                    	<h4>Create Disposition
@@ -669,7 +673,7 @@ error_reporting(E_ALL);*/
 	                           <small>Assign a status in a campaign then fill up the information below </small>
 	                        </h4>
 	                        <fieldset>
-		                    	<div class="form-group mt">       
+		                    	<div class="form-group mt">
 		                            <label class="col-sm-3 control-label" for="disposition_campaign">Campaign: </label>
 		                            <div class="col-sm-9 mb">
 		                                <select id="disposition_campaign" name="disposition_campaign" class="form-control">
@@ -682,7 +686,7 @@ error_reporting(E_ALL);*/
 		                                </select>
 		                            </div>
 		                        </div>
-		                        <div class="form-group"> 
+		                        <div class="form-group">
 		                            <label class="col-sm-3 control-label" for="status">Status</label>
 		                            <div class="col-sm-9 mb">
 		                                <input type="text" name="status" id="status" class="form-control" placeholder="Status (Mandatory)" minlength="3" maxlenght="6" required>
@@ -695,7 +699,7 @@ error_reporting(E_ALL);*/
 		                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="Status Name (Mandatory)" maxlenght="30" required>
 		                            </div>
 		                        </div>
-		                        <div class="form-group">        
+		                        <div class="form-group">
 				                        <!--<label class="col-sm-2 control-label" for="grouplevel" style="padding-top:15px;"> </label>-->
 				                    <div class="col-lg-1">
 				                   	</div>
@@ -719,7 +723,7 @@ error_reporting(E_ALL);*/
 								                  <input type="checkbox" id="dnc" name="dnc" class="flat-red">
 								                  DNC
 								            </label>
-									          
+
 							                <label class="col-sm-4 checkbox-inline" for="customer_contact">
 								                  <input type="checkbox" id="customer_contact" name="customer_contact" class="flat-red">
 								                  Customer Contact
@@ -752,24 +756,49 @@ error_reporting(E_ALL);*/
 	    </div>
     <!-- end of modal -->
 
-	
+
 	<!-- End of modal -->
 
 	<?php print $ui->standardizedThemeJS(); ?>
 	<!-- JQUERY STEPS-->
   	<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-	
+
     <!-- iCheck 1.0.1 -->
 	<script src="js/plugins/iCheck/icheck.min.js"></script>
 
 	<script type="text/javascript">
+		function checkCampaign(campaign_id){
+			var status = '';
+			$.ajax({
+				/*url: ".\php\ViewCampaign.php",*/
+				url: "./php/checkCampaign.php",
+				type: 'POST',
+				async: false,
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(data) {
+					// console.log(data);
+					var info = $.parseJSON(data);
+					if(info.result == "success"){
+						status = 1;
+					}else{
+						status = info.status;
+					}
+				}
+			});
+
+			return status;
+		}
+
 		$(document).ready(function(){
 
 			/******
 			** Initializations
 			******/
 
-				//initialization of the datatables 
+				//initialization of the datatables
 					$('#table_campaign').dataTable();
 					$('#table_disposition').dataTable();
 					$('#table_leadfilter').dataTable();
@@ -779,7 +808,7 @@ error_reporting(E_ALL);*/
 					  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 					});
 
-				//reloads page when modal closes 
+				//reloads page when modal closes
 				/*	$('#add_campaign').on('hidden.bs.modal', function () {
 						location.reload();
 					});
@@ -802,7 +831,7 @@ error_reporting(E_ALL);*/
 			** Campaign Events
 			*************/
 				//add + initialization of campaign
-					var campaign_form = $("#campaign_form"); // init form wizard 
+					var campaign_form = $("#campaign_form"); // init form wizard
 
 				    campaign_form.validate({
 				        errorPlacement: function errorPlacement(error, element) { element.after(error); }
@@ -819,16 +848,16 @@ error_reporting(E_ALL);*/
 					            return true;
 					        }
 
-							// Clean up if user went backward before
-						    if (currentIndex < newIndex)
-						    {
+									// Clean up if user went backward before
+						    	if (currentIndex < newIndex)
+						    	{
 						        // To remove error styles
 						        $(".body:eq(" + newIndex + ") label.error", disposition_form).remove();
 						        $(".body:eq(" + newIndex + ") .error", disposition_form).removeClass("error");
-						    }
+						    	}
 
-				            campaign_form.validate().settings.ignore = ":disabled,:hidden";
-				            return campaign_form.valid();
+				          campaign_form.validate().settings.ignore = ":disabled,:hidden";
+				          return campaign_form.valid();
 				        },
 				        onFinishing: function (event, currentIndex)
 				        {
@@ -838,11 +867,40 @@ error_reporting(E_ALL);*/
 				        },
 				        onFinished: function (event, currentIndex)
 				        {
+									var campaign_id = $('#campaign-id').val();
+									var resultCheck = checkCampaign(campaign_id);
+									console.log(resultCheck);
+									if(resultCheck == 1){
+										swal({
+											title: "Proceed with saving campaign?",
+											text: "This action cannot be undone.",
+											type: "warning",
+											showCancelButton: true,
+											confirmButtonColor: "#DD6B55",
+											confirmButtonText: "Yes, save Campaign!",
+											cancelButtonText: "No",
+											closeOnConfirm: false,
+											closeOnCancel: false
+											},
+											function(isConfirm){
+												if (isConfirm) {
+													$('#finish').text("Loading...");
+								        	$('#finish').attr("disabled", true);
 
-				        	$('#finish').text("Loading...");
-				        	$('#finish').attr("disabled", true);
-
-				        	$('#campaign_form').submit();
+								        	$('#campaign_form').submit();
+												} else {
+													swal("Cancelled", "Campaign not saved)", "error");
+													$('#campaign-name').val('');
+													campaign_form.children("div").steps("previous");
+													$('#add_campaign').modal('hide');
+												}
+											});
+											$('.campaign-checker-message').addClass('hide');
+									}else{
+										campaign_form.children("div").steps("previous");
+										$('.campaign-checker-message').removeClass('hide');
+										$('#campaign-id').focus();
+									}
 
 				        }
 				    });
@@ -862,7 +920,7 @@ error_reporting(E_ALL);*/
 		            onfinish:function(){
 						$('#campaign_form').submit();
 		            }
-					
+
 		        });
 				*/
 				//view campaign
@@ -873,7 +931,7 @@ error_reporting(E_ALL);*/
 					  /*url: ".\php\ViewCampaign.php",*/
 					  url: "./php/ViewCampaign.php",
 					  type: 'POST',
-					  data: { 
+					  data: {
 					  	campaign_id :camp_id,
 					  },
 					  dataType: 'json',
@@ -915,23 +973,23 @@ error_reporting(E_ALL);*/
 				//delete campaign
 			         $(document).on('click','.delete-campaign',function() {
 			            var id = $(this).attr('data-id');
-			                swal({   
-			                	title: "Are you sure?",   
-			                	text: "This action cannot be undone.",   
-			                	type: "warning",   
-			                	showCancelButton: true,   
-			                	confirmButtonColor: "#DD6B55",   
-			                	confirmButtonText: "Yes, delete this campaign!",   
-			                	cancelButtonText: "No, cancel please!",   
-			                	closeOnConfirm: false,   
-			                	closeOnCancel: false 
-			                	}, 
-			                	function(isConfirm){   
-			                		if (isConfirm) { 
+			                swal({
+			                	title: "Are you sure?",
+			                	text: "This action cannot be undone.",
+			                	type: "warning",
+			                	showCancelButton: true,
+			                	confirmButtonColor: "#DD6B55",
+			                	confirmButtonText: "Yes, delete this campaign!",
+			                	cancelButtonText: "No, cancel please!",
+			                	closeOnConfirm: false,
+			                	closeOnCancel: false
+			                	},
+			                	function(isConfirm){
+			                		if (isConfirm) {
 			                			$.ajax({
 					                        url: "./php/DeleteCampaign.php",
 					                        type: 'POST',
-					                        data: { 
+					                        data: {
 					                            campaign_id:id,
 					                        },
 					                        success: function(data) {
@@ -953,20 +1011,20 @@ error_reporting(E_ALL);*/
 					                            }
 					                        }
 					                    });
-									} else {     
-				                			swal("Cancelled", "No action has been done :)", "error");   
-				                	} 
+													} else {
+				                			swal("Cancelled", "No action has been done :)", "error");
+				                	}
 			                	}
 			                );
 			         });
-			//------------------ end of campaign 
+			//------------------ end of campaign
 
 			/*************
 			** Disposition Events
 			*************/
 
 				// initialization and add of disposition
-					var disposition_form = $("#create_disposition"); // init form wizard 
+					var disposition_form = $("#create_disposition"); // init form wizard
 
 				    disposition_form.validate({
 				        errorPlacement: function errorPlacement(error, element) { element.after(error); }
@@ -1087,7 +1145,7 @@ error_reporting(E_ALL);*/
 		                          }
 		                    }
 		                });
-			            	
+
 			        }
 			    });
 
@@ -1097,27 +1155,27 @@ error_reporting(E_ALL);*/
 						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="disposition_id" value="' + $(this).attr('data-id') + '" /></form>');
 						$(form).submit();
 					});
-				
+
 				//delete disposition
 			        $(document).on('click','.delete_disposition',function() {
 			            var id = $(this).attr('data-id');
-			            swal({   
-			            	title: "Are you sure?",   
-			            	text: "This action cannot be undone.",   
-			            	type: "warning",   
-			            	showCancelButton: true,   
-			            	confirmButtonColor: "#DD6B55",   
-			            	confirmButtonText: "Yes, delete this disposition!",   
-			            	cancelButtonText: "No, cancel please!",   
-			            	closeOnConfirm: false,   
-			            	closeOnCancel: false 
-			            	}, 
-			            	function(isConfirm){   
-			            		if (isConfirm) { 
+			            swal({
+			            	title: "Are you sure?",
+			            	text: "This action cannot be undone.",
+			            	type: "warning",
+			            	showCancelButton: true,
+			            	confirmButtonColor: "#DD6B55",
+			            	confirmButtonText: "Yes, delete this disposition!",
+			            	cancelButtonText: "No, cancel please!",
+			            	closeOnConfirm: false,
+			            	closeOnCancel: false
+			            	},
+			            	function(isConfirm){
+			            		if (isConfirm) {
 			            			$.ajax({
 				                        url: "./php/DeleteDisposition.php",
 				                        type: 'POST',
-				                        data: { 
+				                        data: {
 				                            disposition_id:id,
 				                        },
 				                        success: function(data) {
@@ -1139,9 +1197,9 @@ error_reporting(E_ALL);*/
 				                            }
 				                        }
 				                    });
-								} else {     
-			                			swal("Cancelled", "No action has been done :)", "error");   
-			                	} 
+								} else {
+			                			swal("Cancelled", "No action has been done :)", "error");
+			                	}
 			            	}
 			            );
 			        });
@@ -1162,23 +1220,23 @@ error_reporting(E_ALL);*/
 		        //delete leadfilter
 			        $(document).on('click','.delete_leadfilter',function() {
 			            var id = $(this).attr('data-id');
-			            swal({   
-			            	title: "Are you sure?",   
-			            	text: "This action cannot be undone.",   
-			            	type: "warning",   
-			            	showCancelButton: true,   
-			            	confirmButtonColor: "#DD6B55",   
-			            	confirmButtonText: "Yes, delete this leadfilter!",   
-			            	cancelButtonText: "No, cancel please!",   
-			            	closeOnConfirm: false,   
-			            	closeOnCancel: false 
-			            	}, 
-			            	function(isConfirm){   
-			            		if (isConfirm) { 
+			            swal({
+			            	title: "Are you sure?",
+			            	text: "This action cannot be undone.",
+			            	type: "warning",
+			            	showCancelButton: true,
+			            	confirmButtonColor: "#DD6B55",
+			            	confirmButtonText: "Yes, delete this leadfilter!",
+			            	cancelButtonText: "No, cancel please!",
+			            	closeOnConfirm: false,
+			            	closeOnCancel: false
+			            	},
+			            	function(isConfirm){
+			            		if (isConfirm) {
 			            			$.ajax({
 				                        url: "./php/DeleteLeadFilter.php",
 				                        type: 'POST',
-				                        data: { 
+				                        data: {
 				                            leadfilter_id:id,
 				                        },
 				                        success: function(data) {
@@ -1200,9 +1258,9 @@ error_reporting(E_ALL);*/
 				                            }
 				                        }
 				                    });
-								} else {     
-			                			swal("Cancelled", "No action has been done :)", "error");   
-			                	} 
+								} else {
+			                			swal("Cancelled", "No action has been done :)", "error");
+			                	}
 			            	}
 			            );
 			        });
@@ -1214,7 +1272,7 @@ error_reporting(E_ALL);*/
 
 				/*** CAMPAIGNS ***/
 					// result of Create
-						<?php 
+						<?php
 							if($_GET['message'] == "Success") {
 						?>
 								swal(
@@ -1232,8 +1290,8 @@ error_reporting(E_ALL);*/
 						?>
 								sweetAlert("Oops...", "Something went wrong.", "error");
 						<?php
-								
-							} 
+
+							}
 						?>
 					//name
 						$('#campaign-name').keyup(function(){
@@ -1251,7 +1309,7 @@ error_reporting(E_ALL);*/
 
 					//dialmethod
 						var dial_method = $('#dial-method').val();
-						
+
 						dialMethod(dial_method);
 
 						$('#dial-method').change(function(){
@@ -1406,10 +1464,10 @@ error_reporting(E_ALL);*/
 				/*** end of disposition filters ***/
 
 
-			
+
 
 		}); // end of document ready
-		
+
 
 		function clear_form(){
 
@@ -1431,7 +1489,7 @@ error_reporting(E_ALL);*/
 			}
 		}
 
-		function duplicate_status_check(){ 
+		function duplicate_status_check(){
 			var status_form_value = $('#status').val();
 			var campaign_form_value = $('#disposition_campaign').val();
 	        if(status_form_value != ""){
@@ -1445,7 +1503,7 @@ error_reporting(E_ALL);*/
 					success: function(data) {
 						if(data == "success"){
 							$("#disposition_checker").val("0");
-							
+
 							$( "#status" ).removeClass("error");
 							$( "#status-duplicate-error" ).text( "Status is available." ).removeClass("error").addClass("avail");
 						}else{
@@ -1453,7 +1511,7 @@ error_reporting(E_ALL);*/
 
 							$( "#status" ).addClass( "error" );
 							$( "#status-duplicate-error" ).text( data ).removeClass("avail").addClass("error");
-							
+
 						}
 					}
 				});

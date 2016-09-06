@@ -17,11 +17,8 @@
 	$postfields["goPass"] = goPass; #Password goes here. (required)
 	$postfields["goAction"] = "goCheckCampaign"; #action performed by the [[API:Functions]]. (required)
 	$postfields["responsetype"] = responsetype; #json. (required)
-	$postfields["campaign_id"] = $_POST['campaign_id']; 
-
-	if(isset($_POST['status'])){
-		$postfields["status"] = $_POST['status'];
-	}
+	$postfields["campaign_id"] = $_POST['campaign_id'];
+	$postfields["status"] = (isset($_POST['status']))? $_POST['status']:'';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -33,12 +30,6 @@
 	curl_close($ch);
 	$output = json_decode($data);
 
-	if($output->result == "success"){
-		echo $output->result;
-	}else{
-		if($output->result == "fail"){
-			echo $output->status;
-		}
-	}
+	echo json_encode($data);
 
 ?>
