@@ -434,9 +434,9 @@
 								</div>
 
 								<div class="form-group">		
-									<label class="col-sm-4 control-label" for="fullname">Full Name</label>
+									<label class="col-sm-4 control-label" for="pfullname">Full Name</label>
 									<div class="col-sm-8 mb">
-										<input type="text" name="fullname" id="fullname" placeholder="Full Name (Mandatory)" class="form-control" required>
+										<input type="text" name="pfullname" id="pfullname" placeholder="Full Name (Mandatory)" class="form-control" required>
 									</div>
 								</div>
 								<div class="form-group">		
@@ -796,7 +796,6 @@
 
 	// -------------------------
 		
-		//
 
 		// disable special characters on User ID
 		$('#user_form').bind('keypress', function (event) {
@@ -808,7 +807,7 @@
 		    }
 		});
 
-		// disable special characters and allow spaces on full name
+		// disable special characters on Fullname for Users
 		$('#fullname').bind('keypress', function (event) {
 		    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
 		    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
@@ -818,7 +817,7 @@
 		    }
 		});
 
-		// disable special characters on Fullname
+		// disable special characters on phone extension
 			$('#phone_ext').bind('keypress', function (event) {
 			    var regex = new RegExp("^[0-9]+$");
 			    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
@@ -828,9 +827,9 @@
 			    }
 			});
 
-		// disable special characters on Fullname
-			$('#fullname').bind('keypress', function (event) {
-			    var regex = new RegExp("^[a-zA-Z0-9]+$");
+		// disable special characters on Fullname for Phones
+			$('#pfullname').bind('keypress', function (event) {
+			    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
 			    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
 			    if (!regex.test(key)) {
 			       event.preventDefault();

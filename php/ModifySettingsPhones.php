@@ -44,8 +44,8 @@ if ($validated == 1) {
 		$status = stripslashes($status);
 	}
     
-    $fullname = NULL; if (isset($_POST["fullname"])) { 
-		$fullname = $_POST["fullname"]; 
+    $fullname = NULL; if (isset($_POST["pfullname"])) { 
+		$fullname = $_POST["pfullname"]; 
 		$fullname = stripslashes($fullname);
 	}
     
