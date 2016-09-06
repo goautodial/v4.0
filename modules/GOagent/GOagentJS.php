@@ -698,23 +698,6 @@ $(document).ready(function() {
             });
         });
         
-        $("[data-toggle='control-sidebar']").on('click', function() {
-            var sideBar = '230px';
-            if (isMobile) {
-                sideBar = '100%';
-            }
-            
-            if ($("aside").hasClass('control-sidebar-open')) {
-                $("aside.control-sidebar").css({
-                    'width': sideBar
-                });
-            } else {
-                $("aside.control-sidebar").css({
-                    'width': '230px'
-                });
-            }
-        });
-        
         var d = new Date();
         var currDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() + 30);
         $("#cb-datepicker").datetimepicker({
@@ -739,6 +722,11 @@ $(document).ready(function() {
         $("#show-cb-calendar").click(function() {
             $("#cb-container").slideToggle('slow');
         });
+        
+        if (!$("aside.control-sidebar").hasClass("control-sidebar-open")) {
+            checkSidebarIfOpen(true);
+            $.AdminLTE.controlSidebar.open($("aside.control-sidebar"), true);
+        }
     });
 
     var logoutRegX = new RegExp("logout\.php", "ig");
@@ -1392,24 +1380,7 @@ $(document).ready(function() {
     $("#popup-hotkeys").drags();
     
     $("[data-toggle='control-sidebar']").on('click', function() {
-        var $isOpen = $("aside.control-sidebar").hasClass("control-sidebar-open");
-        var options = {};
-        if ($isOpen) {
-            options = {
-                'margin-right': '0'
-            };
-            if (parseInt($("body").innerWidth()) < 768) {
-                options['margin-left'] = '0';
-            }
-        } else {
-            options = {
-                'margin-right': '230px'
-            };
-            if (parseInt($("body").innerWidth()) < 768) {
-                options['margin-left'] = '-230px';
-            }
-        }
-        $("aside.content-wrapper").css(options);
+        checkSidebarIfOpen();
     });
     
     $("#reload-script").click(function() {
@@ -1417,7 +1388,7 @@ $(document).ready(function() {
     });
     
     // Hijack links on left menu
-    $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks|callbackslist)").on('click', hijackThisLink);
+    $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").on('click', hijackThisLink);
     
     $("#submitCBDate").click(function() {
         CallBackDateSubmit();
@@ -1428,30 +1399,74 @@ $(document).ready(function() {
     });
 });
 
+function checkSidebarIfOpen(startUp) {
+    var $isOpen = $("aside.control-sidebar").hasClass("control-sidebar-open");
+    var options = {};
+    var rightBar = 0;
+    var sideBar = '230px';
+    if (isMobile) {
+        sideBar = '100%';
+    }
+    
+    if ($isOpen && !startUp) {
+        options = {
+            'margin-right': '0'
+        };
+        if (parseInt($("body").innerWidth()) < 768) {
+            options['margin-left'] = '0';
+        }
+        rightBar = '-' + sideBar;
+    } else {
+        options = {
+            'margin-right': '230px'
+        };
+        if (parseInt($("body").innerWidth()) < 768) {
+            options['margin-left'] = '-230px';
+        }
+    }
+    $("aside.content-wrapper").css(options);
+    $("aside.control-sidebar").css({
+        'width': sideBar,
+        'right': rightBar
+    });
+}
+
 function hijackThisLink(e) {
     e.preventDefault();
     var thisLink = $(this).attr('href');
     var hash = '';
     var origHash = window.location.hash.replace("#","");
+    var breadCrumb = '<li><a href="agent.php"><i class="fa fa-home"></i> Home</a></li>';
     if (/customerslist/g.test(thisLink)) {
-        $(".content-heading").html("<?=$lh->translationFor('contacts')?>");
+        $(".content-heading span").html("<?=$lh->translationFor('contacts')?>");
+        breadCrumb += '<li class="active"><?=$lh->translationFor('contacts')?></li>';
         hash = 'contacts';
     } else if (/agent/g.test(thisLink)) {
-        $(".content-heading").html("<?=$lh->translationFor('contact_information')?>");
+        $(".content-heading span").html("<?=$lh->translationFor('contact_information')?>");
+        breadCrumb = '<li class="active"><i class="fa fa-home"></i> Home</li>';
     } else if (/edituser/g.test(thisLink)) {
-        $(".content-heading").html("<?=$lh->translationFor('edit_profile')?>");
-        hash = 'editprofile';
+        $(".content-heading span").html("<?=$lh->translationFor('my_profile')?>");
+        breadCrumb += '<li class="active"><?=$lh->translationFor('profile')?></li>';
+        hash = 'profile';
+    } else if (/profile/g.test(thisLink)) {
+        $(".content-heading span").html("<?=$lh->translationFor('my_profile')?>");
+        breadCrumb += '<li class="active"><?=$lh->translationFor('profile')?></li>';
+        hash = 'profile';
     } else if (/events|callbackslist/g.test(thisLink)) {
-        $(".content-heading").html("<?=$lh->translationFor('list_of_callbacks')?>");
+        $(".content-heading span").html("<?=$lh->translationFor('list_of_callbacks')?>");
+        breadCrumb += '<li class="active"><?=$lh->translationFor('callbacks')?></li>';
         hash = 'callbacks';
     } else if (/messages/g.test(thisLink)) {
-        $(".content-heading").html("<?=$lh->translationFor('messages')?>");
+        $(".content-heading span").html("<?=$lh->translationFor('messages')?>");
+        breadCrumb += '<li class="active"><?=$lh->translationFor('messages')?></li>';
         hash = 'messages';
     } else if (/notifications/g.test(thisLink)) {
-        $(".content-heading").html("<?=$lh->translationFor('notifications')?>");
+        $(".content-heading span").html("<?=$lh->translationFor('notifications')?>");
+        breadCrumb += '<li class="active"><?=$lh->translationFor('notifications')?></li>';
         hash = 'notifications';
     } else if (/tasks/g.test(thisLink)) {
-        $(".content-heading").html("<?=$lh->translationFor('tasks')?>");
+        $(".content-heading span").html("<?=$lh->translationFor('tasks')?>");
+        breadCrumb += '<li class="active"><?=$lh->translationFor('tasks')?></li>';
         hash = 'tasks';
     }
     
@@ -1477,6 +1492,10 @@ function hijackThisLink(e) {
     } else {
         MainPanelToFront();
     }
+    
+    $(".content-heading ol").empty();
+    $(".content-heading ol").html(breadCrumb);
+    $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
     
     if (origHash !== hash) {
         $(".preloader").fadeOut('slow');
@@ -3145,7 +3164,7 @@ function CallBacksCountCheck() {
                         commentTitle = ' title="'+thisComments+'"';
                         thisComments = thisComments.substring(0, 20) + "...";
                     }
-                    var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td class="hidden-sm">'+value.campaign_name+'</td><td class="visible-lg"'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" class="btn btn-primary btn-sm"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button></td></tr>';
+                    var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td>'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" class="btn btn-primary btn-sm"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
                     $("#callback-list tbody").append(appendThis);
                 });
                 $("#callback-list").css('width', '100%');
@@ -3153,13 +3172,22 @@ function CallBacksCountCheck() {
                     "bDestroy": true,
                     "aoColumnDefs": [{
                         "bSortable": false,
-                        "aTargets": [ 5 ],
+                        "aTargets": [ 6 ],
                     }, {
                         "bSearchable": false,
-                        "aTargets": [ 2, 5 ]
+                        "aTargets": [ 2, 3, 6 ]
                     }, {
                         "sClass": "hidden-xs",
-                        "aTargets": [ 0, 2, 3, 4 ]
+                        "aTargets": [ 0 ]
+                    }, {
+                        "sClass": "hidden-xs hidden-sm",
+                        "aTargets": [ 3 ]
+                    }, {
+                        "sClass": "visible-md visible-lg",
+                        "aTargets": [ 4 ]
+                    }, {
+                        "sClass": "visible-lg",
+                        "aTargets": [ 2, 5 ]
                     }]
                 });
                 $("#callback-list_filter").parent('div').attr('class', 'col-sm-6 hidden-xs');
@@ -3167,17 +3195,23 @@ function CallBacksCountCheck() {
                 $("#contents-callbacks").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 $("#contents-callbacks").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 if (!is_logged_in) {
-                    $("button[id^='dial-cb-']").addClass('hidden');
+                    $("button[id='dial-cb']").addClass('disabled');
                 }
             } else {
                 if (!is_logged_in) {
-                    $("button[id^='dial-cb-']").addClass('hidden');
+                    $("button[id='dial-cb']").addClass('disabled');
                 } else {
-                    $("button[id^='dial-cb-']").removeClass('hidden');
+                    $("button[id='dial-cb']").removeClass('disabled');
                 }
             }
             
-            $("a:regex(href, agent|edituser|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
+            $("button[id='dial-cb']").on('click', function() {
+                var CBid = $(this).data('cbid');
+                var CBlead = $(this).data('leadid');
+                NewCallbackCall(CBid, CBlead, 'MAIN');
+            });
+            
+            $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
         }
     });
 }
@@ -3186,24 +3220,35 @@ function CallBacksCountCheck() {
 // ################################################################################
 // Open up a callback customer record as manual dial preview mode
 function NewCallbackCall(taskCBid, taskLEADid, taskCBalt) {
-    if (waiting_on_dispo > 0) {
-        swal({
-            title: "<?=$lh->translationFor('system_delay_try_again')?>",
-            text: "<?=$lh->translationFor('code')?>: " + agent_log_id + " - " + waiting_on_dispo,
-            type: 'error'
-        });
-    } else {
-        //alt_phone_dialing = 1;
-        LastCallbackViewed = 1;
-        LastCallbackCount = (LastCallbackCount - 1);
-        auto_dial_level = 0;
-        manual_dial_in_progress = 1;
-        MainPanelToFront();
-        //if (alt_phone_dialing == 1)
-        //    {buildDiv('DiaLDiaLAltPhonE');}
-        $("#LeadPreview").prop('checked', true);
-        //$("#DiaLAltPhonE").prop('checked', true);
-        ManualDialNext(taskCBid,taskLEADid,'','','','0','',taskCBalt);
+    var move_on = 1;
+    if ( (AutoDialWaiting == 1) || (live_customer_call == 1) || (alt_dial_active == 1) || (MD_channel_look == 1) || (in_lead_preview_state == 1) ) {
+        if ( (auto_pause_precall == 'Y') && ( (agent_pause_codes_active == 'Y') || (agent_pause_codes_active == 'FORCE') ) && (AutoDialWaiting == 1) && (live_customer_call != 1) && (alt_dial_active != 1) && (MD_channel_look != 1) && (in_lead_preview_state != 1) ) {
+            agent_log_id = AutoDial_ReSume_PauSe("VDADpause", '', '', '', '', '1', auto_pause_precall_code);
+        } else {
+            move_on = 0;
+            swal("<?=$lang['must_be_paused_to_check']?>");
+        }
+    }
+    if (move_on == 1) {
+        if (waiting_on_dispo > 0) {
+            swal({
+                title: "<?=$lh->translationFor('system_delay_try_again')?>",
+                text: "<?=$lh->translationFor('code')?>: " + agent_log_id + " - " + waiting_on_dispo,
+                type: 'error'
+            });
+        } else {
+            //alt_phone_dialing = 1;
+            LastCallbackViewed = 1;
+            LastCallbackCount = (LastCallbackCount - 1);
+            auto_dial_level = 0;
+            manual_dial_in_progress = 1;
+            MainPanelToFront();
+            //if (alt_phone_dialing == 1)
+            //    {buildDiv('DiaLDiaLAltPhonE');}
+            $("#LeadPreview").prop('checked', false);
+            //$("#DiaLAltPhonE").prop('checked', true);
+            ManualDialNext(taskCBid,taskLEADid,'','','','0','',taskCBalt);
+        }
     }
 }
 

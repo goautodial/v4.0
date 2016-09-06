@@ -374,8 +374,10 @@ if (isset($_GET["message"])) {
                 <!-- Content Header (Page header) -->
                 <section class="content-heading">
 					<!-- Page title -->
-                    <?php $lh->translateText("contact_information"); ?>
-                    <small class="ng-binding animated fadeInUpShort hidden"><?php echo $fullname;?></small>
+                    <span><?php $lh->translateText("contact_information"); ?></span>
+                    <ol class="breadcrumb hidden-xs pull-right">
+						<li class="active"><i class="fa fa-home"></i> Home</li>
+					</ol>
                 </section>
 
                 <!-- Main content -->
@@ -808,19 +810,22 @@ if (isset($_GET["message"])) {
 								<table id="callback-list" class="display" style="border: 1px solid #f4f4f4">
 									<thead>
 										<tr>
-											<th class="hidden-xs">
+											<th>
 												Customer Name
 											</th>
 											<th>
 												Phone Number
 											</th>
-											<th class="hidden-xs">
+											<th>
+												Last Call Time
+											</th>
+											<th>
 												Callback Time
 											</th>
-											<th class="hidden-xs hidden-sm">
+											<th>
 												Campaign
 											</th>
-											<th class="hidden-xs visible-lg">
+											<th>
 												Comments
 											</th>
 											<th>
@@ -968,7 +973,7 @@ if (isset($_GET["message"])) {
         <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
 			<li>
 				<div class="center-block" style="text-align: center">
-					<a href="./edituser.php" class="btn btn-warning"><i class='fa fa-user'></i> <?=$lh->translationFor("my_profile")?></a>
+					<a href="./profile.php" class="btn btn-warning"><i class='fa fa-user'></i> <?=$lh->translationFor("my_profile")?></a>
 					 &nbsp; 
 					<a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class='fa fa-sign-out'></i> <?=$lh->translationFor("exit")?></a>
 				</div>
