@@ -93,21 +93,22 @@ error_reporting(E_ALL);*/
 							 <div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
 
-								 <!-- In-group panel tabs-->
+								 <!-- Campaign panel tabs-->
 									 <li role="presentation" class="active">
 										<a href="#T_campaign" aria-controls="T_campaign" role="tab" data-toggle="tab" class="bb0">
 										   Campaigns </a>
 									 </li>
-								<!-- IVR panel tab -->
+								<!-- Disposition panel tab -->
 									 <li role="presentation">
 										<a href="#T_disposition" aria-controls="T_disposition" role="tab" data-toggle="tab" class="bb0">
 										   Dispositions </a>
 									 </li>
-								<!-- DID panel tab -->
+								<!-- LeadFilter panel tab 
 									 <li role="presentation">
 										<a href="#T_leadfilter" aria-controls="T_leadfilter" role="tab" data-toggle="tab" class="bb0">
 										   Lead Filters </a>
 									 </li>
+								-->
 								  </ul>
 
 								<!-- Tab panes-->
@@ -270,10 +271,10 @@ error_reporting(E_ALL);*/
 				<?php print $ui->getCircleButton("campaigns", "plus"); ?>
 			</div>
 			<div class="fab-div-area" id="fab-div-area">
-				<ul class="fab-ul" style="height: 250px;">
+				<ul class="fab-ul" style="height: 170px;">
 					<li class="li-style"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaign" title="Add Campaign"></a></li><br/>
 					<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_disposition" title="Add Disposition"></a></li><br/>
-					<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_leadfilter" title="Add Phone Numbers"> </a></li>
+					<!--<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_leadfilter" title="Add Phone Numbers"> </a></li>-->
 				</ul>
 			</div>
 		</div>
@@ -657,14 +658,16 @@ error_reporting(E_ALL);*/
 	<!-- Disposition Modal -->
 	    <div class="modal fade" id="add_disposition" tabindex="-1" aria-labelledby="add_disposition" >
 	        <div class="modal-dialog" role="document">
-	            <div class="modal-content" style="border-radius:5px;">
+	            <div class="modal-content">
 
 	            <!-- Header -->
 	                <div class="modal-header">
-	                    <button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
-	                    <h4 class="modal-title animated bounceInRight" id="ingroup_modal"><b>Status Wizard » Create New Status</b></h4>
+	                    <h4 class="modal-title animated bounceInRight" id="ingroup_modal">
+	                    	<b>Status Wizard » Create New Status</b>
+	                    	<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
+	                    </h4>
 	                </div>
-	                <div class="modal-body" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;padding-top:0px;">
+	                <div class="modal-body">
 
 	                <form action="#" method="POST" id="create_disposition" role="form">
 	                    <div class="row">
@@ -703,45 +706,44 @@ error_reporting(E_ALL);*/
 				                        <!--<label class="col-sm-2 control-label" for="grouplevel" style="padding-top:15px;"> </label>-->
 				                    <div class="col-lg-1">
 				                   	</div>
-				                    <div class="col-lg-11">
+				                    <div class="col-lg-11 mt">
 				                    	<div class="row">
-					                		<label class="col-sm-3 checkbox-inline" for="selectable">
-								                  <input type="checkbox" id="selectable" name="selectable" checked class="flat-red">
-								                  Selectable
-							                </label>
-							                <label class="col-sm-4 checkbox-inline" for="human_answered">
-								                  <input type="checkbox" id="human_answered" name="human_answered" class="flat-red">
-								                  Human Answered
-									        </label>
-									        <label class="col-sm-3 checkbox-inline" for="sale">
-								                  <input type="checkbox" id="sale" name="sale" class="flat-red">
-								                  Sale
-								            </label>
+				                    		<label class="col-sm-3 checkbox-inline c-checkbox" for="selectable">
+												<input type="checkbox" id="selectable" name="selectable" checked>
+												<span class="fa fa-check"></span> Selectable
+											</label>
+											<label class="col-sm-4 checkbox-inline c-checkbox" for="human_answered">
+												<input type="checkbox" id="human_answered" name="human_answered">
+												<span class="fa fa-check"></span> Human Answered
+											</label>
+											<label class="col-sm-3 checkbox-inline c-checkbox" for="sale">
+												<input type="checkbox" id="sale" name="sale">
+												<span class="fa fa-check"></span> Sale
+											</label>
 								        </div>
 								        <div class="row">
-								            <label class="col-sm-3 checkbox-inline" for="dnc">
-								                  <input type="checkbox" id="dnc" name="dnc" class="flat-red">
-								                  DNC
-								            </label>
-
-							                <label class="col-sm-4 checkbox-inline" for="customer_contact">
-								                  <input type="checkbox" id="customer_contact" name="customer_contact" class="flat-red">
-								                  Customer Contact
-							                </label>
-							                <label class="col-sm-4 checkbox-inline" for="not_interested">
-								                  <input type="checkbox" id="not_interested" name="not_interested" class="flat-red">
-								                  Not Interested
-							                </label>
+								        	<label class="col-sm-3 checkbox-inline c-checkbox" for="dnc">
+												<input type="checkbox" id="dnc" name="dnc">
+												<span class="fa fa-check"></span> DNC
+											</label>
+											<label class="col-sm-4 checkbox-inline c-checkbox" for="customer_contact">
+												<input type="checkbox" id="customer_contact" name="customer_contact">
+												<span class="fa fa-check"></span> Customer Contact
+											</label>
+											<label class="col-sm-4 checkbox-inline c-checkbox" for="not_interested">
+												<input type="checkbox" id="not_interested" name="not_interested">
+												<span class="fa fa-check"></span> Not Interested
+											</label>
 							            </div>
 								        <div class="row">
-							                <label class="col-sm-3 checkbox-inline" for="unworkable">
-								                  <input type="checkbox" id="unworkable" name="unworkable" class="flat-red">
-								                  Unworkable
-							                </label>
-							                <label class="col-sm-4 checkbox-inline" for="scheduled_callback">
-								                  <input type="checkbox" id="scheduled_callback" name="scheduled_callback" class="flat-red">
-								                  Scheduled Callback
-							                </label>
+								        	<label class="col-sm-3 checkbox-inline c-checkbox" for="unworkable">
+												<input type="checkbox" id="unworkable" name="unworkable">
+												<span class="fa fa-check"></span> Unworkable
+											</label>
+											<label class="col-sm-4 checkbox-inline c-checkbox" for="scheduled_callback">
+												<input type="checkbox" id="scheduled_callback" name="scheduled_callback">
+												<span class="fa fa-check"></span> Scheduled Callback
+											</label>
 							            </div>
 				                    </div>
 			                    </div>
@@ -767,31 +769,6 @@ error_reporting(E_ALL);*/
 	<script src="js/plugins/iCheck/icheck.min.js"></script>
 
 	<script type="text/javascript">
-		function checkCampaign(campaign_id){
-			var status = '';
-			$.ajax({
-				/*url: ".\php\ViewCampaign.php",*/
-				url: "./php/checkCampaign.php",
-				type: 'POST',
-				async: false,
-				data: {
-					campaign_id : campaign_id,
-				},
-				dataType: 'json',
-				success: function(data) {
-					// console.log(data);
-					var info = $.parseJSON(data);
-					if(info.result == "success"){
-						status = 1;
-					}else{
-						status = info.status;
-					}
-				}
-			});
-
-			return status;
-		}
-
 		$(document).ready(function(){
 
 			/******
@@ -821,11 +798,6 @@ error_reporting(E_ALL);*/
 						location.reload();
 					});
 				*/
-				//Flat red color scheme for iCheck
-				    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-				      checkboxClass: 'icheckbox_flat-green',
-				      radioClass: 'iradio_flat-green'
-				    });
 
 			/*************
 			** Campaign Events
@@ -1489,6 +1461,31 @@ error_reporting(E_ALL);*/
 			}
 		}
 
+		function checkCampaign(campaign_id){
+			var status = '';
+			$.ajax({
+				/*url: ".\php\ViewCampaign.php",*/
+				url: "./php/checkCampaign.php",
+				type: 'POST',
+				async: false,
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(data) {
+					// console.log(data);
+					var info = $.parseJSON(data);
+					if(info.result == "success"){
+						status = 1;
+					}else{
+						status = info.status;
+					}
+				}
+			});
+
+			return status;
+		}
+
 		function duplicate_status_check(){
 			var status_form_value = $('#status').val();
 			var campaign_form_value = $('#disposition_campaign').val();
@@ -1500,8 +1497,10 @@ error_reporting(E_ALL);*/
 				    	status : status_form_value,
 				    	campaign_id : campaign_form_value
 				    },
+				    dataType: 'json',
 					success: function(data) {
-						if(data == "success"){
+						var returndata = $.parseJSON(data);
+						if(returndata.result == "success"){
 							$("#disposition_checker").val("0");
 
 							$( "#status" ).removeClass("error");
@@ -1510,7 +1509,7 @@ error_reporting(E_ALL);*/
 							$("#disposition_checker").val("1");
 
 							$( "#status" ).addClass( "error" );
-							$( "#status-duplicate-error" ).text( data ).removeClass("avail").addClass("error");
+							$( "#status-duplicate-error" ).text( returndata.status ).removeClass("avail").addClass("error");
 
 						}
 					}

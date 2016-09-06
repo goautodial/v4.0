@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once('goCRMAPISettings.php');	
 
@@ -12,22 +15,20 @@ require_once('goCRMAPISettings.php');
 	$postfields["script_name"] 			= $_POST['script_name']; 
 	$postfields["script_comments"] 		= $_POST['script_comments'];
 	$postfields["script_text"] 			= $_POST['script_text']; 
-	$postfields["active"] 				= $_POST['status'];
+	$postfields["active"] 				= $_POST['active'];
 	$postfields["user"]					= $_POST['script_user'];
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
-	// curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 	curl_setopt($ch, CURLOPT_POST, 1);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	$data = curl_exec($ch);
 	curl_close($ch);
-
 	$output = json_decode($data);
-	
-	if ($output->result=="success") {
+
+	if ($output->result == "success") {
 		# Result was OK!
 		$status = "success";
 	} else {
@@ -36,5 +37,4 @@ require_once('goCRMAPISettings.php');
 	}
 
 	echo $status;
-
 ?>

@@ -100,7 +100,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
                         	<?php
 				        		if($campaign_id != NULL){echo "Campaign";}
 				        		if($did != NULL){echo "Disposition";}
-				        		if($leadfilter != NULL){echo "Lead Filter";}
+				        		if($lf_id != NULL){echo "Lead Filter";}
 					        ?>
 					    </small>
                     </h1>
