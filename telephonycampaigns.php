@@ -576,11 +576,11 @@ error_reporting(E_ALL);*/
 			    				</div>
 			    			</div> -->
 				    			<div class="form-group blended">
-				    				<label class="control-label col-lg-5">Call Recordings:</label>
+				    				<label class="control-label col-lg-5">Campaign Recordings:</label>
 				    				<div class="col-lg-7 mb">
-				    					<select class="form-control" id="call-recordings" name="call_recordings">
-				    						<option VALUE="NEVER">ON</option>
-				    						<option value="ALLFORCE">OFF</option>
+				    					<select class="form-control" id="call-recordings" name="campaign_recording">
+				    						<option value="NEVER">OFF</option>
+				    						<option value="ALLFORCE">ON</option>
 				    						<option value="ONDEMAND">ON-DEMAND</option>
 				    					</select>
 				    				</div>
@@ -615,12 +615,12 @@ error_reporting(E_ALL);*/
 			    					</select>
 			    				</div>
 			    			</div> -->
-				    			<div class="form-group inbound hide">
+				    			<!-- <div class="form-group inbound hide">
 				    				<label class="control-label col-lg-5">Campaign Recording:</label>
 				    				<div class="col-lg-7 mb">
 				    					<input id="campaign-recording" name="campaign_recording" type="text" class="form-control">
 				    				</div>
-				    			</div>
+				    			</div> -->
 			    			<!-- <div class="form-group inbound hide">
 			    				<label class="control-label col-lg-4">Inbound Man:</label>
 			    				<div class="col-lg-8">
