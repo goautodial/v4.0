@@ -174,75 +174,75 @@
 														<button type="button" class="btn btn-default" onClick="addtext();">Insert!</button>
 													</span>
 													<select class="form-control" name="script_text_dropdown" id="script_text_dropdown">
-														<option value="fullname">Agent Name</option>
-														<option value="vendor_lead_code">vendor_lead_code</option>
-														<option value="source_id">source_id</option>
-														<option value="list_id">list_id</option>
-														<option value="gmt_offset_now">gmt_offset_now</option>
-														<option value="called_since_last_reset">called_since_last_reset</option>
-														<option value="phone_code">phone_code</option>
-														<option value="phone_number">phone_number</option>
-														<option value="title">title</option>
-														<option value="first_name">first_name</option>
-														<option value="middle_initial">middle_initial</option>
-														<option value="last_name">last_name</option>
-														<option value="address1">address1</option>
-														<option value="address2">address2</option>
-														<option value="address3">address3</option>
-														<option value="city">city</option>
-														<option value="state">state</option>
-														<option value="province">province</option>
-														<option value="postal_code">postal_code</option>
-														<option value="country_code">country_code</option>
-														<option value="gender">gender</option>
-														<option value="date_of_birth">date_of_birth</option>
-														<option value="alt_phone">alt_phone</option>
-														<option value="email">email</option>
-														<option value="security_phrase">security_phrase</option>
-														<option value="comments">comments</option>
-														<option value="lead_id">lead_id</option>
-														<option value="campaign">campaign</option>
-														<option value="phone_login">phone_login</option>
-														<option value="group">group</option>
-														<option value="channel_group">channel_group</option>
-														<option value="SQLdate">SQLdate</option>
-														<option value="epoch">epoch</option>
-														<option value="uniqueid">uniqueid</option>
-														<option value="customer_zap_channel">customer_zap_channel</option>
-														<option value="server_ip">server_ip</option>
-														<option value="SIPexten">SIPexten</option>
-														<option value="session_id">session_id</option>
-														<option value="dialed_number">dialed_number</option>
-														<option value="dialed_label">dialed_label</option>
-														<option value="rank">rank</option>
-														<option value="owner">owner</option>
-														<option value="camp_script">camp_script</option>
-														<option value="in_script">in_script</option>
-														<option value="script_width">script_width</option>
-														<option value="script_height">script_height</option>
-														<option value="recording_filename">recording_filename</option>
-														<option value="recording_id">recording_id</option>
-														<option value="user_custom_one">user_custom_one</option>
-														<option value="user_custom_two">user_custom_two</option>
-														<option value="user_custom_three">user_custom_three</option>
-														<option value="user_custom_four">user_custom_four</option>
-														<option value="user_custom_five">user_custom_five</option>
-														<option value="preset_number_a">preset_number_a</option>
-														<option value="preset_number_b">preset_number_b</option>
-														<option value="preset_number_c">preset_number_c</option>
-														<option value="preset_number_d">preset_number_d</option>
-														<option value="preset_number_e">preset_number_e</option>
-														<option value="preset_number_f">preset_number_f</option>
-														<option value="preset_dtmf_a">preset_dtmf_a</option>
-														<option value="preset_dtmf_b">preset_dtmf_b</option>
-														<option value="did_id">did_id</option>
-														<option value="did_extension">did_extension</option>
-														<option value="did_pattern">did_pattern</option>
-														<option value="did_description">did_description</option>
-														<option value="closecallid">closecallid</option>
-														<option value="xfercallid">xfercallid</option>
-														<option value="agent_log_id">agent_log_id</option>
-														<option value="entry_list_id">entry_list_id</option>
+														<option value="--A--fullname--B-- ">Agent Name</option>
+														<option value="--A--vendor_lead_code--B-- ">vendor_lead_code</option>
+														<option value="--A--source_id--B-- ">source_id</option>
+														<option value="--A--list_id--B-- ">list_id</option>
+														<option value="--A--gmt_offset_now--B-- ">gmt_offset_now</option>
+														<option value="--A--called_since_last_reset--B-- ">called_since_last_reset</option>
+														<option value="--A--phone_code--B-- ">phone_code</option>
+														<option value="--A--phone_number--B-- ">phone_number</option>
+														<option value="--A--title--B-- ">title</option>
+														<option value="--A--first_name--B-- ">first_name</option>
+														<option value="--A--middle_initial--B-- ">middle_initial</option>
+														<option value="--A--last_name--B-- ">last_name</option>
+														<option value="--A--address1--B-- ">address1</option>
+														<option value="--A--address2--B-- ">address2</option>
+														<option value="--A--address3--B-- ">address3</option>
+														<option value="--A--city--B-- ">city</option>
+														<option value="--A--state--B-- ">state</option>
+														<option value="--A--province--B-- ">province</option>
+														<option value="--A--postal_code--B-- ">postal_code</option>
+														<option value="--A--country_code--B-- ">country_code</option>
+														<option value="--A--gender--B-- ">gender</option>
+														<option value="--A--date_of_birth--B-- ">date_of_birth</option>
+														<option value="--A--alt_phone--B-- ">alt_phone</option>
+														<option value="--A--email--B-- ">email</option>
+														<option value="--A--security_phrase--B-- ">security_phrase</option>
+														<option value="--A--comments--B-- ">comments</option>
+														<option value="--A--lead_id--B-- ">lead_id</option>
+														<option value="--A--campaign--B-- ">campaign</option>
+														<option value="--A--phone_login--B-- ">phone_login</option>
+														<option value="--A--group--B-- ">group</option>
+														<option value="--A--channel_group--B-- ">channel_group</option>
+														<option value="--A--SQLdate--B-- ">SQLdate</option>
+														<option value="--A--epoch--B-- ">epoch</option>
+														<option value="--A--uniqueid--B-- ">uniqueid</option>
+														<option value="--A--customer_zap_channel--B-- ">customer_zap_channel</option>
+														<option value="--A--server_ip--B-- ">server_ip</option>
+														<option value="--A--SIPexten--B-- ">SIPexten</option>
+														<option value="--A--session_id--B-- ">session_id</option>
+														<option value="--A--dialed_number--B-- ">dialed_number</option>
+														<option value="--A--dialed_label--B-- ">dialed_label</option>
+														<option value="--A--rank--B-- ">rank</option>
+														<option value="--A--owner--B-- ">owner</option>
+														<option value="--A--camp_script--B-- ">camp_script</option>
+														<option value="--A--in_script--B-- ">in_script</option>
+														<option value="--A--script_width--B-- ">script_width</option>
+														<option value="--A--script_height--B-- ">script_height</option>
+														<option value="--A--recording_filename--B-- ">recording_filename</option>
+														<option value="--A--recording_id--B-- ">recording_id</option>
+														<option value="--A--user_custom_one--B-- ">user_custom_one</option>
+														<option value="--A--user_custom_two--B-- ">user_custom_two</option>
+														<option value="--A--user_custom_three--B-- ">user_custom_three</option>
+														<option value="--A--user_custom_four--B-- ">user_custom_four</option>
+														<option value="--A--user_custom_five--B-- ">user_custom_five</option>
+														<option value="--A--preset_number_a--B-- ">preset_number_a</option>
+														<option value="--A--preset_number_b--B-- ">preset_number_b</option>
+														<option value="--A--preset_number_c--B-- ">preset_number_c</option>
+														<option value="--A--preset_number_d--B-- ">preset_number_d</option>
+														<option value="--A--preset_number_e--B-- ">preset_number_e</option>
+														<option value="--A--preset_number_f--B-- ">preset_number_f</option>
+														<option value="--A--preset_dtmf_a--B-- ">preset_dtmf_a</option>
+														<option value="--A--preset_dtmf_b--B-- ">preset_dtmf_b</option>
+														<option value="--A--did_id--B-- ">did_id</option>
+														<option value="--A--did_extension--B-- ">did_extension</option>
+														<option value="--A--did_pattern--B-- ">did_pattern</option>
+														<option value="--A--did_description--B-- ">did_description</option>
+														<option value="--A--closecallid--B-- ">closecallid</option>
+														<option value="--A--xfercallid--B-- ">xfercallid</option>
+														<option value="--A--agent_log_id--B-- ">agent_log_id</option>
+														<option value="--A--entry_list_id--B-- ">entry_list_id</option>
 													</select>
 												</div>
 											</div>
@@ -435,13 +435,42 @@
 	}); // end of document ready
 	
 function addtext() {
-	var script_text = document.getElementById('script_text');
-	var script_text_dropdown = document.getElementById('script_text_dropdown');
-	var addtext = "";
+	var txtarea = document.getElementById('script_text');
+	var text = document.getElementById('script_text_dropdown').value;
 
-	addtext = "--A--"+script_text_dropdown.value+"--B--";
+	if (!txtarea) { return; }
 
-	script_text.value = script_text.value  + addtext;
+	var scrollPos = txtarea.scrollTop;
+	var strPos = 0;
+	var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
+		"ff" : (document.selection ? "ie" : false ) );
+	if (br == "ie") {
+		txtarea.focus();
+		var range = document.selection.createRange();
+		range.moveStart ('character', -txtarea.value.length);
+		strPos = range.text.length;
+	} else if (br == "ff") {
+		strPos = txtarea.selectionStart;
+	}
+
+	var front = (txtarea.value).substring(0, strPos);
+	var back = (txtarea.value).substring(strPos, txtarea.value.length);
+	txtarea.value = front + text + back;
+	strPos = strPos + text.length;
+	if (br == "ie") {
+		txtarea.focus();
+		var ieRange = document.selection.createRange();
+		ieRange.moveStart ('character', -txtarea.value.length);
+		ieRange.moveStart ('character', strPos);
+		ieRange.moveEnd ('character', 0);
+		ieRange.select();
+	} else if (br == "ff") {
+		txtarea.selectionStart = strPos;
+		txtarea.selectionEnd = strPos;
+		txtarea.focus();
+	}
+
+	txtarea.scrollTop = scrollPos;
 }
 </script>
 
