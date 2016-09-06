@@ -3,9 +3,9 @@
 	/** Campaigns API - Add a new Campaign */
 	/**
 	 * Generates action circle buttons for different pages/module
-	 * @param goUser 
-	 * @param goPass 
-	 * @param goAction 
+	 * @param goUser
+	 * @param goPass
+	 * @param goAction
 	 * @param responsetype
 	 * @param hostname
 	 * @param did_pattern
@@ -17,7 +17,7 @@
 	 * @param campaign_id
 	 * @param campaign_name
 	 */
-        
+
     require_once('goCRMAPISettings.php');
 
 	$url = gourl."/goCampaigns/goAPI.php"; # URL to GoAutoDial API file
@@ -45,7 +45,6 @@
 	$postfields['custom_dial_prefix']			= ($postfields['dial_prefix'] == "CUSTOM")? $_POST['custom_prefix']:0;
 	$postfields['description'] 					= $_POST['description'];
 	$postfields['status'] 						= $_POST['status'];
-	$postfields['call_recordings'] 				= $_POST['call_recordings'];
 	$postfields['script'] 						= $_POST['script'];
 	$postfields['answering_machine_detection'] 	= $_POST['answering_machine_detection'];
 	$postfields['caller_id']  					= $_POST['caller_id'];
