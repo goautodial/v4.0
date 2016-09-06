@@ -99,17 +99,16 @@
 	<div class="modal fade" id="scripts-modal" tabindex="-1"aria-labelledby="scripts" >
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-				
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title animated bounceInRight" id="scripts">
 						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create scripts."></i> 
 						<b>Script Wizard » Add New Script</b>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
 				<div class="modal-body">
 				
-					<form method="POST" id="create_form" role="form">
+					<form id="create_form" role="form">
 						<div class="row">
 							<?php
 								$max = count($scripts->script_id);
@@ -157,9 +156,9 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label" for="status">Active: </label>
+									<label class="col-sm-3 control-label" for="active">Active: </label>
 									<div class="col-sm-9 mb">
-										<select name="status" class="form-control">
+										<select name="active" class="form-control">
 											<option value="Y" selected>Yes</option>
 											<option value="N" >No</option>						
 										</select>
@@ -259,7 +258,6 @@
 								</div>
 							</fieldset>
 						</div>
-
 					</form>
 			
 				</div> <!-- end of modal body -->
