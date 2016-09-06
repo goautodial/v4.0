@@ -68,6 +68,8 @@
                 <?php if ($user->userHasAdminPermission()) { ?>
                     <div class="panel panel-default">
                     	<div class="panel-body">
+                    		<legend><?php $lh->translateText("users"); ?></legend>
+
                     		<div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
 
@@ -97,7 +99,6 @@
 								<div class="tab-content bg-white">
 									<!--==== users ====-->
 									<div id="users_tab" role="tabpanel" class="tab-pane active">
-			                        <legend><?php $lh->translateText("users"); ?></legend>
 										<?php print $ui->goGetAllUserList(); ?>
 			                        </div>
 									
@@ -106,7 +107,6 @@
 									?>
 									<!--==== Phones ====-->
 									<div id="phone_tab" role="tabpanel" class="tab-pane">
-			                            <legend><?php $lh->translateText("phones"); ?></legend>
 										<?php print $ui->getPhonesList(); ?>
 			                        </div>
 									<?php
