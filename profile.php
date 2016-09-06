@@ -112,7 +112,10 @@
             $user_group = $output->data->user_group;
             $status = $output->data->active;
             $outcallstoday = $output->data->outcallstoday;
+            $outsalestoday = $output->data->outsalestoday;
             $incallstoday = $output->data->incallstoday;
+            $insalestoday = $output->data->insalestoday;
+            $totalsalestoday = ($outsalestoday + $insalestoday);
             
             if ($outcallstoday == NULL){
                 $outcallstoday = "0";
@@ -137,27 +140,20 @@
                      <img src="img/avatars/demian_avatar.jpg" alt="Image" class="img-thumbnail img-circle thumb128">
                      <h3 class="m0"><?php echo $agentname; ?></h3>
                      <p><?php echo $agentid; ?></p>
-                     <p>User Group: AGENTS, User Level: 1, Status: Active, Modules: Telephony, Helpdesk & Livechat.</p>
+                     <p>Empowering the next generation contact centers.</p>
                   </div>
                </div>
                <div class="text-center bg-gray-dark p-lg mb-xl">
                   <div class="row row-table" style="height: 7%">
                      <div class="col-xs-4 br">
-                        <h3 class="m0"><?php echo $outcallstoday; ?></h3>
+                        <h3 class="m0"><?php echo $totalcallstoday; ?></h3>
                         <p class="m0">
-                           <span class="hidden-xs">Outbound Calls</span>
+                           <span class="hidden-xs">Calls Today</span>
                            <!-- <span>Views</span> -->
                         </p>
-                     </div>
+                     </div>                    
                      <div class="col-xs-4 br">
-                        <h3 class="m0"><?php echo $incallstoday; ?></h3>
-                        <p class="m0">
-                           <span class="hidden-xs">Inbound Calls</span>
-                           <!-- <span>Views</span> -->
-                        </p>
-                     </div>                     
-                     <div class="col-xs-4 br">
-                        <h3 class="m0">25</h3>
+                        <h3 class="m0"><?php echo $totalsalestoday; ?></h3>
                         <p class="m0">Sales Today</p>
                      </div>
                      <div class="col-xs-4">
@@ -456,9 +452,9 @@
                               <hr>
                               <ul class="list-unstyled ph-xl">
                                  <li>
-                                    <em class="fa fa-home fa-fw mr-lg"></em>User Group: <?php echo $user_group; ?></li>
+                                    <em class="fa fa-home fa-fw mr-lg"></em>Group: <?php echo $user_group; ?></li>
                                  <li>
-                                    <em class="fa fa-briefcase fa-fw mr-lg"></em><a href="mailto:<?php echo $email; ?>">Email: <?php echo $email; ?></a>
+                                    <em class="fa fa-briefcase fa-fw mr-lg"></em><a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
                                  </li>
                                  <li>
                                     <em class="fa fa-graduation-cap fa-fw mr-lg"></em>Status: <?php echo $status; ?></li>
