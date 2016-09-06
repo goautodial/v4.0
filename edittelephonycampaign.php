@@ -1257,7 +1257,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 											<input type="checkbox" name="add_scheduled_callback" id="add_scheduled_callback" class="flat-red" value="Y" />
 										</td>
 										<td>
-											<a type="button" id="add_new_status" data-id="<?php echo $did;?>" class="btn btn-primary"><span id="add_button"><i class="fa fa-plus"></i> New Status</span></a>
+											<a type="button" id="add_new_status" data-id="<?php echo $did;?>" class="btn btn-primary" disabled><span id="add_button"><i class="fa fa-plus"></i> New Status</span></a>
 										</td>
 									</tr>
 								<!------>
@@ -1333,51 +1333,51 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 	                            <input type="text" name="edit_status_name" id="edit_status_name" class="form-control" placeholder="Status Name" maxlenght="30" required>
 	                        </div>
 		                </div>
-		                <div class="form-group mt">
-		                	<div class="col-lg-1">
+		                <div class="form-group">
+				                        <!--<label class="col-sm-2 control-label" for="grouplevel" style="padding-top:15px;"> </label>-->
+		                    <div class="col-lg-1">
 		                   	</div>
 		                    <div class="col-lg-11 mt">
 		                    	<div class="row mb">
-			                		<label class="col-sm-3 checkbox-inline" for="selectable">
-						                  <input type="checkbox" id="edit_selectable" name="edit_selectable" checked class="flat-red">
-						                  Selectable
-					                </label>
-					                <label class="col-sm-4 checkbox-inline" for="human_answered">
-						                  <input type="checkbox" id="edit_human_answered" name="edit_human_answered" class="flat-red">
-						                  Human Answered
-							        </label>
-							        <label class="col-sm-3 checkbox-inline" for="sale">
-						                  <input type="checkbox" id="edit_sale" name="edit_sale" class="flat-red">
-						                  Sale
-						            </label>
+		                    		<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_selectable">
+										<input type="checkbox" id="edit_selectable" name="edit_selectable" checked>
+										<span class="fa fa-check"></span> Selectable
+									</label>
+									<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_human_answered">
+										<input type="checkbox" id="edit_human_answered" name="edit_human_answered">
+										<span class="fa fa-check"></span> Human Answered
+									</label>
+									<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_sale">
+										<input type="checkbox" id="edit_sale" name="edit_sale">
+										<span class="fa fa-check"></span> Sale
+									</label>
 						        </div>
 						        <div class="row mb">
-						            <label class="col-sm-3 checkbox-inline" for="dnc">
-						                  <input type="checkbox" id="edit_dnc" name="edit_dnc" class="flat-red">
-						                  DNC
-						            </label>
-
-					                <label class="col-sm-4 checkbox-inline" for="customer_contact">
-						                  <input type="checkbox" id="edit_customer_contact" name="edit_customer_contact" class="flat-red">
-						                  Customer Contact
-					                </label>
-					                <label class="col-sm-4 checkbox-inline" for="not_interested">
-						                  <input type="checkbox" id="edit_not_interested" name="edit_not_interested" class="flat-red">
-						                  Not Interested
-					                </label>
+						        	<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_dnc">
+										<input type="checkbox" id="edit_dnc" name="edit_dnc">
+										<span class="fa fa-check"></span> DNC
+									</label>
+									<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_customer_contact">
+										<input type="checkbox" id="edit_customer_contact" name="edit_customer_contact">
+										<span class="fa fa-check"></span> Customer Contact
+									</label>
+									<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_not_interested">
+										<input type="checkbox" id="edit_not_interested" name="edit_not_interested">
+										<span class="fa fa-check"></span> Not Interested
+									</label>
 					            </div>
 						        <div class="row mb">
-					                <label class="col-sm-3 checkbox-inline" for="unworkable">
-						                  <input type="checkbox" id="edit_unworkable" name="edit_unworkable" class="flat-red">
-						                  Unworkable
-					                </label>
-					                <label class="col-sm-4 checkbox-inline" for="scheduled_callback">
-						                  <input type="checkbox" id="edit_scheduled_callback" name="edit_scheduled_callback" class="flat-red">
-						                  Scheduled Callback
-					                </label>
+						        	<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_unworkable">
+										<input type="checkbox" id="edit_unworkable" name="edit_unworkable">
+										<span class="fa fa-check"></span> Unworkable
+									</label>
+									<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_scheduled_callback">
+										<input type="checkbox" id="edit_scheduled_callback" name="edit_scheduled_callback">
+										<span class="fa fa-check"></span> Scheduled Callback
+									</label>
 					            </div>
 		                    </div>
-		                </div>
+	                    </div>
 	            	</form>
                 </div>
                 <div class="modal-footer">
@@ -1465,7 +1465,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 			   		//Add Status
 				        $('#add_new_status').click(function(){
 
-					        $('#add_button').html("<i class='fa fa-check'></i> Saving, Please Wait.....");
+					        $('#add_button').html("<i class='fa fa-check'></i> Saving...");
 							$('#add_new_status').attr("disabled", true);
 
 					        var validate = 0;
@@ -1532,10 +1532,18 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 					                    success: function(data) {
 					                      // console.log(data);
 					                          if(data == 1){
-					                                swal("Success!", "New Status Successfully Added!", "success");
+					                          		swal(
+														{
+															title: "Success",
+															text: "New Status Successfully Added!",
+															type: "success"
+														},
+														function(){
+															window.location.href = 'edittelephonycampaigns.php';
+														}
+													);
 					                                $('#add_button').html("<i class='fa fa-plus'></i> New Status");
 													$('#add_new_status').attr("disabled", false);
-					                                window.setTimeout(function(){location.reload()},1000)
 					                          }
 					                          else{
 					                              sweetAlert("Oops...", "Something went wrong! " + data, "error");
@@ -1588,44 +1596,44 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 							  	$('#edit_unworkable').val(data.unworkable);
 
 							  	if(data.selectable == "Y"){
-							  		$('#edit_selectable').iCheck('check');
+							  		$('#edit_selectable').prop("checked", true);
 							  	}else{
-							  		$('#edit_selectable').iCheck('uncheck');
+							  		$('#edit_selectable').prop("checked", false);
 							  	}
 							  	if(data.human_answered == "Y"){
-							  		$('#edit_human_answered').iCheck('check');
+							  		$('#edit_human_answered').prop("checked", true);
 							  	}else{
-							  		$('#edit_human_answered').iCheck('uncheck');
+							  		$('#edit_human_answered').prop("checked", false);
 							  	}
 							  	if(data.sale == "Y"){
-							  		$('#edit_sale').iCheck('check');
+							  		$('#edit_sale').prop("checked", true);
 							  	}else{
-							  		$('#edit_sale').iCheck('uncheck');
+							  		$('#edit_sale').prop("checked", false);
 							  	}
 							  	if(data.dnc == "Y"){
-							  		$('#edit_dnc').iCheck('check');
+							  		$('#edit_dnc').prop("checked", true);
 							  	}else{
-							  		$('#edit_dnc').iCheck('uncheck');
+							  		$('#edit_dnc').prop("checked", false);
 							  	}
 							  	if(data.scheduled_callback == "Y"){
-							  		$('#edit_scheduled_callback').iCheck('check');
+							  		$('#edit_scheduled_callback').prop("checked", true);
 							  	}else{
-							  		$('#edit_scheduled_callback').iCheck('uncheck');
+							  		$('#edit_scheduled_callback').prop("checked", false);
 							  	}
 							  	if(data.customer_contact == "Y"){
-							  		$('#edit_customer_contact').iCheck('check');
+							  		$('#edit_customer_contact').prop("checked", true);
 							  	}else{
-							  		$('#edit_customer_contact').iCheck('uncheck');
+							  		$('#edit_customer_contact').prop("checked", false);
 							  	}
 							  	if(data.not_interested == "Y"){
-							  		$('#edit_not_interested').iCheck('check');
+							  		$('#edit_not_interested').prop("checked", true);
 							  	}else{
-							  		$('#edit_not_interested').iCheck('uncheck');
+							  		$('#edit_not_interested').prop("checked", false);
 							  	}
 							  	if(data.unworkable == "Y"){
-							  		$('#edit_unworkable').iCheck('check');
+							  		$('#edit_unworkable').prop("checked", true);
 							  	}else{
-							  		$('#edit_unworkable').iCheck('uncheck');
+							  		$('#edit_unworkable').prop("checked", false);
 							  	}
 							  }
 							});
@@ -1670,7 +1678,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 				            	}
 
 			                	$.ajax({
-				                    url: "./php/ModifyTelephonyCampaign.php",
+				                    url: "./php/ModifyDisposition.php",
 				                    type: 'POST',
 				                    data: {
 				                    	disposition : $('#edit_campaign').val(),
@@ -1693,8 +1701,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 											$('#modify_disposition').attr("disabled", false);
 			                                window.setTimeout(function(){location.reload()},2000)
 				                        }else{
-				                            $('.output-message-error').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-				                            $("#disposition_result").html(data);
+				                        	swal("Ooops!", "Something went wrong! "+ data, "error");
 				                            $('#update_button').html("<i class='fa fa-check'></i> Update");
 											$('#modify_disposition').attr("disabled", false);
 				                        }
@@ -1799,6 +1806,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 							    }
 							});
 					/*** end of disposition filters ***/
+
 					$('#auto_dial_level').change(function(){
 						if($(this).val() == 'ADVANCE'){
 							$('#auto_dial_level_adv').removeClass('hide');
@@ -1889,8 +1897,11 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 					    	status : status_form_value,
 					    	campaign_id : campaign_form_value
 					    },
+					    dataType: 'json',
+						
 						success: function(data) {
-							if(data == "success"){
+							var returndata = $.parseJSON(data);
+							if(returndata.result == "success"){
 
 									if(addoredit == "add")
 										$("#add_new_status").attr("disabled", false);
@@ -1899,7 +1910,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 										$("#modify_disposition").attr("disabled", false);
 
 								$( "#status" ).removeClass("error");
-								$( "#status-duplicate-error" ).text( "Status is available." ).removeClass("error").addClass("avail");
+								$( "#status-duplicate-error" ).text("").removeClass("error").addClass("avail");
 
 							}else{
 
@@ -1909,7 +1920,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 										$("#modify_disposition").attr("disabled", true);
 
 								$( "#status" ).addClass( "error" );
-								$( "#status-duplicate-error" ).text( data ).removeClass("avail").addClass("error");
+								$( "#status-duplicate-error" ).text( returndata.status ).removeClass("avail").addClass("error");
 
 							}
 						}
