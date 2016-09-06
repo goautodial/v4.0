@@ -77,7 +77,7 @@
 										    Users </a>
 									 </li>
 									 <?php
-										 if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){
+										 if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
 									 ?>
 									 
 									 <!-- Phones panel tabs-->
@@ -102,7 +102,7 @@
 			                        </div>
 									
 									<?php
-										if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){
+										if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
 									?>
 									<!--==== Phones ====-->
 									<div id="phone_tab" role="tabpanel" class="tab-pane">
@@ -127,7 +127,7 @@
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 <?php
-	if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){
+	if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
 ?>
     <!-- FIXED ACTION BUTTON --> 
 		<div class="bottom-menu skin-blue">
@@ -343,7 +343,7 @@
 	<!-- end of add user modal -->
 
  <?php
-	if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){
+	if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
 ?>
 	<!-- ADD PHONE MODAL -->
 	    <div class="modal fade" id="phone-wizard-modal" tabindex="-1"aria-labelledby="T_Phones" >
