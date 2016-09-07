@@ -433,7 +433,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                     //print_r($droppedpercentage);                                                      
                                                     $dropped_percentage = $droppedpercentage->data->getDroppedPercentage; 
                                                     
-                                                    if ($dropped_percentage <= "10"){
+                                                    if ($dropped_percentage < "30"){
                                                         $color = "#5d9cec";
                                                     }
                                                     if ($dropped_percentage >= "30"){
@@ -464,7 +464,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 											line-height: normal;
 											font-family: Arial;
 											text-align: center;
-											color: #0073b7;
+											color: <?php echo $color; ?>;
 											padding: 0px;
 											-webkit-appearance: none;
 											background: none;
@@ -478,7 +478,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 									 <span class="text-dark"><?php echo $dropped_percentage; ?></span>
 								  </p>
 							   </div>
-							</div> -->
+							</div>
 							<!-- END loader widget-->
 						</div>
 
@@ -499,10 +499,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                     }
                                                     
                                                     ?>
-						   <div class="panel-body">
-                                                        <a data-toggle="modal" data-target="#realtime_sla_monitoring">
+						   <div class="panel-body">                                                        
 								<div class="panel-title">Service Level Agreement Percentage</div>
 								<center>
+                                                                    <a data-toggle="modal" data-target="#realtime_sla_monitoring">
 									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 										<input type="text"
 										class="knob" value="<?php echo $sla_percentage; ?>" data-width="150" data-height="150" data-padding="21px"
@@ -523,12 +523,13 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 											line-height: normal;
 											font-family: Arial;
 											text-align: center;
-											color: #0073b7;
+											color: <?php echo $color; ?>;
 											padding: 0px;
 											-webkit-appearance: none;
 											background: none;
 										">
 									</div>
+                                                                    </a>
 								</center>
 							   <div class="panel-footer">
 								  <p class="text-muted">
@@ -536,8 +537,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 									 <span>Service Level Agreement:</span>
 									 <span class="text-dark"><?php echo $sla_percentage; ?></span>
 								  </p>
-							   </div>
-                                                        </a>
+							   </div>                                                        
 							</div>
 							<!-- END loader widget-->
 						</div>
