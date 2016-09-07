@@ -165,7 +165,6 @@ $ingroup = $ui->API_getInGroups();
  
 
 $dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
-$dropped_percentage = $ui->API_goGetDroppedPercentage();
 $calls_incoming_queue = $ui->API_goGetIncomingQueue();
 
 $callsperhour = $ui->API_goGetCallsPerHour();
@@ -426,15 +425,29 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 
             	<aside class="col-lg-3">
 
-        <!--==== SERVICE LEVEL AGREEMENT ==== -->
-                                                <div class="panel panel-default">
+        <!--==== DROPPED PERCENTAGE  ==== -->
+                                                <!-- <div class="panel panel-default">
+                                                    <?php
+                                                    $droppedpercentage = $ui->API_goGetDroppedPercentage();
+                                                    //echo ("pre");
+                                                    //print_r($droppedpercentage);                                                      
+                                                    $dropped_percentage = $droppedpercentage->data->getDroppedPercentage; 
+                                                    
+                                                    if ($dropped_percentage <= "10"){
+                                                        $color = "#5d9cec";
+                                                    }
+                                                    if ($dropped_percentage >= "30"){
+                                                        $color = "orange";
+                                                    }                                                    
+                                                    
+                                                    ?>
 						   <div class="panel-body">
 								<div class="panel-title">Dropped Calls Percentage</div>
 								<center>
 									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 										<input type="text"
 										class="knob" value="<?php echo $dropped_percentage; ?>" data-width="150" data-height="150" data-padding="21px"
-										data-fgcolor="#0073b7" data-readonly="true" readonly="readonly"
+										data-fgcolor="<?php echo $color; ?>" data-readonly="true" readonly="readonly"
 										style="
 											width: 49px;
 											height: 100px;
@@ -465,10 +478,70 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 									 <span class="text-dark"><?php echo $dropped_percentage; ?></span>
 								  </p>
 							   </div>
+							</div> -->
+							<!-- END loader widget-->
+						<!-- </div> -->
+
+        <!--==== SERVICE LEVEL AGREEMENT ==== -->
+                                                <div class="panel panel-default">
+                                                    <?php
+                                                    $slapercentage = $ui->API_goGetSLAPercentage();     
+                                                    //echo ("pre");
+                                                    //print_r($slapercentage);
+                                                    $sla_percentage = $slapercentage->data[0]->SLA; 
+                                                    //echo ("pre");
+                                                    //print_r($sla_percentage);                                                    
+                                                    if ($sla_percentage < "95"){
+                                                        $color = "orange";
+                                                    }                                                   
+                                                    if ($sla_percentage >= "95"){
+                                                        $color = "#5d9cec";
+                                                    }
+                                                    
+                                                    ?>
+						   <div class="panel-body">
+                                                        <a data-toggle="modal" data-target="#realtime_sla_monitoring">
+								<div class="panel-title">Service Level Agreement Percentage</div>
+								<center>
+									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
+										<input type="text"
+										class="knob" value="<?php echo $sla_percentage; ?>" data-width="150" data-height="150" data-padding="21px"
+										data-fgcolor="<?php echo $color; ?>" data-readonly="true" readonly="readonly"
+										style="
+											width: 49px;
+											height: 100px;
+											position: absolute;
+											margin-top: 45px;
+											margin-left: -98px;
+											vertical-align: middle;
+											border: 0px;
+											font-style: normal;
+											font-variant: normal;
+											font-weight: bold;
+											/* font-stretch: normal; */
+											font-size: 30px;
+											line-height: normal;
+											font-family: Arial;
+											text-align: center;
+											color: #0073b7;
+											padding: 0px;
+											-webkit-appearance: none;
+											background: none;
+										">
+									</div>
+								</center>
+							   <div class="panel-footer">
+								  <p class="text-muted">
+									 <em class="fa fa-upload fa-fw"></em>
+									 <span>Service Level Agreement:</span>
+									 <span class="text-dark"><?php echo $sla_percentage; ?></span>
+								  </p>
+							   </div>
+                                                        </a>
 							</div>
 							<!-- END loader widget-->
 						</div>
-
+						
 			<!-- ==== TASK ACTIVITIES ===== -->
 			
                                 <div class="panel panel-default">
@@ -661,7 +734,43 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                         </div>	
                     </div>
                     
-                        <!-- End of Campaigns Monitoring -->                        
+                        <!-- End of Campaigns Monitoring -->
+			<!-- Realtime Service Level Monitoring -->
+
+                    <div class="modal fade" id="realtime_sla_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-lg modal-dialog" style="min-width: 75%">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4>Service Level Agreement Monitoring</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="responsive">
+                                    <!-- <div class="col-sm-12">-->
+                                        <table class="table table-striped table-hover" id="realtime_sla_monitoring_table" style="width: 100%">
+                                            <thead>
+                                                    <th style="color: white;">Pic</th>
+                                                    <th>Site</th>                                                    
+                                                    <th>Calls Today</th>
+                                                    <th>Answered Calls</th>                                                    
+                                                    <th>Calls Less 20s</th>
+                                                    <th>Abandon</th>
+                                                    <th>SLA</th>
+                                                    <th>AHT</th>                                                    
+                                                    <!-- <th>User Group</th> -->
+                                            </thead>
+                                            <tbody>
+                                            
+                                            </tbody>
+                                        </table>
+                                    <!--</div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>	
+                    </div>
+                    
+                        <!-- End of Realtime Service Level Monitoring -->                        
                         <!-- Agent Information -->
                         
                     <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-hidden="true"> 
@@ -1167,9 +1276,10 @@ function goGetModalUsernameValue(){
                         load_campaigns_monitoring();
                         load_agents_monitoring_summary();
                         
-        // ---- realtime agent monitoring
+        // ---- realtime monitoring
                         load_realtime_agents_monitoring();
                         load_realtime_calls_monitoring();
+                        load_realtime_sla_monitoring();
                         
         // ---- view agent information modal
                         load_view_agent_information();
@@ -1205,9 +1315,10 @@ function goGetModalUsernameValue(){
 		setInterval(load_campaigns_monitoring,10000);
 		setInterval(load_agents_monitoring_summary,5000);
 		
-		// ... realtime agents monitoring ...
+		// ... realtime monitoring ...
                 setInterval(load_realtime_agents_monitoring,3000);
                 setInterval(load_realtime_calls_monitoring,3000);
+                setInterval(load_realtime_sla_monitoring,5000);
 		
 		// ... view agent information modal  ...
 		setInterval(load_view_agent_information,3000);

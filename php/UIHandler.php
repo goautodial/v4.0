@@ -5198,11 +5198,12 @@ error_reporting(E_ERROR | E_PARSE);
 		 * [[API: Function]] - goGetDroppedPercentage
 		 * This application is used to get dropped call percentage.
 		*/
-		public function API_goGetDroppedPercentage() {
+            public function API_goGetDroppedPercentage() {
 		$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass;
 		$postfields["goAction"] = "goGetDroppedPercentage"; #action performed by the [[API:Functions]]
+                $postfields["responsetype"] = responsetype;
 
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);
@@ -5212,28 +5213,39 @@ error_reporting(E_ERROR | E_PARSE);
 		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		 $data = curl_exec($ch);
 		 curl_close($ch);
-			
-		$data = explode(";",$data);
-		foreach ($data AS $temp) {
-		  $temp = explode("=",$temp);
-		  $results[$temp[0]] = $temp[1];
-		}
+                
+		 $output = json_decode($data);
+		 
+		 return $output;
 		
-		if ($results["result"]=="success") {
-		# Result was OK!
-		//var_dump($results); #to see the returned arrays.
-			 if($results["getDroppedPercentage"] != ""){
-				return $results["getDroppedPercentage"];
-			 }else{
-				$vars = 0;
-				return $vars;
-			 }
-		}else{
-				$vars = 0;
-				return $vars;
-		}
+            }
+            
+		/*
+		 * Display SLA Percentage
+		 * [[API: Function]] - goGetSLAPercentage
+		 * This application is used to get dropped call percentage.
+		*/
+            public function API_goGetSLAPercentage() {
+		$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass;
+		$postfields["goAction"] = "goGetSLAPercentage"; #action performed by the [[API:Functions]]
+                $postfields["responsetype"] = responsetype;
+
+		 $ch = curl_init();
+		 curl_setopt($ch, CURLOPT_URL, $url);
+		 curl_setopt($ch, CURLOPT_POST, 1);
+		 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		 $data = curl_exec($ch);
+		 curl_close($ch);
+                
+		 $output = json_decode($data);
+		 
+		 return $output;
 		
-	}
+            }            
 	
 	/*
 	 * Displaying Cluster Status

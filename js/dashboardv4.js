@@ -212,7 +212,39 @@
                 table.fnProcessingIndicator();
         } 
     });
-    }    
+    } 
+    
+    function load_realtime_sla_monitoring(){
+    $.ajax({
+        url: "./php/APIs/API_GetRealtimeSLAMonitoring.php",
+        cache: false,
+        dataType: 'json',
+        success: function(values){
+            //$("#refresh_realtime_agents_monitoring").html(values);
+                var JSONStringrealtimesla = values;
+                var JSONObjectrealtimesla = JSON.parse(JSONStringrealtimesla);
+                //console.log(JSONStringrealtimesla);
+                //console.log(JSONObjectrealtimesla); 
+                var table = $('#realtime_sla_monitoring_table').dataTable({ 
+                                data:JSONObjectrealtimesla,
+                                "destroy":true,
+                                //"searching": false,
+                                stateSave: true,
+                                drawCallback: function(settings) {
+                                    var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                                    pagination.toggle(this.api().page.info().pages > 1);
+                                },
+                                "columnDefs": [
+                                    {
+                                        className: "hidden-xs", 
+                                        "targets": [ 1,2,3, 4 ] 
+                                    }
+                                ]
+                });
+                goAvatar._init(goOptions);
+        } 
+    });
+    }     
 
 /*
 * Agents status box 
