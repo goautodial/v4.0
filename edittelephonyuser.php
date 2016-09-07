@@ -306,9 +306,6 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 									   	<!-- ADVANCED SETTINGS -->
 									   	<div id="tab_2" class="tab-pane fade in">
-							       			<input type="hidden" name="agent_choose_blended" value="0">
-							       			<input type="hidden" name="scheduled_callbacks" value="1">
-							       			<input type="hidden" name="agent_call_manual" value="1">
 
 							       			<fieldset>
 							       				<div class="form-group mt">
@@ -323,7 +320,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 																$hotkeys .= '<option value="0" > Active </option>';
 															}
 															
-															if($output->data->hotkeys_active == "1" || $output->data->hotkeys_active == NULL){
+															if($output->data->hotkeys_active == "1"){
 																$hotkeys .= '<option value="1" selected> Inactive </option>';
 															}else{
 																$hotkeys .= '<option value="1" > Inactive </option>';
@@ -334,18 +331,64 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="agent_recordings" class="col-sm-3 control-label">Agent Recordings</label>
+													<label for="vicidial_recording_override" class="col-sm-3 control-label">Agent Recordings</label>
 													<div class="col-sm-9 mb">
-														<select class="form-control" name="agent_recordings" id="agent_recordings">
-															<option value="0"> 0 </option>
+														<select class="form-control" name="vicidial_recording_override" id="vicidial_recording_override">
+															<?php
+																$agents_recordings = NULL;
+																if($output->data->vicidial_recording_override == "DISABLED"){
+																	$agents_recordings .= '<option value="DISABLED" selected> DISABLED </option>';
+																}else{
+																	$agents_recordings .= '<option value="DISABLED" > DISABLED </option>';
+																}
+																
+																if($output->data->vicidial_recording_override == "NEVER"){
+																	$agents_recordings .= '<option value="NEVER" selected> NEVER </option>';
+																}else{
+																	$agents_recordings .= '<option value="NEVER" > NEVER </option>';
+																}
+
+																if($output->data->vicidial_recording_override == "ONDEMAND"){
+																	$agents_recordings .= '<option value="ONDEMAND" selected> ONDEMAND </option>';
+																}else{
+																	$agents_recordings .= '<option value="ONDEMAND" > ONDEMAND </option>';
+																}
+
+																if($output->data->vicidial_recording_override == "ALLCALLS"){
+																	$agents_recordings .= '<option value="ALLCALLS" selected> ALLCALLS </option>';
+																}else{
+																	$agents_recordings .= '<option value="ALLCALLS" > ALLCALLS </option>';
+																}
+
+																if($output->data->vicidial_recording_override == "ALLFORCE"){
+																	$agents_recordings .= '<option value="ALLFORCE" selected> ALLFORCE </option>';
+																}else{
+																	$agents_recordings .= '<option value="ALLFORCE" > ALLFORCE </option>';
+																}
+																echo $agents_recordings;
+															?>
 														</select>
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="agent_transfers" class="col-sm-3 control-label">Agent Transfers</label>
+													<label for="vicidial_transfers" class="col-sm-3 control-label">Agent Transfers</label>
 													<div class="col-sm-9 mb">
-														<select class="form-control" name="agent_transfers" id="agent_transfers">
-															<option value="1"> 1 </option>
+														<select class="form-control" name="vicidial_transfers" id="vicidial_transfers">
+															<?php
+																$vicidial_transfers = NULL;
+																if($output->data->vicidial_transfers == "0"){
+																	$vicidial_transfers .= '<option value="0" selected> NO </option>';
+																}else{
+																	$vicidial_transfers .= '<option value="0" > NO </option>';
+																}
+																
+																if($output->data->vicidial_transfers == "1"){
+																	$vicidial_transfers .= '<option value="1" selected> YES </option>';
+																}else{
+																	$vicidial_transfers .= '<option value="1" > YES </option>';
+																}
+																echo $vicidial_transfers;
+															?>
 														</select>
 													</div>
 												</div>
@@ -353,7 +396,87 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<label for="closer_default_blended" class="col-sm-3 control-label">Closer Default Blended</label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="closer_default_blended" id="closer_default_blended">
-															<option value="1"> 1 </option>
+															<?php
+																$closer_default_blended = NULL;
+																if($output->data->closer_default_blended == "0"){
+																	$closer_default_blended .= '<option value="0" selected> NO </option>';
+																}else{
+																	$closer_default_blended .= '<option value="0" > NO </option>';
+																}
+																
+																if($output->data->closer_default_blended == "1" ){
+																	$closer_default_blended .= '<option value="1" selected> YES </option>';
+																}else{
+																	$closer_default_blended .= '<option value="1" > YES </option>';
+																}
+																echo $closer_default_blended;
+															?>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="agentcall_manual" class="col-sm-3 control-label">Agent Call Manual</label>
+													<div class="col-sm-9 mb">
+														<select class="form-control" name="agentcall_manual" id="agentcall_manual">
+															<?php
+																$agentcall_manual = NULL;
+																if($output->data->agentcall_manual == "0"){
+																	$agentcall_manual .= '<option value="0" selected> NO </option>';
+																}else{
+																	$agentcall_manual .= '<option value="0" > NO </option>';
+																}
+																
+																if($output->data->agentcall_manual == "1" ){
+																	$agentcall_manual .= '<option value="1" selected> YES </option>';
+																}else{
+																	$agentcall_manual .= '<option value="1" > YES </option>';
+																}
+																echo $agentcall_manual;
+															?>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="scheduled_callbacks" class="col-sm-3 control-label">Scheduled Callbacks</label>
+													<div class="col-sm-9 mb">
+														<select class="form-control" name="scheduled_callbacks" id="scheduled_callbacks">
+															<?php
+																$scheduled_callbacks = NULL;
+																if($output->data->scheduled_callbacks == "0"){
+																	$scheduled_callbacks .= '<option value="0" selected> NO </option>';
+																}else{
+																	$scheduled_callbacks .= '<option value="0" > NO </option>';
+																}
+																
+																if($output->data->scheduled_callbacks == "1" ){
+																	$scheduled_callbacks .= '<option value="1" selected> YES </option>';
+																}else{
+																	$scheduled_callbacks .= '<option value="1" > YES </option>';
+																}
+																echo $scheduled_callbacks;
+															?>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="agentonly_callbacks" class="col-sm-3 control-label">Agent-Only Callbacks</label>
+													<div class="col-sm-9 mb">
+														<select class="form-control" name="agentonly_callbacks" id="agentonly_callbacks">
+															<?php
+																$agentonly_callbacks = NULL;
+																if($output->data->agentonly_callbacks == "0"){
+																	$agentonly_callbacks .= '<option value="0" selected> NO </option>';
+																}else{
+																	$agentonly_callbacks .= '<option value="0" > NO </option>';
+																}
+																
+																if($output->data->agentonly_callbacks == "1" ){
+																	$agentonly_callbacks .= '<option value="1" selected> YES </option>';
+																}else{
+																	$agentonly_callbacks .= '<option value="1" > YES </option>';
+																}
+																echo $agentonly_callbacks;
+															?>
 														</select>
 													</div>
 												</div>
@@ -386,15 +509,15 @@ $user_groups = $ui->API_goGetUserGroupsList();
 															<?php
 																$choose_ingroup = NULL;
 																if($output->data->agent_choose_ingroups == "1"){
-																	$choose_ingroup .= '<option value="1" selected> 1 </option>';
+																	$choose_ingroup .= '<option value="1" selected> YES </option>';
 																}else{
-																	$choose_ingroup .= '<option value="1" > 1 </option>';
+																	$choose_ingroup .= '<option value="1" > YES </option>';
 																}
 																
 																if($output->data->agent_choose_ingroups == "0" || $output->data->agent_choose_ingroups == NULL){
-																	$choose_ingroup .= '<option value="0" selected> 0 </option>';
+																	$choose_ingroup .= '<option value="0" selected> NO </option>';
 																}else{
-																	$choose_ingroup .= '<option value="0" > 0 </option>';
+																	$choose_ingroup .= '<option value="0" > NO </option>';
 																}
 																echo $choose_ingroup;
 															?>

@@ -77,6 +77,31 @@ if ($validated == 1) {
 		$agent_choose_ingroups = stripslashes($agent_choose_ingroups);
 	}
 
+	$vicidial_recording_override = NULL; if (isset($_POST["vicidial_recording_override"])) { 
+		$vicidial_recording_override = $_POST["vicidial_recording_override"]; 
+		$vicidial_recording_override = stripslashes($vicidial_recording_override);
+	}
+	$vicidial_transfers = NULL; if (isset($_POST["vicidial_transfers"])) { 
+		$vicidial_transfers = $_POST["vicidial_transfers"]; 
+		$vicidial_transfers = stripslashes($vicidial_transfers);
+	}
+	$closer_default_blended = NULL; if (isset($_POST["closer_default_blended"])) { 
+		$closer_default_blended = $_POST["closer_default_blended"]; 
+		$closer_default_blended = stripslashes($closer_default_blended);
+	}
+	$agentcall_manual = NULL; if (isset($_POST["agentcall_manual"])) { 
+		$agentcall_manual = $_POST["agentcall_manual"]; 
+		$agentcall_manual = stripslashes($agentcall_manual);
+	}
+	$scheduled_callbacks = NULL; if (isset($_POST["scheduled_callbacks"])) { 
+		$scheduled_callbacks = $_POST["scheduled_callbacks"]; 
+		$scheduled_callbacks = stripslashes($scheduled_callbacks);
+	}
+	$agentonly_callbacks = NULL; if (isset($_POST["agentonly_callbacks"])) { 
+		$agentonly_callbacks = $_POST["agentonly_callbacks"]; 
+		$agentonly_callbacks = stripslashes($agentonly_callbacks);
+	}
+
 	$url = gourl."/goUsers/goAPI.php"; # URL to GoAutoDial API file
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -96,11 +121,30 @@ if ($validated == 1) {
     $postfields["phone_pass"] = $phone_pass;
     $postfields["hotkeys_active"] = $hotkeys_active;
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+
     if (isset($_POST["api_access"])) { 
     	$postfields["vdc_agent_api_access"] = $vdc_agent_api_access;
 	}
 	if (isset($_POST["choose_ingroup"])) { 
     	$postfields["agent_choose_ingroups"] = $agent_choose_ingroups;
+	}
+	if (isset($_POST["vicidial_recording_override"])) { 
+    	$postfields["vicidial_recording_override"] = $vicidial_recording_override;
+	}
+	if (isset($_POST["vicidial_transfers"])) { 
+    	$postfields["vicidial_transfers"] = $vicidial_transfers;
+	}
+	if (isset($_POST["closer_default_blended"])) { 
+    	$postfields["closer_default_blended"] = $closer_default_blended;
+	}
+	if (isset($_POST["agentcall_manual"])) { 
+    	$postfields["agentcall_manual"] = $agentcall_manual;
+	}
+	if (isset($_POST["scheduled_callbacks"])) { 
+    	$postfields["scheduled_callbacks"] = $scheduled_callbacks;
+	}
+	if (isset($_POST["agentonly_callbacks"])) { 
+    	$postfields["agentonly_callbacks"] = $agentonly_callbacks;
 	}
 
     $ch = curl_init();
