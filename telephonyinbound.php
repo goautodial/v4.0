@@ -37,13 +37,7 @@
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-        
-        <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			})
-		</script>
-
+     
     </head>
     
     <?php print $ui->creamyBody(); ?>
@@ -118,7 +112,7 @@
 								<table class="table table-striped table-bordered table-hover" id="table_ingroup">
 								   <thead>
 									  <tr>
-                                                                                 <th style="color: white;">Pic</th>
+                                         <th style="color: white;">Pic</th>
 										 <th>In-Group</th>
 										 <th class='hide-on-low hide-on-medium'>Descriptions</th>
 										 <th class='hide-on-low hide-on-medium'>Priority</th>
@@ -141,7 +135,7 @@
 
 									   	?>	
 											<tr>
-                                                                                                <td><avatar username='<?php echo $ingroup->group_name[$i];?>' :size='36'></avatar></td>
+                                                <td><avatar username='<?php echo $ingroup->group_name[$i];?>' :size='36'></avatar></td>
 												<td><strong><a class='edit-ingroup' data-id="<?php echo $ingroup->group_id[$i];?>"><?php echo $ingroup->group_id[$i];?></a></strong></td>
 												<td class='hide-on-low hide-on-medium'><?php echo $ingroup->group_name[$i];?></td>
 												<td class='hide-on-low hide-on-medium'><?php echo $ingroup->queue_priority[$i];?></td>
@@ -161,7 +155,7 @@
 								<table class="table table-striped table-bordered table-hover" id="table_ivr">
 								   <thead>
 									  <tr>
-                                                                                 <th style="color: white;">Pic</th>
+                                         <th style="color: white;">Pic</th>
 										 <th>Menu ID</th>
 										 <th class='hide-on-medium hide-on-low'>Descriptions</th>
 										 <th class='hide-on-medium hide-on-low'>Prompt</th>
@@ -196,7 +190,7 @@
 								<table class="table table-striped table-bordered table-hover" id="table_did">
 								   <thead>
 									  <tr>
-                                                                                 <th style="color: white;">Pic</th>
+                                         <th style="color: white;">Pic</th>
 										 <th>Phone Numbers</th>
 										 <th class='hide-on-medium hide-on-low'>Description</th>
 										 <th class='hide-on-medium hide-on-low'>Status</th>
@@ -225,7 +219,7 @@
 
 									   	?>	
 											<tr>
-                                                                                                <td><avatar username='<?php echo $phonenumber->did_description[$i];?>' :size='36'></avatar></td>
+                                                <td><avatar username='<?php echo $phonenumber->did_description[$i];?>' :size='36'></avatar></td>
 												<td><strong><a class='edit-phonenumber' data-id="<?php echo $phonenumber->did_id[$i];?>"><?php echo $phonenumber->did_pattern[$i];?></a></strong></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->did_description[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->active[$i];?></td>
@@ -255,7 +249,7 @@
 							<div class="fab-div-area" id="fab-div-area">
 								<ul class="fab-ul" style="height: 250px;">
 									<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_ingroups" title="Create an Ingroup"></a></li><br/>
-									<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#add_ivr" title="Add an Interactive Voice Recording"></a></li><br/>
+									<li class="li-style"><a class="fa fa-volume-control-phone fab-div-item" data-toggle="modal" aria-hidden="true" data-target="#add_ivr" title="Add an Interactive Voice Recording"></a></li><br/>
 									<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers" title="Add a Phone Number / DID / TFN"> </a></li>
 								</ul>
 							</div>
@@ -291,10 +285,10 @@
 
 			<!-- Header -->
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title animated bounceInRight" id="ingroup_modal">
 						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create ingroups."></i> 
 						<b>In-Group Wizard » Create New Ingroup</b>
+						<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
 				<div class="modal-body wizard-content">
@@ -451,12 +445,11 @@
 		<div class="modal fade" id="add_ivr" tabindex="-1" aria-labelledby="ivr_modal" >
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-					
-				<div class="modal-header">					
-					<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
+				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="ivr_modal">
 						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create IVR."></i> 
 						<b>Call Menu Wizard » Create New Call Menu</b>
+						<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
@@ -655,10 +648,10 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title animated bounceInRight" id="did_modal">
 						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create DID/TFN."></i> 
 						<b>DID Wizard » Create new DID</b>
+						<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
 				<div class="modal-body wizard-content">

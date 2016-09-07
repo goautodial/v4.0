@@ -104,7 +104,7 @@
 
 							<!--==== Voicefiles ====-->
 							<div id="voicefiles_tab" role="tabpanel" class="tab-pane active">
-								<?php print $ui->getListAllVoiceFiles(); ?>
+								<?php echo $_SESSION['use_webrtc'];print $ui->getListAllVoiceFiles(); ?>
 							</div>
 
 						</div><!-- END tab content-->
@@ -212,8 +212,10 @@
 
             <!-- Header -->
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title animated bounceInRight"><b>Music On Hold Wizard » Add New Music On Hold</b></h4>
+                    <h4 class="modal-title animated bounceInRight">
+                    	<b>Music On Hold Wizard » Add New Music On Hold</b>
+                    	<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
+                    </h4>
                 </div>
                 <div class="modal-body wizard-content">
 
@@ -315,8 +317,10 @@
 	    <!-- Modal content-->
 	    <div class="modal-content">
 	      	<div class="modal-header">
-	        	<button type="button" class="close" data-dismiss="modal">&times;</button>
-	       		<h4 class="modal-title animated bounceInRight"><b>Upload Voice Files</b></h4>
+	       		<h4 class="modal-title animated bounceInRight">
+	       			<b>Upload Voice Files</b>
+	       			<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
+	       		</h4>
 	      	</div>
 		    <div class="modal-body clearfix">
 		        <form action="./php/AddVoiceFiles.php" method="POST" id="voicefile_form" enctype="multipart/form-data">

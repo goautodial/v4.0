@@ -5614,7 +5614,7 @@ error_reporting(E_ERROR | E_PARSE);
     	$css .= '<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />'; // circle buttons css
 		$css .= '<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />'; // ionicons
 		$css .= '<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />'; // bootstrap3 css
-		$css .= '<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">'; // font-awesome css
+		$css .= '<link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">'; // font-awesome css
 		$css .= '<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">'; // animate css
 		//$css .= '<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css 
 		$css .= '<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">'; // app css
