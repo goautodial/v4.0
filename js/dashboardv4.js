@@ -234,6 +234,14 @@
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                                     pagination.toggle(this.api().page.info().pages > 1);
                                 },
+                                "oLanguage": {
+                                        "sLengthMenu": "",
+                                        "sEmptyTable": "No Data Available",
+                                        "oPaginate": {
+                                            "sPrevious": "Prev",
+                                            "sNext": "Next"
+                                        }
+                                },                                
                                 "columnDefs": [
                                     {
                                         className: "hidden-xs", 

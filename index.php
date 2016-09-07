@@ -750,10 +750,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                         <table class="table table-striped table-hover" id="realtime_sla_monitoring_table" style="width: 100%">
                                             <thead>
                                                     <th style="color: white;">Pic</th>
-                                                    <th>Site</th>                                                    
+                                                    <th>User Groups</th>                                                    
                                                     <th>Calls Today</th>
                                                     <th>Answered Calls</th>                                                    
-                                                    <th>Calls Less 20s</th>
+                                                    <th>Ans Calls Less 20s</th>
                                                     <th>Abandon</th>
                                                     <th>SLA</th>
                                                     <th>AHT</th>                                                    
@@ -1318,7 +1318,7 @@ function goGetModalUsernameValue(){
 		// ... realtime monitoring ...
                 setInterval(load_realtime_agents_monitoring,3000);
                 setInterval(load_realtime_calls_monitoring,3000);
-                setInterval(load_realtime_sla_monitoring,5000);
+                setInterval(load_realtime_sla_monitoring,3000);
 		
 		// ... view agent information modal  ...
 		setInterval(load_view_agent_information,3000);
