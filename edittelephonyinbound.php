@@ -937,7 +937,7 @@ if (isset($_POST["did"])) {
                 <section class="content">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<legend>MODIFY DID RECORD : <u><?php echo $output->did_id[$i];?></u></legend>
+							<legend>MODIFY DID RECORD : <u><?php echo $output->did_pattern[$i];?></u></legend>
 								
 								<form id="modifydid">
 
@@ -1521,8 +1521,8 @@ if (isset($_POST["did"])) {
 							    	idgroup: groupID
 							    },
 								success: function(data) {
-									$('#submit_button').html("<i class='fa fa-check'></i> Submit");
-	                				$('#submit_button').prop("disabled", false)
+									$('#submit_agent_rank').html("<i class='fa fa-check'></i> Submit");
+	                				$('#submit_agent_rank').prop("disabled", false)
 									console.log(data);
 									if(data == "success"){
 										swal("Success!", "Agent Rank for this inbound Successfully Updated!", "success");

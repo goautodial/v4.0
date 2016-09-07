@@ -47,11 +47,6 @@
         <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
 		<script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
-        <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			})
-		</script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -113,8 +108,10 @@
 	    <!-- Modal content-->
 	    <div class="modal-content">
 	      	<div class="modal-header">
-	        	<button type="button" class="close" data-dismiss="modal">&times;</button>
-	       		<h4 class="modal-title animated bounceInRight"><b>Call Time Wizard » Add New Call Time</b></h4>
+	       		<h4 class="modal-title animated bounceInRight">
+	       			<b>Call Time Wizard » Add New Call Time</b>
+	       			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	       		</h4>
 	      	</div>
 	      	<div class="modal-body">
 				<form id="form_calltimes">

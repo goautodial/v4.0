@@ -45,11 +45,6 @@
 	    <!-- Bootstrap Player -->
 	    <script src="js/bootstrap-player.js" type="text/javascript"></script>
 
-        <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			})
-		</script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">

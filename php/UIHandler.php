@@ -3428,6 +3428,31 @@ error_reporting(E_ERROR | E_PARSE);
 		
 	}
 	
+	public function API_goGetAllAgentRank($user_id, $group_id) {
+		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "goGetAllAgentRank"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["user_id"] = $user_id;
+		$postfields["group_id"] = $group_id;
+		//$postfields["goVarLimit"] = 10;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);		
+		curl_setopt($ch, CURLOPT_POST, 1);		
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);		
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);		
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);		
+		$data = curl_exec($ch);
+		curl_close($ch);		
+		$output = json_decode($data);		 
+		
+		return $output;
+		
+	}
+
 	/*
 	 *
 	 * SETTINGS MENU
@@ -5589,7 +5614,7 @@ error_reporting(E_ERROR | E_PARSE);
     	$css .= '<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />'; // circle buttons css
 		$css .= '<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />'; // ionicons
 		$css .= '<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />'; // bootstrap3 css
-		$css .= '<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">'; // font-awesome css
+		$css .= '<link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">'; // font-awesome css
 		$css .= '<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">'; // animate css
 		//$css .= '<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css 
 		$css .= '<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">'; // app css

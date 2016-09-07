@@ -34,11 +34,6 @@
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
-        <script type="text/javascript">
-            $(window).ready(function() {
-                $(".preloader").fadeOut("slow");
-            })
-        </script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -98,8 +93,10 @@
 
                 <!-- Header -->
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title animated bounceInRight" id="ingroup_modal"><b>Voice Mail Wizard » Add New Voice Mail</b></h4>
+                        <h4 class="modal-title animated bounceInRight" id="ingroup_modal">
+                            <b>Voice Mail Wizard » Add New Voice Mail</b>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </h4>
                     </div>
                     <div class="modal-body">
                     
