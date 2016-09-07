@@ -622,7 +622,8 @@ $disposition = $ui->API_getAllDispositions();
 							    	state : state_filter_val
 							    },
 								success: function(data) {
-
+									$('#search_button').text("Search");
+	                				$('#search_button').prop("disabled", false);
 									console.log(data);
 
 									if(data != ""){
@@ -658,7 +659,8 @@ $disposition = $ui->API_getAllDispositions();
 							    	state : state_filter_val
 							    },
 								success: function(data) {
-
+									$('#search_button').text("Search");
+	                				$('#search_button').prop("disabled", false);
 									console.log(data);
 
 									if(data != ""){
@@ -701,7 +703,8 @@ $disposition = $ui->API_getAllDispositions();
 							    	state : state_filter_val
 							    },
 								success: function(data) {
-
+									$('#search_button').text("Search");
+	                				$('#search_button').prop("disabled", false);
 									console.log(data);
 
 									if(data != ""){
@@ -742,7 +745,8 @@ $disposition = $ui->API_getAllDispositions();
 							    	state : state_filter_val
 							    },
 								success: function(data) {
-
+									$('#search_button').text("Search");
+	                				$('#search_button').prop("disabled", false);
 									console.log(data);
 
 									if(data != ""){
@@ -783,7 +787,8 @@ $disposition = $ui->API_getAllDispositions();
 							    	state : state_filter_val
 							    },
 								success: function(data) {
-
+									$('#search_button').text("Search");
+	                				$('#search_button').prop("disabled", false);
 									console.log(data);
 
 									if(data != ""){
@@ -847,6 +852,8 @@ $disposition = $ui->API_getAllDispositions();
 							    	agent_filter : agent_filter_val
 							    },
 								success: function(data) {
+									$('#search_button').text("Search");
+	                				$('#search_button').prop("disabled", false);
 									console.log(data);
 									if(data != ""){
 										$('#table_callrecordings').html(data);
@@ -874,6 +881,8 @@ $disposition = $ui->API_getAllDispositions();
 							    	agent_filter : agent_filter_val
 							    },
 								success: function(data) {
+									$('#search_button').text("Search");
+	                				$('#search_button').prop("disabled", false);
 									console.log(data);
 									if(data != ""){
 										$('#table_callrecordings').html(data);
@@ -984,6 +993,8 @@ $disposition = $ui->API_getAllDispositions();
 								    	agent_filter : agent_filter_val
 								    },
 									success: function(data) {
+										$('#search_button').text("Search");
+	                					$('#search_button').prop("disabled", false);
 										console.log(data);
 										if(data != ""){
 											$('#table_callrecordings').html(data);

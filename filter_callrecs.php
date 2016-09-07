@@ -8,8 +8,17 @@ $user = \creamy\CreamyUser::currentUser();
 
 if($_POST['start_filterdate'] != "" && $_POST['end_filterdate'] != "" && $_POST['agent_filter'] == ""){ // if agent filter is empty
 
-  $start =  date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));
-  $end = date('Y-m-d H:i:s', strtotime($_POST['end_filterdate']));
+  if($_POST['start_filterdate'] != ""){
+    $start = date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));
+  }else{
+    $start = "";
+  }
+
+  if($_POST['start_filterdate'] != ""){
+    $end = date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));
+  }else{
+    $end = "";
+  }
 
   if($_POST['search_recordings'] != ""){
     $output = $ui->getListAllRecordings($_POST['search_recordings'], $start, $end);
@@ -31,8 +40,17 @@ if($_POST['start_filterdate'] != "" && $_POST['end_filterdate'] != "" && $_POST[
 
 }else if($_POST['start_filterdate'] != "" && $_POST['end_filterdate'] != "" && $_POST['agent_filter'] != ""){ // if all posts are not empty
 
-  $start =  date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));
-  $end = date('Y-m-d H:i:s', strtotime($_POST['end_filterdate']));
+  if($_POST['start_filterdate'] != ""){
+    $start = date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));
+  }else{
+    $start = "";
+  }
+
+  if($_POST['start_filterdate'] != ""){
+    $end = date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));
+  }else{
+    $end = "";
+  }
 
     if($_POST['search_recordings'] != ""){
       $output = $ui->getListAllRecordings($_POST['search_recordings'], $start, $end, $_POST['agent_filter']);

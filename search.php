@@ -22,11 +22,19 @@ if(isset($_POST['search_recordings'])){
   }
 
   if(isset($_POST['start_filterdate'])){
-    $start = date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));;
+    if($_POST['start_filterdate'] != ""){
+      $start = date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));
+    }else{
+      $start = "";
+    }
   }
 
   if(isset($_POST['end_filterdate'])){
-    $end = date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));;
+    if($_POST['start_filterdate'] != ""){
+      $end = date('Y-m-d H:i:s', strtotime($_POST['start_filterdate']));
+    }else{
+      $end = "";
+    }
   }
 
   $table_list = $ui->getListAllRecordings($_POST['search_recordings'], $start, $end, $agent_filter);

@@ -3782,7 +3782,10 @@ error_reporting(E_ERROR | E_PARSE);
 	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
 	    $postfields["requestDataPhone"] = $search_phone; 
+
+	    if(isset($start_filterdate))
 	    $postfields["start_filterdate"] = $start_filterdate;
+		
 	    $postfields["end_filterdate"] = $end_filterdate;
 	    $postfields["agent_filter"] = $agent_filter;
 	    

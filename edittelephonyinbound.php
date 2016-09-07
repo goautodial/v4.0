@@ -555,22 +555,18 @@ if (isset($_POST["did"])) {
 												?>
 										   </tbody>
 										</table>
+								</form>
 										<fieldset class="footer-buttons">
 					                        <div class="box-footer">
 					                           <div class="col-sm-3 pull-right">
 														<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 					                           	
-					                                	<button type="submit" class="btn btn-primary" id="submit_agent_rank" href=""> <span id="submit_button"><i class="fa fa-check"></i> Submit</span></button>
+					                                	<a type="button" class="btn btn-primary" id="submit_agent_rank" data-id="<?php echo $groupid;?>"> <span id="submit_button"><i class="fa fa-check"></i> Submit</span></a>
 													
 					                           </div>
 					                        </div>
 					                    </fieldset>
 									</div>
-								</form>
-									<!-- FOOTER BUTTONS -->
-								   	<div id="modifyINGROUPresult"></div>
-								   	
-
 								</div><!-- END tab content-->
 							</div><!-- END of tabpanel -->
 							
@@ -975,15 +971,15 @@ if (isset($_POST["did"])) {
 												<?php
 													$status = NULL;
 													if($output->active[$i] == "Y"){
-														$status .= '<option value="Y" selected> YES </option>';
+														$status .= '<option value="Y" selected> Active </option>';
 													}else{
-														$status .= '<option value="Y" > YES </option>';
+														$status .= '<option value="Y" > Active </option>';
 													}
 													
 													if($output->active[$i] == "N" || $output->active[$i] == NULL){
-														$status .= '<option value="N" selected> NO </option>';
+														$status .= '<option value="N" selected> Inactive </option>';
 													}else{
-														$status .= '<option value="N" > NO </option>';
+														$status .= '<option value="N" > Inactive </option>';
 													}
 													echo $status;
 												?>
@@ -1437,8 +1433,33 @@ if (isset($_POST["did"])) {
 				
 				// agent rank form submit
 				$('#submit_agent_rank').click(function(){
-					var id = $(this).attr('data-id');
-					checkdatas(id);
+					var groupID = $(this).attr('data-id');
+					var itemdatas = $('#agentrankform').serialize();
+
+	                $('input:checkbox[id^="CHECK"]').each(function() {
+                        if (!this.checked) {
+                                itemdatas += '&'+this.name+'=NO';
+                        }
+	                });
+	                
+	                $.ajax({
+					    url: "php/ModifyAgentRank.php",
+					    type: 'POST',
+					    data: {
+					    	itemrank: itemdatas,
+					    	idgroup: groupID
+					    },
+						success: function(data) {
+							$('#submit_agent_rank').html("<i class='fa fa-check'></i> Submit");
+            				$('#submit_agent_rank').prop("disabled", false)
+							console.log(data);
+							if(data == "success"){
+								swal("Success!", "Agent Rank for this inbound Successfully Updated!", "success");
+							}else{
+								sweetAlert("Oops...", "Something went wrong! "+data, "error");
+							}
+						}
+					});
 				});
 
 				//IVR
@@ -1505,33 +1526,33 @@ if (isset($_POST["did"])) {
 			});
 
 			function checkdatas(groupID) {
-			        if (groupID != undefined) {
-			                var itemdatas = $('#agentrankform').serialize();
-			                $('input:checkbox[id^="CHECK"]').each(function() {
-			                        if (!this.checked) {
-			                                itemdatas += '&'+this.name+'=NO';
-			                        }
-			                });
-			                
-			                $.ajax({
-							    url: "php/ModifyAgentRank.php",
-							    type: 'POST',
-							    data: {
-							    	itemrank: itemdatas,
-							    	idgroup: groupID
-							    },
-								success: function(data) {
-									$('#submit_agent_rank').html("<i class='fa fa-check'></i> Submit");
-	                				$('#submit_agent_rank').prop("disabled", false)
-									console.log(data);
-									if(data == "success"){
-										swal("Success!", "Agent Rank for this inbound Successfully Updated!", "success");
-									}else{
-										sweetAlert("Oops...", "Something went wrong! "+data, "error");
-									}
+		        if (groupID != undefined) {
+		                var itemdatas = $('#agentrankform').serialize();
+		                $('input:checkbox[id^="CHECK"]').each(function() {
+		                        if (!this.checked) {
+		                                itemdatas += '&'+this.name+'=NO';
+		                        }
+		                });
+
+		                $.ajax({
+						    url: "php/ModifyAgentRank.php",
+						    type: 'POST',
+						    data: {
+						    	itemrank: itemdatas,
+						    	idgroup: groupID
+						    },
+							success: function(data) {
+								$('#submit_agent_rank').html("<i class='fa fa-check'></i> Submit");
+                				$('#submit_agent_rank').prop("disabled", false)
+								console.log(data);
+								if(data == "success"){
+									swal("Success!", "Agent Rank for this inbound Successfully Updated!", "success");
+								}else{
+									sweetAlert("Oops...", "Something went wrong! "+data, "error");
 								}
-							});
-			        } 
+							}
+						});
+		    	}
 			        /*else {
 			                if ($("#selectAllAgents").is(':checked'))
 			                {
@@ -1546,7 +1567,6 @@ if (isset($_POST["did"])) {
 		                        });
 			                }
 			        }*/
-			    return false;
 			}
 		</script>
 
