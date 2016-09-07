@@ -937,7 +937,7 @@ if (isset($_POST["did"])) {
                 <section class="content">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<legend>MODIFY DID RECORD : <u><?php echo $output->did_id[$i];?></u></legend>
+							<legend>MODIFY DID RECORD : <u><?php echo $output->did_pattern[$i];?></u></legend>
 								
 								<form id="modifydid">
 
