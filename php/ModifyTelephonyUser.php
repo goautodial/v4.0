@@ -72,6 +72,10 @@ if ($validated == 1) {
 		$vdc_agent_api_access = $_POST["api_access"]; 
 		$vdc_agent_api_access = stripslashes($vdc_agent_api_access);
 	}
+	$agent_choose_ingroups = NULL; if (isset($_POST["choose_ingroup"])) { 
+		$agent_choose_ingroups = $_POST["choose_ingroup"]; 
+		$agent_choose_ingroups = stripslashes($agent_choose_ingroups);
+	}
 
 	$url = gourl."/goUsers/goAPI.php"; # URL to GoAutoDial API file
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -95,7 +99,10 @@ if ($validated == 1) {
     if (isset($_POST["api_access"])) { 
     	$postfields["vdc_agent_api_access"] = $vdc_agent_api_access;
 	}
-	
+	if (isset($_POST["choose_ingroup"])) { 
+    	$postfields["agent_choose_ingroups"] = $agent_choose_ingroups;
+	}
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);

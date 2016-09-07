@@ -306,7 +306,6 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 									   	<!-- ADVANCED SETTINGS -->
 									   	<div id="tab_2" class="tab-pane fade in">
-							       			<input type="hidden" name="agent_choose_ingroup" value="0">
 							       			<input type="hidden" name="agent_choose_blended" value="0">
 							       			<input type="hidden" name="scheduled_callbacks" value="1">
 							       			<input type="hidden" name="agent_call_manual" value="1">
@@ -359,7 +358,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="api_access" class="col-sm-3 control-label">Allow API Access</label>
+													<label for="api_access" class="col-sm-3 control-label"><i class="fa fa-info-circle" title="If disabled, agent won't be able to take calls."></i> Allow API Access</label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="api_access" id="api_access">
 															<?php
@@ -376,6 +375,28 @@ $user_groups = $ui->API_goGetUserGroupsList();
 																	$api_access .= '<option value="0" > Disable </option>';
 																}
 																echo $api_access;
+															?>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="choose_ingroup" class="col-sm-3 control-label"> Agent Choose Ingroup</label>
+													<div class="col-sm-9 mb">
+														<select class="form-control" name="choose_ingroup" id="choose_ingroup">
+															<?php
+																$choose_ingroup = NULL;
+																if($output->data->agent_choose_ingroups == "1"){
+																	$choose_ingroup .= '<option value="1" selected> 1 </option>';
+																}else{
+																	$choose_ingroup .= '<option value="1" > 1 </option>';
+																}
+																
+																if($output->data->agent_choose_ingroups == "0" || $output->data->agent_choose_ingroups == NULL){
+																	$choose_ingroup .= '<option value="0" selected> 0 </option>';
+																}else{
+																	$choose_ingroup .= '<option value="0" > 0 </option>';
+																}
+																echo $choose_ingroup;
 															?>
 														</select>
 													</div>

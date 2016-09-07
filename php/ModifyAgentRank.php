@@ -1,13 +1,13 @@
 <?php
-/*ini_set('display_errors', 1);
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
+error_reporting(E_ALL);
 
 require_once('CRMDefaults.php');
 require_once('goCRMAPISettings.php');
 
 // check required fields
-$reason = "Unable to Modify User Group";
+$reason = "Unable to Modify Agent Rank";
 
 $validated = 1;
 if (!isset($_POST["idgroup"])) {
@@ -18,6 +18,7 @@ if ($validated == 1) {
     
 	// collect new user data.	
 	$modifyid = $_POST['idgroup'];
+    $itemrank = $_POST['itemrank'];
 
 	$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -25,11 +26,11 @@ if ($validated == 1) {
     $postfields["goAction"] = "goEditAgentRank"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; #json (required)
     $postfields["idgroup"] = $modifyid;
-	$postfields["itemrank"] = $group_name;
+	$postfields["itemrank"] = $itemrank;
 	
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_TIMEOUT, 100);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
