@@ -841,7 +841,7 @@ if (isset($_GET["message"])) {
 						</div><!-- /.row -->
 						
 						<!-- Profile -->
-						<div class="unwrap">
+						<div class="unwrap" style="display: none;">
 							<div style="background-image: url(img/profile-bg.jpg)" class="bg-cover">
 							   <div class="p-xl text-center text-white">
 									<span style="display:table; margin:0 auto;"><?=$ui->getVueAvatar($_SESSION['user'], $user->getUserAvatar(), 128)?></span>
