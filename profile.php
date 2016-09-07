@@ -20,15 +20,17 @@
     $lh = \creamy\LanguageHandler::getInstance();
     $user = \creamy\CreamyUser::currentUser();
     
+    $userid = $user->getUserId();
+    $userrole = $user->getUserRole();
     //$userid = NULL;
-    $userid = "1359";
-    if (isset($_POST["userid"])) {
-            $userid = $_POST["userid"];
-    }
-
-    if(isset($_POST["role"])){
-            $userrole = $_POST["role"];
-    }
+    //$userid = "1359";
+    //if (isset($_POST["userid"])) {
+    //        $userid = $_POST["userid"];
+    //}
+    //
+    //if(isset($_POST["role"])){
+    //        $userrole = $_POST["role"];
+    //}
 
     $voicemails = $ui->API_goGetVoiceMails();
     $user_groups = $ui->API_goGetUserGroupsList();
@@ -38,6 +40,7 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <title>User Profile</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <meta name="description" content="Bootstrap Admin App + jQuery">
         <meta name="keywords" content="app, responsive, jquery, bootstrap, dashboard, admin">
@@ -101,7 +104,7 @@
             $userobj = NULL;
             $errormessage = NULL;
 
-            $output = $ui->goGetUserInfo($userid, $userrole);
+            $output = $ui->goGetUserInfo($userid, "user");
             //echo ("pre");
             //print_r($output);
 
@@ -137,9 +140,9 @@
             <div class="unwrap">
                <div style="background-image: url(img/profile-bg.jpg)" class="bg-cover">
                   <div class="p-xl text-center text-white">
-                     <img src="img/avatars/demian_avatar.jpg" alt="Image" class="img-thumbnail img-circle thumb128">
-                     <h3 class="m0"><?php echo $agentname; ?></h3>
-                     <p><?php echo $agentid; ?></p>
+                     <span style="display:table; margin:0 auto; background-color: #dadada; border: 3px solid #dadada; border-radius: 50%; margin-bottom: 10px; height: 128px; width: 128px;"><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 124)?></span>
+                     <h3 class="m0"><?php echo $user->getUserName(); ?></h3>
+                     <p><?php echo $_SESSION['user']; ?></p>
                      <p>Empowering the next generation contact centers.</p>
                   </div>
                </div>
@@ -588,32 +591,34 @@
         <?php print $ui->creamyFooter();?>
     <!-- =============== VENDOR SCRIPTS ===============-->
     <!-- MODERNIZR-->
-    <script src="./vendor/modernizr/modernizr.custom.js"></script>
+    <!--<script src="./vendor/modernizr/modernizr.custom.js"></script>-->
     <!-- MATCHMEDIA POLYFILL-->
-    <script src="./vendor/matchMedia/matchMedia.js"></script>
+    <!--<script src="./vendor/matchMedia/matchMedia.js"></script>-->
     <!-- JQUERY-->
-    <script src="./vendor/jquery/dist/jquery.js"></script>
+    <!--<script src="./vendor/jquery/dist/jquery.js"></script>-->
     <!-- BOOTSTRAP-->
-    <script src="./vendor/bootstrap/dist/js/bootstrap.js"></script>
+    <!--<script src="./vendor/bootstrap/dist/js/bootstrap.js"></script>-->
     <!-- STORAGE API-->
-    <script src="./vendor/jQuery-Storage-API/jquery.storageapi.js"></script>
+    <!--<script src="./vendor/jQuery-Storage-API/jquery.storageapi.js"></script>-->
     <!-- JQUERY EASING-->
-    <script src="./vendor/jquery.easing/js/jquery.easing.js"></script>
+    <!--<script src="./vendor/jquery.easing/js/jquery.easing.js"></script>-->
     <!-- ANIMO-->
-    <script src="./vendor/animo.js/animo.js"></script>
+    <!--<script src="./vendor/animo.js/animo.js"></script>-->
     <!-- SLIMSCROLL-->
-    <script src="./vendor/slimScroll/jquery.slimscroll.min.js"></script>
+    <!--<script src="./vendor/slimScroll/jquery.slimscroll.min.js"></script>-->
     <!-- SCREENFULL-->
-    <script src="./vendor/screenfull/dist/screenfull.js"></script>
+    <!--<script src="./vendor/screenfull/dist/screenfull.js"></script>-->
     <!-- LOCALIZE-->
-    <script src="./vendor/jquery-localize-i18n/dist/jquery.localize.js"></script>
+    <!--<script src="./vendor/jquery-localize-i18n/dist/jquery.localize.js"></script>-->
     <!-- RTL demo-->
     <!-- <script src="js/demo/demo-rtl.js"></script> -->
     <!-- =============== PAGE VENDOR SCRIPTS ===============-->
     <!-- GOOGLE MAPS-->
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-    <script src="./vendor/jQuery-gMap/jquery.gmap.min.js"></script>
+    <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
+    <!--<script src="./vendor/jQuery-gMap/jquery.gmap.min.js"></script>-->
     <!-- =============== APP SCRIPTS ===============-->
-    <script src="js/app.js"></script>        
+    <!--<script src="js/app.js"></script>        -->
+        
+    <?php print $ui->standardizedThemeJS();?>
     </body>
 </html>
