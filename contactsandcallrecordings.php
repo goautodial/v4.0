@@ -168,7 +168,7 @@ $leads = $ui->API_GetLeads($user->getUserName());
 
 											   	?>
 														<tr>
-															<td><?php echo $leads->lead_id[$i];?></a></td>
+															<td><a class="edit-contact" data-id="<?php echo $leads->lead_id[$i];?>"><?php echo $leads->lead_id[$i];?></a></td>
 															<td class='hide-on-medium hide-on-low'><?php echo $leads->first_name[$i].' '.$leads->middle_initial[$i].' '.$leads->last_name[$i];?></td>
 															<td class='hide-on-medium hide-on-low'><?php echo $leads->phone_number[$i];?></td>
 															<td class='hide-on-medium hide-on-low'><?php echo $leads->status[$i];?></td>
@@ -239,14 +239,26 @@ $disposition = $ui->API_getAllDispositions();
 		                        <div class="form-group">
 		                           <label>Add Filters:</label>
 		                           <div class="mb">
-		                              	<select id="add_filters" multiple="multiple" class="select2-3 form-control" style="width:100%;">
-		                                    <option value="filter_disposition" class="contacts_filters">Disposition</option>
-		                                    <option value="filter_list" class="contacts_filters">List ID</option>
-		                                    <option value="filter_address" class="contacts_filters">Address </option>
-		                                    <option value="filter_city" class="contacts_filters">City </option>
-		                                    <option value="filter_state" class="contacts_filters">State </option>
-		                                    <option value="filter_agent" class="callrecordings_filters" disabled>Agent </option>
-		                             	</select>
+		                           		<div class="add_contact_filters">
+			                              	<select multiple="multiple" class="select2-3 form-control add_filters1" style="width:100%;">
+			                                    <option value="filter_disposition" class="contacts_filters">Disposition</option>
+			                                    <option value="filter_list" class="contacts_filters">List ID</option>
+			                                    <option value="filter_address" class="contacts_filters">Address </option>
+			                                    <option value="filter_city" class="contacts_filters">City </option>
+			                                    <option value="filter_state" class="contacts_filters">State </option>
+		                                    	<option value="filter_agent" disabled>Agent </option>
+			                             	</select>
+			                            </div>
+			                            <div class="add_callrecording_filters" style="display:none;">
+			                              	<select multiple="multiple" class="select2-3 form-control add_filters2" style="width:100%;">
+			                                    <option value="filter_disposition" class="contacts_filters" disabled>Disposition</option>
+			                                    <option value="filter_list" class="contacts_filters" disabled>List ID</option>
+			                                    <option value="filter_address" class="contacts_filters" disabled>Address </option>
+			                                    <option value="filter_city" class="contacts_filters" disabled>City </option>
+			                                    <option value="filter_state" class="contacts_filters" disabled>State </option>
+		                                    	<option value="filter_agent" class="contacts_filters" >Agent </option>
+			                             	</select>
+			                            </div>
 		                           </div>
 		                        </div>
 
@@ -257,7 +269,7 @@ $disposition = $ui->API_getAllDispositions();
 								    <div class="form-group">
 										<label>Disposition: </label>
 										<div class="mb">
-											<select name="disposition_filter" id="disposition_filter" class="form-control">
+											<select name="disposition_filter" id="disposition_filter" class="form-control select2-3" style="width:100%;">
 													<option value="">- - - NO DISPOSITION SELECTED - - -</option>
 												<?php
 												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
@@ -344,6 +356,21 @@ $disposition = $ui->API_getAllDispositions();
 							<!-- CALL RECORDINGS FILTER -->
 		                    <div class="all_callrecording_filters">
 		                        <div class="callrecordings_filter_div" style="display:none;">
+		                        	<div class="agent_filter_div" style="display:none;">
+										<div class="form-group">
+											<label>Agent: </label>
+											<div class="mb">
+												<select name="agent_filter" id="agent_filter" class="form-control">
+													<option value="" selected DISABLED> -- SELECT AN AGENT -- </option>
+													<?php
+														for($i=0; $i < count($agents->user_id);$i++){
+															echo "<option value='".$agents->userno[$i]."'> ".$agents->full_name[$i]." </option>";
+														}
+													?>
+												</select>
+											</div>
+										</div>
+									</div>
 		               				<div class="form-group">
 			               				<label>Start Date:</label>
 							            <div class="form-group">
@@ -368,23 +395,6 @@ $disposition = $ui->API_getAllDispositions();
 							                </div>
 							            </div>
 								    </div>
-								</div>
-
-
-								<div class="agent_filter_div" style="display:none;">
-									<div class="form-group">
-										<label>Agent: </label>
-										<div class="mb">
-											<select name="agent_filter" id="agent_filter" class="form-control">
-												<option value="" selected DISABLED> -- SELECT AN AGENT -- </option>
-												<?php
-													for($i=0; $i < count($agents->user_id);$i++){
-														echo "<option value='".$agents->userno[$i]."'> ".$agents->full_name[$i]." </option>";
-													}
-												?>
-											</select>
-										</div>
-									</div>
 								</div>
 							</div>
 
@@ -417,10 +427,11 @@ $disposition = $ui->API_getAllDispositions();
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 
-	<!-- FIXED ACTION BUTTON -->
+	<!-- FIXED ACTION BUTTON 
 	<div class="action-button-circle" data-toggle="modal" data-target="#list-modal">
 		<?php print $ui->getCircleButton("list_and_call_recording", "plus"); ?>
 	</div>
+	-->
 
 	<!-- Modal -->
 	<div id="call-playback-modal" class="modal fade" role="dialog">
@@ -480,7 +491,7 @@ $disposition = $ui->API_getAllDispositions();
                 });
 
 				// initialize single selecting
-				$('#select2-1').select2({
+				$('.select2-1').select2({
 			        theme: 'bootstrap'
 			    });
 			    // initialize multiple selecting
@@ -504,7 +515,7 @@ $disposition = $ui->API_getAllDispositions();
 				** Change between Contacts and Recordings
 				****/
 					// shows contacts datatable if Contact tickbox is checked
-					$('#search_contacts').on('change', function() {
+					$(document).on('change','#search_contacts',function() {
 						$("#search_contacts").prop("disabled", true);
 		            	$("#search_recordings").prop("disabled", false);
 
@@ -512,31 +523,28 @@ $disposition = $ui->API_getAllDispositions();
 							$(".contacts_div").show(); // show contact table
 							$(".callrecordings_div").hide(); // hide table
 
-							$(".all_contact_filters").show(); // hide filter
-							$(".all_callrecording_filters").hide(); // hide filter
+							$(".all_contact_filters").show(); // show filters
+							$(".add_contact_filters").show(); // disable add filter
+							$(".all_callrecording_filters").hide(); // hide filters
+							$(".add_callrecording_filters").hide(); // disable add filter
 
-							// hide callrecordings
-							$(".callrecordings_filter_div").hide();
+							/* hide callrecordings */
+								$(".callrecordings_filter_div").hide();
 
-							$(".contacts_filters").prop("disabled", false); // enable contact filters
-							$(".callrecordings_filters").prop("disabled", true); // disable recording filters
 		            	}else{
 		            		$(".contacts_div").hide();
 		            		$(".all_contact_filters").hide();
-
-		            		$(".contacts_filters").prop("disabled", true); // disable contact filters
-							$(".callrecordings_filters").prop("disabled", false); // enable recording filters
+		            		$(".add_contact_filters").hide(); // disable add filter
 		            	}
 					});
 
 					// shows call recordings datatable if Recordings tickbox is checked
-					$('#search_recordings').on('change', function() {
+					$(document).on('change','#search_recordings',function() {
 						$("#search_contacts").prop("disabled", false);
 		            	$("#search_recordings").prop("disabled", true);
 
-		            	$(".contacts_filters").prop("selected", false);
-
 						if($('#search_recordings').is(":checked")){
+
 							$(".callrecordings_div").show(); // show recordings table
 							$(".callrecordings_filter_div").show(); // show recording filter
 
@@ -544,58 +552,43 @@ $disposition = $ui->API_getAllDispositions();
 							$(".contacts_div").hide();
 		            		$(".all_contact_filters").hide();
 
-							$(".all_contact_filters").hide(); // hide filter
-							$(".all_callrecording_filters").show(); // hide filter
-
-							$(".contacts_filters").prop("disabled", true); // disable contact filters
-							$(".callrecordings_filters").prop("disabled", false); // enable recording filters
+							$(".all_contact_filters").hide(); // hide filters
+							$(".add_contact_filters").hide(); // disable add filter
+							$(".all_callrecording_filters").show(); // show filters
+							$(".add_callrecording_filters").show(); // enable add filter
 
 		            	}else{
 		            		$(".callrecordings_div").hide();
 		            		$(".all_callrecording_filters").hide();
-
-		            		$(".contacts_filters").prop("disabled", false); // enable contact filters
-							$(".callrecordings_filters").prop("disabled", true); // disable recording filters
+		            		$(".add_callrecording_filters").hide(); // disable add filter
 		            	}
 
-					});
+					});	
 
 				/***
 				** Add Filters
 				***/
 					// add filters
-					$("#add_filters").change(function(){
-				        $(this).find("option:selected").each(function(){
+					$(".add_filters1").change(function(){
 
-				            if($(this).attr("value")=="filter_campaign"){
-				                $(".campaign_filter_div").show();
-				            }
+						$(".campaign_filter_div").fadeIn("fast")[ $.inArray('filter_campaign', $(this).val()) >= 0 ? 'show' : 'hide' ]();
+						
+						$(".list_filter_div").fadeIn("fast")[ $.inArray('filter_list', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 
-				            if($(this).attr("value")=="filter_list"){
-				                $(".list_filter_div").show();
-				            }
+						$(".disposition_filter_div").fadeIn("fast")[ $.inArray('filter_disposition', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 
-				            if($(this).attr("value")=="filter_disposition"){
-				                $(".disposition_filter_div").show();
-				            }
+						$(".address_filter_div").fadeIn("fast")[ $.inArray('filter_address', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 
-				            if($(this).attr("value")=="filter_address"){
-				                $(".address_filter_div").show();
-				            }
+						$(".city_filter_div").fadeIn("fast")[ $.inArray('filter_city', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 
-				            if($(this).attr("value")=="filter_city"){
-				                $(".city_filter_div").show();
-				            }
+						$(".state_filter_div").fadeIn("fast")[ $.inArray('filter_state', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 
-				            if($(this).attr("value")=="filter_state"){
-				                $(".state_filter_div").show();
-				            }
+				    }).change();
 
-				            if($(this).attr("value")=="filter_agent"){
-				                $(".agent_filter_div").show();
-				            }
+				    $(".add_filters2").change(function(){
 
-				        });
+						$(".agent_filter_div").fadeIn("fast")[ $.inArray('filter_agent', $(this).val()) >= 0 ? 'show' : 'hide' ]();
+
 				    }).change();
 
 				/****
@@ -808,6 +801,32 @@ $disposition = $ui->API_getAllDispositions();
 				****/
 
 					// ---- DATETIME PICKER INITIALIZATION
+
+						$('#datetimepicker1').datetimepicker({ //start date contacts
+						icons: {
+		                      time: 'fa fa-clock-o',
+		                      date: 'fa fa-calendar',
+		                      up: 'fa fa-chevron-up',
+		                      down: 'fa fa-chevron-down',
+		                      previous: 'fa fa-chevron-left',
+		                      next: 'fa fa-chevron-right',
+		                      today: 'fa fa-crosshairs',
+		                      clear: 'fa fa-trash'
+		                    }
+						});
+
+						$('#datetimepicker2').datetimepicker({ //end date contacts
+						icons: {
+		                      time: 'fa fa-clock-o',
+		                      date: 'fa fa-calendar',
+		                      up: 'fa fa-chevron-up',
+		                      down: 'fa fa-chevron-down',
+		                      previous: 'fa fa-chevron-left',
+		                      next: 'fa fa-chevron-right',
+		                      today: 'fa fa-crosshairs',
+		                      clear: 'fa fa-trash'
+		                    }
+						});
 
 						$('#datetimepicker3').datetimepicker({
 						icons: {

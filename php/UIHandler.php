@@ -5385,8 +5385,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 				$action = $this->ActionMenuForContacts($output->lead_id[$i]);
 				$result .= '<tr>
-								<td class="hide-on-low hide-on-medium">' .$output->lead_id[$i]. '</td>
-								<td>' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
+								<td><a class="edit-contact" data-id="'.$output->lead_id[$i].'">' .$output->lead_id[$i]. '</a></td>
+								<td class="hide-on-low hide-on-medium">' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
 								<td class="hide-on-low hide-on-medium">' .$output->phone_number[$i].'</td>
 								<td class="hide-on-low hide-on-medium">' .$output->status[$i].'</td>
 								<td>' .$action.'</td>
