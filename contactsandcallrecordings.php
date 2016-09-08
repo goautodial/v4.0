@@ -37,7 +37,7 @@
 		<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 
-        <!-- Datetime picker --> 
+        <!-- Datetime picker -->
 		<link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 
         <!-- Data Tables -->
@@ -146,7 +146,7 @@ $leads = $ui->API_GetLeads($user->getUserName());
 									<div class="contacts_div">
 									<!-- Contacts panel tab -->
 									<legend>Contacts</legend>
-									
+
 										<!--==== Contacts ====-->
 										<table class="table table-striped table-bordered table-hover" id="table_contacts">
 										   <thead>
@@ -166,7 +166,7 @@ $leads = $ui->API_GetLeads($user->getUserName());
 
 														$action_lead = $ui->ActionMenuForContacts($leads->lead_id[$i]);
 
-											   	?>	
+											   	?>
 														<tr>
 															<td><?php echo $leads->lead_id[$i];?></a></td>
 															<td class='hide-on-medium hide-on-low'><?php echo $leads->first_name[$i].' '.$leads->middle_initial[$i].' '.$leads->last_name[$i];?></td>
@@ -182,7 +182,7 @@ $leads = $ui->API_GetLeads($user->getUserName());
 										</table>
 									</div>
 
-									<div class="callrecordings_div" style="display:none;">	
+									<div class="callrecordings_div" style="display:none;">
 									<!-- Call Recordings panel tab -->
 										<legend>Call Recordings</legend>
 
@@ -209,7 +209,7 @@ $leads = $ui->API_GetLeads($user->getUserName());
 
 														$action_Call = $ui->getUserActionMenuForCallRecording($callrecs->uniqueid[$i], $callrecs->location[$i]);
 														//echo $callrecs->result;
-											   	?>	
+											   	?>
 														<tr>
 															<td><?php echo $callrecs->end_last_local_call_time[$i];?></td>
 															<td class='hide-on-medium hide-on-low'><?php echo $callrecs->full_name[$i];?></td>
@@ -266,7 +266,7 @@ $disposition = $ui->API_getAllDispositions();
 														<option value="<?php echo $disposition->status[$a];?>"><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
 												<?php
 													}
-												?>	
+												?>
 											</select>
 										</div>
 									</div>
@@ -281,7 +281,7 @@ $disposition = $ui->API_getAllDispositions();
 													for($i=0; $i < count($lists->list_id);$i++){
 														echo "<option value='".$lists->list_id[$i]."'> ".$lists->list_name[$i]." </option>";
 													}
-												?>			
+												?>
 											</select>
 										</div>
 									</div>
@@ -313,7 +313,7 @@ $disposition = $ui->API_getAllDispositions();
 										</div>
 									</div>
 								</div>
-	               				
+
 	               				<div class="form-group">
 		               				<label>Start Date:</label>
 						            <div class="form-group">
@@ -370,18 +370,18 @@ $disposition = $ui->API_getAllDispositions();
 								    </div>
 								</div>
 
-							    
+
 								<div class="agent_filter_div" style="display:none;">
 									<div class="form-group">
 										<label>Agent: </label>
 										<div class="mb">
 											<select name="agent_filter" id="agent_filter" class="form-control">
-												<option value="" selected DISABLED> -- SELECT AN AGENT -- </option> 
+												<option value="" selected DISABLED> -- SELECT AN AGENT -- </option>
 												<?php
 													for($i=0; $i < count($agents->user_id);$i++){
 														echo "<option value='".$agents->userno[$i]."'> ".$agents->full_name[$i]." </option>";
 													}
-												?>			
+												?>
 											</select>
 										</div>
 									</div>
@@ -401,7 +401,7 @@ $disposition = $ui->API_getAllDispositions();
 														echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_name[$i]." </option>";
 													}
 												*/
-												?>			
+												?>
 											</select>
 										</div>
 									</div>
@@ -416,7 +416,7 @@ $disposition = $ui->API_getAllDispositions();
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
-	
+
 	<!-- FIXED ACTION BUTTON -->
 	<div class="action-button-circle" data-toggle="modal" data-target="#list-modal">
 		<?php print $ui->getCircleButton("list_and_call_recording", "plus"); ?>
@@ -453,7 +453,7 @@ $disposition = $ui->API_getAllDispositions();
 
 		<?php print $ui->standardizedThemeJS();?>
 
-		<script src="js/easyWizard.js" type="text/javascript"></script> 
+		<script src="js/easyWizard.js" type="text/javascript"></script>
 		<!-- CHOSEN-->
    		<script src="theme_dashboard/chosen_v1.2.0/chosen.jquery.min.js"></script>
    		<!-- SELECT2-->
@@ -534,7 +534,7 @@ $disposition = $ui->API_getAllDispositions();
 						$("#search_contacts").prop("disabled", false);
 		            	$("#search_recordings").prop("disabled", true);
 
-		            	$(".contacts_filters").prop("selected", false); 
+		            	$(".contacts_filters").prop("selected", false);
 
 						if($('#search_recordings').is(":checked")){
 							$(".callrecordings_div").show(); // show recordings table
@@ -549,7 +549,7 @@ $disposition = $ui->API_getAllDispositions();
 
 							$(".contacts_filters").prop("disabled", true); // disable contact filters
 							$(".callrecordings_filters").prop("disabled", false); // enable recording filters
-							
+
 		            	}else{
 		            		$(".callrecordings_div").hide();
 		            		$(".all_callrecording_filters").hide();
@@ -566,7 +566,7 @@ $disposition = $ui->API_getAllDispositions();
 					// add filters
 					$("#add_filters").change(function(){
 				        $(this).find("option:selected").each(function(){
-				        		
+
 				            if($(this).attr("value")=="filter_campaign"){
 				                $(".campaign_filter_div").show();
 				            }
@@ -597,10 +597,10 @@ $disposition = $ui->API_getAllDispositions();
 
 				        });
 				    }).change();
-				
+
 				/****
 				** Contact filters
-				****/ 
+				****/
 
 					// ----- Disposition
 						$('#disposition_filter').on('change', function() {
@@ -636,7 +636,7 @@ $disposition = $ui->API_getAllDispositions();
 									}
 								}
 							});
-							
+
 						});
 
 					// ----- List ID
@@ -664,7 +664,7 @@ $disposition = $ui->API_getAllDispositions();
 									console.log(data);
 
 									if(data != ""){
-								        
+
 										$('#table_contacts').html(data);
 										$('#table_contacts').DataTable({
 						                	"bDestroy" : true
@@ -674,7 +674,7 @@ $disposition = $ui->API_getAllDispositions();
 									}
 								}
 							});
-							
+
 						});
 
 					// ----- Address
@@ -805,7 +805,7 @@ $disposition = $ui->API_getAllDispositions();
 
 				/****
 				** Call Recording filters
-				****/ 
+				****/
 
 					// ---- DATETIME PICKER INITIALIZATION
 
@@ -916,7 +916,7 @@ $disposition = $ui->API_getAllDispositions();
 	                				$('#search_button').prop("disabled", false)
 									console.log(data);
 									if(data != ""){
-								        
+
 										$('#table_callrecordings').html(data);
 										$('#table_callrecordings').DataTable({
 						                	"bDestroy" : true
@@ -926,7 +926,7 @@ $disposition = $ui->API_getAllDispositions();
 									}
 								}
 							});
-							
+
 						});
 
 	                /****
@@ -966,7 +966,7 @@ $disposition = $ui->API_getAllDispositions();
 		                				$('#search_button').prop("disabled", false)
 										console.log(data);
 										if(data != ""){
-									        
+
 											$('#table_contacts').html(data);
 											$('#table_contacts').DataTable({
 							                	"bDestroy" : true
@@ -1007,9 +1007,9 @@ $disposition = $ui->API_getAllDispositions();
 									}
 								});
 			            	}
-							
+
 						});
-				
+
 				/*****
 				*** Edit functions
 				*****/
@@ -1023,28 +1023,77 @@ $disposition = $ui->API_getAllDispositions();
 				});
 
 				/*****
+				*** Delete functions
+				*****/
+				$(document).on('click','.delete-contact', function() {
+						var id = $(this).attr('data-id');
+						swal({
+							title: "Are you sure?",
+							text: "This action cannot be undone.",
+							type: "warning",
+							showCancelButton: true,
+							confirmButtonColor: "#DD6B55",
+							confirmButtonText: "Yes, delete this contact!",
+							cancelButtonText: "No, cancel please!",
+							closeOnConfirm: false,
+							closeOnCancel: false
+							},
+							function(isConfirm){
+								if (isConfirm) {
+										$.ajax({
+											url: "./php/DeleteContact.php",
+												type: 'POST',
+												data: {
+														leadid:id,
+												},
+												success: function(data) {
+												console.log(data);
+													if(data == "success"){
+														swal({
+																title: "Success",
+																text: "Contact Successfully Deleted!",
+																type: "success"
+															},
+															function(){
+																window.location.href = 'contactsandcallrecordings.php';
+															}
+														);
+													}else{
+															sweetAlert("Oops...", "Something went wrong! "+data, "error");
+															window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+													}
+												}
+										});
+									} else {
+											swal("Cancelled", "No action has been done :)", "error");
+									}
+							}
+						);
+				});
+
+				/*****
 				** For playing Call Recordings
 				*****/
 				$('.play_audio').click(function(){
 					var audioFile = $(this).attr('data-location');
-					
+
 					var sourceFile = '<audio class="audio_file" controls>';
 					    sourceFile += '<source src="'+ audioFile +'" type="audio/mpeg" download="true"/>';
 					    sourceFile += '</audio>';
-					    
+
 					$('.download-audio-file').attr('href', audioFile);
 					$('.audio-player').html(sourceFile);
 					$('#call-playback-modal').modal('show');
-					
+
 					var aud = $('.audio_file').get(0);
 					aud.play();
 				});
-				
+
 				$('#call-playback-modal').on('hidden.bs.modal', function () {
 					var aud = $('.audio_file').get(0);
 					aud.pause();
 				});
-				
+
 			});
 		</script>
 
