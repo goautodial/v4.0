@@ -1815,6 +1815,55 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 						}
 					});
 
+					//delete disposition
+	        $(document).on('click','.delete_disposition', function() {
+	            var id = $(this).attr('data-id');
+	            swal({
+	            	title: "Are you sure?",
+	            	text: "This action cannot be undone.",
+	            	type: "warning",
+	            	showCancelButton: true,
+	            	confirmButtonColor: "#DD6B55",
+	            	confirmButtonText: "Yes, delete this disposition!",
+	            	cancelButtonText: "No, cancel please!",
+	            	closeOnConfirm: false,
+	            	closeOnCancel: false
+	            	},
+	            	function(isConfirm){
+	            		if (isConfirm) {
+	            			$.ajax({
+		                        url: "./php/DeleteDisposition.php",
+		                        type: 'POST',
+		                        data: {
+		                            disposition_id:id,
+		                        },
+		                        success: function(data) {
+		                        console.log(data);
+		                            if(data == 1){
+		                            	swal({
+																			title: "Success",
+																			text: "Disposition Successfully Deleted!",
+																			type: "success"
+																		},
+																		function(){
+																			window.location.href = 'telephonycampaigns.php';
+																		}
+																	);
+		                            }else{
+		                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
+		                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+		                            }
+		                        }
+		                    });
+										} else {
+	                			swal("Cancelled", "No action has been done :)", "error");
+	                	}
+	            	}
+	            );
+	        });
+				// ----------------- end of disposition
+
+
 
 			});// end of document ready
 
@@ -1898,7 +1947,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 					    	campaign_id : campaign_form_value
 					    },
 					    dataType: 'json',
-						
+
 						success: function(data) {
 							var returndata = $.parseJSON(data);
 							if(returndata.result == "success"){

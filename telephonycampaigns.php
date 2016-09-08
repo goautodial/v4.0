@@ -98,7 +98,7 @@ error_reporting(E_ALL);*/
 										<a href="#T_disposition" aria-controls="T_disposition" role="tab" data-toggle="tab" class="bb0">
 										   Dispositions </a>
 									 </li>
-								<!-- LeadFilter panel tab 
+								<!-- LeadFilter panel tab
 									 <li role="presentation">
 										<a href="#T_leadfilter" aria-controls="T_leadfilter" role="tab" data-toggle="tab" class="bb0">
 										   Lead Filters </a>
@@ -1124,7 +1124,7 @@ error_reporting(E_ALL);*/
 					});
 
 				//delete disposition
-			        $(document).on('click','.delete_disposition',function() {
+			        $(document).on('click','.delete_disposition', function() {
 			            var id = $(this).attr('data-id');
 			            swal({
 			            	title: "Are you sure?",
@@ -1148,23 +1148,22 @@ error_reporting(E_ALL);*/
 				                        success: function(data) {
 				                        console.log(data);
 				                            if(data == 1){
-				                            	swal(
-													{
-														title: "Success",
-														text: "Disposition Successfully Deleted!",
-														type: "success"
-													},
-													function(){
-														window.location.href = 'telephonycampaigns.php';
-													}
-												);
+				                            	swal({
+																					title: "Success",
+																					text: "Disposition Successfully Deleted!",
+																					type: "success"
+																				},
+																				function(){
+																					window.location.href = 'telephonycampaigns.php';
+																				}
+																			);
 				                            }else{
 				                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
 				                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
 				                            }
 				                        }
 				                    });
-								} else {
+												} else {
 			                			swal("Cancelled", "No action has been done :)", "error");
 			                	}
 			            	}
