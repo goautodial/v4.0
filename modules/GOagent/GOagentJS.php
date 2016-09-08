@@ -1185,6 +1185,11 @@ $(document).ready(function() {
                                         if (cKey == 'auto_dial_level') {
                                             $.globalEval("starting_dial_level = '"+cValue+"';");
                                         }
+                                        if (cKey == 'campaign_id') {
+                                            console.log(cKey, cValue);
+                                            $.globalEval("campaign = '"+cValue+"';");
+                                            $.globalEval("group = '"+cValue+"';");
+                                        }
                                         if (cKey == 'api_manual_dial') {
                                             var amqc = 1;
                                             var amqcc = 0;
