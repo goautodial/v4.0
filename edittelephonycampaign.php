@@ -377,7 +377,6 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 
 											<div class="tab-pane fade in" id="tab_2">
 												<fieldset>
-													<?php echo $campaign->data->dial_statuses; ?>
 													<?php if($campaign->campaign_type == "OUTBOUND") { ?>
 														<div class="form-group" style="margin-bottom: 10px;">
 															<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=1;?>
