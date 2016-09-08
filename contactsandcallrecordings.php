@@ -1040,30 +1040,30 @@ $disposition = $ui->API_getAllDispositions();
 							},
 							function(isConfirm){
 								if (isConfirm) {
-									$.ajax({
-													url: "./php/DeleteContact.php",
-													type: 'POST',
-													data: {
-															leadid:id,
-													},
-													success: function(data) {
-													console.log(data);
-															if(data == 1){
-																swal({
-																		title: "Success",
-																		text: "Contact Successfully Deleted!",
-																		type: "success"
-																	},
-																	function(){
-																		window.location.href = 'contactsandcallrecordings.php';
-																	}
-																);
-															}else{
-																	sweetAlert("Oops...", "Something went wrong! "+data, "error");
-																	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+										$.ajax({
+											url: "./php/DeleteContact.php",
+												type: 'POST',
+												data: {
+														leadid:id,
+												},
+												success: function(data) {
+												console.log(data);
+													if(data == "success"){
+														swal({
+																title: "Success",
+																text: "Contact Successfully Deleted!",
+																type: "success"
+															},
+															function(){
+																window.location.href = 'contactsandcallrecordings.php';
 															}
+														);
+													}else{
+															sweetAlert("Oops...", "Something went wrong! "+data, "error");
+															window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
 													}
-											});
+												}
+										});
 									} else {
 											swal("Cancelled", "No action has been done :)", "error");
 									}
