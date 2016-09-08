@@ -377,14 +377,18 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 
 											<div class="tab-pane fade in" id="tab_2">
 												<fieldset>
+													<?php echo $campaign->data->dial_statuses; ?>
 													<?php if($campaign->campaign_type == "OUTBOUND") { ?>
-														<div class="form-group">
-															<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=0;?>
+														<div class="form-group" style="margin-bottom: 10px;">
+															<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=1;?>
 															<?php foreach($dial_statuses as $dial_status) { ?>
 																<?php if(!empty($dial_status)) { ?>
 																	<label class="col-sm-3 control-label">Active Dial Status <?php echo $i; ?>:</label>
-																	<span class="col-sm-9 control-label" style="text-align: left;">
+																	<span class="col-sm-8 control-label" style="text-align: left;">
 																		<label><?php echo $dial_status; ?></label> - <span><?php $lh->translateText($dial_status); ?></span>
+																	</span>
+																	<span class="col-sm-1 control-label">
+																		<a href="#" class="remove-this-dial-status"  data-campaign="<?php echo $campaign_id; ?>" data-dial-status="<?php echo $campaign->data->dial_statuses;?>" data-selected-status="<?php echo $dial_status; ?>">Remove</a>
 																	</span>
 																<?php } ?>
 																<?php $i++; ?>
@@ -392,7 +396,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 														</div>
 														<div class="form-group">
 															<label class="col-sm-3 control-label">Dial Status:</label>
-															<div class="col-sm-9 mb">
+															<div class="col-sm-8 mb">
 																<select class="form-control" id="dial_status" name="dial_status">
 																	<option value="NONE">NONE</option>
 																	<?php for($i=0;$i<=count($dialStatus->status);$i++) { ?>
@@ -402,6 +406,9 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 																	<?php } ?>
 																	<option value=""></option>
 																</select>
+															</div>
+															<div class="col-sm-1 mb">
+																<button type="button" class="btn btn-default btn-add-dial-status" data-campaign="<?php echo $campaign_id; ?>" data-dial-status="<?php echo $campaign->data->dial_statuses;?>">Add</button>
 															</div>
 														</div>
 														<div class="form-group">
@@ -812,13 +819,16 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 																</select>
 															</div>
 														</div>
-														<div class="form-group">
-															<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=0;?>
+														<div class="form-group" style="margin-bottom: 10px;">
+															<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=1;?>
 															<?php foreach($dial_statuses as $dial_status) { ?>
 																<?php if(!empty($dial_status)) { ?>
 																	<label class="col-sm-3 control-label">Active Dial Status <?php echo $i; ?>:</label>
-																	<span class="col-sm-9 control-label" style="text-align: left;">
+																	<span class="col-sm-8 control-label" style="text-align: left;">
 																		<label><?php echo $dial_status; ?></label> - <span><?php $lh->translateText($dial_status); ?></span>
+																	</span>
+																	<span class="col-sm-1 control-label">
+																		<a href="#" class="remove-this-dial-status"  data-campaign="<?php echo $campaign_id; ?>" data-dial-status="<?php echo $campaign->data->dial_statuses;?>" data-selected-status="<?php echo $dial_status; ?>">Remove</a>
 																	</span>
 																<?php } ?>
 																<?php $i++; ?>
@@ -826,7 +836,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 														</div>
 														<div class="form-group">
 															<label class="col-sm-3 control-label">Dial Status:</label>
-															<div class="col-sm-9 mb">
+															<div class="col-sm-8 mb">
 																<select class="form-control" id="dial_status" name="dial_status">
 																	<option value="NONE">NONE</option>
 																	<?php for($i=0;$i<=count($dialStatus->status);$i++) { ?>
@@ -836,6 +846,9 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 																	<?php } ?>
 																	<option value=""></option>
 																</select>
+															</div>
+															<div class="col-sm-1 mb">
+																<button type="button" class="btn btn-default btn-add-dial-status" data-campaign="<?php echo $campaign_id; ?>" data-dial-status="<?php echo $campaign->data->dial_statuses;?>">Add</button>
 															</div>
 														</div>
 														<div class="form-group">
@@ -1402,6 +1415,107 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 		<script type="text/javascript">
 			$(document).ready(function() {
 
+				$(document).on('click', '.btn-add-dial-status', function(){
+					var dial_status = $('#dial_status').val();
+					var campaign_id = $(this).data('campaign');
+					var old_dial_status = $(this).data('dial-status');
+
+					swal({
+						title: "Are you sure?",
+						text: "This action cannot be undone.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "Yes, add " + dial_status + " dial status!",
+						cancelButtonText: "No, cancel please!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+												url: "./php/AddDialStatus.php",
+												type: 'POST',
+												data: {
+														campaign_id:campaign_id,
+														dial_status:dial_status,
+														old_dial_status:old_dial_status
+												},
+												dataType: 'json',
+												success: function(data) {
+												// console.log(data);
+														if(data == 1){
+															swal({
+																	title: "Success",
+																	text: "Campaign Dial Status Successfully Updated!",
+																	type: "success"
+																},
+																function(){
+																	location.reload();
+																}
+															);
+														}else{
+																sweetAlert("Oops...", "Something went wrong! "+data, "error");
+														}
+												}
+										});
+								} else {
+										swal("Cancelled", "No action has been done :)", "error");
+								}
+						}
+					);
+				});
+
+				$(document).on('click', '.remove-this-dial-status', function(){
+					var campaign_id = $(this).data('campaign');
+					var dial_status = $(this).data('dial-status');
+					var selected_status = $(this).data('selected-status');
+
+					swal({
+						title: "Are you sure?",
+						text: "This action cannot be undone.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "Yes, remove " + selected_status + " dial status!",
+						cancelButtonText: "No, cancel please!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+												url: "./php/DeleteDialStatus.php",
+												type: 'POST',
+												data: {
+														campaign_id:campaign_id,
+														dial_status:dial_status,
+														selected_status:selected_status
+												},
+												// dataType: 'json',
+												success: function(data) {
+												// console.log(data);
+														if(data == 1){
+															swal({
+																	title: "Success",
+																	text: "Campaign Dial Status Successfully Updated!",
+																	type: "success"
+																},
+																function(){
+																	location.reload();
+																}
+															);
+														}else{
+																sweetAlert("Oops...", "Something went wrong! "+data, "error");
+														}
+												}
+										});
+								} else {
+										swal("Cancelled", "No action has been done :)", "error");
+								}
+						}
+					);
+				});
 				/**************
 				** Init
 				**************/
