@@ -571,23 +571,23 @@ $disposition = $ui->API_getAllDispositions();
 					// add filters
 					$(".add_filters1").change(function(){
 
-						$(".campaign_filter_div").fadeIn("fast")[ $.inArray('filter_campaign', $(this).val()) >= 0 ? 'show' : 'hide' ]();
+						$(".campaign_filter_div").fadeIn("slow")[ $.inArray('filter_campaign', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 						
-						$(".list_filter_div").fadeIn("fast")[ $.inArray('filter_list', $(this).val()) >= 0 ? 'show' : 'hide' ]();
+						$(".list_filter_div").fadeIn("slow")[ $.inArray('filter_list', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 
-						$(".disposition_filter_div").fadeIn("fast")[ $.inArray('filter_disposition', $(this).val()) >= 0 ? 'show' : 'hide' ]();
+						$(".disposition_filter_div").fadeIn("slow")[ $.inArray('filter_disposition', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 
-						$(".address_filter_div").fadeIn("fast")[ $.inArray('filter_address', $(this).val()) >= 0 ? 'show' : 'hide' ]();
+						$(".address_filter_div").fadeIn("slow")[ $.inArray('filter_address', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 
-						$(".city_filter_div").fadeIn("fast")[ $.inArray('filter_city', $(this).val()) >= 0 ? 'show' : 'hide' ]();
+						$(".city_filter_div").fadeIn("slow")[ $.inArray('filter_city', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 
-						$(".state_filter_div").fadeIn("fast")[ $.inArray('filter_state', $(this).val()) >= 0 ? 'show' : 'hide' ]();
+						$(".state_filter_div").fadeIn("slow")[ $.inArray('filter_state', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 
 				    }).change();
 
 				    $(".add_filters2").change(function(){
 
-						$(".agent_filter_div").fadeIn("fast")[ $.inArray('filter_agent', $(this).val()) >= 0 ? 'show' : 'hide' ]();
+						$(".agent_filter_div").fadeIn("slow")[ $.inArray('filter_agent', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 
 				    }).change();
 
