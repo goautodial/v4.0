@@ -1286,6 +1286,49 @@ if (isset($_GET["message"])) {
 							</div>
 						</div>
 						<!-- End Profile -->
+						
+						<!-- Contacts -->
+						<div id="contents-contacts" class="row" style="display: none;">
+							<div class="card col-md-12" style="padding: 15px;">
+								<table id="contacts-list" class="display" style="border: 1px solid #f4f4f4">
+									<thead>
+										<tr>
+											<th>
+												Lead ID
+											</th>
+											<th>
+												Customer Name
+											</th>
+											<th>
+												Phone Number
+											</th>
+											<th>
+												Last Call Time
+											</th>
+											<th>
+												Campaign
+											</th>
+											<th>
+												Status
+											</th>
+											<th>
+												Comments
+											</th>
+											<th>
+												Action
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										
+									</tbody>
+								</table>
+							</div>
+							<?php
+							//var_dump($ui->API_GetLeads($user->getUserName()));
+							?>
+						</div><!-- /.row -->
+						<!-- End Contacts -->
 					</div>
 					
 					<div id="popup-hotkeys" class="panel clearfix">
