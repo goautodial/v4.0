@@ -145,6 +145,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 							<?php
 							if($campaign_id != NULL) {
 								if ($campaign->result=="success") {
+									//var_dump($campaign);
 							?>
 							<div class="panel-body">
 								<legend>MODIFY CAMPAIGN ID : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u></legend>
@@ -270,6 +271,12 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 																	<input type="number" class="form-control" id="custom_prefix" min="0" max="15" name="custom_prefix">
 																</div>
 															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Web Form:</label>
+														<div class="col-sm-10 mb">
+															<input type="text" id="web_form_address" name="web_form_address" class="form-control" value="<?php echo $campaign->data->web_form_address;?>">
 														</div>
 													</div>
 													<div class="form-group">
@@ -750,6 +757,16 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 														</div>
 														<?php if($campaign->data->dial_method == "INBOUND_MAN") { ?>
 															<div class="form-group">
+																<label class="col-sm-3 control-label">Get Call Launch:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="get_call_launch" name="get_call_launch">
+																		<option value="NONE" <?php if($Campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
+																		<option value="SCRIPT" <?php if($Campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
+																		<option value="WEBFORM" <?php if($Campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
+																	</select>
+																</div>
+															</div>
+															<div class="form-group">
 																<label class="col-sm-3 control-label">Dial timeout:</label>
 																<div class="col-sm-9 mb">
 																	<input type="text" class="form-control" id="dial_time_out" name="dial_timeout" value="<?php echo $campaign->data->dial_timeout; ?>">
@@ -806,6 +823,16 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 															</div>
 														<?php } ?>
 													<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
+														<div class="form-group">
+															<label class="col-sm-3 control-label">Get Call Launch:</label>
+															<div class="col-sm-9 mb">
+																<select class="form-control" id="get_call_launch" name="get_call_launch">
+																	<option value="NONE" <?php if($Campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
+																	<option value="SCRIPT" <?php if($Campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
+																	<option value="WEBFORM" <?php if($Campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
+																</select>
+															</div>
+														</div>
 														<div class="form-group">
 															<label class="col-sm-2 control-label">Call Time:</label>
 															<div class="col-sm-10 mb">
@@ -2097,5 +2124,3 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>
-
-?>
