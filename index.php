@@ -432,6 +432,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                     //echo ("pre");
                                                     //print_r($droppedpercentage);                                                      
                                                     $dropped_percentage = $droppedpercentage->data->getDroppedPercentage; 
+
+                                                    if ($dropped_percentage == NULL){
+                                                        $dropped_percentage = "0";
+                                                    }                                                   
                                                     
                                                     if ($dropped_percentage < "30"){
                                                         $color = "#5d9cec";
@@ -489,8 +493,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                     //echo ("pre");
                                                     //print_r($slapercentage);
                                                     $sla_percentage = $slapercentage->data[0]->SLA; 
-                                                    //echo ("pre");
-                                                    //print_r($sla_percentage);                                                    
+                                                    
+                                                    if ($sla_percentage == NULL){
+                                                        $sla_percentage = "100";
+                                                    }                                                    
                                                     if ($sla_percentage < "95"){
                                                         $color = "orange";
                                                     }                                                   
