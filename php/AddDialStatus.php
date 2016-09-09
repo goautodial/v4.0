@@ -22,7 +22,13 @@
 	$postfields["hostname"] 					= $_SERVER['REMOTE_ADDR']; #Default value
 
 	$postfields['campaign_id']  			= $_POST['campaign_id'];
-  $new_status = $_POST['dial_status']." ".$_POST['old_dial_status'];
+
+  if(strpos($_POST['old_dial_status'], $_POST['dial_status']) != true){
+    $new_status = $_POST['dial_status']." ".$_POST['old_dial_status'];
+  }else{
+    $new_status = $_POST['old_dial_status'];
+  }
+
   $postfields['dial_status']  			= $new_status;
 
   $ch = curl_init();
