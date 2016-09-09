@@ -22,8 +22,8 @@
 	$postfields["hostname"] 					= $_SERVER['REMOTE_ADDR']; #Default value
 
 	$postfields['campaign_id']  			= $_POST['campaign_id'];
-
-  if(strpos($_POST['old_dial_status'], $_POST['dial_status']) != true){
+  $checkStatus = strpos($_POST['old_dial_status'], $_POST['dial_status']);
+  if($checkStatus != 0){
     $new_status = $_POST['dial_status']." ".$_POST['old_dial_status'];
   }else{
     $new_status = $_POST['old_dial_status'];
