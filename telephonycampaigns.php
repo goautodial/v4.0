@@ -80,7 +80,7 @@ error_reporting(E_ALL);*/
 	 * API used for display in tables
 	 */
 	$campaign = $ui->API_getListAllCampaigns();
-	$disposition = $ui->API_getAllDispositions();
+	$disposition = $ui->API_getAllDispositions("custom");
 	$leadfilter = $ui->API_getAllLeadFilters();
 	$country_codes = $ui->getCountryCodes();
 	$list = $ui->API_goGetAllLists();
@@ -1102,6 +1102,7 @@ error_reporting(E_ALL);*/
 											},
 											function(){
 												window.location.href = 'telephonycampaigns.php';
+												$(".preloader").fadeIn();
 											}
 										);
 		                          }
@@ -1149,14 +1150,15 @@ error_reporting(E_ALL);*/
 				                        console.log(data);
 				                            if(data == 1){
 				                            	swal({
-																					title: "Success",
-																					text: "Disposition Successfully Deleted!",
-																					type: "success"
-																				},
-																				function(){
-																					window.location.href = 'telephonycampaigns.php';
-																				}
-																			);
+														title: "Success",
+														text: "Disposition Successfully Deleted!",
+														type: "success"
+													},
+													function(){
+														window.location.href = 'telephonycampaigns.php';
+														$(".preloader").fadeIn();
+													}
+												);
 				                            }else{
 				                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
 				                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);

@@ -4405,12 +4405,13 @@ error_reporting(E_ERROR | E_PARSE);
 	 * [[API: Function]] - getAllDispositions
 	 * 	This application is used to get list of campaign belongs to user.
 	*/
-	public function API_getAllDispositions(){
+	public function API_getAllDispositions($custom){
         $url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getAllDispositions"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
+        $postfields["custom_request"] = $custom;
 
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);

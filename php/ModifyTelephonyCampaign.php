@@ -27,6 +27,7 @@
 	$postfields["auto_dial_level_adv"] 			= $_POST["auto_dial_level_adv"];
 	$postfields["dial_prefix"] 					= $_POST["dial_prefix"];
 	$postfields["custom_prefix"] 				= $_POST["custom_prefix"];
+	$postfields["web_form_address"] 			= $_POST["web_form_address"];
 	$postfields["campaign_script"] 				= $_POST["campaign_script"];
 	$postfields["campaign_cid"] 				= $_POST["campaign_cid"];
 	$postfields["campaign_recording"] 			= $_POST["campaign_recording"];

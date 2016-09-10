@@ -145,6 +145,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 							<?php
 							if($campaign_id != NULL) {
 								if ($campaign->result=="success") {
+									//var_dump($campaign);
 							?>
 							<div class="panel-body">
 								<legend>MODIFY CAMPAIGN ID : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u></legend>
@@ -267,9 +268,15 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 																	</select>
 																</div>
 																<div class="col-lg-3">
-																	<input type="number" class="form-control" id="custom_prefix" min="0" max="15" name="custom_prefix">
+																	<input type="number" class="form-control" id="custom_prefix" min="9" max="20" value="9" name="custom_prefix">
 																</div>
 															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Web Form:</label>
+														<div class="col-sm-10 mb">
+															<input type="text" id="web_form_address" name="web_form_address" class="form-control" value="<?php echo $campaign->data->web_form_address;?>">
 														</div>
 													</div>
 													<div class="form-group">
@@ -750,6 +757,16 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 														</div>
 														<?php if($campaign->data->dial_method == "INBOUND_MAN") { ?>
 															<div class="form-group">
+																<label class="col-sm-3 control-label">Get Call Launch:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="get_call_launch" name="get_call_launch">
+																		<option value="NONE" <?php if($Campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
+																		<option value="SCRIPT" <?php if($Campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
+																		<option value="WEBFORM" <?php if($Campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
+																	</select>
+																</div>
+															</div>
+															<div class="form-group">
 																<label class="col-sm-3 control-label">Dial timeout:</label>
 																<div class="col-sm-9 mb">
 																	<input type="text" class="form-control" id="dial_time_out" name="dial_timeout" value="<?php echo $campaign->data->dial_timeout; ?>">
@@ -806,6 +823,16 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 															</div>
 														<?php } ?>
 													<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
+														<div class="form-group">
+															<label class="col-sm-3 control-label">Get Call Launch:</label>
+															<div class="col-sm-9 mb">
+																<select class="form-control" id="get_call_launch" name="get_call_launch">
+																	<option value="NONE" <?php if($Campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
+																	<option value="SCRIPT" <?php if($Campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
+																	<option value="WEBFORM" <?php if($Campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
+																</select>
+															</div>
+														</div>
 														<div class="form-group">
 															<label class="col-sm-2 control-label">Call Time:</label>
 															<div class="col-sm-10 mb">
@@ -1652,7 +1679,8 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 															type: "success"
 														},
 														function(){
-															window.location.href = 'edittelephonycampaigns.php';
+															location.reload();
+															$(".preloader").fadeIn();
 														}
 													);
 					                                $('#add_button').html("<i class='fa fa-plus'></i> New Status");
@@ -1929,51 +1957,53 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 					});
 
 					//delete disposition
-	        $(document).on('click','.delete_disposition', function() {
-	            var id = $(this).attr('data-id');
-	            swal({
-	            	title: "Are you sure?",
-	            	text: "This action cannot be undone.",
-	            	type: "warning",
-	            	showCancelButton: true,
-	            	confirmButtonColor: "#DD6B55",
-	            	confirmButtonText: "Yes, delete this disposition!",
-	            	cancelButtonText: "No, cancel please!",
-	            	closeOnConfirm: false,
-	            	closeOnCancel: false
-	            	},
-	            	function(isConfirm){
-	            		if (isConfirm) {
-	            			$.ajax({
-		                        url: "./php/DeleteDisposition.php",
-		                        type: 'POST',
-		                        data: {
-		                            disposition_id:id,
-		                        },
-		                        success: function(data) {
-		                        console.log(data);
-		                            if(data == 1){
-		                            	swal({
-																			title: "Success",
-																			text: "Disposition Successfully Deleted!",
-																			type: "success"
-																		},
-																		function(){
-																			window.location.href = 'telephonycampaigns.php';
-																		}
-																	);
-		                            }else{
-		                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
-		                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-		                            }
-		                        }
-		                    });
-										} else {
-	                			swal("Cancelled", "No action has been done :)", "error");
-	                	}
-	            	}
-	            );
-	        });
+				        $(document).on('click','.delete_disposition', function() {
+				            var id = $(this).attr('data-id');
+				            var status = $(this).attr('data-status');
+				            swal({
+				            	title: "Are you sure?",
+				            	text: "This action cannot be undone.",
+				            	type: "warning",
+				            	showCancelButton: true,
+				            	confirmButtonColor: "#DD6B55",
+				            	confirmButtonText: "Yes, delete this disposition!",
+				            	cancelButtonText: "No, cancel please!",
+				            	closeOnConfirm: false,
+				            	closeOnCancel: false
+				            	},
+				            	function(isConfirm){
+				            		if (isConfirm) {
+				            			$.ajax({
+					                        url: "./php/DeleteDisposition.php",
+					                        type: 'POST',
+					                        data: {
+					                            disposition_id:id,
+					                            status: status
+					                        },
+					                        success: function(data) {
+					                        console.log(data);
+					                            if(data == 1){
+					                            	swal({
+															title: "Success",
+															text: "Disposition Successfully Deleted!",
+															type: "success"
+														},
+														function(){
+															location.reload();
+															$(".preloader").fadeIn();
+														}
+													);
+					                            }else{
+					                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
+					                            }
+					                        }
+					                    });
+													} else {
+				                			swal("Cancelled", "No action has been done :)", "error");
+				                	}
+				            	}
+				            );
+				        });
 				// ----------------- end of disposition
 
 
@@ -2094,5 +2124,3 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>
-
-?>
