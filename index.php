@@ -1317,8 +1317,8 @@ function goGetModalUsernameValue(){
 		setInterval(load_cluster_status,10000);
 		
 		// ... agent and campaign resources ...
-		setInterval(load_campaigns_resources,10000);
-		setInterval(load_campaigns_monitoring,10000);
+		setInterval(load_campaigns_resources,30000);
+		setInterval(load_campaigns_monitoring,20000);
 		setInterval(load_agents_monitoring_summary,5000);
 		
 		// ... realtime monitoring ...
