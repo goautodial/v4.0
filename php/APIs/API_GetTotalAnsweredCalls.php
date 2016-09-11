@@ -20,20 +20,14 @@ require_once('../goCRMAPISettings.php');
     $data = curl_exec($ch);
     curl_close($ch);
    
-   //var_dump($data);
-   $data = explode(";",$data);
-   foreach ($data AS $temp) {
-      $temp = explode("=",$temp);
-      $results[$temp[0]] = $temp[1];
-   }
-   
-   if ($results["result"]=="success") {
-      # Result was OK!
-      //var_dump($results); #to see the returned arrays.
-           echo number_format($results["getTotalAnsweredCalls"]);
-   } else {
-      # An error occurred
-           echo "0";
-   }
+    $output = json_decode($data);
+    
+    $total_answered_calls = $output->data->getTotalAnsweredCalls;
+    
+    if ($total_answered_calls == NULL){
+            $total_answered_calls = "0";
+    }
+        
+    echo round($total_answered_calls); 
 
 ?>

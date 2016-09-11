@@ -5095,22 +5095,9 @@ error_reporting(E_ERROR | E_PARSE);
 			 $data = curl_exec($ch);
 			 curl_close($ch);
 			
-			//var_dump($data);
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalAnsweredCalls"];
-			} else {
-			   # An error occurred
-					$vars = 0;
-					return $vars;
-			}
+			 $output = json_decode($data);
+			 
+			 return $output;
 		}		
 		/*
 		 * Displaying Total Dropped Calls
