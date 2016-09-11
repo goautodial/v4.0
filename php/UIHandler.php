@@ -4405,13 +4405,12 @@ error_reporting(E_ERROR | E_PARSE);
 	 * [[API: Function]] - getAllDispositions
 	 * 	This application is used to get list of campaign belongs to user.
 	*/
-	public function API_getAllDispositions($custom){
+	public function API_getAllDispositions(){
         $url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getAllDispositions"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
-        $postfields["custom_request"] = $custom;
 
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
@@ -5070,19 +5069,9 @@ error_reporting(E_ERROR | E_PARSE);
 			 $data = curl_exec($ch);
 			 curl_close($ch);
 			
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!	   
-					return $results["getTotalCalls"];					
-			} else {
-					$vars = 0;
-					return $vars;
-			}
+			 $output = json_decode($data);
+			 
+			 return $output;
 		}
 		
 		/*
@@ -5144,23 +5133,9 @@ error_reporting(E_ERROR | E_PARSE);
 			 $data = curl_exec($ch);
 			 curl_close($ch);
 			
-			//var_dump($data);
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-                           //var_dump($results);
-			   //die("dd");
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalDroppedCalls"];
-			} else {
-					$vars = 0;
-					return $vars;
-			}
+			 $output = json_decode($data);
+			 
+			 return $output;
 		}		
 		/*
 		 * Displaying Live Outbound
