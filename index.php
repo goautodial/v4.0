@@ -426,7 +426,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
             	<aside class="col-lg-3">
 
         <!--==== DROPPED PERCENTAGE  ==== -->
-                                                <div class="panel panel-default">
+                                                <!-- <div class="panel panel-default">
                                                     <?php
                                                     $droppedpercentage = $ui->API_goGetDroppedPercentage();
                                                     //echo ("pre");
@@ -437,13 +437,16 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                         $dropped_percentage = "0";
                                                     }                                                   
                                                     
-                                                    if ($dropped_percentage < "30"){
+                                                    if ($dropped_percentage < "10"){
                                                         $color = "#5d9cec";
                                                     }
-                                                    if ($dropped_percentage >= "30"){
-                                                        $color = "orange";
+                                                    if ($dropped_percentage >= "10"){
+                                                        $color = "#f05050";
                                                     }                                                    
-                                                    
+                                                    if ($dropped_percentage > "100"){
+                                                        $color = "#f05050";
+                                                        $dropped_percentage = "100";
+                                                    }                                                    
                                                     ?>
 						   <div class="panel-body">
 								<div class="panel-title">Dropped Calls Percentage</div>
@@ -482,9 +485,9 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 									 <span class="text-dark"><?php echo $dropped_percentage; ?></span>
 								  </p>
 							   </div>
-							</div>
+							</div> -->
 							<!-- END loader widget-->
-						</div>
+						<!-- </div> -->
 
         <!--==== SERVICE LEVEL AGREEMENT ==== -->
                                                 <div class="panel panel-default">
