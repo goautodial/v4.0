@@ -34,7 +34,7 @@
 
     $voicemails = $ui->API_goGetVoiceMails();
     $user_groups = $ui->API_goGetUserGroupsList();
-
+    
 ?>
 
 <html>
@@ -104,7 +104,7 @@
             $userobj = NULL;
             $errormessage = NULL;
 
-            $output = $ui->goGetUserInfo($userid, "user");
+            $output = $ui->goGetUserInfo($userid, "user_id");
             //echo ("pre");
             //print_r($output);
 
