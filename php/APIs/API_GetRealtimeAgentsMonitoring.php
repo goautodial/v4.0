@@ -35,8 +35,8 @@
     curl_close($ch);
 
     $output = json_decode($data);
-    echo "<pre>";
-    print_r($output);    
+    //echo "<pre>";
+    //print_r($output);    
                         
     $creamyAvatar = $ui->getSessionAvatar();
 
