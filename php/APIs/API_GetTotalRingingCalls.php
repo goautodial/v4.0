@@ -1,16 +1,17 @@
 <?php
-require_once('../goCRMAPISettings.php');
-/*
-* Displaying Call(s) Ringing
-* [[API: Function]] - goGetRingingCall
-* This application is used to get calls ringing
-*/
+    require_once('../goCRMAPISettings.php');
+    /*
+    * Displaying Call(s) Ringing
+    * [[API: Function]] - goGetRingingCall
+    * This application is used to get calls ringing
+    */
 
-   $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-   $postfields["goUser"] = goUser; #Username goes here. (required)
-   $postfields["goPass"] = goPass;
-   $postfields["goAction"] = "goGetRingingCalls"; #action performed by the [[API:Functions]]
-   
+    $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+    $postfields["goUser"] = goUser; #Username goes here. (required)
+    $postfields["goPass"] = goPass;
+    $postfields["goAction"] = "goGetRingingCalls"; #action performed by the [[API:Functions]]
+    $postfields["responsetype"] = responsetype;
+    
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -19,21 +20,15 @@ require_once('../goCRMAPISettings.php');
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
     $data = curl_exec($ch);
     curl_close($ch);
-   
-   //var_dump($data);
-   $data = explode(";",$data);
-   foreach ($data AS $temp) {
-      $temp = explode("=",$temp);
-      $results[$temp[0]] = $temp[1];
-   }
-   
-   if ($results["result"]=="success") {
-      # Result was OK!
-      //var_dump($results); #to see the returned arrays.
-           echo $results["getRingingCalls"];
-   } else {
-      # An error occurred
-           echo 0;
-   }
+    
+    $output = json_decode($data);
+        
+    $total_calls = $output->data->getRingingCalls;
+        
+    if($total_calls == NULL || $total_calls == 0){
+        $total_calls = 0;
+    }
+        
+    echo json_encode(round($total_calls));  
 
 ?>

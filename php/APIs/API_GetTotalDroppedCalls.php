@@ -10,7 +10,8 @@
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetTotalDroppedCalls"; #action performed by the [[API:Functions]]
-
+    $postfields["responsetype"] = responsetype;
+    
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -24,10 +25,9 @@
     
     $total_dropped_calls = $output->data->getTotalDroppedCalls;
     
-    if ($total_dropped_calls == NULL){
-            $total_dropped_calls = "0";
+    if($total_dropped_calls == NULL || $total_dropped_calls == 0){
+        $total_dropped_calls = 0;
     }
-    
-    
-    echo round($total_dropped_calls);  
+        
+    echo json_encode(round($total_dropped_calls));  
 ?>

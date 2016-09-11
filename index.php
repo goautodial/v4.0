@@ -428,25 +428,25 @@ $callsperhour = $ui->API_goGetCallsPerHour();
         <!--==== DROPPED PERCENTAGE  ==== -->
                                                 <!-- <div class="panel panel-default">
                                                     <?php
-                                                    $droppedpercentage = $ui->API_goGetDroppedPercentage();
+                                                    //$droppedpercentage = $ui->API_goGetDroppedPercentage();
                                                     //echo ("pre");
                                                     //print_r($droppedpercentage);                                                      
-                                                    $dropped_percentage = $droppedpercentage->data->getDroppedPercentage; 
+                                                    //$dropped_percentage = $droppedpercentage->data->getDroppedPercentage; 
 
-                                                    if ($dropped_percentage == NULL){
-                                                        $dropped_percentage = "0";
-                                                    }                                                   
+                                                    //if ($dropped_percentage == NULL){
+                                                        //$dropped_percentage = "0";
+                                                    //}                                                   
                                                     
-                                                    if ($dropped_percentage < "10"){
-                                                        $color = "#5d9cec";
-                                                    }
-                                                    if ($dropped_percentage >= "10"){
-                                                        $color = "#f05050";
-                                                    }                                                    
-                                                    if ($dropped_percentage > "100"){
-                                                        $color = "#f05050";
-                                                        $dropped_percentage = "100";
-                                                    }                                                    
+                                                    //if ($dropped_percentage < "10"){
+                                                        //$color = "#5d9cec";
+                                                    //}
+                                                    //if ($dropped_percentage >= "10"){
+                                                        //$color = "#f05050";
+                                                    //}                                                    
+                                                    //if ($dropped_percentage > "100"){
+                                                        //$color = "#f05050";
+                                                        //$dropped_percentage = "100";
+                                                    //}                                                    
                                                     ?>
 						   <div class="panel-body">
 								<div class="panel-title">Dropped Calls Percentage</div>

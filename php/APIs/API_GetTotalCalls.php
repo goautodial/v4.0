@@ -10,7 +10,8 @@
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetTotalCalls"; #action performed by the [[API:Functions]]
-
+    $postfields["responsetype"] = responsetype;
+    
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -24,9 +25,9 @@
     
     $total_calls = $output->data->getTotalCalls;
     
-    if ($total_calls == NULL){
-            $total_calls = "0";
+    if($total_calls == NULL || $total_calls == 0){
+        $total_calls = 0;
     }
         
-    echo round($total_calls); 
+    echo json_encode(round($total_calls)); 
 ?>

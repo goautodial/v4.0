@@ -41,7 +41,7 @@
     $creamyAvatar = $ui->getSessionAvatar();
 
     $barracks = '[';
-
+    
     foreach ($output->data as $key => $value) {
    
     $userid = $value->vu_user_id;
@@ -61,11 +61,17 @@
     $last_state_change = $value->last_state_change;
     $lead_id = $value->vla_lead_id;
     $agent_log_id = $value->vla_agent_log_id;
-    $vla_callerid = $value->vla_callerid;
-    $vac_callerid = $value->vac_callerid;
+    $vla_callerid = $value->vla_callerid;    
     $cust_phone = $value->vl_phone_number;
-    $pausecode = "";
-    $parked_channel = $value->pc_channel;
+
+    $vac_callerid = $output->data[1]->vac_callerid;
+
+    $pc_channel = $output->data[2]->pc_channel;
+    $pc_channel_group = $output->data[2]->pc_channel_group;
+    $pc_extension = $output->data[2]->pc_extension;
+    $pc_parked_by = $output->data[2]->pc_parked_by;
+        
+    
     $STARTtime = date("U");
     $CM = "";
     $textclass = "text-info";
@@ -81,9 +87,6 @@
                 $textclass = "text-warning";
             }        
         
-            if ($parked_channel != NULL){
-                $status = "PARK";
-            }
             if ($call_type == "AUTO"){
                 $CM="[A]";
             }
@@ -92,12 +95,17 @@
             }
             if ($call_type == "MANUAL"){
                 $CM="[M]";
-            }
-            //if ($vla_callerid != $vac_callerid){
+            }           
+            if ($vla_callerid != $vac_callerid){
                 //$last_call_time=$last_state_change;
-                //$status = "HANGUP";
-            //}            
+                $status = "HUNGUP";
+            }             
+            if ($pc_channel != NULL){
+                $status = "PARK";
+            } 
+
     }
+    
     
     if (preg_match("/READY|PAUSED|CLOSER/",$status)){
         $last_call_time = $last_state_change;
@@ -138,13 +146,11 @@
     $call_time_SEC = ($call_time_SEC * 60);
     $call_time_SEC = round($call_time_SEC, 0);
     
+    
     if ($call_time_SEC < 10){
         $call_time_SEC = "0$call_time_SEC";
     }
     
-    $call_time_MS = "$call_time_M_int:$call_time_SEC";
-    $G = "";
-    $EG = "";
     
     if ($status=="PAUSED"){
         $circleclass = "circle circle-warning circle-lg text-left";
@@ -187,9 +193,13 @@
             }            
         }         
     
-    if ($status == "DEAD"){
+    if ($status == "HANGUP"){
         $textclass = "text-danger";
     }
+
+    $call_time_MS = "$call_time_M_int:$call_time_SEC";
+    $G = "";
+    $EG = "";
     
     $barracks .='[';       
     //$barracks .= '"<img src=\"'.$sessionAvatar.'\" class=\"img-circle thumb48\"> <b class=\"text-blue\">'.$agentname.'</b>",';
@@ -207,5 +217,6 @@
     $barracks .= ']';
     
     echo json_encode($barracks);
+
     
 ?>
