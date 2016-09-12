@@ -65,13 +65,13 @@
         
         if ($leadscount == 0){ 
             $textclass = "text-blue";
-            $sessionAvatar = "<div class='media'><avatar username='$campname' :size='36'></avatar></div>";
+            $sessionAvatar = "<div class='media'><avatar username='$localcalltime' :size='36'></avatar></div>";
             
         } 
         
         if ($leadscount > 0){ 
             $textclass = "text-blue";
-            $sessionAvatar = "<div class='media'><avatar username='$campname' :size='36'></avatar></div>";
+            $sessionAvatar = "<div class='media'><avatar username='$localcalltime' :size='36'></avatar></div>";
             
         } 
         $campaignsmonitoring .='[';

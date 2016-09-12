@@ -34,6 +34,6 @@
         $total_agents_call = 0;
     }
         
-    echo json_encode(round($total_agents_call));
+    echo json_encode(round(number_format($total_agents_call)));
     
 ?>

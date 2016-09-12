@@ -39,5 +39,5 @@
         $total_agents_wait_calls = 0;
     }
         
-    echo json_encode(round($total_agents_wait_calls)); 
+    echo json_encode(round(number_format($total_agents_wait_calls))); 
 ?>

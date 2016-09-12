@@ -120,7 +120,11 @@
 
     } else {
         
+        $max = 0;
+        
         foreach ($output->data as $key => $value) {
+        
+            if(++$max > 6) break;
         
             $userid = $value->vu_user_id;
             $agentid = $value->vla_user;

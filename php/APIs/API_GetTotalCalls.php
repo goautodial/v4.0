@@ -38,5 +38,5 @@
         $total_calls = 0;
     }
         
-    echo json_encode(round($total_calls)); 
+    echo json_encode(round(number_format($total_calls))); 
 ?>
