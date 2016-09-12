@@ -32,11 +32,12 @@
 
     $output = json_decode($data);
     
-    $total_calls = $output->data->getTotalCalls;
+    $total_calls = $output->data->getTotalCalls;    
     
     if($total_calls == NULL || $total_calls == 0){
         $total_calls = 0;
     }
-        
-    echo json_encode(round(number_format($total_calls))); 
+
+    //echo json_encode(number_format($total_calls));
+    echo number_format($total_calls);
 ?>
