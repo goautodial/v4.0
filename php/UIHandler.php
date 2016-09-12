@@ -1923,7 +1923,7 @@ error_reporting(E_ERROR | E_PARSE);
 		// old img element : <img src="'.$avatar.'" class="img-circle" alt="User Image" />
 		$avatarElement = $this->getVueAvatar($username, $avatar, 40);
 		$result = '<aside class="main-sidebar" sidebar-offcanvas"><section class="sidebar">
-	            <div class="user-panel">
+	            <div class="user-panel hidden">
 	                <div class="pull-left image">
 	                    <a href="edituser.php">'.$avatarElement.'</a>
 	                </div>
