@@ -1384,7 +1384,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            </nav>
 	        </header>
 	        <div class="preloader">
-	        	<div class="pull-right close-preloader" style="display:none">
+	        	<div class="pull-right close-preloader" style="display:none;">
     				<a type="button" class="close-preloader-button" aria-label="Close" style="color:white;"><i class="fa fa-close fa-lg"></i></a>
     			</div>
     			<center>
@@ -1392,7 +1392,14 @@ error_reporting(E_ERROR | E_PARSE);
     					<span class="dots">
     					<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
     					</span>
+
+    					<br/><br/>
+		    			<div class="reload-page" style="display:none; color:white;">
+		    				The page is taking too long to load. It probably failed. <br/> Please check your Internet Connection and click the button below to try again...<br/>
+		    				<br/><button type="button" class="btn reload-button" style="display:none; color: #333333;"><i class="fa fa-undo fa-3x"></i></button>
+		    			</div>
     			</center>
+    			
     		</div>
 
     		<script type="text/javascript">
@@ -1400,6 +1407,14 @@ error_reporting(E_ERROR | E_PARSE);
     			setTimeout( function(){ 
 				    $(".close-preloader").fadeIn("slow");
 				}, 10000 );
+				
+				setTimeout( function(){ 
+				    $(".reload-page").fadeIn("slow");
+				}, 20000 );
+				
+				setTimeout( function(){ 
+				    $(".reload-button").fadeIn("slow");
+				}, 22000 );
 
 	    		$(window).ready(function() {
 					$(".preloader").fadeOut("slow");
@@ -1407,6 +1422,11 @@ error_reporting(E_ERROR | E_PARSE);
 				
 	    		$(document).on("click", ".close-preloader-button", function(){
 					$(".preloader").fadeOut("slow");
+				});
+
+				$(document).on("click", ".reload-button", function(){
+					$(".reload-button").html("<i class=\"fa fa-circle-o-notch fa-spin fa-3x fa-fw\"></i><span class=\"sr-only\">Loading...</span>");
+					window.location = window.location.href;
 				});
 
 			</script>
