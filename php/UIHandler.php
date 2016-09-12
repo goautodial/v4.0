@@ -1396,7 +1396,7 @@ error_reporting(E_ERROR | E_PARSE);
     					<br/><br/>
 		    			<div class="reload-page" style="display:none; color:white;">
 		    				The page is taking too long to load. It probably failed. <br/> Please check your Internet Connection and click the button below to try again...<br/>
-		    				<br/><button type="button" class="btn reload-button" style="display:none; color: #333333;"><i class="fa fa-undo fa-3x"></i></button>
+		    				<br/><button type="button" class="btn reload-button" style="display:none; color: #333333;"><i class="fa fa-refresh fa-3x"></i></button>
 		    			</div>
     			</center>
     			
@@ -1425,7 +1425,7 @@ error_reporting(E_ERROR | E_PARSE);
 				});
 
 				$(document).on("click", ".reload-button", function(){
-					$(".reload-button").html("<i class=\"fa fa-circle-o-notch fa-spin fa-3x fa-fw\"></i><span class=\"sr-only\">Loading...</span>");
+					$(".reload-button").html("<i class=\"fa fa-refresh fa-spin fa-3x fa-fw"\"></i><span class=\"sr-only\">Loading...</span>");
 					window.location = window.location.href;
 				});
 
