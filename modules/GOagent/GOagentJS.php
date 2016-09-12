@@ -3017,11 +3017,13 @@ function RefreshAgentsView(RAlocation, RAcount) {
                                 if (agent_status_view_time > 0) {
                                     agent_status_time = ' - '+agentStatus.call_time;
                                 }
-                                agent_list += '<li title="'+agentID+' - '+agentStatus.status+'" style="cursor: default; color: '+agentStatus.textcolor+'; background-color: '+agentStatus.statcolor+'"><div class="text-center">'+agentStatus.full_name+''+agent_status_time+'</div></li>';
+                                var agentAvatar = goGetAvatar(agentID, '32');
+                                agent_list += '<li title="'+agentID+' - '+agentStatus.status+'" style="cursor: default; color: '+agentStatus.textcolor+'; background-color: '+agentStatus.statcolor+'; line-height: 32px; padding: 5px 0;"><div>'+agentStatus.full_name+''+agent_status_time+'<span style="float: left; padding: 0 15px;">'+agentAvatar+'</span></div></li>';
                             })
                         });
                         agent_list += '<li style="bottom: 25; position: absolute;"><div class="text-center"><span><i class="fa fa-square" style="color: #ADD8E6;"></i> <?=$lh->translationFor('ready')?></span> &nbsp; <span><i class="fa fa-square" style="color: #D8BFD8;"></i> <?=$lh->translationFor('incall')?></span> &nbsp; <span><i class="fa fa-square" style="color: #F0E68C;"></i> <?=$lh->translationFor('paused')?></span></div></li>';
                         $("#go_agent_view_list").html(agent_list);
+                        goAvatar._init(goOptions);
                     }
                 }
             });
@@ -5960,15 +5962,16 @@ function NoneInSession() {
     //still on development
 }
 
-function goGetAvatar(account) {
+function goGetAvatar(account, size) {
     var defaultAvatar = '';
     var avatarInitials = 'initials';
+    size = (typeof size === 'undefined') ? '64' : size;
     if (account === undefined || account == '') {
         var account = 'Dialed Client';
         defaultAvatar = 'src="<?php echo CRM_DEFAULTS_USER_AVATAR;?>"';
         avatarInitials = 'username';
     }
-    var avatar = "<avatar username='"+account+"' "+defaultAvatar+" :size='64'></avatar>";
+    var avatar = "<avatar username='"+account+"' "+defaultAvatar+" :size='"+size+"'></avatar>";
     
     return avatar;
 }
