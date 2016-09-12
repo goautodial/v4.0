@@ -1987,7 +1987,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		// Create Tabs
 		if (count($tabs) < 1) {
-			$tabs = array('user' => 'settings');
+			$tabs = array('commenting-o'=>'messaging', 'phone'=>'dialer', 'user'=>'settings');
 		}
 		$tabresult = '<ul class="nav nav-tabs nav-justified control-sidebar-tabs">'."\n";
 		$tabpanes = '<div class="tab-content" style="border-width:0; overflow-y: hidden; padding-bottom: 30px;">'."\n";
@@ -1995,7 +1995,8 @@ error_reporting(E_ERROR | E_PARSE);
 		foreach ($tabs as $icon => $tabname) {
 			$activeClass = ($x < 1) ? ' class="active"' : '';
 			$isActive = ($x < 1) ? true : false;
-			$tabresult .= '<li id="'.$tabname.'-tab"'.$activeClass.'><a href="#control-sidebar-'.$tabname.'-tab" data-toggle="tab"><i class="fa fa-'.$icon.'"></i></a></li>'."\n";
+			$isHidden = ($tabname == 'dialer') ? ' style="display: none;"' : '';
+			$tabresult .= '<li id="'.$tabname.'-tab"'.$activeClass.$isHidden.'><a href="#control-sidebar-'.$tabname.'-tab" data-toggle="tab"><i class="fa fa-'.$icon.'"></i></a></li>'."\n";
 			$tabpanes .= $this->getRightTabPane($user, $tabname, $isActive);
 			$x++;
 		}

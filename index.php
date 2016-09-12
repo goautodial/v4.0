@@ -100,6 +100,10 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 	    <!-- ChartJS 1.0.1 -->
 	    <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
 		
+		<!-- SnackbarJS -->
+        <link href="css/snackbar/snackbar.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/snackbar/material.css" rel="stylesheet" type="text/css" />
+		
         <!-- Creamy App -->
         <script src="adminlte/js/app.min.js" type="text/javascript"></script>
 		
@@ -639,7 +643,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                 </section><!-- /.content -->
 				
             </aside><!-- /.right-side -->
-			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar(), array('phone'=>'dialer', 'commenting-o'=>'messaging', 'user'=>'settings')); ?>
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 			
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
@@ -1371,6 +1375,9 @@ function goGetModalUsernameValue(){
    <!-- =============== APP SCRIPTS ===============-->
     <script src="theme_dashboard/js/app.js"></script>
     <script src="theme_dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
+	
+	<!-- SnackbarJS -->
+	<script src="js/snackbar.js" type="text/javascript"></script>
 			
 	<!-- Vue Avatar -->
 	<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>
