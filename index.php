@@ -392,7 +392,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                             <!-- START responsive-->
                                                             <div class="responsive">
                                                                 <div class="col-sm-12">
-                                                                    <table id="cluster-status" class="table table-striped table-hover" style="width: 100%">
+                                                                    <table id="cluster-status" class="table table-striped table-hover display compact" style="width: 100%">
                                                                         <thead>
                                                                                 <tr>
                                                                                         <th style="color: white;">Pic</th>
@@ -655,7 +655,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                 <div class="modal-body">
                                     <div class="content table-responsive table-full-width">
                                     <!-- <div class="col-sm-12">-->
-                                        <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
+                                        <table class="table table-striped table-hover display compact" id="realtime_agents_monitoring_table" style="width: 100%">
                                             <thead>                                            
                                                     <th style="color: white;">Pic</th>
                                                     <th style="font-size: small;">Agent Name</th>                                                    
@@ -689,7 +689,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                 <div class="modal-body">
                                     <div class="responsive">
                                     <!-- <div class="col-sm-12">-->
-                                        <table class="table table-striped table-hover" id="realtime_calls_monitoring_table" style="width: 100%">
+                                        <table class="table table-striped table-hover display compact" id="realtime_calls_monitoring_table" style="width: 100%">
                                             <thead>
                                                     <th style="color: white;">Pic</th>
                                                     <th style="font-size: small;">Status</th>                                                    
@@ -723,7 +723,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                 <div class="modal-body">
                                     <div class="responsive">
                                     <!-- <div class="col-sm-12">-->
-                                        <table class="table table-striped table-hover" id="campaigns_monitoring_table" style="width: 100%">
+                                        <table id="campaigns_monitoring_table" class="table table-striped table-hover display compact" cellspacing="0" style="width: 100%">
                                             <thead>
                                                     <th style="color: white;">Pic</th>
                                                     <th style="font-size: small;">Campaign ID</th>                                                    
@@ -756,7 +756,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                 <div class="modal-body">
                                     <div class="responsive">
                                     <!-- <div class="col-sm-12">-->
-                                        <table class="table table-striped table-hover" id="realtime_sla_monitoring_table" style="width: 100%">
+                                        <table class="table table-striped table-hover display compact" id="realtime_sla_monitoring_table" style="width: 100%">
                                             <thead>
                                                     <th style="color: white;">Pic</th>
                                                     <th style="font-size: small;">User Groups</th>                                                    

@@ -86,7 +86,7 @@
     $STARTtime = date("U");       
     
     //$sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='36'></avatar></div>";
-    $sessionAvatar = "<div class='media'><avatar username='$agentname' :size='36'></avatar></div>";
+    $sessionAvatar = "<div class='media'><avatar username='$agentname' :size='32'></avatar></div>";
 
     if ($status == "INCALL"){
         //$last_call_time = $last_state_change;
