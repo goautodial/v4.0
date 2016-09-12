@@ -1373,8 +1373,8 @@ error_reporting(E_ERROR | E_PARSE);
 		                    	'.$this->getTopbarNotificationsMenu($user).'
 		                    	'.$this->getTopbarTasksMenu($user).'
 		                    	<li>
-			                    	<a href="#" class="visible-xs" data-toggle="control-sidebar" style="padding-top: 17px; padding-bottom: 18px; margin-right: -15px;"><i class="fa fa-cogs"></i></a>
-										<a href="#" class="hidden-xs" data-toggle="control-sidebar" style="padding-top: 14px; padding-bottom: 14px; margin-right: -15px;">
+			                    	<a href="#" class="visible-xs" data-toggle="control-sidebar" style="padding-top: 17px; padding-bottom: 18px;"><i class="fa fa-cogs"></i></a>
+										<a href="#" class="hidden-xs" data-toggle="control-sidebar" style="padding-top: 14px; padding-bottom: 14px;">
 											'.$avatarElement.'
 											<span> '.$user->getUserName().' <i class="caret"></i></span>
 										</a>
@@ -1983,7 +1983,6 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		// prefix: structure and home link
 		// old img element : <img src="'.$avatar.'" class="img-circle" alt="User Image" />
-		$avatarElement = $this->getVueAvatar($username, $avatar, 96, false, true, false);
 		$result = '<aside class="control-sidebar control-sidebar-dark">'."\n";
 		
 		// Create Tabs
@@ -1991,52 +1990,65 @@ error_reporting(E_ERROR | E_PARSE);
 			$tabs = array('user' => 'settings');
 		}
 		$tabresult = '<ul class="nav nav-tabs nav-justified control-sidebar-tabs">'."\n";
+		$tabpanes = '<div class="tab-content" style="border-width:0; overflow-y: hidden; padding-bottom: 30px;">'."\n";
 		$x = 0;
 		foreach ($tabs as $icon => $tabname) {
-			$isActive = ($x < 1) ? ' class="active"' : '';
-			$tabresult .= '<li id="'.$tabname.'-tab"'.$isActive.'><a href="#control-sidebar-'.$tabname.'-tab" data-toggle="tab"><i class="fa fa-'.$icon.'"></i></a></li>'."\n";
+			$activeClass = ($x < 1) ? ' class="active"' : '';
+			$isActive = ($x < 1) ? true : false;
+			$tabresult .= '<li id="'.$tabname.'-tab"'.$activeClass.'><a href="#control-sidebar-'.$tabname.'-tab" data-toggle="tab"><i class="fa fa-'.$icon.'"></i></a></li>'."\n";
+			$tabpanes .= $this->getRightTabPane($user, $tabname, $isActive);
 			$x++;
 		}
 		$tabresult .= '</ul>'."\n";
+		$tabpanes .= "</div>\n";
 		
-		$tabphanes = '<div class="tab-content" style="border-width:0; overflow-y: hidden; padding-bottom: 30px;">'."\n";
-		$tabphanes .= '<div class="tab-pane active" id="control-sidebar-settings-tab">
-		<ul class="control-sidebar-menu" id="go_user_profile">
-			<li>
-				<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px; padding-top: 10px;">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<p>'.$avatarElement.'</p>
-						<p style="color:white;">'.$username.'<br><small>'.$this->lh->translationFor("nice_to_see_you_again").'</small></p>
-					</a>
-				</div>
-			</li>';
+		
+		$result .= $tabresult;
+		$result .= $tabpanes;
+		$result .= "</aside>\n";
+		$result .= "<div class='control-sidebar-bg' style='position: fixed; height: auto;'></div>\n";
+		
+		return $result;
+	}
+	
+	protected function getRightTabPane($user, $tab, $active = false) {
+		$avatarElement = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 96, false, true, false);
+		
+		$isActive = ($active) ? ' active' : '';
+		$tabpanes = '<div class="tab-pane'.$isActive.'" id="control-sidebar-'.$tab.'-tab">'."\n";
+		
+		if ($tab == 'settings') {
+			$tabpanes .= '<ul class="control-sidebar-menu" id="go_tab_profile">
+				<li>
+					<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px; padding-top: 10px;">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<p>'.$avatarElement.'</p>
+							<p style="color:white;">'.$user->getUserName().'<br><small>'.$this->lh->translationFor("nice_to_see_you_again").'</small></p>
+						</a>
+					</div>
+				</li>';
 			if ($user->userHasBasicPermission()) {
-				$tabphanes .= '<li>
+				$tabpanes .= '<li>
 					<div class="text-center"><a href="" data-toggle="modal" id="change-password-toggle" data-target="#change-password-dialog-modal">'.$this->lh->translationFor("change_password").'</a></div>
 					<div class="text-center"><a href="./messages.php">'.$this->lh->translationFor("messages").'</a></div>
 					<div class="text-center"><a href="./notifications.php">'.$this->lh->translationFor("notifications").'</a></div>
 					<div class="text-center"><a href="./tasks.php">'.$this->lh->translationFor("tasks").'</a></div>
 				</li>';
 			}
-		$tabphanes .= '</ul>
-        <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
-			<li>
-				<div class="center-block" style="text-align: center">
-					<a href="./profile.php" class="btn btn-warning"><i class="fa fa-user"></i> '.$this->lh->translationFor("my_profile").'</a>
-					 &nbsp; 
-					<a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class="fa fa-sign-out"></i> '.$this->lh->translationFor("exit").'</a>
-				</div>
-			</li>
-        </ul>
-      </div>';
-		$tabphanes .= "</div>\n";
+			$tabpanes .= '</ul>
+			  <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+				<li>
+					<div class="center-block" style="text-align: center">
+						<a href="./profile.php" class="btn btn-warning"><i class="fa fa-user"></i> '.$this->lh->translationFor("my_profile").'</a>
+						 &nbsp; 
+						<a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class="fa fa-sign-out"></i> '.$this->lh->translationFor("exit").'</a>
+					</div>
+				</li>
+			  </ul>'."\n";
+		}
+		$tabpanes .= "</div>\n";
 		
-		$result .= $tabresult;
-		$result .= $tabphanes;
-		$result .= "</aside>\n";
-		$result .= "<div class='control-sidebar-bg' style='position: fixed; height: auto;'></div>\n";
-		
-		return $result;
+		return $tabpanes;
 	}
 
 

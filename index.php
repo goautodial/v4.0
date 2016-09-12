@@ -639,7 +639,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                 </section><!-- /.content -->
 				
             </aside><!-- /.right-side -->
-			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar(), array('phone'=>'dialer', 'commenting-o'=>'messaging', 'user'=>'settings')); ?>
 			
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
