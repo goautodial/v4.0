@@ -37,6 +37,6 @@
         $incoming_calls = 0;
     }
         
-    echo json_encode(number_format($incoming_calls)); 
+    echo json_encode(round(number_format($incoming_calls))); 
 
 ?>
