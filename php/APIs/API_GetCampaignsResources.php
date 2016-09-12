@@ -47,13 +47,9 @@
 		                           </div>';
 
     } else {
-
-    //echo "<pre>";
-    //print_r($output);
   
     $max = 0;
-        
-        
+                
         foreach ($output->data as $key => $value) {
         
         if(++$max > 6) break; 
@@ -70,7 +66,7 @@
   
         if ($leadscount == 0){   
         
-             $sessionAvatar = "<avatar username='$campname' :size='32'></avatar>";
+             $sessionAvatar = "<avatar username='$localcalltime' :size='32'></avatar>";
              
                 echo                            '<div class="media-box">
                                                     <div class="pull-left">
@@ -91,7 +87,7 @@
         }
             if ($leadscount > 0){ 
             
-                 $sessionAvatar = "<avatar username='$campname' :size='32'></avatar>";
+                 $sessionAvatar = "<avatar username='$localcalltime' :size='32'></avatar>";
                  
                 echo                            '<div class="media-box">
                                                     <div class="pull-left">
