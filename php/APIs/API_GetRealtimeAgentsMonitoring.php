@@ -205,10 +205,10 @@
 
 
     $barracks .='[';       
-    $barracks .= '"<b id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\">'.$sessionAvatar.'</b>",';
-    $barracks .= '"<b id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\">'.$agentname.'</b>",'; 
+    $barracks .= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\">'.$sessionAvatar.'</a>",';
+    $barracks .= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\">'.$agentname.'</a>",'; 
     $barracks .= '"'.$user_group.'",';    
-    $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
+    $barracks .= '"<a class=\"'.$textclass.'\">'.$status.''.$CM.'</a>",';    
     $barracks .= '"'.$cust_phone.'",';         
     $barracks .= '"<b class=\"'.$textclass.'\">'.$call_time_MS.'</b>",';
     $barracks .= '"'.$campname.'"';
