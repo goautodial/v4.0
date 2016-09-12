@@ -4198,8 +4198,9 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function getListAllCallTimes($goUser, $goPass, $goAction, $responsetype){
-	    $url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
+
+	public function getCalltimes(){
+		$url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllCalltimes"; #action performed by the [[API:Functions]]. (required)
@@ -4214,6 +4215,12 @@ error_reporting(E_ERROR | E_PARSE);
 	    $data = curl_exec($ch);
 	    curl_close($ch);
 	    $output = json_decode($data);
+
+	    return $output;
+	}
+
+	public function getListAllCallTimes($goUser, $goPass, $goAction, $responsetype){
+	    $output = $this->getCalltimes();
 	   
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -4274,12 +4281,14 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function API_getListAllCarriers($goUser, $goPass, $goAction, $responsetype){
+
+	public function getCarriers(){
 		$url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCarriersList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
+    
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
 	    curl_setopt($ch, CURLOPT_POST, 1);
@@ -4289,11 +4298,12 @@ error_reporting(E_ERROR | E_PARSE);
 	    $data = curl_exec($ch);
 	    curl_close($ch);
 	    $output = json_decode($data);
+
 	    return $output;
 	}
 
 	public function getListAllCarriers(){
-		$output = $this->API_getListAllCarriers();
+		$output = $this->getCarriers();
 	   
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -4314,7 +4324,7 @@ error_reporting(E_ERROR | E_PARSE);
 				    $active = "Inactive";
 				}
                     $result .= "<tr>
-	                    <td class ='hide-on-low'>".$output->carrier_id[$i]."</td>
+	                    <td class ='hide-on-low'><a class='edit-carrier' data-id='".$output->carrier_id[$i]."'>".$output->carrier_id[$i]."</td>
 	                    <td>".$output->carrier_name[$i]."</td>
 	                    <td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 			    		<td class ='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
@@ -4490,12 +4500,13 @@ error_reporting(E_ERROR | E_PARSE);
 	 * [[API: Function]] - getAllDispositions
 	 * 	This application is used to get list of campaign belongs to user.
 	*/
-	public function API_getAllDispositions(){
+	public function API_getAllDispositions($custom){
         $url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getAllDispositions"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
+        $postfields["custom_request"] = $custom;
 
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
@@ -5384,7 +5395,6 @@ error_reporting(E_ERROR | E_PARSE);
        }
 	}
 
-
 	public function getAllowedList($user_id){
 		$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -5484,46 +5494,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$output = json_decode($data);
 
 		return $output;
-	}
-
-	public function getCalltimes(){
-		$url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
-	    $postfields["goUser"] = goUser; #Username goes here. (required)
-	    $postfields["goPass"] = goPass; #Password goes here. (required)
-	    $postfields["goAction"] = "getAllCalltimes"; #action performed by the [[API:Functions]]. (required)
-	    $postfields["responsetype"] = responsetype; #json. (required)
-    
-	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $url);
-	    curl_setopt($ch, CURLOPT_POST, 1);
-	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	    $data = curl_exec($ch);
-	    curl_close($ch);
-	    $output = json_decode($data);
-
-	    return $output;
-	}
-
-	public function getCarriers(){
-		$url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
-	    $postfields["goUser"] = goUser; #Username goes here. (required)
-	    $postfields["goPass"] = goPass; #Password goes here. (required)
-	    $postfields["goAction"] = "goGetCarriersList"; #action performed by the [[API:Functions]]. (required)
-	    $postfields["responsetype"] = responsetype; #json. (required)
-    
-	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $url);
-	    curl_setopt($ch, CURLOPT_POST, 1);
-	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	    $data = curl_exec($ch);
-	    curl_close($ch);
-	    $output = json_decode($data);
-
-	    return $output;
 	}
 
 	public function API_getAllDialStatuses($campaign_id){

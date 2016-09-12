@@ -1,5 +1,7 @@
 <?php
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 	###################################################
 	### Name: editsettingscarrier.php 				###
 	### Functions: Edit Carrier 			 		###
@@ -32,43 +34,11 @@ if (isset($_POST["cid"])) {
         <meta charset="UTF-8">
         <title>Edit Carrier</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+
+        <!-- Call for standardized css -->
+        <?php print $ui->standardizedThemeCSS();?>
         <?php print $ui->creamyThemeCSS(); ?>
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-		<!-- Forms and actions -->
-		<script src="js/jquery.validate.min.js" type="text/javascript"></script>
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-
-        	<!-- =============== BOOTSTRAP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
-				<!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
-
-        <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			})
-		</script>
     </head>
     <style>
     	select{
@@ -112,7 +82,7 @@ if (isset($_POST["cid"])) {
 						<?php
 						$errormessage = NULL;
 						
-						//if(isset($extenid)) {
+						if(isset($cid)) {
 							$url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
 					        $postfields["goUser"] = goUser; #Username goes here. (required)
 					        $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -131,12 +101,10 @@ if (isset($_POST["cid"])) {
 					         curl_close($ch);
 					         $output = json_decode($data);
 					        
-					        //var_dump($output); 
+					        //var_dump($output->result); 
 
 							if ($output->result=="success") {
-								
-							# Result was OK!
-								for($i=0;$i<count($output->user_group);$i++){
+							
 						?>
 
 						<legend>MODIFY CARRIER ID : <u><?php echo $cid;?></u></legend>
@@ -160,13 +128,13 @@ if (isset($_POST["cid"])) {
 										<div class="form-group mt">
 											<label for="carrier_name" class="col-sm-2 control-label">Carrier Name</label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="carrier_name" id="carrier_name" placeholder="Carrier Name" value="<?php echo $output->carrier_name[$i];?>">
+												<input type="text" class="form-control" name="carrier_name" id="carrier_name" placeholder="Carrier Name" value="<?php echo $output->data->carrier_name;?>">
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="carrier_description" class="col-sm-2 control-label">Carrier Description</label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="Carrier Description" value="<?php echo $output->carrier_description[$i];?>">
+												<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="Carrier Description" value="<?php echo $output->data->carrier_description;?>">
 											</div>
 										</div>
 										<div class="form-group">
@@ -190,25 +158,25 @@ if (isset($_POST["cid"])) {
 										<div class="form-group registration_div" style="display:none;">
 											<label for="username" class="col-sm-2 control-label">Username</label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="username" id="username" placeholder="Username" value="<?php echo $output->username[$i];?>">
+												<input type="text" class="form-control" name="username" id="username" placeholder="Username" value="<?php echo $output->data->username;?>">
 											</div>
 										</div>
 										<div class="form-group registration_div" style="display:none;">
 											<label for="password" class="col-sm-2 control-label">Password</label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="<?php echo $output->password[$i];?>">
+												<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="<?php echo $output->data->password;?>">
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="server_ip" class="col-sm-2 control-label">Server IP/Host</label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="server_ip" id="server_ip" placeholder="Server IP/Host" value="<?php echo $output->server_ip[$i];?>">
+												<input type="text" class="form-control" name="server_ip" id="server_ip" placeholder="Server IP/Host" value="<?php echo $output->data->server_ip;?>">
 											</div>
 										</div>
 										<div class="form-group registration_div" style="display:none;">
 											<label for="carrier_desc" class="col-sm-2 control-label">Port</label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="carrier_desc" id="carrier_desc" placeholder="Carrier Description" value="<?php echo $output->carrier_description[$i];?>">
+												<input type="text" class="form-control" name="carrier_desc" id="carrier_desc" placeholder="Carrier Description" value="<?php echo $output->data->carrier_description;?>">
 											</div>
 										</div>
 										<div class="form-group">
@@ -268,19 +236,19 @@ if (isset($_POST["cid"])) {
 												<select class="form-control" name="protocol" id="protocol">
 												<?php
 													$protocol = NULL;
-													if($output->protocol[$i] == "SIP"){
+													if($output->data->protocol == "SIP"){
 														$protocol .= '<option value="SIP" selected> SIP </option>';
 													}else{
 														$protocol .= '<option value="SIP" > SIP </option>';
 													}
 													
-													if($output->protocol[$i] == "IAX2"){
+													if($output->data->protocol == "IAX2"){
 														$protocol .= '<option value="IAX2" selected> IAX2 </option>';
 													}else{
 														$protocol .= '<option value="IAX2" > IAX2 </option>';
 													}
 
-													if($output->protocol[$i] == "CUSTOM"){
+													if($output->data->protocol == "CUSTOM"){
 														$protocol .= '<option value="CUSTOM" selected> CUSTOM </option>';
 													}else{
 														$protocol .= '<option value="CUSTOM" > CUSTOM </option>';
@@ -296,13 +264,13 @@ if (isset($_POST["cid"])) {
 												<select class="form-control" name="active" id="active">
 												<?php
 													$active = NULL;
-													if($output->active[$i] == "Y"){
+													if($output->data->active == "Y"){
 														$active .= '<option value="Y" selected> YES </option>';
 													}else{
 														$active .= '<option value="Y" > YES </option>';
 													}
 													
-													if($output->active[$i] == "N" || $output->active[$i] == NULL){
+													if($output->data->active == "N" || $output->active[$i] == NULL){
 														$active .= '<option value="N" selected> NO </option>';
 													}else{
 														$active .= '<option value="N" > NO </option>';
@@ -315,7 +283,44 @@ if (isset($_POST["cid"])) {
 									</fieldset>
 								</div><!-- tab 1 -->
 
-								
+									<!-- ADVANCED SETTINGS -->
+				                <div id="tab_2" class="tab-pane fade in">
+				                	<fieldset>
+				                		<div class="form-group mt">
+											<label for="registration_string" class="col-sm-2 control-label">Registration String</label>
+											<div class="col-sm-10 mb">
+												<input type="text" class="form-control" name="registration_string" id="registration_string" placeholder="Registration String" value="<?php echo $output->data->registration_string;?>">
+											</div>
+										</div>
+										<div class="form-group mt">
+											<label for="globals_string" class="col-sm-2 control-label">Global String</label>
+											<div class="col-sm-10 mb">
+												<input type="text" class="form-control" name="globals_string" id="globals_string" placeholder="Global String" value="<?php echo $output->data->globals_string;?>">
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="status" class="col-sm-2 control-label">Account Entry</label>
+											<div class="col-sm-10 mb">
+												<div class="panel">
+													<div class="panel-body">
+														<textarea rows="11" class="form-control note-editor" id="account_entry" name="account_entry"><?php echo $output->data->account_entry;?></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="status" class="col-sm-2 control-label">Dial Plan Entry</label>
+											<div class="col-sm-10 mb">
+												<div class="panel">
+													<div class="panel-body">
+														<textarea rows="3" class="form-control note-editor" id="dialplan_entry" name="dialplan_entry"><?php echo $output->data->dialplan_entry;?></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</fieldset>
+								</div><!-- tab 2 -->
+
 								<!-- NOTIFICATIONS -->
 			                    <div id="notifications">
 			                        <div class="output-message-success" style="display:none;">
@@ -358,7 +363,7 @@ if (isset($_POST["cid"])) {
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 
-  		
+  		<?php print $ui->standardizedThemeJS();?>
 		
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>

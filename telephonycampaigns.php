@@ -171,7 +171,7 @@ error_reporting(E_ALL);*/
 										<table class="table table-striped table-bordered table-hover" id="table_disposition">
 										   <thead>
 											  <tr>
-                                                                                                 <th style="color: white;">Pic</th>
+                                                 <th style="color: white;">Pic</th>
 												 <th class='hide-on-medium hide-on-low'>Campaign ID</th>
 												 <th>Campaign Name</th>
 												 <th class='hide-on-medium hide-on-low'>Custom Disposition</th>
