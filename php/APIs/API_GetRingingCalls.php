@@ -39,6 +39,6 @@
         $ringing_calls = 0;
     }
         
-    echo json_encode(round($ringing_calls)); 
+    echo json_encode(number_format($ringing_calls)); 
 
 ?>
