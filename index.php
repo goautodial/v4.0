@@ -426,24 +426,27 @@ $callsperhour = $ui->API_goGetCallsPerHour();
             	<aside class="col-lg-3">
 
         <!--==== DROPPED PERCENTAGE  ==== -->
-                                                <div class="panel panel-default">
+                                                <!-- <div class="panel panel-default">
                                                     <?php
-                                                    $droppedpercentage = $ui->API_goGetDroppedPercentage();
+                                                    //$droppedpercentage = $ui->API_goGetDroppedPercentage();
                                                     //echo ("pre");
                                                     //print_r($droppedpercentage);                                                      
-                                                    $dropped_percentage = $droppedpercentage->data->getDroppedPercentage; 
+                                                    //$dropped_percentage = $droppedpercentage->data->getDroppedPercentage; 
 
-                                                    if ($dropped_percentage == NULL){
-                                                        $dropped_percentage = "0";
-                                                    }                                                   
+                                                    //if ($dropped_percentage == NULL){
+                                                        //$dropped_percentage = "0";
+                                                    //}                                                   
                                                     
-                                                    if ($dropped_percentage < "30"){
-                                                        $color = "#5d9cec";
-                                                    }
-                                                    if ($dropped_percentage >= "30"){
-                                                        $color = "orange";
-                                                    }                                                    
-                                                    
+                                                    //if ($dropped_percentage < "10"){
+                                                        //$color = "#5d9cec";
+                                                    //}
+                                                    //if ($dropped_percentage >= "10"){
+                                                        //$color = "#f05050";
+                                                    //}                                                    
+                                                    //if ($dropped_percentage > "100"){
+                                                        //$color = "#f05050";
+                                                        //$dropped_percentage = "100";
+                                                    //}                                                    
                                                     ?>
 						   <div class="panel-body">
 								<div class="panel-title">Dropped Calls Percentage</div>
@@ -482,9 +485,9 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 									 <span class="text-dark"><?php echo $dropped_percentage; ?></span>
 								  </p>
 							   </div>
-							</div>
+							</div> -->
 							<!-- END loader widget-->
-						</div>
+						<!-- </div> -->
 
         <!--==== SERVICE LEVEL AGREEMENT ==== -->
                                                 <div class="panel panel-default">
@@ -650,7 +653,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                     <h4>Realtime Agents Monitoring</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="responsive">
+                                    <div class="content table-responsive table-full-width">
                                     <!-- <div class="col-sm-12">-->
                                         <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
                                             <thead>                                            
@@ -1298,13 +1301,13 @@ function goGetModalUsernameValue(){
 		setInterval(load_totalagentspaused,5000);
 		setInterval(load_totalagentswaitingcall,5000);
 		
-		setInterval(load_totalSales,5000);
-		setInterval(load_INSalesHour,5000);
-		setInterval(load_OUTSalesPerHour,5000);
+		//setInterval(load_totalSales,5000);
+		//setInterval(load_INSalesHour,5000);
+		//setInterval(load_OUTSalesPerHour,5000);
 		
-		setInterval(load_TotalActiveLeads,5000);
-		setInterval(load_LeadsinHopper,5000);
-		setInterval(load_TotalDialableLeads,5000);
+		//setInterval(load_TotalActiveLeads,5000);
+		//setInterval(load_LeadsinHopper,5000);
+		//setInterval(load_TotalDialableLeads,5000);
 		
 		setInterval(load_RingingCalls,5000);
 		setInterval(load_IncomingQueue,5000);
@@ -1317,14 +1320,14 @@ function goGetModalUsernameValue(){
 		setInterval(load_cluster_status,10000);
 		
 		// ... agent and campaign resources ...
-		setInterval(load_campaigns_resources,10000);
-		setInterval(load_campaigns_monitoring,10000);
+		setInterval(load_campaigns_resources,30000);
+		setInterval(load_campaigns_monitoring,20000);
 		setInterval(load_agents_monitoring_summary,5000);
 		
 		// ... realtime monitoring ...
                 setInterval(load_realtime_agents_monitoring,3000);
                 setInterval(load_realtime_calls_monitoring,3000);
-                setInterval(load_realtime_sla_monitoring,3000);
+                setInterval(load_realtime_sla_monitoring,10000);
 		
 		// ... view agent information modal  ...
 		setInterval(load_view_agent_information,3000);

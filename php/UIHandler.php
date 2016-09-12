@@ -4405,13 +4405,12 @@ error_reporting(E_ERROR | E_PARSE);
 	 * [[API: Function]] - getAllDispositions
 	 * 	This application is used to get list of campaign belongs to user.
 	*/
-	public function API_getAllDispositions($custom){
+	public function API_getAllDispositions(){
         $url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getAllDispositions"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
-        $postfields["custom_request"] = $custom;
 
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
@@ -4642,32 +4641,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalAgentsWaitCalls"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype;
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			//var_dump($data);
-			 $data = explode(";",$data);
-			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			 }
+			$output = json_decode($data);
 			
-			 if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalAgentsWaitCalls"];
-			 } else {
-			   # An error occured
-					$vars = 0;
-					return $vars;
-			 }
+                        return($data);
 		}
 		
 		/*
@@ -4681,9 +4668,9 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalAgentsPaused"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
 			
-			
-			$ch = curl_init();
+                        $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
@@ -4692,22 +4679,9 @@ error_reporting(E_ERROR | E_PARSE);
 			$data = curl_exec($ch);
 			curl_close($ch);
 			
-			//var_dump($data);
-			 $data = explode(";",$data);
-			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			 }
-			
-			 if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalAgentsPaused"];
-			 } else {
-			   # An error occurred
-					$vars = 0;
-					return $vars;
-			 }
+			$output = json_decode($data);
+			 
+			return $output;
 		
 		}
 		
@@ -4722,32 +4696,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass; 
 			$postfields["goAction"] = "goGetTotalAgentsCall"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype;
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			//var_dump($data);
-			 $data = explode(";",$data);
-			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			 }
+			$output = json_decode($data);
 			
-			 if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalAgentsCall"];
-			 } else {
-			   # An error occured
-					$vars = 0;
-					return $vars;
-			 }
+                        return($data);
 		}
 		
 		/*
@@ -4842,7 +4804,8 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalActiveLeads"; #action performed by the [[API:Functions]]
-
+                        $postfields["responsetype"] = responsetype; 
+                        
 			 $ch = curl_init();
 			 curl_setopt($ch, CURLOPT_URL, $url);
 			 curl_setopt($ch, CURLOPT_POST, 1);
@@ -4881,15 +4844,18 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetActiveCampaignsToday"; #action performed by the [[API:Functions]]
-
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $postfields["responsetype"] = responsetype; 
+                        
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			
+			$output = json_decode($data);
 			
                         return($data);
 		}
@@ -4905,31 +4871,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetRingingCalls"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getRingingCalls"];
-			} else {
-			   # An error occurred
-					$vars = 0;
-					return $vars;
-			}
+			$output = json_decode($data);
+			 
+			return $output;
 		
 		}
 
@@ -4946,18 +4901,18 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goAction"] = "goGetHopperLeadsWarning"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype; 
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			
+			$output = json_decode($data);
 			 
-			 $output = json_decode($data);
-			 
-			 return $output;
+			return $output;
 		}
 		
 		/*
@@ -5021,31 +4976,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetIncomingQueue"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getIncomingQueue"];
-			} else {
-			   # An error occurred
-					$vars = 0;
-					return $vars;
-			}
+			$output = json_decode($data);
+			 
+			return $output;
 		
 		}
 		
@@ -5060,29 +5004,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalCalls"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
 
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!	   
-					return $results["getTotalCalls"];					
-			} else {
-					$vars = 0;
-					return $vars;
-			}
+			$output = json_decode($data);
+			 
+			return $output;
 		}
 		
 		/*
@@ -5096,32 +5031,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalAnsweredCalls"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype;
 
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			//var_dump($data);
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalAnsweredCalls"];
-			} else {
-			   # An error occurred
-					$vars = 0;
-					return $vars;
-			}
+			$output = json_decode($data);
+			 
+			return $output;
 		}		
 		/*
 		 * Displaying Total Dropped Calls
@@ -5134,33 +5057,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalDroppedCalls"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype;
 
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			//var_dump($data);
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-                           //var_dump($results);
-			   //die("dd");
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalDroppedCalls"];
-			} else {
-					$vars = 0;
-					return $vars;
-			}
+			$output = json_decode($data);
+			 
+			return $output;
 		}		
 		/*
 		 * Displaying Live Outbound
@@ -5173,33 +5083,21 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetLiveOutbound"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype;
+
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+			$output = json_decode($data);
+			 
+			return $output;
 			
-			//var_dump($data);
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getLiveOutbound"];
-			} else {
-			   # An error occured
-					$vars = 0;
-					return $vars;
-			}
-		
 		}
 		
 		/*
@@ -5231,27 +5129,27 @@ error_reporting(E_ERROR | E_PARSE);
 		 * [[API: Function]] - goGetDroppedPercentage
 		 * This application is used to get dropped call percentage.
 		*/
-            public function API_goGetDroppedPercentage() {
-		$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass;
-		$postfields["goAction"] = "goGetDroppedPercentage"; #action performed by the [[API:Functions]]
-                $postfields["responsetype"] = responsetype;
+                public function API_goGetDroppedPercentage() {
+                        $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+                        $postfields["goUser"] = goUser; #Username goes here. (required)
+                        $postfields["goPass"] = goPass;
+                        $postfields["goAction"] = "goGetDroppedPercentage"; #action performed by the [[API:Functions]]
+                        $postfields["responsetype"] = responsetype;
 
-		 $ch = curl_init();
-		 curl_setopt($ch, CURLOPT_URL, $url);
-		 curl_setopt($ch, CURLOPT_POST, 1);
-		 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		 $data = curl_exec($ch);
-		 curl_close($ch);
-                
-		 $output = json_decode($data);
-		 
-		 return $output;
-		
-            }
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_URL, $url);
+                        curl_setopt($ch, CURLOPT_POST, 1);
+                        curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+                        $data = curl_exec($ch);
+                        curl_close($ch);
+                        
+                        $output = json_decode($data);
+                        
+                        return $output;
+                    
+                }
             
 		/*
 		 * Display SLA Percentage

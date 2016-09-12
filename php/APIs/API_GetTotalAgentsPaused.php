@@ -1,17 +1,26 @@
 <?php
-require_once('../goCRMAPISettings.php');
-/*
-*Displaying Agent(s) on Paused
-*[[API: Function]] - goGetTotalAgentsPaused
-*This application is used to get total of agents paused
-*/
+    ####################################################
+    #### Name: GetTotalAgentsPaused.php             ####
+    #### Type: API for dashboard php encode         ####
+    #### Version: 0.9                               ####
+    #### Copyright: GOAutoDial Inc. (c) 2011-2016   ####
+    #### Written by: Demian Lizandro Biscocho       ####
+    #### License: AGPLv2                            ####
+    ####################################################
+    
+    require_once('../goCRMAPISettings.php');
+    /*
+    *Displaying Agent(s) on Paused
+    *[[API: Function]] - goGetTotalAgentsPaused
+    *This application is used to get total of agents paused
+    */
 
-   $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-   $postfields["goUser"] = goUser; #Username goes here. (required)
-   $postfields["goPass"] = goPass;
-   $postfields["goAction"] = "goGetTotalAgentsPaused"; #action performed by the [[API:Functions]]
-   
-   
+    $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+    $postfields["goUser"] = goUser; #Username goes here. (required)
+    $postfields["goPass"] = goPass;
+    $postfields["goAction"] = "goGetTotalAgentsPaused"; #action performed by the [[API:Functions]]
+    $postfields["responsetype"] = responsetype;
+    
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -20,21 +29,16 @@ require_once('../goCRMAPISettings.php');
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
     $data = curl_exec($ch);
     curl_close($ch);
-   
-   //var_dump($data);
-    $data = explode(";",$data);
-    foreach ($data AS $temp) {
-      $temp = explode("=",$temp);
-      $results[$temp[0]] = $temp[1];
+    
+    //var_dump($data);
+    $output = json_decode($data);
+        
+    $total_agents_paused = $output->data->getTotalAgentsPaused;
+        
+    if($total_agents_paused == NULL || $total_agents_paused == 0){
+        $total_agents_paused = 0;
     }
-   
-    if ($results["result"]=="success") {
-      # Result was OK!
-      //var_dump($results); #to see the returned arrays.
-           echo number_format($results["getTotalAgentsPaused"]);
-    } else {
-      # An error occurred
-      echo "0";
-    }
+        
+    echo json_encode(round($total_agents_paused)); 
 
 ?>
