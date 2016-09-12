@@ -268,7 +268,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 																	</select>
 																</div>
 																<div class="col-lg-3">
-																	<input type="number" class="form-control" id="custom_prefix" min="9" max="20" value="9" name="custom_prefix">
+																	<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if(isset($campaign->data->dial_prefix))echo $campaign->data->dial_prefix; ?>" minlength="9" maxlength="20" required>
 																</div>
 															</div>
 														</div>
