@@ -136,8 +136,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				$(".preloader").fadeOut("slow");
 			})
 		</script>
-	<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'; // sweetalert
-	<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>'; // sweetalert js
+	<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
+	<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
