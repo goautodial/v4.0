@@ -1377,9 +1377,7 @@ error_reporting(E_ALL);*/
 				/*** DISPOSITION ***/
 					// check duplicates
 						$("#status").keyup(function() {
-							clearTimeout($.data(this, 'timer'));
-							var wait = setTimeout(duplicate_status_check, 1000);
-							$(this).data('timer', wait);
+							duplicate_status_check();
 						});
 
 						$('#disposition_campaign').change(function(){
