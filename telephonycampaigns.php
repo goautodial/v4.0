@@ -687,14 +687,14 @@ error_reporting(E_ALL);*/
 		                        <div class="form-group">
 		                            <label class="col-sm-3 control-label" for="status">Status</label>
 		                            <div class="col-sm-9 mb">
-		                                <input type="text" name="status" id="status" class="form-control" placeholder="Status (Mandatory)" minlength="3" maxlenght="6" required>
+		                                <input type="text" name="status" id="status" class="form-control" placeholder="Status (Mandatory)" minlength="3" maxlength="6" required>
 		                            	<label id="status-duplicate-error"></label>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
 		                            <label class="col-sm-3 control-label" for="status_name">Status Name </label>
 		                            <div class="col-sm-9 mb">
-		                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="Status Name (Mandatory)" maxlenght="30" required>
+		                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="Status Name (Mandatory)" maxlength="30" required>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
@@ -1378,7 +1378,7 @@ error_reporting(E_ALL);*/
 					// check duplicates
 						$("#status").keyup(function() {
 							clearTimeout($.data(this, 'timer'));
-							var wait = setTimeout(duplicate_status_check, 500);
+							var wait = setTimeout(duplicate_status_check, 1000);
 							$(this).data('timer', wait);
 						});
 

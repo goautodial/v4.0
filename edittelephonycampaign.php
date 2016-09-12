@@ -555,9 +555,9 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 															<label class="col-sm-3 control-label">Get Call Launch:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="get_call_launch" name="get_call_launch">
-																	<option value="NONE" <?php if($Campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
-																	<option value="SCRIPT" <?php if($Campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
-																	<option value="WEBFORM" <?php if($Campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
+																	<option value="NONE" <?php if($campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
+																	<option value="SCRIPT" <?php if($campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
+																	<option value="WEBFORM" <?php if($campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
 																</select>
 															</div>
 														</div>
@@ -686,9 +686,9 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 															<label class="col-sm-3 control-label">Get Call Launch:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="get_call_launch" name="get_call_launch">
-																	<option value="NONE" <?php if($Campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
-																	<option value="SCRIPT" <?php if($Campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
-																	<option value="WEBFORM" <?php if($Campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
+																	<option value="NONE" <?php if($campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
+																	<option value="SCRIPT" <?php if($campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
+																	<option value="WEBFORM" <?php if($campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
 																</select>
 															</div>
 														</div>
@@ -760,9 +760,9 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 																<label class="col-sm-3 control-label">Get Call Launch:</label>
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="get_call_launch" name="get_call_launch">
-																		<option value="NONE" <?php if($Campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
-																		<option value="SCRIPT" <?php if($Campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
-																		<option value="WEBFORM" <?php if($Campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
+																		<option value="NONE" <?php if($campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
+																		<option value="SCRIPT" <?php if($campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
+																		<option value="WEBFORM" <?php if($campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
 																	</select>
 																</div>
 															</div>
@@ -827,9 +827,9 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 															<label class="col-sm-3 control-label">Get Call Launch:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="get_call_launch" name="get_call_launch">
-																	<option value="NONE" <?php if($Campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
-																	<option value="SCRIPT" <?php if($Campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
-																	<option value="WEBFORM" <?php if($Campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
+																	<option value="NONE" <?php if($campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
+																	<option value="SCRIPT" <?php if($campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
+																	<option value="WEBFORM" <?php if($campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
 																</select>
 															</div>
 														</div>
@@ -1024,9 +1024,9 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 															<label class="col-sm-3 control-label">Get Call Launch:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="get_call_launch" name="get_call_launch">
-																	<option value="NONE" <?php if($Campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
-																	<option value="SCRIPT" <?php if($Campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
-																	<option value="WEBFORM" <?php if($Campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
+																	<option value="NONE" <?php if($campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
+																	<option value="SCRIPT" <?php if($campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
+																	<option value="WEBFORM" <?php if($campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
 																</select>
 															</div>
 														</div>
@@ -1265,7 +1265,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 									<tr><td colspan="11" style="background: #ecf0f5;">&nbsp;</td></tr>
 									<tr style="border-top: 1px solid #f4f4f4;">
 										<td>
-											<input type="text" name="add_status" id="add_status" class="" placeholder="Status">
+											<input type="text" name="add_status" id="add_status" class="" placeholder="Status" maxlength="6">
 											<br/><small><label id="status-duplicate-error"></label></small>
 										</td>
 										<td>
