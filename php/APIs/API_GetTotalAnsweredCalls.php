@@ -1,4 +1,13 @@
 <?php
+    ####################################################
+    #### Name: GetTotalAnsweredCalls.php            ####
+    #### Type: API for dashboard php encode         ####
+    #### Version: 0.9                               ####
+    #### Copyright: GOAutoDial Inc. (c) 2011-2016   ####
+    #### Written by: Demian Lizandro Biscocho       ####
+    #### License: AGPLv2                            ####
+    ####################################################
+    
     require_once('../goCRMAPISettings.php');
     /*
     * Displaying Total Answered Calls

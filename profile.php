@@ -173,7 +173,7 @@
                            <li data-datetime="Today" class="timeline-separator"></li>
                            <!-- START timeline item-->
                            <li>
-<div class="timeline-badge primary">
+                <div class="timeline-badge primary">
                      <em class="fa fa-users"></em>
                   </div>
                   <div class="timeline-panel">

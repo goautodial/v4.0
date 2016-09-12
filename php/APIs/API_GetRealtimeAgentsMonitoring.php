@@ -93,7 +93,7 @@
         $textclass = "text-success";        
         
         if ($pc_channel != NULL){
-                $last_call_time = $pc_parked_time;
+                //$last_call_time = $pc_parked_time;
                 $status = "PARK";
         }
     
@@ -140,12 +140,12 @@
     }
     
     if (preg_match("/3-WAY/",$status)){
-        $call_time_S = ($STARTtime - $call_mostrecent);
+        $call_time_S = ($STARTtime - $last_state_change);
         $textclass = "text-success";
     }
 
     //$call_time_S = ($STARTtime - $call_time);
-    //$call_time_S = ($STARTtime - $last_state_change);
+    $call_time_S = ($STARTtime - $last_state_change);
     $call_time_M = ($call_time_S / 60);
     $call_time_M = round($call_time_M, 2);
     $call_time_M_int = intval("$call_time_M");

@@ -130,7 +130,7 @@
                 var JSONStringrealtime = values;
                 var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
                 //console.log(JSONStringrealtime);
-                //console.log(JSONObjectrealtime); 
+                console.log(JSONObjectrealtime); 
                 var table = $('#realtime_agents_monitoring_table').dataTable({
                                 data:JSONObjectrealtime,
                                 "destroy":true,
