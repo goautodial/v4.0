@@ -1358,6 +1358,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$name = $this->creamyHeaderName();
 			//<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="32"> '.$name.'</a>
 		// return header
+		$avatarElement = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 22, true);
 		return '<header class="main-header">
 				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
 	            <nav class="navbar navbar-static-top" role="navigation">
@@ -1371,7 +1372,13 @@ error_reporting(E_ERROR | E_PARSE);
 	                    		'.$this->getTopbarMessagesMenu($user).'  
 		                    	'.$this->getTopbarNotificationsMenu($user).'
 		                    	'.$this->getTopbarTasksMenu($user).'
-		                    	'.$this->getTopbarUserMenu($user).'
+		                    	<li>
+			                    	<a href="#" class="visible-xs" data-toggle="control-sidebar" style="padding-top: 17px; padding-bottom: 18px; margin-right: -15px;"><i class="fa fa-cogs"></i></a>
+										<a href="#" class="hidden-xs" data-toggle="control-sidebar" style="padding-top: 14px; padding-bottom: 14px; margin-right: -15px;">
+											'.$avatarElement.'
+											<span> '.$user->getUserName().' <i class="caret"></i></span>
+										</a>
+				               </li>
 	                    </ul>
 	                </div>
 	            </nav>
@@ -1963,6 +1970,71 @@ error_reporting(E_ERROR | E_PARSE);
         }
 		
 		$result .= '</ul></section></aside>';
+		
+		return $result;
+	}
+	
+	/**
+	 * Right Sidebar
+	 */
+	public function getRightSidebar($userid, $username, $avatar, $tabs = array()) {
+		$mh = \creamy\ModuleHandler::getInstance();
+		$user = \creamy\CreamyUser::currentUser();
+		
+		// prefix: structure and home link
+		// old img element : <img src="'.$avatar.'" class="img-circle" alt="User Image" />
+		$avatarElement = $this->getVueAvatar($username, $avatar, 96, false, true, false);
+		$result = '<aside class="control-sidebar control-sidebar-dark">'."\n";
+		
+		// Create Tabs
+		if (count($tabs) < 1) {
+			$tabs = array('user' => 'settings');
+		}
+		$tabresult = '<ul class="nav nav-tabs nav-justified control-sidebar-tabs">'."\n";
+		$x = 0;
+		foreach ($tabs as $icon => $tabname) {
+			$isActive = ($x < 1) ? ' class="active"' : '';
+			$tabresult .= '<li id="'.$tabname.'-tab"'.$isActive.'><a href="#control-sidebar-'.$tabname.'-tab" data-toggle="tab"><i class="fa fa-'.$icon.'"></i></a></li>'."\n";
+			$x++;
+		}
+		$tabresult .= '</ul>'."\n";
+		
+		$tabphanes = '<div class="tab-content" style="border-width:0; overflow-y: hidden; padding-bottom: 30px;">'."\n";
+		$tabphanes .= '<div class="tab-pane active" id="control-sidebar-settings-tab">
+		<ul class="control-sidebar-menu" id="go_user_profile">
+			<li>
+				<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px; padding-top: 10px;">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<p>'.$avatarElement.'</p>
+						<p style="color:white;">'.$username.'<br><small>'.$this->lh->translationFor("nice_to_see_you_again").'</small></p>
+					</a>
+				</div>
+			</li>';
+			if ($user->userHasBasicPermission()) {
+				$tabphanes .= '<li>
+					<div class="text-center"><a href="" data-toggle="modal" id="change-password-toggle" data-target="#change-password-dialog-modal">'.$this->lh->translationFor("change_password").'</a></div>
+					<div class="text-center"><a href="./messages.php">'.$this->lh->translationFor("messages").'</a></div>
+					<div class="text-center"><a href="./notifications.php">'.$this->lh->translationFor("notifications").'</a></div>
+					<div class="text-center"><a href="./tasks.php">'.$this->lh->translationFor("tasks").'</a></div>
+				</li>';
+			}
+		$tabphanes .= '</ul>
+        <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+			<li>
+				<div class="center-block" style="text-align: center">
+					<a href="./profile.php" class="btn btn-warning"><i class="fa fa-user"></i> '.$this->lh->translationFor("my_profile").'</a>
+					 &nbsp; 
+					<a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class="fa fa-sign-out"></i> '.$this->lh->translationFor("exit").'</a>
+				</div>
+			</li>
+        </ul>
+      </div>';
+		$tabphanes .= "</div>\n";
+		
+		$result .= $tabresult;
+		$result .= $tabphanes;
+		$result .= "</aside>\n";
+		$result .= "<div class='control-sidebar-bg' style='position: fixed; height: auto;'></div>\n";
 		
 		return $result;
 	}
@@ -5515,21 +5587,22 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function standardizedThemeCSS() {
 		$css = "";
-		$css .= '<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />'; // bootstrap basic css
-		$css .= '<link href="css/creamycrm.css" rel="stylesheet" type="text/css" />'; // creamycrm css
-    	$css .= '<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />'; // circle buttons css
-		$css .= '<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />'; // ionicons
-		$css .= '<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />'; // bootstrap3 css
-		$css .= '<link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">'; // font-awesome css
-		$css .= '<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">'; // animate css
+		$css .= '<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />'."\n"; // bootstrap basic css
+		$css .= '<link href="css/creamycrm.css" rel="stylesheet" type="text/css" />'."\n"; // creamycrm css
+    	$css .= '<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />'."\n"; // circle buttons css
+		$css .= '<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />'."\n"; // ionicons
+		$css .= '<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />'."\n"; // bootstrap3 css
+		$css .= '<link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">'."\n"; // font-awesome css
+		$css .= '<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">'."\n"; // animate css
 		//$css .= '<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css 
-		$css .= '<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">'; // app css
-		$css .= '<link rel="stylesheet" href="css/customizedLoader.css">'; // preloader css
-		$css .= '<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'; // sweetalert
+		$css .= '<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">'."\n"; // app css
+		$css .= '<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">'."\n";
+		$css .= '<link rel="stylesheet" href="css/customizedLoader.css">'."\n"; // preloader css
+		$css .= '<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'."\n"; // sweetalert
 		/* JS that needs to be declared first */
-		$css .= '<script src="js/jquery.min.js"></script>'; // required JS
-		$css .= '<script src="js/bootstrap.min.js" type="text/javascript"></script>'; // required JS
-		$css .= '<script src="js/jquery-ui.min.js" type="text/javascript"></script>'; // required JS
+		$css .= '<script src="js/jquery.min.js"></script>'."\n"; // required JS
+		$css .= '<script src="js/bootstrap.min.js" type="text/javascript"></script>'."\n"; // required JS
+		$css .= '<script src="js/jquery-ui.min.js" type="text/javascript"></script>'."\n"; // required JS
 
 		return $css;
 	}
@@ -5539,12 +5612,12 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function standardizedThemeJS() {
 		$js = '';
-		$js .= '<script src="js/jquery.validate.min.js" type="text/javascript"></script>'; // forms and action js
-		$js .= '<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>'; // sweetalert js 
-		$js .= '<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>'; // bootstrap 3 js
-		$js .= '<script src="js/app.min.js" type="text/javascript"></script>'; // creamy app js
-		$js .= '<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>';
-		$js .= '<script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>';
+		$js .= '<script src="js/jquery.validate.min.js" type="text/javascript"></script>'."\n"; // forms and action js
+		$js .= '<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>'."\n"; // sweetalert js 
+		$js .= '<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>'."\n"; // bootstrap 3 js
+		$js .= '<script src="adminlte/js/app.min.js" type="text/javascript"></script>'."\n"; // creamy app js
+		$js .= '<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>'."\n";
+		$js .= '<script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>'."\n";
 		$js .= "<script type='text/javascript'>
 			
 			var goOptions = {
@@ -5571,7 +5644,7 @@ error_reporting(E_ERROR | E_PARSE);
 				}
 			};
 			var goAvatar = new Vue(goOptions);
-		</script>";
+		</script>\n";
 
 		return $js;
 	}

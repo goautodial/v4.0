@@ -101,7 +101,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 	    <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
 		
         <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
+        <script src="adminlte/js/app.min.js" type="text/javascript"></script>
 		
 		<!-- Data Tables -->
         <!-- <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
@@ -126,6 +126,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				<!-- =============== APP STYLES ===============-->
 			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 
+  		<!-- Theme style -->
+  		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
 		<!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -637,6 +639,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                 </section><!-- /.content -->
 				
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 			
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
