@@ -1425,7 +1425,7 @@ error_reporting(E_ERROR | E_PARSE);
 				});
 
 				$(document).on("click", ".reload-button", function(){
-					$(".reload-button").html("<i class=\"fa fa-refresh fa-spin fa-3x fa-fw"\"></i><span class=\"sr-only\">Loading...</span>");
+					$(".reload-button").html("<i class=\"fa fa-refresh fa-spin fa-3x fa-fw\"></i><span class=\"sr-only\">Loading...</span>");
 					window.location = window.location.href;
 				});
 
