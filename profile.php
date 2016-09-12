@@ -178,12 +178,12 @@
                   </div>
                   <div class="timeline-panel">
                      <div class="popover">
-                        <h4 class="popover-title">Client Meeting</h4>
+                        <h4 class="popover-title">Outbound Calls</h4>
                         <div class="arrow"></div>
                         <div class="popover-content">
-                           <p>Av 123 St - Floor 2
+                           <p>Calls today: <?php echo $outcallstoday; ?>
                               <br>
-                              <small>Pellentesque ut diam velit, eget porttitor risus. Nullam posuere euismod volutpat.</small>
+                              <small>Click to display all outbound calls for this day.</small>
                            </p>
                         </div>
                      </div>
@@ -197,12 +197,12 @@
                   </div>
                   <div class="timeline-panel">
                      <div class="popover right">
-                        <h4 class="popover-title">Call</h4>
+                        <h4 class="popover-title">Inbound Calls</h4>
                         <div class="arrow"></div>
                         <div class="popover-content">
                            <p>Michael <a href="tel:+011654524578">(+011) 6545 24578 ext. 132</a>
                               <br>
-                              <small>Pellentesque ut diam velit, eget porttitor risus. Nullam posuere euismod volutpat.</small>
+                              <small>Click to display all inbound and closer calls for this day.</small>
                            </p>
                         </div>
                      </div>
@@ -423,7 +423,7 @@
                                     </span>
                                  </span>
                               </a>
-                              <!-- END User status--><a href="#" class="media p mt0 list-group-item text-center text-muted">View all contacts</a>
+                              <!-- END User status--><a href="contactsandcallrecordings.php" class="media p mt0 list-group-item text-center text-muted">View all contacts</a>
                            </div>
                         </div>
                         <div class="panel panel-default">

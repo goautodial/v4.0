@@ -653,7 +653,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                     <h4>Realtime Agents Monitoring</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="responsive">
+                                    <div class="content table-responsive table-full-width">
                                     <!-- <div class="col-sm-12">-->
                                         <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
                                             <thead>                                            
@@ -1301,13 +1301,13 @@ function goGetModalUsernameValue(){
 		setInterval(load_totalagentspaused,5000);
 		setInterval(load_totalagentswaitingcall,5000);
 		
-		setInterval(load_totalSales,5000);
-		setInterval(load_INSalesHour,5000);
-		setInterval(load_OUTSalesPerHour,5000);
+		//setInterval(load_totalSales,5000);
+		//setInterval(load_INSalesHour,5000);
+		//setInterval(load_OUTSalesPerHour,5000);
 		
-		setInterval(load_TotalActiveLeads,5000);
-		setInterval(load_LeadsinHopper,5000);
-		setInterval(load_TotalDialableLeads,5000);
+		//setInterval(load_TotalActiveLeads,5000);
+		//setInterval(load_LeadsinHopper,5000);
+		//setInterval(load_TotalDialableLeads,5000);
 		
 		setInterval(load_RingingCalls,5000);
 		setInterval(load_IncomingQueue,5000);
@@ -1327,7 +1327,7 @@ function goGetModalUsernameValue(){
 		// ... realtime monitoring ...
                 setInterval(load_realtime_agents_monitoring,3000);
                 setInterval(load_realtime_calls_monitoring,3000);
-                setInterval(load_realtime_sla_monitoring,3000);
+                setInterval(load_realtime_sla_monitoring,10000);
 		
 		// ... view agent information modal  ...
 		setInterval(load_view_agent_information,3000);

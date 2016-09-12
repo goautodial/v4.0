@@ -96,12 +96,12 @@
         success: function(values){
             //console.log(data);
             //$("#refresh_cluster_status").html(values);
-                var JSONStringrealtime = values;
-                var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+                var JSONStringcluster = values;
+                var JSONObjectcluster = JSON.parse(JSONStringcluster);
                 //console.log(JSONStringrealtime);
                 //console.log(JSONObjectrealtime); 
                 var table = $('#cluster-status').dataTable({ 
-                                data:JSONObjectrealtime,
+                                data:JSONObjectcluster,
                                 "paging":   false,
                                 "bPaginate": false,
                                 "searching": false,
@@ -148,8 +148,8 @@
                                             "sNext": "Next"
                                         }
                                 },
-                                //"bFilter": false,
-                                //"bInfo": false,
+                                "bFilter": false,
+                                "bInfo": false,
                                 "columnDefs": [
                                     {
                                         className: "hidden-xs", 
@@ -184,29 +184,22 @@
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                                     pagination.toggle(this.api().page.info().pages > 1);
                                 },
+                                "oLanguage": {
+                                        "sLengthMenu": "",
+                                        "sEmptyTable": "No Agents Available",
+                                        "oPaginate": {
+                                            "sPrevious": "Prev",
+                                            "sNext": "Next"
+                                        }
+                                },
+                                "bFilter": false,
+                                "bInfo": false,                                
                                 "columnDefs": [
                                     {
                                         className: "hidden-xs", 
                                         "targets": [ 1, 3, 4 ] 
                                     }
-                                ]                                 
-//                                "oLanguage": {
-//                                        "sLengthMenu": "",
-//                                        "sEmptyTable": "No Calls Available",
-//                                        "oPaginate": {
-//                                            "sPrevious": "Prev",
-//                                            "sNext": "Next"
-//                                        }
-//                                },
-//                                "bFilter": false
-//                                "bInfo": false                                                               
-//                                "columnDefs": [
-//                                    {
-//                                        "targets": [ 6 ],
-//                                        "visible": false,
-//                                        "searchable": false
-//                                    }
-//                                ]
+                                ]
                 });
                 goAvatar._init(goOptions);
                 table.fnProcessingIndicator();
@@ -241,7 +234,9 @@
                                             "sPrevious": "Prev",
                                             "sNext": "Next"
                                         }
-                                },                                
+                                },
+                                "bFilter": false,
+                                "bInfo": false,                                
                                 "columnDefs": [
                                     {
                                         className: "hidden-xs", 
