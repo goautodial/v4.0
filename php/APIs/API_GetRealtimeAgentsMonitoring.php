@@ -206,7 +206,7 @@
 
     $barracks .='[';       
     $barracks .= '"'.$sessionAvatar.'",';
-    $barracks .= '"<a href=\"#\" id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 
+    $barracks .= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 
     $barracks .= '"'.$user_group.'",';    
     $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
     $barracks .= '"'.$cust_phone.'",';         
