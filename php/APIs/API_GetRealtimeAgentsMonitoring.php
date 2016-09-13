@@ -86,7 +86,7 @@
     $STARTtime = date("U");       
     
     //$sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='36'></avatar></div>";
-    $sessionAvatar = "<div class='media'><avatar username='$agentname' :size='36'></avatar></div>";
+    $sessionAvatar = "<div class='media'><avatar username='$agentname' :size='32'></avatar></div>";
 
     if ($status == "INCALL"){
         //$last_call_time = $last_state_change;
@@ -205,8 +205,8 @@
 
 
     $barracks .='[';       
-    $barracks .= '"<b id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class='.$textclass.'>'.$sessionAvatar.'</b>",';
-    $barracks .= '"<b id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class='.$textclass.'>'.$agentname.'</b>",'; 
+    $barracks .= '"'.$sessionAvatar.'",';
+    $barracks .= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 
     $barracks .= '"'.$user_group.'",';    
     $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
     $barracks .= '"'.$cust_phone.'",';         

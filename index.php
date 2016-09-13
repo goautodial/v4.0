@@ -100,12 +100,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 	    <!-- ChartJS 1.0.1 -->
 	    <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
 		
-		<!-- SnackbarJS -->
-        <link href="css/snackbar/snackbar.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/snackbar/material.css" rel="stylesheet" type="text/css" />
-		
         <!-- Creamy App -->
-        <script src="adminlte/js/app.min.js" type="text/javascript"></script>
+        <script src="js/app.min.js" type="text/javascript"></script>
 		
 		<!-- Data Tables -->
         <!-- <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
@@ -130,8 +126,6 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				<!-- =============== APP STYLES ===============-->
 			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 
-  		<!-- Theme style -->
-  		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
 		<!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -140,8 +134,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				$(".preloader").fadeOut("slow");
 			})
 		</script>
-	<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
-	<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'; // sweetalert
+	<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>'; // sweetalert js
     </head>
     <?php print $ui->creamyBody(); ?>
         <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
@@ -367,24 +361,24 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                                 <div class="text-white">Realtime Calls Monitoring</div></a>                                        
                                     </div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg" id="refresh_RingingCalls"></span></div>
-								<div class="text-muted">Outgoing Calls</div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_RingingCalls"></span></div>
+								<div class="text">Outgoing Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg" id="refresh_IncomingQueue"></span></div>
-								<div class="text-muted">Incoming Calls</div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_IncomingQueue"></span></div>
+								<div class="text">Incoming Calls</div>
 	                	</div>	                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg" id="refresh_AnsweredCalls"></span></div>
-								<div class="text-muted">Answered Calls</div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_AnsweredCalls"></span></div>
+								<div class="text">Answered Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg" id="refresh_DroppedCalls"></span></div>
-								<div class="text-muted">Dropped Calls</div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_DroppedCalls"></span></div>
+								<div class="text">Dropped Calls</div>
 	                	</div>	                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg" id="refresh_TotalCalls"></span></div>
-								<div class="text-muted" style="font-size: small;">Total Calls</div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalCalls"></span></div>
+								<div class="text" style="font-size: small;">Total Calls</div>
 	                	</div>
 	                </div>
                 </div>
@@ -398,17 +392,17 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                             <!-- START responsive-->
                                                             <div class="responsive">
                                                                 <div class="col-sm-12">
-                                                                    <table id="cluster-status" class="table table-striped table-hover" style="width: 100%">
+                                                                    <table id="cluster-status" class="table table-striped table-hover display compact" style="width: 100%">
                                                                         <thead>
                                                                                 <tr>
                                                                                         <th style="color: white;">Pic</th>
-                                                                                        <th>Server ID</th>
-                                                                                        <th>Server IP</th>
-                                                                                        <th>Active</th>
-                                                                                        <th>Load</th>
-                                                                                        <th>Channels</th>
-                                                                                        <th>Disk</th>
-                                                                                        <th>Date and Time</th>
+                                                                                        <th style="font-size: small;">Server ID</th>
+                                                                                        <th style="font-size: small;">Server IP</th>
+                                                                                        <th style="font-size: small;">Active</th>
+                                                                                        <th style="font-size: small;">Load</th>
+                                                                                        <th style="font-size: small;">Channels</th>
+                                                                                        <th style="font-size: small;">Disk</th>
+                                                                                        <th style="font-size: small;">Date and Time</th>
                                                                                 </tr>
                                                                         </thead>
                                                                         <tbody>
@@ -643,7 +637,6 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                 </section><!-- /.content -->
 				
             </aside><!-- /.right-side -->
-			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 			
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
@@ -662,15 +655,15 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                 <div class="modal-body">
                                     <div class="content table-responsive table-full-width">
                                     <!-- <div class="col-sm-12">-->
-                                        <table class="table table-striped table-hover" id="realtime_agents_monitoring_table" style="width: 100%">
+                                        <table class="table table-striped table-hover display compact" id="realtime_agents_monitoring_table" style="width: 100%">
                                             <thead>                                            
                                                     <th style="color: white;">Pic</th>
-                                                    <th>Agent Name</th>                                                    
-                                                    <th>Group</th>
-                                                    <th>Status</th>
-                                                    <th>Phone Number</th>
-                                                    <th>MM:SS</th>
-                                                    <th>Campaign</th>                                                    
+                                                    <th style="font-size: small;">Agent Name</th>                                                    
+                                                    <th style="font-size: small;">Group</th>
+                                                    <th style="font-size: small;">Status</th>
+                                                    <th style="font-size: small;">Phone Number</th>
+                                                    <th style="font-size: small;">MM:SS</th>
+                                                    <th style="font-size: small;">Campaign</th>                                                    
                                             </thead>
                                             <tbody>
 
@@ -696,14 +689,14 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                 <div class="modal-body">
                                     <div class="responsive">
                                     <!-- <div class="col-sm-12">-->
-                                        <table class="table table-striped table-hover" id="realtime_calls_monitoring_table" style="width: 100%">
+                                        <table class="table table-striped table-hover display compact" id="realtime_calls_monitoring_table" style="width: 100%">
                                             <thead>
                                                     <th style="color: white;">Pic</th>
-                                                    <th>Status</th>                                                    
-                                                    <th>Phone Number </th>
-                                                    <th>Call Type</th>                                                    
-                                                    <th>Campaign</th>
-                                                    <th>MM:SS</th>
+                                                    <th style="font-size: small;">Status</th>                                                    
+                                                    <th style="font-size: small;">Phone Number </th>
+                                                    <th style="font-size: small;">Call Type</th>                                                    
+                                                    <th style="font-size: small;">Campaign</th>
+                                                    <th style="font-size: small;">MM:SS</th>
                                                     <!-- <th>User Group</th> -->
                                             </thead>
                                             <tbody>
@@ -730,14 +723,14 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                 <div class="modal-body">
                                     <div class="responsive">
                                     <!-- <div class="col-sm-12">-->
-                                        <table class="table table-striped table-hover" id="campaigns_monitoring_table" style="width: 100%">
+                                        <table id="campaigns_monitoring_table" class="table table-striped table-hover display compact" cellspacing="0" style="width: 100%">
                                             <thead>
                                                     <th style="color: white;">Pic</th>
-                                                    <th>Campaign ID</th>                                                    
-                                                    <th>Campaign Name</th>
-                                                    <th>Leads on Hopper</th>
-                                                    <th>Call Times</th>                                                  
-                                                    <th>User Group</th>                                                    
+                                                    <th style="font-size: small;">Campaign ID</th>                                                    
+                                                    <th style="font-size: small;">Campaign Name</th>
+                                                    <th style="font-size: small;">Leads on Hopper</th>
+                                                    <th style="font-size: small;">Call Times</th>                                                  
+                                                    <th style="font-size: small;">User Group</th>                                                    
                                             </thead>
                                             <tbody>
                                             
@@ -763,16 +756,16 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                 <div class="modal-body">
                                     <div class="responsive">
                                     <!-- <div class="col-sm-12">-->
-                                        <table class="table table-striped table-hover" id="realtime_sla_monitoring_table" style="width: 100%">
+                                        <table class="table table-striped table-hover display compact" id="realtime_sla_monitoring_table" style="width: 100%">
                                             <thead>
                                                     <th style="color: white;">Pic</th>
-                                                    <th>User Groups</th>                                                    
-                                                    <th>Calls Today</th>
-                                                    <th>Answered Calls</th>                                                    
-                                                    <th>Ans Calls Less 20s</th>
-                                                    <th>Abandon</th>
-                                                    <th>SLA</th>
-                                                    <th>AHT</th>                                                    
+                                                    <th style="font-size: small;">User Groups</th>                                                    
+                                                    <th style="font-size: small;">Calls Today</th>
+                                                    <th style="font-size: small;">Answered Calls</th>                                                    
+                                                    <th style="font-size: small;">Ans Calls Less 20s</th>
+                                                    <th style="font-size: small;">Abandon</th>
+                                                    <th style="font-size: small;">SLA</th>
+                                                    <th style="font-size: small;">AHT</th>                                                    
                                                     <!-- <th>User Group</th> -->
                                             </thead>
                                             <tbody>
@@ -810,11 +803,11 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             <div class="responsive">
                                                     <table class="table table-striped table-hover" id="view_agent_information_table" style="width: 100%">
                                                         <thead>
-                                                                <th>Agent ID</th> 
-                                                                <th>Agent Phone</th>
-                                                                <th>Status</th>                                                                
-                                                                <th>Cust Phone</th>
-                                                                <th>MM:SS</th>
+                                                                <th style="font-size: small;">Agent ID</th> 
+                                                                <th style="font-size: small;">Agent Phone</th>
+                                                                <th style="font-size: small;">Status</th>                                                                
+                                                                <th style="font-size: small;">Cust Phone</th>
+                                                                <th style="font-size: small;">MM:SS</th>
                                                    
                                                         </thead>
                                                         <tbody>
@@ -1375,9 +1368,6 @@ function goGetModalUsernameValue(){
    <!-- =============== APP SCRIPTS ===============-->
     <script src="theme_dashboard/js/app.js"></script>
     <script src="theme_dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
-	
-	<!-- SnackbarJS -->
-	<script src="js/snackbar.js" type="text/javascript"></script>
 			
 	<!-- Vue Avatar -->
 	<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>

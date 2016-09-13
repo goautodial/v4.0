@@ -38,6 +38,6 @@
         $total_answered_calls = 0;
     }
         
-    echo json_encode(round(number_format($total_answered_calls))); 
+    echo number_format($total_answered_calls); 
 
 ?>

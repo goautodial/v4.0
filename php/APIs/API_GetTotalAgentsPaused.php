@@ -39,6 +39,6 @@
         $total_agents_paused = 0;
     }
         
-    echo json_encode(round(number_format($total_agents_paused))); 
+    echo number_format($total_agents_paused); 
 
 ?>
