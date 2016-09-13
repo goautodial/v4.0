@@ -208,9 +208,9 @@
     $barracks .= '"'.$sessionAvatar.'",';
     $barracks .= '"<b id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class=\"'.$textclass.'\">'.$agentname.'</b>",'; 
     $barracks .= '"'.$user_group.'",';    
-    $barracks .= '"'.$status.''.$CM.'",';    
+    $barracks .= '"<a class=\"'.$textclass.'\">'.$status.''.$CM.'</a>",';    
     $barracks .= '"'.$cust_phone.'",';         
-    $barracks .= '"<b class=\"'.$textclass.'\">'.$call_time_MS.'</b>",';
+    $barracks .= '"<a class=\"'.$textclass.'\">'.$call_time_MS.'</a>",';
     $barracks .= '"'.$campname.'"';
     $barracks .='],';
 }
