@@ -66,7 +66,6 @@
             <?php
                 $campaigns = $ui->API_getListAllCampaigns();
             ?>
-            
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
@@ -76,8 +75,16 @@
                                 <div class="panel-body">
                                     <legend><?php $lh->translateText("call_reports"); ?></legend>
 
-                                    <div class="box-body table" id="table">
-                                        </table>
+                                    <div class="report-loader" style="color:lightgray; display:none;">
+                                        <center>
+                                            <h3>
+                                                <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+                                                Loading...
+                                            </h3>
+                                        </center>
+                                    </div>
+                                    <div class="box-body" id="table">
+                                        
                                     </div><!-- /.box-body -->
 
                                 </div><!-- /.panel-body -->
@@ -103,11 +110,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="campaign_id">Campaign</label>
-                                    <select class="form-control select2" id="campaign_id" style="width:100%;">
+                                    <select class="form-control select2" name="campaign_id" id="campaign_id" style="width:100%;">
                                         <?php
                                             for($i=0; $i < count($campaigns->campaign_id);$i++){
                                         ?>
-                                            <option><?php echo $campaigns->campaign_name[$i];?></option>
+                                            <option value="<?php echo $campaigns->campaign_id[$i];?>"><?php echo $campaigns->campaign_id[$i]." - ".$campaigns->campaign_name[$i];?></option>
                                         <?php
                                             }
                                         ?>
@@ -193,9 +200,11 @@
                     $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
                 });
 
+                
                  /* changing reports */
                 $('#filter_type').on('change', function() {
-
+                    $('#table').empty();
+                    $(".report-loader").fadeIn("slow");
                         $.ajax({
                             url: "reports.php",
                             type: 'POST',
@@ -212,13 +221,44 @@
                                 console.log(data);
 
                                 if(data != ""){
+                                    $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
                                 }else{
+                                    $(".report-loader").fadeOut("slow");
                                     $('#table').html("NO DATA");
                                 }
                             }
                         });
+                });
+                
+                 /* changing reports */
+                $('#campaign_id').on('change', function() {
+                    $('#table').empty();
+                    $(".report-loader").fadeIn("slow");
+                        $.ajax({
+                            url: "reports.php",
+                            type: 'POST',
+                            data: {
+                                pageTitle : $("#filter_type").val(),
+                                campaignID : $("#campaign_id").val(),
+                                request : $("#request").val(),
+                                userID : $("#userID").val(),
+                                userGroup : $("#userGroup").val(),
+                                fromDate : $("#start_filterdate").val(),
+                                toDate : $("#end_filterdate").val()
+                            },
+                            success: function(data) {
+                                console.log(data);
 
+                                if(data != ""){
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html(data);
+                                }else{
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html("NO DATA");
+                                }
+                            }
+                        });
                 });
 
                     /* Daterange
