@@ -101,7 +101,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 	    <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
 		
         <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
+        <!--<script src="js/app.min.js" type="text/javascript"></script>-->
 		
 		<!-- Data Tables -->
         <!-- <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
@@ -125,7 +125,8 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
 				<!-- =============== APP STYLES ===============-->
 			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-
+		
+		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
 		<!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
@@ -637,6 +638,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                 </section><!-- /.content -->
 				
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 			
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
@@ -953,7 +955,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 </script>
 	
 <!--========== REFRESH DIVS ==============-->
-	<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>
+	<!--<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>-->
 	<!-- <script src="js/load_statusboxes.js"></script> -->
         <script src="js/dashboardv4.js"></script>
 	<!-- <script src="js/load_clusterstatus.js"></script> -->
@@ -1366,7 +1368,8 @@ function goGetModalUsernameValue(){
    <script src="theme_dashboard/js/jquery-classyloader/js/jquery.classyloader.min.js"></script>
    
    <!-- =============== APP SCRIPTS ===============-->
-    <script src="theme_dashboard/js/app.js"></script>
+    <!--<script src="theme_dashboard/js/app.js"></script>-->
+	<script src="adminlte/js/app.min.js" type="text/javascript"></script>
     <script src="theme_dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
 			
 	<!-- Vue Avatar -->
