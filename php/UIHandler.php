@@ -1227,7 +1227,7 @@ error_reporting(E_ERROR | E_PARSE);
 	        //             <td class='hide-on-medium hide-on-low'>".$userData["creation_date"]."</td>
 	        //             <td class='hide-on-medium hide-on-low'>".$userRole."</td>
 	        //             <td class='hide-on-low'>".$status."</td>
-	        //             <td>".$action."</td>
+	        //             <td nowrap>".$action."</td>
 	        //         </tr>";
 	           $result = $result."<tr>
 	                    <td>".$userData["user_id"]."</td>
@@ -1235,7 +1235,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td class='hide-on-medium hide-on-low'>".$userData["email"]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$userRole."</td>
 	                    <td class='hide-on-low'>".$status."</td>
-	                    <td>".$action."</td>
+	                    <td nowrap>".$action."</td>
 	                </tr>";
 	       }
 	       
@@ -3246,7 +3246,7 @@ error_reporting(E_ERROR | E_PARSE);
 	
        if($output->result=="success") {
        	   $columns = array("     ", "Agent ID", "Agent Name", "Group", "Status", "Action");
-	       $hideOnMedium = array("Agent ID", "Group", "Status");
+	       $hideOnMedium = array("Group", "Status");
 	       $hideOnLow = array( "Agent ID", "Group", "Status");
 		   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
@@ -3263,12 +3263,12 @@ error_reporting(E_ERROR | E_PARSE);
 	       	    $sessionAvatar = "<avatar username='".$output->full_name[$i]."' :size='36'></avatar>";
 
 		        $result .= "<tr>
-		        		 <td>".$sessionAvatar."</td>
-	                     <td class='hide-on-low'><strong><a class='edit-T_user' data-id=".$output->user_id[$i].">".$output->user[$i]."</a></strong></td>
+		        		 <td>".$sessionAvatar."</a></td>
+	                     <td class='hide-on-low'><a class='edit-T_user' data-id=".$output->user_id[$i]."><strong>".$output->user[$i]."</strong></a></td>
 						 <td>".$output->full_name[$i]."</td>";
-	            $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
-	                     <td class='hide-on-low'>".$output->active[$i]."</td>
-	                     <td>".$action."</td>
+	            $result .="<td class=' hide-on-low hide-on-medium'>".$output->user_group[$i]."</td>
+	                     <td class='hide-on-low hide-on-medium'>".$output->active[$i]."</td>
+	                     <td nowrap>".$action."</td>
 				         </tr>";
 	       }
 	       
@@ -3385,7 +3385,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td>".$output->group_name[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->group_type[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->forced_timeclock_login[$i]."</td>
-	                    <td>".$action."</td>
+	                    <td nowrap>".$action."</td>
 	                </tr>";
 				
 			}
@@ -3450,7 +3450,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td class='hide-on-medium hide-on-low'>".$output->list_lastcalldate[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->tally[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->campaign_id[$i]."</td>
-	                    <td>".$action."</td>
+	                    <td nowrap>".$action."</td>
 	                </tr>";
 				
 		
@@ -3672,7 +3672,7 @@ error_reporting(E_ERROR | E_PARSE);
 						<td class='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>
-						<td>".$action."</td>
+						<td nowrap>".$action."</td>
 	                </tr>";
 				
 			}
@@ -3740,7 +3740,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td class='hide-on-medium hide-on-low'>".$output->old_messages[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->delete_vm_after_email[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
-	                    <td>".$action."</td>
+	                    <td nowrap>".$action."</td>
 	                </tr>";
 				
 			}
@@ -3918,7 +3918,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 
 	    	$columns = array("Date", "Customer", "Phone Number", "Agent", "Duration", "Action");
-	    	$hideOnMedium = array("Customer", "Phone Number", "Agent", "Duration");
+	    	$hideOnMedium = array("Agent", "Duration");
 	    	$hideOnLow = array("Customer", "Phone Number", "Agent", "Duration");
 			$result = $this->generateTableHeaderWithItems($columns, "table_callrecordings", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
 
@@ -3935,8 +3935,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 			$result .= "<tr>
 				<td>".$output->end_last_local_call_time[$i]."</td>
-				<td class='hide-on-medium hide-on-low'>".$output->full_name[$i]."</td>
-				<td class='hide-on-medium hide-on-low'>".$output->phone_number[$i]."</td>
+				<td class='hide-on-low'>".$output->full_name[$i]."</td>
+				<td class='hide-on-low'>".$output->phone_number[$i]."</td>
 				<td class='hide-on-medium hide-on-low'>".$output->users[$i]."</td>
 				<td class='hide-on-medium hide-on-low'>".$duration."</td>
 				<td>".$action_Call."</td>
@@ -4034,7 +4034,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td class ='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
 				<td class ='hide-on-medium hide-on-low'>".$output->random[$i]."</td>
 				<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
-				<td>".$action."</td>
+				<td nowrap>".$action."</td>
 				</tr>";
 	    }
 		return $result.'</table>';
@@ -4103,7 +4103,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= "<tr>
 			<td><a class='play_voice_file' data-location='".$file_link."'>".$output->file_name[$i]."</td>
 			<td class ='hide-on-medium hide-on-low'>".$output->file_date[$i]."</td>
-			<td>".$action."</td>
+			<td nowrap>".$action."</td>
 		    </tr>";
 	    }
 		return $result.'</table>';
@@ -4165,7 +4165,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 	    # Result was OK!
 	    $columns = array("Script ID", "Script Name", "Status", "Type", "User Group", "Actions");
-	    	$hideOnMedium = array("Script ID", "Type", "Status", "User Group");
+	    $hideOnMedium = array("Type", "Status", "User Group");
 	    $hideOnLow = array( "Script ID", "Type", "Status", "User Group");
 
 		    $result = $this->generateTableHeaderWithItems($columns, "scripts_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
@@ -4180,7 +4180,7 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 		
 			$result .= "<tr>
-				<td class='hide-on-low'><a class='edit-T_user' data-id='.$output->script_id[$i].'>".$output->script_id[$i]."</td>
+				<td class='hide-on-low'><a class='edit_script' data-id='".$output->script_id[$i]."'>".$output->script_id[$i]."</td>
 				<td>".$output->script_name[$i]."</td>
 				<td class='hide-on-medium hide-on-low'>".$active."</td>
 				<td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
@@ -4267,7 +4267,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td class ='hide-on-medium hide-on-low'>".$output->ct_default_start[$i]."</td>
 			   			<td class ='hide-on-medium hide-on-low'>".$output->ct_default_stop[$i]."</td>
 			    		<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
-	                    <td>".$action."</td>
+	                    <td nowrap>".$action."</td>
 	                </tr>";
             }
 
@@ -4351,7 +4351,7 @@ error_reporting(E_ERROR | E_PARSE);
 			    		<td class ='hide-on-medium hide-on-low'>".$output->registration_string[$i]."</td>
 			    		<td class ='hide-on-low'>".$output->active[$i]."</td>
 			    		<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
-	                    <td>".$action."</td>
+	                    <td nowrap>".$action."</td>
 	                </tr>";
             }
 
@@ -5390,7 +5390,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       if($output->result=="success") {
 
        	   $columns = array("Lead ID", "Full Name", "Phone Number", "Status", "Action");
-	       $hideOnMedium = array("Lead ID", "Phone Number", "Status");
+	       $hideOnMedium = array("Lead ID", "Status");
 	       $hideOnLow = array( "Lead ID", "Phone Number", "Status");
 		   $result = $this->generateTableHeaderWithItems($columns, "table_contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
@@ -5401,8 +5401,8 @@ error_reporting(E_ERROR | E_PARSE);
 				$action = $this->ActionMenuForContacts($output->lead_id[$i]);
 				$result .= '<tr>
 								<td><a class="edit-contact" data-id="'.$output->lead_id[$i].'">' .$output->lead_id[$i]. '</a></td>
-								<td class="hide-on-low hide-on-medium">' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
-								<td class="hide-on-low hide-on-medium">' .$output->phone_number[$i].'</td>
+								<td class="hide-on-low">' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
+								<td class="hide-on-low">' .$output->phone_number[$i].'</td>
 								<td class="hide-on-low hide-on-medium">' .$output->status[$i].'</td>
 								<td>' .$action.'</td>
 							</tr> ';
@@ -5597,7 +5597,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$css .= '<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />'."\n"; // bootstrap3 css
 		$css .= '<link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">'."\n"; // font-awesome css
 		$css .= '<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">'."\n"; // animate css
-		//$css .= '<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css 
+		$css .= '<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css 
 		$css .= '<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">'."\n"; // app css
 		$css .= '<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">'."\n";
 		$css .= '<link rel="stylesheet" href="css/customizedLoader.css">'."\n"; // preloader css

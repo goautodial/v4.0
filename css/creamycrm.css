@@ -4164,12 +4164,12 @@ Gradient Background colors
  * Admin users table.
  */
 /* low resolution, 480px and below */
-@media only screen and (max-width: 480px){
+@media only screen and (max-width: 555px){
 	.hide-on-low { display: none!important; }
 }
 
 /* medium resolution, 481 px to 1023px */
-@media only screen and (min-width: 481px) and (max-width: 1023) {
+@media only screen and (min-width: 481px) and (max-width: 850px) {
 	.hide-on-medium { display: none!important; }
 }
 

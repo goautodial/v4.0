@@ -115,7 +115,7 @@ error_reporting(E_ALL);*/
 										   <thead>
 											  <tr>
                                                  <th style="color: white;">Pic</th>
-												 <th class='hide-on-medium hide-on-low'>Campaign ID</th>
+												 <th class='hide-on-medium hide-on-low' style='width:0px;'>Campaign ID</th>
 												 <th >Campaign Name</th>
 												 <th class='hide-on-medium hide-on-low'>Dial Method</th>
 												 <th class='hide-on-medium hide-on-low'>Status</th>
@@ -152,12 +152,12 @@ error_reporting(E_ALL);*/
 
 											   	?>
 													<tr>
-                                                        <td><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='36'></avatar></td>
-														<td class='hide-on-medium hide-on-low'><strong><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></strong></td>
-														<td><?php echo $campaign->campaign_name[$i];?></a></td>
+                                                        <td><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
+														<td class='hide-on-medium hide-on-low'><strong><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></a></strong></td>
+														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $campaign->dial_method[$i];?></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $campaign->active[$i];?></td>
-														<td><?php echo $action_CAMPAIGN;?></td>
+														<td nowrap><?php echo $action_CAMPAIGN;?></td>
 													</tr>
 												<?php
 													}
@@ -186,9 +186,9 @@ error_reporting(E_ALL);*/
 
 											   	?>
 													<tr>
-                                                        <td><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='36'></avatar></td>
-														<td class='hide-on-medium hide-on-low'><strong><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></strong></td>
-														<td><?php echo $campaign->campaign_name[$i];?></a></td>
+                                                        <td><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
+														<td class='hide-on-medium hide-on-low'><strong><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></a></strong></td>
+														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'>
 												<?php
 												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
@@ -209,7 +209,7 @@ error_reporting(E_ALL);*/
 												//}
 												?>
 														</td>
-														<td><?php echo $action_DISPOSITION;?></td>
+														<td nowrap><?php echo $action_DISPOSITION;?></td>
 													</tr>
 												<?php
 													}
@@ -240,7 +240,7 @@ error_reporting(E_ALL);*/
                                                         <td><avatar username='<?php echo $leadfilter->lead_filter_name[$i];?>' :size='36'></avatar></td>
 														<td><?php echo $leadfilter->lead_filter_id[$i];?></td>
 														<td><strong><a class=''><?php echo $leadfilter->lead_filter_name[$i];?></a></strong></td>
-														<td><?php echo $action_LEADFILTER;?></td>
+														<td nowrap><?php echo $action_LEADFILTER;?></td>
 													</tr>
 												<?php
 													}
@@ -1512,7 +1512,8 @@ error_reporting(E_ALL);*/
 		}
 
 </script>
-
+		
+		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

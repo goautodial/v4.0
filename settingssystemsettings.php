@@ -93,5 +93,6 @@
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 
+        <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
     </body>
 </html>

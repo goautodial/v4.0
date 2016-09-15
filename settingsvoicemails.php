@@ -316,7 +316,8 @@
                 });
     });
 </script>
-    
+        
+        <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         <?php print $ui->creamyFooter();?>
     </body>
 </html>

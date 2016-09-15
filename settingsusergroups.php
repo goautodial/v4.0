@@ -302,6 +302,6 @@
     }); // end of document ready
 </script>
 
-        
+        <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
     </body>
 </html>
