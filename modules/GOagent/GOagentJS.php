@@ -1477,6 +1477,9 @@ function hijackThisLink(e) {
     
     if (origHash !== hash) {
         $(".preloader").fadeIn('fast');
+        if (hash == 'contacts') {
+            getContactList();
+        }
     }
     
     if (hash.length > 0) {
@@ -1502,7 +1505,7 @@ function hijackThisLink(e) {
     $(".content-heading ol").html(breadCrumb);
     $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
     
-    if (origHash !== hash) {
+    if (origHash !== hash && hash == 'contacts') {
         $(".preloader").fadeOut('slow');
     }
 }
@@ -5956,6 +5959,72 @@ function TimerActionRun(taskaction, taskdialalert) {
 
     if (next_action < 1)
         {timer_action = 'NONE';}	
+}
+
+function getContactList() {
+    var postData = {
+        goAction: 'goGetContactList',
+        goUser: uName,
+        goPass: uPass,
+        goLimit: 1000,
+        responsetype: 'json'
+    };
+    
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json"
+    })
+    .done(function (result) {
+        if (result.result == 'success') {
+            var leadsList = result.leads;
+            $("#contacts-list").dataTable().fnDestroy();
+            $("#contacts-list tbody").empty();
+            $.each(leadsList, function(key, value) {
+                var thisComments = value.comments;
+                var commentTitle = '';
+                if (thisComments.length > 20) {
+                    commentTitle = ' title="'+thisComments+'"';
+                    thisComments = thisComments.substring(0, 20) + "...";
+                }
+                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+value.first_name+' '+value.middle_initial+' '+value.last_name+'</td><td>'+value.phone_number+'</td><td>'+value.last_local_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-lead" data-leadid="'+value.lead_id+'" class="btn btn-primary btn-sm" style="margin: 2px;"><i class="fa fa-phone"></i></button></td></tr>';
+                $("#contacts-list tbody").append(appendThis);
+            });
+            $("#contacts-list").css('width', '100%');
+            $("#contacts-list").DataTable({
+                "bDestroy": true,
+                "aoColumnDefs": [{
+                    "bSortable": false,
+                    "aTargets": [ 7 ],
+                }, {
+                    "bSearchable": false,
+                    "aTargets": [ 3, 5, 7 ]
+                }, {
+                    "sClass": "hidden-xs",
+                    "aTargets": [ 0 ]
+                }, {
+                    "sClass": "hidden-xs hidden-sm",
+                    "aTargets": [ 1 ]
+                }, {
+                    "sClass": "visible-md visible-lg",
+                    "aTargets": [ 4, 5 ]
+                }, {
+                    "sClass": "visible-lg",
+                    "aTargets": [ 3, 6 ]
+                }]
+            });
+            $("#contacts-list_filter").parent('div').attr('class', 'col-sm-6 hidden-xs');
+            $("#contacts-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
+            $("#contents-contacts").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
+            $("#contents-contacts").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
+            if (!is_logged_in) {
+                $("button[id='dial-lead']").addClass('disabled');
+            }
+            $(".preloader").fadeOut('slow');
+        }
+    });
 }
 
 function NoneInSession() {
