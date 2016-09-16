@@ -19,11 +19,11 @@
 
         <?php print $ui->creamyThemeCSS(); ?>
 
-            <!-- Daterang picker CSS --
-            <link rel="stylesheet" type="text/css" media="all" href="theme_dashboard/bootstrap-daterangepicker/daterangepicker.css" />
-            <!-- Daterange Picker JS --
-            <script type="text/javascript" src="theme_dashboard/bootstrap-daterangepicker/moment.js"></script>
-            <script type="text/javascript" src="theme_dashboard/bootstrap-daterangepicker/daterangepicker.js"></script>
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+        <!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
         
         <!-- Datetime picker --> 
         <link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
@@ -216,6 +216,21 @@
                                 if(data != ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
+
+                                    if($("#filter_type").val() == "agent_detail"){
+                                        $('#agent_detail_top').dataTable();
+                                        $('#agent_detail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "agent_pdetail"){
+                                        $('#agent_pdetail_top').dataTable();
+                                        $('#agent_pdetail_mid').dataTable();
+                                        $('#agent_pdetail_bottom').dataTable();
+                                        $('#agent_pdetail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "dispo"){
+                                        $('#dispo').dataTable();
+                                    }
+
                                 }else{
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html("NO DATA");
@@ -246,6 +261,21 @@
                                 if(data != ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
+
+                                    if($("#filter_type").val() == "agent_detail"){
+                                        $('#agent_detail_top').dataTable();
+                                        $('#agent_detail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "agent_pdetail"){
+                                        $('#agent_pdetail_top').dataTable();
+                                        $('#agent_pdetail_mid').dataTable();
+                                        $('#agent_pdetail_bottom').dataTable();
+                                        $('#agent_pdetail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "dispo"){
+                                        $('#dispo').dataTable();
+                                    }
+
                                 }else{
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html("NO DATA");
@@ -277,6 +307,21 @@
                                 if(data != ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
+
+                                    if($("#filter_type").val() == "agent_detail"){
+                                        $('#agent_detail_top').dataTable();
+                                        $('#agent_detail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "agent_pdetail"){
+                                        $('#agent_pdetail_top').dataTable();
+                                        $('#agent_pdetail_mid').dataTable();
+                                        $('#agent_pdetail_bottom').dataTable();
+                                        $('#agent_pdetail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "dispo"){
+                                        $('#dispo').dataTable();
+                                    }
+
                                 }else{
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html("NO DATA");
@@ -307,6 +352,21 @@
                                 if(data != ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
+
+                                    if($("#filter_type").val() == "agent_detail"){
+                                        $('#agent_detail_top').dataTable();
+                                        $('#agent_detail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "agent_pdetail"){
+                                        $('#agent_pdetail_top').dataTable();
+                                        $('#agent_pdetail_mid').dataTable();
+                                        $('#agent_pdetail_bottom').dataTable();
+                                        $('#agent_pdetail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "dispo"){
+                                        $('#dispo').dataTable();
+                                    }
+
                                 }else{
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html("NO DATA");
