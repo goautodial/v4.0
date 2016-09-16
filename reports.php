@@ -55,48 +55,103 @@ $output = json_decode($data);
 if($output->result == "success"){
 	echo '<div class="responsive animated bounceInUp">';
 
+// AGENT TIME DETAIL
 	if($pageTitle == "agent_detail"){
 		$agent_detail = '';
 		
-		$agent_detail .= '<div class="table-responsive">
-			<table class="table table-striped table-bordered table-hover">
-				<thead>
-					<tr>
-			            <th nowrap> Full Name </th>
-			            <th nowrap> User Name </th>
-			            <th nowrap> Calls </th>
-			            <th nowrap> Agent Time </th>
-			            <th nowrap> WAIT </th>
-			            <th nowrap> Talk </th>
-			            <th nowrap> Dispo </th>
-			            <th nowrap> Pause </th>
-			            <th nowrap> Wrap-Up </th>
-			            <th nowrap> Customer </th>
-		            </tr>
-		        </thead>
-		        <tbody>
-		';
+		// top table
+			$agent_detail .= '<div class="table-responsive">
+				<table class="table table-striped table-bordered table-hover" id="agent_detail_top">
+					<thead>
+						<tr>
+				            <th nowrap> Full Name </th>
+				            <th nowrap> User Name </th>
+				            <th nowrap> Calls </th>
+				            <th nowrap> Agent Time </th>
+				            <th nowrap> WAIT </th>
+				            <th nowrap> Talk </th>
+				            <th nowrap> Dispo </th>
+				            <th nowrap> Pause </th>
+				            <th nowrap> Wrap-Up </th>
+				            <th nowrap> Customer </th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			';
 
-		if($output->getReports->TOPsorted_output != NULL){
-			for($i=0; $i <= count($output->getReports->TOPsorted_output); $i++){
-		    	$agent_detail .= $output->getReports->TOPsorted_output[$i];
-		    }
-		}else{
-			$agent_detail .= "<tr><td colspan='10'><center> - - - NO AVAILABLE DATA - - - </center></td></tr>";
-		}
-			
-	    $agent_detail .= '</tbody></table>';
+			if($output->getReports->TOPsorted_output != NULL){
+				for($i=0; $i <= count($output->getReports->TOPsorted_output); $i++){
+			    	$agent_detail .= $output->getReports->TOPsorted_output[$i];
+			    }
+			}else{
+				$agent_detail .= "";
+			}
+				
+		    $agent_detail .= '</tbody>';
+
+		    if($output->getReports->TOTcalls != NULL){
+			   		$agent_detail .= '<tfoot><tr class="warning"><th nowrap> Total </th>';
+					    $agent_detail .= $output->getReports->TOT_AGENTS;
+					    $agent_detail .= '<th nowrap>'.$output->getReports->TOTcalls.'</th>';
+					    $agent_detail .= $output->getReports->TOTALtime;
+					    $agent_detail .= $output->getReports->TOTwait;
+					    $agent_detail .= $output->getReports->TOTtalk;
+					    $agent_detail .= $output->getReports->TOTdispo;
+					    $agent_detail .= $output->getReports->TOTpause;
+					    $agent_detail .= $output->getReports->TOTdead;
+					    $agent_detail .= $output->getReports->TOTcustomer;
+					$agent_detail .= '</tr></tfoot>';
+				}
+
+			$agent_detail .= '</table></div><br/>'; 
+
+
+	    // login table
+		    if($output->getReports->sub_statusesTOP != NULL){
+			    $agent_detail .= '<div class="table-responsive">
+					<table class="table table-striped table-bordered table-hover" id="agent_detail_login">
+						<thead>
+							<tr>';
+
+					            $agent_detail .= $output->getReports->sub_statusesTOP;
+				
+				$agent_detail .= '</tr>
+				        </thead>
+				        <tbody>
+				';
+
+				if($output->getReports->BOTsorted_output != NULL){
+					for($i=0; $i <= count($output->getReports->BOTsorted_output); $i++){
+				    	$agent_detail .= $output->getReports->BOTsorted_output[$i];
+				    }
+				}else{
+					$agent_detail .= "";
+				}
+		   		
+		   		$agent_detail .= '</tbody>';
+
+		   		if($output->getReports->SUMstatuses != NULL){
+			   		$agent_detail .= '<tfoot><tr class="warning"><th nowrap> Total </th>';
+					    $agent_detail .= $output->getReports->SUMstatuses;
+					$agent_detail .= '</tr></tfoot>';
+				}
+
+				$agent_detail .= '</table></div><br/>'; 
+
+			}
 
 	    echo $agent_detail; // return for agent details
 
 	}// end of agent_detail
 
+
+// AGENT PERFORMANCE DETAIL
 	if($pageTitle == "agent_pdetail"){
 		$agent_pdetail = '';
 
 		// start of top table
 			$agent_pdetail .= '<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover">
+				<table class="table table-striped table-bordered table-hover" id="agent_pdetail_top">
 					<thead>
 						<tr>
 				            <th nowrap> Full Name </th>
@@ -123,7 +178,7 @@ if($output->result == "success"){
 						    	$agent_pdetail .= $output->getReports->TOPsorted_output[$i];
 						    }
 						}else{
-							$agent_pdetail .= "<tr><td colspan='16'><center> - - - NO AVAILABLE DATA - - - </center></td></tr>";
+							$agent_pdetail .= "";
 						}
 		   		$agent_pdetail .= '</tbody>';
 
@@ -153,7 +208,7 @@ if($output->result == "success"){
 	    // start of middle table
 			if($output->getReports->MIDsorted_output != NULL){
 			    $agent_pdetail .= '<div class="table-responsive">
-				    <table class="table table-striped table-bordered table-hover">
+				    <table class="table table-striped table-bordered table-hover" id="agent_pdetail_mid">
 				    	<thead>
 							<tr>
 					            <th nowrap> Full Name </th>';
@@ -197,7 +252,7 @@ if($output->result == "success"){
 
 		// start of bottom table
 			$agent_pdetail .= '<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover">
+				<table class="table table-striped table-bordered table-hover" id="agent_pdetail_bottom">
 			    	<thead>
 						<tr>
 				            <th nowrap> Full Name </th>
@@ -213,7 +268,7 @@ if($output->result == "success"){
 						        $agent_pdetail .= $output->getReports->BOTsorted_output[$i];
 						    }
 						}else{
-							$agent_pdetail .= "<tr><td colspan='5'><center> - - - NO AVAILABLE DATA - - - </center></td></tr>";
+							$agent_pdetail .= "";
 						}
 				$agent_pdetail .= '</tbody>';
 
@@ -233,7 +288,7 @@ if($output->result == "success"){
 		// start of login table
 			if($output->getReports->SstatusesBOT != NULL){
 				$agent_pdetail .= '<div class="table-responsive">
-					<table class="table table-striped table-bordered table-hover">
+					<table class="table table-striped table-bordered table-hover" id="agent_pdetail_login">
 				    	<thead>
 							<tr>';
 								$agent_pdetail .= $output->getReports->SstatusesBOT;
@@ -246,7 +301,7 @@ if($output->result == "success"){
 							        $agent_pdetail .= '<tr>'.$output->getReports->SstatusesBOTR[$i].'</tr>';
 							    }
 							}else{
-								$agent_pdetail .= "<tr><td colspan='3'><center> - - - NO AVAILABLE DATA - - - </center></td></tr>";
+								$agent_pdetail .= "";
 							}
 					$agent_pdetail .= '</tbody>';
 
