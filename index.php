@@ -293,46 +293,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                         <!-- END date widget    -->
                                 </div>
             </div>
-					
-					<!-- Update (if needed) -->
-                                        <?php
-						require_once('./php/Updater.php');
-						$upd = \creamy\Updater::getInstance();
-						$currentVersion = $upd->getCurrentVersion();
-						if (!$upd->CRMIsUpToDate()) {
-					?>
-
-                    <div class="row">
-                        <section class="col-lg-12">
-                            <!-- version -->
-                            <div class="box box-danger">
-                                <div class="box-header">
-                                    <i class="fa fa-refresh"></i>
-                                    <h3 class="box-title"><?php print $lh->translationFor("version")." ".number_format($currentVersion, 1); ?></h3>
-                                </div>
-                                <div class="box-body">
-									<?php
-									if ($upd->canUpdateFromVersion($currentVersion)) { // update needed
-										$contentText = $lh->translationFor("you_need_to_update");
-										print $ui->formWithContent(
-											"update_form", 						// form id
-											$contentText, 						// form content
-											$lh->translationFor("update"), 		// submit text
-											CRM_UI_STYLE_DEFAULT,				// submit style
-											CRM_UI_DEFAULT_RESULT_MESSAGE_TAG,	// resulting message tag
-											"update.php");						// form PHP action URL.
-									} else { // we cannot update?
-										$lh->translateText("crm_update_impossible");
-									}
-									?>
-                                </div>
-                            </div>
-                        </section>
-                    </div>  
-					<?php } ?>   
-
-
-                                <!-- ROW FOR THE REST -->
+				
+                <!-- ROW FOR THE REST -->
                     <div class="row"> 
                             <div class="col-lg-9" id="row_for_rest">
 				
