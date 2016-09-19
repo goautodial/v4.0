@@ -51,7 +51,7 @@
         $averagehandlingtime = $value->AHT;
 
         $textclass = "text-info";        
-        $sessionAvatar = "<div class='media'><avatar username='$usergroup' :size='36'></avatar></div>";   
+        $sessionAvatar = "<div class='media'><avatar username='$usergroup' :size='32'></avatar></div>";   
             
         $barracks .='[';       
         $barracks .= '"'.$sessionAvatar.'",';

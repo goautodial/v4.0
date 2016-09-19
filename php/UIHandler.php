@@ -1227,7 +1227,7 @@ error_reporting(E_ERROR | E_PARSE);
 	        //             <td class='hide-on-medium hide-on-low'>".$userData["creation_date"]."</td>
 	        //             <td class='hide-on-medium hide-on-low'>".$userRole."</td>
 	        //             <td class='hide-on-low'>".$status."</td>
-	        //             <td>".$action."</td>
+	        //             <td nowrap>".$action."</td>
 	        //         </tr>";
 	           $result = $result."<tr>
 	                    <td>".$userData["user_id"]."</td>
@@ -1235,7 +1235,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td class='hide-on-medium hide-on-low'>".$userData["email"]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$userRole."</td>
 	                    <td class='hide-on-low'>".$status."</td>
-	                    <td>".$action."</td>
+	                    <td nowrap>".$action."</td>
 	                </tr>";
 	       }
 	       
@@ -1358,6 +1358,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$name = $this->creamyHeaderName();
 			//<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="32"> '.$name.'</a>
 		// return header
+		$avatarElement = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 22, true);
 		return '<header class="main-header">
 				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
 	            <nav class="navbar navbar-static-top" role="navigation">
@@ -1371,13 +1372,19 @@ error_reporting(E_ERROR | E_PARSE);
 	                    		'.$this->getTopbarMessagesMenu($user).'  
 		                    	'.$this->getTopbarNotificationsMenu($user).'
 		                    	'.$this->getTopbarTasksMenu($user).'
-		                    	'.$this->getTopbarUserMenu($user).'
+		                    	<li>
+			                    	<a href="#" class="visible-xs" data-toggle="control-sidebar" style="padding-top: 17px; padding-bottom: 18px;"><i class="fa fa-cogs"></i></a>
+										<a href="#" class="hidden-xs" data-toggle="control-sidebar" style="padding-top: 14px; padding-bottom: 14px;">
+											'.$avatarElement.'
+											<span> '.$user->getUserName().' <i class="caret"></i></span>
+										</a>
+				               </li>
 	                    </ul>
 	                </div>
 	            </nav>
 	        </header>
 	        <div class="preloader">
-	        	<div class="pull-right close-preloader" style="display:none">
+	        	<div class="pull-right close-preloader" style="display:none;">
     				<a type="button" class="close-preloader-button" aria-label="Close" style="color:white;"><i class="fa fa-close fa-lg"></i></a>
     			</div>
     			<center>
@@ -1385,7 +1392,14 @@ error_reporting(E_ERROR | E_PARSE);
     					<span class="dots">
     					<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
     					</span>
+
+    					<br/><br/>
+		    			<div class="reload-page" style="display:none; color:white;">
+		    				The page is taking too long to load. It probably failed. <br/> Please check your Internet Connection and click the button below to try again...<br/>
+		    				<br/><button type="button" class="btn reload-button" style="display:none; color: #333333;"><i class="fa fa-refresh fa-3x"></i></button>
+		    			</div>
     			</center>
+    			
     		</div>
 
     		<script type="text/javascript">
@@ -1393,6 +1407,14 @@ error_reporting(E_ERROR | E_PARSE);
     			setTimeout( function(){ 
 				    $(".close-preloader").fadeIn("slow");
 				}, 10000 );
+				
+				setTimeout( function(){ 
+				    $(".reload-page").fadeIn("slow");
+				}, 20000 );
+				
+				setTimeout( function(){ 
+				    $(".reload-button").fadeIn("slow");
+				}, 22000 );
 
 	    		$(window).ready(function() {
 					$(".preloader").fadeOut("slow");
@@ -1400,6 +1422,11 @@ error_reporting(E_ERROR | E_PARSE);
 				
 	    		$(document).on("click", ".close-preloader-button", function(){
 					$(".preloader").fadeOut("slow");
+				});
+
+				$(document).on("click", ".reload-button", function(){
+					$(".reload-button").html("<i class=\"fa fa-refresh fa-spin fa-3x fa-fw\"></i><span class=\"sr-only\">Loading...</span>");
+					window.location = window.location.href;
 				});
 
 			</script>
@@ -1916,7 +1943,7 @@ error_reporting(E_ERROR | E_PARSE);
 		// old img element : <img src="'.$avatar.'" class="img-circle" alt="User Image" />
 		$avatarElement = $this->getVueAvatar($username, $avatar, 40);
 		$result = '<aside class="main-sidebar" sidebar-offcanvas"><section class="sidebar">
-	            <div class="user-panel">
+	            <div class="user-panel hidden">
 	                <div class="pull-left image">
 	                    <a href="edituser.php">'.$avatarElement.'</a>
 	                </div>
@@ -1965,6 +1992,84 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= '</ul></section></aside>';
 		
 		return $result;
+	}
+	
+	/**
+	 * Right Sidebar
+	 */
+	public function getRightSidebar($userid, $username, $avatar, $tabs = array()) {
+		$mh = \creamy\ModuleHandler::getInstance();
+		$user = \creamy\CreamyUser::currentUser();
+		
+		// prefix: structure and home link
+		// old img element : <img src="'.$avatar.'" class="img-circle" alt="User Image" />
+		$result = '<aside class="control-sidebar control-sidebar-dark">'."\n";
+		
+		// Create Tabs
+		if (count($tabs) < 1) {
+			$tabs = array('commenting-o'=>'messaging', 'phone'=>'dialer', 'user'=>'settings');
+		}
+		$tabresult = '<ul class="nav nav-tabs nav-justified control-sidebar-tabs">'."\n";
+		$tabpanes = '<div class="tab-content" style="border-width:0; overflow-y: hidden; padding-bottom: 30px;">'."\n";
+		$x = 0;
+		foreach ($tabs as $icon => $tabname) {
+			$activeClass = ($x < 1) ? ' class="active"' : '';
+			$isActive = ($x < 1) ? true : false;
+			$isHidden = ($tabname == 'dialer') ? ' style="display: none;"' : '';
+			$tabresult .= '<li id="'.$tabname.'-tab"'.$activeClass.$isHidden.'><a href="#control-sidebar-'.$tabname.'-tab" data-toggle="tab"><i class="fa fa-'.$icon.'"></i></a></li>'."\n";
+			$tabpanes .= $this->getRightTabPane($user, $tabname, $isActive);
+			$x++;
+		}
+		$tabresult .= '</ul>'."\n";
+		$tabpanes .= "</div>\n";
+		
+		
+		$result .= $tabresult;
+		$result .= $tabpanes;
+		$result .= "</aside>\n";
+		$result .= "<div class='control-sidebar-bg' style='position: fixed; height: auto;'></div>\n";
+		
+		return $result;
+	}
+	
+	protected function getRightTabPane($user, $tab, $active = false) {
+		$avatarElement = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 96, false, true, false);
+		
+		$isActive = ($active) ? ' active' : '';
+		$tabpanes = '<div class="tab-pane'.$isActive.'" id="control-sidebar-'.$tab.'-tab">'."\n";
+		
+		if ($tab == 'settings') {
+			$tabpanes .= '<ul class="control-sidebar-menu" id="go_tab_profile">
+				<li>
+					<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px; padding-top: 10px;">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<p>'.$avatarElement.'</p>
+							<p style="color:white;">'.$user->getUserName().'<br><small>'.$this->lh->translationFor("nice_to_see_you_again").'</small></p>
+						</a>
+					</div>
+				</li>';
+			if ($user->userHasBasicPermission()) {
+				$tabpanes .= '<li>
+					<div class="text-center"><a href="" data-toggle="modal" id="change-password-toggle" data-target="#change-password-dialog-modal">'.$this->lh->translationFor("change_password").'</a></div>
+					<div class="text-center"><a href="./messages.php">'.$this->lh->translationFor("messages").'</a></div>
+					<div class="text-center"><a href="./notifications.php">'.$this->lh->translationFor("notifications").'</a></div>
+					<div class="text-center"><a href="./tasks.php">'.$this->lh->translationFor("tasks").'</a></div>
+				</li>';
+			}
+			$tabpanes .= '</ul>
+			  <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+				<li>
+					<div class="center-block" style="text-align: center">
+						<a href="./profile.php" class="btn btn-warning"><i class="fa fa-user"></i> '.$this->lh->translationFor("my_profile").'</a>
+						 &nbsp; 
+						<a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class="fa fa-sign-out"></i> '.$this->lh->translationFor("exit").'</a>
+					</div>
+				</li>
+			  </ul>'."\n";
+		}
+		$tabpanes .= "</div>\n";
+		
+		return $tabpanes;
 	}
 
 
@@ -3141,7 +3246,7 @@ error_reporting(E_ERROR | E_PARSE);
 	
        if($output->result=="success") {
        	   $columns = array("     ", "Agent ID", "Agent Name", "Group", "Status", "Action");
-	       $hideOnMedium = array("Agent ID", "Group", "Status");
+	       $hideOnMedium = array("Group", "Status");
 	       $hideOnLow = array( "Agent ID", "Group", "Status");
 		   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
@@ -3158,12 +3263,12 @@ error_reporting(E_ERROR | E_PARSE);
 	       	    $sessionAvatar = "<avatar username='".$output->full_name[$i]."' :size='36'></avatar>";
 
 		        $result .= "<tr>
-		        		 <td>".$sessionAvatar."</td>
-	                     <td class='hide-on-low'><strong><a class='edit-T_user' data-id=".$output->user_id[$i].">".$output->user[$i]."</a></strong></td>
+		        		 <td>".$sessionAvatar."</a></td>
+	                     <td class='hide-on-low'><a class='edit-T_user' data-id=".$output->user_id[$i]."><strong>".$output->user[$i]."</strong></a></td>
 						 <td>".$output->full_name[$i]."</td>";
-	            $result .="<td class=' hide-on-low'>".$output->user_group[$i]."</td>
-	                     <td class='hide-on-low'>".$output->active[$i]."</td>
-	                     <td>".$action."</td>
+	            $result .="<td class=' hide-on-low hide-on-medium'>".$output->user_group[$i]."</td>
+	                     <td class='hide-on-low hide-on-medium'>".$output->active[$i]."</td>
+	                     <td nowrap>".$action."</td>
 				         </tr>";
 	       }
 	       
@@ -3280,7 +3385,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td>".$output->group_name[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->group_type[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->forced_timeclock_login[$i]."</td>
-	                    <td>".$action."</td>
+	                    <td nowrap>".$action."</td>
 	                </tr>";
 				
 			}
@@ -3345,7 +3450,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td class='hide-on-medium hide-on-low'>".$output->list_lastcalldate[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->tally[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->campaign_id[$i]."</td>
-	                    <td>".$action."</td>
+	                    <td nowrap>".$action."</td>
 	                </tr>";
 				
 		
@@ -3567,7 +3672,7 @@ error_reporting(E_ERROR | E_PARSE);
 						<td class='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>
-						<td>".$action."</td>
+						<td nowrap>".$action."</td>
 	                </tr>";
 				
 			}
@@ -3635,7 +3740,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td class='hide-on-medium hide-on-low'>".$output->old_messages[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->delete_vm_after_email[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
-	                    <td>".$action."</td>
+	                    <td nowrap>".$action."</td>
 	                </tr>";
 				
 			}
@@ -3813,7 +3918,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 
 	    	$columns = array("Date", "Customer", "Phone Number", "Agent", "Duration", "Action");
-	    	$hideOnMedium = array("Customer", "Phone Number", "Agent", "Duration");
+	    	$hideOnMedium = array("Agent", "Duration");
 	    	$hideOnLow = array("Customer", "Phone Number", "Agent", "Duration");
 			$result = $this->generateTableHeaderWithItems($columns, "table_callrecordings", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
 
@@ -3830,8 +3935,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 			$result .= "<tr>
 				<td>".$output->end_last_local_call_time[$i]."</td>
-				<td class='hide-on-medium hide-on-low'>".$output->full_name[$i]."</td>
-				<td class='hide-on-medium hide-on-low'>".$output->phone_number[$i]."</td>
+				<td class='hide-on-low'>".$output->full_name[$i]."</td>
+				<td class='hide-on-low'>".$output->phone_number[$i]."</td>
 				<td class='hide-on-medium hide-on-low'>".$output->users[$i]."</td>
 				<td class='hide-on-medium hide-on-low'>".$duration."</td>
 				<td>".$action_Call."</td>
@@ -3929,7 +4034,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<td class ='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
 				<td class ='hide-on-medium hide-on-low'>".$output->random[$i]."</td>
 				<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
-				<td>".$action."</td>
+				<td nowrap>".$action."</td>
 				</tr>";
 	    }
 		return $result.'</table>';
@@ -3998,7 +4103,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= "<tr>
 			<td><a class='play_voice_file' data-location='".$file_link."'>".$output->file_name[$i]."</td>
 			<td class ='hide-on-medium hide-on-low'>".$output->file_date[$i]."</td>
-			<td>".$action."</td>
+			<td nowrap>".$action."</td>
 		    </tr>";
 	    }
 		return $result.'</table>';
@@ -4060,7 +4165,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 	    # Result was OK!
 	    $columns = array("Script ID", "Script Name", "Status", "Type", "User Group", "Actions");
-	    	$hideOnMedium = array("Script ID", "Type", "Status", "User Group");
+	    $hideOnMedium = array("Type", "Status", "User Group");
 	    $hideOnLow = array( "Script ID", "Type", "Status", "User Group");
 
 		    $result = $this->generateTableHeaderWithItems($columns, "scripts_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow); 
@@ -4075,7 +4180,7 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 		
 			$result .= "<tr>
-				<td class='hide-on-low'><a class='edit-T_user' data-id='.$output->script_id[$i].'>".$output->script_id[$i]."</td>
+				<td class='hide-on-low'><a class='edit_script' data-id='".$output->script_id[$i]."'>".$output->script_id[$i]."</td>
 				<td>".$output->script_name[$i]."</td>
 				<td class='hide-on-medium hide-on-low'>".$active."</td>
 				<td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
@@ -4113,8 +4218,9 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function getListAllCallTimes($goUser, $goPass, $goAction, $responsetype){
-	    $url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
+
+	public function getCalltimes(){
+		$url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllCalltimes"; #action performed by the [[API:Functions]]. (required)
@@ -4129,6 +4235,12 @@ error_reporting(E_ERROR | E_PARSE);
 	    $data = curl_exec($ch);
 	    curl_close($ch);
 	    $output = json_decode($data);
+
+	    return $output;
+	}
+
+	public function getListAllCallTimes($goUser, $goPass, $goAction, $responsetype){
+	    $output = $this->getCalltimes();
 	   
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -4155,7 +4267,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td class ='hide-on-medium hide-on-low'>".$output->ct_default_start[$i]."</td>
 			   			<td class ='hide-on-medium hide-on-low'>".$output->ct_default_stop[$i]."</td>
 			    		<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
-	                    <td>".$action."</td>
+	                    <td nowrap>".$action."</td>
 	                </tr>";
             }
 
@@ -4189,12 +4301,14 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction 
 	 * @param responsetype
 	 */
-	public function API_getListAllCarriers($goUser, $goPass, $goAction, $responsetype){
+
+	public function getCarriers(){
 		$url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCarriersList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
+    
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
 	    curl_setopt($ch, CURLOPT_POST, 1);
@@ -4204,11 +4318,12 @@ error_reporting(E_ERROR | E_PARSE);
 	    $data = curl_exec($ch);
 	    curl_close($ch);
 	    $output = json_decode($data);
+
 	    return $output;
 	}
 
 	public function getListAllCarriers(){
-		$output = $this->API_getListAllCarriers();
+		$output = $this->getCarriers();
 	   
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -4229,14 +4344,14 @@ error_reporting(E_ERROR | E_PARSE);
 				    $active = "Inactive";
 				}
                     $result .= "<tr>
-	                    <td class ='hide-on-low'>".$output->carrier_id[$i]."</td>
+	                    <td class ='hide-on-low'><a class='edit-carrier' data-id='".$output->carrier_id[$i]."'>".$output->carrier_id[$i]."</td>
 	                    <td>".$output->carrier_name[$i]."</td>
 	                    <td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 			    		<td class ='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
 			    		<td class ='hide-on-medium hide-on-low'>".$output->registration_string[$i]."</td>
 			    		<td class ='hide-on-low'>".$output->active[$i]."</td>
 			    		<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
-	                    <td>".$action."</td>
+	                    <td nowrap>".$action."</td>
 	                </tr>";
             }
 
@@ -4642,32 +4757,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalAgentsWaitCalls"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype;
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			//var_dump($data);
-			 $data = explode(";",$data);
-			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			 }
+			$output = json_decode($data);
 			
-			 if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalAgentsWaitCalls"];
-			 } else {
-			   # An error occured
-					$vars = 0;
-					return $vars;
-			 }
+                        return($data);
 		}
 		
 		/*
@@ -4681,9 +4784,9 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalAgentsPaused"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
 			
-			
-			$ch = curl_init();
+                        $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
@@ -4692,22 +4795,9 @@ error_reporting(E_ERROR | E_PARSE);
 			$data = curl_exec($ch);
 			curl_close($ch);
 			
-			//var_dump($data);
-			 $data = explode(";",$data);
-			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			 }
-			
-			 if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalAgentsPaused"];
-			 } else {
-			   # An error occurred
-					$vars = 0;
-					return $vars;
-			 }
+			$output = json_decode($data);
+			 
+			return $output;
 		
 		}
 		
@@ -4722,32 +4812,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass; 
 			$postfields["goAction"] = "goGetTotalAgentsCall"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype;
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			//var_dump($data);
-			 $data = explode(";",$data);
-			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			 }
+			$output = json_decode($data);
 			
-			 if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalAgentsCall"];
-			 } else {
-			   # An error occured
-					$vars = 0;
-					return $vars;
-			 }
+                        return($data);
 		}
 		
 		/*
@@ -4842,7 +4920,8 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalActiveLeads"; #action performed by the [[API:Functions]]
-
+                        $postfields["responsetype"] = responsetype; 
+                        
 			 $ch = curl_init();
 			 curl_setopt($ch, CURLOPT_URL, $url);
 			 curl_setopt($ch, CURLOPT_POST, 1);
@@ -4881,15 +4960,18 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetActiveCampaignsToday"; #action performed by the [[API:Functions]]
-
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $postfields["responsetype"] = responsetype; 
+                        
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			
+			$output = json_decode($data);
 			
                         return($data);
 		}
@@ -4905,31 +4987,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetRingingCalls"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getRingingCalls"];
-			} else {
-			   # An error occurred
-					$vars = 0;
-					return $vars;
-			}
+			$output = json_decode($data);
+			 
+			return $output;
 		
 		}
 
@@ -4946,18 +5017,18 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goAction"] = "goGetHopperLeadsWarning"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype; 
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			
+			$output = json_decode($data);
 			 
-			 $output = json_decode($data);
-			 
-			 return $output;
+			return $output;
 		}
 		
 		/*
@@ -5021,31 +5092,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetIncomingQueue"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getIncomingQueue"];
-			} else {
-			   # An error occurred
-					$vars = 0;
-					return $vars;
-			}
+			$output = json_decode($data);
+			 
+			return $output;
 		
 		}
 		
@@ -5060,29 +5120,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalCalls"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype; 
 
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!	   
-					return $results["getTotalCalls"];					
-			} else {
-					$vars = 0;
-					return $vars;
-			}
+			$output = json_decode($data);
+			 
+			return $output;
 		}
 		
 		/*
@@ -5096,32 +5147,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalAnsweredCalls"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype;
 
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			//var_dump($data);
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalAnsweredCalls"];
-			} else {
-			   # An error occurred
-					$vars = 0;
-					return $vars;
-			}
+			$output = json_decode($data);
+			 
+			return $output;
 		}		
 		/*
 		 * Displaying Total Dropped Calls
@@ -5134,33 +5173,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalDroppedCalls"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype;
 
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			//var_dump($data);
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-                           //var_dump($results);
-			   //die("dd");
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getTotalDroppedCalls"];
-			} else {
-					$vars = 0;
-					return $vars;
-			}
+			$output = json_decode($data);
+			 
+			return $output;
 		}		
 		/*
 		 * Displaying Live Outbound
@@ -5173,33 +5199,21 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetLiveOutbound"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype;
+
+                        $ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 			
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+			$output = json_decode($data);
+			 
+			return $output;
 			
-			//var_dump($data);
-			$data = explode(";",$data);
-			foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			}
-			
-			if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getLiveOutbound"];
-			} else {
-			   # An error occured
-					$vars = 0;
-					return $vars;
-			}
-		
 		}
 		
 		/*
@@ -5231,27 +5245,27 @@ error_reporting(E_ERROR | E_PARSE);
 		 * [[API: Function]] - goGetDroppedPercentage
 		 * This application is used to get dropped call percentage.
 		*/
-            public function API_goGetDroppedPercentage() {
-		$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass;
-		$postfields["goAction"] = "goGetDroppedPercentage"; #action performed by the [[API:Functions]]
-                $postfields["responsetype"] = responsetype;
+                public function API_goGetDroppedPercentage() {
+                        $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+                        $postfields["goUser"] = goUser; #Username goes here. (required)
+                        $postfields["goPass"] = goPass;
+                        $postfields["goAction"] = "goGetDroppedPercentage"; #action performed by the [[API:Functions]]
+                        $postfields["responsetype"] = responsetype;
 
-		 $ch = curl_init();
-		 curl_setopt($ch, CURLOPT_URL, $url);
-		 curl_setopt($ch, CURLOPT_POST, 1);
-		 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		 $data = curl_exec($ch);
-		 curl_close($ch);
-                
-		 $output = json_decode($data);
-		 
-		 return $output;
-		
-            }
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_URL, $url);
+                        curl_setopt($ch, CURLOPT_POST, 1);
+                        curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+                        $data = curl_exec($ch);
+                        curl_close($ch);
+                        
+                        $output = json_decode($data);
+                        
+                        return $output;
+                    
+                }
             
 		/*
 		 * Display SLA Percentage
@@ -5376,7 +5390,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       if($output->result=="success") {
 
        	   $columns = array("Lead ID", "Full Name", "Phone Number", "Status", "Action");
-	       $hideOnMedium = array("Lead ID", "Phone Number", "Status");
+	       $hideOnMedium = array("Lead ID", "Status");
 	       $hideOnLow = array( "Lead ID", "Phone Number", "Status");
 		   $result = $this->generateTableHeaderWithItems($columns, "table_contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
@@ -5387,8 +5401,8 @@ error_reporting(E_ERROR | E_PARSE);
 				$action = $this->ActionMenuForContacts($output->lead_id[$i]);
 				$result .= '<tr>
 								<td><a class="edit-contact" data-id="'.$output->lead_id[$i].'">' .$output->lead_id[$i]. '</a></td>
-								<td class="hide-on-low hide-on-medium">' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
-								<td class="hide-on-low hide-on-medium">' .$output->phone_number[$i].'</td>
+								<td class="hide-on-low">' .$output->first_name[$i].' '.$output->middle_initial[$i].' '.$output->last_name[$i].'</td>
+								<td class="hide-on-low">' .$output->phone_number[$i].'</td>
 								<td class="hide-on-low hide-on-medium">' .$output->status[$i].'</td>
 								<td>' .$action.'</td>
 							</tr> ';
@@ -5400,7 +5414,6 @@ error_reporting(E_ERROR | E_PARSE);
        		//display nothing
        }
 	}
-
 
 	public function getAllowedList($user_id){
 		$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -5503,46 +5516,6 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 
-	public function getCalltimes(){
-		$url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
-	    $postfields["goUser"] = goUser; #Username goes here. (required)
-	    $postfields["goPass"] = goPass; #Password goes here. (required)
-	    $postfields["goAction"] = "getAllCalltimes"; #action performed by the [[API:Functions]]. (required)
-	    $postfields["responsetype"] = responsetype; #json. (required)
-    
-	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $url);
-	    curl_setopt($ch, CURLOPT_POST, 1);
-	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	    $data = curl_exec($ch);
-	    curl_close($ch);
-	    $output = json_decode($data);
-
-	    return $output;
-	}
-
-	public function getCarriers(){
-		$url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
-	    $postfields["goUser"] = goUser; #Username goes here. (required)
-	    $postfields["goPass"] = goPass; #Password goes here. (required)
-	    $postfields["goAction"] = "goGetCarriersList"; #action performed by the [[API:Functions]]. (required)
-	    $postfields["responsetype"] = responsetype; #json. (required)
-    
-	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $url);
-	    curl_setopt($ch, CURLOPT_POST, 1);
-	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	    $data = curl_exec($ch);
-	    curl_close($ch);
-	    $output = json_decode($data);
-
-	    return $output;
-	}
-
 	public function API_getAllDialStatuses($campaign_id){
 		$url = gourl."/goDialStatus/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -5617,21 +5590,22 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function standardizedThemeCSS() {
 		$css = "";
-		$css .= '<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />'; // bootstrap basic css
-		$css .= '<link href="css/creamycrm.css" rel="stylesheet" type="text/css" />'; // creamycrm css
-    	$css .= '<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />'; // circle buttons css
-		$css .= '<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />'; // ionicons
-		$css .= '<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />'; // bootstrap3 css
-		$css .= '<link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">'; // font-awesome css
-		$css .= '<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">'; // animate css
-		//$css .= '<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css 
-		$css .= '<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">'; // app css
-		$css .= '<link rel="stylesheet" href="css/customizedLoader.css">'; // preloader css
-		$css .= '<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'; // sweetalert
+		$css .= '<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />'."\n"; // bootstrap basic css
+		$css .= '<link href="css/creamycrm.css" rel="stylesheet" type="text/css" />'."\n"; // creamycrm css
+    	$css .= '<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />'."\n"; // circle buttons css
+		$css .= '<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />'."\n"; // ionicons
+		$css .= '<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />'."\n"; // bootstrap3 css
+		$css .= '<link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">'."\n"; // font-awesome css
+		$css .= '<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">'."\n"; // animate css
+		$css .= '<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css 
+		$css .= '<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">'."\n"; // app css
+		$css .= '<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">'."\n";
+		$css .= '<link rel="stylesheet" href="css/customizedLoader.css">'."\n"; // preloader css
+		$css .= '<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'."\n"; // sweetalert
 		/* JS that needs to be declared first */
-		$css .= '<script src="js/jquery.min.js"></script>'; // required JS
-		$css .= '<script src="js/bootstrap.min.js" type="text/javascript"></script>'; // required JS
-		$css .= '<script src="js/jquery-ui.min.js" type="text/javascript"></script>'; // required JS
+		$css .= '<script src="js/jquery.min.js"></script>'."\n"; // required JS
+		$css .= '<script src="js/bootstrap.min.js" type="text/javascript"></script>'."\n"; // required JS
+		$css .= '<script src="js/jquery-ui.min.js" type="text/javascript"></script>'."\n"; // required JS
 
 		return $css;
 	}
@@ -5641,12 +5615,12 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function standardizedThemeJS() {
 		$js = '';
-		$js .= '<script src="js/jquery.validate.min.js" type="text/javascript"></script>'; // forms and action js
-		$js .= '<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>'; // sweetalert js 
-		$js .= '<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>'; // bootstrap 3 js
-		$js .= '<script src="js/app.min.js" type="text/javascript"></script>'; // creamy app js
-		$js .= '<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>';
-		$js .= '<script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>';
+		$js .= '<script src="js/jquery.validate.min.js" type="text/javascript"></script>'."\n"; // forms and action js
+		$js .= '<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>'."\n"; // sweetalert js 
+		$js .= '<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>'."\n"; // bootstrap 3 js
+		$js .= '<script src="adminlte/js/app.min.js" type="text/javascript"></script>'."\n"; // creamy app js
+		$js .= '<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>'."\n";
+		$js .= '<script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>'."\n";
 		$js .= "<script type='text/javascript'>
 			
 			var goOptions = {
@@ -5673,7 +5647,7 @@ error_reporting(E_ERROR | E_PARSE);
 				}
 			};
 			var goAvatar = new Vue(goOptions);
-		</script>";
+		</script>\n";
 
 		return $js;
 	}

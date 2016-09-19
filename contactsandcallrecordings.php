@@ -151,11 +151,11 @@ $leads = $ui->API_GetLeads($user->getUserName());
 										<table class="table table-striped table-bordered table-hover" id="table_contacts">
 										   <thead>
 											  <tr>
-												 <th>Lead ID</th>
-												 <th class='hide-on-medium hide-on-low'>Full Name</th>
-												 <th class='hide-on-medium hide-on-low'>Phone Number</th>
-												 <th class='hide-on-medium hide-on-low'>Status</th>
-												 <th>Action</th>
+												 <th nowrap>Lead ID</th>
+												 <th nowrap class='hide-on-low'>Full Name</th>
+												 <th nowrap class='hide-on-low'>Phone Number</th>
+												 <th nowrap class='hide-on-medium hide-on-low'>Status</th>
+												 <th nowrap>Action</th>
 											  </tr>
 										   </thead>
 										   <tbody>
@@ -168,11 +168,11 @@ $leads = $ui->API_GetLeads($user->getUserName());
 
 											   	?>
 														<tr>
-															<td><a class="edit-contact" data-id="<?php echo $leads->lead_id[$i];?>"><?php echo $leads->lead_id[$i];?></a></td>
-															<td class='hide-on-medium hide-on-low'><?php echo $leads->first_name[$i].' '.$leads->middle_initial[$i].' '.$leads->last_name[$i];?></td>
-															<td class='hide-on-medium hide-on-low'><?php echo $leads->phone_number[$i];?></td>
-															<td class='hide-on-medium hide-on-low'><?php echo $leads->status[$i];?></td>
-															<td><?php echo $action_lead;?></td>
+															<td nowrap><a class="edit-contact" data-id="<?php echo $leads->lead_id[$i];?>"><?php echo $leads->lead_id[$i];?></a></td>
+															<td nowrap class='hide-on-low'><?php echo $leads->first_name[$i].' '.$leads->middle_initial[$i].' '.$leads->last_name[$i];?></td>
+															<td nowrap class='hide-on-low'><?php echo $leads->phone_number[$i];?></td>
+															<td nowrap class='hide-on-medium hide-on-low'><?php echo $leads->status[$i];?></td>
+															<td nowrap><?php echo $action_lead;?></td>
 														</tr>
 												<?php
 														}
@@ -190,12 +190,12 @@ $leads = $ui->API_GetLeads($user->getUserName());
 										<table class="table table-striped table-bordered table-hover" id="table_callrecordings">
 										   <thead>
 											  <tr>
-												 <th>Date</th>
-												 <th class='hide-on-medium hide-on-low'>Customer</th>
-												 <th class='hide-on-medium hide-on-low'>Phone Number</th>
-												 <th class='hide-on-medium hide-on-low'>Agent</th>
-												 <th class='hide-on-medium hide-on-low'>Duration</th>
-												 <th>Action</th>
+												 <th nowrap>Date</th>
+												 <th nowrap class='hide-on-low'>Customer</th>
+												 <th nowrap class='hide-on-low'>Phone Number</th>
+												 <th nowrap class='hide-on-medium hide-on-low'>Agent</th>
+												 <th nowrap class='hide-on-medium hide-on-low'>Duration</th>
+												 <th nowrap>Action</th>
 											  </tr>
 										   </thead>
 										   <tbody>
@@ -211,12 +211,12 @@ $leads = $ui->API_GetLeads($user->getUserName());
 														//echo $callrecs->result;
 											   	?>
 														<tr>
-															<td><?php echo $callrecs->end_last_local_call_time[$i];?></td>
-															<td class='hide-on-medium hide-on-low'><?php echo $callrecs->full_name[$i];?></td>
-															<td class='hide-on-medium hide-on-low'><?php echo $callrecs->phone_number[$i];?></td>
-															<td class='hide-on-medium hide-on-low'><?php echo $callrecs->users[$i];?></td>
-															<td class='hide-on-medium hide-on-low'><?php echo gmdate('H:i:s', $diff); ?></td>
-															<td><?php echo $action_Call;?></td>
+															<td nowrap><?php echo $callrecs->end_last_local_call_time[$i];?></td>
+															<td nowrap class='hide-on-low'><?php echo $callrecs->full_name[$i];?></td>
+															<td nowrap class='hide-on-low'><?php echo $callrecs->phone_number[$i];?></td>
+															<td nowrap class='hide-on-medium hide-on-low'><?php echo $callrecs->users[$i];?></td>
+															<td nowrap class='hide-on-medium hide-on-low'><?php echo gmdate('H:i:s', $diff); ?></td>
+															<td nowrap><?php echo $action_Call;?></td>
 														</tr>
 												<?php
 													}
@@ -1115,7 +1115,8 @@ $disposition = $ui->API_getAllDispositions();
 
 			});
 		</script>
-
+		
+		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 		<?php print $ui->creamyFooter();?>
     </body>
 </html>

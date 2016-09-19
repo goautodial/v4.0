@@ -19,11 +19,11 @@
 
         <?php print $ui->creamyThemeCSS(); ?>
 
-            <!-- Daterang picker CSS --
-            <link rel="stylesheet" type="text/css" media="all" href="theme_dashboard/bootstrap-daterangepicker/daterangepicker.css" />
-            <!-- Daterange Picker JS --
-            <script type="text/javascript" src="theme_dashboard/bootstrap-daterangepicker/moment.js"></script>
-            <script type="text/javascript" src="theme_dashboard/bootstrap-daterangepicker/daterangepicker.js"></script>
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+        <!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
         
         <!-- Datetime picker --> 
         <link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
@@ -66,7 +66,6 @@
             <?php
                 $campaigns = $ui->API_getListAllCampaigns();
             ?>
-            
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
@@ -76,8 +75,16 @@
                                 <div class="panel-body">
                                     <legend><?php $lh->translateText("call_reports"); ?></legend>
 
-                                    <div class="box-body table" id="table">
-                                        </table>
+                                    <div class="report-loader" style="color:lightgray; display:none;">
+                                        <center>
+                                            <h3>
+                                                <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+                                                Loading...
+                                            </h3>
+                                        </center>
+                                    </div>
+                                    <div class="box-body" id="table">
+                                        
                                     </div><!-- /.box-body -->
 
                                 </div><!-- /.panel-body -->
@@ -103,11 +110,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="campaign_id">Campaign</label>
-                                    <select class="form-control select2" id="campaign_id" style="width:100%;">
+                                    <select class="form-control select2" name="campaign_id" id="campaign_id" style="width:100%;">
                                         <?php
                                             for($i=0; $i < count($campaigns->campaign_id);$i++){
                                         ?>
-                                            <option><?php echo $campaigns->campaign_name[$i];?></option>
+                                            <option value="<?php echo $campaigns->campaign_id[$i];?>"><?php echo $campaigns->campaign_id[$i]." - ".$campaigns->campaign_name[$i];?></option>
                                         <?php
                                             }
                                         ?>
@@ -130,7 +137,7 @@
                                     <label>Start Date:</label>
                                     <div class="form-group">
                                         <div class='input-group date' id='datetimepicker1'>
-                                            <input type='text' class="form-control" id="start_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
+                                            <input type='text' class="form-control" id="start_filterdate" name="start_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
                                             <span class="input-group-addon">
                                                 <!-- <span class="glyphicon glyphicon-calendar"></span>-->
                                                 <span class="fa fa-calendar"></span>
@@ -144,7 +151,7 @@
                                     <label>End Date:</label>
                                     <div class="form-group">
                                         <div class='input-group date' id='datetimepicker2'>
-                                            <input type='text' class="form-control" id="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
+                                            <input type='text' class="form-control" id="end_filterdate" name="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
                                             <span class="input-group-addon">
                                                 <!-- <span class="glyphicon glyphicon-calendar"></span>-->
                                                 <span class="fa fa-calendar"></span>
@@ -180,22 +187,108 @@
                 });
 
                 $('#datetimepicker1').datetimepicker({
-                    format: 'DD/MM/YYYY'
+                    format: 'MM/DD/YYYY'
                 });
                 $('#datetimepicker2').datetimepicker({
-                    useCurrent: false, //Important! See issue #1075
-                    format: 'DD/MM/YYYY'
+                    useCurrent: false,
+                    format: 'MM/DD/YYYY'
                 });
                 $("#datetimepicker1").on("dp.change", function (e) {
                     $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
+
+                    $('#table').empty();
+                    $(".report-loader").fadeIn("slow");
+                        $.ajax({
+                            url: "reports.php",
+                            type: 'POST',
+                            data: {
+                                pageTitle : $("#filter_type").val(),
+                                campaignID : $("#campaign_id").val(),
+                                request : $("#request").val(),
+                                userID : $("#userID").val(),
+                                userGroup : $("#userGroup").val(),
+                                fromDate : $("#start_filterdate").val(),
+                                toDate : $("#end_filterdate").val()
+                            },
+                            success: function(data) {
+                                console.log(data);
+
+                                if(data != ""){
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html(data);
+
+                                    if($("#filter_type").val() == "agent_detail"){
+                                        $('#agent_detail_top').dataTable();
+                                        $('#agent_detail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "agent_pdetail"){
+                                        $('#agent_pdetail_top').dataTable();
+                                        $('#agent_pdetail_mid').dataTable();
+                                        $('#agent_pdetail_bottom').dataTable();
+                                        $('#agent_pdetail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "dispo"){
+                                        $('#dispo').dataTable();
+                                    }
+
+                                }else{
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html("NO DATA");
+                                }
+                            }
+                        });
                 });
-                $("#datetimepicker1").on("dp.change", function (e) {
-                    $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+                $("#datetimepicker2").on("dp.change", function (e) {
+                    $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
+
+                    $('#table').empty();
+                    $(".report-loader").fadeIn("slow");
+                        $.ajax({
+                            url: "reports.php",
+                            type: 'POST',
+                            data: {
+                                pageTitle : $("#filter_type").val(),
+                                campaignID : $("#campaign_id").val(),
+                                request : $("#request").val(),
+                                userID : $("#userID").val(),
+                                userGroup : $("#userGroup").val(),
+                                fromDate : $("#start_filterdate").val(),
+                                toDate : $("#end_filterdate").val()
+                            },
+                            success: function(data) {
+                                console.log(data);
+
+                                if(data != ""){
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html(data);
+
+                                    if($("#filter_type").val() == "agent_detail"){
+                                        $('#agent_detail_top').dataTable();
+                                        $('#agent_detail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "agent_pdetail"){
+                                        $('#agent_pdetail_top').dataTable();
+                                        $('#agent_pdetail_mid').dataTable();
+                                        $('#agent_pdetail_bottom').dataTable();
+                                        $('#agent_pdetail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "dispo"){
+                                        $('#dispo').dataTable();
+                                    }
+
+                                }else{
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html("NO DATA");
+                                }
+                            }
+                        });
                 });
 
+                
                  /* changing reports */
                 $('#filter_type').on('change', function() {
-
+                    $('#table').empty();
+                    $(".report-loader").fadeIn("slow");
                         $.ajax({
                             url: "reports.php",
                             type: 'POST',
@@ -212,13 +305,74 @@
                                 console.log(data);
 
                                 if(data != ""){
+                                    $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
+
+                                    if($("#filter_type").val() == "agent_detail"){
+                                        $('#agent_detail_top').dataTable();
+                                        $('#agent_detail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "agent_pdetail"){
+                                        $('#agent_pdetail_top').dataTable();
+                                        $('#agent_pdetail_mid').dataTable();
+                                        $('#agent_pdetail_bottom').dataTable();
+                                        $('#agent_pdetail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "dispo"){
+                                        $('#dispo').dataTable();
+                                    }
+
                                 }else{
+                                    $(".report-loader").fadeOut("slow");
                                     $('#table').html("NO DATA");
                                 }
                             }
                         });
+                });
+                
+                 /* changing reports */
+                $('#campaign_id').on('change', function() {
+                    $('#table').empty();
+                    $(".report-loader").fadeIn("slow");
+                        $.ajax({
+                            url: "reports.php",
+                            type: 'POST',
+                            data: {
+                                pageTitle : $("#filter_type").val(),
+                                campaignID : $("#campaign_id").val(),
+                                request : $("#request").val(),
+                                userID : $("#userID").val(),
+                                userGroup : $("#userGroup").val(),
+                                fromDate : $("#start_filterdate").val(),
+                                toDate : $("#end_filterdate").val()
+                            },
+                            success: function(data) {
+                                console.log(data);
 
+                                if(data != ""){
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html(data);
+
+                                    if($("#filter_type").val() == "agent_detail"){
+                                        $('#agent_detail_top').dataTable();
+                                        $('#agent_detail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "agent_pdetail"){
+                                        $('#agent_pdetail_top').dataTable();
+                                        $('#agent_pdetail_mid').dataTable();
+                                        $('#agent_pdetail_bottom').dataTable();
+                                        $('#agent_pdetail_login').dataTable();
+                                    }
+                                    if($("#filter_type").val() == "dispo"){
+                                        $('#dispo').dataTable();
+                                    }
+
+                                }else{
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html("NO DATA");
+                                }
+                            }
+                        });
                 });
 
                     /* Daterange
@@ -231,5 +385,8 @@
                     */
             });
         </script>
+
+        <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
+        <?php print $ui->creamyFooter(); ?>
     </body>
 </html>

@@ -2288,7 +2288,7 @@ a:focus {
 .table-bordered > thead > tr > td,
 .table-bordered > tbody > tr > td,
 .table-bordered > tfoot > tr > td {
-  border: 1px solid #f4f4f4;
+  /* border: 1px solid #f4f4f4; */
 }
 .table-bordered > thead > tr > th,
 .table-bordered > thead > tr > td {

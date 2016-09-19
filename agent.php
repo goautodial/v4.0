@@ -1290,7 +1290,7 @@ if (isset($_GET["message"])) {
 						<!-- Contacts -->
 						<div id="contents-contacts" class="row" style="display: none;">
 							<div class="card col-md-12" style="padding: 15px;">
-								<table id="contacts-list" class="display" style="border: 1px solid #f4f4f4">
+								<table id="contacts-list" class="display" style="border: 1px solid #f4f4f4; width: 100%;">
 									<thead>
 										<tr>
 											<th>

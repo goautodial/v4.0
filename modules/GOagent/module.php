@@ -912,7 +912,11 @@ EOF;
 		//		console.log('reply!');
 		//	}
 		//};
-		//$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
+		
+		$("#dialer-tab").css('display', 'table-cell');
+		if ( !!$.prototype.snackbar ) {
+			$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
+		}
 	});
 	
 	phone.on('unregistered', function(e) {
@@ -921,7 +925,9 @@ EOF;
 	
 	phone.on('registrationFailed', function(e) {
 		console.log('registrationFailed', e);
-		//$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000});
+		if ( !!$.prototype.snackbar ) {
+			$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000});
+		}
 	});
 	
 	rtcninja.getUserMedia({

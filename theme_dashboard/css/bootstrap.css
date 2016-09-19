@@ -1092,7 +1092,8 @@ a {
 a:hover,
 a:focus {
   color: #1b72e2;
-  text-decoration: underline;
+  text-decoration: none;
+  /* text-decoration: underline; */
 }
 a:focus {
   outline: thin dotted;
@@ -1202,9 +1203,9 @@ h6 .small,
 .h4 .small,
 .h5 .small,
 .h6 .small {
-  font-weight: normal;
-  line-height: 1;
-  color: #3a3f51;
+  /* font-weight: normal; */
+  /* line-height: 1; */
+  /* color: #3a3f51; */
 }
 h1,
 .h1,
@@ -2261,7 +2262,7 @@ th {
 .table > tfoot > tr > td {
   padding: 8px;
   line-height: 1.52857143;
-  vertical-align: top;
+  /* vertical-align: top; */
   border-top: 1px solid #eeeeee;
 }
 .table > thead > tr > th {
@@ -2275,6 +2276,7 @@ th {
 .table > colgroup + thead > tr:first-child > td,
 .table > thead:first-child > tr:first-child > td {
   border-top: 0;
+  white-space: nowrap;
 }
 .table > tbody + tbody {
   border-top: 2px solid #eeeeee;
@@ -2291,7 +2293,7 @@ th {
   padding: 5px;
 }
 .table-bordered {
-  border: 1px solid #eeeeee;
+  /* border: 1px solid #eeeeee; */
 }
 .table-bordered > thead > tr > th,
 .table-bordered > tbody > tr > th,
@@ -2299,7 +2301,7 @@ th {
 .table-bordered > thead > tr > td,
 .table-bordered > tbody > tr > td,
 .table-bordered > tfoot > tr > td {
-  border: 1px solid #eeeeee;
+  /* border: 1px solid #eeeeee; */
 }
 .table-bordered > thead > tr > th,
 .table-bordered > thead > tr > td {
@@ -3635,8 +3637,8 @@ tbody.collapse.in {
 }
 .btn-group > .btn,
 .btn-group-vertical > .btn {
-  position: relative;
-  float: left;
+  /* position: relative; */
+  /* float: left; */
 }
 .btn-group > .btn:hover,
 .btn-group-vertical > .btn:hover,
@@ -3671,7 +3673,8 @@ tbody.collapse.in {
   border-radius: 0;
 }
 .btn-group > .btn:first-child {
-  margin-left: 0;
+  /* margin-left: 0; */
+  font-size: small;
 }
 .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
   border-bottom-right-radius: 0;

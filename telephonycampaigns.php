@@ -115,7 +115,7 @@ error_reporting(E_ALL);*/
 										   <thead>
 											  <tr>
                                                  <th style="color: white;">Pic</th>
-												 <th class='hide-on-medium hide-on-low'>Campaign ID</th>
+												 <th class='hide-on-medium hide-on-low' style='width:0px;'>Campaign ID</th>
 												 <th >Campaign Name</th>
 												 <th class='hide-on-medium hide-on-low'>Dial Method</th>
 												 <th class='hide-on-medium hide-on-low'>Status</th>
@@ -152,12 +152,12 @@ error_reporting(E_ALL);*/
 
 											   	?>
 													<tr>
-                                                        <td><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='36'></avatar></td>
-														<td class='hide-on-medium hide-on-low'><strong><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></strong></td>
-														<td><?php echo $campaign->campaign_name[$i];?></a></td>
+                                                        <td><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
+														<td class='hide-on-medium hide-on-low'><strong><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></a></strong></td>
+														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $campaign->dial_method[$i];?></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $campaign->active[$i];?></td>
-														<td><?php echo $action_CAMPAIGN;?></td>
+														<td nowrap><?php echo $action_CAMPAIGN;?></td>
 													</tr>
 												<?php
 													}
@@ -171,7 +171,7 @@ error_reporting(E_ALL);*/
 										<table class="table table-striped table-bordered table-hover" id="table_disposition">
 										   <thead>
 											  <tr>
-                                                                                                 <th style="color: white;">Pic</th>
+                                                 <th style="color: white;">Pic</th>
 												 <th class='hide-on-medium hide-on-low'>Campaign ID</th>
 												 <th>Campaign Name</th>
 												 <th class='hide-on-medium hide-on-low'>Custom Disposition</th>
@@ -186,9 +186,9 @@ error_reporting(E_ALL);*/
 
 											   	?>
 													<tr>
-                                                        <td><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='36'></avatar></td>
-														<td class='hide-on-medium hide-on-low'><strong><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></strong></td>
-														<td><?php echo $campaign->campaign_name[$i];?></a></td>
+                                                        <td><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
+														<td class='hide-on-medium hide-on-low'><strong><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></a></strong></td>
+														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'>
 												<?php
 												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
@@ -209,7 +209,7 @@ error_reporting(E_ALL);*/
 												//}
 												?>
 														</td>
-														<td><?php echo $action_DISPOSITION;?></td>
+														<td nowrap><?php echo $action_DISPOSITION;?></td>
 													</tr>
 												<?php
 													}
@@ -240,7 +240,7 @@ error_reporting(E_ALL);*/
                                                         <td><avatar username='<?php echo $leadfilter->lead_filter_name[$i];?>' :size='36'></avatar></td>
 														<td><?php echo $leadfilter->lead_filter_id[$i];?></td>
 														<td><strong><a class=''><?php echo $leadfilter->lead_filter_name[$i];?></a></strong></td>
-														<td><?php echo $action_LEADFILTER;?></td>
+														<td nowrap><?php echo $action_LEADFILTER;?></td>
 													</tr>
 												<?php
 													}
@@ -687,14 +687,14 @@ error_reporting(E_ALL);*/
 		                        <div class="form-group">
 		                            <label class="col-sm-3 control-label" for="status">Status</label>
 		                            <div class="col-sm-9 mb">
-		                                <input type="text" name="status" id="status" class="form-control" placeholder="Status (Mandatory)" minlength="3" maxlenght="6" required>
+		                                <input type="text" name="status" id="status" class="form-control" placeholder="Status (Mandatory)" minlength="3" maxlength="6" required>
 		                            	<label id="status-duplicate-error"></label>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
 		                            <label class="col-sm-3 control-label" for="status_name">Status Name </label>
 		                            <div class="col-sm-9 mb">
-		                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="Status Name (Mandatory)" maxlenght="30" required>
+		                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="Status Name (Mandatory)" maxlength="30" required>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
@@ -1377,9 +1377,7 @@ error_reporting(E_ALL);*/
 				/*** DISPOSITION ***/
 					// check duplicates
 						$("#status").keyup(function() {
-							clearTimeout($.data(this, 'timer'));
-							var wait = setTimeout(duplicate_status_check, 500);
-							$(this).data('timer', wait);
+							duplicate_status_check();
 						});
 
 						$('#disposition_campaign').change(function(){
@@ -1514,7 +1512,8 @@ error_reporting(E_ALL);*/
 		}
 
 </script>
-
+		
+		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

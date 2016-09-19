@@ -1477,6 +1477,9 @@ function hijackThisLink(e) {
     
     if (origHash !== hash) {
         $(".preloader").fadeIn('fast');
+        if (hash == 'contacts') {
+            getContactList();
+        }
     }
     
     if (hash.length > 0) {
@@ -1502,7 +1505,7 @@ function hijackThisLink(e) {
     $(".content-heading ol").html(breadCrumb);
     $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
     
-    if (origHash !== hash) {
+    if (origHash !== hash && hash == 'contacts') {
         $(".preloader").fadeOut('slow');
     }
 }
@@ -3017,11 +3020,13 @@ function RefreshAgentsView(RAlocation, RAcount) {
                                 if (agent_status_view_time > 0) {
                                     agent_status_time = ' - '+agentStatus.call_time;
                                 }
-                                agent_list += '<li title="'+agentID+' - '+agentStatus.status+'" style="cursor: default; color: '+agentStatus.textcolor+'; background-color: '+agentStatus.statcolor+'"><div class="text-center">'+agentStatus.full_name+''+agent_status_time+'</div></li>';
+                                var agentAvatar = goGetAvatar(agentID, '32');
+                                agent_list += '<li title="'+agentID+' - '+agentStatus.status+'" style="cursor: default; color: '+agentStatus.textcolor+'; background-color: '+agentStatus.statcolor+'; line-height: 32px; padding: 5px 0;"><div>'+agentStatus.full_name+''+agent_status_time+'<span style="float: left; padding: 0 15px;">'+agentAvatar+'</span></div></li>';
                             })
                         });
                         agent_list += '<li style="bottom: 25; position: absolute;"><div class="text-center"><span><i class="fa fa-square" style="color: #ADD8E6;"></i> <?=$lh->translationFor('ready')?></span> &nbsp; <span><i class="fa fa-square" style="color: #D8BFD8;"></i> <?=$lh->translationFor('incall')?></span> &nbsp; <span><i class="fa fa-square" style="color: #F0E68C;"></i> <?=$lh->translationFor('paused')?></span></div></li>';
                         $("#go_agent_view_list").html(agent_list);
+                        goAvatar._init(goOptions);
                     }
                 }
             });
@@ -5956,19 +5961,86 @@ function TimerActionRun(taskaction, taskdialalert) {
         {timer_action = 'NONE';}	
 }
 
+function getContactList() {
+    var postData = {
+        goAction: 'goGetContactList',
+        goUser: uName,
+        goPass: uPass,
+        goLimit: 1000,
+        responsetype: 'json'
+    };
+    
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json"
+    })
+    .done(function (result) {
+        if (result.result == 'success') {
+            var leadsList = result.leads;
+            $("#contacts-list").dataTable().fnDestroy();
+            $("#contacts-list tbody").empty();
+            $.each(leadsList, function(key, value) {
+                var thisComments = value.comments;
+                var commentTitle = '';
+                if (thisComments.length > 20) {
+                    commentTitle = ' title="'+thisComments+'"';
+                    thisComments = thisComments.substring(0, 20) + "...";
+                }
+                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+value.first_name+' '+value.middle_initial+' '+value.last_name+'</td><td>'+value.phone_number+'</td><td>'+value.last_local_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-lead" data-leadid="'+value.lead_id+'" class="btn btn-primary btn-sm" style="margin: 2px;"><i class="fa fa-phone"></i></button></td></tr>';
+                $("#contacts-list tbody").append(appendThis);
+            });
+            $("#contacts-list").css('width', '100%');
+            $("#contacts-list").DataTable({
+                "bDestroy": true,
+                "aoColumnDefs": [{
+                    "bSortable": false,
+                    "aTargets": [ 7 ],
+                }, {
+                    "bSearchable": false,
+                    "aTargets": [ 3, 5, 7 ]
+                }, {
+                    "sClass": "hidden-xs",
+                    "aTargets": [ 0 ]
+                }, {
+                    "sClass": "hidden-xs hidden-sm",
+                    "aTargets": [ 1 ]
+                }, {
+                    "sClass": "visible-md visible-lg",
+                    "aTargets": [ 4, 5 ]
+                }, {
+                    "sClass": "visible-lg",
+                    "aTargets": [ 3, 6 ]
+                }]
+            });
+            $("#contacts-list_filter").parent('div').attr('class', 'col-sm-6 hidden-xs');
+            $("#contacts-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
+            $("#contents-contacts").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
+            $("#contents-contacts").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
+            if (!is_logged_in) {
+                $("button[id='dial-lead']").addClass('disabled');
+            }
+            $(".preloader").fadeOut('slow');
+        }
+    });
+}
+
 function NoneInSession() {
     //still on development
 }
 
-function goGetAvatar(account) {
+function goGetAvatar(account, size) {
     var defaultAvatar = '';
     var avatarInitials = 'initials';
+    size = (typeof size === 'undefined') ? '64' : size;
     if (account === undefined || account == '') {
         var account = 'Dialed Client';
         defaultAvatar = 'src="<?php echo CRM_DEFAULTS_USER_AVATAR;?>"';
         avatarInitials = 'username';
     }
-    var avatar = "<avatar username='"+account+"' "+defaultAvatar+" :size='64'></avatar>";
+    var avatar = "<avatar username='"+account+"' "+defaultAvatar+" :size='"+size+"'></avatar>";
     
     return avatar;
 }
