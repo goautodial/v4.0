@@ -343,6 +343,7 @@ EOF;
 		'uri': 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 		'password': phone_pass,
 		'session_timers': false,
+		'register': false
 	};
 	
 	var rtcninja = JsSIP.rtcninja;
@@ -490,7 +491,7 @@ EOF;
 	}, function successCb(stream) {
 		localStream = stream;
 	
-		//phone.start();
+		phone.start();
 	}, function failureCb(e) {
 		console.error('getUserMedia failed.', e);
 	});
@@ -771,6 +772,7 @@ EOF;
 		'uri': 'sip:{$phone_login}@{$websocketSIP}{$websocketSIPPort},
 		'password': '{$phone_pass}',
 		'session_timers': false,
+		'register': false
 	};
 	
 	var rtcninja = JsSIP.rtcninja;
@@ -936,7 +938,7 @@ EOF;
 	}, function successCb(stream) {
 		localStream = stream;
 	
-		//phone.start();
+		phone.start();
 	}, function failureCb(e) {
 		console.error('getUserMedia failed.', e);
 	});
