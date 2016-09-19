@@ -663,7 +663,7 @@ $(document).ready(function() {
                 }
                 
                 //Check if Agent is still logged in
-                checkIfStillLoggedIn(check_if_logged_out);
+                checkIfStillLoggedIn(false);
             }
         }, refresh_interval);
         
