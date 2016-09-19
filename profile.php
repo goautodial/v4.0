@@ -134,9 +134,7 @@
     $vmArray = $ui->API_goGetVoiceMails();
     //echo "<pre>";
     //print_r($vmArray);
-    //die();
-    //$vmCnt = count($vmArray->voicemail_id);
-    
+    //die();    
     foreach($vmArray->voicemail_id as $key => $value) {
         //var_dump($key, $value);                       
     
@@ -147,21 +145,19 @@
                 $vm_message = $value2;
             }    
     }
-    //var_dump($vmid);
-    //var_dump($vm_message);
 
 ?>
             <div class="unwrap ng-scope">
-               <div style="background-image: url(img/profile-bg.jpg)" class="bg-cover">
+               <div style="background-image: url(img/profile-bg.jpg); padding-top: 20px;" class="bg-cover">
                   <div class="p-xl text-center text-white">
-                     <span style="display:table; margin:0 auto; background-color: #dadada; border: 3px solid #dadada; border-radius: 50%; margin-bottom: 10px; height: 128px; width: 128px;"><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 124)?></span>
+                     <span style="display:table; margin:0 auto; background-color: #ff902b; border: 3px solid #dadada; border-radius: 50%; margin-bottom: 10px; height: 128px; width: 128px;"><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 128)?></span>
                      <h3 class="m0"><?php echo $user->getUserName(); ?></h3>
                      <p><?php echo $_SESSION['user']; ?></p>
                      <p>Empowering the next generation contact centers.</p>
                   </div>
                </div>
-               <div class="text-center bg-gray-dark p-lg mb-xl">
-                  <div class="row row-table" style="height: 7%">
+               <div class="text-center bg-warning p-lg mb-xl">
+                  <div class="row row-table" style="height: 47px">
                      <div class="col-xs-4 br">
                         <h3 class="m0"><?php echo $totalcallstoday; ?></h3>
                         <p class="m0">
