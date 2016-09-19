@@ -1613,6 +1613,8 @@ function sendLogout (logMeOut) {
                 
                 if (phone.isRegistered()) {
                     phone.unregister(configuration);
+                    
+                    phone.stop();
                 }
                 
                 $("#ScriptContents").html('');
