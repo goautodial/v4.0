@@ -726,7 +726,9 @@ $(document).ready(function() {
         
         if (!$("aside.control-sidebar").hasClass("control-sidebar-open")) {
             checkSidebarIfOpen(true);
-            $.AdminLTE.controlSidebar.open($("aside.control-sidebar"), true);
+            if (!is_logged_in && !phoneRegistered) {
+                $.AdminLTE.controlSidebar.open($("aside.control-sidebar"), true);
+            }
         }
     });
 
