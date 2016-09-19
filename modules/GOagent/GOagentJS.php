@@ -1987,9 +1987,9 @@ function checkIfStillLoggedIn(logged_out) {
             }
         });
     } else {
-        if (<?=$_SESSION['is_logged_in']?> == 0 && !phoneRegistered) {
+        if (!phoneRegistered) {
             console.log('test');
-            $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN', 'campaign_id': campaign, 'is_logged_in': <?=$_SESSION['is_logged_in']?>});
+            $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN', 'campaign_id': campaign});
         }
     }
 }
@@ -6784,6 +6784,7 @@ String.prototype.toUpperFirst = function() {
                 $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $_SESSION['is_logged_in'];
                 break;
         }
+        echo "{$_SESSION['campaign_id']}|{$_SESSION['is_logged_in']}";
     } else {
         echo "ERROR: Module '{$_REQUEST['module_name']}' not found.";
     }
