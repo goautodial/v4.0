@@ -23,7 +23,11 @@
 
 	$postfields['campaign_id']  			= $_POST['campaign_id'];
   $checkStatus = strpos($_POST['old_dial_status'], $_POST['dial_status']);
-  if($checkStatus == 0){
+  // print_r($_POST);
+  // echo "<br />";
+  // print_r($checkStatus);
+  // die;
+  if($checkStatus === 0){
     $new_status = $_POST['dial_status']." ".$_POST['old_dial_status'];
   }else{
     $new_status = $_POST['old_dial_status'];

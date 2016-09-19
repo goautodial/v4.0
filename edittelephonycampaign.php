@@ -1469,7 +1469,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 												},
 												dataType: 'json',
 												success: function(data) {
-												// console.log(data);
+												console.log(data);
 														if(data == 1){
 															swal({
 																	title: "Success",
