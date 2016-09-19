@@ -1524,50 +1524,51 @@ function btnLogMeIn () {
     if (is_logged_in && !phoneRegistered) {
         swal({
             title: '<?=$lh->translationFor('error')?>',
-            text: result.message+".<br><?=$lh->translationFor('phone_aready_logged_in')?>",
+            text: "<?=$lh->translationFor('phone_aready_logged_in')?>",
             type: 'error',
             html: true
         });
-    } else {
-        var postData = {
-            goAction: 'goGetAllowedCampaigns',
-            goUser: uName,
-            goPass: uPass,
-            responsetype: 'json'
-        };
-    
-        $.ajax({
-            type: 'POST',
-            url: '<?=$goAPI?>/goAgent/goAPI.php',
-            processData: true,
-            data: postData,
-            dataType: "json"
-        })
-        .done(function (result) {
-            if (result.result == 'success') {
-                var camp_list = result.data.allowed_campaigns;
-                var camp_options = "<option value=''><?=$lh->translationFor('select_a_campaign')?></option>";
-                $.each(camp_list, function(idx, camp) {
-                    camp_options += "<option value='"+idx+"'>"+camp+"</option>";
-                });
-                $("#select-campaign select#select_camp").html(camp_options);
-                $("#inboundSelection, #scButton, #selectionNote").addClass('hidden');
-                $("#closerSelectBlended").closest('p').addClass('hidden');
-                $("#select-campaign").modal({
-                    keyboard: false,
-                    backdrop: 'static',
-                    show: true
-                });
-            } else {
-                swal({
-                    title: '<?=$lh->translationFor('error')?>',
-                    text: result.message+".<br><?=$lh->translationFor('contact_admin')?>",
-                    type: 'error',
-                    html: true
-                });
-            }
-        });
+        
+        return;
     }
+    var postData = {
+        goAction: 'goGetAllowedCampaigns',
+        goUser: uName,
+        goPass: uPass,
+        responsetype: 'json'
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json"
+    })
+    .done(function (result) {
+        if (result.result == 'success') {
+            var camp_list = result.data.allowed_campaigns;
+            var camp_options = "<option value=''><?=$lh->translationFor('select_a_campaign')?></option>";
+            $.each(camp_list, function(idx, camp) {
+                camp_options += "<option value='"+idx+"'>"+camp+"</option>";
+            });
+            $("#select-campaign select#select_camp").html(camp_options);
+            $("#inboundSelection, #scButton, #selectionNote").addClass('hidden');
+            $("#closerSelectBlended").closest('p').addClass('hidden');
+            $("#select-campaign").modal({
+                keyboard: false,
+                backdrop: 'static',
+                show: true
+            });
+        } else {
+            swal({
+                title: '<?=$lh->translationFor('error')?>',
+                text: result.message+".<br><?=$lh->translationFor('contact_admin')?>",
+                type: 'error',
+                html: true
+            });
+        }
+    });
 }
 
 function btnLogMeOut () {
