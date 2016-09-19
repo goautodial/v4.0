@@ -661,6 +661,9 @@ $(document).ready(function() {
                     CallBacksCountCheck();
                     CB_count_check = 0;
                 }
+                
+                //Check if Agent is still logged in
+                checkIfStillLoggedIn(check_if_logged_out);
             }
         }, refresh_interval);
         
