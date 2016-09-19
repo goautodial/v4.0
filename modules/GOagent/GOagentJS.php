@@ -1001,7 +1001,7 @@ $(document).ready(function() {
     }
 
     window.addEventListener("beforeunload", function (e) {
-        if (is_logged_in) {
+        if (is_logged_in && phoneRegistered) {
             var confirmationMessage = "<?=$lh->translationFor('currently_in_call')?>";
         
             (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
