@@ -1111,6 +1111,7 @@ $(document).ready(function() {
         });
         if (use_webrtc && !phone.isConnected()) {
             phone.start();
+            
             phoneRegistered = true;
         }
         
