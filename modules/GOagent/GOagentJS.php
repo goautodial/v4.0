@@ -664,7 +664,7 @@ $(document).ready(function() {
             }
         }, refresh_interval);
         
-        if (is_logged_in) {
+        if (is_logged_in && phoneRegistered) {
             $("aside.control-sidebar").addClass('control-sidebar-open');
         }
         
