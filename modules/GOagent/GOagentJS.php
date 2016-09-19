@@ -51,6 +51,7 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
 
 // Settings
 var phone;
+var phoneRegistered = false;
 var check_if_logged_out = 1;
 var isMobile = false; //initiate as false
 var is_logged_in = <?=$is_logged_in?>;
@@ -299,7 +300,7 @@ $(document).ready(function() {
     
     $(window).load(function() {
         var refreshId = setInterval(function() {
-            if (is_logged_in) {
+            if (is_logged_in && phoneRegistered) {
                 //Start of checking for live calls
                 //if (live_customer_call == 1) {
                 //    live_call_seconds++;
@@ -660,10 +661,13 @@ $(document).ready(function() {
                     CallBacksCountCheck();
                     CB_count_check = 0;
                 }
+                
+                //Check if Agent is still logged in
+                checkIfStillLoggedIn(false);
             }
         }, refresh_interval);
         
-        if (is_logged_in) {
+        if (is_logged_in && phoneRegistered) {
             $("aside.control-sidebar").addClass('control-sidebar-open');
         }
         
@@ -724,8 +728,10 @@ $(document).ready(function() {
         });
         
         if (!$("aside.control-sidebar").hasClass("control-sidebar-open")) {
-            checkSidebarIfOpen(true);
-            $.AdminLTE.controlSidebar.open($("aside.control-sidebar"), true);
+            if (!is_logged_in && !phoneRegistered) {
+                checkSidebarIfOpen(true);
+                $.AdminLTE.controlSidebar.open($("aside.control-sidebar"), true);
+            }
         }
     });
 
@@ -744,12 +750,12 @@ $(document).ready(function() {
             }, function(sureToLogout){
                 if (sureToLogout) {
                     swal.close();
-                    if (is_logged_in) {
+                    if (is_logged_in && phoneRegistered) {
                         logoutWarn = false;
                         btnLogMeOut();
                         loggedOut++;
                     }
-                    if (use_webrtc) {
+                    if (use_webrtc && phoneRegistered) {
                         if (phone.isConnected()) {
                             phone.stop();
                             loggedOut++;
@@ -998,7 +1004,7 @@ $(document).ready(function() {
     }
 
     window.addEventListener("beforeunload", function (e) {
-        if (is_logged_in) {
+        if (is_logged_in && phoneRegistered) {
             var confirmationMessage = "<?=$lh->translationFor('currently_in_call')?>";
         
             (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
@@ -1108,186 +1114,193 @@ $(document).ready(function() {
         $("#selectedINB").find('abbr').each(function(index) {
             inbArray.push($(this).text());
         });
-        var postData = {
-            goAction: 'goLoginUser',
-            goUser: uName,
-            goPass: uPass,
-            goCampaign: $("#select_camp").val(),
-            goIngroups: inbArray,
-            responsetype: 'json',
-            closer_blended: $("#closerSelectBlended").is(':checked'),
-            goUseWebRTC: use_webrtc
-        };
-
-        $.ajax({
-            type: 'POST',
-            url: '<?=$goAPI?>/goAgent/goAPI.php',
-            processData: true,
-            data: postData,
-            dataType: "json"
-        })
-        .done(function (result) {
-            if (result.result != 'error') {
-                $("#select-campaign").modal('hide');
-                
-                refresh_interval = 1000;
-                is_logged_in = 1;
-                check_if_logged_out = 1;
-                logout_stop_timeouts = 0;
-                
-                $.each(result.data, function(key, value) {
-                    if (key == 'campaign_settings') {
-                        $.each(value, function(cKey, cValue) {
-                            var patt = /^timer_action/g;
-                            if (patt.test(cKey)) {
-                                $.globalEval("campaign_"+cKey+" = '"+cValue+"';");
-                            } else {
-                                if (cValue === undefined || cValue === null) {
-                                    cValue = "";
-                                }
-                                
-                                if (cKey == 'campaign_id') {
-                                    $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN', 'campaign_id': cValue});
-                                }
-                                
-                                if (cKey == 'dial_prefix') {
-                                    dial_prefix = cValue;
-                                    $.globalEval(cKey+" = '"+cValue+"';");
-                                }
-                            
-                                if (cKey == 'manual_dial_prefix') {
-                                    cValue = (cValue.length < 1) ? dial_prefix : cValue;
-                                    $.globalEval(cKey+" = '"+cValue+"';");
-                                }
-                                
-                                if (cKey == 'pause_after_each_call') {
-                                    cKey = 'dispo_check_all_pause';
-                                    cValue = (cValue == 'Y') ? 1 : 0;
-                                }
-                                
-                                if (cKey == 'scheduled_callbacks') {
-                                    cKey = 'camp_scheduled_callbacks';
-                                }
-                                
-                                var rec_patt = /^(campaign_rec_filename|default_group_alias)$/g;
-                                if (rec_patt.test(cKey)) {
-                                    $.globalEval("LIVE_"+cKey+" = '"+cValue+"';");
-                                }
-                                
-                                var dispo_patt = /^(disable_dispo_screen|disable_dispo_status|campaign_recording)$/g;
-                                if (!dispo_patt.test(cKey)) {
-                                    if (cKey == 'web_form_address' || cKey == 'web_form_address_two') {
+        if (use_webrtc && !phone.isConnected()) {
+            phone.start();
+            
+            phoneRegistered = true;
+        }
+        
+        setTimeout(function() {
+            var postData = {
+                goAction: 'goLoginUser',
+                goUser: uName,
+                goPass: uPass,
+                goCampaign: $("#select_camp").val(),
+                goIngroups: inbArray,
+                responsetype: 'json',
+                closer_blended: $("#closerSelectBlended").is(':checked'),
+                goUseWebRTC: use_webrtc
+            };
+    
+            $.ajax({
+                type: 'POST',
+                url: '<?=$goAPI?>/goAgent/goAPI.php',
+                processData: true,
+                data: postData,
+                dataType: "json"
+            })
+            .done(function (result) {
+                if (result.result != 'error') {
+                    $("#select-campaign").modal('hide');
+                    
+                    refresh_interval = 1000;
+                    is_logged_in = 1;
+                    check_if_logged_out = 1;
+                    logout_stop_timeouts = 0;
+                    
+                    $.each(result.data, function(key, value) {
+                        if (key == 'campaign_settings') {
+                            $.each(value, function(cKey, cValue) {
+                                var patt = /^timer_action/g;
+                                if (patt.test(cKey)) {
+                                    $.globalEval("campaign_"+cKey+" = '"+cValue+"';");
+                                } else {
+                                    if (cValue === undefined || cValue === null) {
+                                        cValue = "";
+                                    }
+                                    
+                                    if (cKey == 'campaign_id') {
+                                        $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN', 'campaign_id': cValue});
+                                    }
+                                    
+                                    if (cKey == 'dial_prefix') {
+                                        dial_prefix = cValue;
                                         $.globalEval(cKey+" = '"+cValue+"';");
-                                        $.globalEval("VDIC_"+cKey+" = '"+cValue+"';");
-                                        $.globalEval("TEMP_VDIC_"+cKey+" = '"+cValue+"';");
+                                    }
+                                
+                                    if (cKey == 'manual_dial_prefix') {
+                                        cValue = (cValue.length < 1) ? dial_prefix : cValue;
+                                        $.globalEval(cKey+" = '"+cValue+"';");
+                                    }
+                                    
+                                    if (cKey == 'pause_after_each_call') {
+                                        cKey = 'dispo_check_all_pause';
+                                        cValue = (cValue == 'Y') ? 1 : 0;
+                                    }
+                                    
+                                    if (cKey == 'scheduled_callbacks') {
+                                        cKey = 'camp_scheduled_callbacks';
+                                    }
+                                    
+                                    var rec_patt = /^(campaign_rec_filename|default_group_alias)$/g;
+                                    if (rec_patt.test(cKey)) {
+                                        $.globalEval("LIVE_"+cKey+" = '"+cValue+"';");
+                                    }
+                                    
+                                    var dispo_patt = /^(disable_dispo_screen|disable_dispo_status|campaign_recording)$/g;
+                                    if (!dispo_patt.test(cKey)) {
+                                        if (cKey == 'web_form_address' || cKey == 'web_form_address_two') {
+                                            $.globalEval(cKey+" = '"+cValue+"';");
+                                            $.globalEval("VDIC_"+cKey+" = '"+cValue+"';");
+                                            $.globalEval("TEMP_VDIC_"+cKey+" = '"+cValue+"';");
+                                        } else {
+                                            $.globalEval(cKey+" = '"+cValue+"';");
+                                            if (cKey == 'auto_dial_level') {
+                                                $.globalEval("starting_dial_level = '"+cValue+"';");
+                                            }
+                                            if (cKey == 'campaign_id') {
+                                                $.globalEval("campaign = '"+cValue+"';");
+                                                $.globalEval("group = '"+cValue+"';");
+                                            }
+                                            if (cKey == 'api_manual_dial') {
+                                                var amqc = 1;
+                                                var amqcc = 0;
+                                                if (cValue == 'QUEUE') {
+                                                    amqc = 0;
+                                                    amqcc = 1;
+                                                }
+                                                $.globalEval("AllowManualQueueCalls = '"+amqc+"';");
+                                                $.globalEval("AllowManualQueueCallsChoice = '"+amqcc+"';");
+                                            }
+                                            if (cKey == 'manual_preview_dial') {
+                                                var mdp = 1;
+                                                if (cValue == 'DISABLED')
+                                                    {mdp = 0;}
+                                                $.globalEval("manual_dial_preview = '"+mdp+"';");
+                                            }
+                                            if (cKey == 'manual_dial_override') {
+                                                if (cValue == 'ALLOW_ALL')
+                                                    {agentcall_manual = '1';}
+                                                if (cValue == 'DISABLE_ALL')
+                                                    {agentcall_manual = '0';}
+                                            }
+                                        }
                                     } else {
                                         $.globalEval(cKey+" = '"+cValue+"';");
-                                        if (cKey == 'auto_dial_level') {
-                                            $.globalEval("starting_dial_level = '"+cValue+"';");
-                                        }
-                                        if (cKey == 'campaign_id') {
-                                            console.log(cKey, cValue);
-                                            $.globalEval("campaign = '"+cValue+"';");
-                                            $.globalEval("group = '"+cValue+"';");
-                                        }
-                                        if (cKey == 'api_manual_dial') {
-                                            var amqc = 1;
-                                            var amqcc = 0;
-                                            if (cValue == 'QUEUE') {
-                                                amqc = 0;
-                                                amqcc = 1;
-                                            }
-                                            $.globalEval("AllowManualQueueCalls = '"+amqc+"';");
-                                            $.globalEval("AllowManualQueueCallsChoice = '"+amqcc+"';");
-                                        }
-                                        if (cKey == 'manual_preview_dial') {
-                                            var mdp = 1;
-                                            if (cValue == 'DISABLED')
-                                                {mdp = 0;}
-                                            $.globalEval("manual_dial_preview = '"+mdp+"';");
-                                        }
-                                        if (cKey == 'manual_dial_override') {
-                                            if (cValue == 'ALLOW_ALL')
-                                                {agentcall_manual = '1';}
-                                            if (cValue == 'DISABLE_ALL')
-                                                {agentcall_manual = '0';}
-                                        }
                                     }
+                                }
+                            });
+                        } else {
+                            var patt = /^(user|pass|statuses|statuses_count)$/g;
+                            //console.log("var "+key+" = '"+value+"';");
+                            if (!patt.test(key)) {
+                                if (key == 'now_time') {
+                                    $.globalEval("NOW_TIME = '"+value+"';");
+                                    $.globalEval("SQLdate = '"+value+"';");
+                                } else if (key == 'start_time') {
+                                    $.globalEval("StarTtimE = '"+value+"';");
+                                    $.globalEval("UnixTime = '"+value+"';");
+                                } else if (key == 'VARxferGroups' || key == 'VARxferGroupsNames') {
+                                    $.globalEval(key+" = new Array("+value+");");
+                                } else if (key == 'hotkeys' || key == 'hotkeys_content') {
+                                    $.globalEval(key+" = {"+value+"};");
+                                } else if (key == 'session_name') {
+                                    $.globalEval(key+" = '"+value+"';");
+                                    $.globalEval("webform_session = '&"+key+"="+value+"';");
+                                } else if (key == 'alt_phone_dialing') {
+                                    $.globalEval(key+" = "+value+";");
+                                    $.globalEval("starting_"+key+" = "+value+";");
                                 } else {
-                                    $.globalEval(cKey+" = '"+cValue+"';");
+                                    $.globalEval(key+" = '"+value+"';");
                                 }
                             }
-                        });
-                    } else {
-                        var patt = /^(user|pass|statuses|statuses_count)$/g;
-                        //console.log("var "+key+" = '"+value+"';");
-                        if (!patt.test(key)) {
-                            if (key == 'now_time') {
-                                $.globalEval("NOW_TIME = '"+value+"';");
-                                $.globalEval("SQLdate = '"+value+"';");
-                            } else if (key == 'start_time') {
-                                $.globalEval("StarTtimE = '"+value+"';");
-                                $.globalEval("UnixTime = '"+value+"';");
-                            } else if (key == 'VARxferGroups' || key == 'VARxferGroupsNames') {
-                                $.globalEval(key+" = new Array("+value+");");
-                            } else if (key == 'hotkeys' || key == 'hotkeys_content') {
-                                $.globalEval(key+" = {"+value+"};");
-                            } else if (key == 'session_name') {
-                                $.globalEval(key+" = '"+value+"';");
-                                $.globalEval("webform_session = '&"+key+"="+value+"';");
-                            } else if (key == 'alt_phone_dialing') {
-                                $.globalEval(key+" = "+value+";");
-                                $.globalEval("starting_"+key+" = "+value+";");
-                            } else {
-                                $.globalEval(key+" = '"+value+"';");
-                            }
                         }
+                    });
+        
+                    if ((disable_dispo_screen == 'DISPO_ENABLED') || (disable_dispo_screen == 'DISPO_SELECT_DISABLED') || (disable_dispo_status.length < 1)) {
+                        if (disable_dispo_screen == 'DISPO_SELECT_DISABLED') {
+                            $.globalEval("hide_dispo_list = '1';");
+                        } else {
+                            $.globalEval("hide_dispo_list = '0';");
+                        }
+                        $.globalEval("disable_dispo_screen = '0';");
+                        $.globalEval("disable_dispo_status = '';");
                     }
-                });
-    
-                if ((disable_dispo_screen == 'DISPO_ENABLED') || (disable_dispo_screen == 'DISPO_SELECT_DISABLED') || (disable_dispo_status.length < 1)) {
-                    if (disable_dispo_screen == 'DISPO_SELECT_DISABLED') {
-                        $.globalEval("hide_dispo_list = '1';");
-                    } else {
+                    if ((disable_dispo_screen == 'DISPO_DISABLED') && (disable_dispo_status.length > 0)) {
                         $.globalEval("hide_dispo_list = '0';");
+                        $.globalEval("disable_dispo_screen = '1';");
+                        $.globalEval("disable_dispo_status = '"+disable_dispo_status+"';");
                     }
-                    $.globalEval("disable_dispo_screen = '0';");
-                    $.globalEval("disable_dispo_status = '';");
+                    
+                    var vro_patt = /DISABLED/;
+                    if ((!vro_patt.test(vicidial_recording_override)) && (vicidial_recording > 0))
+                        {var camp_rec = vicidial_recording_override;}
+                    if (vicidial_recording == '0')
+                        {var camp_rec = 'NEVER';}
+                    $.globalEval("campaign_recording = '"+camp_rec+"';");
+                    $.globalEval("LIVE_campaign_recording = '"+camp_rec+"';");
+                    
+                    updateHotKeys();
+                    updateButtons();
+                    toggleButtons(dial_method);
+                    CallBacksCountCheck();
+                } else {
+                    refresh_interval = 730000;
+                    is_logged_in = 0;
+                    swal({
+                        title: '<?=$lh->translationFor('error')?>',
+                        text: result.message,
+                        type: 'error'
+                    });
+                    $("#scSubmit").removeClass('disabled');
                 }
-                if ((disable_dispo_screen == 'DISPO_DISABLED') && (disable_dispo_status.length > 0)) {
-                    $.globalEval("hide_dispo_list = '0';");
-                    $.globalEval("disable_dispo_screen = '1';");
-                    $.globalEval("disable_dispo_status = '"+disable_dispo_status+"';");
-                }
-                
-                var vro_patt = /DISABLED/;
-                if ((!vro_patt.test(vicidial_recording_override)) && (vicidial_recording > 0))
-                    {var camp_rec = vicidial_recording_override;}
-                if (vicidial_recording == '0')
-                    {var camp_rec = 'NEVER';}
-                $.globalEval("campaign_recording = '"+camp_rec+"';");
-                $.globalEval("LIVE_campaign_recording = '"+camp_rec+"';");
-                
-                updateHotKeys();
-                updateButtons();
-                toggleButtons(dial_method);
-                CallBacksCountCheck();
-            } else {
+            })
+            .fail(function() {
                 refresh_interval = 730000;
                 is_logged_in = 0;
-                swal({
-                    title: '<?=$lh->translationFor('error')?>',
-                    text: result.message,
-                    type: 'error'
-                });
                 $("#scSubmit").removeClass('disabled');
-            }
-        })
-        .fail(function() {
-            refresh_interval = 730000;
-            is_logged_in = 0;
-            $("#scSubmit").removeClass('disabled');
-        });
+            });
+        }, 5000);
     });
     
     $("input.digits-only, input.phonenumbers-only").keypress(function (e) {
@@ -1505,12 +1518,23 @@ function hijackThisLink(e) {
     $(".content-heading ol").html(breadCrumb);
     $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
     
-    if (origHash !== hash && hash == 'contacts') {
+    if (origHash !== hash && hash != 'contacts') {
         $(".preloader").fadeOut('slow');
     }
 }
 
 function btnLogMeIn () {
+    console.log(is_logged_in, phoneRegistered);
+    if (is_logged_in && !phoneRegistered) {
+        swal({
+            title: '<?=$lh->translationFor('error')?>',
+            text: "<?=$lh->translationFor('phone_aready_logged_in')?>",
+            type: 'error',
+            html: true
+        });
+        
+        return;
+    }
     var postData = {
         goAction: 'goGetAllowedCampaigns',
         goUser: uName,
@@ -1613,6 +1637,16 @@ function sendLogout (logMeOut) {
                 if (!!$.prototype.functionName) {
                     $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; You have logged out from the dialer.", timeout: 5000, htmlAllowed: true});
                 }
+                
+                setTimeout(function() {
+                    if (use_webrtc && phone.isConnected()) {
+                        phone.unregister(configuration);
+                        
+                        phone.stop();
+                    }
+                    
+                    phoneRegistered = false;
+                }, 3000);
             } else {
                 refresh_interval = 1000;
                 swal({
@@ -1873,7 +1907,7 @@ function toggleButtons (taskaction, taskivr, taskrequeue) {
 }
 
 function updateButtons () {
-    if (is_logged_in) {
+    if (is_logged_in && phoneRegistered) {
         $("#go_nav_btn").removeClass('hidden');
         $("#go_agent_login").addClass('hidden');
         $("#go_agent_logout").removeClass('hidden');
@@ -1923,7 +1957,7 @@ function toggleStatus (status) {
 }
 
 function checkIfStillLoggedIn(logged_out) {
-    if (logged_out) {
+    if (logged_out && phoneRegistered) {
         var postData = {
             goAction: 'goCheckIfLoggedIn',
             goUser: uName,
@@ -1953,6 +1987,12 @@ function checkIfStillLoggedIn(logged_out) {
                 swal(result.message);
             }
         });
+    } else {
+        if (!phoneRegistered) {
+            $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'ChecKLogiN'}, function(result) {
+                is_logged_in = result;
+            });
+        }
     }
 }
 
@@ -3204,11 +3244,11 @@ function CallBacksCountCheck() {
                 $("#callback-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 $("#contents-callbacks").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 $("#contents-callbacks").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
-                if (!is_logged_in) {
+                if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
                     $("button[id='dial-cb']").addClass('disabled');
                 }
             } else {
-                if (!is_logged_in) {
+                if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
                     $("button[id='dial-cb']").addClass('disabled');
                 } else {
                     $("button[id='dial-cb']").removeClass('disabled');
@@ -5966,7 +6006,7 @@ function getContactList() {
         goAction: 'goGetContactList',
         goUser: uName,
         goPass: uPass,
-        goLimit: 1000,
+        goLimit: 100,
         responsetype: 'json'
     };
     
@@ -5989,7 +6029,7 @@ function getContactList() {
                     commentTitle = ' title="'+thisComments+'"';
                     thisComments = thisComments.substring(0, 20) + "...";
                 }
-                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+value.first_name+' '+value.middle_initial+' '+value.last_name+'</td><td>'+value.phone_number+'</td><td>'+value.last_local_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-lead" data-leadid="'+value.lead_id+'" class="btn btn-primary btn-sm" style="margin: 2px;"><i class="fa fa-phone"></i></button></td></tr>';
+                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+value.first_name+' '+value.middle_initial+' '+value.last_name+'</td><td>'+value.phone_number+'</td><td>'+value.last_local_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-lead" data-leadid="'+value.lead_id+'" class="btn btn-primary btn-sm disabled" style="margin: 2px;"><i class="fa fa-phone"></i></button></td></tr>';
                 $("#contacts-list tbody").append(appendThis);
             });
             $("#contacts-list").css('width', '100%');
@@ -6013,16 +6053,18 @@ function getContactList() {
                 }, {
                     "sClass": "visible-lg",
                     "aTargets": [ 3, 6 ]
-                }]
+                }],
+                "fnInitComplete": function() {
+                    $(".preloader").fadeOut('slow');
+                }
             });
             $("#contacts-list_filter").parent('div').attr('class', 'col-sm-6 hidden-xs');
             $("#contacts-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
             $("#contents-contacts").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
             $("#contents-contacts").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
-            if (!is_logged_in) {
+            if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
                 $("button[id='dial-lead']").addClass('disabled');
             }
-            $(".preloader").fadeOut('slow');
         }
     });
 }
@@ -6735,11 +6777,15 @@ String.prototype.toUpperFirst = function() {
 <?php
 } else {
     if ($_REQUEST['module_name'] == 'GOagent') {
-        $campaign = $_REQUEST['campaign_id'];
-        
         switch ($_REQUEST['action']) {
             case "SessioN":
+                $campaign = $_REQUEST['campaign_id'];
                 $_SESSION['campaign_id'] = (strlen($campaign) > 0) ? $campaign : $_SESSION['campaign_id'];
+                break;
+            case "ChecKLogiN":
+                $is_logged_in = $_REQUEST['is_logged_in'];
+                $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $_SESSION['is_logged_in'];
+                echo $_SESSION['is_logged_in'];
                 break;
         }
     } else {

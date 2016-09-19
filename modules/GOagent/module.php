@@ -343,6 +343,7 @@ EOF;
 		'uri': 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 		'password': phone_pass,
 		'session_timers': false,
+		'register': false
 	};
 	
 	var rtcninja = JsSIP.rtcninja;
@@ -350,6 +351,8 @@ EOF;
 	
 	phone.on('connected', function(e) {
 		console.log('connected', e);
+		
+		phone.register();
 	});
 	
 	phone.on('disconnected', function(e) {
@@ -468,6 +471,7 @@ EOF;
 	
 	phone.on('registered', function(e) {
 		console.log('registered', e);
+		phoneRegistered = true;
 		if ( !!$.prototype.snackbar ) {
 			$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
 		}
@@ -475,6 +479,7 @@ EOF;
 	
 	phone.on('unregistered', function(e) {
 		console.log('unregistered', e);
+		phoneRegistered = false;
 	});
 	
 	phone.on('registrationFailed', function(e) {
@@ -490,7 +495,7 @@ EOF;
 	}, function successCb(stream) {
 		localStream = stream;
 	
-		phone.start();
+		//phone.start();
 	}, function failureCb(e) {
 		console.error('getUserMedia failed.', e);
 	});
@@ -767,10 +772,11 @@ EOF;
 	var globalSession;
 	
 	var configuration = {
-		'ws_servers': '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
-		'uri': 'sip:{$phone_login}@{$websocketSIP}{$websocketSIPPort},
-		'password': '{$phone_pass}',
-		'session_timers': false,
+		ws_servers: '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
+		uri: 'sip:{$phone_login}@{$websocketSIP}{$websocketSIPPort},
+		password: '{$phone_pass}',
+		session_timers: false,
+		register: false
 	};
 	
 	var rtcninja = JsSIP.rtcninja;
@@ -913,6 +919,7 @@ EOF;
 		//	}
 		//};
 		
+		phoneRegistered = true;
 		$("#dialer-tab").css('display', 'table-cell');
 		if ( !!$.prototype.snackbar ) {
 			$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
@@ -921,6 +928,7 @@ EOF;
 	
 	phone.on('unregistered', function(e) {
 		console.log('unregistered', e);
+		phoneRegistered = false;
 	});
 	
 	phone.on('registrationFailed', function(e) {
@@ -936,7 +944,7 @@ EOF;
 	}, function successCb(stream) {
 		localStream = stream;
 	
-		phone.start();
+		//phone.start();
 	}, function failureCb(e) {
 		console.error('getUserMedia failed.', e);
 	});
