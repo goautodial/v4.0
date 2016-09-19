@@ -490,7 +490,7 @@ EOF;
 	}, function successCb(stream) {
 		localStream = stream;
 	
-		phone.start();
+		//phone.start();
 	}, function failureCb(e) {
 		console.error('getUserMedia failed.', e);
 	});

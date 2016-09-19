@@ -1108,6 +1108,9 @@ $(document).ready(function() {
         $("#selectedINB").find('abbr').each(function(index) {
             inbArray.push($(this).text());
         });
+        if (!phone.isConnected()) {
+            phone.start();
+        }
         var postData = {
             goAction: 'goLoginUser',
             goUser: uName,
@@ -5966,7 +5969,7 @@ function getContactList() {
         goAction: 'goGetContactList',
         goUser: uName,
         goPass: uPass,
-        goLimit: 1000,
+        goLimit: 100,
         responsetype: 'json'
     };
     
