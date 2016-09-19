@@ -1987,8 +1987,8 @@ function checkIfStillLoggedIn(logged_out) {
             }
         });
     } else {
-        if (is_logged_in > <?=$_SESSION['is_logged_in']?>) {
-            is_logged_in = <?=$_SESSION['is_logged_in']?>;
+        if (<?=$_SESSION['is_logged_in']?> == 0 && !phoneRegistered) {
+            console.log('test');
             $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN', 'campaign_id': campaign, 'is_logged_in': <?=$_SESSION['is_logged_in']?>});
         }
     }
