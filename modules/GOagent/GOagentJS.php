@@ -1505,7 +1505,7 @@ function hijackThisLink(e) {
     $(".content-heading ol").html(breadCrumb);
     $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
     
-    if (origHash !== hash && hash == 'contacts') {
+    if (origHash !== hash && hash != 'contacts') {
         $(".preloader").fadeOut('slow');
     }
 }
@@ -5989,7 +5989,7 @@ function getContactList() {
                     commentTitle = ' title="'+thisComments+'"';
                     thisComments = thisComments.substring(0, 20) + "...";
                 }
-                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+value.first_name+' '+value.middle_initial+' '+value.last_name+'</td><td>'+value.phone_number+'</td><td>'+value.last_local_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-lead" data-leadid="'+value.lead_id+'" class="btn btn-primary btn-sm" style="margin: 2px;"><i class="fa fa-phone"></i></button></td></tr>';
+                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+value.first_name+' '+value.middle_initial+' '+value.last_name+'</td><td>'+value.phone_number+'</td><td>'+value.last_local_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-lead" data-leadid="'+value.lead_id+'" class="btn btn-primary btn-sm disabled" style="margin: 2px;"><i class="fa fa-phone"></i></button></td></tr>';
                 $("#contacts-list tbody").append(appendThis);
             });
             $("#contacts-list").css('width', '100%');
@@ -6013,7 +6013,10 @@ function getContactList() {
                 }, {
                     "sClass": "visible-lg",
                     "aTargets": [ 3, 6 ]
-                }]
+                }],
+                "fnInitComplete": function() {
+                    $(".preloader").fadeOut('slow');
+                }
             });
             $("#contacts-list_filter").parent('div').attr('class', 'col-sm-6 hidden-xs');
             $("#contacts-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
@@ -6022,7 +6025,6 @@ function getContactList() {
             if (!is_logged_in) {
                 $("button[id='dial-lead']").addClass('disabled');
             }
-            $(".preloader").fadeOut('slow');
         }
     });
 }

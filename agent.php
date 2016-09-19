@@ -407,7 +407,7 @@ if (isset($_GET["message"])) {
 									  <ul role="tablist" class="nav nav-tabs nav-justified">
 									  <!-- Nav task panel tabs-->
 										 <li role="presentation" class="active">
-											<a href="#profile" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+											<a href="#contact_info" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
 												<span class="fa fa-user hidden"></span>
 												<?=$lh->translationFor('contact_information')?></a>
 										 </li>
@@ -495,7 +495,7 @@ if (isset($_GET["message"])) {
 								            </table>
 										</div>
 									
-										<div id="profile" role="tabpanel" class="tab-pane active">
+										<div id="contact_info" role="tabpanel" class="tab-pane active">
 
 											<fieldset style="padding-bottom: 0px; margin-bottom: 0px;">
 												<h4>
