@@ -1160,7 +1160,7 @@ $(document).ready(function() {
                                     }
                                     
                                     if (cKey == 'campaign_id') {
-                                        $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN', 'campaign_id': cValue, 'is_logged_in': is_logged_in});
+                                        $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN', 'campaign_id': cValue});
                                     }
                                     
                                     if (cKey == 'dial_prefix') {
