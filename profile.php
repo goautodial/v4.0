@@ -30,11 +30,8 @@
     //
     //if(isset($_POST["role"])){
     //        $userrole = $_POST["role"];
-    //}
+    //}  
 
-    $voicemails = $ui->API_goGetVoiceMails();
-    $user_groups = $ui->API_goGetUserGroupsList();
-    
 ?>
 
 <html>
@@ -75,38 +72,31 @@
     
 
     </head>
-
+        <section class="ng-scope">
     <?php print $ui->creamyBody(); ?>
+        <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
+	        <!-- header logo: style can be found in header.less -->
+			<?php print $ui->creamyHeader($user); ?>
 
-        <div class="wrapper">
-        <!-- header logo: style can be found in header.less -->
-            <?php print $ui->creamyHeader($user); ?>
             <!-- Left side column. contains the logo and sidebar -->
-                <?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
+			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="right-side">
+            <aside class="content-wrapper">
                 <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <h1>
-                        <?php $lh->translateText("telephony"); ?>
+                <!-- <section class="content-heading" style="margin-top: 20px">
+                        <?php $lh->translateText("profile"); ?>
                         <small><?php $lh->translateText("users_management"); ?></small>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
-                        <li><?php $lh->translateText("telephony"); ?></li>
-                        <li class="active"><?php $lh->translateText("users"); ?>
-                    </ol>
+                </section> -->
 
-         <!-- Page content-->
-         <div class="content-wrapper" style="margin-left: -1">
+         <!-- Page content-->        
+         
 <?php
             $userobj = NULL;
-            $errormessage = NULL;
-
+            $errormessage = NULL;            
             $output = $ui->goGetUserInfo($userid, "user_id");
             //echo ("pre");
-            //print_r($output);
+            //var_dump($output);
 
             $userid = $output->data->user_id;
             $agentid = $output->data->user;
@@ -114,11 +104,16 @@
             $email = $output->data->email;
             $user_group = $output->data->user_group;
             $status = $output->data->active;
+            $voicemail_id = $output->data->voicemail_id;
             $outcallstoday = $output->data->outcallstoday;
             $outsalestoday = $output->data->outsalestoday;
             $incallstoday = $output->data->incallstoday;
             $insalestoday = $output->data->insalestoday;
             $totalsalestoday = ($outsalestoday + $insalestoday);
+            
+            if ($incallstoday == NULL){
+                $incallstoday = "0";
+            }
             
             if ($outcallstoday == NULL){
                 $outcallstoday = "0";
@@ -134,10 +129,29 @@
             }
             if ($status == "N"){
                 $status = "INACTIVE";
-            }            
+            }
+
+    $vmArray = $ui->API_goGetVoiceMails();
+    //echo "<pre>";
+    //print_r($vmArray);
+    //die();
+    //$vmCnt = count($vmArray->voicemail_id);
     
+    foreach($vmArray->voicemail_id as $key => $value) {
+        //var_dump($key, $value);                       
+    
+            foreach($vmArray->messages as $key2 => $value2){
+                //var_dump($key2, $value2);
+                if ($value == $voicemail_id) break;
+                $vmid = $value;
+                $vm_message = $value2;
+            }    
+    }
+    //var_dump($vmid);
+    //var_dump($vm_message);
+
 ?>
-            <div class="unwrap">
+            <div class="unwrap ng-scope">
                <div style="background-image: url(img/profile-bg.jpg)" class="bg-cover">
                   <div class="p-xl text-center text-white">
                      <span style="display:table; margin:0 auto; background-color: #dadada; border: 3px solid #dadada; border-radius: 50%; margin-bottom: 10px; height: 128px; width: 128px;"><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 124)?></span>
@@ -160,8 +174,8 @@
                         <p class="m0">Sales Today</p>
                      </div>
                      <div class="col-xs-4">
-                        <h3 class="m0">100</h3>
-                        <p class="m0">Tickets</p>
+                        <h3 class="m0"><?php echo $vm_message; ?></h3>
+                        <p class="m0">Voicemails</p>
                      </div>
                   </div>
                </div>
