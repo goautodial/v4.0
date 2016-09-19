@@ -1196,7 +1196,6 @@ $(document).ready(function() {
                                                 $.globalEval("starting_dial_level = '"+cValue+"';");
                                             }
                                             if (cKey == 'campaign_id') {
-                                                console.log(cKey, cValue);
                                                 $.globalEval("campaign = '"+cValue+"';");
                                                 $.globalEval("group = '"+cValue+"';");
                                             }
@@ -1522,6 +1521,16 @@ function hijackThisLink(e) {
 }
 
 function btnLogMeIn () {
+    if (is_logged_in && !phoneRegistered) {
+        swal({
+            title: '<?=$lh->translationFor('error')?>',
+            text: result.message+".<br><?=$lh->translationFor('contact_admin')?>",
+            type: 'error',
+            html: true
+        });
+        
+        return;
+    }
     var postData = {
         goAction: 'goGetAllowedCampaigns',
         goUser: uName,
