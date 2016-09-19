@@ -3645,7 +3645,7 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 		
-		$columns = array("Exten", "Server IP", "Status", "VMail", "Action");
+		$columns = array("    ","Exten", "Server IP", "Status", "VMail", "Action");
 	    $hideOnMedium = array("Server IP", "Status", "VMail");
 	    $hideOnLow = array("Server IP", "Status", "VMail");
 		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
@@ -3666,9 +3666,11 @@ error_reporting(E_ERROR | E_PARSE);
 				}
 
 				$action = $this->getUserActionMenuForPhones($output->extension[$i]);
-				
+                                $sessionAvatar = "<avatar username='".$output->messages[$i]."' :size='36'></avatar>";
+                                
 				$result = $result."<tr>
-	                    <td><a class='edit-phone' data-id='".$output->extension[$i]."'>".$output->extension[$i]."</a></td>
+                                                         <td>".$sessionAvatar."</a></td>
+	                    <td><a class='edit-phone' data-id='".$output->extension[$i]."'><strong>".$output->extension[$i]."</strong></a></td>
 						<td class='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>
