@@ -1611,12 +1611,6 @@ function sendLogout (logMeOut) {
                     $("#popup-hotkeys").fadeOut("fast");
                 }
                 
-                if (phone.isRegistered()) {
-                    phone.unregister(configuration);
-                    
-                    phone.stop();
-                }
-                
                 $("#ScriptContents").html('');
                 $("#reload-script").hide();
                 CallBacksCountCheck();
@@ -1625,6 +1619,14 @@ function sendLogout (logMeOut) {
                 if (!!$.prototype.functionName) {
                     $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; You have logged out from the dialer.", timeout: 5000, htmlAllowed: true});
                 }
+                
+                setTimeout(function() {
+                    if (phone.isRegistered()) {
+                        phone.unregister(configuration);
+                        
+                        phone.stop();
+                    }
+                }, 3000);
             } else {
                 refresh_interval = 1000;
                 swal({
