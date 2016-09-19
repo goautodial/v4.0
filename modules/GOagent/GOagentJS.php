@@ -19,8 +19,8 @@ $NOW_TIME = date("Y-m-d H:i:s");
 $tsNOW_TIME = date("YmdHis");
 $StarTtimE = date("U");
 
-//ini_set('display_errors', 'on');
-//error_reporting(E_ALL);
+ini_set('display_errors', 'on');
+error_reporting(E_ALL);
 
 $result = get_user_info($_SESSION['user']);
 $default_settings = $result->default_settings;
@@ -6777,14 +6777,13 @@ String.prototype.toUpperFirst = function() {
 <?php
 } else {
     if ($_REQUEST['module_name'] == 'GOagent') {
-        $campaign = $_REQUEST['campaign_id'];
-        $is_logged_in = $_REQUEST['is_logged_in'];
-        
         switch ($_REQUEST['action']) {
             case "SessioN":
+                $campaign = $_REQUEST['campaign_id'];
                 $_SESSION['campaign_id'] = (strlen($campaign) > 0) ? $campaign : $_SESSION['campaign_id'];
                 break;
             case "ChecKLogiN":
+                $is_logged_in = $_REQUEST['is_logged_in'];
                 $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $_SESSION['is_logged_in'];
                 echo $_SESSION['is_logged_in'];
                 break;
