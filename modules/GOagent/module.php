@@ -471,6 +471,7 @@ EOF;
 	
 	phone.on('registered', function(e) {
 		console.log('registered', e);
+		phoneRegistered = true;
 		if ( !!$.prototype.snackbar ) {
 			$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
 		}
@@ -478,6 +479,7 @@ EOF;
 	
 	phone.on('unregistered', function(e) {
 		console.log('unregistered', e);
+		phoneRegistered = false;
 	});
 	
 	phone.on('registrationFailed', function(e) {
@@ -917,6 +919,7 @@ EOF;
 		//	}
 		//};
 		
+		phoneRegistered = true;
 		$("#dialer-tab").css('display', 'table-cell');
 		if ( !!$.prototype.snackbar ) {
 			$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
@@ -925,6 +928,7 @@ EOF;
 	
 	phone.on('unregistered', function(e) {
 		console.log('unregistered', e);
+		phoneRegistered = false;
 	});
 	
 	phone.on('registrationFailed', function(e) {

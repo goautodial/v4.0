@@ -51,6 +51,7 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
 
 // Settings
 var phone;
+var phoneRegistered = false;
 var check_if_logged_out = 1;
 var isMobile = false; //initiate as false
 var is_logged_in = <?=$is_logged_in?>;
@@ -1108,7 +1109,7 @@ $(document).ready(function() {
         $("#selectedINB").find('abbr').each(function(index) {
             inbArray.push($(this).text());
         });
-        if (!phone.isConnected()) {
+        if (use_webrtc && !phone.isConnected()) {
             phone.start();
         }
         
@@ -1621,11 +1622,13 @@ function sendLogout (logMeOut) {
                 }
                 
                 setTimeout(function() {
-                    if (phone.isRegistered()) {
+                    if (use_webrtc && phone.isRegistered()) {
                         phone.unregister(configuration);
                         
                         phone.stop();
                     }
+                    
+                    phoneRegistered = false;
                 }, 3000);
             } else {
                 refresh_interval = 1000;
@@ -1887,7 +1890,7 @@ function toggleButtons (taskaction, taskivr, taskrequeue) {
 }
 
 function updateButtons () {
-    if (is_logged_in) {
+    if (is_logged_in && phoneRegistered) {
         $("#go_nav_btn").removeClass('hidden');
         $("#go_agent_login").addClass('hidden');
         $("#go_agent_logout").removeClass('hidden');
