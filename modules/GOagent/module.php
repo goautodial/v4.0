@@ -768,11 +768,11 @@ EOF;
 	var globalSession;
 	
 	var configuration = {
-		'ws_servers': '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
-		'uri': 'sip:{$phone_login}@{$websocketSIP}{$websocketSIPPort},
-		'password': '{$phone_pass}',
-		'session_timers': false,
-		'register': false
+		ws_servers: '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
+		uri: 'sip:{$phone_login}@{$websocketSIP}{$websocketSIPPort},
+		password: '{$phone_pass}',
+		session_timers: false,
+		register: false
 	};
 	
 	var rtcninja = JsSIP.rtcninja;
