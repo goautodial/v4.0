@@ -178,8 +178,8 @@ var check_s;
 
 var currenttime = '<?=date("F d, Y H:i:s", time())?>' //PHP method of getting server date
 var todayarray=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
-var montharray=new Array("January","February","March","April","May","June","July","August","September","October","November","December")
-var serverdate=new Date(currenttime)
+var montharray=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+var serverdate=new Date(currenttime);
 
 <?php  
     if (isset($camp_info->campaign_id)) {
