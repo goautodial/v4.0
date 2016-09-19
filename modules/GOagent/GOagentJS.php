@@ -1112,10 +1112,6 @@ $(document).ready(function() {
             phone.start();
         }
         
-        if (!phone.isRegistered()) {
-            phone.register();
-        }
-        
         setTimeout(function() {
             var postData = {
                 goAction: 'goLoginUser',
