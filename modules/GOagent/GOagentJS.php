@@ -1989,7 +1989,7 @@ function checkIfStillLoggedIn(logged_out) {
         });
     } else {
         if (!phoneRegistered) {
-            $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN'}, function(result) {
+            $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'ChecKLogiN'}, function(result) {
                 is_logged_in = result;
             });
         }
@@ -6782,13 +6782,13 @@ String.prototype.toUpperFirst = function() {
         
         switch ($_REQUEST['action']) {
             case "SessioN":
-                if (isset($campaign)) {
-                    $_SESSION['campaign_id'] = (strlen($campaign) > 0) ? $campaign : $_SESSION['campaign_id'];
-                }
+                $_SESSION['campaign_id'] = (strlen($campaign) > 0) ? $campaign : $_SESSION['campaign_id'];
+                break;
+            case "ChecKLogiN":
                 $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $_SESSION['is_logged_in'];
+                echo $_SESSION['is_logged_in'];
                 break;
         }
-        echo $_SESSION['is_logged_in'];
     } else {
         echo "ERROR: Module '{$_REQUEST['module_name']}' not found.";
     }
