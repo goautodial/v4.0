@@ -1109,6 +1109,7 @@ $(document).ready(function() {
             inbArray.push($(this).text());
         });
         if (!phone.isRegistered()) {
+            phone.start();
             phone.register();
         }
         var postData = {
