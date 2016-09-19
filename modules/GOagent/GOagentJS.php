@@ -1987,8 +1987,9 @@ function checkIfStillLoggedIn(logged_out) {
             }
         });
     } else {
-        if (<?=$_SESSION['is_logged_in']?> != is_logged_in) {
-            $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN', 'campaign_id': campaign, 'is_logged_in': is_logged_in});
+        if (is_logged_in > <?=$_SESSION['is_logged_in']?>) {
+            is_logged_in = <?=$_SESSION['is_logged_in']?>;
+            $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN', 'campaign_id': campaign, 'is_logged_in': <?=$_SESSION['is_logged_in']?>});
         }
     }
 }
