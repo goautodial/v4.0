@@ -6782,7 +6782,9 @@ String.prototype.toUpperFirst = function() {
         
         switch ($_REQUEST['action']) {
             case "SessioN":
-                $_SESSION['campaign_id'] = (strlen($campaign) > 0) ? $campaign : $_SESSION['campaign_id'];
+                if (isset($campaign)) {
+                    $_SESSION['campaign_id'] = (strlen($campaign) > 0) ? $campaign : $_SESSION['campaign_id'];
+                }
                 $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $_SESSION['is_logged_in'];
                 break;
         }
