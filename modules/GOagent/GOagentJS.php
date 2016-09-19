@@ -6786,7 +6786,7 @@ String.prototype.toUpperFirst = function() {
                 $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $_SESSION['is_logged_in'];
                 break;
         }
-        echo "{$_SESSION['campaign_id']}|{$_SESSION['is_logged_in']}";
+        echo $_SESSION['is_logged_in'];
     } else {
         echo "ERROR: Module '{$_REQUEST['module_name']}' not found.";
     }
