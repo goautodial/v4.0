@@ -1622,7 +1622,7 @@ function sendLogout (logMeOut) {
                 }
                 
                 setTimeout(function() {
-                    if (use_webrtc && phone.isRegistered()) {
+                    if (use_webrtc && phone.isConnected()) {
                         phone.unregister(configuration);
                         
                         phone.stop();
