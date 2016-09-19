@@ -1524,7 +1524,7 @@ function btnLogMeIn () {
     if (is_logged_in && !phoneRegistered) {
         swal({
             title: '<?=$lh->translationFor('error')?>',
-            text: result.message+".<br><?=$lh->translationFor('contact_admin')?>",
+            text: result.message+".<br><?=$lh->translationFor('phone_aready_logged_in')?>",
             type: 'error',
             html: true
         });
