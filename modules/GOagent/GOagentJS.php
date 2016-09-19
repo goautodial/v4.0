@@ -300,7 +300,7 @@ $(document).ready(function() {
     
     $(window).load(function() {
         var refreshId = setInterval(function() {
-            if (is_logged_in) {
+            if (is_logged_in && phoneRegistered) {
                 //Start of checking for live calls
                 //if (live_customer_call == 1) {
                 //    live_call_seconds++;
@@ -747,12 +747,12 @@ $(document).ready(function() {
             }, function(sureToLogout){
                 if (sureToLogout) {
                     swal.close();
-                    if (is_logged_in) {
+                    if (is_logged_in && phoneRegistered) {
                         logoutWarn = false;
                         btnLogMeOut();
                         loggedOut++;
                     }
-                    if (use_webrtc) {
+                    if (use_webrtc && phoneRegistered) {
                         if (phone.isConnected()) {
                             phone.stop();
                             loggedOut++;
@@ -3234,11 +3234,11 @@ function CallBacksCountCheck() {
                 $("#callback-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 $("#contents-callbacks").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 $("#contents-callbacks").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
-                if (!is_logged_in) {
+                if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
                     $("button[id='dial-cb']").addClass('disabled');
                 }
             } else {
-                if (!is_logged_in) {
+                if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
                     $("button[id='dial-cb']").addClass('disabled');
                 } else {
                     $("button[id='dial-cb']").removeClass('disabled');
@@ -6052,7 +6052,7 @@ function getContactList() {
             $("#contacts-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
             $("#contents-contacts").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
             $("#contents-contacts").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
-            if (!is_logged_in) {
+            if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
                 $("button[id='dial-lead']").addClass('disabled');
             }
         }
