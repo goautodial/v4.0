@@ -22,11 +22,16 @@
 	$postfields["hostname"] 					= $_SERVER['REMOTE_ADDR']; #Default value
 
 	$postfields['campaign_id']  			= $_POST['campaign_id'];
-  $checkStatus = strpos($_POST['old_dial_status'], $_POST['dial_status']);
-  if($checkStatus == 0){
-    $new_status = $_POST['dial_status']." ".$_POST['old_dial_status'];
-  }else{
+
+	$statuses = explode(" ", $_POST['old_dial_status']);
+  // print_r($_POST);
+  // echo "<br />";
+  // print_r($checkStatus);
+  // die;
+  if(in_array($_POST['dial_status'], $statuses)){
     $new_status = $_POST['old_dial_status'];
+  }else{
+    $new_status = $_POST['dial_status']." ".$_POST['old_dial_status'];
   }
 
   $postfields['dial_status']  			= $new_status;
