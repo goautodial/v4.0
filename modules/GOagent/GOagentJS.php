@@ -1953,7 +1953,7 @@ function toggleStatus (status) {
 }
 
 function checkIfStillLoggedIn(logged_out) {
-    if (logged_out) {
+    if (logged_out && phoneRegistered) {
         var postData = {
             goAction: 'goCheckIfLoggedIn',
             goUser: uName,
