@@ -1108,8 +1108,8 @@ $(document).ready(function() {
         $("#selectedINB").find('abbr').each(function(index) {
             inbArray.push($(this).text());
         });
-        if (!phone.isConnected()) {
-            phone.start();
+        if (!phone.isRegistered()) {
+            phone.register();
         }
         var postData = {
             goAction: 'goLoginUser',
@@ -1606,6 +1606,10 @@ function sendLogout (logMeOut) {
                     $("#enableHotKeys").prop('checked', false);
                     $(document).off('keydown', 'body', hotKeysAvailable);
                     $("#popup-hotkeys").fadeOut("fast");
+                }
+                
+                if (phone.isRegistered()) {
+                    phone.unregister(configuration);
                 }
                 
                 $("#ScriptContents").html('');
