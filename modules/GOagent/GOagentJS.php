@@ -1524,6 +1524,7 @@ function hijackThisLink(e) {
 }
 
 function btnLogMeIn () {
+    console.log(is_logged_in, phoneRegistered);
     if (is_logged_in && !phoneRegistered) {
         swal({
             title: '<?=$lh->translationFor('error')?>',
