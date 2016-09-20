@@ -1,8 +1,8 @@
 <?php
-/*
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
+error_reporting(E_ALL);
 
 require_once('php/goCRMAPISettings.php');
 
@@ -320,11 +320,18 @@ if($output->result == "success"){
 
 	}// end of agent_pdetail
 
+// DIAL STATUSES SUMMARY
 	if($pageTitle == "dispo"){
 		echo '<div class="table-responsive">'.$output->getReports->TOPsorted_output.'</div>';
 	}// end of dispo
 
+// STATISTICAL REPORT
+	if($pageTitle == "stats"){
+		var_dump($output->getReports);
+	}
+
 	echo '</div>';
+
 }else{
 	echo $output->result;
 }

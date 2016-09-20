@@ -1398,6 +1398,10 @@ error_reporting(E_ALL);*/
 						       return false;
 						    }
 						});
+					// disables pasting
+						$('#campaign-id').bind("paste",function(e) {
+						      e.preventDefault();
+						});
 					// disable special characters on Campaign Name
 						$('#campaign-name').bind('keypress', function (event) {
 						    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
@@ -1407,10 +1411,14 @@ error_reporting(E_ALL);*/
 						       return false;
 						    }
 						});
+					// disables pasting
+						$('#campaign-name').bind("paste",function(e) {
+						      e.preventDefault();
+						});
 				/*** end campaign ***/
 
 				/*** DISPOSITION ***/
-					// disable special characters on User ID
+					// disable special characters on status
 						$('#status').bind('keypress', function (event) {
 						    var regex = new RegExp("^[a-zA-Z0-9]+$");
 						    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
@@ -1419,6 +1427,11 @@ error_reporting(E_ALL);*/
 						       return false;
 						    }
 						});
+					// disables pasting
+						$('#status').bind("paste",function(e) {
+						      e.preventDefault();
+						});
+					// disables special characters on status name
 						$('#status_name').bind('keypress', function (event) {
 						    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
 						    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
@@ -1426,6 +1439,10 @@ error_reporting(E_ALL);*/
 						       event.preventDefault();
 						       return false;
 						    }
+						});
+					// disables pasting
+						$('#status_name').bind("paste",function(e) {
+						      e.preventDefault();
 						});
 				/*** end of disposition filters ***/
 
