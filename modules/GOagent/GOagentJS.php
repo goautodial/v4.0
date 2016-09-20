@@ -624,7 +624,7 @@ $(document).ready(function() {
                 }
                 
                 //Check if Agent is still logged in
-                checkIfStillLoggedIn(check_if_logged_out);
+                checkIfStillLoggedIn(check_if_logged_out, true);
             } else {
                 updateButtons();
                 
@@ -664,7 +664,7 @@ $(document).ready(function() {
                 }
                 
                 //Check if Agent is still logged in
-                checkIfStillLoggedIn(false);
+                checkIfStillLoggedIn(false, false);
             }
         }, refresh_interval);
         
@@ -1956,8 +1956,8 @@ function toggleStatus (status) {
     $("#livecall h3").attr({'class': statusClass, 'title': statusLabel}).html(statusLabel);
 }
 
-function checkIfStillLoggedIn(logged_out) {
-    if (logged_out && phoneRegistered) {
+function checkIfStillLoggedIn(logged_out, check_login) {
+    if (logged_out && phoneRegistered && check_login) {
         var postData = {
             goAction: 'goCheckIfLoggedIn',
             goUser: uName,
