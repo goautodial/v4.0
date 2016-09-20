@@ -1161,7 +1161,7 @@ $(document).ready(function() {
                                     }
                                     
                                     if (cKey == 'campaign_id') {
-                                        $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN', 'campaign_id': cValue});
+                                        $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'SessioN', 'campaign_id': cValue, 'is_logged_in': is_logged_in});
                                     }
                                     
                                     if (cKey == 'dial_prefix') {
@@ -6780,7 +6780,9 @@ String.prototype.toUpperFirst = function() {
         switch ($_REQUEST['action']) {
             case "SessioN":
                 $campaign = $_REQUEST['campaign_id'];
+                $is_logged_in = $_REQUEST['is_logged_in'];
                 $_SESSION['campaign_id'] = (strlen($campaign) > 0) ? $campaign : $_SESSION['campaign_id'];
+                $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $_SESSION['is_logged_in'];
                 break;
             case "ChecKLogiN":
                 $is_logged_in = $_REQUEST['is_logged_in'];
