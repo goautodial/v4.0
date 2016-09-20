@@ -327,6 +327,287 @@ if($output->result == "success"){
 
 // STATISTICAL REPORT
 	if($pageTitle == "stats"){
+		//var_dump($output->getReports->data_calls->cdate);
+		//$increment_color = "009688";
+
+		?>
+		<div collapse="panelChart9" class="panel-wrapper">
+            <div class="panel-body">
+               <div class="chart-splinev1 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)--> 
+            </div>
+        </div>
+        <div id="legendBox"></div>
+	<script>
+        $(function(){
+            var datav3 = [
+                <?php
+	                if($output->getReports->data_calls->cdate != NULL){ // if data exists
+	                	$r = 30;
+						$g = 45;
+						$b = 10;
+	                	for($i = 0; $i < count($output->getReports->data_calls->cdate); $i++){
+	                		//$color = "#".$increment_color;
+	                		//$increment_color = $increment_color + 155001;
+
+							$cdate = $output->getReports->data_calls->cdate[$i];
+							$hour0 = $output->getReports->data_calls->hour0[$i];
+							if($hour0 == NULL)
+								$hour0 = 0;
+							
+							$hour1 = $output->getReports->data_calls->hour1[$i];
+							if($hour1 == NULL){
+								$hour1 = 0;
+							}
+							$hour2 = $output->getReports->data_calls->hour2[$i];
+							if($hour2 == NULL){
+								$hour2 = 0;
+							}
+							$hour3 = $output->getReports->data_calls->hour3[$i];
+							if($hour3 == NULL){
+								$hour3 = 0;
+							}
+							$hour4 = $output->getReports->data_calls->hour4[$i];
+							if($hour4 == NULL){
+								$hour4 = 0;
+							}
+							$hour5 = $output->getReports->data_calls->hour5[$i];
+							if($hour5 == NULL){
+								$hour5 = 0;
+							}
+							$hour6 = $output->getReports->data_calls->hour6[$i];
+							if($hour6 == NULL){
+								$hour6 = 0;
+							}
+							$hour7 = $output->getReports->data_calls->hour7[$i];
+							if($hour7 == NULL){
+								$hour7 = 0;
+							}
+							$hour8 = $output->getReports->data_calls->hour8[$i];
+							if($hour8 == NULL){
+								$hour8 = 0;
+							}
+							$hour9 = $output->getReports->data_calls->hour9[$i];
+							if($hour9 == NULL){
+								$hour9 = 0;
+							}
+							$hour10 = $output->getReports->data_calls->hour10[$i];
+							if($hour10 == NULL){
+								$hour10 = 0;
+							}
+							$hour11 = $output->getReports->data_calls->hour11[$i];
+							if($hour11 == NULL){
+								$hour11 = 0;
+							}
+							$hour12 = $output->getReports->data_calls->hour12[$i];
+							if($hour12 == NULL){
+								$hour12 = 0;
+							}
+							$hour13 = $output->getReports->data_calls->hour13[$i];
+							if($hour13 == NULL){
+								$hour13 = 0;
+							}
+							$hour14 = $output->getReports->data_calls->hour14[$i];
+							if($hour14 == NULL){
+								$hour14 = 0;
+							}
+							$hour15 = $output->getReports->data_calls->hour15[$i];
+							if($hour15 == NULL){
+								$hour15 = 0;
+							}
+							$hour16 = $output->getReports->data_calls->hour16[$i];
+							if($hour16 == NULL){
+								$hour16 = 0;
+							}
+							$hour17 = $output->getReports->data_calls->hour17[$i];
+							if($hour17 == NULL){
+								$hour17 = 0;
+							}
+							$hour18 = $output->getReports->data_calls->hour18[$i];
+							if($hour18 == NULL){
+								$hour18 = 0;
+							}
+							$hour19 = $output->getReports->data_calls->hour19[$i];
+							if($hour19 == NULL){
+								$hour19 = 0;
+							}
+							$hour20 = $output->getReports->data_calls->hour20[$i];
+							if($hour20 == NULL){
+								$hour20 = 0;
+							}
+							$hour21 = $output->getReports->data_calls->hour21[$i];
+							if($hour21 == NULL){
+								$hour21 = 0;
+							}
+							$hour22 = $output->getReports->data_calls->hour22[$i];
+							if($hour22 == NULL){
+								$hour22 = 0;
+							}
+							$hour23 = $output->getReports->data_calls->hour23[$i];
+							if($hour23 == NULL){
+								$hour23 = 0;
+							}
+							
+
+							if($hour0 <= 0 && $hour1 <= 0 && $hour2 <= 0 && $hour3 <= 0 && $hour4 <= 0 && $hour5 <= 0 && $hour6 <= 0 && $hour7 <= 0 && $hour8 <= 0 && $hour9 <= 0 && 
+								$hour10 <= 0 && $hour11 <= 0 && $hour12 <= 0 && $hour13 <= 0 && $hour14 == 0){
+								$cdate = "";
+							}
+
+							$max = max($hour0, $hour1, $hour2, $hour3, $hour4, $hour5, $hour6, $hour7, $hour8, $hour9, $hour10, $hour11, $hour12, $hour13, $hour14);/*, $hour15, $hour16, $hour17, $hour18, 
+								$hour19, $hour20, $hour21, $hour22, $hour23);*/
+							
+							if($max < 4){
+								$max = 4;
+							}
+
+							$color = "rgb(".$r.", ".$g.", ".$b.")";
+
+	                		if($g <= 200 || $g <= 0)
+	                			$g = $g + 25;
+	                		else
+	                			$g = $g - 10;
+	                		
+	                		if($r <= 180 || $r <= 0)
+	                			$r = $r + 25;
+	                		else
+	                			$r = $r - 10;
+
+	                		if($b <= 150 || $b <= 0)
+	                			$b = $b + 25;
+	                		else
+	                			$b = $b - 10;
+                ?>
+                {"label": <?php echo '"'.$cdate.'"';?>,
+                "color": <?php echo '"'.$color.'"';?>,
+                "data": [
+                <?php
+                    echo '["8 AM",'. $hour0 .'],';
+                    echo '["9 AM",'. $hour1 .'],';
+                    echo '["10 AM",'. $hour2 .'],';
+                    echo '["11 AM",'. $hour3 .'],';
+                    echo '["12 NN",'. $hour4 .'],';
+                    echo '["1 PM",'. $hour5 .'],';
+                    echo '["2 PM",'. $hour6 .'],';
+                    echo '["3 PM",'. $hour7 .'],';
+                    echo '["4 PM",'. $hour8 .'],';
+                    echo '["5 PM",'. $hour9 .'],';
+                    echo '["6 PM",'. $hour10 .'],';
+                    echo '["7 PM",'. $hour11 .'],';
+                    echo '["8 PM",'. $hour12 .'],';
+                    echo '["9 PM",'. $hour13 .'],';
+                    echo '["10 PM",'. $hour14 .']';
+                    /*echo '["11 PM",'. $hour15 .'],';
+                    echo '["12 AM",'. $hour16 .'],';
+                    echo '["1 AM",'. $hour17 .'],';
+                    echo '["2 AM",'. $hour18 .'],';
+                    echo '["3 AM",'. $hour19 .'],';
+                    echo '["4 AM",'. $hour20 .'],';
+                    echo '["5 AM",'. $hour21 .'],';
+                    echo '["6 AM",'. $hour22 .'],';
+                    echo '["7 AM",'. $hour23 .']';*/
+                ?>]}
+                <?php 
+		                $a = $i + 1;
+		                	if(count($output->getReports->data_calls->cdate) > $a)
+		                	echo ", ";
+		            }
+
+            	}else{ //if data is null
+            		$max = 4;
+            		$r = 100;
+					$g = 50;
+					$b = 70;
+            		$color = "rgb(".$r.", ".$g.", ".$b.")";
+	                		
+            		if($g <= 200)
+            			$g = $g + $r;
+            		else
+            			$g = $g - $b;
+            		
+            		if($r <= 180)
+            			$r = $r + $b;
+            		else
+            			$r = $r - $g;
+
+            		if($b <= 150)
+            			$b = $b + $g;
+            		else
+            			$b = $b - $r;
+            		$cdate = "";
+            ?>
+            	{"label": <?php echo '"'.$cdate.'"';?>,
+                "color": <?php echo '"'.$color.'"';?>,
+                "data": [
+            <?php
+                    echo '["8 AM", 0],';
+                    echo '["9 AM", 0],';
+                    echo '["10 AM", 0],';
+                    echo '["11 AM", 0],';
+                    echo '["12 NN", 0],';
+                    echo '["1 PM", 0],';
+                    echo '["2 PM", 0],';
+                    echo '["3 PM", 0],';
+                    echo '["4 PM", 0],';
+                    echo '["5 PM", 0],';
+                    echo '["6 PM", 0],';
+                    echo '["7 PM", 0],';
+                    echo '["8 PM", 0],';
+                    echo '["9 PM", 0],';
+                    echo '["10 PM", 0]';
+                    /*echo '["11 PM",'. $hour15 .'],';
+                    echo '["12 AM",'. $hour16 .'],';
+                    echo '["1 AM",'. $hour17 .'],';
+                    echo '["2 AM",'. $hour18 .'],';
+                    echo '["3 AM",'. $hour19 .'],';
+                    echo '["4 AM",'. $hour20 .'],';
+                    echo '["5 AM",'. $hour21 .'],';
+                    echo '["6 AM",'. $hour22 .'],';
+                    echo '["7 AM",'. $hour23 .']';*/
+            		echo "]}";
+            	}
+            ?>
+            ];
+
+            var options = { series: { lines: {show: false}, points: {show: true,radius: 4},
+                    splines: {show: true,tension: 0.4,lineWidth: 1,fill: 0.5}
+                },
+                grid: { borderColor: '#eee', borderWidth: 1, hoverable: true, backgroundColor: '#fcfcfc' },
+                tooltip: true, 
+                tooltipOpts: { content: function (label, x, y) { return y + ' Calls in ' + label; } },
+                xaxis: { tickColor: '#fcfcfc', mode: 'categories' },
+                yaxis: { min: 0, max: <?php echo $max;?>, // optional: use it for a clear represetation
+                    tickColor: '#eee',
+                    //position: 'right' or 'left',
+                    tickFormatter: function (v) { return v/* + ' visitors'*/; }
+                },
+                shadowSize: 0,
+                legend: {
+                	show:true, 
+                	noColumns: 8, 
+                	container: $('#legendBox')
+				}
+              };
+              var chartv3 = $('.chart-splinev1');
+              if(chartv3.length)
+                $.plot(chartv3, datav3, options);
+        });
+	
+	</script>
+		<?php
+	}
+
+// SALES PER AGENT
+	if($pageTitle == "sales_agent"){
+		var_dump($output->getReports);
+	}
+
+// SALES TRACKER
+	if($pageTitle == "sales_tracker"){
+		var_dump($output->getReports);
+	}
+
+// EXPORT CALL REPORT
+	if($pageTitle == "call_export_report"){
 		var_dump($output->getReports);
 	}
 

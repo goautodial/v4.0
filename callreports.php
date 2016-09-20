@@ -84,7 +84,11 @@
                                         </center>
                                     </div>
                                     <div class="box-body" id="table">
-                                        
+                                        <div collapse="panelChart9" class="panel-wrapper">
+                                            <div class="panel-body">
+                                               <div class="chart-splinev3 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)--> 
+                                            </div>
+                                        </div>
                                     </div><!-- /.box-body -->
 
                                 </div><!-- /.panel-body -->
@@ -177,8 +181,14 @@
         <?php print $ui->standardizedThemeJS();?>
 
         <!-- SELECT2-->
-        <script src="theme_dashboard/select2/dist/js/select2.js"></script>
-
+            <script src="theme_dashboard/select2/dist/js/select2.js"></script>
+        <!-- FLOT CHART-->
+            <script src="theme_dashboard/js/Flot/jquery.flot.js"></script>
+            <script src="theme_dashboard/js/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+            <script src="theme_dashboard/js/Flot/jquery.flot.resize.js"></script>
+            <script src="theme_dashboard/js/Flot/jquery.flot.time.js"></script>
+            <script src="theme_dashboard/js/Flot/jquery.flot.categories.js"></script>
+            <script src="theme_dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
         <script>
             $(function () {
                 //Initialize Select2 Elements
@@ -374,6 +384,47 @@
                             }
                         });
                 });
+                
+                /*
+                 * Inbound and Outbound Calls Per Hour Data
+                */
+                    (function(window, document, $, undefined){
+                        $(function(){
+                            var datav3 = [
+                                {
+                                "label": "",
+                                "color": "#009688",
+                                "data": [
+                                <?php
+                                
+                                    echo '["12 MN", 0],';
+                                    echo '["12 MN", 0],';
+                                    echo '["1 AM", 0],';
+                                    echo '["1 AM", 0]';
+                                ?>]
+                                }];
+                                
+                            var options = { series: { lines: {show: false}, points: {show: true,radius: 4},
+                                    splines: {show: true,tension: 0.4,lineWidth: 1,fill: 0.5}
+                                },
+                                grid: { borderColor: '#eee', borderWidth: 1, hoverable: true, backgroundColor: '#fcfcfc' },
+                                tooltip: true, 
+                                tooltipOpts: { content: function (label, x, y) {  return y + ' Calls / Day';  } },
+                                xaxis: { tickColor: '#fcfcfc', mode: 'categories' },
+                                yaxis: { min: 0, max: 4, // optional: use it for a clear represetation
+                                    tickColor: '#eee',
+                                    //position: 'right' or 'left',
+                                    tickFormatter: function (v) {
+                                        return v/* + ' visitors'*/;
+                                    }
+                                },
+                                shadowSize: 0
+                              };
+                              var chartv3 = $('.chart-splinev3');
+                              if(chartv3.length)
+                                $.plot(chartv3, datav3, options);
+                        });
+                    })(window, document, window.jQuery);
 
                     /* Daterange
                     $('#date_range').daterangepicker({
