@@ -1571,6 +1571,10 @@ function btnLogMeIn () {
                 backdrop: 'static',
                 show: true
             });
+            
+            $("#select-campaign ~ button.close").on('click', function() {
+                logging_in = false;
+            });
         } else {
             swal({
                 title: '<?=$lh->translationFor('error')?>',
