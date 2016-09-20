@@ -1571,7 +1571,7 @@ function btnLogMeIn () {
                 show: true
             });
             
-            $("#select-campaign").on('hide', function() {
+            $("#select-campaign").on('hidden.bs.modal', function() {
                 logging_in = false;
                 console.log('hide', logging_in);
             });
