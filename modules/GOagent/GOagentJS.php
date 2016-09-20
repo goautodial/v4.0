@@ -625,7 +625,7 @@ $(document).ready(function() {
                 }
                 
                 //Check if Agent is still logged in
-                checkIfStillLoggedIn(check_if_logged_out, true);
+                checkIfStillLoggedIn(check_if_logged_out);
             } else {
                 updateButtons();
                 
@@ -665,7 +665,7 @@ $(document).ready(function() {
                 }
                 
                 //Check if Agent is still logged in
-                checkIfStillLoggedIn(false, false);
+                checkIfStillLoggedIn(false);
             }
         }, refresh_interval);
         
@@ -1149,6 +1149,7 @@ $(document).ready(function() {
                     is_logged_in = 1;
                     check_if_logged_out = 1;
                     logout_stop_timeouts = 0;
+                    logging_in = false;
                     
                     $.each(result.data, function(key, value) {
                         if (key == 'campaign_settings') {
@@ -1536,7 +1537,6 @@ function btnLogMeIn () {
             closeOnConfirm: false
         }, function() {
             logging_in = false;
-            console.log(logging_in);
             swal.close();
         });
         
@@ -1963,8 +1963,8 @@ function toggleStatus (status) {
     $("#livecall h3").attr({'class': statusClass, 'title': statusLabel}).html(statusLabel);
 }
 
-function checkIfStillLoggedIn(logged_out, check_login) {
-    if (logged_out && phoneRegistered && check_login) {
+function checkIfStillLoggedIn(logged_out) {
+    if (logged_out && phoneRegistered) {
         var postData = {
             goAction: 'goCheckIfLoggedIn',
             goUser: uName,
