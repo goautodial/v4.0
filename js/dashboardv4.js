@@ -140,16 +140,16 @@
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                                     pagination.toggle(this.api().page.info().pages > 1);
                                 },                                
-                                "oLanguage": {
-                                        "sLengthMenu": "",
-                                        "sEmptyTable": "No Agents Available",
-                                        "oPaginate": {
-                                            "sPrevious": "Prev",
-                                            "sNext": "Next"
-                                        }
-                                },
-                                "bFilter": false,
-                                "bInfo": false,
+                                //"oLanguage": {
+                                        //"sLengthMenu": "",
+                                        //"sEmptyTable": "No Agents Available",
+                                        //"oPaginate": {
+                                            //"sPrevious": "Prev",
+                                            //"sNext": "Next"
+                                        //}
+                                //},
+                                //"bFilter": false,
+                                //"bInfo": false,
                                 "columnDefs": [
                                     {
                                         className: "hidden-xs", 
@@ -184,16 +184,16 @@
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                                     pagination.toggle(this.api().page.info().pages > 1);
                                 },
-                                "oLanguage": {
-                                        "sLengthMenu": "",
-                                        "sEmptyTable": "No Agents Available",
-                                        "oPaginate": {
-                                            "sPrevious": "Prev",
-                                            "sNext": "Next"
-                                        }
-                                },
-                                "bFilter": false,
-                                "bInfo": false,                                
+                                //"oLanguage": {
+                                        //"sLengthMenu": "",
+                                        //"sEmptyTable": "No Agents Available",
+                                        //"oPaginate": {
+                                            //"sPrevious": "Prev",
+                                            //"sNext": "Next"
+                                        //}
+                                //},
+                                //"bFilter": false,
+                                //"bInfo": false,                                
                                 "columnDefs": [
                                     {
                                         className: "hidden-xs", 
