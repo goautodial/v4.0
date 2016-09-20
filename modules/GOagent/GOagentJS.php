@@ -56,6 +56,7 @@ var phoneRegistered = false;
 var check_if_logged_out = 1;
 var isMobile = false; //initiate as false
 var is_logged_in = <?=$is_logged_in?>;
+var logging_in = false;
 var logoutWarn = true;
 var use_webrtc = <?=$use_webrtc?>;
 var NOW_TIME = '<?=$NOW_TIME?>';
@@ -1525,12 +1526,17 @@ function hijackThisLink(e) {
 }
 
 function btnLogMeIn () {
+    logging_in = true;
     if (is_logged_in > 0 && !phoneRegistered) {
         swal({
             title: '<?=$lh->translationFor('error')?>',
             text: "<?=$lh->translationFor('phone_already_logged_in')?>",
             type: 'error',
-            html: true
+            html: true,
+            showCancelButton: false
+        }, function() {
+            logging_in = false;
+            console.log(logging_in);
         });
         
         return;
@@ -1988,7 +1994,7 @@ function checkIfStillLoggedIn(logged_out, check_login) {
             }
         });
     } else {
-        if (is_logged_in < 1 && !phoneRegistered) {
+        if (!phoneRegistered && !logging_in) {
             $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'ChecKLogiN'}, function(result) {
                 is_logged_in = result;
             });
