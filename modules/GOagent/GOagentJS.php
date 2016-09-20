@@ -6785,7 +6785,8 @@ String.prototype.toUpperFirst = function() {
                 break;
             case "ChecKLogiN":
                 $is_logged_in = $_REQUEST['is_logged_in'];
-                $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $_SESSION['is_logged_in'];
+                $sess_logged_in = (isset($_SESSION['is_logged_in'])) ? $_SESSION['is_logged_in'] : 0;
+                $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $sess_logged_in;
                 echo $_SESSION['is_logged_in'];
                 break;
         }
