@@ -1997,7 +1997,7 @@ function checkIfStillLoggedIn(logged_out, check_login) {
     } else {
         if (!phoneRegistered && !logging_in) {
             $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'ChecKLogiN'}, function(result) {
-                is_logged_in = result;
+                is_logged_in = parseInt(result);
             });
         }
     }
