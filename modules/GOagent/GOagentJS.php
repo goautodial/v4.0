@@ -1149,7 +1149,6 @@ $(document).ready(function() {
                     is_logged_in = 1;
                     check_if_logged_out = 1;
                     logout_stop_timeouts = 0;
-                    logging_in = false;
                     
                     $.each(result.data, function(key, value) {
                         if (key == 'campaign_settings') {
@@ -1418,6 +1417,11 @@ $(document).ready(function() {
     $("#openWebForm").click(function() {
         window.open(TEMP_VDIC_web_form_address, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
     });
+    
+    $("#select-campaign").on('hide', function() {
+        logging_in = false;
+        console.log('hide', logging_in);
+    });
 });
 
 function checkSidebarIfOpen(startUp) {
@@ -1570,10 +1574,6 @@ function btnLogMeIn () {
                 keyboard: false,
                 backdrop: 'static',
                 show: true
-            });
-            
-            $("#select-campaign ~ button.close").on('click', function() {
-                logging_in = false;
             });
         } else {
             swal({
