@@ -22,6 +22,18 @@ $StarTtimE = date("U");
 //ini_set('display_errors', 'on');
 //error_reporting(E_ALL);
 
+$result = get_user_info($_SESSION['user']);
+$default_settings = $result->default_settings;
+$agent = $result->user_info;
+$phone = $result->phone_info;
+$system = $result->system_info;
+$country_codes = $result->country_codes;
+if (isset($result->camp_info)) {
+    $camp_info = $result->camp_info;
+}
+
+$_SESSION['is_logged_in'] = $result->is_logged_in;
+
 if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
     header('Content-Type: text/javascript');
 
@@ -36,18 +48,6 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
         }
     }
     echo "// {$sess_vars}\n";
-    
-    $result = get_user_info($user);
-    $default_settings = $result->default_settings;
-    $agent = $result->user_info;
-    $phone = $result->phone_info;
-    $system = $result->system_info;
-    $country_codes = $result->country_codes;
-    if (isset($result->camp_info)) {
-        $camp_info = $result->camp_info;
-    }
-
-    $_SESSION['is_logged_in'] = $result->is_logged_in;
 ?>
 
 // Settings
@@ -1988,7 +1988,7 @@ function checkIfStillLoggedIn(logged_out, check_login) {
             }
         });
     } else {
-        if (is_logged_in < 1 && !phoneRegistered) {
+        if (!is_logged_in && !phoneRegistered) {
             $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'ChecKLogiN'}, function(result) {
                 is_logged_in = result;
             });
