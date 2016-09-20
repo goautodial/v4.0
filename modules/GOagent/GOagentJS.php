@@ -22,15 +22,6 @@ $StarTtimE = date("U");
 //ini_set('display_errors', 'on');
 //error_reporting(E_ALL);
 
-$result = get_user_info($_SESSION['user']);
-$default_settings = $result->default_settings;
-$agent = $result->user_info;
-$phone = $result->phone_info;
-$system = $result->system_info;
-$country_codes = $result->country_codes;
-if (isset($result->camp_info)) {
-    $camp_info = $result->camp_info;
-}
 $_SESSION['is_logged_in'] = $result->is_logged_in;
 
 if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
@@ -43,10 +34,20 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
             if ($idx == 'is_logged_in')
                 $val = ($val) ? 1 : 0;
             ${$idx} = $val;
-            $sess_vars .= "{$idx}|";
+            $sess_vars .= "{$idx} => {$val}|";
         }
     }
     echo "// {$sess_vars}\n";
+    
+    $result = get_user_info($user);
+    $default_settings = $result->default_settings;
+    $agent = $result->user_info;
+    $phone = $result->phone_info;
+    $system = $result->system_info;
+    $country_codes = $result->country_codes;
+    if (isset($result->camp_info)) {
+        $camp_info = $result->camp_info;
+    }
 ?>
 
 // Settings
