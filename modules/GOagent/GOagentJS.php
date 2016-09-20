@@ -1527,16 +1527,17 @@ function hijackThisLink(e) {
 
 function btnLogMeIn () {
     logging_in = true;
-    if (is_logged_in > 0 && !phoneRegistered) {
+    if (is_logged_in && !phoneRegistered) {
         swal({
             title: '<?=$lh->translationFor('error')?>',
             text: "<?=$lh->translationFor('phone_already_logged_in')?>",
             type: 'error',
             html: true,
-            showCancelButton: false
+            closeOnConfirm: false
         }, function() {
             logging_in = false;
             console.log(logging_in);
+            swal.close();
         });
         
         return;
