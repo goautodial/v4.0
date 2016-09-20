@@ -22,8 +22,6 @@ $StarTtimE = date("U");
 //ini_set('display_errors', 'on');
 //error_reporting(E_ALL);
 
-$_SESSION['is_logged_in'] = $result->is_logged_in;
-
 if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
     header('Content-Type: text/javascript');
 
@@ -48,6 +46,8 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
     if (isset($result->camp_info)) {
         $camp_info = $result->camp_info;
     }
+
+    $_SESSION['is_logged_in'] = $result->is_logged_in;
 ?>
 
 // Settings
@@ -6786,11 +6786,11 @@ String.prototype.toUpperFirst = function() {
                 break;
             case "ChecKLogiN":
                 $is_logged_in = $_REQUEST['is_logged_in'];
-                $sess_logged_in = (isset($_SESSION['is_logged_in'])) ? $_SESSION['is_logged_in'] : 0;
+                $sess_logged_in = (strlen($_SESSION['is_logged_in']) > 0) ? $_SESSION['is_logged_in'] : 0;
                 $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $sess_logged_in;
-                echo $_SESSION['is_logged_in'];
                 break;
         }
+        echo $_SESSION['is_logged_in'];
     } else {
         echo "ERROR: Module '{$_REQUEST['module_name']}' not found.";
     }
