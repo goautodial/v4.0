@@ -34,7 +34,7 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
             if ($idx == 'is_logged_in')
                 $val = ($val) ? 1 : 0;
             ${$idx} = $val;
-            $sess_vars .= "{$idx} => {$val}|";
+            $sess_vars .= "{$idx}|";
         }
     }
     echo "// {$sess_vars}\n";
@@ -6796,7 +6796,7 @@ String.prototype.toUpperFirst = function() {
 
 function get_user_info($user) {
     //set variables
-    $camp = (isset($_SESSION['campaign_id'])) ? $_SESSION['campaign_id'] : null;
+    $camp = (isset($_SESSION['campaign_id']) && strlen($_SESSION['campaign_id']) > 2) ? $_SESSION['campaign_id'] : '';
     $url = gourl.'/goAgent/goAPI.php';
     $fields = array(
         'goAction' => 'goGetLoginInfo',
