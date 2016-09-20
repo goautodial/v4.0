@@ -1525,11 +1525,10 @@ function hijackThisLink(e) {
 }
 
 function btnLogMeIn () {
-    console.log(is_logged_in, phoneRegistered);
-    if (is_logged_in && !phoneRegistered) {
+    if (is_logged_in > 0 && !phoneRegistered) {
         swal({
             title: '<?=$lh->translationFor('error')?>',
-            text: "<?=$lh->translationFor('phone_aready_logged_in')?>",
+            text: "<?=$lh->translationFor('phone_already_logged_in')?>",
             type: 'error',
             html: true
         });
