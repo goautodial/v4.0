@@ -1976,10 +1976,12 @@ error_reporting(E_ERROR | E_PARSE);
 		// menu for agents
 		$result .= $agentmenu;
 		
+		if($userrole != CRM_DEFAULTS_USER_ROLE_AGENT){
         $result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
 		//$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
         $result .= $this->getSidebarItem("notifications.php", "exclamation", $this->lh->translationFor("notifications"), $numNotifications, "orange");
         $result .= $this->getSidebarItem("tasks.php", "tasks", $this->lh->translationFor("tasks"), $numTasks, "red");
+		}
         
         // suffix: modules
         $activeModules = $mh->activeModulesInstances();
