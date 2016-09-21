@@ -126,7 +126,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				<!-- =============== APP STYLES ===============-->
 			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 		
-		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
+                        <link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
 		<!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
