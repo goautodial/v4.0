@@ -186,6 +186,7 @@
             <script src="theme_dashboard/js/Flot/jquery.flot.js"></script>
             <script src="theme_dashboard/js/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
             <script src="theme_dashboard/js/Flot/jquery.flot.resize.js"></script>
+            <script src="theme_dashboard/js/Flot/jquery.flot.pie.js"></script>
             <script src="theme_dashboard/js/Flot/jquery.flot.time.js"></script>
             <script src="theme_dashboard/js/Flot/jquery.flot.categories.js"></script>
             <script src="theme_dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
