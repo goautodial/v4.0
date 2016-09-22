@@ -38,7 +38,8 @@
     $output = json_decode($data);
     //echo "<pre>";
     //print_r($output);
-    //var_dump($output);
+
+    $creamyAvatar = $ui->getSessionAvatar();
     
     $max = 0;
     
@@ -55,23 +56,34 @@
         $call_date = $value->call_date;
         $length_in_sec = $value->length_in_sec;
         $status = $value->status;
-
-        $sessionAvatar = "<avatar username='$first_name' :size='36'></avatar>";
+        $fullname = "$first_name $last_name";
         
-        echo    '<span class="pull-right">
-                    <small><strong><a id="onclick-leadinfo" data-toggle="modal" data-target="#view_lead_information" data-id="'.$lead_id.'" class="text-black">'.$lead_id.'</strong></a></small>
-                </span>
-                <span class="pull-left">
-                    <!-- Contact avatar-->
+        if ($first_name == NULL){
+            $first_name = "";
+        }
+        if ($last_name == NULL){
+            $last_name = "";
+        }
+        if ($fullname == NULL){
+            $fullname = "";
+        }        
+
+        $sessionAvatar = "<avatar username='$fullname' :size='36'></avatar>";
+                
+        echo    '<span class="media-box">
+                    <span class="pull-left">
                         '.$sessionAvatar.'
-                </span>
-                    <!-- Contact info-->
-                <span class="media-body">
-                    <span class="media-heading">
-                        <strong><a id="onclick-leadinfo" data-toggle="modal" data-target="#view_lead_information" data-id="'.$lead_id.'" class="text m0">'.$first_name.'</strong></a><br>
-                        <small><strong><a id="onclick-leadinfo" data-toggle="modal" data-target="#view_lead_information" data-id="'.$lead_id.'" class="text-black">'.$phone_number.'</strong></a></small>
                     </span>
-                </span>';
+                    <span class="media-box-body clearfix">
+                        <small class="text-muted pull-right ml">'.$lead_id.'</small>             
+                        <span class="media-box-heading"><strong><a id="onclick-leadinfo" data-toggle="modal" data-target="#view_lead_information" data-id="'.$lead_id.'" class="text m0">'.$fullname.'</strong></a>
+                        </span>
+                        <p class="m0">
+                            <small><strong><a id="onclick-leadinfo" data-toggle="modal" data-target="#view_lead_information" data-id="'.$lead_id.'" class="text-black">'.$phone_number.'</strong></a>
+                            </small>
+                        </p><br/>
+                    </span>              
+                </span>';                            
 
     }
 
