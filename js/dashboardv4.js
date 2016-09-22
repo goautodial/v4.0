@@ -83,10 +83,9 @@
                                 "destroy":true
                                 
                 });
-                table.fnProcessingIndicator();
         } 
     });
-    }    
+    }
     
     function load_cluster_status(){
     $.ajax({

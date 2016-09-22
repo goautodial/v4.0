@@ -44,6 +44,31 @@
         
         <?php print $ui->standardizedThemeCSS(); ?>
         <?php print $ui->creamyThemeCSS(); ?>
+        
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+        
+		<!-- javascript -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>    
+        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="js/jquery.validate.min.js" type="text/javascript"></script>
+        
+            <!-- dashboard status boxes -->
+        <script src="js/bootstrap-editable.js" type="text/javascript"></script> 
+        <script src="theme_dashboard/moment/min/moment-with-locales.min.js" type="text/javascript"></script>
+        <script src="js/modules/now.js" type="text/javascript"></script>         
+	    <!-- ChartJS 1.0.1 -->
+	    <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
+		
+        <!-- Creamy App -->
+        <!--<script src="js/app.min.js" type="text/javascript"></script>-->
+		
+		<!-- Data Tables -->
+        <!-- <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script> -->
+        <script src="js/plugins/datatables/FROMjquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/fnProcessingIndicator.js" type="text/javascript"></script>        
 
         <!-- FONT AWESOME-->
         <link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
@@ -60,6 +85,8 @@
         <link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
+        
+        <link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
         
         <script type="text/javascript">
             $(window).ready(function() {
@@ -105,11 +132,11 @@
             $user_group = $output->data->user_group;
             $status = $output->data->active;
             $voicemail_id = $output->data->voicemail_id;
+            
             $outcallstoday = $output->data->outcallstoday;
             $outsalestoday = $output->data->outsalestoday;
             $incallstoday = $output->data->incallstoday;
-            $insalestoday = $output->data->insalestoday;
-            $totalsalestoday = ($outsalestoday + $insalestoday);
+            $insalestoday = $output->data->insalestoday;            
             
             if ($incallstoday == NULL){
                 $incallstoday = "0";
@@ -117,12 +144,10 @@
             
             if ($outcallstoday == NULL){
                 $outcallstoday = "0";
-            }
-            if ($incallstoday == NULL){
-                $incallstoday = "0";
-            }             
+            }            
             
             $totalcallstoday = ($outcallstoday + $incallstoday);
+            $totalsalestoday = ($outsalestoday + $insalestoday);            
             
             if ($status == "Y"){
                 $status = "ACTIVE";
@@ -147,6 +172,7 @@
     }
 
 ?>
+ 
             <div class="unwrap ng-scope">
                <div style="background-image: url(img/profile-bg.jpg); padding-top: 20px;" class="bg-cover">
                   <div class="p-xl text-center text-white">
@@ -356,84 +382,14 @@
                            <div class="panel-heading">
                               <a href="#" class="pull-right">
                                  <em class="icon-plus text-muted"></em>
-                              </a>Contacts</div>
+                              </a>Latest Calls</div>
                            <div class="list-group">
-                              <!-- START User status-->
+                              <!-- START Latest Calls summary widget -->
                               <a href="#" class="media p mt0 list-group-item">
-                                 <span class="pull-right">
-                                    <span class="circle circle-success circle-lg"></span>
-                                 </span>
-                                 <span class="pull-left">
-                                    <!-- Contact avatar-->
-                                    <img src="img/user/05.jpg" alt="Image" class="media-object img-circle thumb32">
-                                 </span>
-                                 <!-- Contact info-->
-                                 <span class="media-body">
-                                    <span class="media-heading">
-                                       <strong>Juan Sims</strong>
-                                       <br>
-                                       <small class="text-muted">Designeer</small>
-                                    </span>
-                                 </span>
+                                    <span id="refresh_agent_latest_calls_summary"></span>                                            
+                                              
                               </a>
-                              <!-- END User status-->
-                              <!-- START User status-->
-                              <a href="#" class="media p mt0 list-group-item">
-                                 <span class="pull-right">
-                                    <span class="circle circle-success circle-lg"></span>
-                                 </span>
-                                 <span class="pull-left">
-                                    <!-- Contact avatar-->
-                                    <img src="img/user/06.jpg" alt="Image" class="media-object img-circle thumb32">
-                                 </span>
-                                 <!-- Contact info-->
-                                 <span class="media-body">
-                                    <span class="media-heading">
-                                       <strong>Maureen Jenkins</strong>
-                                       <br>
-                                       <small class="text-muted">Designeer</small>
-                                    </span>
-                                 </span>
-                              </a>
-                              <!-- END User status-->
-                              <!-- START User status-->
-                              <a href="#" class="media p mt0 list-group-item">
-                                 <span class="pull-right">
-                                    <span class="circle circle-danger circle-lg"></span>
-                                 </span>
-                                 <span class="pull-left">
-                                    <!-- Contact avatar-->
-                                    <img src="img/user/07.jpg" alt="Image" class="media-object img-circle thumb32">
-                                 </span>
-                                 <!-- Contact info-->
-                                 <span class="media-body">
-                                    <span class="media-heading">
-                                       <strong>Billie Dunn</strong>
-                                       <br>
-                                       <small class="text-muted">Designeer</small>
-                                    </span>
-                                 </span>
-                              </a>
-                              <!-- END User status-->
-                              <!-- START User status-->
-                              <a href="#" class="media p mt0 list-group-item">
-                                 <span class="pull-right">
-                                    <span class="circle circle-warning circle-lg"></span>
-                                 </span>
-                                 <span class="pull-left">
-                                    <!-- Contact avatar-->
-                                    <img src="img/user/08.jpg" alt="Image" class="media-object img-circle thumb32">
-                                 </span>
-                                 <!-- Contact info-->
-                                 <span class="media-body">
-                                    <span class="media-heading">
-                                       <strong>Tomothy Roberts</strong>
-                                       <br>
-                                       <small class="text-muted">Designer</small>
-                                    </span>
-                                 </span>
-                              </a>
-                              <!-- END User status--><a href="contactsandcallrecordings.php" class="media p mt0 list-group-item text-center text-muted">View all contacts</a>
+                              <!-- END User status--><a href="contactsandcallrecordings.php" class="media p mt0 list-group-item text-center text-muted">View more</a>
                            </div>
                         </div>
                         <div class="panel panel-default">
@@ -474,7 +430,241 @@
             </aside><!-- /.right-side -->
                 <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         </div><!-- ./wrapper -->
+        
+<!--================= MODALS =====================-->
 
+    <!-- Lead Information -->
+                        
+    <div class="modal fade" id="view_lead_information" tabindex="-1" role="dialog" aria-hidden="true"> 
+        <div class="modal-dialog"> 
+            <div class="modal-content"> 
+                <div class="modal-header"> 
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
+                        <h4 class="modal-title">More about <span id="modal-leadid"></span>:</h4> 
+                </div> 
+                <div class="modal-body"> 
+                    <center> 
+                        <div id="modal-avatar"></div>
+                        <!--<img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle">-->
+                            <h3 class="media-heading"><span id="modal-fullname"></span> <small></small></h3> 
+                                <span><strong>Logged-in to:</strong></span> 
+                                    <span class="label label-warning" id="modal-campaign"></span> 
+                                    <span class="label label-info" id="modal-status"></span> 
+                                    <span class="label label-info" id="modal-userlevel"></span> 
+                                    <span class="label label-success" id="modal-usergroup"></span>
+                    </center> <hr> 
+                        <div class="responsive">
+                            <table class="table table-striped table-hover" id="view_lead_information_table" style="width: 100%">
+                                <thead>
+                                    <th style="font-size: small;">Lead ID</th> 
+                                    <th style="font-size: small;">List ID</th>
+                                    <th style="font-size: small;">Campaign ID</th>                                                                
+                                    <th style="font-size: small;">Phone Number</th>
+                                    <th style="font-size: small;">Status</th>
+                                    <th style="font-size: small;">Agent</th>
+                                </thead>
+                                <tbody>
+                                                        
+                                </tbody>
+                            </table>
+                        </div>
+                </div> 
+                <div class="modal-footer">                                        
+                    <!-- <center> 
+                        <button type="button" class="btn btn-default" data-dismiss="modal">I'm done</button> 
+                    </center> -->
+                </div> 
+            </div> 
+        </div> 
+    </div> 
+                        
+    <!-- End of Lead Information -->
+    <!-- Agent Latest Calls -->
+
+                    <div class="modal fade" id="agent_latest_calls" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-lg modal-dialog" style="min-width: 75%">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4>Latest Phone Calls (100 limit)</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="responsive">
+                                    <!-- <div class="col-sm-12">-->
+                                        <table class="table table-striped table-hover display compact" id="agent_latest_calls_table" style="width: 100%">
+                                            <thead>
+                                                <th style="font-size: small;">Lead ID</th> 
+                                                <th style="font-size: small;">List ID</th>
+                                                <th style="font-size: small;">Campaign ID</th>                                                                
+                                                <th style="font-size: small;">Phone Number</th>
+                                                <th style="font-size: small;">Status</th>
+                                                <th style="font-size: small;">Agent</th>
+                                                <th style="font-size: small;">Call Date</th>
+                                                <th style="font-size: small;">Duration</th>
+                                            </thead>
+                                            <tbody>
+                                            
+                                            </tbody>
+                                        </table>
+                                    <!--</div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>	
+                    </div>
+                    
+    <!-- Agent Latest Calls -->  
+    
+<script>
+
+    function load_agent_latest_calls_summary(){
+    $.ajax({
+        url: "./php/APIs/API_GetAgentLatestCallsSummary.php",
+        cache: false,
+        success: function(data){
+            $("#refresh_agent_latest_calls_summary").html(data);
+            goAvatar._init(goOptions);
+        } 
+    });
+    }
+    
+    function load_agent_latest_calls(){
+    $.ajax({
+        url: "./php/APIs/API_GetAgentLatestCalls.php",
+        cache: false,
+        dataType: 'json',
+        success: function(values){
+                var JSONStringrealtime = values;
+                var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+                //console.log(JSONStringrealtime);
+                console.log(JSONObjectrealtime); 
+                var table = $('#agent_latest_calls_table').dataTable({
+                                data:JSONObjectrealtime,
+                                "destroy":true,
+                                //"searching": false,
+                                stateSave: true,
+                                drawCallback: function(settings) {
+                                    var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                                    pagination.toggle(this.api().page.info().pages > 1);
+                                },                                
+                                //"oLanguage": {
+                                        //"sLengthMenu": "",
+                                        //"sEmptyTable": "No Agents Available",
+                                        //"oPaginate": {
+                                            //"sPrevious": "Prev",
+                                            //"sNext": "Next"
+                                        //}
+                                //},
+                                //"bFilter": false,
+                                //"bInfo": false,
+                                "columnDefs": [
+                                    {
+                                        className: "hidden-xs", 
+                                        "targets": [ 2, 3, 4 ] 
+                                    }
+                                ]    
+                                
+                });
+                goAvatar._init(goOptions);
+                table.fnProcessingIndicator();
+        } 
+    });
+    }    
+    
+    function load_view_lead_information(){
+        
+    var leadid = document.getElementById("modal-leadid").innerText;
+    
+    $.ajax({        
+        type: 'POST',
+        url: "./php/APIs/API_GetLeadInformation.php",
+        data: {lead_id: leadid},
+        cache: false,
+        dataType: 'json',
+        success: function(data){
+            //console.log(data);            
+            //$("#refresh_lead_information").html(data);
+                var JSONStringleadinfo = data;
+                var JSONObjectleadinfo = JSON.parse(JSONStringleadinfo);
+                //console.log(JSONStringrealtime);
+                //console.log(JSONObjectrealtime); 
+                var table = $('#view_lead_information_table').dataTable({ 
+                                data:JSONObjectleadinfo,
+                                "paging":   false,
+                                "bPaginate": false,
+                                "searching": false,
+                                "bInfo" : false,
+                                "destroy":true
+                                
+                });
+        } 
+    });
+    }
+    
+    // Clear lead information
+    function clear_lead_information_form(){
+
+        $('#modal-leadid').html("");
+        $('#modal-list_id').html("");
+        $('#modal-first_name').html("");
+        $('#modal-last_name').html("");
+        $('#modal-phone_number').html("");
+        $('#modal-address1').html("");     
+        $('#modal-city').html("");
+        $('#modal-state').html("");
+        $('#modal-country_code').html("");
+        //$('#modal-voicemail').html("");   
+    }
+
+    //demian
+    $(document).ready(function(){
+
+        // Clear previous lead info
+        $('#view_lead_information').on('hidden.bs.modal', function () {
+
+            clear_lead_information_form();
+
+        });
+        
+        // Get lead information 
+        $(document).on('click','#onclick-leadinfo',function(){
+            var leadid = $(this).attr('data-id');
+            $.ajax({
+                type: 'POST',
+                url: "./php/APIs/API_GetLeadInformation.php",
+                data: {lead_id: leadid},
+                cache: false,
+                    success: function(data){ 
+                        //console.log(data);
+                        var JSONStringleadid = data;
+                        var JSONObjectleadid = JSON.parse(JSONStringleadid);
+                        //console.log(JSONObjectleadid.data.campaign_id);
+                        console.log(JSONObjectleadid);
+                        $('#modal-leadid').html(JSONObjectleadid.data.lead_id);
+                        $('#modal-list_id').html(JSONObjectleadid.data.list_id);                    
+                        $('#modal-first_name').html(JSONObjectleadid.data.first_name);
+                        $('#modal-last_name').html(JSONObjectleadid.data.last_name);
+                        $('#modal-phone_number').html(JSONObjectleadid.data.phone_number);
+                        $('#modal-address1').html(JSONObjectleadid.data.address1);  
+                        $('#modal-city').append(JSONObjectleadid.data.city);
+                        $('#modal-state').html(JSONObjectleadid.data.state);  
+                        $('#modal-country_code').append(JSONObjectleadid.data.country_code);                    
+                    }
+            });     
+        });
+
+        // ---- Fixed Action Button
+            $(".bottom-menu").on('mouseenter mouseleave', function () {
+                $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
+            });
+
+        // ---- loads datatable functions            
+            load_view_lead_information();                        
+            load_agent_latest_calls();
+            load_agent_latest_calls_summary();
+    });
+    
+</script>
 
 
         <?php print $ui->creamyFooter();?>
