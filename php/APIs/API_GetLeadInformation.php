@@ -41,26 +41,23 @@
     //var_dump($output);
     //die("dd");
     
-    $sessionAvatar = $ui->getSessionAvatar(); 
-    
     $leadinformation = '[';
-    
-    //foreach($output->data as $key => $value){
 
     $lead_id = $output->data->lead_id;
     $list_id = $output->data->list_id;
     $campaign_id = $output->data->campaign_id;
     $first_name = $output->data->first_name;
     $last_name = $output->data->last_name;
-    $phone_number = $output->data->phone_number;        
+    $phone_number = $output->data->phone_number;
     $address1 = $output->data->address1;
+    $address2 = $output->data->address2;
     $city = $output->data->city;
     $state = $output->data->state;
     $postal_code = $output->data->postal_code;
+    $country_code = $output->country_code;
     $status = $output->data->status;
     $user = $output->data->user;
-        
-        
+
     $leadinformation .='[';       
     $leadinformation .= '"'.$lead_id.'",';       
     $leadinformation .= '"'.$list_id.'",';   
@@ -68,10 +65,8 @@
     $leadinformation .= '"'.$phone_number.'",';      
     $leadinformation .= '"'.$status.'",';
     $leadinformation .= '"'.$user.'"';
-    $leadinformation .='],';
-
-    //}
-    
+    $leadinformation .='],';        
+        
     $leadinformation = rtrim($leadinformation, ",");    
     $leadinformation .= ']';
     

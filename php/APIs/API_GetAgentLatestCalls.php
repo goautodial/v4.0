@@ -41,8 +41,12 @@
     //var_dump($output);
     
     $max = 0;
-            
+
+    $agentlatestcalls = '['; 
+    
     foreach($output->agentoutcalls as $key => $value){
+    
+        if(++$max > 100) break;
 
         $first_name = $value->first_name;
         $last_name = $value->last_name;                
@@ -51,17 +55,40 @@
         $list_id = $value->list_id;
         $campaign_id = $value->campaign_id;
         $call_date = $value->call_date;
-        $length_in_sec = $value->length_in_sec;
+        $duration = $value->length_in_sec;
         $statusout = $value->status;
         $called_count = $value->called_count;
-                
-    }
+        $fullname = "$first_name $last_name";
+        
+        $textclass = "text-blue";
+        $sessionAvatar = "<avatar username='$fullname' :size='32'></avatar>";
+        
+        $agentlatestcalls .='[';
+        $agentlatestcalls .= '"'.$sessionAvatar.'",';
+        //$agentlatestcalls .= '"<b class=\"'.$textclass.'\">'.$lead_id.'</b>",';
+        $agentlatestcalls .= '"<a id=\"onclick-leadinfo\" data-toggle=\"modal\" data-target=\"#view_lead_information\" data-id=\"'.$lead_id.'\" class=\"text-blue\"><strong>'.$lead_id.'</strong></a>",';
+        $agentlatestcalls .= '"'.$fullname.'",';
+        $agentlatestcalls .= '"'.$list_id.'",'; 
+        $agentlatestcalls .= '"'.$campaign_id.'",';      
+        $agentlatestcalls .= '"'.$phone_number.'",';      
+        $agentlatestcalls .= '"'.$statusout.'",';
+        $agentlatestcalls .= '"'.$call_date.'",';      
+        $agentlatestcalls .= '"'.$duration.'"';        
+        $agentlatestcalls .='],';
+       
+        }
+
+        $agentlatestcalls = rtrim($agentlatestcalls, ",");    
+        $agentlatestcalls .= ']';
+
+        echo json_encode($agentlatestcalls);
     
-    $max = 0;
+/*    $max = 0;
     
     foreach($output->agentincalls as $key => $value){
     
-
+        if(++$max > 100) break;
+        
         $first_name = $value->first_name;
         $last_name = $value->last_name;
         $phone_number = $value->phone_number;
@@ -74,6 +101,6 @@
                 
 
     }
-
+*/
 
 ?>

@@ -584,7 +584,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 							   </div>
 							   <!-- END panel-footer-->
 							</div>
-						</div><!-- end team messages -->
+						</div>
+						<!-- End Agent Monitoring Summary -->
 			<!--==== VECTOR MAP LOADER ======-->
 						<div ng-controller="VectorMapController" class="col-lg-9">
 							<div class="panel panel-transparent">
