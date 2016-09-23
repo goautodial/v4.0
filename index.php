@@ -794,72 +794,66 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                         </div> 
                         
                         <!-- End of Agent Information -->
-			<!-- View Campaign -->
-			
-			<div id="view_campaign_information" class="modal fade" role="dialog">
-			  <div class="modal-dialog">
-
-			    <!-- Modal content-->
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        <h4 class="modal-title"><b>Campaign Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
-			      </div>
-			      <div class="modal-body">
-			      	<div class="output-message-no-result hide">
-				      	<div class="alert alert-warning alert-dismissible" role="alert">
-						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>Notice!</strong> There was an error retrieving details. Either error or no result.
-						</div>
-					</div>
-                                        <div id="content-campaign" class="view-form ">
-					    <div class="form-horizontal">
-                                                <div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign ID:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaignid"></span></b>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign Name:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaignname"></span></b>
-					    	</div>
-					    	<div class="output-message-no-result hide form-group">
-					    		<label class="control-label col-lg-5">Campaign Description:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaigndesc"></span></b>
-                                                </div>					    	
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Call Recordings:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-callrecordings"></span></b>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign Type:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-camptype"></span></b>
-					    	</div>					    	
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Campaign Caller ID:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-campaigncid"></span></b>
-					    	</div>
-					    	<div class="form-group">
-					    		<label class="control-label col-lg-5">Local Call Time:</label>
-					    		<b class="control-label col-lg-7" style="text-align: left;"><span id="modal-localcalltime"></span></b>
-                                                </div>                                             
-                                            </div>
-                                </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			      </div>
-			    </div>
-			    <!-- End of modal content -->
-                           </div>
-                         </div>
-                        </div>
+    <!-- Campaign Information -->
                         
-			<!-- End of View Campaign -->
+    <div class="modal fade" id="view_campaign_information" tabindex="-1" role="dialog" aria-hidden="true"> 
+        <div class="modal-dialog"> 
+            <div class="modal-content"> 
+                <div class="modal-header"> 
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
+                        <h4 class="modal-title">More about campaign ID: <span id="modal-campaignid-mod"></span></h4> 
+                </div> 
+                <div class="modal-body"> 
+                    <center> 
+                        <div id="modal-avatar-campaign"></div>
+                        <!--<img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle">-->
+                            <h3 class="media-heading"><span id="modal-campaignname-mod"></span></h3> 
+                                <span>Campaign Details: </span> 
+                                    <span class="label label-info" id="modal-camptype"></span> 
+                                    <span class="label label-info" id="modal-dial_method"></span> 
+                                    <span class="label label-info" id="modal-auto_dial_level-mod"></span>                                    
+                                    <span class="label label-success" id="modal-next_agent_call"></span>                                                                           
+
+                    </center>
+                        <div class="responsive">
+                            <table class="table table-striped table-hover" id="view_campaign_information_table" style="width: 100%">
+                                <thead>
+                                    <th style="font-size: small;">Caller ID</th> 
+                                    <th style="font-size: small;">Call Recordings</th>
+                                    <!-- <th style="font-size: small;">Campaign ID</th> -->                                                            
+                                    <!-- <th style="font-size: small;">Phone Number</th> -->
+                                    <th style="font-size: small;">Calling Hours</th>
+                                    <th style="font-size: small;">Hopper Level</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    <td><span id="modal-campaigncid-mod"></span></td>
+                                    <td><span id="modal-callrecordings-mod"></span></td>
+                                    <!-- <td><span id="modal-campaign_id"></td> -->
+                                    <!-- <td><span id="modal-phone_number"></td> -->
+                                    <td><span id="modal-localcalltime-mod"></span></td>
+                                    <td><span id="modal-hopper_level-mod"></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                </div> 
+                <div class="modal-footer">                                        
+                    <!-- <center> 
+                        <button type="button" class="btn btn-default" data-dismiss="modal">I'm done</button> 
+                    </center> -->
+                </div> 
+            </div> 
+        </div> 
+    </div> 
+                        
+    <!-- End of Campaign Information --> 
                         
 <?php
-	/*
-	 * Modal Dialogs
-	*/
-		include_once ("./php/ModalPasswordDialogs.php");
+        /*
+        * Modal Dialogs
+        */
+        include_once ("./php/ModalPasswordDialogs.php");
 ?>
 <script>
 	/*
@@ -1100,15 +1094,20 @@ function clear_agent_form(){
 }
 
 // Clear campaign information
- function clear_campaign_form(){
+function clear_campaign_form(){
 
-    $('#modal-campaignid').html("");
-    $('#modal-campaignname').html("");
+    $('#modal-campaignid-mod').html("");                                    
     $('#modal-campaigndesc').html("");
-    $('#modal-callrecordings').html("");
-    //$('#modal-amd').html("");
-    $('#modal-campaigncid').html("");
-    $('#modal-localcalltime').html("");
+    $('#modal-callrecordings-mod').html("");
+    $('#modal-camptype').html("");
+    $('#modal-campaigncid-mod').html("");                                        
+    $('#modal-localcalltime-mod').html("");
+    $('#modal-dial_method').html("");
+    $('#modal-auto_dial_level-mod').html("");
+    $('#modal-avatar-campaign').html("");
+    $('#modal-campaignname-mod').html("");
+    $('#modal-hopper_level-mod').html("");    
+                                                               
 }
 
 function goGetModalUsernameValue(){
@@ -1130,15 +1129,12 @@ function goGetModalUsernameValue(){
 
 }
 
-
-		//demian
-		$(document).ready(function(){
+                //demian
+                $(document).ready(function(){
                     
                     // Clear previous agent info
                     $('#view_agent_information').on('hidden.bs.modal', function () {
-
                         clear_agent_form();
-
                     });
                     
                     //global varible
@@ -1157,9 +1153,6 @@ function goGetModalUsernameValue(){
                                     //console.log(data);
                                     var JSONString = data;
                                     var JSONObject = JSON.parse(JSONString);
-                                    //console.log(JSONString);
-                                    console.log(JSONObject);      // Dump all data of the Object in the console
-                                    //console.log(JSONObject.data[0].vu_user_id);
                                         $('#modal-userid').html(JSONObject.data[0].vu_user_id);
                                         //global_userid = JSONObject.data[0].vu_user_id;
                                         //console.log(global_userid);
@@ -1171,20 +1164,18 @@ function goGetModalUsernameValue(){
                                         $('#modal-userlevel').html(JSONObject.data[0].vu_user_level);                                        
                                         $('#modal-phonelogin').html(JSONObject.data[0].vu_phone_login);
                                         $('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
+                                        $('#modal-campaign_cid').html(JSONObject.data[0].campaign_cid);
                                         
                                         var avatar = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" :size="160"></avatar>';
                                         $('#modal-avatar').html(avatar);
                                         goAvatar._init(goOptions);
                                 }
                         });                        
-                       // load_view_agent_information(userid);
                     });
 
                     // Clear previous agent info
                     $('#view_campaign_information').on('hidden.bs.modal', function () {
-
                         clear_campaign_form();
-
                     });
                     
                     // Get campaign information 
@@ -1200,15 +1191,22 @@ function goGetModalUsernameValue(){
                                     //console.log(campaigndata);
                                     var JSONStringcampaign = campaigndata;
                                     var JSONObjectcampaign = JSON.parse(JSONStringcampaign);
-                                    //console.log(JSONObjectcampaign.data.campaign_id);
                                     console.log(JSONObjectcampaign);
-                                        $('#modal-campaignid').html(JSONObjectcampaign.data.campaign_id);
-                                        $('#modal-campaignname').html(JSONObjectcampaign.data.campaign_name);
-                                        $('#modal-campaigndesc').html(JSONObjectcampaign.data.campaign_description);
-                                        $('#modal-callrecordings').html(JSONObjectcampaign.data.campaign_recording);
-                                        $('#modal-camptype').html(JSONObjectcampaign.data.campaign_type);
-                                        $('#modal-campaigncid').html(JSONObjectcampaign.data.campaign_cid);                                        
-                                        $('#modal-localcalltime').append(JSONObjectcampaign.data.local_call_time);                                       
+                                    $('#modal-campaignid-mod').html(JSONObjectcampaign.data.campaign_id);                                    
+                                    $('#modal-campaigndesc').html(JSONObjectcampaign.data.campaign_description);
+                                    $('#modal-callrecordings-mod').html(JSONObjectcampaign.data.campaign_recording);
+                                    $('#modal-camptype').html(JSONObjectcampaign.campaign_type);
+                                    $('#modal-campaigncid-mod').html(JSONObjectcampaign.data.campaign_cid);                                        
+                                    $('#modal-localcalltime-mod').html(JSONObjectcampaign.data.local_call_time);
+                                    $('#modal-dial_method').html(JSONObjectcampaign.data.dial_method);
+                                    $('#modal-auto_dial_level-mod').html(JSONObjectcampaign.data.auto_dial_level);
+                                    $('#modal-hopper_level-mod').html(JSONObjectcampaign.data.hopper_level);
+                                    
+                                    var campname = JSONObjectcampaign.data.campaign_name;
+                                    var avatar = '<avatar username="'+campname+'" :size="160"></avatar>';
+                                    $('#modal-avatar-campaign').html(avatar);
+                                    $('#modal-campaignname-mod').html(campname);
+                                    goAvatar._init(goOptions);                                        
                                 }
                          });                        
                      });

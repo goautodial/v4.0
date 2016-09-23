@@ -75,11 +75,11 @@
                         '.$sessionAvatar.'
                     </span>
                     <span class="media-box-body clearfix">
-                        <small class="text-muted pull-right ml">'.$lead_id.'</small>             
+                        <small class="text-muted pull-right ml"><a id="onclick-leadinfo" data-toggle="modal" data-target="#view_lead_information" data-id="'.$lead_id.'">'.$lead_id.'</a></small>             
                         <span class="media-box-heading"><strong><a id="onclick-leadinfo" data-toggle="modal" data-target="#view_lead_information" data-id="'.$lead_id.'" class="text m0">'.$fullname.'</strong></a>
                         </span>
                         <p class="m0">
-                            <small><strong><a id="onclick-leadinfo" data-toggle="modal" data-target="#view_lead_information" data-id="'.$lead_id.'" class="text-black">'.$phone_number.'</strong></a>
+                            <small><a id="onclick-leadinfo" data-toggle="modal" data-target="#view_lead_information" data-id="'.$lead_id.'" class="text-black">'.$phone_number.'</a>
                             </small>
                         </p><br/>
                     </span>              

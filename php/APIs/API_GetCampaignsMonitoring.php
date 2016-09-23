@@ -76,7 +76,8 @@
         } 
         $campaignsmonitoring .='[';
         $campaignsmonitoring .= '"'.$sessionAvatar.'",';
-        $campaignsmonitoring .= '"<b class=\"'.$textclass.'\">'.$campid.'</b>",';        
+        //$campaignsmonitoring .= '"<b class=\"'.$textclass.'\">'.$campid.'</b>",'; 
+        $campaignsmonitoring .= '"<a id=\"onclick-campaigninfo\" data-toggle=\"modal\" data-target=\"#view_campaign_information\" data-id=\"'.$campid.'\" class=\"text-blue\"><strong>'.$campid.'</strong></a>",';        
         $campaignsmonitoring .= '"'.$campname.'",'; 
         $campaignsmonitoring .= '"'.$leadscount.'",';      
         $campaignsmonitoring .= '"'.$localcalltime.'",';      

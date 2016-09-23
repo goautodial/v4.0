@@ -61,7 +61,7 @@
         $fullname = "$first_name $last_name";
         
         $textclass = "text-blue";
-        $sessionAvatar = "<avatar username='$fullname' :size='32'></avatar>";
+        $sessionAvatar = "<div class='media'><avatar username='$fullname' :size='32'></avatar></div>";
         
         $agentlatestcalls .='[';
         $agentlatestcalls .= '"'.$sessionAvatar.'",';
