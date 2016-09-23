@@ -1038,41 +1038,50 @@ $(document).ready(function() {
         $("#inboundSelection, #scButton, #selectionNote").addClass('hidden');
         $("#closerSelectBlended").closest('p').addClass('hidden');
         if (camp.length > 0) {
-            $("#logSpinner").removeClass('hidden');
             $("#scSubmit").removeClass('disabled');
-            var postData = {
-                goAction: 'goGetInboundGroups',
-                goUser: uName,
-                goPass: uPass,
-                goCampaign: $(this).val(),
-                responsetype: 'json'
-            };
-        
-            $.ajax({
-                type: 'POST',
-                url: '<?=$goAPI?>/goAgent/goAPI.php',
-                processData: true,
-                data: postData,
-                dataType: "json"
-            })
-            .done(function (data) {
-                var result = data.result;
-                $("#logSpinner").addClass('hidden');
-                if (result != 'error') {
-                    var inb_list = '';
-                    $.each(data.data.inbound_groups, function(idx, inbg) {
-                        inb_list += "<li class='ui-state-default'><abbr title='"+inbg+"'>"+idx+"</abbr></li>";
-                    });
-                    $("#selectedINB").empty();
-                    $("#notSelectedINB").empty().append(inb_list);
-                    $("#inboundSelection, #scButton, #selectionNote").removeClass('hidden');
-                    $("#closerSelectBlended").closest('p').removeClass('hidden');
-                } else {
-                    //alert(data.message);
-                    $("#inboundSelection, #scButton, #selectionNote").addClass('hidden');
-                    $("#closerSelectBlended").closest('p').addClass('hidden');
-                }
-            });
+            if (agent_choose_ingroups == '1') {
+                $("#logSpinner").removeClass('hidden');
+                var postData = {
+                    goAction: 'goGetInboundGroups',
+                    goUser: uName,
+                    goPass: uPass,
+                    goCampaign: $(this).val(),
+                    responsetype: 'json'
+                };
+            
+                $.ajax({
+                    type: 'POST',
+                    url: '<?=$goAPI?>/goAgent/goAPI.php',
+                    processData: true,
+                    data: postData,
+                    dataType: "json"
+                })
+                .done(function (data) {
+                    var result = data.result;
+                    $("#logSpinner").addClass('hidden');
+                    if (result != 'error') {
+                        var inb_list = '';
+                        $.each(data.data.inbound_groups, function(idx, inbg) {
+                            inb_list += "<li class='ui-state-default'><abbr title='"+inbg+"'>"+idx+"</abbr></li>";
+                        });
+                        $("#selectedINB").empty();
+                        $("#notSelectedINB").empty().append(inb_list);
+                        $("#inboundSelection, #scButton, #selectionNote").removeClass('hidden');
+                        $("#closerSelectBlended").closest('p').removeClass('hidden');
+                    } else {
+                        //alert(data.message);
+                        $("#inboundSelection, #scButton, #selectionNote").addClass('hidden');
+                        $("#closerSelectBlended").closest('p').addClass('hidden');
+                    }
+                });
+            } else {
+                var inb_list = $.trim(user_closer_campaigns.slice(0,-1)),
+                user_inb_list = '';
+                $.each(inb_list.split(" "), function(idx, inbg) {
+                    user_inb_list += "<li class='ui-state-default'><abbr title='"+inbg+"'>"+inbg+"</abbr></li>";
+                });
+                $("#selectedINB").empty().append(user_inb_list);
+            }
         } else {
             $("#scSubmit").addClass('disabled');
         }
@@ -1573,7 +1582,7 @@ function btnLogMeIn () {
             
             $("#select-campaign").on('hidden.bs.modal', function() {
                 logging_in = false;
-                console.log('hide', logging_in);
+                //console.log('hide', logging_in);
             });
         } else {
             swal({
@@ -1973,6 +1982,8 @@ function checkIfStillLoggedIn(logged_out) {
             goAction: 'goCheckIfLoggedIn',
             goUser: uName,
             goPass: uPass,
+            goPhone: phone_login,
+            goPhonePass: phone_pass,
             responsetype: 'json'
         };
     
