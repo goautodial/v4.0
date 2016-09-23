@@ -240,12 +240,12 @@ if($output->result == "success"){
 		
 		// start of legend
 				if($output->getReports->MIDsorted_output != NULL){
-					$agent_pdetail .= '<table class="table">
-					    	<tr><th colspan="2"><small>LEGEND: </th></tr>
-					    	<tr><td><small> DNC = DO NOT CALL </small></td><td><small> A = Answering Machine </small></td></tr>
-					    	<tr><td><small> N = No Answer </small></td><td><small> MAIL = MAILER REQUESTED </small></td></tr>
-					    	<tr><td><small> DC	= Disconnected Number </small></td><td><small> YESJM = WILL VOTE FOR JMEDINA </small></td></tr>
-					    	</table><br/>';
+					$agent_pdetail .= '<table class="table table-hover">
+					    	<tr class="info"><th colspan="2"><small>LEGEND: </th></tr>';
+					    	for ($i=0; $i < count($output->getReports->Legend); $i+=2) { 
+					    		$agent_pdetail .= "<tr><td><small>".$output->getReports->Legend[$i]."</small></td><td><small>".$output->getReports->Legend[$i+1]."</small></td></tr>";
+					    	}
+					$agent_pdetail .= '</table><br/>';
 			    }
 		// end of legend
 

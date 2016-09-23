@@ -97,6 +97,10 @@
                         <div class="col-lg-3">
                             <h3 class="m0 pb-lg">Filters</h3>
                             <form id="search_form">
+
+                                <!-- HIDDEN POSTS -->
+                                <input type="hidden" name="userID" id="userID" value="<?php echo $user->getUserName();?>">
+
                                 <div class="form-group">
                                     <label for="filter_type">Type</label>
                                     <select class="form-control select2" id="filter_type" style="width:100%;">
