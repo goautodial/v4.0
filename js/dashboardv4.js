@@ -114,7 +114,6 @@
                                 ]                                                                 
                 });
                 goAvatar._init(goOptions);
-                table.fnProcessingIndicator();
         } 
     });
     }  
@@ -129,7 +128,7 @@
                 var JSONStringrealtime = values;
                 var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
                 //console.log(JSONStringrealtime);
-                console.log(JSONObjectrealtime); 
+                //console.log(JSONObjectrealtime); 
                 var table = $('#realtime_agents_monitoring_table').dataTable({
                                 data:JSONObjectrealtime,
                                 "destroy":true,
@@ -158,7 +157,6 @@
                                 
                 });
                 goAvatar._init(goOptions);
-                table.fnProcessingIndicator();
         } 
     });
     }
@@ -201,7 +199,6 @@
                                 ]
                 });
                 goAvatar._init(goOptions);
-                table.fnProcessingIndicator();
         } 
     });
     } 
