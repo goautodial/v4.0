@@ -471,15 +471,15 @@
                 </div> 
                 <div class="modal-body"> 
                     <center> 
-                        <div id="modal-avatar"></div>
+                        <div id="modal-avatar-lead"></div>
                         <!--<img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle">-->
-                            <h3 class="media-heading"><span id="modal-full_name"></span><small>  <span id="modal-country_code"></small></h3> 
+                            <h3 class="media-heading"><span id="modal-full_name"></span><small>  <span id="modal-country_code"></span></small></h3> 
                                 <span>Address: </span> 
                                     <span class="label label-info" id="modal-address1"></span> 
                                     <span class="label label-info" id="modal-city"></span> 
                                     <span class="label label-waring" id="modal-state"></span>
                                     <span class="label label-success" id="modal-postal_code"></span><br/>                                
-                    </center> <hr> 
+                    </center> 
                         <div class="responsive">
                             <table class="table table-striped table-hover" id="view_lead_information_table" style="width: 100%">
                                 <thead>
@@ -492,12 +492,12 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                    <td><span id="modal-lead_id"></td>
-                                    <td><span id="modal-list_id"></td>
+                                    <td><span id="modal-lead_id"></span></td>
+                                    <td><span id="modal-list_id"></span></td>
                                     <!-- <td><span id="modal-campaign_id"></td> -->
                                     <!-- <td><span id="modal-phone_number"></td> -->
-                                    <td><span id="modal-status"></td>
-                                    <td><span id="modal-user"></td>
+                                    <td><span id="modal-status"></span></td>
+                                    <td><span id="modal-user"></span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -574,7 +574,7 @@
         $('#modal-postal_code').html("");
         $('#modal-country_code').html("");
         $('#modal-full_name').html("");
-        $('#modal-avatar').html("");  
+        $('#modal-avatar-lead').html("");  
         $('#modal-user').html("");
         $('#modal-status').html("");        
     }
@@ -622,7 +622,7 @@
                         var avatar = '<avatar username="'+full_name+'" :size="160"></avatar>';
                         
                         $('#modal-full_name').html(full_name);
-                        $('#modal-avatar').html(avatar);
+                        $('#modal-avatar-lead').html(avatar);
                         goAvatar._init(goOptions);
                     }
                     
