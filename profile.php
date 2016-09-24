@@ -33,13 +33,12 @@
         <meta name="description" content="Bootstrap Admin App + jQuery">
         <meta name="keywords" content="app, responsive, jquery, bootstrap, dashboard, admin">
         
-        <?php print $ui->standardizedThemeCSS(); ?>
         <?php print $ui->creamyThemeCSS(); ?>
         
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         
-		<!-- javascript -->
+            <!-- javascript -->
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>    
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
@@ -368,16 +367,16 @@
                            <div class="panel-heading">
                               <a class="pull-right">
                                  <em class="icon-plus text-muted"></em>
-                              </a>Latest Calls</div>
+                              </a>Latest Outbound Calls</div>
                            <div class="list-group">
                               <!-- START Latest Calls summary widget -->
                                 <a class="media p mt0 list-group-item">
                                 
-                                    <span id="refresh_agent_latest_calls_summary"></span>
+                                    <span id="refresh_agent_latest_outbound_calls_summary"></span>
                                   
                                 </a>
                               
-                              <!-- END User status-->
+                              <!-- END Latest Calls summary widget -->
                                         <a href="#" data-toggle="modal" data-target="#agent_latest_calls" class="media p mt0 list-group-item text-center text-muted">View more</a>                              
                            </div>
                         </div>
@@ -416,10 +415,9 @@
             </div>
          </div>
       </section><!-- /.content -->
-            </aside><!-- /.right-side -->
-                <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
+            </aside><!-- /.right-side -->                
                 <?php print $ui->creamyFooter();?>
-        </div><!-- ./wrapper -->
+
         
 <!--================= MODALS =====================-->
 
@@ -440,7 +438,7 @@
                                                 <th style="color: white;">Pic</th>
                                                 <th style="font-size: small;">Lead ID</th>
                                                 <th style="font-size: small;">Customer</th>
-                                                <th style="font-size: small;">List ID</th>                                                
+                                                <!-- <th style="font-size: small;">List ID</th> -->
                                                 <th style="font-size: small;">Campaign ID</th>                                                                
                                                 <th style="font-size: small;">Phone Number</th>
                                                 <th style="font-size: small;">Status</th>
@@ -525,15 +523,18 @@
             data: {user_id: userid},
             dataType: 'json',
             success: function(values){
-                var JSONStringrealtime = values;
-                var JSONObjectrealtime = JSON.parse(JSONStringrealtime);                
-                //console.log(JSONStringrealtime);
-                //console.log(JSONObjectrealtime); 
+                var JSONStringlatest_calls = values;
+                var JSONObjectlatest_calls = JSON.parse(JSONStringlatest_calls);                
+                console.log(JSONObjectlatest_calls); 
                 var table = $('#agent_latest_calls_table').dataTable({
-                    data:JSONObjectrealtime,
+                    data:JSONObjectlatest_calls,
                     "destroy":true,
                     //"searching": false,
                     stateSave: true,
+                    drawCallback: function(settings) {
+                        var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                            pagination.toggle(this.api().page.info().pages > 1);
+                    },                    
                     "columnDefs": [
                         {
                             className: "hidden-xs", 
@@ -554,7 +555,7 @@
             cache: false,
             data: {user_id: userid},
             success: function(data){
-                $("#refresh_agent_latest_calls_summary").html(data);
+                $("#refresh_agent_latest_outbound_calls_summary").html(data);
                 goAvatar._init(goOptions);
             } 
         });
@@ -600,7 +601,11 @@
                     success: function(data){ 
                         //console.log(data);
                         var JSONStringleadinfo = data;
-                        var JSONObjectleadinfo = JSON.parse(JSONStringleadinfo);                        
+                        var JSONObjectleadinfo = JSON.parse(JSONStringleadinfo);  
+                        var fname = JSONObjectleadinfo.data.first_name;
+                        var lname = JSONObjectleadinfo.data.last_name;
+                        var full_name = fname+' '+lname;
+                        var avatar = '<avatar username="'+full_name+'" :size="160"></avatar>';                        
                         console.log(JSONObjectleadinfo);
                         $('#modal-lead_id').html(JSONObjectleadinfo.data.lead_id);
                         $('#modal-list_id').html(JSONObjectleadinfo.data.list_id);                    
@@ -614,13 +619,7 @@
                         $('#modal-country_code').html(JSONObjectleadinfo.data.country_code);
                         $('#modal-user').html(JSONObjectleadinfo.data.user);
                         $('#modal-status').html(JSONObjectleadinfo.data.status);
-                        $('#modal-campaign_id').html(JSONObjectleadinfo.data.campaign_id);
-                        
-                        var fname = JSONObjectleadinfo.data.first_name;
-                        var lname = JSONObjectleadinfo.data.last_name;
-                        var full_name = fname+' '+lname;
-                        var avatar = '<avatar username="'+full_name+'" :size="160"></avatar>';
-                        
+                        $('#modal-campaign_id').html(JSONObjectleadinfo.data.campaign_id);                                            
                         $('#modal-full_name').html(full_name);
                         $('#modal-avatar-lead').html(avatar);
                         goAvatar._init(goOptions);
@@ -632,6 +631,7 @@
         // ---- loads datatable functions                                                
             load_agent_latest_calls();
             load_agent_latest_calls_summary();
+
     });
 
     
@@ -668,34 +668,8 @@
     <!--<script src="./vendor/jQuery-gMap/jquery.gmap.min.js"></script>-->
     <!-- =============== APP SCRIPTS ===============-->
     <!--<script src="js/app.js"></script>        -->
-	<!-- Vue Avatar -->
-    <script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>
-    <script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>    
-    <script type='text/javascript'>
-        var goOptions = {
-            el: 'body',
-            components: {
-                'avatar': Avatar.Avatar,
-                'rules': {
-                    props: ['items'],
-                    template: 'For example:' +
-                        '<ul id="example-1">' +
-                        '<li v-for="item in items"><b>{{ item.username }}</b> becomes <b>{{ item.initials }}</b></li>' +
-                        '</ul>'
-                }
-            },
-            data: {
-                items: []
-            },
-            methods: {
-                initials: function(username, initials) {
-                    this.items.push({username: username, initials: initials});
-                }
-            }
-        };
-        var goAvatar = new Vue(goOptions);
-    </script>    
-        
+	<!-- Vue Avatar -->   
+    
+    <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>        
     <?php print $ui->standardizedThemeJS();?>
-    </body>
 </html>

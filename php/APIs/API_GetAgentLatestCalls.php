@@ -68,7 +68,7 @@
         //$agentlatestcalls .= '"<b class=\"'.$textclass.'\">'.$lead_id.'</b>",';
         $agentlatestcalls .= '"<a id=\"onclick-leadinfo\" data-toggle=\"modal\" data-target=\"#view_lead_information\" data-id=\"'.$lead_id.'\" class=\"text-blue\"><strong>'.$lead_id.'</strong></a>",';
         $agentlatestcalls .= '"'.$fullname.'",';
-        $agentlatestcalls .= '"'.$list_id.'",'; 
+        //$agentlatestcalls .= '"'.$list_id.'",'; 
         $agentlatestcalls .= '"'.$campaign_id.'",';      
         $agentlatestcalls .= '"'.$phone_number.'",';      
         $agentlatestcalls .= '"'.$statusout.'",';
