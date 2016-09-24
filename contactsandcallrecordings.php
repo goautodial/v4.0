@@ -44,7 +44,7 @@
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
-        <!-- Date Picker -->
+        <!-- Date Picker -->	
         <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
 		<script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
@@ -364,7 +364,7 @@ $disposition = $ui->API_getAllDispositions();
 													<option value="" selected DISABLED> -- SELECT AN AGENT -- </option>
 													<?php
 														for($i=0; $i < count($agents->user_id);$i++){
-															echo "<option value='".$agents->userno[$i]."'> ".$agents->full_name[$i]." </option>";
+															echo '<option value="'.$agents->user[$i].'"> '.$agents->full_name[$i].' </option>';
 														}
 													?>
 												</select>
@@ -616,7 +616,7 @@ $disposition = $ui->API_getAllDispositions();
 							    },
 								success: function(data) {
 									$('#search_button').text("Search");
-	                				$('#search_button').prop("disabled", false);
+	                				$('#search_button').attr("disabled", false);
 									console.log(data);
 
 									if(data != ""){
@@ -653,7 +653,7 @@ $disposition = $ui->API_getAllDispositions();
 							    },
 								success: function(data) {
 									$('#search_button').text("Search");
-	                				$('#search_button').prop("disabled", false);
+	                				$('#search_button').attr("disabled", false);
 									console.log(data);
 
 									if(data != ""){
@@ -697,7 +697,7 @@ $disposition = $ui->API_getAllDispositions();
 							    },
 								success: function(data) {
 									$('#search_button').text("Search");
-	                				$('#search_button').prop("disabled", false);
+	                				$('#search_button').attr("disabled", false);
 									console.log(data);
 
 									if(data != ""){
@@ -739,7 +739,7 @@ $disposition = $ui->API_getAllDispositions();
 							    },
 								success: function(data) {
 									$('#search_button').text("Search");
-	                				$('#search_button').prop("disabled", false);
+	                				$('#search_button').attr("disabled", false);
 									console.log(data);
 
 									if(data != ""){
@@ -781,7 +781,7 @@ $disposition = $ui->API_getAllDispositions();
 							    },
 								success: function(data) {
 									$('#search_button').text("Search");
-	                				$('#search_button').prop("disabled", false);
+	                				$('#search_button').attr("disabled", false);
 									console.log(data);
 
 									if(data != ""){
@@ -829,95 +829,33 @@ $disposition = $ui->API_getAllDispositions();
 						});
 
 						$('#datetimepicker3').datetimepicker({
-						icons: {
-		                      time: 'fa fa-clock-o',
-		                      date: 'fa fa-calendar',
-		                      up: 'fa fa-chevron-up',
-		                      down: 'fa fa-chevron-down',
-		                      previous: 'fa fa-chevron-left',
-		                      next: 'fa fa-chevron-right',
-		                      today: 'fa fa-crosshairs',
-		                      clear: 'fa fa-trash'
-		                    }
+							format: 'MM/DD/YYYY'
 						});
 
 		                $('#datetimepicker4').datetimepicker({
-		                icons: {
-		                      time: 'fa fa-clock-o',
-		                      date: 'fa fa-calendar',
-		                      up: 'fa fa-chevron-up',
-		                      down: 'fa fa-chevron-down',
-		                      previous: 'fa fa-chevron-left',
-		                      next: 'fa fa-chevron-right',
-		                      today: 'fa fa-crosshairs',
-		                      clear: 'fa fa-trash'
-		                    }
+		                	useCurrent: false,
+                    		format: 'MM/DD/YYYY'
 		                });
 
 	                // ---- DATE FILTERS
 
 		                $("#datetimepicker3").on("dp.change", function(e) {
-		                	var start_filterdate_val = $('#start_filterdate').val();
-		                	var end_filterdate_val = $('#end_filterdate').val();
-		                	var agent_filter_val = $('#agent_filter').val();
+		                	$('#datetimepicker4').data("DateTimePicker").minDate(e.date);
 
-		                	$.ajax({
-							    url: "filter_callrecs.php",
-							    type: 'POST',
-							    data: {
-							    	search_recordings : $('#search').val(),
-							    	start_filterdate : start_filterdate_val,
-							    	end_filterdate : end_filterdate_val,
-							    	agent_filter : agent_filter_val
-							    },
-								success: function(data) {
-									$('#search_button').text("Search");
-	                				$('#search_button').prop("disabled", false);
-									console.log(data);
-									if(data != ""){
-										$('#table_callrecordings').html(data);
-										$('#table_callrecordings').DataTable({
-						                	"bDestroy" : true
-						                });
-									}else{
-										init_callrecs_table.fnClearTable();
-									}
-								}
-							});
-						});
+		                	if($('#search').val() == ""){
+		                		$('#search_button').attr("disabled", false);
+		                		$('#search_button').text("Searching...");
+		                	}else{
+			                	$('#search_button').text("Searching...");
+			                	$('#search_button').attr("disabled", true);
+		                	}
 
-		                $("#datetimepicker4").on("dp.change", function(e) {
-		                	var start_filterdate_val = $('#start_filterdate').val();
-		                	var end_filterdate_val = $('#end_filterdate').val();
-		                	var agent_filter_val = $('#agent_filter').val();
-		                	$.ajax({
-							    url: "filter_callrecs.php",
-							    type: 'POST',
-							    data: {
-							    	search_recordings : $('#search').val(),
-							    	start_filterdate : start_filterdate_val,
-							    	end_filterdate : end_filterdate_val,
-							    	agent_filter : agent_filter_val
-							    },
-								success: function(data) {
-									$('#search_button').text("Search");
-	                				$('#search_button').prop("disabled", false);
-									console.log(data);
-									if(data != ""){
-										$('#table_callrecordings').html(data);
-										$('#table_callrecordings').DataTable({
-						                	"bDestroy" : true
-						                });
-									}else{
-										init_callrecs_table.fnClearTable();
-									}
-								}
-							});
-						});
-
-		            // AGENT FILTER
-		            	$('#agent_filter').on('change', function() {
-		            		var agent_filter_val = $('#agent_filter').val();
+		                	if($('#agent_filter').is(':visible')) {
+							    var agent_filter_val = $('#agent_filter').val();
+							}else{
+								var agent_filter_val = "";
+							}
+							
 		            		var start_filterdate_val = $('#start_filterdate').val();
 		                	var end_filterdate_val = $('#end_filterdate').val();
 
@@ -932,7 +870,104 @@ $disposition = $ui->API_getAllDispositions();
 							    },
 								success: function(data) {
 									$('#search_button').text("Search");
-	                				$('#search_button').prop("disabled", false)
+	                				$('#search_button').attr("disabled", false)
+									console.log(data);
+									if(data != ""){
+
+										$('#table_callrecordings').html(data);
+										$('#table_callrecordings').DataTable({
+						                	"bDestroy" : true
+						                });
+									}else{
+										init_callrecs_table.fnClearTable();
+									}
+								}
+							});
+						});
+
+		                $("#datetimepicker4").on("dp.change", function(e) {
+
+		                	$('#datetimepicker3').data("DateTimePicker").maxDate(e.date);
+
+		                	if($('#search').val() == ""){
+		                		$('#search_button').attr("disabled", false);
+		                		$('#search_button').text("Searching...");
+		                	}else{
+			                	$('#search_button').text("Searching...");
+			                	$('#search_button').attr("disabled", true);
+		                	}
+
+		                	if($('#agent_filter').is(':visible')) {
+							    var agent_filter_val = $('#agent_filter').val();
+							}else{
+								var agent_filter_val = "";
+							}
+
+		            		var start_filterdate_val = $('#start_filterdate').val();
+		                	var end_filterdate_val = $('#end_filterdate').val();
+
+		            		$.ajax({
+							    url: "filter_callrecs.php",
+							    type: 'POST',
+							    data: {
+							    	search_recordings : $('#search').val(),
+							    	start_filterdate : start_filterdate_val,
+							    	end_filterdate : end_filterdate_val,
+							    	agent_filter : agent_filter_val
+							    },
+								success: function(data) {
+									$('#search_button').text("Search");
+	                				$('#search_button').attr("disabled", false)
+									console.log(data);
+									if(data != ""){
+
+										$('#table_callrecordings').html(data);
+										$('#table_callrecordings').DataTable({
+						                	"bDestroy" : true
+						                });
+									}else{
+										init_callrecs_table.fnClearTable();
+									}
+								}
+							});
+						});
+
+		            // AGENT FILTER
+		            	$('#agent_filter').on('change', function() {
+
+		            		if($('#search').val() == ""){
+		                		$('#search_button').attr("disabled", false);
+		                		$('#search_button').text("Searching...");
+		                	}else{
+			                	$('#search_button').text("Searching...");
+			                	$('#search_button').attr("disabled", true);
+		                	}
+
+		                	if($('#agent_filter').is(':visible')) {
+							    if($('#agent_filter').is(':visible')) {
+							    var agent_filter_val = $('#agent_filter').val();
+							}else{
+								var agent_filter_val = "";
+							}
+							}else{
+								var agent_filter_val = "";
+							}
+		            		
+		            		var start_filterdate_val = $('#start_filterdate').val();
+		                	var end_filterdate_val = $('#end_filterdate').val();
+
+		            		$.ajax({
+							    url: "filter_callrecs.php",
+							    type: 'POST',
+							    data: {
+							    	search_recordings : $('#search').val(),
+							    	start_filterdate : start_filterdate_val,
+							    	end_filterdate : end_filterdate_val,
+							    	agent_filter : agent_filter_val
+							    },
+								success: function(data) {
+									$('#search_button').text("Search");
+	                				$('#search_button').attr("disabled", false)
 									console.log(data);
 									if(data != ""){
 
@@ -955,10 +990,11 @@ $disposition = $ui->API_getAllDispositions();
 		                //init_contacts_table.destroy();
 
 		                	if($('#search').val() == ""){
-		                		$('#search_button').prop("disabled", false);
+		                		$('#search_button').attr("disabled", false); 
+		                		$('#search_button').text("Searching...");
 		                	}else{
 			                	$('#search_button').text("Searching...");
-			                	$('#search_button').prop("disabled", true);
+			                	$('#search_button').attr("disabled", true);
 		                	}
 
 		                	// if contacts is checked
@@ -982,7 +1018,7 @@ $disposition = $ui->API_getAllDispositions();
 								    },
 									success: function(data) {
 										$('#search_button').text("Search");
-		                				$('#search_button').prop("disabled", false)
+		                				$('#search_button').attr("disabled", false)
 										console.log(data);
 										if(data != ""){
 
@@ -1000,7 +1036,11 @@ $disposition = $ui->API_getAllDispositions();
 			            	if($('#search_recordings').is(":checked")){
 			            		var start_filterdate_val = $('#start_filterdate').val();
 	                			var end_filterdate_val = $('#end_filterdate').val();
-	                			var agent_filter_val = $('#agent_filter').val();
+	                			if($('#agent_filter').is(':visible')) {
+							    var agent_filter_val = $('#agent_filter').val();
+							}else{
+								var agent_filter_val = "";
+							}
 
 								$.ajax({
 								    url: "search.php",
@@ -1013,7 +1053,7 @@ $disposition = $ui->API_getAllDispositions();
 								    },
 									success: function(data) {
 										$('#search_button').text("Search");
-	                					$('#search_button').prop("disabled", false);
+	                					$('#search_button').attr("disabled", false);
 										console.log(data);
 										if(data != ""){
 											$('#table_callrecordings').html(data);
