@@ -1139,7 +1139,7 @@ $(document).ready(function() {
                 goCampaign: $("#select_camp").val(),
                 goIngroups: inbArray,
                 responsetype: 'json',
-                closer_blended: $("#closerSelectBlended").is(':checked'),
+                goCloserBlended: $("#closerSelectBlended").is(':checked'),
                 goUseWebRTC: use_webrtc
             };
     
