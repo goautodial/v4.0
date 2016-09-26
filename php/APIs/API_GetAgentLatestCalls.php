@@ -61,14 +61,14 @@
         $fullname = "$first_name $last_name";
         
         $textclass = "text-blue";
-        $sessionAvatar = "<avatar username='$fullname' :size='32'></avatar>";
+        $sessionAvatar = "<div class='media'><avatar username='$fullname' :size='32'></avatar></div>";
         
         $agentlatestcalls .='[';
         $agentlatestcalls .= '"'.$sessionAvatar.'",';
         //$agentlatestcalls .= '"<b class=\"'.$textclass.'\">'.$lead_id.'</b>",';
         $agentlatestcalls .= '"<a id=\"onclick-leadinfo\" data-toggle=\"modal\" data-target=\"#view_lead_information\" data-id=\"'.$lead_id.'\" class=\"text-blue\"><strong>'.$lead_id.'</strong></a>",';
         $agentlatestcalls .= '"'.$fullname.'",';
-        $agentlatestcalls .= '"'.$list_id.'",'; 
+        //$agentlatestcalls .= '"'.$list_id.'",'; 
         $agentlatestcalls .= '"'.$campaign_id.'",';      
         $agentlatestcalls .= '"'.$phone_number.'",';      
         $agentlatestcalls .= '"'.$statusout.'",';

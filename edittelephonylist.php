@@ -98,11 +98,11 @@ if (isset($_POST["modifyid"])) {
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
                         <?php
 							if(isset($_POST["modifyid"])){
-						?>	
+						?>
 							<li><a href="./telephonylist.php"><?php $lh->translateText("lists"); ?></a></li>
                         <?php
 							}
-                        ?>	                    
+                        ?>
                         <li class="active"><?php $lh->translateText("modify"); ?></li>
                     </ol>
                 </section>
@@ -132,7 +132,7 @@ if (isset($_POST["modifyid"])) {
 				         $output = json_decode($data);
 				        //var_dump($output);
 						if ($output->result=="success") {
-							
+
 						# Result was OK!
 							for($i=0;$i<count($output->list_id);$i++){
 					?>
@@ -142,10 +142,10 @@ if (isset($_POST["modifyid"])) {
 				<div class="panel panel-default">
                     <div class="panel-body">
 						<legend>MODIFY LIST ID : <u><?php echo $modifyid;?></u></legend>
-                    	
+
 							<form id="modifylist">
 								<input type="hidden" name="modifyid" value="<?php echo $modifyid;?>">
-							
+
 						<!-- Custom Tabs -->
 						<div role="tabpanel">
 						<!--<div class="nav-tabs-custom">-->
@@ -184,7 +184,7 @@ if (isset($_POST["modifyid"])) {
 															echo "<option value='".$campaign->campaign_id[$a]."'> ".$campaign->campaign_name[$a]." </option>";
 														}
 													}
-													
+
 													echo $campaign_option;
 												?>
 												</select>
@@ -201,7 +201,7 @@ if (isset($_POST["modifyid"])) {
 													}else{
 														$active .= '<option value="Y" > YES </option>';
 													}
-													
+
 													if($output->active[$i] == "N" || $output->active[$i] == NULL){
 														$active .= '<option value="N" selected> NO </option>';
 													}else{
@@ -218,12 +218,15 @@ if (isset($_POST["modifyid"])) {
 			                    <!-- FOOTER BUTTONS -->
 			                    <fieldset class="footer-buttons">
 			                        <div class="box-footer">
-			                           <div class="col-sm-3 pull-right">
-												<a href="telephonylist.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
-			                           	
-			                                	<button type="submit" class="btn btn-primary" id="modifyListOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-											
+																<div class="row">
+				                          <div class="pull-right">
+																		 <div class="col-sm-12">
+																		 <a href="telephonylist.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
+				                             <button type="submit" class="btn btn-primary" id="modifyListOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+																		 <button type="button" class="btn btn-success" id="add_custom_field" data-id="<?php echo $modifyid; ?>"><i class="fa fa-plus"></i> Custom Fields </button>
+																	 </div>
 			                           </div>
+															 </div>
 			                        </div>
 			                    </fieldset>
 
@@ -235,31 +238,31 @@ if (isset($_POST["modifyid"])) {
             </section>
 					<?php
 							}
-						}	
-                        
+						}
+
 					?>
-					
+
 				<!-- /.content -->
             </aside><!-- /.right-side -->
-			
+
 			<?php print $ui->creamyFooter(); ?>
 
         </div><!-- ./wrapper -->
 
-  		
-		
+
+
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
-	
-				/** 
+
+				/**
 				 * Modifies a telephony list
 			 	 */
 				//$("#modifylist").validate({
                 //	submitHandler: function() {
-					
+
 					$(document).on('click', '#cancel', function(){
 						swal("Cancelled", "No action has been done :)", "error");
 					});
@@ -288,10 +291,19 @@ if (isset($_POST["modifyid"])) {
 	                                  }
 	                            }
 	                        });
-							
-					//return false; //don't let the form refresh the page...					
+
+					//return false; //don't let the form refresh the page...
 				});
-				
+
+				$(document).on('click','#add_custom_field',function() {
+					var url = './addcustomfield.php';
+					var id = $(this).attr('data-id');
+					//alert(extenid);
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
+					//$('body').append(form);  // This line is not necessary
+					$(form).submit();
+				});
+
 			});
 		</script>
 
