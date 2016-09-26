@@ -2846,7 +2846,7 @@ function CheckForIncoming () {
                 if (this_VDIC_data.group_color.length > 2) {
                     $("#MainStatusSpan").css('background', this_VDIC_data.group_color);
                 }
-                dispnum = $("#cust-phone-number").val();
+                dispnum = $(".formMain input[name='phone_number']").val();
                 var status_display_number = phone_number_format(dispnum);
                 var callnum = dialed_number;
                 var dial_display_number = phone_number_format(callnum);
