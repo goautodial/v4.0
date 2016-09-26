@@ -85,8 +85,17 @@ var check_s;
             }
             echo "var {$idx} = {$val};\n";
         } else if (is_array($val)) {
+            echo "    {$idx} = new Array('','','','','','');\n";
+        } else if (is_object($val)) {
             $valList  = "";
-            $valName  = "";
+            $valList2 = "";
+            $valName  = $idx;
+            foreach ($val as $idz => $valz) {
+                $valList  .= "'{$idz}',";
+                $valList2 .= "'{$valz}',";
+            }
+            $valList  = preg_replace("/,$/", "", $valList);
+            $valList2 = preg_replace("/,$/", "", $valList2);
             
             if ($idx == 'xfer_groups') {
                 $valName = 'VARxferGroups';
@@ -101,26 +110,6 @@ var check_s;
             } else if ($idx == 'phone_groups') {
                 $valname = 'VARphonegroups';
             }
-            
-            if (strlen($valName) < 1) {
-                echo "    {$idx} = new Array('','','','','','');\n";
-            } else {
-                foreach ($val as $valz) {
-                    $valList  .= "'{$valz}',";
-                }
-                $valList  = preg_replace("/,$/", "", $valList);
-                echo "var {$valName} = new Array({$valList});\n";
-            }
-        } else if (is_object($val)) {
-            $valList  = "";
-            $valList2 = "";
-            $valName  = $idx;
-            foreach ($val as $idz => $valz) {
-                $valList  .= "'{$idz}',";
-                $valList2 .= "'{$valz}',";
-            }
-            $valList  = preg_replace("/,$/", "", $valList);
-            $valList2 = preg_replace("/,$/", "", $valList2);
             
             echo "var {$valName} = new Array({$valList});\n";
             if ($idx == 'statuses') {
