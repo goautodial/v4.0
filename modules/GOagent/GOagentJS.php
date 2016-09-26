@@ -75,6 +75,15 @@ var check_s;
             if ($idx == 'xfer_group_count') {
                 echo "var XFgroupCOUNT = {$val};\n";
             }
+            if ($idx == 'inbound_group_count') {
+                echo "var INgroupCOUNT = {$val};\n";
+            }
+            if ($idx == 'email_group_count') {
+                echo "var EMAILgroupCOUNT = {$val};\n";
+            }
+            if ($idx == 'phone_group_count') {
+                echo "var PHONEgroupCOUNT = {$val};\n";
+            }
             if ($idx == 'alt_phone_dialing') {
                 echo "var starting_alt_phone_dialing = {$val};\n";
             }
@@ -96,6 +105,14 @@ var check_s;
                 $valName = 'VARxferGroups';
             } else if ($idx == 'xfer_group_names') {
                 $valName = 'VARxferGroupsNames';
+            } else if ($idx == 'inbound_groups') {
+                $valName = 'VARingroups';
+            } else if ($idx == 'inbound_group_handlers') {
+                $valName = 'VARingroup_handlers';
+            } else if ($idx == 'email_groups') {
+                $valName = 'VARemailgroups';
+            } else if ($idx == 'phone_groups') {
+                $valname = 'VARphonegroups';
             }
             
             if ($idx == 'statuses') {
