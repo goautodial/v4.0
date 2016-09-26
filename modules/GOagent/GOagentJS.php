@@ -1120,10 +1120,10 @@ $(document).ready(function() {
     
     $("#scSubmit").click(function(e) {
         e.preventDefault();
-        var inbArray = [];
+        var inbArray = '';
         $("#scSubmit").addClass('disabled');
         $("#selectedINB").find('abbr').each(function(index) {
-            inbArray.push($(this).text());
+            inbArray += $(this).text() + "|";
         });
         if (use_webrtc && !phone.isConnected()) {
             phone.start();
@@ -1137,9 +1137,9 @@ $(document).ready(function() {
                 goUser: uName,
                 goPass: uPass,
                 goCampaign: $("#select_camp").val(),
-                goIngroups: inbArray,
+                goIngroups: inbArray.slice(0, -1),
                 responsetype: 'json',
-                goCloserBlended: $("#closerSelectBlended").is(':checked'),
+                goCloserBlended: ($("#closerSelectBlended").is(':checked') ? 1 : 0),
                 goUseWebRTC: use_webrtc
             };
     
