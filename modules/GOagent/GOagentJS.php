@@ -86,7 +86,6 @@ var check_s;
             echo "var {$idx} = {$val};\n";
         } else if (is_array($val)) {
             $valList  = "";
-            $valList2 = "";
             $valName  = "";
             
             if ($idx == 'xfer_groups') {
