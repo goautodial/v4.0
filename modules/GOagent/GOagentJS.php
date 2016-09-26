@@ -3556,6 +3556,7 @@ function Clear_API_Field(temp_field) {
 }
 
 function ManualDialCheckChannel(taskCheckOR) {
+    console.log('ManualDialCheckChannel');
     var CIDcheck = MDnextCID;
     if (taskCheckOR == 'YES') {
         var CIDcheck = XDnextCID;
