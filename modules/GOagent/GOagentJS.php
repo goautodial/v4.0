@@ -3787,7 +3787,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
         {var group = VDCL_group_id;}
     else
         {var group = campaign;}
-    var form_cust_channel = $("# ").html();
+    var form_cust_channel = $("#callchannel").html();
     var form_cust_serverip = $("#callserverip").val();
     var customer_channel = lastcustchannel;
     var customer_server_ip = lastcustserverip;
