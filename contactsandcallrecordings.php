@@ -247,7 +247,7 @@ $disposition = $ui->API_getAllDispositions();
 			                                    <option value="filter_city" class="contacts_filters">City </option>
 			                                    <option value="filter_state" class="contacts_filters">State </option>
 		                                    	<option value="filter_agent" disabled>Agent </option>
-			                             	</select>
+			                             		</select>
 			                            </div>
 			                            <div class="add_callrecording_filters" style="display:none;">
 			                              	<select multiple="multiple" class="select2-3 form-control add_filters2" style="width:100%;">
@@ -427,7 +427,7 @@ $disposition = $ui->API_getAllDispositions();
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 
-	<!-- FIXED ACTION BUTTON 
+	<!-- FIXED ACTION BUTTON
 	<div class="action-button-circle" data-toggle="modal" data-target="#list-modal">
 		<?php print $ui->getCircleButton("list_and_call_recording", "plus"); ?>
 	</div>
@@ -563,7 +563,7 @@ $disposition = $ui->API_getAllDispositions();
 		            		$(".add_callrecording_filters").hide(); // disable add filter
 		            	}
 
-					});	
+					});
 
 				/***
 				** Add Filters
@@ -572,7 +572,7 @@ $disposition = $ui->API_getAllDispositions();
 					$(".add_filters1").change(function(){
 
 						$(".campaign_filter_div").fadeIn("slow")[ $.inArray('filter_campaign', $(this).val()) >= 0 ? 'show' : 'hide' ]();
-						
+
 						$(".list_filter_div").fadeIn("slow")[ $.inArray('filter_list', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 
 						$(".disposition_filter_div").fadeIn("slow")[ $.inArray('filter_disposition', $(this).val()) >= 0 ? 'show' : 'hide' ]();
@@ -1115,7 +1115,7 @@ $disposition = $ui->API_getAllDispositions();
 
 			});
 		</script>
-		
+
 		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 		<?php print $ui->creamyFooter();?>
     </body>
