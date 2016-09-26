@@ -1261,6 +1261,8 @@ $(document).ready(function() {
                                 } else if (key == 'alt_phone_dialing') {
                                     $.globalEval(key+" = "+value+";");
                                     $.globalEval("starting_"+key+" = "+value+";");
+                                } else if (key == 'closer_blended') {
+                                    $.globalEval(key+" = "+value+";");
                                 } else {
                                     $.globalEval(key+" = '"+value+"';");
                                 }
@@ -2360,10 +2362,10 @@ function CheckForConfCalls (confnum, force) {
                 manager_ingroups_set = 1;
     
                 if ( (external_blended == '1') && (dial_method != 'INBOUND_MAN') )
-                    {closer_blended = '1';}
+                    {closer_blended = 1;}
     
                 if (external_blended == '0')
-                    {closer_blended = '0';}
+                    {closer_blended = 0;}
             }
             
             var live_conf_calls = result.data.channels_list;
