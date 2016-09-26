@@ -74,17 +74,13 @@ var check_s;
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
             if ($idx == 'xfer_group_count') {
                 echo "var XFgroupCOUNT = {$val};\n";
-            }
-            if ($idx == 'inbound_group_count') {
+            } else if ($idx == 'inbound_group_count') {
                 echo "var INgroupCOUNT = {$val};\n";
-            }
-            if ($idx == 'email_group_count') {
+            } else if ($idx == 'email_group_count') {
                 echo "var EMAILgroupCOUNT = {$val};\n";
-            }
-            if ($idx == 'phone_group_count') {
+            } else if ($idx == 'phone_group_count') {
                 echo "var PHONEgroupCOUNT = {$val};\n";
-            }
-            if ($idx == 'alt_phone_dialing') {
+            } else if ($idx == 'alt_phone_dialing') {
                 echo "var starting_alt_phone_dialing = {$val};\n";
             }
             echo "var {$idx} = {$val};\n";
