@@ -85,7 +85,25 @@ var check_s;
             }
             echo "var {$idx} = {$val};\n";
         } else if (is_array($val)) {
-            echo "    {$idx} = new Array('','','','','','');\n";
+            if (preg_match("/^(xfer_groups|inbound_groups|xfer_group_names|inbound_group_handlers)$/", $idx)) {
+                $valName = $idx;
+                if ($idx == 'xfer_groups') {
+                    $valName = 'VARxferGroups';
+                } else if ($idx == 'xfer_group_names') {
+                    $valName = 'VARxferGroupsNames';
+                } else if ($idx == 'inbound_groups') {
+                    $valName = 'VARingroups';
+                } else if ($idx == 'inbound_group_handlers') {
+                    $valName = 'VARingroup_handlers';
+                } else if ($idx == 'email_groups') {
+                    $valName = 'VARemailgroups';
+                } else if ($idx == 'phone_groups') {
+                    $valName = 'VARphonegroups';
+                }
+                echo "var {$valName} = new Array();\n";
+            } else {
+                echo "    {$idx} = new Array('','','','','','');\n";
+            }
         } else if (is_object($val)) {
             $valList  = "";
             $valList2 = "";
@@ -108,7 +126,7 @@ var check_s;
             } else if ($idx == 'email_groups') {
                 $valName = 'VARemailgroups';
             } else if ($idx == 'phone_groups') {
-                $valname = 'VARphonegroups';
+                $valName = 'VARphonegroups';
             }
             
             echo "var {$valName} = new Array({$valList});\n";
