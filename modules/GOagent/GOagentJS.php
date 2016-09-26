@@ -89,17 +89,9 @@ var check_s;
             }
             echo "var {$idx} = {$val};\n";
         } else if (is_array($val)) {
-            echo "    {$idx} = new Array('','','','','','');\n";
-        } else if (is_object($val)) {
             $valList  = "";
             $valList2 = "";
-            $valName  = $idx;
-            foreach ($val as $idz => $valz) {
-                $valList  .= "'{$idz}',";
-                $valList2 .= "'{$valz}',";
-            }
-            $valList  = preg_replace("/,$/", "", $valList);
-            $valList2 = preg_replace("/,$/", "", $valList2);
+            $valName  = "";
             
             if ($idx == 'xfer_groups') {
                 $valName = 'VARxferGroups';
@@ -115,10 +107,30 @@ var check_s;
                 $valname = 'VARphonegroups';
             }
             
+            if (strlen($valName) < 1) {
+                echo "    {$idx} = new Array('','','','','','');\n";
+            } else {
+                foreach ($val as $valz) {
+                    $valList  .= "'{$valz}',";
+                }
+                $valList  = preg_replace("/,$/", "", $valList);
+                echo "var {$valName} = new Array({$valList});\n";
+            }
+        } else if (is_object($val)) {
+            $valList  = "";
+            $valList2 = "";
+            $valName  = $idx;
+            foreach ($val as $idz => $valz) {
+                $valList  .= "'{$idz}',";
+                $valList2 .= "'{$valz}',";
+            }
+            $valList  = preg_replace("/,$/", "", $valList);
+            $valList2 = preg_replace("/,$/", "", $valList2);
+            
+            echo "var {$valName} = new Array({$valList});\n";
             if ($idx == 'statuses') {
                 echo "var statuses_names = new Array({$valList2});\n";
             }
-            echo "var {$valName} = new Array({$valList});\n";
         } else {
             echo "var {$idx} = '{$val}';\n";
             if ($idx == 'callback_statuses_list') {
@@ -3791,7 +3803,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
         {var group = VDCL_group_id;}
     else
         {var group = campaign;}
-    var form_cust_channel = $("#callchannel").html();
+    var form_cust_channel = $("# ").html();
     var form_cust_serverip = $("#callserverip").val();
     var customer_channel = lastcustchannel;
     var customer_server_ip = lastcustserverip;
