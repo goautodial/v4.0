@@ -6726,3 +6726,7 @@ button.close {
     display: none !important;
   }
 }
+#legendBox td{
+  padding: 2px 5px;
+  white-space:nowrap;
+}

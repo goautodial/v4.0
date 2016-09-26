@@ -84,7 +84,11 @@
                                         </center>
                                     </div>
                                     <div class="box-body" id="table">
-                                        
+                                        <div collapse="panelChart9" class="panel-wrapper">
+                                            <div class="panel-body">
+                                               <div class="chart-splinev3 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)--> 
+                                            </div>
+                                        </div>
                                     </div><!-- /.box-body -->
 
                                 </div><!-- /.panel-body -->
@@ -93,6 +97,10 @@
                         <div class="col-lg-3">
                             <h3 class="m0 pb-lg">Filters</h3>
                             <form id="search_form">
+
+                                <!-- HIDDEN POSTS -->
+                                <input type="hidden" name="userID" id="userID" value="<?php echo $user->getUserName();?>">
+
                                 <div class="form-group">
                                     <label for="filter_type">Type</label>
                                     <select class="form-control select2" id="filter_type" style="width:100%;">
@@ -120,6 +128,25 @@
                                         ?>
                                     </select>
                                 </div>
+
+                                <div class="form-group request_div" style="display:none;">
+                                    <label>Request</label>
+                                    <div class="stats_request">
+                                        <select class="form-control select2" name="request1" id="request1" style="width:100%;">
+                                            <option value="daily">Daily</option>
+                                            <option value="weekly">Weekly</option>
+                                            <option value="monthly">Monthly</option>
+                                        </select>
+                                    </div>
+                                    <div class="sales_agent_request">
+                                        <select class="form-control select2" name="request2" id="request2" style="width:100%;">
+                                            <option value="outbound">Outbound</option>
+                                            <option value="inbound">Inbound</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- /. daily weekly monthly -->
+
                                     <!-- USING DATERANGE
                                     <div class="form-group">
                                         <button class="btn datetimepicker1"><i class="fa fa-calendar"></i></button>
@@ -134,7 +161,7 @@
                                     -->
 
                                 <div class="form-group">
-                                    <label>Start Date:</label>
+                                    <label>Start Date</label>
                                     <div class="form-group">
                                         <div class='input-group date' id='datetimepicker1'>
                                             <input type='text' class="form-control" id="start_filterdate" name="start_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
@@ -148,7 +175,7 @@
                                 <!-- /.start date -->
 
                                 <div class="form-group">
-                                    <label>End Date:</label>
+                                    <label>End Date</label>
                                     <div class="form-group">
                                         <div class='input-group date' id='datetimepicker2'>
                                             <input type='text' class="form-control" id="end_filterdate" name="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
@@ -177,8 +204,15 @@
         <?php print $ui->standardizedThemeJS();?>
 
         <!-- SELECT2-->
-        <script src="theme_dashboard/select2/dist/js/select2.js"></script>
-
+            <script src="theme_dashboard/select2/dist/js/select2.js"></script>
+        <!-- FLOT CHART-->
+            <script src="theme_dashboard/js/Flot/jquery.flot.js"></script>
+            <script src="theme_dashboard/js/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+            <script src="theme_dashboard/js/Flot/jquery.flot.resize.js"></script>
+            <script src="theme_dashboard/js/Flot/jquery.flot.pie.js"></script>
+            <script src="theme_dashboard/js/Flot/jquery.flot.time.js"></script>
+            <script src="theme_dashboard/js/Flot/jquery.flot.categories.js"></script>
+            <script src="theme_dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
         <script>
             $(function () {
                 //Initialize Select2 Elements
@@ -198,13 +232,23 @@
 
                     $('#table').empty();
                     $(".report-loader").fadeIn("slow");
+                    
+                    var request = "";
+
+                    if($("#filter_type").val() == "stats"){
+                        request = $("#request1").val()
+                    }
+                    if($("#filter_type").val() == "sales_agent"){
+                        request = $("#request2").val()
+                    }
+
                         $.ajax({
                             url: "reports.php",
                             type: 'POST',
                             data: {
                                 pageTitle : $("#filter_type").val(),
                                 campaignID : $("#campaign_id").val(),
-                                request : $("#request").val(),
+                                request : request,
                                 userID : $("#userID").val(),
                                 userGroup : $("#userGroup").val(),
                                 fromDate : $("#start_filterdate").val(),
@@ -217,18 +261,46 @@
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
 
+                                    if($("#filter_type").val() == "stats"){
+                                        $('.request_div').show();
+                                        $('.stats_request').show();
+                                        $('.sales_agent_request').hide();
+                                    }
                                     if($("#filter_type").val() == "agent_detail"){
                                         $('#agent_detail_top').dataTable();
                                         $('#agent_detail_login').dataTable();
+                                        $('.request_div').hide();
                                     }
                                     if($("#filter_type").val() == "agent_pdetail"){
                                         $('#agent_pdetail_top').dataTable();
                                         $('#agent_pdetail_mid').dataTable();
                                         $('#agent_pdetail_bottom').dataTable();
                                         $('#agent_pdetail_login').dataTable();
+                                        $('.request_div').hide();
                                     }
                                     if($("#filter_type").val() == "dispo"){
                                         $('#dispo').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "sales_agent"){
+                                        $('#outbound').dataTable();
+                                        $('#inbound').dataTable();
+                                        $('.request_div').show();
+                                        $('.sales_agent_request').show();
+                                        $('.stats_request').hide();
+                                    }
+                                    if($("#filter_type").val() == "sales_tracker"){
+                                        $('#outbound_table').dataTable();
+                                        $('#inbound_table').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "inbound_report"){
+                                        $('#inbound_report').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "call_export_report"){
+                                        $('#call_export_report').dataTable();
+                                        $('.request_div').hide();
                                     }
 
                                 }else{
@@ -243,13 +315,23 @@
 
                     $('#table').empty();
                     $(".report-loader").fadeIn("slow");
+                    
+                    var request = "";
+
+                    if($("#filter_type").val() == "stats"){
+                        request = $("#request1").val()
+                    }
+                    if($("#filter_type").val() == "sales_agent"){
+                        request = $("#request2").val()
+                    }
+
                         $.ajax({
                             url: "reports.php",
                             type: 'POST',
                             data: {
                                 pageTitle : $("#filter_type").val(),
                                 campaignID : $("#campaign_id").val(),
-                                request : $("#request").val(),
+                                request : request,
                                 userID : $("#userID").val(),
                                 userGroup : $("#userGroup").val(),
                                 fromDate : $("#start_filterdate").val(),
@@ -262,18 +344,46 @@
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
 
+                                    if($("#filter_type").val() == "stats"){
+                                        $('.request_div').show();
+                                        $('.stats_request').show();
+                                        $('.sales_agent_request').hide();
+                                    }
                                     if($("#filter_type").val() == "agent_detail"){
                                         $('#agent_detail_top').dataTable();
                                         $('#agent_detail_login').dataTable();
+                                        $('.request_div').hide();
                                     }
                                     if($("#filter_type").val() == "agent_pdetail"){
                                         $('#agent_pdetail_top').dataTable();
                                         $('#agent_pdetail_mid').dataTable();
                                         $('#agent_pdetail_bottom').dataTable();
                                         $('#agent_pdetail_login').dataTable();
+                                        $('.request_div').hide();
                                     }
                                     if($("#filter_type").val() == "dispo"){
                                         $('#dispo').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "sales_agent"){
+                                        $('#outbound').dataTable();
+                                        $('#inbound').dataTable();
+                                        $('.request_div').show();
+                                        $('.sales_agent_request').show();
+                                        $('.stats_request').hide();
+                                    }
+                                    if($("#filter_type").val() == "sales_tracker"){
+                                        $('#outbound_table').dataTable();
+                                        $('#inbound_table').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "inbound_report"){
+                                        $('#inbound_report').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "call_export_report"){
+                                        $('#call_export_report').dataTable();
+                                        $('.request_div').hide();
                                     }
 
                                 }else{
@@ -289,13 +399,23 @@
                 $('#filter_type').on('change', function() {
                     $('#table').empty();
                     $(".report-loader").fadeIn("slow");
+                    
+                    var request = "";
+
+                    if($("#filter_type").val() == "stats"){
+                        request = $("#request1").val()
+                    }
+                    if($("#filter_type").val() == "sales_agent"){
+                        request = $("#request2").val()
+                    }
+
                         $.ajax({
                             url: "reports.php",
                             type: 'POST',
                             data: {
-                                pageTitle : this.value,
+                                pageTitle : $("#filter_type").val(),
                                 campaignID : $("#campaign_id").val(),
-                                request : $("#request").val(),
+                                request : request,
                                 userID : $("#userID").val(),
                                 userGroup : $("#userGroup").val(),
                                 fromDate : $("#start_filterdate").val(),
@@ -308,18 +428,46 @@
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
 
+                                    if($("#filter_type").val() == "stats"){
+                                        $('.request_div').show();
+                                        $('.stats_request').show();
+                                        $('.sales_agent_request').hide();
+                                    }
                                     if($("#filter_type").val() == "agent_detail"){
                                         $('#agent_detail_top').dataTable();
                                         $('#agent_detail_login').dataTable();
+                                        $('.request_div').hide();
                                     }
                                     if($("#filter_type").val() == "agent_pdetail"){
                                         $('#agent_pdetail_top').dataTable();
                                         $('#agent_pdetail_mid').dataTable();
                                         $('#agent_pdetail_bottom').dataTable();
                                         $('#agent_pdetail_login').dataTable();
+                                        $('.request_div').hide();
                                     }
                                     if($("#filter_type").val() == "dispo"){
                                         $('#dispo').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "sales_agent"){
+                                        $('#outbound').dataTable();
+                                        $('#inbound').dataTable();
+                                        $('.request_div').show();
+                                        $('.sales_agent_request').show();
+                                        $('.stats_request').hide();
+                                    }
+                                    if($("#filter_type").val() == "sales_tracker"){
+                                        $('#outbound_table').dataTable();
+                                        $('#inbound_table').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "inbound_report"){
+                                        $('#inbound_report').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "call_export_report"){
+                                        $('#call_export_report').dataTable();
+                                        $('.request_div').hide();
                                     }
 
                                 }else{
@@ -334,13 +482,23 @@
                 $('#campaign_id').on('change', function() {
                     $('#table').empty();
                     $(".report-loader").fadeIn("slow");
+
+                    var request = "";
+
+                    if($("#filter_type").val() == "stats"){
+                        request = $("#request1").val()
+                    }
+                    if($("#filter_type").val() == "sales_agent"){
+                        request = $("#request2").val()
+                    }
+
                         $.ajax({
                             url: "reports.php",
                             type: 'POST',
                             data: {
                                 pageTitle : $("#filter_type").val(),
                                 campaignID : $("#campaign_id").val(),
-                                request : $("#request").val(),
+                                request : request,
                                 userID : $("#userID").val(),
                                 userGroup : $("#userGroup").val(),
                                 fromDate : $("#start_filterdate").val(),
@@ -353,18 +511,46 @@
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
 
+                                    if($("#filter_type").val() == "stats"){
+                                        $('.request_div').show();
+                                        $('.stats_request').show();
+                                        $('.sales_agent_request').hide();
+                                    }
                                     if($("#filter_type").val() == "agent_detail"){
                                         $('#agent_detail_top').dataTable();
                                         $('#agent_detail_login').dataTable();
+                                        $('.request_div').hide();
                                     }
                                     if($("#filter_type").val() == "agent_pdetail"){
                                         $('#agent_pdetail_top').dataTable();
                                         $('#agent_pdetail_mid').dataTable();
                                         $('#agent_pdetail_bottom').dataTable();
                                         $('#agent_pdetail_login').dataTable();
+                                        $('.request_div').hide();
                                     }
                                     if($("#filter_type").val() == "dispo"){
                                         $('#dispo').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "sales_agent"){
+                                        $('#outbound').dataTable();
+                                        $('#inbound').dataTable();
+                                        $('.request_div').show();
+                                        $('.sales_agent_request').show();
+                                        $('.stats_request').hide();
+                                    }
+                                    if($("#filter_type").val() == "sales_tracker"){
+                                        $('#outbound_table').dataTable();
+                                        $('#inbound_table').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "inbound_report"){
+                                        $('#inbound_report').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "call_export_report"){
+                                        $('#call_export_report').dataTable();
+                                        $('.request_div').hide();
                                     }
 
                                 }else{
@@ -374,6 +560,210 @@
                             }
                         });
                 });
+
+                $('#request1').on('change', function() {
+                    $('#table').empty();
+                    $(".report-loader").fadeIn("slow");
+                    
+                    var request = "";
+
+                    if($("#filter_type").val() == "stats"){
+                        request = $("#request1").val()
+                    }
+                    if($("#filter_type").val() == "sales_agent"){
+                        request = $("#request2").val()
+                    }
+
+                        $.ajax({
+                            url: "reports.php",
+                            type: 'POST',
+                            data: {
+                                pageTitle : $("#filter_type").val(),
+                                campaignID : $("#campaign_id").val(),
+                                request : request,
+                                userID : $("#userID").val(),
+                                userGroup : $("#userGroup").val(),
+                                fromDate : $("#start_filterdate").val(),
+                                toDate : $("#end_filterdate").val()
+                            },
+                            success: function(data) {
+                                console.log(data);
+
+                                if(data != ""){
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html(data);
+
+                                    if($("#filter_type").val() == "stats"){
+                                        $('.request_div').show();
+                                        $('.stats_request').show();
+                                        $('.sales_agent_request').hide();
+                                    }
+                                    if($("#filter_type").val() == "agent_detail"){
+                                        $('#agent_detail_top').dataTable();
+                                        $('#agent_detail_login').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "agent_pdetail"){
+                                        $('#agent_pdetail_top').dataTable();
+                                        $('#agent_pdetail_mid').dataTable();
+                                        $('#agent_pdetail_bottom').dataTable();
+                                        $('#agent_pdetail_login').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "dispo"){
+                                        $('#dispo').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "sales_agent"){
+                                        $('#outbound').dataTable();
+                                        $('#inbound').dataTable();
+                                        $('.request_div').show();
+                                        $('.sales_agent_request').show();
+                                        $('.stats_request').hide();
+                                    }
+                                    if($("#filter_type").val() == "sales_tracker"){
+                                        $('#outbound_table').dataTable();
+                                        $('#inbound_table').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "inbound_report"){
+                                        $('#inbound_report').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "call_export_report"){
+                                        $('#call_export_report').dataTable();
+                                        $('.request_div').hide();
+                                    }
+
+                                }else{
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html("NO DATA");
+                                }
+                            }
+                        });
+                });
+                
+                $('#request2').on('change', function() {
+                    $('#table').empty();
+                    $(".report-loader").fadeIn("slow");
+                    
+                    var request = "";
+
+                    if($("#filter_type").val() == "stats"){
+                        request = $("#request1").val()
+                    }
+                    if($("#filter_type").val() == "sales_agent"){
+                        request = $("#request2").val()
+                    }
+
+                        $.ajax({
+                            url: "reports.php",
+                            type: 'POST',
+                            data: {
+                                pageTitle : $("#filter_type").val(),
+                                campaignID : $("#campaign_id").val(),
+                                request : request,
+                                userID : $("#userID").val(),
+                                userGroup : $("#userGroup").val(),
+                                fromDate : $("#start_filterdate").val(),
+                                toDate : $("#end_filterdate").val()
+                            },
+                            success: function(data) {
+                                console.log(data);
+
+                                if(data != ""){
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html(data);
+
+                                    if($("#filter_type").val() == "stats"){
+                                        $('.request_div').show();
+                                        $('.stats_request').show();
+                                        $('.sales_agent_request').hide();
+                                    }
+                                    if($("#filter_type").val() == "agent_detail"){
+                                        $('#agent_detail_top').dataTable();
+                                        $('#agent_detail_login').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "agent_pdetail"){
+                                        $('#agent_pdetail_top').dataTable();
+                                        $('#agent_pdetail_mid').dataTable();
+                                        $('#agent_pdetail_bottom').dataTable();
+                                        $('#agent_pdetail_login').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "dispo"){
+                                        $('#dispo').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "sales_agent"){
+                                        $('#outbound').dataTable();
+                                        $('#inbound').dataTable();
+                                        $('.request_div').show();
+                                        $('.sales_agent_request').show();
+                                        $('.stats_request').hide();
+                                    }
+                                    if($("#filter_type").val() == "sales_tracker"){
+                                        $('#outbound_table').dataTable();
+                                        $('#inbound_table').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "inbound_report"){
+                                        $('#inbound_report').dataTable();
+                                        $('.request_div').hide();
+                                    }
+                                    if($("#filter_type").val() == "call_export_report"){
+                                        $('#call_export_report').dataTable();
+                                        $('.request_div').hide();
+                                    }
+
+                                }else{
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html("NO DATA");
+                                }
+                            }
+                        });
+                });
+                /*
+                 * Inbound and Outbound Calls Per Hour Data
+                */
+                    (function(window, document, $, undefined){
+                        $(function(){
+                            var datav3 = [
+                                {
+                                "label": "",
+                                "color": "#009688",
+                                "data": [
+                                <?php
+                                
+                                    echo '["12 MN", 0],';
+                                    echo '["12 MN", 0],';
+                                    echo '["1 AM", 0],';
+                                    echo '["1 AM", 0]';
+                                ?>]
+                                }];
+                                
+                            var options = { series: { lines: {show: false}, points: {show: true,radius: 4},
+                                    splines: {show: true,tension: 0.4,lineWidth: 1,fill: 0.5}
+                                },
+                                grid: { borderColor: '#eee', borderWidth: 1, hoverable: true, backgroundColor: '#fcfcfc' },
+                                tooltip: true, 
+                                tooltipOpts: { content: function (label, x, y) {  return y + ' Calls / Day';  } },
+                                xaxis: { tickColor: '#fcfcfc', mode: 'categories' },
+                                yaxis: { min: 0, max: 4, // optional: use it for a clear represetation
+                                    tickColor: '#eee',
+                                    //position: 'right' or 'left',
+                                    tickFormatter: function (v) {
+                                        return v/* + ' visitors'*/;
+                                    }
+                                },
+                                shadowSize: 0
+                              };
+                              var chartv3 = $('.chart-splinev3');
+                              if(chartv3.length)
+                                $.plot(chartv3, datav3, options);
+                        });
+                    })(window, document, window.jQuery);
 
                     /* Daterange
                     $('#date_range').daterangepicker({

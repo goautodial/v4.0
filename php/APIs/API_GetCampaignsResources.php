@@ -52,58 +52,59 @@
                 
         foreach ($output->data as $key => $value) {
         
-        if(++$max > 6) break; 
-        
-            $campname = $value->campaign_name;
-            $leadscount = $value->mycnt;
-            $campid =  $value->campaign_id;
-            $campdesc = $value->campaign_description;
-            $callrecordings = $value->campaign_recording;
-            $campaigncid = $value->campaign_cid;
-            $localcalltime = $value->local_call_time;
-            $usergroup = $value->user_group;
-            $camptype = $value->campaign_type;      
-  
-        if ($leadscount == 0){   
-        
-             $sessionAvatar = "<avatar username='$localcalltime' :size='32'></avatar>";
-             
-                echo                            '<div class="media-box">
-                                                    <div class="pull-left">
-                                                        '.$sessionAvatar.'
-                                                    </div>                                                
-                                                        <div class="media-box-body clearfix">
-                                                            <small class="text-muted pull-right ml">'.$leadscount.'</small>
-                                                            <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
-                                                            </div>
-                                                                <p class="m0">
-                                                                    <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
-                                                                    </small>
-                                                                </p>
-                                                        </div>
-                                                    </div>
-                                                </div>';
-                                                
-        }
-            if ($leadscount > 0){ 
+            if(++$max > 6) break; 
             
-                 $sessionAvatar = "<avatar username='$localcalltime' :size='32'></avatar>";
-                 
-                echo                            '<div class="media-box">
-                                                    <div class="pull-left">
-                                                        '.$sessionAvatar.'
-                                                    </div>                                                
-                                                        <div class="media-box-body clearfix">
-                                                            <small class="text-muted pull-right ml">'.$leadscount.'</small>
-                                                            <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
+                $campname = $value->campaign_name;
+                $leadscount = $value->mycnt;
+                $campid =  $value->campaign_id;
+                $campdesc = $value->campaign_description;
+                $callrecordings = $value->campaign_recording;
+                $campaigncid = $value->campaign_cid;
+                $localcalltime = $value->local_call_time;
+                $usergroup = $value->user_group;
+                $camptype = $value->campaign_type;      
+    
+            if ($leadscount == 0){   
+            
+                $sessionAvatar = "<avatar username='$localcalltime' :size='32'></avatar>";
+                
+                    echo                            '<div class="media-box">
+                                                        <div class="pull-left">
+                                                            '.$sessionAvatar.'
+                                                        </div>                                                
+                                                            <div class="media-box-body clearfix">
+                                                                <small class="text-muted pull-right ml">'.$leadscount.'</small>
+                                                                <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
+                                                                </div>
+                                                                    <p class="m0">
+                                                                        <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
+                                                                        </small>
+                                                                    </p>
                                                             </div>
-                                                                <p class="m0">
-                                                                    <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
-                                                                    </small>
-                                                                </p>
                                                         </div>
-                                                    </div>
-                                                </div>';
+                                                    </div>';
+                                                    
+            }
+            
+            if ($leadscount > 0){ 
+                
+                    $sessionAvatar = "<avatar username='$localcalltime' :size='32'></avatar>";
+                    
+                    echo                            '<div class="media-box">
+                                                        <div class="pull-left">
+                                                            '.$sessionAvatar.'
+                                                        </div>                                                
+                                                            <div class="media-box-body clearfix">
+                                                                <small class="text-muted pull-right ml">'.$leadscount.'</small>
+                                                                <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
+                                                                </div>
+                                                                    <p class="m0">
+                                                                        <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
+                                                                        </small>
+                                                                    </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>';
             }        
         }
         

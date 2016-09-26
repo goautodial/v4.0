@@ -83,10 +83,9 @@
                                 "destroy":true
                                 
                 });
-                table.fnProcessingIndicator();
         } 
     });
-    }    
+    }
     
     function load_cluster_status(){
     $.ajax({
@@ -115,7 +114,6 @@
                                 ]                                                                 
                 });
                 goAvatar._init(goOptions);
-                table.fnProcessingIndicator();
         } 
     });
     }  
@@ -130,7 +128,7 @@
                 var JSONStringrealtime = values;
                 var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
                 //console.log(JSONStringrealtime);
-                console.log(JSONObjectrealtime); 
+                //console.log(JSONObjectrealtime); 
                 var table = $('#realtime_agents_monitoring_table').dataTable({
                                 data:JSONObjectrealtime,
                                 "destroy":true,
@@ -140,16 +138,16 @@
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                                     pagination.toggle(this.api().page.info().pages > 1);
                                 },                                
-                                "oLanguage": {
-                                        "sLengthMenu": "",
-                                        "sEmptyTable": "No Agents Available",
-                                        "oPaginate": {
-                                            "sPrevious": "Prev",
-                                            "sNext": "Next"
-                                        }
-                                },
-                                "bFilter": false,
-                                "bInfo": false,
+                                //"oLanguage": {
+                                        //"sLengthMenu": "",
+                                        //"sEmptyTable": "No Agents Available",
+                                        //"oPaginate": {
+                                            //"sPrevious": "Prev",
+                                            //"sNext": "Next"
+                                        //}
+                                //},
+                                //"bFilter": false,
+                                //"bInfo": false,
                                 "columnDefs": [
                                     {
                                         className: "hidden-xs", 
@@ -159,7 +157,6 @@
                                 
                 });
                 goAvatar._init(goOptions);
-                table.fnProcessingIndicator();
         } 
     });
     }
@@ -184,16 +181,16 @@
                                     var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                                     pagination.toggle(this.api().page.info().pages > 1);
                                 },
-                                "oLanguage": {
-                                        "sLengthMenu": "",
-                                        "sEmptyTable": "No Agents Available",
-                                        "oPaginate": {
-                                            "sPrevious": "Prev",
-                                            "sNext": "Next"
-                                        }
-                                },
-                                "bFilter": false,
-                                "bInfo": false,                                
+                                //"oLanguage": {
+                                        //"sLengthMenu": "",
+                                        //"sEmptyTable": "No Agents Available",
+                                        //"oPaginate": {
+                                            //"sPrevious": "Prev",
+                                            //"sNext": "Next"
+                                        //}
+                                //},
+                                //"bFilter": false,
+                                //"bInfo": false,                                
                                 "columnDefs": [
                                     {
                                         className: "hidden-xs", 
@@ -202,7 +199,6 @@
                                 ]
                 });
                 goAvatar._init(goOptions);
-                table.fnProcessingIndicator();
         } 
     });
     } 

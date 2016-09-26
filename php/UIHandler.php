@@ -1523,7 +1523,9 @@ error_reporting(E_ERROR | E_PARSE);
 	public function creamyThemeCSS() {
 		$theme = $this->db->getSettingValueForKey(CRM_SETTING_THEME);
 		if (empty($theme)) { $theme = CRM_SETTING_DEFAULT_THEME; }
-		return '<link href="css/skins/skin-'.$theme.'.min.css" rel="stylesheet" type="text/css" />';
+		$return  = '<link href="css/skins/skin-'.$theme.'.min.css" rel="stylesheet" type="text/css" />';
+		$return .= "//{$_SERVER['SCRIPT_FILENAME']}\n";
+		return $return;
 	}
 
 	/**
@@ -1975,11 +1977,12 @@ error_reporting(E_ERROR | E_PARSE);
 
 		// menu for agents
 		$result .= $agentmenu;
-
+		if($userrole != CRM_DEFAULTS_USER_ROLE_AGENT){
         $result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
 		//$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
         $result .= $this->getSidebarItem("notifications.php", "exclamation", $this->lh->translationFor("notifications"), $numNotifications, "orange");
         $result .= $this->getSidebarItem("tasks.php", "tasks", $this->lh->translationFor("tasks"), $numTasks, "red");
+		}
 
         // suffix: modules
         $activeModules = $mh->activeModulesInstances();

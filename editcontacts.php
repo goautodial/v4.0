@@ -17,41 +17,39 @@ $user = \creamy\CreamyUser::currentUser();
 
 $lead_id = $_POST['modifyid'];
 $output = $ui->API_GetLeadInfo($lead_id);
-$list_id_ct = count($output->list_id);
+$list_id_ct = $output->data->list_id;
 
-if ($list_id_ct > 0) {
-	for($i=0;$i < $list_id_ct;$i++){
-		$first_name 	= $output->first_name[$i];
-		$middle_initial = $output->middle_initial[$i];
-		$last_name 		= $output->last_name[$i];
-		
-		$email 			= $output->email[$i];
-		$phone_number 	= $output->phone_number[$i];
-		$alt_phone 		= $output->alt_phone[$i];
-		$address1 		= $output->address1[$i];
-		$address2 		= $output->address2[$i];
-		$address3 		= $output->address3[$i];
-		$city 			= $output->city[$i];
-		$state 			= $output->state[$i];
-		$country 		= $output->country[$i];
-		$gender 		= $output->gender[$i];
-		$date_of_birth 	= $output->date_of_birth[$i];
-		$comments 		= $output->comments[$i];
-		$title 			= $output->title[$i];
-		$call_count 	= $output->call_count[$i];
-		$last_local_call_time = $output->last_local_call_time[$i];
-	}
+if ($list_id_ct != NULL) {
+	$first_name 	= $output->data->first_name;
+	$middle_initial = $output->data->middle_initial;
+	$last_name 		= $output->data->last_name;
+	
+	$email 			= $output->data->email;
+	$phone_number 	= $output->data->phone_number;
+	$alt_phone 		= $output->data->alt_phone;
+	$address1 		= $output->data->address1;
+	$address2 		= $output->data->address2;
+	$address3 		= $output->data->address3;
+	$city 			= $output->data->city;
+	$state 			= $output->data->state;
+	$country 		= $output->data->country;
+	$gender 		= $output->data->gender;
+	$date_of_birth 	= $output->data->date_of_birth;
+	$comments 		= $output->data->comments;
+	$title 			= $output->data->title;
+	$call_count 	= $output->data->call_count;
+	$last_local_call_time = $output->data->last_local_call_time;
 }
-$fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
-$date_of_birth = date('m/d/Y', strtotime($date_of_birth));
-//var_dump($output);
- $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
- 									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
+	$fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
+	$date_of_birth = date('m/d/Y', strtotime($date_of_birth));
+	//var_dump($output);
+	 $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
+	 									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
 
-$avatarHash = md5( strtolower( trim( $user->getUserId() ) ) );
-$avatarURL50 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=50&default=wavatar";
-$avatarURL96 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=wavatar";
-$custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=mm";
+	$avatarHash = md5( strtolower( trim( $user->getUserId() ) ) );
+	$avatarURL50 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=50&default=wavatar";
+	$avatarURL96 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=wavatar";
+	$custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=mm";
 ?>
 
 <html>

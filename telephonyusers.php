@@ -25,8 +25,6 @@
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?>
-        <!-- Creamy style -->
-        <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
 
         <?php print $ui->creamyThemeCSS(); ?>
 
