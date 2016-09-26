@@ -3129,6 +3129,56 @@ function RefreshAgentsView(RAlocation, RAcount) {
     }
 }
 
+function CustomerChannelGone() {
+    
+}
+
+// ################################################################################
+// Check to see if there is a call being sent from the auto-dialer to agent conf
+function ReCheckCustomerChan() {
+    var postData = {
+        goAction: 'goVDADCheckIncoming',
+        goServerIP: server_ip,
+        goSessionName: session_name,
+        goUser: uName,
+        goPass: uPass,
+        goCampaign: campaign,
+        goAgentLogID: agent_log_id,
+        goLeadID: $(".formMain input[name='lead_id']").val(),
+        responsetype: 'json'
+    };
+
+    //$.ajax({
+    //    type: 'POST',
+    //    url: '<?=$goAPI?>/goAgent/goAPI.php',
+    //    processData: true,
+    //    data: postData,
+    //    dataType: "json"
+    //})
+    //.done(function (result) {
+        //var recheck_incoming = null;
+        //recheck_incoming = xmlhttp.responseText;
+    //	alert(xmlhttp.responseText);
+        //var recheck_VDIC_array=recheck_incoming.split("\n");
+        //if (recheck_VDIC_array[0] == '1') {
+        //    var reVDIC_data_VDAC=recheck_VDIC_array[1].split("|");
+        //    if (reVDIC_data_VDAC[3] == lastcustchannel)
+        //        {
+            // do nothing
+        //        }
+        //    else
+        //        {
+    //	alert("Channel has changed from:\n" + lastcustchannel + '|' + lastcustserverip + "\nto:\n" + reVDIC_data_VDAC[3] + '|' + reVDIC_data_VDAC[4]);
+        //        document.getElementById("callchannel").innerHTML	= reVDIC_data_VDAC[3];
+        //        lastcustchannel = reVDIC_data_VDAC[3];
+        //        document.vicidial_form.callserverip.value	= reVDIC_data_VDAC[4];
+        //        lastcustserverip = reVDIC_data_VDAC[4];
+        //        custchannellive = 1;
+        //        }
+        //}
+    //});
+}
+
 // ################################################################################
 // RefresH the calls in queue bottombar
 function RefreshCallsInQueue(CQcount) {
