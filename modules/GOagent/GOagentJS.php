@@ -375,7 +375,7 @@ $(document).ready(function() {
                 }
                 
                 WaitingForNextStep = 0;
-                if ( (CloserSelecting==1) || (TerritorySelecting==1) )	{WaitingForNextStep=1;}
+                if ( (CloserSelecting == 1) || (TerritorySelecting == 1) )	{WaitingForNextStep = 1;}
                 
                 if (open_dispo_screen == 1) {
                     wrapup_counter = 0;
@@ -653,14 +653,14 @@ $(document).ready(function() {
                         {$("#closerSelectBlended").prop('checked', true);}
                     //CloserSelectContent_create();
                     //showDiv('CloserSelectBox');
-                    CloserSelecting = 1;
+                    //CloserSelecting = 1;
                     //CloserSelectContent_create();
                     if (agent_choose_ingroups_DV == "MGRLOCK")
                         {agent_choose_ingroups_skip_count = 4;}
                 } else {
                     //hideDiv('CloserSelectBox');
                     //MainPanelToFront();
-                    CloserSelecting = 0;
+                    //CloserSelecting = 0;
                     if (dial_method == "INBOUND_MAN") {
                         dial_method = "MANUAL";
                         auto_dial_level = 0;
