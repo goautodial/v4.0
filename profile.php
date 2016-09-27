@@ -158,7 +158,7 @@
 
 ?>
  
-            <div class="unwrap ng-scope">
+            <div class="unwrap ng-scope" style="margin-top: -30;">
                <div style="background-image: url(img/profile-bg.jpg); padding-top: 20px;" class="bg-cover">
                   <div class="p-xl text-center text-white">
                      <span style="display:table; margin:0 auto; background-color: #ff902b; border: 3px solid #dadada; border-radius: 50%; margin-bottom: 10px; height: 128px; width: 128px;"><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 128)?></span>
@@ -369,17 +369,34 @@
                                  <em class="icon-plus text-muted"></em>
                               </a>Latest Outbound Calls</div>
                            <div class="list-group">
-                              <!-- START Latest Calls summary widget -->
+                              <!-- START Latest Outbound Calls summary widget -->
                                 <a class="media p mt0 list-group-item">
                                 
                                     <span id="refresh_agent_latest_outbound_calls_summary"></span>
                                   
                                 </a>
                               
-                              <!-- END Latest Calls summary widget -->
-                                        <a href="#" data-toggle="modal" data-target="#agent_latest_calls" class="media p mt0 list-group-item text-center text-muted">View more</a>                              
+                              <!-- END Latest Outbound Calls summary widget -->
+                                        <a href="#" data-toggle="modal" data-target="#agent_latest_outbound_calls" class="media p mt0 list-group-item text-center text-muted">View more</a>                              
                            </div>
                         </div>
+                        <div class="panel panel-default">
+                           <div class="panel-heading">
+                              <a class="pull-right">
+                                 <em class="icon-plus text-muted"></em>
+                              </a>Latest Inbound Calls</div>
+                           <div class="list-group">
+                              <!-- START Latest Inbound Calls summary widget -->
+                                <a class="media p mt0 list-group-item">
+                                
+                                    <span id="refresh_agent_latest_inbound_calls_summary"></span>
+                                  
+                                </a>
+                              
+                              <!-- END Latest Inbound Calls summary widget -->
+                                        <a href="#" data-toggle="modal" data-target="#agent_latest_inbound_calls" class="media p mt0 list-group-item text-center text-muted">View more</a>                              
+                           </div>
+                        </div>                        
                         <div class="panel panel-default">
                            <div class="list-group">
                               <a href="#" class="list-group-item">
@@ -421,19 +438,19 @@
         
 <!--================= MODALS =====================-->
 
-    <!-- Agent Latest Calls -->
+    <!-- Agent Latest Outbound Calls -->
 
-                    <div class="modal fade" id="agent_latest_calls" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal fade" id="agent_latest_outbound_calls" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-lg modal-dialog" style="min-width: 75%">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4>Latest Phone Calls (100 limit)</h4>
+                                    <h4>Latest Outbound Phone Calls (100 limit)</h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="responsive">
                                     <!-- <div class="col-sm-12">-->
-                                        <table class="table table-striped table-hover display compact" id="agent_latest_calls_table" style="width: 100%">
+                                        <table class="table table-striped table-hover display compact" id="agent_latest_outbound_calls_table" style="width: 100%">
                                             <thead>
                                                 <th style="color: white;">Pic</th>
                                                 <th style="font-size: small;">Lead ID</th>
@@ -457,7 +474,46 @@
                         </div>	
                     </div>
                      
-    <!-- End of Agent Latest Calls -->  
+    <!-- End of Agent Latest Outbound Calls --> 
+    
+    <!-- Agent Latest Inbound Calls -->
+
+                    <div class="modal fade" id="agent_latest_inbound_calls" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-lg modal-dialog" style="min-width: 75%">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4>Latest Inbound Phone Calls (100 limit)</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="responsive">
+                                    <!-- <div class="col-sm-12">-->
+                                        <table class="table table-striped table-hover display compact" id="agent_latest_inbound_calls_table" style="width: 100%">
+                                            <thead>
+                                                <th style="color: white;">Pic</th>
+                                                <th style="font-size: small;">Lead ID</th>
+                                                <th style="font-size: small;">Customer</th>
+                                                <!-- <th style="font-size: small;">List ID</th> -->
+                                                <th style="font-size: small;">Campaign ID</th>                                                                
+                                                <th style="font-size: small;">Phone Number</th>
+                                                <th style="font-size: small;">Status</th>
+                                                <!-- <th style="font-size: small;">Agent</th> -->
+                                                <th style="font-size: small;">Call Date</th>
+                                                <th style="font-size: small;">Duration</th>
+                                            </thead>
+                                            <tbody>
+                                            
+                                            </tbody>
+                                        </table>
+                                    <!--</div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>	
+                    </div>
+                     
+    <!-- End of Agent Latest Inbound Calls --> 
+    
     <!-- Lead Information -->
                         
     <div class="modal fade" id="view_lead_information" tabindex="-1" role="dialog" aria-hidden="true"> 
@@ -521,11 +577,11 @@
     
 <script>
 
-    function load_agent_latest_calls(){    
+    function load_agent_latest_outbound_calls(){    
         var userid = <?=$userid?>;         
         $.ajax({
             type: 'POST',
-            url: "./php/APIs/API_GetAgentLatestCalls.php",
+            url: "./php/APIs/API_GetAgentLatestOutboundCalls.php",
             cache: false,
             data: {user_id: userid},
             dataType: 'json',
@@ -533,7 +589,7 @@
                 var JSONStringlatest_calls = values;
                 var JSONObjectlatest_calls = JSON.parse(JSONStringlatest_calls);                
                 console.log(JSONObjectlatest_calls); 
-                var table = $('#agent_latest_calls_table').dataTable({
+                var table = $('#agent_latest_outbound_calls_table').dataTable({
                     data:JSONObjectlatest_calls,
                     "destroy":true,
                     //"searching": false,
@@ -554,11 +610,44 @@
         });
     }
     
-    function load_agent_latest_calls_summary(){    
+    function load_agent_latest_inbound_calls(){    
         var userid = <?=$userid?>;         
         $.ajax({
             type: 'POST',
-            url: "./php/APIs/API_GetAgentLatestCallsSummary.php",
+            url: "./php/APIs/API_GetAgentLatestInboundCalls.php",
+            cache: false,
+            data: {user_id: userid},
+            dataType: 'json',
+            success: function(values){
+                var JSONStringlatest_calls = values;
+                var JSONObjectlatest_calls = JSON.parse(JSONStringlatest_calls);                
+                console.log(JSONObjectlatest_calls); 
+                var table = $('#agent_latest_inbound_calls_table').dataTable({
+                    data:JSONObjectlatest_calls,
+                    "destroy":true,
+                    //"searching": false,
+                    stateSave: true,
+                    drawCallback: function(settings) {
+                        var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                            pagination.toggle(this.api().page.info().pages > 1);
+                    },                    
+                    "columnDefs": [
+                        {
+                            className: "hidden-xs", 
+                            "targets": [ 2, 4, 5, 7 ] 
+                        }
+                    ]                                    
+                });
+                goAvatar._init(goOptions);
+            } 
+        });
+    }    
+    
+    function load_agent_latest_outbound_calls_summary(){    
+        var userid = <?=$userid?>;         
+        $.ajax({
+            type: 'POST',
+            url: "./php/APIs/API_GetAgentLatestOutboundCallsSummary.php",
             cache: false,
             data: {user_id: userid},
             success: function(data){
@@ -567,6 +656,20 @@
             } 
         });
     }
+    
+    function load_agent_latest_inbound_calls_summary(){    
+        var userid = <?=$userid?>;         
+        $.ajax({
+            type: 'POST',
+            url: "./php/APIs/API_GetAgentLatestInboundCallsSummary.php",
+            cache: false,
+            data: {user_id: userid},
+            success: function(data){
+                $("#refresh_agent_latest_inbound_calls_summary").html(data);
+                goAvatar._init(goOptions);
+            } 
+        });
+    }    
     
     // Clear lead information
     function clear_lead_information_form(){
@@ -636,8 +739,10 @@
         });         
            
         // ---- loads datatable functions                                                
-            load_agent_latest_calls();
-            load_agent_latest_calls_summary();
+            load_agent_latest_outbound_calls();
+            load_agent_latest_inbound_calls();
+            load_agent_latest_outbound_calls_summary();
+            load_agent_latest_inbound_calls_summary();
 
     });
 
