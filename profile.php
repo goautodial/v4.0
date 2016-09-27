@@ -509,7 +509,14 @@
             </div> 
         </div> 
     </div> 
-                        
+
+<?php
+        /*
+        * Modal Dialogs
+        */
+        include_once ("./php/ModalPasswordDialogs.php");
+?>
+
     <!-- End of Lead Information -->    
     
 <script>
