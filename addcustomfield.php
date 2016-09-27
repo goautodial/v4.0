@@ -136,6 +136,9 @@ $customs = $customFields->data;
 								<div class="col-lg-9">
 									<div class="row">
 										<div class="col-lg-1 pull-right">
+											<button type="button" class="btn-delete-cf btn btn-danger" style="height: 35px;" data-id="<?php echo $modifyid; ?>"><i class="fa fa-trash"></i></button>
+										</div>
+										<div class="col-lg-1 pull-right">
 											<button type="button" class="btn-field btn btn-success" style="height: 35px;" data-id="<?php echo $modifyid; ?>"><i class="fa fa-plus"></i></button>
 										</div>
 										<div class="col-lg-1 pull-right">
