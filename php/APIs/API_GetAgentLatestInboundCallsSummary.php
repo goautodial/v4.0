@@ -47,7 +47,7 @@
             
             $lead_id = date("Y");
             $phone_number = time();
-            $fullname = "Outbound John Doe";
+            $fullname = "Inbound John Doe";
             $sessionAvatar = "<avatar username='$fullname' :size='36'></avatar>";
             
                 echo    '<span class="media-box">
