@@ -5,12 +5,14 @@ define('GO_AGENT_DIRECTORY', str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(
 define('GO_BASE_DIRECTORY', dirname(dirname(dirname(__FILE__))));
 define('GO_LANG_DIRECTORY', dirname(__FILE__) . '/lang/');
 require_once(GO_BASE_DIRECTORY.'/php/CRMDefaults.php');
+require_once(GO_BASE_DIRECTORY.'/php/UIHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/LanguageHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/DatabaseConnectorFactory.php');
 include(GO_BASE_DIRECTORY.'/php/Session.php');
 require_once(GO_BASE_DIRECTORY.'/php/goCRMAPISettings.php');
 $goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 
+$ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
 $lh->addCustomTranslationsFromFile(GO_LANG_DIRECTORY . $lh->getLanguageHandlerLocale());
 
@@ -74,13 +76,36 @@ var check_s;
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
             if ($idx == 'xfer_group_count') {
                 echo "var XFgroupCOUNT = {$val};\n";
-            }
-            if ($idx == 'alt_phone_dialing') {
+            } else if ($idx == 'inbound_group_count') {
+                echo "var INgroupCOUNT = {$val};\n";
+            } else if ($idx == 'email_group_count') {
+                echo "var EMAILgroupCOUNT = {$val};\n";
+            } else if ($idx == 'phone_group_count') {
+                echo "var PHONEgroupCOUNT = {$val};\n";
+            } else if ($idx == 'alt_phone_dialing') {
                 echo "var starting_alt_phone_dialing = {$val};\n";
             }
             echo "var {$idx} = {$val};\n";
         } else if (is_array($val)) {
-            echo "    {$idx} = new Array('','','','','','');\n";
+            if (preg_match("/^(xfer_groups|inbound_groups|xfer_group_names|inbound_group_handlers)$/", $idx)) {
+                $valName = $idx;
+                if ($idx == 'xfer_groups') {
+                    $valName = 'VARxferGroups';
+                } else if ($idx == 'xfer_group_names') {
+                    $valName = 'VARxferGroupsNames';
+                } else if ($idx == 'inbound_groups') {
+                    $valName = 'VARingroups';
+                } else if ($idx == 'inbound_group_handlers') {
+                    $valName = 'VARingroup_handlers';
+                } else if ($idx == 'email_groups') {
+                    $valName = 'VARemailgroups';
+                } else if ($idx == 'phone_groups') {
+                    $valName = 'VARphonegroups';
+                }
+                echo "var {$valName} = new Array();\n";
+            } else {
+                echo "    {$idx} = new Array('','','','','','');\n";
+            }
         } else if (is_object($val)) {
             $valList  = "";
             $valList2 = "";
@@ -96,12 +121,20 @@ var check_s;
                 $valName = 'VARxferGroups';
             } else if ($idx == 'xfer_group_names') {
                 $valName = 'VARxferGroupsNames';
+            } else if ($idx == 'inbound_groups') {
+                $valName = 'VARingroups';
+            } else if ($idx == 'inbound_group_handlers') {
+                $valName = 'VARingroup_handlers';
+            } else if ($idx == 'email_groups') {
+                $valName = 'VARemailgroups';
+            } else if ($idx == 'phone_groups') {
+                $valName = 'VARphonegroups';
             }
             
+            echo "var {$valName} = new Array({$valList});\n";
             if ($idx == 'statuses') {
                 echo "var statuses_names = new Array({$valList2});\n";
             }
-            echo "var {$valName} = new Array({$valList});\n";
         } else {
             echo "var {$idx} = '{$val}';\n";
             if ($idx == 'callback_statuses_list') {
@@ -362,7 +395,7 @@ $(document).ready(function() {
                 }
                 
                 WaitingForNextStep = 0;
-                if ( (CloserSelecting==1) || (TerritorySelecting==1) )	{WaitingForNextStep=1;}
+                if ( (CloserSelecting == 1) || (TerritorySelecting == 1) )	{WaitingForNextStep = 1;}
                 
                 if (open_dispo_screen == 1) {
                     wrapup_counter = 0;
@@ -640,14 +673,14 @@ $(document).ready(function() {
                         {$("#closerSelectBlended").prop('checked', true);}
                     //CloserSelectContent_create();
                     //showDiv('CloserSelectBox');
-                    CloserSelecting = 1;
+                    //CloserSelecting = 1;
                     //CloserSelectContent_create();
                     if (agent_choose_ingroups_DV == "MGRLOCK")
                         {agent_choose_ingroups_skip_count = 4;}
                 } else {
                     //hideDiv('CloserSelectBox');
                     //MainPanelToFront();
-                    CloserSelecting = 0;
+                    //CloserSelecting = 0;
                     if (dial_method == "INBOUND_MAN") {
                         dial_method = "MANUAL";
                         auto_dial_level = 0;
@@ -1120,10 +1153,10 @@ $(document).ready(function() {
     
     $("#scSubmit").click(function(e) {
         e.preventDefault();
-        var inbArray = [];
+        var inbArray = '';
         $("#scSubmit").addClass('disabled');
         $("#selectedINB").find('abbr').each(function(index) {
-            inbArray.push($(this).text());
+            inbArray += $(this).text() + "|";
         });
         if (use_webrtc && !phone.isConnected()) {
             phone.start();
@@ -1137,9 +1170,9 @@ $(document).ready(function() {
                 goUser: uName,
                 goPass: uPass,
                 goCampaign: $("#select_camp").val(),
-                goIngroups: inbArray,
+                goIngroups: inbArray.slice(0, -1),
                 responsetype: 'json',
-                closer_blended: $("#closerSelectBlended").is(':checked'),
+                goCloserBlended: ($("#closerSelectBlended").is(':checked') ? 1 : 0),
                 goUseWebRTC: use_webrtc
             };
     
@@ -1261,6 +1294,8 @@ $(document).ready(function() {
                                 } else if (key == 'alt_phone_dialing') {
                                     $.globalEval(key+" = "+value+";");
                                     $.globalEval("starting_"+key+" = "+value+";");
+                                } else if (key == 'closer_blended') {
+                                    $.globalEval(key+" = "+value+";");
                                 } else {
                                     $.globalEval(key+" = '"+value+"';");
                                 }
@@ -2360,10 +2395,10 @@ function CheckForConfCalls (confnum, force) {
                 manager_ingroups_set = 1;
     
                 if ( (external_blended == '1') && (dial_method != 'INBOUND_MAN') )
-                    {closer_blended = '1';}
+                    {closer_blended = 1;}
     
                 if (external_blended == '0')
-                    {closer_blended = '0';}
+                    {closer_blended = 0;}
             }
             
             var live_conf_calls = result.data.channels_list;
@@ -2813,7 +2848,7 @@ function CheckForIncoming () {
                 if (this_VDIC_data.group_color.length > 2) {
                     $("#MainStatusSpan").css('background', this_VDIC_data.group_color);
                 }
-                dispnum = $("#cust-phone-number").val();
+                dispnum = $(".formMain input[name='phone_number']").val();
                 var status_display_number = phone_number_format(dispnum);
                 var callnum = dialed_number;
                 var dial_display_number = phone_number_format(callnum);
@@ -3094,6 +3129,56 @@ function RefreshAgentsView(RAlocation, RAcount) {
             });
         }
     }
+}
+
+function CustomerChannelGone() {
+    
+}
+
+// ################################################################################
+// Check to see if there is a call being sent from the auto-dialer to agent conf
+function ReCheckCustomerChan() {
+    var postData = {
+        goAction: 'goVDADCheckIncoming',
+        goServerIP: server_ip,
+        goSessionName: session_name,
+        goUser: uName,
+        goPass: uPass,
+        goCampaign: campaign,
+        goAgentLogID: agent_log_id,
+        goLeadID: $(".formMain input[name='lead_id']").val(),
+        responsetype: 'json'
+    };
+
+    //$.ajax({
+    //    type: 'POST',
+    //    url: '<?=$goAPI?>/goAgent/goAPI.php',
+    //    processData: true,
+    //    data: postData,
+    //    dataType: "json"
+    //})
+    //.done(function (result) {
+        //var recheck_incoming = null;
+        //recheck_incoming = xmlhttp.responseText;
+    //	alert(xmlhttp.responseText);
+        //var recheck_VDIC_array=recheck_incoming.split("\n");
+        //if (recheck_VDIC_array[0] == '1') {
+        //    var reVDIC_data_VDAC=recheck_VDIC_array[1].split("|");
+        //    if (reVDIC_data_VDAC[3] == lastcustchannel)
+        //        {
+            // do nothing
+        //        }
+        //    else
+        //        {
+    //	alert("Channel has changed from:\n" + lastcustchannel + '|' + lastcustserverip + "\nto:\n" + reVDIC_data_VDAC[3] + '|' + reVDIC_data_VDAC[4]);
+        //        document.getElementById("callchannel").innerHTML	= reVDIC_data_VDAC[3];
+        //        lastcustchannel = reVDIC_data_VDAC[3];
+        //        document.vicidial_form.callserverip.value	= reVDIC_data_VDAC[4];
+        //        lastcustserverip = reVDIC_data_VDAC[4];
+        //        custchannellive = 1;
+        //        }
+        //}
+    //});
 }
 
 // ################################################################################
@@ -3541,6 +3626,7 @@ function Clear_API_Field(temp_field) {
 }
 
 function ManualDialCheckChannel(taskCheckOR) {
+    console.log('ManualDialCheckChannel');
     var CIDcheck = MDnextCID;
     if (taskCheckOR == 'YES') {
         var CIDcheck = XDnextCID;
@@ -5871,6 +5957,89 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
     }
 }
 
+function GetCustomFields(listid) {
+    var postData = {
+        module_name: 'GOagent',
+        action: 'CustoMFielD',
+        list_id: listid
+    };
+    $.ajax({
+        type: 'POST',
+        url: '<?=$module_dir?>GOagentJS.php',
+        processData: true,
+        data: postData,
+        dataType: "json"
+    })
+    .done(function (result) {
+        if (result.result == 'success') {
+            var customHTML = '';
+            var fields = [];
+            $.each(result.data, function(idx, val) {
+                var thisRank = val['field_rank'];
+                var thisOrder = val['field_order'];
+                
+                if (typeof fields[thisRank] === 'undefined') {
+                   fields[thisRank] = [];
+                }
+                fields[thisRank][thisOrder] = val;
+            });
+            
+            $.each(fields, function(rank, data) {
+                if (typeof data === 'undefined') return true;
+                var order = 1;
+                var field_cnt = (data.length - 1);
+                customHTML += '<div class="row">';
+                while (order < field_cnt) {
+                    var thisField = data[order];
+                    if (typeof thisField === 'undefined') return true;
+                    
+                    var column = (field_cnt > 1) ? (12 / order) : 12;
+                    customHTML += '<div class="col-sm-' + column + '">';
+                    if (thisField.field_type == 'TEXT') {
+                        customHTML += '<div class="mda-form-group">';
+                        customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" maxlength="' + thisField.field_max + '" value="' + thisField.field_default + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
+                        customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
+                        customHTML += '</div>';
+                    } else if (thisField.field_type == 'CHECKBOX') {
+                        var checkBox = thisField.field_options.split("\n");
+                        customHTML += '<div class="mda-form-group">';
+                        if (thisField.multi_position == 'HORIZONTAL') {
+                            customHTML += '<div class="checkbox">';
+                        }
+                        for (i = 0; i < checkBox.length; i++) {
+                            var checkBoxValue = checkBox[i].split(",");
+                            if (thisField.multi_position == 'VERTICAL') {
+                                customHTML += '<div class="checkbox">';
+                            }
+                            customHTML += '<label style="margin-right: 15px;">';
+                            customHTML += '<input type="' + thisField.field_type.toLowerCase() + '" name="' + thisField.field_label + '[]" id="' + thisField.field_label + '_' + i + '" value="' + checkBoxValue[0] + '">';
+                            customHTML += checkBoxValue[1];
+                            customHTML += '</label>';
+                            if (thisField.multi_position == 'VERTICAL') {
+                                customHTML += '</div>';
+                            }
+                        }
+                        if (thisField.multi_position == 'HORIZONTAL') {
+                            customHTML += '</div>';
+                        }
+                        customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
+                        customHTML += '</div>';
+                    } else if (thisField.field_type == 'DISPLAY') {
+                        customHTML += '<div class="mda-form-group">';
+                        customHTML += '<span>' + thisField.field_options + '</span>';
+                        customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
+                        customHTML += '</div>';
+                    }
+                    customHTML += '</div>';
+                    order++;
+                }
+                customHTML += '</div>';
+            })
+            $("#custom_fields").html(customHTML);
+            $("#custom_fields_content").removeClass('hidden');
+        }
+    });
+}
 
 // ################################################################################
 // pull the script contents sending the webform variables to the script display script
@@ -6805,14 +6974,21 @@ String.prototype.toUpperFirst = function() {
                 $is_logged_in = $_REQUEST['is_logged_in'];
                 $_SESSION['campaign_id'] = (strlen($campaign) > 0) ? $campaign : $_SESSION['campaign_id'];
                 $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $_SESSION['is_logged_in'];
+                $result = $_SESSION['is_logged_in'];
                 break;
             case "ChecKLogiN":
                 $is_logged_in = $_REQUEST['is_logged_in'];
                 $sess_logged_in = (strlen($_SESSION['is_logged_in']) > 0) ? $_SESSION['is_logged_in'] : 0;
                 $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $sess_logged_in;
+                $result = $_SESSION['is_logged_in'];
+                break;
+            case "CustoMFielD":
+                $list_id = $_REQUEST['list_id'];
+                $result = $ui->API_goGetAllCustomFields($list_id);
+                $result = json_encode($result);
                 break;
         }
-        echo $_SESSION['is_logged_in'];
+        print($result);
     } else {
         echo "ERROR: Module '{$_REQUEST['module_name']}' not found.";
     }

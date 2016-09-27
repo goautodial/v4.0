@@ -1524,7 +1524,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$theme = $this->db->getSettingValueForKey(CRM_SETTING_THEME);
 		if (empty($theme)) { $theme = CRM_SETTING_DEFAULT_THEME; }
 		$return  = '<link href="css/skins/skin-'.$theme.'.min.css" rel="stylesheet" type="text/css" />';
-		$return .= "//{$_SERVER['SCRIPT_FILENAME']}\n";
+		//$return .= "//{$_SERVER['SCRIPT_FILENAME']}\n";
 		return $return;
 	}
 
@@ -1923,11 +1923,12 @@ error_reporting(E_ERROR | E_PARSE);
 
 			$callreports = '<li class="treeview"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>'.$this->lh->translationFor("call_reports").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
 			$callreports .= $this-> getSidebarItem("./callreports.php", "bar-chart", $this->lh->translationFor("reports_and_go_analytics"));
+			$callreports .= $this-> getSidebarItem("./callrecordings.php", "phone-square", $this->lh->translationFor("call_recordings"));
 			$callreports .= '</ul></li>';
 
 			$eventsArea .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
 
-			$contactsandrecs .= $this->getSidebarItem("contactsandcallrecordings.php", "phone-square", $this->lh->translationFor("contacts_call_recordings"));
+			$contactsandrecs .= $this->getSidebarItem("crm.php", "group", $this->lh->translationFor("crm"));
 		}
 
 		$agentmenu = NULL;
@@ -3958,19 +3959,21 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 
-	public function getUserActionMenuForCallRecording($id, $location) {
+	public function getUserActionMenuForCallRecording($id, $location, $fullname) {
+		$avatar = $this->getVueAvatar($fullname, NULL, 180);
+		//$avatar = "<avatar username='".$fullname."' :size=80>";
 
-	    return '<div class="btn-group">
-		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
-		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
-					    <span class="caret"></span>
-					    <span class="sr-only">Toggle Dropdown</span>
+	    return "<div class='btn-group'>
+		    <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown'>".$this->lh->translationFor('choose_action')."
+		    <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' style='height: 34px;'>
+					    <span class='caret'></span>
+					    <span class='sr-only'>Toggle Dropdown</span>
 		    </button>
-		    <ul class="dropdown-menu" role="menu">
-			<li><a class="play_audio" href="#" data-location="'.$location.'">Play Call Recording</a></li>
-			<li><a class="download-call-recording" href="'.$location.'" download>Download Call Recording</a></li>
+		    <ul class='dropdown-menu' role='menu'>
+			<li><a class='play_audio' href='#' data-location='".$location."' data-avatar='".$avatar."'>Play Call Recording</a></li>
+			<li><a class='download-call-recording' href='".$location."' download>Download Call Recording</a></li>
 		    </ul>
-		</div>';
+		</div>";
 	}
 
 	/** Music On Hold API - Get all list of music on hold */
@@ -5679,26 +5682,27 @@ error_reporting(E_ERROR | E_PARSE);
 		return '<avatar username="'.$username.'" '.$showAvatar.' '.$initials.' '.$topBarStyle.' '.$sideBarStyle.' '.$roundedImg.' :size="'.$size.'"></avatar>';
 	}
 
-  public function API_goGetAllCustomFields($list_id){
-    $url = gourl."/goCustomFields/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "getAllCustomFields"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["list_id"] = 101;
+	public function API_goGetAllCustomFields($list_id) {
+		$url = gourl."/goCustomFields/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "getAllCustomFields"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["list_id"] = $list_id;
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
 
-    return $output;
-}
+		return $output;
+	}
+
 
 }
 
