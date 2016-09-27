@@ -79,7 +79,6 @@
         <link rel="stylesheet" href="css/customizedLoader.css">
         
         
-        
         <script type="text/javascript">
             $(window).ready(function() {
                     $(".preloader").fadeOut("slow");
@@ -109,6 +108,7 @@
             $errormessage = NULL;            
             $output = $ui->goGetUserInfo($userid, "user_id");
             $creamyAvatar = $ui->getSessionAvatar();
+            $sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='32'></avatar></div>";
             //echo ("pre");
             //var_dump($output);
 
@@ -177,17 +177,19 @@
     if ($vm_message == NULL){
         $vm_message = 0;
     }
-
+        
 ?>
  
             <!-- <div class="unwrap ng-scope" style="margin-top: -30;"> -->
             <div class="unwrap ng-scope">
                <div style="background-image: url(img/profile-bg.jpg)" class="bg-cover">
                   <div class="p-xl text-center text-white">
-                     <span style="display:table; margin:0 auto; background-color: #ff902b; border: 3px solid #dadada; border-radius: 50%; margin-bottom: 10px; height: 128px; width: 128px;"><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 128)?></span>
+                     <a href="#" data-toggle="modal" id="onclick-userinfo" data-target="#view_agent_information">
+                     <span style="display:table; margin:0 auto; background-color: #ff902b; border: 3px solid #dadada; border-radius: 50%; margin-bottom: 10px; height: 128px; width: 128px;"><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 128)?></span></a>
                      <h3 class="m0"><?php echo $user->getUserName(); ?></h3>
                      <p><?php echo $_SESSION['user']; ?></p>
                      <p>Empowering the next generation contact centers.</p>
+                     <a href="#" class="btn btn-xs btn-primary pull-right" style="margin:10px;"><span class="fa fa-picture"></span> Change cover</a>
                   </div>
                </div>
                <div class="text-center bg-warning p-lg mb-xl">
@@ -547,7 +549,46 @@
 
         
 <!--================= MODALS =====================-->
-
+    
+                       <!-- Agent Information -->
+                        
+                    <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-hidden="true"> 
+                        <div class="modal-dialog"> 
+                            <div class="modal-content"> 
+                                <div class="modal-header"> 
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
+                                    <h4 class="modal-title">More about <span id="modal-username"></span>:</h4> 
+                                </div> 
+                                    <div class="modal-body"> 
+                                        <center>                                             
+                                            <div id="modal-avatar-agent"></div>
+                                            <h3 class="media-heading"><span id="modal-fullname"></span> <small></small></h3>
+                                        </center> 
+                                            <!-- <div class="responsive">
+                                                    <table class="table table-striped table-hover" id="view_agent_information_table" style="width: 100%">
+                                                        <thead>
+                                                                <th style="font-size: small;">Agent ID</th> 
+                                                                <th style="font-size: small;">Agent Phone</th> 
+                                                                <th style="font-size: small;">Status</th>                                                                
+                                                                <th style="font-size: small;">Cust Phone</th>
+                                                                <th style="font-size: small;">MM:SS</th>
+                                                   
+                                                        </thead>
+                                                        <tbody>
+                                                        
+                                                        </tbody>
+                                                    </table>
+                                            </div> -->
+                                    </div> 
+                                        <div class="modal-footer">                                        
+                                            <center> 
+                                            </center>
+                                        </div> 
+                                </div> 
+                            </div> 
+                        </div> 
+                        
+                        <!-- End of Agent Information -->    
     <!-- Agent Latest Outbound Calls -->
 
                     <div class="modal fade" id="agent_latest_outbound_calls" tabindex="-1" role="dialog" aria-hidden="true">
@@ -631,7 +672,7 @@
             <div class="modal-content"> 
                 <div class="modal-header"> 
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-                        <h4 class="modal-title">More about: <span id="modal-lead_id"></span></h4> 
+                        <h4 class="modal-title">More about lead ID: <span id="modal-lead_id"></span></h4> 
                 </div> 
                 <div class="modal-body"> 
                     <center> 
@@ -779,7 +820,7 @@
                 goAvatar._init(goOptions);
             } 
         });
-    }    
+    }
     
     // Clear lead information
     function clear_lead_information_form(){
@@ -800,8 +841,10 @@
         $('#modal-status').html("");        
     }
 
+
     //demian
     $(document).ready(function(){
+
     
         // Clear previous lead info
         $('#view_lead_information').on('hidden.bs.modal', function () {
@@ -818,44 +861,71 @@
                 data: {lead_id: leadid},
                 cache: false,
                 //dataType: 'json',
+                success: function(data){ 
+                    //console.log(data);
+                    var JSONStringleadinfo = data;
+                    var JSONObjectleadinfo = JSON.parse(JSONStringleadinfo);  
+                    var fname = JSONObjectleadinfo.data.first_name;
+                    var lname = JSONObjectleadinfo.data.last_name;
+                    var full_name = fname+' '+lname;
+                    var avatar = '<avatar username="'+full_name+'" :size="160"></avatar>';                        
+                    //console.log(JSONObjectleadinfo);
+                    $('#modal-lead_id').html(JSONObjectleadinfo.data.lead_id);
+                    $('#modal-list_id').html(JSONObjectleadinfo.data.list_id);                    
+                    $('#modal-first_name').html(JSONObjectleadinfo.data.first_name);
+                    $('#modal-last_name').html(JSONObjectleadinfo.data.last_name);
+                    $('#modal-phone_number').html(JSONObjectleadinfo.data.phone_number);
+                    $('#modal-address1').html(JSONObjectleadinfo.data.address1);  
+                    $('#modal-city').html(JSONObjectleadinfo.data.city);
+                    $('#modal-state').html(JSONObjectleadinfo.data.state);
+                    $('#modal-postal_code').html(JSONObjectleadinfo.data.postal_code); 
+                    $('#modal-country_code').html(JSONObjectleadinfo.data.country_code);
+                    $('#modal-agent').html(JSONObjectleadinfo.data.user);
+                    $('#modal-status').html(JSONObjectleadinfo.data.status);
+                    $('#modal-campaign_id').html(JSONObjectleadinfo.data.campaign_id);                                            
+                    $('#modal-full_name').html(full_name);
+                    $('#modal-avatar-lead').html(avatar);
+                    goAvatar._init(goOptions);
+                }                    
+            });  
+        });
+        
+        // Get user information and post results in view_agent_information modal
+        $(document).on('click','#onclick-userinfo',function(){
+            var agentid = '<?=$agentid?>';
+            var userid = '<?=$userid?>';
+            var agentname = '<?=$agentname?>';
+            var creamyavatar = '<?=$creamyAvatar?>';
+            $.ajax({        
+                type: 'POST',
+                url: "./php/ViewUserInfo.php",
+                data: {user: agentid},
+                cache: false,
+                //dataType: 'json',
                     success: function(data){ 
                         //console.log(data);
-                        var JSONStringleadinfo = data;
-                        var JSONObjectleadinfo = JSON.parse(JSONStringleadinfo);  
-                        var fname = JSONObjectleadinfo.data.first_name;
-                        var lname = JSONObjectleadinfo.data.last_name;
-                        var full_name = fname+' '+lname;
-                        var avatar = '<avatar username="'+full_name+'" :size="160"></avatar>';                        
-                        console.log(JSONObjectleadinfo);
-                        $('#modal-lead_id').html(JSONObjectleadinfo.data.lead_id);
-                        $('#modal-list_id').html(JSONObjectleadinfo.data.list_id);                    
-                        $('#modal-first_name').html(JSONObjectleadinfo.data.first_name);
-                        $('#modal-last_name').html(JSONObjectleadinfo.data.last_name);
-                        $('#modal-phone_number').html(JSONObjectleadinfo.data.phone_number);
-                        $('#modal-address1').html(JSONObjectleadinfo.data.address1);  
-                        $('#modal-city').html(JSONObjectleadinfo.data.city);
-                        $('#modal-state').html(JSONObjectleadinfo.data.state);
-                        $('#modal-postal_code').html(JSONObjectleadinfo.data.postal_code); 
-                        $('#modal-country_code').html(JSONObjectleadinfo.data.country_code);
-                        $('#modal-agent').html(JSONObjectleadinfo.data.user);
-                        $('#modal-status').html(JSONObjectleadinfo.data.status);
-                        $('#modal-campaign_id').html(JSONObjectleadinfo.data.campaign_id);                                            
-                        $('#modal-full_name').html(full_name);
-                        $('#modal-avatar-lead').html(avatar);
+                        var JSONString = data;
+                        var JSONObject = JSON.parse(JSONString);
+                        //console.log(JSONObject);
+                        $('#modal-userid').html(userid);
+                        //global_userid = JSONObject.data[0].vu_user_id;
+                        $('#modal-username').html(agentid);
+                        $('#modal-fullname').html(agentname);
+
+                        var avatar = '<avatar username="'+agentname+'" src="'+creamyavatar+'" :size="160"></avatar>'; 
+                        $('#modal-avatar-agent').html(avatar);
                         goAvatar._init(goOptions);
                     }
+            });    
+        });
                     
-            });  
-        });         
-           
-        // ---- loads datatable functions                                                
+        // ---- loads datatable functions  
             load_agent_latest_outbound_calls();
             load_agent_latest_inbound_calls();
             load_agent_latest_outbound_calls_summary();
             load_agent_latest_inbound_calls_summary();
 
     });
-
     
 </script>
 
