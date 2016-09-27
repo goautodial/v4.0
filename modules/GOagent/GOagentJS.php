@@ -5966,6 +5966,15 @@ function GetCustomFields(listid, show) {
         $("#custom_fields_content").addClass('hidden');
     }
     
+    if (typeof listid === 'undefined' || listid === null || listid.length < 1) {
+        if (!show) {
+            $("#custom_fields_content").addClass('hidden');
+        } else {
+            $("#custom_fields_content").removeClass('hidden');
+        }
+        return false;
+    }
+    
     var postData = {
         module_name: 'GOagent',
         action: 'CustoMFielD',
