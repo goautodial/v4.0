@@ -76,31 +76,11 @@
         $agentlatestcalls .= '"'.$duration.'"';        
         $agentlatestcalls .='],';
        
-        }
-
-        $agentlatestcalls = rtrim($agentlatestcalls, ",");    
-        $agentlatestcalls .= ']';
-
-        echo json_encode($agentlatestcalls);
-    
-/*    $max = 0;
-    
-    foreach($output->agentincalls as $key => $value){
-    
-        if(++$max > 100) break;
-        
-        $first_name = $value->first_name;
-        $last_name = $value->last_name;
-        $phone_number = $value->phone_number;
-        $lead_id = $value->lead_id;
-        $list_id = $value->list_id;
-        $campaign_id = $value->campaign_id;
-        $call_date = $value->call_date;
-        $length_in_sec = $value->length_in_sec;
-        $statusin = $value->status;
-                
-
     }
-*/
+
+    $agentlatestcalls = rtrim($agentlatestcalls, ",");    
+    $agentlatestcalls .= ']';
+
+    echo json_encode($agentlatestcalls);    
 
 ?>

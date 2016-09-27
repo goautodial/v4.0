@@ -171,7 +171,7 @@
 
 									   	?>	
 											<tr>
-                                                                                                <td><avatar username='<?php echo $ivr->menu_name[$i];?>' :size='36'></avatar></td>
+                                                <td><avatar username='<?php echo $ivr->menu_name[$i];?>' :size='36'></avatar></td>
 												<td><strong><a class='edit-ivr' data-id="<?php echo $ivr->menu_id[$i];?>"><?php echo $ivr->menu_id[$i];?></a></strong></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_name[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_prompt[$i];?></td>

@@ -69,14 +69,16 @@
         <!-- WHIRL (spinners)-->
         <link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
         <!-- =============== PAGE VENDOR STYLES ===============-->
+        <link rel="stylesheet" href="adminlte/css/AdminLTE.css">
         <!-- =============== BOOTSTRAP STYLES ===============-->
         <link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
         <!-- =============== APP STYLES ===============-->
         <link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+        <!-- <link rel="stylesheet" href="css/material/app.css" id="maincss"> -->
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
         
-        <link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
+        
         
         <script type="text/javascript">
             $(window).ready(function() {
@@ -124,11 +126,27 @@
             $insalestoday = $output->data->insalestoday;            
             
             if ($incallstoday == NULL){
-                $incallstoday = "0";
+                $incallstoday = 0;
             }
-            
+            if ($incallstoday == 0){
+                $in_message_today01 = "No inbound calls yet today.";
+                $in_message_today02 = "Showing latest inbound calls intead.";
+                $in_calls_today = "";
+            }else {
+                $in_message_today = "Inbound calls today: ";
+                $in_calls_today = $incallstoday;
+            }         
+                                        
             if ($outcallstoday == NULL){
-                $outcallstoday = "0";
+                $outcallstoday = 0;
+            } 
+            if ($outcallstoday == 0){
+                $out_message_today01 = "No outbound calls yet today.";
+                $out_message_today02 = "Showing latest outbound calls intead.";
+                $out_calls_today = "";
+            }else {
+                $out_message_today = "Outbound calls today: ";
+                $out_calls_today = $outcallstoday;
             }            
             
             $totalcallstoday = ($outcallstoday + $incallstoday);
@@ -153,13 +171,18 @@
                 if ($value == $voicemail_id) break;
                 $vmid = $value;
                 $vm_message = $value2;
+                
             }    
+    }
+    if ($vm_message == NULL){
+        $vm_message = 0;
     }
 
 ?>
  
+            <!-- <div class="unwrap ng-scope" style="margin-top: -30;"> -->
             <div class="unwrap ng-scope">
-               <div style="background-image: url(img/profile-bg.jpg); padding-top: 20px;" class="bg-cover">
+               <div style="background-image: url(img/profile-bg.jpg)" class="bg-cover">
                   <div class="p-xl text-center text-white">
                      <span style="display:table; margin:0 auto; background-color: #ff902b; border: 3px solid #dadada; border-radius: 50%; margin-bottom: 10px; height: 128px; width: 128px;"><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 128)?></span>
                      <h3 class="m0"><?php echo $user->getUserName(); ?></h3>
@@ -191,158 +214,195 @@
                      <div class="col-lg-9">
                         <!-- START timeline-->
                         <ul class="timeline">
-                           <li data-datetime="Today" class="timeline-separator"></li>
-                           <!-- START timeline item-->
-                           <li>
-                <div class="timeline-badge primary">
-                     <em class="fa fa-users"></em>
-                  </div>
-                  <div class="timeline-panel">
-                     <div class="popover">
-                        <h4 class="popover-title">Outbound Calls</h4>
-                        <div class="arrow"></div>
-                        <div class="popover-content">
-                           <p>Calls today: <?php echo $outcallstoday; ?>
-                              <br>
-                              <small>Click to display all outbound calls for this day.</small>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-               </li>
-               <!-- END timeline item-->
-               <!-- START timeline item-->
-               <li class="timeline-inverted">
-                  <div class="timeline-badge warning">
-                     <em class="fa fa-phone"></em>
-                  </div>
-                  <div class="timeline-panel">
-                     <div class="popover right">
-                        <h4 class="popover-title">Inbound Calls</h4>
-                        <div class="arrow"></div>
-                        <div class="popover-content">
-                           <p>Michael <a href="tel:+011654524578">(+011) 6545 24578 ext. 132</a>
-                              <br>
-                              <small>Click to display all inbound and closer calls for this day.</small>
-                           </p>
-                        </div>
-                     </div>
-                  </div>
-               </li>
-               <!-- END timeline item-->
-               <!-- START timeline separator-->
-               <li data-datetime="Yesterday" class="timeline-separator"></li>
-               <!-- END timeline separator-->
-               <!-- START timeline item-->
-               <li>
-                  <div class="timeline-badge danger">
-                     <em class="fa fa-video-camera"></em>
-                  </div>
-                  <div class="timeline-panel">
-                     <div class="popover">
-                        <h4 class="popover-title">Conference</h4>
-                        <div class="arrow"></div>
-                        <div class="popover-content">
-                           <p>Join development group</p>
-                           <small>
-                              <a href="skype:echo123?call">
-                                 <em class="fa fa-phone"></em>Call the Skype Echo</a>
-                           </small>
-                        </div>
-                     </div>
-                  </div>
-               </li>
-               <!-- END timeline item-->
-               <!-- START timeline item-->
-               <li class="timeline-inverted">
-                  <div class="timeline-panel">
-                     <div class="popover right">
-                        <h4 class="popover-title">Appointment</h4>
-                        <div class="arrow"></div>
-                        <div class="popover-content">
-                           <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam.</p>
-                           <div class="btn-group">
-                              <a href="#" data-toggle="dropdown" data-play="fadeIn" class="dropdown-toggle">
-                                 <em class="fa fa-paperclip"></em>
-                              </a>
-                              <ul class="dropdown-menu text-left">
-                                 <li>
-                                    <a href="#">
-                                       <em class="fa fa-download"></em>Download</a>
-                                 </li>
-                                 <li>
-                                    <a href="#">
-                                       <em class="fa fa-share"></em>Send to</a>
-                                 </li>
-                                 <li class="divider"></li>
-                                 <li>
-                                    <a href="#">
-                                       <em class="fa fa-times"></em>Delete</a>
-                                 </li>
-                              </ul>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </li>
-               <!-- END timeline item-->
-               <!-- START timeline item-->
-               <li>
-                  <div class="timeline-badge info">
-                     <em class="fa fa-plane"></em>
-                  </div>
-                  <div class="timeline-panel">
-                     <div class="popover">
-                        <h4 class="popover-title">Fly</h4>
-                        <div class="arrow"></div>
-                        <div class="popover-content">
-                           <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
-                        </div>
-                     </div>
-                  </div>
-               </li>
-               <!-- END timeline item-->
-               <!-- START timeline item-->
-               <li>
-                  <div class="timeline-panel">
-                     <div class="popover">
-                        <h4 class="popover-title">Appointment</h4>
-                        <div class="arrow"></div>
-                        <div class="popover-content">
-                           <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
-                        </div>
-                     </div>
-                  </div>
-               </li>
-               <!-- END timeline item-->
-               <!-- START timeline separator-->
-               <li data-datetime="2014-05-21" class="timeline-separator"></li>
-               <!-- END timeline separator-->
-               <!-- START timeline item-->
-               <li class="timeline-inverted">
-                  <div class="timeline-badge success">
-                     <em class="fa fa-music"></em>
-                  </div>
-                  <div class="timeline-panel">
-                     <div class="popover right">
-                        <h4 class="popover-title">Relax</h4>
-                        <div class="arrow"></div>
-                        <div class="popover-content">
-                           <p>Listen some music</p>
-                        </div>
-                     </div>
-                  </div>
-               </li>
-               <!-- END timeline item-->
-               <!-- START timeline item-->
-               <li class="timeline-end">
-                  <a href="#" class="timeline-badge">
-                     <em class="fa fa-plus"></em>
-                  </a>
-               </li>
-               <!-- END timeline item-->
-            </ul>
-            <!-- END timeline-->
+                            <li data-datetime="Today" class="timeline-separator"></li>
+                            <!-- START timeline item-->
+                            <li>
+                                <div class="timeline-badge primary">
+                                    <em class="fa fa-phone" style="padding-top: 10px;"></em>
+                                </div>
+                                <div class="timeline-panel">
+                                    <div class="popover left">
+                                        <h4 class="popover-title"><a href="#" data-toggle="modal" data-target="#agent_latest_outbound_calls">Outbound Calls</a></h4>
+                                        <div class="arrow"></div>
+                                            <div class="popover-content">
+                                                <!-- <p>Calls today: <?php echo $outcallstoday; ?></p> -->
+                                                <!-- <p>No inbound calls yet today.</p> -->
+                                                <p> <?php echo $out_message_today01; ?> <?php echo $out_calls_today; ?></p>
+                                                <p class="text-muted mv"><?php echo $out_message_today02; ?></p>
+                                            <div class="media bb p">
+                                                <div class="media-body">
+                                                    <!-- <a class="media p mt0 list-group-item"> -->
+                                                    
+                                                        <span id="refresh_agent_latest_outbound_calls_summary"></span>
+                                                    
+                                                    <!-- </a> -->
+                                                </div>
+                                            </div>
+                                            </div>
+                                    </div>                            
+                                </div>
+                            </li>
+                            <!-- END timeline item-->
+                        <!-- START timeline item-->
+                        <li class="timeline-inverted">
+                            <div class="timeline-badge warning">
+                                <em class="fa fa-phone" style="padding-top: 10px;"></em>
+                            </div>
+                            <div class="timeline-panel">
+                                <div class="popover right">
+                                    <h4 class="popover-title"><a href="#" data-toggle="modal" data-target="#agent_latest_inbound_calls">Inbound Calls</a></h4>
+                                        <div class="arrow"></div>
+                                            <div class="popover-content">
+                                                <!-- <p>Calls today: <?php echo $incallstoday; ?></p> -->
+                                                <!-- <p>No inbound calls yet today.</p> -->
+                                                <p> <?php echo $in_message_today01; ?> <?php echo $in_calls_today; ?></p>
+                                                <p class="text-muted mv"><?php echo $in_message_today02; ?></p>
+                                            <div class="media bb p">
+                                                <div class="media-body">
+                                                    <!-- <a class="media p mt0 list-group-item"> -->
+                                                    
+                                                        <span id="refresh_agent_latest_inbound_calls_summary"></span>
+                                                    
+                                                    <!-- </a> -->
+                                                </div>
+                                            </div>
+                                    <!-- <div class="media bb p">
+                                        <small class="pull-right text-muted">30m ago</small>
+                                        <div class="pull-left">
+                                            <img src="app/img/user/08.jpg" alt="Image" class="media-object img-circle thumb32" />
+                                        </div>
+                                        <div class="media-body">
+                                            <span class="media-heading">
+                                                <p class="m0">
+                                                <a href="#">
+                                                    <strong>Samantha Murphy</strong>
+                                                </a>
+                                                </p>
+                                                <p class="m0 text-muted">Excellento job!</p>
+                                            </span>
+                                        </div>
+                                    </div> -->
+                                    <!-- <form method="post" action="" class="mt">
+                                        <textarea placeholder="Comment..." rows="1" class="form-control no-resize"></textarea>
+                                    </form> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- END timeline item-->
+                        <!-- START timeline separator-->
+                        <li data-datetime="Yesterday" class="timeline-separator"></li>
+                        <!-- END timeline separator-->
+                        <!-- START timeline item-->
+                        <li>
+                            <div class="timeline-badge danger">
+                                <em class="fa fa-video-camera" style="padding-top: 10px;"></em>
+                            </div>
+                            <div class="timeline-panel">
+                                <div class="popover">
+                                    <h4 class="popover-title">Conference</h4>
+                                    <div class="arrow"></div>
+                                    <div class="popover-content">
+                                    <p>Join development group</p>
+                                    <small>
+                                        <a href="skype:echo123?call">
+                                            <em class="fa fa-phone"></em>Call the Skype Echo</a>
+                                    </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- END timeline item-->
+                        <!-- START timeline item-->
+                        <li class="timeline-inverted">
+                            <div class="timeline-panel">
+                                <div class="popover right">
+                                    <h4 class="popover-title">Appointment</h4>
+                                    <div class="arrow"></div>
+                                    <div class="popover-content">
+                                    <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam.</p>
+                                    <div class="btn-group">
+                                        <a href="#" data-toggle="dropdown" data-play="fadeIn" class="dropdown-toggle">
+                                            <em class="fa fa-paperclip"></em>
+                                        </a>
+                                        <ul class="dropdown-menu text-left">
+                                            <li>
+                                                <a href="#">
+                                                <em class="fa fa-download" style="padding-top: 10px;"></em>Download</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                <em class="fa fa-share" style="padding-top: 10px;"></em>Send to</a>
+                                            </li>
+                                            <li class="divider"></li>
+                                            <li>
+                                                <a href="#">
+                                                <em class="fa fa-times" style="padding-top: 10px;"></em>Delete</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- END timeline item-->
+                        <!-- START timeline item-->
+                        <li>
+                            <div class="timeline-badge info">
+                                <em class="fa fa-plane" style="padding-top: 10px;"></em>
+                            </div>
+                            <div class="timeline-panel">
+                                <div class="popover">
+                                    <h4 class="popover-title">Fly</h4>
+                                    <div class="arrow"></div>
+                                    <div class="popover-content">
+                                    <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- END timeline item-->
+                        <!-- START timeline item-->
+                        <li>
+                            <div class="timeline-panel">
+                                <div class="popover">
+                                    <h4 class="popover-title">Appointment</h4>
+                                    <div class="arrow"></div>
+                                    <div class="popover-content">
+                                    <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- END timeline item-->
+                        <!-- START timeline separator-->
+                        <li data-datetime="2014-05-21" class="timeline-separator"></li>
+                        <!-- END timeline separator-->
+                        <!-- START timeline item-->
+                        <li class="timeline-inverted">
+                            <div class="timeline-badge success">
+                                <em class="fa fa-music" style="padding-top: 10px;"></em>
+                            </div>
+                            <div class="timeline-panel">
+                                <div class="popover right">
+                                    <h4 class="popover-title">Relax</h4>
+                                    <div class="arrow"></div>
+                                    <div class="popover-content">
+                                    <p>Listen some music</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- END timeline item-->
+                        <!-- START timeline item-->
+                        <li class="timeline-end">
+                            <a href="#" class="timeline-badge">
+                                <em class="fa fa-plus" style="padding-top: 10px;"></em>
+                            </a>
+                        </li>
+                        <!-- END timeline item-->
+                        </ul>
+                        <!-- END timeline-->
                      </div>
                      <div class="col-lg-3">
                         <div class="panel panel-default">
@@ -363,23 +423,90 @@
                               </ul>
                            </div>
                         </div>
-                        <div class="panel panel-default">
-                           <div class="panel-heading">
-                              <a class="pull-right">
-                                 <em class="icon-plus text-muted"></em>
-                              </a>Latest Outbound Calls</div>
-                           <div class="list-group">
-                              <!-- START Latest Calls summary widget -->
-                                <a class="media p mt0 list-group-item">
-                                
-                                    <span id="refresh_agent_latest_outbound_calls_summary"></span>
-                                  
-                                </a>
-                              
-                              <!-- END Latest Calls summary widget -->
-                                        <a href="#" data-toggle="modal" data-target="#agent_latest_calls" class="media p mt0 list-group-item text-center text-muted">View more</a>                              
-                           </div>
-                        </div>
+            <div class="panel panel-default">
+               <div class="panel-heading">
+                  <a href="#" class="pull-right">
+                     <em class="icon-plus text-muted"></em>
+                  </a>Contacts</div>
+               <div class="list-group">
+                  <!-- START User status-->
+                  <a href="#" class="media p mt0 list-group-item">
+                     <span class="pull-right">
+                        <span class="circle circle-success circle-lg"></span>
+                     </span>
+                     <span class="pull-left">
+                        <!-- Contact avatar-->
+                        <img src="img/user/05.jpg" alt="Image" class="media-object img-circle thumb32" />
+                     </span>
+                     <!-- Contact info-->
+                     <span class="media-body">
+                        <span class="media-heading">
+                           <strong>Juan Sims</strong>
+                           <br/>
+                           <small class="text-muted">Designeer</small>
+                        </span>
+                     </span>
+                  </a>
+                  <!-- END User status-->
+                  <!-- START User status-->
+                  <a href="#" class="media p mt0 list-group-item">
+                     <span class="pull-right">
+                        <span class="circle circle-success circle-lg"></span>
+                     </span>
+                     <span class="pull-left">
+                        <!-- Contact avatar-->
+                        <img src="img/user/06.jpg" alt="Image" class="media-object img-circle thumb32" />
+                     </span>
+                     <!-- Contact info-->
+                     <span class="media-body">
+                        <span class="media-heading">
+                           <strong>Maureen Jenkins</strong>
+                           <br/>
+                           <small class="text-muted">Designeer</small>
+                        </span>
+                     </span>
+                  </a>
+                  <!-- END User status-->
+                  <!-- START User status-->
+                  <a href="#" class="media p mt0 list-group-item">
+                     <span class="pull-right">
+                        <span class="circle circle-danger circle-lg"></span>
+                     </span>
+                     <span class="pull-left">
+                        <!-- Contact avatar-->
+                        <img src="img/user/07.jpg" alt="Image" class="media-object img-circle thumb32" />
+                     </span>
+                     <!-- Contact info-->
+                     <span class="media-body">
+                        <span class="media-heading">
+                           <strong>Billie Dunn</strong>
+                           <br/>
+                           <small class="text-muted">Designeer</small>
+                        </span>
+                     </span>
+                  </a>
+                  <!-- END User status-->
+                  <!-- START User status-->
+                  <a href="#" class="media p mt0 list-group-item">
+                     <span class="pull-right">
+                        <span class="circle circle-warning circle-lg"></span>
+                     </span>
+                     <span class="pull-left">
+                        <!-- Contact avatar-->
+                        <img src="img/user/08.jpg" alt="Image" class="media-object img-circle thumb32" />
+                     </span>
+                     <!-- Contact info-->
+                     <span class="media-body">
+                        <span class="media-heading">
+                           <strong>Tomothy Roberts</strong>
+                           <br/>
+                           <small class="text-muted">Designer</small>
+                        </span>
+                     </span>
+                  </a>
+                  <!-- END User status--><a href="contactsandcallrecordings.php" class="media p mt0 list-group-item text-center text-muted">View all contacts</a>
+               </div>
+            </div>                       
                         <div class="panel panel-default">
                            <div class="list-group">
                               <a href="#" class="list-group-item">
@@ -421,19 +548,19 @@
         
 <!--================= MODALS =====================-->
 
-    <!-- Agent Latest Calls -->
+    <!-- Agent Latest Outbound Calls -->
 
-                    <div class="modal fade" id="agent_latest_calls" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal fade" id="agent_latest_outbound_calls" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-lg modal-dialog" style="min-width: 75%">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4>Latest Phone Calls (100 limit)</h4>
+                                    <h4>Latest Outbound Phone Calls (100 limit)</h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="responsive">
                                     <!-- <div class="col-sm-12">-->
-                                        <table class="table table-striped table-hover display compact" id="agent_latest_calls_table" style="width: 100%">
+                                        <table class="table table-striped table-hover display compact" id="agent_latest_outbound_calls_table" style="width: 100%">
                                             <thead>
                                                 <th style="color: white;">Pic</th>
                                                 <th style="font-size: small;">Lead ID</th>
@@ -457,7 +584,46 @@
                         </div>	
                     </div>
                      
-    <!-- End of Agent Latest Calls -->  
+    <!-- End of Agent Latest Outbound Calls --> 
+    
+    <!-- Agent Latest Inbound Calls -->
+
+                    <div class="modal fade" id="agent_latest_inbound_calls" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-lg modal-dialog" style="min-width: 75%">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4>Latest Inbound Phone Calls (100 limit)</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="responsive">
+                                    <!-- <div class="col-sm-12">-->
+                                        <table class="table table-striped table-hover display compact" id="agent_latest_inbound_calls_table" style="width: 100%">
+                                            <thead>
+                                                <th style="color: white;">Pic</th>
+                                                <th style="font-size: small;">Lead ID</th>
+                                                <th style="font-size: small;">Customer</th>
+                                                <!-- <th style="font-size: small;">List ID</th> -->
+                                                <th style="font-size: small;">Campaign ID</th>                                                                
+                                                <th style="font-size: small;">Phone Number</th>
+                                                <th style="font-size: small;">Status</th>
+                                                <!-- <th style="font-size: small;">Agent</th> -->
+                                                <th style="font-size: small;">Call Date</th>
+                                                <th style="font-size: small;">Duration</th>
+                                            </thead>
+                                            <tbody>
+                                            
+                                            </tbody>
+                                        </table>
+                                    <!--</div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>	
+                    </div>
+                     
+    <!-- End of Agent Latest Inbound Calls --> 
+    
     <!-- Lead Information -->
                         
     <div class="modal fade" id="view_lead_information" tabindex="-1" role="dialog" aria-hidden="true"> 
@@ -465,7 +631,7 @@
             <div class="modal-content"> 
                 <div class="modal-header"> 
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-                        <h4 class="modal-title">Telephone: <span id="modal-phone_number"></span></h4> 
+                        <h4 class="modal-title">More about: <span id="modal-lead_id"></span></h4> 
                 </div> 
                 <div class="modal-body"> 
                     <center> 
@@ -475,13 +641,13 @@
                                 <span>Address: </span> 
                                     <span class="label label-info" id="modal-address1"></span> 
                                     <span class="label label-info" id="modal-city"></span> 
-                                    <span class="label label-waring" id="modal-state"></span>
+                                    <span class="label label-warning" id="modal-state"></span>
                                     <span class="label label-success" id="modal-postal_code"></span><br/>                                
                     </center> 
                         <div class="responsive">
                             <table class="table table-striped table-hover" id="view_lead_information_table" style="width: 100%">
                                 <thead>
-                                    <th style="font-size: small;">Lead ID</th> 
+                                    <th style="font-size: small;">Phone Number</th> 
                                     <th style="font-size: small;">List ID</th>
                                     <!-- <th style="font-size: small;">Campaign ID</th> -->                                                            
                                     <!-- <th style="font-size: small;">Phone Number</th> -->
@@ -490,12 +656,12 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                    <td><span id="modal-lead_id"></span></td>
+                                    <td><span id="modal-phone_number"></span></td>
                                     <td><span id="modal-list_id"></span></td>
                                     <!-- <td><span id="modal-campaign_id"></td> -->
                                     <!-- <td><span id="modal-phone_number"></td> -->
                                     <td><span id="modal-status"></span></td>
-                                    <td><span id="modal-user"></span></td>
+                                    <td><span id="modal-agent"></span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -521,11 +687,11 @@
     
 <script>
 
-    function load_agent_latest_calls(){    
+    function load_agent_latest_outbound_calls(){    
         var userid = <?=$userid?>;         
         $.ajax({
             type: 'POST',
-            url: "./php/APIs/API_GetAgentLatestCalls.php",
+            url: "./php/APIs/API_GetAgentLatestOutboundCalls.php",
             cache: false,
             data: {user_id: userid},
             dataType: 'json',
@@ -533,7 +699,7 @@
                 var JSONStringlatest_calls = values;
                 var JSONObjectlatest_calls = JSON.parse(JSONStringlatest_calls);                
                 console.log(JSONObjectlatest_calls); 
-                var table = $('#agent_latest_calls_table').dataTable({
+                var table = $('#agent_latest_outbound_calls_table').dataTable({
                     data:JSONObjectlatest_calls,
                     "destroy":true,
                     //"searching": false,
@@ -554,11 +720,44 @@
         });
     }
     
-    function load_agent_latest_calls_summary(){    
+    function load_agent_latest_inbound_calls(){    
         var userid = <?=$userid?>;         
         $.ajax({
             type: 'POST',
-            url: "./php/APIs/API_GetAgentLatestCallsSummary.php",
+            url: "./php/APIs/API_GetAgentLatestInboundCalls.php",
+            cache: false,
+            data: {user_id: userid},
+            dataType: 'json',
+            success: function(values){
+                var JSONStringlatest_calls = values;
+                var JSONObjectlatest_calls = JSON.parse(JSONStringlatest_calls);                
+                console.log(JSONObjectlatest_calls); 
+                var table = $('#agent_latest_inbound_calls_table').dataTable({
+                    data:JSONObjectlatest_calls,
+                    "destroy":true,
+                    //"searching": false,
+                    stateSave: true,
+                    drawCallback: function(settings) {
+                        var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                            pagination.toggle(this.api().page.info().pages > 1);
+                    },                    
+                    "columnDefs": [
+                        {
+                            className: "hidden-xs", 
+                            "targets": [ 2, 4, 5, 7 ] 
+                        }
+                    ]                                    
+                });
+                goAvatar._init(goOptions);
+            } 
+        });
+    }    
+    
+    function load_agent_latest_outbound_calls_summary(){    
+        var userid = <?=$userid?>;         
+        $.ajax({
+            type: 'POST',
+            url: "./php/APIs/API_GetAgentLatestOutboundCallsSummary.php",
             cache: false,
             data: {user_id: userid},
             success: function(data){
@@ -567,6 +766,20 @@
             } 
         });
     }
+    
+    function load_agent_latest_inbound_calls_summary(){    
+        var userid = <?=$userid?>;         
+        $.ajax({
+            type: 'POST',
+            url: "./php/APIs/API_GetAgentLatestInboundCallsSummary.php",
+            cache: false,
+            data: {user_id: userid},
+            success: function(data){
+                $("#refresh_agent_latest_inbound_calls_summary").html(data);
+                goAvatar._init(goOptions);
+            } 
+        });
+    }    
     
     // Clear lead information
     function clear_lead_information_form(){
@@ -583,7 +796,7 @@
         $('#modal-country_code').html("");
         $('#modal-full_name').html("");
         $('#modal-avatar-lead').html("");  
-        $('#modal-user').html("");
+        $('#modal-agent').html("");
         $('#modal-status').html("");        
     }
 
@@ -624,7 +837,7 @@
                         $('#modal-state').html(JSONObjectleadinfo.data.state);
                         $('#modal-postal_code').html(JSONObjectleadinfo.data.postal_code); 
                         $('#modal-country_code').html(JSONObjectleadinfo.data.country_code);
-                        $('#modal-user').html(JSONObjectleadinfo.data.user);
+                        $('#modal-agent').html(JSONObjectleadinfo.data.user);
                         $('#modal-status').html(JSONObjectleadinfo.data.status);
                         $('#modal-campaign_id').html(JSONObjectleadinfo.data.campaign_id);                                            
                         $('#modal-full_name').html(full_name);
@@ -636,8 +849,10 @@
         });         
            
         // ---- loads datatable functions                                                
-            load_agent_latest_calls();
-            load_agent_latest_calls_summary();
+            load_agent_latest_outbound_calls();
+            load_agent_latest_inbound_calls();
+            load_agent_latest_outbound_calls_summary();
+            load_agent_latest_inbound_calls_summary();
 
     });
 
