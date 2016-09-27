@@ -6902,7 +6902,7 @@ String.prototype.toUpperFirst = function() {
             case "CustoMFielD":
                 $list_id = $_REQUEST['list_id'];
                 $result = $ui->API_goGetAllCustomFields($list_id);
-                return $result;
+                $result = json_encode($result);
                 break;
         }
         print($result);
