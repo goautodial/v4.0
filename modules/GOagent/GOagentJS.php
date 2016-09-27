@@ -5987,7 +5987,7 @@ function GetCustomFields(listid) {
             $.each(fields, function(rank, data) {
                 if (typeof data === 'undefined') return true;
                 var order = 1;
-                var field_cnt = data.length;
+                var field_cnt = (data.length - 1);
                 customHTML += '<div class="row">';
                 while (order < field_cnt) {
                     var thisField = data[order];
