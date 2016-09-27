@@ -5976,28 +5976,36 @@ function GetCustomFields(listid) {
             var fields = [];
             $.each(result.data, function(idx, val) {
                 var thisRank = val['field_rank'];
-                fields[thisRank] = [];
-                fields[thisRank]['field_id'] = val['field_id'];
-                fields[thisRank]['field_label'] = val['field_label'];
-                fields[thisRank]['field_default'] = val['field_default'];
-                fields[thisRank]['field_description'] = val['field_description'];
-                fields[thisRank]['field_help'] = val['field_help'];
-                fields[thisRank]['field_cost'] = val['field_cost'];
-                fields[thisRank]['field_max'] = val['field_max'];
-                fields[thisRank]['field_name'] = val['field_name'];
-                fields[thisRank]['field_options'] = val['field_options'];
-                fields[thisRank]['field_order'] = val['field_order'];
-                fields[thisRank]['field_required'] = val['field_required'];
-                fields[thisRank]['field_size'] = val['field_size'];
-                fields[thisRank]['field_type'] = val['field_type'];
-                fields[thisRank]['multi_position'] = val['multi_position'];
-                fields[thisRank]['name_position'] = val['name_position'];
+                var thisOrder = val['field_order'];
+                
+                if (typeof fields[thisRank] === 'undefined') {
+                   fields[thisRank] = [];
+                }
+                fields[thisRank][thisOrder] = val;
             });
             
+            
             console.log(fields);
+            fields2 = sortThis(fields, 'field_order', 'asc');
+            console.log(fields2);
             $("#custom_fields").removeClass('hidden');
         }
     });
+}
+
+function sortThis(arr, field, order) {
+    if (typeof order === 'undefined') {
+        order = 'desc';
+    }
+    arr.sort((function(index){
+        return function(a, b){
+            if (order == 'asc') {
+                return (a[index] === b[index] ? 0 : (a[index] < b[index] ? -1 : 1));
+            } else {
+                return (a[index] === b[index] ? 0 : (a[index] > b[index] ? -1 : 1));
+            }
+        };
+    })(field));
 }
 
 
