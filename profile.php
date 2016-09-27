@@ -631,7 +631,7 @@
             <div class="modal-content"> 
                 <div class="modal-header"> 
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-                        <h4 class="modal-title">Telephone: <span id="modal-phone_number"></span></h4> 
+                        <h4 class="modal-title">More about: <span id="modal-lead_id"></span></h4> 
                 </div> 
                 <div class="modal-body"> 
                     <center> 
@@ -647,7 +647,7 @@
                         <div class="responsive">
                             <table class="table table-striped table-hover" id="view_lead_information_table" style="width: 100%">
                                 <thead>
-                                    <th style="font-size: small;">Lead ID</th> 
+                                    <th style="font-size: small;">Phone Number</th> 
                                     <th style="font-size: small;">List ID</th>
                                     <!-- <th style="font-size: small;">Campaign ID</th> -->                                                            
                                     <!-- <th style="font-size: small;">Phone Number</th> -->
@@ -656,12 +656,12 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                    <td><span id="modal-lead_id"></span></td>
+                                    <td><span id="modal-phone_number"></span></td>
                                     <td><span id="modal-list_id"></span></td>
                                     <!-- <td><span id="modal-campaign_id"></td> -->
                                     <!-- <td><span id="modal-phone_number"></td> -->
                                     <td><span id="modal-status"></span></td>
-                                    <td><span id="modal-user"></span></td>
+                                    <td><span id="modal-agent"></span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -796,7 +796,7 @@
         $('#modal-country_code').html("");
         $('#modal-full_name').html("");
         $('#modal-avatar-lead').html("");  
-        $('#modal-user').html("");
+        $('#modal-agent').html("");
         $('#modal-status').html("");        
     }
 
@@ -837,7 +837,7 @@
                         $('#modal-state').html(JSONObjectleadinfo.data.state);
                         $('#modal-postal_code').html(JSONObjectleadinfo.data.postal_code); 
                         $('#modal-country_code').html(JSONObjectleadinfo.data.country_code);
-                        $('#modal-user').html(JSONObjectleadinfo.data.user);
+                        $('#modal-agent').html(JSONObjectleadinfo.data.user);
                         $('#modal-status').html(JSONObjectleadinfo.data.status);
                         $('#modal-campaign_id').html(JSONObjectleadinfo.data.campaign_id);                                            
                         $('#modal-full_name').html(full_name);
