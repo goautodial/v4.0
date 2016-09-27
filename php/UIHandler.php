@@ -1886,7 +1886,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$settings = "";
 		$callreports = "";
 		$loadleads = "";
-		$contactsandrecs = "";
+		$crm = "";
 		$eventsArea = "";
 		if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
 
@@ -1928,7 +1928,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 			$eventsArea .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));
 
-			$contactsandrecs .= $this->getSidebarItem("crm.php", "group", $this->lh->translationFor("crm"));
+			$crm .= $this->getSidebarItem("crm.php", "group", $this->lh->translationFor("contacts"));
 		}
 
 		$agentmenu = NULL;
@@ -1969,7 +1969,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= $settings;
 		$result .= $callreports;
 		$result .= $adminArea;
-		$result .= $contactsandrecs;
+		$result .= $crm;
 		$result .= $eventsArea;
 
         // ending: contacts, messages, notifications, tasks, events.
