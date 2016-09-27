@@ -431,6 +431,9 @@ if (isset($_GET["message"])) {
 									<!-- Tab panes-->
 									<div class="tab-content bg-white">
 										<div id="activity" role="tabpanel" class="tab-pane">
+											<?php
+											var_dump($ui->API_goGetAllCustomFields('5050'));
+											?>
 											<table class="table table-striped">
 							                    <tr>
 							                    	<td>
