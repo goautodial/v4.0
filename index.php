@@ -1192,7 +1192,7 @@ function goGetModalUsernameValue(){
                                     //console.log(campaigndata);
                                     var JSONStringcampaign = campaigndata;
                                     var JSONObjectcampaign = JSON.parse(JSONStringcampaign);                                    
-                                    console.log(JSONObjectcampaign);
+                                    //console.log(JSONObjectcampaign);
                                     $('#modal-campaignid-mod').html(JSONObjectcampaign.data.campaign_id);                                    
                                     $('#modal-campaigndesc').html(JSONObjectcampaign.data.campaign_description);                                    
                                     $('#modal-camptype').html(JSONObjectcampaign.campaign_type);
@@ -1201,7 +1201,7 @@ function goGetModalUsernameValue(){
                                     $('#modal-dial_method').html(JSONObjectcampaign.data.dial_method);
                                     $('#modal-auto_dial_level-mod').html(JSONObjectcampaign.data.auto_dial_level);
                                     //$('#modal-hopper_level-mod').html(JSONObjectcampaign.data.hopper_level);
-                                    $('#modal-campaignscript').html(JSONObjectcampaign.data.campaign_script);
+                                    //$('#modal-campaignscript').html(JSONObjectcampaign.data.campaign_script);
                                     var campname = JSONObjectcampaign.data.campaign_name;
                                     var avatar = '<avatar username="'+campname+'" :size="160"></avatar>';
                                     $('#modal-avatar-campaign').html(avatar);
@@ -1209,15 +1209,25 @@ function goGetModalUsernameValue(){
                                     
                                     var callrecordings = JSONObjectcampaign.data.campaign_recording;
                                         if (callrecordings == "ALLFORCE") {
-                                            var callrecordings = "ENABLED"
-                                        };
+                                            var callrecordings = "ENABLED";
+                                        }
                                         if (callrecordings == "ONDEMAND") {
-                                            var callrecordings = "ON-DEMAND"
-                                        };                                        
+                                            var callrecordings = "ON-DEMAND";
+                                        }                                        
                                         if (callrecordings == "NEVER") {
-                                            var callrecordings = "DISABLED"
-                                        };                                        
-                                    $('#modal-callrecordings-mod').html(callrecordings);    
+                                            var callrecordings = "DISABLED";
+                                        }                                        
+                                    $('#modal-callrecordings-mod').html(callrecordings);
+                                    
+                                    var campaignscript = JSONObjectcampaign.data.campaign_script;
+                                        if (campaignscript == null) {
+                                            var campaignscript = "NONE";
+                                        }
+                                        if (campaignscript == "") {
+                                            var campaignscript = "NONE";
+                                        }                                        
+                                    $('#modal-campaignscript').html(campaignscript);
+                                    
                                     goAvatar._init(goOptions);                                        
                                 }
                          });                        
