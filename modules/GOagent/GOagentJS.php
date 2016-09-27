@@ -5,12 +5,14 @@ define('GO_AGENT_DIRECTORY', str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(
 define('GO_BASE_DIRECTORY', dirname(dirname(dirname(__FILE__))));
 define('GO_LANG_DIRECTORY', dirname(__FILE__) . '/lang/');
 require_once(GO_BASE_DIRECTORY.'/php/CRMDefaults.php');
+require_once(GO_BASE_DIRECTORY.'/php/UIHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/LanguageHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/DatabaseConnectorFactory.php');
 include(GO_BASE_DIRECTORY.'/php/Session.php');
 require_once(GO_BASE_DIRECTORY.'/php/goCRMAPISettings.php');
 $goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 
+$ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
 $lh->addCustomTranslationsFromFile(GO_LANG_DIRECTORY . $lh->getLanguageHandlerLocale());
 
@@ -5955,6 +5957,40 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
     }
 }
 
+function GetCustomFields(listid) {
+    var postData = {
+        module_name: 'GOagent',
+        action: 'CustoMFielD',
+        list_id: listid
+    };
+    $.ajax({
+        type: 'POST',
+        url: '<?=$module_dir?>GOagentJS.php',
+        processData: true,
+        data: postData,
+        dataType: "json"
+    })
+    .done(function (result) {
+        if (result.result == 'success') {
+            var customHTML = '';
+            var fields = [];
+            $.each(result.data, function(idx, val) {
+                var thisRank = val['field_rank'];
+                var thisOrder = val['field_order'];
+                
+                if (typeof fields[thisRank] === 'undefined') {
+                   fields[thisRank] = [];
+                }
+                fields[thisRank][thisOrder] = val;
+            });
+            
+            $.each(fields, function(rank, data) {
+                console.log(rank, data);
+            })
+            $("#custom_fields").removeClass('hidden');
+        }
+    });
+}
 
 // ################################################################################
 // pull the script contents sending the webform variables to the script display script
@@ -6889,14 +6925,21 @@ String.prototype.toUpperFirst = function() {
                 $is_logged_in = $_REQUEST['is_logged_in'];
                 $_SESSION['campaign_id'] = (strlen($campaign) > 0) ? $campaign : $_SESSION['campaign_id'];
                 $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $_SESSION['is_logged_in'];
+                $result = $_SESSION['is_logged_in'];
                 break;
             case "ChecKLogiN":
                 $is_logged_in = $_REQUEST['is_logged_in'];
                 $sess_logged_in = (strlen($_SESSION['is_logged_in']) > 0) ? $_SESSION['is_logged_in'] : 0;
                 $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $sess_logged_in;
+                $result = $_SESSION['is_logged_in'];
+                break;
+            case "CustoMFielD":
+                $list_id = $_REQUEST['list_id'];
+                $result = $ui->API_goGetAllCustomFields($list_id);
+                $result = json_encode($result);
                 break;
         }
-        echo $_SESSION['is_logged_in'];
+        print($result);
     } else {
         echo "ERROR: Module '{$_REQUEST['module_name']}' not found.";
     }

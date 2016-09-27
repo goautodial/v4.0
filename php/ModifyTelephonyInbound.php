@@ -58,8 +58,8 @@ if ($groupid != NULL) {
 		$nextagent = stripslashes($nextagent);
 	}
     
-    $prio = NULL; if (isset($_POST["prio"])) { 
-		$prio = $_POST["prio"]; 
+    $prio = NULL; if (isset($_POST["priority"])) { 
+		$prio = $_POST["priority"]; 
 		$prio = stripslashes($prio);
 	}
     
@@ -72,21 +72,133 @@ if ($groupid != NULL) {
 		$script = $_POST["script"]; 
 		$script = stripslashes($script);
 	}
+
+// -------
+
+	$drop_call_seconds = NULL; if (isset($_POST["drop_call_seconds"])) { 
+		$drop_call_seconds = $_POST["drop_call_seconds"]; 
+		$drop_call_seconds = stripslashes($drop_call_seconds);
+	}
+	$drop_action = NULL; if (isset($_POST["drop_action"])) { 
+		$drop_action = $_POST["drop_action"]; 
+		$drop_action = stripslashes($drop_action);
+	}
+	$drop_exten = NULL; if (isset($_POST["drop_exten"])) { 
+		$drop_exten = $_POST["drop_exten"]; 
+		$drop_exten = stripslashes($drop_exten);
+	}
+	$voicemail_ext = NULL; if (isset($_POST["voicemail_ext"])) { 
+		$voicemail_ext = $_POST["voicemail_ext"]; 
+		$voicemail_ext = stripslashes($voicemail_ext);
+	}
+	$drop_inbound_group = NULL; if (isset($_POST["drop_inbound_group"])) { 
+		$drop_inbound_group = $_POST["drop_inbound_group"]; 
+		$drop_inbound_group = stripslashes($drop_inbound_group);
+	}
+	$drop_callmenu = NULL; if (isset($_POST["drop_callmenu"])) { 
+		$drop_callmenu = $_POST["drop_callmenu"]; 
+		$drop_callmenu = stripslashes($drop_callmenu);
+	}
+	$after_hours_action = NULL; if (isset($_POST["after_hours_action"])) { 
+		$after_hours_action = $_POST["after_hours_action"]; 
+		$after_hours_action = stripslashes($after_hours_action);
+	}
+	$after_hours_voicemail = NULL; if (isset($_POST["after_hours_voicemail"])) { 
+		$after_hours_voicemail = $_POST["after_hours_voicemail"]; 
+		$after_hours_voicemail = stripslashes($after_hours_voicemail);
+	}
+	$after_hours_exten = NULL; if (isset($_POST["after_hours_exten"])) { 
+		$after_hours_exten = $_POST["after_hours_exten"]; 
+		$after_hours_exten = stripslashes($after_hours_exten);
+	}
+	/*$afterhours_xfer_group = NULL; if (isset($_POST["afterhours_xfer_group"])) { 
+		$afterhours_xfer_group = $_POST["afterhours_xfer_group"]; 
+		$afterhours_xfer_group = stripslashes($afterhours_xfer_group);
+	}*/
+	$get_call_launch = NULL; if (isset($_POST["call_launch"])) { 
+		$get_call_launch = $_POST["call_launch"]; 
+		$get_call_launch = stripslashes($get_call_launch);
+	}
+	$no_agent_no_queue = NULL; if (isset($_POST["no_agent_no_queue"])) { 
+		$no_agent_no_queue = $_POST["no_agent_no_queue"]; 
+		$no_agent_no_queue = stripslashes($no_agent_no_queue);
+	}
+	$no_agent_action = NULL; if (isset($_POST["no_agent_action"])) { 
+		$no_agent_action = $_POST["no_agent_action"]; 
+		$no_agent_action = stripslashes($no_agent_action);
+	}
+	$no_agents_exten = NULL; if (isset($_POST["no_agents_exten"])) { 
+		$no_agents_exten = $_POST["no_agents_exten"]; 
+		$no_agents_exten = stripslashes($no_agents_exten);
+	}
+	$no_agents_voicemail = NULL; if (isset($_POST["no_agents_voicemail"])) { 
+		$no_agents_voicemail = $_POST["no_agents_voicemail"]; 
+		$no_agents_voicemail = stripslashes($no_agents_voicemail);
+	}
+	$no_agents_ingroup = NULL; if (isset($_POST["no_agents_ingroup"])) { 
+		$no_agents_ingroup = $_POST["no_agents_ingroup"]; 
+		$no_agents_ingroup = stripslashes($no_agents_ingroup);
+	}
+	$no_agents_callmenu = NULL; if (isset($_POST["no_agents_callmenu"])) { 
+		$no_agents_callmenu = $_POST["no_agents_callmenu"]; 
+		$no_agents_callmenu = stripslashes($no_agents_callmenu);
+	}
+	$welcome_message_filename = NULL; if (isset($_POST["welcome_message_filename"])) { 
+		$welcome_message_filename = $_POST["welcome_message_filename"]; 
+		$welcome_message_filename = stripslashes($welcome_message_filename);
+	}
+	$play_welcome_message = NULL; if (isset($_POST["play_welcome_message"])) { 
+		$play_welcome_message = $_POST["play_welcome_message"]; 
+		$play_welcome_message = stripslashes($play_welcome_message);
+	}
+	$moh_context = NULL; if (isset($_POST["moh_context"])) { 
+		$moh_context = $_POST["moh_context"]; 
+		$moh_context = stripslashes($moh_context);
+	}
+	$onhold_prompt_filename = NULL; if (isset($_POST["onhold_prompt_filename"])) { 
+		$onhold_prompt_filename = $_POST["onhold_prompt_filename"]; 
+		$onhold_prompt_filename = stripslashes($onhold_prompt_filename);
+	}
+
     
 	$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goEditInbound"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; #json (required)
-    $postfields["group_id"] = $modify_groupid; #Desired list id. (required)
-	$postfields["group_name"] = $desc; #Desired value for user (required)
-	$postfields["group_color"] = $color; #Desired value for user (required)
-	$postfields["web_form_address"] = $webform; #Desired value for user (required)
-	$postfields["active"] = $status; #Desired value for user (required)
-    $postfields["next_agent_call"] = $nextagent; #Desired value for user (required)
-	$postfields["fronter_display"] = $display; #Desired value for user (required)
-    $postfields["ingroup_script"] = $script; #Desired value for user (required)
-    $postfields["queue_priority"] = $prio; #Desired value for user (required)
+    
+    $postfields["group_id"] = $modify_groupid; 
+	$postfields["group_name"] = $desc; 
+	$postfields["group_color"] = $color; 
+	$postfields["web_form_address"] = $webform; 
+	$postfields["active"] = $status; 
+    $postfields["next_agent_call"] = $nextagent; 
+	$postfields["fronter_display"] = $display; 
+    $postfields["ingroup_script"] = $script; 
+    $postfields["queue_priority"] = $prio; 
+
+    $postfields["drop_call_seconds"] = $drop_call_seconds; 
+    $postfields["drop_action"] = $drop_action; 
+    $postfields["drop_exten"] = $drop_exten; 
+    $postfields["voicemail_ext"] = $voicemail_ext; 
+    $postfields["drop_inbound_group"] = $drop_inbound_group; 
+    $postfields["drop_callmenu"] = $drop_callmenu; 
+    $postfields["after_hours_action"] = $after_hours_action; 
+    $postfields["after_hours_voicemail"] = $after_hours_voicemail; 
+    $postfields["after_hours_exten"] = $after_hours_exten; 
+    //$postfields["afterhours_xfer_group"] = $afterhours_xfer_group; 
+    $postfields["get_call_launch"] = $get_call_launch; 
+    $postfields["no_agent_no_queue"] = $no_agent_no_queue; 
+    $postfields["no_agent_action"] = $no_agent_action; 
+    $postfields["no_agents_exten"] = $no_agents_exten; 
+    $postfields["no_agents_voicemail"] = $no_agents_voicemail; 
+    $postfields["no_agents_ingroup"] = $no_agents_ingroup; 
+    $postfields["no_agents_callmenu"] = $no_agents_callmenu; 
+    $postfields["welcome_message_filename"] = $welcome_message_filename; 
+    $postfields["play_welcome_message"] = $play_welcome_message; 
+    $postfields["moh_context"] = $moh_context; 
+    $postfields["onhold_prompt_filename"] = $onhold_prompt_filename; 
+
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

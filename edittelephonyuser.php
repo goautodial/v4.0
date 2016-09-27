@@ -200,9 +200,9 @@ $user_groups = $ui->API_goGetUserGroupsList();
 																	$userlevel .= '<option value="3" > 3 </option>';
 																}
 																if($output->data->user_level == "4"){
-																	$userlevel .= '<option value="4" selected> 4 </option>';
+																	$userlevel .= '<option value="4" selected disabled> 4 </option>';
 																}else{
-																	$userlevel .= '<option value="4" > 4 </option>';
+																	$userlevel .= '<option value="4"  disabled> 4 </option>';
 																}
 																if($output->data->user_level == "5"){
 																	$userlevel .= '<option value="5" selected> 5 </option>';
