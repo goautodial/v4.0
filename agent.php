@@ -677,8 +677,13 @@ if (isset($_GET["message"])) {
 													</div><!-- /.gender & title -->                   
 												</form>
 												
-												<form role="form" id="custom_form" class="formMain">
-													<div id="custom_fields" class="hidden">
+												<form role="form" id="custom_form" class="formMain hidden">
+													<br>
+													<h4>
+														Custom Forms
+													</h4>
+													<br>
+													<div id="custom_fields">
 														
 													</div>
 												</form>

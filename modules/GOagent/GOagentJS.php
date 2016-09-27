@@ -5986,21 +5986,23 @@ function GetCustomFields(listid) {
             
             $.each(fields, function(rank, data) {
                 if (typeof data === 'undefined') return true;
-                var order = 0;
+                var order = 1;
                 var field_cnt = data.length;
                 customHTML += '<div class="row">';
                 while (order < field_cnt) {
-                    order++;
                     var thisField = data[order];
-                    var column = (field_cnt > 1) ? (order > 1 ? order + 1 : 1) : 1;
+                    if (typeof thisField === 'undefined') return true;
+                    
+                    var column = (field_cnt > 1) ? (12 / order) : 12;
                     customHTML += '<div class="col-sm-' + column + '">';
-                    customHTML += '<div class="mda-form-group label-floating">';
                     if (thisField.field_type == 'TEXT') {
+                        customHTML += '<div class="mda-form-group label-floating">';
                         customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" maxlength="' + thisField.field_max + '" value="' + thisField.field_default + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
                         customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
+                        customHTML += '</div>';
                     } else if (thisField.field_type == 'CHECKBOX') {
                         var checkBox = thisField.field_options.split("\n");
-                        custonHTML += '<div class="material-switch pull-right">';
+                        customHTML += '<div class="material-switch pull-right">';
                         for (i = 0; i < checkBox.length; i++) {
                             var checkBoxValue = checkBox[i].split(",");
                             customHTML += '<input type="' + thisField.field_type.toLowerCase() + '" name="' + thisField.field_label + '[]" id="' + thisField.field_label + '[]" value="' + checkBoxValue[0] + '">';
@@ -6009,15 +6011,17 @@ function GetCustomFields(listid) {
                         customHTML += '</div>';
                         customHTML += '<div>' + thisField.field_name + '</div>';
                     } else {
+                        customHTML += '<div class="mda-form-group label-floating">';
                         customHTML += '';
+                        customHTML += '</div>';
                     }
                     customHTML += '</div>';
-                    customHTML += '</div>';
+                    order++;
                 }
                 customHTML += '</div>';
             })
-            $("$custom_fields").html(customHTML);
-            $("#custom_fields").removeClass('hidden');
+            $("#custom_fields").html(customHTML);
+            $("#custom_form").removeClass('hidden');
         }
     });
 }
