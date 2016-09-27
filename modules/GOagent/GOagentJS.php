@@ -5976,6 +5976,7 @@ function GetCustomFields(listid) {
             var fields = [];
             $.each(result.data, function(idx, val) {
                 var thisRank = val['field_rank'];
+                fields[thisRank] = [];
                 fields[thisRank]['field_id'] = val['field_id'];
                 fields[thisRank]['field_label'] = val['field_label'];
                 fields[thisRank]['field_default'] = val['field_default'];
