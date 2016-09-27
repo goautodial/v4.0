@@ -5,12 +5,14 @@ define('GO_AGENT_DIRECTORY', str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(
 define('GO_BASE_DIRECTORY', dirname(dirname(dirname(__FILE__))));
 define('GO_LANG_DIRECTORY', dirname(__FILE__) . '/lang/');
 require_once(GO_BASE_DIRECTORY.'/php/CRMDefaults.php');
+require_once(GO_BASE_DIRECTORY.'/php/UIHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/LanguageHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/DatabaseConnectorFactory.php');
 include(GO_BASE_DIRECTORY.'/php/Session.php');
 require_once(GO_BASE_DIRECTORY.'/php/goCRMAPISettings.php');
 $goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 
+$ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
 $lh->addCustomTranslationsFromFile(GO_LANG_DIRECTORY . $lh->getLanguageHandlerLocale());
 
@@ -6898,7 +6900,8 @@ String.prototype.toUpperFirst = function() {
                 $result = $_SESSION['is_logged_in'];
                 break;
             case "CustoMFielD":
-                $result = $ui->API_goGetAllCustomFields('5050');
+                $list_id = $_REQUEST['list_id'];
+                $result = $ui->API_goGetAllCustomFields($list_id);
                 break;
         }
         print($result);
