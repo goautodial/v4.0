@@ -368,6 +368,7 @@ $(document).ready(function() {
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     $("#btnLogMeOut").removeClass("disabled");
                     //toggleStatus('NOLIVE');
+                    GetCustomFields(null, false);
                     
                     if (dialingINprogress < 1) {
                         //toggleButton('DialHangup', 'dial');
@@ -521,6 +522,7 @@ $(document).ready(function() {
                         $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
                         $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
                         $("#btnLogMeOut").addClass("disabled");
+                        GetCustomFields($(".formMain input[name='list_id']").val(), true);
                     }
                     if (XD_live_customer_call == 1) {
                         XD_live_call_seconds++;
@@ -6063,8 +6065,9 @@ function GetCustomFields(listid, show, getData) {
                                 if ((patt.test(field_options) && field_options.length < 2) || field_options.length < 1) {
                                     field_options = "&nbsp;";
                                 }
+                                var field_type = (thisField.field_type.length > 0) ? thisField.field_type : 'DISPLAY';
                                 customHTML += '<div class="mda-form-group">';
-                                customHTML += '<span style="padding-left: 5px;">' + field_options + '</span>';
+                                customHTML += '<span id="' + thisField.field_label + '" class="custom_' + field_type.toLowerCase() + '" style="padding-left: 5px;">' + field_options + '</span>';
                                 customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
                                 customHTML += '</div>';
                             }
@@ -6075,7 +6078,7 @@ function GetCustomFields(listid, show, getData) {
                 })
                 $("#custom_fields").html(customHTML);
                 if (show) {
-                    $("#custom_fields_content, #custom_br").slideUp();
+                    $("#custom_fields_content, #custom_br").slideDown();
                 }
             }
         });
