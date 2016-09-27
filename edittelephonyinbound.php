@@ -8,9 +8,7 @@
 	### Written by: Alexander Jim H. Abenoja		###
 	### License: AGPLv2								###
 	###################################################
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 	require_once('./php/CRMDefaults.php');
 	require_once('./php/UIHandler.php');
 	//require_once('./php/DbHandler.php');
@@ -146,7 +144,8 @@ if (isset($_POST["did"])) {
 						$data = curl_exec($ch);
 						curl_close($ch);
 						$output = json_decode($data);
-						
+						//var_dump($output);
+
 						if ($output->result=="success") {
 						# Result was OK!
 					?>			
@@ -491,10 +490,10 @@ if (isset($_POST["did"])) {
 														</div><!-- /. ingroup -->
 
 													<!-- IF CALLMENU IS SELECTED -->
-														<div class="drop_exten_callmenu" <?php if($output->data->drop_action != "CALLMENU"){ ?>style="display:none;"<?php }?>>
+														<div class="drop_callmenu" <?php if($output->data->drop_action != "CALLMENU"){ ?>style="display:none;"<?php }?>>
 															<label for="drop_exten_callmenu" class="col-sm-3 control-label">Drop Callmenu </label>
 															<div class="col-sm-9 mb">
-																<select class="form-control select2" id="drop_exten_callmenu" name="drop_exten_callmenu" style="width:100%;">
+																<select class="form-control select2" id="drop_callmenu" name="drop_callmenu" style="width:100%;">
 																	<?php
 																		$drop_exten_callmenu = NULL;
 																			for($x=0; $x < count($call_menu->menu_id);$x++){									
@@ -564,12 +563,12 @@ if (isset($_POST["did"])) {
 															}else{
 																$after_hours_action .= '<option value="VOICEMAIL" > VOICEMAIL </option>';
 															}
-
+															/*
 															if($output->data->after_hours_action == "IN_GROUP"){
 																$after_hours_action .= '<option value="IN_GROUP" selected> IN_GROUP </option>';
 															}else{
 																$after_hours_action .= '<option value="IN_GROUP" > IN_GROUP </option>';
-															}
+															}*/
 														echo $after_hours_action;
 														?>
 													</select>
@@ -577,15 +576,6 @@ if (isset($_POST["did"])) {
 											</div>
 
 											<!-- AFTER HOURS  -->
-												<div class="form-group">
-													<!-- VOICEMAIL -->
-														<label for="after_hours_exten" class="col-sm-3 control-label">After Hours Voicemail</label>
-														<div class="col-sm-9 mb">
-															<input type="text" class="form-control" name="after_hours_exten" id="after_hours_exten" value="<?php echo $output->data->after_hours_exten;?>" />
-														</div>
-													<!-- /. voicemail -->
-												</div>
-
 												<div class="form-group">
 													<!-- MESSAGE -->
 														<label for="after_hours_exten" class="col-sm-3 control-label">After Hours Message Filename</label>
@@ -605,6 +595,13 @@ if (isset($_POST["did"])) {
 															</select>
 														</div>
 													<!-- /. message -->
+												</div>
+
+												<div class="form-group">
+													<label for="after_hours_exten" class="col-sm-3 control-label">After Hours Extension</label>
+													<div class="col-sm-9 mb">
+														<input type="number" class="form-control" name="after_hours_exten" id="after_hours_exten" value="<?php echo $output->data->after_hours_exten;?>" />
+													</div>
 												</div>
 
 												<div class="form-group">
@@ -628,12 +625,13 @@ if (isset($_POST["did"])) {
 													<!-- /. voicemail -->
 												</div>
 
-												<div class="form-group">
-													<!-- IN_GROUP  -->
+												<!-- IN_GROUP  
+													<div class="form-group">
 														<label for="afterhours_xfer_group" class="col-sm-3 control-label">After Hours Transfer Group </label>
 														<div class="col-sm-9 mb">
 															<select class="form-control select2" id="afterhours_xfer_group" name="afterhours_xfer_group" style="width:100%;">
 																<?php
+																/*
 																	$after_hour_ingroup = NULL;
 																		for($x=0; $x<count($ingroup->group_id);$x++){									
 																			if($output->data->afterhours_xfer_group == $ingroup->group_id[$x]){
@@ -643,19 +641,13 @@ if (isset($_POST["did"])) {
 																			}
 																		}
 																	echo $after_hour_ingroup;
+																*/
 																?>
 															</select>
 														</div>
-													<!-- /. ingroup -->
-												</div>
+													</div>
+												<!-- /. ingroup -->
 									    </fieldset>
-									    <fieldset class="footer-buttons">
-					                           <div class="col-sm-3 pull-right">
-														<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-					                           	
-					                                	<button type="submit" class="btn btn-primary" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-					                           </div>
-					                    </fieldset>
 									</div>
 
 									<!-- ADVANCED SETTINGS -->
@@ -667,28 +659,28 @@ if (isset($_POST["did"])) {
 													<select class="form-control" id="call_launch" name="call_launch">
 														<?php
 														$call_launch = NULL;
-															if($output->data->get_call_launch == "none"){
-																$call_launch .= '<option value="none" selected> NONE </option>';
+															if($output->data->get_call_launch == "NONE"){
+																$call_launch .= '<option value="NONE" selected> NONE </option>';
 															}else{
-																$call_launch .= '<option value="none" > NONE </option>';
+																$call_launch .= '<option value="NONE" > NONE </option>';
 															}
 																
-															if($output->data->get_call_launch == "script"){
-																$call_launch .= '<option value="script" selected> SCRIPT </option>';
+															if($output->data->get_call_launch == "SCRIPT"){
+																$call_launch .= '<option value="SCRIPT" selected> SCRIPT </option>';
 															}else{
-																$call_launch .= '<option value="script" > SCRIPT </option>';
+																$call_launch .= '<option value="SCRIPT" > SCRIPT </option>';
 															}
 
-															if($output->data->get_call_launch == "webform"){
-																$call_launch .= '<option value="webform" selected> WEBFORM </option>';
+															if($output->data->get_call_launch == "WEBFORM"){
+																$call_launch .= '<option value="WEBFORM" selected> WEBFORM </option>';
 															}else{
-																$call_launch .= '<option value="webform" > WEBFORM </option>';
+																$call_launch .= '<option value="WEBFORM" > WEBFORM </option>';
 															}
 
-															if($output->data->get_call_launch == "form"){
-																$call_launch .= '<option value="form" selected> FORM </option>';
+															if($output->data->get_call_launch == "FORM"){
+																$call_launch .= '<option value="FORM" selected> FORM </option>';
 															}else{
-																$call_launch .= '<option value="form" > FORM </option>';
+																$call_launch .= '<option value="FORM" > FORM </option>';
 															}
 														echo $call_launch;
 														?>
@@ -770,7 +762,7 @@ if (isset($_POST["did"])) {
 												<div class="form-group no_agents_exten">
 
 													<!-- IF MESSAGE IS SELECTED -->
-														<div class="no_agents_message" <?php if($output->data->no_agents_action != "MESSAGE"){?> style="display:none;"<?php }?> >
+														<div class="no_agents_message" <?php if($output->data->no_agent_action != "MESSAGE"){?> style="display:none;"<?php }?> >
 															<label for="no_agents_exten" class="col-sm-4 control-label">Audio File</label>
 															<div class="col-sm-8 mb">
 																<select class="form-control select2" id="no_agents_exten" name="no_agents_exten" style="width:100%;">
@@ -790,7 +782,7 @@ if (isset($_POST["did"])) {
 														</div><!-- /. message -->
 													
 													<!-- IF VOICEMAIL IS SELECTED -->
-														<div class="no_agents_voicemail" <?php if($output->data->no_agents_action != "VOICEMAIL"){?> style="display:none;" <?php }?> >
+														<div class="no_agents_voicemail" <?php if($output->data->no_agent_action != "VOICEMAIL"){?> style="display:none;" <?php }?> >
 															<label for="no_agents_voicemail" class="col-sm-4 control-label">Voicemail</label>
 															<div class="col-sm-8 mb">
 																<select class="form-control select2" id="no_agents_voicemail" name="no_agents_voicemail" style="width:100%;">
@@ -810,7 +802,7 @@ if (isset($_POST["did"])) {
 														</div><!-- /. voicemail -->
 
 													<!-- IF IN_GROUP IS SELECTED -->
-														<div class="no_agents_ingroup" <?php if($output->data->no_agents_action != "IN_GROUP"){ ?>style="display:none;"<?php }?>>
+														<div class="no_agents_ingroup" <?php if($output->data->no_agent_action != "IN_GROUP"){ ?>style="display:none;"<?php }?>>
 															<label for="no_agents_ingroup" class="col-sm-4 control-label">In-Group </label>
 															<div class="col-sm-8 mb">
 																<select class="form-control select2" id="no_agents_ingroup" name="no_agents_ingroup" style="width:100%;">
@@ -830,7 +822,7 @@ if (isset($_POST["did"])) {
 														</div><!-- /. ingroup -->
 
 													<!-- IF CALLMENU IS SELECTED -->
-														<div class="no_agents_callmenu" <?php if($output->data->no_agents_action != "CALLMENU"){ ?>style="display:none;"<?php }?>>
+														<div class="no_agents_callmenu" <?php if($output->data->no_agent_action != "CALLMENU"){ ?>style="display:none;"<?php }?>>
 															<label for="no_agents_callmenu" class="col-sm-4 control-label">Callmenu </label>
 															<div class="col-sm-8 mb">
 																<select class="form-control select2" id="no_agents_callmenu" name="no_agents_callmenu" style="width:100%;">
@@ -942,17 +934,15 @@ if (isset($_POST["did"])) {
 												</div>
 							       			</div>
 							       		</fieldset>
-							       		<fieldset class="footer-buttons">
-					                        <div class="box-footer">
-					                           <div class="col-sm-3 pull-right">
-														<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-					                           	
-					                                	<button type="submit" class="btn btn-primary" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-													
-					                           </div>
-					                        </div>
-					                    </fieldset>
 									</div>
+
+									<fieldset class="footer-buttons" id="not_agent_rank">
+			                           <div class="col-sm-3 pull-right">
+												<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+			                           	
+			                                	<a type="submit" class="btn btn-primary" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></a>
+			                           </div>
+				                    </fieldset>
 								</form>
 
 								
@@ -1976,6 +1966,16 @@ if (isset($_POST["did"])) {
 					}
 					
 				});
+	
+			// on tab change hide footer
+				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				  var target = $(e.target).attr("href") // activated tab
+				  if(target == "#agents"){
+				  	$('#not_agent_rank').hide();
+				  }else{
+				  	$('#not_agent_rank').show();
+				  }
+				});
 
 			/****** 
 			** MODIFY Functions 
@@ -2000,10 +2000,9 @@ if (isset($_POST["did"])) {
 								$('#update_button').html("<i class='fa fa-check'></i> Update");
 								$('#modifyInboundOkButton').prop("disabled", false);	
 							}
-							//
                         }
-                    });		
-					return false; //don't let the form refresh the page...		
+                    });	
+                    return false;
 				});
 				
 				// agent rank form submit
@@ -2099,7 +2098,7 @@ if (isset($_POST["did"])) {
 					row.remove();
 				});
 			});
-
+		
 			function checkdatas(groupID) {
 		        if (groupID != undefined) {
 		                var itemdatas = $('#agentrankform').serialize();
