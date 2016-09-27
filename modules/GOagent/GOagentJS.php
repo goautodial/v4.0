@@ -5972,9 +5972,28 @@ function GetCustomFields(listid) {
     })
     .done(function (result) {
         if (result.result == 'success') {
+            var customHTML = '';
+            var fields = [];
             $.each(result.data, function(idx, val) {
-                console.log(val);
+                fields[val.field_rank]['field_id'] = val.field_id;
+                fields[val.field_rank]['field_label'] = val.field_id;
+                fields[val.field_rank]['field_default'] = val.field_default;
+                fields[val.field_rank]['field_description'] = val.field_description;
+                fields[val.field_rank]['field_help'] = val.field_help;
+                fields[val.field_rank]['field_cost'] = val.field_cost;
+                fields[val.field_rank]['field_max'] = val.field_max;
+                fields[val.field_rank]['field_name'] = val.field_name;
+                fields[val.field_rank]['field_options'] = val.field_options;
+                fields[val.field_rank]['field_order'] = val.field_order;
+                fields[val.field_rank]['field_required'] = val.field_required;
+                fields[val.field_rank]['field_size'] = val.field_size;
+                fields[val.field_rank]['field_type'] = val.field_type;
+                fields[val.field_rank]['multi_position'] = val.multi_position;
+                fields[val.field_rank]['name_position'] = val.name_position;
             });
+            
+            console.log(fields);
+            $("#custom_fields").removeClass('hidden');
         }
     });
 }
