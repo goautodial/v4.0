@@ -5971,7 +5971,11 @@ function GetCustomFields(listid) {
         dataType: "json"
     })
     .done(function (result) {
-        console.log(result);
+        if (result.result == 'success') {
+            $.each(result.data, function(idx, val) {
+                console.log(val);
+            });
+        }
     });
 }
 
