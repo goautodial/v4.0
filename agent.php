@@ -676,17 +676,6 @@ if (isset($_GET["message"])) {
 														</div>
 													</div><!-- /.gender & title -->                   
 												</form>
-												
-												<form role="form" id="custom_form" class="formMain hidden">
-													<br>
-													<h4>
-														Custom Forms
-													</h4>
-													<br>
-													<div id="custom_fields">
-														
-													</div>
-												</form>
 											
 							                <!-- NOTIFICATIONS -->
 											<div id="notifications_list">
@@ -751,6 +740,18 @@ if (isset($_GET["message"])) {
 										</div>
 										<!-- End of Scripts -->
 									</div>
+								</div>
+								
+						        <div id="custom_fields_content" class="card-body hidden">
+									<h4>
+										Custom Forms
+									</h4>
+									<br>
+									<form role="form" id="custom_form" class="formMain">
+										<div id="custom_fields">
+											
+										</div>
+									</form>
 								</div>
 
 					<!-- SCRIPT MODAL -->

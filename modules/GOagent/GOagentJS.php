@@ -6021,7 +6021,7 @@ function GetCustomFields(listid) {
                 customHTML += '</div>';
             })
             $("#custom_fields").html(customHTML);
-            $("#custom_form").removeClass('hidden');
+            $("#custom_fields_content").removeClass('hidden');
         }
     });
 }
