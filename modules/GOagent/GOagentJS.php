@@ -6003,19 +6003,31 @@ function GetCustomFields(listid) {
                     } else if (thisField.field_type == 'CHECKBOX') {
                         var checkBox = thisField.field_options.split("\n");
                         customHTML += '<div class="mda-form-group">';
+                        if (thisField.multi_position == 'HORIZONTAL') {
+                            customHTML += '<div class="checkbox">';
+                        }
                         for (i = 0; i < checkBox.length; i++) {
                             var checkBoxValue = checkBox[i].split(",");
-                            customHTML += '<label>';
+                            if (thisField.multi_position == 'VERTICAL') {
+                                customHTML += '<div class="checkbox">';
+                            }
+                            customHTML += '<label style="margin-right: 15px;">';
                             customHTML += '<input type="' + thisField.field_type.toLowerCase() + '" name="' + thisField.field_label + '[]" id="' + thisField.field_label + '_' + i + '" value="' + checkBoxValue[0] + '">';
                             customHTML += checkBoxValue[1];
                             customHTML += '</label>';
+                            if (thisField.multi_position == 'VERTICAL') {
+                                customHTML += '</div>';
+                            }
                         }
-                        customHTML += '<label>' + thisField.field_name + '</label>';
+                        if (thisField.multi_position == 'HORIZONTAL') {
+                            customHTML += '</div>';
+                        }
+                        customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
                         customHTML += '</div>';
                     } else if (thisField.field_type == 'DISPLAY') {
                         customHTML += '<div class="mda-form-group">';
                         customHTML += '<span>' + thisField.field_options + '</span>';
-                        customHTML += '<label>' + thisField.field_name + '</label>';
+                        customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
                         customHTML += '</div>';
                     }
                     customHTML += '</div>';

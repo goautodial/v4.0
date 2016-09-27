@@ -359,6 +359,17 @@ if (isset($_GET["message"])) {
 				-o-transition: all 0.2s ease;
 				transition: all 0.2s ease;
 			}
+			.customform-label {
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 0;
+				display: inline-block;
+				font-size: .85em;
+				opacity: .5;
+				transition: all 0.2s ease;
+				font-weight: 700;
+			}
 		</style>
     </head>
     <?php print $ui->creamyAgentBody(); ?>
