@@ -5985,9 +5985,58 @@ function GetCustomFields(listid) {
             });
             
             $.each(fields, function(rank, data) {
-                console.log(rank, data);
+                if (typeof data === 'undefined') return true;
+                var order = 1;
+                var field_cnt = (data.length - 1);
+                customHTML += '<div class="row">';
+                while (order < field_cnt) {
+                    var thisField = data[order];
+                    if (typeof thisField === 'undefined') return true;
+                    
+                    var column = (field_cnt > 1) ? (12 / order) : 12;
+                    customHTML += '<div class="col-sm-' + column + '">';
+                    if (thisField.field_type == 'TEXT') {
+                        customHTML += '<div class="mda-form-group">';
+                        customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" maxlength="' + thisField.field_max + '" value="' + thisField.field_default + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
+                        customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
+                        customHTML += '</div>';
+                    } else if (thisField.field_type == 'CHECKBOX') {
+                        var checkBox = thisField.field_options.split("\n");
+                        customHTML += '<div class="mda-form-group">';
+                        if (thisField.multi_position == 'HORIZONTAL') {
+                            customHTML += '<div class="checkbox">';
+                        }
+                        for (i = 0; i < checkBox.length; i++) {
+                            var checkBoxValue = checkBox[i].split(",");
+                            if (thisField.multi_position == 'VERTICAL') {
+                                customHTML += '<div class="checkbox">';
+                            }
+                            customHTML += '<label style="margin-right: 15px;">';
+                            customHTML += '<input type="' + thisField.field_type.toLowerCase() + '" name="' + thisField.field_label + '[]" id="' + thisField.field_label + '_' + i + '" value="' + checkBoxValue[0] + '">';
+                            customHTML += checkBoxValue[1];
+                            customHTML += '</label>';
+                            if (thisField.multi_position == 'VERTICAL') {
+                                customHTML += '</div>';
+                            }
+                        }
+                        if (thisField.multi_position == 'HORIZONTAL') {
+                            customHTML += '</div>';
+                        }
+                        customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
+                        customHTML += '</div>';
+                    } else if (thisField.field_type == 'DISPLAY') {
+                        customHTML += '<div class="mda-form-group">';
+                        customHTML += '<span>' + thisField.field_options + '</span>';
+                        customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
+                        customHTML += '</div>';
+                    }
+                    customHTML += '</div>';
+                    order++;
+                }
+                customHTML += '</div>';
             })
-            $("#custom_fields").removeClass('hidden');
+            $("#custom_fields").html(customHTML);
+            $("#custom_fields_content").removeClass('hidden');
         }
     });
 }

@@ -359,6 +359,17 @@ if (isset($_GET["message"])) {
 				-o-transition: all 0.2s ease;
 				transition: all 0.2s ease;
 			}
+			.customform-label {
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 0;
+				display: inline-block;
+				font-size: .85em;
+				opacity: .5;
+				transition: all 0.2s ease;
+				font-weight: 700;
+			}
 		</style>
     </head>
     <?php print $ui->creamyAgentBody(); ?>
@@ -676,12 +687,6 @@ if (isset($_GET["message"])) {
 														</div>
 													</div><!-- /.gender & title -->                   
 												</form>
-												
-												<form role="form" id="custom_form" class="formMain">
-													<div id="custom_fields" class="hidden">
-														
-													</div>
-												</form>
 											
 							                <!-- NOTIFICATIONS -->
 											<div id="notifications_list">
@@ -746,6 +751,18 @@ if (isset($_GET["message"])) {
 										</div>
 										<!-- End of Scripts -->
 									</div>
+								</div>
+								
+						        <div id="custom_fields_content" class="card-body hidden">
+									<h4>
+										Custom Forms
+									</h4>
+									<br>
+									<form role="form" id="custom_form" class="formMain">
+										<div id="custom_fields">
+											
+										</div>
+									</form>
 								</div>
 
 					<!-- SCRIPT MODAL -->
