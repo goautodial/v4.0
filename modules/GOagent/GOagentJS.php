@@ -6889,14 +6889,19 @@ String.prototype.toUpperFirst = function() {
                 $is_logged_in = $_REQUEST['is_logged_in'];
                 $_SESSION['campaign_id'] = (strlen($campaign) > 0) ? $campaign : $_SESSION['campaign_id'];
                 $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $_SESSION['is_logged_in'];
+                $result = $_SESSION['is_logged_in'];
                 break;
             case "ChecKLogiN":
                 $is_logged_in = $_REQUEST['is_logged_in'];
                 $sess_logged_in = (strlen($_SESSION['is_logged_in']) > 0) ? $_SESSION['is_logged_in'] : 0;
                 $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $sess_logged_in;
+                $result = $_SESSION['is_logged_in'];
+                break;
+            case "CustoMFielD":
+                $result = $ui->API_goGetAllCustomFields('5050');
                 break;
         }
-        echo $_SESSION['is_logged_in'];
+        print($result);
     } else {
         echo "ERROR: Module '{$_REQUEST['module_name']}' not found.";
     }
