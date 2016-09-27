@@ -641,7 +641,7 @@
                                 <span>Address: </span> 
                                     <span class="label label-info" id="modal-address1"></span> 
                                     <span class="label label-info" id="modal-city"></span> 
-                                    <span class="label label-waring" id="modal-state"></span>
+                                    <span class="label label-warning" id="modal-state"></span>
                                     <span class="label label-success" id="modal-postal_code"></span><br/>                                
                     </center> 
                         <div class="responsive">
