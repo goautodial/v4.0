@@ -5984,30 +5984,13 @@ function GetCustomFields(listid) {
                 fields[thisRank][thisOrder] = val;
             });
             
-            
-            console.log(fields);
-            fields2 = sortThis(fields, 'field_order', 'asc');
-            console.log(fields2);
+            $.each(fields, function(rank, data) {
+                console.log(rank, data);
+            })
             $("#custom_fields").removeClass('hidden');
         }
     });
 }
-
-function sortThis(arr, field, order) {
-    if (typeof order === 'undefined') {
-        order = 'desc';
-    }
-    arr.sort((function(index){
-        return function(a, b){
-            if (order == 'asc') {
-                return (a[index] === b[index] ? 0 : (a[index] < b[index] ? -1 : 1));
-            } else {
-                return (a[index] === b[index] ? 0 : (a[index] > b[index] ? -1 : 1));
-            }
-        };
-    })(field));
-}
-
 
 // ################################################################################
 // pull the script contents sending the webform variables to the script display script
