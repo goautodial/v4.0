@@ -5958,9 +5958,14 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
 }
 
 function GetCustomFields(listid, show) {
-    if (typeof show !== 'undefined') {
+    if (typeof show === 'undefined') {
         show = false;
     }
+    
+    if (!show) {
+        $("#custom_fields_content").addClass('hidden');
+    }
+    
     var postData = {
         module_name: 'GOagent',
         action: 'CustoMFielD',
@@ -6028,7 +6033,17 @@ function GetCustomFields(listid, show) {
                         }
                         customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
                         customHTML += '</div>';
-                    } else if (thisField.field_type == 'DISPLAY') {
+                    } else if (thisField.field_type == 'SELECT') {
+                        var selectOptions = thisField.field_options.split("\n");
+                        customHTML += '<div class="mda-form-group">';
+                        customHTML += '<select id="' + thisField.field_label + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled">';
+                        for (i = 0; i < selectOptions.length; i++) {
+                            customHTML += '<option value="' + selectOptions[0] + '">' + selectOptions[1] + '</option>';
+                        }
+                        customHTML += '</select>';
+                        customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
+                        customHTML += '</div>';
+                    } else {
                         var patt = /^\s/g;
                         var field_options = thisField.field_options;
                         if ((patt.test(field_options) && field_options.length < 2) || field_options.length < 1) {
