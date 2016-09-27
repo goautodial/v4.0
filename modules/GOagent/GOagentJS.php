@@ -5985,8 +5985,38 @@ function GetCustomFields(listid) {
             });
             
             $.each(fields, function(rank, data) {
-                console.log(rank, data);
+                if (typeof data === 'undefined') return true;
+                var order = 0;
+                var field_cnt = data.length;
+                customHTML += '<div class="row">';
+                while (order < field_cnt) {
+                    order++;
+                    var field_type = data[order]['field_type'];
+                    var column = (field_cnt > 1) ? (order > 1 ? order + 1 : 1) : 1;
+                    customHTML += '<div class="col-sm-' + column + '">';
+                    customHTML += '<div class="mda-form-group label-floating">';
+                    if (field_type == 'TEXT') {
+                        customHTML += '<input id="' + data[order]['field_label'] + '" name="' + data[order]['field_label'] + '" type="'+ field_type.toLowerCase() +'" maxlength="' + data[order]['field_max'] + '" value="' + data[order]['field_default'] + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
+                        customHTML += '<label for="' + data[order]['field_label'] + '">' + data[order]['field_name'] + '</label>';
+                    } else if (field_type == 'CHECKBOX') {
+                        var checkBox = data[order]['field_options'].split("\n");
+                        custonHTML += '<div class="material-switch pull-right">';
+                        for (i = 0; i < checkBox.length; i++) {
+                            var checkBoxValue = checkBox[i].split(",");
+                            customHTML += '<input type="' + field_type.toLowerCase() + '" name="' + data[order]['field_label'] + '[]" id="' + data[order]['field_label'] + '[]" value="' + checkBoxValue[0] + '">';
+                            customHTML += '<label for="' + data[order]['field_label'] + '" class="label-primary"></label>';
+                        }
+                        customHTML += '</div>';
+                        customHTML += '<div>' + data[order]['field_name'] + '</div>';
+                    } else {
+                        customHTML += '';
+                    }
+                    customHTML += '</div>';
+                    customHTML += '</div>';
+                }
+                customHTML += '</div>';
             })
+            $("$custom_fields").html(customHTML);
             $("#custom_fields").removeClass('hidden');
         }
     });
