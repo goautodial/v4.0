@@ -5957,6 +5957,24 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
     }
 }
 
+function GetCustomFields(listid) {
+    var postData = {
+        module_name: 'GOagent',
+        action: 'CustoMFielD',
+        list_id: listid
+    };
+    $.ajax({
+        type: 'POST',
+        url: '<?=$module_dir?>GOagentJS.php',
+        processData: true,
+        data: postData,
+        dataType: "json"
+    })
+    .done(function (result) {
+        console.log(result);
+    });
+}
+
 
 // ################################################################################
 // pull the script contents sending the webform variables to the script display script
