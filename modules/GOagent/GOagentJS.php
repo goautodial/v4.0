@@ -5124,12 +5124,12 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                     case "HIDDEN":
                                     case "DATE":
                                     case "TIME":
-                                        $(field_name + " [id='" + field + "']").val(custom_values_array[idx]);
+                                        $(field_name + " [id='custom_" + field + "']").val(custom_values_array[idx]);
                                         break;
                                     case "CHECKBOX":
                                     case "RADIO":
                                         var checkThis = custom_values_array[idx].split(',');
-                                        $.each($(field_name + " [id^='" + field + "']"), function() {
+                                        $.each($(field_name + " [id^='custom_" + field + "']"), function() {
                                             var checkMe = false;
                                             if (checkThis.indexOf($(this).val()) > -1) {
                                                 checkMe = true;
@@ -5140,7 +5140,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                     case "SELECT":
                                     case "MULTI":
                                         var selectThis = custom_values_array[idx].split(',');
-                                        $.each($(field_name + " [id='" + field + "'] option"), function() {
+                                        $.each($(field_name + " [id='custom_" + field + "'] option"), function() {
                                             var selectMe = false;
                                             if (selectThis.indexOf($(this).val()) > -1) {
                                                 selectMe = true;
@@ -5149,9 +5149,9 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                         });
                                         break;
                                     default:
-                                        $(field_name + " [id='" + field + "']").html(custom_values_array[idx]);
+                                        $(field_name + " [id='custom_" + field + "']").html(custom_values_array[idx]);
                                 }
-                                replaceCustomFields(field, custom_values_array[idx], custom_types_array[idx]);
+                                replaceCustomFields(field, custom_types_array[idx]);
                             });
                             
                             GetCustomFields(null, true);
@@ -6072,16 +6072,16 @@ function GetCustomFields(listid, show, getData) {
                             if (thisField.field_type == 'TEXT' || thisField.field_type == 'HIDDEN') {
                                 var default_value = (thisField.field_default != 'NULL') ? thisField.field_default : '';
                                 customHTML += '<div class="mda-form-group">';
-                                customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" size="' + thisField.field_size + '" maxlength="' + thisField.field_max + '" value="' + default_value + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
+                                customHTML += '<input id="custom_' + thisField.field_label + '" data-type="custom_' + thisField.field_type.toLowerCase() + '" name="custom_' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" size="' + thisField.field_size + '" maxlength="' + thisField.field_max + '" value="' + default_value + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
                                 if (thisField.field_type != 'HIDDEN') {
-                                    customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
+                                    customHTML += '<label for="custom_' + thisField.field_label + '">' + thisField.field_name + '</label>';
                                 }
                                 customHTML += '</div>';
                             } else if (thisField.field_type == 'AREA') {
                                 var default_value = (thisField.field_default != 'NULL') ? thisField.field_default : '';
                                 customHTML += '<div class="mda-form-group">';
-                                customHTML += '<textarea id="' + thisField.field_label + '" name="' + thisField.field_label + '" rows="' + thisField.field_max + '" cols="' + thisField.field_size + '" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled note-editor note-editor-margin">' + default_value + '</textarea>';
-                                customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
+                                customHTML += '<textarea id="custom_' + thisField.field_label + '" data-type="custom_' + thisField.field_type.toLowerCase() + '" name="custom_' + thisField.field_label + '" rows="' + thisField.field_max + '" cols="' + thisField.field_size + '" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled note-editor note-editor-margin">' + default_value + '</textarea>';
+                                customHTML += '<label for="custom_' + thisField.field_label + '">' + thisField.field_name + '</label>';
                                 customHTML += '</div>';
                             } else if (thisField.field_type == 'DATE' || thisField.field_type == 'TIME') {
                                 var default_value = thisField.field_default;
@@ -6102,8 +6102,8 @@ function GetCustomFields(listid, show, getData) {
                                     default_value = (thisField.field_type == 'DATE') ? year + "-" + mon + "-" + day : hour + ":" + min;
                                 }
                                 customHTML += '<div class="mda-form-group">';
-                                customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" value="' + default_value + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
-                                customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
+                                customHTML += '<input id="custom_' + thisField.field_label + '" data-type="custom_' + thisField.field_type.toLowerCase() + '" name="custom_' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" value="' + default_value + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
+                                customHTML += '<label for="custom_' + thisField.field_label + '">' + thisField.field_name + '</label>';
                                 customHTML += '</div>';
                             } else if (thisField.field_type == 'CHECKBOX' || thisField.field_type == 'RADIO') {
                                 var checkBox = thisField.field_options.split("\n");
@@ -6119,7 +6119,7 @@ function GetCustomFields(listid, show, getData) {
                                         customHTML += '<div class="' + thisField.field_type.toLowerCase() + '">';
                                     }
                                     customHTML += '<label style="margin-right: 15px;">';
-                                    customHTML += '<input type="' + thisField.field_type.toLowerCase() + '" name="' + thisField.field_label + '[]" id="' + thisField.field_label + '[]" value="' + checkBoxValue[0] + '" ' + isChecked + '>';
+                                    customHTML += '<input data-type="custom_' + thisField.field_type.toLowerCase() + '" type="' + thisField.field_type.toLowerCase() + '" name="custom_' + thisField.field_label + '[]" id="custom_' + thisField.field_label + '[]" value="' + checkBoxValue[0] + '" ' + isChecked + '>';
                                     customHTML += checkBoxValue[1];
                                     customHTML += '</label>';
                                     if (thisField.multi_position == 'VERTICAL') {
@@ -6136,24 +6136,24 @@ function GetCustomFields(listid, show, getData) {
                                 var default_selected = thisField.field_default.split(",");
                                 var isMulti = (thisField.field_type == 'MULTI') ? 'multiple size="' + thisField.field_size + '"' : '';
                                 customHTML += '<div class="mda-form-group">';
-                                customHTML += '<select ' + isMulti + ' id="' + thisField.field_label + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled">';
+                                customHTML += '<select ' + isMulti + ' id="custom_' + thisField.field_label + '" name="custom_' + thisField.field_label + '" data-type="custom_' + thisField.field_type.toLowerCase() + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled">';
                                 for (i = 0; i < selectOptions.length; i++) {
                                     var selectOption = selectOptions[i].split(",");
                                     var isSelected = (default_selected.indexOf(selectOption[0]) > -1) ? 'selected' : '';
                                     customHTML += '<option value="' + selectOption[0] + '" ' + isSelected + '>' + selectOption[1] + '</option>';
                                 }
                                 customHTML += '</select>';
-                                customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
+                                customHTML += '<label for="custom_' + thisField.field_label + '">' + thisField.field_name + '</label>';
                                 customHTML += '</div>';
                             } else {
                                 var patt = /^\s/g;
-                                var display_content = (thisField.field_default != 'NULL') ? thisField.field_default : '';
-                                if ((patt.test(display_content) && display_content.length < 2) || display_content.length < 1) {
+                                var display_content = (thisField.field_type != 'SCRIPT') ? thisField.field_default : thisField.field_options;
+                                if ((patt.test(display_content) && display_content.length < 2) || display_content.length < 1 || display_content == 'NULL') {
                                     display_content = "&nbsp;";
                                 }
                                 var field_type = (thisField.field_type.length > 0) ? thisField.field_type : 'DISPLAY';
                                 customHTML += '<div class="mda-form-group">';
-                                customHTML += '<span id="' + thisField.field_label + '" class="custom_' + field_type.toLowerCase() + '" style="padding-left: 5px;">' + display_content + '</span>';
+                                customHTML += '<span id="custom_' + thisField.field_label + '" data-type="custom_' + thisField.field_type.toLowerCase() + '" class="custom_' + field_type.toLowerCase() + '" style="padding-left: 5px;">' + display_content + '</span>';
                                 if (thisField.field_type != 'SCRIPT') {
                                     customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
                                 }
@@ -6173,13 +6173,14 @@ function GetCustomFields(listid, show, getData) {
     }
 }
 
-function replaceCustomFields(repID, newValue, repType) {
-    if (typeof repType === 'undefined' || repType.length < 1) {
-        repType = 'display';
+function replaceCustomFields(fieldID, fieldType) {
+    if (typeof fieldType === 'undefined' || fieldType.length < 1) {
+        fieldType = 'display';
     }
-    $.each($(".formMain #custom_fields [class='custom_" + repType + "']"), function(idx, value) {
+    $.each($(".formMain #custom_fields [id='custom_" + fieldID + "']"), function(idx, value) {
         var thisID = $(value).attr('id');
-        if (thisID === repID) {
+        if (thisID === fieldID) {
+            //var newValue = $(".formMain [name='" + rep)
             var replaceThis = $(value).html().replace("--A--" + thisID + "--B--", newValue);
             $(value).html(replaceThis);
         }
