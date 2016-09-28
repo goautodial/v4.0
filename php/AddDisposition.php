@@ -44,6 +44,7 @@ if(!isset($_POST['unworkable'])){
 	$postfields["responsetype"] 	= responsetype; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
 	
+	$postfields['userid'] 				=  $_POST['userid'];
 	$postfields['campaign_id'] 			=  $_POST['campaign'];
 	$postfields['status'] 				=  $_POST['status'];
 	$postfields['status_name'] 			=  $_POST['status_name'];
