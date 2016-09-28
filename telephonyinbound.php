@@ -1211,7 +1211,7 @@
 			        },
 			        onFinishing: function (event, currentIndex)
 			        {
-			            did_form.validate().settings.ignore = ":disabled";
+			            did_form.validate().settings.ignore = ":disabled,:hidden";
 			            return did_form.valid();
 			        },
 			        onFinished: function (event, currentIndex)
@@ -1228,7 +1228,7 @@
 								type: 'POST',
 								data: $("#create_phonenumber").serialize(),
 								success: function(data) {
-								  // console.log(data);
+								   console.log(data);
 									  if(data == 1){
 											swal("Success!", "Phone Number Successfully Created!", "success");
 									  		window.setTimeout(function(){location.reload()},1000)
