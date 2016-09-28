@@ -4534,6 +4534,50 @@ function CustomerData_update() {
         goLeadID: $(".formMain input[name='lead_id']").val(),
         responsetype: 'json'
     };
+    
+    if (custom_fields_enabled > 0) {
+        var customData = {};
+        var defaultFieldsArray = defaultFields.split(',');
+        var custom_fields = '';
+        $.each($(".formMain #custom_fields [id^='custom_']"), function() {
+            var thisID = $(this).prop('id').replace(/^custom_/, '');
+            var fieldType = $(this).data('type');
+            var thisVal = $(this).val();
+            if (defaultFieldsArray.indexOf(thisID) > -1) return true;
+            if (/script|display|readonly/i.test(fieldType)) return true;
+            
+            switch (fieldType) {
+                case "checkbox":
+                case "radio":
+                    thisID = thisID.replace('[]', '');
+                    if ($(this).prop('checked')) {
+                        if (typeof customData[thisID] === 'undefined') {
+                            customData[thisID] = thisVal;
+                        } else {
+                            customData[thisID] += ',' + thisVal;
+                        }
+                    }
+                    break;
+                case "multi":
+                    customData[thisID] = thisVal.join(',');
+                    break;
+                case "area":
+                    thisVal = thisVal.replace(REGcommentsAMP, "--AMP--");
+                    thisVal = thisVal.replace(REGcommentsQUES, "--QUES--");
+                    thisVal = thisVal.replace(REGcommentsPOUND, "--POUND--");
+                    customData[thisID] = thisVal;
+                    break;
+                default:
+                    customData[thisID] = thisVal;
+            }
+            
+            if (custom_fields.indexOf(thisID) < 0) {
+                custom_fields += thisID + ',';
+            }
+        });
+        customData['goCustomFields'] = custom_fields.slice(0,-1);
+        postData = postData.concat(customData);
+    }
 
     $.ajax({
         type: 'POST',
@@ -6122,7 +6166,7 @@ function GetCustomFields(listid, show, getData) {
                             var isDisabled = (defaultFieldsArray.indexOf(thisField.field_label) > -1) ? ' disabled' : '';
                             var column = (field_cnt > 1) ? (12 / field_cnt) : 12;
                             var field_type = (thisField.field_type.length > 0) ? thisField.field_type : 'DISPLAY';
-                            customHTML += '<div class="col-sm-' + column + '">';
+                            customHTML += '<div class="col-sm-' + column + (field_type == 'HIDDEN' ? ' hidden' : '') + '">';
                             if (field_type == 'TEXT' || field_type == 'HIDDEN') {
                                 var default_value = (thisField.field_default != 'NULL') ? thisField.field_default : '';
                                 customHTML += '<div class="mda-form-group">';
