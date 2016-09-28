@@ -39,10 +39,7 @@
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>    
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="js/jquery.validate.min.js" type="text/javascript"></script> 
-        
-        <!-- Data Tables -->
-        <script src="js/plugins/datatables/FROMjquery.dataTables.js" type="text/javascript"></script>        
+        <script src="js/jquery.validate.min.js" type="text/javascript"></script>             
             
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
@@ -69,6 +66,8 @@
         <link rel="Stylesheet" type="text/css" href="css/croppie.css" />
         <!-- <link rel="Stylesheet" type="text/css" href="css/demo.css" /> -->
         
+        <!-- Data Tables -->
+        <script src="theme_dashboard/js/datatables/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
         
         <script type="text/javascript">
             $(window).ready(function(){
@@ -171,7 +170,7 @@
             <div class="unwrap ng-scope">
                <div style="background-image: url(img/profile-bg.jpg)" class="bg-cover">
                   <div class="p-xl text-center text-white">
-                     <a href="#" data-toggle="modal" id="onclick-userinfo" data-target="#view_agent_information">
+                     <a href="#" data-toggle="modal" id="onclick-userinfo" data-target="#profile_pic_modal">
                      <span style="display:table; margin:0 auto; background-color: #ff902b; border: 3px solid #dadada; border-radius: 50%; margin-bottom: 10px; height: 128px; width: 128px;"><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 128)?></span></a>
                      <h3 class="m0"><?php echo $user->getUserName(); ?></h3>
                      <p><?php echo $_SESSION['user']; ?></p>
@@ -493,7 +492,7 @@
                         </span>
                      </span>
                   </a>
-                  <!-- END User status--><a href="contactsandcallrecordings.php" class="media p mt0 list-group-item text-center text-muted">View all contacts</a>
+                  <!-- END User status--><a href="crm.php" class="media p mt0 list-group-item text-center text-muted">View all contacts</a>
                </div>
             </div>                       
                         <div class="panel panel-default">
@@ -536,46 +535,49 @@
 
         
 <!--================= MODALS =====================-->
+
+    <!-- Upload Avatar --> 
     
-                       <!-- Agent Information -->                
-                    <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-hidden="true"> 
-                       <div class="modal-lg modal-dialog" style="min-width: 70%">
+                    <div class="modal fade" id="profile_pic_modal" tabindex="-1" role="dialog" aria-hidden="true"> 
+                        <div class="modal-dialog"> 
                             <div class="modal-content"> 
                                 <div class="modal-header"> 
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-                                    <h4 class="modal-title">Change your profile picture</h4> 
+                                        <h4 class="modal-title">Change your profile picture</h4> 
                                 </div> 
-                                    <center>
-                                        <div class="demo-wrap upload-demo">
-                                            <div class="container">
-                                            <div class="grid">
-                                                <div class="col-1-2">
-                                                    <strong>Upload Example (with exif orientation compatability)</strong>
-                                                    <div class="actions">
-                                                        <a class="btn file-btn">
-                                                            <span>Upload</span>
-                                                            <input type="file" id="upload" value="Choose a file" accept="image/*" />
-                                                        </a>
-                                                        <button class="upload-result">Result</button>
-                                                    </div>
+                                <div class="modal-body"> 
+                                    <center> 
+                                        <div id="upload-demo"></div>
+                                            <div class="col-1-2">
+                                            <h3 class="media-heading">Upload Example (with exif orientation compatability)</h3> 
+                                                <div class="actions">
+                                                    <a class="btn file-btn">
+                                                        <span>Upload</span>
+                                                        <input type="file" id="upload" value="Choose a file" accept="image/*" />
+                                                    </a>                                                        
                                                 </div>
-                                                <div class="col-1-2">
-                                                    <div class="upload-msg">
-                                                        Upload a file to start cropping
-                                                    </div>
-                                                    <div id="upload-demo"></div>
+                                            </div>
+                                                                       
+                                    
+                                        <div class="responsive">
+                                            <div class="col-1-2">
+                                                <div class="upload-msg">
+                                                    Upload a file to start cropping
                                                 </div>
                                             </div>
                                         </div>
-                                        </div>                                           
-                                        </center>
-                                    </div> 
-                                        <div class="modal-footer">                                        
+                                    </center>
+                                </div> 
+                                <div class="modal-footer">                                        
+                                    <center> 
+                                        <button class="upload-result">Result</button> 
+                                    </center>
                                 </div> 
                             </div> 
                         </div> 
-                        
-                        <!-- End of Agent Information -->    
+                    </div>                      
+
+    <!-- End of Upload Avatar -->    
     <!-- Agent Latest Outbound Calls -->
 
                     <div class="modal fade" id="agent_latest_outbound_calls" tabindex="-1" role="dialog" aria-hidden="true">
@@ -612,8 +614,7 @@
                         </div>	
                     </div>
                      
-    <!-- End of Agent Latest Outbound Calls --> 
-    
+    <!-- End of Agent Latest Outbound Calls -->     
     <!-- Agent Latest Inbound Calls -->
 
                     <div class="modal fade" id="agent_latest_inbound_calls" tabindex="-1" role="dialog" aria-hidden="true">
@@ -650,8 +651,7 @@
                         </div>	
                     </div>
                      
-    <!-- End of Agent Latest Inbound Calls --> 
-    
+    <!-- End of Agent Latest Inbound Calls -->     
     <!-- Lead Information -->
                         
     <div class="modal fade" id="view_lead_information" tabindex="-1" role="dialog" aria-hidden="true"> 
@@ -898,82 +898,71 @@
                 }                    
             });  
         });
+
+        // Clear previous  info
+        $('#profile_pic_modal').on('hidden.bs.modal', function () {
+            $('#upload-demo').html("");
+            //$('#upload').html("");
+            //$('#upload-result').html("");
+            
+        });
         
-        // Get user information and post results in view_agent_information modal
+                
+        // Get user information and post results in profile_pic_modal modal
         $(document).on('click','#onclick-userinfo',function(){
             var agentid = '<?=$agentid?>';
             var userid = '<?=$userid?>';
             var agentname = '<?=$agentname?>';
-            //var creamyavatar = '<?=$creamyAvatar?>';
-                        var $uploadCrop;
+            //var creamyavatar = '<?//=$creamyAvatar?>';
+            var $uploadCrop;
 
-                        function readFile(input) {
-                                if (input.files && input.files[0]) {
-                            var reader = new FileReader();
-                            
-                            reader.onload = function (e) {
-                                                $('.upload-demo').addClass('ready');
-                                $uploadCrop.croppie('bind', {
-                                        url: e.target.result
-                                }).then(function(){
-                                        console.log('jQuery bind complete');
-                                });
-                                
-                            }
-                            
-                            reader.readAsDataURL(input.files[0]);
-                        }
-                        else {
-                                swal("Sorry - you're browser doesn't support the FileReader API");
-                            }
-                        }
+            function readFile(input) {
+                    if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function (e) {
+            $('.upload-demo').addClass('ready');
+                    $uploadCrop.croppie('bind', {
+                            url: e.target.result
+                    }).then(function(){
+                            console.log('jQuery bind complete');
+                    });
+                    
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                    swal("Sorry - you're browser doesn't support the FileReader API");
+                }
+            }
 
-                        $uploadCrop = $('#upload-demo').croppie({
-                                viewport: {
-                                        width: 160,
-                                        height: 160,
-                                        type: 'circle'
-                                },
-                                boundary: {
-                                        width: 300,
-                                        height: 300
-                                },
-                                enableExif: true
-                        });
+            $uploadCrop = $('#upload-demo').croppie({
+                    viewport: {
+                            width: 160,
+                            height: 160,
+                            type: 'circle'
+                    },
+                    boundary: {
+                            width: 200,
+                            height: 200
+                    },
+                    enableExif: true
+            });
 
-                        $('#upload').on('change', function () { readFile(this); });
-                        $('.upload-result').on('click', function (ev) {
-                                $uploadCrop.croppie('result', {
-                                        type: 'canvas',
-                                        size: 'viewport'
-                                }).then(function (resp) {
-                                        popupResult({
-                                                src: resp
-                                        });
-                                });
-                        });            
-            $.ajax({        
-                type: 'POST',
-                url: "./php/ViewUserInfo.php",
-                data: {user: agentid},
-                cache: false,
-                //dataType: 'json',
-                    success: function(data){ 
-                        //console.log(data);
-                        var JSONString = data;
-                        var JSONObject = JSON.parse(JSONString);
-                        //console.log(JSONObject);
-                        $('#modal-userid').html(userid);
-                        //global_userid = JSONObject.data[0].vu_user_id;
-                        $('#modal-username').html(agentid);
-                        $('#modal-fullname').html(agentname);
-
-                        //var avatar = '<avatar username="'+agentname+'" src="'+creamyavatar+'" :size="160"></avatar>'; 
-                        //$('#modal-avatar-agent').html(avatar);
-                        //goAvatar._init(goOptions);
-                                                    
-                    }
-            });    
+            $('#upload').on('change', function () { readFile(this); });
+            $('.upload-result').on('click', function (ev) {
+                    $uploadCrop.croppie('result', {
+                            type: 'canvas',
+                            size: 'viewport'
+                    }).then(function (resp) {
+                            popupResult({
+            src: resp
+                            });
+                    });
+            }); 
+            
+   
         });
                     
         // ---- loads datatable functions  
@@ -1000,9 +989,11 @@
     <!-- MATCHMEDIA POLYFILL-->
     <!--<script src="./vendor/matchMedia/matchMedia.js"></script>-->
     <!-- JQUERY-->
-    <script src="theme_dashboard/js/jquery/dist/jquery.js"></script>
+    
+    <!-- conflict <script src="theme_dashboard/js/jquery/dist/jquery.js"></script> -->
     <!-- BOOTSTRAP-->
-    <script src="theme_dashboard/js/bootstrap/dist/js/bootstrap.js"></script>
+    <!-- <script src="theme_dashboard/js/bootstrap/dist/js/bootstrap.js"></script> -->
+    
     <!-- STORAGE API-->
     <!--<script src="./vendor/jQuery-Storage-API/jquery.storageapi.js"></script>-->
     <!-- JQUERY EASING-->
@@ -1025,7 +1016,7 @@
     <script src="js/prism.js"></script>
     <script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
     <script src="js/croppie.js"></script> 
-    <script src="js/demo.js"></script>
+    <!-- <script src="js/demo.js"></script> -->
     <script src="js/exif.js"></script>
         
     <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>        
