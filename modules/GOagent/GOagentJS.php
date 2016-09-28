@@ -5107,6 +5107,53 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     
                     $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
                     
+                    if (custom_field_names.length > 1) {
+                        GetCustomFields(list_id, false);
+                        
+                        var custom_names_array = custom_field_names.split("|");
+                        var custom_values_array = custom_field_values.split("----------");
+                        var custom_types_array = custom_field_types.split("|");
+                        
+                        var customTimer = setTimeout(function() {
+                            $.each(custom_names_array, function(idx, field) {
+                                if (field.length < 1) return true;
+                                var field_name = ".formMain #custom_fields";
+                                switch (custom_types_array[idx]) {
+                                    case "TEXT":
+                                    case "AREA":
+                                    case "HIDDEN":
+                                        $(field_name + " [id='" + field + "']").val(custom_values_array[idx]);
+                                        break;
+                                    case "CHECKBOX":
+                                    case "RADIO":
+                                        var checkThis = custom_values_array[idx].split(',');
+                                        $.each($(field_name + " [id^='" + field + "']"), function() {
+                                            var checkMe = false;
+                                            if (checkThis.indexOf($(this).val()) > -1) {
+                                                checkMe = true;
+                                            }
+                                            $(this).prop('checked', checkMe);
+                                        });
+                                        break;
+                                    case "SELECT":
+                                        var selectThis = custom_values_array[idx].split(',');
+                                        $.each($(field_name + " [id='" + field + "']"), function() {
+                                            var selectMe = false;
+                                            if (selectThis.indexOf($(this).val()) > -1) {
+                                                selectMe = true;
+                                            }
+                                            $(this).prop('checked', checkMe);
+                                        });
+                                        break;
+                                    default:
+                                        $(field_name + " [id='" + field + "']").html(custom_values_array[idx]);
+                                }
+                                replaceCustomFields(field, custom_values_array[idx], custom_types_array[idx]);
+                            });
+                            
+                            GetCustomFields(null, true);
+                        }, 5000);
+                    }
             
                     //$("#cust_full_name").html(cust_first_name+" "+cust_middle_initial+" "+cust_last_name);
                     $("#cust_full_name").removeClass('hidden');
@@ -6024,19 +6071,19 @@ function GetCustomFields(listid, show, getData) {
                                 customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" maxlength="' + thisField.field_max + '" value="' + thisField.field_default + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
                                 customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
                                 customHTML += '</div>';
-                            } else if (thisField.field_type == 'CHECKBOX') {
+                            } else if (thisField.field_type == 'CHECKBOX' || thisField.field_type == 'RADIO') {
                                 var checkBox = thisField.field_options.split("\n");
                                 customHTML += '<div class="mda-form-group">';
                                 if (thisField.multi_position == 'HORIZONTAL') {
-                                    customHTML += '<div class="checkbox">';
+                                    customHTML += '<div class="' + thisField.field_type.toLowerCase() + '">';
                                 }
                                 for (i = 0; i < checkBox.length; i++) {
                                     var checkBoxValue = checkBox[i].split(",");
                                     if (thisField.multi_position == 'VERTICAL') {
-                                        customHTML += '<div class="checkbox">';
+                                        customHTML += '<div class="' + thisField.field_type.toLowerCase() + '">';
                                     }
                                     customHTML += '<label style="margin-right: 15px;">';
-                                    customHTML += '<input type="' + thisField.field_type.toLowerCase() + '" name="' + thisField.field_label + '[]" id="' + thisField.field_label + '_' + i + '" value="' + checkBoxValue[0] + '">';
+                                    customHTML += '<input type="' + thisField.field_type.toLowerCase() + '" name="' + thisField.field_label + '[]" id="' + thisField.field_label + '[]" value="' + checkBoxValue[0] + '">';
                                     customHTML += checkBoxValue[1];
                                     customHTML += '</label>';
                                     if (thisField.multi_position == 'VERTICAL') {
@@ -6048,10 +6095,11 @@ function GetCustomFields(listid, show, getData) {
                                 }
                                 customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
                                 customHTML += '</div>';
-                            } else if (thisField.field_type == 'SELECT') {
+                            } else if (thisField.field_type == 'SELECT' || thisField.field_type == 'MULTI') {
                                 var selectOptions = thisField.field_options.split("\n");
+                                var isMulti = (thisField.field_type == 'MULTI') ? 'multiple size="' + thisField.field_size + '"' : '';
                                 customHTML += '<div class="mda-form-group">';
-                                customHTML += '<select id="' + thisField.field_label + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled">';
+                                customHTML += '<select ' + isMulti + ' id="' + thisField.field_label + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled">';
                                 for (i = 0; i < selectOptions.length; i++) {
                                     var selectOption = selectOptions[i].split(",");
                                     customHTML += '<option value="' + selectOption[0] + '">' + selectOption[1] + '</option>';
@@ -6083,6 +6131,19 @@ function GetCustomFields(listid, show, getData) {
             }
         });
     }
+}
+
+function replaceCustomFields(repID, newValue, repType) {
+    if (typeof repType === 'undefined' || repType.length < 1) {
+        repType = 'display';
+    }
+    $.each($(".formMain #custom_fields [class='custom_" + repType + "']"), function(idx, value) {
+        var thisID = $(value).attr('id');
+        if (thisID === repID) {
+            var replaceThis = $(value).html().replace("--A--" + thisID + "--B--", newValue);
+            $(value).html(replaceThis);
+        }
+    });
 }
 
 // ################################################################################
