@@ -6083,7 +6083,7 @@ function GetCustomFields(listid, show, getData) {
                                     if (m < 10) m = "0" + m;
                                     if (d < 10) d = "0" + d;
                                     
-                                    default_value = y + "-" + m + "-" d;
+                                    default_value = y + "-" + m + "-" + d;
                                 }
                                 customHTML += '<div class="mda-form-group">';
                                 customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" value="' + default_value + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
