@@ -34,32 +34,18 @@
         <meta name="keywords" content="app, responsive, jquery, bootstrap, dashboard, admin">
         
         <?php print $ui->creamyThemeCSS(); ?>
-        
-        <!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        
-            <!-- javascript -->
+
+        <!-- javascript -->
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>    
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="js/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="js/jquery.validate.min.js" type="text/javascript"></script> 
         
-            <!-- dashboard status boxes -->
-        <script src="js/bootstrap-editable.js" type="text/javascript"></script> 
-        <script src="theme_dashboard/moment/min/moment-with-locales.min.js" type="text/javascript"></script>
-        <script src="js/modules/now.js" type="text/javascript"></script>         
-	    <!-- ChartJS 1.0.1 -->
-        <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
-        
-            <!-- Creamy App -->
-        <!--<script src="js/app.min.js" type="text/javascript"></script>-->
+        <!-- Data Tables -->
+        <script src="js/plugins/datatables/FROMjquery.dataTables.js" type="text/javascript"></script>        
             
-            <!-- Data Tables -->
-        <!-- <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script> -->
-        <script src="js/plugins/datatables/FROMjquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/fnProcessingIndicator.js" type="text/javascript"></script>        
-
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <!-- FONT AWESOME-->
         <link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
         <!-- SIMPLE LINE ICONS-->
@@ -77,18 +63,18 @@
         <!-- <link rel="stylesheet" href="css/material/app.css" id="maincss"> -->
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
-        
+        <!-- croppeie -->
+        <link rel="Stylesheet" type="text/css" href="css/prism.css" />
+        <link rel="Stylesheet" type="text/css" href="theme_dashboard/sweetalert/dist/sweetalert.css" />        
+        <link rel="Stylesheet" type="text/css" href="css/croppie.css" />
+        <!-- <link rel="Stylesheet" type="text/css" href="css/demo.css" /> -->
         
         
         <script type="text/javascript">
-            $(window).ready(function() {
-                    $(".preloader").fadeOut("slow");
+            $(window).ready(function(){
+                $(".preloader").fadeOut("slow");
             })
         </script>
-        
-        <link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
-        <script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
-    
 
     </head>
         <section class="ng-scope">
@@ -109,6 +95,7 @@
             $errormessage = NULL;            
             $output = $ui->goGetUserInfo($userid, "user_id");
             $creamyAvatar = $ui->getSessionAvatar();
+            $sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='32'></avatar></div>";
             //echo ("pre");
             //var_dump($output);
 
@@ -177,17 +164,19 @@
     if ($vm_message == NULL){
         $vm_message = 0;
     }
-
+        
 ?>
  
             <!-- <div class="unwrap ng-scope" style="margin-top: -30;"> -->
             <div class="unwrap ng-scope">
                <div style="background-image: url(img/profile-bg.jpg)" class="bg-cover">
                   <div class="p-xl text-center text-white">
-                     <span style="display:table; margin:0 auto; background-color: #ff902b; border: 3px solid #dadada; border-radius: 50%; margin-bottom: 10px; height: 128px; width: 128px;"><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 128)?></span>
+                     <a href="#" data-toggle="modal" id="onclick-userinfo" data-target="#view_agent_information">
+                     <span style="display:table; margin:0 auto; background-color: #ff902b; border: 3px solid #dadada; border-radius: 50%; margin-bottom: 10px; height: 128px; width: 128px;"><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 128)?></span></a>
                      <h3 class="m0"><?php echo $user->getUserName(); ?></h3>
                      <p><?php echo $_SESSION['user']; ?></p>
                      <p>Empowering the next generation contact centers.</p>
+                     <a href="#" class="btn btn-xs btn-primary pull-right" style="margin:10px;"><span class="fa fa-picture"></span> Change cover</a>
                   </div>
                </div>
                <div class="text-center bg-warning p-lg mb-xl">
@@ -547,7 +536,46 @@
 
         
 <!--================= MODALS =====================-->
-
+    
+                       <!-- Agent Information -->                
+                    <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-hidden="true"> 
+                       <div class="modal-lg modal-dialog" style="min-width: 70%">
+                            <div class="modal-content"> 
+                                <div class="modal-header"> 
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
+                                    <h4 class="modal-title">Change your profile picture</h4> 
+                                </div> 
+                                    <center>
+                                        <div class="demo-wrap upload-demo">
+                                            <div class="container">
+                                            <div class="grid">
+                                                <div class="col-1-2">
+                                                    <strong>Upload Example (with exif orientation compatability)</strong>
+                                                    <div class="actions">
+                                                        <a class="btn file-btn">
+                                                            <span>Upload</span>
+                                                            <input type="file" id="upload" value="Choose a file" accept="image/*" />
+                                                        </a>
+                                                        <button class="upload-result">Result</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-1-2">
+                                                    <div class="upload-msg">
+                                                        Upload a file to start cropping
+                                                    </div>
+                                                    <div id="upload-demo"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>                                           
+                                        </center>
+                                    </div> 
+                                        <div class="modal-footer">                                        
+                                </div> 
+                            </div> 
+                        </div> 
+                        
+                        <!-- End of Agent Information -->    
     <!-- Agent Latest Outbound Calls -->
 
                     <div class="modal fade" id="agent_latest_outbound_calls" tabindex="-1" role="dialog" aria-hidden="true">
@@ -631,7 +659,7 @@
             <div class="modal-content"> 
                 <div class="modal-header"> 
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-                        <h4 class="modal-title">More about: <span id="modal-lead_id"></span></h4> 
+                        <h4 class="modal-title">More about lead ID: <span id="modal-lead_id"></span></h4> 
                 </div> 
                 <div class="modal-body"> 
                     <center> 
@@ -779,7 +807,7 @@
                 goAvatar._init(goOptions);
             } 
         });
-    }    
+    }
     
     // Clear lead information
     function clear_lead_information_form(){
@@ -800,8 +828,32 @@
         $('#modal-status').html("");        
     }
 
+	function popupResult(result) {
+		var html;
+		if (result.html) {
+			html = result.html;
+		}
+		if (result.src) {
+			html = '<img src="' + result.src + '" />';
+		}
+		swal({
+			title: '',
+			html: true,
+			text: html,
+			allowOutsideClick: true
+		});
+		setTimeout(function(){
+			$('.sweet-alert').css('margin', function() {
+				var top = -1 * ($(this).height() / 2),
+					left = -1 * ($(this).width() / 2);
+
+				return top + 'px 0 0 ' + left + 'px';
+			});
+		}, 1);
+	}    
     //demian
     $(document).ready(function(){
+
     
         // Clear previous lead info
         $('#view_lead_information').on('hidden.bs.modal', function () {
@@ -818,48 +870,129 @@
                 data: {lead_id: leadid},
                 cache: false,
                 //dataType: 'json',
+                success: function(data){ 
+                    //console.log(data);
+                    var JSONStringleadinfo = data;
+                    var JSONObjectleadinfo = JSON.parse(JSONStringleadinfo);  
+                    var fname = JSONObjectleadinfo.data.first_name;
+                    var lname = JSONObjectleadinfo.data.last_name;
+                    var full_name = fname+' '+lname;
+                    var avatar = '<avatar username="'+full_name+'" :size="160"></avatar>';                        
+                    //console.log(JSONObjectleadinfo);
+                    $('#modal-lead_id').html(JSONObjectleadinfo.data.lead_id);
+                    $('#modal-list_id').html(JSONObjectleadinfo.data.list_id);                    
+                    $('#modal-first_name').html(JSONObjectleadinfo.data.first_name);
+                    $('#modal-last_name').html(JSONObjectleadinfo.data.last_name);
+                    $('#modal-phone_number').html(JSONObjectleadinfo.data.phone_number);
+                    $('#modal-address1').html(JSONObjectleadinfo.data.address1);  
+                    $('#modal-city').html(JSONObjectleadinfo.data.city);
+                    $('#modal-state').html(JSONObjectleadinfo.data.state);
+                    $('#modal-postal_code').html(JSONObjectleadinfo.data.postal_code); 
+                    $('#modal-country_code').html(JSONObjectleadinfo.data.country_code);
+                    $('#modal-agent').html(JSONObjectleadinfo.data.user);
+                    $('#modal-status').html(JSONObjectleadinfo.data.status);
+                    $('#modal-campaign_id').html(JSONObjectleadinfo.data.campaign_id);                                            
+                    $('#modal-full_name').html(full_name);
+                    $('#modal-avatar-lead').html(avatar);
+                    goAvatar._init(goOptions);
+                }                    
+            });  
+        });
+        
+        // Get user information and post results in view_agent_information modal
+        $(document).on('click','#onclick-userinfo',function(){
+            var agentid = '<?=$agentid?>';
+            var userid = '<?=$userid?>';
+            var agentname = '<?=$agentname?>';
+            //var creamyavatar = '<?=$creamyAvatar?>';
+                        var $uploadCrop;
+
+                        function readFile(input) {
+                                if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+                            
+                            reader.onload = function (e) {
+                                                $('.upload-demo').addClass('ready');
+                                $uploadCrop.croppie('bind', {
+                                        url: e.target.result
+                                }).then(function(){
+                                        console.log('jQuery bind complete');
+                                });
+                                
+                            }
+                            
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                        else {
+                                swal("Sorry - you're browser doesn't support the FileReader API");
+                            }
+                        }
+
+                        $uploadCrop = $('#upload-demo').croppie({
+                                viewport: {
+                                        width: 160,
+                                        height: 160,
+                                        type: 'circle'
+                                },
+                                boundary: {
+                                        width: 300,
+                                        height: 300
+                                },
+                                enableExif: true
+                        });
+
+                        $('#upload').on('change', function () { readFile(this); });
+                        $('.upload-result').on('click', function (ev) {
+                                $uploadCrop.croppie('result', {
+                                        type: 'canvas',
+                                        size: 'viewport'
+                                }).then(function (resp) {
+                                        popupResult({
+                                                src: resp
+                                        });
+                                });
+                        });            
+            $.ajax({        
+                type: 'POST',
+                url: "./php/ViewUserInfo.php",
+                data: {user: agentid},
+                cache: false,
+                //dataType: 'json',
                     success: function(data){ 
                         //console.log(data);
-                        var JSONStringleadinfo = data;
-                        var JSONObjectleadinfo = JSON.parse(JSONStringleadinfo);  
-                        var fname = JSONObjectleadinfo.data.first_name;
-                        var lname = JSONObjectleadinfo.data.last_name;
-                        var full_name = fname+' '+lname;
-                        var avatar = '<avatar username="'+full_name+'" :size="160"></avatar>';                        
-                        console.log(JSONObjectleadinfo);
-                        $('#modal-lead_id').html(JSONObjectleadinfo.data.lead_id);
-                        $('#modal-list_id').html(JSONObjectleadinfo.data.list_id);                    
-                        $('#modal-first_name').html(JSONObjectleadinfo.data.first_name);
-                        $('#modal-last_name').html(JSONObjectleadinfo.data.last_name);
-                        $('#modal-phone_number').html(JSONObjectleadinfo.data.phone_number);
-                        $('#modal-address1').html(JSONObjectleadinfo.data.address1);  
-                        $('#modal-city').html(JSONObjectleadinfo.data.city);
-                        $('#modal-state').html(JSONObjectleadinfo.data.state);
-                        $('#modal-postal_code').html(JSONObjectleadinfo.data.postal_code); 
-                        $('#modal-country_code').html(JSONObjectleadinfo.data.country_code);
-                        $('#modal-agent').html(JSONObjectleadinfo.data.user);
-                        $('#modal-status').html(JSONObjectleadinfo.data.status);
-                        $('#modal-campaign_id').html(JSONObjectleadinfo.data.campaign_id);                                            
-                        $('#modal-full_name').html(full_name);
-                        $('#modal-avatar-lead').html(avatar);
-                        goAvatar._init(goOptions);
+                        var JSONString = data;
+                        var JSONObject = JSON.parse(JSONString);
+                        //console.log(JSONObject);
+                        $('#modal-userid').html(userid);
+                        //global_userid = JSONObject.data[0].vu_user_id;
+                        $('#modal-username').html(agentid);
+                        $('#modal-fullname').html(agentname);
+
+                        //var avatar = '<avatar username="'+agentname+'" src="'+creamyavatar+'" :size="160"></avatar>'; 
+                        //$('#modal-avatar-agent').html(avatar);
+                        //goAvatar._init(goOptions);
+                                                    
                     }
+            });    
+        });
                     
-            });  
-        });         
-           
-        // ---- loads datatable functions                                                
+        // ---- loads datatable functions  
             load_agent_latest_outbound_calls();
             load_agent_latest_inbound_calls();
             load_agent_latest_outbound_calls_summary();
             load_agent_latest_inbound_calls_summary();
 
     });
-
+    
+   
     
 </script>
-
-
+               
+        
+    <!-- ChartJS 1.0.1 -->
+    <!-- <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script> -->
+        
+    <!-- Creamy App -->
         
     <!-- =============== VENDOR SCRIPTS ===============-->
     <!-- MODERNIZR-->
@@ -867,17 +1000,17 @@
     <!-- MATCHMEDIA POLYFILL-->
     <!--<script src="./vendor/matchMedia/matchMedia.js"></script>-->
     <!-- JQUERY-->
-    <!--<script src="./vendor/jquery/dist/jquery.js"></script>-->
+    <script src="theme_dashboard/js/jquery/dist/jquery.js"></script>
     <!-- BOOTSTRAP-->
-    <!--<script src="./vendor/bootstrap/dist/js/bootstrap.js"></script>-->
+    <script src="theme_dashboard/js/bootstrap/dist/js/bootstrap.js"></script>
     <!-- STORAGE API-->
     <!--<script src="./vendor/jQuery-Storage-API/jquery.storageapi.js"></script>-->
     <!-- JQUERY EASING-->
     <!--<script src="./vendor/jquery.easing/js/jquery.easing.js"></script>-->
     <!-- ANIMO-->
-    <!--<script src="./vendor/animo.js/animo.js"></script>-->
+    <script src="theme_dashboard/js/animo.js/animo.js"></script>
     <!-- SLIMSCROLL-->
-    <!--<script src="./vendor/slimScroll/jquery.slimscroll.min.js"></script>-->
+    <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- SCREENFULL-->
     <!--<script src="./vendor/screenfull/dist/screenfull.js"></script>-->
     <!-- LOCALIZE-->
@@ -889,9 +1022,13 @@
     <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
     <!--<script src="./vendor/jQuery-gMap/jquery.gmap.min.js"></script>-->
     <!-- =============== APP SCRIPTS ===============-->
-    <!--<script src="js/app.js"></script>        -->
-	<!-- Vue Avatar -->   
-    
+    <script src="js/prism.js"></script>
+    <script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="js/croppie.js"></script> 
+    <script src="js/demo.js"></script>
+    <script src="js/exif.js"></script>
+        
     <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>        
     <?php print $ui->standardizedThemeJS();?>
+    </body>
 </html>
