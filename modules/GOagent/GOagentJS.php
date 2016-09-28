@@ -522,7 +522,6 @@ $(document).ready(function() {
                         $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
                         $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
                         $("#btnLogMeOut").addClass("disabled");
-                        GetCustomFields($(".formMain input[name='list_id']").val(), true);
                     }
                     if (XD_live_customer_call == 1) {
                         XD_live_call_seconds++;
@@ -2793,6 +2792,57 @@ function CheckForIncoming () {
             //    if ($(".formMain input[name='gender']").val() == 'F') {var gIndex = 2;}
             //    document.getElementById("gender_list").selectedIndex = gIndex;
             //}
+            
+            if (custom_field_names.length > 1) {
+                GetCustomFields(this_VDIC_data.list_id, false);
+                
+                var custom_names_array = custom_field_names.split("|");
+                var custom_values_array = custom_field_values.split("----------");
+                var custom_types_array = custom_field_types.split("|");
+                
+                var customTimer = setTimeout(function() {
+                    $.each(custom_names_array, function(idx, field) {
+                        if (field.length < 1) return true;
+                        var field_name = ".formMain #custom_fields [id='custom_" + field + "']";
+                        switch (custom_types_array[idx]) {
+                            case "TEXT":
+                            case "AREA":
+                            case "HIDDEN":
+                            case "DATE":
+                            case "TIME":
+                                $(field_name).val(custom_values_array[idx]);
+                                break;
+                            case "CHECKBOX":
+                            case "RADIO":
+                                var checkThis = custom_values_array[idx].split(',');
+                                $.each($(field_name + " [id^='custom_" + field + "']"), function() {
+                                    var checkMe = false;
+                                    if (checkThis.indexOf($(this).val()) > -1) {
+                                        checkMe = true;
+                                    }
+                                    $(this).prop('checked', checkMe);
+                                });
+                                break;
+                            case "SELECT":
+                            case "MULTI":
+                                var selectThis = custom_values_array[idx].split(',');
+                                $.each($(field_name + " option"), function() {
+                                    var selectMe = false;
+                                    if (selectThis.indexOf($(this).val()) > -1) {
+                                        selectMe = true;
+                                    }
+                                    $(this).prop('selected', selectMe);
+                                });
+                                break;
+                            default:
+                                $(field_name).html(custom_values_array[idx]);
+                        }
+                    });
+                    
+                    replaceCustomFields();
+                    GetCustomFields(null, true);
+                }, 5000);
+            }
 
             lead_dial_number = $(".formMain input[name='phone_number']").val();
             dispnum = $(".formMain input[name='phone_number']").val();
