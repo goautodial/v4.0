@@ -6182,7 +6182,7 @@ function replaceCustomFields(fieldID, fieldType) {
     $.each($(".formMain #custom_fields [data-type='" + fieldType.toLowerCase() + "']"), function() {
         var pattern = /--A--\w+--B--/g;
         var replaceThis = (/script|display|readonly/i.test(fieldType)) ? $(this).html() : $(this).val();
-        var output = oldValue.match(pattern);
+        var output = replaceThis.match(pattern);
         if (output != null) {
             for (i=0; i < output.length; i++) {
                 output[i] = output[i].replace(/--[AB]--/g, '');
