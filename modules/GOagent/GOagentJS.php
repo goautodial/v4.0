@@ -5151,9 +5151,9 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                     default:
                                         $(field_name).html(custom_values_array[idx]);
                                 }
-                                replaceCustomFields(field, custom_types_array[idx]);
                             });
                             
+                            replaceCustomFields();
                             GetCustomFields(null, true);
                         }, 5000);
                     }
@@ -6174,12 +6174,10 @@ function GetCustomFields(listid, show, getData) {
     }
 }
 
-function replaceCustomFields(fieldID, fieldType) {
-    if (typeof fieldType === 'undefined' || fieldType.length < 1) {
-        fieldType = 'display';
-    }
-    
-    $.each($(".formMain #custom_fields [data-type='" + fieldType.toLowerCase() + "']"), function() {
+function replaceCustomFields() {
+    $.each($(".formMain #custom_fields [id^='custom_']"), function() {
+        var fieldType = $(this).data('type');
+        if (/checkbox|radio|multi|select/.test(fieldType)) return true;
         var pattern = /--A--\w+--B--/g;
         var replaceThis = (/script|display|readonly/i.test(fieldType)) ? $(this).html() : $(this).val();
         var output = replaceThis.match(pattern);
@@ -6195,7 +6193,11 @@ function replaceCustomFields(fieldID, fieldType) {
                 }
                 replaceThis = replaceThis.replace("--A--" + output[i] + "--B--", newValue);
             }
-            $(this).html(replaceThis);
+            if (/script|display|readonly/i.test(fieldType)) {
+                $(this).html(replaceThis);
+            } else {
+                $(this).val(replaceThis);
+            }
         }
     });
 }
