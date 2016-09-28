@@ -5122,6 +5122,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                     case "TEXT":
                                     case "AREA":
                                     case "HIDDEN":
+                                    case "DATE":
                                         $(field_name + " [id='" + field + "']").val(custom_values_array[idx]);
                                         break;
                                     case "CHECKBOX":
@@ -5136,13 +5137,14 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                         });
                                         break;
                                     case "SELECT":
+                                    case "MULTI":
                                         var selectThis = custom_values_array[idx].split(',');
-                                        $.each($(field_name + " [id='" + field + "']"), function() {
+                                        $.each($(field_name + " [id='" + field + "'] option"), function() {
                                             var selectMe = false;
                                             if (selectThis.indexOf($(this).val()) > -1) {
                                                 selectMe = true;
                                             }
-                                            $(this).prop('checked', checkMe);
+                                            $(this).prop('selected', selectMe);
                                         });
                                         break;
                                     default:
@@ -6066,9 +6068,14 @@ function GetCustomFields(listid, show, getData) {
                         if (typeof thisField !== 'undefined') {
                             var column = (field_cnt > 1) ? (12 / field_cnt) : 12;
                             customHTML += '<div class="col-sm-' + column + '">';
-                            if (thisField.field_type == 'TEXT') {
+                            if (thisField.field_type == 'TEXT' || thisField.field_type == 'HIDDEN') {
                                 customHTML += '<div class="mda-form-group">';
                                 customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" maxlength="' + thisField.field_max + '" value="' + thisField.field_default + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
+                                customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
+                                customHTML += '</div>';
+                            } else if (thisField.field_type == 'DATE') {
+                                customHTML += '<div class="mda-form-group">';
+                                customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" value="' + thisField.field_default + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
                                 customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
                                 customHTML += '</div>';
                             } else if (thisField.field_type == 'CHECKBOX' || thisField.field_type == 'RADIO') {

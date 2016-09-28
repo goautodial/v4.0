@@ -680,9 +680,8 @@ if (isset($_GET["message"])) {
 														</div>
 														<div class="col-sm-6">
 															<div class="mda-form-group label-floating">
-																<input type="date" id="date_of_birth" value="<?php echo $date_of_birth;?>" name="date_of_birth"
-																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-																<label for="date">Date Of Birth</label>
+																<input type="date" id="date_of_birth" value="" name="date_of_birth" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="date_of_birth">Date Of Birth</label>
 															</div>
 														</div>
 													</div><!-- /.gender & title -->                   
