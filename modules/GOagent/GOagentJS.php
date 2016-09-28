@@ -6074,8 +6074,19 @@ function GetCustomFields(listid, show, getData) {
                                 customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
                                 customHTML += '</div>';
                             } else if (thisField.field_type == 'DATE') {
+                                var default_value = thisField.field_default;
+                                if (default_value == null || default_value.length < 1 || default_value.toLowerCase() == 'null') {
+                                    var curr_date = new Date();
+                                    var m = (curr_date.getMonth() + 1);
+                                    var d = curr_date.getDate();
+                                    var y = (curr_date.getYear() + 1900);
+                                    if (m < 10) m = "0" + m;
+                                    if (d < 10) d = "0" + d;
+                                    
+                                    default_value = y + "-" + m + "-" d;
+                                }
                                 customHTML += '<div class="mda-form-group">';
-                                customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" value="' + thisField.field_default + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
+                                customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" value="' + default_value + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
                                 customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
                                 customHTML += '</div>';
                             } else if (thisField.field_type == 'CHECKBOX' || thisField.field_type == 'RADIO') {
