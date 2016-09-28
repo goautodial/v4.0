@@ -34,32 +34,18 @@
         <meta name="keywords" content="app, responsive, jquery, bootstrap, dashboard, admin">
         
         <?php print $ui->creamyThemeCSS(); ?>
-        
-        <!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        
-            <!-- javascript -->
+
+        <!-- javascript -->
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>    
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="js/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="js/jquery.validate.min.js" type="text/javascript"></script> 
         
-            <!-- dashboard status boxes -->
-        <script src="js/bootstrap-editable.js" type="text/javascript"></script> 
-        <script src="theme_dashboard/moment/min/moment-with-locales.min.js" type="text/javascript"></script>
-        <script src="js/modules/now.js" type="text/javascript"></script>         
-	    <!-- ChartJS 1.0.1 -->
-        <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
-        
-            <!-- Creamy App -->
-        <!--<script src="js/app.min.js" type="text/javascript"></script>-->
+        <!-- Data Tables -->
+        <script src="js/plugins/datatables/FROMjquery.dataTables.js" type="text/javascript"></script>        
             
-            <!-- Data Tables -->
-        <!-- <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script> -->
-        <script src="js/plugins/datatables/FROMjquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/fnProcessingIndicator.js" type="text/javascript"></script>        
-
+        <!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <!-- FONT AWESOME-->
         <link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
         <!-- SIMPLE LINE ICONS-->
@@ -77,17 +63,18 @@
         <!-- <link rel="stylesheet" href="css/material/app.css" id="maincss"> -->
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
+        <!-- croppeie -->
+        <link rel="Stylesheet" type="text/css" href="css/prism.css" />
+        <link rel="Stylesheet" type="text/css" href="theme_dashboard/sweetalert/dist/sweetalert.css" />        
+        <link rel="Stylesheet" type="text/css" href="css/croppie.css" />
+        <!-- <link rel="Stylesheet" type="text/css" href="css/demo.css" /> -->
         
         
         <script type="text/javascript">
-            $(window).ready(function() {
-                    $(".preloader").fadeOut("slow");
+            $(window).ready(function(){
+                $(".preloader").fadeOut("slow");
             })
         </script>
-        
-        <link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
-        <script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
-    
 
     </head>
         <section class="ng-scope">
@@ -550,40 +537,40 @@
         
 <!--================= MODALS =====================-->
     
-                       <!-- Agent Information -->
-                        
+                       <!-- Agent Information -->                
                     <div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-hidden="true"> 
-                        <div class="modal-dialog"> 
+                       <div class="modal-lg modal-dialog" style="min-width: 70%">
                             <div class="modal-content"> 
                                 <div class="modal-header"> 
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-                                    <h4 class="modal-title">More about <span id="modal-username"></span>:</h4> 
+                                    <h4 class="modal-title">Change your profile picture</h4> 
                                 </div> 
-                                    <div class="modal-body"> 
-                                        <center>                                             
-                                            <div id="modal-avatar-agent"></div>
-                                            <h3 class="media-heading"><span id="modal-fullname"></span> <small></small></h3>
-                                        </center> 
-                                            <!-- <div class="responsive">
-                                                    <table class="table table-striped table-hover" id="view_agent_information_table" style="width: 100%">
-                                                        <thead>
-                                                                <th style="font-size: small;">Agent ID</th> 
-                                                                <th style="font-size: small;">Agent Phone</th> 
-                                                                <th style="font-size: small;">Status</th>                                                                
-                                                                <th style="font-size: small;">Cust Phone</th>
-                                                                <th style="font-size: small;">MM:SS</th>
-                                                   
-                                                        </thead>
-                                                        <tbody>
-                                                        
-                                                        </tbody>
-                                                    </table>
-                                            </div> -->
+                                    <center>
+                                        <div class="demo-wrap upload-demo">
+                                            <div class="container">
+                                            <div class="grid">
+                                                <div class="col-1-2">
+                                                    <strong>Upload Example (with exif orientation compatability)</strong>
+                                                    <div class="actions">
+                                                        <a class="btn file-btn">
+                                                            <span>Upload</span>
+                                                            <input type="file" id="upload" value="Choose a file" accept="image/*" />
+                                                        </a>
+                                                        <button class="upload-result">Result</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-1-2">
+                                                    <div class="upload-msg">
+                                                        Upload a file to start cropping
+                                                    </div>
+                                                    <div id="upload-demo"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>                                           
+                                        </center>
                                     </div> 
                                         <div class="modal-footer">                                        
-                                            <center> 
-                                            </center>
-                                        </div> 
                                 </div> 
                             </div> 
                         </div> 
@@ -841,7 +828,29 @@
         $('#modal-status').html("");        
     }
 
+	function popupResult(result) {
+		var html;
+		if (result.html) {
+			html = result.html;
+		}
+		if (result.src) {
+			html = '<img src="' + result.src + '" />';
+		}
+		swal({
+			title: '',
+			html: true,
+			text: html,
+			allowOutsideClick: true
+		});
+		setTimeout(function(){
+			$('.sweet-alert').css('margin', function() {
+				var top = -1 * ($(this).height() / 2),
+					left = -1 * ($(this).width() / 2);
 
+				return top + 'px 0 0 ' + left + 'px';
+			});
+		}, 1);
+	}    
     //demian
     $(document).ready(function(){
 
@@ -895,7 +904,54 @@
             var agentid = '<?=$agentid?>';
             var userid = '<?=$userid?>';
             var agentname = '<?=$agentname?>';
-            var creamyavatar = '<?=$creamyAvatar?>';
+            //var creamyavatar = '<?=$creamyAvatar?>';
+                        var $uploadCrop;
+
+                        function readFile(input) {
+                                if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+                            
+                            reader.onload = function (e) {
+                                                $('.upload-demo').addClass('ready');
+                                $uploadCrop.croppie('bind', {
+                                        url: e.target.result
+                                }).then(function(){
+                                        console.log('jQuery bind complete');
+                                });
+                                
+                            }
+                            
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                        else {
+                                swal("Sorry - you're browser doesn't support the FileReader API");
+                            }
+                        }
+
+                        $uploadCrop = $('#upload-demo').croppie({
+                                viewport: {
+                                        width: 160,
+                                        height: 160,
+                                        type: 'circle'
+                                },
+                                boundary: {
+                                        width: 300,
+                                        height: 300
+                                },
+                                enableExif: true
+                        });
+
+                        $('#upload').on('change', function () { readFile(this); });
+                        $('.upload-result').on('click', function (ev) {
+                                $uploadCrop.croppie('result', {
+                                        type: 'canvas',
+                                        size: 'viewport'
+                                }).then(function (resp) {
+                                        popupResult({
+                                                src: resp
+                                        });
+                                });
+                        });            
             $.ajax({        
                 type: 'POST',
                 url: "./php/ViewUserInfo.php",
@@ -912,9 +968,10 @@
                         $('#modal-username').html(agentid);
                         $('#modal-fullname').html(agentname);
 
-                        var avatar = '<avatar username="'+agentname+'" src="'+creamyavatar+'" :size="160"></avatar>'; 
-                        $('#modal-avatar-agent').html(avatar);
-                        goAvatar._init(goOptions);
+                        //var avatar = '<avatar username="'+agentname+'" src="'+creamyavatar+'" :size="160"></avatar>'; 
+                        //$('#modal-avatar-agent').html(avatar);
+                        //goAvatar._init(goOptions);
+                                                    
                     }
             });    
         });
@@ -927,9 +984,15 @@
 
     });
     
+   
+    
 </script>
-
-
+               
+        
+    <!-- ChartJS 1.0.1 -->
+    <!-- <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script> -->
+        
+    <!-- Creamy App -->
         
     <!-- =============== VENDOR SCRIPTS ===============-->
     <!-- MODERNIZR-->
@@ -937,17 +1000,17 @@
     <!-- MATCHMEDIA POLYFILL-->
     <!--<script src="./vendor/matchMedia/matchMedia.js"></script>-->
     <!-- JQUERY-->
-    <!--<script src="./vendor/jquery/dist/jquery.js"></script>-->
+    <script src="theme_dashboard/js/jquery/dist/jquery.js"></script>
     <!-- BOOTSTRAP-->
-    <!--<script src="./vendor/bootstrap/dist/js/bootstrap.js"></script>-->
+    <script src="theme_dashboard/js/bootstrap/dist/js/bootstrap.js"></script>
     <!-- STORAGE API-->
     <!--<script src="./vendor/jQuery-Storage-API/jquery.storageapi.js"></script>-->
     <!-- JQUERY EASING-->
     <!--<script src="./vendor/jquery.easing/js/jquery.easing.js"></script>-->
     <!-- ANIMO-->
-    <!--<script src="./vendor/animo.js/animo.js"></script>-->
+    <script src="theme_dashboard/js/animo.js/animo.js"></script>
     <!-- SLIMSCROLL-->
-    <!--<script src="./vendor/slimScroll/jquery.slimscroll.min.js"></script>-->
+    <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- SCREENFULL-->
     <!--<script src="./vendor/screenfull/dist/screenfull.js"></script>-->
     <!-- LOCALIZE-->
@@ -959,9 +1022,13 @@
     <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
     <!--<script src="./vendor/jQuery-gMap/jquery.gmap.min.js"></script>-->
     <!-- =============== APP SCRIPTS ===============-->
-    <!--<script src="js/app.js"></script>        -->
-	<!-- Vue Avatar -->   
-    
+    <script src="js/prism.js"></script>
+    <script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="js/croppie.js"></script> 
+    <script src="js/demo.js"></script>
+    <script src="js/exif.js"></script>
+        
     <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>        
     <?php print $ui->standardizedThemeJS();?>
+    </body>
 </html>
