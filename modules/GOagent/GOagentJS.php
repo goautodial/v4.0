@@ -6079,7 +6079,7 @@ function GetCustomFields(listid, show, getData) {
                             } else if (thisField.field_type == 'AREA') {
                                 var default_value = (thisField.field_default != 'NULL') ? thisField.field_default : '';
                                 customHTML += '<div class="mda-form-group">';
-                                customHTML += '<textarea id="' + thisField.field_label + '" name="' + thisField.field_label + '" rows="' + thisField.field_size + '" cols="' + thisField.field_max + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">' + default_value + '</textarea>';
+                                customHTML += '<textarea id="' + thisField.field_label + '" name="' + thisField.field_label + '" rows="' + thisField.field_max + '" cols="' + thisField.field_size + '" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled note-editor note-editor-margin">' + default_value + '</textarea>';
                                 customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
                                 customHTML += '</div>';
                             } else if (thisField.field_type == 'DATE' || thisField.field_type == 'TIME') {
