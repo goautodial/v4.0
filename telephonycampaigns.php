@@ -665,7 +665,7 @@ error_reporting(E_ALL);*/
 	                <div class="modal-body">
 
 	                <form action="#" method="POST" id="create_disposition" role="form">
-	                	<input type="hidden" name="userid" id="userid" value="<?php echo $user->getUserName();?>"/>
+	                	<input type="hidden" name="userid" id="userid" value="<?php echo $user->getUserId();?>"/>
 	                    <div class="row">
 	                    	<h4>Create Disposition
 	                           <br>
