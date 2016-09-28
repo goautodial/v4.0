@@ -6069,23 +6069,36 @@ function GetCustomFields(listid, show, getData) {
                             var column = (field_cnt > 1) ? (12 / field_cnt) : 12;
                             customHTML += '<div class="col-sm-' + column + '">';
                             if (thisField.field_type == 'TEXT' || thisField.field_type == 'HIDDEN') {
+                                var default_value = (thisField.field_default != 'NULL') ? thisField.field_default : '';
                                 customHTML += '<div class="mda-form-group">';
-                                customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" maxlength="' + thisField.field_max + '" value="' + thisField.field_default + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
+                                customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" size="' + thisField.field_size + '" maxlength="' + thisField.field_max + '" value="' + default_value + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
                                 if (thisField.field_type != 'HIDDEN') {
                                     customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
                                 }
                                 customHTML += '</div>';
-                            } else if (thisField.field_type == 'DATE') {
+                            } else if (thisField.field_type == 'AREA') {
+                                var default_value = (thisField.field_default != 'NULL') ? thisField.field_default : '';
+                                customHTML += '<div class="mda-form-group">';
+                                customHTML += '<textarea id="' + thisField.field_label + '" name="' + thisField.field_label + '" rows="' + thisField.field_size + '" cols="' + thisField.field_max + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">' + default_value + '</textarea>';
+                                customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
+                                customHTML += '</div>';
+                            } else if (thisField.field_type == 'DATE' || thisField.field_type == 'TIME') {
                                 var default_value = thisField.field_default;
                                 if (default_value == null || default_value.length < 1 || default_value == 'NULL') {
                                     var curr_date = new Date();
-                                    var m = (curr_date.getMonth() + 1);
-                                    var d = curr_date.getDate();
-                                    var y = (curr_date.getYear() + 1900);
-                                    if (m < 10) m = "0" + m;
-                                    if (d < 10) d = "0" + d;
+                                    var mon = (curr_date.getMonth() + 1);
+                                    var day = curr_date.getDate();
+                                    var year = (curr_date.getYear() + 1900);
+                                    var hour = curr_date.getHours();
+                                    var min = curr_date.getMinutes();
+                                    var sec = curr_date.getSeconds();
+                                    if (mon < 10) mon = "0" + mon;
+                                    if (day < 10) day = "0" + day;
+                                    if (hour < 10) hour = "0" + hour;
+                                    if (min < 10) min = "0" + min;
+                                    if (sec < 10) sec = "0" + sec;
                                     
-                                    default_value = y + "-" + m + "-" + d;
+                                    default_value = (thisField.field_type == 'DATE') ? year + "-" + mon + "-" + day : hour + ":" + min;
                                 }
                                 customHTML += '<div class="mda-form-group">';
                                 customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" value="' + default_value + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
