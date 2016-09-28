@@ -680,9 +680,8 @@ if (isset($_GET["message"])) {
 														</div>
 														<div class="col-sm-6">
 															<div class="mda-form-group label-floating">
-																<input type="date" id="date_of_birth" value="<?php echo $date_of_birth;?>" name="date_of_birth"
-																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-																<label for="date">Date Of Birth</label>
+																<input type="date" id="date_of_birth" value="" name="date_of_birth" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="date_of_birth">Date Of Birth</label>
 															</div>
 														</div>
 													</div><!-- /.gender & title -->                   
@@ -753,9 +752,9 @@ if (isset($_GET["message"])) {
 									</div>
 								</div>
 								
-						        <div id="custom_fields_content" class="card-body hidden">
-									<h4>
-										Custom Forms
+						        <div id="custom_fields_content" class="card-body" style="border: 1px solid rgb(221, 230, 233); margin: 0 32px 0 22px; display: none;">
+									<h4 style="font-weight: 600;">
+										<?=$lh->translationFor('custom_forms')?>
 									</h4>
 									<br>
 									<form role="form" id="custom_form" class="formMain">
@@ -764,6 +763,7 @@ if (isset($_GET["message"])) {
 										</div>
 									</form>
 								</div>
+								<br id="custom_br" style="display: none;">
 
 					<!-- SCRIPT MODAL -->
 							<div class="modal fade" id="script" name="script" tabindex="-1" role="dialog" aria-hidden="true">
