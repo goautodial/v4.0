@@ -2751,7 +2751,7 @@ function CheckForIncoming () {
             if (typeof thisComments !== 'undefined') {
                 thisComments = thisComments.replace(REGcommentsNL, "\n");
             }
-            $(".formMain input[name='comments']").val(thisComments).trigger('change');
+            $(".formMain textarea[name='comments']").val(thisComments).trigger('change');
             $(".formMain input[name='called_count']").val(this_VDIC_data.called_count);
             CBentry_time                                = this_VDIC_data.CBentry_time;
             CBcallback_time                             = this_VDIC_data.CBcallback_time;
@@ -3536,7 +3536,7 @@ function UpdateFieldsData() {
                 if (typeof UDfieldComments !== 'undefined') {
                     UDfieldComments = UDfieldComments.replace(REGcommentsNL, "\n");
                 }
-                $(".formMain input[name='comments']").val(UDfieldComments);
+                $(".formMain textarea[name='comments']").val(UDfieldComments);
             }
             var regUDrank = new RegExp("rank,","ig");
             if (fields_list.match(regUDrank))
@@ -4296,7 +4296,7 @@ function DispoSelectSubmit() {
             $(".formMain input[name='alt_phone']").val('').trigger('change');
             $(".formMain input[name='email']").val('').trigger('change');
             $(".formMain input[name='security_phrase']").val('');
-            $(".formMain input[name='comments']").val('').trigger('change');
+            $(".formMain textarea[name='comments']").val('').trigger('change');
             $(".formMain input[name='audit_comments']").val('');
             if (qc_enabled > 0) {
                 $(".formMain input[name='ViewCommentButton']").val('');
@@ -5062,7 +5062,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     if (typeof MDnextResponse_array[26] !== 'undefined') {
                         MDnextResponse_array[26] = MDnextResponse_array[26].replace(REGcommentsNL, "\n");
                     }
-                    $(".formMain input[name='comments']").val(MDnextResponse_array[26]).trigger('change');
+                    $(".formMain textarea[name='comments']").val(MDnextResponse_array[26]).trigger('change');
                     called_count                            = MDnextResponse_array[27];
                     $(".formMain input[name='called_count']").val(called_count);
                     previous_called_count                   = MDnextResponse_array[27];
@@ -5123,6 +5123,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                     case "AREA":
                                     case "HIDDEN":
                                     case "DATE":
+                                    case "TIME":
                                         $(field_name + " [id='" + field + "']").val(custom_values_array[idx]);
                                         break;
                                     case "CHECKBOX":
@@ -6153,7 +6154,9 @@ function GetCustomFields(listid, show, getData) {
                                 var field_type = (thisField.field_type.length > 0) ? thisField.field_type : 'DISPLAY';
                                 customHTML += '<div class="mda-form-group">';
                                 customHTML += '<span id="' + thisField.field_label + '" class="custom_' + field_type.toLowerCase() + '" style="padding-left: 5px;">' + display_content + '</span>';
-                                customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
+                                if (thisField.field_type != 'SCRIPT') {
+                                    customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
+                                }
                                 customHTML += '</div>';
                             }
                             customHTML += '</div>';
@@ -6523,7 +6526,7 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 		"&alt_phone=" + $(".formMain input[name='alt_phone']").val() + 
 		"&email=" + $(".formMain input[name='email']").val() + 
 		"&security_phrase=" + $(".formMain input[name='security_phrase']").val() + 
-		"&comments=" + $(".formMain input[name='comments']").val() + 
+		"&comments=" + $(".formMain textarea[name='comments']").val() + 
 		"&user=" + uName + 
 		"&pass=" + uPass + 
 		"&campaign=" + campaign + 
@@ -6730,7 +6733,7 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 		var SCalt_phone = $(".formMain input[name='alt_phone']").val();
 		var SCemail = $(".formMain input[name='email']").val();
 		var SCsecurity_phrase = $(".formMain input[name='security_phrase']").val();
-		var SCcomments = $(".formMain input[name='comments']").val();
+		var SCcomments = $(".formMain textarea[name='comments']").val();
 		var SCfullname = LOGfullname;
 		var SCfronter = fronter;
 		var SCuser = uName;
