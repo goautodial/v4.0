@@ -368,6 +368,7 @@ $(document).ready(function() {
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     $("#btnLogMeOut").removeClass("disabled");
                     //toggleStatus('NOLIVE');
+                    GetCustomFields(null, false);
                     
                     if (dialingINprogress < 1) {
                         //toggleButton('DialHangup', 'dial');
@@ -521,6 +522,7 @@ $(document).ready(function() {
                         $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
                         $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
                         $("#btnLogMeOut").addClass("disabled");
+                        GetCustomFields($(".formMain input[name='list_id']").val(), true);
                     }
                     if (XD_live_customer_call == 1) {
                         XD_live_call_seconds++;
@@ -5957,113 +5959,130 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
     }
 }
 
-function GetCustomFields(listid, show) {
+function GetCustomFields(listid, show, getData) {
     if (typeof show === 'undefined') {
         show = false;
     }
     
-    if (!show) {
-        $("#custom_fields_content").addClass('hidden');
+    if (typeof getData === 'undefined') {
+        getData = true;
     }
     
-    var postData = {
-        module_name: 'GOagent',
-        action: 'CustoMFielD',
-        list_id: listid
-    };
-    $.ajax({
-        type: 'POST',
-        url: '<?=$module_dir?>GOagentJS.php',
-        processData: true,
-        data: postData,
-        dataType: "json"
-    })
-    .done(function (result) {
-        if (result.result == 'success') {
-            var customHTML = '';
-            var fields = [];
-            $.each(result.data, function(idx, val) {
-                var thisRank = val['field_rank'];
-                var thisOrder = val['field_order'];
-                
-                if (typeof fields[thisRank] === 'undefined') {
-                   fields[thisRank] = [];
-                }
-                fields[thisRank][thisOrder] = val;
-            });
-            
-            $.each(fields, function(rank, data) {
-                if (typeof data === 'undefined') return true;
-                var order = 0;
-                var field_cnt = (data.length - 1);
-                customHTML += '<div class="row">';
-                while (order < field_cnt) {
-                    order++;
-                    var thisField = data[order];
-                    if (typeof thisField === 'undefined') return true;
+    if (!show) {
+        $("#custom_fields_content, #custom_br").slideUp();
+    }
+    
+    if (typeof listid === 'undefined' || listid === null || listid.length < 1) {
+        if (!show) {
+            $("#custom_fields_content, #custom_br").slideUp();
+        } else {
+            $("#custom_fields_content, #custom_br").slideDown();
+        }
+        return show;
+    }
+    
+    if (getData) {
+        var postData = {
+            module_name: 'GOagent',
+            action: 'CustoMFielD',
+            list_id: listid
+        };
+        $.ajax({
+            type: 'POST',
+            url: '<?=$module_dir?>GOagentJS.php',
+            processData: true,
+            data: postData,
+            dataType: "json"
+        })
+        .done(function (result) {
+            if (result.result == 'success') {
+                var customHTML = '';
+                var fields = [];
+                $.each(result.data, function(idx, val) {
+                    var thisRank = val['field_rank'];
+                    var thisOrder = val['field_order'];
                     
-                    var column = (field_cnt > 1) ? (12 / order) : 12;
-                    customHTML += '<div class="col-sm-' + column + '">';
-                    if (thisField.field_type == 'TEXT') {
-                        customHTML += '<div class="mda-form-group">';
-                        customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" maxlength="' + thisField.field_max + '" value="' + thisField.field_default + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
-                        customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
-                        customHTML += '</div>';
-                    } else if (thisField.field_type == 'CHECKBOX') {
-                        var checkBox = thisField.field_options.split("\n");
-                        customHTML += '<div class="mda-form-group">';
-                        if (thisField.multi_position == 'HORIZONTAL') {
-                            customHTML += '<div class="checkbox">';
-                        }
-                        for (i = 0; i < checkBox.length; i++) {
-                            var checkBoxValue = checkBox[i].split(",");
-                            if (thisField.multi_position == 'VERTICAL') {
-                                customHTML += '<div class="checkbox">';
-                            }
-                            customHTML += '<label style="margin-right: 15px;">';
-                            customHTML += '<input type="' + thisField.field_type.toLowerCase() + '" name="' + thisField.field_label + '[]" id="' + thisField.field_label + '_' + i + '" value="' + checkBoxValue[0] + '">';
-                            customHTML += checkBoxValue[1];
-                            customHTML += '</label>';
-                            if (thisField.multi_position == 'VERTICAL') {
+                    if (typeof fields[thisRank] === 'undefined') {
+                       fields[thisRank] = [];
+                    }
+                    fields[thisRank][thisOrder] = val;
+                });
+                
+                $.each(fields, function(rank, data) {
+                    if (typeof data === 'undefined') return true;
+                    var order = 0;
+                    var field_cnt = (data.length - 1);
+                    customHTML += '<div class="row">';
+                    while (order < field_cnt) {
+                        order++;
+                        var thisField = data[order];
+                        if (typeof thisField !== 'undefined') {
+                            var column = (field_cnt > 1) ? (12 / field_cnt) : 12;
+                            customHTML += '<div class="col-sm-' + column + '">';
+                            if (thisField.field_type == 'TEXT') {
+                                customHTML += '<div class="mda-form-group">';
+                                customHTML += '<input id="' + thisField.field_label + '" name="' + thisField.field_label + '" type="'+ thisField.field_type.toLowerCase() +'" maxlength="' + thisField.field_max + '" value="' + thisField.field_default + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">';
+                                customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
+                                customHTML += '</div>';
+                            } else if (thisField.field_type == 'CHECKBOX') {
+                                var checkBox = thisField.field_options.split("\n");
+                                customHTML += '<div class="mda-form-group">';
+                                if (thisField.multi_position == 'HORIZONTAL') {
+                                    customHTML += '<div class="checkbox">';
+                                }
+                                for (i = 0; i < checkBox.length; i++) {
+                                    var checkBoxValue = checkBox[i].split(",");
+                                    if (thisField.multi_position == 'VERTICAL') {
+                                        customHTML += '<div class="checkbox">';
+                                    }
+                                    customHTML += '<label style="margin-right: 15px;">';
+                                    customHTML += '<input type="' + thisField.field_type.toLowerCase() + '" name="' + thisField.field_label + '[]" id="' + thisField.field_label + '_' + i + '" value="' + checkBoxValue[0] + '">';
+                                    customHTML += checkBoxValue[1];
+                                    customHTML += '</label>';
+                                    if (thisField.multi_position == 'VERTICAL') {
+                                        customHTML += '</div>';
+                                    }
+                                }
+                                if (thisField.multi_position == 'HORIZONTAL') {
+                                    customHTML += '</div>';
+                                }
+                                customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
+                                customHTML += '</div>';
+                            } else if (thisField.field_type == 'SELECT') {
+                                var selectOptions = thisField.field_options.split("\n");
+                                customHTML += '<div class="mda-form-group">';
+                                customHTML += '<select id="' + thisField.field_label + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled">';
+                                for (i = 0; i < selectOptions.length; i++) {
+                                    var selectOption = selectOptions[i].split(",");
+                                    customHTML += '<option value="' + selectOption[0] + '">' + selectOption[1] + '</option>';
+                                }
+                                customHTML += '</select>';
+                                customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
+                                customHTML += '</div>';
+                            } else {
+                                var patt = /^\s/g;
+                                var field_options = thisField.field_options;
+                                if ((patt.test(field_options) && field_options.length < 2) || field_options.length < 1) {
+                                    field_options = "&nbsp;";
+                                }
+                                var field_type = (thisField.field_type.length > 0) ? thisField.field_type : 'DISPLAY';
+                                customHTML += '<div class="mda-form-group">';
+                                customHTML += '<span id="' + thisField.field_label + '" class="custom_' + field_type.toLowerCase() + '" style="padding-left: 5px;">' + field_options + '</span>';
+                                customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
                                 customHTML += '</div>';
                             }
-                        }
-                        if (thisField.multi_position == 'HORIZONTAL') {
                             customHTML += '</div>';
                         }
-                        customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
-                        customHTML += '</div>';
-                    } else if (thisField.field_type == 'SELECT') {
-                        var selectOptions = thisField.field_options.split("\n");
-                        customHTML += '<div class="mda-form-group">';
-                        customHTML += '<select id="' + thisField.field_label + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled">';
-                        for (i = 0; i < selectOptions.length; i++) {
-                            customHTML += '<option value="' + selectOptions[0] + '">' + selectOptions[1] + '</option>';
-                        }
-                        customHTML += '</select>';
-                        customHTML += '<label for="' + thisField.field_label + '">' + thisField.field_name + '</label>';
-                        customHTML += '</div>';
-                    } else {
-                        var patt = /^\s/g;
-                        var field_options = thisField.field_options;
-                        if ((patt.test(field_options) && field_options.length < 2) || field_options.length < 1) {
-                            field_options = "&nbsp;";
-                        }
-                        customHTML += '<div class="mda-form-group">';
-                        customHTML += '<span style="padding-left: 5px;">' + field_options + '</span>';
-                        customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
-                        customHTML += '</div>';
                     }
                     customHTML += '</div>';
+                })
+                $("#custom_fields").html(customHTML);
+                if (show) {
+                    $("#custom_fields_content, #custom_br").slideDown();
                 }
-                customHTML += '</div>';
-            })
-            $("#custom_fields").html(customHTML);
-            if (show) {
-                $("#custom_fields_content").removeClass('hidden');
             }
-        }
-    });
+        });
+    }
 }
 
 // ################################################################################
