@@ -67,7 +67,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <legend><?php $lh->translateText("scripts"); ?></legend>
-							<?php print $ui->getListAllScripts(); ?>
+							<?php print $ui->getListAllScripts($user->getUserName()); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -89,9 +89,10 @@
 	/*
 	* APIs for add form
 	*/
-	$scripts = $ui->API_goGetAllScripts();
+	$scripts = $ui->API_goGetAllScripts($user->getUserName());
+
 ?>
-	<div class="modal fade" id="scripts-modal" tabindex="-1"aria-labelledby="scripts" >
+	<div class="modal fade" id="scripts-modal" tabindex="-1"aria-labelledby="scripts">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
 				<div class="modal-header">
@@ -105,26 +106,6 @@
 				
 					<form id="create_form" role="form">
 						<div class="row">
-							<?php
-								$max = count($scripts->script_id);
-								$x = 0;
-								for($i=0; $i < $max; $i++){
-									//echo $max-$x;
-									$agent = substr($scripts->script_id[$max-$x], 0, 6);
-									if($agent == "script"){
-										$get_last = substr($scripts->script_id[$max-$x], -2);
-									}else{
-										$x = $x+1;
-									}
-								}
-								$script_num = $get_last + 1;
-
-								$num_padded = sprintf("%03d", $script_num);
-								
-								//$fullname = "Agent ".$num_padded;
-								$script_id_for_form = "script".$num_padded;
-							?>
-
 							<h4>Script Details
 	                           <br>
 	                           <small>Fill in the needed details in the form.</small>
@@ -133,8 +114,8 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="script_id">Script ID</label>
 									<div class="col-sm-9 mb">
-										<input type="text" class="form-control" name="script_id" id="script_id" value="<?php echo $script_id_for_form;?>" maxlength="15" disabled required />
-										<input type="hidden" name="script_id" value="<?php echo $script_id_for_form;?>">
+										<input type="text" class="form-control" name="script_id" id="script_id" value="<?php print_r($scripts->script_count);?>" maxlength="15" disabled required />
+										<input type="hidden" name="script_id" value="<?php print_r($scripts->script_count);?>">
 										<input type="hidden" name="script_user" value="<?php echo $user->getUserName();?>">
 									</div>
 								</div>
