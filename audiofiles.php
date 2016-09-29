@@ -284,7 +284,7 @@
 <!-- VOICE FILES MODALS -->
 	<!-- Playback Modal -->
 	<div id="voice-playback-modal" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog modal-sm">
 
 	    <!-- Modal content-->
 	    <div class="modal-content">
@@ -293,7 +293,12 @@
 	        <h4 class="modal-title"><b>Voice Files Playback</b></h4>
 	      </div>
 	      <div class="modal-body">
-		<div class="voice-player"></div>
+	      	<center class="mt"><em class="fa fa-music fa-5x"></em></center>
+	      	<div class="row mt mb">
+		      	<center><span class="voice-details"></span></center>
+		    </div>
+		    <br/>
+			<div class="voice-player"></div>
 	      	<!-- <audio controls>
 			<source src="http://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
 			<source src="http://www.w3schools.com/html/horse.mp3" type="audio/mpeg" />
@@ -677,6 +682,8 @@
 					    sourceFile += '<source src="'+ audioFile +'" type="audio/mpeg" download="true"/>';
 					    sourceFile += '</audio>';
 
+					var voicedetails = $(this).attr('data-details');
+					$('.voice-details').html(voicedetails);
 					$('.download-audio-file').attr('href', audioFile);
 					$('.voice-player').html(sourceFile);
 					$('#voice-playback-modal').modal('show');

@@ -4106,7 +4106,10 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    $file_link = "http://69.46.6.35/sounds/".$output->file_name[$i];
 
-		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i]);
+	    $details = "<strong>Filename</strong>: <i>".$output->file_name[$i]."</i><br/>";
+	    $details .= "<strong>Date</strong>: <i>".$output->file_date[$i]."</i><br/>";
+
+		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i], $details);
 
 		$result .= "<tr>
 			<td><a class='play_voice_file' data-location='".$file_link."'>".$output->file_name[$i]."</td>
@@ -4121,7 +4124,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 
-	private function getUserActionMenuForVoiceFiles($filename) {
+	private function getUserActionMenuForVoiceFiles($filename, $details) {
 	    $file_link = "http://69.46.6.35/sounds/".$filename;
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -4130,7 +4133,7 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="play_voice_file" href="#" data-location="'.$file_link.'">Play Voice File</a></li>
+			<li><a class="play_voice_file" href="#" data-location="'.$file_link.'" data-details="'.$details.'">Play Voice File</a></li>
 		    </ul>
 		</div>';
 	}
