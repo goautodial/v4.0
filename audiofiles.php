@@ -669,7 +669,7 @@
 				?>
 
 			// On play
-				$('.play_voice_file').click(function(){
+				$(document).on('click','.play_voice_file',function() {
 					var audioFile = $(this).attr('data-location');
 
 					var sourceFile = '<audio class="audio_file" controls>';
