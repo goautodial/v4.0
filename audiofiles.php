@@ -38,12 +38,6 @@
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
-        <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			})
-		</script>
-
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -104,7 +98,7 @@
 
 							<!--==== Voicefiles ====-->
 							<div id="voicefiles_tab" role="tabpanel" class="tab-pane active">
-								<?php echo $_SESSION['use_webrtc'];print $ui->getListAllVoiceFiles(); ?>
+								<?php print $ui->getListAllVoiceFiles(); ?>
 							</div>
 
 						</div><!-- END tab content-->

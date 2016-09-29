@@ -2282,7 +2282,7 @@ th {
   border-top: 2px solid #eeeeee;
 }
 .table .table {
-  background-color: #f5f7fa;
+  /* background-color: #f5f7fa; */
 }
 .table-condensed > thead > tr > th,
 .table-condensed > tbody > tr > th,
