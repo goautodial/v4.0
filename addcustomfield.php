@@ -435,6 +435,25 @@ $customs = $customFields->data;
         </div><!-- ./wrapper -->
 
 				<!-- Custom Field Modal -->
+				<div id="modal_custom_field_view" class="modal fade" tabindex="-1" role="dialog">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">View Modal</h4>
+							</div>
+							<div class="modal-body">
+								<div id="viewContainer">
+									<!-- Custom Field Container -->
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div><!-- /.modal-content -->
+					</div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+
 				<div id="modal_custom_field" class="modal fade" tabindex="-1" role="dialog">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
@@ -609,7 +628,7 @@ $customs = $customFields->data;
 													<td style="width: 20%;">
 														<button type="button" class="btn btn-primary btn-edit-cf" data-list-id="<?php echo $modifyid; ?>" data-info="<?php echo htmlspecialchars(json_encode($fieldsvalues), ENT_QUOTES, 'UTF-8'); ?>"><span class="fa fa-pencil"></span></button>
 														<button type="button" class="btn btn-danger btn-delete-cf" data-list-id="<?php echo $modifyid; ?>" data-field-label="<?php echo $A_field_label; ?>" data-field-id="<?php echo $A_field_id; ?>"><span class="fa fa-trash"></span></button>
-														<button type="button" class="btn btn-info"><span class="fa fa-eye"></span></button>
+														<button type="button" class="btn btn-info btn-view-cf" data-info="<?php echo htmlspecialchars(json_encode($fieldsvalues), ENT_QUOTES, 'UTF-8'); ?>"><span class="fa fa-eye"></span></button>
 													</td>
 												</tr>
 												<?php } ?>
@@ -653,26 +672,197 @@ $customs = $customFields->data;
 				$(document).on('click', '.btn-field', function(){
 					var type = $('.custom-fields-selection').val();
 					$('.type').val(type);
+					$('.field-id').val("");
+					$('.field-id').val("");
 					$('.btn-create-field').removeClass('hide');
 					$('.btn-update-field').addClass('hide');
 					$('#modal_custom_field').modal('show');
 				});
 
+				$(document).on('click', '.btn-view-cf', function(){
+					var data = $(this).data('info');
+					console.log(data);
+					var viewHTML = '<table class="table"';
+							viewHTML += '<tr>';
+							viewHTML += '<td><B>' + data.field_name + '</B></td>';
+							viewHTML += '<td>';
 
+							if(data.field_type == "SELECT") {
+								viewHTML += '<select size=1 name="'+ data.field_label +'" id="'+data.field_label+'">';
+							}
+
+							if(data.field_type == "MULTI") {
+								viewHTML += '<select size=1 name="'+ data.field_label +'" id="'+data.field_label+'">';
+							}
+
+							if ( (data.field_type == "SELECT") || (data.field_type == "MULTI") || (data.field_type == "RADIO") || (data.field_type == "CHECKBOX") ){
+								var option_array = data.field_options.split("\n");
+
+								$.each(option_array, function(index, value){
+				            var option_value_array = value.split(",");
+
+										if ( (data.field_type == "SELECT") || (data.field_type == "MULTI") ){
+											if (data.field_default == option_value_array[0]) {
+												var selected = 'SELECTED';
+											}else{
+												var selected = '';
+											}
+
+											viewHTML += '<option value="'+ option_value_array[0] +'" '+ selected +'>'+ option_value_array[1] +'</option>';
+										}
+
+										if ( (data.field_type == "RADIO") || (data.field_type == "CHECKBOX") ){
+											if (data.multi_position == "VERTICAL"){
+												viewHTML += " &nbsp; ";
+											}
+
+											if (data.field_default == option_value_array[0]) {
+												var selected = 'SELECTED';
+											}else{
+												var selected = '';
+											}
+
+											var label_name = data.field_label + '[]';
+
+											viewHTML += '<input type="'+ data.field_type +'" name="'+ label_name +'" id="'+ label_name +'" value="'+ option_value_array[0] +'" '+ selected +'> '+ option_value_array[1] +'\n';
+
+											if (data.multi_position == "VERTICAL"){
+												viewHTML += "<br />\n";
+											}
+										}
+				        });
+							}
+
+							if((data.field_type == "SELECT") || (data.field_type == "MULTI")){
+								viewHTML += '</select>';
+							}
+
+							if (data.field_type == "TEXT"){
+								if (data.field_default == 'NULL'){
+									var default_value = '';
+								}else{
+									var default_value = data.field_default;
+								}
+								viewHTML += '<input type="text" size="'+ data.field_size +'" maxlength="'+ data.field_max +'" name="'+ data.field_label +'" id="'+ data.field_label +'" value="'+ default_value +'">\n';
+							}
+
+							if (data.field_type == "AREA"){
+								viewHTML += '<textarea name="'+ data.field_label +'" id="'+ data.field_label +'" ROWS="'+ data.field_max +'" COLS="'+ data.field_size +'"></textarea>';
+							}
+
+							if (data.field_type == "DISPLAY"){
+								viewHTML += '<b>'+ data.field_default +'</b>';
+							}
+
+							if (data.field_type == "SCRIPT"){
+								if (data.field_default == 'NULL'){
+									var default_value = '';
+								}
+
+								viewHTML += data.field_options + "\n";
+							}
+
+							if (data.field_type == "DATE"){
+								if ( (data.field_default.length < 1) || (data.field_default == "NULL") ) {
+									data.field_default = 0;
+								}
+									var d = new Date();
+									var newDate = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+									viewHTML += '<input type=text size=11 maxlength=10 name="'+ data.field_label +'" id="'+ data.field_label +'" value="'+ newDate +'">\n';
+							}
+
+							if (data.field_type  == "TIME"){
+								var d = new Date();
+								var newDate = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+								var newTime = d.getHours() + ":" + d.getMinutes();
+								viewHTML += '<input type="hidden" name="'+ data.field_label +'" id="'+ data.field_label +'" value="'+ newTime +'">';
+								viewHTML += '<SELECT name="HOUR_'+ data.field_label +'" id="HOUR_'+ data.field_label +'">';
+								viewHTML += '<option>00</option>';
+								viewHTML += '<option>01</option>';
+								viewHTML += '<option>02</option>';
+								viewHTML += '<option>03</option>';
+								viewHTML += '<option>04</option>';
+								viewHTML += '<option>05</option>';
+								viewHTML += '<option>06</option>';
+								viewHTML += '<option>07</option>';
+								viewHTML += '<option>08</option>';
+								viewHTML += '<option>09</option>';
+								viewHTML += '<option>10</option>';
+								viewHTML += '<option>11</option>';
+								viewHTML += '<option>12</option>';
+								viewHTML += '<option>13</option>';
+								viewHTML += '<option>14</option>';
+								viewHTML += '<option>15</option>';
+								viewHTML += '<option>16</option>';
+								viewHTML += '<option>17</option>';
+								viewHTML += '<option>18</option>';
+								viewHTML += '<option>19</option>';
+								viewHTML += '<option>20</option>';
+								viewHTML += '<option>21</option>';
+								viewHTML += '<option>22</option>';
+								viewHTML += '<option>23</option>';
+								viewHTML += '<OPTION value="'+ d.getHours() +'" selected>'+ d.getHours() +'</OPTION>';
+								viewHTML += '</SELECT>';
+								viewHTML += '<SELECT name="MINUTE_'+ data.field_label +'" id="MINUTE_'+ data.field_label +'">';
+								viewHTML += '<option>00</option>';
+								viewHTML += '<option>05</option>';
+								viewHTML += '<option>10</option>';
+								viewHTML += '<option>15</option>';
+								viewHTML += '<option>20</option>';
+								viewHTML += '<option>25</option>';
+								viewHTML += '<option>30</option>';
+								viewHTML += '<option>35</option>';
+								viewHTML += '<option>40</option>';
+								viewHTML += '<option>45</option>';
+								viewHTML += '<option>50</option>';
+								viewHTML += '<option>55</option>';
+								viewHTML += '<OPTION value="'+ d.getMinutes() +'" selected>'+ d.getMinutes() +'</OPTION>';
+								viewHTML += '</SELECT>';
+							}
+
+							viewHTML += '<td>';
+							viewHTML += '<tr>';
+							viewHTML += '</table>';
+
+					$('#viewContainer').html(viewHTML);
+					$('#modal_custom_field_list').modal('hide');
+					$('#modal_custom_field_view').modal('show');
+				});
 
 				$(document).on('click', '.btn-edit-fields', function(){
 					$('#modal_custom_field_list').modal('show');
 				});
 
 				$('#modal_custom_field_list').on('hidden.bs.modal', function (e) {
-				    $('body').addClass('modal-open');
+				    // $('body').addClass('modal-open');
 				});
 
 				$('#modal_custom_field').on('hidden.bs.modal', function (e) {
 						var field_id = $('.field-id').val();
 						if(field_id != ""){
 							$('#modal_custom_field_list').modal('show');
+							$('body').addClass('modal-open');
+						}else{
+							$('body').removeClass('modal-open');
+							$('.field-id').val("");
+							$('.field-label').val("");
+							$('.field-rank').val("");
+							$('.field-order').val("");
+							$('.field-name').val("");
+							$('.field-description').val("");
+							$('.field-type').val("");
+							$('.field-options').val("");
+							$('.field-size').val("");
+							$('.field-max').val("");
+							$('.field-default').val("");
+							$('.field-position').val("").change();
+							$('.field-option-position').val("").change();
+							$('.field-required').val("NO").change();
 						}
+				});
+
+				$('#modal_custom_field_view').on('hidden.bs.modal', function (e) {
+						$('#modal_custom_field_list').modal('show');
 				    $('body').addClass('modal-open');
 				});
 
