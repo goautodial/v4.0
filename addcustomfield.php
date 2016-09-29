@@ -136,6 +136,9 @@ $customs = $customFields->data;
 								<div class="col-lg-9">
 									<div class="row">
 										<div class="col-lg-1 pull-right">
+											<button type="button" class="btn-delete-all-cf btn btn-danger" style="height: 35px;" data-id="<?php echo $modifyid; ?>"><i class="fa fa-trash"></i></button>
+										</div>
+										<div class="col-lg-1 pull-right">
 											<button type="button" class="btn-field btn btn-success" style="height: 35px;" data-id="<?php echo $modifyid; ?>"><i class="fa fa-plus"></i></button>
 										</div>
 										<div class="col-lg-1 pull-right">
@@ -333,8 +336,8 @@ $customs = $customFields->data;
 																	$field_HTML .= "	'controlname': '$A_field_label'});\n";
 																	$field_HTML .= "o_cal.a_tpl.yearscroll = false;\n";
 																	$field_HTML .= "</script>\n";*/
-																	$baseurl = base_url();
-																	$urlcalendar = $baseurl.'js/images/cal.gif';
+																	// $baseurl = base_url();
+																	// $urlcalendar = $baseurl.'js/images/cal.gif';
 																	$field_HTML .= "<img id=\"$A_field_label\" name=\"$A_field_label\" src=\"$urlcalendar\">";
 															}
 
@@ -440,7 +443,8 @@ $customs = $customFields->data;
 								<h4 class="modal-title">Custom Field Wizard</h4>
 							</div>
 							<div class="modal-body">
-								<form class="form-horizontal wizard-form" style="margin-top: 10px;">
+								<form id="wizard-form" class="form-horizontal" style="margin-top: 10px;">
+									<input type="hidden" name="field_id" class="field-id" value="">
 									<div class="form-group">
 										<label class="control-label col-lg-3">List ID:</label>
 										<div class="col-lg-9">
@@ -450,29 +454,29 @@ $customs = $customFields->data;
 									<div class="form-group">
 										<label class="control-label col-lg-3">Label:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control field-label" name="label" value="">
+											<input type="text" class="form-control field-label" name="field_label" value="">
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="control-label col-lg-3">Rank:</label>
 										<div class="col-lg-3">
-											<input type="text" class="form-control rank" name="rank" value="">
+											<input type="text" class="form-control field-rank" name="field_rank" value="">
 										</div>
 										<label class="control-label col-lg-2">Order:</label>
 										<div class="col-lg-3">
-											<input type="text" class="form-control order" name="order" value="">
+											<input type="text" class="form-control field-order" name="field_order" value="">
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="control-label col-lg-3">Name:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control name" name="name" value="">
+											<input type="text" class="form-control field-name" name="field_name" value="">
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="control-label col-lg-3">Position:</label>
 										<div class="col-lg-9">
-											<select class="form-control position" name="position">
+											<select class="form-control field-position" name="field_position">
 												<option value=""></option>
 												<option value="TOP">TOP</option>
 												<option value="LEFT">LEFT</option>
@@ -482,14 +486,14 @@ $customs = $customFields->data;
 									<div class="form-group">
 										<label class="control-label col-lg-3">Description:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control description" name="description" value="">
+											<input type="text" class="form-control field-description" name="field_description" value="">
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="control-label col-lg-3">Type:</label>
 										<div class="col-lg-9">
 											<!-- <input type="text" class="form-control type" name="type" value="" readonly> -->
-											<select class="select2-3 form-control type" style="width:100%;">
+											<select name="field_type" class="select2-3 form-control field-type" style="width:100%;">
 												<option value="TEXT">TEXT</option>
 												<option value="AREA">AREA</option>
 												<option value="SELECT">SELECT</option>
@@ -506,13 +510,13 @@ $customs = $customFields->data;
 									<div class="form-group">
 										<label class="control-label col-lg-3">Options:</label>
 										<div class="col-lg-9">
-											<textarea class="form-control options" style="resize: none;" name="options"></textarea>
+											<textarea class="form-control field-options" style="resize: none;" name="field_options"></textarea>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="control-label col-lg-3">Option Position:</label>
 										<div class="col-lg-9">
-											<select class="form-control option-position" name="option_position">
+											<select class="form-control field-option-position" name="field_option_position">
 												<option value=""></option>
 												<option value="HORIZONTAL">HORIZONTAL</option>
 												<option value="VERTICAL">VERTICAL</option>
@@ -541,8 +545,8 @@ $customs = $customFields->data;
 										<label class="control-label col-lg-3">Field Required:</label>
 										<div class="col-lg-9">
 											<select class="form-control field-required" name="field_required">
-												<option value="YES">YES</option>
-												<option value="NO" selected>NO</option>
+												<option value="Y">YES</option>
+												<option value="N" selected>NO</option>
 											</select>
 										</div>
 									</div>
@@ -551,6 +555,7 @@ $customs = $customFields->data;
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 								<button type="button" class="btn btn-primary btn-create-field">Create Field</button>
+								<button type="button" class="btn btn-success btn-update-field hide">Update Field</button>
 							</div>
 						</div><!-- /.modal-content -->
 					</div><!-- /.modal-dialog -->
@@ -596,14 +601,14 @@ $customs = $customFields->data;
 													$A_name_position 			= $fieldsvalues->name_position;
 													$A_field_order 				= $fieldsvalues->field_order;
 												?>
-												<tr>
+												<tr class="field-row">
 													<td><?php echo $A_field_rank." - ".$A_field_order;?></td>
 													<td><?php echo $A_field_label; ?></td>
 													<td><?php echo $A_field_name; ?></td>
 													<td><?php echo $A_field_type; ?></td>
 													<td style="width: 20%;">
-														<button type="button" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
-														<button type="button" class="btn btn-danger"><span class="fa fa-trash"></span></button>
+														<button type="button" class="btn btn-primary btn-edit-cf" data-list-id="<?php echo $modifyid; ?>" data-info="<?php echo htmlspecialchars(json_encode($fieldsvalues), ENT_QUOTES, 'UTF-8'); ?>"><span class="fa fa-pencil"></span></button>
+														<button type="button" class="btn btn-danger btn-delete-cf" data-list-id="<?php echo $modifyid; ?>" data-field-label="<?php echo $A_field_label; ?>" data-field-id="<?php echo $A_field_id; ?>"><span class="fa fa-trash"></span></button>
 														<button type="button" class="btn btn-info"><span class="fa fa-eye"></span></button>
 													</td>
 												</tr>
@@ -648,60 +653,166 @@ $customs = $customFields->data;
 				$(document).on('click', '.btn-field', function(){
 					var type = $('.custom-fields-selection').val();
 					$('.type').val(type);
+					$('.btn-create-field').removeClass('hide');
+					$('.btn-update-field').addClass('hide');
 					$('#modal_custom_field').modal('show');
 				});
+
+
 
 				$(document).on('click', '.btn-edit-fields', function(){
 					$('#modal_custom_field_list').modal('show');
 				});
 
+				$('#modal_custom_field_list').on('hidden.bs.modal', function (e) {
+				    $('body').addClass('modal-open');
+				});
+
+				$('#modal_custom_field').on('hidden.bs.modal', function (e) {
+						var field_id = $('.field-id').val();
+						if(field_id != ""){
+							$('#modal_custom_field_list').modal('show');
+						}
+				    $('body').addClass('modal-open');
+				});
+
+				$(document).on('click', '.btn-edit-cf', function(){
+					var data = $(this).data('info');
+					var list_id = $(this).data('list-id');
+					$('.list-id').val(list_id);
+					$('.field-id').val(data.field_id);
+					$('.field-label').val(data.field_label);
+					$('.field-rank').val(data.field_rank);
+					$('.field-order').val(data.field_order);
+					$('.field-name').val(data.field_name);
+					$('.field-description').val(data.field_description);
+					$('.field-type').val(data.field_type).change();
+					$('.field-options').val(data.field_options);
+					$('.field-size').val(data.field_size);
+					$('.field-max').val(data.field_max);
+					$('.field-default').val(data.field_default);
+					$('.field-position').val(data.name_position).change();
+					$('.field-option-position').val(data.multi_position).change();
+					$('.field-required').val(data.field_required).change();
+
+					$('#modal_custom_field_list').modal('hide');
+					$('.btn-create-field').addClass('hide');
+					$('.btn-update-field').removeClass('hide');
+					$('#modal_custom_field').modal('show');
+				});
+
 				$('#modal_custom_field').on('hidden.bs.modal', function () {
 					$('.field-label').val("");
-					$('.rank').val("");
-					$('.order').val("");
-					$('.name').val("");
-					$('.description').val("");
-					$('.type').val("");
-					$('.options').val("");
+					$('.field-rank').val("");
+					$('.field-order').val("");
+					$('.field-name').val("");
+					$('.field-description').val("");
+					$('.field-type').val("");
+					$('.field-options').val("");
 					$('.field-size').val("");
 					$('.field-max').val("");
 					$('.field-default').val("");
-					$('.position').val("").change();
-					$('.option-position').val("").change();
+					$('.field-position').val("").change();
+					$('.field-option-position').val("").change();
 					$('.field-required').val("NO").change();
 				});
 
-				$('.btn-create-field').click(function(){
-					var formdata = $('.wizard-form').serializeFormJSON();
-					var label 					= $('.field-label').val();
-					var rank 						= $('.rank').val();
-					var order 					= $('.order').val();
-					var name 						= $('.name').val();
-					var description 		= $('.description').val();
-					var type 						= $('.type').val();
-					var options 				= $('.options').val();
-					var field_size 			= $('.field-size').val();
-					var field_max 			= $('.field-max').val();
-					var field_default 	= $('.field-default').val();
-					var position 				= $('.position').val();
-					var option_position = $('.option-position').val();
-					var field_required 	= $('.field-required').val();
+				$(document).on('click', '.btn-create-field', function(){
+					var form_data = new FormData($("#wizard-form")[0]);
 
-					// console.log(label);
-					// console.log(rank);
-					// console.log(order);
-					// console.log(name);
-					// console.log(description);
-					// console.log(type);
-					// console.log(options);
-					// console.log(field_size);
-					// console.log(field_max);
-					// console.log(field_default);
-					// console.log(position);
-					// console.log(option_position);
-					// console.log(field_required);
+					swal({
+						title: "Are you sure?",
+						text: "This action cannot be undone.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "Yes, create custom field!",
+						cancelButtonText: "No, cancel please!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+												url: "./php/AddCustomField.php",
+												type: 'POST',
+												data: form_data,
+												// dataType: 'json',
+												cache: false,
+                        contentType: false,
+                        processData: false,
+												success: function(data) {
+														// console.log(data);
+														if(data == "success"){
+															swal({
+																	title: "Success",
+																	text: "Custom Field Successfully Created",
+																	type: "success"
+																},
+																function(){
+																	location.reload();
+																	$(".preloader").fadeIn();
+																}
+															);
+														}else{
+																sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+														}
+												}
+									});
+								} else {
+										swal("Cancelled", "No action has been done :)", "error");
+								}
+						}
+					);
+				});
 
-					console.log(formdata);
+				$(document).on('click', '.btn-update-field', function(){
+					var form_data = new FormData($("#wizard-form")[0]);
+
+					swal({
+						title: "Are you sure?",
+						text: "This action cannot be undone.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "Yes, Update this custom field!",
+						cancelButtonText: "No, cancel please!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+												url: "./php/ModifyCustomField.php",
+												type: 'POST',
+												data: form_data,
+												// dataType: 'json',
+												cache: false,
+                        contentType: false,
+                        processData: false,
+												success: function(data) {
+														// console.log(data);
+														if(data == "success"){
+															swal({
+																	title: "Success",
+																	text: "Custom Field Successfully Updated/Modified",
+																	type: "success"
+																},
+																function(){
+																	location.reload();
+																	$(".preloader").fadeIn();
+																}
+															);
+														}else{
+																sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+														}
+												}
+									});
+								} else {
+										swal("Cancelled", "No action has been done :)", "error");
+								}
+						}
+					);
 				});
 
 				$(document).on('click', '.btn-add-field', function(){
@@ -715,6 +826,103 @@ $customs = $customFields->data;
 				$(document).on('click','.delete-row',function(){
             $(this).closest('div.cloned-row').remove();
         });
+
+				$(document).on('click', '.btn-delete-cf', function(){
+					var list_id = $(this).data('list-id');
+					var field_label = $(this).data('field-label');
+					var field_id = $(this).data('field-id');
+					var field_row = $(this).closest('tr.field-row');
+
+					swal({
+						title: "Are you sure?",
+						text: "This action cannot be undone.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "Yes, delete this custom field!",
+						cancelButtonText: "No, cancel please!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+												url: "./php/DeleteCustomField.php",
+												type: 'POST',
+												data: {
+														list_id:list_id,
+														field_label:field_label,
+														field_id:field_id
+												},
+												// dataType: 'json',
+												success: function(data) {
+												// console.log(data);
+														if(data == "success"){
+															swal({
+																title: "Success",
+																text: "Custom Field Successfully Deleted!",
+																type: "success"
+															});
+															field_row.remove();
+														}else{
+																sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+														}
+												}
+									});
+								} else {
+										swal("Cancelled", "No action has been done :)", "error");
+								}
+						}
+					);
+				});
+
+				$(document).on('click', '.btn-delete-all-cf', function(){
+					var list_id = $(this).data('id');
+
+					swal({
+						title: "Are you sure?",
+						text: "This action cannot be undone.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "Yes, delete this all custom field!",
+						cancelButtonText: "No, cancel please!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+												url: "./php/DeleteAllCustomField.php",
+												type: 'POST',
+												data: {
+														list_id:list_id
+												},
+												// dataType: 'json',
+												success: function(data) {
+												console.log(data);
+														if(data == "success"){
+															swal({
+																	title: "Success",
+																	text: "All Custom Field Successfully Deleted!",
+																	type: "success"
+																},
+																function(){
+																	location.reload();
+																	$(".preloader").fadeIn();
+																}
+															);
+														}else{
+																sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+														}
+												}
+									});
+								} else {
+										swal("Cancelled", "No action has been done :)", "error");
+								}
+						}
+					);
+				});
 			});
 
 			(function ($) {

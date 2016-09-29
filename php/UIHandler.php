@@ -5692,7 +5692,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goAction"] = "getAllCustomFields"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["list_id"] = $list_id;
-	
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -5702,9 +5702,10 @@ error_reporting(E_ERROR | E_PARSE);
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$output = json_decode($data);
-	
+
 		return $output;
 	}
+
 
 }
 
