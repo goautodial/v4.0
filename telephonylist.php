@@ -57,15 +57,39 @@
 				$(".preloader").fadeOut("slow");
 			});
 		</script>
-<script type="text/javascript">  
+	<script type="text/javascript">  
     $(document).ready(function() {
 
-    // The event listener for the file upload
-	var something;
-    something = document.getElementById('txtFileUpload').addEventListener('change', upload, false);
-	alert(something);
+		var getalldata = null;
+		var defFields = 'vendor_lead_code,source_id,list_id,phone_code,phone_number,title,first_name,middle_initial,last_name,address1,address2,address3,city,state,province,postal_code,country_code,gender,date_of_birth,alt_phone,email,security_phrase,comments,rank,owner';
+
+
+		// The event listener for the file upload
+		var something;
+		var outputPostPhoneNumbers=[];
+		var delimedvals =[];
+		var duprows =[];
+		var cduprows =[];
+		something = document.getElementById('txtFileUpload').addEventListener('change', upload, false);
+	//alert(something);
 	//$("#yourdropdownid option:selected").text();
 
+		$('#selList').on('change', function() {
+		  var fromDropdownListID = this.value; // or $(this).val()
+			$.ajax({
+				   type: 'POST',
+				   async: false,
+				   url: "./php/APIs/API_goGetLeadsOfList.php",
+				   data: {goListId: fromDropdownListID},
+				   cache: false,
+				   //dataType: 'json',
+					   success: function(rdata) {
+								var myArrayRetrun = rdata.split(',');
+								outputPostPhoneNumbers = rdata;
+						}
+			});
+		});
+		
     // Method that checks that the browser supports the HTML5 File API
     function browserSupportFileUpload() {
         var isCompatible = false;
@@ -88,52 +112,21 @@
                 var csvData = event.target.result;
                 
 				data = $.csv.toArrays(csvData);
-				
+				getalldata = data;		
 				var headerDelimeter = 0;
-				var valuesDelimeter = 1;
+				var valuesDelimeter = 0;
 				
                 if (data && data.length > 0) {
                 
-				var outputHTML = '';
-				var outputOption = '';
-				var outputValuesOption = '';
-				var outputHTML3 = '';
-				var outputPostPhoneNumbers;
-				
-				
-				var defFields = 'vendor_lead_code, source_id, list_id, phone_code, phone_number, title, first_name, middle_initial, last_name, address1, address2, address3, city, state, province, postal_code, country_code, gender, date_of_birth, alt_phone, email, security_phrase, comments, rank, owner';
-				var myarray = defFields.split(',');
-				var fromDropdownListID = $('#list_id').val(); // id - desc
-				
-				$.ajax({
-						   type: 'POST',
-						   async: false,
-						   url: "./php/APIs/API_goGetLeadsOfList.php",
-						   data: {goListId: fromDropdownListID},
-						   cache: false,
-						   //dataType: 'json',
-						   success: function(rdata) {
-						    var myArrayRetrun = rdata.split(',');
-							//alert(myArrayRetrun.length);
-							
-							//console.log(rdata.lenght);
-								if (!$.trim(myArrayRetrun)){
+					var outputHTML = '';
+					var outputOption = '';
+					var outputValuesOption='';
+					var outputValuesOption2='';
+					var outputHTML3 = '';
+				//var outputPostPhoneNumbers;
+					var myarray = defFields.split(',');
+					var fromDropdownListID = $('#list_id').val(); // id - desc
 									
-									//do nothing
-								
-								} else {
-									
-									outputPostPhoneNumbers = myArrayRetrun.slice(0, -1);
-									
-								}
-								
-							}
-							
-				});
-				
-				//alert(outputPostPhoneNumbers.length + '  milo0');
-				//alert(outputPostPhoneNumbers + 'milo1');
-					
 				//Get the headers from CSV files
 				outputOption += '<option value="-1"></option>';
 				for (headerDelimeter = 0; headerDelimeter < data[0].length; headerDelimeter++)
@@ -157,32 +150,131 @@
 					outputHTML += '</select></br>';
 				} //End get the values from default fields
 				
-
 				//Get the phone values from CSV files
-				for (valuesDelimeter = 0; valuesDelimeter < data[0].length; valuesDelimeter++)
+				var counterLastVal = data[0].length + 1;
+				for (valuesDelimeter = 1; valuesDelimeter < counterLastVal; valuesDelimeter++)
 				{ 
 							
 					if(data[valuesDelimeter][0] === null || data[valuesDelimeter][0] === undefined  ){
 						// do nothing
 					} else {
 															
-						outputValuesOption += data[valuesDelimeter][0];
+// working				outputValuesOption += data[valuesDelimeter][0]+',';
+						outputValuesOption = data[valuesDelimeter][0];
+						
+						for(var vb = 0; vb < counterLastVal; vb++) {
+							var myarrayDBPhones = outputPostPhoneNumbers.split(',');
+							
+								if(myarrayDBPhones[vb] == outputValuesOption) {
+								//dup check
+									var dupDatas = [];
+									dupDatas = data[valuesDelimeter];
+									//dupDatas.join('\n');
+									duprows.push(dupDatas);
+								}  else {
+								//no dup
+									delimedvals.push(data[valuesDelimeter]);
+								}	
+							
+						}
 					
 					}
 							
 				} //End get the phone values from CSV files
 				
-				
-								
-				
-				//alert(outputValuesOption);
-				//for(var ix = 0; ix < myarray.length; ix++)
-				//{
-					
-				//}
-				
-				
-				
+				//cduprows = data.splice(duprows,1);
+				//cduprows.push(cduprows);
+				//alert(duprows);
+
+				outputValuesOption = outputValuesOption.replace(/,+$/, "");
+				outputPostPhoneNumbers = outputPostPhoneNumbers.replace(/,+$/, "");
+
+				var myarrayCSVPhones = outputValuesOption.split(',');
+
+//var list = inputval.split(',');
+//alert('ss');
+//myarrayDBPhones = "["+myarrayDBPhones+"]";
+//myarrayCSVPhones = "["+myarrayCSVPhones+"]";
+
+//DUP CHECK
+var list1 = myarrayDBPhones;
+var list2 = myarrayCSVPhones;
+var lookup = {};
+var resx=''; 
+for (var j in list2) {
+    lookup[list2[j]] = list2[j];
+}
+ 
+for (var i in list1) {
+    if (typeof lookup[list1[i]] != 'undefined') {
+        //alert('found ' + list1[i] + ' in both lists');
+	resx = list1[i]+',';
+alert(resx);
+    } 
+}
+
+/* var counterLastVal = data[0].length + 1;
+                                for (valuesDelimeter = 1; valuesDelimeter < counterLastVal; valuesDelimeter++)
+                                {
+
+                                        if(data[valuesDelimeter][0] === null || data[valuesDelimeter][0] === undefined  ){
+                                        } else {
+
+                                                outputValuesOption += data[valuesDelimeter][0]+',';
+
+                                        }
+
+                                }
+*/
+//results = intersect(myarrayDBPhones,myarrayCSVPhones);
+//alert(results);
+/*var results =[];
+intersect_safe
+
+for (var ic = 0; ic < myarrayCSVPhones.length; ic++) {
+    for (var j = 0; j < myarrayDBPhones.length; j++) {
+        if (myarrayCSVPhones[ic] == myarrayDBPhones[j]) {
+        //  $('div:contains("'+daysArray[j]+'")').append("<div class='assignment'>"+courseHwork[ic]+" - appended</div>");
+	results.push(myarrayCSVPhones[ic]);
+        }
+    }
+}
+alert(results);*/
+//var arr = myarrayDBPhones.concat(myarrayCSVPhones);
+/*var sorted_arr = myarrayCSVPhones.concat(myarrayDBPhones);
+var results = [];
+for (var i = 0; i < sorted_arr.length - 1; i++) {
+    if (sorted_arr[i + 1] == sorted_arr[i]) {
+        results.push(sorted_arr[i]);
+    }
+}
+alert(results);*/
+/*for (var i=0; i<myarrayDBPhones.length; ++i) {
+  if (myarrayDBPhones[i] == myarrayCSVPhones[i]) {
+    alert('meron');
+  } else {
+    alert('wala');
+  }
+}
+.each(myarrayDBPhones, function (index, value) {
+    console.log(value.id);
+    if ($.inArray(value.id, myarrayCSVPhones) !== -1) {
+        alert('found');
+    } else {
+        alert('q');
+    }
+});*/
+		//		for(var cg = 0; cg < outputPostPhoneNumbers.length; cg++)
+		//		{
+		//				alert(cg+myarrayCSVPhones[cg]);
+		//			if(outputPostPhoneNumbers[cg] == myarrayCSVPhones[cg]) {
+		//				alert(myarrayCSVPhones[cg]);
+	//				} else {
+	//					alert(myarrayCSVPhones[cg]);
+	//				}
+//				}
+//
+//pieces.indexOf(num.toString());
 				//for(var row in data) {
 					//alert(data['1']);
 					//alert(row);
@@ -195,23 +287,9 @@
 				//}
 				
 				var goFakeFilename = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
-				
-				return goFakeFilename;
 					
 				$('#goMappingContainer').html(outputHTML);
 				
-				     //var goModalUsername = document.getElementById("modal-username").innerText;
-
-						/* $.ajax({
-						   type: 'POST',
-						   url: "./php/APIs/API_goLoadLeadsMapping.php",
-						   data: {goCSVvalues: data},
-						   cache: false,
-						   //dataType: 'json',
-						   success: function(data){
-
-						   }
-					   }); */
  				  
                 } else {
                     alert('No data to import!');
@@ -222,6 +300,135 @@
             };
         }
     }
+
+function array_combine(a, b)
+{
+    if(a.length != b.length)
+    {
+        return false;
+    }
+    else
+    {
+        new_array = new Array();
+ 
+        for (i = 0; i < a.length; i++) 
+        {
+           new_array[a[i]] = b[i];
+        }
+ 
+        return new_array;
+    }
+}
+ 
+
+	$('#fldMap').click(function() {
+		var myarray = defFields.split(',');
+		var first_name = $("#first_name_feild option:selected").val();
+		var counterLastVal = getalldata[0].length + 1;
+		var outputValuesOption = '';
+		var fldFeilds =[];
+		var outputHTMLx =[];
+		var column = [];
+		var column2 = {};
+		var xobj = [];
+		var xxc =[];
+		var jhk = [];
+		var jhk2 = [];
+		var mainarr = { };
+		xobj += "[";
+					for(var ix = 0; ix < myarray.length; ix++)
+					{
+							fldFeilds = myarray[ix] + '_feild';
+							var fldValues_feild = $("#"+fldFeilds+" option:selected").val();
+			
+							//alert(fldFeilds + '-----|' + fldValues_feild);
+							//for (var valuesDelimeter = 0; valuesDelimeter < counterLastVal; valuesDelimeter++)
+							//{
+								
+							//}
+							//var outputHTMLArr = outputHTML;
+							//jhk2.push(fldFeilds);
+							xobj += "{"+fldFeilds+": ";
+							
+							for (var valuesDelimeter = 0; valuesDelimeter < counterLastVal; valuesDelimeter++)
+							{
+								if(getalldata[valuesDelimeter][fldValues_feild] === null || getalldata[valuesDelimeter][fldValues_feild] === undefined  ){
+								} else {
+			//                                                outputValuesOption += column.push(outputHTML+':'+getalldata[valuesDelimeter][fldValues_feild]);
+									//outputHTMLx = getalldata[valuesDelimeter][fldValues_feild];
+									//jhk = getalldata[valuesDelimeter][fldValues_feild];
+									//jhk.replace(/,+$/, "");
+									//jhk.join("\n");
+									//outputHTMLx.push({fldFeilds : [{jhk}] });
+									//xobj += '[{"'+fldFeilds+'":"'+jhk+'" }]';
+									//xobj = fldFeilds+''+jhk;
+									//xxc += jhk;
+									
+									//jhk=getalldata[valuesDelimeter][fldValues_feild];
+									jhk = getalldata[valuesDelimeter][fldValues_feild]+',';
+									//jhk2 = {jhk.};
+									xobj += jhk;
+									
+									//alert(typeof jhk2);
+									//xobj += jhk2;
+									//mainarr[jhk2] = jhk;					
+									//replace(/,+$/, "");
+									
+									//outputHTMLx.push(xobj);
+								//	var outputHTMLArr2 = outputHTMLx;
+				//					column.push(getalldata[valuesDelimeter][fldValues_feild]);
+			//var xobj = '{ "outputHTML" :[{ "outputHTMLx" }]}';
+								}
+								//[{"fld": das,das,da,da},
+								//{next element of the same sort}]
+							}
+							
+							
+							xobj += "},";
+							//outputHTMLx.push([fldFeilds],[xxc]);		
+							
+							//xobj = '{"fldRowValues":[{"'+outputHTML+'":"'+outputHTMLx+'"}]}';
+							//var obj = JSON.parse(xobj);                                     
+			//				alert(obj.fldRowValues[0].vendor_lead_code_feild+'  --- '+obj.fldRowValues[0].source_id_feild);
+			//				alert(obj.fldRowValues[0].source_id_feild);
+			//alert(outputHTML);
+							//var xobj = '{"fldRowValues":[{"'+outputHTML+'":"'+outputHTMLx+'","lastName":"Doe" }]}';
+			//var outputHTMLArr3 = JSON_Parse[outputHTML, outputHTMLx];
+			//					column.push(outputHTMLArr3);
+					} //End get the values from default fields
+					xobj += "]";
+					//jhk.push
+					//alert(xobj);
+					
+					alert(typeof xobj);	
+					
+					outputHTMLx.push(xobj);
+					alert(outputHTMLx);
+					alert(typeof outputHTMLx);
+					
+					//alert(fldFeilds+'----'+outputHTMLx);
+					//alert(outputHTMLx);
+	//alert(obj.vendor_lead_code_feild);
+	
+			//send thise values
+			//duprows
+			/*
+			 *			$.ajax({
+				   type: 'POST',
+				   async: false,
+				   url: "./php/APIs/API_goGetLeadsOfList.php",
+				   data: {goListId: fromDropdownListID},
+				   cache: false,
+				   //dataType: 'json',
+					   success: function(rdata) {
+								var myArrayRetrun = rdata.split(',');
+								outputPostPhoneNumbers = rdata;
+						}
+			});
+			*/
+	});
+
+
 });
 </script>
     </head>
@@ -311,10 +518,18 @@
 	           				<!-- <form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data"> -->
 								
 								<div class="form-group">
+									<label>Duplicate Check</label>
+									<div class="form-group">
+										<select id="dupCheck" name="dupCheck"  class="form-control">
+											<option value="NODUPCHECK">NO DUPLICATE CHECK</option>
+											<option value="DUPCHECK">CHECK IN LIST</option>
+											<option value="DUPCHECK">CHECK IN ALL CAMPAINGN LIST</option>
+										</select>
+									</div>
 									<label>List ID:</label>
 									<div class="form-group">
 										<!-- <select id="select2-1" class="form-control" name="list_id"> -->
-										<select id="list_id" class="form-control" name="list_id">	
+										<select id="selList" class="form-control" name="list_id">	
 										<option value="" selected disabled>-- Select List ID --</option>
 											<?php 
 												for($i=0;$i<count($lists->list_id);$i++){
@@ -339,7 +554,10 @@
 									</div>
 									<div id="goMappingContainer"></div>
 									<div id="goValuesContainer"></div>
-									
+<fieldset>
+        <legend>Upload your CSV File</legend>
+<input type="button" name="fldMap" id="fldMap" value="FIELD MAP">									
+   </fieldset>
 <!-- <div id="dvImportSegments" class="fileupload ">
     <fieldset>
         <legend>Upload your CSV File</legend>
