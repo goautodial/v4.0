@@ -4149,14 +4149,14 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 
 	// API Scripts
-	public function API_goGetAllScripts(){
+	public function API_goGetAllScripts($userid){
 		//goGetAllScriptsAPI
 		$url = gourl."/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getAllScripts"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
-
+        $postfields["userid"] = $userid;
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
          curl_setopt($ch, CURLOPT_POST, 1);
@@ -4171,8 +4171,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 	}
 
-	public function getListAllScripts($goUser, $goPass, $goAction, $responsetype){
-	    $output = $this->API_goGetAllScripts();
+	public function getListAllScripts($userid){
+	    $output = $this->API_goGetAllScripts($userid);
 
 	    if ($output->result=="success") {
 	    # Result was OK!
