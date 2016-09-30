@@ -443,7 +443,7 @@ $customs = $customFields->data;
 								<h4 class="modal-title">View Modal</h4>
 							</div>
 							<div class="modal-body">
-								<div id="viewContainer">
+								<div id="viewContainer" style="margin-top: 10px;">
 									<!-- Custom Field Container -->
 								</div>
 							</div>
@@ -834,11 +834,31 @@ $customs = $customFields->data;
 				});
 
 				$('#modal_custom_field_list').on('hidden.bs.modal', function (e) {
-				    // $('body').addClass('modal-open');
+					var field_id = $('.field-id').val();
+					if(field_id != ""){
+						$('body').addClass('modal-open');
+					}else{
+						$('.field-id').val("");
+						$('.field-label').val("");
+						$('.field-rank').val("");
+						$('.field-order').val("");
+						$('.field-name').val("");
+						$('.field-description').val("");
+						$('.field-type').val("");
+						$('.field-options').val("");
+						$('.field-size').val("");
+						$('.field-max').val("");
+						$('.field-default').val("");
+						$('.field-position').val("").change();
+						$('.field-option-position').val("").change();
+						$('.field-required').val("NO").change();
+						$('body').removeClass('modal-open');
+					}
 				});
 
 				$('#modal_custom_field').on('hidden.bs.modal', function (e) {
 						var field_id = $('.field-id').val();
+						$('.field-id').val("");
 						if(field_id != ""){
 							$('#modal_custom_field_list').modal('show');
 							$('body').addClass('modal-open');
@@ -889,6 +909,7 @@ $customs = $customFields->data;
 					$('.btn-create-field').addClass('hide');
 					$('.btn-update-field').removeClass('hide');
 					$('#modal_custom_field').modal('show');
+					$('body').addClass('modal-open');
 				});
 
 				$('#modal_custom_field').on('hidden.bs.modal', function () {

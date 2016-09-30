@@ -1114,6 +1114,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Modify</a></li>
+      <li><a class="copy-custom-fields" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Copy List Custom Fields</a></li>
 			<li class="divider"></li>
 			<li><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Delete</a></li>
 		    </ul>
