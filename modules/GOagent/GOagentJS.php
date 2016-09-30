@@ -4503,6 +4503,7 @@ function CustomerData_update() {
         REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsAMP, "--AMP--");
         REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsQUES, "--QUES--");
         REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsPOUND, "--POUND--");
+    var customData = {};
 
     var postData = {
         goAction: 'goUpdateLead',
@@ -4536,7 +4537,6 @@ function CustomerData_update() {
     };
     
     if (custom_fields_enabled > 0) {
-        var customData = {};
         var defaultFieldsArray = defaultFields.split(',');
         var custom_fields = '';
         $.each($(".formMain #custom_fields [id^='custom_']"), function() {
@@ -4576,7 +4576,10 @@ function CustomerData_update() {
             }
         });
         customData['goCustomFields'] = custom_fields.slice(0,-1);
-        postData = postData.concat(customData);
+    }
+    
+    if (typeof customData['goCustomFields'] !== 'undefined') {
+        postData = $.extend({}, postData, customData);
     }
 
     $.ajax({
