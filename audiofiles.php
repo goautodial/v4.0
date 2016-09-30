@@ -38,12 +38,6 @@
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
-        <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			})
-		</script>
-
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -104,7 +98,7 @@
 
 							<!--==== Voicefiles ====-->
 							<div id="voicefiles_tab" role="tabpanel" class="tab-pane active">
-								<?php echo $_SESSION['use_webrtc'];print $ui->getListAllVoiceFiles(); ?>
+								<?php print $ui->getListAllVoiceFiles(); ?>
 							</div>
 
 						</div><!-- END tab content-->
@@ -284,7 +278,7 @@
 <!-- VOICE FILES MODALS -->
 	<!-- Playback Modal -->
 	<div id="voice-playback-modal" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog modal-sm">
 
 	    <!-- Modal content-->
 	    <div class="modal-content">
@@ -293,7 +287,12 @@
 	        <h4 class="modal-title"><b>Voice Files Playback</b></h4>
 	      </div>
 	      <div class="modal-body">
-		<div class="voice-player"></div>
+	      	<center class="mt"><em class="fa fa-music fa-5x"></em></center>
+	      	<div class="row mt mb">
+		      	<center><span class="voice-details"></span></center>
+		    </div>
+		    <br/>
+			<div class="voice-player"></div>
 	      	<!-- <audio controls>
 			<source src="http://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
 			<source src="http://www.w3schools.com/html/horse.mp3" type="audio/mpeg" />
@@ -670,13 +669,15 @@
 				?>
 
 			// On play
-				$('.play_voice_file').click(function(){
+				$(document).on('click','.play_voice_file',function() {
 					var audioFile = $(this).attr('data-location');
 
 					var sourceFile = '<audio class="audio_file" controls>';
 					    sourceFile += '<source src="'+ audioFile +'" type="audio/mpeg" download="true"/>';
 					    sourceFile += '</audio>';
 
+					var voicedetails = $(this).attr('data-details');
+					$('.voice-details').html(voicedetails);
 					$('.download-audio-file').attr('href', audioFile);
 					$('.voice-player').html(sourceFile);
 					$('#voice-playback-modal').modal('show');

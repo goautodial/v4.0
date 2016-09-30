@@ -665,6 +665,7 @@ error_reporting(E_ALL);*/
 	                <div class="modal-body">
 
 	                <form action="#" method="POST" id="create_disposition" role="form">
+	                	<input type="hidden" name="userid" id="userid" value="<?php echo $user->getUserId();?>"/>
 	                    <div class="row">
 	                    	<h4>Create Disposition
 	                           <br>
@@ -687,7 +688,7 @@ error_reporting(E_ALL);*/
 		                        <div class="form-group">
 		                            <label class="col-sm-3 control-label" for="status">Status</label>
 		                            <div class="col-sm-9 mb">
-		                                <input type="text" name="status" id="status" class="form-control" placeholder="Status (Mandatory)" minlength="3" maxlength="6" required>
+		                                <input type="text" name="status" id="status" class="form-control" placeholder="Status (Mandatory)" minlength="1" maxlength="6" required>
 		                            	<label id="status-duplicate-error"></label>
 		                            </div>
 		                        </div>
@@ -1079,6 +1080,7 @@ error_reporting(E_ALL);*/
 		                    url: "./php/AddDisposition.php",
 		                    type: 'POST',
 		                    data: {
+		                    		userid : $('#userid').val(),
 			                    	campaign : $('#disposition_campaign').val(),
 			                    	status : $('#status').val(),
 						    		status_name : $('#status_name').val(),
@@ -1107,7 +1109,7 @@ error_reporting(E_ALL);*/
 										);
 		                          }
 		                          else{
-		                              sweetAlert("Oops...", "Something went wrong!"+data, "error");
+		                              sweetAlert("Oops...", "Something went wrong! "+data, "error");
 		                              $('#finish').val("Submit");
 									  $('#finish').prop("disabled", false);
 		                          }

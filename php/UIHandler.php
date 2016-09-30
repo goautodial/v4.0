@@ -1114,6 +1114,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Modify</a></li>
+      <li><a class="copy-custom-fields" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Copy List Custom Fields</a></li>
 			<li class="divider"></li>
 			<li><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Delete</a></li>
 		    </ul>
@@ -4106,7 +4107,10 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    $file_link = "http://69.46.6.35/sounds/".$output->file_name[$i];
 
-		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i]);
+	    $details = "<strong>Filename</strong>: <i>".$output->file_name[$i]."</i><br/>";
+	    $details .= "<strong>Date</strong>: <i>".$output->file_date[$i]."</i><br/>";
+
+		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i], $details);
 
 		$result .= "<tr>
 			<td><a class='play_voice_file' data-location='".$file_link."'>".$output->file_name[$i]."</td>
@@ -4121,7 +4125,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 
-	private function getUserActionMenuForVoiceFiles($filename) {
+	private function getUserActionMenuForVoiceFiles($filename, $details) {
 	    $file_link = "http://69.46.6.35/sounds/".$filename;
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -4130,7 +4134,7 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="play_voice_file" href="#" data-location="'.$file_link.'">Play Voice File</a></li>
+			<li><a class="play_voice_file" href="#" data-location="'.$file_link.'" data-details="'.$details.'">Play Voice File</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4145,14 +4149,14 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 
 	// API Scripts
-	public function API_goGetAllScripts(){
+	public function API_goGetAllScripts($userid){
 		//goGetAllScriptsAPI
 		$url = gourl."/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getAllScripts"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
-
+        $postfields["userid"] = $userid;
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
          curl_setopt($ch, CURLOPT_POST, 1);
@@ -4167,8 +4171,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 	}
 
-	public function getListAllScripts($goUser, $goPass, $goAction, $responsetype){
-	    $output = $this->API_goGetAllScripts();
+	public function getListAllScripts($userid){
+	    $output = $this->API_goGetAllScripts($userid);
 
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -5689,7 +5693,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goAction"] = "getAllCustomFields"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["list_id"] = $list_id;
-	
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -5699,9 +5703,10 @@ error_reporting(E_ERROR | E_PARSE);
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$output = json_decode($data);
-	
+
 		return $output;
 	}
+
 
 }
 
