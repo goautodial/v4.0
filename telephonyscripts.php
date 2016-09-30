@@ -93,7 +93,7 @@
 
 ?>
 	<div class="modal fade" id="scripts-modal" tabindex="-1"aria-labelledby="scripts">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="scripts">
@@ -113,36 +113,40 @@
 	                        <fieldset>
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="script_id">Script ID</label>
-									<div class="col-sm-9 mb">
+									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="script_id" id="script_id" value="<?php print_r($scripts->script_count);?>" maxlength="15" disabled required />
 										<input type="hidden" name="script_id" value="<?php print_r($scripts->script_count);?>">
 										<input type="hidden" name="script_user" value="<?php echo $user->getUserName();?>">
 									</div>
+									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="script_name">Script Name</label>
-									<div class="col-sm-9 mb">
+									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="script_name" id="script_name" placeholder="Script Name" maxlength="50" required />
 									</div>
+									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="script_comments">Script Comments</label>
-									<div class="col-sm-9 mb">
+									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="script_comments" id="script_comments" maxlength="255" placeholder="Script Comments" />
 									</div>
+									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="active">Active: </label>
-									<div class="col-sm-9 mb">
+									<div class="col-sm-8 mb">
 										<select name="active" class="form-control">
 											<option value="Y" selected>Yes</option>
 											<option value="N" >No</option>						
 										</select>
 									</div>
+									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
 									<label for="script_text" class="col-sm-3 control-label">Script Text</label>
-									<div class="col-sm-9 mb">
+									<div class="col-sm-8 mb">
 										<div class="row">
 											<div class="col-sm-12 mb">
 												<div class="input-group">
@@ -222,15 +226,20 @@
 													</select>
 												</div>
 											</div>
-											<div class="col-sm-12">
-												<div class="panel">
-													<div class="panel-body">
-														<textarea rows="3" class="form-control note-editor" id="script_text" name="script_text" required></textarea>
-													</div>
-												</div>
+										</div>
+									</div>
+									<div class="col-sm-1">&nbsp;</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-2">&nbsp;</div>
+									<div class="col-sm-9">
+										<div class="panel">
+											<div class="panel-body">
+												<textarea rows="5" class="form-control note-editor" id="script_text" name="script_text" required></textarea>
 											</div>
 										</div>
 									</div>
+									<div class="col-sm-1">&nbsp;</div>
 								</div>
 							</fieldset>
 						</div>

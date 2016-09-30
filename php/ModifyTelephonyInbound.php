@@ -320,6 +320,12 @@ if ($did != NULL) {
 		$status = $_POST["status"]; 
 		$status = stripslashes($status);
 	}
+
+	$filter_clean_cid_number = NULL; if (isset($_POST["cid_num"])) { 
+		$filter_clean_cid_number = $_POST["cid_num"]; 
+		$filter_clean_cid_number = stripslashes($filter_clean_cid_number);
+	}
+	
     
 	$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -331,6 +337,7 @@ if ($did != NULL) {
 	$postfields["did_description"] = $desc; #Desired value for user (required)
 	$postfields["did_route"] = $route; #Desired value for user (required)
 	$postfields["did_active"] = $status; #Desired value for user (required)
+	$postfields["filter_clean_cid_number"] = $filter_clean_cid_number;
 
 	if($_POST['route'] == "AGENT"){
 	    $postfields["user"]                     = $_POST['route_agentid']; #Desired user (required if did_route is AGENT)
