@@ -158,7 +158,7 @@
 								</table>
 							</div>
 							
-							<!--==== IVR ====-->
+							<!--==== IVR ====--
 							<div id="T_ivr" role="tabpanel" class="tab-pane">
 								<table class="table table-striped table-bordered table-hover" id="table_ivr">
 								   <thead>
@@ -173,6 +173,7 @@
 								   </thead>
 								   <tbody>
 									   	<?php
+									   	/*
 									   		for($i=0;$i < count($ivr->menu_id);$i++){
 
 											$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i], $ivr->menu_name[$i]);
@@ -188,6 +189,7 @@
 											</tr>
 										<?php
 											}
+										*/
 										?>
 								   </tbody>
 								</table>

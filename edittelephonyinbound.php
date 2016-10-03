@@ -1338,61 +1338,7 @@ if (isset($_POST["did"])) {
 						if ($output->result=="success") {
 						# Result was OK!
 						?>
-					<script>
-						$(window).ready(function() {
-							var route = document.getElementById('route').value;
-
-							if(route == "AGENT") {
-							  $('#form_route_agent').show();
-							  
-							  $('#form_route_ingroup').hide();
-							  $('#form_route_phone').hide();
-							  $('#form_route_callmenu').hide();
-							  $('#form_route_voicemail').hide();
-							  $('#form_route_exten').hide();
-							}if(route == "IN_GROUP") {
-							  $('#form_route_ingroup').show();
-							  
-							  $('#form_route_agent').hide();
-							  $('#form_route_phone').hide();
-							  $('#form_route_callmenu').hide();
-							  $('#form_route_voicemail').hide();
-							  $('#form_route_exten').hide();
-							}if(route == "PHONE") {
-							  $('#form_route_phone').show();
-							  
-							  $('#form_route_agent').hide();
-							  $('#form_route_ingroup').hide();
-							  $('#form_route_callmenu').hide();
-							  $('#form_route_voicemail').hide();
-							  $('#form_route_exten').hide();
-							}if(route == "CALLMENU") {
-							  $('#form_route_callmenu').show();
-							  
-							  $('#form_route_agent').hide();
-							  $('#form_route_ingroup').hide();
-							  $('#form_route_phone').hide();
-							  $('#form_route_voicemail').hide();
-							  $('#form_route_exten').hide();
-							}if(route == "VOICEMAIL") {
-							  $('#form_route_voicemail').show();
-							  
-							  $('#form_route_agent').hide();
-							  $('#form_route_ingroup').hide();
-							  $('#form_route_phone').hide();
-							  $('#form_route_callmenu').hide();
-							  $('#form_route_exten').hide();
-							}if(route == "EXTEN") {
-							  $('#form_route_exten').show();
-							  
-							  $('#form_route_agent').hide();
-							  $('#form_route_ingroup').hide();
-							  $('#form_route_phone').hide();
-							  $('#form_route_voicemail').hide();
-							  $('#form_route_callmenu').hide();
-							}
-						});
-					</script>
+					
 				<!-- Main content -->
                 <section class="content">
 					<div class="panel panel-default">
@@ -1499,11 +1445,11 @@ if (isset($_POST["did"])) {
 									</fieldset>
 									<fieldset>
 										<!-- IF DID ROUTE = AGENT-->
-										<div id="form_route_agent" style="display: none;">
+										<div id="form_route_agent" <?php if($output->data->did_route  != "AGENT"){ ?> style="display: none;" <?php }?> >
 											<div class="form-group">
 												<label for="route_agentid" class="col-sm-3 control-label">Agent ID: </label>
 												<div class="col-sm-9 mb">
-													<select name="route_agentid" id="route_agentid" class="form-control select2">
+													<select name="route_agentid" id="route_agentid" class="form-control select2" style="width:100%;">
 														<option value="" > -- NONE -- </option>
 														<?php
 															for($i=0;$i<count($users->user);$i++){
@@ -1601,7 +1547,7 @@ if (isset($_POST["did"])) {
 										</div><!-- end of div agent-->
 										
 									<!-- IF DID ROUTE = IN-GROUP-->
-										<div id="form_route_ingroup" class="form-group" style="display: none;">										
+										<div id="form_route_ingroup" class="form-group" <?php if($output->data->did_route  != "IN_GROUP"){ ?> style="display: none;" <?php }?> >										
 											<label for="route_ingroupid" class="col-sm-3 control-label">In-Group ID: </label>
 											<div class="col-sm-9 mb">
 												<select name="route_ingroupid" id="route_ingroupid" class="form-control">
@@ -1619,8 +1565,7 @@ if (isset($_POST["did"])) {
 										</div><!-- end of ingroup div -->
 										
 									<!-- IF DID ROUTE = PHONE -->
-
-										<div id="form_route_phone" style="display: none;">
+										<div id="form_route_phone" <?php if($output->data->did_route  != "PHONE"){ ?> style="display: none;" <?php }?> >
 											<div class="form-group">
 												<label  for="route_phone_exten" class="col-sm-3 control-label">Phone Extension: </label>
 												<div class="col-sm-9 mb">
@@ -1657,7 +1602,7 @@ if (isset($_POST["did"])) {
 										</div><!-- end of phone div -->
 										
 									<!-- IF DID ROUTE = IVR -->
-										<div id="form_route_callmenu" style="display: none;">
+										<div id="form_route_callmenu" <?php if($output->data->did_route  != "IVR"){ ?> style="display: none;" <?php }?> >
 											<div class="form-group">
 												<label for="route_ivr" class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-9 mb">
@@ -1677,7 +1622,7 @@ if (isset($_POST["did"])) {
 										</div><!-- end of ivr div -->
 										
 									<!-- IF DID ROUTE = VoiceMail -->
-										<div id="form_route_voicemail" style="display: none;">
+										<div id="form_route_voicemail" <?php if($output->data->did_route  != "VOICEMAIL"){ ?> style="display: none;" <?php }?> >
 											<div class="form-group">
 												<label for="route_voicemail" class="col-sm-3 control-label">Voicemail Box: </label>
 												<div class="col-sm-9 mb">
@@ -1697,7 +1642,7 @@ if (isset($_POST["did"])) {
 										</div><!-- end of voicemail div -->
 										
 										<!-- IF DID ROUTE = Custom Extension -->
-										<div id="form_route_exten" style="display: none;">
+										<div id="form_route_exten" <?php if($output->data->did_route  != "EXTEN"){ ?> style="display: none;" <?php }?> >
 											<div class="form-group">
 												<label for="route_exten" class="col-sm-3 control-label">Extension: </label>
 												<div class="col-sm-9 mb">
