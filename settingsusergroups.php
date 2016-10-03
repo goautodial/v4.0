@@ -106,7 +106,8 @@
                         <div class="row">
                     <!-- STEP 1 -->
                             <h4>
-                                <small></small>
+                                Create a User Group<br/>
+                                <small>Enter basic settings</small>
                             </h4>
                             <fieldset>
                             <div class="form-group mt">

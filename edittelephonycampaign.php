@@ -1362,7 +1362,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 
 	                		<label class="col-sm-3 control-label" for="status">Status:</label>
 	                        <div class="col-sm-9">
-	                            <input type="text" name="edit_status" id="edit_status" class="form-control" placeholder="Status" minlength="3" maxlenght="6" required>
+	                            <input type="text" name="edit_status" id="edit_status" class="form-control" placeholder="Status" minlength="1" maxlenght="6" required>
 	                            <br/><small><label id="status-duplicate-error"></label></small>
 	                    	</div>
 		                </div>

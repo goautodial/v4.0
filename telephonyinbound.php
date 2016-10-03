@@ -37,7 +37,15 @@
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-     
+
+     	<!-- bootstrap color picker -->
+		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
+
+     	<!-- SELECT2-->
+   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+   		<!-- SELECT2-->
+   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
     </head>
     
     <?php print $ui->creamyBody(); ?>
@@ -279,7 +287,7 @@
 <!-- TELEPHONY INBOUND MODALS -->
 
 	<!-- ADD INGROUP MODAL -->
-		<div class="modal fade" id="add_ingroups" tabindex="-1" aria-labelledby="ingroup_modal" >
+		<div class="modal fade" id="add_ingroups" aria-labelledby="ingroup_modal" >
         <div class="modal-dialog" role="document">
             <div class="modal-content">
 
@@ -321,7 +329,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label" for="user_group">User Group</label>
 								<div class="col-sm-9 mb">
-									<select id="user_group" class="form-control" name="user_group">
+									<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
 										<?php
 											for($i=0;$i<count($user_groups->user_group);$i++){
 										?>
@@ -356,7 +364,7 @@
 							<div class="form-group mt">
 								<label class="col-sm-3 control-label" for="ingroup_voicemail">Voicemail</label>
 								<div class="col-sm-9 mb">	
-									<select name="ingroup_voicemail" id="ingroup_voicemail" class="form-control">
+									<select name="ingroup_voicemail" id="ingroup_voicemail" class="form-control select2-1" style="width:100%;">
 										<?php
 											if($voicemails == NULL){
 										?>
@@ -404,7 +412,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label" for="script">Script</label>
 								<div class="col-sm-9 mb">	
-									<select name="script" id="script" class="form-control">
+									<select name="script" id="script" class="form-control select2-1" style="width:100%;">
 										<option value="NONE">--- NONE --- </option>
 										<?php
 											for($i=0;$i<count($scripts->script_id);$i++){
@@ -442,7 +450,7 @@
 	</div><!-- end of modal -->
 	
 	<!-- ADD IVR MODAL -->
-		<div class="modal fade" id="add_ivr" tabindex="-1" aria-labelledby="ivr_modal" >
+		<div class="modal fade" id="add_ivr" aria-labelledby="ivr_modal" >
         <div class="modal-dialog" role="document">
             <div class="modal-content">
 				<div class="modal-header">
@@ -477,7 +485,7 @@
 							<div class="form-group">		
 								<label class="col-sm-4 control-label" for="menu_prompt">Menu Greeting</label>
 								<div class="col-sm-8 mb">
-									<select name="menu_prompt" id="menu_prompt" class="form-control">
+									<select name="menu_prompt" id="menu_prompt" class="form-control select2-1" style="width:100%;">
 										<option value="goWelcomeIVR" selected>-- Default Value --</option>
 										<?php
 											for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -499,7 +507,7 @@
 							<div class="form-group">		
 								<label class="col-sm-4 control-label" for="menu_timeout_prompt">Menu Timeout Greeting</label>
 								<div class="col-sm-8 mb">
-									<select name="menu_timeout_prompt " id="menu_timeout_prompt" class="form-control">
+									<select name="menu_timeout_prompt " id="menu_timeout_prompt" class="form-control select2-1" style="width:100%;">
 										<option value="" selected>-- Default Value --</option>
 										<?php
 											for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -515,7 +523,7 @@
 							<div class="form-group">		
 								<label class="col-sm-4 control-label" for="menu_invalid_prompt">Menu Invalid Greeting</label>
 								<div class="col-sm-8 mb">
-									<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control">
+									<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control select2-1" style="width:100%;">
 										<option value="" selected>-- Default Value --</option>	
 										<?php
 											for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -554,7 +562,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="user_groups">User Groups</label>
 								<div class="col-sm-8 mb">
-									<select name="user_groups" id="user_groups" class="form-control">
+									<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
 										<?php
 											for($i=0;$i<count($user_groups->user_group);$i++){
 										?>
@@ -576,7 +584,7 @@
 							<div class="form-group">
 								<label class="col-sm-5 control-label" for="tracking_group">Tracking Group</label>
 								<div class="col-sm-7 mb">
-									<select name="tracking_group" id="tracking_group" class="form-control">
+									<select name="tracking_group" id="tracking_group" class="form-control select2-1" style="width:100%;">
 									<?php
 										for($i=0;$i<count($ingroups->group_id);$i++){
 									?>
@@ -644,7 +652,7 @@
 
 	
 	<!-- ADD DID MODAL -->
-	<div class="modal fade" id="add_phonenumbers" tabindex="-1" aria-labelledby="did_modal" >
+	<div class="modal fade" id="add_phonenumbers" aria-labelledby="did_modal" >
         <div class="modal-dialog" role="document">
             <div class="modal-content">
 				<div class="modal-header">
@@ -702,7 +710,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="user_groups">User Groups</label>
 								<div class="col-sm-8 mb">
-									<select name="user_groups" id="user_groups" class="form-control">
+									<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
 										<?php
 											for($i=0;$i<count($user_groups->user_group);$i++){
 										?>
@@ -725,13 +733,13 @@
 								<div class="form-group">
 									<label class="col-sm-4 control-label" for="route_agentid">Agent ID</label>
 									<div class="col-sm-8 mb">	
-										<select name="route_agentid" id="route_agentid" class="form-control">
+										<select name="route_agentid" id="route_agentid" class="form-control select2-1" style="width:100%;">
 											<option value="" > -- NONE -- </option>
 											<?php
-												for($i=0;$i<count($users->userno);$i++){
+												for($i=0;$i<count($users->user);$i++){
 											?>
-												<option value="<?php echo $users->userno[$i];?>">
-													<?php echo $users->userno[$i].' - '.$users->full_name[$i];?>
+												<option value="<?php echo $users->user[$i];?>">
+													<?php echo $users->user[$i].' - '.$users->full_name[$i];?>
 												</option>									
 											<?php
 												}
@@ -757,7 +765,7 @@
 							<div id="form_route_ingroup" style="display: none;">
 								<label class="col-sm-4 control-label" for="route_ingroupid">In-Group ID</label>
 								<div class="col-sm-8 mb">	
-									<select name="route_ingroupid" id="route_ingroupid" class="form-control">
+									<select name="route_ingroupid" id="route_ingroupid" class="form-control select2-1" style="width:100%;">
 										<?php
 											for($i=0;$i<count($ingroups->group_id);$i++){
 										?>
@@ -777,7 +785,7 @@
 								<div class="form-group">
 									<label class="col-sm-4 control-label" for="route_phone_exten">Phone Extension</label>
 									<div class="col-sm-8 mb">	
-										<select name="route_phone_exten" id="route_phone_exten" class="form-control">
+										<select name="route_phone_exten" id="route_phone_exten" class="form-control select2-1" style="width:100%;">
 											<?php
 												for($i=0;$i<count($phones->extension);$i++){
 											?>
@@ -793,7 +801,7 @@
 								<div class="form-group">
 									<label class="col-sm-4 control-label" for="route_phone_server">Server IP</label>
 									<div class="col-sm-8 mb">	
-										<select name="route_phone_server" id="route_phone_server" class="form-control">
+										<select name="route_phone_server" id="route_phone_server" class="form-control select2-1" style="width:100%;">
 											<option value="" > -- NONE -- </option>
 											<?php
 												for($i=0;$i < 1;$i++){
@@ -815,7 +823,7 @@
 								<div class="form-group">
 									<label class="col-sm-4 control-label" for="route_ivr">Call Menu</label>
 									<div class="col-sm-8 mb">	
-										<select name="route_ivr" id="route_ivr" class="form-control">
+										<select name="route_ivr" id="route_ivr" class="form-control select2-1" style="width:100%;">
 											<?php
 											if(count($ivr->menu_id) > 0){
 												for($i=0;$i<count($ivr->menu_id);$i++){
@@ -842,7 +850,7 @@
 								<div class="form-group">
 									<label class="col-sm-4 control-label" for="route_voicemail">Voicemail Box</label>
 									<div class="col-sm-8 mb">	
-										<select name="route_voicemail" id="route_voicemail" class="form-control">
+										<select name="route_voicemail" id="route_voicemail" class="form-control select2-1" style="width:100%;">
 											
 											<?php
 												for($i=0;$i<count($voicemails->voicemail_id);$i++){
@@ -891,8 +899,7 @@
 		<?php print $ui->standardizedThemeJS(); ?>
         <!-- JQUERY STEPS-->
   		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-	    <!-- bootstrap color picker -->
-		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
+	    
 
  <script type="text/javascript">
 	$(document).ready(function() {
@@ -904,9 +911,6 @@
 				$(".bottom-menu").on('mouseenter mouseleave', function () {
 				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 				});
-
-			//loads colorpicker
-    			$("#colorpicker").colorpicker();
 
 			//loads datatable functions
 				$('#table_ingroup').dataTable();
@@ -965,7 +969,7 @@
 			        },
 			        onFinishing: function (event, currentIndex)
 			        {
-			            ingroup_form.validate().settings.ignore = ":disabled";
+			            ingroup_form.validate().settings.ignore = ":disabled,:hidden";
 			            return ingroup_form.valid();
 			        },
 			        onFinished: function (event, currentIndex)
@@ -1096,7 +1100,7 @@
 			        },
 			        onFinishing: function (event, currentIndex)
 			        {
-			            ivr_form.validate().settings.ignore = ":disabled";
+			            ivr_form.validate().settings.ignore = ":disabled,:hidden";
 			            return ivr_form.valid();
 			        },
 			        onFinished: function (event, currentIndex)
@@ -1419,7 +1423,15 @@
 						}
 						
 					});	 
+		
 
+			/* loads colorpicker */
+    			$(".colorpicker").colorpicker();
+
+    		/* initialize select2 */
+				$('.select2-1').select2({
+			        theme: 'bootstrap'
+			    });
 	});
 </script>
 		

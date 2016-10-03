@@ -42,11 +42,11 @@ $user_groups = $ui->API_goGetUserGroupsList();
         <?php print $ui->standardizedThemeCSS(); ?>
         <?php print $ui->creamyThemeCSS(); ?>
 
-        <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			})
-		</script>
+        <!-- SELECT2-->
+   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+   		<!-- SELECT2-->
+   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -142,7 +142,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 												<div class="form-group">
 													<label for="usergroup" class="col-sm-2 control-label">User Group</label>
 													<div class="col-sm-10 mb">
-														<select class="form-control" id="usergroup" name="usergroup">
+														<select class="form-control select2-1" id="usergroup" name="usergroup">
 															<?php
 																for($a=0;$a<count($user_groups->user_group);$a++){
 															?>
@@ -256,7 +256,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 												<div class="form-group">
 													<label for="voicemail" class="col-sm-2 control-label">Voicemail</label>
 													<div class="col-sm-10 mb">
-														<select class="form-control" name="voicemail" id="voicemail">
+														<select class="form-control select2-1" name="voicemail" id="voicemail">
 															<?php
 																if($voicemails == NULL){
 															?>
@@ -576,6 +576,11 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 <script type="text/javascript">
 	$(document).ready(function() {
+
+		/* initialize select2 */
+			$('.select2-1').select2({
+		        theme: 'bootstrap'
+		    });
 
 		// for cancelling
 		$(document).on('click', '#cancel', function(){
