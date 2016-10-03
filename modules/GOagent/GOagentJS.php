@@ -4502,7 +4502,6 @@ function CustomerData_update() {
         REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsAMP, "--AMP--");
         REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsQUES, "--QUES--");
         REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsPOUND, "--POUND--");
-    var customData = {};
 
     var postData = {
         goAction: 'goUpdateLead',
@@ -4532,6 +4531,7 @@ function CustomerData_update() {
         goEmail: $(".formMain input[name='email']").val(),
         goSecurity: $(".formMain input[name='security_phrase']").val(),
         goLeadID: $(".formMain input[name='lead_id']").val(),
+        goCustomFields: '',
         responsetype: 'json'
     };
     
@@ -4550,35 +4550,31 @@ function CustomerData_update() {
                 case "radio":
                     thisID = thisID.replace('[]', '');
                     if ($(this).prop('checked')) {
-                        if (typeof customData[thisID] === 'undefined') {
-                            customData[thisID] = thisVal;
+                        if (typeof postData[thisID] === 'undefined') {
+                            postData[thisID] = thisVal;
                         } else {
-                            customData[thisID] += ',' + thisVal;
+                            postData[thisID] += ',' + thisVal;
                         }
                     }
                     break;
                 case "multi":
-                    customData[thisID] = thisVal.join(',');
+                    postData[thisID] = thisVal.join(',');
                     break;
                 case "area":
                     thisVal = thisVal.replace(REGcommentsAMP, "--AMP--");
                     thisVal = thisVal.replace(REGcommentsQUES, "--QUES--");
                     thisVal = thisVal.replace(REGcommentsPOUND, "--POUND--");
-                    customData[thisID] = thisVal;
+                    postData[thisID] = thisVal;
                     break;
                 default:
-                    customData[thisID] = thisVal;
+                    postData[thisID] = thisVal;
             }
             
             if (custom_fields.indexOf(thisID) < 0) {
                 custom_fields += thisID + ',';
             }
         });
-        customData['goCustomFields'] = custom_fields.slice(0,-1);
-    }
-    
-    if (typeof customData['goCustomFields'] !== 'undefined') {
-        postData = $.extend({}, postData, customData);
+        postData['goCustomFields'] = custom_fields.slice(0,-1);
     }
 
     $.ajax({
