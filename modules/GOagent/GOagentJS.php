@@ -369,7 +369,7 @@ $(document).ready(function() {
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     $("#btnLogMeOut").removeClass("disabled");
                     //toggleStatus('NOLIVE');
-                    GetCustomFields(null, false);
+                    //GetCustomFields(null, false);
                     
                     if (dialingINprogress < 1) {
                         //toggleButton('DialHangup', 'dial');
@@ -2801,46 +2801,46 @@ function CheckForIncoming () {
                 var custom_values_array = custom_field_values.split("----------");
                 var custom_types_array = custom_field_types.split("|");
                 
-                var customTimer = setTimeout(function() {
-                    $.each(custom_names_array, function(idx, field) {
-                        if (field.length < 1) return true;
-                        var field_name = ".formMain #custom_fields [id='custom_" + field + "']";
-                        switch (custom_types_array[idx]) {
-                            case "TEXT":
-                            case "AREA":
-                            case "HIDDEN":
-                            case "DATE":
-                            case "TIME":
-                                $(field_name).val(custom_values_array[idx]);
-                                break;
-                            case "CHECKBOX":
-                            case "RADIO":
-                                var checkThis = custom_values_array[idx].split(',');
-                                $.each($(field_name + " [id^='custom_" + field + "']"), function() {
-                                    var checkMe = false;
-                                    if (checkThis.indexOf($(this).val()) > -1) {
-                                        checkMe = true;
-                                    }
-                                    $(this).prop('checked', checkMe);
-                                });
-                                break;
-                            case "SELECT":
-                            case "MULTI":
-                                var selectThis = custom_values_array[idx].split(',');
-                                $.each($(field_name + " option"), function() {
-                                    var selectMe = false;
-                                    if (selectThis.indexOf($(this).val()) > -1) {
-                                        selectMe = true;
-                                    }
-                                    $(this).prop('selected', selectMe);
-                                });
-                                break;
-                            default:
-                                $(field_name).html(custom_values_array[idx]);
-                        }
-                    });
+                $.each(custom_names_array, function(idx, field) {
+                    if (field.length < 1) return true;
+                    var field_name = ".formMain #custom_fields [id='custom_" + field + "']";
+                    switch (custom_types_array[idx]) {
+                        case "TEXT":
+                        case "AREA":
+                        case "HIDDEN":
+                        case "DATE":
+                        case "TIME":
+                            $(field_name).val(custom_values_array[idx]);
+                            break;
+                        case "CHECKBOX":
+                        case "RADIO":
+                            var checkThis = custom_values_array[idx].split(',');
+                            $.each($(field_name + " [id^='custom_" + field + "']"), function() {
+                                var checkMe = false;
+                                if (checkThis.indexOf($(this).val()) > -1) {
+                                    checkMe = true;
+                                }
+                                $(this).prop('checked', checkMe);
+                            });
+                            break;
+                        case "SELECT":
+                        case "MULTI":
+                            var selectThis = custom_values_array[idx].split(',');
+                            $.each($(field_name + " option"), function() {
+                                var selectMe = false;
+                                if (selectThis.indexOf($(this).val()) > -1) {
+                                    selectMe = true;
+                                }
+                                $(this).prop('selected', selectMe);
+                            });
+                            break;
+                        default:
+                            $(field_name).html(custom_values_array[idx]);
+                    }
+                });
                     
-                    replaceCustomFields();
+                replaceCustomFields();
+                setTimeout(function() {
                     GetCustomFields(null, true);
                 }, 5000);
             }
@@ -3679,7 +3679,6 @@ function Clear_API_Field(temp_field) {
 }
 
 function ManualDialCheckChannel(taskCheckOR) {
-    console.log('ManualDialCheckChannel');
     var CIDcheck = MDnextCID;
     if (taskCheckOR == 'YES') {
         var CIDcheck = XDnextCID;
@@ -5109,86 +5108,84 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         toggleButton('DialHangup', 'dial');
                     }
                 } else {
-                    var MDnextResponse_array = [];
-                    for(var x in result.data){
-                        MDnextResponse_array.push(result.data[x]);
-                    }
-                    MDnextCID = MDnextResponse_array[0];
+                    var thisVdata = result.data;
+                    
+                    MDnextCID = thisVdata.MqueryCID;
                     
                     fronter                                 = uName;
-                    LastCID                                 = MDnextResponse_array[0];
-                    lead_id                                 = MDnextResponse_array[1];
+                    LastCID                                 = thisVdata.MqueryCID;
+                    lead_id                                 = thisVdata.lead_id;
                     $(".formMain input[name='lead_id']").val(lead_id);
-                    LeadPrevDispo                           = MDnextResponse_array[2];
-                    $(".formMain input[name='vendor_lead_code']").val(MDnextResponse_array[4]);
-                    list_id                                 = MDnextResponse_array[5];
+                    LeadPrevDispo                           = thisVdata.status;
+                    $(".formMain input[name='vendor_lead_code']").val(thisVdata.vendor_lead_code);
+                    list_id                                 = thisVdata.list_id;
                     $(".formMain input[name='list_id']").val(list_id);
-                    $(".formMain input[name='gmt_offset_now']").val(MDnextResponse_array[6]);
-                    cust_phone_code                         = MDnextResponse_array[7];
-                    $(".formMain input[name='phone_code']").val(cust_phone_code);
-                    cust_phone_number                       = MDnextResponse_array[8];
+                    $(".formMain input[name='gmt_offset_now']").val(thisVdata.gmt_offset_now);
+                    cust_phone_code                         = thisVdata.phone_code;
+                    $(".formMain input[name='phone_code']").val(cust_phone_code).trigger('change');
+                    cust_phone_number                       = thisVdata.phone_number;
                     $(".formMain input[name='phone_number']").val(cust_phone_number).trigger('change');
-                    $(".formMain input[name='title']").val(MDnextResponse_array[9]).trigger('change');
-                    cust_first_name                         = MDnextResponse_array[10];
+                    $(".formMain input[name='title']").val(thisVdata.title);
+                    cust_first_name                         = thisVdata.first_name;
                     if (cust_first_name !== '') {
                         $("#cust_full_name a[id='first_name']").editable('setValue', cust_first_name, true);
                     }
-                    cust_middle_initial                     = MDnextResponse_array[11];
+                    cust_middle_initial                     = thisVdata.middle_initial;
                     if (cust_middle_initial != '') {
                         $("#cust_full_name a[id='middle_initial']").editable('setValue', cust_middle_initial, true);
                     }
-                    cust_last_name                          = MDnextResponse_array[12];
+                    cust_last_name                          = thisVdata.last_name;
                     if (cust_last_name !== '') {
                         $("#cust_full_name a[id='last_name']").editable('setValue', cust_last_name, true);
                     }
-                    $(".formMain input[name='address1']").val(MDnextResponse_array[13]).trigger('change');
-                    $(".formMain input[name='address2']").val(MDnextResponse_array[14]).trigger('change');
-                    $(".formMain input[name='address3']").val(MDnextResponse_array[15]).trigger('change');
-                    $(".formMain input[name='city']").val(MDnextResponse_array[16]).trigger('change');
-                    $(".formMain input[name='state']").val(MDnextResponse_array[17]).trigger('change');
-                    $(".formMain input[name='province']").val(MDnextResponse_array[18]).trigger('change');
-                    $(".formMain input[name='postal_code']").val(MDnextResponse_array[19]).trigger('change');
-                    $(".formMain select[name='country_code']").val(MDnextResponse_array[20]).trigger('change');
-                    $(".formMain select[name='gender']").val(MDnextResponse_array[21]).trigger('change');
-                    var dateOfBirth = MDnextResponse_array[22];
+                    $(".formMain input[name='address1']").val(thisVdata.address1).trigger('change');
+                    $(".formMain input[name='address2']").val(thisVdata.address2).trigger('change');
+                    $(".formMain input[name='address3']").val(thisVdata.address3).trigger('change');
+                    $(".formMain input[name='city']").val(thisVdata.city).trigger('change');
+                    $(".formMain input[name='state']").val(thisVdata.state).trigger('change');
+                    $(".formMain input[name='province']").val(thisVdata.province).trigger('change');
+                    $(".formMain input[name='postal_code']").val(thisVdata.postal_code).trigger('change');
+                    $(".formMain select[name='country_code']").val(thisVdata.country_code).trigger('change');
+                    $(".formMain select[name='gender']").val(thisVdata.gender).trigger('change');
+                    var dateOfBirth = thisVdata.date_of_birth;
                     $(".formMain input[name='date_of_birth']").val(dateOfBirth);
-                    $(".formMain input[name='alt_phone']").val(MDnextResponse_array[23]).trigger('change');
-                    cust_email                              = MDnextResponse_array[24];
+                    $(".formMain input[name='alt_phone']").val(thisVdata.alt_phone).trigger('change');
+                    cust_email                              = thisVdata.email;
                     $(".formMain input[name='email']").val(cust_email).trigger('change');
-                    $(".formMain input[name='security_phrase']").val(MDnextResponse_array[25]);
+                    $(".formMain input[name='security_phrase']").val(thisVdata.security_phrase);
                     var REGcommentsNL = new RegExp("!N","g");
-                    if (typeof MDnextResponse_array[26] !== 'undefined') {
-                        MDnextResponse_array[26] = MDnextResponse_array[26].replace(REGcommentsNL, "\n");
+                    if (typeof thisVdata.comments !== 'undefined') {
+                        thisVdata.comments = thisVdata.comments.replace(REGcommentsNL, "\n");
                     }
-                    $(".formMain textarea[name='comments']").val(MDnextResponse_array[26]).trigger('change');
-                    called_count                            = MDnextResponse_array[27];
+                    $(".formMain textarea[name='comments']").val(thisVdata.comments).trigger('change');
+                    called_count                            = thisVdata.called_count;
                     $(".formMain input[name='called_count']").val(called_count);
-                    previous_called_count                   = MDnextResponse_array[27];
-                    previous_dispo                          = MDnextResponse_array[2];
-                    CBentry_time                            = MDnextResponse_array[28];
-                    CBcallback_time                         = MDnextResponse_array[29];
-                    CBuser                                  = MDnextResponse_array[30];
-                    CBcomments                              = MDnextResponse_array[31];
-                    dialed_number                           = MDnextResponse_array[32];
-                    dialed_label                            = MDnextResponse_array[33];
-                    source_id                               = MDnextResponse_array[34];
-                    $(".formMain input[name='rank']").val(MDnextResponse_array[35]);
-                    $(".formMain input[name='owner']").val(MDnextResponse_array[36]);
-                    Call_Script_ID                          = MDnextResponse_array[37];
-                    script_recording_delay                  = MDnextResponse_array[38];
-                    Call_XC_a_Number                        = MDnextResponse_array[39];
-                    Call_XC_b_Number                        = MDnextResponse_array[40];
-                    Call_XC_c_Number                        = MDnextResponse_array[41];
-                    Call_XC_d_Number                        = MDnextResponse_array[42];
-                    Call_XC_e_Number                        = MDnextResponse_array[43];
-                    entry_list_id                           = MDnextResponse_array[44];
+                    previous_called_count                   = thisVdata.called_count;
+                    previous_dispo                          = thisVdata.dispo;
+                    CBentry_time                            = thisVdata.CBentry_time;
+                    CBcallback_time                         = thisVdata.CBcallback_time;
+                    CBuser                                  = thisVdata.CBuser;
+                    CBcomments                              = thisVdata.CBcomments;
+                    dialed_number                           = thisVdata.agent_dialed_number;
+                    dialed_label                            = thisVdata.agent_dialed_type;
+                    source_id                               = thisVdata.source_id;
+                    $(".formMain input[name='rank']").val(thisVdata.rank);
+                    $(".formMain input[name='owner']").val(thisVdata.owner);
+                    Call_Script_ID                          = thisVdata.Call_Script_ID;
+                    script_recording_delay                  = thisVdata.script_recording_delay;
+                    Call_XC_a_Number                        = thisVdata.xferconf_a_number;
+                    Call_XC_b_Number                        = thisVdata.xferconf_b_number;
+                    Call_XC_c_Number                        = thisVdata.xferconf_c_number;
+                    Call_XC_d_Number                        = thisVdata.xferconf_d_number;
+                    Call_XC_e_Number                        = thisVdata.xferconf_e_number;
+                    entry_list_id                           = thisVdata.entry_list_id;
                     $(".formMain input[name='entry_list_id']").val(entry_list_id);
-                    custom_field_names                      = MDnextResponse_array[45];
-                    custom_field_values                     = MDnextResponse_array[46];
-                    custom_field_types                      = MDnextResponse_array[47];
-                    list_webform                            = MDnextResponse_array[48];
-                    list_webform_two                        = MDnextResponse_array[49];
-                    post_phone_time_diff_alert_message      = MDnextResponse_array[50];
+                    custom_field_names                      = thisVdata.custom_field_names;
+                    custom_field_values                     = thisVdata.custom_field_values;
+                    custom_field_types                      = thisVdata.custom_field_types;
+                    list_webform                            = thisVdata.web_form_address;
+                    list_webform_two                        = thisVdata.web_form_address_two;
+                    post_phone_time_diff_alert_message      = thisVdata.post_phone_time_diff_alert_message;
 
                     timer_action = campaign_timer_action;
                     timer_action_message = campaign_timer_action_message;
@@ -5212,46 +5209,46 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         var custom_values_array = custom_field_values.split("----------");
                         var custom_types_array = custom_field_types.split("|");
                         
-                        var customTimer = setTimeout(function() {
-                            $.each(custom_names_array, function(idx, field) {
-                                if (field.length < 1) return true;
-                                var field_name = ".formMain #custom_fields [id='custom_" + field + "']";
-                                switch (custom_types_array[idx]) {
-                                    case "TEXT":
-                                    case "AREA":
-                                    case "HIDDEN":
-                                    case "DATE":
-                                    case "TIME":
-                                        $(field_name).val(custom_values_array[idx]);
-                                        break;
-                                    case "CHECKBOX":
-                                    case "RADIO":
-                                        var checkThis = custom_values_array[idx].split(',');
-                                        $.each($(field_name + " [id^='custom_" + field + "']"), function() {
-                                            var checkMe = false;
-                                            if (checkThis.indexOf($(this).val()) > -1) {
-                                                checkMe = true;
-                                            }
-                                            $(this).prop('checked', checkMe);
-                                        });
-                                        break;
-                                    case "SELECT":
-                                    case "MULTI":
-                                        var selectThis = custom_values_array[idx].split(',');
-                                        $.each($(field_name + " option"), function() {
-                                            var selectMe = false;
-                                            if (selectThis.indexOf($(this).val()) > -1) {
-                                                selectMe = true;
-                                            }
-                                            $(this).prop('selected', selectMe);
-                                        });
-                                        break;
-                                    default:
-                                        $(field_name).html(custom_values_array[idx]);
-                                }
-                            });
-                            
-                            replaceCustomFields();
+                        $.each(custom_names_array, function(idx, field) {
+                            if (field.length < 1) return true;
+                            var field_name = ".formMain #custom_fields [id='custom_" + field + "']";
+                            switch (custom_types_array[idx]) {
+                                case "TEXT":
+                                case "AREA":
+                                case "HIDDEN":
+                                case "DATE":
+                                case "TIME":
+                                    $(field_name).val(custom_values_array[idx]);
+                                    break;
+                                case "CHECKBOX":
+                                case "RADIO":
+                                    var checkThis = custom_values_array[idx].split(',');
+                                    $.each($(field_name + " [id^='custom_" + field + "']"), function() {
+                                        var checkMe = false;
+                                        if (checkThis.indexOf($(this).val()) > -1) {
+                                            checkMe = true;
+                                        }
+                                        $(this).prop('checked', checkMe);
+                                    });
+                                    break;
+                                case "SELECT":
+                                case "MULTI":
+                                    var selectThis = custom_values_array[idx].split(',');
+                                    $.each($(field_name + " option"), function() {
+                                        var selectMe = false;
+                                        if (selectThis.indexOf($(this).val()) > -1) {
+                                            selectMe = true;
+                                        }
+                                        $(this).prop('selected', selectMe);
+                                    });
+                                    break;
+                                default:
+                                    $(field_name).html(custom_values_array[idx]);
+                            }
+                        });
+                        
+                        replaceCustomFields();
+                        setTimeout(function() {
                             GetCustomFields(null, true);
                         }, 5000);
                     }
@@ -6119,7 +6116,7 @@ function GetCustomFields(listid, show, getData) {
     if (!show) {
         $("#custom_fields_content, #custom_br").slideUp();
     }
-    
+    console.log('test');
     if (typeof listid === 'undefined' || listid === null || listid.length < 1) {
         if (!show) {
             $("#custom_fields_content, #custom_br").slideUp();
