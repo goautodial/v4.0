@@ -71,7 +71,7 @@
     // The event listener for the file upload
 	var something;
     something = document.getElementById('txtFileUpload').addEventListener('change', upload, false);
-	alert(something);
+	//alert(something);
 	//$("#yourdropdownid option:selected").text();
 
     // Method that checks that the browser supports the HTML5 File API
