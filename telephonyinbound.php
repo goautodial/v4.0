@@ -100,7 +100,7 @@
 								<a href="#T_ingroup" aria-controls="T_ingroup" role="tab" data-toggle="tab" class="bb0">
 								    In-Groups</a>
 							 </li>
-						<!-- IVR panel tab -->
+						<!-- IVR panel tab 
 							 <li role="presentation">
 								<a href="#T_ivr" aria-controls="T_ivr" role="tab" data-toggle="tab" class="bb0">
 								    Interactive Voice Response (IVR) Menus </a>
@@ -158,7 +158,7 @@
 								</table>
 							</div>
 							
-							<!--==== IVR ====-->
+							<!--==== IVR ====--
 							<div id="T_ivr" role="tabpanel" class="tab-pane">
 								<table class="table table-striped table-bordered table-hover" id="table_ivr">
 								   <thead>
@@ -173,6 +173,7 @@
 								   </thead>
 								   <tbody>
 									   	<?php
+									   	/*
 									   		for($i=0;$i < count($ivr->menu_id);$i++){
 
 											$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i], $ivr->menu_name[$i]);
@@ -188,6 +189,7 @@
 											</tr>
 										<?php
 											}
+										*/
 										?>
 								   </tbody>
 								</table>
