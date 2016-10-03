@@ -369,7 +369,7 @@ $(document).ready(function() {
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     $("#btnLogMeOut").removeClass("disabled");
                     //toggleStatus('NOLIVE');
-                    //GetCustomFields(null, false);
+                    GetCustomFields(null, false);
                     
                     if (dialingINprogress < 1) {
                         //toggleButton('DialHangup', 'dial');
