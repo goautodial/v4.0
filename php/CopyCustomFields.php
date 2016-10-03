@@ -21,7 +21,6 @@
 	$postfields["list_from"]	= $_POST['list_from'];
 	$postfields["copy_option"]	= $_POST['copy_option'];
 
-
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);
   curl_setopt($ch, CURLOPT_POST, 1);
@@ -31,7 +30,7 @@
   $data = curl_exec($ch);
   curl_close($ch);
   $output = json_decode($data);
-print_r($output);die;
+
 	if ($output->result=="success") {
 		# Result was OK!
 		$status = "success";

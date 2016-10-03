@@ -71,7 +71,7 @@
     // The event listener for the file upload
 	var something;
     something = document.getElementById('txtFileUpload').addEventListener('change', upload, false);
-	alert(something);
+	//alert(something);
 	//$("#yourdropdownid option:selected").text();
 
     // Method that checks that the browser supports the HTML5 File API
@@ -504,7 +504,7 @@
 	</div>
 
 
-	<div id="modal_custom_field_copy" class="modal fade" tabindex="-1" role="dialog">
+	<div id="modal_custom_field_copy" class="modal fade" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -534,9 +534,9 @@
 							<label class="control-label col-lg-4">Copy Option:</label>
 							<div class="col-lg-8">
 								<select class="form-control select2" name="copy_option">
-									<option value="APPEND">APPEND</option>
+									<!-- <option value="APPEND">APPEND</option> -->
 									<option value="UPDATE">UPDATE</option>
-									<option value="REPALCE">REPALCE</option>
+									<option value="REPLACE">REPLACE</option>
 								</select>
 							</div>
 						</div>
@@ -724,21 +724,21 @@
 	                        contentType: false,
 	                        processData: false,
 													success: function(data) {
-															console.log(data);
-															// if(data == "success"){
-															// 	swal({
-															// 			title: "Success",
-															// 			text: "Custom Fields Successfully Copied",
-															// 			type: "success"
-															// 		},
-															// 		function(){
-															// 			location.reload();
-															// 			$(".preloader").fadeIn();
-															// 		}
-															// 	);
-															// }else{
-															// 		sweetAlert("Oops...", "Something went wrong! "+ data, "error");
-															// }
+															// console.log(data);
+															if(data == "success"){
+																swal({
+																		title: "Success",
+																		text: "Custom Fields Successfully Copied",
+																		type: "success"
+																	},
+																	function(){
+																		location.reload();
+																		$(".preloader").fadeIn();
+																	}
+																);
+															}else{
+																	sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+															}
 													}
 										});
 									} else {

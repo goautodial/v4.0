@@ -1515,7 +1515,7 @@ if (isset($_GET["message"])) {
 				    $('.input-disabled').prop('disabled', false);
 				    //$('.hide_div').show();
 				    $("input:required, select:required").addClass("required_div");
-				    $('#edit-profile').hide();
+				    $('#edit-profile').addClass('hidden');
 				    
 				    var txtBox=document.getElementById("first_name" );
 					txtBox.focus();
