@@ -51,6 +51,7 @@ $leadfilter = $ui->API_getAllLeadFilters();
 $dialStatus = $ui->API_getAllDialStatuses($campaign->data->campaign_id);
 $dids = $ui->API_getAllDIDs($campaign->data->campaign_id);
 $voicefiles = $ui->API_GetVoiceFilesList();
+$ingroups = $ui->API_getInGroups();
 
 ?>
 <html>
@@ -268,7 +269,7 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 																	</select>
 																</div>
 																<div class="col-lg-3">
-																	<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if(isset($campaign->data->dial_prefix))echo $campaign->data->dial_prefix; ?>" minlength="9" maxlength="20" required>
+																	<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if($campaign->data->dial_prefix == "CUSTOM"){echo "9";}else{echo $campaign->data->dial_prefix;} ?>" minlength="9" maxlength="20" required>
 																</div>
 															</div>
 														</div>
@@ -384,6 +385,15 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 
 											<div class="tab-pane fade in" id="tab_2">
 												<fieldset>
+													<div class="form-group">
+														<label class="col-sm-3 control-label">Allowed Inbound and Blended:</label>
+														<div class="col-sm-9 mb">
+															<select class="form-control" id="campaign_allow_inbound" name="campaign_allow_inbound">
+																<option value="N" <?php if($campaign->data->campaign_allow_inbound == "N") echo "selected";?>>N</option>
+																<option value="Y" <?php if($campaign->data->campaign_allow_inbound == "Y") echo "selected";?>>Y</option>
+															</select>
+														</div>
+													</div>
 													<?php if($campaign->campaign_type == "OUTBOUND") { ?>
 														<div class="form-group" style="margin-bottom: 10px;">
 															<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=1;?>
@@ -593,11 +603,11 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 															<label class="col-sm-3 control-label">Manual Dial Filter:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="manual_dial_filter" name="manual_dial_filter">
-																	<option value="NONE" <?php if($camapign->data->manual_dial_filter == "NONE") echo "selected";?>>NONE</option>
-																	<option value="DNC_ONLY" <?php if($camapign->data->manual_dial_filter == "DNC_ONLY") echo "selected";?>>DNC ONLY</option>
-																	<option value="CAMPLIST_ONLY" <?php if($camapign->data->manual_dial_filter == "CAMPLIST_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
-																	<option value="DNC_AND_CAMPLIST" <?php if($camapign->data->manual_dial_filter == "DNC_AND_CAMPLIST") echo "selected";?>>DNC & CAMPLIST</option>
-																	<option value="DNC_AND_CAMPLIST_ALL" <?php if($camapign->data->manual_dial_filter == "DNC_AND_CAMPLIST_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
+																	<option value="NONE" <?php if($campaign->data->manual_dial_filter == "NONE") echo "selected";?>>NONE</option>
+																	<option value="DNC_ONLY" <?php if($campaign->data->manual_dial_filter == "DNC_ONLY") echo "selected";?>>DNC ONLY</option>
+																	<option value="CAMPLIST_ONLY" <?php if($campaign->data->manual_dial_filter == "CAMPLIST_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
+																	<option value="DNC_AND_CAMPLIST" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST") echo "selected";?>>DNC & CAMPLIST</option>
+																	<option value="DNC_AND_CAMPLIST_ALL" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
 																</select>
 															</div>
 														</div>
@@ -719,11 +729,11 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 															<label class="col-sm-3 control-label">Manual Dial Filter:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="manual_dial_filter" name="manual_dial_filter">
-																	<option value="NONE" <?php if($camapign->data->manual_dial_filter == "NONE") echo "selected";?>>NONE</option>
-																	<option value="DNC_ONLY" <?php if($camapign->data->manual_dial_filter == "DNC_ONLY") echo "selected";?>>DNC ONLY</option>
-																	<option value="CAMPLIST_ONLY" <?php if($camapign->data->manual_dial_filter == "CAMPLIST_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
-																	<option value="DNC_AND_CAMPLIST" <?php if($camapign->data->manual_dial_filter == "DNC_AND_CAMPLIST") echo "selected";?>>DNC & CAMPLIST</option>
-																	<option value="DNC_AND_CAMPLIST_ALL" <?php if($camapign->data->manual_dial_filter == "DNC_AND_CAMPLIST_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
+																	<option value="NONE" <?php if($campaign->data->manual_dial_filter == "NONE") echo "selected";?>>NONE</option>
+																	<option value="DNC_ONLY" <?php if($campaign->data->manual_dial_filter == "DNC_ONLY") echo "selected";?>>DNC ONLY</option>
+																	<option value="CAMPLIST_ONLY" <?php if($campaign->data->manual_dial_filter == "CAMPLIST_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
+																	<option value="DNC_AND_CAMPLIST" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST") echo "selected";?>>DNC & CAMPLIST</option>
+																	<option value="DNC_AND_CAMPLIST_ALL" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
 																</select>
 															</div>
 														</div>
@@ -1057,11 +1067,11 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 															<label class="col-sm-3 control-label">Manual Dial Filter:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="manual_dial_filter" name="manual_dial_filter">
-																	<option value="NONE" <?php if($camapign->data->manual_dial_filter == "NONE") echo "selected";?>>NONE</option>
-																	<option value="DNC_ONLY" <?php if($camapign->data->manual_dial_filter == "DNC_ONLY") echo "selected";?>>DNC ONLY</option>
-																	<option value="CAMPLIST_ONLY" <?php if($camapign->data->manual_dial_filter == "CAMPLIST_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
-																	<option value="DNC_AND_CAMPLIST" <?php if($camapign->data->manual_dial_filter == "DNC_AND_CAMPLIST") echo "selected";?>>DNC & CAMPLIST</option>
-																	<option value="DNC_AND_CAMPLIST_ALL" <?php if($camapign->data->manual_dial_filter == "DNC_AND_CAMPLIST_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
+																	<option value="NONE" <?php if($campaign->data->manual_dial_filter == "NONE") echo "selected";?>>NONE</option>
+																	<option value="DNC_ONLY" <?php if($campaign->data->manual_dial_filter == "DNC_ONLY") echo "selected";?>>DNC ONLY</option>
+																	<option value="CAMPLIST_ONLY" <?php if($campaign->data->manual_dial_filter == "CAMPLIST_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
+																	<option value="DNC_AND_CAMPLIST" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST") echo "selected";?>>DNC & CAMPLIST</option>
+																	<option value="DNC_AND_CAMPLIST_ALL" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
 																</select>
 															</div>
 														</div>
@@ -1141,6 +1151,28 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 													<?php } else { ?>
 														Default
 													<?php } ?>
+													<div class="campaign_allow_inbound_div hide">
+														<div class="form-group">
+															<label class="col-sm-3 control-label">Inbound Groups:</label>
+															<div class="col-sm-9 mb">
+																<?php for($i=0;$i<=count($ingroups->group_id);$i++) { ?>
+																	<?php if(!empty($ingroups->group_id[$i])) {?>
+																		<input type="checkbox" name="closer_campaigns[]" value="<?php echo $ingroups->group_id[$i]?>" <?php if(in_array($ingroups->group_id[$i],explode(" - ", $campaign->data->closer_campaigns))) echo "checked";?>>&nbsp;<?php echo $ingroups->group_id[$i]." - ".$ingroups->group_name[$i]; ?><br />
+																	<?php } ?>
+																<?php } ?>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label">Allowed transfer groups:</label>
+															<div class="col-sm-9 mb">
+																<?php for($i=0;$i<=count($ingroups->group_id);$i++) { ?>
+																	<?php if(!empty($ingroups->group_id[$i])) {?>
+																		<input type="checkbox" name="xfer_groups[]" value="<?php echo $ingroups->group_id[$i]?>"<?php if(in_array($ingroups->group_id[$i],explode(" - ", $campaign->data->xfer_groups))) echo "checked";?>>&nbsp;<?php echo $ingroups->group_id[$i]." - ".$ingroups->group_name[$i]; ?><br />
+																	<?php } ?>
+																<?php } ?>
+															</div>
+														</div>
+													</div>
 												</fieldset>
 											</div>
 											<!-- /.tab-pane -->
@@ -1439,7 +1471,21 @@ $voicefiles = $ui->API_GetVoiceFilesList();
 		<script src="js/plugins/iCheck/icheck.min.js"></script>
 
 		<script type="text/javascript">
+			function check_campaign_allow_inbound(value){
+				if(value == "Y"){
+					$('.campaign_allow_inbound_div').removeClass('hide');
+				}else{
+					$('.campaign_allow_inbound_div').addClass('hide');
+				}
+			}
 			$(document).ready(function() {
+				var campaign_allow_inbound = $('#campaign_allow_inbound').val();
+				check_campaign_allow_inbound(campaign_allow_inbound);
+
+				$(document).on('change', '#campaign_allow_inbound', function(){
+					var value = $(this).val();
+					check_campaign_allow_inbound(value);
+				});
 
 				$(document).on('click', '.btn-add-dial-status', function(){
 					var dial_status = $('#dial_status').val();

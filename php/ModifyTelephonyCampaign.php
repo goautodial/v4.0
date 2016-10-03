@@ -53,13 +53,36 @@
 	$postfields["customer_3way_hangup_logging"] = $_POST["customer_3way_hangup_logging"];
 	$postfields["customer_3way_hangup_seconds"] = $_POST["customer_3way_hangup_seconds"];
 	$postfields["customer_3way_hangup_action"] 	= $_POST["customer_3way_hangup_action"];
+	$postfields["campaign_allow_inbound"] = $_POST["campaign_allow_inbound"];
+
+	if(is_array($_POST["closer_campaigns"])){
+		$closerCampaigns = "";
+		foreach($_POST["closer_campaigns"] as $closercamp){
+			$closerCampaigns .= $closercamp." - ";
+		}
+		$closerCampaigns = rtrim($closerCampaigns, " - ");
+	}else{
+		$closerCampaigns = $closer_campaigns;
+	}
+
+	if(is_array($_POST["xfer_groups"])){
+		$xfergroups = "";
+		foreach($_POST["xfer_groups"] as $xfergrp){
+			$xfergroups .= $xfergrp." - ";
+		}
+		$xfergroups = rtrim($xfergroups, " - ");
+	}else{
+		$xfergroups = $xfer_groups;
+	}
+
+	$postfields["closer_campaigns"] = $closerCampaigns;
+	$postfields["xfer_groups"] = $xfergroups;
 
 	if ($_POST["dial_method"] == "INBOUND_MAN") {
 		$postfields["inbound_man"] 					= $_POST["inbound_man"];
 	} else {
 		$postfields["inbound_man"] 					= "";
 	}
-
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
