@@ -369,7 +369,6 @@ $(document).ready(function() {
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     $("#btnLogMeOut").removeClass("disabled");
                     //toggleStatus('NOLIVE');
-                    GetCustomFields(null, false);
                     
                     if (dialingINprogress < 1) {
                         //toggleButton('DialHangup', 'dial');
@@ -2795,7 +2794,7 @@ function CheckForIncoming () {
             //}
             
             if (custom_field_names.length > 1) {
-                GetCustomFields(this_VDIC_data.list_id, false);
+                GetCustomFields(this_VDIC_data.list_id, false, true);
                 
                 var custom_names_array = custom_field_names.split("|");
                 var custom_values_array = custom_field_values.split("----------");
@@ -4124,6 +4123,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
         }
 
         //ShoWTransferMain('OFF');
+        GetCustomFields(null, false);
         activateLinks();
     }
 }
@@ -5203,7 +5203,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
                     
                     if (custom_field_names.length > 1) {
-                        GetCustomFields(list_id, false);
+                        GetCustomFields(list_id, false, true);
                         
                         var custom_names_array = custom_field_names.split("|");
                         var custom_values_array = custom_field_values.split("----------");
@@ -6110,20 +6110,19 @@ function GetCustomFields(listid, show, getData) {
     }
     
     if (typeof getData === 'undefined') {
-        getData = true;
+        getData = false;
     }
     
     if (!show) {
         $("#custom_fields_content, #custom_br").slideUp();
     }
-    console.log('test');
+    
     if (typeof listid === 'undefined' || listid === null || listid.length < 1) {
         if (!show) {
             $("#custom_fields_content, #custom_br").slideUp();
         } else {
             $("#custom_fields_content, #custom_br").slideDown();
         }
-        return show;
     }
     
     if (getData) {
