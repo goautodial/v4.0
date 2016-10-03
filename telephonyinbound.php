@@ -100,7 +100,7 @@
 								<a href="#T_ingroup" aria-controls="T_ingroup" role="tab" data-toggle="tab" class="bb0">
 								    In-Groups</a>
 							 </li>
-						<!-- IVR panel tab -->
+						<!-- IVR panel tab 
 							 <li role="presentation">
 								<a href="#T_ivr" aria-controls="T_ivr" role="tab" data-toggle="tab" class="bb0">
 								    Interactive Voice Response (IVR) Menus </a>
