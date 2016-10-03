@@ -27,21 +27,17 @@
        
         <?php print $ui->standardizedThemeCSS(); ?>
 
-        <!-- Wizard Form style -->
-        <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
+    	<!-- Wizard Form style -->
         <link href="css/style.css" rel="stylesheet" type="text/css" />
-        <!-- Wizard Form style -->
-    	<link rel="stylesheet" href="css/easyWizard.css">
 
-        <!-- DATA TABLES -->
+    	<!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 
         <?php print $ui->creamyThemeCSS(); ?>
 
-        <!-- Data Tables -->
+		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-	
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -576,10 +572,11 @@
 		<script src="js/easyWizard.js" type="text/javascript"></script> 
 
 		<script type="text/javascript">
+		
 			$(document).ready(function() {
 				$('#carriers').dataTable();
 				
-				/* on authorization change */
+				/* on authorization change *
 				$('input[type=radio][name=authentication]').on('change', function() {
 				//  alert( this.value ); // or $(this).val()
 					if(this.value == "auth_reg") {
@@ -590,7 +587,7 @@
 					}
 				});
 
-				 /* on custom dtmf select */
+				 /* on custom dtmf select *
 				$('input[type=radio][name=dtmf]').on('change', function() {
 				//  alert( this.value ); // or $(this).val()
 					if(this.value == "custom") {
@@ -690,10 +687,10 @@
 	                }
 					
 	            });
-
+					*/
 				/**
 				  * Edit user details
-				 */
+				 *
 				$(document).on('click','.edit-carrier',function() {
 					var url = 'editsettingscarrier.php';
 					var cid = $(this).attr('data-id');
@@ -741,8 +738,10 @@
                             } 
                         }
                     );
-				});
+
+				});*/
 			});
+
 		</script>
 
 		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>

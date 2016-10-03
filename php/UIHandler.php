@@ -1411,17 +1411,17 @@ error_reporting(E_ERROR | E_PARSE);
 
 				setTimeout( function(){
 				    $(".reload-page").fadeIn("slow");
-				}, 20000 );
+				}, 30000 );
 
 				setTimeout( function(){
 				    $(".reload-button").fadeIn("slow");
-				}, 22000 );
+				}, 32000 );
 
 	    		$(window).ready(function() {
 					$(".preloader").fadeOut("slow");
 				})
-
-	    		$(document).on("click", ".close-preloader-button", function(){
+				
+				$(document).on("click", ".close-preloader-button", function(){
 					$(".preloader").fadeOut("slow");
 				});
 
@@ -1429,6 +1429,19 @@ error_reporting(E_ERROR | E_PARSE);
 					$(".reload-button").html("<i class=\"fa fa-refresh fa-spin fa-3x fa-fw\"></i><span class=\"sr-only\">Loading...</span>");
 					window.location = window.location.href;
 				});
+
+				$(window).ready(function() {
+					$(".preloader").fadeOut("slow");
+					$(".reload-page").fadeOut("slow");
+					$(".reload-button").fadeOut("slow");
+				})
+				
+				$(window).load(function() {
+					$(".reload-page").html("");
+					$(".reload-button").html("");
+				})
+
+	    		
 
 			</script>
 			';
@@ -4270,7 +4283,7 @@ error_reporting(E_ERROR | E_PARSE);
             $output->ct_default_stop[$i] = date('H:i A', strtotime($output->ct_default_stop[$i]));
 
             if($output->user_group[$i] == "---ALL---"){
-            	$output->user_group[$i] = "All Usergroups";
+            	$output->user_group[$i] = "ALL USER GROUPS";
             }
 
                     $result .= "<tr>

@@ -38,6 +38,14 @@
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
+        <!-- CHOSEN-->
+   		<link rel="stylesheet" href="theme_dashboard/chosen_v1.2.0/chosen.min.css">
+        <!-- SELECT2-->
+   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+   		<!-- SELECT2-->
+   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
+
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -160,7 +168,7 @@
 	$suggested_extension = $max + 1;
 ?>
 	<!-- ADD USER MODAL -->
-	    <div class="modal fade" id="user-wizard-modal" tabindex="-1"aria-labelledby="T_User" >
+	    <div class="modal fade" id="user-wizard-modal" aria-labelledby="T_User" >
 	        <div class="modal-dialog" role="document">
 	            <div class="modal-content">
 					
@@ -172,7 +180,7 @@
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body" style="overflow:hidden;">
 					
 					<form id="wizard_form" action="#">
 						<div class="row">
@@ -241,7 +249,7 @@
 								<div class="form-group mt">
 									<label class="col-sm-4 control-label" for="user_group">User Group</label>
 									<div class="col-sm-8 mb">
-										<select id="user_group" class="form-control" name="user_group">
+										<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
 											<?php
 												for($i=0;$i<count($user_groups->user_group);$i++){
 											?>
@@ -268,10 +276,10 @@
 									</div>
 								</div>
 								<div class="form-group">	
-									<label class="col-sm-4 control-label" for="password" title="Default Password is: Go<?php echo date('Y');?>"> Password <br/></label>
+									<label class="col-sm-4 control-label" for="password"><i class="fa fa-info-circle" title="Default Password is: Go<?php echo date('Y');?>"></i>  Password </label>
 									
 									<div class="col-sm-8 mb">
-										<input type="password" class="form-control" name="password" id="password" placeholder="Password (Mandatory)"  title="Default Password is: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" maxlength="20" required>
+										<input type="password" class="form-control" name="password" id="password" placeholder="Password (Mandatory)" value="Go<?php echo date('Y');?>" maxlength="20" required>
 									</div>
 								</div>
 								<div class="form-group">		
@@ -346,7 +354,7 @@
 	if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
 ?>
 	<!-- ADD PHONE MODAL -->
-	    <div class="modal fade" id="phone-wizard-modal" tabindex="-1"aria-labelledby="T_Phones" >
+	    <div class="modal fade" id="phone-wizard-modal" aria-labelledby="T_Phones" >
 	        <div class="modal-dialog" role="document">
 	            <div class="modal-content">
 					<div class="modal-header">
@@ -410,7 +418,7 @@
 								<div class="form-group">		
 									<label class="col-sm-4 control-label" for="start_ext">User Group</label>
 									<div class="col-sm-8 mb">
-										<select name="user_group" id="user_group" class="form-control" required>
+										<select name="user_group" id="user_group" class="form-control select2-1" style="width:100%;" required>
 											<option value="ALL">ALL USER GROUPS</option>
 											<?php
 												for($i=0; $i < count($user_groups->user_group); $i++){
@@ -502,6 +510,8 @@
 		<?php print $ui->standardizedThemeJS();?>
 		<!-- JQUERY STEPS-->
   		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
+  		<!-- SELECT2-->
+        <script src="theme_dashboard/select2/dist/js/select2.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -533,6 +543,7 @@
 				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 				});
 
+			
 		/*********
 		** Add Wizard
 		*********/
@@ -687,6 +698,7 @@
 						});
 		        }
 		    });
+
 	//--------------------
 
 		/*********
@@ -906,6 +918,14 @@
 				  $('#custom_seats').hide();
 				}
 			});
+
+		/* initialize select2 */
+			$('.select2-1').select2({
+		        theme: 'bootstrap'
+		    });
+		   
+		    //document.on("jqueryui-configure-dialog", function(e) { e.allowInteraction.push(".select2-1"); });
+		
 	});
 	
 </script>
