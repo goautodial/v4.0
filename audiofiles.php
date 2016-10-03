@@ -38,6 +38,11 @@
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
+        <!-- SELECT2-->
+   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+   		<!-- SELECT2-->
+   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -166,7 +171,7 @@
 			<div class="form-group">
 				<label class="control-label col-lg-4">User Group:</label>
 				<div class="col-lg-7">
-					<select class="form-control moh_user_group">
+					<select class="form-control moh_user_group select2-1" style="width:100%;">
 						<?php
                             for($i=0;$i<count($user_groups->user_group);$i++){
                         ?>
@@ -243,8 +248,8 @@
 	                        <div class="form-group">
 	                            <label class="col-sm-4 control-label" for="user_group">User Group: </label>
 	                            <div class="col-sm-8 mb">
-	                                <select id="user_group" class="form-control" name="user_group">
-	                                	<!--<option value="---ALL---">  ALL USER GROUPS  </option>-->
+	                                <select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
+	                                	<option value="---ALL---">  ALL USER GROUPS  </option>
 	                                    <?php
 	                                        for($i=0;$i<count($user_groups->user_group);$i++){
 	                                    ?>
@@ -458,12 +463,12 @@
 		                                        swal("Success!", "Music On Hold Successfully Created!", "success");
 		                                        window.setTimeout(function(){location.reload()},3000)
 		                                        $('#submit_moh').val("Submit");
-		                                        $('#submit_moh').prop("disabled", false);
+		                                        $('#submit_moh').attr("disabled", false);
 		                                  }
 		                                  else{
 		                                      sweetAlert("Oops...", "Something went wrong!"+data, "error");
 		                                      $('#submit_moh').val("Submit");
-		                                      $('#submit_moh').prop("disabled", false);
+		                                      $('#submit_moh').attr("disabled", false);
 		                                  }
 		                            }
 		                        });
@@ -754,6 +759,11 @@
 				       return false;
 				    }
 				});
+
+		/* initialize select2 */
+			$('.select2-1').select2({
+		        theme: 'bootstrap'
+		    });
 	});
 </script>
 

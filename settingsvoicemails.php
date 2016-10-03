@@ -21,7 +21,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Voicemails</title>
+        <title><?php $lh->translateText("voice_mails"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?> 
@@ -34,6 +34,11 @@
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
+        <!-- SELECT2-->
+        <link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+        <link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+        <!-- SELECT2-->
+        <script src="theme_dashboard/select2/dist/js/select2.js"></script>  
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -104,7 +109,8 @@
                         <div class="row">
                     <!-- STEP 1 -->
                             <h4>
-                                <small></small>
+                                Create a Voice Mail<br/>
+                                <small>Enter basic settings and assign to a user group</small>
                             </h4>
                             <fieldset>
                                 <div class="form-group mt">

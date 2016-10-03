@@ -246,15 +246,18 @@ if (isset($_POST["script_id"])) {
 															</select>
 														</div>
 													</div>
-													<div class="col-sm-12">
-														<div class="panel">
-															<div class="panel-body">
-																<textarea rows="3" class="form-control note-editor" id="script_text" name="script_text"><?php echo $output->script_text[$i];?></textarea>
-															</div>
-														</div>
-														
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-sm-1">&nbsp;</div>
+											<div class="col-sm-11">
+												<div class="panel">
+													<div class="panel-body">
+														<textarea rows="14" class="form-control note-editor" id="script_text" name="script_text"><?php echo $output->script_text[$i];?></textarea>
 													</div>
 												</div>
+												
 											</div>
 										</div>
 									</fieldset>
@@ -299,7 +302,7 @@ if (isset($_POST["script_id"])) {
 			$(document).ready(function() {
 				
 				$(document).on('click', '#cancel', function(){
-					swal("Cancelled", "No action has been done :)", "error");
+					sweetAlert("Cancelled", "No action has been done :)", "error");
 				});
 
 				/** 

@@ -47,6 +47,11 @@
         <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
 		<script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
+		<!-- SELECT2-->
+   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+   		<!-- SELECT2-->
+   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -117,7 +122,8 @@
 				<form id="form_calltimes">
 					<div class="row">
 						<h4>
-							<small></small>
+							Basic Settings<br/>
+							<small>Enter your basic call time details and assign a usergroup.</small>
 						</h4>
 						<fieldset>
 							<div class="form-group mt">
@@ -142,8 +148,8 @@
 							<div class="form-group">
 								<label class="control-label col-lg-4">User Group</label>
 								<div class="col-lg-8 mb">
-									<select class="form-control call-time-user-group" name="call_time_user_group">
-										<!--<option value="ALL"> ALL USER GROUPS </option>-->
+									<select class="form-control call-time-user-group select2-1" name="call_time_user_group" style="width:100%;">
+										<option value="ALL"> ALL USER GROUPS </option>
 											<?php
 												for($i=0;$i<count($user_groups->user_group);$i++){
 											?>
@@ -156,7 +162,8 @@
 							</div>
 						</fieldset>
 						<h4>
-							<small></small>
+							Add a Voice File<br/>
+							<small>Apply a voice file in a specific day and the time.</small>
 						</h4>
 						<fieldset>
 							<div class="form-group mt">
@@ -174,13 +181,13 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_default" value="0">
+											<input type="text" class="form-control start_time" name="start_default" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_default" value="0">
+											<input type="text" class="form-control end_time" name="stop_default" value="">
 										</div>
 										<div class="col-lg-6">
-											<select class="form-control" name="audio_default">
+											<select class="form-control select2-1" style="width:100%;" name="audio_default">
 												<option value="" selected disabled> - - - Audio Chooser - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -199,13 +206,13 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_sunday" value="0">
+											<input type="text" class="form-control start_time" name="start_sunday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_sunday" value="0">
+											<input type="text" class="form-control end_time" name="stop_sunday" value="">
 										</div>
 										<div class="col-lg-6">
-											<select class="form-control" name="audio_sunday">
+											<select class="form-control select2-1" style="width:100%;" name="audio_sunday">
 												<option value="" selected disabled> - - - Audio Chooser - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -224,13 +231,13 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_monday" value="0">
+											<input type="text" class="form-control start_time" name="start_monday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_monday" value="0">
+											<input type="text" class="form-control end_time" name="stop_monday" value="">
 										</div>
 										<div class="col-lg-6">
-											<select class="form-control" name="audio_monday">
+											<select class="form-control select2-1" style="width:100%;" name="audio_monday">
 												<option value="" selected disabled> - - - Audio Chooser - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -249,13 +256,13 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_tuesday" value="0">
+											<input type="text" class="form-control start_time" name="start_tuesday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_tuesday" value="0">
+											<input type="text" class="form-control end_time" name="stop_tuesday" value="">
 										</div>
 										<div class="col-lg-6">
-											<select class="form-control" name="audio_tuesday">
+											<select class="form-control select2-1" style="width:100%;" name="audio_tuesday">
 												<option value="" selected disabled> - - - Audio Chooser - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -274,13 +281,13 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_wednesday" value="0">
+											<input type="text" class="form-control start_time" name="start_wednesday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_wednesday" value="0">
+											<input type="text" class="form-control end_time" name="stop_wednesday" value="">
 										</div>
 										<div class="col-lg-6">
-											<select class="form-control" name="audio_wednesday">
+											<select class="form-control select2-1" style="width:100%;" name="audio_wednesday">
 												<option value="" selected disabled> - - - Audio Chooser - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -299,13 +306,13 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_thursday" value="0">
+											<input type="text" class="form-control start_time" name="start_thursday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_thursday" value="0">
+											<input type="text" class="form-control end_time" name="stop_thursday" value="">
 										</div>
 										<div class="col-lg-6">
-											<select class="form-control" name="audio_thursday">
+											<select class="form-control select2-1" style="width:100%;" name="audio_thursday">
 												<option value="" selected disabled> - - - Audio Chooser - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -324,13 +331,13 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_friday" value="0">
+											<input type="text" class="form-control start_time" name="start_friday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_friday" value="0">
+											<input type="text" class="form-control end_time" name="stop_friday" value="">
 										</div>
 										<div class="col-lg-6">
-											<select class="form-control" name="audio_friday">
+											<select class="form-control select2-1" style="width:100%;" name="audio_friday">
 												<option value="" selected disabled> - - - Audio Chooser - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -349,13 +356,13 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_saturday" value="0">
+											<input type="text" class="form-control start_time" name="start_saturday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_saturday" value="0">
+											<input type="text" class="form-control end_time" name="stop_saturday" value="">
 										</div>
 										<div class="col-lg-6">
-											<select class="form-control" name="audio_saturday">
+											<select class="form-control select2-1" style="width:100%;" name="audio_saturday">
 												<option value="" selected disabled> - - - Audio Chooser - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -393,14 +400,6 @@
 			// $('#view-calltime-modal').modal('show');
 				$('#calltimes').dataTable();
 
-			//initialize timepicker
-				$('.start_time').datetimepicker({
-                format: 'LT'
-            });
-           	$('.end_time').datetimepicker({
-                format: 'LT'
-            });
-			
 			// init form wizard 
 				var form = $("#form_calltimes"); 
 			    form.validate({
@@ -537,6 +536,22 @@
 				       return false;
 				    }
 				});
+
+		/* initialize select2 */
+			$('.select2-1').select2({
+		        theme: 'bootstrap'
+		    });
+
+		//initialize timepicker
+			$('.start_time').datetimepicker({
+				defaultDate: '',
+                format: 'LT'
+               
+            });
+           	$('.end_time').datetimepicker({
+           		defaultDate: '',
+                format: 'LT'
+            });
 	}); // end of document ready
 </script>
 		

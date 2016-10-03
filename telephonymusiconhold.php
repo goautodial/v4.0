@@ -44,7 +44,12 @@
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 	    <!-- Bootstrap Player -->
 	    <script src="js/bootstrap-player.js" type="text/javascript"></script>
-
+        <!-- SELECT2-->
+        <link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+        <link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+        <!-- SELECT2-->
+        <script src="theme_dashboard/select2/dist/js/select2.js"></script>
+        
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -394,7 +399,11 @@
                         }
                     );
 				});
-
+                
+                /* initialize select2 */
+                    $('.select2-1').select2({
+                        theme: 'bootstrap'
+                    });
 			});
 		</script>
 

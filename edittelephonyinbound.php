@@ -64,12 +64,6 @@ if (isset($_POST["did"])) {
   		<!-- SELECT2 CSS -->
         <link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
         <link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
-
-        <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			})
-		</script>
     </head>
     <style>
     	select{
@@ -1343,7 +1337,6 @@ if (isset($_POST["did"])) {
 						
 						if ($output->result=="success") {
 						# Result was OK!
-							for($i=0;$i<count($output->did_pattern);$i++){
 						?>
 					<script>
 						$(window).ready(function() {
@@ -1404,7 +1397,7 @@ if (isset($_POST["did"])) {
                 <section class="content">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<legend>MODIFY DID RECORD : <u><?php echo $output->did_pattern[$i];?></u></legend>
+							<legend>MODIFY DID RECORD : <u><?php echo $output->data->did_pattern;?></u></legend>
 								
 								<form id="modifydid">
 
@@ -1421,18 +1414,18 @@ if (isset($_POST["did"])) {
 					               	<!-- BASIC SETTINGS -->
 					                <div id="tab_1" class="tab-pane fade in active">
 
-										<input type="hidden" name="modify_did" value="<?php echo $output->did_id[$i];?>">
+										<input type="hidden" name="modify_did" value="<?php echo $output->data->did_id;?>">
 									<fieldset>
 										<div class="form-group mt">
 											<label for="did_pattern" class="col-sm-2 control-label">DID NUMBER</label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="did_pattern" id="did_pattern" value="<?php echo $output->did_pattern[$i];?>">
+												<input type="text" class="form-control" name="did_pattern" id="did_pattern" value="<?php echo $output->data->did_pattern;?>">
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="desc" class="col-sm-2 control-label">Description</label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="desc" id="desc" value="<?php echo $output->did_description[$i];?>">
+												<input type="text" class="form-control" name="desc" id="desc" value="<?php echo $output->data->did_description;?>">
 											</div>
 										</div>
 										<div class="form-group">
@@ -1441,13 +1434,13 @@ if (isset($_POST["did"])) {
 												<select class="form-control" name="status" id="status">
 												<?php
 													$status = NULL;
-													if($output->active[$i] == "Y"){
+													if($output->data->did_active == "Y"){
 														$status .= '<option value="Y" selected> Active </option>';
 													}else{
 														$status .= '<option value="Y" > Active </option>';
 													}
 													
-													if($output->active[$i] == "N" || $output->active[$i] == NULL){
+													if($output->data->did_active == "N" || $output->data->did_active == NULL){
 														$status .= '<option value="N" selected> Inactive </option>';
 													}else{
 														$status .= '<option value="N" > Inactive </option>';
@@ -1463,37 +1456,37 @@ if (isset($_POST["did"])) {
 												<select class="form-control" id="route" name="route">
 													<?php
 														$route = NULL;
-														if($output->did_route [$i] == "AGENT"){
+														if($output->data->did_route  == "AGENT"){
 															$route .= '<option value="AGENT" selected> Agent </option>';
 														}else{
 															$route .= '<option value="AGENT" > Agent </option>';
 														}
 														
-														if($output->did_route [$i] == "IN_GROUP"){
+														if($output->data->did_route  == "IN_GROUP"){
 															$route .= '<option value="IN_GROUP" selected> In-group </option>';
 														}else{
 															$route .= '<option value="IN_GROUP" > In-group </option>';
 														}
 														
-														if($output->did_route [$i] == "PHONE"){
+														if($output->data->did_route  == "PHONE"){
 															$route .= '<option value="PHONE" selected> Phone </option>';
 														}else{
 															$route .= '<option value="PHONE" > Phone </option>';
 														}
 														
-														if($output->did_route [$i] == "CALLMENU "){
+														if($output->data->did_route  == "CALLMENU "){
 															$route .= '<option value="CALLMENU" selected> Call Menu / IVR </option>';
 														}else{
 															$route .= '<option value="CALLMENU" > Call Menu / IVR </option>';
 														}
 														
-														if($output->did_route [$i] == "VOICEMAIL"){
+														if($output->data->did_route  == "VOICEMAIL"){
 															$route .= '<option value="VOICEMAIL" selected> Voicemail </option>';
 														}else{
 															$route .= '<option value="VOICEMAIL" > Voicemail </option>';
 														}
 														
-														if($output->did_route [$i] == "EXTEN"){
+														if($output->data->did_route  == "EXTEN"){
 															$route .= '<option value="EXTEN" selected> Custom Extension </option>';
 														}else{
 															$route .= '<option value="EXTEN" > Custom Extension </option>';
@@ -1510,13 +1503,13 @@ if (isset($_POST["did"])) {
 											<div class="form-group">
 												<label for="route_agentid" class="col-sm-3 control-label">Agent ID: </label>
 												<div class="col-sm-9 mb">
-													<select name="route_agentid" id="route_agentid" class="form-control">
+													<select name="route_agentid" id="route_agentid" class="form-control select2">
 														<option value="" > -- NONE -- </option>
 														<?php
-															for($i=0;$i<count($users->userno);$i++){
+															for($i=0;$i<count($users->user);$i++){
 														?>
-															<option value="<?php echo $users->userno[$i];?>">
-																<?php echo $users->userno[$i].' - '.$users->full_name[$i];?>
+															<option value="<?php echo $users->user[$i];?>">
+																<?php echo $users->user[$i].' - '.$users->full_name[$i];?>
 															</option>									
 														<?php
 															}
@@ -1540,7 +1533,7 @@ if (isset($_POST["did"])) {
 													<div class="form-group" id="ru_exten" style="display: none;">
 														<label for="ru_exten" class="col-sm-3 control-label">Extension</label>
 														<div class="col-sm-9 mb">
-															<input type="text" class="form-control" name="ru_exten" id="ru_exten" value="<?php echo $output->did_pattern[$i];?>">
+															<input type="text" class="form-control" name="ru_exten" id="ru_exten" value="<?php echo $output->data->did_pattern;?>">
 														</div>
 													</div>
 												<!--IF route_unavail = INGROUP -->
@@ -1581,7 +1574,7 @@ if (isset($_POST["did"])) {
 													<div class="form-group" id="ru_voicemail" style="display: none;">
 														<label for="exten" class="col-sm-3 control-label">Voicemail</label>
 														<div class="col-sm-9 mb">
-															<input type="text" class="form-control" name="exten" id="exten" value="<?php echo $output->did_pattern[$i];?>">
+															<input type="text" class="form-control" name="exten" id="exten" value="<?php echo $output->data->did_pattern;?>">
 														</div>
 													</div>
 											<div class="form-group">
@@ -1635,7 +1628,7 @@ if (isset($_POST["did"])) {
 														<?php
 															for($i=0;$i<count($phones->extension);$i++){
 														?>
-															<option value="<?php echo $phones->extension[$i];?>">
+															<option value="<?php echo $phones->extension;?>">
 																<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
 															</option>									
 														<?php
@@ -1729,7 +1722,7 @@ if (isset($_POST["did"])) {
 							       			<div class="form-group mt">
 							       				<label for="cid_num" class="col-sm-2 control-label">Clean CID Number</label>
 							       				<div class="col-sm-10 mb">
-													<input type="text" class="form-control" name="cid_num" id="cid_num" value="">
+													<input type="text" class="form-control" name="cid_num" id="cid_num" value="<?php echo $output->data->filter_clean_cid_number;?>" maxlength="20">
 												</div>
 							       			</div>
 							       		</fieldset>				       			
@@ -1756,7 +1749,7 @@ if (isset($_POST["did"])) {
 					</div><!-- body -->
                 </section>
 						<?php		
-							}
+							
 						} else {
 						# An error occured
 							echo $output->result;

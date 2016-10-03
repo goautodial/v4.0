@@ -44,7 +44,11 @@ error_reporting(E_ALL);*/
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-
+        <!-- SELECT2-->
+   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+   		<!-- SELECT2-->
+   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
     </head>
      <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -651,7 +655,7 @@ error_reporting(E_ALL);*/
 	<!-- End of modal -->
 
 	<!-- Disposition Modal -->
-	    <div class="modal fade" id="add_disposition" tabindex="-1" aria-labelledby="add_disposition" >
+	    <div class="modal fade" id="add_disposition" aria-labelledby="add_disposition" >
 	        <div class="modal-dialog" role="document">
 	            <div class="modal-content">
 
@@ -675,7 +679,7 @@ error_reporting(E_ALL);*/
 		                    	<div class="form-group mt">
 		                            <label class="col-sm-3 control-label" for="disposition_campaign">Campaign: </label>
 		                            <div class="col-sm-9 mb">
-		                                <select id="disposition_campaign" name="disposition_campaign" class="form-control">
+		                                <select id="disposition_campaign" name="disposition_campaign" class="form-control select2-1" style="width:100%;">
 		                                		<option value="ALL"> - - - ALL CAMPAIGNS - - - </option>
 		                                   <?php
 		                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
@@ -1448,7 +1452,10 @@ error_reporting(E_ALL);*/
 						});
 				/*** end of disposition filters ***/
 
-
+			/* initialize select2 */
+				$('.select2-1').select2({
+			        theme: 'bootstrap'
+			    });
 
 
 		}); // end of document ready
@@ -1529,7 +1536,7 @@ error_reporting(E_ALL);*/
 				});
 			}
 		}
-
+		
 </script>
 		
 		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
