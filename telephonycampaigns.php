@@ -123,7 +123,7 @@ error_reporting(E_ALL);*/
 												 <th >Campaign Name</th>
 												 <th class='hide-on-medium hide-on-low'>Dial Method</th>
 												 <th class='hide-on-medium hide-on-low'>Status</th>
-												 <th>Action</th>
+												 <th style="width:16%;">Action</th>
 											  </tr>
 										   </thead>
 										   <tbody>
@@ -179,7 +179,7 @@ error_reporting(E_ALL);*/
 												 <th class='hide-on-medium hide-on-low'>Campaign ID</th>
 												 <th>Campaign Name</th>
 												 <th class='hide-on-medium hide-on-low'>Custom Disposition</th>
-												 <th>Action</th>
+												 <th class='action_disposition'>Action</th>
 											  </tr>
 										   </thead>
 										   <tbody>
@@ -213,7 +213,7 @@ error_reporting(E_ALL);*/
 												//}
 												?>
 														</td>
-														<td nowrap><?php echo $action_DISPOSITION;?></td>
+														<td style="width:16%;"><?php echo $action_DISPOSITION;?></td>
 													</tr>
 												<?php
 													}
@@ -777,7 +777,11 @@ error_reporting(E_ALL);*/
 
 				//initialization of the datatables
 					$('#table_campaign').dataTable();
-					$('#table_disposition').dataTable();
+					$('#table_disposition').dataTable({
+						columnDefs: [
+						    { width: "16%", targets: "action_disposition" }
+						]
+					});
 					$('#table_leadfilter').dataTable();
 
 				// FAB HOVER
