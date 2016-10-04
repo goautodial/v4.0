@@ -432,7 +432,7 @@ if (isset($_GET["message"])) {
 												<span class="fa fa-file-text-o hidden"></span>
 												<?=$lh->translationFor('script')?></a>
 										 </li>
-										 <li role="presentation">
+										 <li role="presentation" class="hidden">
 											<a href="#activity" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
 												<span class="fa fa-calendar hidden"></span>
 												<?=$lh->translationFor('activity')?></a>
@@ -441,7 +441,7 @@ if (isset($_GET["message"])) {
 									</div>
 									<!-- Tab panes-->
 									<div class="tab-content bg-white">
-										<div id="activity" role="tabpanel" class="tab-pane">
+										<div id="activity" role="tabpanel" class="tab-pane hidden">
 											<table class="table table-striped">
 							                    <tr>
 							                    	<td>
