@@ -6528,6 +6528,8 @@ function getContactList() {
             $("#contents-contacts").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
             if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
                 $("button[id='dial-lead']").addClass('disabled');
+            } else {
+                $("button[id='dial-lead']").removeClass('disabled');
             }
         }
     });
