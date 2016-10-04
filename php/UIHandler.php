@@ -1468,7 +1468,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return '<header class="main-header">
 				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
 	            <nav class="navbar navbar-static-top" role="navigation">
-	                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+	                <a href="#" class="sidebar-toggle hidden" data-toggle="offcanvas" role="button">
 	                    <span class="sr-only">Toggle navigation</span>
 	                    <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 	                </a>
