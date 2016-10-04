@@ -1,4 +1,4 @@
-<?php	
+<?php
 
     ###########################################################
     ### Name: telephonymusiconhold.php                      ###
@@ -13,7 +13,7 @@
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
-    include('./php/goCRMAPISettings.php'); 
+    include('./php/goCRMAPISettings.php');
 
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
@@ -24,7 +24,7 @@
         <meta charset="UTF-8">
         <title>Carriers</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-       
+
         <?php print $ui->standardizedThemeCSS(); ?>
 
     	<!-- Wizard Form style -->
@@ -81,7 +81,7 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
-		
+
 		<div class="action-button-circle" data-toggle="modal" data-target="#wizard-modal">
 			<?php print $ui->getCircleButton("carriers", "plus"); ?>
 		</div>
@@ -90,13 +90,13 @@
 	* MODAL
 	*/
 	$user_groups = $ui->API_goGetUserGroupsList();
-	$carriers = $ui->API_getListAllCarriers();
+	$carriers = $ui->getCarriers();
 ?>
 	<!-- ADD WIZARD MODAL -->
 	<div class="modal fade" id="wizard-modal" tabindex="-1">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-				
+
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight">
 						<b>Carrier Wizard » Add New Carrier</b>
@@ -104,7 +104,7 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-				
+
 				<form id="create_form" role="form">
 				<!-- STEP 1 -->
 					<div class="wizard-step">
@@ -119,7 +119,7 @@
 							</div>
 						</div>
 					</div>
-				
+
 				<!-- STEP 2 -->
 					<div class="wizard-step">
 						<!-- IF MANUAL / COPY -->
@@ -231,15 +231,15 @@
 										</label>
 										<label class="col-sm-3 radio-inline c-radio" for="dtmf_1">
 											<input id="dtmf_1" type="radio" name="dtmf" value="RFC2833" checked>
-											<span class="fa fa-circle"></span> RFC2833   
+											<span class="fa fa-circle"></span> RFC2833
 										</label>
 										<label class="col-sm-3 radio-inline c-radio" for="dtmf_2">
 											<input id="dtmf_2" type="radio" name="dtmf" value="inband">
-											<span class="fa fa-circle"></span> Inband   
+											<span class="fa fa-circle"></span> Inband
 										</label>
 										<label class="col-sm-3 radio-inline c-radio" for="dtmf_3">
 											<input id="dtmf_3" type="radio" name="dtmf" value="custom">
-											<span class="fa fa-circle"></span> Custom      
+											<span class="fa fa-circle"></span> Custom
 										</label>
 									</div>
 								</div>
@@ -446,16 +446,16 @@
 												<tbody><tr>
 													<td><p style="font-size: 14px;">
 													    This site is owned and operated by GoAutoDial, Inc. ("we", "us", "our" or "GoAutoDial").
-							                                                    GoAutoDial, Inc.provides its services to you ("Customer", "you" or "end user") 
-									  subject to the following conditions 
+							                                                    GoAutoDial, Inc.provides its services to you ("Customer", "you" or "end user")
+									  subject to the following conditions
 							                                                    .<br>
-							                                                    If you visit or shop at our website or any other affiliated 
+							                                                    If you visit or shop at our website or any other affiliated
 							                                                    <a href="http://reversephonelookuppages.com/" class="faqlinka" style="color: green;">reverse phone lookup</a> websites,
 							                  you affirmatively accept the following conditions.
 							                  Continued use of the site and any of
 							                     				    GoAutoDial's services constitute the affirmative agreement to these terms and conditions.                                                    <br>
 
-							                                                    GoAutoDial reserves the right to change the terms, conditions and notices under which the                                                    GoAutoDial sites and services are offered,including but not limited to the charges associated with the use of the                                                    GoAutoDialsites and services. 
+							                                                    GoAutoDial reserves the right to change the terms, conditions and notices under which the                                                    GoAutoDial sites and services are offered,including but not limited to the charges associated with the use of the                                                    GoAutoDialsites and services.
 													    </p>
 													</td>
 												</tr>
@@ -487,10 +487,10 @@
 							                    Statuses/Dispositions configuration
 							                    Call Times configuration
 							                    IVR – Basic configuration (one level only)
-							                    Basic tutorial for Campaign and Leads management.    									    
-							    									    
-							    									    
-							    									    
+							                    Basic tutorial for Campaign and Leads management.
+
+
+
 							    									    </p></td></tr>
 												<tr><td><br><p style="font-size: 14px;">4.2.2.All advance configurations not listed above will be charged with the regular hourly support rate of $80 per hour. </p></td></tr>
 												<tr><td><br><p style="font-size: 14px;">4.2.3.We provide limited support and provide samples configurations for IP Phones/Softphones. It is the end users responsibility to properly configure their workstations and devices for use with GoAutoDial'sservices. </p></td></tr>
@@ -523,10 +523,10 @@
 						<!-- ./justgo -->
 
 					</div><!--end of step2 -->
-					
-					
+
+
 				</form>
-		
+
 				</div> <!-- end of modal body -->
 
 				<div class="modal-footer wizard-buttons">
@@ -566,16 +566,16 @@
 	  </div>
 	</div>
 	<!-- End of modal -->
-		
+
 		<!-- Forms and actions -->
 		<?php print $ui->standardizedThemeJS(); ?>
-		<script src="js/easyWizard.js" type="text/javascript"></script> 
+		<script src="js/easyWizard.js" type="text/javascript"></script>
 
 		<script type="text/javascript">
-		
+
 			$(document).ready(function() {
 				$('#carriers').dataTable();
-				
+
 				/* on authorization change *
 				$('input[type=radio][name=authentication]').on('change', function() {
 				//  alert( this.value ); // or $(this).val()
@@ -599,7 +599,7 @@
 
 				$("#wizard-modal").wizard({
 
-					onnext:function(){		
+					onnext:function(){
 
 						var carrier_type = document.getElementById('carrier_type').value;
 
@@ -626,10 +626,10 @@
 						}else{
 							$('.justgo_div').hide();
 						}
-						
+
 					},
 	                onfinish:function(){
-	                
+
 					var generate_phone_logins = document.getElementById('generate_phone_logins').value;
 					var phone_logins = document.getElementById('phone_logins').value;
 					var phone_pass = document.getElementById('phone_pass').value;
@@ -655,7 +655,7 @@
 						if(fullname == ""){
 							validate_wizard = 1;
 						}
-						
+
 						if(password != conf_password || password == ""){
 							validate_wizard = 1;
 						}
@@ -685,7 +685,7 @@
 						}
 
 	                }
-					
+
 	            });
 					*/
 				/**
@@ -703,23 +703,23 @@
 
 				$('.delete-carrier').click(function(){
 					var id = $(this).attr('data-id');
-                    swal({   
-                        title: "Are you sure?",   
-                        text: "This action cannot be undone.",   
-                        type: "warning",   
-                        showCancelButton: true,   
-                        confirmButtonColor: "#DD6B55",   
-                        confirmButtonText: "Yes, delete this carrier!",   
-                        cancelButtonText: "No, cancel please!",   
-                        closeOnConfirm: false,   
-                        closeOnCancel: false 
-                        }, 
-                        function(isConfirm){   
-                            if (isConfirm) { 
+                    swal({
+                        title: "Are you sure?",
+                        text: "This action cannot be undone.",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete this carrier!",
+                        cancelButtonText: "No, cancel please!",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                        },
+                        function(isConfirm){
+                            if (isConfirm) {
                             	$.ajax({
 									url: "./php/DeleteCarrier.php",
 									type: 'POST',
-									data: { 
+									data: {
 									      carrier_id : id,
 									},
 									dataType: 'json',
@@ -732,10 +732,10 @@
 										}
 									}
 								});
-								
-							 } else {     
-                                swal("Cancelled", "No action has been done :)", "error");   
-                            } 
+
+							 } else {
+                                swal("Cancelled", "No action has been done :)", "error");
+                            }
                         }
                     );
 
