@@ -1506,7 +1506,7 @@ function hijackThisLink(e) {
         $(".content-heading span").html("<?=$lh->translationFor('contacts')?>");
         breadCrumb += '<li class="active"><?=$lh->translationFor('contacts')?></li>';
         hash = 'contacts';
-    } else if (/agent/g.test(thisLink)) {
+    } else if (/agent|index/g.test(thisLink)) {
         $(".content-heading span").html("<?=$lh->translationFor('contact_information')?>");
         breadCrumb = '<li class="active"><i class="fa fa-home"></i> Home</li>';
     } else if (/edituser/g.test(thisLink)) {
@@ -1563,7 +1563,7 @@ function hijackThisLink(e) {
     
     $(".content-heading ol").empty();
     $(".content-heading ol").html(breadCrumb);
-    $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
+    $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
     
     if (origHash !== hash && hash != 'contacts') {
         $(".preloader").fadeOut('slow');
