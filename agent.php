@@ -1473,12 +1473,14 @@ if (isset($_GET["message"])) {
 			</li>
 			<?php
 			if ($user->userHasBasicPermission()) {
-				echo '<li>
-					<div class="text-center"><a href="" data-toggle="modal" id="change-password-toggle" data-target="#change-password-dialog-modal">'.$lh->translationFor("change_password").'</a></div>
-					<div class="text-center"><a href="./messages.php">'.$lh->translationFor("messages").'</a></div>
-					<div class="text-center"><a href="./notifications.php">'.$lh->translationFor("notifications").'</a></div>
-					<div class="text-center"><a href="./tasks.php">'.$lh->translationFor("tasks").'</a></div>
-				</li>';
+				//echo '<li>
+				//	<div class="text-center"><a href="" data-toggle="modal" id="change-password-toggle" data-target="#change-password-dialog-modal">'.$lh->translationFor("change_password").'</a></div>
+				//	<div class="text-center"><a href="./messages.php">'.$lh->translationFor("messages").'</a></div>
+				//	<div class="text-center"><a href="./notifications.php">'.$lh->translationFor("notifications").'</a></div>
+				//	<div class="text-center"><a href="./tasks.php">'.$lh->translationFor("tasks").'</a></div>
+				//</li>';
+				$ui->getSidebarItem("customerslist.php", "users", $lh->translationFor("contacts"));
+				$ui->getSidebarItem("callbackslist.php", "calendar", $lh->translationFor("callbacks"), "0", "blue");
 			}
 			?>
 		</ul>
