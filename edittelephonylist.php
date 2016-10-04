@@ -223,7 +223,7 @@ if (isset($_POST["modifyid"])) {
 																		 <div class="col-sm-12">
 																		 <a href="telephonylist.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
 				                             <button type="submit" class="btn btn-primary" id="modifyListOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-																		 <button type="button" class="btn btn-success" id="add_custom_field" data-id="<?php echo $modifyid; ?>"><i class="fa fa-plus"></i> Custom Fields </button>
+																		 <button type="button" class="btn btn-success" id="add_custom_field" data-id="<?php echo $modifyid; ?>"><i class="fa fa-th-list"></i> Custom Fields </button>
 																	 </div>
 			                           </div>
 															 </div>
