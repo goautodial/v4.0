@@ -1479,8 +1479,8 @@ if (isset($_GET["message"])) {
 				//	<div class="text-center"><a href="./notifications.php">'.$lh->translationFor("notifications").'</a></div>
 				//	<div class="text-center"><a href="./tasks.php">'.$lh->translationFor("tasks").'</a></div>
 				//</li>';
-				$ui->getSidebarItem("customerslist.php", "users", $lh->translationFor("contacts"));
-				$ui->getSidebarItem("callbackslist.php", "calendar", $lh->translationFor("callbacks"), "0", "blue");
+				echo $ui->getSidebarItem("customerslist.php", "users", $lh->translationFor("contacts"));
+				echo $ui->getSidebarItem("callbackslist.php", "calendar", $lh->translationFor("callbacks"), "0", "blue");
 			}
 			?>
 		</ul>
