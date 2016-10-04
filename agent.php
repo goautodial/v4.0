@@ -1471,6 +1471,7 @@ if (isset($_GET["message"])) {
 					</a>
 				</div>
 			</li>
+			<li></li>
 			<?php
 			if ($user->userHasBasicPermission()) {
 				//echo '<li>
@@ -1479,6 +1480,7 @@ if (isset($_GET["message"])) {
 				//	<div class="text-center"><a href="./notifications.php">'.$lh->translationFor("notifications").'</a></div>
 				//	<div class="text-center"><a href="./tasks.php">'.$lh->translationFor("tasks").'</a></div>
 				//</li>';
+				echo $ui->getSidebarItem("./agent.php", "dashboard", $lh->translationFor("Home"));
 				echo $ui->getSidebarItem("customerslist.php", "users", $lh->translationFor("contacts"));
 				echo $ui->getSidebarItem("callbackslist.php", "calendar", $lh->translationFor("callbacks"), "0", "blue");
 			}
