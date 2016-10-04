@@ -763,12 +763,12 @@ $(document).ready(function() {
             $("#cb-container").slideToggle('slow');
         });
         
-        if (!$("aside.control-sidebar").hasClass("control-sidebar-open")) {
-            if (!is_logged_in && !phoneRegistered) {
-                checkSidebarIfOpen(true);
-                $.AdminLTE.controlSidebar.open($("aside.control-sidebar"), true);
-            }
-        }
+        //if (!$("aside.control-sidebar").hasClass("control-sidebar-open")) {
+        //    if (!is_logged_in && !phoneRegistered) {
+        //        checkSidebarIfOpen(true);
+        //        $.AdminLTE.controlSidebar.open($("aside.control-sidebar"), true);
+        //    }
+        //}
     });
 
     var logoutRegX = new RegExp("logout\.php", "ig");
