@@ -280,6 +280,7 @@
 											 <th class='hide-on-medium hide-on-low'>Status</th>
 											 <th class='hide-on-medium hide-on-low'>Leads Count</th>
 											 <th class='hide-on-medium hide-on-low'>Campaign</th>
+											 <th class='hide-on-medium hide-on-low'>Fields</th>
 											 <th class='hide-on-medium hide-on-low'>Action</th>
 										  </tr>
 									   </thead>
@@ -303,6 +304,7 @@
 													<td class='hide-on-medium hide-on-low'><?php echo $lists->active[$i];?></td>
 								                    <td class='hide-on-medium hide-on-low'><?php echo $lists->tally[$i];?></td>
 													<td class='hide-on-medium hide-on-low'><?php echo $lists->campaign_id[$i];?></td>
+													<td class='hide-on-medium hide-on-low'><?php echo $lists->cf_count[$i];?></td>
 								                    <td><?php echo $action_list;?></td>
 									            </tr>
 											<?php
