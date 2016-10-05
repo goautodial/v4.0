@@ -473,8 +473,7 @@ $agents = $ui->API_goGetAllUserLists();
 						});
 
 		            // AGENT FILTER
-		            	$('#agent_filter').on('change', function() {
-
+		            	$(document).on('change','#agent_filter',function() {
 		            		if($('#search').val() == ""){
 		                		$('#search_button').attr("disabled", false);
 		                		$('#search_button').text("Searching...");
@@ -576,7 +575,7 @@ $agents = $ui->API_goGetAllUserLists();
 				/*****
 				** For playing Call Recordings
 				*****/
-				$('.play_audio').click(function(){
+				$(document).on('click','.play_audio',function() {
 					var audioFile = $(this).attr('data-location');
 
 					var sourceFile = '<audio class="audio_file" controls>';
