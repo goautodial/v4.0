@@ -2705,8 +2705,10 @@ function CheckForIncoming () {
             closecallid                                 = this_VDIC_data.closecallid;
             xfercallid                                  = this_VDIC_data.xfercallid;
 
-            if ( (this_VDIC_data.fronter_full_name.length > 1) && (VDCL_fronter_display == 'Y') )
-                {VDIC_fronter = "  Fronter: " + this_VDIC_data.fronter_full_name + " - " + this_VDIC_data.tsr;}
+            if (this_VDIC_data.fronter_full_name != null) {
+                if ( (this_VDIC_data.fronter_full_name.length > 1) && (VDCL_fronter_display == 'Y') )
+                    {VDIC_fronter = "  Fronter: " + this_VDIC_data.fronter_full_name + " - " + this_VDIC_data.tsr;}
+            }
             
             $(".formMain input[name='lead_id']").val(this_VDIC_data.lead_id);
             $(".formMain input[name='uniqueid']").val(this_VDIC_data.uniqueid);
