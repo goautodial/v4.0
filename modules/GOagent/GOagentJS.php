@@ -3279,7 +3279,7 @@ function DialLog(taskMDstage, nodeletevdac) {
     var alt_num_status = 0;
     if (taskMDstage == "start") {
         MDlogEPOCH = 0;
-        var UID_test = document.vicidial_form.uniqueid.value;
+        var UID_test = $(".formMain input[name='uniqueid']").val();
         if (UID_test.length < 4) {
             UID_test = epoch_sec + '.' + random;
             $(".formMain input[name='uniqueid']").val(UID_test);
