@@ -1310,6 +1310,23 @@ $(document).ready(function() {
                                 } else {
                                     $.globalEval(key+" = '"+value+"';");
                                 }
+                            } else {
+                                if (key != 'user') {
+                                    if (typeof value == 'object') {
+                                        var idxArr = '';
+                                        var valArr = '';
+                                        $.each(value, function(idx, val) {
+                                            idxArr += "'"+idx+"',";
+                                            valArr += "'"+val+"',";
+                                        });
+                                        $.globalEval(key+" = new Array("+idxArr.slice(0,-1)+");");
+                                        $.globalEval(key+"_names = new Array("+valArr.slice(0,-1)+");");
+                                    } else if (typeof value == 'number') {
+                                        $.globalEval(key+" = "+value+";");
+                                    } else {
+                                        $.globalEval(key+" = '"+value+"';");
+                                    }
+                                }
                             }
                         }
                     });
