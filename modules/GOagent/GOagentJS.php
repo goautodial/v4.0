@@ -2755,7 +2755,7 @@ function CheckForIncoming () {
             activateLinks();
 
             // INSERT VICIDIAL_LOG ENTRY FOR THIS CALL PROCESS
-            DialLog("start");
+            //DialLog("start");
 
             custchannellive = 1;
 
@@ -3970,6 +3970,8 @@ function ManualDialCheckChannel(taskCheckOR) {
                 toggleButton('DialHangup', 'hangup');
                 activateLinks();
                 
+                // INSERT VICIDIAL_LOG ENTRY FOR THIS CALL PROCESS
+                DialLog("start");
                 lastcustserverip = '';
             }
         }
