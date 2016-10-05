@@ -5208,6 +5208,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         $.each(custom_names_array, function(idx, field) {
                             if (field.length < 1) return true;
                             var field_name = ".formMain #custom_fields [id='custom_" + field + "']";
+                            console.log(idx, custom_types_array[idx], custom_values_array[idx]);
                             switch (custom_types_array[idx]) {
                                 case "TEXT":
                                 case "AREA":
