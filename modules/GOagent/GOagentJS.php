@@ -1094,8 +1094,7 @@ $(document).ready(function() {
                     data: postData,
                     dataType: "json",
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'charset': 'UTF-8'
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 })
                 .done(function (data) {
@@ -1192,8 +1191,7 @@ $(document).ready(function() {
                 data: postData,
                 dataType: "json",
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'charset': 'UTF-8'
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 }
             })
             .done(function (result) {
@@ -1612,8 +1610,7 @@ function btnLogMeIn () {
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -1691,8 +1688,7 @@ function sendLogout (logMeOut) {
             data: postData,
             dataType: "json",
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'charset': 'UTF-8'
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         })
         .done(function (result) {
@@ -2050,8 +2046,7 @@ function checkIfStillLoggedIn(logged_out) {
             data: postData,
             dataType: "json",
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'charset': 'UTF-8'
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         })
         .done(function (result) {
@@ -2115,8 +2110,7 @@ function CheckForConfCalls (confnum, force) {
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -2616,8 +2610,7 @@ function CheckForIncoming () {
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -3193,8 +3186,7 @@ function RefreshAgentsView(RAlocation, RAcount) {
                 data: postData,
                 dataType: "json",
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'charset': 'UTF-8'
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 }
             })
             .done(function (result) {
@@ -3252,8 +3244,7 @@ function ReCheckCustomerChan() {
     //    data: postData,
     //    dataType: "json",
     //    headers: {
-    //        'Content-Type': 'application/x-www-form-urlencoded',
-    //        'charset': 'UTF-8'
+    //        'Content-Type': 'application/x-www-form-urlencoded'
     //    }
     //})
     //.done(function (result) {
@@ -3357,8 +3348,7 @@ function DialLog(taskMDstage, nodeletevdac) {
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -3433,8 +3423,7 @@ function RefreshCallsInQueue(CQcount) {
                 data: postData,
                 dataType: "json",
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'charset': 'UTF-8'
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 }
             })
             .done(function (result) {
@@ -3468,8 +3457,7 @@ function CallBacksCountCheck() {
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -3670,8 +3658,7 @@ function UpdateFieldsData() {
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -3859,8 +3846,7 @@ function Clear_API_Field(temp_field) {
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -3897,8 +3883,7 @@ function ManualDialCheckChannel(taskCheckOR) {
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -4147,8 +4132,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
             data: postData,
             dataType: "json",
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'charset': 'UTF-8'
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         })
         .done(function (result) {
@@ -4496,8 +4480,7 @@ function DispoSelectSubmit() {
                 data: postData,
                 dataType: "json",
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'charset': 'UTF-8'
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 }
             })
             .done(function (result) {
@@ -4788,8 +4771,7 @@ function CustomerData_update() {
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -4901,8 +4883,7 @@ function ManualDialOnly(taskaltnum) {
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -5113,8 +5094,7 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -5259,8 +5239,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
             data: postData,
             dataType: "json",
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'charset': 'UTF-8'
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         })
         .done(function (result) {
@@ -5673,8 +5652,7 @@ function AutoDial_Resume_Pause(taskaction, taskagentlog, taskwrapup, taskstatusc
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -5792,8 +5770,7 @@ function XFerCallHangup() {
             data: postData,
             dataType: "json",
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'charset': 'UTF-8'
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         })
         .done(function (result) {
@@ -5863,8 +5840,7 @@ function DialTimeHangup(tasktypecall) {
             data: postData,
             dataType: "json",
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'charset': 'UTF-8'
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         })
         .done(function (result) {
@@ -6280,8 +6256,7 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 data: postData,
                 dataType: "json",
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'charset': 'UTF-8'
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 }
             })
             .done(function (result) {
@@ -6322,8 +6297,7 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                     data: postData,
                     dataType: "json",
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'charset': 'UTF-8'
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 })
                 .done(function (result) {
@@ -6380,8 +6354,7 @@ function GetCustomFields(listid, show, getData) {
             data: postData,
             dataType: "json",
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'charset': 'UTF-8'
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         })
         .done(function (result) {
@@ -6598,8 +6571,7 @@ function LoadScriptContents() {
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
@@ -6737,8 +6709,7 @@ function getContactList() {
         data: postData,
         dataType: "json",
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'charset': 'UTF-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
     .done(function (result) {
