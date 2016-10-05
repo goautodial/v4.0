@@ -2705,8 +2705,10 @@ function CheckForIncoming () {
             closecallid                                 = this_VDIC_data.closecallid;
             xfercallid                                  = this_VDIC_data.xfercallid;
 
-            if ( (this_VDIC_data.fronter_full_name.length > 1) && (VDCL_fronter_display == 'Y') )
-                {VDIC_fronter = "  Fronter: " + this_VDIC_data.fronter_full_name + " - " + this_VDIC_data.tsr;}
+            if (this_VDIC_data.fronter_full_name != null) {
+                if ( (this_VDIC_data.fronter_full_name.length > 1) && (VDCL_fronter_display == 'Y') )
+                    {VDIC_fronter = "  Fronter: " + this_VDIC_data.fronter_full_name + " - " + this_VDIC_data.tsr;}
+            }
             
             $(".formMain input[name='lead_id']").val(this_VDIC_data.lead_id);
             $(".formMain input[name='uniqueid']").val(this_VDIC_data.uniqueid);
@@ -2859,9 +2861,9 @@ function CheckForIncoming () {
                                     var selectThis = custom_values_array[idx].split(',');
                                     $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
                                         if (selectThis.indexOf($(this).val()) > -1) {
-                                            $(this).prop('checked', true);
+                                            $(this).prop('selected', true);
                                         } else {
-                                            $(this).prop('checked', false);
+                                            $(this).prop('selected', false);
                                         }
                                     });
                                     break;
@@ -3277,7 +3279,7 @@ function DialLog(taskMDstage, nodeletevdac) {
     var alt_num_status = 0;
     if (taskMDstage == "start") {
         MDlogEPOCH = 0;
-        var UID_test = document.vicidial_form.uniqueid.value;
+        var UID_test = $(".formMain input[name='uniqueid']").val();
         if (UID_test.length < 4) {
             UID_test = epoch_sec + '.' + random;
             $(".formMain input[name='uniqueid']").val(UID_test);
@@ -5436,9 +5438,9 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                             var selectThis = custom_values_array[idx].split(',');
                                             $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
                                                 if (selectThis.indexOf($(this).val()) > -1) {
-                                                    $(this).prop('checked', true);
+                                                    $(this).prop('selected', true);
                                                 } else {
-                                                    $(this).prop('checked', false);
+                                                    $(this).prop('selected', false);
                                                 }
                                             });
                                             break;
