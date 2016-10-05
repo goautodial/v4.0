@@ -1087,7 +1087,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>';
 	}
 	//telephony menu for users
-	private function getUserActionMenuForT_User($userid, $role, $name) {
+	private function getUserActionMenuForT_User($userid, $role, $name, $user) {
 
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -1097,6 +1097,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
 	                    <li><a class="edit-T_user" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("Modify").'</a></li>
+	                    <li><a class="emergency-logout" href="#" data-emergency-logout-username="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("Emergency Logout").'</a></li>
 	                    <li class="divider"></li>
 	                    <li><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("Delete").'</a></li>
 	                </ul>
@@ -3279,7 +3280,7 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = "Inactive";
 				 }
 
-	       	    $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i]);
+	       	    $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i], $output->user[$i]);
 	       	    $sessionAvatar = "<avatar username='".$output->full_name[$i]."' :size='36'></avatar>";
 
 		        $result .= "<tr>
@@ -5722,6 +5723,35 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 
+	public function API_EmergencyLogout($username) {
+		$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass;
+		$postfields["goAction"] = "goEmergencyLogout"; #action performed by the [[API:Functions]]
+		$postfields["responsetype"] = responsetype;
+		$postfields["goUserAgent"] = $username;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		$data = curl_exec($ch);
+		curl_close($ch);
+
+		$output = json_decode($data);
+
+		if ($output->result=="success") {
+		   # Result was OK!
+		    $status = "success";
+		 } else {
+		   # An error occured
+			$status = $output->result;
+		}
+
+		return $status;
+	}
 
 }
 

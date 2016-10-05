@@ -723,6 +723,50 @@
 					//$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				});
+
+	//--------------------
+
+		/*********
+		** Emergency Logout Event
+		*********/
+			//user edit event
+				$(document).on('click','.emergency-logout',function() {
+					var userid = $(this).attr('data-emergency-logout-username');
+					var name = $(this).attr('data-name');
+					swal({   
+	                	title: "Emergency Log Out : " + name,
+	                	type: "warning",   
+	                	showCancelButton: true,   
+	                	confirmButtonColor: "#DD6B55",   
+	                	confirmButtonText: "Log Out this agent",   
+	                	cancelButtonText: "Cancel Emergency Log Out",   
+	                	closeOnConfirm: false,   
+	                	closeOnCancel: false 
+	                	}, 
+	                	function(isConfirm){   
+	                		if (isConfirm) { 
+	                			$.ajax({
+									type: 'POST',
+									url: "php/emergency_logout.php",
+									data: {goUserAgent: userid},
+									cache: false,
+									//dataType: 'json',
+									success: function(data){
+										if(data == "success"){
+											sweetAlert("Agent Logged Out Successfully", "", "success");
+										}else{
+											sweetAlert("Emergency Logout",data, "warning");
+										}
+									}
+								}); 
+							} else {     
+	                			swal("Cancelled", "No action has been done :)", "error");   
+	                		} 
+	                	}
+	                );
+					
+				});
+				
 	// ------------------
 				
 		/*********
