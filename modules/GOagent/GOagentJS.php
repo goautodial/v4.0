@@ -72,6 +72,9 @@ var refresh_interval = 1000;
 var SIPserver = '<?=$SIPserver?>';
 var check_s;
 var getFields = false;
+var hangup_all_non_reserved= 1;	//set to 1 to force hangup all non-reserved channels upon Hangup Customer
+var blind_transfer = 0;
+var MDlogEPOCH = 0;
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -1089,7 +1092,11 @@ $(document).ready(function() {
                     url: '<?=$goAPI?>/goAgent/goAPI.php',
                     processData: true,
                     data: postData,
-                    dataType: "json"
+                    dataType: "json",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'charset': 'UTF-8'
+                    }
                 })
                 .done(function (data) {
                     var result = data.result;
@@ -1183,7 +1190,11 @@ $(document).ready(function() {
                 url: '<?=$goAPI?>/goAgent/goAPI.php',
                 processData: true,
                 data: postData,
-                dataType: "json"
+                dataType: "json",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'charset': 'UTF-8'
+                }
             })
             .done(function (result) {
                 if (result.result != 'error') {
@@ -1599,7 +1610,11 @@ function btnLogMeIn () {
         url: '<?=$goAPI?>/goAgent/goAPI.php',
         processData: true,
         data: postData,
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
         if (result.result == 'success') {
@@ -1674,7 +1689,11 @@ function sendLogout (logMeOut) {
             url: '<?=$goAPI?>/goAgent/goAPI.php',
             processData: true,
             data: postData,
-            dataType: "json"
+            dataType: "json",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'charset': 'UTF-8'
+            }
         })
         .done(function (result) {
             if (result.result == 'success') {
@@ -2029,7 +2048,11 @@ function checkIfStillLoggedIn(logged_out) {
             url: '<?=$goAPI?>/goAgent/goAPI.php',
             processData: true,
             data: postData,
-            dataType: "json"
+            dataType: "json",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'charset': 'UTF-8'
+            }
         })
         .done(function (result) {
             if (result.result == 'success') {
@@ -2090,7 +2113,11 @@ function CheckForConfCalls (confnum, force) {
         url: '<?=$goAPI?>/goAgent/goAPI.php',
         processData: true,
         data: postData,
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
         if (result.result == 'success') {
@@ -2587,7 +2614,11 @@ function CheckForIncoming () {
         url: '<?=$goAPI?>/goAgent/goAPI.php',
         processData: true,
         data: postData,
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
         if (live_customer_call == 1) {
@@ -2647,8 +2678,10 @@ function CheckForIncoming () {
             else
                 {LIVE_web_vars = default_web_vars;}
 
-            if (this_VDIC_data.group_web_two.length > 5)
-                {VDIC_web_form_address_two = this_VDIC_data.group_web_two;}
+            if (this_VDIC_data.group_web_two != null) {
+                if (this_VDIC_data.group_web_two.length > 5)
+                    {VDIC_web_form_address_two = this_VDIC_data.group_web_two;}
+            }
 
             var call_timer_action                       = this_VDIC_data.timer_action;
 
@@ -3158,7 +3191,11 @@ function RefreshAgentsView(RAlocation, RAcount) {
                 url: '<?=$goAPI?>/goAgent/goAPI.php',
                 processData: true,
                 data: postData,
-                dataType: "json"
+                dataType: "json",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'charset': 'UTF-8'
+                }
             })
             .done(function (result) {
                 var newRAlocationHTML = result.result;
@@ -3213,7 +3250,11 @@ function ReCheckCustomerChan() {
     //    url: '<?=$goAPI?>/goAgent/goAPI.php',
     //    processData: true,
     //    data: postData,
-    //    dataType: "json"
+    //    dataType: "json",
+    //    headers: {
+    //        'Content-Type': 'application/x-www-form-urlencoded',
+    //        'charset': 'UTF-8'
+    //    }
     //})
     //.done(function (result) {
         //var recheck_incoming = null;
@@ -3240,6 +3281,141 @@ function ReCheckCustomerChan() {
 }
 
 // ################################################################################
+// Insert or update the vicidial_log entry for a customer call
+function DialLog(taskMDstage, nodeletevdac) {
+    var alt_num_status = 0;
+    if (taskMDstage == "start") {
+        MDlogEPOCH = 0;
+        var UID_test = document.vicidial_form.uniqueid.value;
+        if (UID_test.length < 4) {
+            UID_test = epoch_sec + '.' + random;
+            $(".formMain input[name='uniqueid']").val(UID_test);
+        }
+    } else {
+        if (alt_phone_dialing == 1) {
+            if ($("#DialALTPhone").is(':checked')) {
+                var status_display_content = '';
+                if (status_display_LEADID > 0) {status_display_content = status_display_content + " <?=$lh->translationFor('lead')?>: " + $(".formMain input[name='lead_id']").val();}
+                if (status_display_LISTID > 0) {status_display_content = status_display_content + " <?=$lh->translationFor('list')?>: " + $(".formMain input[name='list_id']").val();}
+
+                alt_num_status = 1;
+                reselect_alt_dial = 1;
+                alt_dial_active = 1;
+                alt_dial_status_display = 1;
+                var man_status = "<?=$lh->translationFor('dial_alt_phone_number')?>: <a href=\"#\" onclick=\"ManualDialOnly('MainPhone')\"><font class=\"preview_text\">&nbsp;<?=$lh->translationFor('main_phone')?>&nbsp;</font></a> or <a href=\"#\" onclick=\"ManualDialOnly('ALTPhone')\"><font class=\"preview_text\">&nbsp;<?=$lh->translationFor('alt_phone')?>&nbsp;</font></a> or <a href=\"#\" onclick=\"ManualDialOnly('Address3')\"><font class=\"preview_text\">&nbsp;<?=$lh->translationFor('address3')?>&nbsp;</font></a> or <a href=\"#\" onclick=\"ManualDialAltDone()\"><font class=\"preview_text_red\">&nbsp;<?=$lh->translationFor('finish_lead')?>&nbsp;</font></a>" + status_display_content;
+                $("#MainStatusSpan").html(man_status);
+            }
+        }
+    }
+    
+    
+    var postData = {
+        goAction: 'goManualDialLogCall',
+        goServerIP: server_ip,
+        goSessionName: session_name,
+        goUser: uName,
+        goPass: uPass,
+        goStage: taskMDstage,
+        goCampaign: campaign,
+        goAgentLogID: agent_log_id,
+        goUniqueID: $(".formMain input[name='uniqueid']").val(),
+        goLeadID: $(".formMain input[name='lead_id']").val(),
+        goListID: $(".formMain input[name='list_id']").val(),
+        goLengthInSec: 0,
+        goPhoneCode: $(".formMain input[name='phone_code']").val(),
+        goPhoneNumber: lead_dial_number,
+        goExten: extension,
+        goExtension: extension,
+        goChannel: lastcustchannel,
+        goStartEpoch: MDlogEPOCH,
+        goAutoDialLevel: auto_dial_level,
+        goStopRecAfterEachCall: VDstop_rec_after_each_call,
+        goConfSilentPrefix: conf_silent_prefix,
+        goProtocol: protocol,
+        goExtContext: ext_context,
+        goConfExten: session_id,
+        goUserABB: user_abb,
+        goMDnextCID: LastCID,
+        goInOut: inOUT,
+        goALTDial: dialed_label,
+        goAgentChannel: agentchannel,
+        goConfDialed: conf_dialed,
+        goLeavingThreeway: leaving_threeway,
+        goHangupAllNonReserved: hangup_all_non_reserved,
+        goBlindTransfer: blind_transfer,
+        goDialMethod: dial_method,
+        goNoDeleteVDAC: nodeletevdac,
+        goALTNumStatus: alt_num_status,
+        goQMExtension: qm_extension,
+        responsetype: 'json'
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
+    })
+    .done(function (result) {
+        var MDlogResponse = result.data;
+        MDlogLINE = MDlogResponse_array[0];
+        if ( (MDlogLINE == "LOG NOT ENTERED") && (VDstop_rec_after_each_call != 1) )
+            {
+    //		alert("error: log not entered\n");
+            }
+        else
+            {
+            MDlogEPOCH = MDlogResponse_array[1];
+    //		alert("VICIDIAL Call log entered:\n" + document.vicidial_form.uniqueid.value);
+            if ( (taskMDstage != "start") && (VDstop_rec_after_each_call == 1) )
+                {
+                var conf_rec_start_html = "<a href=\"#\" onclick=\"conf_send_recording('MonitorConf','" + session_id + "','');return false;\"><img src=\"./images/vdc_LB_startrecording.gif\" border=\"0\" alt=\"<?=$lang['start_recording']?>\" /></a>";
+                if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') )
+                    {
+                    document.getElementById("RecorDControl").innerHTML = "<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lang['start_recording']?>\" />";
+                    }
+                else
+                    {document.getElementById("RecorDControl").innerHTML = conf_rec_start_html;}
+                
+                MDlogRecorDings = MDlogResponse_array[3];
+                if (window.MDlogRecorDings)
+                    {
+                    var MDlogRecorDings_array=MDlogRecorDings.split("|");
+            //		recording_filename = MDlogRecorDings_array[2];
+            //		recording_id = MDlogRecorDings_array[3];
+
+                    var RecDispNamE = MDlogRecorDings_array[2];
+                    if (RecDispNamE.length > 25)
+                        {
+                        RecDispNamE = RecDispNamE.substr(0,22);
+                        RecDispNamE = RecDispNamE + '...';
+                        }
+                    document.getElementById("RecorDingFilename").innerHTML = RecDispNamE;
+                    document.getElementById("RecorDID").innerHTML = MDlogRecorDings_array[3];
+                    }
+                }
+            }
+        RedirectXFER = 0;
+        conf_dialed = 0;
+    });
+}
+
+// ################################################################################
+// Finish the alternate dialing and move on to disposition the call
+function ManualDialAltDone() {
+    alt_phone_dialing = starting_alt_phone_dialing;
+    alt_dial_active = 0;
+    alt_dial_status_display = 0;
+    open_dispo_screen = 1;
+    $("#MainStatusSpan").html("<?=$lh->translationFor('dial_next')?>");
+}
+
+// ################################################################################
 // RefresH the calls in queue bottombar
 function RefreshCallsInQueue(CQcount) {
     if (CQcount > 0) {
@@ -3262,7 +3438,11 @@ function RefreshCallsInQueue(CQcount) {
                 url: '<?=$goAPI?>/goAgent/goAPI.php',
                 processData: true,
                 data: postData,
-                dataType: "json"
+                dataType: "json",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'charset': 'UTF-8'
+                }
             })
             .done(function (result) {
                 if (result.result == 'success') {
@@ -3293,7 +3473,11 @@ function CallBacksCountCheck() {
         url: '<?=$goAPI?>/goAgent/goAPI.php',
         processData: true,
         data: postData,
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
         var CBpre = '';
@@ -3491,7 +3675,11 @@ function UpdateFieldsData() {
         url: '<?=$goAPI?>/goAgent/goAPI.php',
         processData: true,
         data: postData,
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
         var UDfieldsResponse = null;
@@ -3676,7 +3864,11 @@ function Clear_API_Field(temp_field) {
         url: '<?=$goAPI?>/goAgent/goAPI.php',
         processData: true,
         data: postData,
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
 		//alert(result.result);
@@ -3710,7 +3902,11 @@ function ManualDialCheckChannel(taskCheckOR) {
         url: '<?=$goAPI?>/goAgent/goAPI.php',
         processData: true,
         data: postData,
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
         var this_MD_data = result.data;
@@ -3956,7 +4152,11 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
             url: '<?=$goAPI?>/goAgent/goAPI.php',
             processData: true,
             data: postData,
-            dataType: "json"
+            dataType: "json",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'charset': 'UTF-8'
+            }
         })
         .done(function (result) {
             NActiveExt = null;
@@ -4302,6 +4502,10 @@ function DispoSelectSubmit() {
                 processData: true,
                 data: postData,
                 dataType: "json",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'charset': 'UTF-8'
+                }
             })
             .done(function (result) {
                 if (auto_dial_level < 1) {
@@ -4590,6 +4794,10 @@ function CustomerData_update() {
         processData: true,
         data: postData,
         dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
         console.log('Customer data updated...');
@@ -4699,6 +4907,10 @@ function ManualDialOnly(taskaltnum) {
         processData: true,
         data: postData,
         dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
         if (result.result == 'error') {
@@ -4907,6 +5119,10 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
         processData: true,
         data: postData,
         dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
         var BOresponse = result;
@@ -5049,6 +5265,10 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
             processData: true,
             data: postData,
             dataType: "json",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'charset': 'UTF-8'
+            }
         })
         .done(function (result) {
             //dialingINprogress = 0;
@@ -5458,7 +5678,11 @@ function AutoDial_Resume_Pause(taskaction, taskagentlog, taskwrapup, taskstatusc
         url: '<?=$goAPI?>/goAgent/goAPI.php',
         processData: true,
         data: postData,
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
         if (result.result == 'error') {
@@ -5573,7 +5797,11 @@ function XFerCallHangup() {
             url: '<?=$goAPI?>/goAgent/goAPI.php',
             processData: true,
             data: postData,
-            dataType: "json"
+            dataType: "json",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'charset': 'UTF-8'
+            }
         })
         .done(function (result) {
                 //alert(result.message);
@@ -5640,7 +5868,11 @@ function DialTimeHangup(tasktypecall) {
             url: '<?=$goAPI?>/goAgent/goAPI.php',
             processData: true,
             data: postData,
-            dataType: "json"
+            dataType: "json",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'charset': 'UTF-8'
+            }
         })
         .done(function (result) {
             //alert(result.message + "\n" + tasktypecall + "\n" + leaving_threeway);
@@ -6053,7 +6285,11 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 url: '<?=$goAPI?>/goAgent/goAPI.php',
                 processData: true,
                 data: postData,
-                dataType: "json"
+                dataType: "json",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'charset': 'UTF-8'
+                }
             })
             .done(function (result) {
                 var XfeRRedirecToutput = null;
@@ -6091,7 +6327,11 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                     url: '<?=$goAPI?>/goAgent/goAPI.php',
                     processData: true,
                     data: postData,
-                    dataType: "json"
+                    dataType: "json",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'charset': 'UTF-8'
+                    }
                 })
                 .done(function (result) {
                     Nactiveext = null;
@@ -6145,7 +6385,11 @@ function GetCustomFields(listid, show, getData) {
             url: '<?=$module_dir?>GOagentJS.php',
             processData: true,
             data: postData,
-            dataType: "json"
+            dataType: "json",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'charset': 'UTF-8'
+            }
         })
         .done(function (result) {
             if (result.result == 'success') {
@@ -6359,7 +6603,11 @@ function LoadScriptContents() {
         url: '<?=$goAPI?>/goAgent/goAPI.php',
         processData: true,
         data: postData,
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
         if (result.result == 'success') {
@@ -6494,7 +6742,11 @@ function getContactList() {
         url: '<?=$goAPI?>/goAgent/goAPI.php',
         processData: true,
         data: postData,
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'charset': 'UTF-8'
+        }
     })
     .done(function (result) {
         if (result.result == 'success') {
