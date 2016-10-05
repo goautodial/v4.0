@@ -201,14 +201,18 @@ if (isset($_GET["message"])) {
 					title: 'Enter First Name',
 					placeholder: 'Enter First Name',
 					emptytext: '&nbsp;',
-					unsavedclass: null
+					unsavedclass: null,
+					inputclass: 'text-color-black',
+					onblur: 'submit'
 				});
 				$("a[id='middle_initial']").editable({
 					type: 'text',
 					title: 'Enter Middle Initial',
 					placeholder: 'Enter Middle Initial',
 					emptytext: '&nbsp;',
-					unsavedclass: null
+					unsavedclass: null,
+					inputclass: 'text-color-black',
+					onblur: 'submit'
 				});
 				$("a[id='last_name']").editable({
 					type: 'text',
@@ -216,7 +220,9 @@ if (isset($_GET["message"])) {
 					title: 'Enter Last Name',
 					placeholder: 'Enter Last Name',
 					emptytext: '&nbsp;',
-					unsavedclass: null
+					unsavedclass: null,
+					inputclass: 'text-color-black',
+					onblur: 'submit'
 				});
 				
 				//$("#callback-list").DataTable({"bDestroy": true, "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5 ] }, { "bSearchable": false, "aTargets": [ 2, 5 ] }] });
@@ -369,6 +375,9 @@ if (isset($_GET["message"])) {
 				opacity: .5;
 				transition: all 0.2s ease;
 				font-weight: 700;
+			}
+			.text-color-black {
+				color: black;
 			}
 		</style>
     </head>
