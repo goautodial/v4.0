@@ -52,7 +52,7 @@ $dialStatus = $ui->API_getAllDialStatuses($campaign->data->campaign_id);
 $dids = $ui->API_getAllDIDs($campaign->data->campaign_id);
 $voicefiles = $ui->API_GetVoiceFilesList();
 $ingroups = $ui->API_getInGroups();
-
+$lists = $ui->API_goGetAllLists();
 ?>
 <html>
     <head>
@@ -72,7 +72,14 @@ $ingroups = $ui->API_getInGroups();
         <?php print $ui->creamyThemeCSS(); ?>
         <!-- iCheck for checkboxes and radio inputs -->
   		<link rel="stylesheet" href="css/iCheck/all.css">
-
+			<!-- SELECT2-->
+   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+			<style type="text/css">
+				.select2-container{
+					width: 100% !important;
+				}
+			</style>
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
@@ -616,9 +623,12 @@ $ingroups = $ui->API_getInGroups();
 														<div class="form-group">
 															<label class="col-sm-3 control-label">Manual Dial List ID:</label>
 															<div class="col-sm-9 mb">
-																<select class="form-control" id="manual_dial_list_id" name="manual_dial_list_id">
-																	<option value="998" <?php if($campaign->data->manual_dial_list_id == 998 || $campaign->data->manual_dial_list_id == 0) echo "selected";?>>998</option>
-																	<option value="999" <?php if($campaign->data->manual_dial_list_id == 999) echo "selected";?>>999</option>
+																<select class="form-control select2" id="manual_dial_list_id" name="manual_dial_list_id">
+																	<!-- <option value="998" <?php //if($campaign->data->manual_dial_list_id == 998 || $campaign->data->manual_dial_list_id == 0) echo "selected";?>>998</option>
+																	<option value="999" <?php //if($campaign->data->manual_dial_list_id == 999) echo "selected";?>>999</option> -->
+																	<?php for($i=0;$i<count($lists->list_id);$i++){ ?>
+								                        <option value="<?php echo $lists->list_id[$i];?>" <?php if($lists->list_id[$i] == $campaign->data->manual_dial_list_id) echo "selected";?>><?php echo $lists->list_id[$i]; ?></option>';
+								                  <?php } ?>
 																</select>
 															</div>
 														</div>
@@ -1471,6 +1481,8 @@ $ingroups = $ui->API_getInGroups();
 
     	<!-- iCheck 1.0.1 -->
 		<script src="js/plugins/iCheck/icheck.min.js"></script>
+		!-- SELECT2-->
+   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
 
 		<script type="text/javascript">
 			function check_campaign_allow_inbound(value){
@@ -1481,6 +1493,10 @@ $ingroups = $ui->API_getInGroups();
 				}
 			}
 			$(document).ready(function() {
+				$('.select2').select2({
+							theme: 'bootstrap'
+				});
+
 				var campaign_allow_inbound = $('#campaign_allow_inbound').val();
 				check_campaign_allow_inbound(campaign_allow_inbound);
 
