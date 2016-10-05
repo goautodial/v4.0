@@ -71,6 +71,7 @@ var c = new Date();
 var refresh_interval = 1000;
 var SIPserver = '<?=$SIPserver?>';
 var check_s;
+var getFields = false;
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -2799,49 +2800,54 @@ function CheckForIncoming () {
                 var custom_names_array = custom_field_names.split("|");
                 var custom_values_array = custom_field_values.split("----------");
                 var custom_types_array = custom_field_types.split("|");
+                var field_name = ".formMain #custom_fields";
                 
-                $.each(custom_names_array, function(idx, field) {
-                    if (field.length < 1) return true;
-                    var field_name = ".formMain #custom_fields [id='custom_" + field + "']";
-                    switch (custom_types_array[idx]) {
-                        case "TEXT":
-                        case "AREA":
-                        case "HIDDEN":
-                        case "DATE":
-                        case "TIME":
-                            $(field_name).val(custom_values_array[idx]);
-                            break;
-                        case "CHECKBOX":
-                        case "RADIO":
-                            var checkThis = custom_values_array[idx].split(',');
-                            $.each($(field_name + " [id^='custom_" + field + "']"), function() {
-                                var checkMe = false;
-                                if (checkThis.indexOf($(this).val()) > -1) {
-                                    checkMe = true;
-                                }
-                                $(this).prop('checked', checkMe);
-                            });
-                            break;
-                        case "SELECT":
-                        case "MULTI":
-                            var selectThis = custom_values_array[idx].split(',');
-                            $.each($(field_name + " option"), function() {
-                                var selectMe = false;
-                                if (selectThis.indexOf($(this).val()) > -1) {
-                                    selectMe = true;
-                                }
-                                $(this).prop('selected', selectMe);
-                            });
-                            break;
-                        default:
-                            $(field_name).html(custom_values_array[idx]);
+                var fieldsPopulated = setInterval(function() {
+                    if (getFields) {
+                        clearInterval(fieldsPopulated);
+                        
+                        $.each(custom_names_array, function(idx, field) {
+                            if (field.length < 1) return true;
+                            
+                            switch (custom_types_array[idx]) {
+                                case "TEXT":
+                                case "AREA":
+                                case "HIDDEN":
+                                case "DATE":
+                                case "TIME":
+                                    $(field_name + " [id='custom_" + field + "']").val(custom_values_array[idx]);
+                                    break;
+                                case "CHECKBOX":
+                                case "RADIO":
+                                    var checkThis = custom_values_array[idx].split(',');
+                                    $.each($(field_name + " [id^='custom_" + field + "']"), function() {
+                                        if (checkThis.indexOf($(this).val()) > -1) {
+                                            $(this).prop('checked', true);
+                                        } else {
+                                            $(this).prop('checked', false);
+                                        }
+                                    });
+                                    break;
+                                case "SELECT":
+                                case "MULTI":
+                                    var selectThis = custom_values_array[idx].split(',');
+                                    $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
+                                        if (selectThis.indexOf($(this).val()) > -1) {
+                                            $(this).prop('checked', true);
+                                        } else {
+                                            $(this).prop('checked', false);
+                                        }
+                                    });
+                                    break;
+                                default:
+                                    $(field_name + " [id='custom_" + field + "']").html(custom_values_array[idx]);
+                            }
+                        });
+                        
+                        replaceCustomFields();
+                        GetCustomFields(null, true);
                     }
-                });
-                    
-                replaceCustomFields();
-                setTimeout(function() {
-                    GetCustomFields(null, true);
-                }, 5000);
+                }, 1000);
             }
 
             lead_dial_number = $(".formMain input[name='phone_number']").val();
@@ -3780,7 +3786,7 @@ function ManualDialCheckChannel(taskCheckOR) {
         MD_channel_look = 0;
         MD_ring_seconds = 0;
         
-        toggleButtons(dial_method);
+        $("#MainStatusSpan").html('&nbsp;');
         swal("<?=$lh->translationFor('dial_timeout')?>.");
     }
 }
@@ -4151,8 +4157,9 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
         if (per_call_notes == 'ENABLED') {
             var test_notes = $("#call_notes_dispo").val();
             if (test_notes.length > 0)
-                {$(".formMain input[name='call_notes']").val(test_notes).trigger('change');}
-            $("#PerCallNotesContent").html("<br /><b><font size='3'><?=$lh->translationFor('call_notes')?>: </font></b><br /><textarea name='call_notes_dispo' id='call_notes_dispo' rows='2' cols='100' class='cust_form_text' value=''>" + $(".formMain input[name='call_notes']").val() + "</textarea>");
+                {$(".formMain [name='call_notes']").val(test_notes);}
+            //$("#PerCallNotesContent").html("<br /><b><font size='3'><?=$lh->translationFor('call_notes')?>: </font></b><br /><textarea name='call_notes_dispo' id='call_notes_dispo' rows='2' cols='100' class='cust_form_text'>" + $(".formMain [name='call_notes']").val() + "</textarea>");
+            $("#PerCallNotesContent").html("<input type='hidden' name='call_notes_dispo' id='call_notes_dispo' value='" + $(".formMain [name='call_notes']").val() + "' />");
         } else {
             $("#PerCallNotesContent").html("<input type='hidden' name='call_notes_dispo' id='call_notes_dispo' value='' />");
         }
@@ -4353,8 +4360,8 @@ function DispoSelectSubmit() {
                 $(".formMain input[name='audit_comments_button']").val('');
             }
             $(".formMain input[name='called_count']").val('');
-            $(".formMain input[name='call_notes']").val('');
-            $(".formMain input[name='call_notes_dispo']").val('');
+            $(".formMain [name='call_notes']").val('');
+            $(".formMain [name='call_notes_dispo']").val('');
             $("#MainStatusSpan").html('&nbsp;');
             VDCL_group_id = '';
             fronter = '';
@@ -5204,49 +5211,54 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         var custom_names_array = custom_field_names.split("|");
                         var custom_values_array = custom_field_values.split("----------");
                         var custom_types_array = custom_field_types.split("|");
+                        var field_name = ".formMain #custom_fields";
                         
-                        $.each(custom_names_array, function(idx, field) {
-                            if (field.length < 1) return true;
-                            var field_name = ".formMain #custom_fields [id='custom_" + field + "']";
-                            switch (custom_types_array[idx]) {
-                                case "TEXT":
-                                case "AREA":
-                                case "HIDDEN":
-                                case "DATE":
-                                case "TIME":
-                                    $(field_name).val(custom_values_array[idx]);
-                                    break;
-                                case "CHECKBOX":
-                                case "RADIO":
-                                    var checkThis = custom_values_array[idx].split(',');
-                                    $.each($(field_name + " [id^='custom_" + field + "']"), function() {
-                                        var checkMe = false;
-                                        if (checkThis.indexOf($(this).val()) > -1) {
-                                            checkMe = true;
-                                        }
-                                        $(this).prop('checked', checkMe);
-                                    });
-                                    break;
-                                case "SELECT":
-                                case "MULTI":
-                                    var selectThis = custom_values_array[idx].split(',');
-                                    $.each($(field_name + " option"), function() {
-                                        var selectMe = false;
-                                        if (selectThis.indexOf($(this).val()) > -1) {
-                                            selectMe = true;
-                                        }
-                                        $(this).prop('selected', selectMe);
-                                    });
-                                    break;
-                                default:
-                                    $(field_name).html(custom_values_array[idx]);
+                        var fieldsPopulated = setInterval(function() {
+                            if (getFields) {
+                                clearInterval(fieldsPopulated);
+                                
+                                $.each(custom_names_array, function(idx, field) {
+                                    if (field.length < 1) return true;
+                                    
+                                    switch (custom_types_array[idx]) {
+                                        case "TEXT":
+                                        case "AREA":
+                                        case "HIDDEN":
+                                        case "DATE":
+                                        case "TIME":
+                                            $(field_name + " [id='custom_" + field + "']").val(custom_values_array[idx]);
+                                            break;
+                                        case "CHECKBOX":
+                                        case "RADIO":
+                                            var checkThis = custom_values_array[idx].split(',');
+                                            $.each($(field_name + " [id^='custom_" + field + "']"), function() {
+                                                if (checkThis.indexOf($(this).val()) > -1) {
+                                                    $(this).prop('checked', true);
+                                                } else {
+                                                    $(this).prop('checked', false);
+                                                }
+                                            });
+                                            break;
+                                        case "SELECT":
+                                        case "MULTI":
+                                            var selectThis = custom_values_array[idx].split(',');
+                                            $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
+                                                if (selectThis.indexOf($(this).val()) > -1) {
+                                                    $(this).prop('checked', true);
+                                                } else {
+                                                    $(this).prop('checked', false);
+                                                }
+                                            });
+                                            break;
+                                        default:
+                                            $(field_name + " [id='custom_" + field + "']").html(custom_values_array[idx]);
+                                    }
+                                });
+                            
+                                replaceCustomFields();
+                                GetCustomFields(null, true);
                             }
-                        });
-                        
-                        replaceCustomFields();
-                        setTimeout(function() {
-                            GetCustomFields(null, true);
-                        }, 5000);
+                        }, 1000);
                     }
             
                     //$("#cust_full_name").html(cust_first_name+" "+cust_middle_initial+" "+cust_last_name);
@@ -6119,6 +6131,7 @@ function GetCustomFields(listid, show, getData) {
         } else {
             $("#custom_fields_content, #custom_br").slideDown();
         }
+        getFields = false;
     }
     
     if (getData) {
@@ -6261,6 +6274,8 @@ function GetCustomFields(listid, show, getData) {
                 if (show) {
                     $("#custom_fields_content, #custom_br").slideDown();
                 }
+                
+                getFields = true;
             }
         });
     }
@@ -6493,7 +6508,9 @@ function getContactList() {
                     commentTitle = ' title="'+thisComments+'"';
                     thisComments = thisComments.substring(0, 20) + "...";
                 }
-                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+value.first_name+' '+value.middle_initial+' '+value.last_name+'</td><td>'+value.phone_number+'</td><td>'+value.last_local_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-lead" data-leadid="'+value.lead_id+'" class="btn btn-primary btn-sm disabled" style="margin: 2px;"><i class="fa fa-phone"></i></button></td></tr>';
+                var customer_name = (value.first_name || '') + ' ' + (value.middle_initial || '') + ' ' + (value.last_name || '');
+                var last_call_time = (value.last_local_call_time || '0000-00-00 00:00:00');
+                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+customer_name+'</td><td>'+value.phone_number+'</td><td>'+last_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-lead" data-leadid="'+value.lead_id+'" class="btn btn-primary btn-sm disabled" style="margin: 2px;"><i class="fa fa-phone"></i></button></td></tr>';
                 $("#contacts-list tbody").append(appendThis);
             });
             $("#contacts-list").css('width', '100%');
