@@ -20,6 +20,7 @@ $US = '_';
 $NOW_TIME = date("Y-m-d H:i:s");
 $tsNOW_TIME = date("YmdHis");
 $StarTtimE = date("U");
+$FILE_TIME = date("Ymd-His");
 
 //ini_set('display_errors', 'on');
 //error_reporting(E_ALL);
@@ -63,6 +64,8 @@ var logoutWarn = true;
 var use_webrtc = <?=$use_webrtc?>;
 var NOW_TIME = '<?=$NOW_TIME?>';
 var SQLdate = '<?=$NOW_TIME?>';
+var filedate = '<?=$FILE_TIME?>';
+var tinydate = '';
 var StarTtimE = '<?=$StarTtimE?>';
 var UnixTime = '<?=$StarTtimE?>';
 var UnixTimeMS = 0;
@@ -75,6 +78,9 @@ var getFields = false;
 var hangup_all_non_reserved= 1;	//set to 1 to force hangup all non-reserved channels upon Hangup Customer
 var blind_transfer = 0;
 var MDlogEPOCH = 0;
+var recLIST = '';
+var filename = '';
+var last_filename = '';
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -584,7 +590,7 @@ $(document).ready(function() {
                         if (all_record_count < allcalls_delay)
                             {all_record_count++;}
                         else {
-                            //ConfSendRecording('MonitorConf', session_id , '');
+                            ConfSendRecording('MonitorConf', session_id , '');
                             all_record = 'NO';
                             all_record_count = 0;
                         }
@@ -1210,7 +1216,7 @@ $(document).ready(function() {
                                 if (patt.test(cKey)) {
                                     $.globalEval("campaign_"+cKey+" = '"+cValue+"';");
                                 } else {
-                                    if (cValue === undefined || cValue === null) {
+                                    if (typeof cValue == 'undefined' || typeof cValue == 'null') {
                                         cValue = "";
                                     }
                                     
@@ -1242,7 +1248,11 @@ $(document).ready(function() {
                                         $.globalEval("LIVE_"+cKey+" = '"+cValue+"';");
                                     }
                                     
-                                    var dispo_patt = /^(disable_dispo_screen|disable_dispo_status|campaign_recording)$/g;
+                                    if (cKey == 'campaign_recording') {
+                                        $.globalEval("LIVE_"+cKey+" = '"+cValue+"';");
+                                    }
+                                    
+                                    var dispo_patt = /^(disable_dispo_screen|disable_dispo_status)$/g;
                                     if (!dispo_patt.test(cKey)) {
                                         if (cKey == 'web_form_address' || cKey == 'web_form_address_two') {
                                             $.globalEval(cKey+" = '"+cValue+"';");
@@ -1347,12 +1357,13 @@ $(document).ready(function() {
                     }
                     
                     var vro_patt = /DISABLED/;
+                    var camp_rec = campaign_recording;
                     if ((!vro_patt.test(vicidial_recording_override)) && (vicidial_recording > 0))
-                        {var camp_rec = vicidial_recording_override;}
+                        {camp_rec = vicidial_recording_override;}
                     if (vicidial_recording == '0')
-                        {var camp_rec = 'NEVER';}
-                    $.globalEval("campaign_recording = '"+camp_rec+"';");
-                    $.globalEval("LIVE_campaign_recording = '"+camp_rec+"';");
+                        {camp_rec = 'NEVER';}
+                    campaign_recording = camp_rec;
+                    LIVE_campaign_recording = camp_rec;
                     
                     updateHotKeys();
                     updateButtons();
@@ -2217,11 +2228,11 @@ function CheckForConfCalls (confnum, force) {
                 api_parkcustomer = confArray.api_park;
                 
             if (api_recording=='START') {
-                //ConfSendRecording('MonitorConf', session_id,'','1');
+                ConfSendRecording('MonitorConf', session_id,'','1');
                 //sendToAPI('recording', 'START');
             }
             if (api_recording=='STOP') {
-                //ConfSendRecording('StopMonitorConf', session_id, recording_filename,'1');
+                ConfSendRecording('StopMonitorConf', session_id, recording_filename, '1');
                 //sendToAPI('recording', 'STOP');
             }
             if (api_transferconf_function.length > 0) {
@@ -3318,7 +3329,6 @@ function DialLog(taskMDstage, nodeletevdac) {
         }
     }
     
-    
     var postData = {
         goAction: 'goManualDialLogCall',
         goServerIP: server_ip,
@@ -3373,7 +3383,7 @@ function DialLog(taskMDstage, nodeletevdac) {
     .done(function (result) {
         var MDlogResponse = result.message;
         var MDlogResponse_array = MDlogResponse.split('\n');
-        if ( (MDlogResponse.indexOf("LOG NOT ENTERED") > -1) && (VDstop_rec_after_each_call != 1) ) {
+        if ( (MDlogResponse_array[0].indexOf("LOG NOT ENTERED") > -1) && (VDstop_rec_after_each_call != 1) ) {
     //		alert("error: log not entered\n");
             console.log('ERROR: Log NOT Entered');
         } else {
@@ -3381,9 +3391,9 @@ function DialLog(taskMDstage, nodeletevdac) {
             if ( (taskMDstage != "start") && (VDstop_rec_after_each_call == 1) ) {
                 //var conf_rec_start_html = "<a href=\"#\" onclick=\"ConfSendRecording('MonitorConf','" + session_id + "','');return false;\"><img src=\"./images/vdc_LB_startrecording.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" /></a>";
                 if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') ) {
-                    $("#RecorDControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
+                    //$("#RecorDControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
                 } else {
-                    $("#RecorDControl").html(conf_rec_start_html);
+                    //$("#RecorDControl").html(conf_rec_start_html);
                 }
                 
                 MDlogRecordings = MDlogResponse_array[3];
@@ -3404,6 +3414,120 @@ function DialLog(taskMDstage, nodeletevdac) {
         }
         RedirectXFER = 0;
         conf_dialed = 0;
+    });
+}
+
+// ################################################################################
+// Send MonitorConf/StopMonitorConf command for recording of conferences
+function ConfSendRecording(taskconfrectype, taskconfrec, taskconffile, taskfromapi) {
+    if (inOUT == 'OUT') {
+        tmp_vicidial_id = $(".formMain input[name='uniqueid']").val();
+    } else {
+        tmp_vicidial_id = 'IN';
+    }
+    if (taskconfrectype == 'MonitorConf') {
+        var REGrecCLEANvlc = new RegExp(" ","g");
+        var recVendorLeadCode = $(".formMain input[name='vendor_lead_code']").val();
+        recVendorLeadCode = recVendorLeadCode.replace(REGrecCLEANvlc, '');
+        var recLeadID = $(".formMain input[name='lead_id']").val();
+
+        //	CAMPAIGN CUSTPHONE FULLDATE TINYDATE EPOCH AGENT VENDORLEADCODE LEADID
+        var REGrecCAMPAIGN = new RegExp("CAMPAIGN","g");
+        var REGrecINGROUP = new RegExp("INGROUP","g");
+        var REGrecCUSTPHONE = new RegExp("CUSTPHONE","g");
+        var REGrecFULLDATE = new RegExp("FULLDATE","g");
+        var REGrecTINYDATE = new RegExp("TINYDATE","g");
+        var REGrecEPOCH = new RegExp("EPOCH","g");
+        var REGrecAGENT = new RegExp("AGENT","g");
+        var REGrecVENDORLEADCODE = new RegExp("VENDORLEADCODE","g");
+        var REGrecLEADID = new RegExp("LEADID","g");
+        filename = LIVE_campaign_rec_filename;
+        filename = filename.replace(REGrecCAMPAIGN, campaign);
+        filename = filename.replace(REGrecINGROUP, VDCL_group_id);
+        filename = filename.replace(REGrecCUSTPHONE, lead_dial_number);
+        filename = filename.replace(REGrecFULLDATE, filedate);
+        filename = filename.replace(REGrecTINYDATE, tinydate);
+        filename = filename.replace(REGrecEPOCH, epoch_sec);
+        filename = filename.replace(REGrecAGENT, user);
+        filename = filename.replace(REGrecVENDORLEADCODE, recVendorLeadCode);
+        filename = filename.replace(REGrecLEADID, recLeadID);
+    	//filename = filedate + "_" + user_abb;
+        var query_recording_exten = recording_exten;
+        var channelrec = "Local/" + conf_silent_prefix + '' + taskconfrec + "@" + ext_context;
+        //var conf_rec_start_html = "<a href=\"#\" onclick=\"conf_send_recording('StopMonitorConf','" + taskconfrec + "','" + filename + "');return false;\"><img src=\"./images/vdc_LB_stoprecording.gif\" border=\"0\" alt=\"<?=$lang['stop_recording']?>\" /></a>";
+
+        if (LIVE_campaign_recording == 'ALLFORCE') {
+            //$("#RecorDControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
+        } else {
+            //$("#RecorDControl").html(conf_rec_start_html);
+        }
+    }
+    if (taskconfrectype == 'StopMonitorConf') {
+        filename = taskconffile;
+        var query_recording_exten = session_id;
+        var channelrec = "Local/" + conf_silent_prefix + '' + taskconfrec + "@" + ext_context;
+        //var conf_rec_start_html = "<a href=\"#\" onclick=\"conf_send_recording('MonitorConf','" + taskconfrec + "','');return false;\"><img src=\"./images/vdc_LB_startrecording.gif\" border=\"0\" alt=\"<?=$lang['start_recording']?>\" /></a>";
+        if (LIVE_campaign_recording == 'ALLFORCE') {
+            //$("#RecorDControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
+        } else {
+            //$("#RecorDControl").html(conf_rec_start_html);
+        }
+    }
+    
+    var postData = {
+        goAction: 'goMonitorCall',
+        goServerIP: server_ip,
+        goSessionName: session_name,
+        goUser: uName,
+        goPass: uPass,
+        goCampaign: campaign,
+        goTask: taskconfrectype,
+        goChannel: channelrec,
+        goFilename: filename,
+        goExten: query_recording_exten,
+        goExtContext: ext_context,
+        goLeadID: $(".formMain input[name='lead_id']").val(),
+        goExtPriority: 1,
+        goFromVDC: 'YES',
+        goFormat: 'text',
+        goUniqueID: tmp_vicidial_id,
+        goFromAPI: taskfromapi,
+        responsetype: 'json'
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    .done(function (result) {
+        var RClookResponse = result;
+        if (RClookResponse.result == 'success') {
+            var RClookFILE = RClookResponse.filename;
+            var RClookID = RClookResponse.recording_id;
+            if (RClookID.length > 0) {
+                recording_filename = RClookFILE;
+                recording_id = RClookID;
+    
+                if (delayed_script_load == 'YES') {
+                    //RefresHScript();
+                    delayed_script_load = 'NO';
+                }
+    
+                var RecDispNamE = RClookFILE;
+                if (RecDispNamE.length > 25) {
+                    RecDispNamE = RecDispNamE.substr(0,22);
+                    RecDispNamE = RecDispNamE + '...';
+                }
+                $("#RecorDingFilename").html(RecDispNamE);
+                $("#RecorDID").html(RClookID);
+            }
+        }
     });
 }
 
@@ -6831,6 +6955,27 @@ function displaytime(){
     } else if (dispHour < 1) {
         dispHour = 12;
     }
+    
+    var year= serverdate.getYear()
+    var month= serverdate.getMonth()
+        month++;
+    var daym= serverdate.getDate()
+    var hours = serverdate.getHours();
+    var min = serverdate.getMinutes();
+    var sec = serverdate.getSeconds();
+    var dayz= serverdate.getDay();
+        dayz++;
+    if (year < 1000) {year+=1900}
+    if (month< 10) {month= "0" + month}
+    if (daym< 10) {daym= "0" + daym}
+    if (hours < 10) {hours = "0" + hours;}
+    if (min < 10) {min = "0" + min;}
+    if (sec < 10) {sec = "0" + sec;}
+    var Tyear = (year-2000);
+    
+    filedate = year + "" + month + "" + daym + "-" + hours + "" + min + "" + sec;
+    tinydate = Tyear + "" + month + "" + daym + "" + hours + "" + min + "" + sec;
+    SQLdate = year + "-" + month + "-" + daym + " " + hours + ":" + min + ":" + sec;
     
     var timestring = padlength(dispHour)+":"+padlength(serverdate.getMinutes())+":"+padlength(serverdate.getSeconds())+" "+AmPm;
     $("#server_date").html(todaystring+", "+datestring+" "+timestring);
