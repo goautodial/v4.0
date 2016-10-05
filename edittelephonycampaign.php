@@ -149,7 +149,9 @@ $ingroups = $ui->API_getInGroups();
 									//var_dump($campaign);
 							?>
 							<div class="panel-body">
-								<legend>MODIFY CAMPAIGN ID : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u></legend>
+								<legend>MODIFY CAMPAIGN ID : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u>
+									<span class="pull-right">MANUAL DIAL LIST ID: <u><?php echo $campaign->data->manual_dial_list_id;?></u></span>
+								</legend>
 
 								<!-- Custom Tabs -->
 								<div role="tabpanel">
