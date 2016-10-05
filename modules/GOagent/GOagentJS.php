@@ -3779,15 +3779,8 @@ function ManualDialCheckChannel(taskCheckOR) {
     if ( (MD_ring_seconds > 49) && (MD_ring_seconds > dial_timeout) ) {
         MD_channel_look = 0;
         MD_ring_seconds = 0;
-        open_dispo_screen = 0;
         
-        if (!$("#DialALTPhone").is(':checked')) {
-            open_dispo_screen = 1;
-        }
-        
-        toggleButtons(dial_method);
         $("#MainStatusSpan").html('&nbsp;');
-        GetCustomFields(null, false);
         swal("<?=$lh->translationFor('dial_timeout')?>.");
     }
 }
