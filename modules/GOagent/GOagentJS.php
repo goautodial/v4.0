@@ -2802,14 +2802,14 @@ function CheckForIncoming () {
                 
                 $.each(custom_names_array, function(idx, field) {
                     if (field.length < 1) return true;
-                    var field_name = ".formMain #custom_fields [id='custom_" + field + "']";
+                    var field_name = ".formMain #custom_fields";
                     switch (custom_types_array[idx]) {
                         case "TEXT":
                         case "AREA":
                         case "HIDDEN":
                         case "DATE":
                         case "TIME":
-                            $(field_name).val(custom_values_array[idx]);
+                            $(field_name + " [id='custom_" + field + "']").val(custom_values_array[idx]);
                             break;
                         case "CHECKBOX":
                         case "RADIO":
@@ -2825,7 +2825,7 @@ function CheckForIncoming () {
                         case "SELECT":
                         case "MULTI":
                             var selectThis = custom_values_array[idx].split(',');
-                            $.each($(field_name + " option"), function() {
+                            $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
                                 var selectMe = false;
                                 if (selectThis.indexOf($(this).val()) > -1) {
                                     selectMe = true;
@@ -2834,7 +2834,7 @@ function CheckForIncoming () {
                             });
                             break;
                         default:
-                            $(field_name).html(custom_values_array[idx]);
+                            $(field_name + " [id='custom_" + field + "']").html(custom_values_array[idx]);
                     }
                 });
                 
@@ -5198,7 +5198,6 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     
                     $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
                     
-                    console.log(custom_field_names.length);
                     if (custom_field_names.length > 1) {
                         GetCustomFields(list_id, false, true);
                         
@@ -5208,7 +5207,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         
                         $.each(custom_names_array, function(idx, field) {
                             if (field.length < 1) return true;
-                            var field_name = ".formMain #custom_fields [id='custom_" + field + "']";
+                            var field_name = ".formMain #custom_fields";
                             console.log(idx, custom_types_array[idx], custom_values_array[idx]);
                             switch (custom_types_array[idx]) {
                                 case "TEXT":
@@ -5216,7 +5215,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                 case "HIDDEN":
                                 case "DATE":
                                 case "TIME":
-                                    $(field_name).val(custom_values_array[idx]);
+                                    $(field_name + " [id='custom_" + field + "']").val(custom_values_array[idx]);
                                     break;
                                 case "CHECKBOX":
                                 case "RADIO":
@@ -5232,7 +5231,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                 case "SELECT":
                                 case "MULTI":
                                     var selectThis = custom_values_array[idx].split(',');
-                                    $.each($(field_name + " option"), function() {
+                                    $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
                                         var selectMe = false;
                                         if (selectThis.indexOf($(this).val()) > -1) {
                                             selectMe = true;
@@ -5241,7 +5240,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                     });
                                     break;
                                 default:
-                                    $(field_name).html(custom_values_array[idx]);
+                                    $(field_name + " [id='custom_" + field + "']").html(custom_values_array[idx]);
                             }
                         });
                         
