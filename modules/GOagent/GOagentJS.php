@@ -2861,9 +2861,9 @@ function CheckForIncoming () {
                                     var selectThis = custom_values_array[idx].split(',');
                                     $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
                                         if (selectThis.indexOf($(this).val()) > -1) {
-                                            $(this).prop('checked', true);
+                                            $(this).prop('selected', true);
                                         } else {
-                                            $(this).prop('checked', false);
+                                            $(this).prop('selected', false);
                                         }
                                     });
                                     break;
@@ -5438,9 +5438,9 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                             var selectThis = custom_values_array[idx].split(',');
                                             $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
                                                 if (selectThis.indexOf($(this).val()) > -1) {
-                                                    $(this).prop('checked', true);
+                                                    $(this).prop('selected', true);
                                                 } else {
-                                                    $(this).prop('checked', false);
+                                                    $(this).prop('selected', false);
                                                 }
                                             });
                                             break;
