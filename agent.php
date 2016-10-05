@@ -693,6 +693,12 @@ if (isset($_GET["message"])) {
 																<label for="date_of_birth">Date Of Birth</label>
 															</div>
 														</div>
+														<div class="col-sm-12">
+															<div class="form-group" style="float: left; width:100%;">
+																<textarea rows="5" id="call_notes" name="call_notes" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled note-editor note-editor-margin" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
+																<label for="call_notes">Call Notes</label>
+															</div>
+														</div>
 													</div><!-- /.gender & title -->                   
 												</form>
 											
@@ -725,7 +731,7 @@ if (isset($_GET["message"])) {
 											<div class="row">
 												<div class="col-sm-12">
 													<h4><!--Comments-->
-														<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
+														<!--<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>-->
 													</h4>
 												
 													<form role="form" id="comment_form" class="formMain form-inline" >
