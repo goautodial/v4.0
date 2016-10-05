@@ -2743,7 +2743,7 @@ function CheckForIncoming () {
             activateLinks();
 
             // INSERT VICIDIAL_LOG ENTRY FOR THIS CALL PROCESS
-            // DialLog("start");
+            DialLog("start");
 
             custchannellive = 1;
 
@@ -3362,44 +3362,37 @@ function DialLog(taskMDstage, nodeletevdac) {
         }
     })
     .done(function (result) {
-        var MDlogResponse = result.data;
-        MDlogLINE = MDlogResponse_array[0];
-        if ( (MDlogLINE == "LOG NOT ENTERED") && (VDstop_rec_after_each_call != 1) )
-            {
+        var MDlogResponse = result.message;
+        var MDlogResponse_array = MDlogResponse.split('\n');
+        if ( (MDlogResponse.indexOf("LOG NOT ENTERED") > -1) && (VDstop_rec_after_each_call != 1) ) {
     //		alert("error: log not entered\n");
-            }
-        else
-            {
+            console.log('ERROR: Log NOT Entered');
+        } else {
             MDlogEPOCH = MDlogResponse_array[1];
-    //		alert("VICIDIAL Call log entered:\n" + document.vicidial_form.uniqueid.value);
-            if ( (taskMDstage != "start") && (VDstop_rec_after_each_call == 1) )
-                {
-                var conf_rec_start_html = "<a href=\"#\" onclick=\"conf_send_recording('MonitorConf','" + session_id + "','');return false;\"><img src=\"./images/vdc_LB_startrecording.gif\" border=\"0\" alt=\"<?=$lang['start_recording']?>\" /></a>";
-                if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') )
-                    {
-                    document.getElementById("RecorDControl").innerHTML = "<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lang['start_recording']?>\" />";
-                    }
-                else
-                    {document.getElementById("RecorDControl").innerHTML = conf_rec_start_html;}
+            if ( (taskMDstage != "start") && (VDstop_rec_after_each_call == 1) ) {
+                //var conf_rec_start_html = "<a href=\"#\" onclick=\"ConfSendRecording('MonitorConf','" + session_id + "','');return false;\"><img src=\"./images/vdc_LB_startrecording.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" /></a>";
+                if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') ) {
+                    $("#RecorDControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
+                } else {
+                    $("#RecorDControl").html(conf_rec_start_html);
+                }
                 
-                MDlogRecorDings = MDlogResponse_array[3];
-                if (window.MDlogRecorDings)
-                    {
-                    var MDlogRecorDings_array=MDlogRecorDings.split("|");
-            //		recording_filename = MDlogRecorDings_array[2];
-            //		recording_id = MDlogRecorDings_array[3];
+                MDlogRecordings = MDlogResponse_array[3];
+                if (window.MDlogRecorDings) {
+                    var MDlogRecordings_array = MDlogRecordings.split("|");
+            //		recording_filename = MDlogRecordings_array[2];
+            //		recording_id = MDlogRecordings_array[3];
 
-                    var RecDispNamE = MDlogRecorDings_array[2];
-                    if (RecDispNamE.length > 25)
-                        {
-                        RecDispNamE = RecDispNamE.substr(0,22);
-                        RecDispNamE = RecDispNamE + '...';
-                        }
-                    document.getElementById("RecorDingFilename").innerHTML = RecDispNamE;
-                    document.getElementById("RecorDID").innerHTML = MDlogRecorDings_array[3];
+                    var RecDispName = MDlogRecorDings_array[2];
+                    if (RecDispName.length > 25) {
+                        RecDispName = RecDispName.substr(0,22);
+                        RecDispName = RecDispName + '...';
                     }
+                    $("#RecorDingFilename").html(RecDispName);
+                    $("#RecordID").html(MDlogRecordings_array[3]);
                 }
             }
+        }
         RedirectXFER = 0;
         conf_dialed = 0;
     });
@@ -4173,7 +4166,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
         MDnextCID = '';
 
         //UPDATE VICIDIAL_LOG ENTRY FOR THIS CALL PROCESS
-        //DialLog("end",nodeletevdac);
+        DialLog("end",nodeletevdac);
         conf_dialed = 0;
         if (dispowindow == 'NO') {
             open_dispo_screen = 0;
