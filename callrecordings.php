@@ -578,7 +578,7 @@ $agents = $ui->API_goGetAllUserLists();
 				$(document).on('click','.play_audio',function() {
 					var audioFile = $(this).attr('data-location');
 
-					var sourceFile = '<audio class="audio_file" controls>';
+					var sourceFile = '<audio class="audio_file" controls style="width:100%">';
 					    sourceFile += '<source src="'+ audioFile +'" type="audio/mpeg" download="true"/>';
 					    sourceFile += '</audio>';
 
