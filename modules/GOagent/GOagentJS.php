@@ -5198,6 +5198,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     
                     $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
                     
+                    console.log(custom_field_names.length);
                     if (custom_field_names.length > 1) {
                         GetCustomFields(list_id, false, true);
                         
