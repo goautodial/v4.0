@@ -1421,7 +1421,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    		$(window).ready(function() {
 					$(".preloader").fadeOut("slow");
 				})
-				
+
 				$(document).on("click", ".close-preloader-button", function(){
 					$(".preloader").fadeOut("slow");
 				});
@@ -1436,13 +1436,13 @@ error_reporting(E_ERROR | E_PARSE);
 					$(".reload-page").fadeOut("slow");
 					$(".reload-button").fadeOut("slow");
 				})
-				
+
 				$(window).load(function() {
 					$(".reload-page").html("");
 					$(".reload-button").html("");
 				})
 
-	    		
+
 
 			</script>
 			';
@@ -1464,7 +1464,7 @@ error_reporting(E_ERROR | E_PARSE);
 									//'.$this->getTopbarMessagesMenu($user).'
 									//'.$this->getTopbarNotificationsMenu($user).'
 									//'.$this->getTopbarTasksMenu($user).'
-		
+
 		$avatarElement = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 22, true);
 		return '<header class="main-header">
 				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
@@ -3873,6 +3873,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="edit-campaign" href="#" data-id="'.$id.'">View Details</a></li>
+      <li><a class="view-pause-codes" href="#" data-id="'.$id.'">View Pause Codes</a></li>
 			<li><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';

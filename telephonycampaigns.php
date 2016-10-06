@@ -156,7 +156,7 @@ error_reporting(E_ALL);*/
 
 											   	?>
 													<tr>
-                                                        <td><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
+                            <td><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
 														<td class='hide-on-medium hide-on-low'><strong><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></a></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $campaign->dial_method[$i];?></td>
@@ -175,7 +175,7 @@ error_reporting(E_ALL);*/
 										<table class="table table-striped table-bordered table-hover" id="table_disposition">
 										   <thead>
 											  <tr>
-                                                 <th style="color: white;">Pic</th>
+                         <th style="color: white;">Pic</th>
 												 <th class='hide-on-medium hide-on-low'>Campaign ID</th>
 												 <th>Campaign Name</th>
 												 <th class='hide-on-medium hide-on-low'>Custom Disposition</th>
@@ -190,7 +190,7 @@ error_reporting(E_ALL);*/
 
 											   	?>
 													<tr>
-                                                        <td><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
+                            <td><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
 														<td class='hide-on-medium hide-on-low'><strong><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></a></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'>
@@ -758,6 +758,92 @@ error_reporting(E_ALL);*/
 	    </div>
     <!-- end of modal -->
 
+		<div id="modal_view_pause_codes" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title"><b>Pause Codes</b></h4>
+		      </div>
+		      <div class="modal-body">
+						<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
+							<div class="table-responsive">
+								<table id="pause_codes_list" class="table table-bordered" style="width: 100%;">
+	                <thead>
+	                    <tr>
+	                        <th>Pause Code</th>
+	                        <th>Pause Code Name</th>
+	                        <th>Billable</th>
+	                        <th>Action</th>
+	                    </tr>
+	                </thead>
+									<tbody class="data-container">
+										<!-- Data Here -->
+									</tbody>
+								</table>
+							</div>
+						</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-success btn-new-pause-code" data-campaign="">Create New</button>
+		      </div>
+		    </div>
+		    <!-- End of modal content -->
+		  </div>
+		</div>
+
+		<div id="modal_form_pause_codes" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title"><b>Pause Codes</b></h4>
+		      </div>
+		      <div class="modal-body">
+						<form id="form_pause_codes" class="form-horizontal" style="margin-top: 10px;">
+							<div class="form-group">
+								<label class="control-label col-lg-3">Campaign ID:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control campaign-id" name="campaign_id" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-3">Pause Code:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control pause-code" name="pause_code">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-3">Pause Code Name:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control pause-code-name" name="pause_code_name">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-3">Billable:</label>
+								<div class="col-lg-9">
+									<select class="form-control billable" name="billable">
+										<option value="YES">YES</option>
+										<option value="NO">NO</option>
+										<option value="HALF">HALF</option>
+									</select>
+								</div>
+							</div>
+						</form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary btn-save-pause-code">Save</button>
+						<button type="button" class="btn btn-success btn-update-pause-code hide">Update</button>
+		      </div>
+		    </div>
+		    <!-- End of modal content -->
+		  </div>
+		</div>
+
 
 	<!-- End of modal -->
 
@@ -769,8 +855,237 @@ error_reporting(E_ALL);*/
 	<script src="js/plugins/iCheck/icheck.min.js"></script>
 
 	<script type="text/javascript">
-		$(document).ready(function(){
+		function get_pause_codes(campaign_id){
+			$.ajax({
+				url: "./php/GetPauseCodes.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						// var values = JSON.parse(response.result);
+						// console.log(response);
+						$('.btn-new-pause-code').attr('data-campaign', campaign_id);
+						$('#modal_view_pause_codes').modal('show');
+						var table = $('#pause_codes_list').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('.data-container').html(response);
+						$('#pause_codes_list').DataTable({
+							"searching": true,
+							bFilter: true
+						});
+						$("#pause_codes_list").css("width","100%");
+					}
+			});
+		}
 
+		$(document).ready(function(){
+			// $('#modal_form_pause_codes').modal('show');
+
+			$(document).on('click', '.view-pause-codes', function(){
+				var campaign_id = $(this).data('id');
+				// alert(campaign_id);
+				get_pause_codes(campaign_id);
+			});
+
+			$(document).on('click', '.btn-new-pause-code', function(){
+				var campaign_id = $(this).data('campaign');
+				$('.campaign-id').val(campaign_id);
+
+				$('.pause-code').val('');
+				$('.pause-code-name').val('');
+				$('.billable').val('YES').trigger('change');
+				$('.btn-save-pause-code').removeClass('hide');
+				$('.btn-update-pause-code').addClass('hide');
+				$('#modal_view_pause_codes').modal('hide');
+				$('#modal_form_pause_codes').modal('show');
+				$('body').addClass('modal-open');
+			});
+
+			$('#modal_form_pause_codes').on('hidden.bs.modal', function () {
+				// var campaign_id = $('.camapaign-id').val();
+				$('#modal_form_pause_codes').modal('hide');
+				$('#modal_view_pause_codes').modal('show');
+				$('body').addClass('modal-open');
+			});
+
+			$('#modal_view_pause_codes').on('hidden.bs.modal', function () {
+				if($('#modal_form_pause_codes').hasClass('in')){
+					$('body').addClass('modal-open');
+				}
+			});
+
+			$(document).on('click', '.btn-edit-pc', function(){
+				var campaign_id = $(this).data('camp-id');
+				var code = $(this).data('code');
+				var name = $(this).data('name');
+				var billable = $(this).data('billable');
+
+				$('.campaign-id').val(campaign_id);
+				$('.pause-code').val(code);
+				$('.pause-code').attr('readonly', true);
+				$('.pause-code-name').val(name);
+				$('.billable').val(billable).trigger('change');
+				$('.btn-save-pause-code').addClass('hide');
+				$('.btn-update-pause-code').removeClass('hide');
+				$('#modal_view_pause_codes').modal('hide');
+				$('#modal_form_pause_codes').modal('show');
+				$('body').addClass('modal-open');
+			});
+
+			$(document).on('click', '.btn-delete-pc', function(){
+				var campaign_id = $(this).data('camp-id');
+				var pause_code = $(this).data('code');
+				swal({
+					title: "Are you sure?",
+					text: "This action cannot be undone.",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Yes, delete pause code!",
+					cancelButtonText: "No, cancel please!",
+					closeOnConfirm: false,
+					closeOnCancel: false
+					},
+					function(isConfirm){
+						if (isConfirm) {
+							$.ajax({
+											url: "./php/DeletePauseCode.php",
+											type: 'POST',
+											data: {
+												campaign_id:campaign_id,
+												pause_code:pause_code
+											},
+											// dataType: 'json',
+											success: function(data) {
+													// console.log(data);
+													if(data == "success"){
+														swal({
+																title: "Success",
+																text: "Pause Code Successfully Deleted",
+																type: "success"
+															},
+															function(){
+																get_pause_codes(campaign_id);
+															}
+														);
+													}else{
+															sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+													}
+											}
+								});
+							} else {
+									swal("Cancelled", "No action has been done :)", "error");
+							}
+					}
+				);
+			});
+
+			$(document).on('click', '.btn-save-pause-code', function(){
+				var form_data = new FormData($("#form_pause_codes")[0]);
+				var campaign_id = $('.campaign-id').val();
+				swal({
+					title: "Are you sure?",
+					text: "This action cannot be undone.",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Yes, create pause code!",
+					cancelButtonText: "No, cancel please!",
+					closeOnConfirm: false,
+					closeOnCancel: false
+					},
+					function(isConfirm){
+						if (isConfirm) {
+							$.ajax({
+											url: "./php/AddPauseCode.php",
+											type: 'POST',
+											data: form_data,
+											// dataType: 'json',
+											cache: false,
+											contentType: false,
+											processData: false,
+											success: function(data) {
+													// console.log(data);
+													if(data == "success"){
+														swal({
+																title: "Success",
+																text: "Pause Code Successfully Created",
+																type: "success"
+															},
+															function(){
+																$('.pause-code').val('');
+																$('.pause-code-name').val('');
+																$('.billable').val('YES').trigger('change');
+																$('#modal_form_pause_codes').modal('hide');
+																get_pause_codes(campaign_id);
+															}
+														);
+													}else{
+															sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+													}
+											}
+								});
+							} else {
+									swal("Cancelled", "No action has been done :)", "error");
+							}
+					}
+				);
+			});
+
+			$(document).on('click', '.btn-update-pause-code', function(){
+				var form_data = new FormData($("#form_pause_codes")[0]);
+				var campaign_id = $('.campaign-id').val();
+				swal({
+					title: "Are you sure?",
+					text: "This action cannot be undone.",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Yes, update pause code!",
+					cancelButtonText: "No, cancel please!",
+					closeOnConfirm: false,
+					closeOnCancel: false
+					},
+					function(isConfirm){
+						if (isConfirm) {
+							$.ajax({
+											url: "./php/ModifyPauseCode.php",
+											type: 'POST',
+											data: form_data,
+											// dataType: 'json',
+											cache: false,
+											contentType: false,
+											processData: false,
+											success: function(data) {
+													// console.log(data);
+													if(data == "success"){
+														swal({
+																title: "Success",
+																text: "Pause Code Successfully Updated",
+																type: "success"
+															},
+															function(){
+																$('.pause-code').val('');
+																$('.pause-code-name').val('');
+																$('.billable').val('YES').trigger('change');
+																$('#modal_form_pause_codes').modal('hide');
+																get_pause_codes(campaign_id);
+															}
+														);
+													}else{
+															sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+													}
+											}
+								});
+							} else {
+									swal("Cancelled", "No action has been done :)", "error");
+							}
+					}
+				);
+			});
 			/******
 			** Initializations
 			******/
@@ -1540,9 +1855,9 @@ error_reporting(E_ALL);*/
 				});
 			}
 		}
-		
+
 </script>
-		
+
 		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 		<?php print $ui->creamyFooter(); ?>
     </body>
