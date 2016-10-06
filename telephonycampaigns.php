@@ -960,20 +960,20 @@ error_reporting(E_ALL);*/
 											},
 											// dataType: 'json',
 											success: function(data) {
-													console.log(data);
-													// if(data == "success"){
-													// 	swal({
-													// 			title: "Success",
-													// 			text: "Pause Code Successfully Deleted",
-													// 			type: "success"
-													// 		},
-													// 		function(){
-													// 			get_pause_codes(campaign_id);
-													// 		}
-													// 	);
-													// }else{
-													// 		sweetAlert("Oops...", "Something went wrong! "+ data, "error");
-													// }
+													// console.log(data);
+													if(data == "success"){
+														swal({
+																title: "Success",
+																text: "Pause Code Successfully Deleted",
+																type: "success"
+															},
+															function(){
+																get_pause_codes(campaign_id);
+															}
+														);
+													}else{
+															sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+													}
 											}
 								});
 							} else {
