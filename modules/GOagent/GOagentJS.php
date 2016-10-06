@@ -1500,6 +1500,12 @@ $(document).ready(function() {
     $("#openWebForm").click(function() {
         window.open(TEMP_VDIC_web_form_address, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
     });
+    
+    $("button[id^='dial-cb-']").on('click', function() {
+        var CBid = $(this).data('cbid');
+        var CBlead = $(this).data('leadid');
+        NewCallbackCall(CBid, CBlead, 'MAIN');
+    });
 });
 
 function checkSidebarIfOpen(startUp) {
@@ -3728,12 +3734,6 @@ function CallBacksCountCheck() {
                 }
             }
             
-            $("button[id^='dial-cb-']").on('click', function() {
-                var CBid = $(this).data('cbid');
-                var CBlead = $(this).data('leadid');
-                NewCallbackCall(CBid, CBlead, 'MAIN');
-            });
-            
             $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
         }
     });
@@ -3749,7 +3749,7 @@ function NewCallbackCall(taskCBid, taskLEADid, taskCBalt) {
             agent_log_id = AutoDial_ReSume_PauSe("VDADpause", '', '', '', '', '1', auto_pause_precall_code);
         } else {
             move_on = 0;
-            swal("<?=$lang['must_be_paused_to_check']?>");
+            swal("<?=$lang['must_be_paused_to_check_callbacks']?>");
         }
     }
     if (move_on == 1) {
