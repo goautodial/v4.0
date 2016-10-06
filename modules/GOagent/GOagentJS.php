@@ -4483,7 +4483,7 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
             var test_notes = $("[name='call_notes_dispo']").val();
             if (test_notes.length > 0)
                 {$(".formMain [name='call_notes']").val(test_notes);}
-            $("#PerCallNotesContent").html("<br /><b><font size='3'><?=$lh->translationFor('call_notes')?>: </font></b><br /><textarea name='call_notes_dispo' id='call_notes_dispo' rows='2' class='form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin'>" + $(".formMain [name='call_notes']").val() + "</textarea><br>");
+            $("#PerCallNotesContent").html("<b><font size='3'><?=$lh->translationFor('call_notes')?>: </font></b><br /><textarea name='call_notes_dispo' id='call_notes_dispo' rows='2' class='form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin'>" + $(".formMain [name='call_notes']").val() + "</textarea><br>");
         } else {
             $("#PerCallNotesContent").html("<input type='hidden' name='call_notes_dispo' id='call_notes_dispo' value='' />");
         }
