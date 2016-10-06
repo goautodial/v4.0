@@ -4480,11 +4480,10 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
             $("#DispoManualQueueMessage").html("<b><?=$lh->translationFor('manual_dial_queue_calls_waiting')?>: " + APIManualDialQueue + "</b>");
         }
         if (per_call_notes == 'ENABLED') {
-            var test_notes = $("#call_notes_dispo").val();
+            var test_notes = $("[name='call_notes_dispo']").val();
             if (test_notes.length > 0)
                 {$(".formMain [name='call_notes']").val(test_notes);}
-            //$("#PerCallNotesContent").html("<br /><b><font size='3'><?=$lh->translationFor('call_notes')?>: </font></b><br /><textarea name='call_notes_dispo' id='call_notes_dispo' rows='2' cols='100' class='cust_form_text'>" + $(".formMain [name='call_notes']").val() + "</textarea>");
-            $("#PerCallNotesContent").html("<input type='hidden' name='call_notes_dispo' id='call_notes_dispo' value='" + $(".formMain [name='call_notes']").val() + "' />");
+            $("#PerCallNotesContent").html("<br /><b><font size='3'><?=$lh->translationFor('call_notes')?>: </font></b><br /><textarea name='call_notes_dispo' id='call_notes_dispo' rows='2' class='form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin'>" + $(".formMain [name='call_notes']").val() + "</textarea><br>");
         } else {
             $("#PerCallNotesContent").html("<input type='hidden' name='call_notes_dispo' id='call_notes_dispo' value='' />");
         }
@@ -4615,7 +4614,7 @@ function DispoSelectSubmit() {
                 goCallBackLeadStatus: CallBackLeadStatus,
                 goComments: encodeURIComponent(CallBackComments),
                 goCustomFieldNames: custom_field_names,
-                goCallNotes: encodeURIComponent(call_notes_dispo),
+                goCallNotes: encodeURIComponent($("[name='call_notes_dispo']").val()),
                 goQMDispoCode: DispoQMcsCODE,
                 goEmailEnabled: email_enabled,
                 responsetype: 'json'
@@ -4689,7 +4688,7 @@ function DispoSelectSubmit() {
             }
             $(".formMain input[name='called_count']").val('');
             $(".formMain [name='call_notes']").val('');
-            $(".formMain [name='call_notes_dispo']").val('');
+            $("[name='call_notes_dispo']").val('');
             $("#MainStatusSpan").html('&nbsp;');
             VDCL_group_id = '';
             fronter = '';
