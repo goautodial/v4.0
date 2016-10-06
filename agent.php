@@ -695,7 +695,7 @@ if (isset($_GET["message"])) {
 														</div>
 														<div class="col-sm-12">
 															<div class="form-group" style="float: left; width:100%;">
-																<textarea rows="5" id="call_notes" name="call_notes" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled note-editor note-editor-margin" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
+																<textarea rows="5" id="call_notes" name="call_notes" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin" style="resize:none; width: 100%;"></textarea>
 																<label for="call_notes">Call Notes</label>
 															</div>
 														</div>
@@ -1388,7 +1388,7 @@ if (isset($_GET["message"])) {
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
       <li id="dialer-tab" class="active"><a href="#control-sidebar-dialer-tab" data-toggle="tab"><i class="fa fa-phone"></i></a></li>
-      <li id="agents-tab" class="hidden"><a href="#control-sidebar-agents-tab" data-toggle="tab"><i class="fa fa-users"></i></a></li>
+      <li id="agents-tab" class="hidden"><a href="#control-sidebar-users-tab" data-toggle="tab"><i class="fa fa-users"></i></a></li>
       <li id="settings-tab"><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
     </ul>
     <!-- Tab panes -->
@@ -1468,7 +1468,7 @@ if (isset($_GET["message"])) {
       </div>
       <!-- /.tab-pane -->
       <!-- Agents View tab content -->
-      <div class="tab-pane" id="control-sidebar-agents-tab">
+      <div class="tab-pane" id="control-sidebar-users-tab">
 		<h4><?=$lh->translationFor('other_agent_status')?></h4>
 		<ul class="control-sidebar-menu" id="go_agent_view_list" style="padding: 0px 15px;">
 			<li><div class="text-center"><?=$lh->translationFor('loading_agents')?>...</div></li>
