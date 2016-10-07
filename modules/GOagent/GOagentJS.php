@@ -685,6 +685,12 @@ $(document).ready(function() {
                     $("#pause_code_link").removeClass('hidden');
                 }
                 
+                if (per_call_notes == 'ENABLED') {
+                    $("#call_notes_content").removeClass('hidden');
+                } else {
+                    $("#call_notes_content").addClass('hidden');
+                }
+                
                 if (INgroupCOUNT > 0) {
                     if (closer_default_blended == 1)
                         {$("#closerSelectBlended").prop('checked', true);}

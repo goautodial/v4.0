@@ -696,7 +696,7 @@ if (isset($_GET["message"])) {
 																<label for="date_of_birth">Date Of Birth</label>
 															</div>
 														</div>
-														<div class="col-sm-12">
+														<div id="call_notes_content" class="col-sm-12">
 															<div class="form-group" style="float: left; width:100%;">
 																<textarea rows="5" id="call_notes" name="call_notes" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin" style="resize:none; width: 100%;"></textarea>
 																<label for="call_notes">Call Notes</label>
