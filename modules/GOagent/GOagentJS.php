@@ -1398,6 +1398,9 @@ $(document).ready(function() {
                     updateButtons();
                     toggleButtons(dial_method);
                     CallBacksCountCheck();
+                    if (custom_fields_launch == 'LOGIN') {
+                        GetCustomFields(manual_dial_list_id, true, true);
+                    }
                 } else {
                     refresh_interval = 730000;
                     is_logged_in = 0;
@@ -1783,6 +1786,10 @@ function sendLogout (logMeOut) {
                     
                     phoneRegistered = false;
                 }, 3000);
+                
+                if (custom_fields_launch == 'LOGIN') {
+                    GetCustomFields(null, false);
+                }
             } else {
                 refresh_interval = 1000;
                 swal({
