@@ -1533,6 +1533,9 @@ $(document).ready(function() {
     //    var CBlead = $(this).data('leadid');
     //    NewCallbackCall(CBid, CBlead, 'MAIN');
     //});
+    $("#contacts-list_wrapper ul.pagination li a").on('click', function() {
+        console.log('test');
+    });
 });
 
 function checkSidebarIfOpen(startUp) {
