@@ -379,6 +379,9 @@ if (isset($_GET["message"])) {
 			.text-color-black {
 				color: black;
 			}
+			::-webkit-scrollbar { 
+				display: none;
+			}
 		</style>
     </head>
     <?php print $ui->creamyAgentBody(); ?>
@@ -1392,7 +1395,7 @@ if (isset($_GET["message"])) {
       <li id="settings-tab"><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
     </ul>
     <!-- Tab panes -->
-    <div class="tab-content" style="border-width:0; overflow-y: hidden; padding-bottom: 30px;">
+    <div class="tab-content" style="border-width:0; overflow-y: auto; padding-bottom: 30px;">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-dialer-tab">
         <ul class="control-sidebar-menu" id="go_agent_dialer">
@@ -1453,8 +1456,8 @@ if (isset($_GET["message"])) {
 			
         </ul>
 		
-        <ul class="control-sidebar-menu" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px; text-align: center;">
-			<li>
+        <ul class="control-sidebar-menu" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 5px; text-align: center;">
+			<li style="margin-bottom: -5px;">
 				<p><strong><?=$lh->translateText("Call Duration")?>:</strong> <span id="SecondsDISP">0</span> <?=$lh->translationFor('second')?></p>
 				<span id="session_id" class="hidden"></span>
 				<span id="callchannel" class="hidden"></span>
@@ -1502,6 +1505,9 @@ if (isset($_GET["message"])) {
 				echo $ui->getSidebarItem("callbackslist.php", "", $lh->translationFor("callbacks"), "0", "blue");
 			}
 			?>
+			<li id="pause_code_link" class="hidden">
+				<div><a onclick="PauseCodeSelectBox();"><?=$lh->translationFor('enter_pause_code')?></a></div>
+			</li>
 		</ul>
 		
         <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
