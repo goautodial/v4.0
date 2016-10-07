@@ -1502,6 +1502,9 @@ if (isset($_GET["message"])) {
 				echo $ui->getSidebarItem("callbackslist.php", "", $lh->translationFor("callbacks"), "0", "blue");
 			}
 			?>
+			<li id="pause_code_link" class="hidden">
+				<div onclick="PauseCodeSelectBox();"><?=$lh->translationFor('enter_pause_code')?></div>
+			</li>
 		</ul>
 		
         <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">

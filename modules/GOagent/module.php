@@ -145,6 +145,8 @@ class GOagent extends Module {
 		$pauseAgentXS = $this->lh()->translationFor("pause");
 		$transferConference = $this->lh()->translationFor("transfer_conference_functions");
 		$callbackDateSelection = $this->lh()->translationFor("callback_datepicker");
+		$selectPauseCode = $this->lh()->translationFor("select_pause_code");
+		$pauseCodeSelection = $this->lh()->translationFor("pause_code_selection");
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -596,6 +598,25 @@ EOF;
 					</div>
 					<strong><span id="pause_agent">$pauseAgent</span><span id="pause_agent_xs" style="display: none;">$pauseAgentXS</span></strong>
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="select-pause-codes" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">$selectPauseCode</h4>
+			</div>
+			<div class="modal-body">
+				<span id="PauseCodeSelectContent"> $pauseCodeSelection </span>
+			</div>
+			<div class="modal-footer">
+				<input type="hidden" name="PauseCodeSelection" id="PauseCodeSelection" />
+				<span class="pull-right">
+					<button class="btn btn-default btn-raised" id="btn-pause-code-back">Back</button> 
+					<button class="btn btn-warning btn-raised" id="btn-pause-code-submit">Submit</button>
+				</span>
 			</div>
 		</div>
 	</div>

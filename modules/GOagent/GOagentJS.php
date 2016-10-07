@@ -144,6 +144,8 @@ var last_filename = '';
             echo "var {$valName} = new Array({$valList});\n";
             if ($idx == 'statuses') {
                 echo "var statuses_names = new Array({$valList2});\n";
+            } else if ($idx == 'pause_codes') {
+                echo "var pause_codes_names = new Array({$valList2});\n";
             }
         } else {
             echo "var {$idx} = '{$val}';\n";
@@ -678,6 +680,10 @@ $(document).ready(function() {
                 }
                 
                 $("#LeadLookUP").prop('checked', true);
+                
+                if ( (agent_pause_codes_active == 'Y') || (agent_pause_codes_active == 'FORCE') ) {
+                    $("#pause_code_link").removeClass('hidden');
+                }
                 
                 if (INgroupCOUNT > 0) {
                     if (closer_default_blended == 1)
@@ -5762,8 +5768,8 @@ function AutoDial_Resume_Pause(taskaction, taskagentlog, taskwrapup, taskstatusc
             toggleButton('DialHangup', 'dial', false);
         }
 
-        if ( (agent_pause_codes_active=='FORCE') && (temp_reason != 'LOGOUT') && (temp_reason != 'REQUEUE') && (temp_reason != 'DIALNEXT') && (temp_auto != '1') ) {
-            //PauseCodeSelectContent_create();
+        if ( (agent_pause_codes_active == 'FORCE') && (temp_reason != 'LOGOUT') && (temp_reason != 'REQUEUE') && (temp_reason != 'DIALNEXT') && (temp_auto != '1') ) {
+            PauseCodeSelectContent_create();
         }
 
         if (temp_auto == '1') {
@@ -6684,6 +6690,115 @@ function replaceCustomFields() {
             }
         }
     });
+}
+
+function PauseCodeSelectBox() {
+    $("#select-pause-codes").modal({
+        keyboard: false,
+        backdrop: 'static'
+    });
+    PauseCodeSelectContent_create();
+}
+
+// ################################################################################
+// Generate the Pause Code Chooser panel
+function PauseCodeSelectContent_create() {
+    var move_on = 1;
+    if ( (AutoDialWaiting == 1) || (live_customer_call == 1) || (alt_dial_active == 1) || (MD_channel_look == 1) || (in_lead_preview_state == 1) ) {
+        if ((auto_pause_precall == 'Y') && ( (agent_pause_codes_active == 'Y') || (agent_pause_codes_active == 'FORCE') ) && (AutoDialWaiting == 1) && (live_customer_call != 1) && (alt_dial_active != 1) && (MD_channel_look != 1) && (in_lead_preview_state != 1) ) {
+            agent_log_id = AutoDial_Resume_Pause("VDADpause",'','','','','1','');
+        } else {
+            move_on = 0;
+            swal("<?=$lh->translationFor('must_be_pause_to_enter_code')?>");
+        }
+    }
+    if (move_on == 1) {
+        if (APIManualDialQueue > 0) {
+            PauseCodeSelectSubmit('NXDIAL');
+        } else {
+            WaitingForNextStep = 1;
+            PauseCode_HTML = '';
+            $("input[name='PauseCodeSelection']").val('');		
+            var pause_codes_ct_half = parseInt(pause_codes_ct / 2);
+            PauseCode_HTML = "<table cellpadding='5' cellspacing='5' width='100%' style='-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; margin: 0 auto;'><tr><td colspan='2'>&nbsp; <b><?=$lh->translationFor('pause_code')?></b><br><br></td></tr><tr><td bgcolor='#FFFFFF' height='300px' width='auto' valign='top' class='PauseCodeSelectA' style='white-space: nowrap;'>";
+            var loop_ct = 0;
+            while (loop_ct < pause_codes_ct) {
+                PauseCode_HTML = PauseCode_HTML + "<span id='pause-code-"+pause_codes[loop_ct]+"' style='cursor:pointer;color:#77a30a;' onclick=\"PauseCodeSelectSubmit('" + pause_codes[loop_ct] + "');return false;\">&nbsp; <span class='hidden-xs'>" + pause_codes[loop_ct] + " - " + pause_code_names[loop_ct] + "</span><span class='hidden-sm hidden-md hidden-lg'>" + pause_code_names[loop_ct] + "</span></span> &nbsp;<br /><br />";
+                loop_ct++;
+                if (loop_ct == pause_codes_ct_half && !isMobile) {
+                    PauseCode_HTML = PauseCode_HTML + "</td><td bgcolor='#FFFFFF' height='300px' width='auto' valign='top' class='PauseCodeSelectB' style='white-space: nowrap;'>";
+                }
+            }
+
+            if (agent_pause_codes_active == 'FORCE') {
+                $("#btn-pause-code-back").hide();
+            } else {
+                $("#btn-pause-code-back").show();
+            }
+            
+            PauseCode_HTML = PauseCode_HTML + "</td></tr></table>";
+            $("#PauseCodeSelectContent").html(PauseCode_HTML);
+        }
+    }
+    if (focus_blur_enabled == 1) {
+        //document.inert_form.inert_button.focus();
+        //document.inert_form.inert_button.blur();
+    }
+}
+
+// ################################################################################
+// Submit the Pause Code 
+function PauseCodeSelectSubmit(newpausecode) {
+    WaitingForNextStep = 0;
+
+    var postData = {
+        goAction: 'goPauseCodeSubmit',
+        goUser: uName,
+        goPass: uPass,
+        goCampaign: campaign,
+        goExtension: extension,
+        goServerIP: server_ip,
+        goSessionName: session_name,
+        goStatus: newpausecode,
+        goAgentLogID: agent_log_id,
+        goProtocol: protocol,
+        goPhoneIP: phone_ip,
+        goEnableSIPSAKMessages: enable_sipsak_messages,
+        goStage: pause_code_counter,
+        goCampaignCID: LastCallCID,
+        goAutoDialLevel: starting_dial_level,
+        responsetype: 'json'
+    };
+    
+    pause_code_counter++;
+    
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    .done(function (result) {
+        if (result.result == 'success') {
+            agent_log_id = result.agent_log_id;
+        }
+        
+        if (!!$.prototype.snackbar) {
+            if (result.result == 'success') {
+                $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
+            } else {
+                $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
+            }
+        }
+    });
+    
+    //return agent_log_id;
+    LastCallCID = '';
+    scroll(0,0);
 }
 
 // ################################################################################
