@@ -6804,7 +6804,7 @@ function PauseCodeSelectSubmit(newpausecode) {
         
         if (!!$.prototype.snackbar) {
             if (result.result == 'success') {
-                $.snackbar({id: "agentPaused", content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 0, htmlAllowed: true});
+                $.snackbar({id: "agentPaused", content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 10000, htmlAllowed: true});
             } else {
                 $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
             }
