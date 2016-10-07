@@ -1854,10 +1854,12 @@ function updateHotKeys() {
         $("#toggleHotkeys").hide();
     }
     var hotkeysContent = "<dl class='dl-horizontal'>";
+    var hk_ct = 1;
     for (var key in hotkeys) {
         var thisKey = hotkeys[key];
-        hotkeysContent += "<dt class='text-primary'>"+thisKey+"</dt>";
+        hotkeysContent += "<dt class='text-primary'>"+hk_ct+") "+thisKey+"</dt>";
         hotkeysContent += "<dd>"+thisKey+" - "+hotkeys_content[thisKey]+"</dd>";
+        hk_ct++;
     }
     hotkeysContent += "</dl>";
     
