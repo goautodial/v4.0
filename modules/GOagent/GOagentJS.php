@@ -3720,7 +3720,7 @@ function CallBacksCountCheck() {
                         commentTitle = ' title="'+thisComments+'"';
                         thisComments = thisComments.substring(0, 20) + "...";
                     }
-                    var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td>'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" onclick="NewCallbackCall('+value.callback_id+', '+value.lead_id+');" class="btn btn-primary btn-sm"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
+                    var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td>'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" onclick="NewCallbackCall('+value.callback_id+', '+value.lead_id+');" class="btn btn-primary btn-sm dial-callback"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
                     $("#callback-list tbody").append(appendThis);
                 });
                 $("#callback-list").css('width', '100%');
@@ -3760,10 +3760,6 @@ function CallBacksCountCheck() {
                     $("button[id^='dial-cb-']").removeClass('disabled');
                 }
             }
-            
-            $("#callback-list_wrapper ul.pagination li a").on('click', function() {
-                console.log('test');
-            });
             
             $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
         }
@@ -7020,7 +7016,7 @@ function getContactList() {
                 
                 var customer_name = (value.first_name || '') + ' ' + (value.middle_initial || '') + ' ' + (value.last_name || '');
                 var last_call_time = (value.last_local_call_time || '0000-00-00 00:00:00');
-                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+customer_name+'</td><td>'+value.phone_number+'</td><td>'+last_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-lead-'+value.lead_id+'" data-leadid="'+value.lead_id+'" onclick="ManualDialNext(\'\','+value.lead_id+','+value.phone_code+','+value.phone_number+',\'\',\'0\');" class="btn btn-primary btn-sm disabled" style="margin: 2px;"><i class="fa fa-phone"></i></button></td></tr>';
+                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+customer_name+'</td><td>'+value.phone_number+'</td><td>'+last_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-lead-'+value.lead_id+'" data-leadid="'+value.lead_id+'" onclick="ManualDialNext(\'\','+value.lead_id+','+value.phone_code+','+value.phone_number+',\'\',\'0\');" class="btn btn-primary btn-sm dial-lead" style="margin: 2px;"><i class="fa fa-phone"></i></button></td></tr>';
                 $("#contacts-list tbody").append(appendThis);
             });
             $("#contacts-list").css('width', '100%');
@@ -7058,10 +7054,6 @@ function getContactList() {
             } else {
                 $("button[id^='dial-lead-']").removeClass('disabled');
             }
-            
-            $("#contacts-list_wrapper ul.pagination li a").on('click', function() {
-                console.log('test');
-            });
         }
     });
 }
