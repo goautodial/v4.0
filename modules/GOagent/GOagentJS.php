@@ -1311,7 +1311,7 @@ $(document).ready(function() {
                                 }
                             });
                         } else {
-                            var patt = /^(user|pass|statuses|statuses_count)$/g;
+                            var patt = /^(user|pass|statuses|statuses_count|pause_codes|pause_codes_count)$/g;
                             //console.log("var "+key+" = '"+value+"';");
                             if (!patt.test(key)) {
                                 if (key == 'now_time') {
@@ -6728,13 +6728,13 @@ function PauseCodeSelectContent_create() {
             WaitingForNextStep = 1;
             PauseCode_HTML = '';
             $("input[name='PauseCodeSelection']").val('');		
-            var pause_codes_ct_half = parseInt(pause_codes_ct / 2);
+            var pause_codes_count_half = parseInt(pause_codes_count / 2);
             PauseCode_HTML = "<table cellpadding='5' cellspacing='5' width='100%' style='-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; margin: 0 auto;'><tr><td colspan='2'>&nbsp; <b><?=$lh->translationFor('pause_code')?></b><br><br></td></tr><tr><td bgcolor='#FFFFFF' height='300px' width='auto' valign='top' class='PauseCodeSelectA' style='white-space: nowrap;'>";
             var loop_ct = 0;
-            while (loop_ct < pause_codes_ct) {
+            while (loop_ct < pause_codes_count) {
                 PauseCode_HTML = PauseCode_HTML + "<span id='pause-code-"+pause_codes[loop_ct]+"' style='cursor:pointer;color:#77a30a;' onclick=\"PauseCodeSelectSubmit('" + pause_codes[loop_ct] + "');return false;\">&nbsp; <span class='hidden-xs'>" + pause_codes[loop_ct] + " - " + pause_codes_names[loop_ct] + "</span><span class='hidden-sm hidden-md hidden-lg'>" + pause_codes_names[loop_ct] + "</span></span> &nbsp;<br /><br />";
                 loop_ct++;
-                if (loop_ct == pause_codes_ct_half && !isMobile) {
+                if (loop_ct == pause_codes_count_half && !isMobile) {
                     PauseCode_HTML = PauseCode_HTML + "</td><td bgcolor='#FFFFFF' height='300px' width='auto' valign='top' class='PauseCodeSelectB' style='white-space: nowrap;'>";
                 }
             }
