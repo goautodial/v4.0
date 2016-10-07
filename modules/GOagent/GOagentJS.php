@@ -386,6 +386,12 @@ $(document).ready(function() {
                         //toggleButton('DialHangup', 'dial');
                         //toggleButton('ResumePause', 'on');
                     }
+                    
+                    if (per_call_notes == 'ENABLED') {
+                        $("#call_notes_content").removeClass('hidden');
+                    } else {
+                        $("#call_notes_content").addClass('hidden');
+                    }
                 }
                 //End of checking for live calls
     
