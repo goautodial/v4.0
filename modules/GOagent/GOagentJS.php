@@ -81,6 +81,7 @@ var MDlogEPOCH = 0;
 var recLIST = '';
 var filename = '';
 var last_filename = '';
+var custom_fields_launch = 'LOGIN';
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -2886,7 +2887,9 @@ function CheckForIncoming () {
             //}
             
             if (custom_field_names.length > 1) {
-                GetCustomFields(this_VDIC_data.list_id, false, true);
+                if (custom_fields_launch == 'ONCALL') {
+                    GetCustomFields(this_VDIC_data.list_id, false, true);
+                }
                 
                 var custom_names_array = custom_field_names.split("|");
                 var custom_values_array = custom_field_values.split("----------");
@@ -2936,7 +2939,9 @@ function CheckForIncoming () {
                         });
                         
                         replaceCustomFields();
-                        GetCustomFields(null, true);
+                        if (custom_fields_launch == 'ONCALL') {
+                            GetCustomFields(null, true);
+                        }
                     }
                 }, 1000);
             }
@@ -4491,7 +4496,9 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
         }
 
         //ShoWTransferMain('OFF');
-        GetCustomFields(null, false);
+        if (custom_fields_launch == 'ONCALL') {
+            GetCustomFields(null, false);
+        }
         activateLinks();
     }
 }
@@ -5582,7 +5589,9 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
                     
                     if (custom_field_names.length > 1) {
-                        GetCustomFields(list_id, false, true);
+                        if (custom_fields_launch == 'ONCALL') {
+                            GetCustomFields(list_id, false, true);
+                        }
                         
                         var custom_names_array = custom_field_names.split("|");
                         var custom_values_array = custom_field_values.split("----------");
@@ -5632,7 +5641,9 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                 });
                             
                                 replaceCustomFields();
-                                GetCustomFields(null, true);
+                                if (custom_fields_launch == 'ONCALL') {
+                                    GetCustomFields(null, true);
+                                }
                             }
                         }, 1000);
                     }
