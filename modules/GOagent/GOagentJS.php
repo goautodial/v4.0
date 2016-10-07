@@ -3753,6 +3753,14 @@ function CallBacksCountCheck() {
                 if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
                     $("button[id^='dial-cb-']").addClass('disabled');
                 }
+                
+                $('#callback-list').on('draw.dt', function() {
+                    if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
+                        $("button[id^='dial-cb-']").addClass('disabled');
+                    } else {
+                        $("button[id^='dial-cb-']").removeClass('disabled');
+                    }
+                });
             } else {
                 if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
                     $("button[id^='dial-cb-']").addClass('disabled');
@@ -7055,9 +7063,13 @@ function getContactList() {
                 $("button[id^='dial-lead-']").removeClass('disabled');
             }
             
-            $('#contacts-list').on('page', function () {
-                console.log('test');
-            } );
+            $('#contacts-list').on('draw.dt', function() {
+                if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
+                    $("button[id^='dial-lead-']").addClass('disabled');
+                } else {
+                    $("button[id^='dial-lead-']").removeClass('disabled');
+                }
+            });
         }
     });
 }
