@@ -1506,7 +1506,7 @@ if (isset($_GET["message"])) {
 			}
 			?>
 			<li id="pause_code_link" class="hidden">
-				<div><a onclick="PauseCodeSelectBox();"><?=$lh->translationFor('enter_pause_code')?></a></div>
+				<a onclick="PauseCodeSelectBox();"><i class="fa fa-"></i> <span><?=$lh->translationFor('enter_pause_code')?></span></a>
 			</li>
 		</ul>
 		

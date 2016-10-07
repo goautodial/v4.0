@@ -5761,6 +5761,10 @@ function AutoDial_Resume_Pause(taskaction, taskagentlog, taskwrapup, taskstatusc
             toggleButton('ResumePause', 'pause');
             toggleButton('DialHangup', 'dial', false);
         }
+        
+        if ($("#agentPaused").is(':visible')) {
+            $("#agentPaused").snackbar('hide');
+        }
     } else {
         VDRP_stage = 'PAUSED';
         var APIaction = 'PAUSE';
@@ -5778,7 +5782,8 @@ function AutoDial_Resume_Pause(taskaction, taskagentlog, taskwrapup, taskstatusc
         }
 
         if ( (agent_pause_codes_active == 'FORCE') && (temp_reason != 'LOGOUT') && (temp_reason != 'REQUEUE') && (temp_reason != 'DIALNEXT') && (temp_auto != '1') ) {
-            PauseCodeSelectContent_create();
+            PauseCodeSelectBox();
+            //PauseCodeSelectContent_create();
         }
 
         if (temp_auto == '1') {
@@ -6793,12 +6798,13 @@ function PauseCodeSelectSubmit(newpausecode) {
     })
     .done(function (result) {
         if (result.result == 'success') {
+            $("#select-pause-codes").modal('hide');
             agent_log_id = result.agent_log_id;
         }
         
         if (!!$.prototype.snackbar) {
             if (result.result == 'success') {
-                $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
+                $.snackbar({id: "agentPaused", content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 0, htmlAllowed: true});
             } else {
                 $.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; " + result.message, timeout: 3000, htmlAllowed: true});
             }
