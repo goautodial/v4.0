@@ -895,6 +895,7 @@ error_reporting(E_ALL);*/
 				$('.campaign-id').val(campaign_id);
 
 				$('.pause-code').val('');
+				$('.pause-code').removeAttr("readonly");
 				$('.pause-code-name').val('');
 				$('.billable').val('YES').trigger('change');
 				$('.btn-save-pause-code').removeClass('hide');
