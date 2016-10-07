@@ -7015,7 +7015,7 @@ function getContactList() {
                 }
                 var customer_name = (value.first_name || '') + ' ' + (value.middle_initial || '') + ' ' + (value.last_name || '');
                 var last_call_time = (value.last_local_call_time || '0000-00-00 00:00:00');
-                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+customer_name+'</td><td>'+value.phone_number+'</td><td>'+last_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-lead-'+value.lead_id+'" data-leadid="'+value.lead_id+'" class="btn btn-primary btn-sm disabled" style="margin: 2px;"><i class="fa fa-phone"></i></button></td></tr>';
+                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+customer_name+'</td><td>'+value.phone_number+'</td><td>'+last_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-lead-'+value.lead_id+'" data-leadid="'+value.lead_id+'" onclick="ManualDialNext(\"\",\"'+value.lead_id+'\",\"\",\"'+value.phone_number+'\",\"\",\"0\",\"\",\"\");" class="btn btn-primary btn-sm disabled" style="margin: 2px;"><i class="fa fa-phone"></i></button></td></tr>';
                 $("#contacts-list tbody").append(appendThis);
             });
             $("#contacts-list").css('width', '100%');
