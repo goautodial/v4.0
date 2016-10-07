@@ -1533,9 +1533,6 @@ $(document).ready(function() {
     //    var CBlead = $(this).data('leadid');
     //    NewCallbackCall(CBid, CBlead, 'MAIN');
     //});
-    $("#contacts-list_wrapper ul.pagination li a").on('click', function() {
-        console.log('test');
-    });
 });
 
 function checkSidebarIfOpen(startUp) {
@@ -3763,6 +3760,10 @@ function CallBacksCountCheck() {
                     $("button[id^='dial-cb-']").removeClass('disabled');
                 }
             }
+            
+            $("#callback-list_wrapper ul.pagination li a").on('click', function() {
+                console.log('test');
+            });
             
             $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
         }
@@ -7057,6 +7058,10 @@ function getContactList() {
             } else {
                 $("button[id^='dial-lead-']").removeClass('disabled');
             }
+            
+            $("#contacts-list_wrapper ul.pagination li a").on('click', function() {
+                console.log('test');
+            });
         }
     });
 }
