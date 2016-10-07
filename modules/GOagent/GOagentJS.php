@@ -756,9 +756,11 @@ $(document).ready(function() {
             
             if (origHeight > $("body").innerHeight()) {
                 var newPos = origHeight - parseInt($("body").innerHeight());
+                console.log(newPos);
                 $("#go_agent_logout").css('bottom', newPos);
             } else {
                 var newPos = origHeight + parseInt($("body").innerHeight());
+                console.log(newPos);
                 $("#go_agent_logout").css('bottom', newPos);
             }
         });
