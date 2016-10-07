@@ -7099,6 +7099,7 @@ function MainPanelToFront() {
     
     $("#cust_info").show();
     $("#loaded-contents").hide();
+    $(".content-heading ol").html('<li><a href="agent.php"><i class="fa fa-home"></i> Home</a></li>');
 }
 
 function padlength(what){
