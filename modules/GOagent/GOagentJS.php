@@ -739,6 +739,8 @@ $(document).ready(function() {
         
         var origHeight = $("body").innerHeight();
         $(window).resize(function() {
+            $("aside.control-sidebar").css('height', '100%');
+            
             if (parseInt($("body").innerWidth()) < 768) {
                 isMobile = true;
                 paddingHB = 50;
