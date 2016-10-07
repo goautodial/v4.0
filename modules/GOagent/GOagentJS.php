@@ -1230,6 +1230,7 @@ $(document).ready(function() {
             .done(function (result) {
                 if (result.result != 'error') {
                     $("#select-campaign").modal('hide');
+                    MainPanelToFront();
                     
                     refresh_interval = 1000;
                     is_logged_in = 1;
@@ -1754,6 +1755,7 @@ function sendLogout (logMeOut) {
         })
         .done(function (result) {
             if (result.result == 'success') {
+                MainPanelToFront();
                 is_logged_in = 0;
                 
                 if ($("#enableHotKeys").is(':checked')) {
