@@ -754,15 +754,11 @@ $(document).ready(function() {
                 'height': newHeight
             });
             
+            var newPos = 0;
             if (origHeight > $("body").innerHeight()) {
-                var newPos = origHeight - parseInt($("body").innerHeight());
-                console.log(newPos);
-                $("#go_agent_logout").css('bottom', newPos);
-            } else {
-                var newPos = origHeight + parseInt($("body").innerHeight());
-                console.log(newPos);
-                $("#go_agent_logout").css('bottom', newPos);
+                newPos = origHeight - parseInt($("body").innerHeight());
             }
+            $("#go_agent_logout").css('bottom', newPos);
         });
         
         var d = new Date();
