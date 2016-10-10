@@ -1398,7 +1398,7 @@ $(document).ready(function() {
                     toggleButtons(dial_method);
                     CallBacksCountCheck();
                     if (custom_fields_launch == 'LOGIN') {
-                        GetCustomFields(manual_dial_list_id, true, true);
+                        GetCustomFields(custom_fields_list_id, true, true);
                     }
                 } else {
                     refresh_interval = 730000;
