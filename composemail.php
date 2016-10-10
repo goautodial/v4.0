@@ -51,7 +51,6 @@ if (isset($_GET["reply_subject"])) {
 
 $folder = MESSAGES_GET_INBOX_MESSAGES;
 
-var_dump($db->getAllEnabledUsers());
 ?>
 <html>
   <head>
