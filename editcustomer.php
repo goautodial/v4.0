@@ -660,6 +660,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 					</div>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 
             <?php //print $ui->creamyFooter(); ?>
 

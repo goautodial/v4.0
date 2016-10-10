@@ -1397,6 +1397,9 @@ $(document).ready(function() {
                     updateButtons();
                     toggleButtons(dial_method);
                     CallBacksCountCheck();
+                    if (custom_fields_launch == 'LOGIN') {
+                        GetCustomFields(custom_fields_list_id, true, true);
+                    }
                 } else {
                     refresh_interval = 730000;
                     is_logged_in = 0;
@@ -1782,6 +1785,10 @@ function sendLogout (logMeOut) {
                     
                     phoneRegistered = false;
                 }, 3000);
+                
+                if (custom_fields_launch == 'LOGIN') {
+                    GetCustomFields(null, false);
+                }
             } else {
                 refresh_interval = 1000;
                 swal({
@@ -2886,7 +2893,9 @@ function CheckForIncoming () {
             //}
             
             if (custom_field_names.length > 1) {
-                GetCustomFields(this_VDIC_data.list_id, false, true);
+                if (custom_fields_launch == 'ONCALL') {
+                    GetCustomFields(this_VDIC_data.list_id, false, true);
+                }
                 
                 var custom_names_array = custom_field_names.split("|");
                 var custom_values_array = custom_field_values.split("----------");
@@ -2936,7 +2945,9 @@ function CheckForIncoming () {
                         });
                         
                         replaceCustomFields();
-                        GetCustomFields(null, true);
+                        if (custom_fields_launch == 'ONCALL') {
+                            GetCustomFields(null, true);
+                        }
                     }
                 }, 1000);
             }
@@ -4491,7 +4502,9 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
         }
 
         //ShoWTransferMain('OFF');
-        GetCustomFields(null, false);
+        if (custom_fields_launch == 'ONCALL') {
+            GetCustomFields(null, false);
+        }
         activateLinks();
     }
 }
@@ -5582,7 +5595,9 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
                     
                     if (custom_field_names.length > 1) {
-                        GetCustomFields(list_id, false, true);
+                        if (custom_fields_launch == 'ONCALL') {
+                            GetCustomFields(list_id, false, true);
+                        }
                         
                         var custom_names_array = custom_field_names.split("|");
                         var custom_values_array = custom_field_values.split("----------");
@@ -5632,7 +5647,9 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                 });
                             
                                 replaceCustomFields();
-                                GetCustomFields(null, true);
+                                if (custom_fields_launch == 'ONCALL') {
+                                    GetCustomFields(null, true);
+                                }
                             }
                         }, 1000);
                     }
@@ -7099,7 +7116,7 @@ function MainPanelToFront() {
     
     $("#cust_info").show();
     $("#loaded-contents").hide();
-    $(".content-heading ol").html('<li><a href="agent.php"><i class="fa fa-home"></i> Home</a></li>');
+    $(".content-heading ol").html('<li class="active"><i class="fa fa-home"></i> Home</li>');
 }
 
 function padlength(what){

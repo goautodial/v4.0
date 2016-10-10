@@ -252,6 +252,7 @@ $agents = $ui->API_goGetAllUserLists();
            			</div><!-- /. row -->
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         </div><!-- ./wrapper -->
 
 	<!-- Modal -->
@@ -603,7 +604,6 @@ $agents = $ui->API_goGetAllUserLists();
 			});
 		</script>
 
-		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 		<?php print $ui->creamyFooter();?>
     </body>
 </html>

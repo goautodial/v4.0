@@ -240,6 +240,7 @@ if (isset($_POST["usergroup_id"])) {
 					
 				<!-- /.content -->
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 
         </div><!-- ./wrapper -->
 

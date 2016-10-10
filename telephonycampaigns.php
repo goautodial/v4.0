@@ -264,6 +264,7 @@ error_reporting(E_ALL);*/
 					</div><!-- /.panel -->
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 
         <div class="bottom-menu skin-blue">
 			<div class="action-button-circle" data-toggle="modal">
@@ -1859,7 +1860,6 @@ error_reporting(E_ALL);*/
 
 </script>
 
-		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

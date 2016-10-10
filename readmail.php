@@ -166,6 +166,7 @@ if (isset($folder) && isset($messageid)) {
           </div><!-- /.row -->
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
+	  <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
       <?php print $ui->creamyFooter(); ?>
     </div><!-- ./wrapper -->
 	<script type="text/javascript">
