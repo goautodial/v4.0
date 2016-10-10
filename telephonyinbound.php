@@ -461,7 +461,7 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
-				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				<div class="modal-body wizard-content">
 				
 				<form action="AddTelephonyIVR.php" method="POST" id="create_ivr" role="form">
 					<div class="row">
@@ -552,14 +552,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="call_time">Call Time</label>
-								<div class="col-sm-8 mb">
-									<select name="call_time" id="call_time" class="form-control">
-										<option value="ADMIN" > Select Call Time </option>		
-									</select>
-								</div>
-							</div>
+
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="user_groups">User Groups</label>
 								<div class="col-sm-8 mb">
@@ -571,6 +564,15 @@
 										<?php
 											}
 										?>		
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="call_time">Call Time</label>
+								<div class="col-sm-8 mb">
+									<select name="call_time" id="call_time" class="form-control">
+										<option value="ADMIN" > Select Call Time </option>		
 									</select>
 								</div>
 							</div>
@@ -667,7 +669,7 @@
 									</div>
 									<div class="col-lg-6">
 										Desription: 
-										<input type="text" name="" id="" class="form-control" placeholder="Description" required>
+										<input type="text" name="" id="" class="form-control" placeholder="Description">
 									</div>
 									<div class="col-lg-3">
 										Route:
@@ -1166,11 +1168,25 @@
 			        	/*********
 						** ADD EVENT 
 						*********/
-				            
-						sweetAlert("Oops...", "NO ADD FUNCTION YET. Sorry for the inconvenience, but this function is still under construction", "error");
+				            // Submit form via ajax
+					            $.ajax({
+									url: "./php/AddIVR.php",
+									type: 'POST',
+									data: $("#create_ivr").serialize(),
+									success: function(data) {
+									  // console.log(data);
+								  		$('#finish').text("Submit");
+										$('#finish').attr("disabled", false);
 
-						$('#finish').text("Submit");
-						$('#finish').attr("disabled", false);
+										  if(data == "success"){
+												swal("Success!", "Ingroup Successfully Created!", "success");
+										  		window.setTimeout(function(){location.reload()},1000);
+										  }
+										  else{
+											  sweetAlert("Oops...", "Something went wrong! "+data, "error");
+										  }
+									}
+								});
 							
 			        }
 			    }); // end of wizard
