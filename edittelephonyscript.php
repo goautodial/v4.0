@@ -289,6 +289,7 @@ if (isset($_POST["script_id"])) {
 					
 				<!-- /.content -->
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 			
         </div><!-- ./wrapper -->
 
@@ -373,7 +374,6 @@ if (isset($_POST["script_id"])) {
 			}
 		</script>
 
-		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>
