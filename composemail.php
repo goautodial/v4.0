@@ -269,6 +269,5 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 		// hooks
 		<?php print $ui->getComposeMessageActionJS(); ?>		    
 	</script>
-	<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
   </body>
 </html>
