@@ -100,7 +100,7 @@
 								<a href="#T_ingroup" aria-controls="T_ingroup" role="tab" data-toggle="tab" class="bb0">
 								    In-Groups</a>
 							 </li>
-						<!-- IVR panel tab 
+						<!-- IVR panel tab -->
 							 <li role="presentation">
 								<a href="#T_ivr" aria-controls="T_ivr" role="tab" data-toggle="tab" class="bb0">
 								    Interactive Voice Response (IVR) Menus </a>
@@ -158,7 +158,7 @@
 								</table>
 							</div>
 							
-							<!--==== IVR ====--
+							<!--==== IVR ====-->
 							<div id="T_ivr" role="tabpanel" class="tab-pane">
 								<table class="table table-striped table-bordered table-hover" id="table_ivr">
 								   <thead>
@@ -173,7 +173,6 @@
 								   </thead>
 								   <tbody>
 									   	<?php
-									   	/*
 									   		for($i=0;$i < count($ivr->menu_id);$i++){
 
 											$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i], $ivr->menu_name[$i]);
@@ -189,7 +188,6 @@
 											</tr>
 										<?php
 											}
-										*/
 										?>
 								   </tbody>
 								</table>
@@ -453,7 +451,7 @@
 	
 	<!-- ADD IVR MODAL -->
 		<div class="modal fade" id="add_ivr" aria-labelledby="ivr_modal" >
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="ivr_modal">
@@ -576,17 +574,18 @@
 								</div>
 							</div>
 							<div class="form-group">		
-								<label class="col-sm-5 control-label" for="menu_repeat">Track call in realtime report</label>
-								<div class="col-sm-7 mb"> 
+								<label class="col-sm-4 control-label" for="menu_repeat">Track call in realtime report</label>
+								<div class="col-sm-8 mb"> 
 									<select name="call_time" id="call_time" class="form-control">
 										<option value="ADMIN" > Select Track Call </option>		
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-5 control-label" for="tracking_group">Tracking Group</label>
-								<div class="col-sm-7 mb">
+								<label class="col-sm-4 control-label" for="tracking_group">Tracking Group</label>
+								<div class="col-sm-8 mb">
 									<select name="tracking_group" id="tracking_group" class="form-control select2-1" style="width:100%;">
+										<option value="CALLMENU">CALLMENU - Default</option>
 									<?php
 										for($i=0;$i<count($ingroups->group_id);$i++){
 									?>
@@ -608,38 +607,90 @@
 	                       <small>Assign then Enter Account and Login Details</small>
 	                    </h4>
 	                    <fieldset>
-							<div class="form-group">
-								<div class="col-lg-12">
-									<div class="pull-right">
-										<button type="button" class="btn btn-primary add-option">Add Option</button>
-									</div>
+							
+							<div class="form-group mt">
+								<div class="col-sm-12">
+									<center><label class=" control-label">Default Call Menu Entry</label></center>
 								</div>
 							</div>
-							<div class="form-group to-clone-opt">
-								<label class="col-sm-3 control-label" for="">Default Call Menu Entry:</label>
+							<div class="form-group mb">	
 								<div class="col-lg-2">
 									Option:
-									<select class="form-control">
+									<select class="form-control" disabled>
 										<option selected>TIMEOUT</option>
 									</select>
 								</div>
-								<div class="col-lg-2">
+								<div class="col-lg-7">
 									Desription: 
-									<input type="text" name="" id="" class="form-control" placeholder="Description" required value="Hangup">
+									<input type="text" name="" id="" class="form-control" placeholder="Description" required value="Hangup" disabled>
 								</div>
-								<div class="col-lg-2">
+								<div class="col-lg-3">
 									Route:
-									<select class="form-control">
+									<select class="form-control" disabled>
 										<option selected>Hangup</option>
 									</select>
 								</div>
-								<div class="col-lg-2">
-									Audio File:
-									<input type="text" name="" id="" class="form-control" placeholder="Description" required value="vm-goodbye">
+								<div class="col-lg-1">&nbsp;
 								</div>
-								<div class="col-lg-1 btn-remove"></div>
 							</div>
-							<div class="cloning-area"></div>
+							<div class="form-group">
+								<div class="col-lg-12 mt">
+									Audio File:
+									<input type="text" name="" id="" class="form-control" placeholder="Description" required value="vm-goodbye" disabled>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-lg-12 mt">
+									<center>Add New Call Menu Options</center>
+								</div>
+								<div class="col-lg-12"><hr/></div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-lg-12">
+									<div class="col-lg-2">
+										Option:
+										<select class="form-control">
+											<option selected></option>
+											<?php
+												for($i=0; $i <= 9; $i++){
+													echo '<option value="'.$i.'">'.$i.'</option>';
+												}
+											?>
+											<option value="#">#</option>
+											<option value="*">*</option>
+											<option value="TIMECHECK">TIMECHECK</option>
+											<option value="INVALID">INVALID</option>
+										</select>
+									</div>
+									<div class="col-lg-6">
+										Desription: 
+										<input type="text" name="" id="" class="form-control" placeholder="Description" required>
+									</div>
+									<div class="col-lg-3">
+										Route:
+										<select class="form-control">
+											<option selected></option>
+											<option value="CALLMENU">Call Menu / IVR</option>
+											<option value="IN_GROUP">In-group</option>
+											<option value="DID">DID</option>
+											<option value="HANGUP">Hangup</option>
+											<option value="EXTEN">Custom Extension</option>
+											<option value="PHONE">Phone</option>
+											<option value="VOICEMAIL">Voicemail</option>
+											<option value="AGI">AGI</option>
+										</select>
+									</div>
+									<div class="col-lg-1 btn-remove"></div>
+								</div>
+								<!--
+								<div class="col-lg-12">
+									Audio File:
+									<input type="text" name="" id="" class="form-control" placeholder="Audio File" required>
+								</div>-->
+							</div>
+							
 						</fieldset>
 					</div><!-- End of Step -->
 				
