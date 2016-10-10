@@ -95,5 +95,6 @@
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         </div><!-- ./wrapper -->
 
+		<?php print $ui->standardizedThemeJS(); ?>
     </body>
 </html>
