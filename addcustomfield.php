@@ -429,7 +429,6 @@ $customs = $customFields->data;
 
 				<!-- /.content -->
             </aside><!-- /.right-side -->
-			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 
 			<?php print $ui->creamyFooter(); ?>
 
@@ -646,7 +645,6 @@ $customs = $customFields->data;
 				</div><!-- /.modal -->
 				<!-- end of modal -->
 
-		<?php print $ui->standardizedThemeJS(); ?>
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
