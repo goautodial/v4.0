@@ -236,6 +236,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
 		<!-- Modal Dialogs -->
+		<?php print $ui->standardizedThemeJS();?>
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
 	    <!-- Page specific script -->

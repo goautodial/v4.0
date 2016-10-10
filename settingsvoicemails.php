@@ -79,6 +79,7 @@
 				?>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         </div><!-- ./wrapper -->
 
         <div class="action-button-circle" data-toggle="modal" data-target="#addvoicemail-modal">
@@ -323,7 +324,6 @@
     });
 </script>
         
-        <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         <?php print $ui->creamyFooter();?>
     </body>
 </html>
