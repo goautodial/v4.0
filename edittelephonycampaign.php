@@ -408,7 +408,7 @@ $lists = $ui->API_goGetAllLists();
 														<label class="col-sm-3 control-label">Launch Custom Fields:</label>
 														<div class="col-sm-9 mb">
 															<select class="form-control" id="custom_fields_launch" name="custom_fields_launch">
-																<option value="ONCALL" <?php if($campaign->custom_fields_launch == "ONCALL") echo "selected";?>>DISPO</option>
+																<option value="ONCALL" <?php if($campaign->custom_fields_launch == "ONCALL") echo "selected";?>>ONCALL</option>
 																<option value="LOGIN" <?php if($campaign->custom_fields_launch == "LOGIN") echo "selected";?>>LOGIN</option>
 															</select>
 														</div>
