@@ -413,6 +413,12 @@ $lists = $ui->API_goGetAllLists();
 															</select>
 														</div>
 													</div>
+													<div class="form-group">
+														<label class="col-sm-3 control-label">Custom Fields List ID:</label>
+														<div class="col-sm-9 mb">
+															<input type="text" class="form-control" value="<?php if(!empty($campaign->custom_fields_list_id)){echo $campaign->custom_fields_list_id;}?>" id="custom_fields_list_id" name="custom_fields_list_id">
+														</div>
+													</div>
 													<?php if($campaign->campaign_type == "OUTBOUND") { ?>
 														<div class="form-group" style="margin-bottom: 10px;">
 															<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=1;?>

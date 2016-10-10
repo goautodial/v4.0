@@ -56,6 +56,7 @@
 	$postfields["campaign_allow_inbound"]		= $_POST["campaign_allow_inbound"];
 	$postfields["custom_fields_launch"]			= $_POST["custom_fields_launch"];
 	$postfields["campaign_type"]				= $_POST["campaign_type"];
+	$postfields["custom_fields_list_id"]		= $_POST["custom_fields_list_id"];
 
 	if(is_array($_POST["closer_campaigns"])){
 		$closerCampaigns = "";
