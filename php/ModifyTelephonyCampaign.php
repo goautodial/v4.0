@@ -53,7 +53,9 @@
 	$postfields["customer_3way_hangup_logging"] = $_POST["customer_3way_hangup_logging"];
 	$postfields["customer_3way_hangup_seconds"] = $_POST["customer_3way_hangup_seconds"];
 	$postfields["customer_3way_hangup_action"] 	= $_POST["customer_3way_hangup_action"];
-	$postfields["campaign_allow_inbound"] = $_POST["campaign_allow_inbound"];
+	$postfields["campaign_allow_inbound"]		= $_POST["campaign_allow_inbound"];
+	$postfields["custom_fields_launch"]			= $_POST["custom_fields_launch"];
+	$postfields["campaign_type"]				= $_POST["campaign_type"];
 
 	if(is_array($_POST["closer_campaigns"])){
 		$closerCampaigns = "";
