@@ -646,6 +646,7 @@ $customs = $customFields->data;
 				</div><!-- /.modal -->
 				<!-- end of modal -->
 
+		<?php print $ui->standardizedThemeJS(); ?>
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
