@@ -147,6 +147,7 @@ $lists = $ui->API_goGetAllLists();
 	                	?>
 						<form id="campaign_form_edit" class="form-horizontal"  action="./php/ModifyTelephonyCampaign.php" method="POST" enctype="multipart/form-data">
 							<input type="hidden" name="campaign_id" value="<?php echo $campaign->data->campaign_id;?>">
+							<input type="hidden" name="campaign_type" value="<?php echo $campaign->campaign_type;?>">
 							<?php $errormessage = NULL; ?>
 
 						<!-- IF CAMPAIGN -->
@@ -401,6 +402,21 @@ $lists = $ui->API_goGetAllLists();
 																<option value="N" <?php if($campaign->data->campaign_allow_inbound == "N") echo "selected";?>>N</option>
 																<option value="Y" <?php if($campaign->data->campaign_allow_inbound == "Y") echo "selected";?>>Y</option>
 															</select>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-3 control-label">Launch Custom Fields:</label>
+														<div class="col-sm-9 mb">
+															<select class="form-control" id="custom_fields_launch" name="custom_fields_launch">
+																<option value="ONCALL" <?php if($campaign->custom_fields_launch == "ONCALL") echo "selected";?>>ONCALL</option>
+																<option value="LOGIN" <?php if($campaign->custom_fields_launch == "LOGIN") echo "selected";?>>LOGIN</option>
+															</select>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-3 control-label">Custom Fields List ID:</label>
+														<div class="col-sm-9 mb">
+															<input type="text" class="form-control" value="<?php if(!empty($campaign->custom_fields_list_id)){echo $campaign->custom_fields_list_id;}?>" id="custom_fields_list_id" name="custom_fields_list_id">
 														</div>
 													</div>
 													<?php if($campaign->campaign_type == "OUTBOUND") { ?>
@@ -1154,7 +1170,7 @@ $lists = $ui->API_goGetAllLists();
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="customer_3way_hangup_action" name="customer_3way_hangup_action">
 																	<option value="DISPO" <?php if($campaign->data->customer_3way_hangup_action == "DISPO") echo "selected";?>>DISPO</option>
-																	<option value="NONE"> <?php if($campaign->data->customer_3way_hangup_action == "NONE") echo "selected";?></option>
+																	<option value="NONE" <?php if($campaign->data->customer_3way_hangup_action == "NONE") echo "selected";?>>NONE</option>
 																</select>
 															</div>
 														</div>
@@ -1385,6 +1401,7 @@ $lists = $ui->API_goGetAllLists();
                 </section>
 				<!-- /.content -->
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 
         </div><!-- ./wrapper -->
 

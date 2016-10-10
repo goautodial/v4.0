@@ -530,8 +530,9 @@
             </div>
          </div>
       </section><!-- /.content -->
-            </aside><!-- /.right-side -->                
-                <?php print $ui->creamyFooter();?>
+            </aside><!-- /.right-side -->         
+            <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>       
+            <?php print $ui->creamyFooter();?>
 
         
 <!--================= MODALS =====================-->
@@ -1018,8 +1019,7 @@
     <script src="js/croppie.js"></script> 
     <!-- <script src="js/demo.js"></script> -->
     <script src="js/exif.js"></script>
-        
-    <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>        
+    
     <?php print $ui->standardizedThemeJS();?>
     </body>
 </html>

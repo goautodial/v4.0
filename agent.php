@@ -379,6 +379,9 @@ if (isset($_GET["message"])) {
 			.text-color-black {
 				color: black;
 			}
+			::-webkit-scrollbar { 
+				display: none;
+			}
 		</style>
     </head>
     <?php print $ui->creamyAgentBody(); ?>
@@ -693,7 +696,7 @@ if (isset($_GET["message"])) {
 																<label for="date_of_birth">Date Of Birth</label>
 															</div>
 														</div>
-														<div class="col-sm-12">
+														<div id="call_notes_content" class="col-sm-12">
 															<div class="form-group" style="float: left; width:100%;">
 																<textarea rows="5" id="call_notes" name="call_notes" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin" style="resize:none; width: 100%;"></textarea>
 																<label for="call_notes">Call Notes</label>
@@ -1392,7 +1395,7 @@ if (isset($_GET["message"])) {
       <li id="settings-tab"><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
     </ul>
     <!-- Tab panes -->
-    <div class="tab-content" style="border-width:0; overflow-y: hidden; padding-bottom: 30px;">
+    <div class="tab-content" style="border-width:0; overflow-y: auto; padding-bottom: 30px;">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-dialer-tab">
         <ul class="control-sidebar-menu" id="go_agent_dialer">
@@ -1453,8 +1456,8 @@ if (isset($_GET["message"])) {
 			
         </ul>
 		
-        <ul class="control-sidebar-menu" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px; text-align: center;">
-			<li>
+        <ul class="control-sidebar-menu" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 5px; text-align: center;">
+			<li style="margin-bottom: -5px;">
 				<p><strong><?=$lh->translateText("Call Duration")?>:</strong> <span id="SecondsDISP">0</span> <?=$lh->translationFor('second')?></p>
 				<span id="session_id" class="hidden"></span>
 				<span id="callchannel" class="hidden"></span>
@@ -1502,6 +1505,9 @@ if (isset($_GET["message"])) {
 				echo $ui->getSidebarItem("callbackslist.php", "", $lh->translationFor("callbacks"), "0", "blue");
 			}
 			?>
+			<li id="pause_code_link" class="hidden">
+				<a onclick="PauseCodeSelectBox();"><i class="fa fa-"></i> <span><?=$lh->translationFor('enter_pause_code')?></span></a>
+			</li>
 		</ul>
 		
         <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">

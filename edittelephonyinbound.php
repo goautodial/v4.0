@@ -1705,6 +1705,7 @@ if (isset($_POST["did"])) {
 					}
 					
 					?>
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         </div><!-- ./wrapper -->
          
          <?php print $ui->standardizedThemeJS();?>

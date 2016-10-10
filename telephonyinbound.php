@@ -267,6 +267,7 @@
 			</div><!-- /. panel -->
         </section><!-- /.content -->
     </aside><!-- /.right-side -->
+	<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 </div><!-- ./wrapper -->
 
 <?php
@@ -1488,7 +1489,6 @@
 	});
 </script>
 		
-		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

@@ -354,13 +354,24 @@ class DbHandler {
 			//$status = $userobj["status"];
 			// $password_hash = $userobj["pass"];
 			// $status = $userobj["user_level"];
+			$pass_hash = '';
+			$cwd = $_SERVER['DOCUMENT_ROOT'];
 			$password_hash = $userobj->pass;
 			$status = $userobj->active;
 			$user_role = $userobj->user_level;
+			$bcrypt = $userobj->bcrypt;
+			$salt = $userobj->salt;
+			$cost = $userobj->cost;
 			//if ($status == 1) { // user is active
+
+			if ($bcrypt > 0) {
+				$pass_hash = exec("{$cwd}/bin/bp.pl --pass=$password --salt=$salt --cost=$cost");
+				$pass_hash = preg_replace("/PHASH: |\n|\r|\t| /",'',$pass_hash);
+			} else {$pass_hash = $password;}
+			
 			if ($user_role == 9) {
 				//if (\creamy\PassHash::check_password($password_hash, $password)) {
-				if ($password_hash === $password) {
+				if ($password_hash === $pass_hash) {
 	                // User password is correct. return some interesting fields...
 	                $arr = array();
 	                //$arr["id"] = $userobj["id"];
@@ -378,7 +389,9 @@ class DbHandler {
 	                $arr["id"] = $userobj->user_id;
 	                $arr["name"] = $userobj->full_name;
 	                $arr["email"] = $userobj->email;
-					$arr["role"] = $userobj->user_group;
+	                $arr["phone_login"] = $userobj->phone_login;
+	                $arr["phone_pass"] = $userobj->phone_pass;
+					$arr["role"] = ($user_role == 9 || $user_role == 8 || $user_role == 0) ? 0 : 3;
 					$arr["avatar"] = "";
 	                
 	                return $arr;
