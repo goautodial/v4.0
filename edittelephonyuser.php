@@ -565,6 +565,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 				?>
 				</div>
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 			
             
 			
@@ -772,7 +773,6 @@ $user_groups = $ui->API_goGetUserGroupsList();
 		}
 </script>
 
-		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>
