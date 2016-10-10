@@ -81,7 +81,6 @@ var MDlogEPOCH = 0;
 var recLIST = '';
 var filename = '';
 var last_filename = '';
-var custom_fields_launch = 'LOGIN';
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
