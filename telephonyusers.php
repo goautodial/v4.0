@@ -133,6 +133,7 @@
 				?>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         </div><!-- ./wrapper -->
 <?php
 	if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
@@ -974,7 +975,6 @@
 	
 </script>
 		
-		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 		<?php print $ui->creamyFooter();?>
     </body>
 </html>
