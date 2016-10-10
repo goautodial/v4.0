@@ -186,6 +186,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
           </div><!-- /.row -->
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
+	  <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
       <?php print $ui->creamyFooter(); ?>
     </div><!-- ./wrapper -->
     
