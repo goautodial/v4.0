@@ -1506,7 +1506,7 @@ if (isset($_GET["message"])) {
 				//</li>';
 				//echo $ui->getSidebarItem("./agent.php", "", $lh->translationFor("Home"));
 				$numMessages = $db->getUnreadMessagesNumber($user->getUserId());
-				echo $ui->getSidebarItem("messages.php", "", $lh->translationFor("messages"), "0", "green");
+				echo $ui->getSidebarItem("messages.php", "", $lh->translationFor("messages"), $numMessages, "green");
 				echo $ui->getSidebarItem("customerslist.php", "", $lh->translationFor("contacts"));
 				echo $ui->getSidebarItem("callbackslist.php", "", $lh->translationFor("callbacks"), "0", "blue");
 			}
