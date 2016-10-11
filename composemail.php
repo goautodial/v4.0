@@ -55,7 +55,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Creamy</title>
+    <title>Compose Message</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="./css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -142,9 +142,6 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 	            <form method="POST" id="send-message-form" enctype="multipart/form-data">
                 <div class="box-header with-border">
                   <h3 class="box-title"><?php $lh->translateText("compose_new_message"); ?></h3>
-				  <?php
-				  var_dump($db->getAllEnabledUsers());
-				  ?>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <input type="hidden" id="fromuserid" name="fromuserid" value="<?php print $user->getUserId(); ?>">
