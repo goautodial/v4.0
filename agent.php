@@ -28,13 +28,14 @@
 
 require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
-require_once('./php/DbHandler.php');
 require_once('./php/LanguageHandler.php');
+require_once('./php/DbHandler.php');
 require('./php/Session.php');
 
 // initialize structures
 $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
+$db = new \creamy\DbHandler();
 $user = \creamy\CreamyUser::currentUser();
 
 
@@ -1504,6 +1505,7 @@ if (isset($_GET["message"])) {
 				//	<div class="text-center"><a href="./tasks.php">'.$lh->translationFor("tasks").'</a></div>
 				//</li>';
 				//echo $ui->getSidebarItem("./agent.php", "", $lh->translationFor("Home"));
+				$numMessages = $db->getUnreadMessagesNumber($user->getUserId());
 				echo $ui->getSidebarItem("messages.php", "", $lh->translationFor("messages"), "0", "green");
 				echo $ui->getSidebarItem("customerslist.php", "", $lh->translationFor("contacts"));
 				echo $ui->getSidebarItem("callbackslist.php", "", $lh->translationFor("callbacks"), "0", "blue");
