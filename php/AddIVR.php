@@ -5,20 +5,6 @@
 	 * Generates action circle buttons for different pages/module
 	 */
 require_once('goCRMAPISettings.php');
-	 
-/*
-echo 'groupid:'.$_POST['groupid']; echo "<br/>";
-echo 'groupname:'.$_POST['groupname']; echo "<br/>";
-echo 'color:'.$color;  echo "<br/>";
-echo 'active:'.$_POST['active'];  echo "<br/>";
-echo 'webform:'.$_POST['web_form']; echo "<br/>";
-echo 'usergroup:'.$_POST['user_group'];  echo "<br/>";
-echo 'ingroupvoicemail:'.$_POST['ingroup_voicemail'];  echo "<br/>";
-echo 'nextagentcall:'.$_POST['next_agent_call']; echo "<br/>";
-echo 'display:'.$_POST['display']; echo "<br/>";
-echo 'script:'.$_POST['script'];  echo "<br/>";
-echo 'calllaunch:'.$_POST['call_launch']; echo "<br/>";
-*/
 
 	$url = gourl."/goInbound/goAPI.php"; # URL to GoAutoDial API file
 	$postfields["goUser"] 			= goUser; #Username goes here. (required)

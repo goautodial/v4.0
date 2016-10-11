@@ -282,6 +282,7 @@
 	$ivr = $ui->API_getIVR();
 	$scripts = $ui->API_goGetAllScripts();
 	$voicefiles = $ui->API_GetVoiceFilesList();
+	$calltimes = $ui->getCalltimes();
 ?>
 
 
@@ -328,20 +329,6 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label" for="user_group">User Group</label>
-								<div class="col-sm-9 mb">
-									<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
-										<?php
-											for($i=0;$i<count($user_groups->user_group);$i++){
-										?>
-											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
-										<?php
-											}
-										?>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
 								<label class="col-sm-3 control-label" for="active">Active</label>
 								<div class="col-sm-9 mb">
 									<select name="active" id="active" class="form-control">
@@ -354,6 +341,20 @@
 								<label class="col-sm-3 control-label" for="web_form">Web Form</label>
 								<div class="col-sm-9 mb">
 									<input type="url" name="web_form" id="web_form" class="form-control" placeholder="Place a valid URL here... ">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="user_group">User Group</label>
+								<div class="col-sm-9 mb">
+									<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
+										<?php
+											for($i=0;$i<count($user_groups->user_group);$i++){
+										?>
+											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
+										<?php
+											}
+										?>
+									</select>
 								</div>
 							</div>
 						</fieldset>
@@ -540,47 +541,39 @@
 							<div class="form-group">		
 								<label class="col-sm-4 control-label" for="menu_repeat">Menu Repeat</label>
 								<div class="col-sm-8 mb">
-									<input type="number" name="menu_repeat" id="menu_repeat" class="form-control" value="1" min="0" required>
+									<input type="number" name="menu_repeat" id="menu_repeat" class="form-control" value="2" min="0" required>
 								</div>
 							</div>
 							
-							<div class="form-group">		
+							<div class="form-group" style="display:none;">		
 								<label class="col-sm-4 control-label" for="menu_time_check">Menu Time Check</label>
 								<div class="col-sm-8 mb">
 									<select name="menu_time_check" id="menu_time_check" class="form-control">
-										<option value="ADMIN" > Select Menu Time Check </option>		
+										<option value="0" > NO </option>
+										<option value="1" > YES </option>		
 									</select>
 								</div>
 							</div>
-
-							<div class="form-group">
-								<label class="col-sm-4 control-label" for="user_groups">User Groups</label>
+							<div class="form-group">		
+								<label class="col-sm-4 control-label" for="call_time_id">Call Time: </label>
 								<div class="col-sm-8 mb">
-									<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
+									<select name="call_time_id" id="call_time_id" class="form-control select2-1" style="width:100%;">
 										<?php
-											for($i=0;$i<count($user_groups->user_group);$i++){
+											for($x=0; $x<count($calltimes->call_time_id);$x++){
 										?>
-											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
+												<option value="<?php echo $calltimes->call_time_id[$x];?>"> <?php echo $calltimes->call_time_id[$x].' - '.$calltimes->call_time_name[$x]; ?> </option>
 										<?php
 											}
-										?>		
+										?>
 									</select>
 								</div>
 							</div>
-
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="call_time">Call Time</label>
-								<div class="col-sm-8 mb">
-									<select name="call_time" id="call_time" class="form-control">
-										<option value="ADMIN" > Select Call Time </option>		
-									</select>
-								</div>
-							</div>
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="menu_repeat">Track call in realtime report</label>
+							<div class="form-group" style="display:none;">		
+								<label class="col-sm-4 control-label" for="track_in_vdac">Track call in realtime report: </label>
 								<div class="col-sm-8 mb"> 
-									<select name="call_time" id="call_time" class="form-control">
-										<option value="ADMIN" > Select Track Call </option>		
+									<select name="track_in_vdac" id="track_in_vdac" class="form-control">
+										<option value="0" >0 - No Realtime Tracking</option>
+										<option value="1" selected>1 - Realtime Tracking</option>
 									</select>
 								</div>
 							</div>
@@ -601,7 +594,21 @@
 									</select>
 								</div>
 							</div>
-							
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="user_groups">User Groups</label>
+								<div class="col-sm-8 mb">
+									<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
+											<option value="---ALL---"> - - - ALL USER GROUPS - - - </option>
+										<?php
+											for($i=0;$i<count($user_groups->user_group);$i++){
+										?>
+											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
+										<?php
+											}
+										?>		
+									</select>
+								</div>
+							</div>
 						</fieldset>
 
 				<!-- STEP 2 -->
@@ -644,10 +651,11 @@
 							</div>
 
 							<div class="form-group">
-								<div class="col-lg-12 mt">
-									<center>Add New Call Menu Options</center>
+								<div class="col-lg-4"><hr/></div>
+								<div class="col-lg-4 mt mb">
+									<center><strong>Add New Call Menu Options</strong></center>
 								</div>
-								<div class="col-lg-12"><hr/></div>
+								<div class="col-lg-4"><hr/></div>
 							</div>
 
 							<div class="form-group">
