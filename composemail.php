@@ -143,7 +143,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
                 <div class="box-header with-border">
                   <h3 class="box-title"><?php $lh->translateText("compose_new_message"); ?></h3>
 				  <?php
-				  var_dump($ui->getAllEnabledUsers());
+				  var_dump($db->getAllEnabledUsers());
 				  ?>
                 </div><!-- /.box-header -->
                 <div class="box-body">
