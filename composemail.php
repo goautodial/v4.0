@@ -142,6 +142,9 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 	            <form method="POST" id="send-message-form" enctype="multipart/form-data">
                 <div class="box-header with-border">
                   <h3 class="box-title"><?php $lh->translateText("compose_new_message"); ?></h3>
+				  <?php
+				  var_dump($ui->getAllEnabledUsers());
+				  ?>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <input type="hidden" id="fromuserid" name="fromuserid" value="<?php print $user->getUserId(); ?>">

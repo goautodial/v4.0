@@ -759,7 +759,7 @@ if (isset($_GET["message"])) {
 														<h4>
 															<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="reload-script" style="padding: 5px;">Reload Script</a>
 														</h4>
-														<div id="ScriptContents" style="min-height: 100px; border: dashed 1px #c0c0c0; padding: 20px 5px 5px;">
+														<div id="ScriptContents" style="min-height: 200px; border: dashed 1px #c0c0c0; padding: 20px 5px 5px;">
 															<?php echo $output_script;?>
 														</div>
 													</fieldset><!-- /.fieldset -->
@@ -1416,8 +1416,11 @@ if (isset($_GET["message"])) {
         </ul>
 
         <ul class="control-sidebar-menu hidden-xs" id="go_agent_other_buttons" style="margin-top: 15px;padding: 0 15px;">
-			<li id="toggleWebForms" style="padding: 0 5px 15px;">
+			<li id="toggleWebForm" style="padding: 0 5px 15px;">
 				<button type="button" name="openWebForm" id="openWebForm" class="btn btn-warning btn-block disabled"><i class="fa fa-external-link"></i> <?=$lh->translationFor('webform')?></button>
+			</li>
+			<li id="toggleWebFormTwo" style="padding: 0 5px 15px;" class="hidden">
+				<button type="button" name="openWebFormTwo" id="openWebFormTwo" class="btn btn-warning btn-block disabled"><i class="fa fa-external-link"></i> <?=$lh->translationFor('webform_two')?></button>
 			</li>
 			<li style="padding: 0 5px 15px 0; display: none;">
 				<div class="material-switch pull-right">

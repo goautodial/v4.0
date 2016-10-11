@@ -497,7 +497,8 @@ class DbHandler {
 		$this->dbConnectorAsterisk->where("active", "Y");
 		// $cols = array("id", "name", "email", "phone", "role", "avatar", "creation_date", "status");
 		$cols = array("user_id", "user", "email", "phone_login", "user_level", "active");
-		return $this->dbConnectorAsterisk->get(CRM_USERS_TABLE_NAME_ASTERISK, null, $cols);
+		$result = $this->dbConnectorAsterisk->get(CRM_USERS_TABLE_NAME_ASTERISK, null, $cols);
+		return $result;
 	}
     
     /**
