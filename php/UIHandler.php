@@ -834,7 +834,7 @@ error_reporting(E_ERROR | E_PARSE);
 			foreach ($customParameters as $key => $value) { $paramCode .= ", \"$key\": \"$value\" "; }
 		}
 
-		$result = '$(".'.$classname.'").click(function (e) {
+		$result = '$("button.'.$classname.'").click(function (e) {
 				    '.$checkSelectedMessagesCode.'
 					e.preventDefault();
 					'.$confirmPrefix.'
@@ -1476,6 +1476,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                <div class="navbar-custom-menu">
 	                    <ul class="nav navbar-nav">
 	                    		'.$moduleTopbarElements.'
+	                    		'.$this->getTopbarMessagesMenu($user).'
 		                    	<li>
 			                    	<a href="#" class="visible-xs" data-toggle="control-sidebar" style="padding-top: 17px; padding-bottom: 18px; margin-right: -15px;"><i class="fa fa-cogs"></i></a>
 										<a href="#" class="hidden-xs" data-toggle="control-sidebar" style="padding-top: 14px; padding-bottom: 14px; margin-right: -15px;">
@@ -2457,18 +2458,21 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 			if ($message["message_read"] == 0) $table .= '<tr class="unread">';
 			else $table .= '<tr>';
+			
+			$attachments = $this->db->getMessageAttachments($message['id'], $folder);
+			$showPaperClip = (!isset($attachments) || count($attachments) < 1) ? '' : '<i class="fa fa-paperclip" title="Has attachment"></i>';
 
 			// variables and html text depending on the message
 			$favouriteHTML = "-o"; if ($message["favorite"] == 1) $favouriteHTML = "";
 			$messageLink = '<a href="readmail.php?folder='.$folder.'&message_id='.$message["id"].'">';
 
-			$table .= '<td><input type="checkbox" class="message-selection-checkbox" value="'.$message["id"].'"/></td>';
-			$table .= '<td class="mailbox-star"><i class="fa fa-star'.$favouriteHTML.'" id="'.$message["id"].'"></i></td>';
+			$table .= '<td style="width: 5%; text-align: center;"><input type="checkbox" class="message-selection-checkbox" value="'.$message["id"].'"/></td>';
+			$table .= '<td style="width: 5%; text-align: center;" class="mailbox-star"><i class="fa fa-star'.$favouriteHTML.'" id="'.$message["id"].'"></i></td>';
 			// $table .= '<td class="mailbox-name">'.$messageLink.(isset($message["remote_user"]) ? $message["remote_user"] : $this->lh->translationFor("unknown")).'</a></td>';
-			$table .= '<td class="mailbox-name">'.$messageLink.(isset($from_user) ? $from_user: $this->lh->translationFor("unknown")).'</a></td>';
+			$table .= '<td class="mailbox-name" style="width: 20%; white-space: nowrap;">'.$messageLink.(isset($from_user) ? $from_user: $this->lh->translationFor("unknown")).'</a></td>';
 			$table .= '<td class="mailbox-subject">'.$message["subject"].'</td>';
-			$table .= '<td class="mailbox-attachment"></td>'; //<i class="fa fa-paperclip"></i></td>';
-			$table .= '<td class="mailbox-date pull-right">'.$this->relativeTime($message["date"]).'</td>';
+			$table .= '<td class="mailbox-attachment" style="width: 5%; text-align: center;">'.$showPaperClip.'</td>'; //<i class="fa fa-paperclip"></i></td>';
+			$table .= '<td class="mailbox-date" style="width: 15%; white-space: nowrap; text-align: right;">'.$this->relativeTime($message["date"]).'</td>';
 			$table .= '</tr>';
 		}
 		$table .= $this->generateTableFooterWithItems($columns, true, true);
@@ -2511,7 +2515,7 @@ error_reporting(E_ERROR | E_PARSE);
 	/**
 	 * Generates the button group for the mailbox messages table
 	 */
-	public function getMailboxButtons($folder) {
+	public function getMailboxButtons($folder, $canDelete = true) {
 		// send to trash or recover from trash ?
 		if ($folder == MESSAGES_GET_DELETED_MESSAGES) {
 			$trashOrRecover = '<button class="btn btn-default btn-sm messages-restore-message"><i class="fa fa-undo"></i></button>';
@@ -2524,9 +2528,11 @@ error_reporting(E_ERROR | E_PARSE);
 		<div class="btn-group">
 		  <button class="btn btn-default btn-sm messages-mark-as-favorite"><i class="fa fa-star"></i></button>
 		  <button class="btn btn-default btn-sm messages-mark-as-read"><i class="fa fa-eye"></i></button>
-		  <button class="btn btn-default btn-sm messages-mark-as-unread"><i class="fa fa-eye-slash"></i></button>
-		  '.$trashOrRecover.'
-		  <button class="btn btn-default btn-sm messages-delete-permanently"><i class="fa fa-times"></i></button>';
+		  <button class="btn btn-default btn-sm messages-mark-as-unread"><i class="fa fa-eye-slash"></i></button>';
+		if ($canDelete) {
+			$buttons .= $trashOrRecover.'
+			  <button class="btn btn-default btn-sm messages-delete-permanently"><i class="fa fa-times"></i></button>';
+		}
 		// module buttons
 		$mh = \creamy\ModuleHandler::getInstance();
 		$buttons .= $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_MESSAGE_LIST_FOOTER, array("folder" => $folder), CRM_MODULE_MERGING_STRATEGY_APPEND);
@@ -2645,15 +2651,16 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param $activefolder String current active folder the user is in.
 	 * @return String the HTML with the list of message folders as <li> items.
 	 */
-	public function getMessageFoldersAsList($activefolder) {
+	public function getMessageFoldersAsList($activefolder, $canDelete = true) {
 		require_once('Session.php');
 		$user = \creamy\CreamyUser::currentUser();
+		$isHidden = (!$canDelete) ? 'hidden' : '';
 		// info for active folder and unread messages
         $unreadMessages = $this->db->getUnreadMessagesNumber($user->getUserId());
         $aInbox = $activefolder == MESSAGES_GET_INBOX_MESSAGES ? 'class="active"' : '';
         $aSent = $activefolder == MESSAGES_GET_SENT_MESSAGES ? 'class="active"' : '';
         $aFav = $activefolder == MESSAGES_GET_FAVORITE_MESSAGES ? 'class="active"' : '';
-        $aDel = $activefolder == MESSAGES_GET_DELETED_MESSAGES ? 'class="active"' : '';
+        $aDel = $activefolder == MESSAGES_GET_DELETED_MESSAGES ? 'class="active '.$isHidden.'"' : 'class="'.$isHidden.'"';
 
         return '<ul class="nav nav-pills nav-stacked">
 			<li '.$aInbox.'><a href="messages.php?folder=0">

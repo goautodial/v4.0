@@ -1522,7 +1522,7 @@ $(document).ready(function() {
     });
     
     // Hijack links on left menu
-    $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").on('click', hijackThisLink);
+    $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").on('click', hijackThisLink);
     
     $("#submitCBDate").click(function() {
         CallBackDateSubmit();
@@ -1531,12 +1531,6 @@ $(document).ready(function() {
     $("#openWebForm").click(function() {
         window.open(TEMP_VDIC_web_form_address, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
     });
-    
-    //$("button[id^='dial-cb-']").on('click', function() {
-    //    var CBid = $(this).data('cbid');
-    //    var CBlead = $(this).data('leadid');
-    //    NewCallbackCall(CBid, CBlead, 'MAIN');
-    //});
 });
 
 function checkSidebarIfOpen(startUp) {
@@ -3782,7 +3776,7 @@ function CallBacksCountCheck() {
                 }
             }
             
-            $("a:regex(href, agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
+            $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist)").off('click', hijackThisLink).on('click', hijackThisLink);
         }
     });
 }
