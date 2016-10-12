@@ -4132,7 +4132,10 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    for($i=0;$i<count($output->file_name);$i++){
 
-	    $file_link = "http://69.46.6.35/sounds/".$output->file_name[$i];
+	    $web_ip = getenv("SERVER_ADDR");
+	    $file_link = "https://".$web_ip."/sounds/".$output->file_name[$i];
+
+	    //$file_link = "http://69.46.6.35/sounds/".$output->file_name[$i];
 
 	    $details = "<strong>Filename</strong>: <i>".$output->file_name[$i]."</i><br/>";
 	    $details .= "<strong>Date</strong>: <i>".$output->file_date[$i]."</i><br/>";
@@ -4153,7 +4156,8 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	private function getUserActionMenuForVoiceFiles($filename, $details) {
-	    $file_link = "http://69.46.6.35/sounds/".$filename;
+		$web_ip = getenv("SERVER_ADDR");
+	    $file_link = "http://".$web_ip."/sounds/".$filename;
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
