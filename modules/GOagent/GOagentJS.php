@@ -248,7 +248,7 @@ var group = '<?=$camp_info->campaign_id?>';         // same value as campaign va
                     $idx = 'dispo_check_all_pause';
                     $val = ($val == 'Y') ? 1 : 0;
                 }
-                if (preg_match("/^(campaign_rec_filename|default_group_alias)$/", $idx)) {
+                if (preg_match("/^(campaign_rec_filename|default_group_alias|default_xfer_group)$/", $idx)) {
                     echo "var LIVE_{$idx} = '{$val}';\n";
                 }
         
@@ -267,6 +267,8 @@ var group = '<?=$camp_info->campaign_id?>';         // same value as campaign va
                                 $hkList  = preg_replace("/, $/", "", $hkList);
                                 echo "var {$idx} = {".$hkList."};\n";
                             }
+                        } else if (is_numeric($val) && $idx == 'call_requeue_button') {
+                            echo "var {$idx} = $val;\n";
                         } else {
                             echo "var {$idx} = '{$val}';\n";
                             if ($idx == 'auto_dial_level') {
@@ -398,7 +400,7 @@ $(document).ready(function() {
                 $("#LeadLookUP").prop('checked', true);
                     
                 if (check_r < 1) {
-                    toggleButtons(dial_method);
+                    toggleButtons(dial_method, ivr_park_call, call_requeue_button);
                     if (agent_status_view > 0) {
                         $("#agents-tab").removeClass('hidden');
                     } else {
@@ -520,7 +522,7 @@ $(document).ready(function() {
                     }
 
                     if (MD_channel_look == 1) {
-                        ManualDialCheckChannel();
+                        ManualDialCheckChannel(XDcheck);
                     }
                     
                     if ( (CB_count_check > 19) && (agentonly_callbacks == '1') ) {
@@ -690,6 +692,14 @@ $(document).ready(function() {
                 if ( (agent_pause_codes_active == 'Y') || (agent_pause_codes_active == 'FORCE') ) {
                     $("#pause_code_link").removeClass('hidden');
                 }
+                if (allow_closers != 'Y') {
+                    toggleButton('LocalCloser', 'hide');
+				}
+                
+                $("#sessionIDspan").html(session_id);
+                if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') ) {
+                    $("#RecordControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
+				}
                 
                 if (per_call_notes == 'ENABLED') {
                     $("#call_notes_content").removeClass('hidden');
@@ -961,6 +971,7 @@ $(document).ready(function() {
     $("#go_btn_div").append("<button id='btnTransferCall' title='<?=$lh->translationFor('transfer_call')?>' class='btn btn-default btn-lg' style='margin: 0 5px 5px 0; padding: 10px 19px; font-size: 15px;'><i class='fa fa-random'></i></button>");
     $("#go_btn_div").append("<button id='btnIVRParkCall' title='<?=$lh->translationFor('ivr_park_call')?>' class='btn btn-default btn-lg' style='margin: 0 5px 5px 0; padding: 10px 18px 10px 19px; font-size: 15px;'><i class='fa fa-tty'></i></button>");
     $("#go_btn_div").append("<button id='btnReQueueCall' title='<?=$lh->translationFor('requeue_call')?>' class='btn btn-default btn-lg' style='margin: 0 5px 5px 0; padding: 10px 20px 10px 21px; font-size: 15px;'><i class='fa fa-refresh'></i></button>");
+    $("#go_btn_div").append("<button id='btnQuickTransfer' title='<?=$lh->translationFor('quick_transfer')?>' class='btn btn-default btn-lg' style='margin: 0 5px 5px 0; padding: 10px 20px 10px 21px; font-size: 15px;'><i class='fa fa-exchange'></i></button>");
     //$("#go_nav_btn").append("<div id='cust-info' class='center-block' style='text-align: center; line-height: 35px;'><i class='fa fa-user'></i> <span id='cust-name' style='padding-right: 20px;'></span> <i class='fa fa-phone-square'></i> <span id='cust-phone'></span><input type='hidden' id='cust-phone-number' /></div>");
     $("#go_agent_status").append("<li><div id='MainStatusSpan' class='center-block hidden-xs'>&nbsp;</div></li>");
     $("#go_agent_dialpad").append("<li><div id='AgentDialPad' class='center-block' style='text-align: center; min-width: 200px;'></div></li>");
@@ -1009,6 +1020,9 @@ $(document).ready(function() {
                 break;
             case "LogMeOut":
                 btnLogMeOut();
+                break;
+            case "ReQueueCall":
+                btnReQueueCall();
                 break;
         }
     });
@@ -1067,7 +1081,7 @@ $(document).ready(function() {
     });
 
     updateButtons();
-    toggleButtons(dial_method);
+    toggleButtons(dial_method, ivr_park_call, call_requeue_button);
     toggleStatus('NOLIVE');
     activateLinks();
     
@@ -1163,7 +1177,7 @@ $(document).ready(function() {
     
     $("#transfer-selection").change(function() {
         var transfer_selected = $(this).val();
-        $("#transfer-agent, #transfer-regular").addClass('hidden');
+        $("#transfer-closer, #transfer-regular").addClass('hidden');
         //$("#closerSelectBlended").closest('p').addClass('hidden');
         if (transfer_selected.length > 0) {
             var thisSelected = transfer_selected.toLowerCase();
@@ -1195,10 +1209,14 @@ $(document).ready(function() {
     $("#scSubmit").click(function(e) {
         e.preventDefault();
         var inbArray = '';
+        var CloserSelectList = '';
         $("#scSubmit").addClass('disabled');
         $("#selectedINB").find('abbr').each(function(index) {
             inbArray += $(this).text() + "|";
+            CloserSelectList += $(this).text() + " ";
         });
+        $("#CloserSelectList").val(CloserSelectList.slice(0, -1));
+        
         if (use_webrtc && !phone.isConnected()) {
             phone.start();
             
@@ -1267,11 +1285,15 @@ $(document).ready(function() {
                                         cValue = (cValue == 'Y') ? 1 : 0;
                                     }
                                     
+                                    if (cKey == 'call_requeue_button') {
+                                        cValue = (cValue == 'Y') ? 1 : 0;
+                                    }
+                                    
                                     if (cKey == 'scheduled_callbacks') {
                                         cKey = 'camp_scheduled_callbacks';
                                     }
                                     
-                                    var rec_patt = /^(campaign_rec_filename|default_group_alias)$/g;
+                                    var rec_patt = /^(campaign_rec_filename|default_group_alias|default_xfer_group)$/g;
                                     if (rec_patt.test(cKey)) {
                                         $.globalEval("LIVE_"+cKey+" = '"+cValue+"';");
                                     }
@@ -1333,7 +1355,7 @@ $(document).ready(function() {
                                 } else if (key == 'start_time') {
                                     $.globalEval("StarTtimE = '"+value+"';");
                                     $.globalEval("UnixTime = '"+value+"';");
-                                } else if (key == 'VARxferGroups' || key == 'VARxferGroupsNames') {
+                                } else if (key == 'VARxferGroups' || key == 'VARxferGroupsNames' || key == 'VARingroups' || key == 'VARingroup_handlers') {
                                     $.globalEval(key+" = new Array("+value+");");
                                 } else if (key == 'hotkeys' || key == 'hotkeys_content') {
                                     $.globalEval(key+" = {"+value+"};");
@@ -1395,7 +1417,7 @@ $(document).ready(function() {
                     
                     updateHotKeys();
                     updateButtons();
-                    toggleButtons(dial_method);
+                    toggleButtons(dial_method, ivr_park_call, call_requeue_button, quick_transfer_button_enabled);
                     CallBacksCountCheck();
                     if (custom_fields_launch == 'LOGIN') {
                         GetCustomFields(custom_fields_list_id, true, true);
@@ -1530,6 +1552,10 @@ $(document).ready(function() {
     
     $("#openWebForm").click(function() {
         window.open(TEMP_VDIC_web_form_address, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
+    });
+    
+    $("form.formXFER").submit(function(e){
+        e.preventDefault();
     });
 });
 
@@ -1897,7 +1923,7 @@ function hotKeysAvailable(e) {
             } else {
                 // transfer call to answering maching message with hotkey
                 if ( (HKdispo == 'LTMG') || (HKdispo == 'XFTAMM') ) {
-                    //mainxfer_send_redirect('XfeRVMAIL', lastcustchannel, lastcustserverip);
+                    mainxfer_send_redirect('XfeRVMAIL', lastcustchannel, lastcustserverip);
                 } else {
                     HKdispo_display = 4;
                     HKfinish = 1;
@@ -1929,10 +1955,11 @@ function toggleButton (taskname, taskaction, taskenable, taskhide, toupperfirst,
     var actClass = '';
     var actColor = '';
     var actTitle = '';
-    var isEnabled = (taskenable != null) ? taskenable : true;
-    var isHidden = (taskhide != null) ? taskhide : false;
+    var onClick = '';
+    var isEnabled = (typeof taskenable !== 'undefined') ? taskenable : true;
+    var isHidden = (typeof taskhide !== 'undefined') ? taskhide : false;
     
-    if (taskaction != null && taskaction.length > 0) {
+    if (typeof taskaction !== 'undefined' && taskaction.length > 0) {
         switch (taskaction.toLowerCase()) {
             case "dial":
                 actClass = "fa fa-phone";
@@ -1951,6 +1978,30 @@ function toggleButton (taskname, taskaction, taskenable, taskhide, toupperfirst,
             case "pause":
                 actClass = "fa fa-pause";
                 actTitle = "<?=$lh->translationFor('pause_dialing')?>";
+                break;
+            case "park":
+                actColor = "btn btn-warning btn-lg";
+                actTitle = "<?=$lh->translationFor('park_call')?>";
+                break;
+            case "grab":
+                actColor = "btn btn-danger btn-lg";
+                actTitle = "<?=$lh->translationFor('grab_park_call')?>";
+                break;
+            case "parkivr":
+                actColor = "btn btn-warning btn-lg";
+                actTitle = "<?=$lh->translationFor('ivr_park_call')?>";
+                break;
+            case "grabivr":
+                actColor = "btn btn-danger btn-lg";
+                actTitle = "<?=$lh->translationFor('grab_ivr_park_call')?>";
+                break;
+            case "xferon":
+                actClass = "";
+                onClick = "btn"+taskname+"('ON');";
+                break;
+            case "xferoff":
+                actClass = "";
+                onClick = "btn"+taskname+"('OFF', 'YES');";
                 break;
             case "on":
                 actClass = "";
@@ -1984,7 +2035,7 @@ function toggleButton (taskname, taskaction, taskenable, taskhide, toupperfirst,
             }
             
             $("#btn"+taskname+" i").attr('class', actClass);
-            if (actTitle != '') {
+            if (actTitle !== '') {
                 $("#btn"+taskname).attr('title', actTitle);
             }
         } else {
@@ -1992,6 +2043,10 @@ function toggleButton (taskname, taskaction, taskenable, taskhide, toupperfirst,
                 $("#btn"+taskname).addClass('disabled');
             } else {
                 $("#btn"+taskname).removeClass('disabled');
+            }
+            
+            if (onClick.length > 0) {
+                $("#btn"+taskname).attr('onclick', onClick);
             }
         }
         
@@ -2006,13 +2061,14 @@ function toggleButton (taskname, taskaction, taskenable, taskhide, toupperfirst,
     }
 }
 
-function toggleButtons (taskaction, taskivr, taskrequeue) {
-    if (taskaction != null && taskaction.length > 0) {
+function toggleButtons (taskaction, taskivr, taskrequeue, taskquickxfer) {
+    if (typeof taskaction !== 'undefined' && taskaction.length > 0) {
         var btnIVR = 'hide';
         if (taskivr == 'ENABLED' || taskivr == 'ENABLED_PARK_ONLY') {
-            var btnIVR = 'off';
+            btnIVR = 'off';
         }
-        var btnRequeue = (taskrequeue == 'Y') ? 'off' : 'hide';
+        var btnRequeue = (taskrequeue > 0) ? 'off' : 'hide';
+        var btnQuickXFER = (taskquickxfer > 0) ? 'off' : 'hide';
         
         switch (taskaction.toLowerCase()) {
             case "manual":
@@ -2021,11 +2077,11 @@ function toggleButtons (taskaction, taskivr, taskrequeue) {
                 break;
             case "inbound_man":
                 toggleButton('DialHangup', 'dial');
-                toggleButton('ResumePause', 'show');
+                toggleButton('ResumePause', 'on');
                 break;
             default:
                 toggleButton('DialHangup', 'dial', false);
-                toggleButton('ResumePause', 'show');
+                toggleButton('ResumePause', 'on');
         }
         
         //console.log("btnIVR = "+btnIVR+"; btnRequeue = "+btnRequeue);
@@ -2033,6 +2089,7 @@ function toggleButtons (taskaction, taskivr, taskrequeue) {
         toggleButton('ParkCall', 'off');
         toggleButton('IVRParkCall', btnIVR);
         toggleButton('ReQueueCall', btnRequeue);
+        toggleButton('QuickTransfer', btnQuickXFER);
         
         if (btnIVR == 'hide' && btnRequeue == 'hide') {
             $("#btn_spacer").addClass('hidden');
@@ -2277,26 +2334,26 @@ function CheckForConfCalls (confnum, force) {
                 if (api_transferconf_function == 'HANGUP_BOTH')
                     {BothCallHangup();}
                 if (api_transferconf_function == 'LEAVE_VM')
-                    {mainxfer_send_redirect('XfeRVMAIL',lastcustchannel,lastcustserverip);}
+                    {mainxfer_send_redirect('XfeRVMAIL', lastcustchannel, lastcustserverip);}
                 if (api_transferconf_function == 'LEAVE_3WAY_CALL')
                     {leave_3way_call('FIRST');}
                 if (api_transferconf_function == 'BLIND_TRANSFER') {
                     $(".formXFER input[name='xfernumber']").val(api_transferconf_number);
-                    mainxfer_send_redirect('XfeRBLIND',lastcustchannel,lastcustserverip);
+                    mainxfer_send_redirect('XfeRBLIND', lastcustchannel, lastcustserverip);
                 }
                 if (external_transferconf_count < 1) {
                     if (api_transferconf_function == 'LOCAL_CLOSER') {
                         API_selected_xfergroup = api_transferconf_group;
                         $(".formXFER input[name='xfernumber']").val(api_transferconf_number);
-                        //mainxfer_send_redirect('XfeRLOCAL',lastcustchannel,lastcustserverip);
+                        mainxfer_send_redirect('XfeRLOCAL', lastcustchannel, lastcustserverip);
                     }
                     if (api_transferconf_function == 'DIAL_WITH_CUSTOMER') {
-                        if (api_transferconf_consultative=='YES')
-                            {$(".formXFER input[name='consultativexfer']").is(':checked') = true;}
-                        if (api_transferconf_consultative=='NO')
-                            {$(".formXFER input[name='consultativexfer']").is(':checked') = false;}
-                        if (api_transferconf_override=='YES')
-                            {$(".formXFER input[name='xferoverride']").is(':checked') = true;}
+                        if (api_transferconf_consultative == 'YES')
+                            {$(".formXFER input[name='consultativexfer']").prop('checked', true);}
+                        if (api_transferconf_consultative == 'NO')
+                            {$(".formXFER input[name='consultativexfer']").prop('checked', false);}
+                        if (api_transferconf_override == 'YES')
+                            {$(".formXFER input[name='xferoverride']").prop('checked', true);}
                         API_selected_xfergroup = api_transferconf_group;
                         $(".formXFER input[name='xfernumber']").val(api_transferconf_number);
                         active_group_alias = api_transferconf_group_alias;
@@ -2305,11 +2362,11 @@ function CheckForConfCalls (confnum, force) {
                     }
                     if (api_transferconf_function == 'PARK_CUSTOMER_DIAL') {
                         if (api_transferconf_consultative == 'YES')
-                            {$(".formXFER input[name='consultativexfer']").is(':checked') = true;}
+                            {$(".formXFER input[name='consultativexfer']").prop('checked', true);}
                         if (api_transferconf_consultative == 'NO')
-                            {$(".formXFER input[name='consultativexfer']").is(':checked') = false;}
+                            {$(".formXFER input[name='consultativexfer']").prop('checked', false);}
                         if (api_transferconf_override == 'YES')
-                            {$(".formXFER input[name='xferoverride']").is(':checked') = true;}
+                            {$(".formXFER input[name='xferoverride']").prop('checked', true);}
                         API_selected_xfergroup = api_transferconf_group;
                         $(".formXFER input[name='xfernumber']").val(api_transferconf_number);
                         active_group_alias = api_transferconf_group_alias;
@@ -2464,7 +2521,7 @@ function CheckForConfCalls (confnum, force) {
             if ( (CheckDEADcall > 0) && (live_customer_call == 1) ) {
                 if (CheckDEADcallON < 1) {
                     toggleStatus('DEAD');
-                    toggleButton('ParkCall', 'off');
+                    toggleButton('ParkCall', 'grab', false);
                     toggleButton('TransferCall', 'off');
                     CheckDEADcallON = 1;
 
@@ -3017,61 +3074,86 @@ function CheckForIncoming () {
 
             toggleButton('DialHangup','hangup');
             
-            //document.getElementById("ParkControl").innerHTML ="<a href=\"#\" onclick=\"mainxfer_send_redirect('ParK','" + lastcustchannel + "','" + lastcustserverip + "');disableButton('XFER');return false;\"><img src=\"./images/callpark.png\" border=\"0\" title=\"Park Call\" alt=\"Park Call\" /></a>";
-            //if ( (ivr_park_call=='ENABLED') || (ivr_park_call=='ENABLED_PARK_ONLY') )
-            //{
-            //    document.getElementById("ivrParkControl").innerHTML ="<a href=\"#\" onclick=\"mainxfer_send_redirect('ParKivr','" + lastcustchannel + "','" + lastcustserverip + "');return false;\"><img src=\"./images/ivrcallpark.png\" style=\"padding-bottom:3px;\" border=\"0\" title=\"IVR Park Call\" alt=\"IVR Park Call\" /></a>";
-            //}
-            //
-            //document.getElementById("HangupControl").innerHTML = "<a href=\"#\" onclick=\"dialedcall_send_hangup();\"><img src=\"./images/hangup.png\" border=\"0\" title=\"Hangup Customer\" alt=\"Hangup Customer\" /></a>";
-            //
-            //document.getElementById("XferControl").innerHTML = "<a href=\"#\" onclick=\"ShoWTransferMain('ON');disableButton('PARK');\"><img src=\"./images/transfer.png\" border=\"0\" title=\"Transfer - Conference\" alt=\"Transfer - Conference\" /></a>";
-            //
-            //document.getElementById("LocalCloser").innerHTML = "<a href=\"#\" onclick=\"mainxfer_send_redirect('XfeRLOCAL','" + lastcustchannel + "','" + lastcustserverip + "');return false;\"><img src=\"./images/vdc_XB_localcloser.gif\" border=\"0\" alt=\"LOCAL CLOSER\" style=\"vertical-align:middle\" /></a>";
-            //
-            //document.getElementById("DialBlindTransfer").innerHTML = "<input type=\"button\" onclick=\"mainxfer_send_redirect('XfeRBLIND','" + lastcustchannel + "','" + lastcustserverip + "');return false;\" value=\" BLIND TRANSFER \" style=\"font-size:10px;width:150px;vertical-align:middle;\" />";
-            //
-            //document.getElementById("DialBlindVMail").innerHTML = "<a href=\"#\" onclick=\"mainxfer_send_redirect('XfeRVMAIL','" + lastcustchannel + "','" + lastcustserverip + "');return false;\"><img src=\"./images/vdc_XB_ammessage.gif\" border=\"0\" alt=\"Blind Transfer VMail Message\" style=\"vertical-align:middle\" /></a>";
+            toggleButton('ParkCall', 'park');
+            $("#btnParkCall").attr('onclick', "mainxfer_send_redirect('ParK','" + lastcustchannel + "','" + lastcustserverip + "'); toggleButton('TransferCall', 'off');");
+            if ( (ivr_park_call == 'ENABLED') || (ivr_park_call == 'ENABLED_PARK_ONLY') ) {
+                toggleButton('IVRParkCall', 'parkivr');
+                $("#btnIVRParkCall").attr('onclick', "mainxfer_send_redirect('ParKivr','" + lastcustchannel + "','" + lastcustserverip + "');");
+            }
+            
+            toggleButton('TransferCall', 'XFERON');
+            
+            toggleButton('LocalCloser', 'on');
+            $("#btnLocalCloser").attr('onclick', "mainxfer_send_redirect('XfeRLOCAL','" + lastcustchannel + "','" + lastcustserverip + "');");
+            
+            toggleButton('DialBlindTransfer', 'on');
+            $("#btnDialBlindTransfer").attr('onclick', "mainxfer_send_redirect('XfeRBLIND','" + lastcustchannel + "','" + lastcustserverip + "');");
+            
+            toggleButton('DialBlindVMail', 'on');
+            $("#btnDialBlindVMail").attr('onclick', "mainxfer_send_redirect('XfeRVMAIL','" + lastcustchannel + "','" + lastcustserverip + "');");
 
             if ( (quick_transfer_button == 'IN_GROUP') || (quick_transfer_button == 'LOCKED_IN_GROUP') ) {
                 if (quick_transfer_button_locked > 0)
                     {quick_transfer_button_orig = default_xfer_group;}
 
-                //$("#QuickXfer").html("<a href=\"#\" onclick=\"mainxfer_send_redirect('XfeRLOCAL','" + lastcustchannel + "','" + lastcustserverip + "','','','" + quick_transfer_button_locked + "');return false;\"><img src=\"./images/quicktransfer.png\" style=\"padding-bottom:3px;\" border=\"0\" title=\"Quick Transfer\" alt=\"QUICK TRANSFER\" /></a>");
+                toggleButton('QuickTransfer', 'on');
+                $("#btnQuickTransfer").attr('onclick', "mainxfer_send_redirect('XfeRLOCAL','" + lastcustchannel + "','" + lastcustserverip + "','','','" + quick_transfer_button_locked + "');return false;");
             }
             if (prepopulate_transfer_preset_enabled > 0) {
-                if ( (prepopulate_transfer_preset == 'PRESET_1') || (prepopulate_transfer_preset == 'LOCKED_PRESET_1') )
-                    {$("#xfernumber").val(Call_XC_a_Number);   $("#xfername").val('D1');}
-                if ( (prepopulate_transfer_preset == 'PRESET_2') || (prepopulate_transfer_preset == 'LOCKED_PRESET_2') )
-                    {$("#xfernumber").val(Call_XC_b_Number);   $("#xfername").val('D2');}
-                if ( (prepopulate_transfer_preset == 'PRESET_3') || (prepopulate_transfer_preset == 'LOCKED_PRESET_3') )
-                    {$("#xfernumber").val(Call_XC_c_Number);   $("#xfername").val('D3');}
-                if ( (prepopulate_transfer_preset == 'PRESET_4') || (prepopulate_transfer_preset == 'LOCKED_PRESET_4') )
-                    {$("#xfernumber").val(Call_XC_d_Number);   $("#xfername").val('D4');}
-                if ( (prepopulate_transfer_preset == 'PRESET_5') || (prepopulate_transfer_preset == 'LOCKED_PRESET_5') )
-                    {$("#xfernumber").val(Call_XC_e_Number);   $("#xfername").val('D5');}
+                if ( (prepopulate_transfer_preset == 'PRESET_1') || (prepopulate_transfer_preset == 'LOCKED_PRESET_1') ) {
+                    $(".formXFER input[name='xfernumber']").val(Call_XC_a_Number);
+                    $(".formXFER input[name='xfername']").val('D1');
+                }
+                if ( (prepopulate_transfer_preset == 'PRESET_2') || (prepopulate_transfer_preset == 'LOCKED_PRESET_2') ) {
+                    $(".formXFER input[name='xfernumber']").val(Call_XC_b_Number);
+                    $(".formXFER input[name='xfername']").val('D2');
+                }
+                if ( (prepopulate_transfer_preset == 'PRESET_3') || (prepopulate_transfer_preset == 'LOCKED_PRESET_3') ) {
+                    $(".formXFER input[name='xfernumber']").val(Call_XC_c_Number);
+                    $(".formXFER input[name='xfername']").val('D3');
+                }
+                if ( (prepopulate_transfer_preset == 'PRESET_4') || (prepopulate_transfer_preset == 'LOCKED_PRESET_4') ) {
+                    $(".formXFER input[name='xfernumber']").val(Call_XC_d_Number);
+                    $(".formXFER input[name='xfername']").val('D4');
+                }
+                if ( (prepopulate_transfer_preset == 'PRESET_5') || (prepopulate_transfer_preset == 'LOCKED_PRESET_5') ) {
+                    $(".formXFER input[name='xfernumber']").val(Call_XC_e_Number);
+                    $(".formXFER input[name='xfername']").val('D5');
+                }
             }
             if ( (quick_transfer_button == 'PRESET_1') || (quick_transfer_button == 'PRESET_2') || (quick_transfer_button == 'PRESET_3') || (quick_transfer_button == 'PRESET_4') || (quick_transfer_button == 'PRESET_5') || (quick_transfer_button == 'LOCKED_PRESET_1') || (quick_transfer_button == 'LOCKED_PRESET_2') || (quick_transfer_button == 'LOCKED_PRESET_3') || (quick_transfer_button == 'LOCKED_PRESET_4') || (quick_transfer_button == 'LOCKED_PRESET_5') ) {
-                if ( (quick_transfer_button == 'PRESET_1') || (quick_transfer_button == 'LOCKED_PRESET_1') )
-                    {$("#xfernumber").val(Call_XC_a_Number);   $("#xfername").val('D1');}
-                if ( (quick_transfer_button == 'PRESET_2') || (quick_transfer_button == 'LOCKED_PRESET_2') )
-                    {$("#xfernumber").val(Call_XC_b_Number);   $("#xfername").val('D2');}
-                if ( (quick_transfer_button == 'PRESET_3') || (quick_transfer_button == 'LOCKED_PRESET_3') )
-                    {$("#xfernumber").val(Call_XC_c_Number);   $("#xfername").val('D3');}
-                if ( (quick_transfer_button == 'PRESET_4') || (quick_transfer_button == 'LOCKED_PRESET_4') )
-                    {$("#xfernumber").val(Call_XC_d_Number);   $("#xfername").val('D4');}
-                if ( (quick_transfer_button == 'PRESET_5') || (quick_transfer_button == 'LOCKED_PRESET_5') )
-                    {$("#xfernumber").val(Call_XC_e_Number);   $("#xfername").val('D5');}
-                if (quick_transfer_button_locked > 0)
-                    {quick_transfer_button_orig = $("#xfernumber").val();}
+                if ( (quick_transfer_button == 'PRESET_1') || (quick_transfer_button == 'LOCKED_PRESET_1') ) {
+                    $(".formXFER input[name='xfernumber']").val(Call_XC_a_Number);
+                    $(".formXFER input[name='xfername']").val('D1');
+                }
+                if ( (quick_transfer_button == 'PRESET_2') || (quick_transfer_button == 'LOCKED_PRESET_2') ) {
+                    $(".formXFER input[name='xfernumber']").val(Call_XC_b_Number);
+                    $(".formXFER input[name='xfername']").val('D2');
+                }
+                if ( (quick_transfer_button == 'PRESET_3') || (quick_transfer_button == 'LOCKED_PRESET_3') ) {
+                    $(".formXFER input[name='xfernumber']").val(Call_XC_c_Number);
+                    $(".formXFER input[name='xfername']").val('D3');
+                }
+                if ( (quick_transfer_button == 'PRESET_4') || (quick_transfer_button == 'LOCKED_PRESET_4') ) {
+                    $(".formXFER input[name='xfernumber']").val(Call_XC_d_Number);
+                    $(".formXFER input[name='xfername']").val('D4');
+                }
+                if ( (quick_transfer_button == 'PRESET_5') || (quick_transfer_button == 'LOCKED_PRESET_5') ) {
+                    $(".formXFER input[name='xfernumber']").val(Call_XC_e_Number);
+                    $(".formXFER input[name='xfername']").val('D5');
+                }
+                if (quick_transfer_button_locked > 0) {
+                    quick_transfer_button_orig = $(".formXFER input[name='xfernumber']").val();
+                }
                 
-                //$("#QuickXfer").html("<a href=\"#\" onclick=\"mainxfer_send_redirect('XfeRBLIND','" + lastcustchannel + "','" + lastcustserverip + "','','','" + quick_transfer_button_locked + "');return false;\"><img src=\"./images/quicktransfer.png\" style=\"padding-bottom:3px;\" border=\"0\" title=\"Quick Transfer\" alt=\"QUICK TRANSFER\" /></a>");
+                toggleButton('QuickTransfer', 'on');
+                $("#btnQuickTransfer").attr('onclick', "mainxfer_send_redirect('XfeRBLIND','" + lastcustchannel + "','" + lastcustserverip + "','','','" + quick_transfer_button_locked + "');return false;");
             }
 
-            //if (custom_3way_button_transfer_enabled > 0)
-            //{
-            //    $("#CustomXfer").html("<a href=\"#\" onclick=\"custom_button_transfer();return false;\"><img src=\"./images/vdc_LB_customxfer.gif\" border=\"0\" alt=\"Custom Transfer\" /></a>");
-            //}
+            if (custom_3way_button_transfer_enabled > 0) {
+                //$("#CustomXfer").html("<a href=\"#\" onclick=\"custom_button_transfer();return false;\"><img src=\"./images/vdc_LB_customxfer.gif\" border=\"0\" alt=\"Custom Transfer\" /></a>");
+                //toggleButton('CustomTransfer', 'on');
+            }
 
             if (call_requeue_button > 0) {
                 var CloserSelectChoices = $("#CloserSelectList").val();
@@ -3094,7 +3176,7 @@ function CheckForIncoming () {
                 live_Xfer_HTML = live_Xfer_HTML + "<option " + Xfer_Select + "value=\"" + VARxferGroups[loop_ct] + "\">" + VARxferGroups[loop_ct] + " - " + VARxferGroupsNames[loop_ct] + "</option>\n";
                 loop_ct++;
             }
-            //$("#XferGroupList").html("<select size='1' name='XfeRGrouP' class='cust_form' id='XferGroup' onChange='XferAgentSelectLink();return false;'>" + live_Xfer_HTML + "</select>");
+            $("#transfer-local-closer").html(live_Xfer_HTML);
 
             if (lastcustserverip == server_ip) {
                 //$("#VolumeUpSpan").html("<a onclick=\"volume_control('UP','" + lastcustchannel + "','');return false;\"><img src='./images/vdc_volume_up.gif' border='0' /></a>");
@@ -3339,6 +3421,91 @@ function ReCheckCustomerChan() {
         //        }
         //}
     //});
+}
+
+
+// ################################################################################
+// Populate the dtmf and xfer number for each preset link in xfer-conf frame
+function DTMF_Preset_a() {
+    $("#conf_dtmf").val(Call_XC_a_DTMF);
+    $(".formXFER input[name='xfernumber']").val(Call_XC_a_Number);
+    $(".formXFER input[name='xfername']").val('D1');
+}
+function DTMF_Preset_b() {
+    $("#conf_dtmf").val(Call_XC_b_DTMF);
+    $(".formXFER input[name='xfernumber']").val(Call_XC_b_Number);
+    $(".formXFER input[name='xfername']").val('D2');
+}
+function DTMF_Preset_c() {
+    $(".formXFER input[name='xfernumber']").val(Call_XC_c_Number);
+    $(".formXFER input[name='xfername']").val('D3');
+}
+function DTMF_Preset_d() {
+    $(".formXFER input[name='xfernumber']").val(Call_XC_d_Number);
+    $(".formXFER input[name='xfername']").val('D4');
+}
+function DTMF_Preset_e() {
+    $(".formXFER input[name='xfernumber']").val(Call_XC_e_Number);
+    $(".formXFER input[name='xfername']").val('D5');
+}
+
+function DTMF_Preset_a_Dial(taskquiet) {
+    $("#conf_dtmf").val(Call_XC_a_DTMF);
+    $(".formXFER input[name='xfernumber']").val(Call_XC_a_Number);
+    var session_id_dial = session_id;
+    if (taskquiet == 'YES')
+        {session_id_dial = '7' + session_id};
+    BasicOriginateCall(Call_XC_a_Number,'NO','YES',session_id_dial,'YES','','1','0');
+}
+function DTMF_Preset_b_Dial(taskquiet) {
+    $("#conf_dtmf").val(Call_XC_b_DTMF);
+    $(".formXFER input[name='xfernumber']").val(Call_XC_b_Number);
+    var session_id_dial = session_id;
+    if (taskquiet == 'YES')
+        {session_id_dial = '7' + session_id};
+    BasicOriginateCall(Call_XC_b_Number,'NO','YES',session_id_dial,'YES','','1','0');
+}
+function DtMf_PreSet_c_DiaL(taskquiet) {
+    $(".formXFER input[name='xfernumber']").val(Call_XC_c_Number);
+    var session_id_dial = session_id;
+    if (taskquiet == 'YES')
+        {session_id_dial = '7' + session_id};
+    BasicOriginateCall(Call_XC_c_Number,'NO','YES',session_id_dial,'YES','','1','0');
+}
+function DTMF_Preset_d_Dial(taskquiet) {
+    $(".formXFER input[name='xfernumber']").val(Call_XC_d_Number);
+    var session_id_dial = session_id;
+    if (taskquiet == 'YES')
+        {session_id_dial = '7' + session_id};
+    BasicOriginateCall(Call_XC_d_Number,'NO','YES',session_id_dial,'YES','','1','0');
+}
+function DTMF_Preset_e_Dial(taskquiet) {
+    $(".formXFER input[name='xfernumber']").val(Call_XC_e_Number);
+    var session_id_dial = session_id;
+    if (taskquiet == 'YES')
+        {session_id_dial = '7' + session_id};
+    BasicOriginateCall(Call_XC_e_Number,'NO','YES',session_id_dial,'YES','','1','0');
+}
+function hangup_timer_xfer() {
+    //hideDiv('CustomerGoneBox');
+    WaitingForNextStep = 0;
+    custchannellive = 0;
+
+    DialedCallHangup();
+}
+function extension_timer_xfer() {
+    $(".formXFER input[name='xfernumber']").val(timer_action_destination);
+    mainxfer_send_redirect('XfeRBLIND',lastcustchannel,lastcustserverip);
+}
+function callmenu_timer_xfer() {
+    API_selected_callmenu = timer_action_destination;
+    $(".formXFER input[name='xfernumber']").val(timer_action_destination);
+    mainxfer_send_redirect('XfeRBLIND',lastcustchannel,lastcustserverip);
+}
+function ingroup_timer_xfer() {
+    API_selected_xfergroup = timer_action_destination;
+    $(".formXFER input[name='xfernumber']").val(timer_action_destination);
+    mainxfer_send_redirect('XfeRLOCAL',lastcustchannel,lastcustserverip);
 }
 
 // ################################################################################
@@ -4093,55 +4260,220 @@ function ManualDialCheckChannel(taskCheckOR) {
                 $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + " <br><?=$lh->translationFor('waiting_for_ring')?>... " + MD_ring_seconds + " <?=$lh->translationFor('seconds')?>");
             }
         } else {
-            MDuniqueid = this_MD_data.uniqueid;
-            MDchannel = this_MD_data.channel;
-            var MDalert = this_MD_data.MDalert;
-            
-            if (MDalert == "ERROR") {
-                var MDerrorDesc = this_MD_data.MDerrorDesc;
-                var MDerrorDescSIP = this_MD_data.MDerrorDescSIP;
-                swal({
-                    title: "<?=$lh->translationFor('call_rejected')?>",
-                    text: MDchannel + "<br>" + MDerrorDesc + "<br>" + MDerrorDescSIP,
-                    type: 'warning',
-                    html: true
-                });
-            }
-            
-            if ( (MDchannel.match(regMDL)) && (asterisk_version != '1.0.8') && (asterisk_version != '1.0.9') ) {
-                // bad grab of Local channel, try again
-                MD_ring_seconds++;
+            if (taskCheckOR == 'YES') {
+                XDuniqueid = this_MD_data.uniqueid;
+                XDchannel = this_MD_data.channel;
+                var XDalert = this_MD_data.MDalert;
+                
+                if (XDalert == 'ERROR') {
+                    var XDerrorDesc = this_MD_data.MDerrorDesc;
+                    var XDerrorDescSIP = this_MD_data.MDerrorDescSIP;
+                    swal({
+                        title: "<?=$lh->translationFor('call_rejected')?>",
+                        text: XDchannel + "<br>" + XDerrorDescSIP + "<br>" + XDerrorDescSIP,
+                        type: 'warning',
+                        html: true
+                    });
+                }
+                if ( (XDchannel.match(regMDL)) && (asterisk_version != '1.0.8') && (asterisk_version != '1.0.9') && (MD_ring_seconds < 10) ) {
+                    // bad grab of Local channel, try again
+                    MD_ring_seconds++;
+                } else {
+                    $(".formXFER input[name='xferuniqueid']").val(this_MD_data.uniqueid);
+                    $(".formXFER input[name='xferchannel']").val(this_MD_data.channel);
+                    lastxferchannel = this_MD_data.channel;
+                    $(".formXFER input[name='xferlength']").val(0);
+
+                    XD_live_customer_call = 1;
+                    XD_live_call_seconds = 0;
+                    MD_channel_look = 0;
+
+                    var called3rdparty = $(".formXFER input[name='xfernumber']").val();
+                    if (hide_xfer_number_to_dial == 'ENABLED')
+                        {called3rdparty = ' ';}
+                    var status_display_content = '';
+                    if (status_display_CALLID > 0) {status_display_content = status_display_content + " <?=$lh->translationFor('uid')?>: " + CIDcheck;}
+                    if (status_display_LEADID > 0) {status_display_content = status_display_content + " <?=$lh->translationFor('lead')?>: " + $(".formMain input[name='lead_id']").val();}
+                    if (status_display_LISTID > 0) {status_display_content = status_display_content + " <?=$lh->translationFor('list')?>: " + $(".formMain input[name='list_id']").val();}
+
+                    $("#MainStatuSSpan").html("<?=$lh->translationFor('called_3rd_party')?>: " + called3rdparty + " " + status_display_content);
+
+                    toggleButton('Leave3WayCall', 'on');
+
+                    toggleButton('DialWithCustomer', 'off');
+
+                    toggleButton('ParkCustomerDial', 'off');
+
+                    toggleButton('HangupXferLine', 'on');
+                    $("#btnHangupXferLine").attr('onclick', "XFerCallHangup(); return false;");
+
+                    toggleButton('HangupBothLines', 'on');
+
+                    xferchannellive = 1;
+                    XDcheck = '';
+                }
             } else {
-                dialingINprogress = 0;
-                custchannellive = 1;
+                MDuniqueid = this_MD_data.uniqueid;
+                MDchannel = this_MD_data.channel;
+                var MDalert = this_MD_data.MDalert;
                 
-                $(".formMain input[name='uniqueid']").val(this_MD_data.uniqueid);
-                $("#callchannel").html(this_MD_data.channel);
-                lastcustchannel = this_MD_data.channel;
+                if (MDalert == "ERROR") {
+                    var MDerrorDesc = this_MD_data.MDerrorDesc;
+                    var MDerrorDescSIP = this_MD_data.MDerrorDescSIP;
+                    swal({
+                        title: "<?=$lh->translationFor('call_rejected')?>",
+                        text: MDchannel + "<br>" + MDerrorDesc + "<br>" + MDerrorDescSIP,
+                        type: 'warning',
+                        html: true
+                    });
+                }
                 
-                toggleStatus('LIVE');
-                $("#call_length").html("0");
-                $("#session_id").html(session_id);
-                
-                dispnum = lead_dial_number;
-                var status_display_number = phone_number_format(dispnum);
-                
-                live_customer_call = 1;
-                live_call_seconds = 0;
-                MD_channel_look = 0;
-                var status_display_content = '';
-                if (status_display_CALLID > 0) {status_display_content += "<br><b><?=$lh->translationFor('uid')?>:</b> " + CIDcheck;}
-                if (status_display_LEADID > 0) {status_display_content += "<br><b><?=$lh->translationFor('lead_id')?>:</b> " + $(".formMain input[name='lead_id']").val();}
-                if (status_display_LISTID > 0) {status_display_content += "<br><b><?=$lh->translationFor('list_id')?>:</b> " + $(".formMain input[name='list_id']").val();}
-                
-                $("#MainStatusSpan").html("<b><?=$lh->translationFor('called')?>:</b> " + status_display_number + " " + status_display_content);
-                
-                toggleButton('DialHangup', 'hangup');
-                activateLinks();
-                
-                // INSERT VICIDIAL_LOG ENTRY FOR THIS CALL PROCESS
-                DialLog("start");
-                lastcustserverip = '';
+                if ( (MDchannel.match(regMDL)) && (asterisk_version != '1.0.8') && (asterisk_version != '1.0.9') ) {
+                    // bad grab of Local channel, try again
+                    MD_ring_seconds++;
+                } else {
+                    dialingINprogress = 0;
+                    custchannellive = 1;
+                    
+                    $(".formMain input[name='uniqueid']").val(this_MD_data.uniqueid);
+                    $("#callchannel").html(this_MD_data.channel);
+                    lastcustchannel = this_MD_data.channel;
+                    
+                    toggleStatus('LIVE');
+                    $("#call_length").html("0");
+                    $("#session_id").html(session_id);
+                    
+                    dispnum = lead_dial_number;
+                    var status_display_number = phone_number_format(dispnum);
+                    
+                    live_customer_call = 1;
+                    live_call_seconds = 0;
+                    MD_channel_look = 0;
+                    var status_display_content = '';
+                    if (status_display_CALLID > 0) {status_display_content += "<br><b><?=$lh->translationFor('uid')?>:</b> " + CIDcheck;}
+                    if (status_display_LEADID > 0) {status_display_content += "<br><b><?=$lh->translationFor('lead_id')?>:</b> " + $(".formMain input[name='lead_id']").val();}
+                    if (status_display_LISTID > 0) {status_display_content += "<br><b><?=$lh->translationFor('list_id')?>:</b> " + $(".formMain input[name='list_id']").val();}
+                    
+                    $("#MainStatusSpan").html("<b><?=$lh->translationFor('called')?>:</b> " + status_display_number + " " + status_display_content);
+                    
+                    
+                    toggleButton('ParkCall', 'park');
+                    $("#btnParkCall").attr('onclick', "mainxfer_send_redirect('ParK','" + lastcustchannel + "','" + lastcustserverip + "'); toggleButton('TransferCall', 'off');");
+                    if ( (ivr_park_call == 'ENABLED') || (ivr_park_call == 'ENABLED_PARK_ONLY') ) {
+                        toggleButton('IVRParkCall', 'parkivr');
+                        $("#btnIVRParkCall").attr('onclick', "mainxfer_send_redirect('ParKivr','" + lastcustchannel + "','" + lastcustserverip + "');");
+                    }
+
+                    toggleButton('DialHangup', 'hangup');
+
+                    toggleButton('TransferCall', 'XFERON');
+
+                    toggleButton('LocalCloser', 'on');
+                    $("#btnLocalCloser").attr('onclick', "mainxfer_send_redirect('XfeRLOCAL','" + lastcustchannel + "','" + lastcustserverip + "');");
+
+                    toggleButton('DialBlindTransfer', 'on');
+                    $("#btnDialBlindTransfer").attr('onclick', "mainxfer_send_redirect('XfeRBLIND','" + lastcustchannel + "','" + lastcustserverip + "');");
+
+                    toggleButton('DialBlindVMail', 'on');
+                    $("#btnDialBlindVMail").attr('onclick', "mainxfer_send_redirect('XfeRVMAIL','" + lastcustchannel + "','" + lastcustserverip + "');");
+
+                    //volume_control('UP','" + MDchannel + "','');return false;
+                    //volume_control('DOWN','" + MDchannel + "','');return false;
+
+                    if ( (quick_transfer_button == 'IN_GROUP') || (quick_transfer_button == 'LOCKED_IN_GROUP') ) {
+                        quick_transfer_button_orig = '';
+                        if (quick_transfer_button_locked > 0)
+                            {quick_transfer_button_orig = default_xfer_group;}
+
+                        toggleButton('QuickTransfer', 'on');
+                        $("#btnQuickTransfer").attr('onclick', "mainxfer_send_redirect('XfeRLOCAL','" + lastcustchannel + "','" + lastcustserverip + "','','','" + quick_transfer_button_locked + "');return false;");
+                    }
+                    if (prepopulate_transfer_preset_enabled > 0) {
+                        if ( (prepopulate_transfer_preset == 'PRESET_1') || (prepopulate_transfer_preset == 'LOCKED_PRESET_1') ) {
+                            $(".formXFER input[name='xfernumber']").val(Call_XC_a_Number);
+                            $(".formXFER input[name='xfername']").val('D1');
+                        }
+                        if ( (prepopulate_transfer_preset == 'PRESET_2') || (prepopulate_transfer_preset == 'LOCKED_PRESET_2') ) {
+                            $(".formXFER input[name='xfernumber']").val(Call_XC_b_Number);
+                            $(".formXFER input[name='xfername']").val('D2');
+                        }
+                        if ( (prepopulate_transfer_preset == 'PRESET_3') || (prepopulate_transfer_preset == 'LOCKED_PRESET_3') ) {
+                            $(".formXFER input[name='xfernumber']").val(Call_XC_c_Number);
+                            $(".formXFER input[name='xfername']").val('D3');
+                        }
+                        if ( (prepopulate_transfer_preset == 'PRESET_4') || (prepopulate_transfer_preset == 'LOCKED_PRESET_4') ) {
+                            $(".formXFER input[name='xfernumber']").val(Call_XC_d_Number);
+                            $(".formXFER input[name='xfername']").val('D4');
+                        }
+                        if ( (prepopulate_transfer_preset == 'PRESET_5') || (prepopulate_transfer_preset == 'LOCKED_PRESET_5') ) {
+                            $(".formXFER input[name='xfernumber']").val(Call_XC_e_Number);
+                            $(".formXFER input[name='xfername']").val('D5');
+                        }
+                    }
+                    if ( (quick_transfer_button == 'PRESET_1') || (quick_transfer_button == 'PRESET_2') || (quick_transfer_button == 'PRESET_3') || (quick_transfer_button == 'PRESET_4') || (quick_transfer_button == 'PRESET_5') || (quick_transfer_button == 'LOCKED_PRESET_1') || (quick_transfer_button == 'LOCKED_PRESET_2') || (quick_transfer_button == 'LOCKED_PRESET_3') || (quick_transfer_button == 'LOCKED_PRESET_4') || (quick_transfer_button == 'LOCKED_PRESET_5') ) {
+                        if ( (quick_transfer_button == 'PRESET_1') || (quick_transfer_button == 'LOCKED_PRESET_1') ) {
+                            $(".formXFER input[name='xfernumber']").val(Call_XC_a_Number);
+                            $(".formXFER input[name='xfername']").val('D1');
+                        }
+                        if ( (quick_transfer_button == 'PRESET_2') || (quick_transfer_button == 'LOCKED_PRESET_2') ) {
+                            $(".formXFER input[name='xfernumber']").val(Call_XC_b_Number);
+                            $(".formXFER input[name='xfername']").val('D2');
+                        }
+                        if ( (quick_transfer_button == 'PRESET_3') || (quick_transfer_button == 'LOCKED_PRESET_3') ) {
+                            $(".formXFER input[name='xfernumber']").val(Call_XC_c_Number);
+                            $(".formXFER input[name='xfername']").val('D3');
+                        }
+                        if ( (quick_transfer_button == 'PRESET_4') || (quick_transfer_button == 'LOCKED_PRESET_4') ) {
+                            $(".formXFER input[name='xfernumber']").val(Call_XC_d_Number);
+                            $(".formXFER input[name='xfername']").val('D4');
+                        }
+                        if ( (quick_transfer_button == 'PRESET_5') || (quick_transfer_button == 'LOCKED_PRESET_5') ) {
+                            $(".formXFER input[name='xfernumber']").val(Call_XC_e_Number);
+                            $(".formXFER input[name='xfername']").val('D5');
+                        }
+                        quick_transfer_button_orig = '';
+                        if (quick_transfer_button_locked > 0)
+                            {quick_transfer_button_orig = $(".formXFER input[name='xfernumber']").val();}
+
+                        toggleButton('QuickTransfer', 'on');
+                        $("#btnQuickTransfer").attr('onclick', "mainxfer_send_redirect('XfeRBLIND','" + lastcustchannel + "','" + lastcustserverip + "','','','" + quick_transfer_button_locked + "');return false;");
+                    }
+
+                    if (custom_3way_button_transfer_enabled > 0) {
+                        //custom_button_transfer();return false;
+                        //Custom Transfer Button
+                    }
+
+                    if (call_requeue_button > 0) {
+                        var CloserSelectChoices = $("#CloserSelectList").val();
+                        var regCRB = new RegExp("AGENTDIRECT","ig");
+                        if ( (CloserSelectChoices.match(regCRB)) || (closer_campaigns.match(regCRB)) ) {
+                            toggleButton('ReQueueCall', 'on');
+                            //call_requeue_launch();return false;
+                        } else {
+                            toggleButton('ReQueueCall', 'off');
+                        }
+                    }
+
+                    // Build transfer pull-down list
+                    var loop_ct = 0;
+                    var live_Xfer_HTML = '';
+                    var Xfer_Select = '';
+                    while (loop_ct < XFgroupCOUNT) {
+                        if (VARxferGroups[loop_ct] == LIVE_default_xfer_group)
+                            {Xfer_Select = 'selected ';}
+                        else {Xfer_Select = '';}
+                        live_Xfer_HTML += "<option " + Xfer_Select + "value=\"" + VARxferGroups[loop_ct] + "\">" + VARxferGroups[loop_ct] + " - " + VARxferGroupsNames[loop_ct] + "</option>\n";
+                        loop_ct++;
+                    }
+                    $("#transfer-local-closer").html(live_Xfer_HTML);
+                    
+                    activateLinks();
+                    
+                    // INSERT VICIDIAL_LOG ENTRY FOR THIS CALL PROCESS
+                    DialLog("start");
+                    lastcustserverip = '';
+                }
             }
         }
     });
@@ -4152,6 +4484,11 @@ function ManualDialCheckChannel(taskCheckOR) {
         
         $("#MainStatusSpan").html('&nbsp;');
         swal("<?=$lh->translationFor('dial_timeout')?>.");
+
+        if (taskCheckOR == 'YES') {
+            toggleButton('DialWithCustomer', 'on');
+            toggleButton('ParkCustomerDial', 'on');
+        }
     }
 }
 
@@ -4273,6 +4610,130 @@ function ManualDialFinished() {
 }
 
 
+// ################################################################################
+// place 3way and customer into other conference and fake-hangup the lines
+function Leave3WayCall(tempvarattempt) {
+    threeway_end = 0;
+    leaving_threeway = 1;
+
+    if (customerparked > 0) {
+        mainxfer_send_redirect('FROMParK',lastcustchannel,lastcustserverip);
+    }
+
+    mainxfer_send_redirect('3WAY','','',tempvarattempt);
+
+//	if (threeway_end == '0') {
+//		document.vicidial_form.xferchannel.value = '';
+//		xfercall_send_hangup();
+//
+//		document.vicidial_form.callchannel.value = '';
+//		document.vicidial_form.callserverip.value = '';
+//		dialedcall_send_hangup();
+//	}
+
+    toggleStatus('NOLIVE');
+}
+
+
+// ################################################################################
+// filter manual dialstring and pass on to originate call
+function SendManualDial(taskFromConf) {
+    conf_dialed = 1;
+    var sending_group_alias = 0;
+    // Dial With Customer button
+    if (taskFromConf == 'YES') {
+        xfer_in_call = 1;
+        agent_dialed_number = '1';
+        agent_dialed_type = 'XFER_3WAY';
+
+        toggleButton('DialWithCustomer', 'off');
+
+        toggleButton('ParkCustomerDial', 'off');
+
+        var manual_number = $(".formXFER input[name='xfernumber']").val();
+        var manual_number_hidden = $(".formXFER input[name='xfernumhidden']").val();
+        if ( (manual_number.length < 1) && (manual_number_hidden.length > 0) )
+            {manual_number = manual_number_hidden;}
+        var manual_string = manual_number.toString();
+        var dial_conf_exten = session_id;
+        threeway_cid = '';
+        if (three_way_call_cid == 'CAMPAIGN')
+            {threeway_cid = campaign_cid;}
+        if (three_way_call_cid == 'AGENT_PHONE')
+            {threeway_cid = outbound_cid;}
+        if (three_way_call_cid == 'CUSTOMER')
+            {threeway_cid = $(".formMain input[name='phone_number']").val();}
+        if (three_way_call_cid == 'CUSTOM_CID')
+            {threeway_cid = $(".formMain input[name='security_phrase']").val();}
+        if (three_way_call_cid == 'AGENT_CHOOSE') {
+            threeway_cid = cid_choice;
+            if (active_group_alias.length > 1)
+                {var sending_group_alias = 1;}
+        }
+    } else {
+        var manual_number = $(".formXFER input[name='xfernumber']").val();
+        var manual_string = manual_number.toString();
+        var threeway_cid = '1';
+        if (manual_dial_cid == 'AGENT_PHONE')
+            {threeway_cid = outbound_cid;}
+    }
+    var regXFvars = new RegExp("XFER","g");
+    if (manual_string.match(regXFvars)) {
+        var donothing = 1;
+    } else {
+        if ($("#xferoverride").prop('checked') == false) {
+            if (three_way_dial_prefix == 'X') {var temp_dial_prefix = '';}
+            else {var temp_dial_prefix = three_way_dial_prefix;}
+            if (omit_phone_code == 'Y') {var temp_phone_code = '';}
+            else {var temp_phone_code = $(".formMain input[name='phone_code']").val();}
+
+            if (manual_string.length > 7)
+                {manual_string = temp_dial_prefix + "" + temp_phone_code + "" + manual_string;}
+        } else {
+            agent_dialed_type = 'XFER_OVERRIDE';
+        }
+        // due to a bug in Asterisk, these call variables do not actually work
+        call_variables = '__vendor_lead_code=' + $(".formMain input[name='vendor_lead_code']").val() + ',__lead_id=' + $(".formMain input[name='lead_id']").val();
+    }
+    var sending_preset_name = $(".formXFER input[name='xfername']").val();
+    if (taskFromConf == 'YES') {
+        // give extra time for custom fields to commit before consultative transfers
+        if ( ($("#consultativexfer").prop('checked') == true) && (custom_fields_enabled > 0) && (consult_custom_delay > 0) ) {
+            if (consult_custom_wait >= consult_custom_delay) {
+                consult_custom_go = 1;
+                consult_custom_wait = 0;
+            } else {
+                CustomerData_update();
+                consult_custom_wait++;
+                consult_custom_sent++;
+            }
+        } else {
+            consult_custom_go = 1;
+            consult_custom_wait = 0;
+        }
+
+        if (consult_custom_go > 0) {
+            BasicOriginateCall(manual_string,'NO','YES',dial_conf_exten,'NO',taskFromConf,threeway_cid,sending_group_alias,'',sending_preset_name,call_variables);
+        }
+    } else {
+        BasicOriginateCall(manual_string,'NO','NO','','','',threeway_cid,sending_group_alias,sending_preset_name,call_variables);
+    }
+
+    MD_ring_seconds = 0;
+}
+
+
+// ################################################################################
+// park customer and place 3way call
+function XFERParkDial() {
+    conf_dialed = 1;
+
+    mainxfer_send_redirect('ParK', lastcustchannel, lastcustserverip);
+
+    SendManualDial('YES');
+}
+
+
 // Hangup Calls
 function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
     if (VDCL_group_id.length > 1)
@@ -4390,21 +4851,19 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
         //document.getElementById("ScriptButtonSpan").innerHTML = "<a href=\"#\" id=\"ScriptButtonSpan\" style=\"font-size:13px;color:grey;text-decoration:none;\"><?=ucwords($lang['script'])?></a>";
         //document.getElementById("CustomFormSpan").innerHTML = "<a href=\"#\" id=\"CustomFormSpan\" style=\"font-size:13px;color:grey;text-decoration:none;\" /><?=ucwords($lang['custom_form'])?></a>";
         
-        toggleButton('ParkCall', 'off');
-        //document.getElementById("ParkControl").innerHTML = "<img src=\"./images/callpark_OFF.png\" border=\"0\" title=\"<?=$lang['park_call']?>\" alt=\"<?=$lang['park_call']?>\" />";
-        if ( (ivr_park_call=='ENABLED') || (ivr_park_call=='ENABLED_PARK_ONLY') ) {
-            toggleButton('IVRParkCall', 'off');
-            //document.getElementById("ivrParkControl").innerHTML = "<img src=\"./images/ivrcallpark_OFF.png\" style=\"padding-bottom:3px;\" border=\"0\" title=\"<?=$lang['ivr_park_call']?>\" alt=\"<?=$lang['ivr_park_call']?>\" />";
+        toggleButton('ParkCall', 'park', false);
+        //$("#btnParkCall").removeAttr('onclick');
+        if ( (ivr_park_call == 'ENABLED') || (ivr_park_call == 'ENABLED_PARK_ONLY') ) {
+            toggleButton('IVRParkCall', 'parkivr', false);
+            //$("#btnIVRParkCall").removeAttr('onclick');
         }
         
         toggleButton('DialHangup', 'dial');
         toggleButton('TransferCall', 'off');
     
-        //document.getElementById("HangupControl").innerHTML = "<img src=\"./images/hangup_OFF.png\" border=\"0\" title=\"<?=$lang['hangup_customer']?>\" alt=\"<?=$lang['hangup_customer']?>\" />";
-        //document.getElementById("XferControl").innerHTML = "<img src=\"./images/transfer_OFF.png\" border=\"0\" title=\"<?=$lang['transfer_conference']?>\" alt=\"<?=$lang['transfer_conference']?>\" />";
-        //document.getElementById("LocalCloser").innerHTML = "<img src=\"./images/vdc_XB_localcloser_OFF.gif\" border=\"0\" alt=\"<?=$lang['local_closer']?>\" style=\"vertical-align:middle\" />";
-        //document.getElementById("DialBlindTransfer").innerHTML = "<input type=\"button\" value=\" <?=$lang['blind_transfer']?> \" style=\"font-size:10px;width:150px;vertical-align:middle;\" disabled />";
-        //document.getElementById("DialBlindVMail").innerHTML = "<img src=\"./images/vdc_XB_ammessage_OFF.gif\" border=\"0\" alt=\"<?=$lang['blind_trasfer_vmail']?>\" style=\"vertical-align:middle\" />";
+        toggleButton('LocalCloser', 'off');
+        toggleButton('DialBlindTransfer', 'off');
+        toggleButton('DialBlindVMail', 'off');
         //document.getElementById("VolumeUpSpan").innerHTML = "<img src=\"./images/vdc_volume_up_off.gif\" border=\"0\" />";
         //document.getElementById("VolumeDownSpan").innerHTML = "<img src=\"./images/vdc_volume_down_off.gif\" border=\"0\" />";
         
@@ -4422,7 +4881,6 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
 
         if (call_requeue_button > 0) {
             toggleButton('ReQueueCall', 'off');
-            //document.getElementById("ReQueueCall").innerHTML =  "<img src=\"./images/requeuecall_OFF.png\" border=\"0\" title=\"<?=$lang['re_queue_call']?>\" alt=\"<?=$lang['re_queue_call']?>\" />";
         }
 
         $("#custdatetime").html(' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ');
@@ -4495,7 +4953,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
             }
         }
 
-        //ShoWTransferMain('OFF');
+        btnTransferCall('OFF');
         if (custom_fields_launch == 'ONCALL') {
             GetCustomFields(null, false);
         }
@@ -4608,9 +5066,9 @@ function DispoSelectSubmit() {
     xferchannel = '';
     var dispo_error = 0;
 
-    //$("#DialWithCustomer").html('');
-    //$("#ParkCustomerDial").html('');
-    //$("#HangupBothLines").html('');
+    toggleButton('DialWithCustomer', 'on');
+    toggleButton('ParkCustomerDial', 'on');
+    toggleButton('HangupBothLines', 'on');
 
     var DispoChoice = $("#DispoSelection").val();
 
@@ -4755,7 +5213,7 @@ function DispoSelectSubmit() {
             XD_live_call_seconds = 0;
             xfer_in_call = 0;
             MD_channel_look = 0;
-            MD_ring_secondS = 0;
+            MD_ring_seconds = 0;
             uniqueid_status_display = '';
             uniqueid_status_prefix = '';
             custom_call_id = '';
@@ -4779,8 +5237,8 @@ function DispoSelectSubmit() {
             consult_custom_wait = 0;
             consult_custom_go = 0;
             consult_custom_sent = 0;
-            xfername = '';
-            //$("#xfernumhidden").val('');
+            $(".formXFER input[name='xfername']").val('');
+            $(".formXFER input[name='xfernumhidden']").val('');
             //$("#debugbottomspan").html('');
             customer_3way_hangup_dispo_message = '';
             Dispo3wayMessage = '';
@@ -4972,6 +5430,35 @@ function CustomerData_update() {
         $('.hide_div').hide();
         $("input:required, select:required").removeClass("required_div");
     });
+}
+
+
+// ################################################################################
+// Call ReQueue call back to AGENTDIRECT queue launch
+function btnReQueueCall() {
+    $(".formXFER input[name='xfernumber']").val(user);
+
+    // Build transfer pull-down list
+    var loop_ct = 0;
+    var live_Xfer_HTML = '';
+    var Xfer_Select = '';
+    while (loop_ct < XFgroupCOUNT) {
+        if (VARxferGroups[loop_ct] == 'AGENTDIRECT')
+            {Xfer_Select = 'selected ';}
+        else {Xfer_Select = '';}
+        live_Xfer_HTML += "<option " + Xfer_Select + "value=\"" + VARxferGroups[loop_ct] + "\">" + VARxferGroups[loop_ct] + " - " + VARxferGroupsNames[loop_ct] + "</option>\n";
+        loop_ct++;
+    }
+    $("#transfer-local-closer").html(live_Xfer_HTML);
+
+    mainxfer_send_redirect('XfeRLOCAL', lastcustchannel, lastcustserverip, '', 'NO');
+
+    $("#DispoSelection").val('RQXFER');
+    DispoSelectSubmit();
+
+    AutoDial_Resume_Pause("VDADpause",'','','',"REQUEUE",'1','RQUEUE');
+
+    //PauseCodeSelect_submit("RQUEUE");
 }
 
 
@@ -5179,7 +5666,7 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
             Ctasknum = '90009';
             var agentdirect = tasknum_string;
         }
-        var XFERSelect = $("#XFERGroup");
+        var XFERSelect = $("#transfer-local-closer");
         var XFER_Group = XFERSelect.val();
         if (API_selected_xfergroup.length > 1)
             {var XFER_Group = API_selected_xfergroup;}
@@ -5250,7 +5737,7 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
 
     if (cid_choice.length > 3) {
         var call_cid = cid_choice;
-        usegroupalias=1;
+        usegroupalias = 1;
     } else {
         if (taskcid.length > 3) 
             {var call_cid = taskcid;}
@@ -5262,12 +5749,17 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
         goAction: 'goOriginate',
         goUser: uName,
         goPass: uPass,
+        goCampaign: campaign,
         goServerIP: server_ip,
         goSessionName: session_name,
+        goChannel: originatevalue,
+        goQueryCID: queryCID,
         goOutboundCID: call_cid,
-        goUserGroupAlias: usergroupalias,
+        goExten: call_prefix + "" + dialnum,
+        goExtContext: ext_context,
+        goExtPriority: 1,
+        goUseGroupAlias: usegroupalias,
         goPresetName: taskpresetname,
-        goCampaign: campaign,
         goAccount: active_group_alias,
         goAgentDialedNumber: agent_dialed_number,
         goAgentDialedType: agent_dialed_type,
@@ -5304,6 +5796,8 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
             XDcheck = 'YES';
 
             //document.getElementById("HangupXferLine").innerHTML ="<a href=\"#\" onclick=\"xfercall_send_hangup();return false;\"><img src=\"./images/vdc_XB_hangupxferline.gif\" border=\"0\" alt=\"Hangup Xfer Line\" /></a>";
+            toggleButton('HangupXferLine', 'on');
+            $("#btnHangupXferLine").attr('onclick', "XFerCallHangup(); return false;");
         }
         
         active_group_alias = '';
@@ -5937,7 +6431,7 @@ function ManualDialCall(TVfast, TVphone_code, TVphone_number, TVlead_id, TVtype)
 // ################################################################################
 // Send Hangup command for 3rd party call connected to the conference now to Manager
 function XFerCallHangup() {
-    var xferchannel = $("#xferchannel").val();
+    var xferchannel = $(".formXFER input[name='xferchannel']").val();
     var xfer_channel = lastxferchannel;
     var process_post_hangup = 0;
     xfer_in_call = 0;
@@ -5995,18 +6489,18 @@ function XFerCallHangup() {
 
 
     //  DEACTIVATE CHANNEL-DEPENDANT BUTTONS AND VARIABLES
-        $("#xferchannel").val('');
+        $(".formXFER input[name='xferchannel']").val('');
         lastxferchannel = '';
 
-        //document.getElementById("Leave3WayCall").innerHTML = "<input type=\"button\" value=\" <?=$lang['leave_3way_call']?> \" style=\"font-size:10px;width:150px;vertical-align:middle;\" disabled />";
+        toggleButton('Leave3WayCall', 'off');
 
-        //document.getElementById("DialWithCustomer").innerHTML ="<input type=\"button\" onclick=\"SendManualDial('YES');return false;\" value=\" <?=$lang['dial_with_customer']?> \" style=\"font-size:10px;width:150px;vertical-align:middle;\" />";
+        toggleButton('DialWithCustomer', 'on');
 
-        //document.getElementById("ParkCustomerDial").innerHTML ="<input type=\"button\" onclick=\"xfer_park_dial();return false;\" value=\" <?=$lang['park_customer_dial']?> \" style=\"font-size:10px;width:150px;vertical-align:middle;\" />";
+        toggleButton('ParkCustomerDial', 'on');
 
-        //document.getElementById("HangupXferLine").innerHTML ="<input type=\"button\" value=\" <?=$lang['hangup_xfer_lines']?> \" style=\"font-size:10px;width:150px;vertical-align:middle;\" disabled />";
+        toggleButton('HangupXferLine', 'off');
 
-        //document.getElementById("HangupBothLines").innerHTML ="<input type=\"button\" onclick=\"bothcall_send_hangup();return false;\" value=\" <?=$lang['hangup_both_lines']?> \" style=\"font-size:10px;width:150px;vertical-align:middle;\" />";
+        toggleButton('HangupBothLines', 'on');
         
         activateLinks();
     }
@@ -6050,6 +6544,84 @@ function DialTimeHangup(tasktypecall) {
 }
 
 
+function btnTransferCall(showxfervar, showoffvar) {
+    if (vicidial_transfers == '1') {
+        //XferAgentSelectLink();
+
+        if (showxfervar == 'ON') {
+            toggleButton('ParkCall', 'off');
+            HKbutton_allowed = 0;
+            
+            $("#transfer-conference").modal({
+                keyboard: false,
+                backdrop: false,
+                show: true
+            });
+            
+            toggleButton('TransferCall', 'XFEROFF');
+            if ( (quick_transfer_button_enabled > 0) && (quick_transfer_button_locked < 1) ) {
+                toggleButton('QuickTransfer', 'off');
+            }
+            if (custom_3way_button_transfer_enabled > 0) {
+                //toggleButton('CustomTransfer', 'off');
+            }
+        } else {
+            HKbutton_allowed = 1;
+            $("#transfer-conference").modal('hide');
+            $("#agentdirectlink").hide();
+            if (showoffvar == 'YES') {
+                toggleButton('TransferCall', 'XFERON');
+
+                if ( (quick_transfer_button == 'IN_GROUP') || (quick_transfer_button == 'LOCKED_IN_GROUP') ) {
+                    toggleButton('QuickTransfer', 'on');
+                    $("#btnQuickTransfer").attr('onclick', "mainxfer_send_redirect('XfeRLOCAL','" + lastcustchannel + "','" + lastcustserverip + "','','','" + quick_transfer_button_locked + "');return false;");
+                }
+                if ( (quick_transfer_button == 'PRESET_1') || (quick_transfer_button == 'PRESET_2') || (quick_transfer_button == 'PRESET_3') || (quick_transfer_button == 'PRESET_4') || (quick_transfer_button == 'PRESET_5') || (quick_transfer_button == 'LOCKED_PRESET_1') || (quick_transfer_button == 'LOCKED_PRESET_2') || (quick_transfer_button == 'LOCKED_PRESET_3') || (quick_transfer_button == 'LOCKED_PRESET_4') || (quick_transfer_button == 'LOCKED_PRESET_5') ) {
+                    toggleButton('QuickTransfer', 'on');
+                    $("#btnQuickTransfer").attr('onclick', "mainxfer_send_redirect('XfeRBLIND','" + lastcustchannel + "','" + lastcustserverip + "','','','" + quick_transfer_button_locked + "');return false;");
+                }
+                if (custom_3way_button_transfer_enabled > 0) {
+                    //custom_button_transfer();return false;
+                    //toggleButton('CustomTransfer', 'on');
+                }
+                
+                toggleButton('ParkCall', 'on');
+            }
+        }
+        if (three_way_call_cid == 'AGENT_CHOOSE') {
+            if ( (active_group_alias.length < 1) && (LIVE_default_group_alias.length > 1) && (LIVE_caller_id_number.length > 3) ) {
+                active_group_alias = LIVE_default_group_alias;
+                cid_choice = LIVE_caller_id_number;
+            }
+            $("#transfer-dial-group-selected").html("<?=$lh->translationFor('group_alias')?>: " + active_group_alias);
+            $("#transfer-cid").html("<a href=\"#\" onclick=\"GroupAliasSelectContent_create('1');\"><?=$lh->translationFor('choose_group_alias')?></a>");
+        } else {
+            $("#transfer-cid").html('');
+            $("#transfer-dial-group-selected").html('');
+        }
+    } else {
+        if (showxfervar != 'OFF') {
+            swal("<?=$lh->translationFor('no_perm_to_transfer_calls')?>");
+        }
+    }
+}
+
+
+// ################################################################################
+// OnChange function for transfer group select list
+function XferAgentSelectLink() {
+    var XFERSelect = $("#transfer-local-closer");
+    var XScheck = XFERSelect.val();
+    if (typeof XScheck != null) {
+        if (XScheck.match(/AGENTDIRECT/i)) {
+            $("#agentdirectlink").show();
+        } else {
+            $("#agentdirectlink").hide();
+        }
+    }
+}
+
+
 // ################################################################################
 // Start Hangup Functions for both 
 function BothCallHangup() {
@@ -6064,9 +6636,9 @@ function BothCallHangup() {
 // Send Redirect command for live call to Manager sends phone name where call is going to
 // Covers the following types: XFER, VMAIL, ENTRY, CONF, PARK, FROMPARK, XfeRLOCAL, XfeRINTERNAL, XfeRBLIND, VfeRVMAIL
 function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugnote, taskdispowindow, tasklockedquick) {
-    var XFERSelect = $("#XFERGroup");
+    var XFERSelect = $("#transfer-local-closer");
     var XFER_Group = XFERSelect.val();
-    var ADvalue = $("#xfernumber").val();
+    var ADvalue = $(".formXFER input[name='xfernumber']").val();
     if ( ( (taskvar == 'XfeRLOCAL') || (taskvar == 'XfeRINTERNAL') ) && (XFER_Group.match(/AGENTDIRECT/i)) && (ADvalue.length < 2) ) {
         swal("<?=$lh->translationFor('must_select_agent_to_transfer')?>");
     } else {
@@ -6098,10 +6670,10 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 {redirectvalue = lastcustchannel}
             if ( (taskvar == 'XfeRBLIND') || (taskvar == 'XfeRVMAIL') ) {
                 if (tasklockedquick > 0)
-                    {$("#xfernumber").val(quick_transfer_button_orig);}
+                    {$(".formXFER input[name='xfernumber']").val(quick_transfer_button_orig);}
                 var queryCID = "XBvdcW" + epoch_sec + user_abb;
-                var blindxferdialstring = $("#xfernumber").val();
-                var blindxferhiddendialstring = $("#xfernumhidden").val();
+                var blindxferdialstring = $(".formXFER input[name='xfernumber']").val();
+                var blindxferhiddendialstring = $(".formXFER input[name='xfernumhidden']").val();
                 if ( (blindxferdialstring.length < 1) && (blindxferhiddendialstring.length > 0) )
                     {blindxferdialstring = blindxferhiddendialstring;}
                 var regXFvars = new RegExp("XFER","g");
@@ -6117,7 +6689,7 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                         blindxferdialstring = Ctasknum + '*' + $(".formMain input[name='phone_number']").val() + '*' + $(".formMain input[name='lead_id']").val() + '*' + campaign + '*' + closerxfercamptail + '*' + user + '**' + live_call_seconds + '*';
                     }
                 } else {
-                    if ($("#xferoverride").is(':checked') == false) {
+                    if ($(".formXFER input[name='xferoverride']").is(':checked') == false) {
                         if (three_way_dial_prefix == 'X') {var temp_dial_prefix = '';}
                         else {var temp_dial_prefix = three_way_dial_prefix;}
                         if (omit_phone_code == 'Y') {var temp_phone_code = '';}
@@ -6129,7 +6701,7 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 }
                 if (API_selected_callmenu.length > 0) {
                     var blindxferdialstring = 's';
-                    var blindxfercontext = $("#xfernumber").val();
+                    var blindxfercontext = $(".formXFER input[name='xfernumber']").val();
                 } else {
                     var blindxfercontext = ext_context;
                 }
@@ -6143,24 +6715,21 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                     taskvar = 'NOTHING';
                     swal("<?=$lh->translationFor('transfer_num_at_least_1_digit')?>:" + blindxferdialstring);
                 } else {
-                    var xferArray = {
-                        goTask: 'RedirectVD',
-                        goChannel: redirectvalue,
-                        goCallServerIP: redirectserverip,
-                        goQueryCID: queryCID,
-                        goExten: blindxferdialstring,
-                        goExtContext: blindxfercontext,
-                        goExtPriority: 1,
-                        goAutoDialLevel: auto_dial_level,
-                        goCampaign: campaign,
-                        goUniqueID: $(".formMain input[name='uniqueid']").val(),
-                        goLeadID: $(".formMain input[name='lead_id']").val(),
-                        goSeconds: live_call_seconds,
-                        goSessionID: session_id,
-                        goNoDeleteVDAC: no_delete_VDAC,
-                        goPresetName: $("#xfername").val()
-                    };
-                    postData = postData.concat(xferArray);
+                    postData['goTask'] = 'RedirectVD';
+                    postData['goChannel'] = redirectvalue;
+                    postData['goCallServerIP'] = redirectserverip;
+                    postData['goQueryCID'] = queryCID;
+                    postData['goExten'] = blindxferdialstring;
+                    postData['goExtContext'] = blindxfercontext;
+                    postData['goExtPriority'] = 1;
+                    postData['goAutoDialLevel'] = auto_dial_level;
+                    postData['goCampaign'] = campaign;
+                    postData['goUniqueID'] = $(".formMain input[name='uniqueid']").val();
+                    postData['goLeadID'] = $(".formMain input[name='lead_id']").val();
+                    postData['goSeconds'] = live_call_seconds;
+                    postData['goSessionID'] = session_id;
+                    postData['goNoDeleteVDAC'] = no_delete_VDAC;
+                    postData['goPresetName'] = $(".formXFER input[name='xfername']").val();
                 }
             }
             if (taskvar == 'XfeRINTERNAL') {
@@ -6173,8 +6742,8 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 if (consult_custom_sent < 1)
                     {CustomerData_update();}
 
-                $("#xfername").val('');
-                XFERSelect = $("#XFERGroup");
+                $(".formXFER input[name='xfername']").val('');
+                XFERSelect = $("#transfer-local-closer");
                 XFER_Group = XFERSelect.val();
                 if (API_selected_xfergroup.length > 1)
                     {XFER_Group = API_selected_xfergroup;}
@@ -6184,80 +6753,66 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 // 		 "90009*$group**$lead_id**$phone_number*$user*$agent_only*";
                 var redirectdestination = closerxferinternal + '90009*' + XFER_Group + '**' + $(".formMain input[name='lead_id']").val() + '**' + dialed_number + '*' + user + '*' + $("#xfernumber").val() + '*';
                 
-                var xferArray = {
-                    goTask: 'RedirectVD',
-                    goChannel: redirectvalue,
-                    goCallServerIP: redirectserverip,
-                    goQueryCID: queryCID,
-                    goExten: redirectdestination,
-                    goExtContext: ext_context,
-                    goExtPriority: 1,
-                    goAutoDialLevel: auto_dial_level,
-                    goCampaign: campaign,
-                    goUniqueID: $(".formMain input[name='uniqueid']").val(),
-                    goLeadID: $(".formMain input[name='lead_id']").val(),
-                    goSeconds: live_call_seconds,
-                    goSessionID: session_id
-                };
-                postData = postData.concat(xferArray);
+                postData['goTask'] = 'RedirectVD';
+                postData['goChannel'] = redirectvalue;
+                postData['goCallServerIP'] = redirectserverip;
+                postData['goQueryCID'] = queryCID;
+                postData['goExten'] = redirectdestination;
+                postData['goExtContext'] = ext_context;
+                postData['goExtPriority'] = 1;
+                postData['goAutoDialLevel'] = auto_dial_level;
+                postData['goCampaign'] = campaign;
+                postData['goUniqueID'] = $(".formMain input[name='uniqueid']").val();
+                postData['goLeadID'] = $(".formMain input[name='lead_id']").val();
+                postData['goSeconds'] = live_call_seconds;
+                postData['goSessionID'] = session_id;
             }
             if (taskvar == 'XfeR') {
                 var queryCID = "LRvdcW" + epoch_sec + user_abb;
-                var redirectdestination = $("#extension_xfer").val();
+                var redirectdestination = $(".formXFER input[name='extension_xfer']").val();
                 
-                var xferArray = {
-                    goTask: 'RedirectName',
-                    goChannel: redirectvalue,
-                    goCallServerIP: redirectserverip,
-                    goQueryCID: queryCID,
-                    goExtenName: redirectdestination,
-                    goExtContext: ext_context,
-                    goExtPriority: 1,
-                    goSessionID: session_id
-                };
-                postData = postData.concat(xferArray);
+                postData['goTask'] = 'RedirectName';
+                postData['goChannel'] = redirectvalue;
+                postData['goCallServerIP'] = redirectserverip;
+                postData['goQueryCID'] = queryCID;
+                postData['goExtenName'] = redirectdestination;
+                postData['goExtContext'] = ext_context;
+                postData['goExtPriority'] = 1;
+                postData['goSessionID'] = session_id;
             }
             if (taskvar == 'VMAIL') {
                 var queryCID = "LVvdcW" + epoch_sec + user_abb;
-                var redirectdestination = $("#extension_xfer").val();
+                var redirectdestination = $(".formXFER input[name='extension_xfer']").val();
                 
-                var xferArray = {
-                    goTask: 'RedirectNameVmail',
-                    goChannel: redirectvalue,
-                    goCallServerIP: redirectserverip,
-                    goQueryCID: queryCID,
-                    goExten: voicemail_dump_exten,
-                    goExtenName: redirectdestination,
-                    goExtContext: ext_context,
-                    goExtPriority: 1,
-                    goSessionID: session_id
-                };
-                postData = postData.concat(xferArray);
+                postData['goTask'] = 'RedirectNameVmail';
+                postData['goChannel'] = redirectvalue;
+                postData['goCallServerIP'] = redirectserverip;
+                postData['goQueryCID'] = queryCID;
+                postData['goExten'] = voicemail_dump_exten;
+                postData['goExtenName'] = redirectdestination;
+                postData['goExtContext'] = ext_context;
+                postData['goExtPriority'] = 1;
+                postData['goSessionID'] = session_id;
             }
             if (taskvar == 'ENTRY') {
                 var queryCID = "LEvdcW" + epoch_sec + user_abb;
-                var redirectdestination = $("#extension_xfer_entry").val();
+                var redirectdestination = $(".formXFER input[name='extension_xfer_entry']").val();
                 
-                var xferArray = {
-                    goTask: 'Redirect',
-                    goChannel: redirectvalue,
-                    goCallServerIP: redirectserverip,
-                    goQueryCID: queryCID,
-                    goExten: redirectdestination,
-                    goExtContext: ext_context,
-                    goExtPriority: 1,
-                    goSessionID: session_id
-                };
-                postData = postData.concat(xferArray);
+                postData['goTask'] = 'Redirect';
+                postData['goChannel'] = redirectvalue;
+                postData['goCallServerIP'] = redirectserverip;
+                postData['goQueryCID'] = queryCID;
+                postData['goExten'] = redirectdestination;
+                postData['goExtContext'] = ext_context;
+                postData['goExtPriority'] = 1;
+                postData['goSessionID'] = session_id;
             }
             if (taskvar == '3WAY') {
-                xferArray = array();
-
                 var queryCID = "VXvdcW" + epoch_sec + user_abb;
                 var redirectdestination = "NEXTAVAILABLE";
                 var redirectXTRAvalue = XDchannel;
-                var redirecttype_test = $("#xfernumber").val();
-                var XFERSelect = $("#XFERGroup");
+                var redirecttype_test = $(".formXFER input[name='xfernumber']").val();
+                var XFERSelect = $("#transfer-local-closer");
                 var XFER_Group = XFERSelect.val();
                 if (API_selected_xfergroup.length > 1)
                     {var XFER_Group = API_selected_xfergroup;}
@@ -6269,30 +6824,27 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 Dispo3wayChannel = redirectvalue;
                 Dispo3wayXTRAChannel = redirectXTRAvalue;
                 Dispo3wayCallServerIP = redirectserverip;
-                Dispo3wayCallXFERNumber = $("#xfernumber").val();
+                Dispo3wayCallXFERNumber = $(".formXFER input[name='xfernumber']").val();
                 Dispo3wayCallCampTail = '';
                 
-                var xferArray = {
-                    goTask: redirecttype,
-                    goChannel: redirectvalue,
-                    goCallServerIP: redirectserverip,
-                    goQueryCID: queryCID,
-                    goExten: redirectdestination,
-                    goExtContext: ext_context,
-                    goExtPriority: 1,
-                    goExtraChannel: redirectXTRAvalue,
-                    goLeadID: $(".formMain input[name='lead_id']").val(),
-                    goPhoneCode: $(".formMain input[name='phone_code']").val(),
-                    goPhoneNumber: $(".formMain input[name='phone_number']").val(),
-                    goAutoDialLevel: auto_dial_level,
-                    goCampaign: XFER_Group,
-                    goFilename: taskdebugnote,
-                    goAgentChannel: agentchanel,
-                    goSessionID: session_id,
-                    goProtocol: protocol,
-                    goExtension: extension
-                };
-                postData = postData.concat(xferArray);
+                postData['goTask'] = redirecttype;
+                postData['goChannel'] = redirectvalue;
+                postData['goCallServerIP'] = redirectserverip;
+                postData['goQueryCID'] = queryCID;
+                postData['goExten'] = redirectdestination;
+                postData['goExtContext'] = ext_context;
+                postData['goExtPriority'] = 1;
+                postData['goExtraChannel'] = redirectXTRAvalue;
+                postData['goLeadID'] = $(".formMain input[name='lead_id']").val();
+                postData['goPhoneCode'] = $(".formMain input[name='phone_code']").val();
+                postData['goPhoneNumber'] = $(".formMain input[name='phone_number']").val();
+                postData['goAutoDialLevel'] = auto_dial_level;
+                postData['goCampaign'] = XFER_Group;
+                postData['goFilename'] = taskdebugnote;
+                postData['goAgentChannel'] = agentchanel;
+                postData['goSessionID'] = session_id;
+                postData['goProtocol'] = protocol;
+                postData['goExtension'] = extension;
 
                 if (taskdebugnote == 'FIRST') {
                     $("#DispoSelectHAspan").html("<a href='#' onclick='DispoLeavE3wayAgaiN()'><?=$lh->translationFor('leave_3way_again')?></a>");
@@ -6308,27 +6860,26 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 var redirectdestserverip = taskserverip;
                 var parkedby = protocol + "/" + extension;
                 
-                var xferArray = {
-                    goTask: 'RedirectToPark',
-                    goChannel: redirectdestination,
-                    goCallServerIP: redirectdestserverip,
-                    goQueryCID: queryCID,
-                    goExten: park_on_extension,
-                    goExtContext: ext_context,
-                    goExtPriority: 1,
-                    goExtenName: 'park',
-                    goParkedBy: parkedby,
-                    goSessionID: session_id,
-                    goCallCID: CallCID,
-                    goUniqueID: $(".formMain input[name='uniqueid']").val(),
-                    goLeadID: $(".formMain input[name='lead_id']").val(),
-                    goCampaign: campaign
-                };
-                postData = postData.concat(xferArray);
-
-                //document.getElementById("ParkControl").innerHTML ="<a href=\"#\" onclick=\"mainxfer_send_redirect('FROMParK','" + redirectdestination + "','" + redirectdestserverip + "');enableButton('XFER');return false;\"><img src='./images/grabcallpark.png' border='0' alt='<?=$lh->translationFor('grab_parked_call')?>' /></a>";
+                postData['goTask'] = 'RedirectToPark';
+                postData['goChannel'] = redirectdestination;
+                postData['goCallServerIP'] = redirectdestserverip;
+                postData['goQueryCID'] = queryCID;
+                postData['goExten'] = park_on_extension;
+                postData['goExtContext'] = ext_context;
+                postData['goExtPriority'] = 1;
+                postData['goExtenName'] = 'park';
+                postData['goParkedBy'] = parkedby;
+                postData['goSessionID'] = session_id;
+                postData['goCallCID'] = CallCID;
+                postData['goUniqueID'] = $(".formMain input[name='uniqueid']").val();
+                postData['goLeadID'] = $(".formMain input[name='lead_id']").val();
+                postData['goCampaign'] = campaign;
+                
+                toggleButton('ParkCall', 'grab');
+                $("#btnParkCall").attr('onclick', "mainxfer_send_redirect('FROMParK','" + redirectdestination + "','" + redirectdestserverip + "'); toggleButton('TransferCall', 'XFERON');");
                 if ( (ivr_park_call == 'ENABLED') || (ivr_park_call == 'ENABLED_PARK_ONLY') ) {
                     //document.getElementById("ivrParkControl").innerHTML ="<img src='./images/ivrcallpark_OFF.png' style='padding-bottom:3px;' border='0' title='<?=$lh->translationFor('ivr_park_call')?>' alt='<?=$lh->translationFor('ivr_park_call')?>' />";
+                    toggleButton('IVRParkCall', 'parkivr', false);
                 }
                 customerparked = 1;
                 customerparkedcounter = 0;
@@ -6348,25 +6899,24 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                         {var dest_dialstring = session_id;}
                 }
                 
-                var xferArray = {
-                    goTask: 'RedirectFromPark',
-                    goChannel: redirectdestination,
-                    goCallServerIP: redirectdestserverip,
-                    goQueryCID: queryCID,
-                    goExten: dest_dialstring,
-                    goExtContext: ext_context,
-                    goExtPriority: 1,
-                    goCallCID: CallCID,
-                    goCampaign: campaign,
-                    goUniqueID: $(".formMain input[name='uniqueid']").val(),
-                    goLeadID: $(".formMain input[name='lead_id']").val(),
-                    goSessionID: session_id
-                };
-                postData = postData.concat(xferArray);
-
-                //document.getElementById("ParkControl").innerHTML ="<a href='#' onclick=\"mainxfer_send_redirect('ParK','" + redirectdestination + "','" + redirectdestserverip + "');disableButton('XFER');return false;\"><img src='./images/callpark.png' border='0' title='<?=$lh->translationFor('park_call')?>' alt='<?=$lh->translationFor('park_call')?>' /></a>";
+                postData['goTask'] = 'RedirectFromPark';
+                postData['goChannel'] = redirectdestination;
+                postData['goCallServerIP'] = redirectdestserverip;
+                postData['goQueryCID'] = queryCID;
+                postData['goExten'] = dest_dialstring;
+                postData['goExtContext'] = ext_context;
+                postData['goExtPriority'] = 1;
+                postData['goCallCID'] = CallCID;
+                postData['goCampaign'] = campaign;
+                postData['goUniqueID'] = $(".formMain input[name='uniqueid']").val();
+                postData['goLeadID'] = $(".formMain input[name='lead_id']").val();
+                postData['goSessionID'] = session_id;
+                
+                toggleButton('ParkCall', 'park')
+                $("#btnParkCall").attr('onclick', "mainxfer_send_redirect('ParK','" + redirectdestination + "','" + redirectdestserverip + "'); toggleButton('TransferCall', 'off');");
                 if ( (ivr_park_call == 'ENABLED') || (ivr_park_call == 'ENABLED_PARK_ONLY') ) {
-                    //document.getElementById("ivrParkControl").innerHTML ="<a href='#' onclick=\"mainxfer_send_redirect('ParKivr','" + redirectdestination + "','" + redirectdestserverip + "');return false;\"><img src='./images/ivrcallpark.png' style='padding-bottom:3px;' border='0' title='<?=$lh->translationFor('ivr_park_call')?>' alt='<?=$lh->translationFor('ivr_park_call')?>' /></a>";
+                    toggleButton('IVRParkCall', 'parkivr');
+                    $("#btnIVRParkCall").attr('onclick', "mainxfer_send_redirect('ParKivr','" + redirectdestination + "','" + redirectdestserverip + "');");
                 }
                 customerparked = 0;
                 customerparkedcounter = 0;
@@ -6381,30 +6931,28 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 var redirectdestserverip = taskserverip;
                 var parkedby = protocol + "/" + extension;
                 
-                var xferArray = {
-                    goTask: 'RedirectToParkIVR',
-                    goChannel: redirectdestination,
-                    goCallServerIP: redirectdestserverip,
-                    goQueryCID: queryCID,
-                    goExten: park_on_extension,
-                    goExtContext: ext_context,
-                    goExtPriority: 1,
-                    goExtenName: 'park',
-                    goCampaign: campaign,
-                    goUniqueID: $(".formMain input[name='uniqueid']").val(),
-                    goLeadID: $(".formMain input[name='lead_id']").val(),
-                    goParkedBy: parkedby,
-                    goSessionID: session_id,
-                    goCallCID: CallCID
-                };
-                postData = postData.concat(xferArray);
-
-                //document.getElementById("ParkControl").innerHTML = "<img src='./images/callpark_OFF.png' border='0' title='<?=$lh->translationFor('grab_parked_call')?>' alt='<?=$lh->translationFor('grab_parked_call')?>' />";
+                postData['goTask'] = 'RedirectToParkIVR';
+                postData['goChannel'] = redirectdestination;
+                postData['goCallServerIP'] = redirectdestserverip;
+                postData['goQueryCID'] = queryCID;
+                postData['goExten'] = park_on_extension;
+                postData['goExtContext'] = ext_context;
+                postData['goExtPriority'] = 1;
+                postData['goExtenName'] = 'park';
+                postData['goCampaign'] = campaign;
+                postData['goUniqueID'] = $(".formMain input[name='uniqueid']").val();
+                postData['goLeadID'] = $(".formMain input[name='lead_id']").val();
+                postData['goParkedBy'] = parkedby;
+                postData['goSessionID'] = session_id;
+                postData['goCallCID'] = CallCID;
+                
+                toggleButton('ParkCall', 'grab', false);
                 if (ivr_park_call == 'ENABLED_PARK_ONLY') {
-                    //document.getElementById("ivrParkControl").innerHTML = "<img src='./images/ivrgrabcallpark_OFF.png' style='padding-bottom:3px;' border='0' title='<?=$lh->translationFor('grab_ivr_parked_call')?>' alt='<?=$lh->translationFor('grab_ivr_parked_call')?>' />";
+                    toggleButton('IVRParkCall', 'grabivr', false);
                 }
                 if (ivr_park_call == 'ENABLED') {
-                    //document.getElementById("ivrParkControl").innerHTML = "<a href='#' onclick=\"mainxfer_send_redirect('FROMParKivr','" + redirectdestination + "','" + redirectdestserverip + "');return false;\"><img src='./images/ivrgrabcallpark.png' style='padding-bottom:3px;' border='0' title='<?=$lh->translationFor('grab_ivr_parked_call')?>' alt='<?=$lh->translationFor('grab_ivr_parked_call')?>' /></a>";
+                    toggleButton('IVRParkCall', 'grabivr', true);
+                    $("#btnIVRParkCall").attr('onclick', "mainxfer_send_redirect('FROMParKivr','" + redirectdestination + "','" + redirectdestserverip + "');");
                 }
                 customerparked = 1;
                 customerparkedcounter = 0;
@@ -6424,25 +6972,24 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                         {var dest_dialstring = session_id;}
                 }
                 
-                var xferArray = {
-                    goTask: 'RedirectFromParkIVR',
-                    goChannel: redirectdestination,
-                    goCallServerIP: redirectdestserverip,
-                    goQueryCID: queryCID,
-                    goExten: dest_dialstring,
-                    goExtContext: ext_context,
-                    goExtPriority: 1,
-                    goCampaign: campaign,
-                    goUniqueID: $(".formMain input[name='uniqueid']").val(),
-                    goLeadID: $(".formMain input[name='lead_id']").val(),
-                    goSessionID: session_id,
-                    goCallCID: CallCID
-                };
-                postData = postData.concat(xferArray);
-
-                //document.getElementById("ParkControl").innerHTML = "<a href='#' onclick=\"mainxfer_send_redirect('ParK','" + redirectdestination + "','" + redirectdestserverip + "');disableButton('XFER');return false;\"><img src='./images/callpark.png' border='0' title='<?=$lh->translationFor('park_call')?>' alt='<?=$lh->translationFor('park_call')?>' /></a>";
+                postData['goTask'] = 'RedirectFromParkIVR';
+                postData['goChannel'] = redirectdestination;
+                postData['goCallServerIP'] = redirectdestserverip;
+                postData['goQueryCID'] = queryCID;
+                postData['goExten'] = dest_dialstring;
+                postData['goExtContext'] = ext_context;
+                postData['goExtPriority'] = 1;
+                postData['goCampaign'] = campaign;
+                postData['goUniqueID'] = $(".formMain input[name='uniqueid']").val();
+                postData['goLeadID'] = $(".formMain input[name='lead_id']").val();
+                postData['goSessionID'] = session_id;
+                postData['goCallCID'] = CallCID;
+                
+                toggleButton('ParkCall', 'park');
+                $("#btnParkCall").attr('onclick', "mainxfer_send_redirect('ParK','" + redirectdestination + "','" + redirectdestserverip + "'); toggleButton('TransferCall', 'off');");
                 if ( (ivr_park_call=='ENABLED') || (ivr_park_call=='ENABLED_PARK_ONLY') ) {
-                    //document.getElementById("ivrParkControl").innerHTML = "<a href='#' onclick=\"mainxfer_send_redirect('ParKivr','" + redirectdestination + "','" + redirectdestserverip + "');return false;\"><img src='./images/ivrcallpark.png' style='padding-bottom:3px;' border='0' title='<?=$lh->translationFor('ivr_park_call')?>' alt='<?=$lh->translationFor('ivr_park_call')?>' /></a>";
+                    toggleButton('IVRParkCall', 'parkivr');
+                    $("#btnIVRParkCall").attr('onclick', "mainxfer_send_redirect('ParKivr','" + redirectdestination + "','" + redirectdestserverip + "');");
                 }
                 customerparked = 0;
                 customerparkedcounter = 0;
@@ -6461,8 +7008,8 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
             })
             .done(function (result) {
                 var XfeRRedirecToutput = null;
-                XfeRRedirecToutput = xmlhttpXF.responseText;
-                var XfeRRedirecToutput_array=XfeRRedirecToutput.split("|");
+                XfeRRedirecToutput = result;
+                var XfeRRedirecToutput_array = XfeRRedirecToutput.split("|");
                 var XFRDop = XfeRRedirecToutput_array[0];
                 if (XFRDop == "NeWSessioN") {
                     threeway_end = 1;
@@ -6485,10 +7032,7 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
             // used to send second Redirect for manual dial calls
             if ( (auto_dial_level == 0) && (taskvar != '3WAY') ) {
                 RedirectXFER = 1;
-                var xferData = {
-                    goStage: '2NDXfeR'
-                };
-                postData = postData.concat(xferData);
+                postData['goStage'] = '2NDXfeR';
                 
                 $.ajax({
                     type: 'POST',
