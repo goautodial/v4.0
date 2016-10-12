@@ -49,6 +49,11 @@ error_reporting(E_ALL);*/
    		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
    		<!-- SELECT2-->
    		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
+			<style type="text/css">
+				.select2-container{
+					width: 100% !important;
+				}
+			</style>
     </head>
      <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -779,7 +784,7 @@ error_reporting(E_ALL);*/
 	                        <th>Action</th>
 	                    </tr>
 	                </thead>
-									<tbody class="data-container">
+									<tbody id="pause_code_data_container">
 										<!-- Data Here -->
 									</tbody>
 								</table>
@@ -845,6 +850,93 @@ error_reporting(E_ALL);*/
 		  </div>
 		</div>
 
+		<div id="modal_view_hotkeys" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title"><b>Hotkeys</b></h4>
+		      </div>
+		      <div class="modal-body">
+						<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
+							<div class="table-responsive">
+								<table id="hotkeys_list" class="table table-bordered" style="width: 100%;">
+	                <thead>
+	                    <tr>
+	                        <th>Hotkey</th>
+	                        <th>Status</th>
+	                        <th>Description</th>
+	                        <th>Action</th>
+	                    </tr>
+	                </thead>
+									<tbody id="hotkey_data_container">
+										<!-- Data Here -->
+									</tbody>
+								</table>
+							</div>
+						</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-success btn-new-hotkey" data-campaign="">Create New</button>
+		      </div>
+		    </div>
+		    <!-- End of modal content -->
+		  </div>
+		</div>
+
+		<div id="modal_form_hotkeys" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title"><b>Hotkeys</b></h4>
+		      </div>
+		      <div class="modal-body">
+						<form id="form_hotkeys" class="form-horizontal" style="margin-top: 10px;">
+							<div class="form-group">
+								<label class="control-label col-lg-3">Campaign ID:</label>
+								<div class="col-lg-9">
+									<input type="text" class="form-control campaign-id" name="campaign_id" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-3">Hotkey:</label>
+								<div class="col-lg-9">
+									<select class="form-control select2 hotkey" name="hotkey">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-3">Status:</label>
+								<div class="col-lg-9">
+									<input type="hidden" id="hotkey_status_name" name="status_name" value="">
+									<select class="form-control select2 status" name="status"></select>
+								</div>
+							</div>
+						</form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary btn-save-hotkey">Save</button>
+						<button type="button" class="btn btn-success btn-update-hotkey hide">Update</button>
+		      </div>
+		    </div>
+		    <!-- End of modal content -->
+		  </div>
+		</div>
+
 
 	<!-- End of modal -->
 
@@ -872,7 +964,7 @@ error_reporting(E_ALL);*/
 						var table = $('#pause_codes_list').DataTable();
 						table.fnClearTable();
 						table.fnDestroy();
-						$('.data-container').html(response);
+						$('#pause_code_data_container').html(response);
 						$('#pause_codes_list').DataTable({
 							"searching": true,
 							bFilter: true
@@ -882,13 +974,48 @@ error_reporting(E_ALL);*/
 			});
 		}
 
+		function get_hotkeys(campaign_id){
+			$.ajax({
+				url: "./php/GetHotkeys.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						// var values = JSON.parse(response.result);
+						// console.log(response);
+						$('.btn-new-hotkey').attr('data-campaign', campaign_id);
+						$('#modal_view_hotkeys').modal('show');
+						var table = $('#hotkeys_list').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('#hotkey_data_container').html(response);
+						$('#hotkeys_list').DataTable({
+							"searching": true,
+							bFilter: true
+						});
+						$("#hotkeys_list").css("width","100%");
+					}
+			});
+		}
+
 		$(document).ready(function(){
 			// $('#modal_form_pause_codes').modal('show');
+			$('.select2').select2({
+						theme: 'bootstrap'
+			});
 
 			$(document).on('click', '.view-pause-codes', function(){
 				var campaign_id = $(this).data('id');
 				// alert(campaign_id);
 				get_pause_codes(campaign_id);
+			});
+
+			$(document).on('click', '.view-hotkeys', function(){
+				var campaign_id = $(this).data('id');
+				// alert(campaign_id);
+				get_hotkeys(campaign_id);
 			});
 
 			$(document).on('click', '.btn-new-pause-code', function(){
@@ -906,6 +1033,32 @@ error_reporting(E_ALL);*/
 				$('body').addClass('modal-open');
 			});
 
+			$(document).on('click', '.btn-new-hotkey', function(){
+				var campaign_id = $(this).data('campaign');
+				$('.campaign-id').val(campaign_id);
+
+				$.ajax({
+					url: "./php/GetDialStatuses.php",
+					type: 'POST',
+					data: {
+						campaign_id : campaign_id,
+					},
+					dataType: 'json',
+					success: function(response) {
+							// console.log(response);
+							$('.status').html(response);
+
+						}
+				});
+
+				$('.hotkey').val('1').trigger('change');
+				$('.btn-save-hotkey').removeClass('hide');
+				$('.btn-update-hotkey').addClass('hide');
+				$('#modal_view_hotkeys').modal('hide');
+				$('#modal_form_hotkeys').modal('show');
+				$('body').addClass('modal-open');
+			});
+
 			$('#modal_form_pause_codes').on('hidden.bs.modal', function () {
 				// var campaign_id = $('.camapaign-id').val();
 				$('#modal_form_pause_codes').modal('hide');
@@ -913,8 +1066,21 @@ error_reporting(E_ALL);*/
 				$('body').addClass('modal-open');
 			});
 
+			$('#modal_form_hotkeys').on('hidden.bs.modal', function () {
+				// var campaign_id = $('.camapaign-id').val();
+				$('#modal_form_hotkeys').modal('hide');
+				$('#modal_view_hotkeys').modal('show');
+				$('body').addClass('modal-open');
+			});
+
 			$('#modal_view_pause_codes').on('hidden.bs.modal', function () {
 				if($('#modal_form_pause_codes').hasClass('in')){
+					$('body').addClass('modal-open');
+				}
+			});
+
+			$('#modal_view_hotkeys').on('hidden.bs.modal', function () {
+				if($('#modal_form_hotkeys').hasClass('in')){
 					$('body').addClass('modal-open');
 				}
 			});
@@ -985,6 +1151,54 @@ error_reporting(E_ALL);*/
 				);
 			});
 
+			$(document).on('click', '.btn-delete-hk', function(){
+				var campaign_id = $(this).data('camp-id');
+				var hotkey = $(this).data('hotkey');
+				swal({
+					title: "Are you sure?",
+					text: "This action cannot be undone.",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Yes, delete hotkey!",
+					cancelButtonText: "No, cancel please!",
+					closeOnConfirm: false,
+					closeOnCancel: false
+					},
+					function(isConfirm){
+						if (isConfirm) {
+							$.ajax({
+											url: "./php/DeleteHotkey.php",
+											type: 'POST',
+											data: {
+												campaign_id:campaign_id,
+												hotkey:hotkey
+											},
+											// dataType: 'json',
+											success: function(data) {
+													// console.log(data);
+													if(data == "success"){
+														swal({
+																title: "Success",
+																text: "Hotkey Successfully Deleted",
+																type: "success"
+															},
+															function(){
+																get_hotkeys(campaign_id);
+															}
+														);
+													}else{
+															sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+													}
+											}
+								});
+							} else {
+									swal("Cancelled", "No action has been done :)", "error");
+							}
+					}
+				);
+			});
+
 			$(document).on('click', '.btn-save-pause-code', function(){
 				var form_data = new FormData($("#form_pause_codes")[0]);
 				var campaign_id = $('.campaign-id').val();
@@ -1023,6 +1237,62 @@ error_reporting(E_ALL);*/
 																$('.billable').val('YES').trigger('change');
 																$('#modal_form_pause_codes').modal('hide');
 																get_pause_codes(campaign_id);
+															}
+														);
+													}else{
+															sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+													}
+											}
+								});
+							} else {
+									swal("Cancelled", "No action has been done :)", "error");
+							}
+					}
+				);
+			});
+
+			$(document).on('change', '.status', function(){
+				var stat_name = $(this).select2().find(":selected").data("name");
+				// console.log(stat_name);
+				$('#hotkey_status_name').val(stat_name);
+			});
+
+			$(document).on('click', '.btn-save-hotkey', function(){
+				var form_data = new FormData($("#form_hotkeys")[0]);
+				var campaign_id = $('.campaign-id').val();
+				swal({
+					title: "Are you sure?",
+					text: "This action cannot be undone.",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Yes, create hotkey!",
+					cancelButtonText: "No, cancel please!",
+					closeOnConfirm: false,
+					closeOnCancel: false
+					},
+					function(isConfirm){
+						if (isConfirm) {
+							$.ajax({
+											url: "./php/AddHotkey.php",
+											type: 'POST',
+											data: form_data,
+											// dataTbtn-delete-hkype: 'json',
+											cache: false,
+											contentType: false,
+											processData: false,
+											success: function(data) {
+													// console.log(data);
+													if(data == "success"){
+														swal({
+																title: "Success",
+																text: "Hotkey Successfully Created",
+																type: "success"
+															},
+															function(){
+																$('.hotkey').val('1').trigger('change');
+																$('#modal_form_hotkeys').modal('hide');
+																get_hotkeys(campaign_id);
 															}
 														);
 													}else{

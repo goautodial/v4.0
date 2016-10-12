@@ -3874,6 +3874,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="edit-campaign" href="#" data-id="'.$id.'">View Details</a></li>
       <li><a class="view-pause-codes" href="#" data-id="'.$id.'">View Pause Codes</a></li>
+      <li><a class="view-hotkeys" href="#" data-id="'.$id.'">View Hotkeys</a></li>
 			<li><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
@@ -5268,7 +5269,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 			return $data;
 		}
-		
+
 		/*
 		 * Displaying Sales / Hour
 		 * [[API: Function]] - getPerHourSales
@@ -5292,7 +5293,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 			return $data;
 		}
-		
+
 
 		/*
 		 * Display Dropped Percentage
