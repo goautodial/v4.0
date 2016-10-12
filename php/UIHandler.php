@@ -3240,7 +3240,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	// get user info
-	public function goGetUserInfo($userid, $type="userid"){
+	public function goGetUserInfo($userid, $type, $filter){
 		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
@@ -3250,6 +3250,9 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["user"] = $userid; #Desired User ID (required)
 		} else {
 			$postfields["user_id"] = $userid; #Desired User (required)
+		}
+		if($filter == "userInfo"){
+			$postfields["filter"] = $filter;
 		}
 
 		$ch = curl_init();
