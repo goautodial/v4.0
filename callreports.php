@@ -35,11 +35,6 @@
         <link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
         <link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
 
-        <script type="text/javascript">
-            $(window).ready(function() {
-                $(".preloader").fadeOut("slow");
-            })
-        </script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -222,11 +217,21 @@
                 });
 
                 $('#datetimepicker1').datetimepicker({
-                    format: 'MM/DD/YYYY'
+                    icons: {
+                        time: "fa fa-clock-o",
+                        date: "fa fa-calendar",
+                        up: "fa fa-arrow-up",
+                        down: "fa fa-arrow-down"
+                    }
                 });
                 $('#datetimepicker2').datetimepicker({
+                    icons: {
+                        time: "fa fa-clock-o",
+                        date: "fa fa-calendar",
+                        up: "fa fa-arrow-up",
+                        down: "fa fa-arrow-down"
+                    },
                     useCurrent: false,
-                    format: 'MM/DD/YYYY'
                 });
                 $("#datetimepicker1").on("dp.change", function (e) {
                     $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
