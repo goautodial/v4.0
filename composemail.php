@@ -55,7 +55,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Creamy</title>
+    <title>Compose Message</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="./css/font-awesome.min.css" rel="stylesheet" type="text/css" />

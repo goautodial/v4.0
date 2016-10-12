@@ -28,13 +28,14 @@
 
 require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
-require_once('./php/DbHandler.php');
 require_once('./php/LanguageHandler.php');
+require_once('./php/DbHandler.php');
 require('./php/Session.php');
 
 // initialize structures
 $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
+$db = new \creamy\DbHandler();
 $user = \creamy\CreamyUser::currentUser();
 
 
@@ -127,6 +128,8 @@ if (isset($_GET["message"])) {
         <link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 		<!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+		<!-- iCheck for checkboxes and radio inputs -->
+		<link href="css/iCheck/minimal/blue.css" rel="stylesheet" type="text/css" />
 		
 		<!-- DATA TABES SCRIPT -->
 		<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
@@ -134,7 +137,7 @@ if (isset($_GET["message"])) {
 		<!-- Bootstrap WYSIHTML5 -->
 		<!--<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>-->
 		<!-- iCheck -->
-		<!--<script src="js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>-->
+		<script src="js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
 		<!-- SLIMSCROLL-->
 		<script src="theme_dashboard/slimScroll/jquery.slimscroll.min.js"></script>
 		<!-- SWEETALERT-->
@@ -759,7 +762,7 @@ if (isset($_GET["message"])) {
 														<h4>
 															<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="reload-script" style="padding: 5px;">Reload Script</a>
 														</h4>
-														<div id="ScriptContents" style="min-height: 100px; border: dashed 1px #c0c0c0; padding: 20px 5px 5px;">
+														<div id="ScriptContents" style="min-height: 200px; border: dashed 1px #c0c0c0; padding: 20px 5px 5px;">
 															<?php echo $output_script;?>
 														</div>
 													</fieldset><!-- /.fieldset -->
@@ -814,7 +817,7 @@ if (isset($_GET["message"])) {
 										<h3 class="box-title"><?php print $lh->translationFor("folders"); ?></h3>
 									</div>
 									<div class="box-body no-padding">
-										<?php //print $ui->getMessageFoldersAsList($folder); ?>
+										<?php print $ui->getMessageFoldersAsList($folder, false); ?>
 									</div><!-- /.box-body -->
 								</div><!-- /. box -->
 							</div><!-- /.col -->
@@ -827,18 +830,18 @@ if (isset($_GET["message"])) {
 									</div><!-- /.box-header -->
 									<div class="box-body no-padding">
 										<div class="mailbox-controls">
-											<?php //print $ui->getMailboxButtons($folder); ?>
+											<?php print $ui->getMailboxButtons($folder, false); ?>
 										</div>
 										<div class="table-responsive mailbox-messages">
-											<?php //print $ui->getMessagesFromFolderAsTable($user->getUserId(), $folder); ?>
+											<?php print $ui->getMessagesFromFolderAsTable($user->getUserId(), $folder); ?>
 										</div><!-- /.mail-box-messages -->
 									</div><!-- /.box-body -->
 									<div class="box-footer no-padding">
 										<div class="mailbox-controls">
 											<div id="messages-message-box">
-												<?php //if (!empty($message)) { print $ui->calloutInfoMessage($message); } ?>
+												<?php if (!empty($message)) { print $ui->calloutInfoMessage($message); } ?>
 											</div>
-											<?php //print $ui->getMailboxButtons($folder); ?>
+											<?php print $ui->getMailboxButtons($folder, false); ?>
 										</div>
 									</div>
 								</div><!-- /. box -->
@@ -1416,8 +1419,11 @@ if (isset($_GET["message"])) {
         </ul>
 
         <ul class="control-sidebar-menu hidden-xs" id="go_agent_other_buttons" style="margin-top: 15px;padding: 0 15px;">
-			<li id="toggleWebForms" style="padding: 0 5px 15px;">
+			<li id="toggleWebForm" style="padding: 0 5px 15px;">
 				<button type="button" name="openWebForm" id="openWebForm" class="btn btn-warning btn-block disabled"><i class="fa fa-external-link"></i> <?=$lh->translationFor('webform')?></button>
+			</li>
+			<li id="toggleWebFormTwo" style="padding: 0 5px 15px;" class="hidden">
+				<button type="button" name="openWebFormTwo" id="openWebFormTwo" class="btn btn-warning btn-block disabled"><i class="fa fa-external-link"></i> <?=$lh->translationFor('webform_two')?></button>
 			</li>
 			<li style="padding: 0 5px 15px 0; display: none;">
 				<div class="material-switch pull-right">
@@ -1501,6 +1507,8 @@ if (isset($_GET["message"])) {
 				//	<div class="text-center"><a href="./tasks.php">'.$lh->translationFor("tasks").'</a></div>
 				//</li>';
 				//echo $ui->getSidebarItem("./agent.php", "", $lh->translationFor("Home"));
+				$numMessages = $db->getUnreadMessagesNumber($user->getUserId());
+				echo $ui->getSidebarItem("messages.php", "", $lh->translationFor("messages"), $numMessages, "green");
 				echo $ui->getSidebarItem("customerslist.php", "", $lh->translationFor("contacts"));
 				echo $ui->getSidebarItem("callbackslist.php", "", $lh->translationFor("callbacks"), "0", "blue");
 			}
@@ -1538,6 +1546,129 @@ if (isset($_GET["message"])) {
 		
 		<script type="text/javascript">
 			$(document).ready(function() {
+			 	var folder = <?php print $folder; ?>;
+			 	var selectedAll = false;
+			 	var selectedMessages = [];
+				
+			    //iCheck for checkbox and radio inputs
+		        $('input[type="checkbox"].message-selection-checkbox').iCheck({
+					checkboxClass: 'icheckbox_minimal-blue',
+					radioClass: 'iradio_minimal-blue'
+		        });
+		        
+			    // check individual message
+				$('input[type=checkbox].message-selection-checkbox').on("ifUnchecked", function(e) {
+					var index = selectedMessages.indexOf(e.currentTarget.value);
+					if (index >= 0) selectedMessages.splice(index, 1);
+				});
+			    
+			    // uncheck individual message
+				$('input[type=checkbox].message-selection-checkbox').on("ifChecked", function(e) {
+					if (e.currentTarget.value != 'on') selectedMessages.push(e.currentTarget.value);
+				});
+
+			    // uncheck/check all messages
+				$(".checkbox-toggle").click(function() {
+					if (selectedAll) { $("input[type='checkbox'].message-selection-checkbox", ".mailbox").iCheck("uncheck"); }
+					else { $("input[type='checkbox'].message-selection-checkbox", ".mailbox").iCheck("check"); }
+					selectedAll = !selectedAll;
+				});
+
+				// next button for table.
+				$(".mailbox-next").click(function() { datatable.fnPageChange('next'); });
+
+				// previous button for table
+				$(".mailbox-prev").click(function() { datatable.fnPageChange('previous'); });
+
+			    // de-star a starred video / star a de-stared video.
+			    $("td .fa-star, td .fa-star-o").click(function(e) {
+			        e.preventDefault();
+			        
+			        // Detect type: e.currentTarget.id contains the message id.
+					var starred = $(this).hasClass("fa-star");
+					var favorite = 1;
+					var selectedItem = this;
+					
+					if (starred) { // unmark message as favorite
+						favorite = 0;   
+					} // else mark message as favorite
+					
+					$("#messages-message-box").hide();
+					$.post("./php/MarkMessagesAsFavorite.php", { "favorite": favorite, "messageids": [e.currentTarget.id], "folder": folder }, function(data) {
+						if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
+							// toggle visual change.
+				            $(selectedItem).toggleClass("fa-star");
+				            $(selectedItem).toggleClass("fa-star-o");
+						} else {
+							<?php
+								$msg = $ui->calloutErrorMessage($lh->translationFor("message")); 
+								print $ui->fadingInMessageJS($msg, "messages-message-box");
+							?>
+						}
+					});
+			    });
+			
+			    <?php
+			    // mark messages as favorite.
+				$unableFavoriteCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_favorites"));
+				print $ui->mailboxAction(
+					"messages-mark-as-favorite", 											// classname
+					"php/MarkMessagesAsFavorite.php", 										// php to request
+					'for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).removeClass("fa-star-o").addClass("fa-star"); }', // success js
+					$ui->fadingInMessageJS($unableFavoriteCode, "messages-message-box"),	// failure js
+					array("favorite" => 1));												// custom parameters
+				?>
+				
+				<?php
+				// mark messages as read
+				$unableReadCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_read"));
+				print $ui->mailboxAction(
+					"messages-mark-as-read", 												// classname
+					"php/MarkMessagesAsRead.php", 											// php to request
+					'for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").removeClass("unread"); }', 												// success js
+					$ui->fadingInMessageJS($unableReadCode, "messages-message-box")); 		// failure js
+				?>
+				
+				<?php
+				// mark messages as unread
+				$unableUnreadCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_unread"));
+				print $ui->mailboxAction(
+					"messages-mark-as-unread", 												// classname
+					"php/MarkMessagesAsUnread.php", 										// php to request
+					'for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").addClass("unread"); }', 												// success js
+					$ui->fadingInMessageJS($unableUnreadCode, "messages-message-box")); 	// failure js
+				?>
+				
+				<?php
+			    // send to junk mail
+				$junkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
+					$lh->translationFor("messages_sent_trash").'"';
+				print $ui->mailboxAction(
+					"messages-send-to-junk",					// classname
+					"php/JunkMessages.php",						// php to request
+					"swal($junkText);");	// result js
+				?>
+				
+				<?php
+			    // restore mail from junk
+				$unjunkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
+					$lh->translationFor("messages_recovered_trash").'"';
+				print $ui->mailboxAction(
+					"messages-restore-message",					// classname
+					"php/UnjunkMessages.php",					// php to request
+					"swal($unjunkText);");						// result js
+				?>
+				
+				<?php
+			    // delete messages.
+				$unableDeleteCode = $ui->calloutErrorMessage($lh->translationFor("unable_delete_messages"));
+				print $ui->mailboxAction(
+					"messages-delete-permanently", 											// classname
+					"php/DeleteMessages.php", 												// php to request
+					$ui->reloadLocationJS(), 												// success js
+					$ui->fadingInMessageJS($unableDeleteCode, "messages-message-box")); 	// failure js
+				?>
+				
 				$("#edit-profile").click(function(){
 				    $('.input-disabled').prop('disabled', false);
 				    //$('.hide_div').show();

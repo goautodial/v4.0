@@ -5239,6 +5239,7 @@ body .bootstrap-tagsinput .tag {
   background: #fff;
   display: block;
   position: relative;
+  margin-left: 3.5%;
   /* margin: 1.3em; */
   min-height: 400px;
   overflow: hidden;

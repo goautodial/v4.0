@@ -147,6 +147,7 @@ class GOagent extends Module {
 		$callbackDateSelection = $this->lh()->translationFor("callback_datepicker");
 		$selectPauseCode = $this->lh()->translationFor("select_pause_code");
 		$pauseCodeSelection = $this->lh()->translationFor("pause_code_selection");
+		$selectGroupsToSendCalls = $this->lh()->translationFor("select_group_to_send_calls");
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -624,60 +625,86 @@ EOF;
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="btnTransferCall('OFF', 'YES');">&times;</button>
 				<h4 class="modal-title">$transferConference</h4>
 			</div>
 			<div class="modal-body">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="mda-form-group label-floating">
-							<select id="transfer-selection" name="transfer-selection" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select">
-								<option></option>
-								<option value="CLOSER">Transfer to Agent / Closer Group</option>
-								<option value="REGULAR">Regular 3-Way</option>
-							</select>
-							<label for="transfer-selection">Transfer Selection</label>
-						</div>
-					</div>
-				</div>
-				<div id="transfer-closer" class="hidden">
+				<form role="form" id="xfer_form" class="formXFER form-inline">
+					<input type="hidden" id="xferuniqueid" name="xferuniqueid" value="">
+					<input type="hidden" id="xfername" name="xfername" value="">
+					<input type="hidden" id="xfernumhidden" name="xfernumhidden" value="">
 					<div class="row">
-						<div class="col-md-9">
+						<div class="col-md-12">
 							<div class="mda-form-group label-floating">
-								<select id="transfer-local-closer" name="transfer-local-closer" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select">
+								<select id="transfer-selection" name="transfer-selection" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select">
 									<option></option>
+									<option value="CLOSER">Transfer to Agent / Closer Group</option>
+									<option value="REGULAR">Regular 3-Way</option>
 								</select>
-								<label for="transfer-local-closer">Closer Groups</label>
+								<label for="transfer-selection">Transfer Selection</label>
 							</div>
-						</div>
-						<div class="col-md-3" style="padding: 10px;">
-							<button class="btn btn-primary"> LOCAL CLOSER </button>
 						</div>
 					</div>
-				</div>
-				<div id="transfer-regular" class="hidden">
-					<div class="row">
-						<div class="col-md-2">
-							<div class="mda-form-group label-floating">
-								<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="transfer-seconds" name="transfer-seconds" disabled>
-								<label for="transfer-seconds">SECONDS</label>
+					<div id="transfer-closer" class="hidden">
+						<div class="row">
+							<div class="col-md-9">
+								<div class="mda-form-group label-floating">
+									<select id="transfer-local-closer" name="transfer-local-closer" onchange="XferAgentSelectLink();" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select">
+										<option>-- $selectGroupsToSendCalls --</option>
+									</select>
+									<label for="transfer-local-closer">Closer Groups</label>
+								</div>
+							</div>
+							<div class="col-md-3" style="padding: 10px;">
+								<button id="btnLocalCloser" class="btn btn-primary"> LOCAL CLOSER </button>
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="mda-form-group label-floating">
-								<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="transfer-channel" name="transfer-channel" disabled>
-								<label for="transfer-channel">CHANNEL</label>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<label class="checkbox-inline c-checkbox">
-								<input type="checkbox" id="transfer-consultative" value="1">
-								CONSULTATIVE
-							</label>
-						</div>
-						<div class="col-md-3"><button class="btn btn-default btn-sm">HANGUP XFER LINE</button></div>
 					</div>
-				</div>
+					<div id="transfer-regular" class="hidden">
+						<div class="row">
+							<div class="col-md-2">
+								<div class="mda-form-group label-floating">
+									<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="xferlength" name="xferlength" disabled>
+									<label for="xferlength">SECONDS</label>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="mda-form-group label-floating">
+									<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="xferchannel" name="xferchannel" disabled>
+									<label for="xferchannel">CHANNEL</label>
+								</div>
+							</div>
+							<div class="col-md-4" style="padding-top: 15px;">
+								<div class="material-switch pull-right">
+									<input id="consultativexfer" name="consultativexfer" value="1" type="checkbox" onchange="$('#xferoverride').prop('checked', this.checked);"/>
+									<label for="consultativexfer" class="label-primary"></label>
+								</div>
+								<div><b>CONSULTATIVE</b></div>
+								<input type="checkbox" name="xferoverride" id="xferoverride" value="0" class="hidden">
+							</div>
+							<div class="col-md-2" style="text-align: center;"><button class="btn btn-default btn-sm" style="margin-bottom: 2px;" onclick="DTMF_Preset_a();">D1</button><br><button class="btn btn-default btn-sm" onclick="DTMF_Preset_b();">D2</button></div>
+						</div>
+						<div class="row">
+							<div class="col-md-10">
+								<div class="mda-form-group label-floating">
+									<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" id="xfernumber" name="xfernumber">
+									<label for="xfernumber">NUMBER TO DIAL</label>
+								</div>
+							</div>
+						</div>
+						<div class="row" style="margin-bottom: 5px;">
+							<div class="col-md-3"><button id="btnHangupXferLine" class="btn btn-default btn-sm disabled">HANGUP XFER LINE</button></div>
+							<div class="col-md-3"><button id="btnHangupBothLines" onclick="BothCallHangup();" class="btn btn-danger btn-sm disabled">&nbsp; HANGUP BOTH LINE &nbsp;</button></div>
+							<div class="col-md-4" style="padding-left: 30px;"><button id="btnLeave3WayCall" onclick="Leave3WayCall('FIRST');" class="btn btn-primary btn-sm disabled">&nbsp; &nbsp;LEAVE 3-WAY CALL&nbsp; &nbsp;&nbsp;</button></div>
+						</div>
+						<div class="row">
+							<div class="col-md-3"><button id="btnDialBlindTransfer" class="btn btn-primary btn-sm disabled">&nbsp; BLIND TRANSFER &nbsp;</button></div>
+							<div class="col-md-3"><button id="btnDialWithCustomer" onclick="SendManualDial('YES');" class="btn btn-primary btn-sm">DIAL WITH CUSTOMER</button></div>
+							<div class="col-md-4" style="padding-left: 30px;"><button id="btnParkCustomerDial" onclick="XFERParkDial();" class="btn btn-primary btn-sm">PARK CUSTOMER DIAL</button></div>
+							<div class="col-md-2" style="text-align: center;"><button id="btnDialBlindVMail" class="btn btn-primary btn-sm disabled" title="BLIND TRANSFER VMAIL"><i class="fa fa-phone-square"></i> VM</button></div>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>

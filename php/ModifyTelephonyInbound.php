@@ -227,9 +227,9 @@ if ($groupid != NULL) {
 // IVR
 if ($ivr != NULL) {
 	// collect new user data.		
-	$name = NULL; if (isset($_POST["name"])) { 
-		$name = $_POST["name"]; 
-		$name = stripslashes($name);
+	$menu_name = NULL; if (isset($_POST["menu_name"])) { 
+		$menu_name = $_POST["menu_name"]; 
+		$menu_name = stripslashes($menu_name);
 	}
 	
     $menu_prompt = NULL; if (isset($_POST["menu_prompt"])) { 
@@ -255,6 +255,31 @@ if ($ivr != NULL) {
 	$menu_repeat = NULL; if (isset($_POST["menu_repeat"])) { 
 		$menu_repeat = $_POST["menu_repeat"]; 
 		$menu_repeat = stripslashes($menu_repeat);
+	}
+
+	$menu_time_check = NULL; if (isset($_POST["menu_time_check"])) { 
+		$menu_time_check = $_POST["menu_time_check"]; 
+		$menu_time_check = stripslashes($menu_time_check);
+	}
+
+	$call_time_id = NULL; if (isset($_POST["call_time_id"])) { 
+		$call_time_id = $_POST["call_time_id"]; 
+		$call_time_id = stripslashes($call_time_id);
+	}
+
+	$track_in_vdac = NULL; if (isset($_POST["track_in_vdac"])) { 
+		$track_in_vdac = $_POST["track_in_vdac"]; 
+		$track_in_vdac = stripslashes($track_in_vdac);
+	}
+
+	$tracking_group = NULL; if (isset($_POST["tracking_group"])) { 
+		$tracking_group = $_POST["tracking_group"]; 
+		$tracking_group = stripslashes($tracking_group);
+	}
+
+	$user_group = NULL; if (isset($_POST["user_group"])) { 
+		$user_group = $_POST["user_group"]; 
+		$user_group = stripslashes($user_group);
 	}	
     
 	$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -263,12 +288,19 @@ if ($ivr != NULL) {
     $postfields["goAction"] = "goEditIVR"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; #json (required)
     $postfields["menu_id"] = $ivr; 
-	$postfields["menu_name"] = $name; 
+	$postfields["menu_name"] = $menu_name; 
 	$postfields["menu_prompt"] = $menu_prompt; 
 	$postfields["menu_timeout"] = $menu_timeout; 
 	$postfields["menu_timeout_prompt"] = $menu_timeout_prompt; 
 	$postfields["menu_invalid_prompt"] = $menu_invalid_prompt; 
 	$postfields["menu_repeat"] = $menu_repeat; 
+
+	$postfields["menu_time_check"] = $menu_time_check; 
+	$postfields["call_time_id"] = $call_time_id; 
+	$postfields["track_in_vdac"] = $track_in_vdac; 
+	$postfields["tracking_group"] = $tracking_group; 
+	$postfields["user_group"] = $user_group; 
+
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

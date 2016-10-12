@@ -100,7 +100,7 @@
 								<a href="#T_ingroup" aria-controls="T_ingroup" role="tab" data-toggle="tab" class="bb0">
 								    In-Groups</a>
 							 </li>
-						<!-- IVR panel tab 
+						<!-- IVR panel tab -->
 							 <li role="presentation">
 								<a href="#T_ivr" aria-controls="T_ivr" role="tab" data-toggle="tab" class="bb0">
 								    Interactive Voice Response (IVR) Menus </a>
@@ -158,7 +158,7 @@
 								</table>
 							</div>
 							
-							<!--==== IVR ====--
+							<!--==== IVR ====-->
 							<div id="T_ivr" role="tabpanel" class="tab-pane">
 								<table class="table table-striped table-bordered table-hover" id="table_ivr">
 								   <thead>
@@ -173,7 +173,6 @@
 								   </thead>
 								   <tbody>
 									   	<?php
-									   	/*
 									   		for($i=0;$i < count($ivr->menu_id);$i++){
 
 											$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i], $ivr->menu_name[$i]);
@@ -189,7 +188,6 @@
 											</tr>
 										<?php
 											}
-										*/
 										?>
 								   </tbody>
 								</table>
@@ -284,6 +282,7 @@
 	$ivr = $ui->API_getIVR();
 	$scripts = $ui->API_goGetAllScripts();
 	$voicefiles = $ui->API_GetVoiceFilesList();
+	$calltimes = $ui->getCalltimes();
 ?>
 
 
@@ -330,20 +329,6 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label" for="user_group">User Group</label>
-								<div class="col-sm-9 mb">
-									<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
-										<?php
-											for($i=0;$i<count($user_groups->user_group);$i++){
-										?>
-											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
-										<?php
-											}
-										?>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
 								<label class="col-sm-3 control-label" for="active">Active</label>
 								<div class="col-sm-9 mb">
 									<select name="active" id="active" class="form-control">
@@ -356,6 +341,20 @@
 								<label class="col-sm-3 control-label" for="web_form">Web Form</label>
 								<div class="col-sm-9 mb">
 									<input type="url" name="web_form" id="web_form" class="form-control" placeholder="Place a valid URL here... ">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="user_group">User Group</label>
+								<div class="col-sm-9 mb">
+									<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
+										<?php
+											for($i=0;$i<count($user_groups->user_group);$i++){
+										?>
+											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
+										<?php
+											}
+										?>
+									</select>
 								</div>
 							</div>
 						</fieldset>
@@ -454,7 +453,7 @@
 	
 	<!-- ADD IVR MODAL -->
 		<div class="modal fade" id="add_ivr" aria-labelledby="ivr_modal" >
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="ivr_modal">
@@ -463,7 +462,7 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
-				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				<div class="modal-body wizard-content">
 				
 				<form action="AddTelephonyIVR.php" method="POST" id="create_ivr" role="form">
 					<div class="row">
@@ -542,52 +541,47 @@
 							<div class="form-group">		
 								<label class="col-sm-4 control-label" for="menu_repeat">Menu Repeat</label>
 								<div class="col-sm-8 mb">
-									<input type="number" name="menu_repeat" id="menu_repeat" class="form-control" value="1" min="0" required>
+									<input type="number" name="menu_repeat" id="menu_repeat" class="form-control" value="2" min="0" required>
 								</div>
 							</div>
 							
-							<div class="form-group">		
+							<div class="form-group" style="display:none;">		
 								<label class="col-sm-4 control-label" for="menu_time_check">Menu Time Check</label>
 								<div class="col-sm-8 mb">
 									<select name="menu_time_check" id="menu_time_check" class="form-control">
-										<option value="ADMIN" > Select Menu Time Check </option>		
+										<option value="0" > NO </option>
+										<option value="1" > YES </option>		
 									</select>
 								</div>
 							</div>
 							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="call_time">Call Time</label>
+								<label class="col-sm-4 control-label" for="call_time_id">Call Time: </label>
 								<div class="col-sm-8 mb">
-									<select name="call_time" id="call_time" class="form-control">
-										<option value="ADMIN" > Select Call Time </option>		
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label" for="user_groups">User Groups</label>
-								<div class="col-sm-8 mb">
-									<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
+									<select name="call_time_id" id="call_time_id" class="form-control select2-1" style="width:100%;">
 										<?php
-											for($i=0;$i<count($user_groups->user_group);$i++){
+											for($x=0; $x<count($calltimes->call_time_id);$x++){
 										?>
-											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
+												<option value="<?php echo $calltimes->call_time_id[$x];?>"> <?php echo $calltimes->call_time_id[$x].' - '.$calltimes->call_time_name[$x]; ?> </option>
 										<?php
 											}
-										?>		
+										?>
 									</select>
 								</div>
 							</div>
-							<div class="form-group">		
-								<label class="col-sm-5 control-label" for="menu_repeat">Track call in realtime report</label>
-								<div class="col-sm-7 mb"> 
-									<select name="call_time" id="call_time" class="form-control">
-										<option value="ADMIN" > Select Track Call </option>		
+							<div class="form-group" style="display:none;">		
+								<label class="col-sm-4 control-label" for="track_in_vdac">Track call in realtime report: </label>
+								<div class="col-sm-8 mb"> 
+									<select name="track_in_vdac" id="track_in_vdac" class="form-control">
+										<option value="0" >0 - No Realtime Tracking</option>
+										<option value="1" selected>1 - Realtime Tracking</option>
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-5 control-label" for="tracking_group">Tracking Group</label>
-								<div class="col-sm-7 mb">
+								<label class="col-sm-4 control-label" for="tracking_group">Tracking Group</label>
+								<div class="col-sm-8 mb">
 									<select name="tracking_group" id="tracking_group" class="form-control select2-1" style="width:100%;">
+										<option value="CALLMENU">CALLMENU - Default</option>
 									<?php
 										for($i=0;$i<count($ingroups->group_id);$i++){
 									?>
@@ -600,7 +594,21 @@
 									</select>
 								</div>
 							</div>
-							
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="user_groups">User Groups</label>
+								<div class="col-sm-8 mb">
+									<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
+											<option value="---ALL---"> - - - ALL USER GROUPS - - - </option>
+										<?php
+											for($i=0;$i<count($user_groups->user_group);$i++){
+										?>
+											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
+										<?php
+											}
+										?>		
+									</select>
+								</div>
+							</div>
 						</fieldset>
 
 				<!-- STEP 2 -->
@@ -609,38 +617,91 @@
 	                       <small>Assign then Enter Account and Login Details</small>
 	                    </h4>
 	                    <fieldset>
-							<div class="form-group">
-								<div class="col-lg-12">
-									<div class="pull-right">
-										<button type="button" class="btn btn-primary add-option">Add Option</button>
-									</div>
+							
+							<div class="form-group mt">
+								<div class="col-sm-12">
+									<center><label class=" control-label">Default Call Menu Entry</label></center>
 								</div>
 							</div>
-							<div class="form-group to-clone-opt">
-								<label class="col-sm-3 control-label" for="">Default Call Menu Entry:</label>
+							<div class="form-group mb">	
 								<div class="col-lg-2">
 									Option:
-									<select class="form-control">
+									<select class="form-control" disabled>
 										<option selected>TIMEOUT</option>
 									</select>
 								</div>
-								<div class="col-lg-2">
+								<div class="col-lg-7">
 									Desription: 
-									<input type="text" name="" id="" class="form-control" placeholder="Description" required value="Hangup">
+									<input type="text" name="" id="" class="form-control" placeholder="Description" required value="Hangup" disabled>
 								</div>
-								<div class="col-lg-2">
+								<div class="col-lg-3">
 									Route:
-									<select class="form-control">
+									<select class="form-control" disabled>
 										<option selected>Hangup</option>
 									</select>
 								</div>
-								<div class="col-lg-2">
-									Audio File:
-									<input type="text" name="" id="" class="form-control" placeholder="Description" required value="vm-goodbye">
+								<div class="col-lg-1">&nbsp;
 								</div>
-								<div class="col-lg-1 btn-remove"></div>
 							</div>
-							<div class="cloning-area"></div>
+							<div class="form-group">
+								<div class="col-lg-12 mt">
+									Audio File:
+									<input type="text" name="" id="" class="form-control" placeholder="Description" required value="vm-goodbye" disabled>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-lg-4"><hr/></div>
+								<div class="col-lg-4 mt mb">
+									<center><strong>Add New Call Menu Options</strong></center>
+								</div>
+								<div class="col-lg-4"><hr/></div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-lg-12">
+									<div class="col-lg-2">
+										Option:
+										<select class="form-control">
+											<option selected></option>
+											<?php
+												for($i=0; $i <= 9; $i++){
+													echo '<option value="'.$i.'">'.$i.'</option>';
+												}
+											?>
+											<option value="#">#</option>
+											<option value="*">*</option>
+											<option value="TIMECHECK">TIMECHECK</option>
+											<option value="INVALID">INVALID</option>
+										</select>
+									</div>
+									<div class="col-lg-6">
+										Desription: 
+										<input type="text" name="" id="" class="form-control" placeholder="Description">
+									</div>
+									<div class="col-lg-3">
+										Route:
+										<select class="form-control">
+											<option selected></option>
+											<option value="CALLMENU">Call Menu / IVR</option>
+											<option value="IN_GROUP">In-group</option>
+											<option value="DID">DID</option>
+											<option value="HANGUP">Hangup</option>
+											<option value="EXTEN">Custom Extension</option>
+											<option value="PHONE">Phone</option>
+											<option value="VOICEMAIL">Voicemail</option>
+											<option value="AGI">AGI</option>
+										</select>
+									</div>
+									<div class="col-lg-1 btn-remove"></div>
+								</div>
+								<!--
+								<div class="col-lg-12">
+									Audio File:
+									<input type="text" name="" id="" class="form-control" placeholder="Audio File" required>
+								</div>-->
+							</div>
+							
 						</fieldset>
 					</div><!-- End of Step -->
 				
@@ -1115,11 +1176,25 @@
 			        	/*********
 						** ADD EVENT 
 						*********/
-				            
-						sweetAlert("Oops...", "NO ADD FUNCTION YET. Sorry for the inconvenience, but this function is still under construction", "error");
+				            // Submit form via ajax
+					            $.ajax({
+									url: "./php/AddIVR.php",
+									type: 'POST',
+									data: $("#create_ivr").serialize(),
+									success: function(data) {
+									  // console.log(data);
+								  		$('#finish').text("Submit");
+										$('#finish').attr("disabled", false);
 
-						$('#finish').text("Submit");
-						$('#finish').attr("disabled", false);
+										  if(data == "success"){
+												swal("Success!", "Ingroup Successfully Created!", "success");
+										  		window.setTimeout(function(){location.reload()},1000);
+										  }
+										  else{
+											  sweetAlert("Oops...", "Something went wrong! "+data, "error");
+										  }
+									}
+								});
 							
 			        }
 			    }); // end of wizard

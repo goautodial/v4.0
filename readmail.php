@@ -57,7 +57,7 @@ if (isset($folder) && isset($messageid)) {
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Creamy</title>
+    <title>Read Message</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="./css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -166,7 +166,6 @@ if (isset($folder) && isset($messageid)) {
           </div><!-- /.row -->
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
-	  <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
       <?php print $ui->creamyFooter(); ?>
     </div><!-- ./wrapper -->
 	<script type="text/javascript">

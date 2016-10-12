@@ -95,7 +95,8 @@ $user_groups = $ui->API_goGetUserGroupsList();
 					$userobj = NULL;
 					$errormessage = NULL;
 
-					$output = $ui->goGetUserInfo($userid, $userrole);
+					$output = $ui->goGetUserInfo($userid, "user_id", "userInfo");
+					//var_dump($userid);
 					//var_dump($output);
 
 						if(isset($userid)) {
