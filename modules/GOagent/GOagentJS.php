@@ -1544,7 +1544,7 @@ $(document).ready(function() {
     });
     
     // Hijack links on left menu
-    $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail)").on('click', hijackThisLink);
+    $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail|readmail)").on('click', hijackThisLink);
     
     $("#submitCBDate").click(function() {
         CallBackDateSubmit();
@@ -1658,7 +1658,7 @@ function hijackThisLink(e) {
     
     $(".content-heading ol").empty();
     $(".content-heading ol").html(breadCrumb);
-    $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail)").off('click', hijackThisLink).on('click', hijackThisLink);
+    $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail|readmail)").off('click', hijackThisLink).on('click', hijackThisLink);
     
     if (origHash !== hash && hash != 'contacts') {
         $(".preloader").fadeOut('slow');
@@ -3943,7 +3943,7 @@ function CallBacksCountCheck() {
                 }
             }
             
-            $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail)").off('click', hijackThisLink).on('click', hijackThisLink);
+            $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail|readmail)").off('click', hijackThisLink).on('click', hijackThisLink);
         }
     });
 }
