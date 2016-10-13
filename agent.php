@@ -1844,7 +1844,7 @@ if (isset($_GET["message"])) {
 						});
 						
 						// Hijack links on left menu
-						$("a:regex(href, messages)").on('click', hijackThisLink);
+						$("a:regex(href, messages|composemail)").on('click', hijackThisLink);
 					}
 				});
 			}
