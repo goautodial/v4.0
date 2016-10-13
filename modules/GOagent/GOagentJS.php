@@ -25,19 +25,19 @@ $FILE_TIME = date("Ymd-His");
 //ini_set('display_errors', 'on');
 //error_reporting(E_ALL);
 
-$result = get_user_info($_SESSION['user']);
-$default_settings = $result->default_settings;
-$agent = $result->user_info;
-$phone = $result->phone_info;
-$system = $result->system_info;
-$country_codes = $result->country_codes;
-if (isset($result->camp_info)) {
-    $camp_info = $result->camp_info;
-}
-
-$_SESSION['is_logged_in'] = $result->is_logged_in;
-
 if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
+    $result = get_user_info($_SESSION['user']);
+    $default_settings = $result->default_settings;
+    $agent = $result->user_info;
+    $phone = $result->phone_info;
+    $system = $result->system_info;
+    $country_codes = $result->country_codes;
+    if (isset($result->camp_info)) {
+        $camp_info = $result->camp_info;
+    }
+    
+    $_SESSION['is_logged_in'] = $result->is_logged_in;
+    
     header('Content-Type: text/javascript');
 
     echo "// Session Variables\n";
@@ -5394,7 +5394,9 @@ function CustomerData_update() {
                     }
                     break;
                 case "multi":
-                    postData[thisID] = thisVal.join(',');
+                    if (thisVal !== null) {
+                        postData[thisID] = thisVal.join(',');
+                    }
                     break;
                 case "area":
                     thisVal = thisVal.replace(REGcommentsAMP, "--AMP--");
@@ -6841,7 +6843,7 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 postData['goAutoDialLevel'] = auto_dial_level;
                 postData['goCampaign'] = XFER_Group;
                 postData['goFilename'] = taskdebugnote;
-                postData['goAgentChannel'] = agentchanel;
+                postData['goAgentChannel'] = agentchannel;
                 postData['goSessionID'] = session_id;
                 postData['goProtocol'] = protocol;
                 postData['goExtension'] = extension;
@@ -8379,6 +8381,19 @@ String.prototype.toUpperFirst = function() {
                 $list_id = $_REQUEST['list_id'];
                 $result = $ui->API_goGetAllCustomFields($list_id);
                 $result = json_encode($result);
+                break;
+            case "UpdateMessages":
+                $user = \creamy\CreamyUser::currentUser();
+                $folder = $_REQUEST['folder'];
+                $user_id = $_REQUEST['user_id'];
+                $updates = array(
+                    'result' => 'success',
+                    'folders' => $ui->getMessageFoldersAsList($folder),
+                    'controls' => $ui->getMailboxButtons($folder, true, false),
+                    'messages' => $ui->getMessagesFromFolderAsTable($user_id, $folder),
+                    'topbar' => $ui->getTopbarMessagesMenu($user)
+                );
+                $result = json_encode($updates, JSON_UNESCAPED_SLASHES);
                 break;
         }
         print($result);

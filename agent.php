@@ -816,8 +816,8 @@ if (isset($_GET["message"])) {
 									<div class="box-header with-border">
 										<h3 class="box-title"><?php print $lh->translationFor("folders"); ?></h3>
 									</div>
-									<div class="box-body no-padding">
-										<?php print $ui->getMessageFoldersAsList($folder, false); ?>
+									<div id="folders-list" class="box-body no-padding">
+										<?php print $ui->getMessageFoldersAsList($folder); ?>
 									</div><!-- /.box-body -->
 								</div><!-- /. box -->
 							</div><!-- /.col -->
@@ -830,7 +830,7 @@ if (isset($_GET["message"])) {
 									</div><!-- /.box-header -->
 									<div class="box-body no-padding">
 										<div class="mailbox-controls">
-											<?php print $ui->getMailboxButtons($folder, false); ?>
+											<?php print $ui->getMailboxButtons($folder); ?>
 										</div>
 										<div class="table-responsive mailbox-messages">
 											<?php print $ui->getMessagesFromFolderAsTable($user->getUserId(), $folder); ?>
@@ -838,10 +838,7 @@ if (isset($_GET["message"])) {
 									</div><!-- /.box-body -->
 									<div class="box-footer no-padding">
 										<div class="mailbox-controls">
-											<div id="messages-message-box">
-												<?php if (!empty($message)) { print $ui->calloutInfoMessage($message); } ?>
-											</div>
-											<?php print $ui->getMailboxButtons($folder, false); ?>
+											<?php print $ui->getMailboxButtons($folder); ?>
 										</div>
 									</div>
 								</div><!-- /. box -->
@@ -1545,11 +1542,11 @@ if (isset($_GET["message"])) {
 		<script src="adminlte/js/app.min.js"></script>
 		
 		<script type="text/javascript">
+			var folder = <?php print $folder; ?>;
+			var selectedAll = false;
+			var selectedMessages = [];
+			
 			$(document).ready(function() {
-			 	var folder = <?php print $folder; ?>;
-			 	var selectedAll = false;
-			 	var selectedMessages = [];
-				
 			    //iCheck for checkbox and radio inputs
 		        $('input[type="checkbox"].message-selection-checkbox').iCheck({
 					checkboxClass: 'icheckbox_minimal-blue',
@@ -1557,15 +1554,10 @@ if (isset($_GET["message"])) {
 		        });
 		        
 			    // check individual message
-				$('input[type=checkbox].message-selection-checkbox').on("ifUnchecked", function(e) {
-					var index = selectedMessages.indexOf(e.currentTarget.value);
-					if (index >= 0) selectedMessages.splice(index, 1);
-				});
+				$('input[type=checkbox].message-selection-checkbox').on("ifUnchecked", ifUnchecked);
 			    
 			    // uncheck individual message
-				$('input[type=checkbox].message-selection-checkbox').on("ifChecked", function(e) {
-					if (e.currentTarget.value != 'on') selectedMessages.push(e.currentTarget.value);
-				});
+				$('input[type=checkbox].message-selection-checkbox').on("ifChecked", ifChecked);
 
 			    // uncheck/check all messages
 				$(".checkbox-toggle").click(function() {
@@ -1607,6 +1599,12 @@ if (isset($_GET["message"])) {
 						}
 					});
 			    });
+				
+				$("li a[href^='messages.php?']").click(function(e) {
+					var thisFolder = e.target.search.replace("?", "");
+					thisFolder = thisFolder.split("=");
+					updateMessages(<?=$user->getUserId()?>, thisFolder[1], true);
+				});
 			
 			    <?php
 			    // mark messages as favorite.
@@ -1625,7 +1623,7 @@ if (isset($_GET["message"])) {
 				print $ui->mailboxAction(
 					"messages-mark-as-read", 												// classname
 					"php/MarkMessagesAsRead.php", 											// php to request
-					'for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").removeClass("unread"); }', 												// success js
+					'updateMessages('.$user->getUserId().', '.$folder.'); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").removeClass("unread"); }', 												// success js
 					$ui->fadingInMessageJS($unableReadCode, "messages-message-box")); 		// failure js
 				?>
 				
@@ -1635,7 +1633,7 @@ if (isset($_GET["message"])) {
 				print $ui->mailboxAction(
 					"messages-mark-as-unread", 												// classname
 					"php/MarkMessagesAsUnread.php", 										// php to request
-					'for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").addClass("unread"); }', 												// success js
+					'updateMessages('.$user->getUserId().', '.$folder.'); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").addClass("unread"); }', // success js
 					$ui->fadingInMessageJS($unableUnreadCode, "messages-message-box")); 	// failure js
 				?>
 				
@@ -1748,7 +1746,116 @@ if (isset($_GET["message"])) {
 					var thisVal = $(this).val();
 					$(this).parents('.label-floating').toggleClass('focused', (thisVal.length > 0));
 				});
-			});	
+			});
+			
+			function updateMessages(user_id, folder, controls) {
+				if (typeof controls === 'undefined') {
+					controls = false;
+				}
+				
+				var postData = {
+					module_name: 'GOagent',
+					action: 'UpdateMessages',
+					user_id: user_id,
+					folder: folder
+				};
+				$.ajax({
+					type: 'POST',
+					url: 'modules/GOagent/GOagentJS.php',
+					processData: true,
+					data: postData,
+					dataType: "json",
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
+				})
+				.done(function (result) {
+					if (result.result == 'success') {
+						if (controls) {
+							$("div.mailbox-controls").html(result.controls);
+						} else {
+							selectedAll = !selectedAll;
+						}
+						$("#folders-list").html(result.folders);
+						var thisTopBar = result.topbar;
+						$("li.messages-menu").html($(thisTopBar).html());
+						$("li.messages-menu ul.menu").slimScroll({
+							height: '200px'
+						});
+						$("div.mailbox-messages").html(result.messages);
+						
+						//iCheck for checkbox and radio inputs
+						$('input[type="checkbox"].message-selection-checkbox').iCheck({
+							checkboxClass: 'icheckbox_minimal-blue',
+							radioClass: 'iradio_minimal-blue'
+						});
+						
+						// check individual message
+						$('input[type=checkbox].message-selection-checkbox').off("ifUnchecked", ifUnchecked).on("ifUnchecked", ifUnchecked);
+						
+						// uncheck individual message
+						$('input[type=checkbox].message-selection-checkbox').off("ifChecked", ifChecked).on("ifChecked", ifChecked);
+						
+						// uncheck/check all messages
+						$(".checkbox-toggle").click(function() {
+							if (selectedAll) { $("input[type='checkbox'].message-selection-checkbox", ".mailbox").iCheck("uncheck"); }
+							else { $("input[type='checkbox'].message-selection-checkbox", ".mailbox").iCheck("check"); }
+							selectedAll = !selectedAll;
+						});
+						
+						// next button for table.
+						$(".mailbox-next").click(function() { datatable.fnPageChange('next'); });
+						
+						// previous button for table
+						$(".mailbox-prev").click(function() { datatable.fnPageChange('previous'); });
+						
+						// de-star a starred video / star a de-stared video.
+						$("td .fa-star, td .fa-star-o").click(function(e) {
+							e.preventDefault();
+							
+							// Detect type: e.currentTarget.id contains the message id.
+							var starred = $(this).hasClass("fa-star");
+							var favorite = 1;
+							var selectedItem = this;
+							
+							if (starred) { // unmark message as favorite
+								favorite = 0;   
+							} // else mark message as favorite
+							
+							$("#messages-message-box").hide();
+							$.post("./php/MarkMessagesAsFavorite.php", { "favorite": favorite, "messageids": [e.currentTarget.id], "folder": folder }, function(data) {
+								if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
+									// toggle visual change.
+									$(selectedItem).toggleClass("fa-star");
+									$(selectedItem).toggleClass("fa-star-o");
+								} else {
+									<?php
+										$msg = $ui->calloutErrorMessage($lh->translationFor("message")); 
+										print $ui->fadingInMessageJS($msg, "messages-message-box");
+									?>
+								}
+							});
+						});
+				
+						$("li a[href^='messages.php?']").click(function(e) {
+							var thisFolder = e.target.search.replace("?", "");
+							thisFolder = thisFolder.split("=");
+							updateMessages(<?=$user->getUserId()?>, thisFolder[1], true);
+						});
+						
+						// Hijack links on left menu
+						$("a:regex(href, messages)").on('click', hijackThisLink);
+					}
+				});
+			}
+			
+			function ifUnchecked(e) {
+				var index = selectedMessages.indexOf(e.currentTarget.value);
+				if (index >= 0) selectedMessages.splice(index, 1);
+			}
+			function ifChecked(e) {
+				if (e.currentTarget.value != 'on') selectedMessages.push(e.currentTarget.value);
+			}
 		</script>
 		<!-- SnackbarJS -->
         <script src="js/snackbar.js" type="text/javascript"></script>

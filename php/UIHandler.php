@@ -1691,33 +1691,33 @@ error_reporting(E_ERROR | E_PARSE);
 	 * Generates the HTML for the message notifications of a user as a dropdown list element to include in the top bar.
 	 * @param $userid the id of the user.
 	 */
-	protected function getTopbarMessagesMenu($user) {
+	public function getTopbarMessagesMenu($user) {
 		if (!$user->userHasBasicPermission()) return '';
-        $list = $this->db->getMessagesOfType($user->getUserId(), MESSAGES_GET_UNREAD_MESSAGES);
+      $list = $this->db->getMessagesOfType($user->getUserId(), MESSAGES_GET_UNREAD_MESSAGES);
 		$numMessages = count($list);
 
 		$headerText = $this->lh->translationFor("you_have").' '.$numMessages.' '.$this->lh->translationFor("unread_messages");
 		$result = $this->getTopbarMenuHeader("envelope-o", $numMessages, CRM_UI_TOPBAR_MENU_STYLE_COMPLEX, $headerText, null, CRM_UI_STYLE_SUCCESS, false);
 
-        foreach ($list as $message) {
-	    $from = $this->db->getDataForUser($message['user_from']);
+      foreach ($list as $message) {
+			$from = $this->db->getDataForUser($message['user_from']);
 			//if (empty($message["remote_user"])) $remoteuser = $this->lh->translationFor("unknown");
 			if (empty($from['user'])) {
-			    $remoteuser = $this->lh->translationFor("unknown");
+			   $remoteuser = $this->lh->translationFor("unknown");
 			}else{
-			    //$remoteuser = $message["remote_user"];
-			    $remoteuser = $from['user'];
+			   //$remoteuser = $message["remote_user"];
+			   $remoteuser = $from['user'];
 			}
 
-	        if (empty($message["remote_avatar"])) {
-		    $remoteavatar = CRM_DEFAULTS_USER_AVATAR;
-		}else {
-		    $remoteavatar = $message["remote_avatar"];
-	        }
-	        $result .= $this->getTopbarComplexElement($remoteuser, $message["message"], $message["date"], $remoteavatar, "messages.php");
-        }
-        $result .= $this->getTopbarMenuFooter($this->lh->translationFor("see_all_messages"), "messages.php");
-        return $result;
+	      if (empty($message["remote_avatar"])) {
+				$remoteavatar = CRM_DEFAULTS_USER_AVATAR;
+			} else {
+				$remoteavatar = $message["remote_avatar"];
+	      }
+	      $result .= $this->getTopbarComplexElement($remoteuser, $message["message"], $message["date"], $remoteavatar, "messages.php");
+      }
+		$result .= $this->getTopbarMenuFooter($this->lh->translationFor("see_all_messages"), "messages.php");
+		return $result;
 	}
 
 	/**
@@ -2472,7 +2472,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$table .= '<td class="mailbox-name" style="width: 20%; white-space: nowrap;">'.$messageLink.(isset($from_user) ? $from_user: $this->lh->translationFor("unknown")).'</a></td>';
 			$table .= '<td class="mailbox-subject">'.$message["subject"].'</td>';
 			$table .= '<td class="mailbox-attachment" style="width: 5%; text-align: center;">'.$showPaperClip.'</td>'; //<i class="fa fa-paperclip"></i></td>';
-			$table .= '<td class="mailbox-date" style="width: 15%; white-space: nowrap; text-align: right;">'.$this->relativeTime($message["date"]).'</td>';
+			$table .= '<td class="mailbox-date" style="width: 15%; white-space: nowrap; text-align: right; padding-right: 20px;">'.$this->relativeTime($message["date"]).'</td>';
 			$table .= '</tr>';
 		}
 		$table .= $this->generateTableFooterWithItems($columns, true, true);
@@ -2515,7 +2515,7 @@ error_reporting(E_ERROR | E_PARSE);
 	/**
 	 * Generates the button group for the mailbox messages table
 	 */
-	public function getMailboxButtons($folder, $canDelete = true) {
+	public function getMailboxButtons($folder, $canDelete = true, $showModuleButtons = true) {
 		// send to trash or recover from trash ?
 		if ($folder == MESSAGES_GET_DELETED_MESSAGES) {
 			$trashOrRecover = '<button class="btn btn-default btn-sm messages-restore-message"><i class="fa fa-undo"></i></button>';
@@ -2534,8 +2534,10 @@ error_reporting(E_ERROR | E_PARSE);
 			  <button class="btn btn-default btn-sm messages-delete-permanently"><i class="fa fa-times"></i></button>';
 		}
 		// module buttons
-		$mh = \creamy\ModuleHandler::getInstance();
-		$buttons .= $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_MESSAGE_LIST_FOOTER, array("folder" => $folder), CRM_MODULE_MERGING_STRATEGY_APPEND);
+		if ($showModuleButtons) {
+			$mh = \creamy\ModuleHandler::getInstance();
+			$buttons .= $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_MESSAGE_LIST_FOOTER, array("folder" => $folder), CRM_MODULE_MERGING_STRATEGY_APPEND);
+		}
 		// chevrons
 		$buttons .= '</div><div class="pull-right"><div class="btn-group">
 			<button class="btn btn-default btn-sm mailbox-prev"><i class="fa fa-chevron-left"></i></button>
