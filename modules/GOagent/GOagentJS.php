@@ -7009,23 +7009,21 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 }
             })
             .done(function (result) {
-                var XfeRRedirecToutput = null;
-                XfeRRedirecToutput = result;
-                var XfeRRedirecToutput_array = XfeRRedirecToutput.split("|");
-                var XFRDop = XfeRRedirecToutput_array[0];
-                if (XFRDop == "NeWSessioN") {
-                    threeway_end = 1;
-                    $("#callchannel").html('');
-                    $("#callserverip").val('');
-                    DialedCallHangup();
-
-                    $("#xferchannel").val('');
-                    XFerCallHangup();
-
-                    session_id = XfeRRedirecToutput_array[1];
-                    $("#sessionIDspan").html(session_id);
-
-            //		alert("session_id changed to: " + session_id);
+                if (result.result == 'success') {
+                    if (typeof result.new_session != 'undefined') {
+                        threeway_end = 1;
+                        $("#callchannel").html('');
+                        $("#callserverip").val('');
+                        DialedCallHangup();
+    
+                        $(".formXFER input[name='xferchannel']").val('');
+                        XFerCallHangup();
+    
+                        session_id = result.new_session;
+                        $("#sessionIDspan").html(session_id);
+    
+                		console.log("session_id changed to: " + session_id);
+                    }
                 }
             //	alert(xferredirect_query + "\n" + xmlhttpXF.responseText);
             //	document.getElementById("debugbottomspan").innerHTML = xferredirect_query + "\n" + xmlhttpXF.responseText;
@@ -7047,9 +7045,7 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                     }
                 })
                 .done(function (result) {
-                    Nactiveext = null;
-                    Nactiveext = xmlhttpXF2.responseText;
-                //	alert(RedirecTxFEr + "|" + xmlhttpXF2.responseText);
+                //	alert(RedirecTxFEr + "|" + result.message);
                 });
     
                 if ( (taskvar == 'XfeRLOCAL') || (taskvar == 'XfeRBLIND') || (taskvar == 'XfeRVMAIL') ) {
