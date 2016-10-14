@@ -679,16 +679,27 @@ EOF;
 									<input id="consultativexfer" name="consultativexfer" value="1" type="checkbox" onchange="$('#xferoverride').prop('checked', this.checked);"/>
 									<label for="consultativexfer" class="label-primary"></label>
 								</div>
-								<div><b>CONSULTATIVE</b></div>
+								<div style="opacity: .5;"><b>CONSULTATIVE</b></div>
 								<input type="checkbox" name="xferoverride" id="xferoverride" value="0" class="hidden">
 							</div>
 							<div class="col-md-2" style="text-align: center;"><button class="btn btn-default btn-sm" style="margin-bottom: 2px;" onclick="DTMF_Preset_a();">D1</button><br><button class="btn btn-default btn-sm" onclick="DTMF_Preset_b();">D2</button></div>
 						</div>
 						<div class="row">
-							<div class="col-md-10">
+							<div class="col-md-9">
 								<div class="mda-form-group label-floating">
 									<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" id="xfernumber" name="xfernumber">
 									<label for="xfernumber">NUMBER TO DIAL</label>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="mda-form-group label-floating">
+								  <div class="input-group" style="margin-top: -18px;">
+									<input type="text" id="xferdtmf" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" style="margin-top: 18px;">
+									<label for="xferdtmf">SEND DTMF</label>
+									<span class="input-group-btn" style="padding-top: 18px;">
+										<button class="btn btn-primary btn-sm" type="button" onclick="sendXFERdtmf();">SEND</button>
+									</span>
+								  </div>
 								</div>
 							</div>
 						</div>

@@ -7061,6 +7061,43 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
     }
 }
 
+function sendXFERdtmf() {
+    // For DTMF
+    var xferDTMF = $("#xferdtmf").val();
+    console.log('DTMF: '+xferDTMF);
+    var dtmferror = 1;
+    
+    if (live_customer_call > 0 || XD_live_customer_call > 0) {
+        if ($.isNumeric(xferDTMF)) {
+            xferDTMF = parseInt(xferDTMF);
+            if (xferDTMF.between(0, 9, true)) {
+                var options = {
+                    'duration': 160,
+                    'eventHandlers': {
+                        'succeeded': function(originator, response) {
+                            console.log('DTMF succeeded', originator, response);
+                        },
+                        'failed': function(originator, response, cause) {
+                            console.log('DTMF failed', originator, response, cause);
+                        },
+                    }
+                };
+                
+                globalSession.sendDTMF(xferDTMF, options);
+                dtmferror = 0;
+            }
+        }
+        
+        if (dtmferror > 0) {
+            swal({
+                title: '<?=$lh->translationFor('error')?>',
+                text: '<?=$lh->translationFor('please_enter_a_valid_dtmf_number')?>',
+                type: 'error'
+            });
+        }
+    }
+}
+
 function GetCustomFields(listid, show, getData) {
     if (typeof show === 'undefined') {
         show = false;
@@ -8355,6 +8392,13 @@ function phone_number_format(formatphone) {
 
 String.prototype.toUpperFirst = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+Number.prototype.between = function (a, b, inclusive) {
+    var min = Math.min(a, b),
+        max = Math.max(a, b);
+
+    return inclusive ? this >= min && this <= max : this > min && this < max;
 }
 <?php
 } else {
