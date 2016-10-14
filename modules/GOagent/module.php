@@ -679,7 +679,7 @@ EOF;
 									<input id="consultativexfer" name="consultativexfer" value="1" type="checkbox" onchange="$('#xferoverride').prop('checked', this.checked);"/>
 									<label for="consultativexfer" class="label-primary"></label>
 								</div>
-								<div style="opacity: .5;"><b>CONSULTATIVE</b></div>
+								<div><b style="opacity: .5;">CONSULTATIVE</b></div>
 								<input type="checkbox" name="xferoverride" id="xferoverride" value="0" class="hidden">
 							</div>
 							<div class="col-md-2" style="text-align: center;"><button class="btn btn-default btn-sm" style="margin-bottom: 2px;" onclick="DTMF_Preset_a();">D1</button><br><button class="btn btn-default btn-sm" onclick="DTMF_Preset_b();">D2</button></div>

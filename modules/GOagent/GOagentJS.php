@@ -2186,8 +2186,9 @@ function checkIfStillLoggedIn(logged_out) {
             }
         });
     } else {
-        if (!phoneRegistered && !logging_in) {
-            $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'ChecKLogiN'}, function(result) {
+        if (!logging_in) {
+            var update_login = (phoneRegistered) ? 1 : 0;
+            $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'ChecKLogiN', 'is_logged_in': update_login}, function(result) {
                 is_logged_in = parseInt(result);
             });
         }
@@ -4686,6 +4687,10 @@ function SendManualDial(taskFromConf) {
             else {var temp_dial_prefix = three_way_dial_prefix;}
             if (omit_phone_code == 'Y') {var temp_phone_code = '';}
             else {var temp_phone_code = $(".formMain input[name='phone_code']").val();}
+            
+            if (temp_dial_prefix === '' && dial_prefix !== '') {
+                temp_dial_prefix = dial_prefix;
+            }
 
             if (manual_string.length > 7)
                 {manual_string = temp_dial_prefix + "" + temp_phone_code + "" + manual_string;}
