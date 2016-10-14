@@ -1603,7 +1603,7 @@ if (isset($_GET["message"])) {
 				$("li a[href^='messages.php?']").click(function(e) {
 					var thisFolder = e.target.search.replace("?", "");
 					thisFolder = thisFolder.split("=");
-					updateMessages(<?=$user->getUserId()?>, thisFolder[1], true);
+					updateMessages(<?=$user->getUserId()?>, thisFolder[1]);
 				});
 			
 			    <?php
@@ -1776,6 +1776,11 @@ if (isset($_GET["message"])) {
 						} else {
 							selectedAll = !selectedAll;
 						}
+						
+						if (folders == 2) {
+							
+						}
+						
 						$("#folders-list").html(result.folders);
 						var thisTopBar = result.topbar;
 						$("li.messages-menu").html($(thisTopBar).html());
@@ -1795,13 +1800,6 @@ if (isset($_GET["message"])) {
 						
 						// uncheck individual message
 						$('input[type=checkbox].message-selection-checkbox').off("ifChecked", ifChecked).on("ifChecked", ifChecked);
-						
-						// uncheck/check all messages
-						$(".checkbox-toggle").click(function() {
-							if (selectedAll) { $("input[type='checkbox'].message-selection-checkbox", ".mailbox").iCheck("uncheck"); }
-							else { $("input[type='checkbox'].message-selection-checkbox", ".mailbox").iCheck("check"); }
-							selectedAll = !selectedAll;
-						});
 						
 						// next button for table.
 						$(".mailbox-next").click(function() { datatable.fnPageChange('next'); });
@@ -1840,7 +1838,7 @@ if (isset($_GET["message"])) {
 						$("li a[href^='messages.php?']").click(function(e) {
 							var thisFolder = e.target.search.replace("?", "");
 							thisFolder = thisFolder.split("=");
-							updateMessages(<?=$user->getUserId()?>, thisFolder[1], true);
+							updateMessages(<?=$user->getUserId()?>, thisFolder[1]);
 						});
 						
 						// Hijack links on left menu
