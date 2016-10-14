@@ -798,9 +798,9 @@ if($output->result == "success"){
 		      $.plot(chart, data, options);
 
 		  });
-
 	</script>
-		<?php
+	
+	<?php
 	}
 
 // SALES PER AGENT
@@ -815,7 +815,8 @@ if($output->result == "success"){
 						<table class="table table-striped table-bordered table-hover" id="outbound">
 							<thead>
 								<tr>
-						            <th nowrap> Agents Name </th>
+						            <th nowrap> Agent Name </th>
+									<th nowrap> Agent ID </th>
 						            <th nowrap> Sales Count </th>
 					            </tr>
 					        </thead>
@@ -823,9 +824,9 @@ if($output->result == "success"){
 					';
 
 				if($output->getReports->TOPsorted_output != NULL){
-					for($i=0; $i <= count($output->getReports->TOPsorted_output); $i++){
-				    	$outbound .= $output->getReports->TOPsorted_output[$i];
-				    }
+					//for($i=0; $i <= count($output->getReports->TOPsorted_output); $i++){
+				    	$outbound .= $output->getReports->TOPsorted_output;
+				   // }
 				}else{
 					$outbound .= "";
 				}
@@ -833,7 +834,7 @@ if($output->result == "success"){
 			    $outbound .= '</tbody>';
 
 			    if($output->getReports->TOPsorted_output != NULL){
-				   		$outbound .= '<tfoot><tr class="warning"><th nowrap> Total Agents: ';
+				   		$outbound .= '<tfoot><tr class="warning"><th nowrap colspan="2"> Total Agents: ';
 						    $outbound .= count($output->getReports->TOPsorted_output).'</th>';
 						    $outbound .= '<th nowrap>'.$output->getReports->TOToutbound.'</th>';
 						$outbound .= '</tr></tfoot>';
@@ -852,23 +853,30 @@ if($output->result == "success"){
 						<table class="table table-striped table-bordered table-hover" id="inbound">
 							<thead>
 								<tr>
-					            <th nowrap> Agents Name </th>
-					            <th nowrap> Agents ID </th>
+					            <th nowrap> Agent Name </th>
+					            <th nowrap> Agent ID </th>
 					            <th nowrap> Sales Count </th>
 				            </tr>
 				        </thead>
 				        <tbody>
 				';
 					if($output->getReports->BOTsorted_output != NULL){
-						for($i=0; $i <= count($output->getReports->BOTsorted_output); $i++){
-					    	$inbound .= $output->getReports->BOTsorted_output[$i];
-					    }
+						//for($i=0; $i <= count($output->getReports->BOTsorted_output); $i++){
+					    	$inbound .= $output->getReports->BOTsorted_output;
+					    //}
 					}else{
 						$inbound .= "";
 					}
 			   		
 			   		$inbound .= '</tbody>';
-
+					
+					if($output->getReports->BOTsorted_output != NULL){
+				   		$inbound .= '<tfoot><tr class="warning"><th nowrap colspan="2"> Total Agents: ';
+						    $inbound .= count($output->getReports->BOTsorted_output).'</th>';
+						    $inbound .= '<th nowrap>'.$output->getReports->TOTinbound.'</th>';
+						$inbound .= '</tr></tfoot>';
+					}
+					
 					$inbound .= '</table></div>';
 
 		    echo $inbound; // return for inbound
@@ -877,27 +885,11 @@ if($output->result == "success"){
 
 // SALES TRACKER
 	if($pageTitle == "sales_tracker"){
-		$sales_tracker = '
-		<div>
-			<div role="tabpanel">
-				<ul role="tablist" class="nav nav-tabs nav-justified">
-					<li role="presentation" class="active">
-						<a href="#outbound" aria-controls="outbound" role="tab" data-toggle="tab" class="bb0">
-						   Outbound </a>
-					</li>
-					<li role="presentation">
-						<a href="#inbound" aria-controls="inbound" role="tab" data-toggle="tab" class="bb0">
-						   Inbound </a>
-					</li>
-				</ul>
-
-				<div class="tab-content bg-white">
-					
-		';
-		
+		//var_dump($output->getReports);
+		if($_POST['request'] == "outbound"){
 		// Outbound table
 			$sales_tracker .= '
-			<div id="outbound" role="tabpanel" class="tab-pane table-responsive active">
+			<div class="table-responsive">
 				<legend><small><em class="fa fa-arrow-right"></em><i> OUTBOUND </i></small></legend>
 					<table class="table table-striped table-bordered table-hover" id="outbound_table">
 						<thead>
@@ -914,9 +906,17 @@ if($output->result == "success"){
 				        <tbody>
 				';
 
-			if($output->getReports->TOPsorted_output_outbound != NULL){
-				for($i=0; $i <= count($output->getReports->TOPsorted_output_outbound); $i++){
-			    	$sales_tracker .= $output->getReports->TOPsorted_output_outbound[$i];
+			if($output->getReports->outbound_result != NULL){
+				for($i=0; $i < count($output->getReports->phone_number); $i++){
+			    	$sales_tracker .= '<tr>
+							<td nowrap>'.$output->getReports->sale_num[$i].'</td>
+							<td nowrap>'.$output->getReports->call_date[$i].'</td>
+							<td nowrap>'.$output->getReports->agent[$i].'</td>
+							<td nowrap>'.$output->getReports->phone_number[$i].'</td>
+							<td nowrap>'.$output->getReports->first_name[$i].'</td>
+							<td nowrap>'.$output->getReports->last_name[$i].'</td>
+							<td nowrap><a href="#" data-toggle="modal" data-target="#modal_sale_num_'.$output->getReports->sale_num[$i].'" class="btn"><li class="fa fa-info-circle"></li></a></td>
+						</tr>';
 			    }
 			}else{
 				$sales_tracker .= "";
@@ -924,11 +924,14 @@ if($output->result == "success"){
 				
 		    $sales_tracker .= '</tbody>';
 
-			$sales_tracker .= '</table></div>'; 
-
+			$sales_tracker .= '</table></div>';
+			
+		}
+		
+		if($_POST['request'] == "inbound"){
 	    // inbound table
 		    $sales_tracker .= '
-		    <div id="inbound" role="tabpanel" class="tab-pane table-responsive">
+		    <div class="table-responsive">
 			    <legend><small><em class="fa fa-arrow-right"></em><i> INBOUND </i></small></legend>
 					<table class="table table-striped table-bordered table-hover" id="inbound_table">
 						<thead>
@@ -944,9 +947,17 @@ if($output->result == "success"){
 				        </thead>
 				        <tbody>
 			';
-				if($output->getReports->TOPsorted_output_inbound != NULL){
-					for($i=0; $i <= count($output->getReports->TOPsorted_output_inbound); $i++){
-				    	$sales_tracker .= $output->getReports->TOPsorted_output_inbound[$i];
+				if($output->getReports->inbound_result != NULL){
+					for($i=0; $i < count($output->getReports->phone_number); $i++){
+				    	$sales_tracker .= '<tr>
+							<td nowrap>'.$output->getReports->sale_num[$i].'</td>
+							<td nowrap>'.$output->getReports->call_date[$i].'</td>
+							<td nowrap>'.$output->getReports->agent[$i].'</td>
+							<td nowrap>'.$output->getReports->phone_number[$i].'</td>
+							<td nowrap>'.$output->getReports->first_name[$i].'</td>
+							<td nowrap>'.$output->getReports->last_name[$i].'</td>
+							<td nowrap><a href="#" data-toggle="modal" data-target="#modal_sale_num_'.$output->getReports->sale_num[$i].'" class="btn"><li class="fa fa-info-circle"></li></a></td>
+						</tr>';
 				    }
 				}else{
 					$sales_tracker .= "";
@@ -955,14 +966,17 @@ if($output->result == "success"){
 		   		$sales_tracker .= '</tbody>';
 
 				$sales_tracker .= '</table></div>';
-
-		$sales_tracker .= '</div></div></div>';
-
-	    echo $sales_tracker; // return for inbound
+				
+		}
+		
+	echo $sales_tracker; // return for inbound
+		
 	}
 
 // INBOUND CALL REPORT
 	if($pageTitle == "inbound_report"){
+		//var_dump($output);
+		
 		$inbound_report = "";
 
 		$inbound_report .= '
@@ -983,7 +997,7 @@ if($output->result == "success"){
 		';
 
 		if($output->getReports->TOPsorted_output != NULL){
-				for($i=0; $i <= count($output->getReports->TOPsorted_output); $i++){
+				for($i=0; $i < count($output->getReports->TOPsorted_output); $i++){
 			    	$inbound_report .= $output->getReports->TOPsorted_output[$i];
 			    }
 			}else{
@@ -1044,7 +1058,143 @@ if($output->result == "success"){
 	}
 
 	echo '</div>';
-
+	
+	if($pageTitle == "sales_tracker"){
+		if($output->getReports->inbound_result != NULL || $output->getReports->outbound_result != NULL){
+			
+			$modal_sales_tracker = "";
+			
+			for($i=0; $i < count($output->getReports->phone_number); $i++){
+				$sale_num = $output->getReports->sale_num[$i];
+				if($sale_num == NULL)
+					$sale_num = " - - - ";
+				$call_date = $output->getReports->call_date[$i];
+				if($call_date == NULL)
+					$call_date = " - - - ";
+				$agent = $output->getReports->agent[$i];
+				if($agent == NULL)
+					$agent = " - - - ";
+				$phone_number = $output->getReports->phone_number[$i];
+				if($phone_number == NULL)
+					$phone_number = " - - - ";
+				$full_name = $output->getReports->first_name[$i].' '.$output->getReports->last_name[$i];
+				if($full_name == NULL || $full_name == " ")
+					$full_name = " - - - ";
+				$address = $output->getReports->address[$i];
+				if($address == NULL)
+					$address = " - - - ";
+				$city = $output->getReports->city[$i];
+				if($city == NULL)
+					$city = " - - - ";
+				$state = $output->getReports->state[$i];
+				if($state == NULL)
+					$state = " - - - ";
+				$postal = $output->getReports->postal[$i];
+				if($postal == NULL)
+					$postal = " - - - ";
+				$email = $output->getReports->email[$i];
+				if($email == NULL)
+					$email = " - - - ";
+				$alt_phone = $output->getReports->alt_phone[$i];
+				if($alt_phone == NULL)
+					$alt_phone = " - - - ";
+				$comments = $output->getReports->comments[$i];
+				if($comments == NULL)
+					$comments = " - - - ";
+			### MODAL ###
+			$modal_sales_tracker .= '
+				<div class="modal fade" id="modal_sale_num_'.$output->getReports->sale_num[$i].'" >
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title animated bounceInRight"> 
+									<b>Customer Sales Information</b>
+									<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+								</h4>
+							</div>
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-lg-6 control-label">Sale Number: </label>
+									<div class="col-lg-6 reverse_control_label mb">
+										'.$sale_num.'
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-6 control-label">Call Date: </label>
+									<div class="col-lg-6 reverse_control_label mb">
+										'.$call_date.'
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-6 control-label">Agent: </label>
+									<div class="col-lg-6 reverse_control_label mb">
+										'.$agent.'
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-6 control-label">Phone Number: </label>
+									<div class="col-lg-6 reverse_control_label mb">
+										'.$phone_number.'
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-6 control-label">Full Name: </label>
+									<div class="col-lg-6 reverse_control_label mb">
+										'.$full_name.'
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-6 control-label">Address: </label>
+									<div class="col-lg-6 reverse_control_label mb">
+										'.$address.'
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-6 control-label">City: </label>
+									<div class="col-lg-6 reverse_control_label mb">
+										'.$city.'
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-6 control-label">State: </label>
+									<div class="col-lg-6 reverse_control_label mb">
+										'.$state.'
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-6 control-label">Postal: </label>
+									<div class="col-lg-6 reverse_control_label mb">
+										'.$postal.'
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-6 control-label">Email: </label>
+									<div class="col-lg-6 reverse_control_label mb">
+										'.$email.'
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-6 control-label">Alt Phone: </label>
+									<div class="col-lg-6 reverse_control_label mb">
+										'.$alt_phone.'
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-6 control-label">Comments: </label>
+									<div class="col-lg-6 reverse_control_label mb">
+										'.$comments.'
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>';
+			}
+			
+			echo $modal_sales_tracker;
+		}
+	}
+	
 }else{
 	echo $output->result;
 }
