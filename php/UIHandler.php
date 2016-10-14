@@ -4374,9 +4374,9 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 	    # Result was OK!
 
-        $columns = array("Carrier ID", "Carrier Name", "Server IP", "Protocol", "Registration", "Status", "Group", "Action");
-        $hideOnMedium = array("Server IP", "Protocol", "Registration", "Group");
-		$hideOnLow = array( "Carrier ID", "Server IP", "Protocol", "Registration", "Status", "Group");
+        $columns = array("Carrier ID", "Carrier Name", "Server IP", "Protocol", "Status", "Action");
+        $hideOnMedium = array("Server IP", "Protocol");
+		$hideOnLow = array( "Carrier ID", "Server IP", "Protocol", "Status");
 
 		$result = $this->generateTableHeaderWithItems($columns, "carriers", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
@@ -4394,9 +4394,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <td>".$output->carrier_name[$i]."</td>
 	                    <td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 			    		<td class ='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
-			    		<td class ='hide-on-medium hide-on-low'>".$output->registration_string[$i]."</td>
-			    		<td class ='hide-on-low'>".$output->active[$i]."</td>
-			    		<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
+			    		<td class ='hide-on-low'>".$active."</td>
 	                    <td nowrap>".$action."</td>
 	                </tr>";
             }
