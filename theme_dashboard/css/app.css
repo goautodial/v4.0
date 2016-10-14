@@ -5896,9 +5896,9 @@ body .dataTable:after {
 }
 body .dataTables_wrapper .dataTables_paginate .paginate_button {
   background-color: #fff !important;
-  border: 1px solid #e4eaec !important;
+  /*border: 1px solid #e4eaec !important;*/
   margin-left: 0;
-  padding: 6px 16px;
+  /*padding: 6px 16px;*/
 }
 body .dataTables_wrapper .dataTables_paginate .paginate_button.previous {
   border-top-left-radius: 4px;

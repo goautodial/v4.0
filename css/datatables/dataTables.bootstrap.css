@@ -18,6 +18,14 @@ div.dataTables_filter label {
 div.dataTables_filter input {
 	/*width: 16em;*/
 	/* width: 100%; */
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+    border-left-width: 0px;
+       
 }
 
 div.dataTables_info {
@@ -26,12 +34,21 @@ div.dataTables_info {
 
 div.dataTables_paginate {
 	float: right;
-	margin: 0;
+	margin: 0; 
+    display: inline-block;
+    padding-left: 0;
+    /*margin: 20px 0;*/
+    border-radius: 4px;        
 }
 
 div.dataTables_paginate ul.pagination {
-	margin: 2px 0;
-	white-space: nowrap;
+	/*margin: 2px 0;
+	white-space: nowrap; */
+    display: inline-block;
+    padding-left: 0;
+    /* margin: 20px 0; */
+    /* margin-right: 20px; */
+    border-radius: 4px;      
 }
 
 table.dataTable,

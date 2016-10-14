@@ -206,7 +206,7 @@ if($output->result == "success"){
 
 	    // start of middle table
 			if($output->getReports->MIDsorted_output != NULL){
-			    $agent_pdetail .= '<div class="table-responsive">
+			    $agent_pdetail .= '<br/><div class="table-responsive">
 				    <table class="table table-striped table-bordered table-hover" id="agent_pdetail_mid">
 				    	<thead>
 							<tr>
