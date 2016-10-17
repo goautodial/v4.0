@@ -754,7 +754,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
                                     <h4 class="modal-title">More about <span id="modal-username"></span>:</h4> 
                                 </div> 
-                                    <div class="modal-body"> 
+                                    <div class="modal-body" style="min-height: initial;"> 
                                         <center> 
                                             <div id="modal-avatar"></div>
                                             <!--<img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle">-->
@@ -765,7 +765,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             <!-- <span class="label label-info" id="modal-userlevel-vu"></span> -->
                                             <span class="label label-success" id="modal-usergroup-vu"></span>
                                         </center> 
-                                            <div class="responsive">
+                                            <div class="responsive hidden">
                                                     <table class="table table-striped table-hover" id="view_agent_information_table" style="width: 100%">
                                                         <thead>
                                                                 <th style="font-size: small;">Agent ID</th> 
@@ -781,10 +781,19 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                                     </table>
                                             </div>
                                     </div> 
-                                        <div class="modal-footer"> 
-                                            <a href="#" data-toggle="modal" data-target="#" class="pull-right text-danger" onClick="goGetModalUsernameValue();">
-                                                <small>Emergency Logout</small> <em class="fa fa-arrow-right"></em>
-                                            </a>                                        
+                                        <div class="modal-footer">
+                                            <a href="#" class="pull-right" onClick="goGetModalUsernameValue();">
+                                                <button class="btn btn-danger btn-sm">Emergency Logout &nbsp;<i class="fa fa-arrow-right"></i></button>
+                                            </a>
+											
+											<div class="pull-left">
+												<a href="#" onClick="goGetInSession('barge');">
+													<button class="btn btn-success btn-sm">Barge &nbsp;<i class="fa fa-microphone"></i></button>
+												</a>
+												<a href="#" onClick="goGetInSession('listen');">
+													<button class="btn btn-primary btn-sm">Listen &nbsp;<i class="fa fa-microphone-slash"></i></button>
+												</a>
+											</div>
                                             <!-- <center> 
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">I'm done</button> 
                                             </center> -->
@@ -1113,21 +1122,86 @@ function clear_campaign_form(){
 
 function goGetModalUsernameValue(){
    
-   var goModalUsername = document.getElementById("modal-username").innerText;
+	var goModalUsername = document.getElementById("modal-username").innerText;
 
-   $.ajax({
-       type: 'POST',
-       url: "./php/APIs/API_EmergencyLogout.php",
-       data: {goUserAgent: goModalUsername},
-       cache: false,
-       //dataType: 'json',
-       success: function(data){
-	  clear_agent_form();
-	  sweetAlert("Emergency Logout",data, "warning");
-	  $('#view_agent_information').modal('hide');
-       }
-   }); 
+	swal({
+		title: "Are you sure?",
+		text: "Agent "+goModalUsername+" will be logged out of the dialer.",
+		type: "warning",
+		showCancelButton: true,
+		confirmButtonColor: "#DD6B55",
+		confirmButtonText: "Yes, I'm sure!",
+		closeOnConfirm: false
+	}, function(){
+		$.ajax({
+			type: 'POST',
+			url: "./php/APIs/API_EmergencyLogout.php",
+			data: {goUserAgent: goModalUsername},
+			cache: false,
+			//dataType: 'json',
+			success: function(data){
+				clear_agent_form();
+				sweetAlert("Emergency Logout",data, "warning");
+				$('#view_agent_information').modal('hide');
+			}
+		});
+	});
 
+}
+
+function goGetInSession(type) {
+	if (typeof phone !== 'undefined') {
+		var who = document.getElementById("modal-username").innerText;
+		var thisTimer;
+		
+		if (phone_login.length > 0 && phone_pass.length > 0) {
+			if (type == 'barge') {
+				swal({
+					title: "Barging...",
+					text: "You're currently barging "+who+"...<br><h1 id='bTimer' class='text-center'>00:00:00</h1>",
+					html: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Disconnect",
+					closeOnConfirm: false
+				}, function() {
+					clearInterval(thisTimer);
+					swal.close();
+				});
+				
+				thisTimer = setInterval(function() {
+					var bt = $("#bTimer").html().split(':');
+					var bHour = parseInt(bt[0]);
+					var bMin = parseInt(bt[1]);
+					var bSec = parseInt(bt[2]);
+					bSec++;
+					if (bSec > 59) {
+						bSec = 0;
+						bMin++;
+					}
+					if (bMin > 59) {
+						bMin = 0;
+						bHour++;
+					}
+					if (bHour < 10) {bHour = "0"+bHour;}
+					if (bMin < 10) {bMin = "0"+bMin;}
+					if (bSec < 10) {bSec = "0"+bSec;}
+					
+					$("#bTimer").html(bHour+":"+bMin+":"+bSec);
+				}, 1000);
+			} else {
+				swal({
+					title: "Listening...",
+					text: "You're currently listening to "+who+"...",
+					html: true
+				});
+			}
+		} else {
+			swal({
+				title: "ERROR",
+				text: "You're account doesn't have a phone login or pass set..."
+			});
+		}
+	}
 }
 
                 //demian

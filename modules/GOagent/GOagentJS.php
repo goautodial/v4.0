@@ -1616,9 +1616,19 @@ function hijackThisLink(e) {
         $(".content-heading span").html("<?=$lh->translationFor('list_of_callbacks')?>");
         breadCrumb += '<li class="active"><?=$lh->translationFor('callbacks')?></li>';
         hash = 'callbacks';
-    } else if (/messages/g.test(thisLink)) {
+    } else if (/messages|readmail|composemail/g.test(thisLink)) {
         $(".content-heading span").html("<?=$lh->translationFor('messages')?>");
         breadCrumb += '<li class="active"><?=$lh->translationFor('messages')?></li>';
+        
+        $.each($("div[id^='mail-']"), function(idx, elem) {
+            var thisID = $(elem).attr('id').replace('mail-', '');
+            console.log(thisID, thisLink.replace('.php', ''));
+            if (thisID == thisLink.replace('.php', '')) {
+                $(elem).show();
+            } else {
+                $(elem).hide();
+            }
+        });
         hash = 'messages';
     } else if (/notifications/g.test(thisLink)) {
         $(".content-heading span").html("<?=$lh->translationFor('notifications')?>");

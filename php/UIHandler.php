@@ -2429,7 +2429,7 @@ error_reporting(E_ERROR | E_PARSE);
 				//if (isset($selectedUser) && ($selectedUser == $userobj["id"])) { $selectedUserCode = 'selected="true"'; }
 				//$response = $response.'<option value="'.$userobj["id"].'" '.$selectedUserCode.' >'.$userobj["name"].'</option>';
 				if (isset($selectedUser) && ($selectedUser == $userobj["user_id"])) { $selectedUserCode = 'selected="true"'; }
-				$response = $response.'<option value="'.$userobj["user_id"].'" '.$selectedUserCode.' >'.$userobj["user"].'</option>';
+				$response = $response.'<option value="'.$userobj["user_id"].'" '.$selectedUserCode.' >'.$userobj["full_name"].' ('.$userobj["user"].')</option>';
 			} else if ($includeSelf === true) { // assign to myself by default unless another $selectedUser has been specified.
 				$selfSelectedCode = isset($selectedUser) ? "" : 'selected="true"';
 				//$response = $response.'<option value="'.$userobj["id"].'" '.$selfSelectedCode.'>'.$this->lh->translationFor("myself").'</option>';

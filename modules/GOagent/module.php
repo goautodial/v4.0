@@ -819,7 +819,7 @@ EOF;
 		$phone_login = $_SESSION['phone_login'];
 		$phone_pass = $_SESSION['phone_pass'];
 		
-		if ($useWebRTC && strlen($phone_login) > 0) {
+		if ($useWebRTC) {
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
 <script type="text/javascript" src="{$goModuleDIR}js/jsSIP.js"></script>
@@ -828,184 +828,171 @@ EOF;
 	var localStream;
 	var remoteStream;
 	var globalSession;
-	
-	var configuration = {
-		ws_servers: '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
-		uri: 'sip:{$phone_login}@{$websocketSIP}{$websocketSIPPort},
-		password: '{$phone_pass}',
-		session_timers: false,
-		register: false
-	};
-	
 	var rtcninja = JsSIP.rtcninja;
-	var phone = new JsSIP.UA(configuration);
+	var phone;
+	var phone_login = '$phone_login';
+	var phone_pass = '$phone_pass';
 	
-	phone.on('connected', function(e) {
-		console.log('connected', e);
-	});
-	
-	phone.on('disconnected', function(e) {
-		console.log('disconnected', e);
-	});
-	
-	phone.on('newRTCSession', function(e) {
-		var session = e.session;
-		console.log('newRTCSession: originator', e.originator, 'session', e.session, 'request', e.request);
-	
-		session.on('peerconnection', function (data) {
-			console.log('session::peerconnection', data);
+	function registerPhone(login, pass) {
+		var configuration = {
+			ws_servers: '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
+			uri: 'sip:'+login+'@{$websocketSIP}{$websocketSIPPort},
+			password: pass,
+			session_timers: false,
+			register: true
+		};
+		
+		phone = new JsSIP.UA(configuration);
+		
+		phone.on('connected', function(e) {
+			console.log('connected', e);
 		});
-	
-		session.on('iceconnectionstatechange', function (data) {
-			console.log('session::iceconnectionstatechange', data);
+		
+		phone.on('disconnected', function(e) {
+			console.log('disconnected', e);
 		});
-	
-		session.on('connecting', function (data) {
-			console.log('session::connecting', data);
+		
+		phone.on('newRTCSession', function(e) {
+			var session = e.session;
+			console.log('newRTCSession: originator', e.originator, 'session', e.session, 'request', e.request);
+		
+			session.on('peerconnection', function (data) {
+				console.log('session::peerconnection', data);
+			});
+		
+			session.on('iceconnectionstatechange', function (data) {
+				console.log('session::iceconnectionstatechange', data);
+			});
+		
+			session.on('connecting', function (data) {
+				console.log('session::connecting', data);
+			});
+		
+			session.on('sending', function (data) {
+				console.log('session::sending', data);
+			});
+		
+			session.on('progress', function (data) {
+				console.log('session::progress', data);
+			});
+		
+			session.on('accepted', function (data) {
+				console.log('session::accepted', data);
+			});
+		
+			session.on('confirmed', function (data) {
+				console.log('session::confirmed', data);
+			});
+		
+			session.on('ended', function (data) {
+				console.log('session::ended', data);
+			});
+		
+			session.on('failed', function (data) {
+				console.log('session::failed', data);
+			});
+		
+			session.on('addstream', function (data) {
+				console.log('session::addstream', data);
+		
+				remoteStream = data.stream;
+				audioElement = document.querySelector('#remoteStream');
+				audioElement.src = window.URL.createObjectURL(remoteStream);
+				
+				globalSession = session;
+			});
+		
+			session.on('removestream', function (data) {
+				console.log('session::removestream', data);
+			});
+		
+			session.on('newDTMF', function (data) {
+				console.log('session::newDTMF', data);
+			});
+		
+			session.on('hold', function (data) {
+				console.log('session::hold', data);
+			});
+		
+			session.on('unhold', function (data) {
+				console.log('session::unhold', data);
+			});
+		
+			session.on('muted', function (data) {
+				console.log('session::muted', data);
+			});
+		
+			session.on('unmuted', function (data) {
+				console.log('session::unmuted', data);
+			});
+		
+			session.on('reinvite', function (data) {
+				console.log('session::reinvite', data);
+			});
+		
+			session.on('update', function (data) {
+				console.log('session::update', data);
+			});
+		
+			session.on('refer', function (data) {
+				console.log('session::refer', data);
+			});
+		
+			session.on('replaces', function (data) {
+				console.log('session::replaces', data);
+			});
+		
+			session.on('sdp', function (data) {
+				console.log('session::sdp', data);
+			});
+		
+			session.answer({
+				mediaConstraints: {
+					audio: true,
+					video: false
+				},
+				mediaStream: localStream
+			});
 		});
-	
-		session.on('sending', function (data) {
-			console.log('session::sending', data);
+		
+		phone.on('newMessage', function(e) {
+			console.log('newMessage', e);
 		});
-	
-		session.on('progress', function (data) {
-			console.log('session::progress', data);
-		});
-	
-		session.on('accepted', function (data) {
-			console.log('session::accepted', data);
-		});
-	
-		session.on('confirmed', function (data) {
-			console.log('session::confirmed', data);
-		});
-	
-		session.on('ended', function (data) {
-			console.log('session::ended', data);
-		});
-	
-		session.on('failed', function (data) {
-			console.log('session::failed', data);
-		});
-	
-		session.on('addstream', function (data) {
-			console.log('session::addstream', data);
-	
-			remoteStream = data.stream;
-			audioElement = document.querySelector('#remoteStream');
-			audioElement.src = window.URL.createObjectURL(remoteStream);
+		
+		phone.on('registered', function(e) {
+			var xmlhttp = new XMLHttpRequest();
+			var query = "";
 			
-			globalSession = session;
+			phoneRegistered = true;
+			$("#dialer-tab").css('display', 'table-cell');
+			if ( !!$.prototype.snackbar ) {
+				$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
+			}
 		});
-	
-		session.on('removestream', function (data) {
-			console.log('session::removestream', data);
-		});
-	
-		session.on('newDTMF', function (data) {
-			console.log('session::newDTMF', data);
-		});
-	
-		session.on('hold', function (data) {
-			console.log('session::hold', data);
-		});
-	
-		session.on('unhold', function (data) {
-			console.log('session::unhold', data);
-		});
-	
-		session.on('muted', function (data) {
-			console.log('session::muted', data);
-		});
-	
-		session.on('unmuted', function (data) {
-			console.log('session::unmuted', data);
-		});
-	
-		session.on('reinvite', function (data) {
-			console.log('session::reinvite', data);
-		});
-	
-		session.on('update', function (data) {
-			console.log('session::update', data);
-		});
-	
-		session.on('refer', function (data) {
-			console.log('session::refer', data);
-		});
-	
-		session.on('replaces', function (data) {
-			console.log('session::replaces', data);
-		});
-	
-		session.on('sdp', function (data) {
-			console.log('session::sdp', data);
-		});
-	
-		session.answer({
-			mediaConstraints: {
-				audio: true,
-				video: false
-			},
-			mediaStream: localStream
-		});
-	});
-	
-	phone.on('newMessage', function(e) {
-		console.log('newMessage', e);
-	});
-	
-	phone.on('registered', function(e) {
-		var xmlhttp = new XMLHttpRequest();
-		var query = "";
 		
-		//query += "SIP_user_DiaL=" + SIP_user_Dial;
-		//query += "&session_id=" + session_id;
-		//query += "&phone_login=" + phone_login;
-		//query += "&phone_pass=" + phone_pass;
-		//query += "&VD_campaign=" + campaign;
-		//query += "&enable_sipsak=" + enable_sipsak;
-		//query += "&campaign_cid=" + campaign_cid;
-		//query += "&on_hook_agent=" + on_hook_agent;
+		phone.on('unregistered', function(e) {
+			console.log('unregistered', e);
+			phoneRegistered = false;
+		});
 		
-		console.log('registered', e);
-		//xmlhttp.open('GET', 'originate.php?' + query); 
-		//xmlhttp.send(null); 
-		//xmlhttp.onreadystatechange = function() { 
-		//	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-		//		console.log('reply!');
-		//	}
-		//};
+		phone.on('registrationFailed', function(e) {
+			console.log('registrationFailed', e);
+			if ( !!$.prototype.snackbar ) {
+				$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000});
+			}
+		});
 		
-		phoneRegistered = true;
-		$("#dialer-tab").css('display', 'table-cell');
-		if ( !!$.prototype.snackbar ) {
-			$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
-		}
-	});
-	
-	phone.on('unregistered', function(e) {
-		console.log('unregistered', e);
-		phoneRegistered = false;
-	});
-	
-	phone.on('registrationFailed', function(e) {
-		console.log('registrationFailed', e);
-		if ( !!$.prototype.snackbar ) {
-			$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000});
-		}
-	});
-	
-	rtcninja.getUserMedia({
-		audio: true,
-		video: false
-	}, function successCb(stream) {
-		localStream = stream;
-	
-		//phone.start();
-	}, function failureCb(e) {
-		console.error('getUserMedia failed.', e);
-	});
+		rtcninja.getUserMedia({
+			audio: true,
+			video: false
+		}, function successCb(stream) {
+			localStream = stream;
+		
+			//phone.start();
+		}, function failureCb(e) {
+			console.error('getUserMedia failed.', e);
+		});
+	}
 </script>
 EOF;
 		}
