@@ -5655,6 +5655,7 @@ ul.ColVis_collection > li > label input[type=radio]:checked + span {
 .table-responsive .dataTables_wrapper .row {
   margin: 0;
 }
+/*alex
 @media only screen and (max-width: 767px) {
   div.dataTables_filter label,
   div.dataTables_length label,
@@ -5672,6 +5673,7 @@ ul.ColVis_collection > li > label input[type=radio]:checked + span {
     width: 100%;
   }
 }
+*/
 /* ========================================================================
    Component: table-extras.less
  ========================================================================== */
