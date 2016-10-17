@@ -493,10 +493,21 @@ class DbHandler {
      * @return Array an array of objects containing the data of all users in the system.
 	 */
 	public function getAllEnabledUsers() {
+		$user = \creamy\CreamyUser::currentUser();
+		$userGroup = $this->getUserGroup($user->getUserId());
+		
 		// $this->dbConnector->where("status", "1");
 		$this->dbConnectorAsterisk->where("active", "Y");
+		$this->dbConnectorAsterisk->where("user", array('VDAD', 'VDCL', 'goAPI'), 'not in');
+		if ($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT) {
+			$this->dbConnectorAsterisk->where('user_level', '7', '>=');
+			if ($userGroup != false) {
+				$userGroup = ($userGroup == 'AGENTS') ? 'ADMIN' : $userGroup;
+				$this->dbConnectorAsterisk->where('user_group', $userGroup);
+			}
+		}
 		// $cols = array("id", "name", "email", "phone", "role", "avatar", "creation_date", "status");
-		$cols = array("user_id", "user", "email", "phone_login", "user_level", "active");
+		$cols = array("user_id", "user", "email", "phone_login", "user_level", "active", "full_name");
 		return $this->dbConnectorAsterisk->get(CRM_USERS_TABLE_NAME_ASTERISK, null, $cols);
 	}
     
@@ -2037,6 +2048,18 @@ class DbHandler {
 		}
 		return true;
 	}
+    
+    /**
+     * Returns the user_group of the specified user_id
+     * @param Number $user_id id to check in db
+     * @return user_group value of specified user_id, false otherwise
+     */
+    public function getUserGroup($user_id) {
+	    $this->dbConnectorAsterisk->where("user_id", $user_id);
+	    $result = $this->dbConnectorAsterisk->getOne(CRM_USERS_TABLE_NAME_ASTERISK, 'user_group');
+		$return = ($this->dbConnectorAsterisk->getRowCount() > 0) ? $result['user_group'] : false;
+	    return $return;
+    }
 	
 }
 

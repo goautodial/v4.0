@@ -823,7 +823,7 @@ if (isset($_GET["message"])) {
 							</div><!-- /.col -->
 							
 							<!-- main content right side column -->
-							<div class="col-md-9">
+							<div id="mail-messages" class="col-md-9">
 								<div class="box box-default">
 									<div class="box-header with-border">
 										<h3 class="box-title"><?php $lh->translateText("messages"); ?></h3>
@@ -841,6 +841,55 @@ if (isset($_GET["message"])) {
 											<?php print $ui->getMailboxButtons($folder); ?>
 										</div>
 									</div>
+								</div><!-- /. box -->
+							</div><!-- /.col -->
+							
+							<div id="mail-composemail" class="col-md-9" style="display: none;">
+								<div class="box box-default">
+									<form method="POST" id="send-message-form" enctype="multipart/form-data">
+										<div class="box-header with-border">
+											<h3 class="box-title"><?php $lh->translateText("compose_new_message"); ?></h3>
+										</div><!-- /.box-header -->
+										<div class="box-body">
+											<input type="hidden" id="fromuserid" name="fromuserid" value="<?php print $user->getUserId(); ?>">
+											<div class="form-group">
+												<?php print $ui->generateSendToUserSelect($user->getUserId(), false, null, $reply_user); ?>
+												<label for="touserid">Recipients</label>
+											</div>
+											<div class="form-group">
+												<input id="external_recipients" name="external_recipients" class="form-control" placeholder="<?php $lh->translateText("external_message_recipients"); ?>"/>
+												<label for="external_recipients">External Recipients</label>
+											</div>
+											<div class="form-group">
+												<input id="subject" name="subject" class="form-control required" placeholder="<?php $lh->translateText("subject"); ?>:" value="<?php print $reply_subject; ?>"/>
+												<label for="subject">Subject</label>
+											</div>
+											<div class="form-group">
+												<textarea id="compose-textarea" name="message" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin required" style="height: 200px" placeholder="<?php $lh->translateText("write_your_message_here"); ?>"><?php print $reply_text; ?></textarea>
+												<label for="compose-textarea">Message</label>
+											</div>
+											<div class="form-group">
+												<div class="btn btn-default btn-file">
+													<i class="fa fa-paperclip"></i> <?php $lh->translateText("attachment"); ?>
+													<input type="file" class="attachment" name="attachment[]"/>
+												</div>
+												<p class="help-block"><?php print $lh->translationFor("max")." ".CRM_MAX_ATTACHMENT_FILESIZE; ?>MB</p>
+											</div>
+										</div><!-- /.box-body -->
+										<div class="box-footer" id="attachment-list">
+											<label><?php $lh->translateText("attachments"); ?>: </label>
+										</div>
+										<div class="box-footer" id="compose-mail-results">
+										</div>
+										<div class="box-footer">
+											<div class="pull-right">
+												<button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> <?php $lh->translateText("send"); ?></button>
+											</div>
+											<button class="btn btn-default" id="compose-mail-discard"><i class="fa fa-times"></i> <?php $lh->translateText("discard"); ?></button>
+											<!-- Module hook footer -->
+											<?php print $ui->getComposeMessageFooter(); ?>
+										</div><!-- /.box-footer -->
+									</form> <!-- /.form -->
 								</div><!-- /. box -->
 							</div><!-- /.col -->
 						</div><!-- /.row -->
@@ -1591,6 +1640,7 @@ if (isset($_GET["message"])) {
 							// toggle visual change.
 				            $(selectedItem).toggleClass("fa-star");
 				            $(selectedItem).toggleClass("fa-star-o");
+							updateMessages(<?=$user->getUserId()?>, folder);
 						} else {
 							<?php
 								$msg = $ui->calloutErrorMessage($lh->translationFor("message")); 
@@ -1603,7 +1653,7 @@ if (isset($_GET["message"])) {
 				$("li a[href^='messages.php?']").click(function(e) {
 					var thisFolder = e.target.search.replace("?", "");
 					thisFolder = thisFolder.split("=");
-					updateMessages(<?=$user->getUserId()?>, thisFolder[1]);
+					updateMessages(<?=$user->getUserId()?>, thisFolder[1], true);
 				});
 			
 			    <?php
@@ -1612,7 +1662,7 @@ if (isset($_GET["message"])) {
 				print $ui->mailboxAction(
 					"messages-mark-as-favorite", 											// classname
 					"php/MarkMessagesAsFavorite.php", 										// php to request
-					'for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).removeClass("fa-star-o").addClass("fa-star"); }', // success js
+					'updateMessages('.$user->getUserId().', folder); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).removeClass("fa-star-o").addClass("fa-star"); }', // success js
 					$ui->fadingInMessageJS($unableFavoriteCode, "messages-message-box"),	// failure js
 					array("favorite" => 1));												// custom parameters
 				?>
@@ -1623,7 +1673,7 @@ if (isset($_GET["message"])) {
 				print $ui->mailboxAction(
 					"messages-mark-as-read", 												// classname
 					"php/MarkMessagesAsRead.php", 											// php to request
-					'updateMessages('.$user->getUserId().', '.$folder.'); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").removeClass("unread"); }', 												// success js
+					'updateMessages('.$user->getUserId().', folder); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").removeClass("unread"); }', 												// success js
 					$ui->fadingInMessageJS($unableReadCode, "messages-message-box")); 		// failure js
 				?>
 				
@@ -1633,38 +1683,38 @@ if (isset($_GET["message"])) {
 				print $ui->mailboxAction(
 					"messages-mark-as-unread", 												// classname
 					"php/MarkMessagesAsUnread.php", 										// php to request
-					'updateMessages('.$user->getUserId().', '.$folder.'); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").addClass("unread"); }', // success js
+					'updateMessages('.$user->getUserId().', folder); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").addClass("unread"); }', // success js
 					$ui->fadingInMessageJS($unableUnreadCode, "messages-message-box")); 	// failure js
 				?>
 				
 				<?php
 			    // send to junk mail
-				$junkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
-					$lh->translationFor("messages_sent_trash").'"';
-				print $ui->mailboxAction(
-					"messages-send-to-junk",					// classname
-					"php/JunkMessages.php",						// php to request
-					"swal($junkText);");	// result js
+				//$junkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
+				//	$lh->translationFor("messages_sent_trash").'"';
+				//print $ui->mailboxAction(
+				//	"messages-send-to-junk",					// classname
+				//	"php/JunkMessages.php",						// php to request
+				//	"updateMessages(".$user->getUserId().", folder); swal($junkText);");		// result js
 				?>
 				
 				<?php
 			    // restore mail from junk
-				$unjunkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
-					$lh->translationFor("messages_recovered_trash").'"';
-				print $ui->mailboxAction(
-					"messages-restore-message",					// classname
-					"php/UnjunkMessages.php",					// php to request
-					"swal($unjunkText);");						// result js
+				//$unjunkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
+				//	$lh->translationFor("messages_recovered_trash").'"';
+				//print $ui->mailboxAction(
+				//	"messages-restore-message",					// classname
+				//	"php/UnjunkMessages.php",					// php to request
+				//	"updateMessages(".$user->getUserId().", folder); swal($unjunkText);");		// result js
 				?>
 				
 				<?php
 			    // delete messages.
-				$unableDeleteCode = $ui->calloutErrorMessage($lh->translationFor("unable_delete_messages"));
-				print $ui->mailboxAction(
-					"messages-delete-permanently", 											// classname
-					"php/DeleteMessages.php", 												// php to request
-					$ui->reloadLocationJS(), 												// success js
-					$ui->fadingInMessageJS($unableDeleteCode, "messages-message-box")); 	// failure js
+				//$unableDeleteCode = $ui->calloutErrorMessage($lh->translationFor("unable_delete_messages"));
+				//print $ui->mailboxAction(
+				//	"messages-delete-permanently", 											// classname
+				//	"php/DeleteMessages.php", 												// php to request
+				//	$ui->reloadLocationJS(), 												// success js
+				//	$ui->fadingInMessageJS($unableDeleteCode, "messages-message-box")); 	// failure js
 				?>
 				
 				$("#edit-profile").click(function(){
@@ -1748,7 +1798,7 @@ if (isset($_GET["message"])) {
 				});
 			});
 			
-			function updateMessages(user_id, folder, controls) {
+			function updateMessages(user_id, folder_id, controls) {
 				if (typeof controls === 'undefined') {
 					controls = false;
 				}
@@ -1757,7 +1807,7 @@ if (isset($_GET["message"])) {
 					module_name: 'GOagent',
 					action: 'UpdateMessages',
 					user_id: user_id,
-					folder: folder
+					folder: folder_id
 				};
 				$.ajax({
 					type: 'POST',
@@ -1771,15 +1821,29 @@ if (isset($_GET["message"])) {
 				})
 				.done(function (result) {
 					if (result.result == 'success') {
+						selectedMessages = [];
 						if (controls) {
 							$("div.mailbox-controls").html(result.controls);
 						} else {
 							selectedAll = !selectedAll;
 						}
 						
-						if (folders == 2) {
-							
+						if (folder_id == 2) {
+							$.each($("div.mailbox-controls div.btn-group").find("button[class*='messages-send-to-junk']"), function(idx, elem) {
+								$(elem).toggleClass('messages-send-to-junk');
+								$(elem).toggleClass('messages-restore-messages');
+								$(elem).find('i').toggleClass('fa-trash-o');
+								$(elem).find('i').toggleClass('fa-undo');
+							});
+						} else {
+							$.each($("div.mailbox-controls div.btn-group").find("button[class*='messages-restore-messages']"), function(idx, elem) {
+								$(elem).toggleClass('messages-restore-messages');
+								$(elem).toggleClass('messages-send-to-junk');
+								$(elem).find('i').toggleClass('fa-undo');
+								$(elem).find('i').toggleClass('fa-trash-o');
+							});
 						}
+						folder = folder_id;
 						
 						$("#folders-list").html(result.folders);
 						var thisTopBar = result.topbar;
@@ -1821,11 +1885,12 @@ if (isset($_GET["message"])) {
 							} // else mark message as favorite
 							
 							$("#messages-message-box").hide();
-							$.post("./php/MarkMessagesAsFavorite.php", { "favorite": favorite, "messageids": [e.currentTarget.id], "folder": folder }, function(data) {
+							$.post("./php/MarkMessagesAsFavorite.php", { "favorite": favorite, "messageids": [e.currentTarget.id], "folder": folder_id }, function(data) {
 								if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
 									// toggle visual change.
 									$(selectedItem).toggleClass("fa-star");
 									$(selectedItem).toggleClass("fa-star-o");
+									updateMessages(user_id, folder);
 								} else {
 									<?php
 										$msg = $ui->calloutErrorMessage($lh->translationFor("message")); 
@@ -1838,11 +1903,44 @@ if (isset($_GET["message"])) {
 						$("li a[href^='messages.php?']").click(function(e) {
 							var thisFolder = e.target.search.replace("?", "");
 							thisFolder = thisFolder.split("=");
-							updateMessages(<?=$user->getUserId()?>, thisFolder[1]);
+							updateMessages(<?=$user->getUserId()?>, thisFolder[1], true);
 						});
 						
+						$("button.messages-send-to-junk").off('click');
+						<?php
+						// send to junk mail
+						$junkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
+							$lh->translationFor("messages_sent_trash").'"';
+						print $ui->mailboxAction(
+							"messages-send-to-junk",					// classname
+							"php/JunkMessages.php",						// php to request
+							"updateMessages(".$user->getUserId().", folder); swal($junkText);");		// result js
+						?>
+						
+						$("button.messages-restore-message").off('click');
+						<?php
+						// restore mail from junk
+						$unjunkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
+							$lh->translationFor("messages_recovered_trash").'"';
+						print $ui->mailboxAction(
+							"messages-restore-message",					// classname
+							"php/UnjunkMessages.php",					// php to request
+							"updateMessages(".$user->getUserId().", folder, true); swal($unjunkText);");		// result js
+						?>
+						
+						$("button.messages-delete-permanently").off('click');
+						<?php
+						// delete messages.
+						$unableDeleteCode = $ui->calloutErrorMessage($lh->translationFor("unable_delete_messages"));
+						print $ui->mailboxAction(
+							"messages-delete-permanently", 											// classname
+							"php/DeleteMessages.php", 												// php to request
+							$ui->reloadLocationJS(), 												// success js
+							$ui->fadingInMessageJS($unableDeleteCode, "messages-message-box")); 	// failure js
+						?>
+						
 						// Hijack links on left menu
-						$("a:regex(href, messages|composemail|readmail)").on('click', hijackThisLink);
+						$("a:regex(href, messages|composemail|readmail)").off('click', hijackThisLink).on('click', hijackThisLink);
 					}
 				});
 			}
