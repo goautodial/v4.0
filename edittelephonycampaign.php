@@ -270,7 +270,7 @@ $lists = $ui->API_goGetAllLists();
 															<div class="row">
 																<div class="col-lg-9">
 																	<select name="dial_prefix" id="dial_prefix" class="form-control">
-																		<option value="CUSTOM" selected="selected">CUSTOM DIAL PREFIX</option>
+																		<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
 																		<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
 																			<?php if(!empty($carriers->carrier_id[$i])) { ?>
 																				<option value="<?php echo $carriers->carrier_id[$i]; ?>" <?php if($campaign->data->dial_prefix == $carriers->carrier_id[$i]) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
@@ -279,7 +279,7 @@ $lists = $ui->API_goGetAllLists();
 																	</select>
 																</div>
 																<div class="col-lg-3">
-																	<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if($campaign->data->dial_prefix == "CUSTOM"){echo "9";}else{echo $campaign->data->dial_prefix;} ?>" minlength="9" maxlength="20">
+																	<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if($campaign->data->dial_prefix == "CUSTOM"){echo $campaign->data->dial_prefix;}?>" minlength="9" maxlength="20" />
 																</div>
 															</div>
 														</div>
@@ -1510,6 +1510,7 @@ $lists = $ui->API_goGetAllLists();
 				}
 			}
 			$(document).ready(function() {
+			
 				$('.select2').select2({
 							theme: 'bootstrap'
 				});
@@ -2153,8 +2154,10 @@ $lists = $ui->API_goGetAllLists();
 			function dialPrefix(value){
 				if(value == "CUSTOM"){
 					$('#custom_prefix').removeClass('hide');
+					$("#custom_prefix").attr("required", true);
 				}else{
 					$('#custom_prefix').addClass('hide');
+					$("#custom_prefix").attr("required", false);
 				}
 			}
 
