@@ -1154,44 +1154,51 @@ function goGetInSession(type) {
 		var who = document.getElementById("modal-username").innerText;
 		var thisTimer;
 		
-		if (type == 'barge') {
-			swal({
-				title: "Barging...",
-				text: "You're currently barging "+who+"...<br><h1 id='bTimer' class='text-center'>00:00:00</h1>",
-				html: true,
-				confirmButtonColor: "#DD6B55",
-				confirmButtonText: "Disconnect",
-				closeOnConfirm: false
-			}, function() {
-				clearInterval(thisTimer);
-				swal.close();
-			});
-			
-			thisTimer = setInterval(function() {
-				var bt = $("#bTimer").html().split(':');
-				var bHour = parseInt(bt[0]);
-				var bMin = parseInt(bt[1]);
-				var bSec = parseInt(bt[2]);
-				bSec++;
-				if (bSec > 59) {
-					bSec = 0;
-					bMin++;
-				}
-				if (bMin > 59) {
-					bMin = 0;
-					bHour++;
-				}
-				if (bHour < 10) {bHour = "0"+bHour;}
-				if (bMin < 10) {bMin = "0"+bMin;}
-				if (bSec < 10) {bSec = "0"+bSec;}
+		if (phone_login.length > 0 && phone_pass.length > 0) {
+			if (type == 'barge') {
+				swal({
+					title: "Barging...",
+					text: "You're currently barging "+who+"...<br><h1 id='bTimer' class='text-center'>00:00:00</h1>",
+					html: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Disconnect",
+					closeOnConfirm: false
+				}, function() {
+					clearInterval(thisTimer);
+					swal.close();
+				});
 				
-				$("#bTimer").html(bHour+":"+bMin+":"+bSec);
-			}, 1000);
+				thisTimer = setInterval(function() {
+					var bt = $("#bTimer").html().split(':');
+					var bHour = parseInt(bt[0]);
+					var bMin = parseInt(bt[1]);
+					var bSec = parseInt(bt[2]);
+					bSec++;
+					if (bSec > 59) {
+						bSec = 0;
+						bMin++;
+					}
+					if (bMin > 59) {
+						bMin = 0;
+						bHour++;
+					}
+					if (bHour < 10) {bHour = "0"+bHour;}
+					if (bMin < 10) {bMin = "0"+bMin;}
+					if (bSec < 10) {bSec = "0"+bSec;}
+					
+					$("#bTimer").html(bHour+":"+bMin+":"+bSec);
+				}, 1000);
+			} else {
+				swal({
+					title: "Listening...",
+					text: "You're currently listening to "+who+"...",
+					html: true
+				});
+			}
 		} else {
 			swal({
-				title: "Listening...",
-				text: "You're currently listening to "+who+"...",
-				html: true
+				title: "ERROR",
+				text: "You're account doesn't have a phone login or pass set..."
 			});
 		}
 	}
