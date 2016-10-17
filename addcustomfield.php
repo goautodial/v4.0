@@ -47,7 +47,9 @@ $customs = $customFields->data;
 				<!-- Data Tables -->
 		        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
 		        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-
+		        <!-- SELECT2-->
+   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
 				<!-- SELECT2-->
 	   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
         <script type="text/javascript">
