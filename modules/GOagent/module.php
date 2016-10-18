@@ -7,17 +7,6 @@ require_once(CRM_MODULE_INCLUDE_DIRECTORY.'LanguageHandler.php');
 include(CRM_MODULE_INCLUDE_DIRECTORY.'Session.php');
 require_once(CRM_MODULE_INCLUDE_DIRECTORY.'goCRMAPISettings.php');
 
-### Check if DB variables are not set ###
-$VARDB_server   = (!isset($VARDB_server)) ? "162.254.144.92" : $VARDB_server;
-$VARDB_user     = (!isset($VARDB_user)) ? "justgocloud" : $VARDB_user;
-$VARDB_pass     = (!isset($VARDB_pass)) ? "justgocloud1234" : $VARDB_pass;
-$VARDB_database = (!isset($VARDB_database)) ? "asterisk" : $VARDB_database;
-
-$VARDBgo_server   = (!isset($VARDBgo_server)) ? "162.254.144.92" : $VARDBgo_server;
-$VARDBgo_user     = (!isset($VARDBgo_user)) ? "goautodialu" : $VARDBgo_user;
-$VARDBgo_pass     = (!isset($VARDBgo_pass)) ? "pancit8888" : $VARDBgo_pass;
-$VARDBgo_database = (!isset($VARDBgo_database)) ? "goautodial" : $VARDBgo_database;
-
 $baseURL = (!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'] : "http://".$_SERVER['SERVER_NAME'];
 $getSlashes = preg_match_all("/\//", $_SERVER['REQUEST_URI']);
 $baseDIR = (!empty($_SERVER['REQUEST_URI']) && $getSlashes > 1) ? dirname($_SERVER['REQUEST_URI'])."/" : "/";
@@ -48,8 +37,8 @@ class GOagent extends Module {
 		if (!isset($customLanguageFile)) { $customLanguageFile = $this->getModuleLanguageFileForLocale(CRM_LANGUAGE_DEFAULT_LOCALE); }
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
 		
-		$this->astDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL, null, $VARDB_database);
-		$this->goDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL, null, $VARDBgo_database);
+		$this->astDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL, null, DB_NAME_ASTERISK);
+		$this->goDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL, null, DB_NAME);
 
 		$this->userrole = \creamy\CreamyUser::currentUser()->getUserRole();
 		$this->userName = \creamy\CreamyUser::currentUser()->getUserName();
@@ -818,6 +807,10 @@ EOF;
 		
 		$phone_login = $_SESSION['phone_login'];
 		$phone_pass = $_SESSION['phone_pass'];
+		$user_id = $_SESSION['user'];
+		$this->astDB->where('user', $user_id);
+		$rslt = $this->astDB->getOne('vicidial_users', 'pass,pass_hash');
+		$user_pass = (strlen($rslt['pass']) > 0) ? $rslt['pass'] : $rslt['pass_hash'];
 		
 		if ($useWebRTC) {
 			$str .= <<<EOF
@@ -832,6 +825,8 @@ EOF;
 	var phone;
 	var phone_login = '$phone_login';
 	var phone_pass = '$phone_pass';
+	var uName = '$user_id';
+	var uPass = '$user_pass';
 	
 	function registerPhone(login, pass) {
 		var configuration = {
@@ -843,6 +838,10 @@ EOF;
 		};
 		
 		phone = new JsSIP.UA(configuration);
+		
+		phone.on('connecting', function(e) {
+			console.log('connecting', e);
+		});
 		
 		phone.on('connected', function(e) {
 			console.log('connected', e);

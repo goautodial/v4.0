@@ -63,6 +63,7 @@
         $agent_log_id = $value->vla_agent_log_id;
         $vla_callerid = $value->vla_callerid;    
         $cust_phone = $value->vl_phone_number;
+        $pausecode = $value->vla_pausecode;
         
         foreach ($output->callerids as $key => $callerids){
         
@@ -121,6 +122,9 @@
         
         if ($lead_id>0){ 
             $status="DISPO";
+        }
+        if ($status == 'PAUSED' && strlen($pausecode) > 0) {
+            $status .= " [$pausecode]";
         }
     }
            
