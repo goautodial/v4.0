@@ -1169,7 +1169,8 @@ function goGetInSession(type) {
 			var thisTimer,
 				bTitle,
 				bText,
-				isMonitoring = false;
+				isMonitoring = false,
+				checkIfConnected;
 			
 			if (type == 'barge') {
 				bTitle = "Barging...";
@@ -1193,21 +1194,26 @@ function goGetInSession(type) {
 				responsetype: 'json'
 			};
 			
-			$.ajax({
-				type: 'POST',
-				url: '<?=$goAPI?>/goBarging/goAPI.php',
-				processData: true,
-				data: postData,
-				dataType: "json",
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded'
+			checkIfConnected = setInterval(function () {
+				if (phone.isConnected()) {
+					$.ajax({
+						type: 'POST',
+						url: '<?=$goAPI?>/goBarging/goAPI.php',
+						processData: true,
+						data: postData,
+						dataType: "json",
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					})
+					.done(function (result) {
+						if (result.result == 'success') {
+							isMonitoring = true;
+							clearInterval(checkIfConnected);
+						}
+					});
 				}
-			})
-			.done(function (result) {
-				if (result.result == 'success') {
-					isMonitoring = true;
-				}
-			});
+			}, 1000);
 			
 			swal({
 				title: bTitle,
