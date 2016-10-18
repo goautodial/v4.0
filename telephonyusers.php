@@ -30,14 +30,23 @@
 
 		<!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-
+		<link href="css/datatables/buttons/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+	
     	<!-- Wizard Form style -->
 		<link href="css/style.css" rel="stylesheet" type="text/css" />
 
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-
+		
+			<!-- FOR EXPORT -->
+			<script src="js/plugins/datatables/bpampuch/pdfmake/vfs_fonts.js" type="text/javascript"></script>
+			<script src="js/plugins/datatables/bpampuch/pdfmake/pdfmake.min.js" type="text/javascript"></script>
+			<script src="js/plugins/datatables/buttons/buttons.html5.min.js" type="text/javascript"></script>
+			<script src="js/plugins/datatables/buttons/buttons.print.min.js" type="text/javascript"></script>
+			<script src="js/plugins/datatables/buttons/buttons.flash.min.js" type="text/javascript"></script>
+			<script src="js/plugins/datatables/buttons/dataTables.buttons.min.js" type="text/javascript"></script>
+			<script src="js/plugins/datatables/jszip.min.js" type="text/javascript"></script>
         <!-- CHOSEN-->
    		<link rel="stylesheet" href="theme_dashboard/chosen_v1.2.0/chosen.min.css">
         <!-- SELECT2-->
