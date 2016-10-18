@@ -390,27 +390,27 @@ $callsperhour = $ui->API_goGetCallsPerHour();
             	<aside class="col-lg-3">
 
         <!--==== DROPPED PERCENTAGE  ==== -->
-                                                <!-- <div class="panel panel-default">
+                                                <div class="panel panel-default">
                                                     <?php
-                                                    //$droppedpercentage = $ui->API_goGetDroppedPercentage();
+                                                    $droppedpercentage = $ui->API_goGetDroppedPercentage();
                                                     //echo ("pre");
                                                     //print_r($droppedpercentage);                                                      
-                                                    //$dropped_percentage = $droppedpercentage->data->getDroppedPercentage; 
+                                                    $dropped_percentage = $droppedpercentage->data->getDroppedPercentage; 
 
-                                                    //if ($dropped_percentage == NULL){
-                                                        //$dropped_percentage = "0";
-                                                    //}                                                   
+                                                    if ($dropped_percentage == NULL){
+                                                        $dropped_percentage = "0";
+                                                    }                                                   
                                                     
-                                                    //if ($dropped_percentage < "10"){
-                                                        //$color = "#5d9cec";
-                                                    //}
-                                                    //if ($dropped_percentage >= "10"){
-                                                        //$color = "#f05050";
-                                                    //}                                                    
-                                                    //if ($dropped_percentage > "100"){
-                                                        //$color = "#f05050";
-                                                        //$dropped_percentage = "100";
-                                                    //}                                                    
+                                                    if ($dropped_percentage < "10"){
+                                                        $color = "#5d9cec";
+                                                    }
+                                                    if ($dropped_percentage >= "10"){
+                                                        $color = "#f05050";
+                                                    }                                                    
+                                                    if ($dropped_percentage > "100"){
+                                                        $color = "#f05050";
+                                                        $dropped_percentage = "100";
+                                                    }                                                    
                                                     ?>
 						   <div class="panel-body">
 								<div class="panel-title">Dropped Calls Percentage</div>
@@ -449,37 +449,37 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 									 <span class="text-dark"><?php echo $dropped_percentage; ?></span>
 								  </p>
 							   </div>
-							</div> -->
+							</div>
 							<!-- END loader widget-->
-						<!-- </div> -->
+						</div>
 
         <!--==== SERVICE LEVEL AGREEMENT ==== -->
-                                                <div class="panel panel-default">
-                                                    <?php
-                                                    $slapercentage = $ui->API_goGetSLAPercentage();     
+                                                <!-- <div class="panel panel-default">
+                                                    //<?php
+                                                    //$slapercentage = $ui->API_goGetSLAPercentage();     
                                                     //echo ("pre");
                                                     //print_r($slapercentage);
-                                                    $sla_percentage = $slapercentage->data[0]->SLA; 
+                                                    //$sla_percentage = $slapercentage->data[0]->SLA; 
                                                     
-                                                    if ($sla_percentage == NULL){
-                                                        $sla_percentage = "100";
-                                                    }                                                    
-                                                    if ($sla_percentage < "95"){
-                                                        $color = "orange";
-                                                    }                                                   
-                                                    if ($sla_percentage >= "95"){
-                                                        $color = "#5d9cec";
-                                                    }
+                                                    //if ($sla_percentage == NULL){
+                                                        //$sla_percentage = "100";
+                                                    //}                                                    
+                                                    //if ($sla_percentage < "95"){
+                                                        //$color = "orange";
+                                                    //}                                                   
+                                                    //if ($sla_percentage >= "95"){
+                                                        //$color = "#5d9cec";
+                                                    //}
                                                     
-                                                    ?>
+                                                    //?>
 						   <div class="panel-body">                                                        
 								<div class="panel-title">Service Level Agreement Percentage</div>
 								<center>
                                                                     <a data-toggle="modal" data-target="#realtime_sla_monitoring">
 									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 										<input type="text"
-										class="knob" value="<?php echo $sla_percentage; ?>" data-width="150" data-height="150" data-padding="21px"
-										data-fgcolor="<?php echo $color; ?>" data-readonly="true" readonly="readonly"
+										class="knob" value="<?php //echo $sla_percentage; ?>" data-width="150" data-height="150" data-padding="21px"
+										data-fgcolor="<?php //echo $color; ?>" data-readonly="true" readonly="readonly"
 										style="
 											width: 49px;
 											height: 100px;
@@ -496,7 +496,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 											line-height: normal;
 											font-family: Arial;
 											text-align: center;
-											color: <?php echo $color; ?>;
+											color: <?php //echo $color; ?>;
 											padding: 0px;
 											-webkit-appearance: none;
 											background: none;
@@ -508,12 +508,12 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 								  <p class="text-muted">
 									 <em class="fa fa-upload fa-fw"></em>
 									 <span>Service Level Agreement:</span>
-									 <span class="text-dark"><?php echo $sla_percentage; ?></span>
+									 <span class="text-dark"><?php //echo $sla_percentage; ?></span>
 								  </p>
 							   </div>                                                        
-							</div>
+							</div> -->
 							<!-- END loader widget-->
-						</div>
+						<!-- </div> -->
 						
 			<!-- ==== TASK ACTIVITIES ===== -->
 			
