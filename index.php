@@ -923,6 +923,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 		  });
 		  /* END JQUERY KNOB */
 			var series = {
+				'PH': 23456,   // Philippines
 				'CA': 11100,   // Canada
 				'DE': 2510,    // Germany
 				'FR': 3710,    // France
@@ -935,38 +936,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 				'US': 839,     // USA
 				'SA': 410      // Saudi Arabia
 			};
-		  $('#world-map').vectorMap({
-			map: 'world_mill_en',
-			backgroundColor: 'transparent',
-            regionStyle: {
-				initial: {
-					'fill':           '#bbbec6',
-					'fill-opacity':   1,
-					'stroke':         'none',
-					'stroke-width':   1.5,
-					'stroke-opacity': 1
-				},
-				hover: {
-					'fill-opacity': 0.8
-				},
-				selected: {
-					fill: 'blue'
-				},
-				selectedHover: {
-				}
-            },
-			focusOn:{ x:0.4, y:0.6, scale: 1},
-            markerStyle: {
-				initial: {
-					fill: '#23b7e5',
-					stroke: '#23b7e5'
-				}
-            },
-            onRegionLabelShow: function(e, el, code) {
-				if ( series && series[code] )
-					el.html(el.html() + ': ' + series[code] + ' visitors');
-            },
-            markers: [
+			var markers = [
 				{ latLng:[41.90, 12.45],  name:'Vatican City'          },
 				{ latLng:[43.73, 7.41],   name:'Monaco'                },
 				{ latLng:[-0.52, 166.93], name:'Nauru'                 },
@@ -982,15 +952,48 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 				{ latLng:[-4.61,55.45],   name:'Seychelles'            },
 				{ latLng:[7.35,134.46],   name:'Palau'                 },
 				{ latLng:[42.5,1.51],     name:'Andorra'               }
-			],
-            series: {
-                regions: [{
-                    values: series,
-                    scale: ['#878c9a'],
-                    normalizeFunction: 'polynomial'
-                }]
-            }
-		  });
+			];
+			
+			$('#world-map').vectorMap({
+				map: 'world_mill_en',
+				backgroundColor: 'transparent',
+				regionStyle: {
+					initial: {
+						'fill':           '#bbbec6',
+						'fill-opacity':   1,
+						'stroke':         'none',
+						'stroke-width':   1.5,
+						'stroke-opacity': 1
+					},
+					hover: {
+						'fill-opacity': 0.8
+					},
+					selected: {
+						fill: 'blue'
+					},
+					selectedHover: {
+					}
+				},
+				focusOn:{ x:0.4, y:0.6, scale: 1},
+				markerStyle: {
+					initial: {
+						fill: '#23b7e5',
+						stroke: '#23b7e5'
+					}
+				},
+				onRegionLabelShow: function(e, el, code) {
+					if ( series && series[code] )
+						el.html(el.html() + ': ' + series[code] + ' visitors');
+				},
+				markers: markers,
+				series: {
+					regions: [{
+						values: series,
+						scale: ['#878c9a'],
+						normalizeFunction: 'polynomial'
+					}]
+				}
+			});
 		});
 </script>
 	
