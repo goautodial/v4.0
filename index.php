@@ -64,6 +64,7 @@ $db = new \creamy\DbHandler();
 $statsOk = $db->weHaveSomeValidStatistics();
 $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 
+$goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 ?>
 <html>
     <head>
@@ -133,7 +134,7 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
-			})
+			});
 		</script>
 	<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
 	<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
@@ -571,28 +572,30 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 							   <div data-height="230" data-scrollable="yes" class="list-group">
 								  <!-- START list group item-->
 
-                                                                                <span id="refresh_agents_monitoring_summary"></span> 
+                                    <span id="refresh_agents_monitoring_summary"></span> 
 
 								  <!-- END list group item-->
 							   </div>
 							   <!-- END list group-->
 							   <!-- START panel footer-->
 							   <div class="panel-footer clearfix">
-                                                                <a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" class="pull-right">
-                                                                    <medium>View more</medium> <em class="fa fa-arrow-right"></em>
-                                                                </a>
+									<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" class="pull-right">
+										<medium>View more</medium> <em class="fa fa-arrow-right"></em>
+									</a>
 							   </div>
 							   <!-- END panel-footer-->
 							</div>
 						</div>
 						<!-- End Agent Monitoring Summary -->
 			<!--==== VECTOR MAP LOADER ======-->
-						<div ng-controller="VectorMapController" class="col-lg-9">
+						<div class="col-lg-9">
 							<div class="panel panel-transparent">
-							   <div data-vector-map="" data-height="450" data-scale='0' data-map-name="world_mill_en"></div>
+							   <!--<div data-vector-map="" data-height="450" data-scale='0' data-map-name="world_mill"></div>-->
+							   <div id="world-map" style="height: 390px"></div>
 							</div>
-						 </div>
+						</div>
 
+						<br>
 					</div>
 					
 					<?php print $ui->hooksForDashboard(); ?>
@@ -764,6 +767,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             <span class="label label-info" id="modal-campaign"></span> 
                                             <!-- <span class="label label-info" id="modal-userlevel-vu"></span> -->
                                             <span class="label label-success" id="modal-usergroup-vu"></span>
+                                            <span class="label label-primary" id="modal-conf-exten"></span>
+                                            <span class="hidden" id="modal-server-ip"></span>
                                         </center> 
                                             <div class="responsive hidden">
                                                     <table class="table table-striped table-hover" id="view_agent_information_table" style="width: 100%">
@@ -787,10 +792,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             </a>
 											
 											<div class="pull-left">
-												<a href="#" onClick="goGetInSession('barge');">
+												<a href="#" onClick="goGetInSession('BARGE');">
 													<button class="btn btn-success btn-sm">Barge &nbsp;<i class="fa fa-microphone"></i></button>
 												</a>
-												<a href="#" onClick="goGetInSession('listen');">
+												<a href="#" onClick="goGetInSession('MONITOR');">
 													<button class="btn btn-primary btn-sm">Listen &nbsp;<i class="fa fa-microphone-slash"></i></button>
 												</a>
 											</div>
@@ -917,11 +922,11 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			}
 		  });
 		  /* END JQUERY KNOB */
+		  $('#world-map').vectorMap({map: 'world_mill_en'});
 		});
 </script>
 	
 <!--========== REFRESH DIVS ==============-->
-	<!--<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>-->
 	<!-- <script src="js/load_statusboxes.js"></script> -->
         <script src="js/dashboardv4.js"></script>
 	<!-- <script src="js/load_clusterstatus.js"></script> -->
@@ -1098,6 +1103,8 @@ function clear_agent_form(){
     $('#modal-usergroup-vu').html("");     
     //$('#modal-userlevel-vu').html("");
     $('#modal-phonelogin-vu').html("");
+	$('#modal-conf-exten').html("");
+	$('#modal-server-ip').html("");
     //$('#modal-custphone').html("");
     //$('#modal-voicemail').html("");   
 }
@@ -1150,25 +1157,74 @@ function goGetModalUsernameValue(){
 }
 
 function goGetInSession(type) {
-	if (typeof phone !== 'undefined') {
-		var who = document.getElementById("modal-username").innerText;
-		var thisTimer;
+	if (phone_login.length > 0 && phone_pass.length > 0) {
+		registerPhone(phone_login, phone_pass);
 		
-		if (phone_login.length > 0 && phone_pass.length > 0) {
+		if (typeof phone !== 'undefined') {
+			phone.start();
+			
+			var who = document.getElementById("modal-username").innerText;
+			var agent_session_id = document.getElementById("modal-conf-exten").innerText;
+			var server_ip = document.getElementById("modal-server-ip").innerText;
+			var thisTimer,
+				bTitle,
+				bText,
+				isMonitoring = false;
+			
 			if (type == 'barge') {
-				swal({
-					title: "Barging...",
-					text: "You're currently barging "+who+"...<br><h1 id='bTimer' class='text-center'>00:00:00</h1>",
-					html: true,
-					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "Disconnect",
-					closeOnConfirm: false
-				}, function() {
-					clearInterval(thisTimer);
-					swal.close();
-				});
-				
-				thisTimer = setInterval(function() {
+				bTitle = "Barging...";
+				bText = "You're currently barging "+who+"...";
+			} else {
+				bTitle = "Listening...";
+				bText = "You're currently listening to "+who+"...";
+			}
+			
+			var postData = {
+				goAction: 'goMonitorAgent',
+				goUser: uName,
+				goPass: uPass,
+				goAgent: who,
+				goPhoneLogin: phone_login,
+				goSource: 'realtime',
+				goFunction: 'blind_monitor',
+				goSessionID: agent_session_id,
+				goServerIP: server_ip,
+				goStage: type,
+				responsetype: 'json'
+			};
+			
+			$.ajax({
+				type: 'POST',
+				url: '<?=$goAPI?>/goBarging/goAPI.php',
+				processData: true,
+				data: postData,
+				dataType: "json",
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				}
+			})
+			.done(function (result) {
+				if (result.result == 'success') {
+					isMonitoring = true;
+				}
+			});
+			
+			swal({
+				title: bTitle,
+				text: bText + "<br><h1 id='bTimer' class='text-center'>00:00:00</h1>",
+				html: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "Disconnect",
+				closeOnConfirm: false
+			}, function() {
+				clearInterval(thisTimer);
+				isMonitoring = false;
+				phone.stop();
+				swal.close();
+			});
+			
+			thisTimer = setInterval(function() {
+				if (phone.isConnected() && isMonitoring) {
 					var bt = $("#bTimer").html().split(':');
 					var bHour = parseInt(bt[0]);
 					var bMin = parseInt(bt[1]);
@@ -1187,20 +1243,14 @@ function goGetInSession(type) {
 					if (bSec < 10) {bSec = "0"+bSec;}
 					
 					$("#bTimer").html(bHour+":"+bMin+":"+bSec);
-				}, 1000);
-			} else {
-				swal({
-					title: "Listening...",
-					text: "You're currently listening to "+who+"...",
-					html: true
-				});
-			}
-		} else {
-			swal({
-				title: "ERROR",
-				text: "You're account doesn't have a phone login or pass set..."
-			});
+				}
+			}, 1000);
 		}
+	} else {
+		swal({
+			title: "ERROR",
+			text: "You're account doesn't have a phone login or pass set..."
+		});
 	}
 }
 
@@ -1239,6 +1289,8 @@ function goGetInSession(type) {
                                         //$('#modal-userlevel-vu').html(JSONObject.data[0].vu_user_level);                                        
                                         $('#modal-phonelogin-vu').html(JSONObject.data[0].vu_phone_login);
                                         $('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
+                                        $('#modal-conf-exten').html(JSONObject.data[0].vla_conf_exten);
+                                        $('#modal-server-ip').html(JSONObject.data[0].vla_server_ip);
                                         //$('#modal-campaign_cid').html(JSONObject.data[0].campaign_cid);
                                         
                                         var avatar = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" :size="160"></avatar>';
@@ -1420,6 +1472,8 @@ function goGetInSession(type) {
    <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
    <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-world-mill-en.js"></script>
    <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-us-mill-en.js"></script>
+   
+   <!--<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>-->
    
    <!-- CLASSY LOADER-->
    <script src="theme_dashboard/js/jquery-classyloader/js/jquery.classyloader.min.js"></script>
