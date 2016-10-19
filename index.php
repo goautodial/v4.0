@@ -337,12 +337,12 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 								<div class="text">Answered Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_DroppedCalls"></span></div>
-								<div class="text">Dropped Calls</div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_InboundCallsToday"></span></div>
+								<div class="text">Inbound Calls Today</div>
 	                	</div>	                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalCalls"></span></div>
-								<div class="text" style="font-size: small;">Total Calls</div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_OutboundCallsToday"></span></div>
+								<div class="text" style="font-size: small;">Outbound Calls Today</div>
 	                	</div>
 	                </div>
                 </div>
@@ -445,8 +445,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 							   <div class="panel-footer">
 								  <p class="text-muted">
 									 <em class="fa fa-upload fa-fw"></em>
-									 <span>Total Dropped Percentage</span>
-									 <span class="text-dark"><?php echo $dropped_percentage; ?></span>
+									 <span>Dropped Calls: </span>
+									 <span class="text-dark" id="refresh_DroppedCalls"></span>
 								  </p>
 							   </div>
 							</div>
