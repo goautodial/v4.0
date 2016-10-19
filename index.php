@@ -337,12 +337,12 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 								<div class="text">Answered Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_DroppedCalls"></span></div>
-								<div class="text">Dropped Calls</div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalInCalls"></span></div>
+								<div class="text">Inbound Calls Today</div>
 	                	</div>	                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalCalls"></span></div>
-								<div class="text" style="font-size: small;">Total Calls</div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalOutCalls"></span></div>
+								<div class="text" style="font-size: small;">Outbound Calls Today</div>
 	                	</div>
 	                </div>
                 </div>
@@ -445,8 +445,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 							   <div class="panel-footer">
 								  <p class="text-muted">
 									 <em class="fa fa-upload fa-fw"></em>
-									 <span>Total Dropped Percentage</span>
-									 <span class="text-dark"><?php echo $dropped_percentage; ?></span>
+									 <span>Dropped Calls: </span>
+									 <span class="text-dark" id="refresh_DroppedCalls"></span>
 								  </p>
 							   </div>
 							</div>
@@ -1464,6 +1464,8 @@ function goGetInSession(type) {
 			load_AnsweredCalls();
 			load_DroppedCalls();
 			load_TotalCalls();
+			load_TotalInboundCalls();
+			load_TotalOutboundCalls();
 			load_LiveOutbound();
                             
 	// ---- clusterstatus table
@@ -1503,6 +1505,8 @@ function goGetInSession(type) {
 		setInterval(load_AnsweredCalls,5000);
 		setInterval(load_DroppedCalls,5000);
 		setInterval(load_TotalCalls,5000);
+		setInterval(load_TotalInboundCalls,5000);
+		setInterval(load_TotalOutboundCalls,5000);
 		setInterval(load_LiveOutbound,5000);
 		
 		// ... cluster status table ...
