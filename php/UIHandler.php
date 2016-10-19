@@ -1555,7 +1555,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 		$footer = '<footer class="main-footer">
 			<div class="pull-right hidden-xs">
-				<b>Version</b> '.$version.'</div><strong>Copyright &copy; '.date("Y").' <a href="http://www.goautodial.com/">GoAutoDial Inc.</a> All rights reserved.
+				<b>Version</b> '.$version.'</div><strong>Copyright &copy; '.date("Y").' <a href="http://www.goautodial.com/">GOautodial Inc.</a> All rights reserved.
 			</div>
 			</footer>';
 		$footer .= '			<!-- Modal -->
