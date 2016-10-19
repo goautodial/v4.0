@@ -1464,6 +1464,8 @@ function goGetInSession(type) {
 			load_AnsweredCalls();
 			load_DroppedCalls();
 			load_TotalCalls();
+			load_TotalInboundCalls();
+			load_TotalOutboundCalls();
 			load_LiveOutbound();
                             
 	// ---- clusterstatus table
@@ -1503,6 +1505,8 @@ function goGetInSession(type) {
 		setInterval(load_AnsweredCalls,5000);
 		setInterval(load_DroppedCalls,5000);
 		setInterval(load_TotalCalls,5000);
+		setInterval(load_TotalInboundCalls,5000);
+		setInterval(load_TotalOutboundCalls,5000);
 		setInterval(load_LiveOutbound,5000);
 		
 		// ... cluster status table ...
