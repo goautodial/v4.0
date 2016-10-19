@@ -337,11 +337,11 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 								<div class="text">Answered Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_InboundCallsToday"></span></div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalInCalls"></span></div>
 								<div class="text">Inbound Calls Today</div>
 	                	</div>	                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_OutboundCallsToday"></span></div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalOutCalls"></span></div>
 								<div class="text" style="font-size: small;">Outbound Calls Today</div>
 	                	</div>
 	                </div>
