@@ -430,7 +430,7 @@ if (isset($_GET["message"])) {
 							<!-- Card body -->
 						        <div class="card-body custom-tabpanel">
 				                	<div role="tabpanel" class="panel panel-transparent">
-									  <ul role="tablist" class="nav nav-tabs nav-justified">
+									  <ul id="agent_tablist" role="tablist" class="nav nav-tabs nav-justified">
 									  <!-- Nav task panel tabs-->
 										 <li role="presentation" class="active">
 											<a href="#contact_info" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
@@ -455,7 +455,7 @@ if (isset($_GET["message"])) {
 									  </ul>
 									</div>
 									<!-- Tab panes-->
-									<div class="tab-content bg-white">
+									<div id="agent_tabs" class="tab-content bg-white">
 										<div id="activity" role="tabpanel" class="tab-pane hidden">
 											<table class="table table-striped">
 							                    <tr>

@@ -57,6 +57,10 @@
 	$postfields["custom_fields_launch"]			= $_POST["custom_fields_launch"];
 	$postfields["campaign_type"]				= $_POST["campaign_type"];
 	$postfields["custom_fields_list_id"]		= $_POST["custom_fields_list_id"];
+	$postfields["url_tab_first_title"]			= $_POST["url_tab_first_title"];
+	$postfields["url_tab_first_url"]			= $_POST["url_tab_first_url"];
+	$postfields["url_tab_second_title"]			= $_POST["url_tab_second_title"];
+	$postfields["url_tab_second_url"]			= $_POST["url_tab_second_url"];
 
 	if(is_array($_POST["closer_campaigns"])){
 		$closerCampaigns = "";
