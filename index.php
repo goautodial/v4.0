@@ -192,7 +192,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	if($outbound_calls == NULL || $outbound_calls == 0){
 		$outbound_calls = 0;
 	}
-        if($outbound_calls_today == NULL || $outbound_calls_today == 0){
+    if($outbound_calls_today == NULL || $outbound_calls_today == 0){
 		$outbound_calls_today = 0;
 	}	
 	if($inbound_calls == NULL || $inbound_calls == 0){
@@ -211,10 +211,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 //die("dd");	
 ?>		
                         <!-- Page title -->
-                        <?php
-                                $lh->translateText("Dashboard");
-                        ?>
-                        <small class="ng-binding animated fadeInUpShort">Welcome to Goautodial  !</small>
+                        <?=$lh->translateText("Dashboard")?>
+                        <small class="ng-binding animated fadeInUpShort">Welcome to GOautodial !</small>
 						
 					<!--
                     <ol class="breadcrumb">
