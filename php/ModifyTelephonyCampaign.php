@@ -65,9 +65,9 @@
 	if(is_array($_POST["closer_campaigns"])){
 		$closerCampaigns = "";
 		foreach($_POST["closer_campaigns"] as $closercamp){
-			$closerCampaigns .= $closercamp." - ";
+			$closerCampaigns .= $closercamp." ";
 		}
-		$closerCampaigns = rtrim($closerCampaigns, " - ");
+		$closerCampaigns .= "- ";
 	}else{
 		$closerCampaigns = $closer_campaigns;
 	}
@@ -75,9 +75,9 @@
 	if(is_array($_POST["xfer_groups"])){
 		$xfergroups = "";
 		foreach($_POST["xfer_groups"] as $xfergrp){
-			$xfergroups .= $xfergrp." - ";
+			$xfergroups .= $xfergrp." ";
 		}
-		$xfergroups = rtrim($xfergroups, " - ");
+		$xfergroups .= "- ";
 	}else{
 		$xfergroups = $xfer_groups;
 	}

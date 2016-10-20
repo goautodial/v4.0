@@ -1203,7 +1203,7 @@ $lists = $ui->API_goGetAllLists();
 															<div class="col-sm-9 mb">
 																<?php for($i=0;$i<=count($ingroups->group_id);$i++) { ?>
 																	<?php if(!empty($ingroups->group_id[$i])) {?>
-																		<input type="checkbox" name="closer_campaigns[]" value="<?php echo $ingroups->group_id[$i]?>" <?php if(in_array($ingroups->group_id[$i],explode(" - ", $campaign->data->closer_campaigns))) echo "checked";?>>&nbsp;<?php echo $ingroups->group_id[$i]." - ".$ingroups->group_name[$i]; ?><br />
+																		<input type="checkbox" name="closer_campaigns[]" value="<?php echo $ingroups->group_id[$i]?>" <?php if(in_array($ingroups->group_id[$i],explode(" ", $campaign->data->closer_campaigns))) echo "checked";?>>&nbsp;<?php echo $ingroups->group_id[$i]." - ".$ingroups->group_name[$i]; ?><br />
 																	<?php } ?>
 																<?php } ?>
 															</div>
@@ -1213,7 +1213,7 @@ $lists = $ui->API_goGetAllLists();
 															<div class="col-sm-9 mb">
 																<?php for($i=0;$i<=count($ingroups->group_id);$i++) { ?>
 																	<?php if(!empty($ingroups->group_id[$i])) {?>
-																		<input type="checkbox" name="xfer_groups[]" value="<?php echo $ingroups->group_id[$i]?>"<?php if(in_array($ingroups->group_id[$i],explode(" - ", $campaign->data->xfer_groups))) echo "checked";?>>&nbsp;<?php echo $ingroups->group_id[$i]." - ".$ingroups->group_name[$i]; ?><br />
+																		<input type="checkbox" name="xfer_groups[]" value="<?php echo $ingroups->group_id[$i]?>"<?php if(in_array($ingroups->group_id[$i],explode(" ", $campaign->data->xfer_groups))) echo "checked";?>>&nbsp;<?php echo $ingroups->group_id[$i]." - ".$ingroups->group_name[$i]; ?><br />
 																	<?php } ?>
 																<?php } ?>
 															</div>
