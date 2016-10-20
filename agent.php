@@ -32,6 +32,8 @@ require_once('./php/LanguageHandler.php');
 require_once('./php/DbHandler.php');
 require('./php/Session.php');
 
+define('GO_BASE_DIRECTORY', str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(__FILE__)));
+
 // initialize structures
 $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
@@ -92,6 +94,10 @@ if (isset($_GET["message"])) {
 		<!-- SnackbarJS -->
         <link href="css/snackbar/snackbar.min.css" rel="stylesheet" type="text/css" />
         <link href="css/snackbar/material.css" rel="stylesheet" type="text/css" />
+		<!-- bootstrap wysihtml5 - text editor -->
+		<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+		<!-- multiple emails plugin -->
+		<link href="css/multiple-emails/multiple-emails.css" rel="stylesheet" type="text/css" />
         <!-- Creamy style -->
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
         <!-- Customized Style -->
@@ -103,7 +109,14 @@ if (isset($_GET["message"])) {
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <script src="js/jquery.validate.min.js" type="text/javascript"></script>
-		
+		<!-- Bootstrap WYSIHTML5 -->
+		<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+		<!-- Multi file upload -->
+		<script src="js/plugins/multifile/jQuery.MultiFile.min.js" type="text/javascript"></script>
+		<!-- Multiple emails -->
+		<script src="js/plugins/multiple-emails/multiple-emails.js" type="text/javascript"></script>
+		<!-- Print page -->
+		<script src="js/plugins/printThis/printThis.js" type="text/javascript"></script>
         <!-- Creamy App -->
         <!--<script src="js/app.min.js" type="text/javascript"></script>-->
 		
@@ -384,6 +397,9 @@ if (isset($_GET["message"])) {
 			}
 			::-webkit-scrollbar { 
 				display: none;
+			}
+			.mail-preloader span.dots div {
+				background-color: #2196F3;
 			}
 		</style>
     </head>
@@ -835,6 +851,12 @@ if (isset($_GET["message"])) {
 										<div class="table-responsive mailbox-messages">
 											<?php print $ui->getMessagesFromFolderAsTable($user->getUserId(), $folder); ?>
 										</div><!-- /.mail-box-messages -->
+										
+										<div class="mail-preloader" style="margin: 30px 0 10px; text-align: center; display: none;">
+											<span class="dots">
+												<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
+											</span>
+										</div>
 									</div><!-- /.box-body -->
 									<div class="box-footer no-padding">
 										<div class="mailbox-controls">
@@ -856,19 +878,19 @@ if (isset($_GET["message"])) {
 												<?php print $ui->generateSendToUserSelect($user->getUserId(), false, null, $reply_user); ?>
 												<label for="touserid">Recipients</label>
 											</div>
-											<div class="form-group">
+											<div class="form-group hidden">
 												<input id="external_recipients" name="external_recipients" class="form-control" placeholder="<?php $lh->translateText("external_message_recipients"); ?>"/>
 												<label for="external_recipients">External Recipients</label>
 											</div>
 											<div class="form-group">
-												<input id="subject" name="subject" class="form-control required" placeholder="<?php $lh->translateText("subject"); ?>:" value="<?php print $reply_subject; ?>"/>
+												<input id="subject" name="subject" class="form-control required" value="<?php print $reply_subject; ?>"/>
 												<label for="subject">Subject</label>
 											</div>
 											<div class="form-group">
-												<textarea id="compose-textarea" name="message" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin required" style="height: 200px" placeholder="<?php $lh->translateText("write_your_message_here"); ?>"><?php print $reply_text; ?></textarea>
-												<label for="compose-textarea">Message</label>
+												<textarea id="compose-textarea" name="message" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea required" style="height: 200px" placeholder="<?php $lh->translateText("write_your_message_here"); ?>"><?php print $reply_text; ?></textarea>
+												<!--<label for="compose-textarea">Message</label>-->
 											</div>
-											<div class="form-group">
+											<div class="form-group" style="padding: 0px;">
 												<div class="btn btn-default btn-file">
 													<i class="fa fa-paperclip"></i> <?php $lh->translateText("attachment"); ?>
 													<input type="file" class="attachment" name="attachment[]"/>
@@ -883,13 +905,54 @@ if (isset($_GET["message"])) {
 										</div>
 										<div class="box-footer">
 											<div class="pull-right">
-												<button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> <?php $lh->translateText("send"); ?></button>
+												<button class="btn btn-primary" id="compose-mail-submit"><i class="fa fa-envelope-o"></i> <?php $lh->translateText("send"); ?></button>
 											</div>
 											<button class="btn btn-default" id="compose-mail-discard"><i class="fa fa-times"></i> <?php $lh->translateText("discard"); ?></button>
 											<!-- Module hook footer -->
 											<?php print $ui->getComposeMessageFooter(); ?>
 										</div><!-- /.box-footer -->
 									</form> <!-- /.form -->
+								</div><!-- /. box -->
+							</div><!-- /.col -->
+							
+							<div id="mail-readmail" class="col-md-9" style="display: none;">
+								<div class="box box-default" id="message-full-box">
+									<div class="box-header with-border non-printable">
+										<h3 class="box-title"><?php print $lh->translationFor("read_message"); ?></h3>
+									</div><!-- /.box-header -->
+									<div class="box-body no-padding">
+										<div class="mailbox-read-info">
+											<h3 id="read-message-subject"></h3>
+											<h5><?php print $lh->translationFor("from"); ?> <span id="read-message-from"></span>
+											<span id="read-message-date" class="mailbox-read-time pull-right"></span></h5>
+										</div><!-- /.mailbox-read-info -->
+										<div class="mailbox-controls with-border text-center non-printable">
+											<div class="btn-group">
+												<button class="btn btn-default btn-sm mail-delete" style="font-size: 12px;" data-toggle="tooltip" title="Delete"><i class="fa fa-trash-o"></i></button>
+												<button class="btn btn-default btn-sm mail-reply hidden" data-toggle="tooltip" title="Reply"><i class="fa fa-reply"></i></button>
+												<button class="btn btn-default btn-sm mail-forward hidden" data-toggle="tooltip" title="Forward"><i class="fa fa-share"></i></button>
+											</div><!-- /.btn-group -->
+											<button class="btn btn-default btn-sm mail-print" data-toggle="tooltip" title="Print"><i class="fa fa-print"></i></button>
+										</div><!-- /.mailbox-controls -->
+										<div class="mailbox-read-message" id="mailbox-message-text">
+											&nbsp;
+										</div><!-- /.mailbox-read-message -->
+										<div class="mail-preloader non-printable" style="margin: 30px 0 10px; text-align: center; display: none;">
+											<span class="dots">
+												<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
+											</span>
+										</div>
+									</div><!-- /.box-body -->
+									<!-- Attachments (if any) -->
+									<div id="read-message-attachment"></div>
+									<div class="box-footer">
+										<div class="pull-right">
+											<button class="btn btn-default mail-reply hidden"><i class="fa fa-reply"></i> Reply</button>
+											<button class="btn btn-default mail-forward hidden"><i class="fa fa-share"></i> Forward</button>
+										</div>
+										<button class="btn btn-default mail-delete"><i class="fa fa-trash-o"></i> Delete</button>
+										<button class="btn btn-default mail-print"><i class="fa fa-print"></i> Print</button>
+									</div><!-- /.box-footer -->
 								</div><!-- /. box -->
 							</div><!-- /.col -->
 						</div><!-- /.row -->
@@ -1591,6 +1654,8 @@ if (isset($_GET["message"])) {
 		<script src="adminlte/js/app.min.js"></script>
 		
 		<script type="text/javascript">
+			$("#compose-textarea").wysihtml5();
+			
 			var folder = <?php print $folder; ?>;
 			var selectedAll = false;
 			var selectedMessages = [];
@@ -1651,13 +1716,25 @@ if (isset($_GET["message"])) {
 			    });
 				
 				$("li a[href^='messages.php?']").click(function(e) {
-					var thisFolder = e.target.search.replace("?", "");
-					thisFolder = thisFolder.split("=");
-					updateMessages(<?=$user->getUserId()?>, thisFolder[1], true);
+					if (typeof e.target.search !== 'undefined') {
+						var thisFolder = e.target.search.replace("?", "");
+						thisFolder = thisFolder.split("=");
+						updateMessages(<?=$user->getUserId()?>, thisFolder[1]);
+					}
 				});
-			
-			    <?php
-			    // mark messages as favorite.
+				
+				$("td a[href^='readmail.php?']").click(function(e) {
+					if (typeof e.target.search !== 'undefined') {
+						var thisURI = e.target.search.replace("?", "").split("&");
+						thisFolder = thisURI[0].split("=");
+						thisMessage = thisURI[1].split("=");
+						readMessage(thisMessage[1], thisFolder[1]);
+					}
+				});
+				
+				
+				<?php
+				// mark messages as favorite.
 				$unableFavoriteCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_favorites"));
 				print $ui->mailboxAction(
 					"messages-mark-as-favorite", 											// classname
@@ -1688,33 +1765,33 @@ if (isset($_GET["message"])) {
 				?>
 				
 				<?php
-			    // send to junk mail
-				//$junkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
-				//	$lh->translationFor("messages_sent_trash").'"';
-				//print $ui->mailboxAction(
-				//	"messages-send-to-junk",					// classname
-				//	"php/JunkMessages.php",						// php to request
-				//	"updateMessages(".$user->getUserId().", folder); swal($junkText);");		// result js
+				// send to junk mail
+				$junkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
+					$lh->translationFor("messages_sent_trash").'"';
+				print $ui->mailboxAction(
+					"messages-send-to-junk",					// classname
+					"php/JunkMessages.php",						// php to request
+					"updateMessages(".$user->getUserId().", folder); swal($junkText);");		// result js
 				?>
 				
 				<?php
-			    // restore mail from junk
-				//$unjunkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
-				//	$lh->translationFor("messages_recovered_trash").'"';
-				//print $ui->mailboxAction(
-				//	"messages-restore-message",					// classname
-				//	"php/UnjunkMessages.php",					// php to request
-				//	"updateMessages(".$user->getUserId().", folder); swal($unjunkText);");		// result js
+				// restore mail from junk
+				$unjunkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
+					$lh->translationFor("messages_recovered_trash").'"';
+				print $ui->mailboxAction(
+					"messages-restore-message",					// classname
+					"php/UnjunkMessages.php",					// php to request
+					"updateMessages(".$user->getUserId().", folder); swal($unjunkText);");		// result js
 				?>
 				
 				<?php
-			    // delete messages.
-				//$unableDeleteCode = $ui->calloutErrorMessage($lh->translationFor("unable_delete_messages"));
-				//print $ui->mailboxAction(
-				//	"messages-delete-permanently", 											// classname
-				//	"php/DeleteMessages.php", 												// php to request
-				//	$ui->reloadLocationJS(), 												// success js
-				//	$ui->fadingInMessageJS($unableDeleteCode, "messages-message-box")); 	// failure js
+				// delete messages.
+				$unableDeleteCode = $ui->calloutErrorMessage($lh->translationFor("unable_delete_messages"));
+				print $ui->mailboxAction(
+					"messages-delete-permanently", 											// classname
+					"php/DeleteMessages.php", 												// php to request
+					"updateMessages(".$user->getUserId().", folder);", 												// success js
+					$ui->fadingInMessageJS($unableDeleteCode, "messages-message-box")); 	// failure js
 				?>
 				
 				$("#edit-profile").click(function(){
@@ -1770,14 +1847,154 @@ if (isset($_GET["message"])) {
 				
 				});
 				
+				// Start Mail Composer
+				// external recipients
+				$('#external_recipients').multiple_emails();
+	
+				// attachments
+				$('.attachment').MultiFile({
+					max: 5,
+					//accept: 'jpg|jpeg|png|gif|pdf|doc|pages|numbers|xls|docx|xlsx|mp4|mpg|mpeg|avi|m4v|txt|rdf|mp3|ogg|zip|html',
+					list: '#attachment-list',
+					STRING: {
+						remove: '<i class="fa fa-times"></i>'
+					}
+				});
+				
+				// send a message
+				$("#send-message-form").validate({
+					errorElement: "small",
+					rules: {
+						mimeType: "multipart/form-data",
+						subject: "required",
+						message: "required",
+						touserid: {
+							required: true,
+							min: 1,
+							number: true
+						}
+					},
+					messages: {
+						touserid: "<?php $lh->translateText("you_must_choose_user"); ?>",
+					},
+					submitHandler: function() {
+						// file uploads only allowed on modern browsers (sorry IE < 10).
+						var form = $("#send-message-form");
+						var formdata = false;
+						if (window.FormData){
+							formdata = new FormData(form[0]);
+						}
+						<?php
+							$okMsg = $ui->dismissableAlertWithMessage($lh->translationFor("message_successfully_sent"), true, false);
+							$koMsg = $ui->dismissableAlertWithMessage($lh->translationFor("unable_send_message"), false, true);
+						?>
+						//submit the form
+						$("#compose-mail-results").html();
+						$("#compose-mail-results").hide();
+						$.ajax({
+							url         : 'php/SendMessage.php',
+							data        : formdata ? formdata : form.serialize(),
+							cache       : false,
+							contentType : false,
+							processData : false,
+							type        : 'POST',
+							success     : function(data, textStatus, jqXHR){
+								if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
+									$("#compose-mail-results").html('<?php print $okMsg; ?>');
+									$("#compose-mail-results").fadeIn(); //show confirmation message
+									$("#send-message-form")[0].reset();
+									$(".MultiFile-label").remove();
+									
+									setTimeout(function() {
+										$("#compose-mail-results").fadeOut();
+									}, 3000);
+								} else { // failure
+									$("#compose-mail-results").html('<?php print $koMsg; ?>');
+									$("#compose-mail-results").fadeIn(); //show confirmation message
+								}
+							}, error: function(jqXHR, textStatus, errorThrown) {
+								$("#compose-mail-results").html('<?php print $koMsg; ?>');
+								$("#compose-mail-results").fadeIn(); //show confirmation message
+							}
+						});
+	
+						return false; //don't let the form refresh the page...
+					}					
+				});
+				
+				// discard message
+				$('#compose-mail-discard').click(function(e) {
+					e.preventDefault();
+					$("#mail-composemail").hide();
+					$("#mail-messages").show();
+					updateMessages(<?=$user->getUserId()?>, 0);
+				});
+				// End Mail Composer
+				
+				// Start Read Messages
+				// print.
+				$('.mail-print').click(function() {
+					var headerLogo = $("header.main-header img").prop('src');
+					$('#message-full-box').printThis({
+						loadCSS: [
+							"<?php print GO_BASE_DIRECTORY; ?>/css/printpage.css"
+						],
+						importCSS: false,
+						pageTitle: $("#read-message-subject").html(),
+						header: '<div class="print-logo"><img src="'+headerLogo+'" height="32"></div>'
+					});
+				});
+				
+				<?php 
+				// delete
+				print $ui->mailboxAction(
+					"mail-delete", 																		// class name
+					"php/DeleteMessages.php", 															// POST Request URL
+					"$('#mail-readmail').hide(); $('#mail-messages').show(); updateMessages(".$user->getUserId().", folder); swal('".$lh->translationFor("message_successfully_deleted")."');", 													// Success JS				
+					$ui->showCustomErrorMessageAlertJS($lh->translationFor("unable_delete_messages")),  // Failure JS
+					null,																				// custom params 
+					true,																				// confirmation ?
+					true);																				// check selected messages?
+				?>
+				
+				// reply
+				$('.mail-reply').click(function (e) {
+					var text = $('#mailbox-message-text').html();
+					<?php $replySubject = urlencode("Re: ".$message["subject"]); ?>
+					window.location.href = "composemail.php?reply_text="+responseEncodedMessageText(text, "<?php print $fromUser["name"]; ?>")+"&reply_subject=<?php print $replySubject; ?>&reply_user=<?php print $fromUser["id"]; ?>";
+				});
+				
+				// forward
+				$('.mail-forward').click(function (e) {
+					var text = $('#mailbox-message-text').html();
+					<?php $fwdSubject = urlencode("Fwd: ".$message["subject"]); ?>
+					window.location.href = "composemail.php?reply_subject=<?php print $fwdSubject; ?>&reply_text="+responseEncodedMessageText(text, "<?php print $fromUser["name"]; ?>");
+				});
+				
+				// generates the reply-to or forward message text. This text will be suitable for placing in the reply-to/forward content
+				// of a message. It will be:
+				// 1. stripped of all html entities
+				// 2. Added --- Original message from "replyUser" --- 
+				// 3. cut down to 512 characters (added ...)
+				// 4. wrapped in <pre>...</pre>
+				// 5. encoded to be passed as URI
+				function responseEncodedMessageText(text, replyUser) {
+					result = text.trim().substr(0, 512);
+					result = "-------- <?php $lh->translateText("original_message_from"); ?> "+replyUser+" --------\n"+result;
+					result = "<br/><br/><pre>"+result+"</pre>";
+					result = encodeURI(result);
+					return result;				
+				}
+				// End Read Messages
+				
 				/**
 				 * Deletes a customer
 				 */
-				 $("#modifyCustomerDeleteButton").click(function (e) {
+				$("#modifyCustomerDeleteButton").click(function (e) {
 					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
 					e.preventDefault();
 					if (r === true) {
-						var customerid = $(this).attr('href');
+						//var customerid = $(this).attr('href');
 						$.post("./php/DeleteContact.php", $("#modifycustomerform").serialize() ,function(data){
 							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
 								alert("<?php $lh->translateText("Contact Successfully Deleted"); ?>");
@@ -1786,7 +2003,7 @@ if (isset($_GET["message"])) {
 							else { alert ("<?php $lh->translateText("Unable to Delete Contact"); ?>: "+data); }
 						});
 					}
-				 });
+				});
 				
 				$('.form-control').on('focus blur', function (e) {
 					$(this).parents('.label-floating').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
@@ -1796,12 +2013,17 @@ if (isset($_GET["message"])) {
 					var thisVal = $(this).val();
 					$(this).parents('.label-floating').toggleClass('focused', (thisVal.length > 0));
 				});
+				
+				setInterval(function() {
+					if (!$("#contents-messages").is(':visible')) {
+						updateMessages(<?=$user->getUserId()?>, 0);
+					}
+				}, 1000);
 			});
 			
-			function updateMessages(user_id, folder_id, controls) {
-				if (typeof controls === 'undefined') {
-					controls = false;
-				}
+			function updateMessages(user_id, folder_id) {
+				$("#mail-messages div.mailbox-messages").hide();
+				$(".mail-preloader").show();
 				
 				var postData = {
 					module_name: 'GOagent',
@@ -1809,6 +2031,7 @@ if (isset($_GET["message"])) {
 					user_id: user_id,
 					folder: folder_id
 				};
+				
 				$.ajax({
 					type: 'POST',
 					url: 'modules/GOagent/GOagentJS.php',
@@ -1822,29 +2045,10 @@ if (isset($_GET["message"])) {
 				.done(function (result) {
 					if (result.result == 'success') {
 						selectedMessages = [];
-						if (controls) {
-							$("div.mailbox-controls").html(result.controls);
-						} else {
-							selectedAll = !selectedAll;
-						}
-						
-						if (folder_id == 2) {
-							$.each($("div.mailbox-controls div.btn-group").find("button[class*='messages-send-to-junk']"), function(idx, elem) {
-								$(elem).toggleClass('messages-send-to-junk');
-								$(elem).toggleClass('messages-restore-messages');
-								$(elem).find('i').toggleClass('fa-trash-o');
-								$(elem).find('i').toggleClass('fa-undo');
-							});
-						} else {
-							$.each($("div.mailbox-controls div.btn-group").find("button[class*='messages-restore-messages']"), function(idx, elem) {
-								$(elem).toggleClass('messages-restore-messages');
-								$(elem).toggleClass('messages-send-to-junk');
-								$(elem).find('i').toggleClass('fa-undo');
-								$(elem).find('i').toggleClass('fa-trash-o');
-							});
-						}
+						selectedAll = false;
 						folder = folder_id;
 						
+						$("#mail-messages div.mailbox-controls").html(result.controls);
 						$("#folders-list").html(result.folders);
 						var thisTopBar = result.topbar;
 						$("li.messages-menu").html($(thisTopBar).html());
@@ -1852,6 +2056,9 @@ if (isset($_GET["message"])) {
 							height: '200px'
 						});
 						$("div.mailbox-messages").html(result.messages);
+						
+						$(".mail-preloader").hide();
+						$("#mail-messages div.mailbox-messages").slideDown();
 						
 						//iCheck for checkbox and radio inputs
 						$('input[type="checkbox"].message-selection-checkbox').iCheck({
@@ -1866,12 +2073,23 @@ if (isset($_GET["message"])) {
 						$('input[type=checkbox].message-selection-checkbox').off("ifChecked", ifChecked).on("ifChecked", ifChecked);
 						
 						// next button for table.
+						$(".mailbox-next").off('click');
 						$(".mailbox-next").click(function() { datatable.fnPageChange('next'); });
 						
 						// previous button for table
+						$(".mailbox-prev").off('click');
 						$(".mailbox-prev").click(function() { datatable.fnPageChange('previous'); });
 						
+						// uncheck/check all messages
+						$("button.messages-mark-as-read").off('click');
+						$(".checkbox-toggle").click(function() {
+							if (selectedAll) { $("input[type='checkbox'].message-selection-checkbox", ".mailbox").iCheck("uncheck"); }
+							else { $("input[type='checkbox'].message-selection-checkbox", ".mailbox").iCheck("check"); }
+							selectedAll = !selectedAll;
+						});
+						
 						// de-star a starred video / star a de-stared video.
+						$("td .fa-star, td .fa-star-o").off('click');
 						$("td .fa-star, td .fa-star-o").click(function(e) {
 							e.preventDefault();
 							
@@ -1899,12 +2117,59 @@ if (isset($_GET["message"])) {
 								}
 							});
 						});
-				
+						
+						$("li a[href^='messages.php?']").off('click');
 						$("li a[href^='messages.php?']").click(function(e) {
-							var thisFolder = e.target.search.replace("?", "");
-							thisFolder = thisFolder.split("=");
-							updateMessages(<?=$user->getUserId()?>, thisFolder[1], true);
+							if (typeof e.target.search !== 'undefined') {
+								var thisFolder = e.target.search.replace("?", "");
+								thisFolder = thisFolder.split("=");
+								updateMessages(<?=$user->getUserId()?>, thisFolder[1]);
+							}
 						});
+						
+						$("td a[href^='readmail.php?']").off('click');
+						$("td a[href^='readmail.php?']").click(function(e) {
+							if (typeof e.target.search !== 'undefined') {
+								var thisURI = e.target.search.replace("?", "").split("&");
+								thisFolder = thisURI[0].split("=");
+								thisMessage = thisURI[1].split("=");
+								readMessage(thisMessage[1], thisFolder[1]);
+							}
+						});
+						
+						$("button.messages-mark-as-favorite").off('click');
+						<?php
+						// mark messages as favorite.
+						$unableFavoriteCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_favorites"));
+						print $ui->mailboxAction(
+							"messages-mark-as-favorite", 											// classname
+							"php/MarkMessagesAsFavorite.php", 										// php to request
+							'updateMessages('.$user->getUserId().', folder); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).removeClass("fa-star-o").addClass("fa-star"); }', // success js
+							$ui->fadingInMessageJS($unableFavoriteCode, "messages-message-box"),	// failure js
+							array("favorite" => 1));												// custom parameters
+						?>
+						
+						$("button.messages-mark-as-read").off('click');
+						<?php
+						// mark messages as read
+						$unableReadCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_read"));
+						print $ui->mailboxAction(
+							"messages-mark-as-read", 												// classname
+							"php/MarkMessagesAsRead.php", 											// php to request
+							'updateMessages('.$user->getUserId().', folder); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").removeClass("unread"); }', 												// success js
+							$ui->fadingInMessageJS($unableReadCode, "messages-message-box")); 		// failure js
+						?>
+						
+						$("button.messages-mark-as-unread").off('click');
+						<?php
+						// mark messages as unread
+						$unableUnreadCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_unread"));
+						print $ui->mailboxAction(
+							"messages-mark-as-unread", 												// classname
+							"php/MarkMessagesAsUnread.php", 										// php to request
+							'updateMessages('.$user->getUserId().', folder); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").addClass("unread"); }', // success js
+							$ui->fadingInMessageJS($unableUnreadCode, "messages-message-box")); 	// failure js
+						?>
 						
 						$("button.messages-send-to-junk").off('click');
 						<?php
@@ -1925,7 +2190,7 @@ if (isset($_GET["message"])) {
 						print $ui->mailboxAction(
 							"messages-restore-message",					// classname
 							"php/UnjunkMessages.php",					// php to request
-							"updateMessages(".$user->getUserId().", folder, true); swal($unjunkText);");		// result js
+							"updateMessages(".$user->getUserId().", folder); swal($unjunkText);");		// result js
 						?>
 						
 						$("button.messages-delete-permanently").off('click');
@@ -1935,12 +2200,53 @@ if (isset($_GET["message"])) {
 						print $ui->mailboxAction(
 							"messages-delete-permanently", 											// classname
 							"php/DeleteMessages.php", 												// php to request
-							$ui->reloadLocationJS(), 												// success js
+							"updateMessages(".$user->getUserId().", folder);", 												// success js
 							$ui->fadingInMessageJS($unableDeleteCode, "messages-message-box")); 	// failure js
 						?>
 						
 						// Hijack links on left menu
 						$("a:regex(href, messages|composemail|readmail)").off('click', hijackThisLink).on('click', hijackThisLink);
+					}
+				});
+			}
+			
+			function readMessage(message_id, folder_id) {
+				$("#mailbox-message-text, #read-message-attachment, #mail-readmail div.mailbox-read-info, #mail-readmail div.mailbox-controls").hide();
+				$(".mail-preloader").show();
+				
+				var postData = {
+					module_name: 'GOagent',
+					action: 'ReadMessage',
+					user_id: <?=$user->getUserId()?>,
+					messageid: message_id,
+					folder: folder_id
+				};
+				
+				$.ajax({
+					type: 'POST',
+					url: 'modules/GOagent/GOagentJS.php',
+					processData: true,
+					data: postData,
+					dataType: "json",
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
+				})
+				.done(function (result) {
+					if (result.result == 'success') {
+						selectedMessages = [message_id];
+						$("#read-message-subject").html(result.message.subject);
+						$("#read-message-from").html(result.from.user);
+						$("#read-message-date").html(result.message.date);
+						$("#mailbox-message-text").html(result.message.message);
+						$("#read-message-attachment").html(result.attachments);
+						
+						$(".mail-preloader").hide();
+						$("#mailbox-message-text, #read-message-attachment, #mail-readmail div.mailbox-read-info, #mail-readmail div.mailbox-controls").slideDown();
+						
+						if (result.from.user != '' || result.from.user != 'Unknown') {
+							$("button.mail-reply, button.mail-forward").removeClass('hidden');
+						}
 					}
 				});
 			}

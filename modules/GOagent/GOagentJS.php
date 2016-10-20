@@ -7,7 +7,7 @@ define('GO_LANG_DIRECTORY', dirname(__FILE__) . '/lang/');
 require_once(GO_BASE_DIRECTORY.'/php/CRMDefaults.php');
 require_once(GO_BASE_DIRECTORY.'/php/UIHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/LanguageHandler.php');
-require_once(GO_BASE_DIRECTORY.'/php/DatabaseConnectorFactory.php');
+require_once(GO_BASE_DIRECTORY.'/php/DbHandler.php');
 include(GO_BASE_DIRECTORY.'/php/Session.php');
 require_once(GO_BASE_DIRECTORY.'/php/goCRMAPISettings.php');
 $goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
@@ -1623,8 +1623,8 @@ function hijackThisLink(e) {
         
         $.each($("div[id^='mail-']"), function(idx, elem) {
             var thisID = $(elem).attr('id').replace('mail-', '');
-            console.log(thisID, thisLink.replace('.php', ''));
-            if (thisID == thisLink.replace('.php', '')) {
+            var searchID = new RegExp(thisID);
+            if (searchID.test(thisLink)) {
                 $(elem).show();
             } else {
                 $(elem).hide();
@@ -8526,6 +8526,32 @@ Number.prototype.between = function (a, b, inclusive) {
                     'topbar' => $ui->getTopbarMessagesMenu($user)
                 );
                 $result = json_encode($updates, JSON_UNESCAPED_SLASHES);
+                break;
+            case "ReadMessage":
+                $db = new \creamy\DbHandler();
+                $user = \creamy\CreamyUser::currentUser();
+                $folder = $_REQUEST['folder'];
+                $user_id = $_REQUEST['user_id'];
+                $messageid = $_REQUEST['messageid'];
+                
+                // retrieve data about the message and sending user.
+                $message = $db->getSpecificMessage($user_id, $messageid, $folder);
+                $message["date"] = $ui->relativeTime($message["date"]);
+                
+                $from = $db->getDataForUser($message["user_from"]);
+                $fromUser["id"] = $from["user_id"];
+                $fromUser["user"] = (isset($from["user"]) ? $from["user"] : $lh->translationFor("unknown"));
+                $fromUser["name"] = $from["full_name"];
+                // mark the message as read
+                $db->markMessagesAsRead($user_id, array($messageid), $folder);
+                $readmail = array(
+                    'result' => 'success',
+                    'message' => $message,
+                    'from' => $fromUser,
+                    'attachments' => $ui->attachmentsSectionForMessage($messageid, $folder, true),
+                    'test' => "{$module_dir}/../../uploads/2016/10/favorite-1png"
+                );
+                $result = json_encode($readmail, JSON_UNESCAPED_SLASHES);
                 break;
         }
         print($result);
