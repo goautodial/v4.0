@@ -4147,7 +4147,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    for($i=0;$i<count($output->file_name);$i++){
 
 	    $web_ip = getenv("SERVER_ADDR");
-	    $file_link = "https://".$web_ip."/sounds/".$output->file_name[$i];
+	    $file_link = "http://".$web_ip."/sounds/".$output->file_name[$i];
 
 	    //$file_link = "http://69.46.6.35/sounds/".$output->file_name[$i];
 
@@ -4157,7 +4157,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i], $details);
 
 		$result .= "<tr>
-			<td><a class='play_voice_file' data-location='".$file_link."'>".$output->file_name[$i]."</td>
+			<td><a class='play_voice_file' data-location='".$file_link."' data-details='".$details."'>".$output->file_name[$i]."</td>
 			<td class ='hide-on-medium hide-on-low'>".$output->file_date[$i]."</td>
 			<td nowrap>".$action."</td>
 		    </tr>";
