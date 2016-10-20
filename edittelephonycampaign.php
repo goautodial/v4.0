@@ -279,7 +279,7 @@ $lists = $ui->API_goGetAllLists();
 																	</select>
 																</div>
 																<div class="col-lg-3">
-																	<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if($campaign->data->dial_prefix == "CUSTOM"){echo "9";}else{echo $campaign->data->dial_prefix;} ?>" minlength="9" maxlength="20">
+																	<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if(($campaign->data->dial_prefix == "CUSTOM") && ($campaign->data->dial_prefix == 0) || ($campaign->data->dial_prefix == '')){echo 9;}else{echo $campaign->data->dial_prefix;} ?>" minlength="9" maxlength="20">
 																</div>
 															</div>
 														</div>
