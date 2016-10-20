@@ -353,7 +353,27 @@
         } 
     });
     }
+    
+    function load_TotalInboundCalls(){
+    $.ajax({
+        url: "./php/APIs/API_GetTotalInboundCalls.php",
+        cache: false,
+        success: function(data){
+            $("#refresh_TotalInCalls").html(data);
+        } 
+    });
+    }
 
+    function load_TotalOutboundCalls(){
+    $.ajax({
+        url: "./php/APIs/API_GetTotalOutboundCalls.php",
+        cache: false,
+        success: function(data){
+            $("#refresh_TotalOutCalls").html(data);
+        } 
+    });
+    }
+    
     function load_RingingCalls(){
     $.ajax({
         url: "./php/APIs/API_GetTotalRingingCalls.php",

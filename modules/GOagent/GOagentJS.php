@@ -7,7 +7,7 @@ define('GO_LANG_DIRECTORY', dirname(__FILE__) . '/lang/');
 require_once(GO_BASE_DIRECTORY.'/php/CRMDefaults.php');
 require_once(GO_BASE_DIRECTORY.'/php/UIHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/LanguageHandler.php');
-require_once(GO_BASE_DIRECTORY.'/php/DatabaseConnectorFactory.php');
+require_once(GO_BASE_DIRECTORY.'/php/DbHandler.php');
 include(GO_BASE_DIRECTORY.'/php/Session.php');
 require_once(GO_BASE_DIRECTORY.'/php/goCRMAPISettings.php');
 $goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
@@ -1419,6 +1419,7 @@ $(document).ready(function() {
                     updateButtons();
                     toggleButtons(dial_method, ivr_park_call, call_requeue_button, quick_transfer_button_enabled);
                     CallBacksCountCheck();
+                    ShowURLTabs();
                     if (custom_fields_launch == 'LOGIN') {
                         GetCustomFields(custom_fields_list_id, true, true);
                     }
@@ -1622,8 +1623,8 @@ function hijackThisLink(e) {
         
         $.each($("div[id^='mail-']"), function(idx, elem) {
             var thisID = $(elem).attr('id').replace('mail-', '');
-            console.log(thisID, thisLink.replace('.php', ''));
-            if (thisID == thisLink.replace('.php', '')) {
+            var searchID = new RegExp(thisID);
+            if (searchID.test(thisLink)) {
                 $(elem).show();
             } else {
                 $(elem).hide();
@@ -1816,6 +1817,7 @@ function sendLogout (logMeOut) {
                     phoneRegistered = false;
                 }, 3000);
                 
+                removeTabs();
                 if (custom_fields_launch == 'LOGIN') {
                     GetCustomFields(null, false);
                 }
@@ -7333,6 +7335,81 @@ function replaceCustomFields() {
     });
 }
 
+function ShowURLTabs() {
+    if (url_tab_first_url.length < 6 && url_tab_second_url.length < 6) return;
+    
+    if (url_tab_first_url.length > 5) {
+        var first_title = (url_tab_first_title.length > 0) ? url_tab_first_title : '<?=$lh->translationFor('url_tab_one')?>';
+        var first_tab = '<li id="url_tab_one" role="presentation">\
+            <a href="#url_content_one" aria-controls="home" role="tab" data-toggle="tab" class="bb0">\
+                <span class="fa fa-bookmark hidden"></span>\
+                '+first_title+'\
+            </a>\
+        </li>';
+        var first_content = '<div id="url_content_one" role="tabpanel" class="tab-pane">\
+            <div class="row">\
+                <div class="col-sm-12">\
+                    <fieldset style="padding-bottom: 5px; margin-bottom: 5px;">\
+                        <h4>\
+                            <button type="button" class="btn btn-default btn-sm pull-right" onclick="reloadTab(\'ONE\');" style="margin-bottom: 2px;"><i class="fa fa-refresh"></i> <?=$lh->translationFor('refresh')?></button>\
+                        </h4>\
+                        <iframe id="url_tab_iframe_one" src="'+url_tab_first_url+'" style="width: 100%; height: 650px; border: dashed 1px #c0c0c0;">\
+                            <?=$lh->translationFor('broser_not_support_iframes')?>\
+                        </iframe>\
+                    </fieldset>\
+                </div>\
+            </div>\
+        </div>';
+        
+        $(first_tab).insertAfter($("#agent_tablist li").last());
+        $(first_content).insertAfter($("#agent_tabs div[class^='tab-pane']").last());
+    }
+    
+    if (url_tab_second_url.length > 5) {
+        var second_title = (url_tab_second_title.length > 0) ? url_tab_second_title : '<?=$lh->translationFor('url_tab_two')?>';
+        var second_tab = '<li id="url_tab_two" role="presentation">\
+            <a href="#url_content_two" aria-controls="home" role="tab" data-toggle="tab" class="bb0">\
+                <span class="fa fa-bookmark hidden"></span>\
+                '+second_title+'\
+            </a>\
+        </li>';
+        var second_content = '<div id="url_content_two" role="tabpanel" class="tab-pane">\
+            <div class="row">\
+                <div class="col-sm-12">\
+                    <fieldset style="padding-bottom: 5px; margin-bottom: 5px;">\
+                        <h4>\
+                            <button type="button" class="btn btn-default btn-sm pull-right" onclick="reloadTab(\'TWO\');" style="margin-bottom: 2px;"><i class="fa fa-refresh"></i> <?=$lh->translationFor('refresh')?></button>\
+                        </h4>\
+                        <iframe id="url_tab_iframe_two" src="'+url_tab_second_url+'" style="width: 100%; height: 650px; border: dashed 1px #c0c0c0;">\
+                            <?=$lh->translationFor('broser_not_support_iframes')?>\
+                        </iframe>\
+                    </fieldset>\
+                </div>\
+            </div>\
+        </div>';
+        
+        $(second_tab).insertAfter($("#agent_tablist li").last());
+        $(second_content).insertAfter($("#agent_tabs div[class^='tab-pane']").last());
+    }
+}
+
+function reloadTab(what) {
+    if (what == 'TWO') {
+        $('#url_tab_iframe_two').attr( 'src', url_tab_second_url);
+    } else {
+        $('#url_tab_iframe_one').attr( 'src', url_tab_first_url);
+    }
+}
+
+function removeTabs() {
+    $("#url_tab_one").remove();
+    $("#url_content_one").remove();
+    $("#url_tab_two").remove();
+    $("#url_content_two").remove();
+    $("#agent_tablist li").first().addClass('active');
+    $("#agent_tabs div[id='contact_info']").first().addClass('active');
+}
+
 function PauseCodeSelectBox() {
     $("#select-pause-codes").modal({
         keyboard: false,
@@ -8449,6 +8526,32 @@ Number.prototype.between = function (a, b, inclusive) {
                     'topbar' => $ui->getTopbarMessagesMenu($user)
                 );
                 $result = json_encode($updates, JSON_UNESCAPED_SLASHES);
+                break;
+            case "ReadMessage":
+                $db = new \creamy\DbHandler();
+                $user = \creamy\CreamyUser::currentUser();
+                $folder = $_REQUEST['folder'];
+                $user_id = $_REQUEST['user_id'];
+                $messageid = $_REQUEST['messageid'];
+                
+                // retrieve data about the message and sending user.
+                $message = $db->getSpecificMessage($user_id, $messageid, $folder);
+                $message["date"] = $ui->relativeTime($message["date"]);
+                
+                $from = $db->getDataForUser($message["user_from"]);
+                $fromUser["id"] = $from["user_id"];
+                $fromUser["user"] = (isset($from["user"]) ? $from["user"] : $lh->translationFor("unknown"));
+                $fromUser["name"] = $from["full_name"];
+                // mark the message as read
+                $db->markMessagesAsRead($user_id, array($messageid), $folder);
+                $readmail = array(
+                    'result' => 'success',
+                    'message' => $message,
+                    'from' => $fromUser,
+                    'attachments' => $ui->attachmentsSectionForMessage($messageid, $folder, true),
+                    'test' => "{$module_dir}/../../uploads/2016/10/favorite-1png"
+                );
+                $result = json_encode($readmail, JSON_UNESCAPED_SLASHES);
                 break;
         }
         print($result);

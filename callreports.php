@@ -70,6 +70,7 @@
             <?php
                 $campaigns = $ui->API_getListAllCampaigns();
 				$ingroups = $ui->API_getInGroups();
+				$disposition = $ui->API_getAllDispositions();
             ?>
                 <!-- Main content -->
                 <section class="content">
@@ -116,9 +117,9 @@
                                         <option value="sales_agent">Sales Per Agent</option>
                                         <option value="sales_tracker">Sales Tracker</option>
                                         <option value="inbound_report">Inbound Call Report</option>
-                                        <option value="call_export_report">Export Call Report</option>
+                                        <!--<option value="call_export_report">Export Call Report</option>
                                         <option value="dashboard">Dashboard</option>
-                                        <option value="cdr">Call History (CDRs)</option>
+                                        <option value="cdr">Call History (CDRs)</option>-->
                                     </select>
                                 </div>
                                 <div class="form-group campaign_div">
@@ -143,6 +144,19 @@
                                         <?php
                                             }
                                         ?>
+                                    </select>
+                                </div>
+								<div class="form-group ingroup_div" style="display:none;">
+                                    <label for="statuses">Statuses</label>
+                                    <select class="form-control select2" name="statuses" id="statuses" style="width:100%;">
+										<option value="">- - - ALL - - -</option>
+											<?php
+												for($a=0; $a<count($disposition->status); $a++){
+											?>
+													<option value="<?php echo $disposition->status[$a];?>"><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
+											<?php
+												}
+											?>
                                     </select>
                                 </div>
                                 <div class="form-group request_div" style="display:none;">
@@ -231,6 +245,15 @@
             <script src="theme_dashboard/js/Flot/jquery.flot.categories.js"></script>
             <script src="theme_dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
         <script>
+			$(document).on('click','.edit-contact',function() {
+				var url = './editcontacts.php';
+				var id = $(this).attr('data-id');
+				//alert(extenid);
+				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
+				//$('body').append(form);  // This line is not necessary
+				$(form).submit();
+			});
+			
             $(function () {
                 //Initialize Select2 Elements
                 $('.select2').select2({
@@ -991,7 +1014,50 @@
                                 userID : $("#userID").val(),
                                 userGroup : $("#userGroup").val(),
                                 fromDate : $("#start_filterdate").val(),
-                                toDate : $("#end_filterdate").val()
+                                toDate : $("#end_filterdate").val(),
+								statuses : $("#statuses").val()
+                            },
+                            success: function(data) {
+                                console.log(data);
+
+                                if(data != ""){
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html(data);
+
+                                    if($("#filter_type").val() == "inbound_report"){
+										var title = "Inbound Call Report";
+                                        $('#inbound_report').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+                                        $('.request_div').hide();
+										$('.campaign_div').hide();
+										$('.ingroup_div').show();
+                                    }
+
+                                }else{
+                                    $(".report-loader").fadeOut("slow");
+                                    $('#table').html("NO DATA");
+                                }
+                            }
+                        });
+                });
+				
+				$('#statuses').on('change', function() {
+                    $('#table').empty();
+                    $(".report-loader").fadeIn("slow");
+                    
+                    var request = "";
+					
+                        $.ajax({
+                            url: "reports.php",
+                            type: 'POST',
+                            data: {
+                                pageTitle : $("#filter_type").val(),
+                                campaignID : $("#ingroup_id").val(),
+                                request : request,
+                                userID : $("#userID").val(),
+                                userGroup : $("#userGroup").val(),
+                                fromDate : $("#start_filterdate").val(),
+                                toDate : $("#end_filterdate").val(),
+								statuses : $("#statuses").val()
                             },
                             success: function(data) {
                                 console.log(data);

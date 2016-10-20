@@ -42,6 +42,9 @@ $postfields["userID"] 		= $_POST["userID"];
 if(isset($_POST["userGroup"]))
 $postfields["userGroup"] 	= $_POST["userGroup"];
 
+if(isset($_POST["statuses"]))
+$postfields["statuses"] 	= $_POST["statuses"];
+
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_POST, 1);
@@ -894,28 +897,26 @@ if($output->result == "success"){
 					<table class="table table-striped table-bordered table-hover" id="outbound_table">
 						<thead>
 							<tr>
-					            <th nowrap> Sale # </th>
+								<th nowrap> Lead ID </th>
 					            <th nowrap> Call Date & Time </th>
 					            <th nowrap> Agent </th>
 					            <th nowrap> Phone Number </th>
 					            <th nowrap> First Name </th>
 					            <th nowrap> Last Name </th>
-					            <th nowrap> Info </th>
 				            </tr>
 				        </thead>
 				        <tbody>
 				';
 
 			if($output->getReports->outbound_result != NULL){
-				for($i=0; $i < count($output->getReports->phone_number); $i++){
+				for($i=0; $i < count($output->getReports->sale_num); $i++){
 			    	$sales_tracker .= '<tr>
-							<td nowrap>'.$output->getReports->sale_num[$i].'</td>
+							<td nowrap><a class="edit-contact" data-id="'.$output->getReports->lead_id[$i].'">'.$output->getReports->lead_id[$i].'</a></td>
 							<td nowrap>'.$output->getReports->call_date[$i].'</td>
 							<td nowrap>'.$output->getReports->agent[$i].'</td>
 							<td nowrap>'.$output->getReports->phone_number[$i].'</td>
 							<td nowrap>'.$output->getReports->first_name[$i].'</td>
 							<td nowrap>'.$output->getReports->last_name[$i].'</td>
-							<td nowrap><a href="#" data-toggle="modal" data-target="#modal_sale_num_'.$output->getReports->sale_num[$i].'" class="btn"><li class="fa fa-info-circle"></li></a></td>
 						</tr>';
 			    }
 			}else{
@@ -936,27 +937,25 @@ if($output->result == "success"){
 					<table class="table table-striped table-bordered table-hover" id="inbound_table">
 						<thead>
 							<tr>
-				            	<th nowrap> Sale # </th>
+				            	<th nowrap> Lead ID </th>
 					            <th nowrap> Call Date & Time </th>
 					            <th nowrap> Agent </th>
 					            <th nowrap> Phone Number </th>
 					            <th nowrap> First Name </th>
 					            <th nowrap> Last Name </th>
-					            <th nowrap> Info </th>
 				            </tr>
 				        </thead>
 				        <tbody>
 			';
 				if($output->getReports->inbound_result != NULL){
-					for($i=0; $i < count($output->getReports->phone_number); $i++){
+					for($i=0; $i < count($output->getReports->sale_num); $i++){
 				    	$sales_tracker .= '<tr>
-							<td nowrap>'.$output->getReports->sale_num[$i].'</td>
+							<td nowrap><a class="edit-contact" data-id="'.$output->getReports->lead_id[$i].'">'.$output->getReports->lead_id[$i].'</a></td>
 							<td nowrap>'.$output->getReports->call_date[$i].'</td>
 							<td nowrap>'.$output->getReports->agent[$i].'</td>
 							<td nowrap>'.$output->getReports->phone_number[$i].'</td>
 							<td nowrap>'.$output->getReports->first_name[$i].'</td>
 							<td nowrap>'.$output->getReports->last_name[$i].'</td>
-							<td nowrap><a href="#" data-toggle="modal" data-target="#modal_sale_num_'.$output->getReports->sale_num[$i].'" class="btn"><li class="fa fa-info-circle"></li></a></td>
 						</tr>';
 				    }
 				}else{

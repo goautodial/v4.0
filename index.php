@@ -64,6 +64,7 @@ $db = new \creamy\DbHandler();
 $statsOk = $db->weHaveSomeValidStatistics();
 $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 
+$goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 ?>
 <html>
     <head>
@@ -126,14 +127,14 @@ $custsOk = $db->weHaveAtLeastOneCustomerOrContact();
 				<!-- =============== APP STYLES ===============-->
 			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
 		
-                        <link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
+            <link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
 		<!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
-			})
+			});
 		</script>
 	<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
 	<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
@@ -191,7 +192,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 	if($outbound_calls == NULL || $outbound_calls == 0){
 		$outbound_calls = 0;
 	}
-        if($outbound_calls_today == NULL || $outbound_calls_today == 0){
+    if($outbound_calls_today == NULL || $outbound_calls_today == 0){
 		$outbound_calls_today = 0;
 	}	
 	if($inbound_calls == NULL || $inbound_calls == 0){
@@ -210,10 +211,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 //die("dd");	
 ?>		
                         <!-- Page title -->
-                        <?php
-                                $lh->translateText("Dashboard");
-                        ?>
-                        <small class="ng-binding animated fadeInUpShort">Welcome to Goautodial  !</small>
+                        <?=$lh->translateText("Dashboard")?>
+                        <small class="ng-binding animated fadeInUpShort">Welcome to GOautodial !</small>
 						
 					<!--
                     <ol class="breadcrumb">
@@ -336,12 +335,12 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 								<div class="text">Answered Calls</div>
 	                	</div>
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_DroppedCalls"></span></div>
-								<div class="text">Dropped Calls</div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalInCalls"></span></div>
+								<div class="text">Inbound Calls Today</div>
 	                	</div>	                	
 	                	<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
-	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalCalls"></span></div>
-								<div class="text" style="font-size: small;">Total Calls</div>
+	                		<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalOutCalls"></span></div>
+								<div class="text" style="font-size: small;">Outbound Calls Today</div>
 	                	</div>
 	                </div>
                 </div>
@@ -389,27 +388,27 @@ $callsperhour = $ui->API_goGetCallsPerHour();
             	<aside class="col-lg-3">
 
         <!--==== DROPPED PERCENTAGE  ==== -->
-                                                <!-- <div class="panel panel-default">
+                                                <div class="panel panel-default">
                                                     <?php
-                                                    //$droppedpercentage = $ui->API_goGetDroppedPercentage();
+                                                    $droppedpercentage = $ui->API_goGetDroppedPercentage();
                                                     //echo ("pre");
                                                     //print_r($droppedpercentage);                                                      
-                                                    //$dropped_percentage = $droppedpercentage->data->getDroppedPercentage; 
+                                                    $dropped_percentage = $droppedpercentage->data->getDroppedPercentage; 
 
-                                                    //if ($dropped_percentage == NULL){
-                                                        //$dropped_percentage = "0";
-                                                    //}                                                   
+                                                    if ($dropped_percentage == NULL){
+                                                        $dropped_percentage = "0";
+                                                    }                                                   
                                                     
-                                                    //if ($dropped_percentage < "10"){
-                                                        //$color = "#5d9cec";
-                                                    //}
-                                                    //if ($dropped_percentage >= "10"){
-                                                        //$color = "#f05050";
-                                                    //}                                                    
-                                                    //if ($dropped_percentage > "100"){
-                                                        //$color = "#f05050";
-                                                        //$dropped_percentage = "100";
-                                                    //}                                                    
+                                                    if ($dropped_percentage < "10"){
+                                                        $color = "#5d9cec";
+                                                    }
+                                                    if ($dropped_percentage >= "10"){
+                                                        $color = "#f05050";
+                                                    }                                                    
+                                                    if ($dropped_percentage > "100"){
+                                                        $color = "#f05050";
+                                                        $dropped_percentage = "100";
+                                                    }                                                    
                                                     ?>
 						   <div class="panel-body">
 								<div class="panel-title">Dropped Calls Percentage</div>
@@ -444,41 +443,41 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 							   <div class="panel-footer">
 								  <p class="text-muted">
 									 <em class="fa fa-upload fa-fw"></em>
-									 <span>Total Dropped Percentage</span>
-									 <span class="text-dark"><?php echo $dropped_percentage; ?></span>
+									 <span>Dropped Calls: </span>
+									 <span class="text-dark" id="refresh_DroppedCalls"></span>
 								  </p>
 							   </div>
-							</div> -->
+							</div>
 							<!-- END loader widget-->
-						<!-- </div> -->
+						</div>
 
         <!--==== SERVICE LEVEL AGREEMENT ==== -->
-                                                <div class="panel panel-default">
-                                                    <?php
-                                                    $slapercentage = $ui->API_goGetSLAPercentage();     
+                                                <!-- <div class="panel panel-default">
+                                                    //<?php
+                                                    //$slapercentage = $ui->API_goGetSLAPercentage();     
                                                     //echo ("pre");
                                                     //print_r($slapercentage);
-                                                    $sla_percentage = $slapercentage->data[0]->SLA; 
+                                                    //$sla_percentage = $slapercentage->data[0]->SLA; 
                                                     
-                                                    if ($sla_percentage == NULL){
-                                                        $sla_percentage = "100";
-                                                    }                                                    
-                                                    if ($sla_percentage < "95"){
-                                                        $color = "orange";
-                                                    }                                                   
-                                                    if ($sla_percentage >= "95"){
-                                                        $color = "#5d9cec";
-                                                    }
+                                                    //if ($sla_percentage == NULL){
+                                                        //$sla_percentage = "100";
+                                                    //}                                                    
+                                                    //if ($sla_percentage < "95"){
+                                                        //$color = "orange";
+                                                    //}                                                   
+                                                    //if ($sla_percentage >= "95"){
+                                                        //$color = "#5d9cec";
+                                                    //}
                                                     
-                                                    ?>
+                                                    //?>
 						   <div class="panel-body">                                                        
 								<div class="panel-title">Service Level Agreement Percentage</div>
 								<center>
                                                                     <a data-toggle="modal" data-target="#realtime_sla_monitoring">
 									<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 										<input type="text"
-										class="knob" value="<?php echo $sla_percentage; ?>" data-width="150" data-height="150" data-padding="21px"
-										data-fgcolor="<?php echo $color; ?>" data-readonly="true" readonly="readonly"
+										class="knob" value="<?php //echo $sla_percentage; ?>" data-width="150" data-height="150" data-padding="21px"
+										data-fgcolor="<?php //echo $color; ?>" data-readonly="true" readonly="readonly"
 										style="
 											width: 49px;
 											height: 100px;
@@ -495,7 +494,7 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 											line-height: normal;
 											font-family: Arial;
 											text-align: center;
-											color: <?php echo $color; ?>;
+											color: <?php //echo $color; ?>;
 											padding: 0px;
 											-webkit-appearance: none;
 											background: none;
@@ -507,12 +506,12 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 								  <p class="text-muted">
 									 <em class="fa fa-upload fa-fw"></em>
 									 <span>Service Level Agreement:</span>
-									 <span class="text-dark"><?php echo $sla_percentage; ?></span>
+									 <span class="text-dark"><?php //echo $sla_percentage; ?></span>
 								  </p>
 							   </div>                                                        
-							</div>
+							</div> -->
 							<!-- END loader widget-->
-						</div>
+						<!-- </div> -->
 						
 			<!-- ==== TASK ACTIVITIES ===== -->
 			
@@ -571,28 +570,30 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 							   <div data-height="230" data-scrollable="yes" class="list-group">
 								  <!-- START list group item-->
 
-                                                                                <span id="refresh_agents_monitoring_summary"></span> 
+                                    <span id="refresh_agents_monitoring_summary"></span> 
 
 								  <!-- END list group item-->
 							   </div>
 							   <!-- END list group-->
 							   <!-- START panel footer-->
 							   <div class="panel-footer clearfix">
-                                                                <a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" class="pull-right">
-                                                                    <medium>View more</medium> <em class="fa fa-arrow-right"></em>
-                                                                </a>
+									<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" class="pull-right">
+										<medium>View more</medium> <em class="fa fa-arrow-right"></em>
+									</a>
 							   </div>
 							   <!-- END panel-footer-->
 							</div>
 						</div>
 						<!-- End Agent Monitoring Summary -->
 			<!--==== VECTOR MAP LOADER ======-->
-						<div ng-controller="VectorMapController" class="col-lg-9">
+						<div class="col-lg-9">
 							<div class="panel panel-transparent">
-							   <div data-vector-map="" data-height="450" data-scale='0' data-map-name="world_mill_en"></div>
+							   <!--<div data-vector-map="" data-height="450" data-scale='0' data-map-name="world_mill"></div>-->
+							   <div id="world-map" style="height: 390px"></div>
 							</div>
-						 </div>
+						</div>
 
+						<br>
 					</div>
 					
 					<?php print $ui->hooksForDashboard(); ?>
@@ -764,6 +765,8 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             <span class="label label-info" id="modal-campaign"></span> 
                                             <!-- <span class="label label-info" id="modal-userlevel-vu"></span> -->
                                             <span class="label label-success" id="modal-usergroup-vu"></span>
+                                            <span class="label label-primary" id="modal-conf-exten"></span>
+                                            <span class="hidden" id="modal-server-ip"></span>
                                         </center> 
                                             <div class="responsive hidden">
                                                     <table class="table table-striped table-hover" id="view_agent_information_table" style="width: 100%">
@@ -787,10 +790,10 @@ $callsperhour = $ui->API_goGetCallsPerHour();
                                             </a>
 											
 											<div class="pull-left">
-												<a href="#" onClick="goGetInSession('barge');">
+												<a href="#" onClick="goGetInSession('BARGE');">
 													<button class="btn btn-success btn-sm">Barge &nbsp;<i class="fa fa-microphone"></i></button>
 												</a>
-												<a href="#" onClick="goGetInSession('listen');">
+												<a href="#" onClick="goGetInSession('MONITOR');">
 													<button class="btn btn-primary btn-sm">Listen &nbsp;<i class="fa fa-microphone-slash"></i></button>
 												</a>
 											</div>
@@ -917,11 +920,83 @@ $callsperhour = $ui->API_goGetCallsPerHour();
 			}
 		  });
 		  /* END JQUERY KNOB */
+			var series = {
+				'PH': 23456,   // Philippines
+				'CA': 11100,   // Canada
+				'DE': 2510,    // Germany
+				'FR': 3710,    // France
+				'AU': 5710,    // Australia
+				'GB': 8310,    // Great Britain
+				'RU': 9310,    // Russia
+				'BR': 6610,    // Brazil
+				'IN': 7810,    // India
+				'CN': 4310,    // China
+				'US': 839,     // USA
+				'SA': 410      // Saudi Arabia
+			};
+			var markers = [
+				//{ latLng:[14.57, 121.03], name:'Philippines'           },
+				//{ latLng:[41.90, 12.45],  name:'Vatican City'          },
+				//{ latLng:[43.73, 7.41],   name:'Monaco'                },
+				//{ latLng:[-0.52, 166.93], name:'Nauru'                 },
+				//{ latLng:[-8.51, 179.21], name:'Tuvalu'                },
+				//{ latLng:[7.11,171.06],   name:'Marshall Islands'      },
+				//{ latLng:[17.3,-62.73],   name:'Saint Kitts and Nevis' },
+				//{ latLng:[3.2,73.22],     name:'Maldives'              },
+				//{ latLng:[35.88,14.5],    name:'Malta'                 },
+				//{ latLng:[41.0,-71.06],   name:'New England'           },
+				//{ latLng:[12.05,-61.75],  name:'Grenada'               },
+				//{ latLng:[13.16,-59.55],  name:'Barbados'              },
+				//{ latLng:[17.11,-61.85],  name:'Antigua and Barbuda'   },
+				//{ latLng:[-4.61,55.45],   name:'Seychelles'            },
+				//{ latLng:[7.35,134.46],   name:'Palau'                 },
+				//{ latLng:[42.5,1.51],     name:'Andorra'               }
+			];
+			
+			$('#world-map').vectorMap({
+				map: 'world_mill_en',
+				backgroundColor: 'transparent',
+				regionStyle: {
+					initial: {
+						'fill':           '#bbbec6',
+						'fill-opacity':   1,
+						'stroke':         'none',
+						'stroke-width':   1.5,
+						'stroke-opacity': 1
+					},
+					hover: {
+						'fill-opacity': 0.8
+					},
+					selected: {
+						fill: 'blue'
+					},
+					selectedHover: {
+					}
+				},
+				focusOn:{ x:0.4, y:0.6, scale: 1},
+				markerStyle: {
+					initial: {
+						fill: '#23b7e5',
+						stroke: '#23b7e5'
+					}
+				},
+				onRegionLabelShow: function(e, el, code) {
+					if ( series && series[code] )
+						el.html(el.html() + ': ' + series[code] + ' visitors');
+				},
+				markers: markers,
+				series: {
+					regions: [{
+						values: series,
+						scale: ['#878c9a'],
+						normalizeFunction: 'polynomial'
+					}]
+				}
+			});
 		});
 </script>
 	
 <!--========== REFRESH DIVS ==============-->
-	<!--<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>-->
 	<!-- <script src="js/load_statusboxes.js"></script> -->
         <script src="js/dashboardv4.js"></script>
 	<!-- <script src="js/load_clusterstatus.js"></script> -->
@@ -1098,6 +1173,8 @@ function clear_agent_form(){
     $('#modal-usergroup-vu').html("");     
     //$('#modal-userlevel-vu').html("");
     $('#modal-phonelogin-vu').html("");
+	$('#modal-conf-exten').html("");
+	$('#modal-server-ip').html("");
     //$('#modal-custphone').html("");
     //$('#modal-voicemail').html("");   
 }
@@ -1150,25 +1227,80 @@ function goGetModalUsernameValue(){
 }
 
 function goGetInSession(type) {
-	if (typeof phone !== 'undefined') {
-		var who = document.getElementById("modal-username").innerText;
-		var thisTimer;
+	if (phone_login.length > 0 && phone_pass.length > 0) {
+		registerPhone(phone_login, phone_pass);
 		
-		if (phone_login.length > 0 && phone_pass.length > 0) {
+		if (typeof phone !== 'undefined') {
+			phone.start();
+			
+			var who = document.getElementById("modal-username").innerText;
+			var agent_session_id = document.getElementById("modal-conf-exten").innerText;
+			var server_ip = document.getElementById("modal-server-ip").innerText;
+			var thisTimer,
+				bTitle,
+				bText,
+				isMonitoring = false,
+				checkIfConnected;
+			
 			if (type == 'barge') {
-				swal({
-					title: "Barging...",
-					text: "You're currently barging "+who+"...<br><h1 id='bTimer' class='text-center'>00:00:00</h1>",
-					html: true,
-					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "Disconnect",
-					closeOnConfirm: false
-				}, function() {
-					clearInterval(thisTimer);
-					swal.close();
-				});
-				
-				thisTimer = setInterval(function() {
+				bTitle = "Barging...";
+				bText = "You're currently barging "+who+"...";
+			} else {
+				bTitle = "Listening...";
+				bText = "You're currently listening to "+who+"...";
+			}
+			
+			var postData = {
+				goAction: 'goMonitorAgent',
+				goUser: uName,
+				goPass: uPass,
+				goAgent: who,
+				goPhoneLogin: phone_login,
+				goSource: 'realtime',
+				goFunction: 'blind_monitor',
+				goSessionID: agent_session_id,
+				goServerIP: server_ip,
+				goStage: type,
+				responsetype: 'json'
+			};
+			
+			checkIfConnected = setInterval(function () {
+				if (phone.isConnected()) {
+					$.ajax({
+						type: 'POST',
+						url: '<?=$goAPI?>/goBarging/goAPI.php',
+						processData: true,
+						data: postData,
+						dataType: "json",
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					})
+					.done(function (result) {
+						if (result.result == 'success') {
+							isMonitoring = true;
+							clearInterval(checkIfConnected);
+						}
+					});
+				}
+			}, 1000);
+			
+			swal({
+				title: bTitle,
+				text: bText + "<br><h1 id='bTimer' class='text-center'>00:00:00</h1>",
+				html: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "Disconnect",
+				closeOnConfirm: false
+			}, function() {
+				clearInterval(thisTimer);
+				isMonitoring = false;
+				phone.stop();
+				swal.close();
+			});
+			
+			thisTimer = setInterval(function() {
+				if (phone.isConnected() && isMonitoring) {
 					var bt = $("#bTimer").html().split(':');
 					var bHour = parseInt(bt[0]);
 					var bMin = parseInt(bt[1]);
@@ -1187,20 +1319,14 @@ function goGetInSession(type) {
 					if (bSec < 10) {bSec = "0"+bSec;}
 					
 					$("#bTimer").html(bHour+":"+bMin+":"+bSec);
-				}, 1000);
-			} else {
-				swal({
-					title: "Listening...",
-					text: "You're currently listening to "+who+"...",
-					html: true
-				});
-			}
-		} else {
-			swal({
-				title: "ERROR",
-				text: "You're account doesn't have a phone login or pass set..."
-			});
+				}
+			}, 1000);
 		}
+	} else {
+		swal({
+			title: "ERROR",
+			text: "You're account doesn't have a phone login or pass set..."
+		});
 	}
 }
 
@@ -1239,6 +1365,8 @@ function goGetInSession(type) {
                                         //$('#modal-userlevel-vu').html(JSONObject.data[0].vu_user_level);                                        
                                         $('#modal-phonelogin-vu').html(JSONObject.data[0].vu_phone_login);
                                         $('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
+                                        $('#modal-conf-exten').html(JSONObject.data[0].vla_conf_exten);
+                                        $('#modal-server-ip').html(JSONObject.data[0].vla_server_ip);
                                         //$('#modal-campaign_cid').html(JSONObject.data[0].campaign_cid);
                                         
                                         var avatar = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" :size="160"></avatar>';
@@ -1334,6 +1462,8 @@ function goGetInSession(type) {
 			load_AnsweredCalls();
 			load_DroppedCalls();
 			load_TotalCalls();
+			load_TotalInboundCalls();
+			load_TotalOutboundCalls();
 			load_LiveOutbound();
                             
 	// ---- clusterstatus table
@@ -1373,6 +1503,8 @@ function goGetInSession(type) {
 		setInterval(load_AnsweredCalls,5000);
 		setInterval(load_DroppedCalls,5000);
 		setInterval(load_TotalCalls,5000);
+		setInterval(load_TotalInboundCalls,5000);
+		setInterval(load_TotalOutboundCalls,5000);
 		setInterval(load_LiveOutbound,5000);
 		
 		// ... cluster status table ...
@@ -1420,6 +1552,8 @@ function goGetInSession(type) {
    <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
    <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-world-mill-en.js"></script>
    <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-us-mill-en.js"></script>
+   
+   <!--<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>-->
    
    <!-- CLASSY LOADER-->
    <script src="theme_dashboard/js/jquery-classyloader/js/jquery.classyloader.min.js"></script>

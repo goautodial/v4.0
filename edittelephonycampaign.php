@@ -75,15 +75,15 @@ $lists = $ui->API_goGetAllLists();
 			<!-- SELECT2-->
    		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
    		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
-			<style type="text/css">
-				.select2-container{
-					width: 100% !important;
-				}
-			</style>
+		<style type="text/css">
+			.select2-container{
+				width: 100% !important;
+			}
+		</style>
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
-			})
+			});
 		</script>
     </head>
     <style>
@@ -270,7 +270,7 @@ $lists = $ui->API_goGetAllLists();
 															<div class="row">
 																<div class="col-lg-9">
 																	<select name="dial_prefix" id="dial_prefix" class="form-control">
-																		<option value="CUSTOM" selected="selected">CUSTOM DIAL PREFIX</option>
+																		<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
 																		<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
 																			<?php if(!empty($carriers->carrier_id[$i])) { ?>
 																				<option value="<?php echo $carriers->carrier_id[$i]; ?>" <?php if($campaign->data->dial_prefix == $carriers->carrier_id[$i]) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
@@ -417,6 +417,24 @@ $lists = $ui->API_goGetAllLists();
 														<label class="col-sm-3 control-label">Custom Fields List ID:</label>
 														<div class="col-sm-9 mb">
 															<input type="text" class="form-control" value="<?php if(!empty($campaign->custom_fields_list_id)){echo $campaign->custom_fields_list_id;}?>" id="custom_fields_list_id" name="custom_fields_list_id">
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-3 control-label">URL Tab 1:</label>
+														<div class="col-sm-3 mb">
+															<input type="text" class="form-control" placeholder="Enter Title" value="<?php if(!empty($campaign->url_tab_first_title)){echo $campaign->url_tab_first_title;}?>" id="url_tab_first_title" name="url_tab_first_title">
+														</div>
+														<div class="col-sm-6 mb">
+															<input type="text" class="form-control" placeholder="Enter URL (eg. https://www.goautodial.com, URL must be served over HTTPS)" value="<?php if(!empty($campaign->url_tab_first_url)){echo $campaign->url_tab_first_url;}?>" id="url_tab_first_url" name="url_tab_first_url">
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-3 control-label">URL Tab 2:</label>
+														<div class="col-sm-3 mb">
+															<input type="text" class="form-control" placeholder="Enter Title" value="<?php if(!empty($campaign->url_tab_second_title)){echo $campaign->url_tab_second_title;}?>" id="url_tab_second_title" name="url_tab_second_title">
+														</div>
+														<div class="col-sm-6 mb">
+															<input type="text" class="form-control" placeholder="Enter URL (eg. https://www.goautodial.com, URL must be served over HTTPS)" value="<?php if(!empty($campaign->url_tab_second_url)){echo $campaign->url_tab_second_url;}?>" id="url_tab_second_url" name="url_tab_second_url">
 														</div>
 													</div>
 													<?php if($campaign->campaign_type == "OUTBOUND") { ?>
@@ -1510,6 +1528,7 @@ $lists = $ui->API_goGetAllLists();
 				}
 			}
 			$(document).ready(function() {
+			
 				$('.select2').select2({
 							theme: 'bootstrap'
 				});
@@ -2153,8 +2172,10 @@ $lists = $ui->API_goGetAllLists();
 			function dialPrefix(value){
 				if(value == "CUSTOM"){
 					$('#custom_prefix').removeClass('hide');
+					$("#custom_prefix").attr("required", true);
 				}else{
 					$('#custom_prefix').addClass('hide');
+					$("#custom_prefix").attr("required", false);
 				}
 			}
 

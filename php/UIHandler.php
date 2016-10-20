@@ -1555,7 +1555,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 		$footer = '<footer class="main-footer">
 			<div class="pull-right hidden-xs">
-				<b>Version</b> '.$version.'</div><strong>Copyright &copy; '.date("Y").' <a href="http://www.goautodial.com/">GoAutoDial Inc.</a> All rights reserved.
+				<b>Version</b> '.$version.'</div><strong>Copyright &copy; '.date("Y").' <a href="http://www.goautodial.com/">GOautodial Inc.</a> All rights reserved.
 			</div>
 			</footer>';
 		$footer .= '			<!-- Modal -->
@@ -2701,21 +2701,32 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param Int $userid 		identifier for the user.
 	 * @return String The HTML code containing the code for the attachments.
 	 */
-	public function attachmentsSectionForMessage($messageid, $folderid) {
+	public function attachmentsSectionForMessage($messageid, $folderid, $fromAgent = false) {
 		$attachments = $this->db->getMessageAttachments($messageid, $folderid);
 		if (!isset($attachments) || count($attachments) < 1) { return ""; }
 
 		$code = '<div class="box-footer non-printable"><ul class="mailbox-attachments clearfix">';
 		foreach ($attachments as $attachment) {
 			// icon/image
-			$icon = $this->getFiletypeIconForFile($attachment["filepath"]);
+			$uploadPath = "";
+			if ($fromAgent) {
+				$uploadPath = "../../";
+			}
+			
+			$icon = $this->getFiletypeIconForFile($uploadPath . $attachment["filepath"]);
 			if ($icon != CRM_FILETYPE_IMAGE) {
 				$hasImageCode = "";
 				$iconCode = '<i class="fa fa-'.$icon.'"></i>';
 				$attIcon = "paperclip";
 			} else {
 				$hasImageCode = "has-img";
-				$iconCode = '<img src="'.$attachment["filepath"].'" alt="'.$this->lh->translationFor("attachment").'"/>';
+					$thisPath = '//'.$_SERVER["HTTP_HOST"].dirname($_SERVER['PHP_SELF']).'/'.$attachment["filepath"];
+				if ($fromAgent) {
+					$attachmentPath = str_replace('/modules/GOagent', '', $thisPath);
+				} else {
+					$attachmentPath = $thisPath;
+				}
+				$iconCode = '<img src="'.$attachmentPath.'" alt="'.$this->lh->translationFor("attachment").'"/>';
 				$attIcon = "camera";
 			}
 			// code
