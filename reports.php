@@ -329,7 +329,7 @@ if($output->result == "success"){
 
 // STATISTICAL REPORT
 	if($pageTitle == "stats"){
-		//var_dump($output);
+		print_r($output->getReports);
 		//$increment_color = "009688";
 		if($_POST["request"] == "daily"){
 			$max = max(/*$output->getReports->data_calls->hour0, $output->getReports->data_calls->hour1, $output->getReports->data_calls->hour2, $output->getReports->data_calls->hour3, 

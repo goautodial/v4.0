@@ -3632,7 +3632,8 @@ tbody.collapse.in {
 .btn-group,
 .btn-group-vertical {
   position: relative;
-  display: inline-block;
+  /*display: inline-block;*/
+  display: flex;
   vertical-align: middle;
 }
 .btn-group > .btn,
