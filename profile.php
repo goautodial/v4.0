@@ -948,7 +948,7 @@
                     var reader = new FileReader();
                     
                     reader.onload = function (e) {
-                        $('.upload-demo').addClass('ready');
+                        $('#upload-demo').addClass('ready');
                         $uploadCrop.croppie('bind', {
                             url: e.target.result
                         }).then(function(){
@@ -963,6 +963,7 @@
             }
 
             $uploadCrop = $('#upload-demo').croppie({
+                enableExif: true,
                 viewport: {
                     width: 160,
                     height: 160,
@@ -971,12 +972,11 @@
                 boundary: {
                     width: 200,
                     height: 200
-                },
-                enableExif: true
+                }
             });
             
             $uploadCrop.croppie('bind', {
-                url: 'php/ViewImage.php?user_id=<?php print $user->getUserId() ?>'
+                url: './php/ViewImage.php?user_id='+userid
             });
 
             $('#upload').off('change');
