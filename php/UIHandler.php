@@ -2429,14 +2429,14 @@ error_reporting(E_ERROR | E_PARSE);
 				//if (isset($selectedUser) && ($selectedUser == $userobj["id"])) { $selectedUserCode = 'selected="true"'; }
 				//$response = $response.'<option value="'.$userobj["id"].'" '.$selectedUserCode.' >'.$userobj["name"].'</option>';
 				if (isset($selectedUser) && ($selectedUser == $userobj["user_id"])) { $selectedUserCode = 'selected="true"'; }
-				$response = $response.'<option value="'.$userobj["user_id"].'" '.$selectedUserCode.' >'.$userobj["full_name"].' ('.$userobj["user"].')</option>';
+				$response .= '<option value="'.$userobj["user_id"].'" '.$selectedUserCode.' >'.$userobj["full_name"].' ('.$userobj["user"].')</option>';
 			} else if ($includeSelf === true) { // assign to myself by default unless another $selectedUser has been specified.
 				$selfSelectedCode = isset($selectedUser) ? "" : 'selected="true"';
 				//$response = $response.'<option value="'.$userobj["id"].'" '.$selfSelectedCode.'>'.$this->lh->translationFor("myself").'</option>';
-				$response = $response.'<option value="'.$userobj["user_id"].'" '.$selfSelectedCode.'>'.$this->lh->translationFor("myself").'</option>';
+				$response .= '<option value="'.$userobj["user_id"].'" '.$selfSelectedCode.'>'.$this->lh->translationFor("myself").'</option>';
 			}
 		}
-		$response = $response.'</select>';
+		$response .= '</select>';
 		return $response;
 	}
 
@@ -5638,30 +5638,30 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-    public function getSessionAvatar() {
-            $sessionAvatar = $_SESSION['avatar'];
-            return $sessionAvatar;
-    }
+	public function getSessionAvatar() {
+		$sessionAvatar = $_SESSION['avatar'];
+		return $sessionAvatar;
+	}
 
-    public function API_goGetReports($pageTitle){
+   public function API_goGetReports($pageTitle){
 		$url = gourl."/goJamesReports/goAPI.php"; #URL to GoAutoDial API. (required)
-	    $postfields["goUser"] = goUser; #Username goes here. (required)
-	    $postfields["goPass"] = goPass; #Password goes here. (required)
-	    $postfields["goAction"] = "getAllDIDs"; #action performed by the [[API:Functions]]. (required)
-	    $postfields["responsetype"] = responsetype; #json. (required)
-	    $postfields["pageTitle"] = $pageTitle;
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "getAllDIDs"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["pageTitle"] = $pageTitle;
 
-	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $url);
-	    curl_setopt($ch, CURLOPT_POST, 1);
-	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	    $data = curl_exec($ch);
-	    curl_close($ch);
-	    $output = json_decode($data);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
 
-	    return $output;
+		return $output;
 	}
 
 
