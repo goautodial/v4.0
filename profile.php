@@ -75,6 +75,34 @@
             });
         </script>
 
+        <style>
+        .upload-demo .upload-demo-wrap,
+        .upload-demo .upload-result,
+        .upload-demo.ready .upload-msg {
+            display: none;
+        }
+        .upload-demo.ready .upload-demo-wrap {
+            display: block;
+        }
+        .upload-demo.ready .upload-result {
+            display: inline-block;    
+        }
+        .upload-demo-wrap {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        .upload-msg {
+            text-align: center;
+            padding: 45px;
+            font-size: 22px;
+            color: #aaa;
+            width: 200px;
+            height: 200px;
+            margin: 40px auto;
+            border: 1px solid #aaa;
+        }
+        </style>
     </head>
         <section class="ng-scope">
     <?php print $ui->creamyBody(); ?>
@@ -545,35 +573,33 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
                                     <h4 class="modal-title">Change your profile picture</h4> 
                                 </div> 
-                                <div class="modal-body"> 
+                                <div class="modal-body" style="min-height: 45%;"> 
                                     <center> 
-                                        <div id="upload-demo"></div>
-                                        <div class="col-1-2">
-                                            <h3 class="media-heading">Upload Example (with exif orientation compatability)</h3> 
-                                            <div class="actions">
-                                                <a class="btn file-btn">
-                                                    <span>Upload</span>
-                                                    <input type="file" id="upload" value="Choose a file" accept="image/*" />
-                                                </a>                                                        
+                                        <div class="upload-demo col-1-2">
+                                            <div class="upload-msg">
+                                                Upload a file to start cropping
+                                            </div>
+                                            <div class="upload-demo-wrap">
+                                                <div id="upload-demo"></div>
                                             </div>
                                         </div>
-                                        
-                                        <div class="responsive">
-                                            <div class="col-1-2">
-                                                <div class="upload-msg">
-                                                    Upload a file to start cropping
-                                                </div>
+                                        <div class="col-1-2">
+                                            <!--<h3 class="media-heading">Upload Example (with exif orientation compatability)</h3> -->
+                                            <div class="actions">
+                                                <a class="btn file-btn">
+                                                    <input type="file" id="upload" value="Choose a file" accept="image/*" />
+                                                </a>                                                        
                                             </div>
                                         </div>
                                     </center>
                                 </div> 
                                 <div class="modal-footer">                                        
                                     <div class="pull-right">
-                                        <button class="upload-result">Preview</button> 
-                                        <button class="upload-submit">Submit</button>
+                                        <button class="btn btn-default btn-sm upload-result" disabled>Preview</button> 
+                                        <button class="btn btn-warning btn-sm upload-submit" disabled>Submit</button>
                                     </div>
                                     <div class="pull-left">
-                                        <button data-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </div> 
                             </div> 
@@ -847,6 +873,7 @@
 	}
 
 	function popupSubmit(result) {
+        var userid = <?=$userid?>;  
         var imgArray = result.src.split(";");
         var img_type = imgArray[0].replace("data:", "");
             imgArray = imgArray[1].split(",");
@@ -856,7 +883,7 @@
             type: 'POST',
             url: "./php/SaveImage.php",
             data: {
-                user_id: '<?=$user->getUserId()?>',
+                user_id: userid,
                 type: img_type,
                 image: img_data
             },
@@ -930,6 +957,10 @@
         // Clear previous  info
         $('#profile_pic_modal').on('hidden.bs.modal', function () {
             $('#upload-demo').html("");
+            $('#upload').val('');
+            $('.upload-demo').removeClass('ready');
+            $(".upload-result").prop('disabled', true);
+            $(".upload-submit").prop('disabled', true);
             //$('#upload').html("");
             //$('#upload-result').html("");
         });
@@ -948,7 +979,7 @@
                     var reader = new FileReader();
                     
                     reader.onload = function (e) {
-                        $('#upload-demo').addClass('ready');
+                        $('.upload-demo').addClass('ready');
                         $uploadCrop.croppie('bind', {
                             url: e.target.result
                         }).then(function(){
@@ -957,6 +988,8 @@
                     };
                     
                     reader.readAsDataURL(input.files[0]);
+                    $(".upload-result").removeAttr('disabled');
+                    $(".upload-submit").removeAttr('disabled');
                 } else {
                     swal("Sorry - you're browser doesn't support the FileReader API");
                 }
@@ -973,10 +1006,6 @@
                     width: 200,
                     height: 200
                 }
-            });
-            
-            $uploadCrop.croppie('bind', {
-                url: './php/ViewImage.php?user_id='+userid
             });
 
             $('#upload').off('change');
