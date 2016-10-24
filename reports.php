@@ -8,7 +8,7 @@ require_once('php/goCRMAPISettings.php');
 
 $pageTitle = $_POST['pageTitle'];
 
-$url = gourl."/goJamesReports/goAPI.php"; #URL to GoAutoDial API. (required)
+$url = gourl."/goReports/goAPI.php"; #URL to GoAutoDial API. (required)
 $postfields["goUser"] = goUser; #Username goes here. (required)
 $postfields["goPass"] = goPass; #Password goes here. (required)
 $postfields["goAction"] = "goGetReports"; #action performed by the [[API:Functions]]. (required)
