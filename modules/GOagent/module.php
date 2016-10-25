@@ -52,7 +52,9 @@ class GOagent extends Module {
 
 			echo $this->getGOagentContent();
 		} else {
-			echo $this->getGOadminContent();
+			if (count($_POST) < 1) {
+				echo $this->getGOadminContent();
+			}
 		}
 	}
 		
