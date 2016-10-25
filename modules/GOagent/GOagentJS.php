@@ -81,6 +81,7 @@ var MDlogEPOCH = 0;
 var recLIST = '';
 var filename = '';
 var last_filename = '';
+var alertLogout = true;
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -1678,6 +1679,7 @@ function hijackThisLink(e) {
 
 function btnLogMeIn () {
     logging_in = true;
+    alertLogout = true;
     if (is_logged_in && !phoneRegistered) {
         swal({
             title: '<?=$lh->translationFor('error')?>',
@@ -1821,6 +1823,11 @@ function sendLogout (logMeOut) {
                 if (custom_fields_launch == 'LOGIN') {
                     GetCustomFields(null, false);
                 }
+                
+                $("#btnLogMeIn").addClass('disabled');
+                setTimeout(function() {
+                    $("#btnLogMeIn").removeClass('disabled');
+                }, 5000);
             } else {
                 refresh_interval = 1000;
                 swal({
@@ -2185,12 +2192,14 @@ function checkIfStillLoggedIn(logged_out) {
         .done(function (result) {
             if (result.result == 'success') {
                 if (!result.logged_in) {
-                    sendLogout(true);
-                    swal({
-                        title: "<?=$lh->translationFor('logged_out')?>",
-                        text: result.message,
-                        type: 'warning'
-                    });
+                    if (alertLogout) {
+                        sendLogout(true);
+                        swal({
+                            title: "<?=$lh->translationFor('logged_out')?>",
+                            text: result.message,
+                            type: 'warning'
+                        });
+                    }
                 }
                 return;
             } else {

@@ -137,6 +137,7 @@ class GOagent extends Module {
 		$selectPauseCode = $this->lh()->translationFor("select_pause_code");
 		$pauseCodeSelection = $this->lh()->translationFor("pause_code_selection");
 		$selectGroupsToSendCalls = $this->lh()->translationFor("select_group_to_send_calls");
+		$contactAdmin = $this->lh()->translationFor('contact_admin');
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -389,6 +390,13 @@ EOF;
 	
 		session.on('failed', function (data) {
 			console.log('session::failed', data);
+			alertLogout = false;
+			sendLogout(true);
+			swal({
+				title: data.cause,
+				text: "$contactAdmin",
+				type: 'error'
+			});
 		});
 	
 		session.on('addstream', function (data) {
