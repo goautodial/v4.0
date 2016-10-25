@@ -639,6 +639,7 @@ $lists = $ui->API_goGetAllLists();
 																<select class="form-control" id="agent_pause_codes_active" name="agent_pause_codes_active">
 																	<option value="Y" <?php if($campaign->data->agent_pause_codes_active == "Y") echo "selected";?>>YES</option>
 																	<option value="N" <?php if($campaign->data->agent_pause_codes_active == "N") echo "selected";?>>NO</option>
+																	<option value="FORCE" <?php if($campaign->data->agent_pause_codes_active == "FORCE") echo "selected";?>>FORCE</option>
 																</select>
 															</div>
 														</div>
@@ -768,6 +769,7 @@ $lists = $ui->API_goGetAllLists();
 																<select class="form-control" id="agent_pause_codes_active" name="agent_pause_codes_active">
 																	<option value="Y" <?php if($campaign->data->agent_pause_codes_active == "Y") echo "selected";?>>YES</option>
 																	<option value="N" <?php if($campaign->data->agent_pause_codes_active == "N") echo "selected";?>>NO</option>
+																	<option value="FORCE" <?php if($campaign->data->agent_pause_codes_active == "FORCE") echo "selected";?>>FORCE</option>
 																</select>
 															</div>
 														</div>
@@ -1106,6 +1108,7 @@ $lists = $ui->API_goGetAllLists();
 																<select class="form-control" id="agent_pause_codes_active" name="agent_pause_codes_active">
 																	<option value="Y" <?php if($campaign->data->agent_pause_codes_active == "Y") echo "selected";?>>YES</option>
 																	<option value="N" <?php if($campaign->data->agent_pause_codes_active == "N") echo "selected";?>>NO</option>
+																	<option value="FORCE" <?php if($campaign->data->agent_pause_codes_active == "FORCE") echo "selected";?>>FORCE</option>
 																</select>
 															</div>
 														</div>
