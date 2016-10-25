@@ -7464,7 +7464,7 @@ function PauseCodeSelectContent_create() {
                 }
             }
 
-            if (agent_pause_codes_active == 'FORCE') {
+            if (agent_pause_codes_active == 'FORCE' && is_logged_in) {
                 $("#btn-pause-code-back").hide();
             } else {
                 $("#btn-pause-code-back").show();

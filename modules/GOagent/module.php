@@ -622,7 +622,7 @@ EOF;
 			<div class="modal-footer">
 				<input type="hidden" name="PauseCodeSelection" id="PauseCodeSelection" />
 				<span class="pull-right">
-					<button class="btn btn-default btn-raised" id="btn-pause-code-back" data-dismiss="modal">Back</button>
+					<button class="btn btn-default btn-raised" id="btn-pause-code-back" data-dismiss="modal">Close</button>
 				</span>
 			</div>
 		</div>
