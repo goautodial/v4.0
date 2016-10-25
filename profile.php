@@ -72,9 +72,37 @@
         <script type="text/javascript">
             $(window).ready(function(){
                 $(".preloader").fadeOut("slow");
-            })
+            });
         </script>
 
+        <style>
+        .upload-demo .upload-demo-wrap,
+        .upload-demo .upload-result,
+        .upload-demo.ready .upload-msg {
+            display: none;
+        }
+        .upload-demo.ready .upload-demo-wrap {
+            display: block;
+        }
+        .upload-demo.ready .upload-result {
+            display: inline-block;    
+        }
+        .upload-demo-wrap {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        .upload-msg {
+            text-align: center;
+            padding: 45px;
+            font-size: 22px;
+            color: #aaa;
+            width: 200px;
+            height: 200px;
+            margin: 40px auto;
+            border: 1px solid #aaa;
+        }
+        </style>
     </head>
         <section class="ng-scope">
     <?php print $ui->creamyBody(); ?>
@@ -163,7 +191,6 @@
     if ($vm_message == NULL){
         $vm_message = 0;
     }
-        
 ?>
  
             <!-- <div class="unwrap ng-scope" style="margin-top: -30;"> -->
@@ -544,35 +571,36 @@
                             <div class="modal-content"> 
                                 <div class="modal-header"> 
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-                                        <h4 class="modal-title">Change your profile picture</h4> 
+                                    <h4 class="modal-title">Change your profile picture</h4> 
                                 </div> 
-                                <div class="modal-body"> 
+                                <div class="modal-body" style="min-height: 45%;"> 
                                     <center> 
-                                        <div id="upload-demo"></div>
-                                            <div class="col-1-2">
-                                            <h3 class="media-heading">Upload Example (with exif orientation compatability)</h3> 
-                                                <div class="actions">
-                                                    <a class="btn file-btn">
-                                                        <span>Upload</span>
-                                                        <input type="file" id="upload" value="Choose a file" accept="image/*" />
-                                                    </a>                                                        
-                                                </div>
+                                        <div class="upload-demo col-1-2">
+                                            <div class="upload-msg">
+                                                Upload a file to start cropping
                                             </div>
-                                                                       
-                                    
-                                        <div class="responsive">
-                                            <div class="col-1-2">
-                                                <div class="upload-msg">
-                                                    Upload a file to start cropping
-                                                </div>
+                                            <div class="upload-demo-wrap">
+                                                <div id="upload-demo"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-1-2">
+                                            <!--<h3 class="media-heading">Upload Example (with exif orientation compatability)</h3> -->
+                                            <div class="actions">
+                                                <a class="btn file-btn">
+                                                    <input type="file" id="upload" value="Choose a file" accept="image/*" />
+                                                </a>                                                        
                                             </div>
                                         </div>
                                     </center>
                                 </div> 
                                 <div class="modal-footer">                                        
-                                    <center> 
-                                        <button class="upload-result">Result</button> 
-                                    </center>
+                                    <div class="pull-right">
+                                        <button class="btn btn-default btn-sm upload-result" disabled>Preview</button> 
+                                        <button class="btn btn-warning btn-sm upload-submit" disabled>Submit</button>
+                                    </div>
+                                    <div class="pull-left">
+                                        <button class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                                    </div>
                                 </div> 
                             </div> 
                         </div> 
@@ -811,8 +839,7 @@
     }
     
     // Clear lead information
-    function clear_lead_information_form(){
-
+    function clear_lead_information_form() {
         $('#modal-leadID').html("");
         $('#modal-list_id').html("");
         $('#modal-first_name').html("");
@@ -835,7 +862,7 @@
 			html = result.html;
 		}
 		if (result.src) {
-			html = '<img src="' + result.src + '" />';
+			html = '<img src="' + result.src + '" style="border-radius: 50%; border: 3px solid #dadada;" /><br><br><h3 class="m0" style="color: #333;"><?php echo $user->getUserName(); ?></h3><p style="color: #333;"><?php echo $_SESSION['user']; ?></p>';
 		}
 		swal({
 			title: '',
@@ -843,24 +870,51 @@
 			text: html,
 			allowOutsideClick: true
 		});
-		setTimeout(function(){
-			$('.sweet-alert').css('margin', function() {
-				var top = -1 * ($(this).height() / 2),
-					left = -1 * ($(this).width() / 2);
+	}
 
-				return top + 'px 0 0 ' + left + 'px';
-			});
-		}, 1);
-	}    
-    //demian
-    $(document).ready(function(){
-
+	function popupSubmit(result) {
+        var userid = <?=$userid?>;  
+        var imgArray = result.src.split(";");
+        var img_type = imgArray[0].replace("data:", "");
+            imgArray = imgArray[1].split(",");
+        var img_data = imgArray[1];
+        
+        $.ajax({
+            type: 'POST',
+            url: "./php/SaveImage.php",
+            data: {
+                user_id: userid,
+                type: img_type,
+                image: img_data
+            },
+            cache: false,
+            success: function(result) {
+                if (result == 'success') {
+                    swal({
+                        title: "SUCCESS!",
+                        text: "Uploaded a new image on your profile.",
+                        closeOnConfirm: false
+                    }, function() {
+                        location.reload();
+                    });
+                } else {
+                    swal({
+                        title: "ERROR!",
+                        text: "Please re-upload the image file you want to use.",
+                        type: "warning"
+                    });
+                }
+            }
+        });
+	}
     
+    //demian
+    $(document).ready(function() {
         // Clear previous lead info
         $('#view_lead_information').on('hidden.bs.modal', function () {
             clear_lead_information_form();
         }); 
-                    
+        
         // Get lead information 
         $(document).on('click','#onclick-leadinfo',function(){
             var leadid = $(this).attr('data-id');
@@ -896,21 +950,24 @@
                     $('#modal-full_name').html(full_name);
                     $('#modal-avatar-lead').html(avatar);
                     goAvatar._init(goOptions);
-                }                    
+                }
             });  
         });
 
         // Clear previous  info
         $('#profile_pic_modal').on('hidden.bs.modal', function () {
             $('#upload-demo').html("");
+            $('#upload').val('');
+            $('.upload-demo').removeClass('ready');
+            $(".upload-result").prop('disabled', true);
+            $(".upload-submit").prop('disabled', true);
             //$('#upload').html("");
             //$('#upload-result').html("");
-            
         });
         
-                
+        
         // Get user information and post results in profile_pic_modal modal
-        $(document).on('click','#onclick-userinfo',function(){
+        $(document).on('click','#onclick-userinfo', function() {
             var agentid = '<?=$agentid?>';
             var userid = '<?=$userid?>';
             var agentname = '<?=$agentname?>';
@@ -918,64 +975,71 @@
             var $uploadCrop;
 
             function readFile(input) {
-                    if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                
-                reader.onload = function (e) {
-            $('.upload-demo').addClass('ready');
-                    $uploadCrop.croppie('bind', {
-                            url: e.target.result
-                    }).then(function(){
-                            console.log('jQuery bind complete');
-                    });
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
                     
-                }
-                
-                reader.readAsDataURL(input.files[0]);
-            }
-            else {
+                    reader.onload = function (e) {
+                        $('.upload-demo').addClass('ready');
+                        $uploadCrop.croppie('bind', {
+                            url: e.target.result
+                        }).then(function(){
+                            console.log('jQuery bind complete');
+                        });
+                    };
+                    
+                    reader.readAsDataURL(input.files[0]);
+                    $(".upload-result").removeAttr('disabled');
+                    $(".upload-submit").removeAttr('disabled');
+                } else {
                     swal("Sorry - you're browser doesn't support the FileReader API");
                 }
             }
 
             $uploadCrop = $('#upload-demo').croppie({
-                    viewport: {
-                            width: 160,
-                            height: 160,
-                            type: 'circle'
-                    },
-                    boundary: {
-                            width: 200,
-                            height: 200
-                    },
-                    enableExif: true
+                enableExif: true,
+                viewport: {
+                    width: 160,
+                    height: 160,
+                    type: 'circle'
+                },
+                boundary: {
+                    width: 200,
+                    height: 200
+                }
             });
 
+            $('#upload').off('change');
+            $('.upload-result').off('click');
+            $('.upload-submit').off('click');
             $('#upload').on('change', function () { readFile(this); });
-            $('.upload-result').on('click', function (ev) {
-                    $uploadCrop.croppie('result', {
-                            type: 'canvas',
-                            size: 'viewport'
-                    }).then(function (resp) {
-                            popupResult({
-            src: resp
-                            });
+            $('.upload-result').on('click', function () {
+                $uploadCrop.croppie('result', {
+                    type: 'canvas',
+                    size: 'viewport'
+                }).then(function (resp) {
+                    popupResult({
+                        src: resp
                     });
-            }); 
-            
-   
+                });
+            });
+            $('.upload-submit').on('click', function () {
+                $uploadCrop.croppie('result', {
+                    type: 'canvas',
+                    size: 'viewport'
+                }).then(function (resp) {
+                    popupSubmit({
+                        src: resp
+                    });
+                });
+            });
         });
-                    
+        
         // ---- loads datatable functions  
-            load_agent_latest_outbound_calls();
-            load_agent_latest_inbound_calls();
-            load_agent_latest_outbound_calls_summary();
-            load_agent_latest_inbound_calls_summary();
-
+        load_agent_latest_outbound_calls();
+        load_agent_latest_inbound_calls();
+        load_agent_latest_outbound_calls_summary();
+        load_agent_latest_inbound_calls_summary();
     });
-    
-   
-    
 </script>
                
         

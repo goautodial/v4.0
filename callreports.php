@@ -22,7 +22,7 @@
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		<link href="css/datatables/1.10.12/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
-		<link href="css/datatables/buttons/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+		<!--<link href="css/datatables/buttons/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />-->
         <!-- Data Tables -->
         <script src="js/plugins/datatables/1.10.12/jquery.dataTables.min.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>

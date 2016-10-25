@@ -3632,7 +3632,8 @@ tbody.collapse.in {
 .btn-group,
 .btn-group-vertical {
   position: relative;
-  display: inline-block;
+  /*display: inline-block;*/
+  display: flex;
   vertical-align: middle;
 }
 .btn-group > .btn,
@@ -3792,6 +3793,9 @@ tbody.collapse.in {
 }
 .btn-group-justified > .btn-group .dropdown-menu {
   left: auto;
+}
+.mailbox-controls .btn-group {
+  display: inline-block;
 }
 [data-toggle="buttons"] > .btn input[type="radio"],
 [data-toggle="buttons"] > .btn-group > .btn input[type="radio"],

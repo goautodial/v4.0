@@ -47,6 +47,7 @@ require_once('goCRMAPISettings.php');
 class DbHandler {
     /** Database connector */
     private $dbConnector;
+	private $dbConnectorAsterisk;
 	/** Language handler */
 	private $lh;
         
@@ -65,6 +66,7 @@ class DbHandler {
     
     function __destruct() {
 	    if (isset($this->dbConnector)) { unset($this->dbConnector); }
+	    if (isset($this->dbConnectorAsterisk)) { unset($this->dbConnectorAsterisk); }
     }    
     
     /** Administration of users */
@@ -88,7 +90,7 @@ class DbHandler {
 			// check if confirmation email needs to be sent
 			$needsConfirmation = $this->getSettingValueForKey(CRM_SETTING_CONFIRMATION_EMAIL);
 			// start transaction
-			$this->dbConnector->startTransaction();
+			$this->dbConnectorAsterisk->startTransaction();
             // insert query
             $data = Array(
 	            // "name" => $name,
@@ -304,7 +306,7 @@ class DbHandler {
 	                $arr["phone_login"] = $userobj->phone_login;
 	                $arr["phone_pass"] = $userobj->phone_pass;
 					$arr["role"] = ($user_role == 9 || $user_role == 8 || $user_role == 0) ? 0 : 3;
-					$arr["avatar"] = "";
+					$arr["avatar"] = $userobj->avatar;
 	                
 	                return $arr;
 	            } else {
@@ -392,7 +394,7 @@ class DbHandler {
 	                $arr["phone_login"] = $userobj->phone_login;
 	                $arr["phone_pass"] = $userobj->phone_pass;
 					$arr["role"] = ($user_role == 9 || $user_role == 8 || $user_role == 0) ? 0 : 3;
-					$arr["avatar"] = "";
+					$arr["avatar"] = $userobj->avatar;
 	                
 	                return $arr;
 	            } else {
@@ -2060,6 +2062,39 @@ class DbHandler {
 		$return = ($this->dbConnectorAsterisk->getRowCount() > 0) ? $result['user_group'] : false;
 	    return $return;
     }
+	
+	/**
+	 * Saves the data of the image of the specified user_id
+	 * @param Number $user_id to save as image id
+	 * @param String $type to save as image type
+	 * @param Base64 $data to save as image data
+	 * @return boolean true if success, false otherwise
+	 */
+	public function saveUserAvatar($user_id, $type, $data) {
+		$this->dbConnector->where("user_id", $user_id);
+		$this->dbConnector->getOne("go_avatars");
+		$row_cnt = $this->dbConnector->getRowCount();
+		if ($row_cnt > 0) {
+			$this->dbConnector->where('user_id', $user_id);
+			$result = $this->dbConnector->update('go_avatars', array('type' => $type, 'data' => $data));
+		} else {
+			$result = $this->dbConnector->insert('go_avatars', array('user_id' => $user_id, 'type' => $type, 'data' => $data));
+		}
+		$return = ($this->dbConnector->getRowCount() > 0) ? true : false;
+		return $return;
+	}
+	
+	/**
+	 * Returns the data of the image of the specified user_id
+	 * @param Number $user_id id to check in db
+	 * @return type and data value of specified user_id, false otherwise
+	 */
+	public function getUserAvatar($user_id) {
+		$this->dbConnector->where("user_id", $user_id);
+		$result = $this->dbConnector->getOne("go_avatars", 'type,data');
+		$return = ($this->dbConnector->getRowCount() > 0) ? $result : false;
+		return $return;
+	}
 	
 }
 

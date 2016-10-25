@@ -52,7 +52,9 @@ class GOagent extends Module {
 
 			echo $this->getGOagentContent();
 		} else {
-			echo $this->getGOadminContent();
+			if (count($_POST) < 1) {
+				echo $this->getGOadminContent();
+			}
 		}
 	}
 		
@@ -137,6 +139,7 @@ class GOagent extends Module {
 		$selectPauseCode = $this->lh()->translationFor("select_pause_code");
 		$pauseCodeSelection = $this->lh()->translationFor("pause_code_selection");
 		$selectGroupsToSendCalls = $this->lh()->translationFor("select_group_to_send_calls");
+		$contactAdmin = $this->lh()->translationFor('contact_admin');
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -389,6 +392,13 @@ EOF;
 	
 		session.on('failed', function (data) {
 			console.log('session::failed', data);
+			alertLogout = false;
+			sendLogout(true);
+			swal({
+				title: data.cause,
+				text: "$contactAdmin",
+				type: 'error'
+			});
 		});
 	
 		session.on('addstream', function (data) {
@@ -464,6 +474,7 @@ EOF;
 	phone.on('registered', function(e) {
 		console.log('registered', e);
 		phoneRegistered = true;
+		registrationFailed = false;
 		if ( !!$.prototype.snackbar ) {
 			$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
 		}
@@ -476,6 +487,13 @@ EOF;
 	
 	phone.on('registrationFailed', function(e) {
 		console.log('registrationFailed', e);
+		registrationFailed = true;
+		swal({
+			title: "Registration Failed - " + e.cause,
+			text: "$contactAdmin",
+			type: 'error'
+		});
+		
 		if ( !!$.prototype.snackbar ) {
 			$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000});
 		}
@@ -604,7 +622,7 @@ EOF;
 			<div class="modal-footer">
 				<input type="hidden" name="PauseCodeSelection" id="PauseCodeSelection" />
 				<span class="pull-right">
-					<button class="btn btn-default btn-raised" id="btn-pause-code-back" data-dismiss="modal">Back</button>
+					<button class="btn btn-default btn-raised" id="btn-pause-code-back" data-dismiss="modal">Close</button>
 				</span>
 			</div>
 		</div>

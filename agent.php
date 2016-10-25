@@ -887,7 +887,7 @@ if (isset($_GET["message"])) {
 												<label for="subject">Subject</label>
 											</div>
 											<div class="form-group">
-												<textarea id="compose-textarea" name="message" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea required" style="height: 200px" placeholder="<?php $lh->translateText("write_your_message_here"); ?>"><?php print $reply_text; ?></textarea>
+												<textarea id="compose-textarea" name="message" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea required" style="height: 200px" placeholder="<?php $lh->translateText("write_your_message_here"); ?>"></textarea>
 												<!--<label for="compose-textarea">Message</label>-->
 											</div>
 											<div class="form-group" style="padding: 0px;">
@@ -924,6 +924,8 @@ if (isset($_GET["message"])) {
 										<div class="mailbox-read-info">
 											<h3 id="read-message-subject"></h3>
 											<h5><?php print $lh->translationFor("from"); ?> <span id="read-message-from"></span>
+											<span id="read-message-from-id" class="hidden"></span>
+											<span id="read-message-from-name" class="hidden"></span>
 											<span id="read-message-date" class="mailbox-read-time pull-right"></span></h5>
 										</div><!-- /.mailbox-read-info -->
 										<div class="mailbox-controls with-border text-center non-printable">
@@ -1958,34 +1960,64 @@ if (isset($_GET["message"])) {
 				?>
 				
 				// reply
-				$('.mail-reply').click(function (e) {
+				$('.mail-reply').click(function () {
 					var text = $('#mailbox-message-text').html();
-					<?php $replySubject = urlencode("Re: ".$message["subject"]); ?>
-					window.location.href = "composemail.php?reply_text="+responseEncodedMessageText(text, "<?php print $fromUser["name"]; ?>")+"&reply_subject=<?php print $replySubject; ?>&reply_user=<?php print $fromUser["id"]; ?>";
+					var reply_text = responseEncodedMessageText(text, $("#read-message-from-name").html());
+					var reply_subject = "Re: " + $("#read-message-subject").html();
+					var reply_user = $("#read-message-from-id").html();
+					
+					$("#touserid").val(reply_user);
+					$("#subject").val(reply_subject);
+					$("#compose-textarea").val(reply_text);
+					$("#compose-textarea").show();
+					$(".wysihtml5-sandbox").remove();
+					$(".wysihtml5-toolbar").remove();
+					$("input[name='_wysihtml5_mode']").remove();
+					$("#compose-textarea").wysihtml5();
+					
+					setTimeout(function() {
+						$("#mail-composemail").show();
+						$("#mail-readmail").hide();
+					}, 1000);
 				});
 				
 				// forward
-				$('.mail-forward').click(function (e) {
+				$('.mail-forward').click(function () {
 					var text = $('#mailbox-message-text').html();
-					<?php $fwdSubject = urlencode("Fwd: ".$message["subject"]); ?>
-					window.location.href = "composemail.php?reply_subject=<?php print $fwdSubject; ?>&reply_text="+responseEncodedMessageText(text, "<?php print $fromUser["name"]; ?>");
+					var forward_text = responseEncodedMessageText(text, $("#read-message-from-name").html());
+					var forward_subject = "Fwd: " + $("#read-message-subject").html();
+					
+					$("#touserid").val(0);
+					$("#subject").val(forward_subject);
+					$("#compose-textarea").val(forward_text);
+					$("#compose-textarea").show();
+					$(".wysihtml5-sandbox").remove();
+					$(".wysihtml5-toolbar").remove();
+					$("input[name='_wysihtml5_mode']").remove();
+					$("#compose-textarea").wysihtml5();
+					
+					setTimeout(function() {
+						$("#mail-composemail").show();
+						$("#mail-readmail").hide();
+					}, 1000);
 				});
 				
-				// generates the reply-to or forward message text. This text will be suitable for placing in the reply-to/forward content
-				// of a message. It will be:
-				// 1. stripped of all html entities
-				// 2. Added --- Original message from "replyUser" --- 
-				// 3. cut down to 512 characters (added ...)
-				// 4. wrapped in <pre>...</pre>
-				// 5. encoded to be passed as URI
-				function responseEncodedMessageText(text, replyUser) {
-					result = text.trim().substr(0, 512);
-					result = "-------- <?php $lh->translateText("original_message_from"); ?> "+replyUser+" --------\n"+result;
-					result = "<br/><br/><pre>"+result+"</pre>";
-					result = encodeURI(result);
-					return result;				
-				}
-				// End Read Messages
+				$("div a[href='composemail.php']").click(function() {
+					$("#touserid").val(0);
+					$("#subject").val('');
+					$("#compose-textarea").val('');
+					$("#compose-textarea").show();
+					$(".wysihtml5-sandbox").remove();
+					$(".wysihtml5-toolbar").remove();
+					$("input[name='_wysihtml5_mode']").remove();
+					$("#compose-textarea").wysihtml5();
+					
+					setTimeout(function() {
+						$("#mail-composemail").show();
+						$("#mail-readmail").hide();
+						$("#mail-messages").hide();
+					}, 1000);
+				});
 				
 				/**
 				 * Deletes a customer
@@ -2020,6 +2052,22 @@ if (isset($_GET["message"])) {
 					}
 				}, 1000);
 			});
+			
+			// generates the reply-to or forward message text. This text will be suitable for placing in the reply-to/forward content
+			// of a message. It will be:
+			// 1. stripped of all html entities
+			// 2. Added --- Original message from "replyUser" --- 
+			// 3. cut down to 512 characters (added ...)
+			// 4. wrapped in <pre>...</pre>
+			// 5. encoded to be passed as URI
+			function responseEncodedMessageText(text, replyUser) {
+				result = text.trim().substr(0, 512);
+				result = "-------- <?php $lh->translateText("original_message_from"); ?> "+replyUser+" --------\n"+result;
+				result = "<br/><br/><pre>"+result+"</pre>";
+				//result = encodeURI(result);
+				return result;				
+			}
+			// End Read Messages
 			
 			function updateMessages(user_id, folder_id) {
 				$("#mail-messages div.mailbox-messages").hide();
@@ -2237,6 +2285,8 @@ if (isset($_GET["message"])) {
 						selectedMessages = [message_id];
 						$("#read-message-subject").html(result.message.subject);
 						$("#read-message-from").html(result.from.user);
+						$("#read-message-from-id").html(result.from.id);
+						$("#read-message-from-name").html(result.from.name);
 						$("#read-message-date").html(result.message.date);
 						$("#mailbox-message-text").html(result.message.message);
 						$("#read-message-attachment").html(result.attachments);

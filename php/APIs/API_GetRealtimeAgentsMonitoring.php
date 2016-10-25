@@ -81,92 +81,93 @@
             $pc_parked_time = $parked->pc_parked_time;
         }
         
-    $CM = "";
+        $CM = "";
+        
+        //$call_time_MS = "";
+        $STARTtime = date("U");       
+        
+        //$sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='36'></avatar></div>";
+        $sessionAvatar = "<div class='media'><avatar username='$agentname' :size='32'></avatar></div>";
     
-    //$call_time_MS = "";
-    $STARTtime = date("U");       
-    
-    //$sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='36'></avatar></div>";
-    $sessionAvatar = "<div class='media'><avatar username='$agentname' :size='32'></avatar></div>";
-
-    if ($status == "INCALL"){
-        //$last_call_time = $last_state_change;
-        $textclass = "text-success";        
+        if ($status == "INCALL"){
+            //$last_call_time = $last_state_change;
+            $textclass = "text-success";        
+            
+            if ($pc_channel != NULL){
+                    //$last_call_time = $pc_parked_time;
+                    $status = "PARK";
+            }
         
-        if ($pc_channel != NULL){
-                //$last_call_time = $pc_parked_time;
-                $status = "PARK";
-        }
-    
-        if ($vla_callerid != $vac_callerid){
-                $last_call_time = $last_state_change;
-                $status = "HUNGUP";
-        }        
-        
-        if ($call_type == "AUTO"){
-                $CM="[A]";
-        }
-        
-        if ($call_type == "INBOUND"){
-                $CM="[I]";
-        }
-        
-        if ($call_type == "MANUAL"){
-                $CM="[M]";
-        }                        
-    }  
-    
-    if (preg_match("/READY|PAUSED|CLOSER/",$status)){
-        $last_call_time = $last_state_change;
-        $textclass = "text-info";
-        
-        if ($lead_id>0){ 
-            $status="DISPO";
-        }
-        if ($status == 'PAUSED' && strlen($pausecode) > 0) {
-            $status .= " [$pausecode]";
-        }
-    }
-           
-    if (!preg_match("/INCALL|QUEUE|PARK|3-WAY/",$status)){
-        $call_time_S = ($STARTtime - $last_state_change);
-        $textclass = "text-info";
-                    
-            if ($call_time_M_int >= 3){
-                $textclass = "text-warning";
+            if ($vla_callerid != $vac_callerid){
+                    $last_call_time = $last_state_change;
+                    $status = "HUNGUP";
+            }        
+            
+            if ($call_type == "AUTO"){
+                    $CM="[A]";
             }
             
-            if ($call_time_M_int >= 5){
-                $textclass = "text-danger";
-            }        
-    } else {
-        $call_time_S = ($STARTtime - $last_call_time);         
-    }
+            if ($call_type == "INBOUND"){
+                    $CM=" [I]";
+            }
+            
+            if ($call_type == "MANUAL"){
+                    $CM=" [M]";
+            }                        
+        }  
+        
+        if (preg_match("/READY|PAUSED|CLOSER/",$status)){
+            $last_call_time = $last_state_change;
+            $textclass = "text-info";
+            
+            if ($lead_id>0){ 
+                $status="DISPO";
+            }
+        }
+               
+        if (!preg_match("/INCALL|QUEUE|PARK|3-WAY/",$status)){
+            $call_time_S = ($STARTtime - $last_state_change);
+            $textclass = "text-info";
+                        
+                if ($call_time_M_int >= 3){
+                    $textclass = "text-warning";
+                }
+                
+                if ($call_time_M_int >= 5){
+                    $textclass = "text-danger";
+                }        
+        } else {
+            $call_time_S = ($STARTtime - $last_call_time);         
+        }
+        
+        if (preg_match("/3-WAY/",$status)){
+            $call_time_S = ($STARTtime - $last_state_change);
+            $textclass = "text-success";
+        }
     
-    if (preg_match("/3-WAY/",$status)){
+        //$call_time_S = ($STARTtime - $call_time);
         $call_time_S = ($STARTtime - $last_state_change);
-        $textclass = "text-success";
-    }
-
-    //$call_time_S = ($STARTtime - $call_time);
-    $call_time_S = ($STARTtime - $last_state_change);
-    $call_time_M = ($call_time_S / 60);
-    $call_time_M = round($call_time_M, 2);
-    $call_time_M_int = intval("$call_time_M");
-    $call_time_SEC = ($call_time_M - $call_time_M_int);
-    $call_time_SEC = ($call_time_SEC * 60);
-    $call_time_SEC = round($call_time_SEC, 0);
-        
-    if ($call_time_SEC < 10){
-        $call_time_SEC = "0$call_time_SEC";
-    }
-    $call_time_MS = "$call_time_M_int:$call_time_SEC"; 
-   
-    if ($status == "PAUSED"){
-        $circleclass = "circle circle-warning circle-lg text-left";
-        $textclass = "text-warning";
-        $nametextclass = "text-warning";
-        
+        $call_time_M = ($call_time_S / 60);
+        $call_time_M = round($call_time_M, 2);
+        $call_time_M_int = intval("$call_time_M");
+        $call_time_SEC = ($call_time_M - $call_time_M_int);
+        $call_time_SEC = ($call_time_SEC * 60);
+        $call_time_SEC = round($call_time_SEC, 0);
+            
+        if ($call_time_SEC < 10){
+            $call_time_SEC = "0$call_time_SEC";
+        }
+        $call_time_MS = "$call_time_M_int:$call_time_SEC"; 
+       
+        if ($status == "PAUSED"){
+            $circleclass = "circle circle-warning circle-lg text-left";
+            $textclass = "text-warning";
+            $nametextclass = "text-warning";
+            
+            if (strlen($pausecode) > 0) {
+                $status .= " [$pausecode]";
+            }
+            
             if ($call_time_S >= 10){
                 $textclass = "text-warning";
             }
@@ -178,46 +179,46 @@
             }
             if ($call_time_M_int >= 15){
                 $textclass = "text";
-            }            
+            }
+        }
+        
+        if ($status == "READY"){                
+                $textclass = "text-info";
+                
+                if ($call_time_M_int >= 3){
+                    $textclass = "text-warning";
+                }            
+                if ($call_time_M_int >= 5){
+                    $textclass = "text-danger";
+                }            
+            }  
+            
+        if ($status == "DISPO"){                
+                $textclass = "text-warning";
+                
+                if ($call_time_M_int >= 3){
+                    $textclass = "text-danger";
+                }            
+                if ($call_time_M_int >= 5){
+                    $textclass = "text";
+                }            
+            }         
+        
+        if ($status == "HUNGUP"){
+            $textclass = "text-danger";
         }
     
-    if ($status == "READY"){                
-            $textclass = "text-info";
-            
-            if ($call_time_M_int >= 3){
-                $textclass = "text-warning";
-            }            
-            if ($call_time_M_int >= 5){
-                $textclass = "text-danger";
-            }            
-        }  
-        
-    if ($status == "DISPO"){                
-            $textclass = "text-warning";
-            
-            if ($call_time_M_int >= 3){
-                $textclass = "text-danger";
-            }            
-            if ($call_time_M_int >= 5){
-                $textclass = "text";
-            }            
-        }         
     
-    if ($status == "HUNGUP"){
-        $textclass = "text-danger";
+        $barracks .='[';       
+        $barracks .= '"'.$sessionAvatar.'",';
+        $barracks .= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 
+        $barracks .= '"'.$user_group.'",';    
+        $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
+        $barracks .= '"'.$cust_phone.'",';         
+        $barracks .= '"<b class=\"'.$textclass.'\">'.$call_time_MS.'</b>",';
+        $barracks .= '"'.$campname.'"';
+        $barracks .='],';
     }
-
-
-    $barracks .='[';       
-    $barracks .= '"'.$sessionAvatar.'",';
-    $barracks .= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 
-    $barracks .= '"'.$user_group.'",';    
-    $barracks .= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
-    $barracks .= '"'.$cust_phone.'",';         
-    $barracks .= '"<b class=\"'.$textclass.'\">'.$call_time_MS.'</b>",';
-    $barracks .= '"'.$campname.'"';
-    $barracks .='],';
-}
 
     $barracks = rtrim($barracks, ",");    
     $barracks .= ']';
