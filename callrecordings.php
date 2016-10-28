@@ -135,7 +135,7 @@ $callrecs = $ui->API_getListAllRecordings();
 										   </thead>
 										   <tbody>
 											   	<?php
-											   		for($i=0;$i < count($callrecs->list_id);$i++){
+											   		for($i=0;$i < count($callrecs->uniqueid);$i++){
 
 												   		$d1 = strtotime($callrecs->start_last_local_call_time[$i]);
 														$d2 = strtotime($callrecs->end_last_local_call_time[$i]);

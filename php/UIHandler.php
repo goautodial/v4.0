@@ -3972,7 +3972,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 			//$result .= "<tr><td colspan='6'>".$output->query."</tr>";
 
-	    for($i=0; $i < count($output->list_id); $i++){
+	    for($i=0; $i < count($output->uniqueid); $i++){
 			$action_Call = $this->getUserActionMenuForCallRecording($output->uniqueid[$i], $output->location[$i]);
 
 			$d1 = strtotime($output->start_last_local_call_time[$i]);
