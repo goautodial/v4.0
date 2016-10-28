@@ -3982,7 +3982,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$duration = gmdate('H:i:s', $diff);
 
 			$result .= "<tr>
-				<td>".date("M.d,Y h:i A", strtotime($output->last_local_call_time[$i]))."</td>
+				<td>".date("M.d,Y h:i A", strtotime($output->end_last_local_call_time[$i]))."</td>
 				<td class='hide-on-low'>".$output->full_name[$i]."</td>
 				<td class='hide-on-low'>".$output->phone_number[$i]."</td>
 				<td class='hide-on-medium hide-on-low'>".$output->users[$i]."</td>

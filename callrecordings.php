@@ -146,7 +146,7 @@ $callrecs = $ui->API_getListAllRecordings();
 														//echo $callrecs->result;
 											   	?>
 														<tr>
-															<td nowrap><?php echo date("M.d,Y h:i A", strtotime($callrecs->last_local_call_time[$i]));?></td>
+															<td nowrap><?php echo date("M.d,Y h:i A", strtotime($callrecs->end_last_local_call_time[$i]));?></td>
 															<td nowrap class='hide-on-low'><?php echo $callrecs->full_name[$i];?></td>
 															<td nowrap class='hide-on-low'><?php echo $callrecs->phone_number[$i];?></td>
 															<td nowrap class='hide-on-medium hide-on-low'><?php echo $callrecs->users[$i];?></td>
