@@ -449,8 +449,8 @@ $lists = $ui->API_goGetAllLists();
 																	<span class="col-sm-1 control-label">
 																		<a href="#" class="remove-this-dial-status"  data-campaign="<?php echo $campaign_id; ?>" data-dial-status="<?php echo $campaign->data->dial_statuses;?>" data-selected-status="<?php echo $dial_status; ?>">Remove</a>
 																	</span>
-																<?php } ?>
 																<?php $i++; ?>
+																<?php } ?>
 															<?php } ?>
 														</div>
 														<div class="form-group">
@@ -914,8 +914,8 @@ $lists = $ui->API_goGetAllLists();
 																	<span class="col-sm-1 control-label">
 																		<a href="#" class="remove-this-dial-status"  data-campaign="<?php echo $campaign_id; ?>" data-dial-status="<?php echo $campaign->data->dial_statuses;?>" data-selected-status="<?php echo $dial_status; ?>">Remove</a>
 																	</span>
+																	<?php $i++; ?>
 																<?php } ?>
-																<?php $i++; ?>
 															<?php } ?>
 														</div>
 														<div class="form-group">
