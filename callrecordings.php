@@ -146,7 +146,7 @@ $callrecs = $ui->API_getListAllRecordings();
 														//echo $callrecs->result;
 											   	?>
 														<tr>
-															<td nowrap><?php echo $callrecs->end_last_local_call_time[$i];?></td>
+															<td nowrap><?php echo date("M.d,Y h:i A", strtotime($callrecs->last_local_call_time[$i]));?></td>
 															<td nowrap class='hide-on-low'><?php echo $callrecs->full_name[$i];?></td>
 															<td nowrap class='hide-on-low'><?php echo $callrecs->phone_number[$i];?></td>
 															<td nowrap class='hide-on-medium hide-on-low'><?php echo $callrecs->users[$i];?></td>
@@ -191,7 +191,7 @@ $agents = $ui->API_goGetAllUserLists();
 													<option value="" selected DISABLED> -- SELECT AN AGENT -- </option>
 													<?php
 														for($i=0; $i < count($agents->user_id);$i++){
-															echo '<option value="'.$agents->user[$i].'"> '.$agents->full_name[$i].' </option>';
+															echo '<option value="'.$agents->user[$i].'"> '.$agents->user[$i].' - '.$agents->full_name[$i].' </option>';
 														}
 													?>
 												</select>
@@ -202,7 +202,7 @@ $agents = $ui->API_goGetAllUserLists();
 			               				<label>Start Date:</label>
 							            <div class="form-group">
 							                <div class='input-group date' id='datetimepicker3'>
-							                    <input type='text' class="form-control" id="start_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
+							                    <input type='text' class="form-control" id="start_filterdate" placeholder="MM/DD/YYYY"/>
 							                    <span class="input-group-addon">
 							                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
 													<span class="fa fa-calendar"></span>
@@ -214,7 +214,7 @@ $agents = $ui->API_goGetAllUserLists();
 							            <label>End Date:</label>
 							            <div class="form-group">
 							                <div class='input-group date' id='datetimepicker4'>
-							                    <input type='text' class="form-control" id="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
+							                    <input type='text' class="form-control" id="end_filterdate" placeholder="MM/DD/YYYY" value="<?php echo date("m/d/Y H:i:s");?>"/>
 							                    <span class="input-group-addon">
 							                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
 							                        <span class="fa fa-calendar"></span>
@@ -370,12 +370,22 @@ $agents = $ui->API_goGetAllUserLists();
 					// ---- DATETIME PICKER INITIALIZATION
 
 						$('#datetimepicker3').datetimepicker({
-							format: 'MM/DD/YYYY'
+							icons: {
+								time: "fa fa-clock-o",
+								date: "fa fa-calendar",
+								up: "fa fa-arrow-up",
+								down: "fa fa-arrow-down"
+							}
 						});
 
 		                $('#datetimepicker4').datetimepicker({
 		                	useCurrent: false,
-                    		format: 'MM/DD/YYYY'
+                    		icons: {
+								time: "fa fa-clock-o",
+								date: "fa fa-calendar",
+								up: "fa fa-arrow-up",
+								down: "fa fa-arrow-down"
+							}
 		                });
 
 	                // ---- DATE FILTERS
