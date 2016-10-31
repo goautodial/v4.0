@@ -140,6 +140,7 @@ class GOagent extends Module {
 		$pauseCodeSelection = $this->lh()->translationFor("pause_code_selection");
 		$selectGroupsToSendCalls = $this->lh()->translationFor("select_group_to_send_calls");
 		$contactAdmin = $this->lh()->translationFor('contact_admin');
+		$customerInformation = $this->lh()->translationFor('contact_information');
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -781,6 +782,23 @@ EOF;
 						</button>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="view-customer-info" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">$customerInformation</h4>
+			</div>
+			<div class="modal-body">
+				
+			</div>
+			<div class="modal-footer">
+				<span class="pull-right">
+					<button class="btn btn-default btn-raised" id="btn-pause-code-back" data-dismiss="modal">Close</button>
+				</span>
 			</div>
 		</div>
 	</div>

@@ -566,6 +566,8 @@ if (isset($_GET["message"])) {
 												<input type="hidden" value="<?php echo $uniqueid;?>" name="uniqueid">
 												<!--SECONDS-->
 												<input type="hidden" value="" name="seconds">
+												<!--CUSTOM FORM LOADED-->
+												<input type="hidden" value="0" name="FORM_LOADED">
 												
 												<!--<div class="row">
 													<div class="col-sm-4">
@@ -1620,8 +1622,8 @@ if (isset($_GET["message"])) {
 				//echo $ui->getSidebarItem("./agent.php", "", $lh->translationFor("Home"));
 				$numMessages = $db->getUnreadMessagesNumber($user->getUserId());
 				echo $ui->getSidebarItem("messages.php", "", $lh->translationFor("messages"), $numMessages, "green");
-				echo $ui->getSidebarItem("customerslist.php", "", $lh->translationFor("contacts"));
 				echo $ui->getSidebarItem("callbackslist.php", "", $lh->translationFor("callbacks"), "0", "blue");
+				echo $ui->getSidebarItem("customerslist.php", "", $lh->translationFor("contacts"));
 			}
 			?>
 			<li id="pause_code_link" class="hidden">
