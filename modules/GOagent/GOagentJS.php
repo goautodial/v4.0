@@ -7695,7 +7695,7 @@ function getContactList() {
         goAction: 'goGetContactList',
         goUser: uName,
         goPass: uPass,
-        goLimit: 100,
+        goLimit: 200,
         responsetype: 'json'
     };
     
