@@ -488,7 +488,9 @@ EOF;
 	
 	phone.on('registrationFailed', function(e) {
 		console.log('registrationFailed', e);
+		phoneRegistered = false;
 		registrationFailed = true;
+		phone.stop();
 		swal({
 			title: "Registration Failed - " + e.cause,
 			text: "$contactAdmin",
@@ -496,7 +498,7 @@ EOF;
 		});
 		
 		if ( !!$.prototype.snackbar ) {
-			$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000});
+			$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000, htmlAllowed: true});
 		}
 	});
 	
@@ -793,7 +795,12 @@ EOF;
 				<h4 class="modal-title">$customerInformation</h4>
 			</div>
 			<div class="modal-body">
-				
+				<div id="customer-info-content" style="display: none;"></div>
+				<div class="cust-preloader" style="margin: 30px 0 10px; text-align: center;">
+					<span class="dots">
+						<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
+					</span>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<span class="pull-right">

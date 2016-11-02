@@ -1442,8 +1442,10 @@ $(document).ready(function() {
                     is_logged_in = 0;
                     $("#scSubmit").removeClass('disabled');
                 });
+            } else {
+                $("#select-campaign").modal('hide');
             }
-        }, 5000);
+        }, 6000);
     });
     
     $("input.digits-only, input.phonenumbers-only").keypress(function (e) {
@@ -1687,6 +1689,7 @@ function hijackThisLink(e) {
 function btnLogMeIn () {
     logging_in = true;
     alertLogout = true;
+    registrationFailed = false;
     if (is_logged_in && !phoneRegistered) {
         swal({
             title: '<?=$lh->translationFor('error')?>',
@@ -7354,9 +7357,92 @@ function replaceCustomFields() {
 }
 
 function ViewCustInfo(leadid) {
+    $(".cust-preloader").show();
+    $("#customer-info-content").hide();
     $("#view-customer-info").modal({
         backdrop: 'static',
         show: true
+    });
+    
+    var postData = {
+        goAction: 'goGetCustomerInfo',
+        goUser: uName,
+        goPass: uPass,
+        goLeadID: leadid,
+        responsetype: 'json'
+    };
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    .done(function (result) {
+        if (result.result == 'success') {
+            var lead_info = result.lead_info;
+            var infoHtml = '';
+            var infoTitle = '';
+            var colNum = 12;
+            var maxLength = 20;
+            $.each(lead_info, function(key, val) {
+                if (/lead_id|list_id/.test(key)) {
+                    infoHtml += '<input type="hidden" name="viewCust_'+key+'" value="'+val+'" />';
+                } else if (/title|first_name|middle_initial|last_name/.test(key)) {
+                    if (key == 'title') {
+                        infoHtml += '<div class="row">';
+                    }
+                    if (/title|middle_initial/.test(key)) {
+                        colNum = 2;
+                        maxLength = (key == 'title') ? 4 : 1;
+                    } else {
+                        colNum = 4;
+                        maxLength = 30;
+                    }
+                    infoTitle = key.replace('_', ' ').toUpperFirstLetters();
+                    infoHtml += '<div class="col-sm-'+colNum+'">\
+                            <div class="mda-form-group label-floating">\
+                                <input id="viewCust_'+key+'" name="viewCust_'+key+'" type="text" maxlength="'+maxLength+'" value="'+val+'" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">\
+                                <label for="viewCust_'+key+'">'+infoTitle+'</label>\
+                            </div>\
+                        </div>';
+                    if (key == 'last_name') {
+                        infoHtml += '</div>';
+                    }
+                } else if (/phone_code|phone_number|alt_phone/.test(key)) {
+                    if (key == 'phone_number') {
+                        infoHtml += '<div class="row">';
+                    }
+                    
+                    colNum = 6;
+                    maxLength = (key == 'phone_number') ? 18 : 12;
+                    infoTitle = key.replace('_', ' ').toUpperFirstLetters();
+                    infoHtml += '<div class="col-sm-'+colNum+'">\
+                            <div class="mda-form-group label-floating">\
+                                <input id="viewCust_'+key+'" name="viewCust_'+key+'" type="text" maxlength="'+maxLength+'" value="'+val+'" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">\
+                                <label for="viewCust_'+key+'">'+infoTitle+'</label>\
+                            </div>\
+                        </div>';
+                    if (key == 'alt_phone') {
+                        infoHtml += '</div>';
+                    }
+                }
+            });
+            
+            setTimeout(function() {
+                $(".cust-preloader").hide();
+                $("#customer-info-content").html(infoHtml).slideDown();
+            }, 2000);
+        } else {
+            swal({
+                title: '<?=$lh->translationFor('error')?>',
+                text: result.message,
+                type: 'error'
+            });
+        }
     });
 }
 
@@ -7705,6 +7791,7 @@ function getContactList() {
         goUser: uName,
         goPass: uPass,
         goLimit: 200,
+        goCampaign: campaign,
         responsetype: 'json'
     };
     
@@ -7726,9 +7813,11 @@ function getContactList() {
             $.each(leadsList, function(key, value) {
                 var thisComments = value.comments;
                 var commentTitle = '';
-                if (thisComments.length > 20) {
-                    commentTitle = ' title="'+thisComments+'"';
-                    thisComments = thisComments.substring(0, 20) + "...";
+                if (thisComments !== null) {
+                    if (thisComments.length > 20) {
+                        commentTitle = ' title="'+thisComments+'"';
+                        thisComments = thisComments.substring(0, 20) + "...";
+                    }
                 }
                 
                 var customer_name = (value.first_name || '') + ' ' + (value.middle_initial || '') + ' ' + (value.last_name || '');
@@ -8509,6 +8598,14 @@ function phone_number_format(formatphone) {
 
 String.prototype.toUpperFirst = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+String.prototype.toUpperFirstLetters = function() {
+    var str = this.toLowerCase().replace(/^[\u00C0-\u1FFF\u2C00-\uD7FF\w]|\s[\u00C0-\u1FFF\u2C00-\uD7FF\w]/g, function(letter) {
+        return letter.toUpperCase();
+    });
+    
+    return str;
 }
 
 Number.prototype.between = function (a, b, inclusive) {

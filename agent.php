@@ -398,7 +398,7 @@ if (isset($_GET["message"])) {
 			::-webkit-scrollbar { 
 				display: none;
 			}
-			.mail-preloader span.dots div {
+			.mail-preloader span.dots div, .cust-preloader span.dots div {
 				background-color: #2196F3;
 			}
 		</style>
