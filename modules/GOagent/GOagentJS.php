@@ -7359,6 +7359,7 @@ function replaceCustomFields() {
 function ViewCustInfo(leadid) {
     $(".cust-preloader").show();
     $("#customer-info-content").hide();
+    $("#convert-customer").prop('checked', false);
     $("#view-customer-info").modal({
         backdrop: 'static',
         show: true
@@ -7384,12 +7385,15 @@ function ViewCustInfo(leadid) {
     .done(function (result) {
         if (result.result == 'success') {
             var lead_info = result.lead_info;
+            var custom_info = result.custom_info;
             var infoHtml = '';
             var infoTitle = '';
             var colNum = 12;
             var maxLength = 20;
             $.each(lead_info, function(key, val) {
-                if (/lead_id|list_id/.test(key)) {
+                if (key == 'address3') {
+                    //do nothing
+                } else if (/lead_id|list_id/.test(key)) {
                     infoHtml += '<input type="hidden" name="viewCust_'+key+'" value="'+val+'" />';
                 } else if (/title|first_name|middle_initial|last_name/.test(key)) {
                     if (key == 'title') {
@@ -7419,6 +7423,43 @@ function ViewCustInfo(leadid) {
                     
                     colNum = 6;
                     maxLength = (key == 'phone_number') ? 18 : 12;
+                    var disableThis = '';
+                    infoTitle = key.replace('_', ' ').toUpperFirstLetters();
+                    if (key == 'phone_number' && disable_alter_custphone == 'Y') {
+                        disableThis = 'disabled';
+                    }
+                    infoHtml += '<div class="col-sm-'+colNum+'">\
+                            <div class="mda-form-group label-floating">\
+                                <input id="viewCust_'+key+'" name="viewCust_'+key+'" type="text" maxlength="'+maxLength+'" value="'+val+'" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" '+disableThis+'>\
+                                <label for="viewCust_'+key+'">'+infoTitle+'</label>\
+                            </div>\
+                        </div>';
+                    if (key == 'alt_phone') {
+                        infoHtml += '</div>';
+                    }
+                } else if (/address|email/.test(key)) {
+                    maxLength = (key == 'email') ? 70 : 100;
+                    infoTitle = key.replace('_', ' ').toUpperFirstLetters();
+                    infoHtml += '<div class="row">\
+                        <div class="col-sm-12">\
+                            <div class="mda-form-group label-floating">\
+                                <input id="viewCust_'+key+'" name="viewCust_'+key+'" type="text" maxlength="'+maxLength+'" value="'+val+'" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">\
+                                <label for="viewCust_'+key+'">'+infoTitle+'</label>\
+                            </div>\
+                        </div>\
+                    </div>';
+                } else if (/city|state|postal_code|country_code/.test(key)) {
+                    if (key == 'city') {
+                        infoHtml += '<div class="row">';
+                    }
+                    
+                    colNum = 2;
+                    maxLength = 2;
+                    maxLength = (key == 'city') ? 50 : maxLength;
+                    maxLength = (key == 'postal_code') ? 10 : maxLength;
+                    maxLength = (key == 'country_code') ? 3 : maxLength;
+                    colNum = (key == 'city') ? 5 : colNum;
+                    colNum = (key == 'postal_code') ? 3 : colNum;
                     infoTitle = key.replace('_', ' ').toUpperFirstLetters();
                     infoHtml += '<div class="col-sm-'+colNum+'">\
                             <div class="mda-form-group label-floating">\
@@ -7426,15 +7467,53 @@ function ViewCustInfo(leadid) {
                                 <label for="viewCust_'+key+'">'+infoTitle+'</label>\
                             </div>\
                         </div>';
-                    if (key == 'alt_phone') {
+                    if (key == 'country_code') {
                         infoHtml += '</div>';
                     }
+                } else if (/gender|date_of_birth/.test(key)) {
+                    infoTitle = key.replace('_', ' ').toUpperFirstLetters();
+                    if (key == 'gender') {
+                        var selectNone = (val === '') ? 'selected' : '';
+                        var selectMale = (val == 'M') ? 'selected' : '';
+                        var selectFemale = (val == 'F') ? 'selected' : '';
+                        infoHtml += '<div class="row">\
+                            <div class="col-sm-6">\
+                                <div class="mda-form-group label-floating">\
+                                    <select id="viewCust_'+key+'" name="viewCust_'+key+'" value="'+val+'" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select">\
+                                        <option '+selectNone+' disabled value=""></option>\
+                                        <option '+selectMale+' value="M">Male</option>\
+                                        <option '+selectFemale+' value="F">Female</option>\
+                                    </select>\
+                                    <label for="viewCust_'+key+'">'+infoTitle+'</label>\
+                                </div>\
+                            </div>';
+                    }
+                    if (key == 'date_of_birth') {
+                        infoHtml += '<div class="col-sm-6">\
+                                <div class="mda-form-group label-floating">\
+                                    <input type="date" id="viewCust_'+key+'" value="" name="viewCust_'+key+'" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">\
+                                    <label for="viewCust_'+key+'">'+infoTitle+'</label>\
+                                </div>\
+                            </div>\
+                        </div>';
+                    }
+                } else {
+                    //do nothing right now
                 }
             });
+            
+            if (custom_info !== 'null') {
+                $.each(cust_info, function(key, val) {
+                    
+                });
+            }
             
             setTimeout(function() {
                 $(".cust-preloader").hide();
                 $("#customer-info-content").html(infoHtml).slideDown();
+                if (lead_info.list_id > 100) {
+                    $("#convert-customer").prop('checked', true);
+                }
             }, 2000);
         } else {
             swal({

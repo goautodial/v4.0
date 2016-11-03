@@ -141,6 +141,7 @@ class GOagent extends Module {
 		$selectGroupsToSendCalls = $this->lh()->translationFor("select_group_to_send_calls");
 		$contactAdmin = $this->lh()->translationFor('contact_admin');
 		$customerInformation = $this->lh()->translationFor('contact_information');
+		$convertToCustomer = $this->lh()->translationFor('convert_to_customer');
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -789,9 +790,10 @@ EOF;
 	</div>
 </div>
 <div id="view-customer-info" class="modal fade" tabindex="-1">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title">$customerInformation</h4>
 			</div>
 			<div class="modal-body">
@@ -803,8 +805,16 @@ EOF;
 				</div>
 			</div>
 			<div class="modal-footer">
+				<button class="btn btn-default btn-raised pull-left" id="cust-info-back" data-dismiss="modal">Close</button>
 				<span class="pull-right">
-					<button class="btn btn-default btn-raised" id="btn-pause-code-back" data-dismiss="modal">Close</button>
+					<div style="display: inline-block; width: 250px; padding-right: 70px;">
+						<div class="material-switch pull-right" style="margin-left: 20px;">
+							<input id="convert-customer" name="convert-customer" value="0" type="checkbox"/>
+							<label for="convert-customer" class="label-primary" style="width: 0px;"></label>
+						</div>
+						<div style="font-weight: bold;">$convertToCustomer</div>
+					</div>
+					<button class="btn btn-warning btn-raised" id="cust-info-submit">Save</button>
 				</span>
 			</div>
 		</div>
