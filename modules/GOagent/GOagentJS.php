@@ -7198,6 +7198,9 @@ function GetCustomFields(listid, show, getData, viewFields) {
         .done(function (result) {
             if (result.result == 'success') {
                 var customHTML = '';
+                if (typeof viewFields !== 'undefined' && viewFields) {
+                    customHTML = '<div class="row"><div class="col-sm-12"><h4 style="border-bottom: 1px solid #f4f4f4; margin: 10.5px -15px; padding: 0 15px 15px;"><?=$lh->translationFor('custom_fields')?></h4></div></div>';
+                }
                 var fields = [];
                 var skipMe = false;
                 $.each(result.data, function(idx, val) {
@@ -7559,7 +7562,9 @@ function ViewCustInfo(leadid) {
                 }
             });
             
+            var unloadPreloader = true;
             if (custom_fields_enabled > 0) {
+                unloadPreloader = false;
                 GetCustomFields(lead_info.list_id, false, true, true);
                 var fieldsPopulated = setInterval(function() {
                     if (getFields) {
@@ -7603,13 +7608,16 @@ function ViewCustInfo(leadid) {
                         }
                         
                         replaceCustomFields(true);
+                        $(".cust-preloader").hide();
                         GetCustomFields(null, true, false, true);
                     }
                 }, 3000);
             }
             
             setTimeout(function() {
-                $(".cust-preloader").hide();
+                if (unloadPreloader) {
+                    $(".cust-preloader").hide();
+                }
                 $("#customer-info-content").html(infoHtml).slideDown();
                 if (lead_info.list_id > 100) {
                     $("#convert-customer").prop('checked', true);
