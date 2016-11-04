@@ -798,6 +798,7 @@ EOF;
 			</div>
 			<div class="modal-body">
 				<div id="customer-info-content" style="display: none;"></div>
+				<div id="custom-field-content" style="display: none;"></div>
 				<div class="cust-preloader" style="margin: 30px 0 10px; text-align: center;">
 					<span class="dots">
 						<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
