@@ -7514,7 +7514,7 @@ function ViewCustInfo(leadid) {
                         colNum = 4;
                         maxLength = 30;
                     }
-                    infoTitle = key.replace('_', ' ').toUpperFirstLetters();
+                    infoTitle = key.replace(/_/g, ' ').toUpperFirstLetters();
                     infoHtml += '<div class="col-sm-'+colNum+'">\
                             <div class="mda-form-group label-floating">\
                                 <input id="viewCust_'+key+'" name="viewCust_'+key+'" type="text" maxlength="'+maxLength+'" value="'+val+'" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">\
@@ -7532,7 +7532,7 @@ function ViewCustInfo(leadid) {
                     colNum = 6;
                     maxLength = (key == 'phone_number') ? 18 : 12;
                     var disableThis = '';
-                    infoTitle = key.replace('_', ' ').toUpperFirstLetters();
+                    infoTitle = key.replace(/_/g, ' ').toUpperFirstLetters();
                     if (key == 'phone_number' && disable_alter_custphone == 'Y') {
                         disableThis = 'disabled';
                     }
@@ -7547,7 +7547,7 @@ function ViewCustInfo(leadid) {
                     }
                 } else if (/address|email/.test(key)) {
                     maxLength = (key == 'email') ? 70 : 100;
-                    infoTitle = key.replace('_', ' ').toUpperFirstLetters();
+                    infoTitle = key.replace(/_/g, ' ').toUpperFirstLetters();
                     infoHtml += '<div class="row">\
                         <div class="col-sm-12">\
                             <div class="mda-form-group label-floating">\
@@ -7568,7 +7568,7 @@ function ViewCustInfo(leadid) {
                     maxLength = (key == 'country_code') ? 3 : maxLength;
                     colNum = (key == 'city') ? 5 : colNum;
                     colNum = (key == 'postal_code') ? 3 : colNum;
-                    infoTitle = key.replace('_', ' ').toUpperFirstLetters();
+                    infoTitle = key.replace(/_/g, ' ').toUpperFirstLetters();
                     infoHtml += '<div class="col-sm-'+colNum+'">\
                             <div class="mda-form-group label-floating">\
                                 <input id="viewCust_'+key+'" name="viewCust_'+key+'" type="text" maxlength="'+maxLength+'" value="'+val+'" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">\
@@ -7579,7 +7579,7 @@ function ViewCustInfo(leadid) {
                         infoHtml += '</div>';
                     }
                 } else if (/gender|date_of_birth/.test(key)) {
-                    infoTitle = key.replace('_', ' ').toUpperFirstLetters();
+                    infoTitle = key.replace(/_/g, ' ').toUpperFirstLetters();
                     if (key == 'gender') {
                         var selectNone = (val === '') ? 'selected' : '';
                         var selectMale = (val == 'M') ? 'selected' : '';
@@ -7599,7 +7599,7 @@ function ViewCustInfo(leadid) {
                     if (key == 'date_of_birth') {
                         infoHtml += '<div class="col-sm-6">\
                                 <div class="mda-form-group label-floating">\
-                                    <input type="date" id="viewCust_'+key+'" value="" name="viewCust_'+key+'" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">\
+                                    <input type="date" id="viewCust_'+key+'" value="'+val+'" name="viewCust_'+key+'" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">\
                                     <label for="viewCust_'+key+'">'+infoTitle+'</label>\
                                 </div>\
                             </div>\
