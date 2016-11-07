@@ -1568,12 +1568,59 @@ $(document).ready(function() {
     $("#cust-info-submit").click(function() {
         var submitCFData;
         var submitData = $("[id^='viewCust_']").serializeArray();
+        var saveAsCustomer = $("#convert-customer").prop('checked');
         
         if ($("#custom-field-content").is(':visible')) {
             submitCFData = $("[id^='viewCustom_']").serializeArray();
         }
         
-        console.log(submitData, submitCFData);
+        swal({
+            title: "<?=$lh->translationFor('saving_customer_info')?>",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "<?=$lh->translationFor('submit')?>"
+        }, function(){
+            var postData = {
+                goAction: 'goUpdateCustomer',
+                goUser: uName,
+                goPass: uPass,
+                goLeadInfo: submitData,
+                goCustomInfo: submitCFData,
+                goSaveAsCustomer: saveAsCustomer,
+                responsetype: 'json'
+            };
+        
+            $.ajax({
+                type: 'POST',
+                url: '<?=$goAPI?>/goAgent/goAPI.php',
+                processData: true,
+                data: postData,
+                dataType: "json",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .done(function (data) {
+                if (data.result == 'success') {
+                    swal({
+                        title: '<?=$lh->translationFor('success')?>',
+                        text: data.message,
+                        type: 'success',
+                        html: true
+                    });
+                    getContactList();
+                    $("#view-customer-info").modal('hide');
+                } else {
+                    swal({
+                        title: '<?=$lh->translationFor('error')?>',
+                        text: data.message+".<br><br><?=$lh->translationFor('contact_admin')?>",
+                        type: 'error',
+                        html: true
+                    });
+                }
+            });
+        });
     });
 });
 
@@ -7420,6 +7467,7 @@ function ViewCustInfo(leadid) {
     $("#customer-info-content").hide();
     $("#custom-field-content").hide();
     $("#convert-customer").prop('checked', false);
+    $("#cust-info-submit").prop('disabled', true);
     $("#view-customer-info").modal({
         backdrop: 'static',
         show: true
@@ -7619,6 +7667,7 @@ function ViewCustInfo(leadid) {
                     $(".cust-preloader").hide();
                 }
                 $("#customer-info-content").html(infoHtml).slideDown();
+                $("#cust-info-submit").prop('disabled', false);
                 if (lead_info.list_id > 100) {
                     $("#convert-customer").prop('checked', true);
                 }
@@ -7977,7 +8026,7 @@ function getContactList() {
         goAction: 'goGetContactList',
         goUser: uName,
         goPass: uPass,
-        goLimit: 200,
+        goLimit: 1000,
         goCampaign: campaign,
         responsetype: 'json'
     };
