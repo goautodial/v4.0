@@ -40,7 +40,7 @@ if (isset($_POST["usergroup_id"])) {
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
-			})
+			});
 		</script>
     </head>
     <style>
@@ -127,13 +127,13 @@ if (isset($_POST["usergroup_id"])) {
 				               	<!-- BASIC SETTINGS -->
 				                <div id="tab_1" class="tab-pane fade in active">
 				                	<fieldset>
-										<div class="form-group mt">
+										<div class="form-group row mt">
 											<label for="group_name" class="col-sm-2 control-label">Group Name</label>
 											<div class="col-sm-10 mb">
 												<input type="text" class="form-control" name="group_name" id="group_name" placeholder="Group Name (Mandatory)" value="<?php echo $output->group_name[$i];?>">
 											</div>
 										</div>
-										<div class="form-group">
+										<div class="form-group row">
 											<label for="forced_timeclock_login" class="col-sm-2 control-label">Force Timeclock Login</label>
 											<div class="col-sm-10 mb">
 												<select class="form-control" name="forced_timeclock_login" id="forced_timeclock_login">
@@ -162,7 +162,7 @@ if (isset($_POST["usergroup_id"])) {
 											</div>
 										</div>
 								
-										<div class="form-group">
+										<div class="form-group row">
 											<label for="shift_enforcement" class="col-sm-2 control-label">Shift Enforcement</label>
 											<div class="col-sm-10 mb">
 												<select class="form-control" id="shift_enforcement" name="shift_enforcement">
@@ -192,7 +192,7 @@ if (isset($_POST["usergroup_id"])) {
 												</select>
 											</div>
 										</div>
-										<div class="form-group">
+										<div class="form-group row">
 											<label for="group_level" class="col-sm-2 control-label">Group Level</label>
 											<div class="col-sm-10 mb">
 												<select class="form-control" name="group_level" id="group_level">
@@ -209,6 +209,12 @@ if (isset($_POST["usergroup_id"])) {
 													echo $group_level;
 												?>
 												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="group_list_id" class="col-sm-2 control-label">Group List ID</label>
+											<div class="col-sm-10 mb">
+												<input type="text" class="form-control" name="group_list_id" id="group_list_id" placeholder="Group List ID" value="<?php echo $output->group_list_id[$i];?>" readonly>
 											</div>
 										</div>
 									</fieldset>
@@ -275,7 +281,7 @@ if (isset($_POST["usergroup_id"])) {
 									//if message is sent
 									if (data == 1) {
 										swal("Success!", "Usergroup Successfully Updated!", "success");
-                                        window.setTimeout(function(){location.reload()},2000)
+                                        window.setTimeout(function(){location.reload()},2000);
                                         $('#update_button').html("<i class='fa fa-check'></i> Update");
                                         $('#modifyUserGroupOkButton').prop("disabled", false);
 									} else {

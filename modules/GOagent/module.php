@@ -808,7 +808,7 @@ EOF;
 			<div class="modal-footer">
 				<button class="btn btn-default btn-raised pull-left" id="cust-info-back" data-dismiss="modal">Close</button>
 				<span class="pull-right">
-					<div style="display: inline-block; width: 250px; padding-right: 70px;">
+					<div style="display: none; width: 250px; padding-right: 70px;">
 						<div class="material-switch pull-right" style="margin-left: 20px;">
 							<input id="convert-customer" name="convert-customer" value="0" type="checkbox"/>
 							<label for="convert-customer" class="label-primary" style="width: 0px;"></label>
