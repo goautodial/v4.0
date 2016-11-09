@@ -7668,8 +7668,9 @@ function ViewCustInfo(leadid) {
                 }
                 $("#customer-info-content").html(infoHtml).slideDown();
                 $("#cust-info-submit").prop('disabled', false);
-                if (lead_info.list_id > 100 && lead_info.list_id < 995) {
+                if (result.is_customer > 0) {
                     $("#convert-customer").prop('checked', true);
+                    $("#convert-customer").prop('disabled', true);
                 }
             }, 2000);
         } else {
