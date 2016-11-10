@@ -7,53 +7,56 @@ error_reporting(E_ALL);*/
 require_once('php/goCRMAPISettings.php');
 
 $pageTitle = $_POST['pageTitle'];
-
-$url = gourl."/goReports/goAPI.php"; #URL to GoAutoDial API. (required)
-$postfields["goUser"] = goUser; #Username goes here. (required)
-$postfields["goPass"] = goPass; #Password goes here. (required)
-$postfields["goAction"] = "goGetReports"; #action performed by the [[API:Functions]]. (required)
-$postfields["responsetype"] = responsetype; #json. (required)
-$postfields["pageTitle"] = $pageTitle;
-
-if(isset($_POST["fromDate"])){
-	$fromDate = date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
-}else{
-	$fromDate = date('Y-m-d H:i:s');
-}
-
-if($_POST["toDate"] != "" && $_POST["fromDate"] != ""){
-	$toDate = date('Y-m-d H:i:s', strtotime($_POST['toDate']));
-}else{
-	$toDate = date('Y-m-d H:i:s');
-}
-
-$postfields["fromDate"] 	= $fromDate;
-$postfields["toDate"] 		= $toDate;
-
-if(isset($_POST["campaignID"]))
-$postfields["campaignID"] 	= $_POST["campaignID"];
-
-if(isset($_POST["request"]))
-$postfields["request"] 		= $_POST["request"];
-
-if(isset($_POST["userID"]))
-$postfields["userID"] 		= $_POST["userID"];
-
-if(isset($_POST["userGroup"]))
-$postfields["userGroup"] 	= $_POST["userGroup"];
-
-if(isset($_POST["statuses"]))
-$postfields["statuses"] 	= $_POST["statuses"];
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-$data = curl_exec($ch);
-curl_close($ch);
-$output = json_decode($data);
+		
+		$url = gourl."/goReports/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "goGetReports"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+		
+		if($pageTitle != "call_export_report"){
+			$postfields["pageTitle"] = $pageTitle;
+		}
+		
+		if(isset($_POST["fromDate"])){
+			$fromDate = date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
+		}else{
+			$fromDate = date('Y-m-d H:i:s');
+		}
+		
+		if($_POST["toDate"] != "" && $_POST["fromDate"] != ""){
+			$toDate = date('Y-m-d H:i:s', strtotime($_POST['toDate']));
+		}else{
+			$toDate = date('Y-m-d H:i:s');
+		}
+		
+		$postfields["fromDate"] 	= $fromDate;
+		$postfields["toDate"] 		= $toDate;
+		
+		if(isset($_POST["campaignID"]))
+		$postfields["campaignID"] 	= $_POST["campaignID"];
+		
+		if(isset($_POST["request"]))
+		$postfields["request"] 		= $_POST["request"];
+		
+		if(isset($_POST["userID"]))
+		$postfields["userID"] 		= $_POST["userID"];
+		
+		if(isset($_POST["userGroup"]))
+		$postfields["userGroup"] 	= $_POST["userGroup"];
+		
+		if(isset($_POST["statuses"]))
+		$postfields["statuses"] 	= $_POST["statuses"];
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
 
 if($output->result == "success"){
 	echo '<div class="responsive animated bounceInUp">';
@@ -1009,55 +1012,222 @@ if($output->result == "success"){
 
 		echo $inbound_report;
 	}
-
-// EXPORT CALL REPORT
-	if($pageTitle == "call_export_report"){
-		$call_export_report = "";
-
-		$call_export_report .= '
-		<div class="table-responsive">
-			<table class="table table-striped table-bordered table-hover" id="call_export_report">
-				<thead>
-					<tr>
-			            <th nowrap> # </th>
-			            <th nowrap> Date </th>
-			            <th nowrap> Agent ID </th>
-			            <th nowrap> Phone Number </th>
-			            <th nowrap> Time </th>
-			            <th nowrap> Call Duration (IN SEC) </th>
-			            <th nowrap> Disposition </th>
-		            </tr>
-		        </thead>
-		        <tbody>
-		';
-
-		if($output->getReports->TOPsorted_output != NULL){
-				for($i=0; $i <= count($output->getReports->TOPsorted_output); $i++){
-			    	$call_export_report .= $output->getReports->TOPsorted_output[$i];
-			    }
-			}else{
-				$call_export_report .= "";
-			}
-				
-		    $call_export_report .= '</tbody>';
-
-		$call_export_report .= '</table></div>'; 
-
-		echo $call_export_report;
-	}
-
 // DASHBOARD
 	if($pageTitle == "dashboard"){
 		var_dump($output->getReports);
 	}
-
-// EXPORT CALL REPORT
-	if($pageTitle == "call_export_report"){
-		var_dump($output->getReports);
-	}
-
-	echo '</div>';
 	
+// EXPORT CALL REPORT	
+	if ($pageTitle == "call_export_report"){
+		// GET CAMPAIGNS
+			$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass; #Password goes here. (required)
+			$postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
+			$postfields["responsetype"] = responsetype; #json. (required)
+	
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			$campaigns = json_decode($data);
+		
+		// GET INBOUND GROUPS
+			$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass; #Password goes here. (required)
+			$postfields["goAction"] = "goGetAllInboundList"; #action performed by the [[API:Functions]]. (required)
+			$postfields["responsetype"] = responsetype; #json. (required)
+	
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			$inbound = json_decode($data);
+		
+		// GET LISTS
+			$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass; #Password goes here. (required)
+			$postfields["goAction"] = "goGetAllLists"; #action performed by the [[API:Functions]]. (required)
+			$postfields["responsetype"] = responsetype; #json. (required)
+	
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			$list = json_decode($data);
+			
+		// GET STATUSES
+			$url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass; #Password goes here. (required)
+			$postfields["goAction"] = "getAllDispositions"; #action performed by the [[API:Functions]]. (required)
+			$postfields["responsetype"] = responsetype; #json. (required)
+	
+			 $ch = curl_init();
+			 curl_setopt($ch, CURLOPT_URL, $url);
+			 curl_setopt($ch, CURLOPT_POST, 1);
+			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			 $data = curl_exec($ch);
+			 curl_close($ch);
+			 $disposition = json_decode($data);
+		
+		$display = '';
+		$display .= '
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Campaigns:</label>
+								<div class="mb">
+									 <div class="">
+										 <select multiple="multiple" class="select2-3 form-control" id="selected_campaigns" style="width:100%;">';
+												for($i=0; $i < count($campaigns->campaign_id);$i++){
+													$display .= '<option value="'.$campaigns->campaign_id[$i].'">'.$campaigns->campaign_id[$i].' - '.$campaigns->campaign_name[$i].'</option>';
+												}
+			$display .= '				 </select>
+									 </div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Inbound Groups:</label>
+								<div class="mb">
+									 <div class="">
+										 <select multiple="multiple" class="select2-3 form-control" id="selected_inbounds" style="width:100%;">';
+										 $display .= '<option value="">--- NONE ---</option>';
+												for($i=0; $i < count($inbound->group_id);$i++){
+													$display .= '<option value="'.$inbound->group_id[$i].'">'.$inbound->group_id[$i].' - '.$inbound->group_name[$i].'</option>';
+												}
+			$display .= '				 </select>
+									 </div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Lists:</label>
+								<div class="mb">
+									 <div class="">
+										 <select multiple="multiple" class="select2-3 form-control" id="selected_lists" style="width:100%;">';
+										 $display .= '<option value="ALL">--- ALL ---</option>';
+												for($i=0; $i < count($list->list_id);$i++){
+													$display .= '<option value="'.$list->list_id[$i].'">'.$list->list_id[$i].' - '.$list->list_name[$i].'</option>';
+												}
+			$display .= '				 </select>
+									 </div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Statuses:</label>
+								<div class="mb">
+									 <div class="">
+										 <select multiple="multiple" class="select2-3 form-control" id="selected_statuses" style="width:100%;">';
+										 $display .= '<option value="ALL">--- ALL ---</option>';
+												for($i=0; $i < count($disposition->status);$i++){
+													$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+												}
+			$display .= '				 </select>
+									 </div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Custom Fields:</label>
+								<div class="mb">
+									 <div class="">
+										 <select class="form-control" id="selected_custom_fields">
+											<option value="N">NO</option>
+											<option value="Y">YES</option>
+										 </select>
+									 </div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Per Call Notes:</label>
+								<div class="mb">
+									 <div class="">
+										 <select class="form-control" id="selected_per_call_notes">
+											<option value="N">NO</option>
+											<option value="Y">YES</option>
+										 </select>
+									 </div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<center><button class="btn btn-info" name="submit_export" id="submit_export"><li class="fa fa-download"> Submit & Download</button>
+					</div>
+					
+					<span id="result_export"></span>
+		';
+		//var_dump($disposition);
+		echo $display;
+	?>
+		<script>
+			// initialize multiple selecting
+			$('.select2-3').select2({
+				theme: 'bootstrap'
+			});
+			
+			$(document).on('click','#submit_export',function() {
+				$('#submit_export').html("Downloading.....");
+				$('#submit_export').attr("disabled", true);
+				
+				$.ajax({
+					url: "./php/ExportCallReport.php",
+					type: 'POST',
+					data: {
+						campaigns : $('#selected_campaigns').val(),
+						inbounds : $('#selected_inbounds').val(),
+						lists : $('#selected_lists').val(),
+						statuses : $('#selected_statuses').val(),
+						custom_fields : $('#selected_custom_fields').val(),
+						per_call_notes : $('#selected_per_call_notes').val(),
+						start_filterdate : $('#start_filterdate').val(),
+						end_filterdate : $('#end_filterdate').val()
+					},
+					success: function(data) {
+						$('#submit_export').html('<li class="fa fa-download"> Submit & Download');
+						$('#submit_export').attr("disabled", false);
+						$('#result_export').html(data);
+						console.log(data);
+					}
+				});
+			});
+		</script>
+	<?php	
+	}
+	
+	echo '</div>';
+	// end of display
+	
+// ------ FOR MODALS AND OTHERS
 	if($pageTitle == "sales_tracker"){
 		if($output->getReports->inbound_result != NULL || $output->getReports->outbound_result != NULL){
 			
