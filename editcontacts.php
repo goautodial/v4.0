@@ -39,6 +39,7 @@ if ($list_id_ct != NULL) {
 	$title 			= $output->data->title;
 	$call_count 	= $output->data->call_count;
 	$last_local_call_time = $output->data->last_local_call_time;
+	$is_customer	= $output->is_customer;
 }
 	$fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
 	$date_of_birth = date('m/d/Y', strtotime($date_of_birth));
@@ -136,7 +137,7 @@ if ($list_id_ct != NULL) {
 								<div class="card-heading bg-inverse">
 									<div class="row">
 										<div class="col-md-2 text-center visible-md visible-lg">
-											<img src="<?php echo $user->getUserAvatar();?>" id="cust_avatar" alt="Image" class="media-object img-circle thumb96 pull-left">
+											<?php echo $ui->getVueAvatar($fullname, null, 96);?>
 										</div>
 										<div class="col-md-10">
 											<div class="row">
@@ -427,6 +428,13 @@ if ($list_id_ct != NULL) {
 							               </fieldset>
 							               <!-- FOOTER BUTTONS -->
 						                    <fieldset class="footer-buttons">
+												<div style="display: inline-block; width: 220px; padding-right: 70px;">
+													<div class="material-switch pull-right" style="margin-left: 20px;">
+														<input id="convert-customer" name="convert-customer" value="0" type="checkbox"/>
+														<label for="convert-customer" class="label-primary" style="width: 0px;"></label>
+													</div>
+													<div style="font-weight: bold;">Convert to Customer</div>
+												</div>
 					                           <div class="col-sm-3 pull-right">
 														<a href="contactsandcallrecordings.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
 					                           	
@@ -513,6 +521,12 @@ if ($list_id_ct != NULL) {
 		<script type="text/javascript">
 			$(document).ready(function() {
 
+				var is_customer = <?php echo $is_customer; ?>;
+				if (is_customer > 0) {
+					$('#convert-customer').prop('checked', true);
+					$('#convert-customer').prop('disabled', true);
+				}
+				
 				$('#heading_full_name').text("<?php echo $fullname;?>");
 				$('#heading_lead_id').text("<?php echo $lead_id;?>");
 				$('#comments').text("<?php echo $comments;?>");
@@ -527,29 +541,30 @@ if ($list_id_ct != NULL) {
 					$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
 					$('#submit_edit_form').prop("disabled", true);
 
-				var validate = 0;
+					var validate = 0;
 
 					if($('#name_form')[0].checkValidity()) {
 					    if($('#gender_form')[0].checkValidity()) {
 					    	if($('#contact_details_form')[0].checkValidity()) {
 								
 								//alert("Form Submitted!");
+								var postData = $("#name_form, #gender_form, #contact_details_form, #comment_form").serialize() + '&is_customer=' + $('#convert-customer').is(':checked') + '&user_id=' + <?php echo $user->getUserId(); ?>;
 								$.ajax({
 									url: "./php/ModifyContact.php",
 									type: 'POST',
-									data: $("#name_form, #gender_form, #contact_details_form, #comment_form").serialize(),
+									data: postData,
 									success: function(data) {
 									  // console.log(data);
-										  if(data == 1){
-										  	 swal("Success!", "Contact Successfully Updated!", "success");
-											  window.setTimeout(function(){location.reload()},2000);
-											 	$('#update_button').html("<i class='fa fa-check'></i> Update");
-	                                        	$('#submit_edit_form').prop("disabled", false);
-										  }else{
-											  sweetAlert("Oops...", "Something went wrong!", "error");
-											  	$('#update_button').html("<i class='fa fa-check'></i> Update");
-	                                        	$('#submit_edit_form').prop("disabled", false);
-										  }
+										if(data == 1){
+											swal("Success!", "Contact Successfully Updated!", "success");
+											window.setTimeout(function(){location.reload();},2000);
+											$('#update_button').html("<i class='fa fa-check'></i> Update");
+											$('#submit_edit_form').prop("disabled", false);
+										}else{
+											sweetAlert("Oops...", "Something went wrong!", "error");
+											$('#update_button').html("<i class='fa fa-check'></i> Update");
+											$('#submit_edit_form').prop("disabled", false);
+										}
 									}
 								});
 

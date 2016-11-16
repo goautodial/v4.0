@@ -20,6 +20,8 @@ $address3 	= $_POST['address3'];
 $city  = $_POST['city'];
 $state = $_POST['state'];
 $title = $_POST['title'];
+$is_customer = (isset($_POST['is_customer'])) ? $_POST['is_customer'] : false;
+$user_id = $_POST['user_id'];
 
 	// get name (mandatory), customer id and customer type
 	$first_name = $_POST['first_name'];
@@ -148,6 +150,8 @@ $title = $_POST['title'];
 	$postfields["country_code"] 	= $country; #Desired value for user (required)
 	$postfields["date_of_birth"] 	= $date_of_birth; #Desired value for user (required)
 	$postfields["title"] 			= $title; #Desired value for user (required)
+	$postfields["is_customer"]		= ($is_customer) ? 1 : 0;
+	$postfields["user_id"]			= $user_id;
 	
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     

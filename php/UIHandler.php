@@ -5413,7 +5413,7 @@ error_reporting(E_ERROR | E_PARSE);
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass;
 	if($limit != NULL){
-		$postfields["goVarLimit"] = $limit;
+		$postfields["goVarLimit"] = "";
 	}else{
 		$postfields["goVarLimit"] = "50";
 	}
@@ -5465,7 +5465,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	// get contact list
 	public function GetContacts($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter) {
-		$limit = "50";
+		$limit = "search";
 		$output = $this->API_GetLeads($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit);
 	       if($output->result=="success") {
 
