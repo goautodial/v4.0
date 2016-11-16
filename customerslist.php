@@ -185,7 +185,7 @@ error_reporting(E_ALL);*/
 
 										if ($output->result=="success") {
 										# Result was OK!
-											echo $ui->GetContacts($user->getUserName());
+											echo $ui->GetContacts($_SESSION['user']);
 										} else {
 										   # An error occured
 											echo $output->result;

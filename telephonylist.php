@@ -62,173 +62,8 @@
 				$(".preloader").fadeOut("slow");
 			});
 		</script>
-<script type="text/javascript">
-    $(document).ready(function() {
-
-    // The event listener for the file upload
-	var something;
-    something = document.getElementById('txtFileUpload').addEventListener('change', upload, false);
-	//alert(something);
-	//$("#yourdropdownid option:selected").text();
-
-    // Method that checks that the browser supports the HTML5 File API
-    function browserSupportFileUpload() {
-        var isCompatible = false;
-        if (window.File && window.FileReader && window.FileList && window.Blob) {
-        isCompatible = true;
-        }
-        return isCompatible;
-    }
-
-	// Method that reads and processes the selected file
-    function upload(evt) {
-    if (!browserSupportFileUpload()) {
-        alert('The File APIs are not fully supported in this browser!');
-        } else {
-            var data = null;
-            var file = evt.target.files[0];
-            var reader = new FileReader();
-            reader.readAsText(file);
-            reader.onload = function(event) {
-                var csvData = event.target.result;
-
-				data = $.csv.toArrays(csvData);
-
-				var headerDelimeter = 0;
-				var valuesDelimeter = 1;
-
-                if (data && data.length > 0) {
-
-				var outputHTML = '';
-				var outputOption = '';
-				var outputValuesOption = '';
-				var outputHTML3 = '';
-				var outputPostPhoneNumbers;
 
 
-				var defFields = 'vendor_lead_code, source_id, list_id, phone_code, phone_number, title, first_name, middle_initial, last_name, address1, address2, address3, city, state, province, postal_code, country_code, gender, date_of_birth, alt_phone, email, security_phrase, comments, rank, owner';
-				var myarray = defFields.split(',');
-				var fromDropdownListID = $('#list_id').val(); // id - desc
-
-				$.ajax({
-						   type: 'POST',
-						   async: false,
-						   url: "./php/APIs/API_goGetLeadsOfList.php",
-						   data: {goListId: fromDropdownListID},
-						   cache: false,
-						   //dataType: 'json',
-						   success: function(rdata) {
-						    var myArrayRetrun = rdata.split(',');
-							//alert(myArrayRetrun.length);
-
-							//console.log(rdata.lenght);
-								if (!$.trim(myArrayRetrun)){
-
-									//do nothing
-
-								} else {
-
-									outputPostPhoneNumbers = myArrayRetrun.slice(0, -1);
-
-								}
-
-							}
-
-				});
-
-				//alert(outputPostPhoneNumbers.length + '  milo0');
-				//alert(outputPostPhoneNumbers + 'milo1');
-
-				//Get the headers from CSV files
-				outputOption += '<option value="-1"></option>';
-				for (headerDelimeter = 0; headerDelimeter < data[0].length; headerDelimeter++)
-				{
-
-					if(data[0][headerDelimeter] === null || data[0][headerDelimeter] === undefined  ){
-						// do nothing
-					} else {
-
-						outputOption += '<option value="' +  headerDelimeter + '">' + data[0][headerDelimeter] + '</option>';
-
-					}
-
-				} //End get the headers from CSV files
-
-				//Get the values from default fields
-				for(var ix = 0; ix < myarray.length; ix++)
-				{
-					outputHTML += '<label>'+ myarray[ix] + '</label>';
-					outputHTML += '<select id="' + myarray[ix] + '_feild" name="' + myarray[ix] + '_feild">' + outputOption;
-					outputHTML += '</select></br>';
-				} //End get the values from default fields
-
-
-				//Get the phone values from CSV files
-				for (valuesDelimeter = 0; valuesDelimeter < data[0].length; valuesDelimeter++)
-				{
-
-					if(data[valuesDelimeter][0] === null || data[valuesDelimeter][0] === undefined  ){
-						// do nothing
-					} else {
-
-						outputValuesOption += data[valuesDelimeter][0];
-
-					}
-
-				} //End get the phone values from CSV files
-
-
-
-
-				//alert(outputValuesOption);
-				//for(var ix = 0; ix < myarray.length; ix++)
-				//{
-
-				//}
-
-
-
-				//for(var row in data) {
-					//alert(data['1']);
-					//alert(row);
-					//for(var goItems in data[row]) {
-							//outputHTML3 += '<td>' + data[row][goItems] + '</td>\r\n';
-
-
-
-					//}
-				//}
-
-				var goFakeFilename = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
-
-				return goFakeFilename;
-
-				$('#goMappingContainer').html(outputHTML);
-
-				     //var goModalUsername = document.getElementById("modal-username").innerText;
-
-						/* $.ajax({
-						   type: 'POST',
-						   url: "./php/APIs/API_goLoadLeadsMapping.php",
-						   data: {goCSVvalues: data},
-						   cache: false,
-						   //dataType: 'json',
-						   success: function(data){
-
-						   }
-					   }); */
-
-                } else {
-                    alert('No data to import!');
-                }
-            };
-            reader.onerror = function() {
-                alert('Unable to read ' + file.fileName);
-            };
-        }
-    }
-});
-</script>
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -315,14 +150,13 @@
 		               	</div><!-- /.col-lg-9 -->
 			            <div class="col-lg-3">
 	           				<h3 class="m0 pb-lg">Upload/Import Leads</h3>
-	           				<!-- <form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data"> -->
-
+	           				<form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data">
 								<div class="form-group">
 									<label>List ID:</label>
 									<div class="form-group">
 										<!-- <select id="select2-1" class="form-control" name="list_id"> -->
-										<select id="list_id" class="form-control" name="list_id">
-										<option value="" selected disabled>-- Select List ID --</option>
+										<select id="list_id" class="form-control select2" name="list_id" required>
+										<option value="" selected disabled></option>
 											<?php
 												for($i=0;$i<count($lists->list_id);$i++){
 		                                			echo '<option value="'.$lists->list_id[$i].'">'.$lists->list_id[$i].' - '.$lists->list_name[$i].'</option>';
@@ -330,51 +164,53 @@
 											?>
 										</select>
 									</div>
+									
+									<div class="form-group">
+									<label>Duplicate Check:</label>
+										<SELECT size="1" NAME="goDupcheck" ID="goDupcheck" TITLE="Duplicate Check - Will check phone numbers on the lead file and cross reference it with all phone numbers on a specific campaign or in all List ID." class="form-control select2">
+											<OPTION value="NONE">NO DUPLICATE CHECK</OPTION>
+											<OPTION value="DUPLIST">CHECK PHONES IN LIST ID</OPTION>
+											<OPTION value="DUPCAMP">CHECK PHONES IN CAMPAIGN-LISTS</OPTION>
+										</SELECT>
+									</div>
+									
 								</div>
 								<div class="form-group">
 
 									<label>CSV File:</label>
 									<div class="form-group" id="dvImportSegments">
 										<div class="input-group">
-									      <input type="text" class="form-control file-name" name="file_name" placeholder="CSV File">
+									      <input type="text" class="form-control file-name" name="file_name" placeholder="CSV File" required>
 									      <span class="input-group-btn">
-									        <button type="button" class="btn btn-default browse-btn" type="button">Browse</button>
+									        <button type="button" class="btn browse-btn  btn-primary" type="button">Browse</button>
 									      </span>
 									    </div>
 									    <input type="file" class="file-box hide" name="file_upload" id="txtFileUpload" accept=".csv">
 
 									</div>
+									
 									<div id="goMappingContainer"></div>
-									<div id="goValuesContainer"></div>
+									<div id="goValuesContainer"></div> 
 
-<!-- <div id="dvImportSegments" class="fileupload ">
-    <fieldset>
-        <legend>Upload your CSV File</legend>
-            <input type="file" name="File Upload" id="txtFileUpload" accept=".csv" class="file-box hide" />
-   </fieldset>
-</div> -->
 								</div>
 								<div class="form-group">
-
+										<input type="submit" id="btnUpload" name="btnUpload" value="Upload" class="btn btn-primary">
 								</div>
 								<div id="jMapFieldsdiv">
 									<span id="jMapFieldsSpan"></span>
 								</div>
-							<!-- </form> -->
+							</form> 
 							<?php
                         		if(isset($_GET['message'])){
                         			echo '<div class="col-lg-12" style="margin-top: 10px;">';
-                        			if($_GET['message'] == "Success"){
-                        				echo '<div class="alert alert-success">
-										  <strong>Success!</strong> Upload of leads was successful.
-										</div>';
+                        			if($_GET['message'] == "success"){
+                        				echo '<div class="alert alert-success"> <strong>Succes: </strong>'.$_GET['RetMesg']." leads uploaded</div>";
                         			}else{
-                        				echo '<div class="alert alert-danger">
-										  <strong>Error!</strong> Failed to upload file.
-										</div>';
+                        				echo '<div class="alert alert-success"> <strong>Error: </strong>'.$_GET['RetMesg']."</div>";
                         			}
                         			echo '</div>';
                         		}
+								#var_dump($_GET);
                         	?>
 	           			</div><!-- ./upload leads -->
                 	</div>

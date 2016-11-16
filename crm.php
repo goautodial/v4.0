@@ -91,7 +91,7 @@
                 </section>
 <?php
 $lists = $ui->API_goGetAllLists();
-$leads = $ui->API_GetLeads($user->getUserName());
+$leads = $ui->API_GetLeads($_SESSION['user']);
 ?>
                 <!-- Main content -->
                 <section class="content">

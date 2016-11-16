@@ -12,6 +12,7 @@
 
 	require_once('goCRMAPISettings.php');
 	require_once('CRMDefaults.php');
+	
 	// print_r($_FILES['file_upload']);die();
     $url = gourl."/goUploadLeads/goAPI.php"; #URL to GoAutoDial API. (required)
     
@@ -21,8 +22,9 @@
     $postfields["responsetype"]   = responsetype; #json. (required)
     $postfields["hostname"]       = $_SERVER['REMOTE_ADDR']; #Default value
     $postfields["goFileMe"]       = curl_file_create($_FILES['file_upload']['tmp_name'], $_FILES['file_upload']['type'], $_FILES["file_upload"]["name"]);
-    $postfields["goListId"]       = $_POST['list_id'];
-
+    $postfields["goListId"]       = $_REQUEST['list_id'];
+    $postfields["goDupcheck"]       = $_REQUEST['goDupcheck'];
+	
     // print_r($postfields);die;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -41,13 +43,19 @@
    
     if ($output->result == "success") {
     	// echo "Success";
-    	header("Location: ".$home."?message=Success");
+		#var_dump($output);
+		#die('hoy1');
+    	header("Location: ".$home."?message=success&RetMesg=".$output->message);
+		#header("Location: ".$home."?message=Success&query=".$output->query);
     } else {
     	// echo "The following error occured: ".$output->result;
-    	header("Location: ".$home."?message=Error");
+		#var_dump($output);
+		#die('hoy2');
+		header("Location: ".$home."?message=error&RetMesg=".$output->message);
+    	
     }
 
-	print_r($data);
-	die;
+	#print_r($data);
+	#ie;
 
 ?>

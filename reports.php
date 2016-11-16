@@ -1089,13 +1089,14 @@ if($output->result == "success"){
 		
 		$display = '';
 		$display .= '
+				<form action="./php/ExportCallReport.php" id="export_callreport_form" method="POST">
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">
 								<label>Campaigns:</label>
 								<div class="mb">
 									 <div class="">
-										 <select multiple="multiple" class="select2-3 form-control" id="selected_campaigns" style="width:100%;">';
+										 <select multiple="multiple" class="select2-3 form-control" id="selected_campaigns" name="campaigns[]" style="width:100%;">';
 												for($i=0; $i < count($campaigns->campaign_id);$i++){
 													$display .= '<option value="'.$campaigns->campaign_id[$i].'">'.$campaigns->campaign_id[$i].' - '.$campaigns->campaign_name[$i].'</option>';
 												}
@@ -1109,8 +1110,8 @@ if($output->result == "success"){
 								<label>Inbound Groups:</label>
 								<div class="mb">
 									 <div class="">
-										 <select multiple="multiple" class="select2-3 form-control" id="selected_inbounds" style="width:100%;">';
-										 $display .= '<option value="">--- NONE ---</option>';
+										 <select multiple="multiple" class="select2-3 form-control" id="selected_inbounds" name="inbounds[]" style="width:100%;">';
+										 $display .= '<option value="" selected>--- NONE ---</option>';
 												for($i=0; $i < count($inbound->group_id);$i++){
 													$display .= '<option value="'.$inbound->group_id[$i].'">'.$inbound->group_id[$i].' - '.$inbound->group_name[$i].'</option>';
 												}
@@ -1126,8 +1127,8 @@ if($output->result == "success"){
 								<label>Lists:</label>
 								<div class="mb">
 									 <div class="">
-										 <select multiple="multiple" class="select2-3 form-control" id="selected_lists" style="width:100%;">';
-										 $display .= '<option value="ALL">--- ALL ---</option>';
+										 <select multiple="multiple" class="select2-3 form-control" id="selected_lists" name="lists[]" style="width:100%;">';
+										 $display .= '<option value="ALL" selected>--- ALL ---</option>';
 												for($i=0; $i < count($list->list_id);$i++){
 													$display .= '<option value="'.$list->list_id[$i].'">'.$list->list_id[$i].' - '.$list->list_name[$i].'</option>';
 												}
@@ -1141,8 +1142,8 @@ if($output->result == "success"){
 								<label>Statuses:</label>
 								<div class="mb">
 									 <div class="">
-										 <select multiple="multiple" class="select2-3 form-control" id="selected_statuses" style="width:100%;">';
-										 $display .= '<option value="ALL">--- ALL ---</option>';
+										 <select multiple="multiple" class="select2-3 form-control" id="selected_statuses" name="statuses[]" style="width:100%;">';
+										 $display .= '<option value="ALL" selected>--- ALL ---</option>';
 												for($i=0; $i < count($disposition->status);$i++){
 													$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
 												}
@@ -1158,7 +1159,7 @@ if($output->result == "success"){
 								<label>Custom Fields:</label>
 								<div class="mb">
 									 <div class="">
-										 <select class="form-control" id="selected_custom_fields">
+										 <select class="form-control" id="selected_custom_fields" name="custom_fields">
 											<option value="N">NO</option>
 											<option value="Y">YES</option>
 										 </select>
@@ -1171,7 +1172,7 @@ if($output->result == "success"){
 								<label>Per Call Notes:</label>
 								<div class="mb">
 									 <div class="">
-										 <select class="form-control" id="selected_per_call_notes">
+										 <select class="form-control" id="selected_per_call_notes" name="per_call_notes">
 											<option value="N">NO</option>
 											<option value="Y">YES</option>
 										 </select>
@@ -1180,10 +1181,10 @@ if($output->result == "success"){
 							</div>
 						</div>
 					</div>
+				</form>
 					<div class="row">
 						<center><button class="btn btn-info" name="submit_export" id="submit_export"><li class="fa fa-download"> Submit & Download</button>
 					</div>
-					
 					<span id="result_export"></span>
 		';
 		//var_dump($disposition);
@@ -1199,7 +1200,21 @@ if($output->result == "success"){
 				$('#submit_export').html("Downloading.....");
 				$('#submit_export').attr("disabled", true);
 				
-				$.ajax({
+				toDateVal = $('#start_filterdate').val();
+				$('#export_callreport_form').append("<input type='hidden' name='toDate' value='"+
+									toDateVal+"' />");
+				fromDateVal = $('#end_filterdate').val();
+				$('#export_callreport_form').append("<input type='hidden' name='fromDate' value='"+
+									fromDateVal+"' />");
+				
+				//alert($("#toDate").val());
+				
+				$( "#export_callreport_form" ).submit();
+				
+				$('#submit_export').html('<li class="fa fa-download"> Submit & Download');
+				$('#submit_export').attr("disabled", false);
+				
+				/*$.ajax({
 					url: "./php/ExportCallReport.php",
 					type: 'POST',
 					data: {
@@ -1217,8 +1232,10 @@ if($output->result == "success"){
 						$('#submit_export').attr("disabled", false);
 						$('#result_export').html(data);
 						console.log(data);
+						var uri = 'data:application/csv;charset=UTF-8,' + encodeURIComponent(response);
+						window.open(uri, 'test.csv');
 					}
-				});
+				});*/
 			});
 		</script>
 	<?php	

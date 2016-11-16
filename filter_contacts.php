@@ -7,9 +7,9 @@ $user = \creamy\CreamyUser::currentUser();
 
 // if search is not empty
   if($_POST['search_contacts'] != ""){
-    $output = $ui->GetContacts($user->getUserName(), $_POST['search_contacts'], $_POST['disposition'], $_POST['list'], $_POST['address'], $_POST['city'], $_POST['state']);
+    $output = $ui->GetContacts($_SESSION['user'], $_POST['search_contacts'], $_POST['disposition'], $_POST['list'], $_POST['address'], $_POST['city'], $_POST['state']);
   }else{
-    $output = $ui->GetContacts($user->getUserName(), NULL, $_POST['disposition'], $_POST['list'], $_POST['address'], $_POST['city'], $_POST['state']);
+    $output = $ui->GetContacts($_SESSION['user'], NULL, $_POST['disposition'], $_POST['list'], $_POST['address'], $_POST['city'], $_POST['state']);
   }
 
 

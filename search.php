@@ -7,7 +7,7 @@ $user = \creamy\CreamyUser::currentUser();
 
 if(isset($_POST['search_contacts'])){
 
-    $output = $ui->GetContacts($user->getUserName(), $_POST['search_contacts'], $_POST['disposition'], $_POST['list'], $_POST['address'], $_POST['city'], $_POST['state']);
+    $output = $ui->GetContacts($_SESSION['user'], $_POST['search_contacts'], $_POST['disposition'], $_POST['list'], $_POST['address'], $_POST['city'], $_POST['state']);
     echo $output;
 }
 
