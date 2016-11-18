@@ -34,13 +34,6 @@ if (isset($_POST["modifyid"])) {
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <?php print $ui->standardizedThemeCSS();?>
         <?php print $ui->creamyThemeCSS(); ?>
-
-
-        <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			})
-		</script>
     </head>
     <style>
     	select{
@@ -180,21 +173,30 @@ if (isset($_POST["modifyid"])) {
 												</select>
 											</div>
 										</div>
+										<div class="form-group">
+											<label for="reset_list" class="col-sm-2 control-label">Reset List</label>
+											<div class="col-sm-10 mb">
+												<select class="form-control" name="reset_list" id="reset_list">
+													<option value="" selected> NO </option>
+													<option value="Y"> YES </option>
+												</select>
+											</div>
+										</div>
 									</fieldset>
 								</div><!-- tab 1 -->
 
 			                    <!-- FOOTER BUTTONS -->
 			                    <fieldset class="footer-buttons">
 			                        <div class="box-footer">
-																<div class="row">
+										<div class="row">
 				                          <div class="pull-right">
-																		 <div class="col-sm-12">
-																		 <a href="telephonylist.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
-				                             <button type="submit" class="btn btn-primary" id="modifyListOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-																		 <button type="button" class="btn btn-success" id="add_custom_field" data-id="<?php echo $modifyid; ?>"><i class="fa fa-th-list"></i> Custom Fields </button>
-																	 </div>
+											<div class="col-sm-12">
+												<a href="telephonylist.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
+												<button type="submit" class="btn btn-primary" id="modifyListOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+												<button type="button" class="btn btn-success" id="add_custom_field" data-id="<?php echo $modifyid; ?>"><i class="fa fa-th-list"></i> Custom Fields </button>
+											</div>
 			                           </div>
-															 </div>
+										</div>
 			                        </div>
 			                    </fieldset>
 
@@ -242,24 +244,22 @@ if (isset($_POST["modifyid"])) {
 							$('#modifyListOkButton').prop("disabled", true);
 
                 			$.ajax({
-	                            url: "./php/ModifyTelephonyList.php",
-	                            type: 'POST',
-	                            data: $("#modifylist").serialize(),
-	                            success: function(data) {
-	                              // console.log(data);
-	                                  if(data == "success"){
-	                                        swal("Success!", "List Successfully Updated!", "success")
-	                                        window.setTimeout(function(){location.reload()},2000)
-	                                        $('#update_button').html("<i class='fa fa-check'></i> Update");
-	                                        $('#modifyListOkButton').prop("disabled", false);
-	                                  }
-	                                  else{
-	                                      	sweetAlert("Oops...", "Something went wrong!", "error");
-											$('#update_button').html("<i class='fa fa-check'></i> Update");
-											$('#modifyListOkButton').prop("disabled", false);
-	                                  }
-	                            }
-	                        });
+				url: "./php/ModifyTelephonyList.php",
+				type: 'POST',
+				data: $("#modifylist").serialize(),
+				success: function(data) {
+				  // console.log(data);
+					$('#update_button').html("<i class='fa fa-check'></i> Update");
+					$('#modifyListOkButton').prop("disabled", false);
+					  if(data == "success"){
+							swal("Success!", "List Successfully Updated!", "success")
+							window.setTimeout(function(){location.reload()},2000)
+					  }
+					  else{
+							sweetAlert("Oops...", "Something went wrong! " + data, "error");
+					  }
+				}
+			});
 
 					//return false; //don't let the form refresh the page...
 				});

@@ -33,11 +33,14 @@ if ($validated == 1) {
 		$campaign = stripslashes($campaign);
 	}
 	
-    $status = NULL; if (isset($_POST["status"])) { 
-		$status = $_POST["status"]; 
+    $status = NULL; if (isset($_POST["active"])) { 
+		$status = $_POST["active"]; 
 		$status = stripslashes($status);
 	}
-	
+	$reset_list = NULL; if (isset($_POST["reset_list"])) { 
+		$reset_list = $_POST["reset_list"]; 
+		$reset_list = stripslashes($reset_list);
+	}
 
 	$url = gourl."/goLists/goAPI.php"; # URL to GoAutoDial API file
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -49,6 +52,7 @@ if ($validated == 1) {
 	$postfields["list_description"] = $desc; #Desired value for user (required)
 	$postfields["campaign_id"] = $campaign; #Desired value for user (required)
 	$postfields["active"] = $status; #Desired value for user (required)
+	$postfields["reset_list"] = $reset_list;
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
