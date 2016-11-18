@@ -51,16 +51,141 @@
 		<!-- SELECT2 CSS -->
    		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
    		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+		<style type="text/css">
+			#progress-wrp {
+				border: 1px solid #0099CC;
+				border-radius: 3px;
+				position: relative;
+				width: 100%;
+				height: 30px;
+				background-color: #367fa9;
+			}
+			
+			#progress-wrp .progress-bar {
+				border-radius: 3px;
+				position: absolute;
+				width: 1%;
+				height: 100%;
+				background-color: #00a65a;
+			  /* background-color: #4CAF50; */
+			}
+			
+			#progress-wrp .status {
+				top:3px;
+				left:50%;
+				position:absolute;
+				display:inline-block;
+				color: white;
+				font-style: bold;
+				/* color: #000000; */
+			}
+		</style>
 
-			<style type="text/css">
-				.select2-container{
-					width: 100% !important;
-				}
-			</style>
+		<style type="text/css">
+			.select2-container{
+				width: 100% !important;
+			}
+		</style>
+		
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
 			});
+			
+			// Progress bar function
+			function goProgressBar() {
+				
+				var formData = new FormData($('#upload_form')[0]);
+				var progress_bar_id 		= '#progress-wrp'; //ID of an element for response output
+				var percent = 0;
+				
+				var result_output 			= '#output'; //ID of an element for response output
+				var my_form_id 				= '#upload_form'; //ID of an element for response output
+				var submit_btn  = $(this).find("input[type=button]"); //btnUpload
+	
+				  
+				formData.append('tax_file', $('input[type=file]')[0].files);
+				
+				$.ajax({
+					url : "./php/AddLoadLeads.php",
+					type: "POST",
+					data : formData,
+					contentType: false,
+					cache: false,
+					processData:false,
+					maxChunkSize: 1000000000,
+					maxRetries: 100000000,
+					retryTimeout: 5000000000,
+					xhr: function(){
+						//upload Progress
+						var xhr = $.ajaxSettings.xhr();
+						if (xhr.upload) {
+							xhr.upload.addEventListener('progress', function(event) {
+								
+								var position = event.loaded || event.position;
+								var total = event.total;
+								if (event.lengthComputable) {
+									percent = Math.ceil(position / total * 100);
+								}
+								
+								//update progressbar
+								$(progress_bar_id +" .progress-bar").css("width", + percent +"%");
+								$(progress_bar_id + " .status").text(percent +"%");
+								//$(progress_bar_id + " .status").innerHTML = percent + '%';
+								
+								if(percent === 100) {
+									
+									//$('#dStatus').css("display", "block");
+									//$('#dStatus').css("color", "#4CAF50");
+									//$('#qstatus').text("File Uploaded Successfully. Please wait for the TOTAL of leads uploaded.(Do not refresh the page)");
+									//$('#qstatus').text("Data Processing. Please Wait.");
+									//sweetAlert("Oops...", "Something went wrong!", "error");
+									
+									//var uploadMsgTotal = "Total Leads Uploaded: "+res;
+					
+									swal({
+										title: "CSV file upload complete.",
+										text: "Data Now Processing. Please Wait. DO NOT refresh the page.",
+										type: "info",
+										showCancelButton: false,
+										closeOnConfirm: false
+									  });
+									
+								}
+								
+							}, true);
+							
+						}
+						return xhr;
+					},
+					mimeType:"multipart/form-data"
+				}).done(function(res){ //
+					
+					//$(result_output).html(res); //output response from server
+					//submit_btn.val("Upload").prop( "disabled", false); //enable submit button once ajax is done
+					//$(my_form_id)[0].reset(); //reset form
+					//$('#dStatus').css("display", "block");
+					//$('#dStatus').css("color", "#4CAF50");
+					//$('#qstatus').text("Total leads uploaded: "+res);
+					
+					var uploadMsgTotal = "Total Leads Uploaded: "+res;
+					
+					swal({
+							title: "Data Processing Complete!",
+							text: uploadMsgTotal,
+							type: "success"
+						},
+						function(){
+							location.reload();
+							$(".preloader").fadeIn();
+						}
+					);
+					
+				});
+								
+			}
+			// End Progress bar function
+			
 		</script>
 
 
@@ -148,9 +273,10 @@
 		               			</div><!-- /.body -->
 		               		</div><!-- /.panel -->
 		               	</div><!-- /.col-lg-9 -->
+						
 			            <div class="col-lg-3">
 	           				<h3 class="m0 pb-lg">Upload/Import Leads</h3>
-	           				<form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data">
+	           				<form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data" id="upload_form" name="upload_form">
 								<div class="form-group">
 									<label>List ID:</label>
 									<div class="form-group">
@@ -193,9 +319,32 @@
 									<div id="goValuesContainer"></div> 
 
 								</div>
+								
+								<!-- Progress bar -->
 								<div class="form-group">
-										<input type="submit" id="btnUpload" name="btnUpload" value="Upload" class="btn btn-primary">
+									<div id="progress-wrp">
+										<div class="progress-bar"></div >
+										<div class="status">0%</div>
+									</div>
+									<div id="output"><!-- error or success results --></div>
+									<br />
+									<div>
+										<div class="alert alert-success" style="display:none;" id="dStatus"> 
+											<div id="qstatus">  </div>
+										</div>
+									</div>
 								</div>
+								<!-- End Progress bar -->
+						
+								<div class="form-group">
+										<input type="button" id="btnUpload" name="btnUpload" value="Upload" class="btn btn-primary" onClick="goProgressBar();">
+<!--										<div class="col-lg-12" style="margin-top: 10px;">
+											<div class="alert alert-success" style="display:none;" id="dStatus"> 
+												<div id="qstatus">  </div>
+											</div>
+										</div>-->
+								</div>
+								
 								<div id="jMapFieldsdiv">
 									<span id="jMapFieldsSpan"></span>
 								</div>
@@ -212,7 +361,12 @@
                         		}
 								#var_dump($_GET);
                         	?>
+							
+								
+							
 	           			</div><!-- ./upload leads -->
+						
+
                 	</div>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
