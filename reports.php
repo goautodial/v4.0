@@ -1111,7 +1111,7 @@ if($output->result == "success"){
 								<div class="mb">
 									 <div class="">
 										 <select multiple="multiple" class="select2-3 form-control" id="selected_inbounds" name="inbounds[]" style="width:100%;">';
-										 $display .= '<option value="" selected>--- NONE ---</option>';
+										 $display .= '<option value="NONE" selected>--- NONE ---</option>';
 												for($i=0; $i < count($inbound->group_id);$i++){
 													$display .= '<option value="'.$inbound->group_id[$i].'">'.$inbound->group_id[$i].' - '.$inbound->group_name[$i].'</option>';
 												}

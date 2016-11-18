@@ -94,7 +94,7 @@ error_reporting(E_ALL);
         
         //var_dump($output->getReports->query);
         
-        $filename = date()."callreports.csv";
+        $filename = "Export_Call_Report.".date("Y-m-d").".csv";
         $fp = fopen($filename, 'w');
         
         header('Content-type: application/csv');
