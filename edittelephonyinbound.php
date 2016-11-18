@@ -1,12 +1,12 @@
 <?php
 
 	###################################################
-	### Name: edittelephonyinbound.php 				###
-	### Functions: Edit Inbound, IVR & DID  		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
+	### Name: edittelephonyinbound.php 	  ###
+	### Functions: Edit Inbound, IVR & DID  	  ###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	  ###
+	### Version: 4.0 	  ###
+	### Written by: Alexander Jim H. Abenoja	  ###
+	### License: AGPLv2	  ###
 	###################################################
 
 	require_once('./php/CRMDefaults.php');
@@ -1566,20 +1566,20 @@ if (isset($_POST["did"])) {
 										
 									<!-- IF DID ROUTE = IN-GROUP-->
 										<div id="form_route_ingroup" class="form-group" <?php if($output->data->did_route  != "IN_GROUP"){ ?> style="display: none;" <?php }?> >										
-											<label for="route_ingroupid" class="col-sm-3 control-label">In-Group ID: </label>
-											<div class="col-sm-9 mb">
-												<select name="route_ingroupid" id="route_ingroupid" class="form-control">
-													<?php
-														for($i=0;$i<count($ingroups->group_id);$i++){
-													?>
-														<option value="<?php echo $ingroups->group_id[$i];?>">
-															<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
-														</option>									
-													<?php
-														}
-													?>
-												</select>
-											</div>
+										<label for="route_ingroupid" class="col-sm-3 control-label">In-Group ID: </label>
+										<div class="col-sm-9 mb">
+											<select name="route_ingroupid" id="route_ingroupid" class="form-control">
+												<?php
+													for($i=0;$i<count($ingroups->group_id);$i++){
+												?>
+													<option value="<?php echo $ingroups->group_id[$i];?>" <?php if($ingroups->group_id[$i] == $output->data->group_id)echo "selected";?>>
+													     <?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+													</option>				
+												<?php
+													}
+												?>
+											</select>
+										</div>
 										</div><!-- end of ingroup div -->
 										
 									<!-- IF DID ROUTE = PHONE -->
@@ -1591,7 +1591,7 @@ if (isset($_POST["did"])) {
 														<?php
 															for($i=0;$i<count($phones->extension);$i++){
 														?>
-															<option value="<?php echo $phones->extension;?>">
+															<option value="<?php echo $phones->extension[$i];?>" <?php if($phones->extension[$i] == $output->data->phone)echo "selected";?>>
 																<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
 															</option>									
 														<?php
@@ -1608,7 +1608,7 @@ if (isset($_POST["did"])) {
 														<?php
 															for($i=0;$i < 1;$i++){
 														?>
-															<option value="<?php echo $phones->server_ip[$i];?>">
+															<option value="<?php echo $phones->server_ip[$i];?>" <?php if($phones->server_ip[$i] == $output->data->server_ip)echo "selected";?>>
 																<?php echo 'GOautodial - '.$phones->server_ip[$i];?>
 															</option>									
 														<?php
@@ -1628,7 +1628,7 @@ if (isset($_POST["did"])) {
 														<?php
 															for($i=0;$i<count($ivr->menu_id);$i++){
 														?>
-															<option value="<?php echo $ivr->menu_id[$i];?>">
+															<option value="<?php echo $ivr->menu_id[$i];?>" <?php if($ivr->menu_id[$i] == $output->data->menu_id)echo "selected";?>>
 																<?php echo $ivr->menu_id[$i].' - '.$ivr->menu_name[$i];?>
 															</option>									
 														<?php
@@ -1648,7 +1648,7 @@ if (isset($_POST["did"])) {
 														<?php
 															for($i=0;$i<count($voicemails->voicemail_id);$i++){
 														?>
-															<option value="<?php echo $voicemails->voicemail_id[$i];?>">
+															<option value="<?php echo $voicemails->voicemail_id[$i];?>" <?php if($voicemails->voicemail_id[$i] == $output->data->voicemail_ext)echo "selected";?>>
 																<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
 															</option>									
 														<?php
@@ -1664,13 +1664,13 @@ if (isset($_POST["did"])) {
 											<div class="form-group">
 												<label for="route_exten" class="col-sm-3 control-label">Extension: </label>
 												<div class="col-sm-9 mb">
-													<input type="text" name="route_exten" id="route_exten" placeholder="Extension" class="form-control" required>
+													<input type="text" name="route_exten" id="route_exten" placeholder="Extension" class="form-control" value="<?php echo $ouput->data->extension; ?>" required>
 												</div>
 											</div>
 											<div class="form-group">
 												<label for="route_exten_context" class="col-sm-3 control-label">Extension Context: </label>
 												<div class="col-sm-9 mb">
-													<input type="text" name="route_exten_context" id="route_exten_context" placeholder="Extension Context" class="form-control" required>
+													<input type="text" name="route_exten_context" id="route_exten_context" placeholder="Extension Context" class="form-control" value="<?php echo $ouput->data->exten_context;?>" required>
 												</div>
 											</div>
 										</div><!-- end of custom extension div -->

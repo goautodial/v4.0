@@ -1,12 +1,12 @@
 <?php
 
 	###################################################
-	### Name: telephonyinbound.php 					###
-	### Functions: Manage Inbound, IVR & DID  		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
+	### Name: telephonyinbound.php 	   ###
+	### Functions: Manage Inbound, IVR & DID  	   ###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	   ###
+	### Version: 4.0 	   ###
+	### Written by: Alexander Jim H. Abenoja	   ###
+	### License: AGPLv2	   ###
 	###################################################
 
 	require_once('./php/UIHandler.php');
