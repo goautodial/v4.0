@@ -114,9 +114,7 @@ if ($validated == 1) {
 	$postfields["active"] = $status; #Desired value for user (required)
 	$postfields["voicemail"] = $voicemail; #Desired value for user (required)
     $postfields["email"] = $email;
-    if($_POST["password"]){
-    	$postfields["pass"] = $pass;
-    }
+	$postfields["pass"] = $pass;
     $postfields["phone_login"] = $phone_login;
     $postfields["phone_pass"] = $phone_pass;
     $postfields["hotkeys_active"] = $hotkeys_active;

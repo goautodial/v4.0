@@ -620,7 +620,9 @@ $user_groups = $ui->API_goGetUserGroupsList();
 	 	*******/
 			
 		$('#modifyUserOkButton').click(function(){ // on click submit
-				
+			
+			$("#phone_login").prop("disabled", false);
+			
 			$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
 			$('#modifyUserOkButton').prop("disabled", true);
 
@@ -676,6 +678,9 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 	                // validations
 	                if(validate_email == 0 && validate_password == 0){
+		
+		
+		
 	                	$.ajax({
 	                        url: "./php/ModifyTelephonyUser.php",
 	                        type: 'POST',
