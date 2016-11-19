@@ -53,7 +53,7 @@ if ($validated == 1) {
 		$hotkeys_active = stripslashes($hotkeys_active);
 	}
 	
-	$pass = NULL; if (isset($_POST["password"])) { 
+	$pass = ""; if (isset($_POST["password"])) { 
 		$pass = $_POST["password"]; 
 		$pass = stripslashes($pass);
 	}
