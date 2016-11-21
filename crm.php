@@ -105,12 +105,12 @@ $leads = $ui->API_GetLeads($_SESSION['user']);
 								<div class="clearfix">
 									<button type="button" class="pull-left btn btn-default" id="search_button"> Search</button>
 									<div class="pull-right">
-										<label class="checkbox-inline c-checkbox" for="search_customer">
-											<input id="search_customer" name="table_filter" type="checkbox" disabled>
+										<label class="checkbox-inline c-checkbox" for="search_customers">
+											<input id="search_customers" name="search_customers" type="checkbox">
 											<span class="fa fa-check"></span> Customers
 										</label>
 										<label class="checkbox-inline c-checkbox" for="search_contacts">
-											<input id="search_contacts" name="table_filter" type="checkbox" checked disabled>
+											<input id="search_contacts" name="table_filter" type="checkbox" checked>
 											<span class="fa fa-check"></span> Contacts
 										</label>
 									</div>
@@ -330,24 +330,35 @@ $disposition = $ui->API_getAllDispositions();
 				** Change between Contacts and Recordings
 				****/
 					// shows contacts datatable if Contact tickbox is checked
-					$(document).on('change','#search_contacts',function() {
-						$("#search_contacts").prop("disabled", true);
-		            	$("#search_recordings").prop("disabled", false);
+					$(document).on('change','#search_contacts, #search_customers',function() {
+						//$("#search_contacts").prop("disabled", true);
+		            	//$("#search_customers").prop("disabled", false);
+						if ($(this).prop('id') == 'search_contacts') {
+							if ($(this).is(":checked")) {
+								$("#search_customers").prop('checked', false);
+							}
+						}
+						
+						if ($(this).prop('id') == 'search_customers') {
+							if ($(this).is(":checked")) {
+								$("#search_contacts").prop('checked', false);
+							}
+						}
 
-						if($('#search_contacts').is(":checked")){
-							$(".contacts_div").show(); // show contact table
-							//$(".callrecordings_div").hide(); // hide table
-
-							$(".all_contact_filters").show(); // show filters
-							$(".add_contact_filters").show(); // disable add filter
-							//$(".all_callrecording_filters").hide(); // hide filters
-							//$(".add_callrecording_filters").hide(); // disable add filter
-
-		            	}else{
-		            		$(".contacts_div").hide();
-		            		$(".all_contact_filters").hide();
-		            		$(".add_contact_filters").hide(); // disable add filter
-		            	}
+		//				if($('#search_contacts').is(":checked")){
+		//					$(".contacts_div").show(); // show contact table
+		//					//$(".callrecordings_div").hide(); // hide table
+		//
+		//					$(".all_contact_filters").show(); // show filters
+		//					$(".add_contact_filters").show(); // disable add filter
+		//					//$(".all_callrecording_filters").hide(); // hide filters
+		//					//$(".add_callrecording_filters").hide(); // disable add filter
+		//
+		//            	}else{
+		//            		$(".contacts_div").hide();
+		//            		$(".all_contact_filters").hide();
+		//            		$(".add_contact_filters").hide(); // disable add filter
+		//            	}
 					});
 
 				/***
@@ -398,7 +409,7 @@ $disposition = $ui->API_getAllDispositions();
 	                				$('#search_button').attr("disabled", false);
 									console.log(data);
 
-									if(data != ""){
+									if(data !== ""){
 										$('#table_contacts').html(data);
 										$('#table_contacts').DataTable({
 						                	"bDestroy" : true
@@ -435,7 +446,7 @@ $disposition = $ui->API_getAllDispositions();
 	                				$('#search_button').attr("disabled", false);
 									console.log(data);
 
-									if(data != ""){
+									if(data !== ""){
 
 										$('#table_contacts').html(data);
 										$('#table_contacts').DataTable({
@@ -479,7 +490,7 @@ $disposition = $ui->API_getAllDispositions();
 	                				$('#search_button').attr("disabled", false);
 									console.log(data);
 
-									if(data != ""){
+									if(data !== ""){
 										$('#table_contacts').html(data);
 										$('#table_contacts').DataTable({
 						                	"bDestroy" : true
@@ -521,7 +532,7 @@ $disposition = $ui->API_getAllDispositions();
 	                				$('#search_button').attr("disabled", false);
 									console.log(data);
 
-									if(data != ""){
+									if(data !== ""){
 										$('#table_contacts').html(data);
 										$('#table_contacts').DataTable({
 						                	"bDestroy" : true
@@ -563,7 +574,7 @@ $disposition = $ui->API_getAllDispositions();
 	                				$('#search_button').attr("disabled", false);
 									console.log(data);
 
-									if(data != ""){
+									if(data !== ""){
 										$('#table_contacts').html(data);
 										$('#table_contacts').DataTable({
 						                	"bDestroy" : true
@@ -614,7 +625,7 @@ $disposition = $ui->API_getAllDispositions();
 		                $(document).on('click','#search_button',function() {
 		                //init_contacts_table.destroy();
 
-		                	if($('#search').val() == ""){
+		                	if($('#search').val() === ""){
 		                		$('#search_button').attr("disabled", false); 
 		                		$('#search_button').text("Searching...");
 		                	}else{
@@ -623,12 +634,13 @@ $disposition = $ui->API_getAllDispositions();
 		                	}
 
 		                	// if contacts is checked
-		                	if($('#search_contacts').is(":checked")){
+		                	if($("#search_customers").is(":checked") || $('#search_contacts').is(":checked")){
 		                		var disposition_filter_val = $('#disposition_filter').val();
 			            		var list_filter_val = $('#list_filter').val();
 			            		var address_filter_val = $("#address_filter").val();
 			            		var city_filter_val = $("#city_filter").val();
 			            		var state_filter_val = $("#state_filter").val();
+								var search_customers = ($("#search_customers").is(":checked")) ? 1 : 0;
 
 								$.ajax({
 								    url: "search.php",
@@ -639,13 +651,14 @@ $disposition = $ui->API_getAllDispositions();
 								    	list : list_filter_val,
 								    	address : address_filter_val,
 								    	city : city_filter_val,
-								    	state : state_filter_val
+								    	state : state_filter_val,
+										search_customers : search_customers
 								    },
 									success: function(data) {
 										$('#search_button').text("Search");
-		                				$('#search_button').attr("disabled", false)
-										console.log(data);
-										if(data != ""){
+		                				$('#search_button').attr("disabled", false);
+										//console.log(data);
+										if(data !== ""){
 
 											$('#table_contacts').html(data);
 											$('#table_contacts').DataTable({
@@ -656,7 +669,16 @@ $disposition = $ui->API_getAllDispositions();
 										}
 									}
 								});
-			            	}
+			            	} else {
+								swal({
+									title: 'ERROR',
+									text: 'Please check either <b>Customer</b> or <b>Contacts</b> checkbox<br>before clicking the <b>Search</b> button.',
+									type: 'error',
+									html: true
+								});
+								$('#search_button').text("Search");
+								$('#search_button').attr("disabled", false);
+							}
 
 						});
 
