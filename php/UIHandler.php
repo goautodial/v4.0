@@ -5410,14 +5410,14 @@ error_reporting(E_ERROR | E_PARSE);
 	 * [[API: Function]] - goGetLeads
 	 * This application is used to get cluster status
 	*/
-	public function API_GetLeads($userName, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit){
+	public function API_GetLeads($userName, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit = 0, $search_customers = 0){
 	$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass;
-	if($limit != NULL){
-		$postfields["goVarLimit"] = "";
+	if($limit > 0){
+		$postfields["goVarLimit"] = $limit;
 	}else{
-		$postfields["goVarLimit"] = "50";
+		$postfields["goVarLimit"] = "500";
 	}
 
 	$postfields["user_id"] = $userName;
@@ -5429,6 +5429,7 @@ error_reporting(E_ERROR | E_PARSE);
 	$postfields["address_filter"] = $address_filter;
 	$postfields["city_filter"] = $city_filter;
 	$postfields["state_filter"] = $state_filter;
+	$postfields["search_customers"] = $search_customers;
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -5466,9 +5467,9 @@ error_reporting(E_ERROR | E_PARSE);
 		}
 
 	// get contact list
-	public function GetContacts($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter) {
-		$limit = "search";
-		$output = $this->API_GetLeads($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit);
+	public function GetContacts($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit = 500, $search_customers = 0) {
+		//$limit = 10;
+		$output = $this->API_GetLeads($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit, $search_customers);
 	       if($output->result=="success") {
 
        	   $columns = array("Lead ID", "Full Name", "Phone Number", "Status", "Action");

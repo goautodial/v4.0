@@ -436,7 +436,7 @@ if ($list_id_ct != NULL) {
 													<div style="font-weight: bold;">Convert to Customer</div>
 												</div>
 					                           <div class="col-sm-3 pull-right">
-														<a href="contactsandcallrecordings.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
+														<a href="crm.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
 					                           	
 					                                	<button type="submit" class="btn btn-primary" name="submit" id="submit_edit_form"> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 													
