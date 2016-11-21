@@ -1,12 +1,12 @@
 <?php	
 
 	###################################################
-	### Name: telephonyusers.php 					###
-	### Functions: Manage Users 			 		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
+	### Name: telephonyusers.php 	   ###
+	### Functions: Manage Users 	   ###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	   ###
+	### Version: 4.0 	   ###
+	### Written by: Alexander Jim H. Abenoja	   ###
+	### License: AGPLv2	   ###
 	###################################################
 
 	require_once('./php/UIHandler.php');
@@ -107,7 +107,7 @@
 								<div class="tab-content bg-white">
 									<!--==== users ====-->
 									<div id="users_tab" role="tabpanel" class="tab-pane active">
-										<?php print $ui->goGetAllUserList(); ?>
+										<?php print $ui->goGetAllUserList($user->getUserId()); ?>
 			                        </div>
 									
 									<?php

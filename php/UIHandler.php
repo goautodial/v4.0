@@ -3232,12 +3232,14 @@ error_reporting(E_ERROR | E_PARSE);
 	**/
 
 
-	public function API_goGetAllUserLists(){
+	public function API_goGetAllUserLists($user){
 		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAllUserLists"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["user"] = $user; #json. (required)
+		
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);
 		 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -3284,37 +3286,37 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	// get user list
-	public function goGetAllUserList() {
+	public function goGetAllUserList($user) {
 
-	$output = $this->API_goGetAllUserLists();
-
+	$output = $this->API_goGetAllUserLists($user);
+	
        if($output->result=="success") {
        	   $columns = array("     ", "Agent ID", "Agent Name", "Group", "Status", "Action");
 	       $hideOnMedium = array("Group", "Status");
 	       $hideOnLow = array( "Agent ID", "Group", "Status");
 		   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-
-
+		
 	       // iterate through all users
 	       for($i=0;$i<count($output->user_id);$i++){
-				if($output->active[$i] == "Y"){
-					$output->active[$i] = "Active";
-				 }else{
-					$output->active[$i] = "Inactive";
-				 }
+				
+					if($output->active[$i] == "Y"){
+						$output->active[$i] = "Active";
+					}else{
+						$output->active[$i] = "Inactive";
+					}
 
-	       	    $action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i], $output->user[$i]);
-	       	    $sessionAvatar = "<avatar username='".$output->full_name[$i]."' :size='36'></avatar>";
-
-		        $result .= "<tr>
-		        		 <td>".$sessionAvatar."</a></td>
-	                     <td class='hide-on-low'><a class='edit-T_user' data-id=".$output->user_id[$i]."><strong>".$output->user[$i]."</strong></a></td>
-						 <td>".$output->full_name[$i]."</td>";
-	            $result .="<td class=' hide-on-low hide-on-medium'>".$output->user_group[$i]."</td>
-	                     <td class='hide-on-low hide-on-medium'>".$output->active[$i]."</td>
-	                     <td nowrap>".$action."</td>
-				         </tr>";
-	       }
+					$action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i], $output->user[$i]);
+					$sessionAvatar = "<avatar username='".$output->full_name[$i]."' :size='36'></avatar>";
+	
+					$result .= "<tr>
+							 <td>".$sessionAvatar."</a></td>
+							 <td class='hide-on-low'><a class='edit-T_user' data-id=".$output->user_id[$i]."><strong>".$output->user[$i]."</strong></a></td>
+							 <td>".$output->full_name[$i]."</td>";
+					$result .="<td class=' hide-on-low hide-on-medium'>".$output->user_group[$i]."</td>
+							 <td class='hide-on-low hide-on-medium'>".$output->active[$i]."</td>
+							 <td nowrap>".$action."</td>
+							 </tr>";
+				}
 
 	       // print suffix
 	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
@@ -4147,7 +4149,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    for($i=0;$i<count($output->file_name);$i++){
 
 	    $web_ip = getenv("SERVER_ADDR");
-	    $file_link = "http://".$web_ip."/sounds/".$output->file_name[$i];
+	    $file_link = "https://".$web_ip."/sounds/".$output->file_name[$i];
 
 	    //$file_link = "http://69.46.6.35/sounds/".$output->file_name[$i];
 
@@ -4171,7 +4173,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	private function getUserActionMenuForVoiceFiles($filename, $details) {
 		$web_ip = getenv("SERVER_ADDR");
-	    $file_link = "http://".$web_ip."/sounds/".$filename;
+	    $file_link = "https://".$web_ip."/sounds/".$filename;
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
