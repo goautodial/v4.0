@@ -321,38 +321,18 @@
 									if(data != ""){
 										$(".report-loader").fadeOut("slow");
 										$('#table').html(data);
-	
-										if($("#filter_type").val() == "stats"){
-											$('.request_div').show();
-											$('.stats_request').show();
-											$('.sales_agent_request').hide();
-											$('.campaign_div').show();
-											$('.ingroup_div').hide();
-										}
+										
 										if($("#filter_type").val() == "agent_detail"){
 											var title = "Agent Time Detail";
 											$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.request_div').hide();
-											$('.campaign_div').show();
-											$('.ingroup_div').hide();
 										}
 										if($("#filter_type").val() == "agent_pdetail"){
 											var title = "Agent Performance Detail";
 											$('#agent_pdetail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('#agent_pdetail_mid').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('#agent_pdetail_bottom').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('#agent_pdetail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.request_div').hide();
-											$('.campaign_div').show();
-											$('.ingroup_div').hide();
 										}
 										if($("#filter_type").val() == "dispo"){
 											var title = "Dial Statuses Summary";
 											$('#dispo').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.request_div').hide();
-											$('.campaign_div').show();
-											$('.ingroup_div').hide();
 										}
 										if($("#filter_type").val() == "sales_agent"){
 											var title = "Sales Per Agent";
@@ -363,11 +343,6 @@
 											}
 											$('#outbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
 											$('#inbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.request_div').show();
-											$('.sales_agent_request').show();
-											$('.stats_request').hide();
-											$('.campaign_div').show();
-											$('.ingroup_div').hide();
 										}
 										if($("#filter_type").val() == "sales_tracker"){
 											var title = "Sales Tracker";
@@ -378,24 +353,12 @@
 											}
 											$('#outbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
 											$('#inbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.request_div').show();
-											$('.sales_agent_request').show();
-											$('.stats_request').hide();
-											$('.campaign_div').show();
-											$('.ingroup_div').hide();
 										}
 										if($("#filter_type").val() == "inbound_report"){
 											var title = "Inbound Call Report";
 											$('#inbound_report').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.request_div').hide();
 											$('.campaign_div').hide();
 											$('.ingroup_div').show();
-										}
-										if($("#filter_type").val() == "call_export_report"){
-											var title = "Export Call Report";
-											$('.campaign_div').hide();
-											$('.ingroup_div').hide();                                        
-											$('.request_div').hide();
 										}
 	
 									}else{
@@ -419,16 +382,16 @@
 						var campaignID = $("#campaign_id").val();
 						
 						if($("#filter_type").val() == "stats"){
-							request = $("#request1").val()
+							request = $("#request1").val();
 						}
 						if($("#filter_type").val() == "sales_agent"){
-							request = $("#request2").val()
+							request = $("#request2").val();
 						}
 						if($("#filter_type").val() == "sales_tracker"){
-							request = $("#request2").val()
+							request = $("#request2").val();
 						}
 						if($("#filter_type").val() == "inbound_report"){
-							campaignID = $("#ingroup_id").val()
+							campaignID = $("#ingroup_id").val();
 						}
 							$.ajax({
 								url: "reports.php",
@@ -449,37 +412,17 @@
 										$(".report-loader").fadeOut("slow");
 										$('#table').html(data);
 	
-										if($("#filter_type").val() == "stats"){
-											$('.request_div').show();
-											$('.stats_request').show();
-											$('.sales_agent_request').hide();
-											$('.campaign_div').show();
-											$('.ingroup_div').hide();
-										}
 										if($("#filter_type").val() == "agent_detail"){
 											var title = "Agent Time Detail";
 											$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.request_div').hide();
-											$('.campaign_div').show();
-											$('.ingroup_div').hide();
 										}
 										if($("#filter_type").val() == "agent_pdetail"){
 											var title = "Agent Performance Detail";
 											$('#agent_pdetail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('#agent_pdetail_mid').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('#agent_pdetail_bottom').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('#agent_pdetail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.request_div').hide();
-											$('.campaign_div').show();
-											$('.ingroup_div').hide();
 										}
 										if($("#filter_type").val() == "dispo"){
 											var title = "Dial Statuses Summary";
 											$('#dispo').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.request_div').hide();
-											$('.campaign_div').show();
-											$('.ingroup_div').hide();
 										}
 										if($("#filter_type").val() == "sales_agent"){
 											var title = "Sales Per Agent";
@@ -490,11 +433,6 @@
 											}
 											$('#outbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
 											$('#inbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.request_div').show();
-											$('.sales_agent_request').show();
-											$('.stats_request').hide();
-											$('.campaign_div').show();
-											$('.ingroup_div').hide();
 										}
 										if($("#filter_type").val() == "sales_tracker"){
 											var title = "Sales Tracker";
@@ -505,24 +443,10 @@
 											}
 											$('#outbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
 											$('#inbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.request_div').show();
-											$('.sales_agent_request').show();
-											$('.stats_request').hide();
-											$('.campaign_div').show();
-											$('.ingroup_div').hide();
 										}
 										if($("#filter_type").val() == "inbound_report"){
 											var title = "Inbound Call Report";
 											$('#inbound_report').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.request_div').hide();
-											$('.campaign_div').hide();
-											$('.ingroup_div').show();
-										}
-										if($("#filter_type").val() == "call_export_report"){
-											var title = "Export Call Report";
-											$('.campaign_div').hide();
-											$('.ingroup_div').hide();                                        
-											$('.request_div').hide();
 										}
 	
 									}else{
@@ -544,17 +468,56 @@
 					var campaignID = $("#campaign_id").val();
 					
                     if($("#filter_type").val() == "stats"){
-                        request = $("#request1").val()
+                        request = $("#request1").val();
+						$('.request_div').show();
+						$('.stats_request').show();
+						$('.sales_agent_request').hide();
+						$('.campaign_div').show();
+						$('.ingroup_div').hide();
                     }
+					if($("#filter_type").val() == "agent_detail"){
+						$('.request_div').hide();
+						$('.campaign_div').show();
+						$('.ingroup_div').hide();
+					}
+					if($("#filter_type").val() == "agent_pdetail"){
+						$('.request_div').hide();
+						$('.campaign_div').show();
+						$('.ingroup_div').hide();
+					}
+					if($("#filter_type").val() == "dispo"){
+						$('.request_div').hide();
+						$('.campaign_div').show();
+						$('.ingroup_div').hide();
+					}
                     if($("#filter_type").val() == "sales_agent"){
-                        request = $("#request2").val()
+                        request = $("#request2").val();
+						$('.request_div').show();
+						$('.sales_agent_request').show();
+						$('.stats_request').hide();
+						$('.campaign_div').show();
+						$('.ingroup_div').hide();
                     }
 					if($("#filter_type").val() == "sales_tracker"){
-                        request = $("#request2").val()
+                        request = $("#request2").val();
+						$('.request_div').show();
+						$('.sales_agent_request').show();
+						$('.stats_request').hide();
+						$('.campaign_div').show();
+						$('.ingroup_div').hide();
                     }
 					if($("#filter_type").val() == "inbound_report"){
-                        campaignID = $("#ingroup_id").val()
+                        campaignID = $("#ingroup_id").val();
+						$('.request_div').hide();
+						$('.campaign_div').hide();
+						$('.ingroup_div').show();
                     }
+					if($("#filter_type").val() == "call_export_report"){
+                        $('.campaign_div').hide();
+						$('.ingroup_div').hide();                                        
+						$('.request_div').hide();
+                    }
+					
                         $.ajax({
                             url: "reports.php",
                             type: 'POST',
@@ -574,37 +537,21 @@
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
 
-                                    if($("#filter_type").val() == "stats"){
-                                        $('.request_div').show();
-                                        $('.stats_request').show();
-                                        $('.sales_agent_request').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
                                     if($("#filter_type").val() == "agent_detail"){
 										var title = "Agent Time Detail";
                                         $('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
+                                        //$('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
                                     }
                                     if($("#filter_type").val() == "agent_pdetail"){
 										var title = "Agent Performance Detail";
                                         $('#agent_pdetail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_pdetail_mid').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_pdetail_bottom').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_pdetail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
+                                        //$('#agent_pdetail_mid').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+                                        //$('#agent_pdetail_bottom').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+                                        //$('#agent_pdetail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
                                     }
                                     if($("#filter_type").val() == "dispo"){
 										var title = "Dial Statuses Summary";
                                         $('#dispo').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
                                     }
                                     if($("#filter_type").val() == "sales_agent"){
 										var title = "Sales Per Agent";
@@ -615,11 +562,6 @@
 										}
                                         $('#outbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
                                         $('#inbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').show();
-                                        $('.sales_agent_request').show();
-                                        $('.stats_request').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
                                     }
                                     if($("#filter_type").val() == "sales_tracker"){
 										var title = "Sales Tracker";
@@ -630,23 +572,11 @@
 										}
                                         $('#outbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
                                         $('#inbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').show();
-										$('.sales_agent_request').show();
-                                        $('.stats_request').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
                                     }
                                     if($("#filter_type").val() == "inbound_report"){
 										var title = "Inbound Call Report";
                                         $('#inbound_report').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').hide();
-										$('.ingroup_div').show();
-                                    }
-                                    if($("#filter_type").val() == "call_export_report"){
-										var title = "Export Call Report";
-                                        $('.campaign_div').hide(); 										$('.ingroup_div').hide();                                        
-                                        $('.request_div').hide();
+                                       
                                     }
 
                                 }else{

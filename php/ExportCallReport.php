@@ -18,47 +18,50 @@ error_reporting(E_ALL);
     }*/
     
     require_once('./goCRMAPISettings.php');
-    
-    if($_POST['campaigns'] != NULL)
-    $campaigns = $_POST['campaigns'];
-    
-    if($_POST['inbounds'] != NULL)
-    $inbounds = $_POST['inbounds'];
-    
-    if($_POST['lists'] != NULL)
-    $lists = $_POST['lists'];
-    
-    if($_POST['statuses'] != NULL)
-    $statuses = $_POST['statuses'];
-    
-    $custom_fields = $_POST['custom_fields']; 
-    $per_call_notes = $_POST['per_call_notes'];
-    $toDate = date('Y-m-d H:i:s', strtotime($_POST['toDate']));
-    $fromDate = date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
-    
-    $campaigns = implode(" ", $campaigns);
-    $inbounds = implode(" ", $inbounds);
-    $lists = implode(" ", $lists);
-    $statuses = implode(" ", $statuses);
-    
+	
     $url = gourl."/goReports/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goGetReports"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["pageTitle"] = "call_export_report";
+	
+    if(isset($_POST['campaigns']) && $_POST['campaigns'] != NULL){
+		$campaigns = $_POST['campaigns'];
+		$campaigns = implode(" ", $campaigns);
+		$postfields["campaigns"] = $campaigns;
+	}else{
+		$postfields["campaigns"] = "";
+	}
     
-    if($campaigns != NULL)
-    $postfields["campaigns"] = $campaigns;
+    if(isset($_POST['inbounds']) && $_POST['inbounds'] != NULL){
+		$inbounds = $_POST['inbounds'];
+		$inbounds = implode(" ", $inbounds);
+		$postfields["inbounds"] = $inbounds;
+	}else{
+		$postfields["inbounds"] = "";
+	}
     
-    if($inbounds != NULL)
-    $postfields["inbounds"] = $inbounds;
+    if(isset($_POST['lists']) && $_POST['lists'] != NULL){
+		$lists = $_POST['lists'];
+		$lists = implode(" ", $lists);
+		$postfields["lists"] = $lists;
+	}else{
+		$postfields["lists"] = "";
+	}
     
-    if($lists != NULL)
-    $postfields["lists"] = $lists;
+    if(isset($_POST['statuses']) && $_POST['statuses'] != NULL){
+		$statuses = $_POST['statuses'];
+		$statuses = implode(" ", $statuses);
+		$postfields["statuses"] = $statuses;
+	}else{
+		$postfields["statuses"] = "";
+	}
     
-    if($statuses != NULL)
-    $postfields["statuses"] = $statuses;
+    $custom_fields = $_POST['custom_fields']; 
+    $per_call_notes = $_POST['per_call_notes'];
+    $toDate = date('Y-m-d H:i:s', strtotime($_POST['toDate']));
+    $fromDate = date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
     
     $postfields["custom_fields"] = $custom_fields;
     $postfields["per_call_notes"] = $per_call_notes;
@@ -92,10 +95,10 @@ error_reporting(E_ALL);
         //$row = implode(",",$output->getReports->rows);
        // $rows = $output->getReports->rows;
         
-        //var_dump($output->getReports->query);
+        //print_r($output->getReports->query);
         
         $filename = "Export_Call_Report.".date("Y-m-d").".csv";
-        $fp = fopen($filename, 'w');
+        //$fp = fopen($filename, 'w');
         
         header('Content-type: application/csv');
         header('Content-Disposition: attachment; filename='.$filename);
@@ -136,8 +139,8 @@ error_reporting(E_ALL);
         //    echo "\n";
         //}
         
-        fclose($fp);
-        exit;
+        //fclose($fp);
+        //exit;
         
         
     }

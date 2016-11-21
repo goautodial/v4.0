@@ -1111,7 +1111,6 @@ if($output->result == "success"){
 								<div class="mb">
 									 <div class="">
 										 <select multiple="multiple" class="select2-3 form-control" id="selected_inbounds" name="inbounds[]" style="width:100%;">';
-										 $display .= '<option value="NONE" selected>--- NONE ---</option>';
 												for($i=0; $i < count($inbound->group_id);$i++){
 													$display .= '<option value="'.$inbound->group_id[$i].'">'.$inbound->group_id[$i].' - '.$inbound->group_name[$i].'</option>';
 												}
@@ -1201,10 +1200,10 @@ if($output->result == "success"){
 				$('#submit_export').attr("disabled", true);
 				
 				toDateVal = $('#start_filterdate').val();
-				$('#export_callreport_form').append("<input type='hidden' name='toDate' value='"+
+				$('#export_callreport_form').append("<input type='hidden' name='fromDate' value='"+
 									toDateVal+"' />");
 				fromDateVal = $('#end_filterdate').val();
-				$('#export_callreport_form').append("<input type='hidden' name='fromDate' value='"+
+				$('#export_callreport_form').append("<input type='hidden' name='toDate' value='"+
 									fromDateVal+"' />");
 				
 				//alert($("#toDate").val());
