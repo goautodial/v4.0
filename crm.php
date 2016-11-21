@@ -676,6 +676,7 @@ $disposition = $ui->API_getAllDispositions();
 									type: 'error',
 									html: true
 								});
+								//$("#search_contacts").prop("checked", true);
 								$('#search_button').text("Search");
 								$('#search_button').attr("disabled", false);
 							}
