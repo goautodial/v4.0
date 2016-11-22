@@ -195,7 +195,7 @@
 
 	<!-- CHANGE TASK MODAL -->
 
-    <div class="modal fade" id="edit-task-dialog-modal" name="edit-task-dialog-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="edit-task-modal" name="edit-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -280,8 +280,10 @@
 			 */
 			$(".edit-task-action").click(function(e) {
 				// Set ID of the task to edit
+				
 				e.preventDefault();
-		        var ele = $(this).parents("li").first();
+				$('#edit-task-modal').modal();
+                                var ele = $(this).parents("li").first();
 				var task_id = ele.attr("id"); // task ID is contained in the ID element of the li object.
 				$('#edit-task-taskid').val(task_id);
 				
