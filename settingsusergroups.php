@@ -211,7 +211,7 @@
                                 success: function(data) {
                                   // console.log(data);
                                       if(data == 1){
-                                            swal({title: "Success",text: "Usergroup Successfully Created!",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
+                                            swal({title: "Success",text: "Usergroup Successfully Created!",type: "success"},function(){window.location.href = 'settingsusergroups.php';});
                                             $('#finish').val("Submit");
                                       }
                                       else{
