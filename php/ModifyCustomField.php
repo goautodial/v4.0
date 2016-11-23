@@ -23,6 +23,7 @@
 	$postfields["field_rank"] 						= $_POST['field_rank'];
 	$postfields["field_order"] 						= $_POST['field_order'];
 	$postfields["field_label"] 						= $_POST['field_label'];
+	$postfields["field_label_old"] 						= $_POST['field_label_old'];
 	$postfields["field_position"] 				= $_POST['field_position'];
 	$postfields["field_description"] 			= $_POST['field_description'];
 	$postfields["field_type"] 						= $_POST['field_type'];
@@ -52,4 +53,5 @@
 	}
 
 	echo $status;
+#var_dump($output);
 ?>
