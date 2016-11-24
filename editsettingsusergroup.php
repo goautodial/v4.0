@@ -1,12 +1,12 @@
 <?php
 
 	###################################################
-	### Name: editsettingsusergroups.php 			###
-	### Functions: Edit Usergroups 			 		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
+	### Name: editsettingsusergroups.php 	   ###
+	### Functions: Edit Usergroups 	   ###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	   ###
+	### Version: 4.0    	   ###
+	### Written by: Alexander Jim H. Abenoja	   ###
+	### License: AGPLv2	   ###
 	###################################################
 
 	require_once('./php/CRMDefaults.php');
@@ -71,7 +71,7 @@ if (isset($_POST["usergroup_id"])) {
 						?>	
 							<li><a href="./settingsusergroups.php"><?php $lh->translateText("User Groups"); ?></a></li>
                         <?php
-							}
+	}
                         ?>	                    
                         <li class="active"><?php $lh->translateText("modify"); ?></li>
                     </ol>
@@ -99,11 +99,10 @@ if (isset($_POST["usergroup_id"])) {
 				         $data = curl_exec($ch);
 				         curl_close($ch);
 				         $output = json_decode($data);
-				         
+						 
 						if ($output->result=="success") {
 							
 						# Result was OK!
-							for($i=0;$i<count($output->user_group);$i++){
 					?>
 
             <!-- Main content -->
@@ -130,7 +129,7 @@ if (isset($_POST["usergroup_id"])) {
 										<div class="form-group row mt">
 											<label for="group_name" class="col-sm-2 control-label">Group Name</label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="group_name" id="group_name" placeholder="Group Name (Mandatory)" value="<?php echo $output->group_name[$i];?>">
+												<input type="text" class="form-control" name="group_name" id="group_name" placeholder="Group Name (Mandatory)" value="<?php echo $output->data->group_name;?>">
 											</div>
 										</div>
 										<div class="form-group row">
@@ -139,19 +138,19 @@ if (isset($_POST["usergroup_id"])) {
 												<select class="form-control" name="forced_timeclock_login" id="forced_timeclock_login">
 												<?php
 													$forced_timeclock_login = NULL;
-													if($output->forced_timeclock_login[$i] == "N"){
+													if($output->data->forced_timeclock_login == "N"){
 														$forced_timeclock_login .= '<option value="N" selected> NO </option>';
 													}else{
 														$forced_timeclock_login .= '<option value="N" > NO </option>';
 													}
 													
-													if($output->forced_timeclock_login[$i] == "Y"){
+													if($output->data->forced_timeclock_login == "Y"){
 														$forced_timeclock_login .= '<option value="Y" selected> YES </option>';
 													}else{
 														$forced_timeclock_login .= '<option value="Y" > YES </option>';
 													}
 
-													if($output->forced_timeclock_login[$i] == "ADMIN_EXEMPT"){
+													if($output->data->forced_timeclock_login == "ADMIN_EXEMPT"){
 														$forced_timeclock_login .= '<option value="ADMIN_EXEMPT" selected> ADMIN EXEMPT </option>';
 													}else{
 														$forced_timeclock_login .= '<option value="ADMIN_EXEMPT" > ADMIN EXEMPT </option>';
@@ -169,19 +168,19 @@ if (isset($_POST["usergroup_id"])) {
 													<?php
 														$shift_enforcement = NULL;
 
-														if($output->shift_enforcement[$i] == "OFF" || $output->shift_enforcement[$i] == ""){
+														if($output->data->shift_enforcement == "OFF" || $output->data->shift_enforcement == ""){
 															$shift_enforcement .= '<option value="OFF" selected> OFF </option>';
 														}else{
 															$shift_enforcement .= '<option value="OFF" > OFF </option>';
 														}
 														
-														if($output->shift_enforcement[$i] == "START"){
+														if($output->data->shift_enforcement== "START"){
 															$shift_enforcement .= '<option value="START" selected> START </option>';
 														}else{
 															$shift_enforcement .= '<option value="START" > START </option>';
 														}
 					                                    
-					                                    if($output->shift_enforcement[$i] == "ALL"){
+					                                    if($output->data->shift_enforcement == "ALL"){
 															$shift_enforcement .= '<option value="ALL" selected> ALL </option>';
 														}else{
 															$shift_enforcement .= '<option value="ALL" > ALL </option>';
@@ -199,7 +198,7 @@ if (isset($_POST["usergroup_id"])) {
 												<?php
 													$group_level = NULL;
 													for($o=1; $o <= 9; $o++){
-														if($output->group_level[$i] == $o){
+														if($output->data->group_level == $o){
 															$group_level .= '<option value="'.$o.'" selected> '.$o.' </option>';
 														}else{
 															$group_level .= '<option value="'.$o.'"> '.$o.' </option>';
@@ -211,12 +210,13 @@ if (isset($_POST["usergroup_id"])) {
 												</select>
 											</div>
 										</div>
+										<!--
 										<div class="form-group row">
 											<label for="group_list_id" class="col-sm-2 control-label">Group List ID</label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="group_list_id" id="group_list_id" placeholder="Group List ID" value="<?php echo $output->group_list_id[$i];?>" readonly>
+												<input type="text" class="form-control" name="group_list_id" id="group_list_id" placeholder="Group List ID" value="<?php echo $output->data->group_list_id;?>" readonly>
 											</div>
-										</div>
+										</div>-->
 									</fieldset>
 								</div><!-- tab 1 -->
 
@@ -224,7 +224,7 @@ if (isset($_POST["usergroup_id"])) {
 			                    <fieldset class="footer-buttons">
 			                        <div class="box-footer">
 			                           <div class="col-sm-3 pull-right">
-												<a href="settingsusergroups.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+				<a href="settingsusergroups.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 			                           	
 			                                	<button type="submit" class="btn btn-primary" id="modifyUserGroupOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 											
@@ -239,9 +239,7 @@ if (isset($_POST["usergroup_id"])) {
 	            </div>
             </section>
 					<?php
-							}
-						}	
-                        
+						}
 					?>
 					
 				<!-- /.content -->
@@ -281,7 +279,7 @@ if (isset($_POST["usergroup_id"])) {
 									//if message is sent
 									if (data == 1) {
 										swal("Success!", "Usergroup Successfully Updated!", "success");
-                                        window.setTimeout(function(){location.reload()},2000);
+                                        //window.setTimeout(function(){location.reload()},2000);
                                         $('#update_button').html("<i class='fa fa-check'></i> Update");
                                         $('#modifyUserGroupOkButton').prop("disabled", false);
 									} else {
