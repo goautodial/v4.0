@@ -55,7 +55,7 @@ $customs = $customFields->data;
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
-			})
+			});
 		</script>
     </head>
     <style>
@@ -127,7 +127,7 @@ $customs = $customFields->data;
 							</div>
 							<!-- /.box-header -->
 							<!-- form start -->
-							<form role="form">
+							<!-- <form role="form"> -->
 								<div class="box-body">
 									<div class="form-horizontal">
 										<div class="row">
@@ -387,7 +387,7 @@ $customs = $customFields->data;
 										</div>
 									</div>
 								</div>
-							</form>
+						<!--	</form> -->
 						</div>
             </section>
 
@@ -429,6 +429,7 @@ $customs = $customFields->data;
 							<div class="modal-body">
 								<form id="wizard-form" class="form-horizontal" style="margin-top: 10px;">
 									<input type="hidden" name="field_id" class="field-id" value="">
+									<input type="hidden" name="field_label_old" class="form-control field-label" id="field_label_old" value="">
 									<div class="form-group">
 										<label class="control-label col-lg-3">List ID:</label>
 										<div class="col-lg-9">
@@ -528,9 +529,10 @@ $customs = $customFields->data;
 									<div class="form-group">
 										<label class="control-label col-lg-3">Field Required:</label>
 										<div class="col-lg-9">
-											<select class="form-control field-required" name="field_required">
+											<select class="form-control field-requireds" name="field_required" required>
+												<option value=""></option>
+												<option value="N">NO</option>
 												<option value="Y">YES</option>
-												<option value="N" selected>NO</option>
 											</select>
 										</div>
 									</div>
@@ -635,10 +637,10 @@ $customs = $customFields->data;
 				});
 
 				$(document).on('click', '.btn-field', function(){
-					var type = $('.custom-fields-selection').val();
-					$('.type').val(type);
+					//var type = $('.custom-fields-selection').val();
+					//$('.type').val(type);
 					$('.field-id').val("");
-					$('.field-id').val("");
+//					$('.field-id').val("");
 					$('.btn-create-field').removeClass('hide');
 					$('.btn-update-field').addClass('hide');
 					$('#modal_custom_field').modal('show');
@@ -800,7 +802,7 @@ $customs = $customFields->data;
 
 				$('#modal_custom_field_list').on('hidden.bs.modal', function (e) {
 					var field_id = $('.field-id').val();
-					if(field_id != ""){
+					if(field_id !== ""){
 						$('body').addClass('modal-open');
 					}else{
 						$('.field-id').val("");
@@ -816,7 +818,7 @@ $customs = $customFields->data;
 						$('.field-default').val("");
 						$('.field-position').val("").change();
 						$('.field-option-position').val("").change();
-						$('.field-required').val("NO").change();
+						$('.field-requireds').val("").change();
 						$('body').removeClass('modal-open');
 					}
 				});
@@ -824,7 +826,7 @@ $customs = $customFields->data;
 				$('#modal_custom_field').on('hidden.bs.modal', function (e) {
 						var field_id = $('.field-id').val();
 						$('.field-id').val("");
-						if(field_id != ""){
+						if(field_id !== ""){
 							$('#modal_custom_field_list').modal('show');
 							$('body').addClass('modal-open');
 						}else{
@@ -842,7 +844,7 @@ $customs = $customFields->data;
 							$('.field-default').val("");
 							$('.field-position').val("").change();
 							$('.field-option-position').val("").change();
-							$('.field-required').val("NO").change();
+							$('.field-requireds').val("").change();
 						}
 				});
 
@@ -868,7 +870,7 @@ $customs = $customFields->data;
 					$('.field-default').val(data.field_default);
 					$('.field-position').val(data.name_position).change();
 					$('.field-option-position').val(data.multi_position).change();
-					$('.field-required').val(data.field_required).change();
+					$('.field-requireds').val(data.field_required).change();
 
 					$('#modal_custom_field_list').modal('hide');
 					$('.btn-create-field').addClass('hide');
@@ -890,7 +892,7 @@ $customs = $customFields->data;
 					$('.field-default').val("");
 					$('.field-position').val("").change();
 					$('.field-option-position').val("").change();
-					$('.field-required').val("NO").change();
+					$('.field-requireds').val("").change();
 				});
 
 				$(document).on('click', '.btn-create-field', function(){
@@ -944,7 +946,9 @@ $customs = $customFields->data;
 
 				$(document).on('click', '.btn-update-field', function(){
 					var form_data = new FormData($("#wizard-form")[0]);
-
+					var field_label_old = $('#field_label_old').val();
+					form_data.append('field_label_old',field_label_old);
+					
 					swal({
 						title: "Are you sure?",
 						text: "This action cannot be undone.",

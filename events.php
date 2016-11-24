@@ -187,7 +187,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 		               </div><!-- /.col -->
 		               <!--try modal-->
 
-		        <div class="modal fade" id="edit-events-dialog-modal" name="edit-events-dialog-modal" tabindex="-1" role="dialog" aria-hidden="true">
+		        <div class="modal fade" id="edit-events-modal" name="edit-events-modal" tabindex="-1" role="dialog" aria-hidden="true">
 			        <div class="modal-dialog">
 			            <div class="modal-content">
 			                <div class="modal-header">
@@ -439,7 +439,8 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 			$(".edit-events-action").click(function(e) {
 				// Set ID of the events to edit
 				e.preventDefault();
-		        var ele = $(this).parents("li").first();
+				$('#edit-events-modal').modal();
+                                var ele = $(this).parents("li").first();
 				var events_id = ele.attr("id"); // events ID is contained in the ID element of the li object.
 				$('#edit-events-eventsid').val(events_id);
 				
