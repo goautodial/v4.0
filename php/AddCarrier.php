@@ -18,6 +18,7 @@
 	if($_POST['carrier_type'] == "manual"){
 		$postfields["carrier_description"]	= $_POST['carrier_description'];
 		$postfields["user_group"]	= $_POST['user_group'];
+		
 		$postfields["authentication"]	= $_POST['authentication'];
 			
 		if($_POST['authentication'] == "registration"){
@@ -25,16 +26,16 @@
 			$postfields["password"]	= $_POST['password'];
 		}
 		
+		$postfields["protocol"]	= $_POST['protocol'];
 		$postfields["sip_server_ip"]	= $_POST['sip_server_ip'];
 		$postfields["codecs"]	= $_POST['codecs'];
 		$postfields["dtmf"]	= $_POST['dtmf'];
 		$postfields["custom_dtmf"]	= $_POST['custom_dtmf'];
-		$postfields["protocol"]	= $_POST['protocol'];
-		$postfields["manual_server_ip"]	= $_POST['manual_server_ip'];
+		$postfields["manual_server_ip"]	= $_SERVER['REMOTE_ADDR'];
 	
 	}
 	
-	if($_POST['carrier_type'] == "manual"){
+	if($_POST['carrier_type'] == "copy"){
 		$postfields["copy_server_ip"]	= $_POST['copy_server_ip'];
 		$postfields["source_carrier"]	= $_POST['source_carrier'];
 	}

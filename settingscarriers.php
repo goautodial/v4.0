@@ -115,9 +115,10 @@
 							<small>Choose what carrier type should be created</small>
 						</h4>
 						<fieldset>
+							<br/><br/><br/><br/><br/><br/>
 							<div class="form-group mt">
-								<label class="col-sm-3 control-label" for="carrier_type">Carrier Type:</label>
-								<div class="col-sm-9">
+								<label class="col-sm-3 control-label" for="carrier_type">Carrier Type</label>
+								<div class="col-sm-7">
 									<select id="carrier_type" class="form-control" name="carrier_type">
 										<option value="justgo">  GoAutodial - JustGoVoIP </option>
 										<option value="manual">  Manual </option>
@@ -138,13 +139,13 @@
 								<div class="form-group mt">
 												<label for="carrier_id" class="col-sm-3 control-label">Carrier ID</label>
 												<div class="col-sm-8 mb">
-													<input type="text" class="form-control" name="carrier_id" id="carrier_id" placeholder="Carrier ID" maxlength="15" required>
+													<input type="text" class="form-control" name="carrier_id" id="carrier_id" placeholder="Carrier ID" maxlength="15" required />
 												</div>
 											</div>
 								<div class="form-group">
 									<label for="carrier_name" class="col-sm-3 control-label">Carrier Name</label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="carrier_name" id="carrier_name" placeholder="Carrier Name" required>
+										<input type="text" class="form-control" name="carrier_name" id="carrier_name" placeholder="Carrier Name" required />
 									</div>
 								</div>
 							</div>
@@ -153,14 +154,14 @@
 								<div class="form-group">
 									<label for="carrier_description" class="col-sm-3 control-label">Carrier Description</label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="Carrier Description" required>
+										<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="Carrier Description" required />
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="carrier_description" class="col-sm-3 control-label">User Group</label>
 									<div class="col-sm-8 mb">
 										<select id="user_group" class="form-control" name="user_group">
-												<option value="ALL">  ALL USERGROUPS  </option>
+												<option value="---ALL---">  ALL USERGROUPS  </option>
 											<?php
 												for($i=0;$i<count($user_groups->user_group);$i++){
 											?>
@@ -192,19 +193,19 @@
 								<div class="form-group registration_div" style="display:none;">
 									<label for="username" class="col-sm-3 control-label">Username</label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
+										<input type="text" class="form-control" name="username" id="username" placeholder="Username" required />
 									</div>
 								</div>
 								<div class="form-group registration_div" style="display:none;">
 									<label for="password" class="col-sm-3 control-label">Password</label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="password" id="password" placeholder="Password" required>
+										<input type="text" class="form-control" name="password" id="password" placeholder="Password" required />
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="server_ip" class="col-sm-3 control-label">SIP Server</label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="sip_server_ip" id="sip_server_ip" placeholder="Server IP/Host" required>
+										<input type="text" class="form-control" name="sip_server_ip" id="sip_server_ip" placeholder="Server IP/Host" required />
 									</div>
 								</div>
 								<div class="form-group">
@@ -258,7 +259,7 @@
 								<div class="form-group" id="input_custom_dtmf" style="display:none;">
 									<label for="custom_dtmf" class="col-sm-4 control-label"></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" id="custom_dtmf" name="custom_dtmf" placeholder="Enter Custom DTMF" required>
+										<input type="text" class="form-control" id="custom_dtmf" name="custom_dtmf" placeholder="Enter Custom DTMF" required />
 									</div>
 								</div>
 								<div class="form-group">
@@ -301,7 +302,7 @@
 											<?php
 												for($i=0;$i<1;$i++){
 											?>
-												<option><?php echo $carriers->server_ip[$i];?> - GOautodial Meetme Server</option>
+												<option value="<?php echo $carriers->server_ip[$i];?>"><?php echo $carriers->server_ip[$i];?> - GOautodial Meetme Server</option>
 											<?php
 												}
 											?>
@@ -315,7 +316,7 @@
 											<?php
 												for($i=0;$i<count($carriers->carrier_id);$i++){
 											?>
-												<option><?php echo $carriers->carrier_id[$i].' - '.$carriers->carrier_name[$i].' - '.$carriers->server_ip[$i];?></option>
+												<option value="<?php echo $carriers->carrier_id[$i];?>"><?php echo $carriers->carrier_id[$i].' - '.$carriers->carrier_name[$i].' - '.$carriers->server_ip[$i];?></option>
 											<?php
 												}
 											?>
@@ -374,74 +375,74 @@
 									</div>
 									<div class="form-group">
 										<label for="company" class="col-sm-3 control-label">Company</label>
-										<div class="col-sm-9 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="Company" required>
+										<div class="col-sm-8 mb">
+											<input type="text" class="form-control" id="company" name="company" placeholder="Company" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="company" class="col-sm-3 control-label">First Name</label>
-										<div class="col-sm-9 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="First Name" required>
+										<label for="firstname" class="col-sm-3 control-label">First Name</label>
+										<div class="col-sm-8 mb">
+											<input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="company" class="col-sm-3 control-label">Last Name</label>
-										<div class="col-sm-9 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="Last Name" required>
+										<label for="lastname" class="col-sm-3 control-label">Last Name</label>
+										<div class="col-sm-8 mb">
+											<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="company" class="col-sm-3 control-label">Address</label>
-										<div class="col-sm-9 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="Address" required>
+										<label for="address" class="col-sm-3 control-label">Address</label>
+										<div class="col-sm-8 mb">
+											<input type="text" class="form-control" id="address" name="address" placeholder="Address" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="company" class="col-sm-3 control-label">City</label>
-										<div class="col-sm-9 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="City" required>
+										<label for="city" class="col-sm-3 control-label">City</label>
+										<div class="col-sm-8 mb">
+											<input type="text" class="form-control" id="city" name="city" placeholder="City" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="company" class="col-sm-3 control-label">State</label>
-										<div class="col-sm-9 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="State" required>
+										<label for="state" class="col-sm-3 control-label">State</label>
+										<div class="col-sm-8 mb">
+											<input type="text" class="form-control" id="state" name="state" placeholder="State" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="company" class="col-sm-3 control-label">Postal Code</label>
-										<div class="col-sm-9 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="Postal Code" required>
+										<label for="postal" class="col-sm-3 control-label">Postal Code</label>
+										<div class="col-sm-8 mb">
+											<input type="text" class="form-control" id="postal" name="postal" placeholder="Postal Code" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="company" class="col-sm-3 control-label">Country</label>
-										<div class="col-sm-9 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="Country" required>
+										<label for="country" class="col-sm-3 control-label">Country</label>
+										<div class="col-sm-8 mb">
+											<input type="text" class="form-control" id="country" name="country" placeholder="Country" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="company" class="col-sm-3 control-label">Time Zone</label>
-										<div class="col-sm-9 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="Time Zone" required>
+										<label for="timezone" class="col-sm-3 control-label">Time Zone</label>
+										<div class="col-sm-8 mb">
+											<input type="text" class="form-control" id="timezone" name="timezone" placeholder="Time Zone" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="company" class="col-sm-3 control-label">Phone</label>
-										<div class="col-sm-9 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="Phone" required>
+										<label for="phone" class="col-sm-3 control-label">Phone</label>
+										<div class="col-sm-8 mb">
+											<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="company" class="col-sm-3 control-label">Mobile Phone</label>
-										<div class="col-sm-9 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="Mobile Phone" required>
+										<label for="mobilephone" class="col-sm-3 control-label">Mobile Phone</label>
+										<div class="col-sm-8 mb">
+											<input type="text" class="form-control" id="mobilephone" name="mobilephone" placeholder="Mobile Phone" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="company" class="col-sm-3 control-label">Email</label>
-										<div class="col-sm-9 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="Email" required>
+										<label for="email" class="col-sm-3 control-label">Email</label>
+										<div class="col-sm-8 mb">
+											<input type="text" class="form-control" id="email" name="email" placeholder="Email" required />
 										</div>
 									</div>
 								</fieldset>
@@ -637,7 +638,7 @@
 						return form.valid();
 					},
 					onFinishing: function (){
-						form.validate().settings.ignore = ":disabled";
+						form.validate().settings.ignore = "disabled,:hidden";
 						return form.valid();
 					},
 					onFinished: function (){
@@ -646,19 +647,19 @@
 	
 						// Submit form via ajax
 						$.ajax({
-							url: "./php/CreateTelephonyUser.php",
+							url: "./php/AddCarrier.php",
 							type: 'POST',
 							data: $("#create_form").serialize(),
 							success: function(data) {
 							  // console.log(data);
-								$('#finish').val("Submit");
+								$('#finish').text("Submit");
 								$('#finish').attr("disabled", false);
 								
 								if(data == 1){
 									swal({	title: "Success",
 											text: "Carrier Successfully Created!",
 											type: "success" },
-										function(){ window.location.href = 'telephonyusers.php'; }
+										function(){ window.location.href = 'settingscarriers.php'; }
 									);
 								}else{
 									sweetAlert("Oops...", "Something went wrong. "+data, "error");
@@ -740,6 +741,16 @@
                         }
                     );
 
+				});
+				
+				// disable special characters on Carrier ID
+				$('#carrier_id').bind('keypress', function (event) {
+					var regex = new RegExp("^[a-zA-Z0-9]+$");
+					var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+					if (!regex.test(key)) {
+					   event.preventDefault();
+					   return false;
+					}
 				});
 			});
 
