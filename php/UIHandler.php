@@ -3232,7 +3232,7 @@ error_reporting(E_ERROR | E_PARSE);
 	**/
 
 
-	public function API_goGetAllUserLists($user){
+	public function API_goGetAllUserLists($user = ''){
 		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
