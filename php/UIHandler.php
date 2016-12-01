@@ -3289,7 +3289,6 @@ error_reporting(E_ERROR | E_PARSE);
 	public function goGetAllUserList($user) {
 
 	$output = $this->API_goGetAllUserLists($user);
-	
        if($output->result=="success") {
        	   $columns = array("     ", "Agent ID", "Agent Name", "Group", "Status", "Action");
 	       $hideOnMedium = array("Group", "Status");
@@ -3900,6 +3899,7 @@ error_reporting(E_ERROR | E_PARSE);
 			<li><a class="edit-campaign" href="#" data-id="'.$id.'">View Details</a></li>
       <li><a class="view-pause-codes" href="#" data-id="'.$id.'">View Pause Codes</a></li>
       <li><a class="view-hotkeys" href="#" data-id="'.$id.'">View Hotkeys</a></li>
+	  <li><a class="view-lists" href="#" data-id="'.$id.'">View Lists</a></li>
 			<li><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
@@ -5621,7 +5621,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	public function API_getAllDIDs($campaign_id){
-		$url = gourl."/goUnbound/goAPI.php"; #URL to GoAutoDial API. (required)
+		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllDIDs"; #action performed by the [[API:Functions]]. (required)
