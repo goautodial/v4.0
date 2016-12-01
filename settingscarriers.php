@@ -808,7 +808,7 @@ host=
 									dataType: 'json',
 									success: function(data) {
 										if(data == 1){
-											swal("Success!", "Music On Hold Successfully Deleted!", "success");
+											swal("Success!", "Carrier Successfully Deleted!", "success");
                                             window.setTimeout(function(){location.reload()},1000);
 										}else{
 											sweetAlert("Oops...", "Something went wrong! "+data, "error");
