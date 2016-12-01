@@ -119,6 +119,7 @@ if (isset($_POST["usergroup_id"])) {
 						<!--<div class="nav-tabs-custom">-->
 							<ul role="tablist" class="nav nav-tabs nav-justified">
 								<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
+								<li><a href="#tab_2" data-toggle="tab"> Group Permissions</a></li>
 							</ul>
 			               <!-- Tab panes-->
 			               <div class="tab-content">
@@ -220,6 +221,51 @@ if (isset($_POST["usergroup_id"])) {
 									</fieldset>
 								</div><!-- tab 1 -->
 
+				               	<!-- ADVANCE SETTINGS -->
+				                <div id="tab_2" class="tab-pane fade in">
+				                	<fieldset>
+										<?php
+										$perms = json_decode($output->data->permissions);
+										$list_perms = '';
+										foreach ($perms as $type => $perm) {
+											$list_perms .= '<div class="form-group row mt">';
+											$list_perms .= '<label for="group_name" class="col-sm-4 control-label">'.$lh->translationFor($type).'</label>';
+											$list_perms .= '<div class="col-sm-8 mb">';
+											
+											foreach ($perm as $idx => $value) {
+												$checkThis = '';
+												if ($value !== 'N') { $checkThis = ' checked'; }
+												$disableThis = '';
+												if ($usergroup_id === 'AGENTS') { $disableThis = ' disabled'; }
+												
+												$defaultValue = 'Y';
+												$list_options = '';
+												$label = $idx;
+												if (!preg_match("/dashboard|reportsanalytics|recordings|support/", $type)) {
+													if (preg_match("/_create$/", $idx)) { $defaultValue = 'C'; $label = 'Create'; }
+													if (preg_match("/_read$/", $idx)) { $defaultValue = 'R'; $label = 'Read'; }
+													if (preg_match("/_update$/", $idx)) { $defaultValue = 'U'; $label = 'Update'; }
+													if (preg_match("/_delete$/", $idx)) { $defaultValue = 'D'; $label = 'Delete'; }
+													if (preg_match("/_upload$/", $idx)) { $defaultValue = 'C'; $label = 'Upload'; }
+													$list_options = ' display: inline-block;';
+													
+													if ($type == 'multi-tenant' && !preg_match("/(_create|_display|_update|_delete)$/", $idx)) {
+														$list_options = '';
+													}
+												}
+												$list_perms .= '<div class="checkbox c-checkbox" style="margin-right: 15px;'.$list_options.'">';
+												$list_perms .= '<label><input name="'.$idx.'" id="'.$idx.'" type="checkbox"'.$checkThis.' value="'.$defaultValue.'"'.$disableThis.'><span class="fa fa-check"></span> '.$lh->translationFor($label).'</label>';
+												$list_perms .= '</div>';
+											}
+											
+											$list_perms .= '</div>';
+											$list_perms .= '</div>';
+										}
+										echo $list_perms;
+										?>
+									</fieldset>
+								</div><!-- tab 2 -->
+
 			                    <!-- FOOTER BUTTONS -->
 			                    <fieldset class="footer-buttons">
 			                        <div class="box-footer">
@@ -277,6 +323,7 @@ if (isset($_POST["usergroup_id"])) {
 							$("#modifyvoicemail").serialize(), 
 								function(data){
 									//if message is sent
+									console.log($("#modifyvoicemail").serialize());
 									if (data == 1) {
 										swal("Success!", "Usergroup Successfully Updated!", "success");
                                         //window.setTimeout(function(){location.reload()},2000);
