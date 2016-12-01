@@ -358,7 +358,7 @@ $lists = $ui->API_goGetAllLists();
 															<?php if(count($dids->did_id) != 0) {?>
 																<?php for($i=0;$i<=count($dids->did_id);$i++) { ?>
 																	<?php if(!empty($dids->did_id[$i])){ ?>
-																		<p><?php echo $dids->did_id[$i]." - ".$dids->did_pattern[$i]." - ".$dids->did_description[$i]; ?></p>
+																		<p><?php echo $dids->did_pattern[$i]; ?></p>
 																	<?php } ?>
 																<?php }?>
 															<?php } else { ?>
@@ -382,7 +382,7 @@ $lists = $ui->API_goGetAllLists();
 															<?php if(count($dids->did_id) != 0) {?>
 																<?php for($i=0;$i<=count($dids->did_id);$i++) { ?>
 																	<?php if(!empty($dids->did_id[$i])){ ?>
-																		<p><?php echo $dids->did_id[$i]." - ".$dids->did_pattern[$i]." - ".$dids->did_description[$i]; ?></p>
+																		<p><?php echo $dids->did_pattern[$i]; ?></p>
 																	<?php } ?>
 																<?php }?>
 															<?php } else { ?>
