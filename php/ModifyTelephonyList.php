@@ -64,7 +64,7 @@ if ($validated == 1) {
     $data = curl_exec($ch);
     curl_close($ch);
     $output = json_decode($data);
-    
+    //print_r($output);die;
     if ($output->result=="success") {
     # Result was OK!
 		echo "success";

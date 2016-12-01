@@ -21,7 +21,7 @@
 	$postfields["active"] 						= $_POST["active"];
 	$postfields["dial_method"] 					= $_POST["dial_method"];
 
-	if($_POST["dial_method"] == "AUTO_DIAL")
+	if($_POST["dial_method"] == "RATIO")
 		$postfields["auto_dial_level"]			= $_POST["auto_dial_level"];
 
 	$postfields["auto_dial_level_adv"] 			= $_POST["auto_dial_level_adv"];

@@ -211,11 +211,12 @@ $lists = $ui->API_goGetAllLists();
 															<div class="row">
 																<div class="col-lg-8">
 																	<select id="auto_dial_level" class="form-control" name="auto_dial_level">
-																		<option value="0" <?php if($campaign->data->auto_dial_level == 0) echo "selected";?>>OFF</option>
-										    						<option value="1.0"<?php if($campaign->data->auto_dial_level == 1) echo "selected";?>>NORMAL</option>
-										    						<option VALUE="2.0" <?php if($campaign->data->auto_dial_level == 2) echo "selected";?>>MODERATE</option>
-										    						<option VALUE="4.0"<?php if($campaign->data->auto_dial_level == 4) echo "selected";?>>AGGRESIVE</option>
-																		<option value="ADVANCE">ADVANCE</option>
+																	<option value="OFF" <?php if($campaign->data->auto_dial_level == 0) echo "selected";?>>OFF</option>
+										    						<option value="SLOW"<?php if($campaign->data->auto_dial_level == 1) echo "selected";?>>SLOW</option>
+										    						<option VALUE="NORMAL" <?php if($campaign->data->auto_dial_level == 2) echo "selected";?>>NORMAL</option>
+																	<option VALUE="HIGH" <?php if($campaign->data->auto_dial_level == 4) echo "selected";?>>HIGH</option>
+										    						<option VALUE="MAX"<?php if($campaign->data->auto_dial_level == 6) echo "selected";?>>MAX</option>
+																	<option value="ADVANCE">ADVANCE</option>
 																	</select>
 																</div>
 																<div class="col-lg-4">
@@ -356,7 +357,9 @@ $lists = $ui->API_goGetAllLists();
 														<span class="col-sm-10 control-label" style="text-align: left; vertical-align: top;">
 															<?php if(count($dids->did_id) != 0) {?>
 																<?php for($i=0;$i<=count($dids->did_id);$i++) { ?>
-																	<p><?php echo $dids->did_id[$i]." - ".$dids->did_pattern[$i]." - ".$dids->did_description[$i]; ?></p>
+																	<?php if(!empty($dids->did_id[$i])){ ?>
+																		<p><?php echo $dids->did_id[$i]." - ".$dids->did_pattern[$i]." - ".$dids->did_description[$i]; ?></p>
+																	<?php } ?>
 																<?php }?>
 															<?php } else { ?>
 																No <b>DID/'s</b> found for this campaign.
@@ -378,7 +381,9 @@ $lists = $ui->API_goGetAllLists();
 														<span class="col-sm-10 control-label" style="text-align: left; vertical-align: top;">
 															<?php if(count($dids->did_id) != 0) {?>
 																<?php for($i=0;$i<=count($dids->did_id);$i++) { ?>
-																	<p><?php echo $dids->did_id[$i]." - ".$dids->did_pattern[$i]." - ".$dids->did_description[$i]; ?></p>
+																	<?php if(!empty($dids->did_id[$i])){ ?>
+																		<p><?php echo $dids->did_id[$i]." - ".$dids->did_pattern[$i]." - ".$dids->did_description[$i]; ?></p>
+																	<?php } ?>
 																<?php }?>
 															<?php } else { ?>
 																No <b>DID/'s</b> found for this campaign.
@@ -724,9 +729,7 @@ $lists = $ui->API_goGetAllLists();
 														<div class="form-group">
 															<label class="col-sm-3 control-label">Customer 3-way Hangup Seconds:</label>
 															<div class="col-sm-9 mb">
-																<select class="form-control" id="customer_3way_hangup_seconds" name="customer_3way_hangup_seconds">
-																	<option value="5" <?php if($campaign->data->customer_3way_hangup_seconds == "5") echo "selected";?>>5</option>
-																</select>
+																<input type="number" class="form-control" id="customer_3way_hangup_seconds" name="customer_3way_hangup_seconds" value="<?php if(!empty($campaign->data->customer_3way_hangup_seconds)){echo $campaign->data->customer_3way_hangup_seconds;}else{echo "5";} ?>" onkeydown="return FilterInput(event)">
 															</div>
 														</div>
 														<div class="form-group">
@@ -865,9 +868,7 @@ $lists = $ui->API_goGetAllLists();
 															<div class="form-group">
 																<label class="col-sm-3 control-label">Customer 3-way Hangup Seconds:</label>
 																<div class="col-sm-9 mb">
-																	<select class="form-control" id="customer_3way_hangup_seconds" name="customer_3way_hangup_seconds">
-																		<option value="5" <?php if($campaign->data->customer_3way_hangup_seconds == "5") echo "selected";?>>5</option>
-																	</select>
+																	<input type="number" class="form-control" id="customer_3way_hangup_seconds" name="customer_3way_hangup_seconds" value="<?php if(!empty($campaign->data->customer_3way_hangup_seconds)){echo $campaign->data->customer_3way_hangup_seconds;}else{echo "5";} ?>" onkeydown="return FilterInput(event)">
 																</div>
 															</div>
 															<div class="form-group">
@@ -1181,9 +1182,7 @@ $lists = $ui->API_goGetAllLists();
 														<div class="form-group">
 															<label class="col-sm-3 control-label">Customer 3-way Hangup Seconds:</label>
 															<div class="col-sm-9 mb">
-																<select class="form-control" id="customer_3way_hangup_seconds" name="customer_3way_hangup_seconds">
-																	<option value="5" <?php if($campaign->data->customer_3way_hangup_seconds == "5") echo "selected";?>>5</option>
-																</select>
+																<input type="number" class="form-control" id="customer_3way_hangup_seconds" name="customer_3way_hangup_seconds" value="<?php if(!empty($campaign->data->customer_3way_hangup_seconds)){echo $campaign->data->customer_3way_hangup_seconds;}else{echo "5";} ?>" onkeydown="return FilterInput(event)">
 															</div>
 														</div>
 														<div class="form-group">
@@ -1444,7 +1443,7 @@ $lists = $ui->API_goGetAllLists();
 
 	                		<label class="col-sm-3 control-label" for="status">Status:</label>
 	                        <div class="col-sm-9">
-	                            <input type="text" name="edit_status" id="edit_status" class="form-control" placeholder="Status" minlength="1" maxlenght="6" required>
+	                            <input type="text" name="edit_status" id="edit_status" class="form-control" placeholder="Status" minlength="1" maxlenght="6" required readonly>
 	                            <br/><small><label id="status-duplicate-error"></label></small>
 	                    	</div>
 		                </div>
@@ -1523,6 +1522,14 @@ $lists = $ui->API_goGetAllLists();
    		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
 
 		<script type="text/javascript">
+			
+			function FilterInput(event) {
+				var keyCode = ('which' in event) ? event.which : event.keyCode;
+			
+				isNotWanted = (keyCode == 69 || keyCode == 101);
+				return !isNotWanted;
+			};
+		
 			function check_campaign_allow_inbound(value){
 				if(value == "Y"){
 					$('.campaign_allow_inbound_div').removeClass('hide');
@@ -1677,8 +1684,8 @@ $lists = $ui->API_goGetAllLists();
 					        $('.am_message_chooser').toggle('show');
 					    });
 
-						var dial_method = $('#dial_method').val();
-						dialMethod(dial_method);
+						//var dial_method = $('#dial_method').val();
+						//dialMethod(dial_method);
 
 						$('#dial_method').change(function(){
 							dialMethod($(this).val());
