@@ -38,6 +38,88 @@ if ($validated == 1) {
 		$shift_enforcement = $_POST["shift_enforcement"]; 
 		$shift_enforcement = stripslashes($shift_enforcement);
 	}
+	
+	$group_permission  = '{';
+	
+	$group_permission .= '"dashboard":{';
+	$group_permission .= '"dashboard_display":' . (isset($_POST["dashboard_display"]) ? '"Y"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"user":{';
+	$group_permission .= '"user_create":' . (isset($_POST["user_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"user_read":' . (isset($_POST["user_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"user_update":' . (isset($_POST["user_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"user_delete":' . (isset($_POST["user_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"campaign":{';
+	$group_permission .= '"campaign_create":' . (isset($_POST["campaign_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"campaign_read":' . (isset($_POST["campaign_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"campaign_update":' . (isset($_POST["campaign_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"campaign_delete":' . (isset($_POST["campaign_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"list":{';
+	$group_permission .= '"list_create":' . (isset($_POST["list_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"list_read":' . (isset($_POST["list_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"list_update":' . (isset($_POST["list_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"list_delete":' . (isset($_POST["list_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"customfields":{';
+	$group_permission .= '"customfields_create":' . (isset($_POST["customfields_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"customfields_read":' . (isset($_POST["customfields_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"customfields_update":' . (isset($_POST["customfields_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"customfields_delete":' . (isset($_POST["customfields_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"loadleads":{';
+	$group_permission .= '"loadleads_read":' . (isset($_POST["loadleads_read"]) ? '"R"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"script":{';
+	$group_permission .= '"script_create":' . (isset($_POST["script_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"script_read":' . (isset($_POST["script_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"script_update":' . (isset($_POST["script_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"script_delete":' . (isset($_POST["script_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"inbound":{';
+	$group_permission .= '"inbound_create":' . (isset($_POST["inbound_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"inbound_read":' . (isset($_POST["inbound_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"inbound_update":' . (isset($_POST["inbound_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"inbound_delete":' . (isset($_POST["inbound_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"voicefiles":{';
+	$group_permission .= '"voicefiles_upload":' . (isset($_POST["voicefiles_upload"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"voicefiles_delete":' . (isset($_POST["voicefiles_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"reportsanalytics":{';
+	$group_permission .= '"reportsanalytics_display":' . (isset($_POST["reportsanalytics_display"]) ? '"Y"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"recordings":{';
+	$group_permission .= '"recordings_display":' . (isset($_POST["recordings_display"]) ? '"Y"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"support":{';
+	$group_permission .= '"support_display":' . (isset($_POST["support_display"]) ? '"Y"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"multi-tenant":{';
+	$group_permission .= '"tenant_create":' . (isset($_POST["tenant_create"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"tenant_display":' . (isset($_POST["tenant_display"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"tenant_update":' . (isset($_POST["tenant_update"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"tenant_delete":' . (isset($_POST["tenant_delete"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"tenant_logs":' . (isset($_POST["tenant_logs"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"tenant_calltimes":' . (isset($_POST["tenant_calltimes"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"tenant_phones":' . (isset($_POST["tenant_phones"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"tenant_voicemails":' . (isset($_POST["tenant_voicemails"]) ? '"Y"' : '"N"');
+	$group_permission .= '}';
+	
+	$group_permission .= '}';
     
 	$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -49,6 +131,7 @@ if ($validated == 1) {
 	$postfields["group_level"] = $group_level; #Desired value for user (required)
 	$postfields["forced_timeclock_login"] = $forced_timeclock_login; #Desired value for user (required)
 	$postfields["shift_enforcement"] = $shift_enforcement; #Desired value for user (required)
+	$postfields["permissions"] = $group_permission;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
