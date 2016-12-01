@@ -107,7 +107,7 @@
 								<div class="tab-content bg-white">
 									<!--==== users ====-->
 									<div id="users_tab" role="tabpanel" class="tab-pane active">
-										<?php print $ui->goGetAllUserList($user->getUserId()); ?>
+										<?php print $ui->goGetAllUserList($_SESSION['user']); ?>
 			                        </div>
 									
 									<?php
