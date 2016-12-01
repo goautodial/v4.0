@@ -53,6 +53,10 @@ error_reporting(E_ALL);*/
 				.select2-container{
 					width: 100% !important;
 				}
+				
+				.select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+					margin-top: 1px;
+				}
 			</style>
     </head>
      <?php print $ui->creamyBody(); ?>
@@ -389,7 +393,7 @@ error_reporting(E_ALL);*/
 				    				<label class="control-label col-lg-4">Campaign ID:</label>
 				    				<div class="col-lg-8 mb">
 				    					<div class="input-group">
-									      <input id="campaign-id" name="campaign_id" type="number" class="form-control" placeholder="" value="<?php echo str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT); ?>" maxlength="8" readonly>
+									      <input id="campaign-id" name="campaign_id" type="number" class="form-control" placeholder="" value="<?php echo str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT); ?>" maxlength="8" readonly onkeydown="return FilterInput(event)">
 									      <span class="input-group-btn">
 									        <button id="campaign-id-edit-btn" class="btn btn-default" type="button" style="min-height: 34px;"><i class="fa fa-pencil"></i></button>
 									      </span>
@@ -444,7 +448,14 @@ error_reporting(E_ALL);*/
 				    			<div class="form-group copy-from hide">
 				    				<label class="control-label col-lg-4">Copy from campaign:</label>
 				    				<div class="col-lg-8 mb">
-				    					<input id="copy-from-campaign" name="copy_from_campaign" type="text" class="form-control">
+				    					<!--<input id="copy-from-campaign" name="copy_from_campaign" type="text" class="form-control">-->
+										<select id="copy-from-campaign" name="copy_from_campaign" class="form-control">
+											<?php
+												for($i=0;$i < count($campaign->campaign_id);$i++){
+													echo '<option value="'.$campaign->campaign_id[$i].'">'.$campaign->campaign_id[$i].' - '.$campaign->campaign_name[$i].'</option>';
+												}
+											?>
+										</select>
 				    				</div>
 				    			</div>
 				    		</fieldset>
@@ -536,12 +547,59 @@ error_reporting(E_ALL);*/
 				    				<label class="control-label col-lg-5">Auto Dial Level:</label>
 				    				<div class="col-lg-7 mb">
 				    					<select class="form-control" id="auto-dial-level" name="auto_dial_level">
-				    						<option value="0">OFF</option>
-				    						<option value="1.0">NORMAL</option>
-				    						<option VALUE="2.0">MODERATE</option>
-				    						<option VALUE="4.0">AGGRESIVE</option>
-				    						<!-- <option value="CUSTOM">CUSTOM</option> -->
+				    						<option value="OFF">OFF</option>
+											<option value="SLOW">SLOW</option>
+											<option VALUE="NORMAL">NORMAL</option>
+											<option VALUE="HIGH">HIGH</option>
+											<option VALUE="MAX">MAX</option>
+											<option value="ADVANCE">ADVANCE</option>
 				    					</select>
+				    				</div>
+				    			</div>
+								<div class="form-group auto-dial-level-adv hide">
+				    				<label class="control-label col-lg-5"></label>
+				    				<div class="col-lg-7 mb">
+				    					<select id="auto_dial_level_adv" class="form-control" name="auto_dial_level_adv">
+											<option value="1.0">1.0</option>
+											<option value="1.5">1.5</option>
+											<option value="2.0">2.0</option>
+											<option value="2.5">2.5</option>
+											<option value="3.0">3.0</option>
+											<option value="3.5">3.5</option>
+											<option value="4.0">4.0</option>
+											<option value="4.5">4.5</option>
+											<option value="5.0">5.0</option>
+											<option value="5.5">5.5</option>
+											<option value="6.0">6.0</option>
+											<option value="6.5">6.5</option>
+											<option value="7.0">7.0</option>
+											<option value="7.5">7.5</option>
+											<option value="8.0">8.0</option>
+											<option value="8.5">8.5</option>
+											<option value="9.0">9.0</option>
+											<option value="9.5">9.5</option>
+											<option value="10.0">10.0</option>
+											<option value="10.5">10.5</option>
+											<option value="11.0">11.0</option>
+											<option value="11.5">11.5</option>
+											<option value="12.0">12.0</option>
+											<option value="12.5">12.5</option>
+											<option value="13.0">13.0</option>
+											<option value="13.5">13.5</option>
+											<option value="14.0">14.0</option>
+											<option value="14.5">14.5</option>
+											<option value="15.0">15.0</option>
+											<option value="15.5">15.5</option>
+											<option value="16.0">16.0</option>
+											<option value="16.5">16.5</option>
+											<option value="17.0">17.0</option>
+											<option value="17.5">17.5</option>
+											<option value="18.0">18.0</option>
+											<option value="18.5">18.5</option>
+											<option value="19.0">19.0</option>
+											<option value="19.5">19.5</option>
+											<option value="20.0">20.0</option>
+										</select>
 				    				</div>
 				    			</div>
 				    			<?php $carriers = $ui->getCarriers(); ?>
@@ -897,13 +955,13 @@ error_reporting(E_ALL);*/
 		      <div class="modal-body">
 						<form id="form_hotkeys" class="form-horizontal" style="margin-top: 10px;">
 							<div class="form-group">
-								<label class="control-label col-lg-3">Campaign ID:</label>
+								<label class="control-label col-lg-3" style="text-align: left;">Campaign ID:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control campaign-id" name="campaign_id" readonly>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-3">Hotkey:</label>
+								<label class="control-label col-lg-3" style="text-align: left;">Hotkey:</label>
 								<div class="col-lg-9">
 									<select class="form-control select2 hotkey" name="hotkey">
 										<option value="1">1</option>
@@ -919,10 +977,12 @@ error_reporting(E_ALL);*/
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-3">Status:</label>
+								<label class="control-label col-lg-3" style="text-align: left;">Status:</label>
 								<div class="col-lg-9">
 									<input type="hidden" id="hotkey_status_name" name="status_name" value="">
-									<select class="form-control select2 status" name="status"></select>
+									<select class="form-control select2 status" name="status">
+										<option>Select a Status</option>
+									</select>
 								</div>
 							</div>
 						</form>
@@ -931,6 +991,141 @@ error_reporting(E_ALL);*/
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary btn-save-hotkey">Save</button>
 						<button type="button" class="btn btn-success btn-update-hotkey hide">Update</button>
+		      </div>
+		    </div>
+		    <!-- End of modal content -->
+		  </div>
+		</div>
+		
+		<div id="modal_view_lists" class="modal fade" role="dialog">
+		  <div class="modal-dialog" style="width: 70%;">
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title"><b>Lists</b></h4>
+		      </div>
+		      <div class="modal-body">
+					<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
+						<div class="table-responsive">
+							<table id="lists_list" class="table table-bordered" style="width: 100%;">
+								<thead>
+									<tr>
+										<th>List ID</th>
+										<th>List Name</th>
+										<th>Description</th>
+										<th>Leads Count</th>
+										<th>Active</th>
+										<th>Last Call Date</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody id="lists_data_container">
+									<!-- Data Here -->
+								</tbody>
+							</table>
+						</div>
+					</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<!--<button type="button" class="btn btn-success btn-new-lists" data-campaign="">Create New</button>-->
+		      </div>
+		    </div>
+		    <!-- End of modal content -->
+		  </div>
+		</div>
+		
+		<div id="modal_form_lists" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title"><b>Lists</b> <small>(Form)</small></h4>
+		      </div>
+		      <div class="modal-body">
+				<form id="form_lists" class="form-horizontal">
+					<input type="hidden" name="lists_id" class="lists-id">
+					<div class="form-group">
+						<label class="control-label col-lg-4" style="text-align: left;">Name:</label>
+						<div class="col-lg-8">
+							<input type="text" class="form-control lists-name" name="lists_name">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-lg-4" style="text-align: left;">Description:</label>
+						<div class="col-lg-8">
+							<input type="text" class="form-control lists-description" name="lists_description">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-lg-4" style="text-align: left;">Campaign:</label>
+						<div class="col-lg-8">
+							<select name="lists_campaign" class="form-control select2 lists-campaign">
+								<?php
+									for($i=0;$i < count($campaign->campaign_id);$i++){
+										echo '<option value="'.$campaign->campaign_id[$i].'">'.$campaign->campaign_id[$i].' - '.$campaign->campaign_name[$i].'</option>';
+									}
+								?>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-lg-4" style="text-align: left;">Reset Time:</label>
+						<div class="col-lg-8">
+							<input type="text" class="form-control lists-reset-time" name="lists_reset_time">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-lg-4" style="text-align: left;">Reset Lead Called Status:</label>
+						<div class="col-lg-3">
+							<select name="lists_lead_called_status" class="form-control select2 lists-lead-called-status">
+								<option value="N">N</option>
+								<option value="Y">Y</option>
+							</select>
+						</div>
+						<label class="control-label col-lg-2" style="text-align: left;">Active:</label>
+						<div class="col-lg-3">
+							<select name="lists_active" class="form-control select2 lists-active">
+								<option value="N">N</option>
+								<option value="Y">Y</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-lg-4" style="text-align: left;">Agent Script Override:</label>
+						<div class="col-lg-8">
+							<select name="lists_agent_script_override" class="form-control lists-agent-script-override">
+								<option value="" selected="selected">NONE - INACTIVE</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-lg-4" style="text-align: left;">Campaign CID Override:</label>
+						<div class="col-lg-8">
+							<input type="text" class="form-control lists-cid-override" name="lists_cid_override">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-lg-4" style="text-align: left;"></label>
+						<div class="col-lg-3">
+							<select name="lists_drop_inbound_group_override" class="form-control lists-drop-inbound-group-override">
+								<option value="NONE">NONE</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-lg-4" style="text-align: left;">Web Form:</label>
+						<div class="col-lg-8">
+							<input type="text" class="form-control lists-web-form" name="lists_web_form">
+						</div>
+					</div>
+				</form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-success btn-update-lists" data-campaign="">Update</button>
 		      </div>
 		    </div>
 		    <!-- End of modal content -->
@@ -948,6 +1143,13 @@ error_reporting(E_ALL);*/
 	<script src="js/plugins/iCheck/icheck.min.js"></script>
 
 	<script type="text/javascript">
+		function FilterInput(event) {
+			var keyCode = ('which' in event) ? event.which : event.keyCode;
+		
+			isNotWanted = (keyCode == 69 || keyCode == 101);
+			return !isNotWanted;
+		};
+
 		function get_pause_codes(campaign_id){
 			$.ajax({
 				url: "./php/GetPauseCodes.php",
@@ -999,11 +1201,57 @@ error_reporting(E_ALL);*/
 					}
 			});
 		}
+		
+		function get_lists(campaign_id){
+			$.ajax({
+				url: "./php/GetLists.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						// var values = JSON.parse(response.result);
+						//console.log(response);
+						// $('.btn-new-lists').attr('data-campaign', campaign_id);
+						$('#modal_view_lists').modal('show');
+						var table = $('#lists_list').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('#lists_data_container').html(response);
+						$('#lists_list').DataTable({
+							"searching": true,
+							bFilter: true
+						});
+						$("#lists_list").css("width","100%");
+					}
+			});
+		}
 
 		$(document).ready(function(){
-			// $('#modal_form_pause_codes').modal('show');
+			//$('#modal_form_lists').modal('show');
 			$('.select2').select2({
-						theme: 'bootstrap'
+				theme: 'bootstrap'
+			});
+			
+			$(document).on('click','.edit-list',function() {
+				var dataInfo = $(this).data('info');
+				//console.log(dataInfo);
+				$('.lists-id').val(dataInfo.list_id);
+				$('.lists-name').val(dataInfo.list_name);
+				$('.lists-description').val(dataInfo.list_description);
+				$('.lists-campaign').val(dataInfo.campaign_id).trigger('change');
+				$('.lists-reset-time').val(dataInfo.reset_time);
+				$('.lists-lead-called-status').val(dataInfo.reset_called_lead_status).trigger('change');
+				$('.lists-active').val(dataInfo.active).trigger('change');
+				$('.lists-agent-script-override').val(dataInfo.agent_script_override).trigger('change');
+				$('.lists-cid-override').val(dataInfo.campaign_cid_override);
+				$('.lists-drop-inbound-group-override').val(dataInfo.drop_inbound_group_override).trigger('change');
+				$('.lists-web-form').val(dataInfo.web_from_address);
+				$('.btn-update-lists').attr('data-campaign', dataInfo.campaign_id);
+				$('#modal_view_lists').modal('hide');
+				$('#modal_form_lists').modal('show');
+				$('body').addClass('modal-open');
 			});
 
 			$(document).on('click', '.view-pause-codes', function(){
@@ -1016,6 +1264,12 @@ error_reporting(E_ALL);*/
 				var campaign_id = $(this).data('id');
 				// alert(campaign_id);
 				get_hotkeys(campaign_id);
+			});
+			
+			$(document).on('click', '.view-lists', function(){
+				var campaign_id = $(this).data('id');
+				// alert(campaign_id);
+				get_lists(campaign_id);
 			});
 
 			$(document).on('click', '.btn-new-pause-code', function(){
@@ -1047,7 +1301,10 @@ error_reporting(E_ALL);*/
 					success: function(response) {
 							// console.log(response);
 							$('.status').html(response);
-
+							$('.status').select2({
+								theme: 'bootstrap'
+							});
+							$('.status').val("").trigger("change");
 						}
 				});
 
@@ -1083,6 +1340,17 @@ error_reporting(E_ALL);*/
 				if($('#modal_form_hotkeys').hasClass('in')){
 					$('body').addClass('modal-open');
 				}
+			});
+		
+			$('#modal_view_lists').on('hidden.bs.modal', function () {
+				if($('#modal_form_lists').hasClass('in')){
+					$('body').addClass('modal-open');
+				}
+			});
+			
+			$('#modal_form_lists').on('hidden.bs.modal', function () {
+				$('#modal_view_lists').modal('show');
+				$('body').addClass('modal-open');
 			});
 
 			$(document).on('click', '.btn-edit-pc', function(){
@@ -1250,9 +1518,62 @@ error_reporting(E_ALL);*/
 					}
 				);
 			});
+			
+			
+			$(document).on('click', '.btn-update-lists', function(){
+				var campaign_id = $(this).data('campaign');
+				swal({
+					title: "Are you sure?",
+					text: "This action cannot be undone.",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Yes, modify list!",
+					cancelButtonText: "No, cancel please!",
+					closeOnConfirm: false,
+					closeOnCancel: false
+					},
+					function(isConfirm){
+						if (isConfirm) {
+								$.ajax({
+									url: "./php/ModifyTelephonyList.php",
+									type: 'POST',
+									data: {
+										'modifyid': $('.lists-id').val(),
+										'name': $('.lists-name').val(),
+										'desc': $('.lists-description').val(),
+										'campaign': $('.lists-campaign').val(),
+										'active': $('.lists-active').val(),
+										'reset_list': $('.lists-lead-called-status').val()
+									},
+									// dataType: 'json',
+									success: function(data) {
+											console.log(data);
+											if(data == "success"){
+												swal({
+														title: "Success",
+														text: "List Successfully Modified",
+														type: "success"
+													},
+													function(){
+														$('#modal_form_lists').modal('hide');
+														get_lists(campaign_id);
+													}
+												);
+											}else{
+													sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+											}
+									}
+								});
+							} else {
+									swal("Cancelled", "No action has been done :)", "error");
+							}
+					}
+				);
+			});
 
 			$(document).on('change', '.status', function(){
-				var stat_name = $(this).select2().find(":selected").data("name");
+				var stat_name = $(this).select2({theme: 'bootstrap'}).find(":selected").data("name");
 				// console.log(stat_name);
 				$('#hotkey_status_name').val(stat_name);
 			});
@@ -1296,7 +1617,7 @@ error_reporting(E_ALL);*/
 															}
 														);
 													}else{
-															sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+														sweetAlert("Oops...", "Something went wrong! "+ data, "error");	
 													}
 											}
 								});
@@ -1953,6 +2274,10 @@ error_reporting(E_ALL);*/
 								$('.inbound').addClass('hide');
 								$('.copy-from').removeClass('hide');
 								$('.carrier-to-use').addClass('hide');
+								
+								$('#copy-from-campaign').select2({
+									theme: 'bootstrap'
+								});
 							}else if(selectedTypeVal == 'blended'){
 								$('.outbound').addClass('hide');
 								$('.inbound').addClass('hide');
@@ -2048,7 +2373,15 @@ error_reporting(E_ALL);*/
 			        theme: 'bootstrap'
 			    });
 
-
+				$('#auto-dial-level').change(function(){
+					var val = $(this).val();
+					if(val == 'ADVANCE') {
+                        $('div.auto-dial-level-adv').removeClass('hide');
+                    }else{
+						$('div.auto-dial-level-adv').addClass('hide');
+					}
+				});
+				
 		}); // end of document ready
 
 

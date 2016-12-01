@@ -30,7 +30,9 @@
 		if ($output->result=="success") {
 			# Result was OK!
 			$status = "success";
-		} else {
+        }elseif($output->result=="duplicate"){
+            $status = "duplicate";
+        }else {
 			# An error occured
 			$status = "error";
 		}
