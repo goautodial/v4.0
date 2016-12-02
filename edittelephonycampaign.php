@@ -210,7 +210,7 @@ $lists = $ui->API_goGetAllLists();
 														<div class="col-sm-10 mb">
 															<div class="row">
 																<div class="col-lg-8">
-																	<select id="auto_dial_level" class="form-control" name="auto_dial_level">
+																	<select id="auto_dial_level" class="form-control" name="auto_dial_level" <?php if($campaign->data->dial_method !== "RATIO") echo "disabled";?>>
 																	<option value="OFF" <?php if($campaign->data->auto_dial_level == 0) echo "selected";?>>OFF</option>
 										    						<option value="SLOW"<?php if($campaign->data->auto_dial_level == 1) echo "selected";?>>SLOW</option>
 										    						<option VALUE="NORMAL" <?php if($campaign->data->auto_dial_level == 2) echo "selected";?>>NORMAL</option>
@@ -2164,19 +2164,21 @@ $lists = $ui->API_goGetAllLists();
 				if(value == "RATIO"){
 					$('#auto_dial_level').prop('disabled', false);
 					$('#auto_dial_level option[value=SLOW]').prop('selected', true);
-				}else if(value == "PREDICTIVE"){
+				}else if(value == "ADAPT_TAPERED"){
 					$('#auto_dial_level').prop('disabled', true);
-					$('#auto_dial_level option[value=OFF]').prop('selected', true);
+					$('#auto_dial_level option[value=MAX]').prop('selected', true);
 					// $('#auto_dial_level_adv').addClass('hide');
 				}else if(value == "INBOUND_MAN"){
 					$('#auto_dial_level').prop('disabled', true);
-					$('#auto_dial_level option[value=OFF]').prop('selected', true);
+					$('#auto_dial_level option[value=SLOW]').prop('selected', true);
 					// $('#auto_dial_level_adv').addClass('hide');
 				}else{
 					$('#auto_dial_level').prop('disabled', true);
 					$('#auto_dial_level option[value=OFF]').prop('selected', true);
 					// $('#auto_dial_level_adv').addClass('hide');
 				}
+				
+				$('#auto_dial_level_adv').addClass('hide');
 			}
 
 			function dialPrefix(value){

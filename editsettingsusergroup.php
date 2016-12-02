@@ -228,7 +228,9 @@ if (isset($_POST["usergroup_id"])) {
 										$perms = json_decode($output->data->permissions);
 										$list_perms = '';
 										foreach ($perms as $type => $perm) {
-											$list_perms .= '<div class="form-group row mt">';
+											$hiddenRow = '';
+											if ($type == 'multi-tenant') { $hiddenRow = ' hidden'; }
+											$list_perms .= '<div class="form-group row mt'.$hiddenRow.'">';
 											$list_perms .= '<label for="group_name" class="col-sm-4 control-label">'.$lh->translationFor($type).'</label>';
 											$list_perms .= '<div class="col-sm-8 mb">';
 											
@@ -236,7 +238,7 @@ if (isset($_POST["usergroup_id"])) {
 												$checkThis = '';
 												if ($value !== 'N') { $checkThis = ' checked'; }
 												$disableThis = '';
-												if ($usergroup_id === 'AGENTS') { $disableThis = ' disabled'; }
+												if (preg_match("/^(ADMIN|AGENTS)$/", $usergroup_id)) { $disableThis = ' disabled'; }
 												
 												$defaultValue = 'Y';
 												$list_options = '';

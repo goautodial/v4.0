@@ -493,7 +493,7 @@
                         function(isConfirm){   
                             if (isConfirm) { 
                             	$.ajax({
-		                            url: "./php/DeleteCallTime.php",
+		                            url: "./php/DeleteCalltime.php",
 		                            type: 'POST',
 		                            data: { 
 		                                call_time_id:id,

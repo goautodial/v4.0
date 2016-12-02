@@ -4313,8 +4313,8 @@ error_reporting(E_ERROR | E_PARSE);
 	        for($i=0;$i<count($output->call_time_id);$i++){
 		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i], $output->call_time_name[$i]);
 
-            $output->ct_default_start[$i] = date('H:i A', strtotime($output->ct_default_start[$i]));
-            $output->ct_default_stop[$i] = date('H:i A', strtotime($output->ct_default_stop[$i]));
+            $output->ct_default_start[$i] = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start[$i])));
+            $output->ct_default_stop[$i] = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_stop[$i])));
 
             if($output->user_group[$i] == "---ALL---"){
             	$output->user_group[$i] = "ALL USER GROUPS";
@@ -5808,6 +5808,38 @@ error_reporting(E_ERROR | E_PARSE);
 		return $status;
 	}
 
+	
+	public function API_goGetGroupPermission($group){
+		$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "goGetUserGroupInfo"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["agent_id"] = $group; #json. (required)
+		
+		 $ch = curl_init();
+		 curl_setopt($ch, CURLOPT_URL, $url);
+		 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		 curl_setopt($ch, CURLOPT_POST, 1);
+		 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		 $data = curl_exec($ch);
+		 curl_close($ch);
+		 $output = json_decode($data);
+
+		 return json_decode($output->data->permissions);
+	}
+	
+	public function goGetPermissions($type = 'user', $group) {
+		$permissions = $this->API_goGetGroupPermission($group);
+		if (!is_null($permissions)) {
+			$return = $permissions->{$type};
+		} else {
+			$return = null;
+		}
+		return $return;
+	}
 }
 
 ?>

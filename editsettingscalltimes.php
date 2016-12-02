@@ -47,7 +47,7 @@ if (isset($_POST["cid"])) {
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");
-			})
+			});
 		</script>
     </head>
     <style>
@@ -92,98 +92,108 @@ if (isset($_POST["cid"])) {
 						<?php
 						$errormessage = NULL;
 						
-							$url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
-        
-					        $postfields["goUser"] = goUser; #Username goes here. (required)
-					        $postfields["goPass"] = goPass; #Password goes here. (required)
-					        $postfields["goAction"] = "getCalltimesInfo"; #action performed by the [[API:Functions]]. (required)
-					        $postfields["responsetype"] = responsetype; #json. (required)
-					        $postfields["call_time_id"] = $_POST['cid']; #Desired uniqueid. (required)
-					        
-					        $ch = curl_init();
-					        curl_setopt($ch, CURLOPT_URL, $url);
-					        //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-					        curl_setopt($ch, CURLOPT_POST, 1);
-					        curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-					        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-					        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-					        $data = curl_exec($ch);
-					        curl_close($ch);
-					        $output = json_decode($data);
+						$url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
+	
+						$postfields["goUser"] = goUser; #Username goes here. (required)
+						$postfields["goPass"] = goPass; #Password goes here. (required)
+						$postfields["goAction"] = "getCalltimesInfo"; #action performed by the [[API:Functions]]. (required)
+						$postfields["responsetype"] = responsetype; #json. (required)
+						$postfields["call_time_id"] = $_POST['cid']; #Desired uniqueid. (required)
+						
+						$ch = curl_init();
+						curl_setopt($ch, CURLOPT_URL, $url);
+						//curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+						curl_setopt($ch, CURLOPT_POST, 1);
+						curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+						curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+						$data = curl_exec($ch);
+						curl_close($ch);
+						$output = json_decode($data);
 
-					        //var_dump($output);
+						//var_dump($output);
 
-							if ($output->result=="success") {
+						if ($output->result=="success") {
 							
 							$user_groups = $ui->API_goGetUserGroupsList();
 							$voicefiles = $ui->API_GetVoiceFilesList();
 
 							# Result was OK!
-								for($i=0;$i<count($output->call_time_id);$i++){
+							if(isset($output->ct_default_start)){
+								$default_start = $output->ct_default_start;
+								$default_stop  = $output->ct_default_stop;
+								if ($default_start < 1000) {
+									$default_start = "0{$default_start}";
+								} else if ($default_start < 100) {
+									$default_start = "00{$default_start}";
+								}
+								if ($default_stop < 1000) {
+									$default_stop = "0{$default_stop}";
+								} else if ($default_stop < 100) {
+									$default_stop = "00{$default_stop}";
+								}
+								$start_default =  date('h:i A', strtotime($default_start));
+								$stop_default =  date('h:i A', strtotime($default_stop));
+							}else{
+								$start_default =  "12:00 AM";
+								$stop_default =  "12:00 AM";
+							}
+							
+							if(isset($output->ct_sunday_start)){
+								$start_sunday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_start)));
+								$stop_sunday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_stop)));
+							}else{
+								$start_sunday =  "12:00 AM";
+								$stop_sunday =  "12:00 AM";
+							}
+							
+							if(isset($output->ct_monday_start)){
+								$start_monday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_start)));
+								$stop_monday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_stop)));
+							}else{
+								$start_monday =  "12:00 AM";
+								$stop_monday =  "12:00 AM";
+							}
 
-								if(isset($output->ct_default_start[$i])){
-									$start_default =  date('h:i A', strtotime($output->ct_default_start[$i]));
-						        	$stop_default =  date('h:i A', strtotime($output->ct_default_stop[$i]));
-								}else{
-									$start_default =  "12:00 AM";
-						        	$stop_default =  "12:00 AM";
-								}
-								
-								if(isset($output->ct_sunday_start[$i])){
-									$start_sunday =  date('h:i A', strtotime($output->ct_sunday_start[$i]));
-						        	$stop_sunday =  date('h:i A', strtotime($output->ct_sunday_stop[$i]));
-								}else{
-									$start_sunday =  "12:00 AM";
-						        	$stop_sunday =  "12:00 AM";
-								}
-						        
-								if(isset($output->ct_monday_start[$i])){
-									$start_monday =  date('h:i A', strtotime($output->ct_sunday_start[$i]));
-						        	$stop_monday =  date('h:i A', strtotime($output->ct_sunday_stop[$i]));
-								}else{
-									$start_monday =  "12:00 AM";
-						        	$stop_monday =  "12:00 AM";
-								}
+							if(isset($output->ct_tuesday_start)){
+								$start_tuesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_start)));
+								$stop_tuesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_stop)));
+							}else{
+								$start_tuesday =  "12:00 AM";
+								$stop_tuesday =  "12:00 AM";
+							}
 
-								if(isset($output->ct_tuesday_start[$i])){
-									$start_tuesday =  date('h:i A', strtotime($output->ct_tuesday_start[$i]));
-						        	$stop_tuesday =  date('h:i A', strtotime($output->ct_tuesday_stop[$i]));
-								}else{
-									$start_tuesday =  "12:00 AM";
-						        	$stop_tuesday =  "12:00 AM";
-								}
+							if(isset($output->ct_wednesday_start)){
+								$start_wednesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_start)));
+								$stop_wednesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_stop)));
+							}else{
+								$start_wednesday =  "12:00 AM";
+								$stop_wednesday =  "12:00 AM";
+							}
 
-								if(isset($output->ct_wednesday_start[$i])){
-									$start_wednesday =  date('h:i A', strtotime($output->ct_wednesday_start[$i]));
-						        	$stop_wednesday =  date('h:i A', strtotime($output->ct_wednesday_stop[$i]));
-								}else{
-									$start_wednesday =  "12:00 AM";
-						        	$stop_wednesday =  "12:00 AM";
-								}
+							if(isset($output->ct_thursday_start)){
+								$start_thursday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_start)));
+								$stop_thursday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_stop)));
+							}else{
+								$start_thursday =  "12:00 AM";
+								$stop_thursday =  "12:00 AM";
+							}
 
-								if(isset($output->ct_thursday_start[$i])){
-									$start_thursday =  date('h:i A', strtotime($output->ct_thursday_start[$i]));
-						        	$stop_thursday =  date('h:i A', strtotime($output->ct_thursday_stop[$i]));
-								}else{
-									$start_thursday =  "12:00 AM";
-						        	$stop_thursday =  "12:00 AM";
-								}
+							if(isset($output->ct_friday_start)){
+								$start_friday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_start)));
+								$stop_friday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_stop)));
+							}else{
+								$start_friday =  "12:00 AM";
+								$stop_friday =  "12:00 AM";
+							}
 
-								if(isset($output->ct_friday_start[$i])){
-									$start_friday =  date('h:i A', strtotime($output->ct_friday_start[$i]));
-						        	$stop_friday =  date('h:i A', strtotime($output->ct_friday_stop[$i]));
-								}else{
-									$start_friday =  "12:00 AM";
-						        	$stop_friday =  "12:00 AM";
-								}
-
-								if(isset($output->ct_saturday_start[$i])){
-									$start_saturday =  date('h:i A', strtotime($output->ct_saturday_start[$i]));
-						        	$stop_saturday =  date('h:i A', strtotime($output->ct_saturday_stop[$i]));
-								}else{
-									$start_saturday =  "12:00 AM";
-						        	$stop_saturday =  "12:00 AM";
-								}
+							if(isset($output->ct_saturday_start)){
+								$start_saturday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_start)));
+								$stop_saturday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_stop)));
+							}else{
+								$start_saturday =  "12:00 AM";
+								$stop_saturday =  "12:00 AM";
+							}
 							
 						?>
 
@@ -207,23 +217,24 @@ if (isset($_POST["cid"])) {
 										<div class="form-group mt">
 											<label for="calltime_name" class="col-sm-2 control-label">Call Time Name</label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="calltime_name" id="calltime_name" placeholder="Call Time Name" value="<?php echo $output->call_time_name[$i];?>">
+												<input type="text" class="form-control" name="calltime_name" id="calltime_name" placeholder="Call Time Name" value="<?php echo $output->call_time_name;?>">
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="calltime_comments" class="col-sm-2 control-label">Call Time Comments</label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="calltime_comments" id="calltime_comments" placeholder="Call Time Comments" value="<?php echo $output->call_time_comments[$i];?>">
+												<input type="text" class="form-control" name="calltime_comments" id="calltime_comments" placeholder="Call Time Comments" value="<?php echo $output->call_time_comments;?>">
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="protocol" class="col-sm-2 control-label">User Group</label>
 											<div class="col-sm-10 mb">
 												<select class="form-control" id="usergroup" name="usergroup">
+													<option value="---ALL---">ALL USER GROUPS</option>
 													<?php
 														for($a=0;$a<count($user_groups->user_group);$a++){
 													?>
-														<option value="<?php echo $user_groups->user_group[$a];?>" <?php if($output->user_group[$i] == $user_groups->user_group[$a]){echo "selected";}?> >  
+														<option value="<?php echo $user_groups->user_group[$a];?>" <?php if($output->user_group == $user_groups->user_group[$a]){echo "selected";}?> >  
 															<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>  
 														</option>
 													<?php
@@ -245,7 +256,7 @@ if (isset($_POST["cid"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="control-label col-lg-2">Dafault:</label>
+											<label class="control-label col-lg-2">Default:</label>
 											<div class="col-lg-10 mb">
 												<div class="row">
 													<div class="col-lg-3">
@@ -260,7 +271,7 @@ if (isset($_POST["cid"])) {
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
-																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+																<option value="<?php echo $voicefiles->file_name[$a];?>" <?php if ($output->default_afterhours_filename_override === $voicefiles->file_name[$a]) echo "selected"; ?>>  <?php echo $voicefiles->file_name[$a];?>  </option>
 															<?php
 																}
 															?>
@@ -285,7 +296,7 @@ if (isset($_POST["cid"])) {
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
-																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+																<option value="<?php echo $voicefiles->file_name[$a];?>" <?php if ($output->sunday_afterhours_filename_override === $voicefiles->file_name[$a]) echo "selected"; ?>>  <?php echo $voicefiles->file_name[$a];?>  </option>
 															<?php
 																}
 															?>
@@ -310,7 +321,7 @@ if (isset($_POST["cid"])) {
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
-																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+																<option value="<?php echo $voicefiles->file_name[$a];?>" <?php if ($output->monday_afterhours_filename_override === $voicefiles->file_name[$a]) echo "selected"; ?>>  <?php echo $voicefiles->file_name[$a];?>  </option>
 															<?php
 																}
 															?>
@@ -335,7 +346,7 @@ if (isset($_POST["cid"])) {
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
-																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+																<option value="<?php echo $voicefiles->file_name[$a];?>" <?php if ($output->tuesday_afterhours_filename_override === $voicefiles->file_name[$a]) echo "selected"; ?>>  <?php echo $voicefiles->file_name[$a];?>  </option>
 															<?php
 																}
 															?>
@@ -360,7 +371,7 @@ if (isset($_POST["cid"])) {
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
-																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+																<option value="<?php echo $voicefiles->file_name[$a];?>" <?php if ($output->wednesday_afterhours_filename_override === $voicefiles->file_name[$a]) echo "selected"; ?>>  <?php echo $voicefiles->file_name[$a];?>  </option>
 															<?php
 																}
 															?>
@@ -385,7 +396,7 @@ if (isset($_POST["cid"])) {
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
-																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+																<option value="<?php echo $voicefiles->file_name[$a];?>" <?php if ($output->thursday_afterhours_filename_override === $voicefiles->file_name[$a]) echo "selected"; ?>>  <?php echo $voicefiles->file_name[$a];?>  </option>
 															<?php
 																}
 															?>
@@ -410,7 +421,7 @@ if (isset($_POST["cid"])) {
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
-																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+																<option value="<?php echo $voicefiles->file_name[$a];?>" <?php if ($output->friday_afterhours_filename_override === $voicefiles->file_name[$a]) echo "selected"; ?>>  <?php echo $voicefiles->file_name[$a];?>  </option>
 															<?php
 																}
 															?>
@@ -435,7 +446,7 @@ if (isset($_POST["cid"])) {
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
-																<option value="<?php echo $voicefiles->file_name[$a];?>">  <?php echo $voicefiles->file_name[$a];?>  </option>
+																<option value="<?php echo $voicefiles->file_name[$a];?>" <?php if ($output->saturday_afterhours_filename_override === $voicefiles->file_name[$a]) echo "selected"; ?>>  <?php echo $voicefiles->file_name[$a];?>  </option>
 															<?php
 																}
 															?>
@@ -466,7 +477,6 @@ if (isset($_POST["cid"])) {
 	            </div>
             </section>
 					<?php
-							}
 						}	
                         
 					?>
@@ -508,8 +518,8 @@ if (isset($_POST["cid"])) {
                         success: function(data) {
                           // console.log(data);
                               if(data == 1){
-                                    swal("Success!", "Call Times Successfully Updated!", "success")
-                                    window.setTimeout(function(){location.reload()},2000)
+                                    swal("Success!", "Call Times Successfully Updated!", "success");
+                                    window.setTimeout(function(){location.reload();},2000);
                                     $('#update_button').html("<i class='fa fa-check'></i> Update");
                                     $('#modifyCalltimesOkButton').prop("disabled", false);
                               }

@@ -75,8 +75,9 @@
 			} else {
 				$_SESSION["user"] = $username;
 				$_SESSION["userid"] = $result["id"];
-				$_SESSION["username"] = $result["name"]; 
+				$_SESSION["username"] = $result["name"];
 				$_SESSION["userrole"] = $result["role"];
+				$_SESSION["usergroup"] = $result["user_group"];
 				$_SESSION["phone_login"] = $result["phone_login"];
 				$_SESSION["phone_pass"] = $result["phone_pass"];
 				
