@@ -453,7 +453,7 @@ if (isset($_POST["cid"])) {
 									$('#modifyCarrierOkButton').prop("disabled", false);
 									
 									if (data == 1) {
-										sweetAlert("Carrier Modified Successfully", "Carrier is now updated! " + data, "success");
+										sweetAlert("Carrier Modified Successfully", "Carrier is now updated! ", "success");
 									} else {
 										sweetAlert("Oops...", "Something went wrong! "+data, "error");
 									}
