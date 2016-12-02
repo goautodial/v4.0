@@ -128,7 +128,7 @@ if (isset($_POST["cid"])) {
 						<div class="form-group mt">
 							<label for="carrier_name" class="col-sm-2 control-label">Carrier Name</label>
 							<div class="col-sm-10 mb">
-								<input type="text" class="form-control" name="carrier_name" id="carrier_name" placeholder="Carrier Name" value="<?php echo $output->data->carrier_name;?>">
+								<input type="text" class="form-control" name="carrier_name" id="carrier_name" placeholder="Carrier Name" value="<?php echo $output->data->carrier_name;?>" required />
 							</div>
 						</div>
 						<div class="form-group">
@@ -453,7 +453,7 @@ if (isset($_POST["cid"])) {
 									$('#modifyCarrierOkButton').prop("disabled", false);
 									
 									if (data == 1) {
-										sweetAlert("Carrier Modified Successfully", "", "success");
+										sweetAlert("Carrier Modified Successfully", "Carrier is now updated! " + data, "success");
 									} else {
 										sweetAlert("Oops...", "Something went wrong! "+data, "error");
 									}
