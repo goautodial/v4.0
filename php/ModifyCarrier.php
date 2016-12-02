@@ -43,6 +43,26 @@ if ($validated == 1) {
 		$active = $_POST["active"]; 
 		$active = stripslashes($active);
 	}
+	
+	$registration_string = NULL; if (isset($_POST["registration_string"])) { 
+		$registration_string = $_POST["registration_string"]; 
+		$registration_string = stripslashes($registration_string);
+	}
+	
+	$account_entry = NULL; if (isset($_POST["account_entry"])) { 
+		$account_entry = $_POST["account_entry"]; 
+		$account_entry = stripslashes($account_entry);
+	}
+	
+	$globals_string = NULL; if (isset($_POST["globals_string"])) { 
+		$globals_string = $_POST["globals_string"]; 
+		$globals_string = stripslashes($globals_string);
+	}
+	
+	$dialplan_entry = NULL; if (isset($_POST["dialplan_entry"])) { 
+		$dialplan_entry = $_POST["dialplan_entry"]; 
+		$dialplan_entry = stripslashes($dialplan_entry);
+	}
     
 	$url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -53,7 +73,11 @@ if ($validated == 1) {
 	$postfields["carrier_name"] = $carrier_name; 
 	$postfields["carrier_description"] = $carrier_description; 
 	$postfields["protocol"] = $protocol; 
-	$postfields["server_ip"] = $server_ip; 
+	$postfields["server_ip"] = $server_ip;
+	$postfields["registration_string"] = $registration_string;
+	$postfields["account_entry"] = $account_entry;
+	$postfields["globals_string"] = $globals_string;
+	$postfields["dialplan_entry"] = $dialplan_entry;
 	$postfields["active"] = $active; 
 
     $ch = curl_init();
@@ -66,7 +90,7 @@ if ($validated == 1) {
     $data = curl_exec($ch);
     curl_close($ch);
     $output = json_decode($data);
-
+	
     if ($output->result=="success") {
     # Result was OK!
         echo 1;
