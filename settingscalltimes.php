@@ -178,14 +178,14 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Dafault</label>
+								<label class="control-label col-lg-2">Default</label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_default" value="">
+											<input type="text" class="form-control start_time" name="start_default" value="0">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_default" value="">
+											<input type="text" class="form-control end_time" name="stop_default" value="0">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_default">
@@ -207,10 +207,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_sunday" value="">
+											<input type="text" class="form-control start_time" name="start_sunday" value="0">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_sunday" value="">
+											<input type="text" class="form-control end_time" name="stop_sunday" value="0">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_sunday">
@@ -232,10 +232,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_monday" value="">
+											<input type="text" class="form-control start_time" name="start_monday" value="0">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_monday" value="">
+											<input type="text" class="form-control end_time" name="stop_monday" value="0">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_monday">
@@ -257,10 +257,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_tuesday" value="">
+											<input type="text" class="form-control start_time" name="start_tuesday" value="0">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_tuesday" value="">
+											<input type="text" class="form-control end_time" name="stop_tuesday" value="0">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_tuesday">
@@ -282,10 +282,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_wednesday" value="">
+											<input type="text" class="form-control start_time" name="start_wednesday" value="0">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_wednesday" value="">
+											<input type="text" class="form-control end_time" name="stop_wednesday" value="0">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_wednesday">
@@ -307,10 +307,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_thursday" value="">
+											<input type="text" class="form-control start_time" name="start_thursday" value="0">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_thursday" value="">
+											<input type="text" class="form-control end_time" name="stop_thursday" value="0">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_thursday">
@@ -332,10 +332,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_friday" value="">
+											<input type="text" class="form-control start_time" name="start_friday" value="0">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_friday" value="">
+											<input type="text" class="form-control end_time" name="stop_friday" value="0">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_friday">
@@ -357,10 +357,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_saturday" value="">
+											<input type="text" class="form-control start_time" name="start_saturday" value="0">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_saturday" value="">
+											<input type="text" class="form-control end_time" name="stop_saturday" value="0">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_saturday">
@@ -479,19 +479,19 @@
 		*********************/	
                  $(document).on('click','.delete-calltime',function() {
                     var id = $(this).attr('data-id');
-                    swal({   
-                        title: "Are you sure?",   
-                        text: "This action cannot be undone.",   
-                        type: "warning",   
-                        showCancelButton: true,   
-                        confirmButtonColor: "#DD6B55",   
-                        confirmButtonText: "Yes, delete this call time!",   
-                        cancelButtonText: "No, cancel please!",   
-                        closeOnConfirm: false,   
-                        closeOnCancel: false 
-                        }, 
-                        function(isConfirm){   
-                            if (isConfirm) { 
+                    swal({
+                        title: "Are you sure?",
+                        text: "This action cannot be undone.",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete this call time!",
+                        cancelButtonText: "No, cancel please!",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                        },
+                        function(isConfirm){
+                            if (isConfirm) {
                             	$.ajax({
 		                            url: "./php/DeleteCalltime.php",
 		                            type: 'POST',
@@ -507,8 +507,8 @@
 		                                }
 		                            }
 		                        });
-							} else {     
-                                    swal("Cancelled", "No action has been done :)", "error");   
+							} else {
+                                swal("Cancelled", "No action has been done :)", "error");
                             }
                         }
                     );
