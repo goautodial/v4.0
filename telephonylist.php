@@ -632,6 +632,19 @@
 						//$('body').append(form);  // This line is not necessary
 						$(form).submit();
 					});
+					
+					/**
+					  * Edit user details
+					 */
+					$(document).on('click','.download-list',function() {
+						var url = 'php/ExportList.php';
+						var id = $(this).attr('data-id');
+						//alert(extenid);
+						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="listid" value="'+id+'" /></form>');
+						//$('body').append(form);  // This line is not necessary
+						$(form).submit();
+					});
+					
 
 					/***
 					** Delete
