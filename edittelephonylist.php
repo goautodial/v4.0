@@ -25,7 +25,8 @@ $modifyid = NULL;
 if (isset($_POST["modifyid"])) {
 	$modifyid = $_POST["modifyid"];
 }
-
+$statuses = $ui->API_ListsStatuses($modifyid);
+$timezones = $ui->API_ListsTimezone($modifyid);
 ?>
 <html>
     <head>
@@ -39,6 +40,16 @@ if (isset($_POST["modifyid"])) {
     	select{
     		font-weight: normal;
     	}
+ 
+    	.table-bordered>tbody>tr>td,
+    	.table-bordered>thead>tr>th{
+    		border: 1px solid #f4f4f4;
+    		font-size: small;
+    	}
+    	.panel .table {
+		    margin-bottom: 0;
+		    border: 1px solid #f4f4f4;
+		}
     </style>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -112,78 +123,234 @@ if (isset($_POST["modifyid"])) {
 						<!--<div class="nav-tabs-custom">-->
 							<ul role="tablist" class="nav nav-tabs nav-justified">
 								<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
+								<li><a href="#tab_2" data-toggle="tab"> Statuses</a></li>
+								<li><a href="#tab_3" data-toggle="tab"> Timezones</a></li>
 							</ul>
 			               <!-- Tab panes-->
 			               <div class="tab-content">
 
 				               	<!-- BASIC SETTINGS -->
 				                <div id="tab_1" class="tab-pane fade in active">
-				                	<fieldset>
-										<div class="form-group mt">
-											<label for="group_name" class="col-sm-2 control-label">Name</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="name" id="name" placeholder="Name (Required)" value="<?php echo $output->list_name[$i];?>">
-											</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;">Name:</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control" name="name" value="<?php echo $output->list_name[$i];?>">
 										</div>
-										<div class="form-group mt">
-											<label for="group_name" class="col-sm-2 control-label">Description</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="desc" id="desc" placeholder="Description (Optional)" value="<?php echo $output->list_desc[$i];?>">
-											</div>
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;">Description:</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control" name="desc" value="<?php echo $output->list_description[$i];?>">
 										</div>
-										<div class="form-group">
-											<label for="campaign" class="col-sm-2 control-label">Campaign</label>
-											<div class="col-sm-10 mb">
-												<select class="form-control" name="campaign" id="campaign">
-												<?php
-													$campaign_option = NULL;
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;">Campaign:</label>
+										<div class="col-lg-9">
+											<select class="form-control" name="campaign" id="campaign">
+											<?php
+												$campaign_option = NULL;
 
-													for($a=0; $a < count($campaign->campaign_id);$a++){
-														if($campaign->campaign_id[$a] == $output->campaign_id[$i]){
-															echo "<option value='".$campaign->campaign_id[$a]."' selected> ".$campaign->campaign_name[$a]." </option>";
-														}else{
-															echo "<option value='".$campaign->campaign_id[$a]."'> ".$campaign->campaign_name[$a]." </option>";
-														}
-													}
-
-													echo $campaign_option;
-												?>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="active" class="col-sm-2 control-label">Active</label>
-											<div class="col-sm-10 mb">
-												<select class="form-control" name="active" id="active">
-												<?php
-													$active = NULL;
-													if($output->active[$i] == "Y"){
-														$active .= '<option value="Y" selected> YES </option>';
+												for($a=0; $a < count($campaign->campaign_id);$a++){
+													if($campaign->campaign_id[$a] == $output->campaign_id[$i]){
+														echo "<option value='".$campaign->campaign_id[$a]."' selected> ".$campaign->campaign_name[$a]." </option>";
 													}else{
-														$active .= '<option value="Y" > YES </option>';
+														echo "<option value='".$campaign->campaign_id[$a]."'> ".$campaign->campaign_name[$a]." </option>";
 													}
+												}
 
-													if($output->active[$i] == "N" || $output->active[$i] == NULL){
-														$active .= '<option value="N" selected> NO </option>';
-													}else{
-														$active .= '<option value="N" > NO </option>';
-													}
-													echo $active;
-												?>
-												</select>
-											</div>
+												echo $campaign_option;
+											?>
+											</select>
+											</select>
 										</div>
-										<div class="form-group">
-											<label for="reset_list" class="col-sm-2 control-label">Reset List</label>
-											<div class="col-sm-10 mb">
-												<select class="form-control" name="reset_list" id="reset_list">
-													<option value="" selected> NO </option>
-													<option value="Y"> YES </option>
-												</select>
-											</div>
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;">Reset Time:</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control" name="reset_time" value="<?php echo $output->reset_time[$i];?>">
 										</div>
-									</fieldset>
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;">Reset Lead Called Status:</label>
+										<div class="col-lg-4">
+											<select name="reset_list" class="form-control select2">
+												<option value="N" <?php if($output->reset_called_lead_status[$i] == 'N') echo 'selected';?>>N</option>
+												<option value="Y" <?php if($output->reset_called_lead_status[$i] == 'Y') echo 'selected';?>>Y</option>
+											</select>
+										</div>
+										<label class="control-label col-lg-2" style="text-align: left;">Active:</label>
+										<div class="col-lg-3">
+											<select name="active" class="form-control select2">
+												<option value="N"  <?php if($output->active[$i] == 'N') echo 'selected';?>>N</option>
+												<option value="Y"  <?php if($output->active[$i] == 'Y') echo 'selected';?>>Y</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;">Agent Script Override:</label>
+										<div class="col-lg-9">
+											<select name="agent_script_override" class="form-control">
+												<option value="" selected="selected">NONE - INACTIVE</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;">Campaign CID Override:</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control" name="campaign_cid_override" value="<?php echo $output->campaign_cid_override[$i];?>">
+										</div>
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;"></label>
+										<div class="col-lg-9">
+											<select name="drop_inbound_group_override" class="form-control">
+												<option value="NONE">NONE</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;">Web Form:</label>
+										<div class="col-lg-9">
+											<input type="text" class="form-control" name="web_form">
+										</div>
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;">Transfer Conf No. Override:</label>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" name="">
+										</div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" name="">
+										</div>
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;"></label>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" name="">
+										</div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" name="">
+										</div>
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;"></label>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" name="">
+										</div>
+									</div>
+								
 								</div><!-- tab 1 -->
+								<div id="tab_2" class="tab-pane">
+									<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
+										<div class="table-responsive">
+											<table id="lists_statuses" class="table table-bordered" style="width: 100%;">
+												<thead>
+													<tr>
+														<th>Status</th>
+														<th>Description</th>
+														<th>Called</th>
+														<th>Not Called</th>
+													</tr>
+												</thead>
+												<tbody>
+													<?php 
+														$called = array();
+														$ncalled = array();
+													?>
+													<?php for($s=0;$s<count($statuses->stats);$s++){ ?>
+														<?php 
+															if($statuses->called_since_last_reset[$s] == 'N'){
+																$countCalled = 0;
+																$countNCalled = $statuses->countvlists[$s];
+
+															}else{
+																$countCalled = $statuses->countvlists[$s];
+																$countNCalled = 0;
+															}
+															array_push($called, $countCalled);
+															array_push($ncalled, $countNCalled);
+														?>
+														<tr>
+															<td><?php echo $statuses->stats[$s]; ?></td>
+															<td><?php echo $statuses->status_name[$s]; ?></td>
+															<td style="text-align: center; width: 15%;"><?php echo $countCalled; ?></td>
+															<td style="text-align: center; width: 15%;"><?php echo $countNCalled; ?></td>
+														</tr>
+													<?php } ?>
+													<tr>
+														<td colspan="2" style="text-align: right;"><b>SUBTOTAL</b></td>
+														<td style="text-align: center; width: 15%;"><?php echo array_sum($called); ?></td>
+														<td style="text-align: center; width: 15%;"><?php echo array_sum($ncalled); ?></td>
+													</tr>
+													<tr>
+														<td colspan="2" style="text-align: right;"><b>TOTAL</b></td>
+														<td colspan="2" style="text-align: center; width: 30%;">
+															<?php 
+																$total = array_sum($called) + array_sum($ncalled);
+																echo $total;
+															?>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+
+								<div id="tab_3" class="tab-pane">
+									<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
+										<div class="table-responsive">
+											<table id="lists_statuses" class="table table-bordered" style="width: 100%;">
+												<thead>
+													<tr>
+														<th>GMT OFF SET NOW (local time)</th>
+														<th>Called</th>
+														<th>Not Called</th>
+													</tr>
+												</thead>
+												<tbody>
+													<?php 
+														$tcalled = array();
+														$tncalled = array();
+													?>
+													<?php for($s=0;$s<count($timezones->gmt_offset_now);$s++){ ?>
+														<?php 
+															if($timezones->called_since_last_reset[$s] == 'N'){
+																$counttCalled = 0;
+																$counttNCalled = $timezones->counttlist[$s];
+
+															}else{
+																$counttCalled = $timezones->counttlist[$s];
+																$counttNCalled = 0;
+															}
+															array_push($tcalled, $counttCalled);
+															array_push($tncalled, $counttNCalled);
+														?>
+														<tr>
+															<td><?php echo $timezones->gmt_offset_now[$s]." (".gmdate("D M Y H:i", time() + 3600 * $timezones->gmt_offset_now[$s]).")"; ?></td>
+															<td style="text-align: center; width: 15%;"><?php echo $counttCalled; ?></td>
+															<td style="text-align: center; width: 15%;"><?php echo $counttNCalled; ?></td>
+														</tr>
+													<?php } ?>
+													<tr>
+														<td style="text-align: right;"><b>SUBTOTAL</b></td>
+														<td style="text-align: center; width: 15%;"><?php echo array_sum($tcalled); ?></td>
+														<td style="text-align: center; width: 15%;"><?php echo array_sum($tncalled); ?></td>
+													</tr>
+													<tr>
+														<td style="text-align: right;"><b>TOTAL</b></td>
+														<td colspan="2" style="text-align: center; width: 30%;">
+															<?php 
+																$totalt = array_sum($tcalled) + array_sum($tncalled);
+																echo $totalt;
+															?>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
 
 			                    <!-- FOOTER BUTTONS -->
 			                    <fieldset class="footer-buttons">
