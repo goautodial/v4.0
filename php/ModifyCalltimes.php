@@ -95,6 +95,15 @@ if ($validated == 1) {
 
     $postfields["ct_saturday_start"]  = $start_saturday;
     $postfields["ct_saturday_stop"]   = $stop_saturday;
+	
+	$postfields["default_audio"] = $_POST["audio_default"];
+	$postfields["sunday_audio"] = $_POST["audio_sunday"];
+	$postfields["monday_audio"] = $_POST["audio_monday"];
+	$postfields["tuesday_audio"] = $_POST["audio_tuesday"];
+	$postfields["wednesday_audio"] = $_POST["audio_wednesday"];
+	$postfields["thursday_audio"] = $_POST["audio_thursday"];
+	$postfields["friday_audio"] = $_POST["audio_friday"];
+	$postfields["saturday_audio"] = $_POST["audio_saturday"];
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

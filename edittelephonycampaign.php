@@ -210,7 +210,7 @@ $lists = $ui->API_goGetAllLists();
 														<div class="col-sm-10 mb">
 															<div class="row">
 																<div class="col-lg-8">
-																	<select id="auto_dial_level" class="form-control" name="auto_dial_level">
+																	<select id="auto_dial_level" class="form-control" name="auto_dial_level" <?php if($campaign->data->dial_method !== "RATIO") echo "disabled";?>>
 																	<option value="OFF" <?php if($campaign->data->auto_dial_level == 0) echo "selected";?>>OFF</option>
 										    						<option value="SLOW"<?php if($campaign->data->auto_dial_level == 1) echo "selected";?>>SLOW</option>
 										    						<option VALUE="NORMAL" <?php if($campaign->data->auto_dial_level == 2) echo "selected";?>>NORMAL</option>
@@ -698,6 +698,18 @@ $lists = $ui->API_goGetAllLists();
 																	<option value="FEWEST_CALLS" <?php if(strtoupper($campaign->data->next_agent_call) == "FEWEST_CALLS") echo "selected";?>>FEWEST CALLS</option>
 																	<option value="LONGEST_WAITING_TIME" <?php if(strtoupper($campaign->data->next_agent_call) == "LONGEST_WAITING_TIME") echo "selected";?>>LONGEST WAITING TIME</option>
 																</select>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label">Transfer-Conf Number 1:</label>
+															<div class="col-sm-9 mb">
+																<input type="text" class="form-control" value="<?php if(!empty($campaign->data->xferconf_a_number)){echo $campaign->data->xferconf_a_number;}else{echo "";}?>" id="xferconf_a_number" name="xferconf_a_number">
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label">Transfer-Conf Number 2:</label>
+															<div class="col-sm-9 mb">
+																<input type="text" class="form-control" value="<?php if(!empty($campaign->data->xferconf_b_number)){echo $campaign->data->xferconf_b_number;}else{echo "";}?>" id="xferconf_b_number" name="xferconf_b_number">
 															</div>
 														</div>
 														<div class="form-group">
@@ -1195,9 +1207,9 @@ $lists = $ui->API_goGetAllLists();
 															</div>
 														</div>
 													<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
-														Survey
+														<!--Survey-->
 													<?php } else { ?>
-														Default
+														<!--Default-->
 													<?php } ?>
 													<div class="campaign_allow_inbound_div hide">
 														<div class="form-group">
@@ -2164,19 +2176,21 @@ $lists = $ui->API_goGetAllLists();
 				if(value == "RATIO"){
 					$('#auto_dial_level').prop('disabled', false);
 					$('#auto_dial_level option[value=SLOW]').prop('selected', true);
-				}else if(value == "PREDICTIVE"){
+				}else if(value == "ADAPT_TAPERED"){
 					$('#auto_dial_level').prop('disabled', true);
-					$('#auto_dial_level option[value=OFF]').prop('selected', true);
+					$('#auto_dial_level option[value=MAX]').prop('selected', true);
 					// $('#auto_dial_level_adv').addClass('hide');
 				}else if(value == "INBOUND_MAN"){
 					$('#auto_dial_level').prop('disabled', true);
-					$('#auto_dial_level option[value=OFF]').prop('selected', true);
+					$('#auto_dial_level option[value=SLOW]').prop('selected', true);
 					// $('#auto_dial_level_adv').addClass('hide');
 				}else{
 					$('#auto_dial_level').prop('disabled', true);
 					$('#auto_dial_level option[value=OFF]').prop('selected', true);
 					// $('#auto_dial_level_adv').addClass('hide');
 				}
+				
+				$('#auto_dial_level_adv').addClass('hide');
 			}
 
 			function dialPrefix(value){

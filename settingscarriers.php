@@ -93,6 +93,7 @@
 	*/
 	$user_groups = $ui->API_goGetUserGroupsList();
 	$carriers = $ui->getCarriers();
+	$servers = $ui->getServers();
 ?>
 	<!-- ADD WIZARD MODAL -->
 	<div class="modal fade" id="wizard-modal" tabindex="-1">
@@ -154,7 +155,7 @@
 								<div class="form-group">
 									<label for="carrier_description" class="col-sm-3 control-label">Carrier Description</label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="Carrier Description" required />
+										<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="Carrier Description" />
 									</div>
 								</div>
 								<div class="form-group">
@@ -172,7 +173,30 @@
 										</select>
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group custom_protocol" style="display:none;">
+									<label for="registration_string" class="col-sm-3 control-label">Registration String</label>
+									<div class="col-sm-8 mb">
+										<input type="text" class="form-control" name="registration_string" value="" id="registration_string" maxlength="255" size="50">
+									</div>
+								</div>
+								<div class="form-group custom_protocol" style="display:none;">
+									<label for="account_entry" class="col-sm-3 control-label">Account Entry</label>
+									<div class="col-sm-8 mb">
+										<textarea name="account_entry" class="form-control note-editor valid" cols="55" rows="10" id="account_entry" style="resize: none;">
+[]
+disallow=all
+allow=gsm
+allow=ulaw
+type=friend
+dtmfmode=rfc2833
+context=trunkinbound
+qualify=yes
+insecure=invite,port
+nat=yes
+host=</textarea>
+									</div>
+								</div>
+								<div class="form-group not_custom_protocol">
 									<label for="carrier_desc" class="col-sm-3 control-label">Authentication</label>
 									<div class="col-sm-8 mb">
 										<div class="row mt">
@@ -202,13 +226,31 @@
 										<input type="text" class="form-control" name="password" id="password" placeholder="Password" required />
 									</div>
 								</div>
-								<div class="form-group">
-									<label for="server_ip" class="col-sm-3 control-label">SIP Server</label>
+								<div class="form-group registration_div" style="display:none;">
+									<label for="server_ip" class="col-sm-3 control-label">Server IP/Host</label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="sip_server_ip" id="sip_server_ip" placeholder="Server IP/Host" required />
+										<input type="text" class="form-control" name="reg_host" id="reg_host" placeholder="Server IP/Host" />
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group registration_div" style="display:none;">
+									<label for="reg_port" class="col-sm-3 control-label">Port</label>
+									<div class="col-sm-8 mb">
+										<input type="text" class="form-control" name="reg_port" id="reg_host" placeholder="Port" maxlength="10" value="5060" required />
+									</div>
+								</div>
+								<div class="form-group not_custom_protocol sip_server">
+									<label for="server_ip" class="col-sm-3 control-label">SIP Server</label>
+									<div class="col-sm-8 mb">
+										<input type="text" class="form-control" name="sip_server_ip" id="sip_server_ip" placeholder="Server IP/Host" />
+									</div>
+								</div>
+								<div class="form-group not_custom_protocol">
+									<label for="dialprefix" class="col-sm-3 control-label">Dial Prefix</label>
+									<div class="col-sm-8 mb">
+										<input type="text" class="form-control" name="dialprefix" id="dialprefix" placeholder="Dial Prefix" maxlength="15" required />
+									</div>
+								</div>
+								<div class="form-group not_custom_protocol">
 									<label for="carrier_desc" class="col-sm-3 control-label">Codecs</label>
 									<div class="col-sm-8 mb">
 										<div class="row mt">
@@ -216,25 +258,25 @@
 												&nbsp;
 											</label>
 											<label class="col-sm-2 checkbox-inline c-checkbox" for="gsm">
-												<input type="checkbox" id="gsm" name="codecs" value="GSM" checked>
+												<input type="checkbox" id="gsm" name="codecs[]" value="GSM" checked>
 												<span class="fa fa-check"></span> GSM
 											</label>
 											<label class="col-sm-2 checkbox-inline c-checkbox" for="ulaw">
-												<input type="checkbox" id="ulaw" name="codecs" value="ULAW" checked>
+												<input type="checkbox" id="ulaw" name="codecs[]" value="ULAW" checked>
 												<span class="fa fa-check"></span> ULAW
 											</label>
 											<label class="col-sm-2 checkbox-inline c-checkbox" for="alaw">
-												<input type="checkbox" id="alaw" name="codecs" value="ALAW">
+												<input type="checkbox" id="alaw" name="codecs[]" value="ALAW">
 												<span class="fa fa-check"></span> ALAW
 											</label>
 											<label class="col-sm-2 checkbox-inline c-checkbox" for="g729">
-												<input type="checkbox" id="g729" name="codecs" value="G729">
+												<input type="checkbox" id="g729" name="codecs[]" value="G729">
 												<span class="fa fa-check"></span> G729
 											</label>
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group not_custom_protocol">
 									<label for="carrier_desc" class="col-sm-3 control-label">DTMF Mode</label>
 									<div class="col-sm-8 mb">
 										<div class="row mt">
@@ -242,7 +284,7 @@
 												&nbsp;
 											</label>
 											<label class="col-sm-3 radio-inline c-radio" for="dtmf_1">
-												<input id="dtmf_1" type="radio" name="dtmf" value="RFC2833" checked>
+												<input id="dtmf_1" type="radio" name="dtmf" value="rfc2833" checked>
 												<span class="fa fa-circle"></span> RFC2833
 											</label>
 											<label class="col-sm-3 radio-inline c-radio" for="dtmf_2">
@@ -257,7 +299,7 @@
 									</div>
 								</div>
 								<div class="form-group" id="input_custom_dtmf" style="display:none;">
-									<label for="custom_dtmf" class="col-sm-4 control-label"></label>
+									<label for="custom_dtmf" class="col-sm-3 control-label"></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" id="custom_dtmf" name="custom_dtmf" placeholder="Enter Custom DTMF" required />
 									</div>
@@ -265,29 +307,51 @@
 								<div class="form-group">
 									<label for="protocol" class="col-sm-3 control-label">Protocol</label>
 									<div class="col-sm-8 mb">
-										<select class="form-control" name="protocol" id="protocol">
-										<?php
-											$protocol = NULL;
-												$protocol .= '<option value="SIP" > SIP </option>';
-												$protocol .= '<option value="IAX2" > IAX2 </option>';
-												$protocol .= '<option value="CUSTOM" > CUSTOM </option>';
-											echo $protocol;
-										?>
-										</select>
+										<div class="row">
+											<div class="col-sm-6">
+												<select class="form-control" name="protocol" id="protocol">
+												<?php
+													$protocol = NULL;
+														$protocol .= '<option value="SIP" > SIP </option>';
+														$protocol .= '<option value="IAX2" > IAX2 </option>';
+														$protocol .= '<option value="CUSTOM" > CUSTOM </option>';
+													echo $protocol;
+												?>
+												</select>
+											</div>
+											<div class="col-sm-6">
+												<select name="cust_protocol" id="cust_protocol" class="form-control custom_protocol" style="display:none;">
+													<option value="SIP">SIP</option>
+													<option value="Zap">Zap</option>
+													<option value="IAX2">IAX2</option>
+													<option value="EXTERNAL">EXTERNAL</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group custom_protocol" style="display:none;">
+									<label for="globals_string" class="col-sm-3 control-label">Global String</label>
+									<div class="col-sm-8 mb">
+										<input type="text" name="globals_string" class="form-control" value="" id="globals_string" maxlength="255" size="50">
+									</div>
+								</div>
+								<div class="form-group custom_protocol" style="display:none;">
+									<label for="dialplan_entry" class="col-sm-3 control-label">Dialplan Entry</label>
+									<div class="col-sm-8 mb">
+										<textarea name="dialplan_entry" class="form-control note-editor valid"  cols="65" rows="10" id="dialplan_entry" style="resize: none;"></textarea>
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="server_ip" class="col-sm-3 control-label">Server IP</label>
 									<div class="col-sm-8 mb">
-										<div class="row mt">
-											<label class="col-sm-1">
-												&nbsp;
-											</label>
-											<label class="col-sm-2 checkbox-inline c-checkbox" for="manual_server_ip">
-												<input type="checkbox" id="manual_server_ip" name="manual_server_ip" value="<?php echo gourl;?>" checked>
-												<span class="fa fa-check"></span>
-											</label>
-										</div>
+										<select name="server_ip" class="form-control">
+											<?php
+												for($i=0;$i<count($servers->server_ip);$i++){
+													echo "<option value=".$servers->server_ip[$i].">".$servers->server_ip[$i]." - ".$servers->server_description[$i]."</option>";
+												}
+											?>
+										</select>
 									</div>
 								</div>
 							</div>
@@ -651,7 +715,7 @@
 							type: 'POST',
 							data: $("#create_form").serialize(),
 							success: function(data) {
-							  // console.log(data);
+							   console.log(data);
 								$('#finish').text("Submit");
 								$('#finish').attr("disabled", false);
 								
@@ -674,9 +738,11 @@
 				//  alert( this.value ); // or $(this).val()
 					if(this.value == "auth_reg") {
 					  $('.registration_div').show();
+					  $('.sip_server').hide();
 					}
 					if(this.value == "auth_ip") {
 					  $('.registration_div').hide();
+					  $('.sip_server').show();
 					}
 				});
 
@@ -687,6 +753,19 @@
 						$('#input_custom_dtmf').show();
 					}else{
 						$('#input_custom_dtmf').hide();
+					}
+				});
+				
+				 /* on protocol select */
+				$('#protocol').on('change', function() {
+					if(this.value == "CUSTOM") {
+						$('.custom_protocol').show();
+						$('.not_custom_protocol').hide();
+						$('.registration_div').hide();
+					}else{
+						$('.custom_protocol').hide();
+						$('.not_custom_protocol').show();
+						$('.registration_div').show();
 					}
 				});
 				
@@ -727,7 +806,7 @@
 									dataType: 'json',
 									success: function(data) {
 										if(data == 1){
-											swal("Success!", "Music On Hold Successfully Deleted!", "success");
+											swal("Success!", "Carrier Successfully Deleted!", "success");
                                             window.setTimeout(function(){location.reload()},1000);
 										}else{
 											sweetAlert("Oops...", "Something went wrong! "+data, "error");

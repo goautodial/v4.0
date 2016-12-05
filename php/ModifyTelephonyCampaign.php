@@ -48,6 +48,8 @@
 	$postfields["available_only_ratio_tally"] 	= $_POST["available_only_ratio_tally"];
 	$postfields["campaign_rec_filename"] 		= $_POST["campaign_rec_filename"];
 	$postfields["next_agent_call"] 				= $_POST["next_agent_call"];
+	$postfields["xferconf_a_number"] 			= $_POST["xferconf_a_number"];
+	$postfields["xferconf_b_number"] 			= $_POST["xferconf_b_number"];
 	$postfields["three_way_call_cid"] 			= $_POST["three_way_call_cid"];
 	$postfields["three_way_dial_prefix"] 		= $_POST["three_way_dial_prefix"];
 	$postfields["customer_3way_hangup_logging"] = $_POST["customer_3way_hangup_logging"];

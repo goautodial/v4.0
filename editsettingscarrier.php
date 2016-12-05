@@ -101,253 +101,307 @@ if (isset($_POST["cid"])) {
 					         curl_close($ch);
 					         $output = json_decode($data);
 					        
-					        //var_dump($output->result); 
-
+					        //var_dump($output->result);
+							$servers = $ui->getServers();
+							
 							if ($output->result=="success") {
 							
 						?>
 
-						<legend>MODIFY CARRIER ID : <u><?php echo $cid;?></u></legend>
-                    	
-							<form id="modifycarrier">
-								<input type="hidden" name="modifyid" value="<?php echo $cid;?>">
-							
-						<!-- Custom Tabs -->
-						<div role="tabpanel">
-						<!--<div class="nav-tabs-custom">-->
-							<ul role="tablist" class="nav nav-tabs nav-justified">
-								<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
-								<li><a href="#tab_2" data-toggle="tab"> Advanced Settings</a></li>
-							</ul>
-			               <!-- Tab panes-->
-			               <div class="tab-content">
+					<legend>MODIFY CARRIER ID : <u><?php echo $cid;?></u></legend>
+					
+						<form id="modifycarrier">
+							<input type="hidden" name="modifyid" value="<?php echo $cid;?>">
+						
+					<!-- Custom Tabs -->
+					<div role="tabpanel">
+					<!--<div class="nav-tabs-custom">-->
+						<ul role="tablist" class="nav nav-tabs nav-justified">
+							<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
+							<!--<li><a href="#tab_2" data-toggle="tab"> Advanced Settings</a></li>-->
+						</ul>
+					   <!-- Tab panes-->
+					   <div class="tab-content">
 
 				               	<!-- BASIC SETTINGS -->
 				                <div id="tab_1" class="tab-pane fade in active">
 				                	<fieldset>
-										<div class="form-group mt">
-											<label for="carrier_name" class="col-sm-2 control-label">Carrier Name</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="carrier_name" id="carrier_name" placeholder="Carrier Name" value="<?php echo $output->data->carrier_name;?>">
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="carrier_description" class="col-sm-2 control-label">Carrier Description</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="Carrier Description" value="<?php echo $output->data->carrier_description;?>">
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="carrier_desc" class="col-sm-2 control-label">Authentication</label>
-											<div class="col-sm-10 mb">
-												<div class="row mt">
-													<label class="col-sm-1">
-														&nbsp;
-													</label>
-													<label class="col-sm-2 radio-inline c-radio" for="auth_ip">
-														<input id="auth_ip" type="radio" name="authentication" value="auth_ip" checked>
-														<span class="fa fa-circle"></span> IP Based
-													</label>
-													<label class="col-sm-2 radio-inline c-radio" for="auth_reg">
-														<input id="auth_reg" type="radio" name="authentication" value="auth_reg">
-														<span class="fa fa-circle"></span> Registration
-													</label>
-												</div>
-											</div>
-										</div>
-										<div class="form-group registration_div" style="display:none;">
-											<label for="username" class="col-sm-2 control-label">Username</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="username" id="username" placeholder="Username" value="<?php echo $output->data->username;?>">
-											</div>
-										</div>
-										<div class="form-group registration_div" style="display:none;">
-											<label for="password" class="col-sm-2 control-label">Password</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="<?php echo $output->data->password;?>">
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="server_ip" class="col-sm-2 control-label">Server IP/Host</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="server_ip" id="server_ip" placeholder="Server IP/Host" value="<?php echo $output->data->server_ip;?>">
-											</div>
-										</div>
-										<div class="form-group registration_div" style="display:none;">
-											<label for="carrier_desc" class="col-sm-2 control-label">Port</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="carrier_desc" id="carrier_desc" placeholder="Carrier Description" value="<?php echo $output->data->carrier_description;?>">
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="carrier_desc" class="col-sm-2 control-label">Codecs</label>
-											<div class="col-sm-10 mb">
-												<div class="row mt">
-													<label class="col-sm-1">
-														&nbsp;
-													</label>
-													<label class="col-sm-2 checkbox-inline c-checkbox" for="gsm">
-														<input type="checkbox" id="gsm" name="codecs" value="GSM" checked>
-														<span class="fa fa-check"></span> GSM
-													</label>
-													<label class="col-sm-2 checkbox-inline c-checkbox" for="ulaw">
-														<input type="checkbox" id="ulaw" name="codecs" value="ULAW" checked>
-														<span class="fa fa-check"></span> ULAW
-													</label>
-													<label class="col-sm-2 checkbox-inline c-checkbox" for="alaw">
-														<input type="checkbox" id="alaw" name="codecs" value="ALAW">
-														<span class="fa fa-check"></span> ALAW
-													</label>
-													<label class="col-sm-2 checkbox-inline c-checkbox" for="g729">
-														<input type="checkbox" id="g729" name="codecs" value="G729">
-														<span class="fa fa-check"></span> G729
-													</label>
-												</div>
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="carrier_desc" class="col-sm-2 control-label">DTMF Mode</label>
-											<div class="col-sm-10 mb">
-												<div class="row mt">
-													<label class="col-sm-1">
-														&nbsp;
-													</label>
-													<label class="col-sm-2 radio-inline c-radio" for="dtmf_1">
-														<input id="dtmf_1" type="radio" name="dtmf" value="RFC2833" checked>
-														<span class="fa fa-circle"></span> RFC2833   
-													</label>
-													<label class="col-sm-2 radio-inline c-radio" for="dtmf_2">
-														<input id="dtmf_2" type="radio" name="dtmf" value="inband">
-														<span class="fa fa-circle"></span> Inband   
-													</label>
-													<label class="col-sm-2 radio-inline c-radio" for="dtmf_3">
-														<input id="dtmf_3" type="radio" name="dtmf" value="custom">
-														<span class="fa fa-circle"></span> Custom      
-													</label>
-													<span id="input_custom_dtmf" class="col-sm-4 mb" style="display:none;">
-														<input type="text" class="form-control" name="custom_dtmf" placeholder="Enter Custom DTMF" >
-													</span>
-												</div>
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="protocol" class="col-sm-2 control-label">Protocol</label>
-											<div class="col-sm-10 mb">
-												<select class="form-control" name="protocol" id="protocol">
-												<?php
-													$protocol = NULL;
-													if($output->data->protocol == "SIP"){
-														$protocol .= '<option value="SIP" selected> SIP </option>';
+						<div class="form-group mt">
+							<label for="carrier_name" class="col-sm-2 control-label">Carrier Name</label>
+							<div class="col-sm-10 mb">
+								<input type="text" class="form-control" name="carrier_name" id="carrier_name" placeholder="Carrier Name" value="<?php echo $output->data->carrier_name;?>" required />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="carrier_description" class="col-sm-2 control-label">Carrier Description</label>
+							<div class="col-sm-10 mb">
+								<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="Carrier Description" value="<?php echo $output->data->carrier_description;?>">
+							</div>
+						</div>
+						<!--
+						<div class="form-group">
+							<label for="carrier_desc" class="col-sm-2 control-label">Authentication</label>
+							<div class="col-sm-10 mb">
+								<div class="row mt">
+									<label class="col-sm-1">
+										&nbsp;
+									</label>
+									<label class="col-sm-2 radio-inline c-radio" for="auth_ip">
+										<input id="auth_ip" type="radio" name="authentication" value="auth_ip" checked>
+										<span class="fa fa-circle"></span> IP Based
+									</label>
+									<label class="col-sm-2 radio-inline c-radio" for="auth_reg">
+										<input id="auth_reg" type="radio" name="authentication" value="auth_reg">
+										<span class="fa fa-circle"></span> Registration
+									</label>
+								</div>
+							</div>
+						</div>-->
+						<div class="form-group mt">
+							<label for="registration_string" class="col-sm-2 control-label">Registration String</label>
+							<div class="col-sm-10 mb">
+								<input type="text" class="form-control" name="registration_string" id="registration_string" placeholder="Registration String" value="<?php echo $output->data->registration_string;?>">
+							</div>
+						</div>
+						<!--
+						<div class="form-group registration_div" style="display:none;">
+							<label for="username" class="col-sm-2 control-label">Username</label>
+							<div class="col-sm-10 mb">
+								<input type="text" class="form-control" name="username" id="username" placeholder="Username" value="<?php //echo $output->data->username;?>">
+							</div>
+						</div>
+						<div class="form-group registration_div" style="display:none;">
+							<label for="password" class="col-sm-2 control-label">Password</label>
+							<div class="col-sm-10 mb">
+								<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="<?php //echo $output->data->password;?>">
+							</div>
+						</div>-->
+						<div class="form-group">
+							<label for="status" class="col-sm-2 control-label">Account Entry</label>
+							<div class="col-sm-10 mb">
+								<div class="panel">
+									<div class="panel-body">
+										<textarea rows="11" class="form-control note-editor" id="account_entry" name="account_entry" cols="55" rows="10"><?php echo $output->data->account_entry;?></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="server_ip" class="col-sm-2 control-label">Server IP/Host</label>
+							<div class="col-sm-10 mb">
+								<select name="server_ip" class="form-control">
+								<?php
+								$sever_ip = "";
+									for($i=0;$i<count($servers->server_ip);$i++){
+										if($servers->server_ip[$i] == $output->data->server_ip)
+										$server_ip .= "<option value=".$servers->server_ip[$i]." selected>".$servers->server_ip[$i]." - ".$servers->server_description[$i]."</option>";
+										else
+										$server_ip .= "<option value=".$servers->server_ip[$i].">".$servers->server_ip[$i]." - ".$servers->server_description[$i]."</option>";
+									}
+								echo $server_ip;
+								?>
+								</select>
+							</div>
+						</div>
+						<!--
+						<div class="form-group registration_div" style="display:none;">
+							<label for="carrier_desc" class="col-sm-2 control-label">Port</label>
+							<div class="col-sm-10 mb">
+								<input type="text" class="form-control" name="carrier_desc" id="carrier_desc" placeholder="Carrier Description" value="<?php echo $output->data->carrier_description;?>">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="carrier_desc" class="col-sm-2 control-label">Codecs</label>
+							<div class="col-sm-10 mb">
+								<div class="row mt">
+									<label class="col-sm-1">
+										&nbsp;
+									</label>
+									<label class="col-sm-2 checkbox-inline c-checkbox" for="gsm">
+										<input type="checkbox" id="gsm" name="codecs" value="GSM" checked>
+										<span class="fa fa-check"></span> GSM
+									</label>
+									<label class="col-sm-2 checkbox-inline c-checkbox" for="ulaw">
+										<input type="checkbox" id="ulaw" name="codecs" value="ULAW" checked>
+										<span class="fa fa-check"></span> ULAW
+									</label>
+									<label class="col-sm-2 checkbox-inline c-checkbox" for="alaw">
+										<input type="checkbox" id="alaw" name="codecs" value="ALAW">
+										<span class="fa fa-check"></span> ALAW
+									</label>
+									<label class="col-sm-2 checkbox-inline c-checkbox" for="g729">
+										<input type="checkbox" id="g729" name="codecs" value="G729">
+										<span class="fa fa-check"></span> G729
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="carrier_desc" class="col-sm-2 control-label">DTMF Mode</label>
+							<div class="col-sm-10 mb">
+								<div class="row mt">
+									<label class="col-sm-1">
+										&nbsp;
+									</label>
+									<label class="col-sm-2 radio-inline c-radio" for="dtmf_1">
+										<input id="dtmf_1" type="radio" name="dtmf" value="RFC2833" checked>
+										<span class="fa fa-circle"></span> RFC2833   
+									</label>
+									<label class="col-sm-2 radio-inline c-radio" for="dtmf_2">
+										<input id="dtmf_2" type="radio" name="dtmf" value="inband">
+										<span class="fa fa-circle"></span> Inband   
+									</label>
+									<label class="col-sm-2 radio-inline c-radio" for="dtmf_3">
+										<input id="dtmf_3" type="radio" name="dtmf" value="custom">
+										<span class="fa fa-circle"></span> Custom      
+									</label>
+									<span id="input_custom_dtmf" class="col-sm-4 mb" style="display:none;">
+										<input type="text" class="form-control" name="custom_dtmf" placeholder="Enter Custom DTMF" >
+									</span>
+								</div>
+							</div>
+						</div>-->
+						<div class="form-group">
+							<label for="protocol" class="col-sm-2 control-label">Protocol</label>
+							<div class="col-sm-10 mb">
+								<select class="form-control" name="protocol" id="protocol">
+									<?php
+									   $protocol = NULL;
+								
+										if($output->data->protocol == "SIP"){
+											$protocol .= '<option value="SIP" selected> SIP </option>';
+										}else{
+											$protocol .= '<option value="SIP" > SIP </option>';
+										}
+										
+										if($output->data->protocol == "IAX2"){
+											$protocol .= '<option value="IAX2" selected> IAX2 </option>';
+										}else{
+											$protocol .= '<option value="IAX2" > IAX2 </option>';
+										}
+	
+													if($output->data->protocol == "Zap"){
+														$protocol .= '<option value="Zap" selected> Zap </option>';
 													}else{
-														$protocol .= '<option value="SIP" > SIP </option>';
+														$protocol .= '<option value="Zap" > Zap </option>';
 													}
 													
-													if($output->data->protocol == "IAX2"){
-														$protocol .= '<option value="IAX2" selected> IAX2 </option>';
+													if($output->data->protocol == "EXTERNAL"){
+														$protocol .= '<option value="EXTERNAL" selected> EXTERNAL </option>';
 													}else{
-														$protocol .= '<option value="IAX2" > IAX2 </option>';
-													}
-
-													if($output->data->protocol == "CUSTOM"){
-														$protocol .= '<option value="CUSTOM" selected> CUSTOM </option>';
-													}else{
-														$protocol .= '<option value="CUSTOM" > CUSTOM </option>';
+														$protocol .= '<option value="EXTERNAL" > EXTERNAL </option>';
 													}
 													echo $protocol;
 												?>
-												</select>
-											</div>
+											</select>
 										</div>
-										<div class="form-group">
-											<label for="status" class="col-sm-2 control-label">Active</label>
-											<div class="col-sm-10 mb">
-												<select class="form-control" name="active" id="active">
-												<?php
-													$active = NULL;
-													if($output->data->active == "Y"){
-														$active .= '<option value="Y" selected> YES </option>';
-													}else{
-														$active .= '<option value="Y" > YES </option>';
-													}
-													
-													if($output->data->active == "N" || $output->active[$i] == NULL){
-														$active .= '<option value="N" selected> NO </option>';
-													}else{
-														$active .= '<option value="N" > NO </option>';
-													}
-													echo $active;
-												?>
-												</select>
-											</div>
+									</div>
+									<div class="form-group mt">
+										<label for="globals_string" class="col-sm-2 control-label">Global String</label>
+										<div class="col-sm-10 mb">
+											<input type="text" class="form-control" name="globals_string" id="globals_string" maxlength="255" size="50" placeholder="Global String" value="<?php echo $output->data->globals_string;?>">
 										</div>
-									</fieldset>
-								</div><!-- tab 1 -->
-
-									<!-- ADVANCED SETTINGS -->
-				                <div id="tab_2" class="tab-pane fade in">
-				                	<fieldset>
-				                		<div class="form-group mt">
-											<label for="registration_string" class="col-sm-2 control-label">Registration String</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="registration_string" id="registration_string" placeholder="Registration String" value="<?php echo $output->data->registration_string;?>">
-											</div>
-										</div>
-										<div class="form-group mt">
-											<label for="globals_string" class="col-sm-2 control-label">Global String</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="globals_string" id="globals_string" placeholder="Global String" value="<?php echo $output->data->globals_string;?>">
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="status" class="col-sm-2 control-label">Account Entry</label>
-											<div class="col-sm-10 mb">
-												<div class="panel">
-													<div class="panel-body">
-														<textarea rows="11" class="form-control note-editor" id="account_entry" name="account_entry"><?php echo $output->data->account_entry;?></textarea>
-													</div>
+									</div>
+									<div class="form-group">
+										<label for="status" class="col-sm-2 control-label">Dial Plan Entry</label>
+										<div class="col-sm-10 mb">
+											<div class="panel">
+												<div class="panel-body">
+													<textarea rows="3" class="form-control note-editor" cols="65" rows="10" id="dialplan_entry" name="dialplan_entry"><?php echo $output->data->dialplan_entry;?></textarea>
 												</div>
 											</div>
 										</div>
-										<div class="form-group">
-											<label for="status" class="col-sm-2 control-label">Dial Plan Entry</label>
-											<div class="col-sm-10 mb">
-												<div class="panel">
-													<div class="panel-body">
-														<textarea rows="3" class="form-control note-editor" id="dialplan_entry" name="dialplan_entry"><?php echo $output->data->dialplan_entry;?></textarea>
-													</div>
+									</div>
+									<div class="form-group">
+										<label for="status" class="col-sm-2 control-label">Active</label>
+										<div class="col-sm-10 mb">
+											<select class="form-control" name="active" id="active">
+											<?php
+												$active = NULL;
+												if($output->data->active == "Y"){
+													$active .= '<option value="Y" selected> YES </option>';
+												}else{
+													$active .= '<option value="Y" > YES </option>';
+												}
+												
+												if($output->data->active == "N" || $output->active[$i] == NULL){
+													$active .= '<option value="N" selected> NO </option>';
+												}else{
+													$active .= '<option value="N" > NO </option>';
+												}
+												echo $active;
+											?>
+											</select>
+										</div>
+									</div>
+								</fieldset>
+							</div><!-- tab 1 -->
+
+								<!-- ADVANCED SETTINGS --><!--
+							<div id="tab_2" class="tab-pane fade in">
+								<fieldset>
+									<div class="form-group mt">
+										<label for="registration_string" class="col-sm-2 control-label">Registration String</label>
+										<div class="col-sm-10 mb">
+											<input type="text" class="form-control" name="registration_string" id="registration_string" placeholder="Registration String" value="<?php echo $output->data->registration_string;?>">
+										</div>
+									</div>
+									<div class="form-group mt">
+										<label for="globals_string" class="col-sm-2 control-label">Global String</label>
+										<div class="col-sm-10 mb">
+											<input type="text" class="form-control" name="globals_string" id="globals_string" placeholder="Global String" value="<?php echo $output->data->globals_string;?>">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="status" class="col-sm-2 control-label">Account Entry</label>
+										<div class="col-sm-10 mb">
+											<div class="panel">
+												<div class="panel-body">
+													<textarea rows="11" class="form-control note-editor" id="account_entry" name="account_entry"><?php echo $output->data->account_entry;?></textarea>
 												</div>
 											</div>
 										</div>
-									</fieldset>
-								</div><!-- tab 2 -->
+									</div>
+									<div class="form-group">
+										<label for="status" class="col-sm-2 control-label">Dial Plan Entry</label>
+										<div class="col-sm-10 mb">
+											<div class="panel">
+												<div class="panel-body">
+													<textarea rows="3" class="form-control note-editor" id="dialplan_entry" name="dialplan_entry"><?php echo $output->data->dialplan_entry;?></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+							</div><!-- tab 2 -->
 
-								<!-- NOTIFICATIONS -->
-			                    <div id="notifications">
-			                        <div class="output-message-success" style="display:none;">
-			                            <div class="alert alert-success alert-dismissible" role="alert">
-			                              <strong>Success!</strong> Carrier ID <?php echo $cid?> modified !
-			                            </div>
-			                        </div>
-			                        <div class="output-message-error" style="display:none;">
-			                            <div class="alert alert-danger alert-dismissible" role="alert">
-			                              <span id="modifyCarrierResult"></span>
-			                            </div>
-			                        </div>
-			                    </div>
+							<!-- NOTIFICATIONS -->
+							<div id="notifications">
+								<div class="output-message-success" style="display:none;">
+									<div class="alert alert-success alert-dismissible" role="alert">
+									  <strong>Success!</strong> Carrier ID <?php echo $cid?> modified !
+									</div>
+								</div>
+								<div class="output-message-error" style="display:none;">
+									<div class="alert alert-danger alert-dismissible" role="alert">
+									  <span id="modifyCarrierResult"></span>
+									</div>
+								</div>
+							</div>
 
-			                    <!-- FOOTER BUTTONS -->
-			                    <fieldset class="footer-buttons">
-			                        <div class="box-footer">
-			                           <div class="col-sm-3 pull-right">
-												<a href="settingscarriers.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-			                           	
-			                                	<button type="submit" class="btn btn-primary" id="modifyCarrierOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-											
-			                           </div>
-			                        </div>
-			                    </fieldset>
+							<!-- FOOTER BUTTONS -->
+							<fieldset class="footer-buttons">
+								<div class="box-footer">
+								   <div class="col-sm-3 pull-right">
+											<a href="settingscarriers.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+									
+											<button type="submit" class="btn btn-primary" id="modifyCarrierOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+										
+								   </div>
+								</div>
+							</fieldset>
 
-				            	</div><!-- end of tab content -->
+							</div><!-- end of tab content -->
 	                    	</div><!-- tab panel -->
 	                    </form>
 	                </div><!-- body -->
@@ -392,14 +446,14 @@ if (isset($_POST["cid"])) {
 					}
 				});
 
-				/** 
-				 * Modifies a telephony list
-			 	 */
-				$("#modifycarrier").validate({
-                	submitHandler: function() {
-						//submit the form
-							$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
-							$('#modifyCarrierOkButton').prop("disabled", true);
+			/** 
+			 * Modifies a telephony list
+			 */
+			$("#modifycarrier").validate({
+				submitHandler: function() {
+					//submit the form
+						$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+						$('#modifyCarrierOkButton').prop("disabled", true);
 
 							$("#resultmessage").html();
 							$("#resultmessage").fadeOut();
@@ -407,16 +461,13 @@ if (isset($_POST["cid"])) {
 							$("#modifycarrier").serialize(), 
 								function(data){
 									//if message is sent
-									if (data == 1) {
-										$('.output-message-success').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-                                        window.setTimeout(function(){location.reload()},2000)
-                                        $('#update_button').html("<i class='fa fa-check'></i> Update");
-                                        $('#modifyCarrierOkButton').prop("disabled", false);
-									} else {
-										$('#modifyCarrierResult').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
-									
 									$('#update_button').html("<i class='fa fa-check'></i> Update");
 									$('#modifyCarrierOkButton').prop("disabled", false);
+									
+									if (data == 1) {
+										sweetAlert("Carrier Modified Successfully", "Carrier is now updated! ", "success");
+									} else {
+										sweetAlert("Oops...", "Something went wrong! "+data, "error");
 									}
 									//
 								});

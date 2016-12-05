@@ -21,6 +21,7 @@ error_reporting(E_ALL);*/
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$perm = $ui->goGetPermissions('campaign', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -146,19 +147,19 @@ error_reporting(E_ALL);*/
 														}
 
 														if($campaign->dial_method[$i] == "RATIO"){
-															$campaign->dial_method[$i] = "AUTO DIAL";
+															$dial_method = "AUTO DIAL";
 														}
 
 														if($campaign->dial_method[$i] == "MANUAL"){
-															$campaign->dial_method[$i] = "MANUAL";
+															$dial_method = "MANUAL";
 														}
 
 														if($campaign->dial_method[$i] == "ADAPT_TAPERED"){
-															$campaign->dial_method[$i] = "PREDICTIVE";
+															$dial_method = "PREDICTIVE";
 														}
 
 														if($campaign->dial_method[$i] == "INBOUND_MAN"){
-															$campaign->dial_method[$i] = "INBOUND_MAN";
+															$dial_method = "INBOUND MAN";
 														}
 
 													$action_CAMPAIGN = $ui->ActionMenuForCampaigns($campaign->campaign_id[$i], $campaign->campaign_name[$i]);
@@ -168,7 +169,7 @@ error_reporting(E_ALL);*/
                             <td><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
 														<td class='hide-on-medium hide-on-low'><strong><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></a></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
-														<td class='hide-on-medium hide-on-low'><?php echo $campaign->dial_method[$i];?></td>
+														<td class='hide-on-medium hide-on-low'><?php echo $dial_method;?></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $campaign->active[$i];?></td>
 														<td nowrap><?php echo $action_CAMPAIGN;?></td>
 													</tr>
@@ -275,7 +276,7 @@ error_reporting(E_ALL);*/
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 
-        <div class="bottom-menu skin-blue">
+        <div class="bottom-menu skin-blue <?php if ($perm->campaign_create == 'N') { echo "hidden"; } ?>">
 			<div class="action-button-circle" data-toggle="modal">
 				<?php print $ui->getCircleButton("campaigns", "plus"); ?>
 			</div>
@@ -1148,7 +1149,7 @@ error_reporting(E_ALL);*/
 		
 			isNotWanted = (keyCode == 69 || keyCode == 101);
 			return !isNotWanted;
-		};
+		}
 
 		function get_pause_codes(campaign_id){
 			$.ajax({
@@ -1296,6 +1297,7 @@ error_reporting(E_ALL);*/
 					type: 'POST',
 					data: {
 						campaign_id : campaign_id,
+						hotkeys_only: 1
 					},
 					dataType: 'json',
 					success: function(response) {
