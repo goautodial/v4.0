@@ -101,8 +101,9 @@ if (isset($_POST["cid"])) {
 					         curl_close($ch);
 					         $output = json_decode($data);
 					        
-					        //var_dump($output->result); 
-
+					        //var_dump($output->result);
+							$servers = $ui->getServers();
+							
 							if ($output->result=="success") {
 							
 						?>
@@ -188,7 +189,18 @@ if (isset($_POST["cid"])) {
 						<div class="form-group">
 							<label for="server_ip" class="col-sm-2 control-label">Server IP/Host</label>
 							<div class="col-sm-10 mb">
-								<input type="text" class="form-control" name="server_ip" id="server_ip" placeholder="Server IP/Host" value="<?php echo $output->data->server_ip;?>">
+								<select name="server_ip" class="form-control">
+								<?php
+								$sever_ip = "";
+									for($i=0;$i<count($servers->server_ip);$i++){
+										if($servers->server_ip[$i] == $output->data->server_ip)
+										$server_ip .= "<option value=".$servers->server_ip[$i]." selected>".$servers->server_ip[$i]." - ".$servers->server_description[$i]."</option>";
+										else
+										$server_ip .= "<option value=".$servers->server_ip[$i].">".$servers->server_ip[$i]." - ".$servers->server_description[$i]."</option>";
+									}
+								echo $server_ip;
+								?>
+								</select>
 							</div>
 						</div>
 						<!--

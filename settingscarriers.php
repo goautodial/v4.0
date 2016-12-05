@@ -93,6 +93,7 @@
 	*/
 	$user_groups = $ui->API_goGetUserGroupsList();
 	$carriers = $ui->getCarriers();
+	$servers = $ui->getServers();
 ?>
 	<!-- ADD WIZARD MODAL -->
 	<div class="modal fade" id="wizard-modal" tabindex="-1">
@@ -192,8 +193,7 @@ context=trunkinbound
 qualify=yes
 insecure=invite,port
 nat=yes
-host=
-										</textarea>
+host=</textarea>
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
@@ -299,7 +299,7 @@ host=
 									</div>
 								</div>
 								<div class="form-group" id="input_custom_dtmf" style="display:none;">
-									<label for="custom_dtmf" class="col-sm-4 control-label"></label>
+									<label for="custom_dtmf" class="col-sm-3 control-label"></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" id="custom_dtmf" name="custom_dtmf" placeholder="Enter Custom DTMF" required />
 									</div>
@@ -345,15 +345,13 @@ host=
 								<div class="form-group">
 									<label for="server_ip" class="col-sm-3 control-label">Server IP</label>
 									<div class="col-sm-8 mb">
-										<div class="row mt">
-											<label class="col-sm-1">
-												&nbsp;
-											</label>
-											<label class="col-sm-2 checkbox-inline c-checkbox" for="manual_server_ip">
-												<input type="checkbox" id="manual_server_ip" name="manual_server_ip" value="<?php echo getenv("SERVER_ADDR");?>" checked>
-												<span class="fa fa-check"></span>
-											</label>
-										</div>
+										<select name="server_ip" class="form-control">
+											<?php
+												for($i=0;$i<count($servers->server_ip);$i++){
+													echo "<option value=".$servers->server_ip[$i].">".$servers->server_ip[$i]." - ".$servers->server_description[$i]."</option>";
+												}
+											?>
+										</select>
 									</div>
 								</div>
 							</div>

@@ -52,7 +52,7 @@
 			$postfields["protocol"]	= $_POST['protocol'];
 		}
 		
-		$postfields["manual_server_ip"]	= getenv("SERVER_ADDR");
+		$postfields["manual_server_ip"]	= $_POST['server_ip'];
 	}
 	
 	if($_POST['carrier_type'] == "copy"){
