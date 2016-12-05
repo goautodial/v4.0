@@ -701,6 +701,18 @@ $lists = $ui->API_goGetAllLists();
 															</div>
 														</div>
 														<div class="form-group">
+															<label class="col-sm-3 control-label">Transfer-Conf Number 1:</label>
+															<div class="col-sm-9 mb">
+																<input type="text" class="form-control" value="<?php if(!empty($campaign->data->xferconf_a_number)){echo $campaign->data->xferconf_a_number;}else{echo "";}?>" id="xferconf_a_number" name="xferconf_a_number">
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label">Transfer-Conf Number 2:</label>
+															<div class="col-sm-9 mb">
+																<input type="text" class="form-control" value="<?php if(!empty($campaign->data->xferconf_b_number)){echo $campaign->data->xferconf_b_number;}else{echo "";}?>" id="xferconf_b_number" name="xferconf_b_number">
+															</div>
+														</div>
+														<div class="form-group">
 															<label class="col-sm-3 control-label">Caller ID for 3-way Calls:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="three_way_call_cid" name="three_way_call_cid">
