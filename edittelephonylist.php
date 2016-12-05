@@ -234,32 +234,31 @@ if (isset($_POST["modifyid"])) {
 				//$("#modifylist").validate({
                 //	submitHandler: function() {
 
-					$(document).on('click', '#cancel', function(){
-						swal("Cancelled", "No action has been done :)", "error");
+				$(document).on('click', '#cancel', function(){
+					swal("Cancelled", "No action has been done :)", "error");
+				});
+
+				$(document).on('click','#modifyListOkButton',function() {
+					//submit the form
+					$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+					$('#modifyListOkButton').prop("disabled", true);
+
+                	$.ajax({
+						url: "./php/ModifyTelephonyList.php",
+						type: 'POST',
+						data: $("#modifylist").serialize(),
+						success: function(data) {
+							// console.log(data);
+							$('#update_button').html("<i class='fa fa-check'></i> Update");
+							$('#modifyListOkButton').prop("disabled", false);
+							if(data == "success"){
+								swal("Success!", "List Successfully Updated!", "success");
+								window.setTimeout(function(){location.reload();},2000);
+							} else {
+								sweetAlert("Oops...", "Something went wrong! " + data, "error");
+							}
+						}
 					});
-
-					$(document).on('click','#modifyListOkButton',function() {
-						//submit the form
-							$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
-							$('#modifyListOkButton').prop("disabled", true);
-
-                			$.ajax({
-				url: "./php/ModifyTelephonyList.php",
-				type: 'POST',
-				data: $("#modifylist").serialize(),
-				success: function(data) {
-				  // console.log(data);
-					$('#update_button').html("<i class='fa fa-check'></i> Update");
-					$('#modifyListOkButton').prop("disabled", false);
-					  if(data == "success"){
-							swal("Success!", "List Successfully Updated!", "success")
-							window.setTimeout(function(){location.reload()},2000)
-					  }
-					  else{
-							sweetAlert("Oops...", "Something went wrong! " + data, "error");
-					  }
-				}
-			});
 
 					//return false; //don't let the form refresh the page...
 				});
