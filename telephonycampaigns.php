@@ -1297,6 +1297,7 @@ error_reporting(E_ALL);*/
 					type: 'POST',
 					data: {
 						campaign_id : campaign_id,
+						hotkeys_only: 1
 					},
 					dataType: 'json',
 					success: function(response) {
