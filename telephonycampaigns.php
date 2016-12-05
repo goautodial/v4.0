@@ -1149,7 +1149,7 @@ error_reporting(E_ALL);*/
 		
 			isNotWanted = (keyCode == 69 || keyCode == 101);
 			return !isNotWanted;
-		};
+		}
 
 		function get_pause_codes(campaign_id){
 			$.ajax({
