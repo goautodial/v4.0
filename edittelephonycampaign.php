@@ -1195,9 +1195,9 @@ $lists = $ui->API_goGetAllLists();
 															</div>
 														</div>
 													<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
-														Survey
+														<!--Survey-->
 													<?php } else { ?>
-														Default
+														<!--Default-->
 													<?php } ?>
 													<div class="campaign_allow_inbound_div hide">
 														<div class="form-group">
