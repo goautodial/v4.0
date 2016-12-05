@@ -13,6 +13,7 @@
 		$postfields["goAction"] = "getAllDialStatuses"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["campaign_id"] = $_POST['campaign_id'];
+		$postfields["hotkeys_only"] = $_POST['hotkeys_only'];
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
