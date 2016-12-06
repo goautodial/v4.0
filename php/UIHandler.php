@@ -1115,7 +1115,8 @@ error_reporting(E_ERROR | E_PARSE);
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Modify</a></li>
-      <li><a class="copy-custom-fields" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Copy List Custom Fields</a></li>
+			<li><a class="copy-custom-fields" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Copy List Custom Fields</a></li>
+			<li><a class="download-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Download List</a></li>
 			<li class="divider"></li>
 			<li><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Delete</a></li>
 		    </ul>
@@ -1892,11 +1893,13 @@ error_reporting(E_ERROR | E_PARSE);
 	 * Generates the HTML for the sidebar of a user, given its role.
 	 * @param $userid the id of the user.
 	 */
-	public function getSidebar($userid, $username, $userrole, $avatar) {
+	public function getSidebar($userid, $username, $userrole, $avatar, $usergroup) {
 		$numMessages = $this->db->getUnreadMessagesNumber($userid);
 		$numTasks = $this->db->getUnfinishedTasksNumber($userid);
 		$numNotifications = $this->db->getNumberOfTodayNotifications($userid) + $this->db->getNumberOfTodayEvents($userid);
 		$mh = \creamy\ModuleHandler::getInstance();
+		
+		$perms = $this->goGetPermissions('sidebar', $usergroup);
 
 		$adminArea = "";
 		$telephonyArea = "";
@@ -1975,7 +1978,9 @@ error_reporting(E_ERROR | E_PARSE);
 	            <ul class="sidebar-menu"><li class="header">'.strtoupper($this->lh->translationFor("menu")).'</li>';
 	    // body: home and customer menus
 	    if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN){
-	    	$result .= $this->getSidebarItem("./index.php", "dashboard", $this->lh->translationFor("Dashboard"));
+			if ($perms->dashboard->dashboard_display === 'Y') {
+				$result .= $this->getSidebarItem("./index.php", "dashboard", $this->lh->translationFor("Dashboard"));
+			}
 	    }
 	    if($userrole == CRM_DEFAULTS_USER_ROLE_AGENT){
 	    	$result .= $this->getSidebarItem("./agent.php", "dashboard", $this->lh->translationFor("Home"));
@@ -5858,10 +5863,14 @@ error_reporting(E_ERROR | E_PARSE);
 		 return json_decode($output->data->permissions);
 	}
 	
-	public function goGetPermissions($type = 'user', $group) {
+	public function goGetPermissions($type = 'dashboard', $group) {
 		$permissions = $this->API_goGetGroupPermission($group);
-		if (!is_null($permissions)) {
-			$return = $permissions->{$type};
+		if (!is_null($permissions) && (array_key_exists($type, $permissions) || $type == 'sidebar')) {
+			if ($type === 'sidebar') {
+				$return = $permissions;
+			} else {
+				$return = $permissions->{$type};
+			}
 		} else {
 			$return = null;
 		}

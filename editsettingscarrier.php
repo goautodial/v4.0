@@ -324,7 +324,7 @@ if (isset($_POST["cid"])) {
 													$active .= '<option value="Y" > YES </option>';
 												}
 												
-												if($output->data->active == "N" || $output->active[$i] == NULL){
+												if($output->data->active == "N" || $output->data->active == NULL){
 													$active .= '<option value="N" selected> NO </option>';
 												}else{
 													$active .= '<option value="N" > NO </option>';
