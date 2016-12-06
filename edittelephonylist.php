@@ -217,25 +217,25 @@ $timezones = $ui->API_ListsTimezone($modifyid);
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;">Transfer Conf No. Override:</label>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" name="">
+											<input type="text" class="form-control" name="xferconf_a_number">
 										</div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" name="">
-										</div>
-									</div>
-									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;"></label>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" name="">
-										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" name="">
+											<input type="text" class="form-control" name="xferconf_b_number">
 										</div>
 									</div>
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"></label>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" name="">
+											<input type="text" class="form-control" name="xferconf_c_number">
+										</div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" name="xferconf_d_number">
+										</div>
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;"></label>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" name="xferconf_e_number">
 										</div>
 									</div>
 								
@@ -313,21 +313,21 @@ $timezones = $ui->API_ListsTimezone($modifyid);
 														$tcalled = array();
 														$tncalled = array();
 													?>
-													<?php for($s=0;$s<count($timezones->gmt_offset_now);$s++){ ?>
+													<?php for($t=0;$t<count($timezones->gmt_offset_now);$t++){ ?>
 														<?php 
-															if($timezones->called_since_last_reset[$s] == 'N'){
+															if($timezones->called_since_last_reset[$t] == 'N'){
 																$counttCalled = 0;
-																$counttNCalled = $timezones->counttlist[$s];
+																$counttNCalled = $timezones->counttlist[$t];
 
 															}else{
-																$counttCalled = $timezones->counttlist[$s];
+																$counttCalled = $timezones->counttlist[$t];
 																$counttNCalled = 0;
 															}
 															array_push($tcalled, $counttCalled);
 															array_push($tncalled, $counttNCalled);
 														?>
 														<tr>
-															<td><?php echo $timezones->gmt_offset_now[$s]." (".gmdate("D M Y H:i", time() + 3600 * $timezones->gmt_offset_now[$s]).")"; ?></td>
+															<td><?php echo $timezones->gmt_offset_now[$t]." (".gmdate("D M Y H:i", time() + 3600 * $timezones->gmt_offset_now[$t]).")"; ?></td>
 															<td style="text-align: center; width: 15%;"><?php echo $counttCalled; ?></td>
 															<td style="text-align: center; width: 15%;"><?php echo $counttNCalled; ?></td>
 														</tr>

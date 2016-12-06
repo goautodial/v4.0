@@ -26,8 +26,18 @@
 		if(!empty($output)){
 			$data = '';
 			$i=0;
+			$count_active = 0;
+			$count_inactive = 0;
+			$lead_count = 0;
 			for($i=0;$i<=count($output->campaign_id);$i++) {
 				if(!empty($output->list_id[$i])){
+					if($output->active[$i] == "Y"){
+						$count_active = $count_active + 1;
+						$lead_count = $lead_count + $output->tally[$i];
+					}else{
+						$count_inactive = $count_inactive +1;
+					}
+
 					$info = array(
 						'list_id' 						=> $output->list_id[$i],
 						'list_name' 					=> $output->list_name[$i],
@@ -39,7 +49,12 @@
 						'agent_script_override' 		=> $output->agent_script_override[$i],
 						'campaign_cid_override' 		=> $output->campaign_cid_override[$i],
 						'drop_inbound_group_override' 	=> $output->drop_inbound_group_override[$i],
-						'web_form_address' 				=> $output->web_form_address[$i]
+						'web_form_address' 				=> $output->web_form_address[$i],
+						'xferconf_a_number' 			=> $output->xferconf_a_number[$i],
+						'xferconf_b_number' 			=> $output->xferconf_b_number[$i],
+						'xferconf_c_number' 			=> $output->xferconf_c_number[$i],
+						'xferconf_d_number' 			=> $output->xferconf_d_number[$i],
+						'xferconf_e_number' 			=> $output->xferconf_e_number[$i]
 					);
 					$data .= '<tr>';
 					$data .= '<td>'.$output->list_id[$i].'</td>';
@@ -53,7 +68,11 @@
 				}
 			}
 
-			echo json_encode($data, true);
+			$details['data'] = $data;
+			$details['count_active'] = $count_active;
+			$details['count_inactive'] = $count_inactive;
+			$details['lead_count'] = $lead_count;
+			echo json_encode($details, true);
 		}else{
 			echo json_encode("empty", true);
 		}

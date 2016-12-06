@@ -1007,25 +1007,40 @@ error_reporting(E_ALL);*/
 		        <h4 class="modal-title"><b>Lists</b></h4>
 		      </div>
 		      <div class="modal-body">
-					<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
-						<div class="table-responsive">
-							<table id="lists_list" class="table table-bordered" style="width: 100%;">
-								<thead>
-									<tr>
-										<th>List ID</th>
-										<th>List Name</th>
-										<th>Description</th>
-										<th>Leads Count</th>
-										<th>Active</th>
-										<th>Last Call Date</th>
-										<th>Action</th>
-									</tr>
-								</thead>
-								<tbody id="lists_data_container">
-									<!-- Data Here -->
-								</tbody>
-							</table>
+		      		<div class="form-group">
+						<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
+							<div class="table-responsive">
+								<table id="lists_list" class="table table-bordered" style="width: 100%;">
+									<thead>
+										<tr>
+											<th>List ID</th>
+											<th>List Name</th>
+											<th>Description</th>
+											<th>Leads Count</th>
+											<th>Active</th>
+											<th>Last Call Date</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody id="lists_data_container">
+										<!-- Data Here -->
+									</tbody>
+								</table>
+							</div>
 						</div>
+					</div>
+					<div class="form-group">
+						<p>
+							This Campaign has <b><span class="count_active"></span> active</b> lists and <b><span class="count_inactive"></span> inactive</b> lists
+						</p>
+						<p>
+							This Campaign has <b><span class="count_leads"></span> leads</b> in the queue (hopper dial)
+						</p>
+						<p>
+							<a href="#" style="color: green;" class="view-leads-on-hopper" data-campaign="">
+								View Leads in the hopper for this campaign
+							</a>
+						</p>
 					</div>
 		      </div>
 		      <div class="modal-footer">
@@ -1046,87 +1061,205 @@ error_reporting(E_ALL);*/
 		        <h4 class="modal-title"><b>Lists</b> <small>(Form)</small></h4>
 		      </div>
 		      <div class="modal-body">
-				<form id="form_lists" class="form-horizontal">
+				<form id="form_lists" class="form-horizontal" style="margin-top: 10px;">
 					<input type="hidden" name="lists_id" class="lists-id">
-					<div class="form-group">
-						<label class="control-label col-lg-4" style="text-align: left;">Name:</label>
-						<div class="col-lg-8">
-							<input type="text" class="form-control lists-name" name="lists_name">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4" style="text-align: left;">Description:</label>
-						<div class="col-lg-8">
-							<input type="text" class="form-control lists-description" name="lists_description">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4" style="text-align: left;">Campaign:</label>
-						<div class="col-lg-8">
-							<select name="lists_campaign" class="form-control select2 lists-campaign">
-								<?php
-									for($i=0;$i < count($campaign->campaign_id);$i++){
-										echo '<option value="'.$campaign->campaign_id[$i].'">'.$campaign->campaign_id[$i].' - '.$campaign->campaign_name[$i].'</option>';
-									}
-								?>
-							</select>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4" style="text-align: left;">Reset Time:</label>
-						<div class="col-lg-8">
-							<input type="text" class="form-control lists-reset-time" name="lists_reset_time">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4" style="text-align: left;">Reset Lead Called Status:</label>
-						<div class="col-lg-3">
-							<select name="lists_lead_called_status" class="form-control select2 lists-lead-called-status">
-								<option value="N">N</option>
-								<option value="Y">Y</option>
-							</select>
-						</div>
-						<label class="control-label col-lg-2" style="text-align: left;">Active:</label>
-						<div class="col-lg-3">
-							<select name="lists_active" class="form-control select2 lists-active">
-								<option value="N">N</option>
-								<option value="Y">Y</option>
-							</select>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4" style="text-align: left;">Agent Script Override:</label>
-						<div class="col-lg-8">
-							<select name="lists_agent_script_override" class="form-control lists-agent-script-override">
-								<option value="" selected="selected">NONE - INACTIVE</option>
-							</select>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4" style="text-align: left;">Campaign CID Override:</label>
-						<div class="col-lg-8">
-							<input type="text" class="form-control lists-cid-override" name="lists_cid_override">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4" style="text-align: left;"></label>
-						<div class="col-lg-3">
-							<select name="lists_drop_inbound_group_override" class="form-control lists-drop-inbound-group-override">
-								<option value="NONE">NONE</option>
-							</select>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-lg-4" style="text-align: left;">Web Form:</label>
-						<div class="col-lg-8">
-							<input type="text" class="form-control lists-web-form" name="lists_web_form">
-						</div>
-					</div>
+					<div role="tabpanel">
+						<!--<div class="nav-tabs-custom">-->
+							<ul role="tablist" class="nav nav-tabs nav-justified">
+								<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
+								<li><a href="#tab_2" data-toggle="tab"> Statuses</a></li>
+								<li><a href="#tab_3" data-toggle="tab"> Timezones</a></li>
+							</ul>
+			               <!-- Tab panes-->
+			               <div class="tab-content">
+			               		<div id="tab_1" class="tab-pane fade in active">
+			               			<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;">Name:</label>
+										<div class="col-lg-8">
+											<input type="text" class="form-control lists-name" name="lists_name">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;">Description:</label>
+										<div class="col-lg-8">
+											<input type="text" class="form-control lists-description" name="lists_description">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;">Campaign:</label>
+										<div class="col-lg-8">
+											<select name="lists_campaign" class="form-control select2 lists-campaign">
+												<?php
+													for($i=0;$i < count($campaign->campaign_id);$i++){
+														echo '<option value="'.$campaign->campaign_id[$i].'">'.$campaign->campaign_id[$i].' - '.$campaign->campaign_name[$i].'</option>';
+													}
+												?>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;">Reset Time:</label>
+										<div class="col-lg-8">
+											<input type="text" class="form-control lists-reset-time" name="lists_reset_time">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;">Reset Lead Called Status:</label>
+										<div class="col-lg-3">
+											<select name="lists_lead_called_status" class="form-control select2 lists-lead-called-status">
+												<option value="N">N</option>
+												<option value="Y">Y</option>
+											</select>
+										</div>
+										<label class="control-label col-lg-2" style="text-align: left;">Active:</label>
+										<div class="col-lg-3">
+											<select name="lists_active" class="form-control select2 lists-active">
+												<option value="N">N</option>
+												<option value="Y">Y</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;">Agent Script Override:</label>
+										<div class="col-lg-8">
+											<select name="lists_agent_script_override" class="form-control lists-agent-script-override">
+												<option value="" selected="selected">NONE - INACTIVE</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;">Campaign CID Override:</label>
+										<div class="col-lg-8">
+											<input type="text" class="form-control lists-cid-override" name="lists_cid_override">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;"></label>
+										<div class="col-lg-3">
+											<select name="lists_drop_inbound_group_override" class="form-control lists-drop-inbound-group-override">
+												<option value="NONE">NONE</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;">Web Form:</label>
+										<div class="col-lg-8">
+											<input type="text" class="form-control lists-web-form" name="lists_web_form">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;">Transfer Conf No. Override:</label>
+										<div class="col-lg-4">
+											<input type="text" class="form-control lists-xferconf-a-number" name="xferconf_a_number">
+										</div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control lists-xferconf-b-number" name="xferconf_b_number">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;">&nbsp;</label>
+										<div class="col-lg-4">
+											<input type="text" class="form-control lists-xferconf-c-number" name="xferconf_c_number">
+										</div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control lists-xferconf-d-number" name="xferconf_d_number">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;">&nbsp;</label>
+										<div class="col-lg-4">
+											<input type="text" class="form-control lists-xferconf-e-number" name="xferconf_e_number">
+										</div>
+									</div>
+			               		</div>
+			               		<div id="tab_2" class="tab-pane">
+			               			<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
+										<div class="table-responsive">
+											<table id="lists_statuses" class="table table-bordered" style="width: 100%;">
+												<thead>
+													<tr>
+														<th>Status</th>
+														<th>Description</th>
+														<th>Called</th>
+														<th>Not Called</th>
+													</tr>
+												</thead>
+												<tbody id="lists_statuses_container">
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+			               		</div>
+			               		<div id="tab_3" class="tab-pane">
+			               			<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
+										<div class="table-responsive">
+											<table id="lists_statuses" class="table table-bordered" style="width: 100%;">
+												<thead>
+													<tr>
+														<th>GMT OFF SET NOW (local time)</th>
+														<th>Called</th>
+														<th>Not Called</th>
+													</tr>
+												</thead>
+												<tbody id="lists_timezone_container">
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+			               		</div>
+			               </div>
+			        </div>
+					
 				</form>
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-success btn-update-lists" data-campaign="">Update</button>
+		      </div>
+		    </div>
+		    <!-- End of modal content -->
+		  </div>
+		</div>
+
+		<div id="modal_view_leads_on_hopper" class="modal fade" role="dialog">
+		  <div class="modal-dialog" style="width: 70%;">
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title"><b>Lists</b></h4>
+		      </div>
+		      <div class="modal-body">
+					<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
+						<div class="table-responsive">
+							<table id="leads_on_hopper" class="table table-bordered" style="width: 100%;">
+								<thead>
+									<tr>
+										<th>Order</th>
+										<th>Priority</th>
+										<th>Lead ID</th>
+										<th>List ID</th>
+										<th>Phone Number</th>
+										<th>State</th>
+										<th>Status</th>
+										<th>Count</th>
+										<th>GMT</th>
+										<th>ALT</th>
+										<th>Source</th>
+									</tr>
+								</thead>
+								<tbody id="leads_hopper_container">
+									<!-- Data Here -->
+								</tbody>
+							</table>
+						</div>
+					</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<!--<button type="button" class="btn btn-success btn-new-lists" data-campaign="">Create New</button>-->
 		      </div>
 		    </div>
 		    <!-- End of modal content -->
@@ -1213,18 +1346,48 @@ error_reporting(E_ALL);*/
 				dataType: 'json',
 				success: function(response) {
 						// var values = JSON.parse(response.result);
-						//console.log(response);
+						// console.log(response);
 						// $('.btn-new-lists').attr('data-campaign', campaign_id);
 						$('#modal_view_lists').modal('show');
 						var table = $('#lists_list').DataTable();
 						table.fnClearTable();
 						table.fnDestroy();
-						$('#lists_data_container').html(response);
+						$('#lists_data_container').html(response.data);
+						$('.count_active').text(response.count_active);
+						$('.count_inactive').text(response.count_inactive);
+						$('.count_leads').text(response.lead_count);
+						$('.view-leads-on-hopper').attr('data-campaign', campaign_id);
 						$('#lists_list').DataTable({
 							"searching": true,
 							bFilter: true
 						});
 						$("#lists_list").css("width","100%");
+					}
+			});
+		}
+
+		function get_leads_on_hopper(campaign_id){
+			$.ajax({
+				url: "./php/GetLeadsOnHopper.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						console.log(response);
+						$('#modal_view_lists').modal('hide');
+						$('#modal_view_leads_on_hopper').modal('show');
+						$('body').addClass('modal-open');
+						var table = $('#leads_on_hopper').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('#leads_hopper_container').html(response);
+						$('#leads_on_hopper').DataTable({
+							"searching": true,
+							bFilter: true
+						});
+						$("#leads_on_hopper").css("width","100%");
 					}
 			});
 		}
@@ -1249,6 +1412,38 @@ error_reporting(E_ALL);*/
 				$('.lists-cid-override').val(dataInfo.campaign_cid_override);
 				$('.lists-drop-inbound-group-override').val(dataInfo.drop_inbound_group_override).trigger('change');
 				$('.lists-web-form').val(dataInfo.web_from_address);
+				$('.lists-xferconf-a-number').val(dataInfo.xferconf_a_number);
+				$('.lists-xferconf-b-number').val(dataInfo.xferconf_b_number);
+				$('.lists-xferconf-c-number').val(dataInfo.xferconf_c_number);
+				$('.lists-xferconf-d-number').val(dataInfo.xferconf_d_number);
+				$('.lists-xferconf-e-number').val(dataInfo.xferconf_e_number);
+
+				$.ajax({
+					url: "./php/GetListsStatuses.php",
+					type: 'POST',
+					data: {
+						list_id : dataInfo.list_id,
+					},
+					dataType: 'json',
+					success: function(response) {
+							console.log(response);
+							$('#lists_statuses_container').html(response);
+						}
+				});
+
+				$.ajax({
+					url: "./php/GetListsTimezones.php",
+					type: 'POST',
+					data: {
+						list_id : dataInfo.list_id,
+					},
+					dataType: 'json',
+					success: function(response) {
+							console.log(response);
+							$('#lists_timezone_container').html(response);
+						}
+				});
+
 				$('.btn-update-lists').attr('data-campaign', dataInfo.campaign_id);
 				$('#modal_view_lists').modal('hide');
 				$('#modal_form_lists').modal('show');
@@ -1271,6 +1466,17 @@ error_reporting(E_ALL);*/
 				var campaign_id = $(this).data('id');
 				// alert(campaign_id);
 				get_lists(campaign_id);
+			});
+			
+			$(document).on('click', '.view-leads-on-hopper', function(){
+				var campaign_id = $(this).data('campaign');
+				// alert(campaign_id);
+				get_leads_on_hopper(campaign_id);
+				$('body').addClass('modal-open');
+			});
+
+			$('#modal_view_leads_on_hopper').on('shown.bs.modal', function (e) {
+			  $('body').addClass('modal-open');
 			});
 
 			$(document).on('click', '.btn-new-pause-code', function(){
@@ -1351,6 +1557,12 @@ error_reporting(E_ALL);*/
 			});
 			
 			$('#modal_form_lists').on('hidden.bs.modal', function () {
+				$('#modal_view_lists').modal('show');
+				$('body').addClass('modal-open');
+			});
+			
+
+			$('#modal_view_leads_on_hopper').on('hidden.bs.modal', function () {
 				$('#modal_view_lists').modal('show');
 				$('body').addClass('modal-open');
 			});
@@ -1546,7 +1758,17 @@ error_reporting(E_ALL);*/
 										'desc': $('.lists-description').val(),
 										'campaign': $('.lists-campaign').val(),
 										'active': $('.lists-active').val(),
-										'reset_list': $('.lists-lead-called-status').val()
+										'reset_list': $('.lists-lead-called-status').val(),
+										'reset_time' : $('.lists-reset-time').val(),
+										'agent_script_override' : $('.lists-agent-script-override').val(),
+										'campaign_cid_override' : $('.lists-cid-override').val(),
+										'drop_inbound_group_override' : $('.lists-drop-inbound-group-override').val(),
+										'web_form' : $('.lists-web-form').val(),
+										'xferconf_a_number' : $('.lists-xferconf-a-number').val(),
+										'xferconf_b_number' : $('.lists-xferconf-b-number').val(),
+										'xferconf_c_number' : $('.lists-xferconf-c-number').val(),
+										'xferconf_d_number' : $('.lists-xferconf-d-number').val(),
+										'xferconf_e_number' : $('.lists-xferconf-e-number').val()
 									},
 									// dataType: 'json',
 									success: function(data) {
