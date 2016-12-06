@@ -192,7 +192,7 @@ dtmfmode=rfc2833
 context=trunkinbound
 qualify=yes
 insecure=invite,port
-nat=yes
+nat=force_rport,comedia
 host=</textarea>
 									</div>
 								</div>
