@@ -59,6 +59,11 @@ $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
 //$colors = $ui->generateStatisticsColors();
 
+$perms = $ui->goGetPermissions('dashboard', $_SESSION['usergroup']);
+if ($perms->dashboard_display === 'N') {
+	header("location: crm.php");
+}
+
 // calculate number of statistics and customers
 $db = new \creamy\DbHandler();
 $statsOk = $db->weHaveSomeValidStatistics();
@@ -145,7 +150,7 @@ $goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : st
 			<?php print $ui->creamyHeader($user); ?>
 
             <!-- Left side column. contains the logo and sidebar -->
-			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
+			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar(), $_SESSION['usergroup']); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="content-wrapper">
