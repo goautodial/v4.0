@@ -1426,7 +1426,7 @@ error_reporting(E_ALL);*/
 					},
 					dataType: 'json',
 					success: function(response) {
-							console.log(response);
+							//console.log(response);
 							$('#lists_statuses_container').html(response);
 						}
 				});
@@ -1439,7 +1439,7 @@ error_reporting(E_ALL);*/
 					},
 					dataType: 'json',
 					success: function(response) {
-							console.log(response);
+							//console.log(response);
 							$('#lists_timezone_container').html(response);
 						}
 				});
