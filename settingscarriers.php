@@ -247,7 +247,7 @@ host=</textarea>
 								<div class="form-group not_custom_protocol">
 									<label for="dialprefix" class="col-sm-3 control-label">Dial Prefix</label>
 									<div class="col-sm-8 mb">
-										<input type="number" class="form-control" name="dialprefix" id="dialprefix" placeholder="Dial Prefix" maxlength="15" required />
+										<input type="number" class="form-control" name="dialprefix" id="dialprefix" placeholder="Dial Prefix" maxlength="15" minlength="10" min="0" required />
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
