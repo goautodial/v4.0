@@ -42,7 +42,10 @@
 				$data .= '</tr>';
 			}
 		}
-		echo json_encode($data, true);
+
+		$details['count'] = $i;
+		$details['data'] = $data;
+		echo json_encode($details, true);
 	}else{
 		echo json_encode("empty", true);
 	}
