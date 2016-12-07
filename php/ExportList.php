@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
     }*/
-    
+    ini_set('memory_limit', '2048M');
     require_once('./goCRMAPISettings.php');
 	
     $url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -39,12 +39,29 @@ error_reporting(E_ALL);
         header('Content-Disposition: attachment; filename='.$filename);
         
         echo $header."\n";
-        
-        for($i=0; $i <= count($output->header); $i++){
-            echo $output->row[$i]."\n";
+		
+        for($i=0; $i < count($output->row); $i++){
+			$row = $output->row[$i];
+			
+			// filter data replaces comma with |
+			for($x=0; $x < count($row);$x++){
+				$row_data = str_replace(",","|",$row[$x]);
+				$filtered_row[] = $row_data;
+			}
+			
+			$array_filtered_row = implode(",",$filtered_row);
+			echo $array_filtered_row;
+			echo "\n";
+			
+			$array_filtered_row = "";
+			unset($filtered_row);
+			
         }
         
         
-    }
+    }else{
+		echo "Failed to Process Request... Please inform the administrator.";
+		//$output->query;
+	}
    
 ?>

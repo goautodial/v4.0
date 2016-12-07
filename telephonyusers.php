@@ -597,7 +597,7 @@
 				        $(".body:eq(" + newIndex + ") .error", uform).removeClass("error");
 				    }
 
-		            uform.validate().settings.ignore = ":disabled,:hidden";
+		            uform.validate().settings.ignore = ":disabled";
 		            return uform.valid();
 		        },
 		        onFinishing: function (event, currentIndex)

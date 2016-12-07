@@ -1899,6 +1899,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$numNotifications = $this->db->getNumberOfTodayNotifications($userid) + $this->db->getNumberOfTodayEvents($userid);
 		$mh = \creamy\ModuleHandler::getInstance();
 		
+		$usergroup = (!isset($usergroup) ? $_SESSION['usergroup'] : $usergroup);
 		$perms = $this->goGetPermissions('sidebar', $usergroup);
 
 		$adminArea = "";
@@ -1908,27 +1909,34 @@ error_reporting(E_ERROR | E_PARSE);
 		$loadleads = "";
 		$crm = "";
 		$eventsArea = "";
-		if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
+		if ($userrole != CRM_DEFAULTS_USER_ROLE_AGENT) {
 
 			$modulesWithSettings = $mh->modulesWithSettings();
 			$adminArea = '<li class="treeview"><a href="#"><i class="fa fa-dashboard"></i> <span>'.$this->lh->translationFor("administration").'</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">';
 			$adminArea .= $this->getSidebarItem("./adminsettings.php", "gears", $this->lh->translationFor("settings")); // admin settings
-			$adminArea .= $this->getSidebarItem("./telephonyusers.php", "user", $this->lh->translationFor("users")); // admin settings
+			//$adminArea .= $this->getSidebarItem("./telephonyusers.php", "user", $this->lh->translationFor("users")); // admin settings
 			$adminArea .= $this->getSidebarItem("./adminmodules.php", "archive", $this->lh->translationFor("modules")); // admin settings
 			//$adminArea .= $this->getSidebarItem("./admincustomers.php", "users", $this->lh->translationFor("customers")); // admin settings
 			foreach ($modulesWithSettings as $k => $m) { $adminArea .= $this->getSidebarItem("./modulesettings.php?module_name=".urlencode($k), $m->mainPageViewIcon(), $m->mainPageViewTitle()); }
 	        $adminArea .= '</ul></li>';
 
 			$telephonyArea = '<li class="treeview"><a href="#"><i class="fa fa-phone"></i> <span>'.$this->lh->translationFor("telephony").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
-			$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "users", $this->lh->translationFor("users"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonycampaigns.php", "fa fa-dashboard", $this->lh->translationFor("campaigns"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonylist.php", "list", $this->lh->translationFor("lists"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "comment", $this->lh->translationFor("scripts"));
-			$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
-			$telephonyArea .= $this-> getSidebarItem("./audiofiles.php", "music", $this->lh->translationFor("audiofiles"));
-			//$telephonyArea .= $this-> getSidebarItem("./telephonymusiconhold.php", "music", $this->lh->translationFor("music_on_hold"));
-			//$telephonyArea .= $this-> getSidebarItem("./telephonyvoicefiles.php", "files-o", $this->lh->translationFor("voice_files"));
+			if ($perms->user->user_read == 'R')
+				$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "users", $this->lh->translationFor("users"));
+			if ($perms->campaign->campaign_read == 'R')
+				$telephonyArea .= $this-> getSidebarItem("./telephonycampaigns.php", "fa fa-dashboard", $this->lh->translationFor("campaigns"));
+			if ($perms->list->list_read == 'R')
+				$telephonyArea .= $this-> getSidebarItem("./telephonylist.php", "list", $this->lh->translationFor("lists"));
+			if ($perms->script->script_read == 'R')
+				$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "comment", $this->lh->translationFor("scripts"));
+			if ($perms->inbound->inbound_read == 'R')
+				$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
+			if ($perms->voicefiles->voicefiles_upload == 'C') {
+				$telephonyArea .= $this-> getSidebarItem("./audiofiles.php", "music", $this->lh->translationFor("audiofiles"));
+				//$telephonyArea .= $this-> getSidebarItem("./telephonymusiconhold.php", "music", $this->lh->translationFor("music_on_hold"));
+				//$telephonyArea .= $this-> getSidebarItem("./telephonyvoicefiles.php", "files-o", $this->lh->translationFor("voice_files"));
+			}
 			$telephonyArea .= '</ul></li>';
 
 			$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
@@ -1977,7 +1985,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>
 	            <ul class="sidebar-menu"><li class="header">'.strtoupper($this->lh->translationFor("menu")).'</li>';
 	    // body: home and customer menus
-	    if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN){
+	    if($userrole != CRM_DEFAULTS_USER_ROLE_AGENT){
 			if ($perms->dashboard->dashboard_display === 'Y') {
 				$result .= $this->getSidebarItem("./index.php", "dashboard", $this->lh->translationFor("Dashboard"));
 			}
@@ -1987,10 +1995,18 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 
 	    // menu for admin
-        $result .= $telephonyArea;
-		$result .= $settings;
+		if ($perms->user->user_read == 'N' && $perms->campaign->campaign_read == 'N' && $perms->list->list_read == 'N'
+			 && $perms->script->script_read == 'N' && $perms->inbound->inbound_read == 'N' && $perms->voicefiles->voicefiles_upload == 'N') {
+			$telephonyArea = '';
+		}
+		$result .= $telephonyArea;
+		if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
+			$result .= $settings;
+		}
 		$result .= $callreports;
-		$result .= $adminArea;
+		if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
+			$result .= $adminArea;
+		}
 		$result .= $crm;
 		$result .= $eventsArea;
 

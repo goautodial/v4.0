@@ -87,7 +87,7 @@
 					$_SESSION["avatar"] = CRM_DEFAULTS_USER_AVATAR;
 				}
 
-				if($_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_ADMIN){
+				if($_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_ADMIN || $_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_SUPERVISOR || $_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_TEAMLEADER){
 					header("location: index.php"); // Redirecting To Admin Dashboard
 				}
 				if($_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_AGENT){
