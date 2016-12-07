@@ -25,8 +25,10 @@
 	if(!empty($output)){
 		$data = '';
 		$i=0;
+		$count = 0;
 		for($i=0;$i<=count($output->lead_id);$i++) {
 			if(!empty($output->lead_id[$i])){
+				$count = $count + 1;
 				$data .= '<tr>';
 				$data .= '<td>'.$output->hopper_id[$i].'</td>';
 				$data .= '<td>'.$output->priority[$i].'</td>';
@@ -43,7 +45,7 @@
 			}
 		}
 
-		$details['count'] = $i;
+		$details['count'] = $count;
 		$details['data'] = $data;
 		echo json_encode($details, true);
 	}else{
