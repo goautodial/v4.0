@@ -44,8 +44,8 @@
 		}
 
 		$details['count'] = $i;
-		$details['data']
-		echo json_encode($data, true);
+		$details['data'] = $data;
+		echo json_encode($details, true);
 	}else{
 		echo json_encode("empty", true);
 	}

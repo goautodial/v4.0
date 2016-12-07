@@ -1364,6 +1364,19 @@ error_reporting(E_ALL);*/
 						$("#lists_list").css("width","100%");
 					}
 			});
+
+			$.ajax({
+				url: "./php/GetLeadsOnHopper.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						// console.log(response);
+						$('.count_leads').text(response.count);
+					}
+			});
 		}
 
 		function get_leads_on_hopper(campaign_id){
@@ -1466,18 +1479,6 @@ error_reporting(E_ALL);*/
 				var campaign_id = $(this).data('id');
 				// alert(campaign_id);
 				get_lists(campaign_id);
-				$.ajax({
-					url: "./php/GetLeadsOnHopper.php",
-					type: 'POST',
-					data: {
-						campaign_id : campaign_id,
-					},
-					dataType: 'json',
-					success: function(response) {
-							// console.log(response);
-							$('.count_leads').text(response.count);
-						}
-				});
 			});
 			
 			$(document).on('click', '.view-leads-on-hopper', function(){
