@@ -23,10 +23,10 @@ error_reporting(E_ALL);
     $data = curl_exec($ch);
     curl_close($ch);
     $output = json_decode($data);
-    echo "<pre>";
-	print_r($output);
-	echo "</pre>";
-	/*
+//    echo "<pre>";
+//	print_r($output);
+//	echo "</pre>";
+	
     if($output->result == "success"){
         //$filename = $output->getReports->filename;
         
@@ -39,12 +39,29 @@ error_reporting(E_ALL);
         header('Content-Disposition: attachment; filename='.$filename);
         
         echo $header."\n";
-        
-        for($i=0; $i <= count($output->header); $i++){
-            echo $output->row[$i]."\n";
+		
+        for($i=0; $i < count($output->row); $i++){
+			$row = $output->row[$i];
+			
+			// filter data replaces comma with |
+			for($x=0; $x < count($row);$x++){
+				$row_data = str_replace(",","|",$row[$x]);
+				$filtered_row[] = $row_data;
+			}
+			
+			$array_filtered_row = implode(",",$filtered_row);
+			echo $array_filtered_row;
+			echo "\n";
+			
+			$array_filtered_row = "";
+			unset($filtered_row);
+			
         }
         
         
-    }*/
+    }else{
+		echo "Failed to Process Request... Please inform the administrator.";
+		//$output->query;
+	}
    
 ?>
