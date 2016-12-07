@@ -74,7 +74,7 @@
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
             <!-- Left side column. contains the logo and sidebar -->
-			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
+			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar(), $_SESSION['usergroup']); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side content-wrapper">
