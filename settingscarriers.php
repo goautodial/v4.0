@@ -364,10 +364,8 @@ host=</textarea>
 									<div class="col-sm-8 mb">
 										<select class="form-control" name="copy_server_ip">
 											<?php
-												for($i=0;$i<1;$i++){
-											?>
-												<option value="<?php echo $carriers->server_ip[$i];?>"><?php echo $carriers->server_ip[$i];?> - GOautodial Meetme Server</option>
-											<?php
+												for($i=0;$i<count($servers->server_ip);$i++){
+													echo "<option value=".$servers->server_ip[$i].">".$servers->server_ip[$i]." - ".$servers->server_description[$i]."</option>";
 												}
 											?>
 										</select>
