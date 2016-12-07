@@ -23,10 +23,10 @@ error_reporting(E_ALL);
     $data = curl_exec($ch);
     curl_close($ch);
     $output = json_decode($data);
-//    echo "<pre>";
-//	print_r($output);
-//	echo "</pre>";
-	
+    echo "<pre>";
+	print_r($output);
+	echo "</pre>";
+	/*
     if($output->result == "success"){
         //$filename = $output->getReports->filename;
         
@@ -45,6 +45,6 @@ error_reporting(E_ALL);
         }
         
         
-    }
+    }*/
    
 ?>

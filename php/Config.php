@@ -2,8 +2,8 @@
 // specific instalation configuration
 
 // database configuration
-define('DB_USERNAME', 'creamcrm');
-define('DB_PASSWORD', 'creamcrm');
+define('DB_USERNAME', 'goautodialu');
+define('DB_PASSWORD', 'pancit8888');
 define('DB_HOST', 'localhost');
 //define('DB_NAME', 'db_creamcrm');
 define('DB_NAME', 'goautodial');

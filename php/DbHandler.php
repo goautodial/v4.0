@@ -299,13 +299,26 @@ class DbHandler {
 	                //$arr["email"] = $userobj["email"];
 	                //$arr["role"] = $userobj["role"];
 	                //$arr["avatar"] = $userobj["avatar"];
+					switch ($user_role) {
+						case 9:
+							$user_role = CRM_DEFAULTS_USER_ROLE_ADMIN;
+							break;
+						case 8:
+							$user_role = CRM_DEFAULTS_USER_ROLE_SUPERVISOR;
+							break;
+						case 7:
+							$user_role = CRM_DEFAULTS_USER_ROLE_TEAMLEADER;
+							break;
+						default:
+							$user_role = CRM_DEFAULTS_USER_ROLE_AGENT;
+					}
 			
 					$arr["id"] = $userobj->user_id;
 	                $arr["name"] = $userobj->full_name;
 	                $arr["email"] = $userobj->email;
 	                $arr["phone_login"] = $userobj->phone_login;
 	                $arr["phone_pass"] = $userobj->phone_pass;
-					$arr["role"] = ($user_role == 9 || $user_role == 8 || $user_role == 0) ? 0 : 3;
+					$arr["role"] = $user_role;
 					$arr["avatar"] = $userobj->avatar;
 					$arr["user_group"] = $userobj->user_group;
 	                
@@ -388,13 +401,26 @@ class DbHandler {
 	    //             $arr["email"] = $userobj["email"];
 	    //             $arr["role"] = $userobj["user_group"];
 	    //             $arr["avatar"] = "";
+					switch ($user_role) {
+						case 9:
+							$user_role = CRM_DEFAULTS_USER_ROLE_ADMIN;
+							break;
+						case 8:
+							$user_role = CRM_DEFAULTS_USER_ROLE_SUPERVISOR;
+							break;
+						case 7:
+							$user_role = CRM_DEFAULTS_USER_ROLE_TEAMLEADER;
+							break;
+						default:
+							$user_role = CRM_DEFAULTS_USER_ROLE_AGENT;
+					}
 
 	                $arr["id"] = $userobj->user_id;
 	                $arr["name"] = $userobj->full_name;
 	                $arr["email"] = $userobj->email;
 	                $arr["phone_login"] = $userobj->phone_login;
 	                $arr["phone_pass"] = $userobj->phone_pass;
-					$arr["role"] = ($user_role == 9 || $user_role == 8 || $user_role == 0) ? 0 : 3;
+					$arr["role"] = $user_role;
 					$arr["avatar"] = $userobj->avatar;
 					$arr["user_group"] = $userobj->user_group;
 	                
