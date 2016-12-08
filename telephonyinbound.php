@@ -466,9 +466,9 @@
 				
 				<form action="AddTelephonyIVR.php" method="POST" id="create_ivr" role="form">
 					<div class="row">
-						<h4>Account Details
+						<h4>Call Menu Details
                            <br>
-                           <small>Assign then Enter Account and Login Details</small>
+                           <small>Enter Call Menu Details</small>
                         </h4>
                         <fieldset>
 							<div class="form-group mt">
@@ -612,9 +612,9 @@
 						</fieldset>
 
 				<!-- STEP 2 -->
-						<h4>Account Details
+						<h4>Call Menu Entry
 	                       <br>
-	                       <small>Assign then Enter Account and Login Details</small>
+	                       <small>Set Default Call Menu Entry</small>
 	                    </h4>
 	                    <fieldset>
 							
