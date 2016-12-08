@@ -120,20 +120,8 @@ if (isset($_POST["cid"])) {
 
 							# Result was OK!
 							if(isset($output->ct_default_start)){
-								$default_start = $output->ct_default_start;
-								$default_stop  = $output->ct_default_stop;
-								if ($default_start < 1000) {
-									$default_start = "0{$default_start}";
-								} else if ($default_start < 100) {
-									$default_start = "00{$default_start}";
-								}
-								if ($default_stop < 1000) {
-									$default_stop = "0{$default_stop}";
-								} else if ($default_stop < 100) {
-									$default_stop = "00{$default_stop}";
-								}
-								$start_default =  date('h:i A', strtotime($default_start));
-								$stop_default =  date('h:i A', strtotime($default_stop));
+								$start_default =  date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start)));
+								$stop_default =  date('h:i A', strtotime(sprintf("%04d", $output->ct_default_stop)));
 							}else{
 								$start_default =  "12:00 AM";
 								$stop_default =  "12:00 AM";
