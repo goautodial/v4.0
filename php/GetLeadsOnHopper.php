@@ -47,6 +47,7 @@
 
 		$details['count'] = $count;
 		$details['data'] = $data;
+		$details['dial_statuses'] = $output->camp_dial_status;
 		echo json_encode($details, true);
 	}else{
 		echo json_encode("empty", true);
