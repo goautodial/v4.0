@@ -779,8 +779,8 @@ host=</textarea>
 					//$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				 });
-
-				$('.delete-carrier').click(function(){
+				
+				$(document).on('click','.delete-carrier',function() {
 					var id = $(this).attr('data-id');
                     swal({
                         title: "Are you sure?",

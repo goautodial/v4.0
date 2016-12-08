@@ -1329,7 +1329,11 @@ error_reporting(E_ALL);*/
 						$('#hotkey_data_container').html(response);
 						$('#hotkeys_list').DataTable({
 							"searching": true,
-							bFilter: true
+							bFilter: true,
+							"aoColumnDefs": [{
+								"bSearchable": false,
+								"aTargets": [ 3 ]
+							}]
 						});
 						$("#hotkeys_list").css("width","100%");
 					}
