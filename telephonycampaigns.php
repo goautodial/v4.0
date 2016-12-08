@@ -1359,13 +1359,26 @@ error_reporting(E_ALL);*/
 						$('#lists_data_container').html(response.data);
 						$('.count_active').text(response.count_active);
 						$('.count_inactive').text(response.count_inactive);
-						$('.count_leads').text(response.lead_count);
+						
 						$('.view-leads-on-hopper').attr('data-campaign', campaign_id);
 						$('#lists_list').DataTable({
 							"searching": true,
 							bFilter: true
 						});
 						$("#lists_list").css("width","100%");
+					}
+			});
+
+			$.ajax({
+				url: "./php/GetLeadsOnHopper.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						// console.log(response);
+						$('.count_leads').text(response.count);
 					}
 			});
 		}
@@ -1379,14 +1392,14 @@ error_reporting(E_ALL);*/
 				},
 				dataType: 'json',
 				success: function(response) {
-						console.log(response);
+						// console.log(response);
 						$('#modal_view_lists').modal('hide');
 						$('#modal_view_leads_on_hopper').modal('show');
 						$('body').addClass('modal-open');
 						var table = $('#leads_on_hopper').DataTable();
 						table.fnClearTable();
 						table.fnDestroy();
-						$('#leads_hopper_container').html(response);
+						$('#leads_hopper_container').html(response.data);
 						$('#leads_on_hopper').DataTable({
 							"searching": true,
 							bFilter: true

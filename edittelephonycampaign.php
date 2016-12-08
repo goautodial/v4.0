@@ -273,7 +273,7 @@ $lists = $ui->API_goGetAllLists();
 																	<select name="dial_prefix" id="dial_prefix" class="form-control">
 																		<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
 																		<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
-																			<?php if(!empty($carriers->carrier_id[$i])) { ?>
+																			<?php if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') { ?>
 																				<option value="<?php echo $carriers->carrier_id[$i]; ?>" <?php if($campaign->data->dial_prefix == $carriers->carrier_id[$i]) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
 																			<?php } ?>
 																		<?php } ?>
