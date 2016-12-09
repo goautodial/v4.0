@@ -216,6 +216,7 @@ $lists = $ui->API_goGetAllLists();
 										    						<option VALUE="NORMAL" <?php if($campaign->data->auto_dial_level == 2) echo "selected";?>>NORMAL</option>
 																	<option VALUE="HIGH" <?php if($campaign->data->auto_dial_level == 4) echo "selected";?>>HIGH</option>
 										    						<option VALUE="MAX"<?php if($campaign->data->auto_dial_level == 6) echo "selected";?>>MAX</option>
+										    						<option VALUE="MAX_PREDICTIVE"<?php if($campaign->data->auto_dial_level == 10 || $campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?> disabled>MAX_PREDICTIVE</option>
 																	<option value="ADVANCE">ADVANCE</option>
 																	</select>
 																</div>
@@ -2178,7 +2179,7 @@ $lists = $ui->API_goGetAllLists();
 					$('#auto_dial_level option[value=SLOW]').prop('selected', true);
 				}else if(value == "ADAPT_TAPERED"){
 					$('#auto_dial_level').prop('disabled', true);
-					$('#auto_dial_level option[value=MAX]').prop('selected', true);
+					$('#auto_dial_level option[value=MAX_PREDICTIVE]').prop('selected', true);
 					// $('#auto_dial_level_adv').addClass('hide');
 				}else if(value == "INBOUND_MAN"){
 					$('#auto_dial_level').prop('disabled', true);
