@@ -207,10 +207,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_sunday" value="0">
+											<input type="text" class="form-control start_time" name="start_sunday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_sunday" value="0">
+											<input type="text" class="form-control end_time" name="stop_sunday" value="">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_sunday">
@@ -232,10 +232,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_monday" value="0">
+											<input type="text" class="form-control start_time" name="start_monday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_monday" value="0">
+											<input type="text" class="form-control end_time" name="stop_monday" value="">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_monday">
@@ -257,10 +257,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_tuesday" value="0">
+											<input type="text" class="form-control start_time" name="start_tuesday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_tuesday" value="0">
+											<input type="text" class="form-control end_time" name="stop_tuesday" value="">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_tuesday">
@@ -282,10 +282,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_wednesday" value="0">
+											<input type="text" class="form-control start_time" name="start_wednesday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_wednesday" value="0">
+											<input type="text" class="form-control end_time" name="stop_wednesday" value="">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_wednesday">
@@ -307,10 +307,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_thursday" value="0">
+											<input type="text" class="form-control start_time" name="start_thursday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_thursday" value="0">
+											<input type="text" class="form-control end_time" name="stop_thursday" value="">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_thursday">
@@ -332,10 +332,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_friday" value="0">
+											<input type="text" class="form-control start_time" name="start_friday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_friday" value="0">
+											<input type="text" class="form-control end_time" name="stop_friday" value="">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_friday">
@@ -357,10 +357,10 @@
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
-											<input type="text" class="form-control start_time" name="start_saturday" value="0">
+											<input type="text" class="form-control start_time" name="start_saturday" value="">
 										</div>
 										<div class="col-lg-3">
-											<input type="text" class="form-control end_time" name="stop_saturday" value="0">
+											<input type="text" class="form-control end_time" name="stop_saturday" value="">
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_saturday">
