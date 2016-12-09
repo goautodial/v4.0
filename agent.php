@@ -40,6 +40,9 @@ $lh = \creamy\LanguageHandler::getInstance();
 $db = new \creamy\DbHandler();
 $user = \creamy\CreamyUser::currentUser();
 
+if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_AGENT){
+    header("location: index.php");
+}
 
 $lead_id = $_GET['lead_id'];
 $output = $ui->API_GetLeadInfo($lead_id);
