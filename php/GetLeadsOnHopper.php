@@ -26,9 +26,11 @@
 		$data = '';
 		$i=0;
 		$count = 0;
+		$dial_status = '';
 		for($i=0;$i<=count($output->lead_id);$i++) {
 			if(!empty($output->lead_id[$i])){
 				$count = $count + 1;
+				$dial_status = $output->camp_dial_status[$i];
 				$data .= '<tr>';
 				$data .= '<td>'.$output->hopper_id[$i].'</td>';
 				$data .= '<td>'.$output->priority[$i].'</td>';
@@ -47,6 +49,7 @@
 
 		$details['count'] = $count;
 		$details['data'] = $data;
+		$details['dial_statuses'] = $dial_status;
 		echo json_encode($details, true);
 	}else{
 		echo json_encode("empty", true);

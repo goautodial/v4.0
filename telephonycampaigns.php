@@ -1377,7 +1377,7 @@ error_reporting(E_ALL);*/
 				},
 				dataType: 'json',
 				success: function(response) {
-						// console.log(response);
+						console.log(response);
 						$('.count_leads').text(response.count);
 					}
 			});
