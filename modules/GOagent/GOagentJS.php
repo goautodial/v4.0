@@ -6061,7 +6061,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         swal("<?=$lh->translationFor('phone_number_not_on_list')?>.");
                         alert_displayed = 1;
                     }
-                    if (ERR_MSG.match(regMDFvarDNC)) {
+                    if (ERR_MSG.match(regMDFvarTIME)) {
                         swal("<?=$lh->translationFor('phone_number_outside_time')?>.");
                         alert_displayed = 1;
                     }
