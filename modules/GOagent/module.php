@@ -568,7 +568,7 @@ EOF;
 				</div>
 				<p class="text-center hidden" style="padding-top: 10px;">
 					<span class="material-switch">
-						<input type="checkbox" name="closerSelectBlended" id="closerSelectBlended" value="closer" />
+						<input type="checkbox" name="closerSelectBlended" id="closerSelectBlended" value="closer" checked />
 						<label for="closerSelectBlended" class="label-primary" style="width: 0px; margin-left: 10px;"></label>
 					</span>
 					<span style="padding-left: 45px;">$blendedCalling ($outboundActivated)</span>
