@@ -20,10 +20,7 @@
 	$postfields["campaign_desc"] 				= $_POST["campaign_desc"];
 	$postfields["active"] 						= $_POST["active"];
 	$postfields["dial_method"] 					= $_POST["dial_method"];
-
-	if($_POST["dial_method"] == "RATIO")
-		$postfields["auto_dial_level"]			= $_POST["auto_dial_level"];
-
+	$postfields["auto_dial_level"]				= $_POST["auto_dial_level"];
 	$postfields["auto_dial_level_adv"] 			= $_POST["auto_dial_level_adv"];
 	$postfields["dial_prefix"] 					= $_POST["dial_prefix"];
 	$postfields["custom_prefix"] 				= $_POST["custom_prefix"];
