@@ -1,12 +1,12 @@
 <?php	
 	
 	###################################################
-	### Name: settingscalltimes.php 				###
-	### Functions: Manage Calltimes 				###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
+	### Name: settingscalltimes.php 	   ###
+	### Functions: Manage Calltimes 	   ###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	   ###
+	### Version: 4.0 	   ###
+	### Written by: Alexander Jim H. Abenoja	   ###
+	### License: AGPLv2	   ###
 	###################################################
 
 	require_once('./php/UIHandler.php');
@@ -189,7 +189,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_default">
-												<option value="" selected> - - - Audio Chooser - - - </option>
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<option value=""> - - - NONE - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -214,7 +215,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_sunday">
-												<option value="" selected> - - - Audio Chooser - - - </option>
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<option value=""> - - - NONE - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -239,7 +241,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_monday">
-												<option value="" selected> - - - Audio Chooser - - - </option>
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<option value=""> - - - NONE - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -264,7 +267,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_tuesday">
-												<option value="" selected> - - - Audio Chooser - - - </option>
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<option value=""> - - - NONE - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -289,7 +293,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_wednesday">
-												<option value="" selected> - - - Audio Chooser - - - </option>
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<option value=""> - - - NONE - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -314,7 +319,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_thursday">
-												<option value="" selected> - - - Audio Chooser - - - </option>
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<option value=""> - - - NONE - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -339,7 +345,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_friday">
-												<option value="" selected> - - - Audio Chooser - - - </option>
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<option value=""> - - - NONE - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -364,7 +371,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_saturday">
-												<option value="" selected> - - - Audio Chooser - - - </option>
+												<option value="" selected disabled> - - - Audio Chooser - - - </option>
+												<option value=""> - - - NONE - - - </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
