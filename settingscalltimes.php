@@ -143,7 +143,7 @@
 							<div class="form-group">
 								<label class="control-label col-lg-4">Call Time Comments</label>
 								<div class="col-lg-8 mb">
-									<input type="text" class="form-control call-time-comments" name="call_time_comments" id="call_time_comments" placeholder="Call Time Comments (Mandatory)" maxlength="255" required>
+									<input type="text" class="form-control call-time-comments" name="call_time_comments" id="call_time_comments" placeholder="Call Time Comments (Mandatory)" maxlength="255" >
 								</div>
 							</div>
 							<div class="form-group">

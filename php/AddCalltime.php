@@ -16,26 +16,26 @@
         $start_default =	(strlen($_POST['start_default']) > 0) ? date('Hi', strtotime($_POST['start_default'])) : "0000";
         $stop_default =		(strlen($_POST['stop_default']) > 0) ? date('Hi', strtotime($_POST['stop_default'])) : "0000";
 
-        $start_sunday =		(strlen($_POST['start_sunday']) > 0) ? date('Hi', strtotime($_POST['start_sunday'])) : $start_default;
-        $stop_sunday =		(strlen($_POST['stop_sunday']) > 0) ? date('Hi', strtotime($_POST['stop_sunday'])) : $stop_default;
+        $start_sunday =		(strlen($_POST['start_sunday']) > 0) ? date('Hi', strtotime($_POST['start_sunday'])) : "0000";
+        $stop_sunday =		(strlen($_POST['stop_sunday']) > 0) ? date('Hi', strtotime($_POST['stop_sunday'])) : "0000";
 
-        $start_monday =		(strlen($_POST['start_monday']) > 0) ? date('Hi', strtotime($_POST['start_monday'])) : $start_default;
-        $stop_monday =		(strlen($_POST['stop_monday']) > 0) ? date('Hi', strtotime($_POST['stop_monday'])) : $stop_default;
+        $start_monday =		(strlen($_POST['start_monday']) > 0) ? date('Hi', strtotime($_POST['start_monday'])) : "0000";
+        $stop_monday =		(strlen($_POST['stop_monday']) > 0) ? date('Hi', strtotime($_POST['stop_monday'])) : "0000";
 
-        $start_tuesday =	(strlen($_POST['start_tuesday']) > 0) ? date('Hi', strtotime($_POST['start_tuesday'])) : $start_default;
-        $stop_tuesday =		(strlen($_POST['stop_tuesday']) > 0) ? date('Hi', strtotime($_POST['stop_tuesday'])) : $stop_default;
+        $start_tuesday =	(strlen($_POST['start_tuesday']) > 0) ? date('Hi', strtotime($_POST['start_tuesday'])) : "0000";
+        $stop_tuesday =		(strlen($_POST['stop_tuesday']) > 0) ? date('Hi', strtotime($_POST['stop_tuesday'])) : "0000";
 
-        $start_wednesday =	(strlen($_POST['start_wednesday']) > 0) ? date('Hi', strtotime($_POST['start_wednesday'])) : $start_default;
-        $stop_wednesday =	(strlen($_POST['stop_wednesday']) > 0) ? date('Hi', strtotime($_POST['stop_wednesday'])) : $stop_default;
+        $start_wednesday =	(strlen($_POST['start_wednesday']) > 0) ? date('Hi', strtotime($_POST['start_wednesday'])) : "0000";
+        $stop_wednesday =	(strlen($_POST['stop_wednesday']) > 0) ? date('Hi', strtotime($_POST['stop_wednesday'])) : "0000";
 
-        $start_thursday =	(strlen($_POST['start_thursday']) > 0) ? date('Hi', strtotime($_POST['start_thursday'])) : $start_default;
-        $stop_thursday =	(strlen($_POST['stop_thursday']) > 0) ? date('Hi', strtotime($_POST['stop_thursday'])) : $stop_default;
+        $start_thursday =	(strlen($_POST['start_thursday']) > 0) ? date('Hi', strtotime($_POST['start_thursday'])) : "0000";
+        $stop_thursday =	(strlen($_POST['stop_thursday']) > 0) ? date('Hi', strtotime($_POST['stop_thursday'])) : "0000";
 
-        $start_friday =		(strlen($_POST['start_friday']) > 0) ? date('Hi', strtotime($_POST['start_friday'])) : $start_default;
-        $stop_friday =		(strlen($_POST['stop_friday']) > 0) ? date('Hi', strtotime($_POST['stop_friday'])) : $stop_default;
+        $start_friday =		(strlen($_POST['start_friday']) > 0) ? date('Hi', strtotime($_POST['start_friday'])) : "0000";
+        $stop_friday =		(strlen($_POST['stop_friday']) > 0) ? date('Hi', strtotime($_POST['stop_friday'])) : "0000";
 
-        $start_saturday =	(strlen($_POST['start_saturday']) > 0) ? date('Hi', strtotime($_POST['start_saturday'])) : $start_default;
-        $stop_saturday =	(strlen($_POST['stop_saturday']) > 0) ? date('Hi', strtotime($_POST['stop_saturday'])) : $stop_default;
+        $start_saturday =	(strlen($_POST['start_saturday']) > 0) ? date('Hi', strtotime($_POST['start_saturday'])) : "0000";
+        $stop_saturday =	(strlen($_POST['stop_saturday']) > 0) ? date('Hi', strtotime($_POST['stop_saturday'])) : "0000";
 
         $postfields["goUser"]             = goUser; #Username goes here. (required)
         $postfields["goPass"]             = goPass; #Password goes here. (required)
