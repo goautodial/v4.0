@@ -2643,6 +2643,7 @@ error_reporting(E_ALL);*/
 		function dialMethod(value){
 			if(value == "RATIO"){
 				$('#auto-dial-level').prop('disabled', false);
+				$('#auto-dial-level option[value=OFF]').prop('disabled', true);
 				$('#auto-dial-level option[value=SLOW]').prop('selected', true);
 				$('div.auto-dial-level').removeClass('hide');
 			}else if(value == "ADAPT_TAPERED"){
