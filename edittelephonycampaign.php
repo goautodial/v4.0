@@ -130,21 +130,27 @@ $lists = $ui->API_goGetAllLists();
                 <section class="content">
 					<div class="panel panel-default">
 
-						<?php
-	                		if(isset($_GET['message'])){
-	                			echo '<div class="col-lg-12" style="margin-top: 10px;">';
-	                			if($_GET['message'] == "Success"){
-	                				echo '<div class="alert alert-success">
-									  <strong>Success!</strong> Campaign has been modified.
-									</div>';
-	                			}else{
-	                				echo '<div class="alert alert-danger">
-									  <strong>Error!</strong> Something went wrong please contact administrator.
-									</div>';
-	                			}
-	                			echo '</div>';
-	                		}
-	                	?>
+					<?php
+						if(isset($_GET['message'])){
+					?>
+					<script>
+						$(document).ready(function() {
+					<?php if($_GET['message'] == "Success"){ ?>
+						swal({	title: "Success",
+							text: "Campaign Modified Successfully!",
+							type: "success"
+						},function(){
+								window.location.href = 'telephonycampaigns.php';
+						});
+					<?php }else{ ?>
+							sweetAlert("Oops...", "Something went wrong.", "error");
+					<?php	}	?>
+						});
+					</script>
+					<?php	
+						}
+					?>
+					
 						<form id="campaign_form_edit" class="form-horizontal"  action="./php/ModifyTelephonyCampaign.php" method="POST" enctype="multipart/form-data">
 							<input type="hidden" name="campaign_id" value="<?php echo $campaign->data->campaign_id;?>">
 							<input type="hidden" name="campaign_type" value="<?php echo $campaign->campaign_type;?>">
