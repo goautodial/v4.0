@@ -606,11 +606,11 @@ error_reporting(E_ALL);*/
 				    				</div>
 				    			</div>
 				    			<?php $carriers = $ui->getCarriers(); ?>
-				    			<div class="form-group carrier-to-use">
+				    			<div class="form-group col-lg-12 carrier-to-use">
 				    				<label class="control-label col-lg-5">Carrier to use for this campaign:</label>
 				    				<div class="col-lg-7 mb">
-				    					<div class="row">
-				    						<div class="col-lg-12">
+										<div class="col-lg-12">
+											<div class="row">
 												<select name="dial_prefix" id="dial_prefix" class="form-control">
 													<option value="CUSTOM" selected="selected">CUSTOM DIAL PREFIX</option>
 													<?php
@@ -626,8 +626,8 @@ error_reporting(E_ALL);*/
 													?>
 												</select>
 											</div>
-											<div class="col-lg-12 mt custom-prefix">
-												<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="9" min="0" max="15" required>
+											<div class="row mt custom-prefix">
+												<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="9" min="0" maxlength="15" required>
 											</div>
 										</div>
 									</div>
