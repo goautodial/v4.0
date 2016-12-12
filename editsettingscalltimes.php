@@ -110,77 +110,77 @@ if (isset($_POST["cid"])) {
 						$data = curl_exec($ch);
 						curl_close($ch);
 						$output = json_decode($data);
-
+						//echo "<pre>";
 						//var_dump($output);
-
+						//echo "</pre>";
 						if ($output->result=="success") {
 							
 							$user_groups = $ui->API_goGetUserGroupsList();
 							$voicefiles = $ui->API_GetVoiceFilesList();
 
 							# Result was OK!
-							if(isset($output->ct_default_start)){
+							if($output->ct_default_start != $output->ct_default_stop){
 								$start_default =  date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start)));
 								$stop_default =  date('h:i A', strtotime(sprintf("%04d", $output->ct_default_stop)));
 							}else{
-								$start_default =  "12:00 AM";
-								$stop_default =  "12:00 AM";
+								$start_default =  "NULL";
+								$stop_default =  "NULL";
 							}
 							
-							if(isset($output->ct_sunday_start)){
+							if($output->ct_sunday_start != $output->ct_sunday_stop){
 								$start_sunday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_start)));
 								$stop_sunday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_stop)));
 							}else{
-								$start_sunday =  "12:00 AM";
-								$stop_sunday =  "12:00 AM";
+								$start_sunday =  "NULL";
+								$stop_sunday =  "NULL";
 							}
 							
-							if(isset($output->ct_monday_start)){
+							if($output->ct_monday_start != $output->ct_monday_stop){
 								$start_monday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_start)));
 								$stop_monday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_stop)));
 							}else{
-								$start_monday =  "12:00 AM";
-								$stop_monday =  "12:00 AM";
+								$start_monday =  "NULL";
+								$stop_monday =  "NULL";
 							}
 
-							if(isset($output->ct_tuesday_start)){
+							if($output->ct_tuesday_start != $output->ct_tuesday_stop){
 								$start_tuesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_start)));
 								$stop_tuesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_stop)));
 							}else{
-								$start_tuesday =  "12:00 AM";
-								$stop_tuesday =  "12:00 AM";
+								$start_tuesday =  "NULL";
+								$stop_tuesday =  "NULL";
 							}
 
-							if(isset($output->ct_wednesday_start)){
+							if($output->ct_wednesday_start != $output->ct_wednesday_stop){
 								$start_wednesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_start)));
 								$stop_wednesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_stop)));
 							}else{
-								$start_wednesday =  "12:00 AM";
-								$stop_wednesday =  "12:00 AM";
+								$start_wednesday =  "NULL";
+								$stop_wednesday =  "NULL";
 							}
 
-							if(isset($output->ct_thursday_start)){
+							if($output->ct_thursday_start != $output->ct_thursday_stop){
 								$start_thursday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_start)));
 								$stop_thursday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_stop)));
 							}else{
-								$start_thursday =  "12:00 AM";
-								$stop_thursday =  "12:00 AM";
+								$start_thursday =  "NULL";
+								$stop_thursday =  "NULL";
 							}
 
-							if(isset($output->ct_friday_start)){
+							if($output->ct_friday_start != $output->ct_friday_stop){
 								$start_friday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_start)));
 								$stop_friday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_stop)));
 							}else{
-								$start_friday =  "12:00 AM";
-								$stop_friday =  "12:00 AM";
+								$start_friday =  "NULL";
+								$stop_friday =  "NULL";
 							}
 
-							if(isset($output->ct_saturday_start)){
+							if($output->ct_saturday_start != $output->ct_saturday_stop){
 								$start_saturday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_start)));
 								$stop_saturday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_stop)));
 							}else{
-								$start_saturday =  "12:00 AM";
-								$stop_saturday =  "12:00 AM";
+								$start_saturday =  "NULL";
+								$stop_saturday =  "NULL";
 							}
 							
 						?>
@@ -490,9 +490,11 @@ if (isset($_POST["cid"])) {
 
 			    //initialize timepicker
 				$('.start_time').datetimepicker({
+					defaultDate: '',
                     format: 'LT'
                 });
                 $('.end_time').datetimepicker({
+					defaultDate: '',
                     format: 'LT'
                 });
 
@@ -521,8 +523,8 @@ if (isset($_POST["cid"])) {
                               }
                               else{
                                   	sweetAlert("Oops...", "Something went wrong!", "error");
-									$('#update_button').html("<i class='fa fa-check'></i> Update");
-									$('#modifyCalltimesOkButton').prop("disabled", false);
+	$('#update_button').html("<i class='fa fa-check'></i> Update");
+	$('#modifyCalltimesOkButton').prop("disabled", false);
                               }
                         }
                     });				
