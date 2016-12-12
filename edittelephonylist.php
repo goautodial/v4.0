@@ -134,13 +134,13 @@ $timezones = $ui->API_ListsTimezone($modifyid);
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;">Name:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control" name="name" value="<?php echo $output->list_name[$i];?>">
+											<input type="text" pattern=".{2,20}" class="form-control" name="name" value="<?php echo $output->list_name[$i];?>" maxlength="30">
 										</div>
 									</div>
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;">Description:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control" name="desc" value="<?php echo $output->list_description[$i];?>">
+											<input type="text" class="form-control" name="desc" value="<?php echo $output->list_description[$i];?>" maxlength="255">
 										</div>
 									</div>
 									<div class="form-group clearfix">
