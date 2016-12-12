@@ -415,19 +415,19 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="add_list_id">List ID:</label>
 							<div class="col-sm-9 mb">
-								<input type="text" class="form-control" name="add_list_id" id="add_list_id" placeholder="List ID" value="<?php echo $next_list;?>" disabled />
+								<input type="number" pattern=".{2,8}" class="form-control" name="add_list_id" id="add_list_id" placeholder="List ID" value="<?php echo $next_list;?>" maxlength="14" disabled />
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="list_name">List Name:</label>
 							<div class="col-sm-9 mb">
-								<input type="text" class="form-control" name="list_name" id="list_name" placeholder="List Name" value="<?php echo $next_listname;?>" />
+								<input type="text" pattern=".{2,20}" class="form-control" name="list_name" id="list_name" placeholder="List Name" value="<?php echo $next_listname;?>" maxlength="30" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="list_desc">List Description:</label>
 							<div class="col-sm-9 mb">
-								<input type="text" class="form-control" name="list_desc" id="list_desc" placeholder="List Description"  value="<?php echo $next_listdesc;?>"/>
+								<input type="text" class="form-control" name="list_desc" id="list_desc" placeholder="List Description"  value="<?php echo $next_listdesc;?>" maxlength="255" />
 							</div>
 						</div>
 						<div class="form-group">
@@ -579,19 +579,19 @@
 					var disabled = form.find(':input:disabled').removeAttr('disabled');
 					var serialized = form.serialize();
 
-	                if(list_id == ""){
+	                if(list_id === ""){
 	                    validate = 1;
 	                }
 
-	                if(list_name == ""){
+	                if(list_name === ""){
 	                    validate = 1;
 	                }
 
-	                if(list_desc == ""){
-	                    validate = 1;
-	                }
+	                //if(list_desc == ""){
+	                //    validate = 1;
+	                //}
 
-	                    if(validate == 0){
+	                    if(validate < 1){
 	                    //alert("Validated !");
 
 	                        $.ajax({
@@ -601,8 +601,8 @@
 	                            success: function(data) {
 	                              // console.log(data);
 	                                  if(data == 1){
-	                                        swal("Success!", "List Successfully Created!", "success")
-	                                        window.setTimeout(function(){location.reload()},3000)
+	                                        swal("Success!", "List Successfully Created!", "success");
+	                                        window.setTimeout(function(){location.reload();},3000);
 	                                        $('#submit_list').val("Loading");
 	                                  }
 	                                  else{
