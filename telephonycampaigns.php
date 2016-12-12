@@ -1,12 +1,12 @@
 <?php
 
 	###########################################################
-	### Name: telephonycampaigns.php 						###
-	### Functions: Manage Campaigns, Disposition			###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016			###
-	### Version: 4.0 										###
-	### Written by: Alexander Abenoja & Noel Umandap		###
-	### License: AGPLv2										###
+	### Name: telephonycampaigns.php 		   ###
+	### Functions: Manage Campaigns, Disposition		   ###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016		   ###
+	### Version: 4.0 		   ###
+	### Written by: Alexander Abenoja & Noel Umandap		   ###
+	### License: AGPLv2		   ###
 	###########################################################
 
 /*
@@ -611,11 +611,17 @@ error_reporting(E_ALL);*/
 				    						<div class="col-lg-12">
 												<select name="dial_prefix" id="dial_prefix" class="form-control">
 													<option value="CUSTOM" selected="selected">CUSTOM DIAL PREFIX</option>
-													<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
-														<?php if(!empty($carriers->carrier_id[$i])) { ?>
+													<?php
+														for($i=0;$i<=count($carriers->carrier_id);$i++) {
+															if(!empty($carriers->carrier_id[$i])) {
+																if($carriers->active[$i] == "Y"){
+													?>
 															<option value="<?php echo $carriers->carrier_id[$i]; ?>" <?php if($campaign->data->dial_prefix == $carriers->carrier_id[$i]) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
-														<?php } ?>
-													<?php } ?>
+													<?php
+																}
+															}
+														}
+													?>
 												</select>
 											</div>
 											<div class="col-lg-12 mt custom-prefix">

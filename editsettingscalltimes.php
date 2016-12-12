@@ -1,12 +1,12 @@
 <?php
 	
 	###################################################
-	### Name: settingscalltimes.php 				###
-	### Functions: Manage Calltimes 				###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
+	### Name: settingscalltimes.php 	   ###
+	### Functions: Manage Calltimes 	   ###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	   ###
+	### Version: 4.0 	   ###
+	### Written by: Alexander Jim H. Abenoja	   ###
+	### License: AGPLv2	   ###
 	###################################################
 
 	require_once('./php/CRMDefaults.php');
@@ -255,7 +255,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_default">
-															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<option value="" disabled> - - - Audio Chooser - - - </option>
+															<option value="" <?php if ($output->default_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -280,7 +281,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_sunday">
-															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<option value="" disabled> - - - Audio Chooser - - - </option>
+															<option value="" <?php if ($output->sunday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -305,7 +307,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_monday">
-															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<option value="" disabled> - - - Audio Chooser - - - </option>
+															<option value="" <?php if ($output->monday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -330,7 +333,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_tuesday">
-															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<option value="" disabled> - - - Audio Chooser - - - </option>
+															<option value="" <?php if ($output->tuesday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -355,7 +359,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_wednesday">
-															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<option value="" disabled> - - - Audio Chooser - - - </option>
+															<option value="" <?php if ($output->wednesday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -380,7 +385,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_thursday">
-															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<option value="" disabled> - - - Audio Chooser - - - </option>
+															<option value="" <?php if ($output->thursday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -405,7 +411,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_friday">
-															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<option value="" disabled> - - - Audio Chooser - - - </option>
+															<option value="" <?php if ($output->friday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -430,7 +437,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_saturday">
-															<option value="" selected disabled> - - - Audio Chooser - - - </option>
+															<option value="" disabled> - - - Audio Chooser - - - </option>
+															<option value="" <?php if ($output->saturday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
