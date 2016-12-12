@@ -1,12 +1,12 @@
 <?php
 
 	###########################################################
-	### Name: edittelephonycampaigns.php					###
-	### Functions: Edit Campaings, Disposition 				###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016			###
-	### Version: 4.0 										###
-	### Written by: Alexander Abenoja & Noel Umandap		###
-	### License: AGPLv2										###
+	### Name: edittelephonycampaigns.php		  ###
+	### Functions: Edit Campaings, Disposition 		  ###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016		  ###
+	### Version: 4.0 		  ###
+	### Written by: Alexander Abenoja & Noel Umandap		  ###
+	### License: AGPLv2		  ###
 	###########################################################
 
 	require_once('./php/CRMDefaults.php');

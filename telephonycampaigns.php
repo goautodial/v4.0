@@ -541,6 +541,7 @@ error_reporting(E_ALL);*/
 				    						<option value="MANUAL">MANUAL</option>
 				    						<option value="RATIO">AUTODIAL</option>
 				    						<option value="ADAPT_TAPERED">PREDICTIVE</option>
+											<option value="INBOUND_MAN">INBOUND MAN</option>
 				    					</select>
 				    				</div>
 				    			</div>
@@ -553,6 +554,7 @@ error_reporting(E_ALL);*/
 											<option VALUE="NORMAL">NORMAL</option>
 											<option VALUE="HIGH">HIGH</option>
 											<option VALUE="MAX">MAX</option>
+											<option VALUE="MAX_PREDICTIVE">MAX_PREDICTIVE</option>
 											<option value="ADVANCE">ADVANCE</option>
 				    					</select>
 				    				</div>
@@ -2426,6 +2428,7 @@ error_reporting(E_ALL);*/
 
 							}
 						?>
+					
 					//name
 						$('#campaign-name').keyup(function(){
 							var text = $(this).val();
@@ -2441,6 +2444,7 @@ error_reporting(E_ALL);*/
 						});
 
 					//dialmethod
+						
 						var dial_method = $('#dial-method').val();
 
 						dialMethod(dial_method);
@@ -2635,22 +2639,44 @@ error_reporting(E_ALL);*/
 		function clear_form(){
 
 		}
-
+	
 		function dialMethod(value){
 			if(value == "RATIO"){
 				$('#auto-dial-level').prop('disabled', false);
-				$('#auto-dial-level option[value="1.0"]').prop('selected', true);
+				$('#auto-dial-level option[value=SLOW]').prop('selected', true);
 				$('div.auto-dial-level').removeClass('hide');
 			}else if(value == "ADAPT_TAPERED"){
 				$('#auto-dial-level').prop('disabled', true);
-				$('#auto-dial-level option[value="0"]').prop('selected', true);
-				$('div.auto-dial-level').addClass('hide');
+				$('#auto-dial-level option[value=MAX_PREDICTIVE]').prop('selected', true);
+				$('div.auto-dial-level').removeClass('hide');
+			}else if(value == "INBOUND_MAN"){
+				$('#auto-dial-level').prop('disabled', true);
+				$('#auto-dial-level option[value=SLOW]').prop('selected', true);
+				$('div.auto-dial-level').removeClass('hide');
 			}else{
 				$('#auto-dial-level').prop('disabled', true);
-				$('#auto-dial-level option[value="0"]').prop('selected', true);
-				$('div.auto-dial-level').addClass('hide');
+				$('#auto-dial-level option[value=OFF]').prop('selected', true);
+				$('div.auto-dial-level').removeClass('hide');
 			}
+			
+			$('#auto_dial_level_adv').addClass('hide');
+			
 		}
+		//function dialMethod(value){
+		//	if(value == "RATIO"){
+		//		$('#auto-dial-level').prop('disabled', false);
+		//		$('#auto-dial-level option[value="1.0"]').prop('selected', true);
+		//		$('div.auto-dial-level').removeClass('hide');
+		//	}else if(value == "ADAPT_TAPERED"){
+		//		$('#auto-dial-level').prop('disabled', true);
+		//		$('#auto-dial-level option[value="0"]').prop('selected', true);
+		//		$('div.auto-dial-level').addClass('hide');
+		//	}else{
+		//		$('#auto-dial-level').prop('disabled', true);
+		//		$('#auto-dial-level option[value="0"]').prop('selected', true);
+		//		$('div.auto-dial-level').addClass('hide');
+		//	}
+		//}
 
 		function checkCampaign(campaign_id){
 			var status = '';
