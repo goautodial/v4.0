@@ -4008,14 +4008,17 @@ error_reporting(E_ERROR | E_PARSE);
 			//$result .= "<tr><td colspan='6'>".$output->query."</tr>";
 
 	    for($i=0; $i < count($output->uniqueid); $i++){
-			$action_Call = $this->getUserActionMenuForCallRecording($output->uniqueid[$i], $output->location[$i]);
+			$details = "<strong>Phone</strong>: <i>".$output->phone_number[$i]."</i><br/>";
+			$details .= "<strong>Date</strong>: <i>".date("M.d,Y h:i A", strtotime($output->end_last_local_call_time[$i]))."</i><br/>";
+		
+			$action_Call = $this->getUserActionMenuForCallRecording($output->uniqueid[$i], $output->location[$i], $details);
 
 			$d1 = strtotime($output->start_last_local_call_time[$i]);
 			$d2 = strtotime($output->end_last_local_call_time[$i]);
 
 			$diff = abs($d2 - $d1);
 			$duration = gmdate('H:i:s', $diff);
-
+			
 			$result .= "<tr>
 				<td>".date("M.d,Y h:i A", strtotime($output->end_last_local_call_time[$i]))."</td>
 				<td class='hide-on-low'>".$output->full_name[$i]."</td>
@@ -4036,10 +4039,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 
-	public function getUserActionMenuForCallRecording($id, $location, $fullname) {
-		$avatar = $this->getVueAvatar($fullname, NULL, 180);
-		//$avatar = "<avatar username='".$fullname."' :size=80>";
-
+	public function getUserActionMenuForCallRecording($id, $location, $details) {
 	    return "<div class='btn-group'>
 		    <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown'>".$this->lh->translationFor('choose_action')."
 		    <button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' style='height: 34px;'>
@@ -4047,7 +4047,7 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class='sr-only'>Toggle Dropdown</span>
 		    </button>
 		    <ul class='dropdown-menu' role='menu'>
-			<li><a class='play_audio' href='#' data-location='".$location."' data-avatar='".$avatar."'>Play Call Recording</a></li>
+			<li><a class='play_audio' href='#' data-location='".$location."' data-details='".$details."'>Play Call Recording</a></li>
 			<li><a class='download-call-recording' href='".$location."' download>Download Call Recording</a></li>
 		    </ul>
 		</div>";
@@ -4182,7 +4182,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    for($i=0;$i<count($output->file_name);$i++){
 
 	    $web_ip = getenv("SERVER_ADDR");
-	    $file_link = "https://".$web_ip."/sounds/".$output->file_name[$i];
+	    $file_link = "http://".$web_ip."/sounds/".$output->file_name[$i];
 
 	    //$file_link = "http://69.46.6.35/sounds/".$output->file_name[$i];
 
@@ -4206,7 +4206,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	private function getUserActionMenuForVoiceFiles($filename, $details) {
 		$web_ip = getenv("SERVER_ADDR");
-	    $file_link = "https://".$web_ip."/sounds/".$filename;
+	    $file_link = "http://".$web_ip."/sounds/".$filename;
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">

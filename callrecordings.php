@@ -1,12 +1,12 @@
 <?php
 
 	###################################################
-	### Name: callrecordings.php 					###
-	### Functions: Display, Search and Filter  		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
+	### Name: callrecordings.php 	   ###
+	### Functions: Display, Search and Filter  	   ###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016	   ###
+	### Version: 4.0 	   ###
+	### Written by: Alexander Jim H. Abenoja	   ###
+	### License: AGPLv2	   ###
 	###################################################
 
 	require_once('./php/UIHandler.php');
@@ -98,132 +98,132 @@ $callrecs = $ui->API_getListAllRecordings();
                 <!-- Main content -->
                 <section class="content">
                 	<div class="row">
-						<div class="col-lg-9">
-							<div class="form-group mb-xl">
-								<div class="has-clear">
-									<input type="text" placeholder="Search Phone Number, First or Last Name" id="search" class="form-control mb">
-									<span class="form-control-clear fa fa-close form-control-feedback"></span>
-								</div>
-								<div class="clearfix">
-									<button type="button" class="pull-left btn btn-default" id="search_button"> Search</button>
-									<div class="pull-right">
-										<label class="checkbox-inline c-checkbox" for="search_recordings">
-											<input id="search_recordings" name="table_filter" type="checkbox" checked disabled>
-											<span class="fa fa-check"></span> Recordings
-										</label>
-									</div>
-								</div>
-							</div>
-		                	<div class="panel panel-default">
-								<div class="panel-body">
+		<div class="col-lg-9">
+		<div class="form-group mb-xl">
+			<div class="has-clear">
+				<input type="text" placeholder="Search Phone Number, First or Last Name" id="search" class="form-control mb">
+				<span class="form-control-clear fa fa-close form-control-feedback"></span>
+			</div>
+			<div class="clearfix">
+				<button type="button" class="pull-left btn btn-default" id="search_button"> Search</button>
+				<div class="pull-right">
+					<label class="checkbox-inline c-checkbox" for="search_recordings">
+						<input id="search_recordings" name="table_filter" type="checkbox" checked disabled>
+						<span class="fa fa-check"></span> Recordings
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				
+				<div class="callrecordings_div">
+				<!-- Call Recordings panel tab -->
+					<legend>Call Recordings</legend>
+		
+					<!--==== Call Recordings ====-->
+					<table class="table table-striped table-bordered table-hover" id="table_callrecordings">
+					   <thead>
+						  <tr>
+							 <th nowrap>Date</th>
+							 <th nowrap class='hide-on-low'>Customer</th>
+							 <th nowrap class='hide-on-low'>Phone Number</th>
+							 <th nowrap class='hide-on-medium hide-on-low'>Agent</th>
+							 <th nowrap class='hide-on-medium hide-on-low'>Duration</th>
+							 <th nowrap>Action</th>
+						  </tr>
+					   </thead>
+					   <tbody>
+							<?php
+								for($i=0;$i < count($callrecs->uniqueid);$i++){
+									$details = "<strong>Phone</strong>: <i>".$callrecs->phone_number[$i]."</i><br/>";
+									$details .= "<strong>Agent</strong>: <i>".$callrecs->users[$i]."</i><br/>";
+									$details .= "<strong>Date</strong>: <i>".date("M.d,Y h:i A", strtotime($callrecs->end_last_local_call_time[$i]))."</i><br/>";
 									
-									<div class="callrecordings_div">
-									<!-- Call Recordings panel tab -->
-										<legend>Call Recordings</legend>
-
-										<!--==== Call Recordings ====-->
-										<table class="table table-striped table-bordered table-hover" id="table_callrecordings">
-										   <thead>
-											  <tr>
-												 <th nowrap>Date</th>
-												 <th nowrap class='hide-on-low'>Customer</th>
-												 <th nowrap class='hide-on-low'>Phone Number</th>
-												 <th nowrap class='hide-on-medium hide-on-low'>Agent</th>
-												 <th nowrap class='hide-on-medium hide-on-low'>Duration</th>
-												 <th nowrap>Action</th>
-											  </tr>
-										   </thead>
-										   <tbody>
-											   	<?php
-											   		for($i=0;$i < count($callrecs->uniqueid);$i++){
-
-												   		$d1 = strtotime($callrecs->start_last_local_call_time[$i]);
-														$d2 = strtotime($callrecs->end_last_local_call_time[$i]);
-
-														$diff = abs($d2 - $d1);
-
-														$action_Call = $ui->getUserActionMenuForCallRecording($callrecs->uniqueid[$i], $callrecs->location[$i], $callrecs->full_name[$i]);
-														//echo $callrecs->result;
-											   	?>
-														<tr>
-															<td nowrap><?php echo date("M.d,Y h:i A", strtotime($callrecs->end_last_local_call_time[$i]));?></td>
-															<td nowrap class='hide-on-low'><?php echo $callrecs->full_name[$i];?></td>
-															<td nowrap class='hide-on-low'><?php echo $callrecs->phone_number[$i];?></td>
-															<td nowrap class='hide-on-medium hide-on-low'><?php echo $callrecs->users[$i];?></td>
-															<td nowrap class='hide-on-medium hide-on-low'><?php echo gmdate('H:i:s', $diff); ?></td>
-															<td nowrap><?php echo $action_Call;?></td>
-														</tr>
-												<?php
-													}
-												?>
-										   </tbody>
-										</table>
-									</div>
-			               		</div><!-- /.body -->
-		               		</div><!-- /.panel -->
-	               		</div><!-- /.col-lg-9 -->
+									$d1 = strtotime($callrecs->start_last_local_call_time[$i]);
+									$d2 = strtotime($callrecs->end_last_local_call_time[$i]);
+									$diff = abs($d2 - $d1);
+									$action_Call = $ui->getUserActionMenuForCallRecording($callrecs->uniqueid[$i], $callrecs->location[$i], $details);
+									
+							?>
+									<tr>
+										<td nowrap><?php echo date("M.d,Y h:i A", strtotime($callrecs->end_last_local_call_time[$i]));?></td>
+										<td nowrap class='hide-on-low'><?php echo $callrecs->full_name[$i];?></td>
+										<td nowrap class='hide-on-low'><?php echo $callrecs->phone_number[$i];?></td>
+										<td nowrap class='hide-on-medium hide-on-low'><?php echo $callrecs->users[$i];?></td>
+										<td nowrap class='hide-on-medium hide-on-low'><?php echo gmdate('H:i:s', $diff); ?></td>
+										<td nowrap><?php echo $action_Call;?></td>
+									</tr>
+							<?php
+								}
+							?>
+					   </tbody>
+					</table>
+				</div>
+			</div><!-- /.body -->
+		</div><!-- /.panel -->
+	</div><!-- /.col-lg-9 -->
 <?php
 $agents = $ui->API_goGetAllUserLists();
 ?>
 	               		<div class="col-lg-3">
 	           				<h3 class="m0 pb-lg">Filters</h3>
 	           				<form id="search_form">
-
-		                        <div class="form-group">
-		                           <label>Add Filters:</label>
-		                           <div class="mb">
-			                            <div class="add_callrecording_filters">
-			                              	<select multiple="multiple" class="select2-3 form-control add_filters2" style="width:100%;">
-		                                    	<option value="filter_agent" class="contacts_filters" >Agent </option>
-			                             	</select>
-			                            </div>
-		                           </div>
-		                        </div>
+						<div class="form-group">
+						   <label>Add Filters:</label>
+						   <div class="mb">
+							<div class="add_callrecording_filters">
+									<select multiple="multiple" class="select2-3 form-control add_filters2" style="width:100%;">
+										<option value="filter_agent" class="contacts_filters" >Agent </option>
+									</select>
+								</div>
+						   </div>
+						</div>
 
 							<!-- CALL RECORDINGS FILTER -->
 		                    <div class="all_callrecording_filters">
 		                        <div class="callrecordings_filter_div">
 		                        	<div class="agent_filter_div" style="display:none;">
-										<div class="form-group">
-											<label>Agent: </label>
-											<div class="mb">
-												<select name="agent_filter" id="agent_filter" class="form-control">
-													<option value="" selected DISABLED> -- SELECT AN AGENT -- </option>
-													<?php
-														for($i=0; $i < count($agents->user_id);$i++){
-															echo '<option value="'.$agents->user[$i].'"> '.$agents->user[$i].' - '.$agents->full_name[$i].' </option>';
-														}
-													?>
-												</select>
-											</div>
-										</div>
-									</div>
-		               				<div class="form-group">
-			               				<label>Start Date:</label>
-							            <div class="form-group">
-							                <div class='input-group date' id='datetimepicker3'>
-							                    <input type='text' class="form-control" id="start_filterdate" placeholder="MM/DD/YYYY"/>
-							                    <span class="input-group-addon">
-							                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
-													<span class="fa fa-calendar"></span>
-							                    </span>
-							                </div>
-							            </div>
-							        </div>
-							        <div class="form-group">
-							            <label>End Date:</label>
-							            <div class="form-group">
-							                <div class='input-group date' id='datetimepicker4'>
-							                    <input type='text' class="form-control" id="end_filterdate" placeholder="MM/DD/YYYY" value="<?php echo date("m/d/Y H:i:s");?>"/>
-							                    <span class="input-group-addon">
-							                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
-							                        <span class="fa fa-calendar"></span>
-							                    </span>
-							                </div>
-							            </div>
-								    </div>
-								</div>
-							</div>
+				<div class="form-group">
+					<label>Agent: </label>
+					<div class="mb">
+						<select name="agent_filter" id="agent_filter" class="form-control">
+							<option value="" selected DISABLED> -- SELECT AN AGENT -- </option>
+							<?php
+								for($i=0; $i < count($agents->user_id);$i++){
+									echo '<option value="'.$agents->user[$i].'"> '.$agents->user[$i].' - '.$agents->full_name[$i].' </option>';
+								}
+							?>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Start Date:</label>
+				<div class="form-group">
+					<div class='input-group date' id='datetimepicker3'>
+						<input type='text' class="form-control" id="start_filterdate" placeholder="MM/DD/YYYY"/>
+						<span class="input-group-addon">
+							<!-- <span class="glyphicon glyphicon-calendar"></span>-->
+							<span class="fa fa-calendar"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>End Date:</label>
+				<div class="form-group">
+					<div class='input-group date' id='datetimepicker4'>
+						<input type='text' class="form-control" id="end_filterdate" placeholder="MM/DD/YYYY" value="<?php echo date("m/d/Y H:i:s");?>"/>
+						<span class="input-group-addon">
+							<!-- <span class="glyphicon glyphicon-calendar"></span>-->
+							<span class="fa fa-calendar"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+			</div>
+			</div>
 
 							<fieldset>
 							    <!--
@@ -257,7 +257,7 @@ $agents = $ui->API_goGetAllUserLists();
 
 	<!-- Modal -->
 	<div id="call-playback-modal" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog modal-sm">
 
 	    <!-- Modal content-->
 	    <div class="modal-content">
@@ -266,8 +266,10 @@ $agents = $ui->API_goGetAllUserLists();
 	        <h4 class="modal-title"><b>Call Recording Playback</b></h4>
 	      </div>
 	      <div class="modal-body">
-
-	      	<div class="play_avatar" style="padding: 20px 35%;"></div>
+		<center class="mt"><em class="fa fa-music fa-5x"></em></center>
+	      	<div class="row mt mb">
+			<center><span class="voice-details"></span></center>
+		</div>
 	      	<br/>
 			<div class="audio-player" style="width:100%"></div>
 		      	<!-- <audio controls>
@@ -328,14 +330,14 @@ $agents = $ui->API_goGetAllUserLists();
 				    $box.prop("checked", false);
 				  }
 				});
-
+				
 				/****
 				** Change between Contacts and Recordings
 				****/
 					// shows call recordings datatable if Recordings tickbox is checked
 					$(document).on('change','#search_recordings',function() {
-		            	$("#search_recordings").prop("disabled", true);
-
+						$("#search_recordings").prop("disabled", true);
+				
 						if($('#search_recordings').is(":checked")){
 
 							$(".callrecordings_div").show(); // show recordings table
@@ -593,10 +595,8 @@ $agents = $ui->API_goGetAllUserLists();
 					    sourceFile += '<source src="'+ audioFile +'" type="audio/mpeg" download="true"/>';
 					    sourceFile += '</audio>';
 
-					var avatar = $(this).attr('data-avatar');
-					//var avatar = '<avatar username="'+ fullname +'" :size=36></avatar>';
-
-					$('.play_avatar').html(avatar);
+					var voicedetails = $(this).attr('data-details');
+					$('.voice-details').html(voicedetails);
 					goAvatar._init(goOptions);
 					$('.download-audio-file').attr('href', audioFile);
 					$('.audio-player').html(sourceFile);
