@@ -131,7 +131,8 @@
 								<label class="control-label col-lg-4">Call Time ID</label>
 								<div class="col-lg-8 mb">
 									<label class="control-label call-time-id hide"></label>
-									<input type="text" class="form-control call-time-id-textbox" name="call_time_id" id="call_time_id" placeholder="Call Time ID (Mandatory)" title="Must be 3-10 characters only." minlength="3" maxlength="10" required>
+									<input type="text" class="form-control call-time-id-textbox" name="call_time_id" id="call_time_id" placeholder="Call Time ID (Mandatory)" title="Must be 2-10 characters only." minlength="2" maxlength="10" required>
+									<label id="calltime-duplicate-error"></label>
 								</div>
 							</div>
 							<div class="form-group">
@@ -402,7 +403,8 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-
+		var checker = 0;
+		
 		/*********************
 		** INITIALIZATION
 		*********************/
@@ -424,10 +426,18 @@
 			        transitionEffect: "slideLeft",
 			        onStepChanging: function (event, currentIndex, newIndex)
 			        {
-			        	// Allways allow step back to the previous step even if the current step is not valid!
-				        if (currentIndex > newIndex) {
-				            return true;
-				        }
+						// Allways allow step back to the previous step even if the current step is not valid!
+						if (currentIndex > newIndex) {
+							checker = 0;
+							return true;
+						}
+	
+						console.log(checker);
+						// Disable next if there are duplicates
+						if(checker > 0){
+							$(".body:eq(" + newIndex + ") .error", form).addClass("error");
+							return false;
+						}
 
 						// Clean up if user went backward before
 					    if (currentIndex < newIndex)
@@ -524,27 +534,27 @@
 		
 		/*********************
 		** FILTERS
-		*********************/	
+	*********************/	
 
-			// disable special characters on Fullname
-				$('#call_time_id').bind('keypress', function (event) {
-				    var regex = new RegExp("^[ A-Za-z0-9_-]*$");
-				    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-				    if (!regex.test(key)) {
-				       event.preventDefault();
-				       return false;
-				    }
-				});
+		// disable special characters on Fullname
+			$('#call_time_id').bind('keypress', function (event) {
+				var regex = new RegExp("^[a-zA-Z0-9_-]+$");
+				var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+				if (!regex.test(key)) {
+				   event.preventDefault();
+				   return false;
+				}
+			});
 
-			// disable special characters on Fullname
-				$('#call_time_name').bind('keypress', function (event) {
-				    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
-				    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-				    if (!regex.test(key)) {
-				       event.preventDefault();
-				       return false;
-				    }
-				});
+		// disable special characters on Fullname
+			$('#call_time_name').bind('keypress', function (event) {
+				var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+				var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+				if (!regex.test(key)) {
+				   event.preventDefault();
+				   return false;
+				}
+			});
 
 		/* initialize select2 */
 			$('.select2-1').select2({
@@ -561,6 +571,39 @@
            		defaultDate: '',
                 format: 'LT'
             });
+		
+		// check duplicates
+			$("#call_time_id").keyup(function() {
+				clearTimeout($.data(this, 'timer'));
+				var wait = setTimeout(validate_id, 500);
+				$(this).data('timer', wait);
+			});
+		
+			function validate_id(){
+				var id_value = $('#call_time_id').val();
+		        if(id_value != ""){
+				    $.ajax({
+					    url: "php/checkCalltime.php",
+					    type: 'POST',
+					    data: {
+					    	id : id_value
+					    },
+						success: function(data) {
+							console.log(data);
+							if(data == "success"){
+								checker = 0;
+								$( "#call_time_id" ).removeClass("error");
+								$( "#calltime-duplicate-error" ).text( "" ).removeClass("error").addClass("avail");
+							}else{
+								$( "#call_time_id" ).removeClass("valid").addClass( "error" );
+								$( "#calltime-duplicate-error" ).text( data ).removeClass("avail").addClass("error");
+								
+								checker = 1;
+							}
+						}
+					});
+				}
+			}
 	}); // end of document ready
 </script>
 		
