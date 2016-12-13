@@ -17,6 +17,7 @@
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$perm = $ui->goGetPermissions('user', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -73,7 +74,7 @@
 		
                 <!-- Main content -->
                 <section class="content">
-                <?php if ($user->userHasAdminPermission()) { ?>
+                <?php if ($perm->user_read !== 'N') { ?>
                     <div class="panel panel-default">
                     	<div class="panel-body">
                     		<legend><?php $lh->translateText("users"); ?></legend>
@@ -107,7 +108,7 @@
 								<div class="tab-content bg-white">
 									<!--==== users ====-->
 									<div id="users_tab" role="tabpanel" class="tab-pane active">
-										<?php print $ui->goGetAllUserList($_SESSION['user']); ?>
+										<?php print $ui->goGetAllUserList($_SESSION['user'], $perm); ?>
 			                        </div>
 									
 									<?php
@@ -139,7 +140,7 @@
 	if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
 ?>
     <!-- FIXED ACTION BUTTON --> 
-		<div class="bottom-menu skin-blue">
+		<div class="bottom-menu skin-blue <?=($perm->user_create === 'N' ? 'hidden' : '')?>">
 			<div class="action-button-circle" data-toggle="modal">
 				<?php print $ui->getCircleButton("users", "plus"); ?>
 			</div>
@@ -153,7 +154,7 @@
 <?php
 	}else{
 ?>
-	<div class="action-button-circle" data-toggle="modal" data-target="#user-wizard-modal">
+	<div class="action-button-circle <?=($perm->user_create === 'N' ? 'hidden' : '')?>" data-toggle="modal" data-target="#user-wizard-modal">
 		<?php print $ui->getCircleButton("calls", "user-plus"); ?>
 	</div>
 <?php
@@ -527,7 +528,15 @@
 
 				//users
 				$('#T_users').dataTable({
-					stateSave: true
+					stateSave: true,
+					"aaSorting": [[ 1, "asc" ]],
+					"aoColumnDefs": [{
+						"bSearchable": false,
+						"aTargets": [ 0, 5 ]
+					},{
+						"bSortable": false,
+						"aTargets": [ 0, 5 ]
+					}]
 				});
 				//phones
 				$('#T_phones').dataTable({

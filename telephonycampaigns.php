@@ -87,7 +87,7 @@ error_reporting(E_ALL);*/
                 	<div class="panel panel-default">
                 		<div class="panel-body">
                 			<legend>Campaigns</legend>
-                <?php if ($user->userHasAdminPermission()) { ?>
+                <?php if ($perm->campaign_read !== 'N') { ?>
 <?php
 
 	/*
@@ -162,12 +162,12 @@ error_reporting(E_ALL);*/
 															$dial_method = "INBOUND MAN";
 														}
 
-													$action_CAMPAIGN = $ui->ActionMenuForCampaigns($campaign->campaign_id[$i], $campaign->campaign_name[$i]);
+													$action_CAMPAIGN = $ui->ActionMenuForCampaigns($campaign->campaign_id[$i], $campaign->campaign_name[$i], $perm);
 
 											   	?>
 													<tr>
-                            <td><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
-														<td class='hide-on-medium hide-on-low'><strong><a class="edit-campaign" data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></a></strong></td>
+														<td><?php if ($perm->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign_update !== 'N') { echo '</a>'; } ?></td>
+														<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $dial_method;?></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $campaign->active[$i];?></td>
@@ -200,7 +200,7 @@ error_reporting(E_ALL);*/
 
 											   	?>
 													<tr>
-                            <td><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
+														<td><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
 														<td class='hide-on-medium hide-on-low'><strong><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></a></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'>
@@ -1933,11 +1933,28 @@ error_reporting(E_ALL);*/
 			******/
 
 				//initialization of the datatables
-					$('#table_campaign').dataTable();
+					$('#table_campaign').dataTable({
+						"aaSorting": [[ 1, "asc" ]],
+						"aoColumnDefs": [{
+							"bSearchable": false,
+							"aTargets": [ 0, 5 ]
+						},{
+							"bSortable": false,
+							"aTargets": [ 0, 5 ]
+						}]
+					});
 					$('#table_disposition').dataTable({
 						columnDefs: [
 						    { width: "16%", targets: "action_disposition" }
-						]
+						],
+						"aaSorting": [[ 1, "asc" ]],
+						"aoColumnDefs": [{
+							"bSearchable": false,
+							"aTargets": [ 0, 4 ]
+						},{
+							"bSortable": false,
+							"aTargets": [ 0, 4 ]
+						}]
 					});
 					$('#table_leadfilter').dataTable();
 

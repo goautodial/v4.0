@@ -17,8 +17,12 @@ $uid = $_REQUEST['user_id'];
 
 $image = $db->getUserAvatar($uid);
 
-ob_clean();
-
-header('Content-type: '.$image['type']);
-echo base64_decode($image['data']);
+if (is_array($image)) {
+    ob_clean();
+    
+    header('Content-type: '.$image['type']);
+    echo base64_decode($image['data']);
+} else {
+    echo "";
+}
 ?>

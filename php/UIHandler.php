@@ -1087,7 +1087,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>';
 	}
 	//telephony menu for users
-	private function getUserActionMenuForT_User($userid, $role, $name, $user) {
+	private function getUserActionMenuForT_User($userid, $role, $name, $user, $perm) {
 
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -1096,10 +1096,10 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-T_user" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("Modify").'</a></li>
+	                    <li><a class="edit-T_user'.($perm->user_update === 'N' ? ' hidden' : '').'" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("Modify").'</a></li>
 	                    <li><a class="emergency-logout" href="#" data-emergency-logout-username="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("Emergency Logout").'</a></li>
-	                    <li class="divider"></li>
-	                    <li><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("Delete").'</a></li>
+	                    <li class="divider'.($perm->user_delete === 'N' ? ' hidden' : '').'"></li>
+	                    <li><a class="delete-T_user'.($perm->user_delete === 'N' ? ' hidden' : '').'" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("Delete").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -3307,7 +3307,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	// get user list
-	public function goGetAllUserList($user) {
+	public function goGetAllUserList($user, $perm) {
 
 	$output = $this->API_goGetAllUserLists($user);
        if($output->result=="success") {
@@ -3325,12 +3325,24 @@ error_reporting(E_ERROR | E_PARSE);
 						$output->active[$i] = "Inactive";
 					}
 
-					$action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i], $output->user[$i]);
-					$sessionAvatar = "<avatar username='".$output->full_name[$i]."' :size='36'></avatar>";
+					$action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i], $output->user[$i], $perm);
+					//$sessionAvatar = "<avatar username='".$output->full_name[$i]."' :size='36'></avatar>";
+					$avatar = NULL;
+					if ($this->db->getUserAvatar($output->user_id[$i])) {
+						$avatar = "./php/ViewImage.php?user_id=" . $output->user_id[$i];
+					}
+					$sessionAvatar = $this->getVueAvatar($output->full_name[$i], $avatar, 36);
+					
+					$preFix = "<a class='edit-T_user' data-id=".$output->user_id[$i].">";
+					$sufFix = "</a>";
+					if ($perm->user_update === 'N') {
+						$preFix = '';
+						$sufFix = '';
+					}
 	
 					$result .= "<tr>
 							 <td>".$sessionAvatar."</a></td>
-							 <td class='hide-on-low'><a class='edit-T_user' data-id=".$output->user_id[$i]."><strong>".$output->user[$i]."</strong></a></td>
+							 <td class='hide-on-low'>".$preFix."<strong>".$output->user[$i]."</strong>".$sufFix."</td>
 							 <td>".$output->full_name[$i]."</td>";
 					$result .="<td class=' hide-on-low hide-on-medium'>".$output->user_group[$i]."</td>
 							 <td class='hide-on-low hide-on-medium'>".$output->active[$i]."</td>
@@ -3908,7 +3920,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 
-	public function ActionMenuForCampaigns($id, $name) {
+	public function ActionMenuForCampaigns($id, $name, $perm) {
 
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -3917,11 +3929,11 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-campaign" href="#" data-id="'.$id.'">View Details</a></li>
+			<li'.($perm->campaign_update === 'N' ? ' class="hidden"' : '').'><a class="edit-campaign" href="#" data-id="'.$id.'">View Details</a></li>
       <li><a class="view-pause-codes" href="#" data-id="'.$id.'">View Pause Codes</a></li>
       <li><a class="view-hotkeys" href="#" data-id="'.$id.'">View Hotkeys</a></li>
 	  <li><a class="view-lists" href="#" data-id="'.$id.'">View Lists</a></li>
-			<li><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li'.($perm->campaign_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}
