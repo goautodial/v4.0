@@ -119,29 +119,70 @@ if (isset($_POST["cid"])) {
 							$voicefiles = $ui->API_GetVoiceFilesList();
 
 							# Result was OK!
-							$start_default =  (isset($output->ct_default_start)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start))) : "12:00 AM";
-							$stop_default =  (isset($output->ct_default_stop)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_default_stop))) : "12:00 AM";
+							if($output->ct_default_start != $output->ct_default_stop){
+								$start_default =  date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start)));
+								$stop_default =  date('h:i A', strtotime(sprintf("%04d", $output->ct_default_stop)));
+							}else{
+								$start_default =  "NULL";
+								$stop_default =  "NULL";
+							}
 							
-							$start_sunday =  (isset($output->ct_sunday_start)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_start))) : $start_default;
-							$stop_sunday =  (isset($output->ct_sunday_stop)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_stop))) : $stop_default;
+							if($output->ct_sunday_start != $output->ct_sunday_stop){
+								$start_sunday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_start)));
+								$stop_sunday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_stop)));
+							}else{
+								$start_sunday =  "NULL";
+								$stop_sunday =  "NULL";
+							}
 							
-							$start_monday =  (isset($output->ct_monday_start)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_start))) : $start_default;
-							$stop_monday =  (isset($output->ct_monday_stop)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_stop))) : $stop_default;
+							if($output->ct_monday_start != $output->ct_monday_stop){
+								$start_monday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_start)));
+								$stop_monday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_stop)));
+							}else{
+								$start_monday =  "NULL";
+								$stop_monday =  "NULL";
+							}
 
-							$start_tuesday =  (isset($output->ct_tuesday_start)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_start))) : $start_default;
-							$stop_tuesday =  (isset($output->ct_tuesday_stop)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_stop))) : $stop_default;
+							if($output->ct_tuesday_start != $output->ct_tuesday_stop){
+								$start_tuesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_start)));
+								$stop_tuesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_stop)));
+							}else{
+								$start_tuesday =  "NULL";
+								$stop_tuesday =  "NULL";
+							}
 
-							$start_wednesday =  (isset($output->ct_wednesday_start)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_start))) : $start_default;
-							$stop_wednesday =  (isset($output->ct_wednesday_stop)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_stop))) : $stop_default;
+							if($output->ct_wednesday_start != $output->ct_wednesday_stop){
+								$start_wednesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_start)));
+								$stop_wednesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_stop)));
+							}else{
+								$start_wednesday =  "NULL";
+								$stop_wednesday =  "NULL";
+							}
 
-							$start_thursday =  (isset($output->ct_thursday_start)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_start))) : $start_default;
-							$stop_thursday =  (isset($output->ct_thursday_stop)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_stop))) : $stop_default;
+							if($output->ct_thursday_start != $output->ct_thursday_stop){
+								$start_thursday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_start)));
+								$stop_thursday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_stop)));
+							}else{
+								$start_thursday =  "NULL";
+								$stop_thursday =  "NULL";
+							}
 
-							$start_friday =  (isset($output->ct_friday_start)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_start))) : $start_default;
-							$stop_friday =  (isset($output->ct_friday_stop)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_stop))) : $stop_default;
+							if($output->ct_friday_start != $output->ct_friday_stop){
+								$start_friday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_start)));
+								$stop_friday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_stop)));
+							}else{
+								$start_friday =  "NULL";
+								$stop_friday =  "NULL";
+							}
 
-							$start_saturday =  (isset($output->ct_saturday_start)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_start))) : $start_default;
-							$stop_saturday =  (isset($output->ct_saturday_stop)) ? date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_stop))) : $stop_default;
+							if($output->ct_saturday_start != $output->ct_saturday_stop){
+								$start_saturday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_start)));
+								$stop_saturday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_stop)));
+							}else{
+								$start_saturday =  "NULL";
+								$stop_saturday =  "NULL";
+							}
+							
 						?>
 
 						<legend>MODIFY CALL TIME ID : <u><?php echo $cid;?></u></legend>
