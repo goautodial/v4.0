@@ -5,7 +5,12 @@
 	 * Generates action circle buttons for different pages/module
 	 */
 
+	require_once('UIHandler.php');
     require_once('goCRMAPISettings.php');
+	include('Session.php');
+	
+	$ui = \creamy\UIHandler::getInstance();
+	$perm = $ui->goGetPermissions('pausecodes', $_SESSION['usergroup']);
 
     $url = gourl."/goPauseCodes/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -33,7 +38,7 @@
 					$data .= '<td>'.$output->pause_code[$i].'</td>';
 					$data .= '<td>'.str_replace("+"," ",$output->pause_code_name[$i]).'</td>';
 					$data .= '<td>'.$output->billable[$i].'</td>';
-					$data .= '<td style="width: 20%;"><a style="margin-right: 5px;" href="#"" class="btn-edit-pc btn btn-primary" data-camp-id="'.$output->campaign_id[$i].'" data-code="'.$output->pause_code[$i].'" data-name="'.str_replace("+"," ",$output->pause_code_name[$i]).'" data-billable="'.$output->billable[$i].'"><span class="fa fa-pencil"></span></a><a href="#" class="btn-delete-pc btn btn-danger" data-camp-id="'.$output->campaign_id[$i].'" data-code="'.$output->pause_code[$i].'"><span class="fa fa-trash"></span></a></td>';
+					$data .= '<td style="width: 20%;"><a style="margin-right: 5px;" href="#"" class="btn-edit-pc btn btn-primary'.($perm->pausecodes_update === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-code="'.$output->pause_code[$i].'" data-name="'.str_replace("+"," ",$output->pause_code_name[$i]).'" data-billable="'.$output->billable[$i].'"><span class="fa fa-pencil"></span></a><a href="#" class="btn-delete-pc btn btn-danger'.($perm->pausecodes_delete === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-code="'.$output->pause_code[$i].'"><span class="fa fa-trash"></span></a></td>';
 					$data .= '</tr>';
 				}
 			}

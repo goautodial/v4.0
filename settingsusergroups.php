@@ -160,7 +160,15 @@
         ** INITIALIZATION
         *********************/
             // init data table
-                $('#usergroups_table').dataTable();
+                $('#usergroups_table').dataTable({
+					"aoColumnDefs": [{
+						"bSearchable": false,
+						"aTargets": [ 4 ]
+					},{
+						"bSortable": false,
+						"aTargets": [ 4 ]
+					}]
+				});
 
             // init form wizard 
                 var form = $("#create_usergroup"); 

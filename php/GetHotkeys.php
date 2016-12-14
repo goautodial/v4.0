@@ -5,7 +5,12 @@
 	 * Generates action circle buttons for different pages/module
 	 */
 
+	require_once('UIHandler.php');
     require_once('goCRMAPISettings.php');
+	include('Session.php');
+	
+	$ui = \creamy\UIHandler::getInstance();
+	$perm = $ui->goGetPermissions('hotkeys', $_SESSION['usergroup']);
 
     $url = gourl."/goHotkeys/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -33,7 +38,7 @@
 					$data .= '<td>'.$output->hotkey[$i].'</td>';
 					$data .= '<td>'.$output->status[$i].'</td>';
 					$data .= '<td>'.str_replace("+"," ",$output->status_name[$i]).'</td>';
-					$data .= '<td style="width: 20%;"><a href="#" class="btn-delete-hk btn btn-danger" data-camp-id="'.$output->campaign_id[$i].'" data-hotkey="'.$output->hotkey[$i].'"><span class="fa fa-trash"></span></a></td>';
+					$data .= '<td style="width: 20%;"><a href="#" class="btn-delete-hk btn btn-danger'.($perm->hotkeys_delete === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-hotkey="'.$output->hotkey[$i].'"><span class="fa fa-trash"></span></a></td>';
 					$data .= '</tr>';
 				}
 			}

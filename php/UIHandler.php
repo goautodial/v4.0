@@ -3929,11 +3929,11 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li'.($perm->campaign_update === 'N' ? ' class="hidden"' : '').'><a class="edit-campaign" href="#" data-id="'.$id.'">View Details</a></li>
-      <li><a class="view-pause-codes" href="#" data-id="'.$id.'">View Pause Codes</a></li>
-      <li><a class="view-hotkeys" href="#" data-id="'.$id.'">View Hotkeys</a></li>
-	  <li><a class="view-lists" href="#" data-id="'.$id.'">View Lists</a></li>
-			<li'.($perm->campaign_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li'.($perm->campaign->campaign_update === 'N' ? ' class="hidden"' : '').'><a class="edit-campaign" href="#" data-id="'.$id.'">View Details</a></li>
+      <li'.($perm->pausecodes->pausecodes_read === 'N' ? ' class="hidden"' : '').'><a class="view-pause-codes" href="#" data-id="'.$id.'">View Pause Codes</a></li>
+      <li'.($perm->hotkeys->hotkeys_read === 'N' ? ' class="hidden"' : '').'><a class="view-hotkeys" href="#" data-id="'.$id.'">View Hotkeys</a></li>
+	  <li'.($perm->list->list_read === 'N' ? ' class="hidden"' : '').'><a class="view-lists" href="#" data-id="'.$id.'">View Lists</a></li>
+			<li'.($perm->campaign->campaign_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}
@@ -5893,11 +5893,22 @@ error_reporting(E_ERROR | E_PARSE);
 	
 	public function goGetPermissions($type = 'dashboard', $group) {
 		$permissions = $this->API_goGetGroupPermission($group);
-		if (!is_null($permissions) && (array_key_exists($type, $permissions) || $type == 'sidebar')) {
-			if ($type === 'sidebar') {
-				$return = $permissions;
+		if (!is_null($permissions)) {
+			$types = explode(",", $type);
+			if (count($types) > 1) {
+				foreach ($types as $t) {
+					if (array_key_exists($t, $permissions)) {
+						$return->{$t} = $permissions->{$t};
+					}
+				}
 			} else {
-				$return = $permissions->{$type};
+				if ($type == 'sidebar') {
+					$return = $permissions;
+				} else if (array_key_exists($type, $permissions)) {
+					$return = $permissions->{$type};
+				} else {
+					$return = null;
+				}
 			}
 		} else {
 			$return = null;

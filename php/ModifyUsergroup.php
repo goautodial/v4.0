@@ -59,6 +59,19 @@ if ($validated == 1) {
 	$group_permission .= '"campaign_delete":' . (isset($_POST["campaign_delete"]) ? '"D"' : '"N"');
 	$group_permission .= '},';
 	
+	$group_permission .= '"pausecodes":{';
+	$group_permission .= '"pausecodes_create":' . (isset($_POST["pausecodes_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"pausecodes_read":' . (isset($_POST["pausecodes_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"pausecodes_update":' . (isset($_POST["pausecodes_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"pausecodes_delete":' . (isset($_POST["pausecodes_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"hotkeys":{';
+	$group_permission .= '"hotkeys_create":' . (isset($_POST["hotkeys_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"hotkeys_read":' . (isset($_POST["hotkeys_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"hotkeys_delete":' . (isset($_POST["hotkeys_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
 	$group_permission .= '"list":{';
 	$group_permission .= '"list_create":' . (isset($_POST["list_create"]) ? '"C"' : '"N"') . ',';
 	$group_permission .= '"list_read":' . (isset($_POST["list_read"]) ? '"R"' : '"N"') . ',';

@@ -32,7 +32,7 @@
 			$status = "success";
 		} else {
 			# An error occured
-			$status = "error";
+			$status = $output->result;
 		}
 
 		echo $status;

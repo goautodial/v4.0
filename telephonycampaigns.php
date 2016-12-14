@@ -21,7 +21,7 @@ error_reporting(E_ALL);*/
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	$perm = $ui->goGetPermissions('campaign', $_SESSION['usergroup']);
+	$perm = $ui->goGetPermissions('campaign,pausecodes,hotkeys,list', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -860,7 +860,7 @@ error_reporting(E_ALL);*/
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-success btn-new-pause-code" data-campaign="">Create New</button>
+						<button type="button" class="btn btn-success btn-new-pause-code<?=($perm->pausecodes->pausecodes_create === 'N' ? ' hidden' : '')?>" data-campaign="">Create New</button>
 		      </div>
 		    </div>
 		    <!-- End of modal content -->
@@ -946,7 +946,7 @@ error_reporting(E_ALL);*/
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-success btn-new-hotkey" data-campaign="">Create New</button>
+						<button type="button" class="btn btn-success btn-new-hotkey<?=($perm->hotkeys->hotkeys_create === 'N' ? ' hidden' : '')?>" data-campaign="">Create New</button>
 		      </div>
 		    </div>
 		    <!-- End of modal content -->
@@ -1311,7 +1311,14 @@ error_reporting(E_ALL);*/
 						$('#pause_code_data_container').html(response);
 						$('#pause_codes_list').DataTable({
 							"searching": true,
-							bFilter: true
+							bFilter: true,
+							"aoColumnDefs": [{
+								"bSearchable": false,
+								"aTargets": [ 3 ]
+							},{
+								"bSortable": false,
+								"aTargets": [ 3 ]
+							}]
 						});
 						$("#pause_codes_list").css("width","100%");
 					}
@@ -1340,6 +1347,9 @@ error_reporting(E_ALL);*/
 							bFilter: true,
 							"aoColumnDefs": [{
 								"bSearchable": false,
+								"aTargets": [ 3 ]
+							},{
+								"bSortable": false,
 								"aTargets": [ 3 ]
 							}]
 						});
@@ -2643,10 +2653,11 @@ error_reporting(E_ALL);*/
 
 				$('#auto-dial-level').change(function(){
 					var val = $(this).val();
+					alert(val);
 					if(val == 'ADVANCE') {
-                        $('div.auto-dial-level-adv').removeClass('hide');
+                        $('.auto-dial-level-adv').removeClass('hide');
                     }else{
-						$('div.auto-dial-level-adv').addClass('hide');
+						$('.auto-dial-level-adv').addClass('hide');
 					}
 				});
 				
