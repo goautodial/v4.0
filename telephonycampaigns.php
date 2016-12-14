@@ -2653,7 +2653,6 @@ error_reporting(E_ALL);*/
 
 				$('#auto-dial-level').change(function(){
 					var val = $(this).val();
-					alert(val);
 					if(val == 'ADVANCE') {
                         $('.auto-dial-level-adv').removeClass('hide');
                     }else{
@@ -2686,9 +2685,8 @@ error_reporting(E_ALL);*/
 				$('#auto-dial-level').prop('disabled', true);
 				$('#auto-dial-level option[value=OFF]').prop('selected', true);
 				$('div.auto-dial-level').removeClass('hide');
+				$('.auto-dial-level-adv').addClass('hide');
 			}
-			
-			$('#auto_dial_level_adv').addClass('hide');
 			
 		}
 		//function dialMethod(value){
