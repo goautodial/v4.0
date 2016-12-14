@@ -21,7 +21,7 @@ error_reporting(E_ALL);*/
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	$perm = $ui->goGetPermissions('campaign,pausecodes,hotkeys,list', $_SESSION['usergroup']);
+	$perm = $ui->goGetPermissions('campaign,disposition,pausecodes,hotkeys,list', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -87,7 +87,7 @@ error_reporting(E_ALL);*/
                 	<div class="panel panel-default">
                 		<div class="panel-body">
                 			<legend>Campaigns</legend>
-                <?php if ($perm->campaign_read !== 'N') { ?>
+                <?php if ($perm->campaign->campaign_read !== 'N') { ?>
 <?php
 
 	/*
@@ -166,8 +166,8 @@ error_reporting(E_ALL);*/
 
 											   	?>
 													<tr>
-														<td><?php if ($perm->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign_update !== 'N') { echo '</a>'; } ?></td>
-														<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
+														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
+														<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $dial_method;?></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $campaign->active[$i];?></td>
@@ -196,12 +196,12 @@ error_reporting(E_ALL);*/
 											   	<?php
 											   		for($i=0;$i < count($campaign->campaign_id);$i++){
 
-													$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i]);
+													$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i], $perm);
 
 											   	?>
 													<tr>
-														<td><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar></a></td>
-														<td class='hide-on-medium hide-on-low'><strong><a class='edit_disposition' data-id="<?php echo $campaign->campaign_id[$i];?>" data-name="<?php echo $campaign->campaign_name[$i];?>"><?php echo $campaign->campaign_id[$i];?></a></strong></td>
+														<td><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit_disposition" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
+														<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit_disposition" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'>
 												<?php
@@ -276,14 +276,14 @@ error_reporting(E_ALL);*/
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 
-        <div class="bottom-menu skin-blue <?php if ($perm->campaign_create == 'N') { echo "hidden"; } ?>">
+        <div class="bottom-menu skin-blue <?php if ($perm->campaign->campaign_create == 'N' && $perm->disposition->disposition_create == 'N') { echo "hidden"; } ?>">
 			<div class="action-button-circle" data-toggle="modal">
 				<?php print $ui->getCircleButton("campaigns", "plus"); ?>
 			</div>
 			<div class="fab-div-area" id="fab-div-area">
-				<ul class="fab-ul" style="height: 170px;">
-					<li class="li-style"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaign" title="Add Campaign"></a></li><br/>
-					<li class="li-style"><a class="fa fa-tty fab-div-item" data-toggle="modal" data-target="#add_disposition" title="Add Disposition"></a></li><br/>
+				<ul class="fab-ul" style="height: <?php if ($perm->campaign->campaign_create == 'N' || $perm->disposition->disposition_create == 'N') { echo "110px"; } else { echo "170px"; } ?>;">
+					<li class="li-style<?=($perm->campaign->campaign_create == 'N' ? ' hidden' : '')?>"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaign" title="Add Campaign"></a></li><br/>
+					<li class="li-style<?=($perm->disposition->disposition_create == 'N' ? ' hidden' : '')?>"><a class="fa fa-tty fab-div-item" data-toggle="modal" data-target="#add_disposition" title="Add Disposition"></a></li><br/>
 					<!--<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_leadfilter" title="Add Phone Numbers"> </a></li>-->
 				</ul>
 			</div>

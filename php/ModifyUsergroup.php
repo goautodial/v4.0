@@ -59,6 +59,12 @@ if ($validated == 1) {
 	$group_permission .= '"campaign_delete":' . (isset($_POST["campaign_delete"]) ? '"D"' : '"N"');
 	$group_permission .= '},';
 	
+	$group_permission .= '"disposition":{';
+	$group_permission .= '"disposition_create":' . (isset($_POST["disposition_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"disposition_update":' . (isset($_POST["disposition_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"disposition_delete":' . (isset($_POST["disposition_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
 	$group_permission .= '"pausecodes":{';
 	$group_permission .= '"pausecodes_create":' . (isset($_POST["pausecodes_create"]) ? '"C"' : '"N"') . ',';
 	$group_permission .= '"pausecodes_read":' . (isset($_POST["pausecodes_read"]) ? '"R"' : '"N"') . ',';
@@ -76,7 +82,8 @@ if ($validated == 1) {
 	$group_permission .= '"list_create":' . (isset($_POST["list_create"]) ? '"C"' : '"N"') . ',';
 	$group_permission .= '"list_read":' . (isset($_POST["list_read"]) ? '"R"' : '"N"') . ',';
 	$group_permission .= '"list_update":' . (isset($_POST["list_update"]) ? '"U"' : '"N"') . ',';
-	$group_permission .= '"list_delete":' . (isset($_POST["list_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '"list_delete":' . (isset($_POST["list_delete"]) ? '"D"' : '"N"') . ',';
+	$group_permission .= '"list_upload":' . (isset($_POST["list_upload"]) ? '"C"' : '"N"');
 	$group_permission .= '},';
 	
 	$group_permission .= '"customfields":{';
@@ -84,10 +91,6 @@ if ($validated == 1) {
 	$group_permission .= '"customfields_read":' . (isset($_POST["customfields_read"]) ? '"R"' : '"N"') . ',';
 	$group_permission .= '"customfields_update":' . (isset($_POST["customfields_update"]) ? '"U"' : '"N"') . ',';
 	$group_permission .= '"customfields_delete":' . (isset($_POST["customfields_delete"]) ? '"D"' : '"N"');
-	$group_permission .= '},';
-	
-	$group_permission .= '"loadleads":{';
-	$group_permission .= '"loadleads_read":' . (isset($_POST["loadleads_read"]) ? '"R"' : '"N"');
 	$group_permission .= '},';
 	
 	$group_permission .= '"script":{';

@@ -17,6 +17,7 @@
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$perm = $ui->goGetPermissions('list,customfields', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -214,16 +215,17 @@
                     </ol>
                 </section>
 
-		<?php
-			/****
-			** API to get data of tables
-			****/
-			$lists = $ui->API_goGetAllLists();
-		?>
                 <!-- Main content -->
                 <section class="content">
+		<?php
+			if ($perm->list->list_read !== 'N') {
+				/****
+				** API to get data of tables
+				****/
+				$lists = $ui->API_goGetAllLists();
+		?>
                 	<div class="row">
-                                <div class="col-lg-9">
+                        <div class="col-lg-<?=($perm->list->list_upload === 'N' ? '12' : '9')?>">
 		                	<div class="panel panel-default">
 								<div class="panel-body">
 									<legend>Lists</legend>
@@ -252,7 +254,7 @@
 													$lists->active[$i] = "Inactive";
 												}
 
-												$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i]);
+												$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i], $perm);
 											?>
 												<tr>
                                                                                     <td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>
@@ -274,6 +276,9 @@
 		               		</div><!-- /.panel -->
 		               	</div><!-- /.col-lg-9 -->
 						
+						<?php
+						if ($perm->list->list_upload !== 'N') {
+						?>
 			            <div class="col-lg-3">
 	           				<h3 class="m0 pb-lg">Upload/Import Leads</h3>
 	           				<form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data" id="upload_form" name="upload_form">
@@ -365,9 +370,16 @@
 								
 							
 	           			</div><!-- ./upload leads -->
-						
+						<?php
+						}
+						?>
 
                 	</div>
+				<?php
+					} else {
+						print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
+					}
+				?>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
@@ -558,7 +570,15 @@
 					$('#table_lists').DataTable( {
 			            deferRender:    true,
 				    	select: true,
-				    	stateSave: true
+				    	stateSave: true,
+						"aaSorting": [[ 1, "asc" ]],
+						"aoColumnDefs": [{
+							"bSearchable": false,
+							"aTargets": [ 0, 7 ]
+						},{
+							"bSortable": false,
+							"aTargets": [ 0, 7 ]
+						}]
 					});
 
 					/**

@@ -1096,16 +1096,16 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-T_user'.($perm->user_update === 'N' ? ' hidden' : '').'" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("Modify").'</a></li>
+	                    <li'.($perm->user_update === 'N' ? ' class="hidden"' : '').'><a class="edit-T_user" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("Modify").'</a></li>
 	                    <li><a class="emergency-logout" href="#" data-emergency-logout-username="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("Emergency Logout").'</a></li>
 	                    <li class="divider'.($perm->user_delete === 'N' ? ' hidden' : '').'"></li>
-	                    <li><a class="delete-T_user'.($perm->user_delete === 'N' ? ' hidden' : '').'" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("Delete").'</a></li>
+	                    <li'.($perm->user_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("Delete").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 	//telephony menu for lists and call recordings
-	public function getUserActionMenuForLists($listid, $listname) {
+	public function getUserActionMenuForLists($listid, $listname, $perm) {
 
 		   return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -1114,11 +1114,11 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Modify</a></li>
-			<li><a class="copy-custom-fields" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Copy List Custom Fields</a></li>
-			<li><a class="download-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Download List</a></li>
-			<li class="divider"></li>
-			<li><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Delete</a></li>
+			<li'.($perm->list->list_update === 'N' ? ' class="hidden"' : '').'><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Modify</a></li>
+			<li'.($perm->customfields->customfields_create === 'N' ? ' class="hidden"' : '').'><a class="copy-custom-fields" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Copy List Custom Fields</a></li>
+			<li'.($perm->list->list_download === 'N' ? ' class="hidden"' : '').'><a class="download-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Download List</a></li>
+			<li class="divider'.($perm->list->list_delete === 'N' ? ' hidden' : '').'"></li>
+			<li'.($perm->list->list_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Delete</a></li>
 		    </ul>
 		</div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -4660,7 +4660,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 
-	public function ActionMenuForDisposition($id, $name) {
+	public function ActionMenuForDisposition($id, $name, $perm) {
 		 return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -4668,8 +4668,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit_disposition" href="#" data-id="'.$id.'">Modify</a></li>
-			<li><a class="delete_disposition" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li'.($perm->disposition->disposition_update === 'N' ? ' class="hidden"' : '').'><a class="edit_disposition" href="#" data-id="'.$id.'">Modify</a></li>
+			<li'.($perm->disposition->disposition_delete === 'N' ? ' class="hidden"' : '').'><a class="delete_disposition" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}
