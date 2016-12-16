@@ -229,7 +229,7 @@ $lists = $ui->API_goGetAllLists();
 																	<option VALUE="HIGH" <?php if($autodial_level == "4") echo "selected";?>>HIGH</option>
 										    						<option VALUE="MAX"<?php if($autodial_level == "6") echo "selected";?>>MAX</option>
 										    						<option VALUE="MAX_PREDICTIVE"<?php if($autodial_level == "10" || $campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?> disabled>MAX_PREDICTIVE</option>
-																	<option value="ADVANCE" <?php if($autodial_level != "0" || $autodial_level != "1" || $autodial_level != "2" || $autodial_level != "4" || $autodial_level != "6" || $autodial_level != "10") echo "selected";?> >ADVANCE</option>
+																	<option value="ADVANCE" <?php if($autodial_level != "0" && $autodial_level != "1" && $autodial_level != "2" && $autodial_level != "4" && $autodial_level != "6" && $autodial_level != "10") echo "selected";?> >ADVANCE</option>
 																	</select>
 																</div>
 																<div class="col-lg-4">
@@ -2189,6 +2189,7 @@ $lists = $ui->API_goGetAllLists();
 				if(value == "RATIO"){
 					$('#auto_dial_level').prop('disabled', false);
 					$('#auto_dial_level option[value=SLOW]').prop('selected', true);
+					$('#auto_dial_level option[value=OFF]').prop('disabled', true);
 				}else if(value == "ADAPT_TAPERED"){
 					$('#auto_dial_level').prop('disabled', true);
 					$('#auto_dial_level option[value=MAX_PREDICTIVE]').prop('selected', true);
