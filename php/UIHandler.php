@@ -1126,7 +1126,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	//telephony menu for INBOUNDS
 		//ingroup
-	public function getUserActionMenuForInGroups($groupid) {
+	public function getUserActionMenuForInGroups($groupid, $perm) {
 
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -1135,15 +1135,15 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-ingroup" href="#" data-id="'.$groupid.'">Modify</a></li>
-	                    <li class="divider"></li>
-	                    <li><a class="delete-ingroup" href="#" data-id="'.$groupid.'">Delete</a></li>
+	                    <li'.($perm->inbound->inbound_update === 'N' ? ' class="hidden"' : '').'><a class="edit-ingroup" href="#" data-id="'.$groupid.'">Modify</a></li>
+	                    <li class="divider'.(($perm->inbound->inbound_update === 'N' || $perm->inbound->inbound_delete === 'N') ? ' hidden' : '').'"></li>
+	                    <li'.($perm->inbound->inbound_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-ingroup" href="#" data-id="'.$groupid.'">Delete</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 		//ivr
-	public function ActionMenuForIVR($ivr, $desc) {
+	public function ActionMenuForIVR($ivr, $desc, $perm) {
 
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -1152,15 +1152,15 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Modify</a></li>
-	                    <li class="divider"></li>
-	                    <li><a class="delete-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Delete</a></li>
+	                    <li'.($perm->ivr->ivr_update === 'N' ? ' class="hidden"' : '').'><a class="edit-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Modify</a></li>
+	                    <li class="divider'.(($perm->ivr->ivr_update === 'N' || $perm->ivr->ivr_delete === 'N') ? ' hidden' : '').'"></li>
+	                    <li'.($perm->ivr->ivr_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Delete</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
 	}
 		//did
-	public function getUserActionMenuForDID($did, $desc) {
+	public function getUserActionMenuForDID($did, $desc, $perm) {
 
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -1169,9 +1169,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Modify</a></li>
-	                    <li class="divider"></li>
-	                    <li><a class="delete-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Delete</a></li>
+	                    <li'.($perm->did->did_update === 'N' ? ' class="hidden"' : '').'><a class="edit-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Modify</a></li>
+	                    <li class="divider'.(($perm->did->did_update === 'N' || $perm->did->did_delete === 'N') ? ' hidden' : '').'"></li>
+	                    <li'.($perm->did->did_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Delete</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -4087,6 +4087,8 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	public function getListAllMusicOnHold($goUser, $goPass, $goAction, $responsetype){
+		require_once('Session.php');
+		$perm = $this->goGetPermissions('moh', $_SESSION['usergroup']);
 	    $output = $this->API_goGetAllMusicOnHold();
 
 	    # Result was OK!
@@ -4096,7 +4098,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
 	    for($i=0;$i<count($output->moh_id);$i++){
-			$action = $this->getUserActionMenuForMusicOnHold($output->moh_id[$i], $output->moh_name[$i]);
+			$action = $this->getUserActionMenuForMusicOnHold($output->moh_id[$i], $output->moh_name[$i], $perm);
 
 			if($output->active[$i] == "Y"){
 				$output->active[$i] = "Active";
@@ -4125,7 +4127,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $result.'</table>';
 	}
 
-	private function getUserActionMenuForMusicOnHold($id, $name) {
+	private function getUserActionMenuForMusicOnHold($id, $name, $perm) {
 
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -4134,8 +4136,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-moh" href="#" data-id="'.$id.'">Modify</a></li>
-			<li><a class="delete-moh" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li'.($perm->moh_update === 'N' ? ' class="hidden"' : '').'><a class="edit-moh" href="#" data-id="'.$id.'">Modify</a></li>
+			<li'.($perm->moh_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-moh" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4170,6 +4172,8 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	public function getListAllVoiceFiles(){
+		require_once('Session.php');
+		$perm = $this->goGetPermissions('voicefiles', $_SESSION['usergroup']);
 		$output = $this->API_GetVoiceFilesList();
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -4189,7 +4193,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $details = "<strong>Filename</strong>: <i>".$output->file_name[$i]."</i><br/>";
 	    $details .= "<strong>Date</strong>: <i>".$output->file_date[$i]."</i><br/>";
 
-		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i], $details);
+		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i], $details, $perm);
 
 		$result .= "<tr>
 			<td><a class='play_voice_file' data-location='".$file_link."' data-details='".$details."'>".$output->file_name[$i]."</td>
@@ -4204,7 +4208,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 
-	private function getUserActionMenuForVoiceFiles($filename, $details) {
+	private function getUserActionMenuForVoiceFiles($filename, $details, $perm) {
 		$web_ip = getenv("SERVER_ADDR");
 	    $file_link = "http://".$web_ip."/sounds/".$filename;
 	    return '<div class="btn-group">
@@ -4214,7 +4218,7 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="play_voice_file" href="#" data-location="'.$file_link.'" data-details="'.$details.'">Play Voice File</a></li>
+			<li'.($perm->voicefiles_play === 'N' ? ' class="hidden"' : '').'><a class="play_voice_file" href="#" data-location="'.$file_link.'" data-details="'.$details.'">Play Voice File</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4251,7 +4255,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	}
 
-	public function getListAllScripts($userid){
+	public function getListAllScripts($userid, $perm){
 	    $output = $this->API_goGetAllScripts($userid);
 
 	    if ($output->result=="success") {
@@ -4263,7 +4267,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    $result = $this->generateTableHeaderWithItems($columns, "scripts_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
 	    for($i=0;$i<count($output->script_id);$i++){
-		$action = $this->getUserActionMenuForScripts($output->script_id[$i], $output->script_name[$i]);
+		$action = $this->getUserActionMenuForScripts($output->script_id[$i], $output->script_name[$i], $perm);
 
 			if($output->active[$i] == "Y"){
 			    $active = "Active";
@@ -4288,7 +4292,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 
-	private function getUserActionMenuForScripts($id, $name) {
+	private function getUserActionMenuForScripts($id, $name, $perm) {
 
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -4297,8 +4301,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit_script" href="#" data-id="'.$id.'">Modify</a></li>
-			<li><a class="delete_script" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li'.($perm->script_update === 'N' ? ' class="hidden"' : '').'><a class="edit_script" href="#" data-id="'.$id.'">Modify</a></li>
+			<li'.($perm->script_delete === 'N' ? ' class="hidden"' : '').'><a class="delete_script" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
 		    </ul>
 		</div>';
 	}

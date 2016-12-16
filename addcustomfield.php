@@ -33,6 +33,10 @@ $customs = $customFields->data;
 // print_r($customs);
 // die;
 
+$perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
+if ($perm->customfields_read === 'N') {
+	header("location: telephonylist.php");
+}
 ?>
 <html>
     <head>
@@ -99,13 +103,13 @@ $customs = $customFields->data;
 								</h3>
 								<div class="col-lg-9">
 									<div class="row">
-										<div class="col-lg-1 pull-right">
+										<div class="col-lg-1 pull-right<?=($perm->customfields_delete === 'N' ? ' hidden' : '')?>">
 											<button type="button" class="btn-delete-all-cf btn btn-danger" style="height: 35px;" data-id="<?php echo $modifyid; ?>"><i class="fa fa-trash"></i></button>
 										</div>
-										<div class="col-lg-1 pull-right">
+										<div class="col-lg-1 pull-right<?=($perm->customfields_create === 'N' ? ' hidden' : '')?>">
 											<button type="button" class="btn-field btn btn-success" style="height: 35px;" data-id="<?php echo $modifyid; ?>"><i class="fa fa-plus"></i></button>
 										</div>
-										<div class="col-lg-1 pull-right">
+										<div class="col-lg-1 pull-right<?=($perm->customfields_update === 'N' ? ' hidden' : '')?>">
 											<button type="button" class="btn-edit-fields btn btn-info" style="height: 35px;" data-id="<?php echo $modifyid; ?>"><i class="fa fa-pencil"></i></button>
 										</div>
 										<!-- <div class="col-lg-4 pull-right">

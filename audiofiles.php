@@ -17,6 +17,8 @@
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
+	$perm = $ui->goGetPermissions('voicefiles,moh', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -70,7 +72,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-                <?php if ($user->userHasAdminPermission()) { ?>
+                <?php if ($perm->voicefiles->voicefiles_play !== 'N' || $perm->moh->moh_read !== 'N') { ?>
 
 			<div class="panel panel-default">
 				<div class="panel-body">
@@ -80,13 +82,28 @@
 
 						<ul role="tablist" class="nav nav-tabs nav-justified">
 
+						<?php
+						$toggleVoicefiles = ' class="active"';
+						$toggleMOH = '';
+						$activeVoicefiles = ' active';
+						$activeMOH = '';
+						if ($perm->voicefiles->voicefiles_play === 'N') {
+							$toggleVoicefiles = ' class="hidden"';
+							$activeVoicefiles = '';
+						}
+						if ($perm->moh->moh_read === 'N') { $toggleMOH = ' class="hidden"'; }
+						if ($perm->moh->moh_read !== 'N' && $perm->voicefiles->voicefiles_play === 'N') {
+							$toggleMOH = ' class="active"';
+							$activeMOH = ' active';
+						}
+						?>
 						<!-- Voicefiles panel tab -->
-							 <li role="presentation" class="active">
+							 <li role="presentation"<?=$toggleVoicefiles?>>
 								<a href="#voicefiles_tab" aria-controls="voicefiles_tab" role="tab" data-toggle="tab" class="bb0">
 								    Voice Files </a>
 							 </li>
 						 <!-- MOH panel tabs-->
-							 <li role="presentation" >
+							 <li role="presentation"<?=$toggleMOH?>>
 								<a href="#moh_tab" aria-controls="moh_tab" role="tab" data-toggle="tab" class="bb0">
 								    Music On-Hold</a>
 							 </li>
@@ -97,12 +114,12 @@
 						<div class="tab-content bg-white">
 
 							<!--==== MOH ====-->
-							<div id="moh_tab" role="tabpanel" class="tab-pane">
+							<div id="moh_tab" role="tabpanel" class="tab-pane<?=$activeMOH?>">
 								<?php print $ui->getListAllMusicOnHold(); ?>
 							</div>
 
 							<!--==== Voicefiles ====-->
-							<div id="voicefiles_tab" role="tabpanel" class="tab-pane active">
+							<div id="voicefiles_tab" role="tabpanel" class="tab-pane<?=$activeVoicefiles?>">
 								<?php print $ui->getListAllVoiceFiles(); ?>
 							</div>
 
@@ -115,14 +132,29 @@
 								}
 							?>
 
-						<div class="bottom-menu skin-blue">
+						<div class="bottom-menu skin-blue<?php if ($perm->voicefiles->voicefiles_play == 'N' && $perm->moh->moh_create == 'N') { echo " hidden"; } ?>">
 							<div class="action-button-circle" data-toggle="modal">
 								<?php print $ui->getCircleButton("inbound", "plus"); ?>
 							</div>
 							<div class="fab-div-area" id="fab-div-area">
-								<ul class="fab-ul" style="height: 170px;">
-									<li class="li-style"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#form-voicefiles-modal" title="Add a Voice File"></a></li><br/>
-									<li class="li-style"><a class="fa fa-music fab-div-item" data-toggle="modal" data-target="#moh-wizard" title="Add a Music On-hold"></a></li><br/>
+								<?php
+								$menu = 2;
+								$menuHeight = '170px';
+								$hideVoicefiles = '';
+								$hideMOH = '';
+								if ($perm->voicefiles->voicefiles_play === 'N') {
+									$menu--;
+									$hideVoicefiles = ' hidden';
+								}
+								if ($perm->moh->moh_create === 'N') {
+									$menu--;
+									$hideMOH = ' hidden';
+								}
+								if ($menu < 2) { $menuHeight = '110px'; }
+								?>
+								<ul class="fab-ul" style="height: <?=$menuHeight?>;">
+									<li class="li-style<?=$hideVoicefiles?>"><a class="fa fa-volume-up fab-div-item" data-toggle="modal" data-target="#form-voicefiles-modal" title="Add a Voice File"></a></li><br/>
+									<li class="li-style<?=$hideMOH?>"><a class="fa fa-music fab-div-item" data-toggle="modal" data-target="#moh-wizard" title="Add a Music On-hold"></a></li><br/>
 								</ul>
 							</div>
 						</div>
@@ -306,7 +338,7 @@
 		</audio> -->
 	      </div>
 	      <div class="modal-footer">
-		<a href="" class="btn btn-primary download-audio-file" download>Download File</a>
+		<a href="" class="btn btn-primary download-audio-file<?=($perm->voicefiles->voicefiles_download === 'N' ? ' hidden' : '')?>" download>Download File</a>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	      </div>
 	    </div>
@@ -401,8 +433,24 @@
 				});
 
 			//loads datatable functions
-				$('#music-on-hold_table').dataTable();
-				$('#voicefiles').dataTable();
+				$('#music-on-hold_table').dataTable({
+					"aoColumnDefs": [{
+						"bSearchable": false,
+						"aTargets": [ 4 ]
+					},{
+						"bSortable": false,
+						"aTargets": [ 4 ]
+					}]
+				});
+				$('#voicefiles').dataTable({
+					"aoColumnDefs": [{
+						"bSearchable": false,
+						"aTargets": [ 2 ]
+					},{
+						"bSortable": false,
+						"aTargets": [ 2 ]
+					}]
+				});
 
 		/*******************
 		** MOH EVENTS

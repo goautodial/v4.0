@@ -7,6 +7,8 @@
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
+	$perm = $ui->goGetPermissions('reportsanalytics', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -76,7 +78,7 @@
             ?>
                 <!-- Main content -->
                 <section class="content">
-                <?php if ($user->userHasAdminPermission()) { ?>
+                <?php if ($perm->reportsanalytics_display !== 'N') { ?>
                     <div class="row">
                         <div class="col-lg-9">
                             <div class="panel panel-default">
