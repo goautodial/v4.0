@@ -17,6 +17,8 @@
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
+	$perm = $ui->goGetPermissions('inbound,ivr,did', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -73,7 +75,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-                <?php if ($user->userHasAdminPermission()) { ?>
+                <?php if ($perm->inbound->inbound_read !== 'N' || $perm->ivr->ivr_read !== 'N' || $perm->did->did_read !== 'N') { ?>
 
 <?php
 	/*
@@ -95,18 +97,40 @@
 						
 						<ul role="tablist" class="nav nav-tabs nav-justified">
 
-						 <!-- In-group panel tabs-->
-							 <li role="presentation" class="active">
+						<!-- In-group panel tabs-->
+						<?php
+						$toggleInbound = ' class="active"';
+						$toggleIVR = '';
+						$toggleDID = '';
+						$activeInbound = ' active';
+						$activeIVR = '';
+						$activeDID = '';
+						if ($perm->inbound->inbound_read === 'N') {
+							$toggleInbound = ' class="hidden"';
+							$activeInbound = '';
+						}
+						if ($perm->ivr->ivr_read === 'N') { $toggleIVR = ' class="hidden"'; }
+						if ($perm->ivr->ivr_read !== 'N' && $perm->inbound->inbound_read === 'N') {
+							$toggleIVR = ' class="active"';
+							$activeIVR = ' active';
+						}
+						if ($perm->did->did_read === 'N') { $toggleDID = ' class="hidden"'; }
+						if ($perm->did->did_read !== 'N' && ($perm->inbound->inbound_read === 'N' && $perm->ivr->ivr_read === 'N')) {
+							$toggleDID = ' class="active"';
+							$activeDID = ' active';
+						}
+						?>
+							 <li role="presentation"<?=$toggleInbound?>>
 								<a href="#T_ingroup" aria-controls="T_ingroup" role="tab" data-toggle="tab" class="bb0">
 								    In-Groups</a>
 							 </li>
 						<!-- IVR panel tab -->
-							 <li role="presentation">
+							 <li role="presentation"<?=$toggleIVR?>>
 								<a href="#T_ivr" aria-controls="T_ivr" role="tab" data-toggle="tab" class="bb0">
 								    Interactive Voice Response (IVR) Menus </a>
 							 </li>
 						<!-- DID panel tab -->
-							 <li role="presentation">
+							 <li role="presentation"<?=$toggleDID?>>
 								<a href="#T_phonenumber" aria-controls="T_phonenumber" role="tab" data-toggle="tab" class="bb0">
 								    Phone Numbers (DIDs/TFNs) </a>
 							 </li>
@@ -116,7 +140,7 @@
 						<div class="tab-content bg-white">
 
 							<!--==== In-group ====-->
-							<div id="T_ingroup" role="tabpanel" class="tab-pane active">
+							<div id="T_ingroup" role="tabpanel" class="tab-pane<?=$activeInbound?>">
 								<table class="table table-striped table-bordered table-hover" id="table_ingroup">
 								   <thead>
 									  <tr>
@@ -139,12 +163,12 @@
 													$ingroup->active[$i] = "Inactive";
 												}
 
-											$action_INGROUP = $ui->getUserActionMenuForInGroups($ingroup->group_id[$i]);
+											$action_INGROUP = $ui->getUserActionMenuForInGroups($ingroup->group_id[$i], $perm);
 
 									   	?>	
 											<tr>
                                                 <td><avatar username='<?php echo $ingroup->group_name[$i];?>' :size='36'></avatar></td>
-												<td><strong><a class='edit-ingroup' data-id="<?php echo $ingroup->group_id[$i];?>"><?php echo $ingroup->group_id[$i];?></a></strong></td>
+												<td><strong><?php if ($perm->inbound->inbound_update !== 'N') { echo '<a class="edit-ingroup" data-id="'.$ingroup->group_id[$i].'">'; } ?><?php echo $ingroup->group_id[$i];?><?php if ($perm->inbound->inbound_update !== 'N') { echo '</a>'; } ?></strong></td>
 												<td class='hide-on-low hide-on-medium'><?php echo $ingroup->group_name[$i];?></td>
 												<td class='hide-on-low hide-on-medium'><?php echo $ingroup->queue_priority[$i];?></td>
 												<td class='hide-on-low'><?php echo $ingroup->active[$i];?></td>
@@ -159,7 +183,7 @@
 							</div>
 							
 							<!--==== IVR ====-->
-							<div id="T_ivr" role="tabpanel" class="tab-pane">
+							<div id="T_ivr" role="tabpanel" class="tab-pane<?=$activeIVR?>">
 								<table class="table table-striped table-bordered table-hover" id="table_ivr">
 								   <thead>
 									  <tr>
@@ -175,12 +199,12 @@
 									   	<?php
 									   		for($i=0;$i < count($ivr->menu_id);$i++){
 
-											$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i], $ivr->menu_name[$i]);
+											$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i], $ivr->menu_name[$i], $perm);
 
 									   	?>	
 											<tr>
                                                 <td><avatar username='<?php echo $ivr->menu_name[$i];?>' :size='36'></avatar></td>
-												<td><strong><a class='edit-ivr' data-id="<?php echo $ivr->menu_id[$i];?>"><?php echo $ivr->menu_id[$i];?></a></strong></td>
+												<td><strong><?php if ($perm->ivr->ivr_update !== 'N') { echo '<a class="edit-ivr" data-id="'.$ivr->menu_id[$i].'">'; } ?><?php echo $ivr->menu_id[$i];?><?php if ($perm->ivr->ivr_update !== 'N') { echo '</a>'; } ?></strong></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_name[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_prompt[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_timeout[$i];?></td>
@@ -194,7 +218,7 @@
 							</div>
 
 							<!--==== phonenumber / DID ====-->
-							<div id="T_phonenumber" class="tab-pane">
+							<div id="T_phonenumber" class="tab-pane<?=$activeDID?>">
 								<table class="table table-striped table-bordered table-hover" id="table_did">
 								   <thead>
 									  <tr>
@@ -223,12 +247,12 @@
 													$phonenumber->did_route[$i] = "CUSTOM EXTENSION";
 												}
 
-											$action_DID = $ui->getUserActionMenuForDID($phonenumber->did_id[$i], $phonenumber->did_description[$i]);
+											$action_DID = $ui->getUserActionMenuForDID($phonenumber->did_id[$i], $phonenumber->did_description[$i], $perm);
 
 									   	?>	
 											<tr>
                                                 <td><avatar username='<?php echo $phonenumber->did_description[$i];?>' :size='36'></avatar></td>
-												<td><strong><a class='edit-phonenumber' data-id="<?php echo $phonenumber->did_id[$i];?>"><?php echo $phonenumber->did_pattern[$i];?></a></strong></td>
+												<td><strong><?php if ($perm->did->did_update !== 'N') { echo '<a class="edit-phonenumber" data-id="'.$phonenumber->did_id[$i].'">'; } ?><?php echo $phonenumber->did_pattern[$i];?><?php if ($perm->inbound->inbound_update !== 'N') { echo '</a>'; } ?></strong></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->did_description[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->active[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->did_route[$i];?></td>
@@ -250,15 +274,36 @@
 								}
 							?>
 							
-						<div class="bottom-menu skin-blue">
+						<div class="bottom-menu skin-blue<?php if ($perm->inbound->inbound_create == 'N' && $perm->ivr->ivr_create == 'N' && $perm->did->did_create == 'N') { echo " hidden"; } ?>">
 							<div class="action-button-circle" data-toggle="modal">
 								<?php print $ui->getCircleButton("inbound", "plus"); ?>
 							</div>
 							<div class="fab-div-area" id="fab-div-area">
-								<ul class="fab-ul" style="height: 250px;">
-									<li class="li-style"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_ingroups" title="Create an Ingroup"></a></li><br/>
-									<li class="li-style"><a class="fa fa-volume-control-phone fab-div-item" data-toggle="modal" aria-hidden="true" data-target="#add_ivr" title="Add an Interactive Voice Recording"></a></li><br/>
-									<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers" title="Add a Phone Number / DID / TFN"> </a></li>
+								<?php
+								$menu = 3;
+								$menuHeight = '250px';
+								$hideInbound = '';
+								$hideIVR = '';
+								$hideDID = '';
+								if ($perm->inbound->inbound_create === 'N') {
+									$menu--;
+									$hideInbound = ' hidden';
+								}
+								if ($perm->ivr->ivr_create === 'N') {
+									$menu--;
+									$hideIVR = ' hidden';
+								}
+								if ($perm->did->did_create === 'N') {
+									$menu--;
+									$hideDID = ' hidden';
+								}
+								if ($menu < 3) { $menuHeight = '170px'; }
+								if ($menu < 2) { $menuHeight = '110px'; }
+								?>
+								<ul class="fab-ul" style="height: <?=$menuHeight?>;">
+									<li class="li-style<?=$hideInbound?>"><a class="fa fa-users fab-div-item" data-toggle="modal" data-target="#add_ingroups" title="Create an Ingroup"></a></li><?php if ($hideInbound === '') { echo '<br/>'; } ?>
+									<li class="li-style<?=$hideIVR?>"><a class="fa fa-volume-control-phone fab-div-item" data-toggle="modal" aria-hidden="true" data-target="#add_ivr" title="Add an Interactive Voice Recording"></a></li><?php if ($hideIVR === '') { echo '<br/>'; } ?>
+									<li class="li-style<?=$hideDID?>"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_phonenumbers" title="Add a Phone Number / DID / TFN"> </a></li>
 								</ul>
 							</div>
 						</div>
@@ -617,7 +662,6 @@
 					   <small>Set Default Call Menu Entry</small>
 					</h4>
 					<fieldset>
-						<div id="staticDiv">
 						<div class="form-group">
 							<div class="col-lg-4"><hr/></div>
 							<div class="col-lg-4 mt mb">
@@ -625,234 +669,153 @@
 							</div>
 							<div class="col-lg-4"><hr/></div>
 						</div>
-					
-						<div class="form-group">
-							<div class="col-lg-12">
-								<div class="col-lg-2">
-									Option:
-									<select class="form-control">
-										<option selected></option>
-										<?php
-											for($i=0; $i <= 9; $i++){
-												echo '<option value="'.$i.'">'.$i.'</option>';
-											}
-										?>
-										<option value="#">#</option>
-										<option value="*">*</option>
-										<option value="TIMECHECK">TIMECHECK</option>
-										<option value="INVALID">INVALID</option>
-									</select>
-								</div>
-								<div class="col-lg-7">
-									Desription: 
-									<input type="text" name="" id="" class="form-control" placeholder="Description">
-								</div>
-								<div class="col-lg-3">
-									Route:
-									<select class="form-control">
-										<option selected></option>
-										<option value="CALLMENU">Call Menu / IVR</option>
-										<option value="IN_GROUP">In-group</option>
-										<option value="DID">DID</option>
-										<option value="HANGUP">Hangup</option>
-										<option value="EXTEN">Custom Extension</option>
-										<option value="PHONE">Phone</option>
-										<option value="VOICEMAIL">Voicemail</option>
-										<option value="AGI">AGI</option>
-									</select>
-								</div>
-								
-							</div>
-							<!--
-							<div class="col-lg-12">
-								Audio File:
-								<input type="text" name="" id="" class="form-control" placeholder="Audio File" required>
-							</div>-->
-						</div>
-						
-						<div class="form-group">
-							<div class="col-lg-12">
-								<div class="col-lg-2">
-									Option:
-									<select class="form-control">
-										<option selected></option>
-										<?php
-											for($i=0; $i <= 9; $i++){
-												echo '<option value="'.$i.'">'.$i.'</option>';
-											}
-										?>
-										<option value="#">#</option>
-										<option value="*">*</option>
-										<option value="TIMECHECK">TIMECHECK</option>
-										<option value="INVALID">INVALID</option>
-									</select>
-								</div>
-								<div class="col-lg-7">
-									Desription: 
-									<input type="text" name="" id="" class="form-control" placeholder="Description">
-								</div>
-								<div class="col-lg-3">
-									Route:
-									<select class="form-control">
-										<option selected></option>
-										<option value="CALLMENU">Call Menu / IVR</option>
-										<option value="IN_GROUP">In-group</option>
-										<option value="DID">DID</option>
-										<option value="HANGUP">Hangup</option>
-										<option value="EXTEN">Custom Extension</option>
-										<option value="PHONE">Phone</option>
-										<option value="VOICEMAIL">Voicemail</option>
-										<option value="AGI">AGI</option>
-									</select>
-								</div>
-								<div class="col-lg-1 btn-remove"></div>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<div class="col-lg-12">
-								<div class="col-lg-2">
-									Option:
-									<select class="form-control">
-										<option selected></option>
-										<?php
-											for($i=0; $i <= 9; $i++){
-												echo '<option value="'.$i.'">'.$i.'</option>';
-											}
-										?>
-										<option value="#">#</option>
-										<option value="*">*</option>
-										<option value="TIMECHECK">TIMECHECK</option>
-										<option value="INVALID">INVALID</option>
-									</select>
-								</div>
-								<div class="col-lg-7">
-									Desription: 
-									<input type="text" name="" id="" class="form-control" placeholder="Description">
-								</div>
-								<div class="col-lg-3">
-									Route:
-									<select class="form-control" id="route_menu_03">
-										<option selected value=""></option>
-										<option value="CALLMENU">Call Menu / IVR</option>
-										<option value="IN_GROUP">In-group</option>
-										<option value="DID">DID</option>
-										<option value="HANGUP">Hangup</option>
-										<option value="EXTEN">Custom Extension</option>
-										<option value="PHONE">Phone</option>
-										<option value="VOICEMAIL">Voicemail</option>
-										<option value="AGI">AGI</option>
-									</select>
-								</div>
-								<div class="col-lg-1 btn-remove"></div>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-lg-12 route_div_03 mb mt">
-								<!-- CALL MENU -->
-									<div id="route_callmenu_03" style="display:none;">
-										<label class="col-sm-3 control-label">Call Menu: </label>
-										<div class="col-sm-6">
-											<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
-											<?php
-												for($i=0;$i < count($ivr->menu_id);$i++){
-													echo "<option value=".$ivr->menu_id[$i].">".$ivr->menu_id[$i]." - ".$ivr->menu_name[$i]."</option>";
-												}
-											?>
+						<div id="static_div">
+							<div class="clone_div">
+								<div class="form-group">
+									<div class="col-lg-12">
+										<div class="col-lg-2">
+											Option:
+											<select class="form-control route_option" name="route_option[]">
+												<option selected></option>
+												<?php
+													for($i=0; $i <= 9; $i++){
+														echo '<option value="'.$i.'">'.$i.'</option>';
+													}
+												?>
+												<option value="#">#</option>
+												<option value="*">*</option>
+												<option value="TIMECHECK">TIMECHECK</option>
+												<option value="INVALID">INVALID</option>
 											</select>
 										</div>
-									</div>
-								<!-- IN GROUP -->
-									<div id="route_ingroup_03" style="display:none;">
-										<label class="col-sm-3 control-label">In Group: </label>
-										<div class="col-sm-6">
-											<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
-											<?php
-												for($i=0;$i < count($ingroup->group_id);$i++){
-													echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
-												}
-											?>
+										<div class="col-lg-7">
+											Desription: 
+											<input type="text" name="route_desc[]" id="" class="form-control" placeholder="Description">
+										</div>
+										<div class="col-lg-3">
+											Route:
+											<select class="form-control route_menu" name="route_menu[]">
+												<option selected value=""></option>
+												<option value="CALLMENU">Call Menu / IVR</option>
+												<option value="IN_GROUP">In-group</option>
+												<option value="DID">DID</option>
+												<option value="HANGUP">Hangup</option>
+												<option value="EXTEN">Custom Extension</option>
+												<option value="PHONE">Phone</option>
+												<option value="VOICEMAIL">Voicemail</option>
+												<option value="AGI">AGI</option>
 											</select>
 										</div>
+										<div class="col-lg-1 btn-remove"></div>
 									</div>
-								<!-- DID -->
-									<div id="route_did_03" style="display:none;">
-										<label class="col-sm-3 control-label">DID: </label>
-										<div class="col-sm-6">
-											<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
-											<?php
-												for($i=0;$i < count($phonenumber->did_pattern);$i++){
-													echo "<option value=".$phonenumber->did_id[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
-												}
-											?>
-											</select>
-										</div>
-									</div>
-								<!-- HANGUP -->
-									<div id="route_hangup_03" style="display:none;">
-										<label class="col-sm-3 control-label">Audio File: </label>
-										<div class="col-sm-6">
-											<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
-											<?php
-												for($i=0;$i<count($voicefiles->file_name);$i++){
-													$file = substr($voicefiles->file_name[$i], 0, -4);
-													echo "<option value=".$file.">".$file."</option>";
-												}
-											?>
-											</select>
-										</div>
-									</div>
-								<!-- EXTEN -->
-									<div id="route_exten_03" style="display:none;">
-										<div class="col-sm-6">
-											<label class="col-sm-3 control-label">Extension: </label>
-											<div class="col-sm-9">
-												<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_0" />
+								</div>
+								<div class="form-group">
+									<div class="col-lg-12 route_menu_div mb mt">
+										<!-- CALL MENU -->
+											<div class="route_callmenu" style="display:none;">
+												<label class="col-sm-3 control-label">Call Menu: </label>
+												<div class="col-sm-6">
+													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<?php
+														for($i=0;$i < count($ivr->menu_id);$i++){
+															echo "<option value=".$ivr->menu_id[$i].">".$ivr->menu_id[$i]." - ".$ivr->menu_name[$i]."</option>";
+														}
+													?>
+													</select>
+												</div>
 											</div>
-										</div>
-										<div class="col-sm-6">
-											<label class="col-sm-3 control-label">Context: </label>
-											<div class="col-sm-9">
-												<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_0" />
+										<!-- IN GROUP -->
+											<div class="route_ingroup" style="display:none;">
+												<label class="col-sm-3 control-label">In Group: </label>
+												<div class="col-sm-6">
+													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<?php
+														for($i=0;$i < count($ingroup->group_id);$i++){
+															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
+														}
+													?>
+													</select>
+												</div>
 											</div>
-										</div>
+										<!-- DID -->
+											<div class="route_did" style="display:none;">
+												<label class="col-sm-3 control-label">DID: </label>
+												<div class="col-sm-6">
+													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<?php
+														for($i=0;$i < count($phonenumber->did_pattern);$i++){
+															echo "<option value=".$phonenumber->did_id[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
+														}
+													?>
+													</select>
+												</div>
+											</div>
+										<!-- HANGUP -->
+											<div class="route_hangup" style="display:none;">
+												<label class="col-sm-3 control-label">Audio File: </label>
+												<div class="col-sm-6">
+													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<?php
+														for($i=0;$i<count($voicefiles->file_name);$i++){
+															$file = substr($voicefiles->file_name[$i], 0, -4);
+															echo "<option value=".$file.">".$file."</option>";
+														}
+													?>
+													</select>
+												</div>
+											</div>
+										<!-- EXTEN -->
+											<div class="route_exten" style="display:none;">
+												<div class="col-sm-6">
+													<label class="col-sm-3 control-label">Extension: </label>
+													<div class="col-sm-9">
+														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_0" />
+													</div>
+												</div>
+												<div class="col-sm-6">
+													<label class="col-sm-3 control-label">Context: </label>
+													<div class="col-sm-9">
+														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_0" />
+													</div>
+												</div>
+											</div>
+										<!-- PHONE -->
+											<div class="route_phone" style="display:none;">
+												<label class="col-sm-3 control-label">Phone: </label>
+												<div class="col-sm-6">
+													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<?php
+														for($i=0;$i < count($phones->extension);$i++){
+															echo "<option value=".$phones->extension[$i].">".$phones->extension[$i]." - ".$phones->server_ip[$i]." - ".$phones->dialplan_number[$i]."</option>";
+														}
+													?>
+													</select>
+												</div>
+											</div>
+										<!-- VOICEMAIL -->
+											<div class="route_voicemail" style="display:none;">
+												<label class="col-sm-3 control-label">Voicemail Box: </label>
+												<div class="col-sm-6">
+													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<?php
+														for($i=0;$i < count($ingroup->group_id);$i++){
+															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
+														}
+													?>
+													</select>
+												</div>
+											</div>
+										<!-- AGI -->
+											<div class="route_agi" style="display:none;">
+												<label class="col-sm-3 control-label">AGI: </label>
+												<div class="col-sm-6">
+													<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
+												</div>
+											</div>
 									</div>
-								<!-- PHONE -->
-									<div id="route_phone_03" style="display:none;">
-										<label class="col-sm-3 control-label">Phone: </label>
-										<div class="col-sm-6">
-											<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
-											<?php
-												for($i=0;$i < count($phones->extension);$i++){
-													echo "<option value=".$phones->extension[$i].">".$phones->extension[$i]." - ".$phones->server_ip[$i]." - ".$phones->dialplan_number[$i]."</option>";
-												}
-											?>
-											</select>
-										</div>
-									</div>
-								<!-- VOICEMAIL -->
-									<div id="route_voicemail_03" style="display:none;">
-										<label class="col-sm-3 control-label">Voicemail Box: </label>
-										<div class="col-sm-6">
-											<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
-											<?php
-												for($i=0;$i < count($ingroup->group_id);$i++){
-													echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
-												}
-											?>
-											</select>
-										</div>
-									</div>
-								<!-- AGI -->
-									<div id="route_agi_03" style="display:none;">
-										<label class="col-sm-3 control-label">AGI: </label>
-										<div class="col-sm-6">
-											<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
-										</div>
-									</div>
+								</div>
 							</div>
-						</div>
-						
+						</div><!--static div -->
 					</fieldset>
 					</div><!-- End of Step -->
 				</form>
@@ -1125,9 +1088,36 @@
 				});
 
 			//loads datatable functions
-				$('#table_ingroup').dataTable();
-				$('#table_ivr').dataTable();
-				$('#table_did').dataTable();
+				$('#table_ingroup').dataTable({
+					"aaSorting": [[ 1, "asc" ]],
+					"aoColumnDefs": [{
+						"bSearchable": false,
+						"aTargets": [ 0, 6 ]
+					},{
+						"bSortable": false,
+						"aTargets": [ 0, 6 ]
+					}]
+				});
+				$('#table_ivr').dataTable({
+					"aaSorting": [[ 1, "asc" ]],
+					"aoColumnDefs": [{
+						"bSearchable": false,
+						"aTargets": [ 0, 5 ]
+					},{
+						"bSortable": false,
+						"aTargets": [ 0, 5 ]
+					}]
+				});
+				$('#table_did').dataTable({
+					"aaSorting": [[ 1, "asc" ]],
+					"aoColumnDefs": [{
+						"bSearchable": false,
+						"aTargets": [ 0, 5 ]
+					},{
+						"bSortable": false,
+						"aTargets": [ 0, 5 ]
+					}]
+				});
 
 			//reloads page when modal closes
 			/*
@@ -1552,6 +1542,136 @@
 					});
 
 			/*** IVR ***/
+				
+				$(document).on('change', '.route_option',function(){
+					//alert(this.value);
+					showhide_option(this.value);
+					
+					$("div.clone_div:last").clone().insertAfter("div.clone_div:last");
+					$('select.route_menu:last').addClass('option_'+this.value).attr("id", "option_"+this.value);
+					$('div.route_menu_div:last').addClass('option_div_'+this.value);
+					$('option_div_'+this.value).children($('.route_callmenu').addClass('route_callmenu_'+this.value));
+				});
+				
+				function showhide_option(id){
+					//$(".route_option option[value="+id+"]").hide();
+					$(".route_option option[value="+id+"]").prop("disabled", true).css({"background-color": "#c1c1c1", "color": "white"});
+					if(id === ""){
+						alert("BLANK");
+					}
+				}
+				
+				$(document).on('change', '.route_menu',function(){
+					var classes = $('#option_1').attr('class').split(' ');
+
+					for(var i=0; i<classes.length; i++){
+					  alert(classes[i]);
+					}
+					//$('.route_callmenu').parent().show();
+					//$(parent_div).show();
+					//$('.route_callmenu').parent().show();
+					/*alert(this.value);
+					if(this.value == "CALLMENU") {
+						$('.route_callmenu').show();
+						
+						$('.route_ivr').hide();
+						$('.route_ingroup').hide();
+						$('.route_did').hide();
+						$('.route_hangup').hide();
+						$('.route_exten').hide();
+						$('.route_phone').hide();
+						$('.route_voicemail').hide();
+						$('.route_agi').hide();
+					
+					}if(this.value == "IN_GROUP") {
+						$('.route_ingroup').show();
+						
+						$('.route_callmenu').hide();
+						$('.route_did').hide();
+						$('.route_hangup').hide();
+						$('.route_exten').hide();
+						$('.route_phone').hide();
+						$('.route_voicemail').hide();
+						$('.route_agi').hide();
+						
+					}if(this.value == "DID") {
+						$('.route_did').show();
+						
+						$('.route_callmenu').hide();
+						$('.route_ingroup').hide();
+						$('.route_hangup').hide();
+						$('.route_exten').hide();
+						$('.route_phone').hide();
+						$('.route_voicemail').hide();
+						$('.route_agi').hide();
+						
+					}if(this.value == "HANGUP") {
+						$('.route_hangup').show();
+						
+						$('.route_callmenu').hide();
+						$('.route_ingroup').hide();
+						$('.route_did').hide();
+						$('.route_exten').hide();
+						$('.route_phone').hide();
+						$('.route_voicemail').hide();
+						$('.route_agi').hide();
+						
+					}if(this.value == "EXTEN") {
+						$('.route_exten').show();
+						
+						$('.route_callmenu').hide();
+						$('.route_ingroup').hide();
+						$('.route_did').hide();
+						$('.route_hangup').hide();
+						$('.route_phone').hide();
+						$('.route_voicemail').hide();
+						$('.route_agi').hide();
+						
+					}if(this.value == "PHONE") {
+						$('.route_phone').show();
+						
+						$('.route_callmenu').hide();
+						$('.route_ingroup').hide();
+						$('.route_did').hide();
+						$('.route_hangup').hide();
+						$('.route_exten').hide();
+						$('.route_voicemail').hide();
+						$('.route_agi').hide();
+						
+					}if(this.value == "VOICEMAIL") {
+						$('.route_voicemail').show();
+						
+						$('.route_callmenu').hide();
+						$('.route_ingroup').hide();
+						$('.route_did').hide();
+						$('.route_hangup').hide();
+						$('.route_exten').hide();
+						$('.route_phone').hide();
+						$('.route_agi').hide();
+						
+					}if(this.value == "AGI") {
+						$('.route_agi').show();
+						
+						$('.route_callmenu').hide();
+						$('.route_ingroup').hide();
+						$('.route_did').hide();
+						$('.route_hangup').hide();
+						$('.route_exten').hide();
+						$('.route_phone').hide();
+						$('.route_voicemail').hide();
+					}
+					if(this.value == "") {
+						$('.route_callmenu').hide();
+						$('.route_ingroup').hide();
+						$('.route_did').hide();
+						$('.route_hangup').hide();
+						$('.route_exten').hide();
+						$('.route_phone').hide();
+						$('.route_voicemail').hide();
+						$('.route_agi').hide();
+					}*/
+				});
+				
 				//add option
 					$('.add-option').click(function(){
 						var toClone = $('.to-clone-opt').clone();
@@ -1644,109 +1764,6 @@
 						
 					});	 
 		
-		// route options
-		$('#route_menu_03').on('change', function() {
-			if(this.value == "CALLMENU") {
-				$('#route_callmenu_03').show();
-				
-				$('#route_ivr_03').hide();
-				$('#route_ingroup_03').hide();
-				$('#route_did_03').hide();
-				$('#route_hangup_03').hide();
-				$('#route_exten_03').hide();
-				$('#route_phone_03').hide();
-				$('#route_voicemail_03').hide();
-				$('#route_agi_03').hide();
-			
-			}if(this.value == "IN_GROUP") {
-				$('#route_ingroup_03').show();
-				
-				$('#route_callmenu_03').hide();
-				$('#route_did_03').hide();
-				$('#route_hangup_03').hide();
-				$('#route_exten_03').hide();
-				$('#route_phone_03').hide();
-				$('#route_voicemail_03').hide();
-				$('#route_agi_03').hide();
-				
-			}if(this.value == "DID") {
-				$('#route_did_03').show();
-				
-				$('#route_callmenu_03').hide();
-				$('#route_ingroup_03').hide();
-				$('#route_hangup_03').hide();
-				$('#route_exten_03').hide();
-				$('#route_phone_03').hide();
-				$('#route_voicemail_03').hide();
-				$('#route_agi_03').hide();
-				
-			}if(this.value == "HANGUP") {
-				$('#route_hangup_03').show();
-				
-				$('#route_callmenu_03').hide();
-				$('#route_ingroup_03').hide();
-				$('#route_did_03').hide();
-				$('#route_exten_03').hide();
-				$('#route_phone_03').hide();
-				$('#route_voicemail_03').hide();
-				$('#route_agi_03').hide();
-				
-			}if(this.value == "EXTEN") {
-				$('#route_exten_03').show();
-				
-				$('#route_callmenu_03').hide();
-				$('#route_ingroup_03').hide();
-				$('#route_did_03').hide();
-				$('#route_hangup_03').hide();
-				$('#route_phone_03').hide();
-				$('#route_voicemail_03').hide();
-				$('#route_agi_03').hide();
-				
-			}if(this.value == "PHONE") {
-				$('#route_phone_03').show();
-				
-				$('#route_callmenu_03').hide();
-				$('#route_ingroup_03').hide();
-				$('#route_did_03').hide();
-				$('#route_hangup_03').hide();
-				$('#route_exten_03').hide();
-				$('#route_voicemail_03').hide();
-				$('#route_agi_03').hide();
-				
-			}if(this.value == "VOICEMAIL") {
-				$('#route_voicemail_03').show();
-				
-				$('#route_callmenu_03').hide();
-				$('#route_ingroup_03').hide();
-				$('#route_did_03').hide();
-				$('#route_hangup_03').hide();
-				$('#route_exten_03').hide();
-				$('#route_phone_03').hide();
-				$('#route_agi_03').hide();
-				
-			}if(this.value == "AGI") {
-				$('#route_agi_03').show();
-				
-				$('#route_callmenu_03').hide();
-				$('#route_ingroup_03').hide();
-				$('#route_did_03').hide();
-				$('#route_hangup_03').hide();
-				$('#route_exten_03').hide();
-				$('#route_phone_03').hide();
-				$('#route_voicemail_03').hide();
-			}
-			if(this.value == "") {
-				$('#route_callmenu_03').hide();
-				$('#route_ingroup_03').hide();
-				$('#route_did_03').hide();
-				$('#route_hangup_03').hide();
-				$('#route_exten_03').hide();
-				$('#route_phone_03').hide();
-				$('#route_voicemail_03').hide();
-				$('#route_agi_03').hide();
-			}
-		});
-
 			/* loads colorpicker */
     			$(".colorpicker").colorpicker();
 

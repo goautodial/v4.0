@@ -17,6 +17,8 @@
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
+	$perm = $ui->goGetPermissions('recordings', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -92,11 +94,12 @@
 						<li class="active"><?php $lh->translateText("call_recordings"); ?>
                     </ol>
                 </section>
-<?php
-$callrecs = $ui->API_getListAllRecordings();
-?>
                 <!-- Main content -->
                 <section class="content">
+				<?php
+				if ($perm->recordings_display !== 'N') {
+				$callrecs = $ui->API_getListAllRecordings();
+				?>
                 	<div class="row">
 		<div class="col-lg-9">
 		<div class="form-group mb-xl">
@@ -250,6 +253,11 @@ $agents = $ui->API_goGetAllUserLists();
 						    <!--<button type="button" class="pull-left btn btn-default" id="search_button">Apply</button>-->
 	           			</div><!-- ./filters -->
            			</div><!-- /. row -->
+				<?php
+					} else {
+						print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
+					}
+				?>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>

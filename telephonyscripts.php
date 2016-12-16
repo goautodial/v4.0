@@ -17,6 +17,8 @@
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
+	$perm = $ui->goGetPermissions('script', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -63,11 +65,11 @@
 
                 <!-- Main content -->
                 <section class="content">
-                <?php if ($user->userHasAdminPermission()) { ?>
+                <?php if ($perm->script_read !== 'N') { ?>
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <legend><?php $lh->translateText("scripts"); ?></legend>
-							<?php print $ui->getListAllScripts($user->getUserName()); ?>
+							<?php print $ui->getListAllScripts($user->getUserName(), $perm); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -83,7 +85,7 @@
 	</div><!-- ./wrapper -->
 
 	<!-- FIXED ACTION BUTTON -->
-	<div class="action-button-circle" data-toggle="modal" data-target="#scripts-modal">
+	<div class="action-button-circle<?=($perm->script_create === 'N' ? ' hidden' : '')?>" data-toggle="modal" data-target="#scripts-modal">
 		<?php print $ui->getCircleButton("scripts", "plus"); ?>
 	</div>
 <?php
@@ -263,7 +265,15 @@
 		*******************/
 
 			// init data table
-				$('#scripts_table').dataTable();
+				$('#scripts_table').dataTable({
+					"aoColumnDefs": [{
+						"bSearchable": false,
+						"aTargets": [ 5 ]
+					},{
+						"bSortable": false,
+						"aTargets": [ 5 ]
+					}]
+				});
 
 		/*******************
 		** INIT WIZARD & ADD EVENT

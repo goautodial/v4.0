@@ -938,7 +938,6 @@ if (isset($_POST["did"])) {
 			                           </div>
 				                    </fieldset>
 								</form>
-
 								
 									<!--==== Agent Rank Table ====-->
 									<div id="agents" class="tab-pane fade in">
@@ -1020,17 +1019,17 @@ if (isset($_POST["did"])) {
 												?>
 										   </tbody>
 										</table>
-								</form>
-										<fieldset class="footer-buttons">
-					                        <div class="box-footer">
-					                           <div class="col-sm-3 pull-right">
-														<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-					                           	
-					                                	<a type="button" class="btn btn-primary" id="submit_agent_rank" data-id="<?php echo $groupid;?>"> <span id="submit_button"><i class="fa fa-check"></i> Submit</span></a>
-													
-					                           </div>
-					                        </div>
-					                    </fieldset>
+									</form>
+									<fieldset class="footer-buttons">
+										<div class="box-footer">
+										   <div class="col-sm-3 pull-right">
+													<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+											
+													<a type="button" class="btn btn-primary" id="submit_agent_rank" data-id="<?php echo $groupid;?>"> <span id="submit_button"><i class="fa fa-check"></i> Submit</span></a>
+												
+										   </div>
+										</div>
+									</fieldset>
 									</div>
 								</div><!-- END tab content-->
 							</div><!-- END of tabpanel -->
@@ -1038,16 +1037,16 @@ if (isset($_POST["did"])) {
 						</div><!-- body -->
 					</div><!-- body -->
                 </section>
-					<?php		
-							
+					<?php
 						} else {
 						# An error occured
-							echo $output->result;
+						echo $output->result;
 						}
                         
 					}else {
-			    		$errormessage = $lh->translationFor("some_fields_missing");
+						$errormessage = $lh->translationFor("some_fields_missing");
 					}
+					
 				// IF IVR
 					if($ivr != NULL) {
 						/*
@@ -1082,7 +1081,7 @@ if (isset($_POST["did"])) {
 
 						if ($output->result=="success") {
 						# Result was OK!
-						?>
+					?>
 						<section class="content">
 							<div class="panel panel-default">
 								<div class="panel-body">
@@ -1107,12 +1106,9 @@ if (isset($_POST["did"])) {
 												<a href="#tab_3" data-toggle="tab">
 												Advance Settings </a>
 											 </li>
-										</ul>		
-
-									<input type="hidden" name="modify_ivr" value="<?php echo $output->data->menu_id;?>">
-
+										</ul>
+										<input type="hidden" name="modify_ivr" value="<?php echo $output->data->menu_id;?>">
 										<div class="tab-content">
-
 											<div class="tab-pane active" id="tab_1">
 												<div class="form-group mt">
 													<label class="col-sm-3 control-label" for="menu_id">Menu ID:</label>
@@ -1120,13 +1116,13 @@ if (isset($_POST["did"])) {
 														<input type="text" name="menu_id" id="menu_id" class="form-control" placeholder="Menu ID" minlength="4" required title="No Spaces. Minimum of 4 characters" value="<?php echo $output->data->menu_id;?>">
 													</div>
 												</div>
-												<div class="form-group">		
+												<div class="form-group">
 													<label class="col-sm-3 control-label" for="menu_name">Menu Name: </label>
 													<div class="col-sm-9">
 														<input type="text" name="menu_name" id="menu_name" class="form-control" placeholder="Menu Name" required value="<?php echo $output->data->menu_name;?>">
 													</div>
 												</div>
-												<div class="form-group">		
+												<div class="form-group">
 													<label class="col-sm-3 control-label" for="menu_prompt">Menu Greeting: </label>
 													<div class="col-sm-9">
 														<select name="menu_prompt" id="menu_prompt" class="form-control select2" style="width:100%;">
@@ -1135,20 +1131,20 @@ if (isset($_POST["did"])) {
 																for($i=0;$i<count($voicefiles->file_name);$i++){
 																	$file = substr($voicefiles->file_name[$i], 0, -4);
 															?>
-																<option value="<?php echo $file;?>" <?php if($voicefiles->file[$i] == $output->data->menu_prompt){echo "selected";}?> ><?php echo $file;?></option>		
+																<option value="<?php echo $file;?>" <?php if($voicefiles->file[$i] == $output->data->menu_prompt){echo "selected";}?> ><?php echo $file;?></option>
 															<?php
 																}
 															?>
 														</select>
 													</div>
 												</div>
-												<div class="form-group">		
+												<div class="form-group">
 													<label class="col-sm-3 control-label" for="menu_timeout">Menu Timeout: </label>
 													<div class="col-sm-9">
 														<input type="number" name="menu_timeout" id="menu_timeout" class="form-control" value="10" min="0" required>
 													</div>
 												</div>
-												<div class="form-group">		
+												<div class="form-group">
 													<label class="col-sm-3 control-label" for="menu_timeout_prompt">Menu Timeout Greeting: </label>
 													<div class="col-sm-9">
 														<select name="menu_timeout_prompt " id="menu_timeout_prompt" class="form-control select2" style="width:100%;">
@@ -1157,59 +1153,57 @@ if (isset($_POST["did"])) {
 																for($i=0;$i<count($voicefiles->file_name);$i++){
 																	$file = substr($voicefiles->file_name[$i], 0, -4);
 															?>
-																<option value="<?php echo $file;?>" <?php if($voicefiles->file[$i] == $output->data->menu_timeout_prompt){echo "selected";}?> ><?php echo $file;?></option>		
+																<option value="<?php echo $file;?>" <?php if($voicefiles->file[$i] == $output->data->menu_timeout_prompt){echo "selected";}?> ><?php echo $file;?></option>
 															<?php
 																}
 															?>				
 														</select>
 													</div>
 												</div>
-												<div class="form-group">		
+												<div class="form-group">
 													<label class="col-sm-3 control-label" for="menu_invalid_prompt">Menu Invalid Greeting: </label>
 													<div class="col-sm-9">
 														<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control select2" style="width:100%;">
-															<option value="" selected>-- Default Value --</option>	
+															<option value="" selected>-- Default Value --</option>
 															<?php
 																for($i=0;$i<count($voicefiles->file_name);$i++){
 																	$file = substr($voicefiles->file_name[$i], 0, -4);
 															?>
-																<option value="<?php echo $file;?>" <?php if($voicefiles->file[$i] == $output->data->menu_invalid_prompt){echo "selected";}?> ><?php echo $file;?></option>		
+																<option value="<?php echo $file;?>" <?php if($voicefiles->file[$i] == $output->data->menu_invalid_prompt){echo "selected";}?> ><?php echo $file;?></option>
 															<?php
 																}
 															?>				
 														</select>
 													</div>
 												</div>
-												<div class="form-group">		
+												<div class="form-group">
 													<label class="col-sm-3 control-label" for="menu_repeat">Menu Repeat: </label>
 													<div class="col-sm-9">
 														<input type="number" name="menu_repeat" id="menu_repeat" class="form-control"value="<?php echo $output->data->menu_repeat;?>" min="0" required>
 													</div>
 												</div>
-												<div class="form-group">		
+												<div class="form-group">
 													<label class="col-sm-3 control-label" for="menu_time_check">Menu Time Check: </label>
 													<div class="col-sm-9">
-														<select name="menu_time_check" id="menu_time_check" class="form-control">
-															<option value="0" <?php if($output->data->menu_time_check == "0"){echo "selected";}?> > 0 - No Realtime Tracking </option>
-															<option value="1" <?php if($output->data->menu_time_check == "1"){echo "selected";}?> > 1 - Realtime Tracking </option>	
+														<select name="menu_time_check" id="menu_time_check" class="form-control"><option value="0" <?php if($output->data->menu_time_check == "0"){echo "selected";}?> > 0 - No Realtime Tracking </option><option value="1" <?php if($output->data->menu_time_check == "1"){echo "selected";}?> > 1 - Realtime Tracking </option>	
 														</select>
 													</div>
 												</div>
-												<div class="form-group">		
+												<div class="form-group">
 													<label class="col-sm-3 control-label" for="call_time_id">Call Time: </label>
 													<div class="col-sm-9">
 														<select name="call_time_id" id="call_time_id" class="form-control select2" style="width:100%;">
 															<?php
 																for($x=0; $x<count($calltimes->call_time_id);$x++){
 															?>
-																	<option value="<?php echo $calltimes->call_time_id[$x];?>" <?php if($calltimes->call_time_id[$i] == $output->data->call_time_id){echo "selected";} ?> > <?php echo $calltimes->call_time_id[$x].' - '.$calltimes->call_time_name[$x]; ?> </option>
+																<option value="<?php echo $calltimes->call_time_id[$x];?>" <?php if($calltimes->call_time_id[$i] == $output->data->call_time_id){echo "selected";} ?> > <?php echo $calltimes->call_time_id[$x].' - '.$calltimes->call_time_name[$x]; ?> </option>
 															<?php
 																}
 															?>
 														</select>
 													</div>
 												</div>
-												<div class="form-group">		
+												<div class="form-group">
 													<label class="col-sm-3 control-label" for="track_in_vdac">Track call in realtime report: </label>
 													<div class="col-sm-9"> 
 														<select name="track_in_vdac" id="track_in_vdac" class="form-control">
@@ -1295,10 +1289,8 @@ if (isset($_POST["did"])) {
 											<fieldset>
 						                        <div class="box-footer">
 						                           <div class="col-sm-3 pull-right">
-															<a href="telephonyinbound.php" type="button"  id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-						                           	
-						                                	<button type="submit" class="btn btn-primary" id="modifyIVROkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-														
+														<a href="telephonyinbound.php" type="button"  id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+														<button type="submit" class="btn btn-primary" id="modifyIVROkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 						                           </div>
 						                        </div>
 						                    </fieldset>

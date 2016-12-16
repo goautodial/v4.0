@@ -107,9 +107,31 @@ if ($validated == 1) {
 	$group_permission .= '"inbound_delete":' . (isset($_POST["inbound_delete"]) ? '"D"' : '"N"');
 	$group_permission .= '},';
 	
+	$group_permission .= '"ivr":{';
+	$group_permission .= '"ivr_create":' . (isset($_POST["ivr_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"ivr_read":' . (isset($_POST["ivr_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"ivr_update":' . (isset($_POST["ivr_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"ivr_delete":' . (isset($_POST["ivr_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"did":{';
+	$group_permission .= '"did_create":' . (isset($_POST["did_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"did_read":' . (isset($_POST["did_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"did_update":' . (isset($_POST["did_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"did_delete":' . (isset($_POST["did_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
 	$group_permission .= '"voicefiles":{';
 	$group_permission .= '"voicefiles_upload":' . (isset($_POST["voicefiles_upload"]) ? '"C"' : '"N"') . ',';
-	$group_permission .= '"voicefiles_delete":' . (isset($_POST["voicefiles_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '"voicefiles_play":' . (isset($_POST["voicefiles_play"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"voicefiles_download":' . (isset($_POST["voicefiles_download"]) ? '"Y"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"moh":{';
+	$group_permission .= '"moh_create":' . (isset($_POST["moh_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"moh_read":' . (isset($_POST["moh_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"moh_update":' . (isset($_POST["moh_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"moh_delete":' . (isset($_POST["moh_delete"]) ? '"D"' : '"N"');
 	$group_permission .= '},';
 	
 	$group_permission .= '"reportsanalytics":{';

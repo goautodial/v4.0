@@ -229,7 +229,7 @@ if (isset($_POST["usergroup_id"])) {
 										$list_perms = '';
 										foreach ($perms as $type => $perm) {
 											$hiddenRow = '';
-											if ($type == 'multi-tenant') { $hiddenRow = ' hidden'; }
+											if (preg_match("/support|multi-tenant|chat|osticket/", $type)) { $hiddenRow = ' hidden'; }
 											$list_perms .= '<div class="form-group row mt'.$hiddenRow.'">';
 											$list_perms .= '<label for="group_name" class="col-sm-4 control-label">'.$lh->translationFor($type).'</label>';
 											$list_perms .= '<div class="col-sm-8 mb">';
@@ -249,6 +249,8 @@ if (isset($_POST["usergroup_id"])) {
 													if (preg_match("/_update$/", $idx)) { $defaultValue = 'U'; $label = 'Update'; }
 													if (preg_match("/_delete$/", $idx)) { $defaultValue = 'D'; $label = 'Delete'; }
 													if (preg_match("/_upload$/", $idx)) { $defaultValue = 'C'; $label = 'Upload'; }
+													if (preg_match("/_play/", $idx)) { $defaultValue = 'Y'; $label = 'Play'; }
+													if (preg_match("/_download/", $idx)) { $defaultValue = 'Y'; $label = 'Download'; }
 													$list_options = ' display: inline-block;';
 													
 													if ($type == 'multi-tenant' && !preg_match("/(_create|_display|_update|_delete)$/", $idx)) {
