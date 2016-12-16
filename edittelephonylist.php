@@ -176,8 +176,8 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 										<label class="control-label col-lg-3" style="text-align: left;">Reset Lead Called Status:</label>
 										<div class="col-lg-4">
 											<select name="reset_list" class="form-control select2">
-												<option value="N" <?php if($output->reset_called_lead_status[$i] == 'N') echo 'selected';?>>N</option>
-												<option value="Y" <?php if($output->reset_called_lead_status[$i] == 'Y') echo 'selected';?>>Y</option>
+												<option value="N">N</option>
+												<option value="Y">Y</option>
 											</select>
 										</div>
 										<label class="control-label col-lg-2" style="text-align: left;">Active:</label>
