@@ -231,7 +231,7 @@ $lists = $ui->API_goGetAllLists();
 																?>
 																<div class="col-lg-8">
 																	<select id="auto_dial_level" class="form-control" name="auto_dial_level" <?php if($campaign->data->dial_method !== "RATIO") echo "disabled";?>>
-																	<option value="OFF" <?php if($autodial_level == "0") echo "selected";?> disabled>OFF</option>
+																	<option value="OFF" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?> disabled>OFF</option>
 										    						<option value="SLOW"<?php if($autodial_level == "1") echo "selected";?>>SLOW</option>
 										    						<option VALUE="NORMAL" <?php if($autodial_level == "2") echo "selected";?>>NORMAL</option>
 																	<option VALUE="HIGH" <?php if($autodial_level == "4") echo "selected";?>>HIGH</option>
