@@ -49,6 +49,7 @@ $scripts = $ui->API_goGetAllScripts();
 $carriers = $ui->getCarriers();
 $leadfilter = $ui->API_getAllLeadFilters();
 $dialStatus = $ui->API_getAllDialStatuses($campaign->data->campaign_id);
+$campdialStatus = $ui->API_getAllCampaignDialStatuses($campaign->data->campaign_id);
 $dids = $ui->API_getAllDIDs($campaign->data->campaign_id);
 $voicefiles = $ui->API_GetVoiceFilesList();
 $ingroups = $ui->API_getInGroups();
@@ -90,6 +91,13 @@ $lists = $ui->API_goGetAllLists();
     	select{
     		font-weight: normal;
     	}
+		.select2-container{
+			width: 100% !important;
+		}
+		
+		.select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+			margin-top: 1px;
+		}
     </style>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -475,13 +483,27 @@ $lists = $ui->API_goGetAllLists();
 															<label class="col-sm-3 control-label">Dial Status:</label>
 															<div class="col-sm-8 mb">
 																<select class="form-control" id="dial_status" name="dial_status">
-																	<option value="NONE">NONE</option>
-																	<?php for($i=0;$i<=count($dialStatus->status);$i++) { ?>
-																		<option value="<?php echo $dialStatus->status[$i]?>" <?php if($campaign->data->dial_status_a == $dialStatus->status[$i]) echo "selected"; ?>>
-																			<?php echo $dialStatus->status[$i]." - ".$dialStatus->status_name[$i]?>
-																		</option>
+																	<option value="" selected>NONE</option>
+																	<optgroup label="System Statuses">
+																		<?php for($i=0;$i<=count($dialStatus->status);$i++) { ?>
+																			<?php if( !empty($dialStatus->status[$i]) && !in_array($dialStatus->status[$i], $dial_statuses) ){ ?>
+																				<option value="<?php echo $dialStatus->status[$i]?>">
+																					<?php echo $dialStatus->status[$i]." - ".$dialStatus->status_name[$i]?>
+																				</option>
+																			<?php } ?>
+																		<?php } ?>
+																	</optgroup>
+																	<?php if(count($campdialStatus->status) > 0){ ?>
+																		<optgroup label="Campaign Statuses">
+																		<?php for($i=0;$i<=count($campdialStatus->status);$i++) { ?>
+																			<?php if( !empty($campdialStatus->status[$i])  && !in_array($campdialStatus->status[$i], $dial_statuses) ){ ?>
+																				<option value="<?php echo $campdialStatus->status[$i]?>">
+																					<?php echo $campdialStatus->status[$i]." - ".$campdialStatus->status_name[$i]?>
+																				</option>
+																			<?php } ?>
+																		<?php } ?>
+																		</optgroup>
 																	<?php } ?>
-																	<option value=""></option>
 																</select>
 															</div>
 															<div class="col-sm-1 mb">
@@ -948,13 +970,27 @@ $lists = $ui->API_goGetAllLists();
 															<label class="col-sm-3 control-label">Dial Status:</label>
 															<div class="col-sm-8 mb">
 																<select class="form-control" id="dial_status" name="dial_status">
-																	<option value="NONE">NONE</option>
+																	<option value="" selected>NONE</option>
+																	<optgroup label="System Statuses">
 																	<?php for($i=0;$i<=count($dialStatus->status);$i++) { ?>
-																		<option value="<?php echo $dialStatus->status[$i]?>" <?php if($campaign->data->dial_status_a == $dialStatus->status[$i]) echo "selected"; ?>>
-																			<?php echo $dialStatus->status[$i]." - ".$dialStatus->status_name[$i]?>
-																		</option>
+																		<?php if( !empty($dialStatus->status[$i]) && !in_array($dialStatus->status[$i], $dial_statuses) ){ ?>
+																			<option value="<?php echo $dialStatus->status[$i]?>">
+																				<?php echo $dialStatus->status[$i]." - ".$dialStatus->status_name[$i]?>
+																			</option>
+																		<?php } ?>
 																	<?php } ?>
-																	<option value=""></option>
+																	</optgroup>
+																	<?php if(count($campdialStatus->status) > 0){ ?>
+																		<optgroup label="Campaign Statuses">
+																		<?php for($i=0;$i<=count($campdialStatus->status);$i++) { ?>
+																			<?php if( !empty($campdialStatus->status[$i])  && !in_array($campdialStatus->status[$i], $dial_statuses) ){ ?>
+																				<option value="<?php echo $campdialStatus->status[$i]?>">
+																					<?php echo $campdialStatus->status[$i]." - ".$campdialStatus->status_name[$i]?>
+																				</option>
+																			<?php } ?>
+																		<?php } ?>
+																		</optgroup>
+																	<?php } ?>
 																</select>
 															</div>
 															<div class="col-sm-1 mb">
@@ -964,7 +1000,7 @@ $lists = $ui->API_goGetAllLists();
 														<div class="form-group">
 															<label class="col-sm-3 control-label">List Order:</label>
 															<div class="col-sm-9 mb">
-																<select size="1" name="lead_order" id="lead_order" class="form-control">
+																	<select size="1" name="lead_order" id="lead_order" class="form-control">
 														            <option value="DOWN" <?php if($campaign->data->lead_order == "DOWN") echo "selected"; ?>>DOWN</option>
 														            <option value="UP" <?php if($campaign->data->lead_order == "UP") echo "selected"; ?>>UP</option>
 														            <option value="DOWN_PHONE" <?php if($campaign->data->lead_order == "DOWN_PHONE") echo "selected"; ?>>DOWN PHONE</option>
@@ -1565,7 +1601,11 @@ $lists = $ui->API_goGetAllLists();
 			$(document).ready(function() {
 			
 				$('.select2').select2({
-							theme: 'bootstrap'
+					theme: 'bootstrap'
+				});
+				
+				$('#dial_status').select2({
+					theme: 'bootstrap'
 				});
 
 				var campaign_allow_inbound = $('#campaign_allow_inbound').val();
