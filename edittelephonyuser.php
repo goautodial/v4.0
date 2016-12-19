@@ -1,12 +1,12 @@
 <?php
 
 	###########################################################
-	### Name: edittelephonyuser.php 						###
-	### Functions: Edit Users 								###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016			###
-	### Version: 4.0 										###
-	### Written by: Alexander Abenoja & Noel Umandap		###
-	### License: AGPLv2										###
+	### Name: edittelephonyuser.php 	       ###
+	### Functions: Edit Users 		   ###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016		   ###
+	### Version: 4.0 		   ###
+	### Written by: Alexander Abenoja & Noel Umandap		   ###
+	### License: AGPLv2		   ###
 	###########################################################
 
 	require_once('./php/CRMDefaults.php');
@@ -315,16 +315,16 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														<select class="form-control" name="hotkeys" id="hotkeys">
 														<?php
 															$hotkeys = NULL;
-															if($output->data->hotkeys_active == "0"){
-																$hotkeys .= '<option value="0" selected> Active </option>';
+															if($output->data->hotkeys_active == "1"){
+																$hotkeys .= '<option value="1" selected> Active </option>';
 															}else{
-																$hotkeys .= '<option value="0" > Active </option>';
+																$hotkeys .= '<option value="1" > Active </option>';
 															}
 															
-															if($output->data->hotkeys_active == "1"){
-																$hotkeys .= '<option value="1" selected> Inactive </option>';
+															if($output->data->hotkeys_active == "0"){
+																$hotkeys .= '<option value="0" selected> Inactive </option>';
 															}else{
-																$hotkeys .= '<option value="1" > Inactive </option>';
+																$hotkeys .= '<option value="0" > Inactive </option>';
 															}
 															echo $hotkeys;
 														?>
