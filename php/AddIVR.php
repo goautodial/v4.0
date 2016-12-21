@@ -27,6 +27,41 @@ require_once('goCRMAPISettings.php');
 	$postfields['custom_dialplan_entry'] = $_POST['custom_dialplan_entry'];
 	$postfields['tracking_group'] = $_POST['tracking_group'];
     
+	$route_option = $_POST['option'];
+	$route_option = array_diff($route_option, array( '' ));
+	
+	$route_desc = $_POST['route_desc'];
+	$route_desc = array_diff($route_desc, array( '' ));
+	
+	$route_menu = $_POST['route_menu'];
+	$route_menu = array_diff($route_menu, array( '' ));
+	
+	$option_route_value = $_POST['option_route_value'];
+	$option_route_value = array_diff($option_route_value, array( '' ));
+	
+	$option_route_context = $_POST['option_route_value_context'];
+	$option_route_context = array_diff($option_route_context, array( '' ));
+	
+	for($i=0;$i < count($route_option);$i++){
+		$array[] = array("option" => $route_option[$i], "desc" => $route_desc[$i], "menu" => $route_menu[$i], "option_value" => $option_route_value, "option_context" => $option_route_context[$i]);
+	}
+	$filtered_array = array_diff($array, array( '' ));
+	
+	$imploded_option = implode("+", array_column($filtered_array, 'option'));
+	$imploded_desc = implode("+", array_column($filtered_array, 'desc'));
+	$imploded_menu = implode("+", array_column($filtered_array, 'menu'));
+	$imploded_value = implode("+", $option_route_value);
+	$imploded_context = implode("+", $option_route_context);
+	
+	$postfields['option'] = $imploded_option;
+	$postfields['option_desc'] = $imploded_desc;
+	$postfields['option_menu'] = $imploded_menu;
+	$postfields['option_value'] = $imploded_value;
+	$postfields['option_context'] = $imploded_context;
+	
+	//echo "<pre>";
+	//var_dump($imploded_value);
+	//echo "</pre>";
     
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -52,6 +87,5 @@ require_once('goCRMAPISettings.php');
 	}
 
 	echo $status;
-
 
 ?>
