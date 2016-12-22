@@ -2575,7 +2575,7 @@
 			/*********
 			** EDIT INGROUP
 			*********/
-				$(document).on("click",".edit-ingroup").click(function(e) {
+				$(document).on("click",".edit-ingroup",function(e) {
 					e.preventDefault();
 					var url = './edittelephonyinbound.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="groupid" value="' + $(this).attr('data-id') + '" /></form>');
@@ -2611,7 +2611,7 @@
 									console.log(data);
 								  		if(data == 1){
 								  			swal("Success!", "Inbound Successfully Deleted!", "success");
-											window.setTimeout(function(){location.reload()},3000)
+											window.setTimeout(function(){location.reload()},3000);
 										}else{
 											sweetAlert("Oops...", "Something went wrong! "+data, "error");
 										}
@@ -2701,8 +2701,7 @@
 			/*********
 			** EDIT IVR
 			*********/
-
-				$(document).on("click",".edit-ivr").click(function(e) {
+				$(document).on("click",".edit-ivr",function(e) {
 					e.preventDefault();
 					var url = './edittelephonyinbound.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="ivr" value="' + $(this).attr('data-id') + '" /></form>');
@@ -2829,7 +2828,7 @@
 			/*********
 			** EDIT DID
 			*********/
-
+	
 				$(document).on('click','.edit-phonenumber',function() {
 					var url = './edittelephonyinbound.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="did" value="' + $(this).attr('data-id') + '" /></form>');
@@ -2886,6 +2885,14 @@
 		/*******************
 		** OTHER TRIGGER EVENTS and FILTERS
 		*******************/
+			/* loads colorpicker */
+    			$(".colorpicker").colorpicker();
+
+    		/* initialize select2 */
+				$('.select2-1').select2({
+			        theme: 'bootstrap'
+			    });
+				
 			/*** INGROUP ***/
 				// disable special characters on Ingroup ID
 					$('#groupid').bind('keypress', function (event) {
@@ -4755,14 +4762,6 @@
 						}
 						
 					});	 
-		
-			/* loads colorpicker */
-    			$(".colorpicker").colorpicker();
-
-    		/* initialize select2 */
-				$('.select2-1').select2({
-			        theme: 'bootstrap'
-			    });
 	});
 </script>
 		
