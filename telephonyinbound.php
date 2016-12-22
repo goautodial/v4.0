@@ -2610,8 +2610,7 @@
 									success: function(data) {
 									console.log(data);
 								  		if(data == 1){
-								  			swal("Success!", "Inbound Successfully Deleted!", "success");
-											window.setTimeout(function(){location.reload()},3000);
+											swal({title: "Success!",text: "Inbound Successfully Deleted!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 										}else{
 											sweetAlert("Oops...", "Something went wrong! "+data, "error");
 										}
@@ -2684,14 +2683,12 @@
 									  // console.log(data);
 								  		$('#finish').text("Submit");
 										$('#finish').attr("disabled", false);
-
-										  if(data == "success"){
-												swal("Success!", "Ingroup Successfully Created!", "success");
-										  		window.setTimeout(function(){location.reload()},1000);
-										  }
-										  else{
+										if(data == "success"){
+												swal({title: "Success!",text: "IVR Successfully Created!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+										}
+										else{
 											  sweetAlert("Oops...", "Something went wrong! "+data, "error");
-										  }
+										}
 									}
 								});
 							
@@ -2737,8 +2734,7 @@
 									success: function(data) {
 									console.log(data);
 								  		if(data == 1){
-								  			swal("Success!", "IVR Successfully Deleted!", "success");
-											//window.setTimeout(function(){location.reload()},3000)
+											swal({title: "Success!",text: "IVR Successfully Deleted!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 										}else{
 											sweetAlert("Oops...", "Something went wrong! "+data, "error");
 										}
@@ -2807,15 +2803,12 @@
 								data: $("#create_phonenumber").serialize(),
 								success: function(data) {
 								   console.log(data);
-									  if(data == 1){
-											swal("Success!", "Phone Number Successfully Created!", "success");
-									  		window.setTimeout(function(){location.reload()},1000)
-									  		$('#submit_did').val("Submit");
+								   $('#submit_did').val("Submit");
 											$('#submit_did').attr("disabled", false);
+									  if(data == 1){
+									  		swal({title: "Success!",text: "Phone Number Successfully Created!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 									  }else{
 											sweetAlert("Oops...", "Something went wrong! "+data, "error");
-											$('#submit_did').val("Submit");
-											$('#submit_did').attr("disabled", false);
 									  }
 								}
 							});
@@ -2866,8 +2859,7 @@
 									//console.log(modify_did);
 									console.log(data);
 								  		if(data == 1){
-								  			swal("Success!", "Phonenumber Successfully Deleted!", "success");
-											//window.setTimeout(function(){location.reload()},3000)
+											swal({title: "Success!",text: "Phone Number Successfully Deleted!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 										}else{
 											sweetAlert("Oops...", "Something went wrong! "+data, "error");
 										}
