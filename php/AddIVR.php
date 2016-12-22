@@ -37,30 +37,23 @@ require_once('goCRMAPISettings.php');
 	$route_menu = array_diff($route_menu, array( '' ));
 	
 	$option_route_value = $_POST['option_route_value'];
-	$option_route_value = array_diff($option_route_value, array( '' ));
+	$option_route_value = array_filter($option_route_value);
+	$implode_value = implode(",", $option_route_value);
+	$option_route_value = explode(",", $implode_value);
 	
 	$option_route_context = $_POST['option_route_value_context'];
 	$option_route_context = array_diff($option_route_context, array( '' ));
 	
+	$items = "";
 	for($i=0;$i < count($route_option);$i++){
-		$array[] = array("option" => $route_option[$i], "desc" => $route_desc[$i], "menu" => $route_menu[$i], "option_value" => $option_route_value, "option_context" => $option_route_context[$i]);
+		$items .= $route_option[$i]."+".$route_desc[$i]."+".$route_menu[$i]."+".$option_route_value[$i]."+".$option_route_context[$i];
+		$items .= "|";
 	}
-	$filtered_array = array_diff($array, array( '' ));
 	
-	$imploded_option = implode("+", array_column($filtered_array, 'option'));
-	$imploded_desc = implode("+", array_column($filtered_array, 'desc'));
-	$imploded_menu = implode("+", array_column($filtered_array, 'menu'));
-	$imploded_value = implode("+", $option_route_value);
-	$imploded_context = implode("+", $option_route_context);
-	
-	$postfields['option'] = $imploded_option;
-	$postfields['option_desc'] = $imploded_desc;
-	$postfields['option_menu'] = $imploded_menu;
-	$postfields['option_value'] = $imploded_value;
-	$postfields['option_context'] = $imploded_context;
-	
+	$postfields['items'] = $items;
+		
 	//echo "<pre>";
-	//var_dump($imploded_value);
+	//var_dump($items);
 	//echo "</pre>";
     
 	$ch = curl_init();
@@ -77,7 +70,7 @@ require_once('goCRMAPISettings.php');
 	
 	if ($output->result=="success") {
 		# Result was OK!
-		$status = "success";
+		$status = $output->result;
 		//$return['msg'] = "New User has been successfully saved.";
 	} else {
 		# An error occured

@@ -243,8 +243,8 @@
 												if($phonenumber->did_route[$i] == "IN_GROUP"){
 													$phonenumber->did_route[$i] = "IN-GROUP";
 												}
-												if($phonenumber->did_route[$i] == "EXTEN"){
-													$phonenumber->did_route[$i] = "CUSTOM EXTENSION";
+												if($phonenumber->did_route[$i] == "EXTENSION"){
+													$phonenumber->did_route[$i] = "CUSTOM EXTENSIONSION";
 												}
 
 											$action_DID = $ui->getUserActionMenuForDID($phonenumber->did_id[$i], $phonenumber->did_description[$i], $perm);
@@ -498,7 +498,7 @@
 	
 	<!-- ADD IVR MODAL -->
 		<div class="modal fade" id="add_ivr" aria-labelledby="ivr_modal" >
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg" role="document" style="height:90%;">
             <div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="ivr_modal">
@@ -700,7 +700,7 @@
 												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
-												<option value="EXTEN">Custom Extension</option>
+												<option value="EXTENSION">Custom Extension</option>
 												<option value="PHONE">Phone</option>
 												<option value="VOICEMAIL">Voicemail</option>
 												<option value="AGI">AGI</option>
@@ -768,7 +768,7 @@
 													</select>
 												</div>
 											</div>
-										<!-- EXTEN -->
+										<!-- EXTENSION -->
 											<div class="route_exten_0" style="display:none;">
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Extension: </label>
@@ -851,7 +851,7 @@
 												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
-												<option value="EXTEN">Custom Extension</option>
+												<option value="EXTENSION">Custom Extension</option>
 												<option value="PHONE">Phone</option>
 												<option value="VOICEMAIL">Voicemail</option>
 												<option value="AGI">AGI</option>
@@ -919,7 +919,7 @@
 													</select>
 												</div>
 											</div>
-										<!-- EXTEN -->
+										<!-- EXTENSION -->
 											<div class="route_exten_1" style="display:none;">
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Extension: </label>
@@ -1002,7 +1002,7 @@
 												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
-												<option value="EXTEN">Custom Extension</option>
+												<option value="EXTENSION">Custom Extension</option>
 												<option value="PHONE">Phone</option>
 												<option value="VOICEMAIL">Voicemail</option>
 												<option value="AGI">AGI</option>
@@ -1070,7 +1070,7 @@
 													</select>
 												</div>
 											</div>
-										<!-- EXTEN -->
+										<!-- EXTENSION -->
 											<div class="route_exten_2" style="display:none;">
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Extension: </label>
@@ -1153,7 +1153,7 @@
 												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
-												<option value="EXTEN">Custom Extension</option>
+												<option value="EXTENSION">Custom Extension</option>
 												<option value="PHONE">Phone</option>
 												<option value="VOICEMAIL">Voicemail</option>
 												<option value="AGI">AGI</option>
@@ -1221,7 +1221,7 @@
 													</select>
 												</div>
 											</div>
-										<!-- EXTEN -->
+										<!-- EXTENSION -->
 											<div class="route_exten_3" style="display:none;">
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Extension: </label>
@@ -1304,7 +1304,7 @@
 												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
-												<option value="EXTEN">Custom Extension</option>
+												<option value="EXTENSION">Custom Extension</option>
 												<option value="PHONE">Phone</option>
 												<option value="VOICEMAIL">Voicemail</option>
 												<option value="AGI">AGI</option>
@@ -1372,7 +1372,7 @@
 													</select>
 												</div>
 											</div>
-										<!-- EXTEN -->
+										<!-- EXTENSION -->
 											<div class="route_exten_4" style="display:none;">
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Extension: </label>
@@ -1455,7 +1455,7 @@
 												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
-												<option value="EXTEN">Custom Extension</option>
+												<option value="EXTENSION">Custom Extension</option>
 												<option value="PHONE">Phone</option>
 												<option value="VOICEMAIL">Voicemail</option>
 												<option value="AGI">AGI</option>
@@ -1523,7 +1523,7 @@
 													</select>
 												</div>
 											</div>
-										<!-- EXTEN -->
+										<!-- EXTENSION -->
 											<div class="route_exten_5" style="display:none;">
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Extension: </label>
@@ -1606,7 +1606,7 @@
 												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
-												<option value="EXTEN">Custom Extension</option>
+												<option value="EXTENSION">Custom Extension</option>
 												<option value="PHONE">Phone</option>
 												<option value="VOICEMAIL">Voicemail</option>
 												<option value="AGI">AGI</option>
@@ -1674,7 +1674,7 @@
 													</select>
 												</div>
 											</div>
-										<!-- EXTEN -->
+										<!-- EXTENSION -->
 											<div class="route_exten_6" style="display:none;">
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Extension: </label>
@@ -1757,7 +1757,7 @@
 												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
-												<option value="EXTEN">Custom Extension</option>
+												<option value="EXTENSION">Custom Extension</option>
 												<option value="PHONE">Phone</option>
 												<option value="VOICEMAIL">Voicemail</option>
 												<option value="AGI">AGI</option>
@@ -1825,7 +1825,7 @@
 													</select>
 												</div>
 											</div>
-										<!-- EXTEN -->
+										<!-- EXTENSION -->
 											<div class="route_exten_7" style="display:none;">
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Extension: </label>
@@ -1908,7 +1908,7 @@
 												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
-												<option value="EXTEN">Custom Extension</option>
+												<option value="EXTENSION">Custom Extension</option>
 												<option value="PHONE">Phone</option>
 												<option value="VOICEMAIL">Voicemail</option>
 												<option value="AGI">AGI</option>
@@ -1976,7 +1976,7 @@
 													</select>
 												</div>
 											</div>
-										<!-- EXTEN -->
+										<!-- EXTENSION -->
 											<div class="route_exten_8" style="display:none;">
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Extension: </label>
@@ -2059,7 +2059,7 @@
 												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
-												<option value="EXTEN">Custom Extension</option>
+												<option value="EXTENSION">Custom Extension</option>
 												<option value="PHONE">Phone</option>
 												<option value="VOICEMAIL">Voicemail</option>
 												<option value="AGI">AGI</option>
@@ -2127,7 +2127,7 @@
 													</select>
 												</div>
 											</div>
-										<!-- EXTEN -->
+										<!-- EXTENSION -->
 											<div class="route_exten_9" style="display:none;">
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Extension: </label>
@@ -2242,7 +2242,7 @@
 										<option value="PHONE"> Phone </option>
 										<option value="CALLMENU"> Call Menu / IVR </option>
 										<option value="VOICEMAIL"> Voicemail </option>
-										<option value="EXTEN"> Custom Extension </option>
+										<option value="EXTENSION"> Custom Extension </option>
 									</select>
 								</div>
 							</div>
@@ -2293,7 +2293,7 @@
 											<option value="VOICEMAIL" > Voicemail </option>
 											<option value="PHONE" > Phone </option>
 											<option value="IN_GROUP" > In-group </option>
-											<option value="EXTEN" > Custom Extension </option>
+											<option value="EXTENSION" > Custom Extension </option>
 										</select>
 									</div>
 								</div>
@@ -2633,7 +2633,7 @@
 			** INIT WIZARD
 			*********/
 				var ivr_form = $("#create_ivr"); // init form wizard 
-
+				
 			    ivr_form.validate({
 			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
 			    });
@@ -2655,7 +2655,9 @@
 					        $(".body:eq(" + newIndex + ") label.error", ivr_form).remove();
 					        $(".body:eq(" + newIndex + ") .error", ivr_form).removeClass("error");
 					    }
-
+						
+						$("#create_ivr").find( ".content.clearfix" ).css( "height", "75%" );
+						
 			            ivr_form.validate().settings.ignore = ":disabled,:hidden";
 			            return ivr_form.valid();
 			        },
@@ -2694,7 +2696,10 @@
 							
 			        }
 			    }); // end of wizard
-
+			
+			//$(document).on("click","#next",function(e) {
+			//	$("#create_ivr").find( ".content.clearfix" ).css( "height", "75%" );
+			//});
 			/*********
 			** EDIT IVR
 			*********/
@@ -2746,7 +2751,7 @@
 	                	}
 	                );
 				});
-		
+			
 		//-------------------- end of main ivr events
 
 		/*******************
@@ -2835,7 +2840,7 @@
 
 				$(document).on('click','.delete-phonenumber',function() {
 				 	var id = $(this).attr('data-id');
-	                swal({   
+	                swal({
 	                	title: "Are you sure?",   
 	                	text: "This action cannot be undone.",   
 	                	type: "warning",   
@@ -2845,7 +2850,7 @@
 	                	cancelButtonText: "No, cancel please!",   
 	                	closeOnConfirm: false,   
 	                	closeOnCancel: false 
-	                	}, 
+					}, 
 	                	function(isConfirm){   
 	                		if (isConfirm) { 
 	                			$.ajax({
@@ -3037,7 +3042,7 @@
 						$('.route_agi_0').hide();
 							$(".route_agi_0 :input").prop('required',false);
 						
-					}if(this.value == "EXTEN") {
+					}if(this.value == "EXTENSION") {
 						$('.route_exten_0').show();
 						$(".route_exten_0 :input").prop('required',true);
 						
@@ -3209,7 +3214,7 @@
 						$('.route_agi_1').hide();
 							$(".route_agi_1 :input").prop('required',false);
 						
-					}if(this.value == "EXTEN") {
+					}if(this.value == "EXTENSION") {
 						$('.route_exten_1').show();
 						$(".route_exten_1 :input").prop('required',true);
 						
@@ -3381,7 +3386,7 @@
 						$('.route_agi_2').hide();
 							$(".route_agi_2 :input").prop('required',false);
 						
-					}if(this.value == "EXTEN") {
+					}if(this.value == "EXTENSION") {
 						$('.route_exten_2').show();
 						$(".route_exten_2 :input").prop('required',true);
 						
@@ -3553,7 +3558,7 @@
 						$('.route_agi_3').hide();
 							$(".route_agi_3 :input").prop('required',false);
 						
-					}if(this.value == "EXTEN") {
+					}if(this.value == "EXTENSION") {
 						$('.route_exten_3').show();
 						$(".route_exten_3 :input").prop('required',true);
 						
@@ -3725,7 +3730,7 @@
 						$('.route_agi_4').hide();
 							$(".route_agi_4 :input").prop('required',false);
 						
-					}if(this.value == "EXTEN") {
+					}if(this.value == "EXTENSION") {
 						$('.route_exten_4').show();
 						$(".route_exten_4 :input").prop('required',true);
 						
@@ -3897,7 +3902,7 @@
 						$('.route_agi_5').hide();
 							$(".route_agi_5 :input").prop('required',false);
 						
-					}if(this.value == "EXTEN") {
+					}if(this.value == "EXTENSION") {
 						$('.route_exten_5').show();
 						$(".route_exten_5 :input").prop('required',true);
 						
@@ -4069,7 +4074,7 @@
 						$('.route_agi_6').hide();
 							$(".route_agi_6 :input").prop('required',false);
 						
-					}if(this.value == "EXTEN") {
+					}if(this.value == "EXTENSION") {
 						$('.route_exten_6').show();
 						$(".route_exten_6 :input").prop('required',true);
 						
@@ -4241,7 +4246,7 @@
 						$('.route_agi_7').hide();
 							$(".route_agi_7 :input").prop('required',false);
 						
-					}if(this.value == "EXTEN") {
+					}if(this.value == "EXTENSION") {
 						$('.route_exten_7').show();
 						$(".route_exten_7 :input").prop('required',true);
 						
@@ -4413,7 +4418,7 @@
 						$('.route_agi_8').hide();
 							$(".route_agi_8 :input").prop('required',false);
 						
-					}if(this.value == "EXTEN") {
+					}if(this.value == "EXTENSION") {
 						$('.route_exten_8').show();
 						$(".route_exten_8 :input").prop('required',true);
 						
@@ -4585,7 +4590,7 @@
 						$('.route_agi_9').hide();
 							$(".route_agi_9 :input").prop('required',false);
 						
-					}if(this.value == "EXTEN") {
+					}if(this.value == "EXTENSION") {
 						$('.route_exten_9').show();
 						$(".route_exten_9 :input").prop('required',true);
 						
@@ -4743,7 +4748,7 @@
 						  $('#form_route_phone').hide();
 						  $('#form_route_callmenu').hide();
 						  $('#form_route_exten').hide();
-						}if(this.value == "EXTEN") {
+						}if(this.value == "EXTENSION") {
 						  $('#form_route_exten').show();
 						  
 						  $('#form_route_agent').hide();
@@ -4753,7 +4758,7 @@
 						  $('#form_route_callmenu').hide();
 						}
 						
-					});	 
+					});
 	});
 </script>
 		
