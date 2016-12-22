@@ -697,7 +697,7 @@
 											<select class="form-control route_menu_0" name="route_menu[]">
 												<option selected value=""></option>
 												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="IN_GROUP">In-group</option>
+												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
 												<option value="EXTEN">Custom Extension</option>
@@ -848,7 +848,7 @@
 											<select class="form-control route_menu_1" name="route_menu[]">
 												<option selected value=""></option>
 												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="IN_GROUP">In-group</option>
+												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
 												<option value="EXTEN">Custom Extension</option>
@@ -999,7 +999,7 @@
 											<select class="form-control route_menu_2" name="route_menu[]">
 												<option selected value=""></option>
 												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="IN_GROUP">In-group</option>
+												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
 												<option value="EXTEN">Custom Extension</option>
@@ -1150,7 +1150,7 @@
 											<select class="form-control route_menu_3" name="route_menu[]">
 												<option selected value=""></option>
 												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="IN_GROUP">In-group</option>
+												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
 												<option value="EXTEN">Custom Extension</option>
@@ -1301,7 +1301,7 @@
 											<select class="form-control route_menu_4" name="route_menu[]">
 												<option selected value=""></option>
 												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="IN_GROUP">In-group</option>
+												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
 												<option value="EXTEN">Custom Extension</option>
@@ -1452,7 +1452,7 @@
 											<select class="form-control route_menu_5" name="route_menu[]">
 												<option selected value=""></option>
 												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="IN_GROUP">In-group</option>
+												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
 												<option value="EXTEN">Custom Extension</option>
@@ -1603,7 +1603,7 @@
 											<select class="form-control route_menu_6" name="route_menu[]">
 												<option selected value=""></option>
 												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="IN_GROUP">In-group</option>
+												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
 												<option value="EXTEN">Custom Extension</option>
@@ -1754,7 +1754,7 @@
 											<select class="form-control route_menu_7" name="route_menu[]">
 												<option selected value=""></option>
 												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="IN_GROUP">In-group</option>
+												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
 												<option value="EXTEN">Custom Extension</option>
@@ -1905,7 +1905,7 @@
 											<select class="form-control route_menu_8" name="route_menu[]">
 												<option selected value=""></option>
 												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="IN_GROUP">In-group</option>
+												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
 												<option value="EXTEN">Custom Extension</option>
@@ -2056,7 +2056,7 @@
 											<select class="form-control route_menu_9" name="route_menu[]">
 												<option selected value=""></option>
 												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="IN_GROUP">In-group</option>
+												<option value="INGROUP">In-group</option>
 												<option value="DID">DID</option>
 												<option value="HANGUP">Hangup</option>
 												<option value="EXTEN">Custom Extension</option>
