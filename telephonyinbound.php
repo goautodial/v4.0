@@ -2988,7 +2988,7 @@
 						$('.route_agi_0').hide();
 							$(".route_agi_0 :input").prop('required',false);
 					
-					}if(this.value == "IN_GROUP") {
+					}if(this.value == "INGROUP") {
 						$('.route_ingroup_0').show();
 						$(".route_ingroup_0 :input").prop('required',true);
 
@@ -3160,7 +3160,7 @@
 						$('.route_agi_1').hide();
 							$(".route_agi_1 :input").prop('required',false);
 					
-					}if(this.value == "IN_GROUP") {
+					}if(this.value == "INGROUP") {
 						$('.route_ingroup_1').show();
 						$(".route_ingroup_1 :input").prop('required',true);
 
@@ -3332,7 +3332,7 @@
 						$('.route_agi_2').hide();
 							$(".route_agi_2 :input").prop('required',false);
 					
-					}if(this.value == "IN_GROUP") {
+					}if(this.value == "INGROUP") {
 						$('.route_ingroup_2').show();
 						$(".route_ingroup_2 :input").prop('required',true);
 
@@ -3504,7 +3504,7 @@
 						$('.route_agi_3').hide();
 							$(".route_agi_3 :input").prop('required',false);
 					
-					}if(this.value == "IN_GROUP") {
+					}if(this.value == "INGROUP") {
 						$('.route_ingroup_3').show();
 						$(".route_ingroup_3 :input").prop('required',true);
 
@@ -3676,7 +3676,7 @@
 						$('.route_agi_4').hide();
 							$(".route_agi_4 :input").prop('required',false);
 					
-					}if(this.value == "IN_GROUP") {
+					}if(this.value == "INGROUP") {
 						$('.route_ingroup_4').show();
 						$(".route_ingroup_4 :input").prop('required',true);
 
@@ -3848,7 +3848,7 @@
 						$('.route_agi_5').hide();
 							$(".route_agi_5 :input").prop('required',false);
 					
-					}if(this.value == "IN_GROUP") {
+					}if(this.value == "INGROUP") {
 						$('.route_ingroup_5').show();
 						$(".route_ingroup_5 :input").prop('required',true);
 
@@ -4020,7 +4020,7 @@
 						$('.route_agi_6').hide();
 							$(".route_agi_6 :input").prop('required',false);
 					
-					}if(this.value == "IN_GROUP") {
+					}if(this.value == "INGROUP") {
 						$('.route_ingroup_6').show();
 						$(".route_ingroup_6 :input").prop('required',true);
 
@@ -4192,7 +4192,7 @@
 						$('.route_agi_7').hide();
 							$(".route_agi_7 :input").prop('required',false);
 					
-					}if(this.value == "IN_GROUP") {
+					}if(this.value == "INGROUP") {
 						$('.route_ingroup_7').show();
 						$(".route_ingroup_7 :input").prop('required',true);
 
@@ -4364,7 +4364,7 @@
 						$('.route_agi_8').hide();
 							$(".route_agi_8 :input").prop('required',false);
 					
-					}if(this.value == "IN_GROUP") {
+					}if(this.value == "INGROUP") {
 						$('.route_ingroup_8').show();
 						$(".route_ingroup_8 :input").prop('required',true);
 
@@ -4536,7 +4536,7 @@
 						$('.route_agi_9').hide();
 							$(".route_agi_9 :input").prop('required',false);
 					
-					}if(this.value == "IN_GROUP") {
+					}if(this.value == "INGROUP") {
 						$('.route_ingroup_9').show();
 						$(".route_ingroup_9 :input").prop('required',true);
 
