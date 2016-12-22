@@ -1342,9 +1342,9 @@ if (isset($_POST["did"])) {
 						$data = curl_exec($ch);
 						curl_close($ch);
 						$output = json_decode($data);
-						
+						//echo "<pre>";
 						//var_dump($output);
-						
+						//echo "</pre>";
 						if ($output->result=="success") {
 						# Result was OK!
 						?>
@@ -1430,7 +1430,7 @@ if (isset($_POST["did"])) {
 															$route .= '<option value="PHONE" > Phone </option>';
 														}
 														
-														if($output->data->did_route  == "CALLMENU "){
+														if($output->data->did_route  == "CALLMENU"){
 															$route .= '<option value="CALLMENU" selected> Call Menu / IVR </option>';
 														}else{
 															$route .= '<option value="CALLMENU" > Call Menu / IVR </option>';
@@ -1557,7 +1557,7 @@ if (isset($_POST["did"])) {
 										</div><!-- end of div agent-->
 										
 									<!-- IF DID ROUTE = IN-GROUP-->
-										<div id="form_route_ingroup" class="form-group" <?php if($output->data->did_route  != "IN_GROUP"){ ?> style="display: none;" <?php }?> >										
+										<div id="form_route_ingroup" class="form-group" <?php if($output->data->did_route  != "IN_GROUP"){ ?> style="display: none;" <?php }?> >
 										<label for="route_ingroupid" class="col-sm-3 control-label">In-Group ID: </label>
 										<div class="col-sm-9 mb">
 											<select name="route_ingroupid" id="route_ingroupid" class="form-control">
@@ -1612,7 +1612,7 @@ if (isset($_POST["did"])) {
 										</div><!-- end of phone div -->
 										
 									<!-- IF DID ROUTE = IVR -->
-										<div id="form_route_callmenu" <?php if($output->data->did_route  != "IVR"){ ?> style="display: none;" <?php }?> >
+										<div id="form_route_callmenu" <?php if($output->data->did_route  != "CALLMENU"){ ?> style="display: none;" <?php }?> >
 											<div class="form-group">
 												<label for="route_ivr" class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-9 mb">
