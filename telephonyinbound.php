@@ -800,15 +800,20 @@
 										<!-- VOICEMAIL -->
 											<div class="route_voicemail_0" style="display:none;">
 												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($voicemails->voicemail_id);$i++){
-															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
-														}
-													?>
-													</select>
+												<div class="col-sm-9">
+													<div class="col-sm-6">
+														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_0" maxlength="255" size="15">
+													</div>
+													<div class="col-sm-6">
+														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_0">
+															<option value="" selected> - - - NONE - - - </option>
+														<?php
+															for($i=0;$i < count($voicemails->voicemail_id);$i++){
+																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
+															}
+														?>
+														</select>
+													</div>
 												</div>
 											</div>
 										<!-- AGI -->
@@ -951,15 +956,20 @@
 										<!-- VOICEMAIL -->
 											<div class="route_voicemail_1" style="display:none;">
 												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($voicemails->voicemail_id);$i++){
-															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
-														}
-													?>
-													</select>
+												<div class="col-sm-9">
+													<div class="col-sm-6">
+														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_1" maxlength="255" size="15">
+													</div>
+													<div class="col-sm-6">
+														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_1">
+															<option value="" selected> - - - NONE - - - </option>
+														<?php
+															for($i=0;$i < count($voicemails->voicemail_id);$i++){
+																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
+															}
+														?>
+														</select>
+													</div>
 												</div>
 											</div>
 										<!-- AGI -->
@@ -1102,15 +1112,20 @@
 										<!-- VOICEMAIL -->
 											<div class="route_voicemail_2" style="display:none;">
 												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($voicemails->voicemail_id);$i++){
-															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
-														}
-													?>
-													</select>
+												<div class="col-sm-9">
+													<div class="col-sm-6">
+														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_2" maxlength="255" size="15">
+													</div>
+													<div class="col-sm-6">
+														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_2">
+															<option value="" selected> - - - NONE - - - </option>
+														<?php
+															for($i=0;$i < count($voicemails->voicemail_id);$i++){
+																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
+															}
+														?>
+														</select>
+													</div>
 												</div>
 											</div>
 										<!-- AGI -->
@@ -1253,15 +1268,20 @@
 										<!-- VOICEMAIL -->
 											<div class="route_voicemail_3" style="display:none;">
 												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($voicemails->voicemail_id);$i++){
-															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
-														}
-													?>
-													</select>
+												<div class="col-sm-9">
+													<div class="col-sm-6">
+														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_3" maxlength="255" size="15">
+													</div>
+													<div class="col-sm-6">
+														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_3">
+															<option value="" selected> - - - NONE - - - </option>
+														<?php
+															for($i=0;$i < count($voicemails->voicemail_id);$i++){
+																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
+															}
+														?>
+														</select>
+													</div>
 												</div>
 											</div>
 										<!-- AGI -->
@@ -1404,15 +1424,20 @@
 										<!-- VOICEMAIL -->
 											<div class="route_voicemail_4" style="display:none;">
 												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($voicemails->voicemail_id);$i++){
-															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
-														}
-													?>
-													</select>
+												<div class="col-sm-9">
+													<div class="col-sm-6">
+														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_4" maxlength="255" size="15">
+													</div>
+													<div class="col-sm-6">
+														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_4">
+															<option value="" selected> - - - NONE - - - </option>
+														<?php
+															for($i=0;$i < count($voicemails->voicemail_id);$i++){
+																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
+															}
+														?>
+														</select>
+													</div>
 												</div>
 											</div>
 										<!-- AGI -->
@@ -1555,15 +1580,20 @@
 										<!-- VOICEMAIL -->
 											<div class="route_voicemail_5" style="display:none;">
 												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($voicemails->voicemail_id);$i++){
-															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
-														}
-													?>
-													</select>
+												<div class="col-sm-9">
+													<div class="col-sm-6">
+														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_5" maxlength="255" size="15">
+													</div>
+													<div class="col-sm-6">
+														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_5">
+															<option value="" selected> - - - NONE - - - </option>
+														<?php
+															for($i=0;$i < count($voicemails->voicemail_id);$i++){
+																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
+															}
+														?>
+														</select>
+													</div>
 												</div>
 											</div>
 										<!-- AGI -->
@@ -1706,15 +1736,20 @@
 										<!-- VOICEMAIL -->
 											<div class="route_voicemail_6" style="display:none;">
 												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($voicemails->voicemail_id);$i++){
-															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
-														}
-													?>
-													</select>
+												<div class="col-sm-9">
+													<div class="col-sm-6">
+														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_6" maxlength="255" size="15">
+													</div>
+													<div class="col-sm-6">
+														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_6">
+															<option value="" selected> - - - NONE - - - </option>
+														<?php
+															for($i=0;$i < count($voicemails->voicemail_id);$i++){
+																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
+															}
+														?>
+														</select>
+													</div>
 												</div>
 											</div>
 										<!-- AGI -->
@@ -1857,15 +1892,20 @@
 										<!-- VOICEMAIL -->
 											<div class="route_voicemail_7" style="display:none;">
 												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($voicemails->voicemail_id);$i++){
-															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
-														}
-													?>
-													</select>
+												<div class="col-sm-9">
+													<div class="col-sm-6">
+														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_7" maxlength="255" size="15">
+													</div>
+													<div class="col-sm-6">
+														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_7">
+															<option value="" selected> - - - NONE - - - </option>
+														<?php
+															for($i=0;$i < count($voicemails->voicemail_id);$i++){
+																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
+															}
+														?>
+														</select>
+													</div>
 												</div>
 											</div>
 										<!-- AGI -->
@@ -2008,15 +2048,20 @@
 										<!-- VOICEMAIL -->
 											<div class="route_voicemail_8" style="display:none;">
 												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($voicemails->voicemail_id);$i++){
-															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
-														}
-													?>
-													</select>
+												<div class="col-sm-9">
+													<div class="col-sm-6">
+														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_8" maxlength="255" size="15">
+													</div>
+													<div class="col-sm-6">
+														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_8">
+															<option value="" selected> - - - NONE - - - </option>
+														<?php
+															for($i=0;$i < count($voicemails->voicemail_id);$i++){
+																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
+															}
+														?>
+														</select>
+													</div>
 												</div>
 											</div>
 										<!-- AGI -->
@@ -2159,15 +2204,20 @@
 										<!-- VOICEMAIL -->
 											<div class="route_voicemail_9" style="display:none;">
 												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($voicemails->voicemail_id);$i++){
-															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
-														}
-													?>
-													</select>
+												<div class="col-sm-9">
+													<div class="col-sm-6">
+														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_9" maxlength="255" size="15">
+													</div>
+													<div class="col-sm-6">
+														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_9">
+															<option value="" selected> - - - NONE - - - </option>
+														<?php
+															for($i=0;$i < count($voicemails->voicemail_id);$i++){
+																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
+															}
+														?>
+														</select>
+													</div>
 												</div>
 											</div>
 										<!-- AGI -->
@@ -4759,6 +4809,49 @@
 						}
 						
 					});
+				
+			// for voicemail
+				$(document).on('change', '#option_voicemail_select_0',function(){
+					var val = $(this).val();
+					$('#option_voicemail_input_0').val(val);
+				});
+				$(document).on('change', '#option_voicemail_select_1',function(){
+					var val = $(this).val();
+					$('#option_voicemail_input_1').val(val);
+				});
+				$(document).on('change', '#option_voicemail_select_2',function(){
+					var val = $(this).val();
+					$('#option_voicemail_input_2').val(val);
+				});
+				$(document).on('change', '#option_voicemail_select_3',function(){
+					var val = $(this).val();
+					$('#option_voicemail_input_3').val(val);
+				});
+				$(document).on('change', '#option_voicemail_select_4',function(){
+					var val = $(this).val();
+					$('#option_voicemail_input_4').val(val);
+				});
+				$(document).on('change', '#option_voicemail_select_5',function(){
+					var val = $(this).val();
+					$('#option_voicemail_input_5').val(val);
+				});
+				$(document).on('change', '#option_voicemail_select_6',function(){
+					var val = $(this).val();
+					$('#option_voicemail_input_6').val(val);
+				});
+				$(document).on('change', '#option_voicemail_select_7',function(){
+					var val = $(this).val();
+					$('#option_voicemail_input_7').val(val);
+				});
+				$(document).on('change', '#option_voicemail_select_8',function(){
+					var val = $(this).val();
+					$('#option_voicemail_input_8').val(val);
+				});
+				$(document).on('change', '#option_voicemail_select_9',function(){
+					var val = $(this).val();
+					$('#option_voicemail_input_9').val(val);
+				});
+				
 	});
 </script>
 		
