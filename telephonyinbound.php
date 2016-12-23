@@ -747,7 +747,7 @@
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_id[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
+															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
 														}
 													?>
 													</select>
@@ -903,7 +903,7 @@
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_id[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
+															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1059,7 +1059,7 @@
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_id[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
+															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1215,7 +1215,7 @@
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_id[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
+															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1371,7 +1371,7 @@
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_id[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
+															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1527,7 +1527,7 @@
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_id[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
+															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1683,7 +1683,7 @@
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_id[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
+															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1839,7 +1839,7 @@
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_id[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
+															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1995,7 +1995,7 @@
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_id[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
+															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
 														}
 													?>
 													</select>
@@ -2151,7 +2151,7 @@
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_id[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
+															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
 														}
 													?>
 													</select>
