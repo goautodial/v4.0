@@ -715,7 +715,7 @@
 											<div class="route_callmenu_0" style="display:none;">
 												<label class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ivr->menu_id);$i++){
@@ -729,7 +729,7 @@
 											<div class="route_ingroup_0" style="display:none;">
 												<label class="col-sm-3 control-label">In Group: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ingroup->group_id);$i++){
@@ -743,7 +743,7 @@
 											<div class="route_did_0" style="display:none;">
 												<label class="col-sm-3 control-label">DID: </label>
 												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
@@ -757,7 +757,7 @@
 											<div class="route_hangup_0" style="display:none;">
 												<label class="col-sm-3 control-label">Audio File: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -787,7 +787,7 @@
 											<div class="route_phone_0" style="display:none;">
 												<label class="col-sm-3 control-label">Phone: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phones->extension);$i++){
@@ -805,7 +805,7 @@
 														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_0" maxlength="255" size="15">
 													</div>
 													<div class="col-sm-6">
-														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_0">
+														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_0">
 															<option value="" selected> - - - NONE - - - </option>
 														<?php
 															for($i=0;$i < count($voicemails->voicemail_id);$i++){
@@ -871,7 +871,7 @@
 											<div class="route_callmenu_1" style="display:none;">
 												<label class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ivr->menu_id);$i++){
@@ -885,7 +885,7 @@
 											<div class="route_ingroup_1" style="display:none;">
 												<label class="col-sm-3 control-label">In Group: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ingroup->group_id);$i++){
@@ -899,7 +899,7 @@
 											<div class="route_did_1" style="display:none;">
 												<label class="col-sm-3 control-label">DID: </label>
 												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
@@ -913,7 +913,7 @@
 											<div class="route_hangup_1" style="display:none;">
 												<label class="col-sm-3 control-label">Audio File: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -943,7 +943,7 @@
 											<div class="route_phone_1" style="display:none;">
 												<label class="col-sm-3 control-label">Phone: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phones->extension);$i++){
@@ -961,7 +961,7 @@
 														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_1" maxlength="255" size="15">
 													</div>
 													<div class="col-sm-6">
-														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_1">
+														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_1">
 															<option value="" selected> - - - NONE - - - </option>
 														<?php
 															for($i=0;$i < count($voicemails->voicemail_id);$i++){
@@ -1027,7 +1027,7 @@
 											<div class="route_callmenu_2" style="display:none;">
 												<label class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ivr->menu_id);$i++){
@@ -1041,7 +1041,7 @@
 											<div class="route_ingroup_2" style="display:none;">
 												<label class="col-sm-3 control-label">In Group: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ingroup->group_id);$i++){
@@ -1055,7 +1055,7 @@
 											<div class="route_did_2" style="display:none;">
 												<label class="col-sm-3 control-label">DID: </label>
 												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
@@ -1069,7 +1069,7 @@
 											<div class="route_hangup_2" style="display:none;">
 												<label class="col-sm-3 control-label">Audio File: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -1099,7 +1099,7 @@
 											<div class="route_phone_2" style="display:none;">
 												<label class="col-sm-3 control-label">Phone: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phones->extension);$i++){
@@ -1117,7 +1117,7 @@
 														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_2" maxlength="255" size="15">
 													</div>
 													<div class="col-sm-6">
-														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_2">
+														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_2">
 															<option value="" selected> - - - NONE - - - </option>
 														<?php
 															for($i=0;$i < count($voicemails->voicemail_id);$i++){
@@ -1183,7 +1183,7 @@
 											<div class="route_callmenu_3" style="display:none;">
 												<label class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ivr->menu_id);$i++){
@@ -1197,7 +1197,7 @@
 											<div class="route_ingroup_3" style="display:none;">
 												<label class="col-sm-3 control-label">In Group: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ingroup->group_id);$i++){
@@ -1211,7 +1211,7 @@
 											<div class="route_did_3" style="display:none;">
 												<label class="col-sm-3 control-label">DID: </label>
 												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
@@ -1225,7 +1225,7 @@
 											<div class="route_hangup_3" style="display:none;">
 												<label class="col-sm-3 control-label">Audio File: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -1255,7 +1255,7 @@
 											<div class="route_phone_3" style="display:none;">
 												<label class="col-sm-3 control-label">Phone: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phones->extension);$i++){
@@ -1273,7 +1273,7 @@
 														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_3" maxlength="255" size="15">
 													</div>
 													<div class="col-sm-6">
-														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_3">
+														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_3">
 															<option value="" selected> - - - NONE - - - </option>
 														<?php
 															for($i=0;$i < count($voicemails->voicemail_id);$i++){
@@ -1339,7 +1339,7 @@
 											<div class="route_callmenu_1" style="display:none;">
 												<label class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ivr->menu_id);$i++){
@@ -1353,7 +1353,7 @@
 											<div class="route_ingroup_4" style="display:none;">
 												<label class="col-sm-3 control-label">In Group: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ingroup->group_id);$i++){
@@ -1367,7 +1367,7 @@
 											<div class="route_did_4" style="display:none;">
 												<label class="col-sm-3 control-label">DID: </label>
 												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
@@ -1381,7 +1381,7 @@
 											<div class="route_hangup_4" style="display:none;">
 												<label class="col-sm-3 control-label">Audio File: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -1411,7 +1411,7 @@
 											<div class="route_phone_4" style="display:none;">
 												<label class="col-sm-3 control-label">Phone: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phones->extension);$i++){
@@ -1429,7 +1429,7 @@
 														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_4" maxlength="255" size="15">
 													</div>
 													<div class="col-sm-6">
-														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_4">
+														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_4">
 															<option value="" selected> - - - NONE - - - </option>
 														<?php
 															for($i=0;$i < count($voicemails->voicemail_id);$i++){
@@ -1495,7 +1495,7 @@
 											<div class="route_callmenu_5" style="display:none;">
 												<label class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ivr->menu_id);$i++){
@@ -1509,7 +1509,7 @@
 											<div class="route_ingroup_5" style="display:none;">
 												<label class="col-sm-3 control-label">In Group: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ingroup->group_id);$i++){
@@ -1523,7 +1523,7 @@
 											<div class="route_did_5" style="display:none;">
 												<label class="col-sm-3 control-label">DID: </label>
 												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
@@ -1537,7 +1537,7 @@
 											<div class="route_hangup_5" style="display:none;">
 												<label class="col-sm-3 control-label">Audio File: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -1567,7 +1567,7 @@
 											<div class="route_phone_5" style="display:none;">
 												<label class="col-sm-3 control-label">Phone: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phones->extension);$i++){
@@ -1585,7 +1585,7 @@
 														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_5" maxlength="255" size="15">
 													</div>
 													<div class="col-sm-6">
-														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_5">
+														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_5">
 															<option value="" selected> - - - NONE - - - </option>
 														<?php
 															for($i=0;$i < count($voicemails->voicemail_id);$i++){
@@ -1651,7 +1651,7 @@
 											<div class="route_callmenu_6" style="display:none;">
 												<label class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ivr->menu_id);$i++){
@@ -1665,7 +1665,7 @@
 											<div class="route_ingroup_6" style="display:none;">
 												<label class="col-sm-3 control-label">In Group: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ingroup->group_id);$i++){
@@ -1679,7 +1679,7 @@
 											<div class="route_did_6" style="display:none;">
 												<label class="col-sm-3 control-label">DID: </label>
 												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
@@ -1693,7 +1693,7 @@
 											<div class="route_hangup_6" style="display:none;">
 												<label class="col-sm-3 control-label">Audio File: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -1723,7 +1723,7 @@
 											<div class="route_phone_6" style="display:none;">
 												<label class="col-sm-3 control-label">Phone: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phones->extension);$i++){
@@ -1741,7 +1741,7 @@
 														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_6" maxlength="255" size="15">
 													</div>
 													<div class="col-sm-6">
-														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_6">
+														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_6">
 															<option value="" selected> - - - NONE - - - </option>
 														<?php
 															for($i=0;$i < count($voicemails->voicemail_id);$i++){
@@ -1807,7 +1807,7 @@
 											<div class="route_callmenu_7" style="display:none;">
 												<label class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ivr->menu_id);$i++){
@@ -1821,7 +1821,7 @@
 											<div class="route_ingroup_7" style="display:none;">
 												<label class="col-sm-3 control-label">In Group: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ingroup->group_id);$i++){
@@ -1835,7 +1835,7 @@
 											<div class="route_did_7" style="display:none;">
 												<label class="col-sm-3 control-label">DID: </label>
 												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
@@ -1849,7 +1849,7 @@
 											<div class="route_hangup_7" style="display:none;">
 												<label class="col-sm-3 control-label">Audio File: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -1879,7 +1879,7 @@
 											<div class="route_phone_7" style="display:none;">
 												<label class="col-sm-3 control-label">Phone: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phones->extension);$i++){
@@ -1897,7 +1897,7 @@
 														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_7" maxlength="255" size="15">
 													</div>
 													<div class="col-sm-6">
-														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_7">
+														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_7">
 															<option value="" selected> - - - NONE - - - </option>
 														<?php
 															for($i=0;$i < count($voicemails->voicemail_id);$i++){
@@ -1963,7 +1963,7 @@
 											<div class="route_callmenu_8" style="display:none;">
 												<label class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ivr->menu_id);$i++){
@@ -1977,7 +1977,7 @@
 											<div class="route_ingroup_8" style="display:none;">
 												<label class="col-sm-3 control-label">In Group: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ingroup->group_id);$i++){
@@ -1991,7 +1991,7 @@
 											<div class="route_did_8" style="display:none;">
 												<label class="col-sm-3 control-label">DID: </label>
 												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
@@ -2005,7 +2005,7 @@
 											<div class="route_hangup_8" style="display:none;">
 												<label class="col-sm-3 control-label">Audio File: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -2035,7 +2035,7 @@
 											<div class="route_phone_8" style="display:none;">
 												<label class="col-sm-3 control-label">Phone: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phones->extension);$i++){
@@ -2053,7 +2053,7 @@
 														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_8" maxlength="255" size="15">
 													</div>
 													<div class="col-sm-6">
-														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_8">
+														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_8">
 															<option value="" selected> - - - NONE - - - </option>
 														<?php
 															for($i=0;$i < count($voicemails->voicemail_id);$i++){
@@ -2119,7 +2119,7 @@
 											<div class="route_callmenu_9" style="display:none;">
 												<label class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ivr->menu_id);$i++){
@@ -2133,7 +2133,7 @@
 											<div class="route_ingroup_9" style="display:none;">
 												<label class="col-sm-3 control-label">In Group: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($ingroup->group_id);$i++){
@@ -2147,7 +2147,7 @@
 											<div class="route_did_9" style="display:none;">
 												<label class="col-sm-3 control-label">DID: </label>
 												<div class="col-sm-6">
-													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phonenumber->did_pattern);$i++){
@@ -2161,7 +2161,7 @@
 											<div class="route_hangup_9" style="display:none;">
 												<label class="col-sm-3 control-label">Audio File: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i<count($voicefiles->file_name);$i++){
@@ -2191,7 +2191,7 @@
 											<div class="route_phone_9" style="display:none;">
 												<label class="col-sm-3 control-label">Phone: </label>
 												<div class="col-sm-6">
-													<select class="select2-1 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($i=0;$i < count($phones->extension);$i++){
@@ -2209,7 +2209,7 @@
 														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_9" maxlength="255" size="15">
 													</div>
 													<div class="col-sm-6">
-														<select class="col-sm-6 select2-1 form-control" " style="width:100%;" id="option_voicemail_select_9">
+														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_9">
 															<option value="" selected> - - - NONE - - - </option>
 														<?php
 															for($i=0;$i < count($voicemails->voicemail_id);$i++){
