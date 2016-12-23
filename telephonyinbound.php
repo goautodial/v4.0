@@ -804,8 +804,8 @@
 													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
+														for($i=0;$i < count($voicemails->voicemail_id);$i++){
+															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
 														}
 													?>
 													</select>
@@ -955,8 +955,8 @@
 													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
+														for($i=0;$i < count($voicemails->voicemail_id);$i++){
+															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1106,8 +1106,8 @@
 													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
+														for($i=0;$i < count($voicemails->voicemail_id);$i++){
+															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1257,8 +1257,8 @@
 													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
+														for($i=0;$i < count($voicemails->voicemail_id);$i++){
+															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1408,8 +1408,8 @@
 													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
+														for($i=0;$i < count($voicemails->voicemail_id);$i++){
+															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1559,8 +1559,8 @@
 													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
+														for($i=0;$i < count($voicemails->voicemail_id);$i++){
+															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1710,8 +1710,8 @@
 													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
+														for($i=0;$i < count($voicemails->voicemail_id);$i++){
+															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
 														}
 													?>
 													</select>
@@ -1861,8 +1861,8 @@
 													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
+														for($i=0;$i < count($voicemails->voicemail_id);$i++){
+															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
 														}
 													?>
 													</select>
@@ -2012,8 +2012,8 @@
 													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
+														for($i=0;$i < count($voicemails->voicemail_id);$i++){
+															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
 														}
 													?>
 													</select>
@@ -2163,8 +2163,8 @@
 													<select class="col-sm-6 select2-1 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
+														for($i=0;$i < count($voicemails->voicemail_id);$i++){
+															echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->full_name[$i]."</option>";
 														}
 													?>
 													</select>
