@@ -42,20 +42,43 @@ require_once('goCRMAPISettings.php');
 	$option_route_value = explode(",", $implode_value);
 	
 	$option_route_context = $_POST['option_route_value_context'];
-	$option_route_context = array_diff($option_route_context, array( '' ));
+	//$option_route_context_post = array_filter($option_route_context_post);
+	
+	$ingroup_context = "";
+	for($i=0; $i < 10; $i++){
+		if($route_menu[$i] == "INGROUP"){
+			$ingroup_context .= $_POST['handle_method_'.$i].",";
+			$ingroup_context .= $_POST['search_method_'.$i].",";
+			$ingroup_context .= $_POST['list_id_'.$i].",";
+			$ingroup_context .= $_POST['campaign_id_'.$i].",";
+			$ingroup_context .= $_POST['phone_code'.$i].",";
+			$ingroup_context .= $_POST['enter_filename_'.$i].",";
+			$ingroup_context .= $_POST['id_number_filename_'.$i].",";
+			$ingroup_context .= $_POST['confirm_filename_'.$i].",";
+			$ingroup_context .= $_POST['vid_digits_'.$i];
+			
+			$option_route_context[$i] = $ingroup_context;
+			$ingroup_context = "";
+		}
+	}
+	
+	//echo "<pre>";
+	//var_dump($option_route_context);
+	//echo "</pre>";
 	
 	$items = "";
 	for($i=0;$i < count($route_option);$i++){
+		if($route_option[$i] == "A") $route_option[$i] = '#';
+		if($route_option[$i] == "B") $route_option[$i] = '*';
+		if($route_option[$i] == "C") $route_option[$i] = 'TIMECHECK';
+		if($route_option[$i] == "D") $route_option[$i] = 'TIMEOUT';
+		if($route_option[$i] == "E") $route_option[$i] = 'INVALID';
 		$items .= $route_option[$i]."+".$route_desc[$i]."+".$route_menu[$i]."+".$option_route_value[$i]."+".$option_route_context[$i];
 		$items .= "|";
 	}
 	
 	$postfields['items'] = $items;
-		
-	//echo "<pre>";
-	//var_dump($items);
-	//echo "</pre>";
-    
+	
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	// curl_setopt($ch, CURLOPT_HTTPHEADER, $header);

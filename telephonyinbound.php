@@ -322,6 +322,7 @@
 	$users = $ui->API_goGetAllUserLists();
 	$user_groups = $ui->API_goGetUserGroupsList();
 	$ingroups = $ui->API_getInGroups();
+	$campaign = $ui->API_getListAllCampaigns();
 	$voicemails = $ui->API_goGetVoiceMails();
 	$phones = $ui->API_getPhonesList();
 	$ivr = $ui->API_getIVR();
@@ -361,13 +362,13 @@
 									<input type="text" name="groupid" id="groupid" class="form-control" placeholder="Group ID (Mandatory)" title="Must be 2-20 characters in length." maxlength="20" minlength="2" required>
 								</div>
 							</div>
-							<div class="form-group">		
+							<div class="form-group">
 								<label class="col-sm-3 control-label" for="groupname">Group Name</label>
 								<div class="col-sm-9 mb">
 									<input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name (Mandatory)" title="Must be 2-20 characters in length." maxlength="20" minlength="2" required>
 								</div>
 							</div>
-							<div class="form-group">		
+							<div class="form-group">
 								<label class="col-sm-3 control-label" for="color">Group Color</label>
 								<div class="col-sm-9 mb">
 						            <input type="text" class="form-control colorpicker" name="color" id="color" value="#fffff">
@@ -410,7 +411,7 @@
                         <fieldset>
 							<div class="form-group mt">
 								<label class="col-sm-3 control-label" for="ingroup_voicemail">Voicemail</label>
-								<div class="col-sm-9 mb">	
+								<div class="col-sm-9 mb">
 									<select name="ingroup_voicemail" id="ingroup_voicemail" class="form-control select2-1" style="width:100%;">
 										<?php
 											if($voicemails == NULL){
@@ -432,7 +433,7 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label" for="next_agent_call">Next Agent Call</label>
-								<div class="col-sm-9 mb">	
+								<div class="col-sm-9 mb">
 									<select name="next_agent_call" id="next_agent_call" class="form-control">
 											<option value="random"> Random </option>
 											<option value="oldest_call_start"> Oldest Call Start </option>
@@ -458,7 +459,7 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label" for="script">Script</label>
-								<div class="col-sm-9 mb">	
+								<div class="col-sm-9 mb">
 									<select name="script" id="script" class="form-control select2-1" style="width:100%;">
 										<option value="NONE">--- NONE --- </option>
 										<?php
@@ -475,7 +476,7 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label" for="call_launch">Get Call Launch</label>
-								<div class="col-sm-9 mb">	
+								<div class="col-sm-9 mb">
 									<select name="call_launch" id="call_launch" class="form-control">
 											<option value="NONE"> NONE </option>
 											<option value="SCRIPT"> SCRIPT </option>
@@ -538,7 +539,7 @@
 										for($i=0;$i<count($voicefiles->file_name);$i++){
 											$file = substr($voicefiles->file_name[$i], 0, -4);
 									?>
-										<option value="<?php echo $file;?>"><?php echo $file;?></option>		
+										<option value="<?php echo $file;?>"><?php echo $file;?></option>
 									<?php
 										}
 									?>
@@ -560,7 +561,7 @@
 										for($i=0;$i<count($voicefiles->file_name);$i++){
 											$file = substr($voicefiles->file_name[$i], 0, -4);
 									?>
-										<option value="<?php echo $file;?>"><?php echo $file;?></option>		
+										<option value="<?php echo $file;?>"><?php echo $file;?></option>
 									<?php
 										}
 									?>				
@@ -571,12 +572,12 @@
 							<label class="col-sm-3 control-label" for="menu_invalid_prompt">Invalid Greeting</label>
 							<div class="col-sm-8 mb">
 								<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control select2-1" style="width:100%;">
-									<option value="" selected>-- Default Value --</option>	
+									<option value="" selected>-- Default Value --</option>
 									<?php
 										for($i=0;$i<count($voicefiles->file_name);$i++){
 											$file = substr($voicefiles->file_name[$i], 0, -4);
 									?>
-										<option value="<?php echo $file;?>"><?php echo $file;?></option>		
+										<option value="<?php echo $file;?>"><?php echo $file;?></option>
 									<?php
 										}
 									?>				
@@ -670,7 +671,10 @@
 							<div class="col-lg-4"><hr/></div>
 						</div>
 						<div id="static_div">
-							<div class="option_div_0">
+							<?php
+								for($i=0;$i < 10; $i++){
+							?>
+							<div class="option_div_<?php echo $i;?>">
 								<div class="form-group">
 									<div class="col-lg-12">
 										<div class="col-lg-2">
@@ -678,23 +682,24 @@
 											<select class="form-control route_option" name="option[]">
 												<option selected></option>
 												<?php
-													for($i=0; $i <= 9; $i++){
-														echo '<option value="'.$i.'">'.$i.'</option>';
+													for($x=0; $x <= 9; $x++){
+														echo '<option value="'.$x.'">'.$x.'</option>';
 													}
 												?>
-												<option value="#">#</option>
-												<option value="*">*</option>
-												<option value="TIMECHECK">TIMECHECK</option>
-												<option value="INVALID">INVALID</option>
+												<option value="A">#</option>
+												<option value="B">*</option>
+												<option value="C">TIMECHECK</option>
+												<option value="D">TIMEOUT</option>
+												<option value="E">INVALID</option>
 											</select>
 										</div>
 										<div class="col-lg-7">
 											Desription: 
-											<input type="text" name="route_desc[]" id="" class="form-control route_desc_0" placeholder="Description"/>
+											<input type="text" name="route_desc[]" id="" class="form-control route_desc_<?php echo $i;?>" placeholder="Description"/>
 										</div>
 										<div class="col-lg-3">
 											Route:
-											<select class="form-control route_menu_0" name="route_menu[]">
+											<select class="form-control route_menu_<?php echo $i;?>" name="route_menu[]">
 												<option selected value=""></option>
 												<option value="CALLMENU">Call Menu / IVR</option>
 												<option value="INGROUP">In-group</option>
@@ -710,58 +715,186 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="col-lg-12 option_menu_0 mb mt">
+									<div class="col-lg-12 option_menu_<?php echo $i;?> mb mt">
 										<!-- CALL MENU -->
-											<div class="route_callmenu_0" style="display:none;">
+											<div class="route_callmenu_<?php echo $i;?>" style="display:none;">
 												<label class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($ivr->menu_id);$i++){
-															echo "<option value=".$ivr->menu_id[$i].">".$ivr->menu_id[$i]." - ".$ivr->menu_name[$i]."</option>";
+														for($x=0;$x < count($ivr->menu_id);$x++){
+															echo "<option value=".$ivr->menu_id[$x].">".$ivr->menu_id[$x]." - ".$ivr->menu_name[$x]."</option>";
 														}
 													?>
 													</select>
 												</div>
 											</div>
 										<!-- IN GROUP -->
-											<div class="route_ingroup_0" style="display:none;">
-												<label class="col-sm-3 control-label">In Group: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
-														}
-													?>
-													</select>
+											<div class="route_ingroup_<?php echo $i;?>" style="display:none;">
+												<div class="row mb">
+													<label class="col-sm-3 control-label">In Group: </label>
+													<div class="col-sm-6">
+														<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
+															<option value="" selected> - - - NONE - - - </option>
+														<?php
+															for($x=0;$x < count($ingroup->group_id);$x++){
+																echo "<option value=".$ingroup->group_id[$x].">".$ingroup->group_id[$x]." - ".$ingroup->group_name[$x]."</option>";
+															}
+														?>
+														</select>
+													</div>
+												</div>
+												<div class="col-sm-11">
+													<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
+														<label class="col-sm-3 control-label">Handle Method:</label>
+														<div class="col-sm-7">
+															<select class="form-control" name="handle_method_<?php echo $i;?>" id="edit_handle_method_<?php echo $i;?>">
+																<option value="CID">CID</option>
+																<option value="CIDLOOKUP" selected="selected">CIDLOOKUP</option>
+																<option value="CIDLOOKUPRL">CIDLOOKUPRL</option>
+																<option value="CIDLOOKUPRC">CIDLOOKUPRC</option>
+																<option value="ANI">ANI</option>
+																<option value="ANILOOKUP">ANILOOKUP</option>
+																<option value="ANILOOKUPRL">ANILOOKUPRL</option>
+																<option value="VIDPROMPT">VIDPROMPT</option>
+																<option value="VIDPROMPTLOOKUP">VIDPROMPTLOOKUP</option>
+																<option value="VIDPROMPTLOOKUPRL">VIDPROMPTLOOKUPRL</option>
+																<option value="VIDPROMPTLOOKUPRC">VIDPROMPTLOOKUPRC</option>
+																<option value="CLOSER">CLOSER</option>
+																<option value="3DIGITID">3DIGITID</option>
+																<option value="4DIGITID">4DIGITID</option>
+																<option value="5DIGITID">5DIGITID</option>
+																<option value="10DIGITID">10DIGITID</option>
+															</select>
+														</div>
+													</div>
+													<div class="row mb">
+														<div class="col-sm-7">
+															<label class="col-sm-4 control-label">Campaign ID: </label>
+															<div class="col-sm-8">
+																<select class="form-control" name="campaign_id_<?php echo $i;?>" style="width:100%;">
+																<?php
+																	for($x=0;$x < count($campaign->campaign_id);$x++){
+																		echo "<option value=".$campaign->campaign_id[$x].">".$campaign->campaign_id[$x]." - ".$campaign->campaign_name[$x]."</option>";
+																	}
+																?>
+																</select>
+															</div>
+														</div>
+														<div class="col-sm-5 ingroup_advanced_settings_<?php echo $i;?>">
+															<label class="col-sm-5 control-label">Phone Code: </label>
+															<div class="col-sm-7">
+																<input type="text" class="form-control" name="phone_code<?php echo $i;?>" value="1" id="edit_phone_code_<?php echo $i;?>" maxlength="14" size="4">
+															</div>
+														</div>
+													</div>
+													<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
+														<div class="col-sm-7">
+															<label class="col-sm-4 control-label">Search Method:</label>
+															<div class="col-sm-8">
+																<select class="form-control" name="search_method_<?php echo $i;?>" id="edit_search_method_<?php echo $i;?>">
+																	<option value="LB" selected="selected">LB - Load Balanced</option>
+																	<option value="LO">LO - Load Balanced Overflow</option>
+																	<option value="SO">Server Only</option>
+																</select>
+															</div>
+														</div>
+														<div class="col-sm-5">
+															<label class="col-sm-5 control-label" for="search_method_list_id">List ID: </label>
+															<div class="col-sm-7">
+																<input type="text" name="list_id_<?php echo $i;?>" value="998" id="edit_list_id_<?php echo $i;?>" class="form-control" maxlength="14" size="8">
+															</div>
+														</div>
+													</div>
+													<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
+														<label class="col-sm-3 control-label">VID Digits: </label>
+														<div class="col-sm-7">
+															<input type="text" class="form-control" name="vid_digits_<?php echo $i;?>" value="1" id="edit_validate_digits_<?php echo $i;?>" maxlength="3" size="3">
+														</div>
+													</div>
+													<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
+														<label class="col-sm-4 control-label">VID Enter Filename: </label>
+														<div class="col-sm-8">
+															<div class="col-sm-6">
+																<input type="text" name="enter_filename_<?php echo $i;?>" value="sip-silence" id="edit_enter_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
+															</div>
+															<div class="col-sm-6">
+																<select class="col-sm-6 form-control" style="width:100%;" id="enter_filename_select_<?php echo $i;?>">
+																	<option value="sip-silence" selected> - - - DEFAULT VALUE - - - </option>
+																<?php
+																	for($x=0;$x<count($voicefiles->file_name);$x++){
+																		$file = substr($voicefiles->file_name[$x], 0, -4);
+																		echo "<option value=".$file.">".$file."</option>";
+																	}
+																?>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
+														<label class="col-sm-4 control-label">VID ID Number Filename: </label>
+														<div class="col-sm-8">
+															<div class="col-sm-6">
+																<input type="text" name="id_number_filename_<?php echo $i;?>" value="sip-silence" id="edit_id_number_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
+															</div>
+															<div class="col-sm-6">
+																<select class="col-sm-6 form-control" style="width:100%;" id="edit_id_number_filename_select_<?php echo $i;?>">
+																	<option value="sip-silence" selected> - - - DEFAULT VALUE - - - </option>
+																<?php
+																	for($x=0;$x<count($voicefiles->file_name);$x++){
+																		$file = substr($voicefiles->file_name[$x], 0, -4);
+																		echo "<option value=".$file.">".$file."</option>";
+																	}
+																?>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
+														<label class="col-sm-4 control-label">VID Confirm Filename: </label>
+														<div class="col-sm-8">
+															<div class="col-sm-6">
+																<input type="text" name="confirm_filename_<?php echo $i;?>" value="sip-silence" id="edit_confirm_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
+															</div>
+															<div class="col-sm-6">
+																<select class="col-sm-6 form-control" style="width:100%;" id="edit_confirm_filename_select_<?php echo $i;?>">
+																	<option value="sip-silence" selected> - - - DEFAULT VALUE - - - </option>
+																<?php
+																	for($x=0;$x<count($voicefiles->file_name);$x++){
+																		$file = substr($voicefiles->file_name[$x], 0, -4);
+																		echo "<option value=".$file.">".$file."</option>";
+																	}
+																?>
+																</select>
+															</div>
+														</div>
+													</div>
 												</div>
 											</div>
 										<!-- DID -->
-											<div class="route_did_0" style="display:none;">
+											<div class="route_did_<?php echo $i;?>" style="display:none;">
 												<label class="col-sm-3 control-label">DID: </label>
 												<div class="col-sm-6">
 													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
+														for($x=0;$x < count($phonenumber->did_pattern);$x++){
+															echo "<option value=".$phonenumber->did_pattern[$x].">".$phonenumber->did_pattern[$x]." - ".$phonenumber->did_description[$x]."</option>";
 														}
 													?>
 													</select>
 												</div>
 											</div>
 										<!-- HANGUP -->
-											<div class="route_hangup_0" style="display:none;">
+											<div class="route_hangup_<?php echo $i;?>" style="display:none;">
 												<label class="col-sm-3 control-label">Audio File: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i<count($voicefiles->file_name);$i++){
-															$file = substr($voicefiles->file_name[$i], 0, -4);
+														for($x=0;$x<count($voicefiles->file_name);$x++){
+															$file = substr($voicefiles->file_name[$x], 0, -4);
 															echo "<option value=".$file.">".$file."</option>";
 														}
 													?>
@@ -769,47 +902,47 @@
 												</div>
 											</div>
 										<!-- EXTENSION -->
-											<div class="route_exten_0" style="display:none;">
+											<div class="route_exten_<?php echo $i;?>" style="display:none;">
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Extension: </label>
 													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_0" />
+														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_<?php echo $i;?>" />
 													</div>
 												</div>
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Context: </label>
 													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_0" />
+														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_<?php echo $i;?>" />
 													</div>
 												</div>
 											</div>
 										<!-- PHONE -->
-											<div class="route_phone_0" style="display:none;">
+											<div class="route_phone_<?php echo $i;?>" style="display:none;">
 												<label class="col-sm-3 control-label">Phone: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
-														for($i=0;$i < count($phones->extension);$i++){
-															echo "<option value=".$phones->extension[$i].">".$phones->extension[$i]." - ".$phones->server_ip[$i]." - ".$phones->dialplan_number[$i]."</option>";
+														for($x=0;$x < count($phones->extension);$x++){
+															echo "<option value=".$phones->extension[$x].">".$phones->extension[$x]." - ".$phones->server_ip[$x]." - ".$phones->dialplan_number[$x]."</option>";
 														}
 													?>
 													</select>
 												</div>
 											</div>
 										<!-- VOICEMAIL -->
-											<div class="route_voicemail_0" style="display:none;">
+											<div class="route_voicemail_<?php echo $i;?>" style="display:none;">
 												<label class="col-sm-3 control-label">Voicemail Box: </label>
 												<div class="col-sm-9">
 													<div class="col-sm-6">
-														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_0" maxlength="255" size="15">
+														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_<?php echo $i;?>" maxlength="255" size="15">
 													</div>
 													<div class="col-sm-6">
-														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_0">
+														<select class="col-sm-6 select2-2 form-control" style="width:100%;" id="option_voicemail_select_<?php echo $i;?>">
 															<option value="" selected> - - - NONE - - - </option>
 														<?php
-															for($i=0;$i < count($voicemails->voicemail_id);$i++){
-																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
+															for($x=0;$x < count($voicemails->voicemail_id);$x++){
+																echo "<option value=".$voicemails->voicemail_id[$x].">".$voicemails->voicemail_id[$x]." - ".$voicemails->fullname[$x]."</option>";
 															}
 														?>
 														</select>
@@ -817,7 +950,7 @@
 												</div>
 											</div>
 										<!-- AGI -->
-											<div class="route_agi_0" style="display:none;">
+											<div class="route_agi_<?php echo $i;?>" style="display:none;">
 												<label class="col-sm-3 control-label">AGI: </label>
 												<div class="col-sm-6">
 													<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
@@ -826,1410 +959,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="option_div_1">
-								<div class="form-group">
-									<div class="col-lg-12">
-										<div class="col-lg-2">
-											Option:
-											<select class="form-control route_option" name="option[]">
-												<option selected></option>
-												<?php
-													for($i=0; $i <= 9; $i++){
-														echo '<option value="'.$i.'">'.$i.'</option>';
-													}
-												?>
-												<option value="#">#</option>
-												<option value="*">*</option>
-												<option value="TIMECHECK">TIMECHECK</option>
-												<option value="INVALID">INVALID</option>
-											</select>
-										</div>
-										<div class="col-lg-7">
-											Desription: 
-											<input type="text" name="route_desc[]" id="" class="form-control route_desc_1" placeholder="Description"/>
-										</div>
-										<div class="col-lg-3">
-											Route:
-											<select class="form-control route_menu_1" name="route_menu[]">
-												<option selected value=""></option>
-												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="INGROUP">In-group</option>
-												<option value="DID">DID</option>
-												<option value="HANGUP">Hangup</option>
-												<option value="EXTENSION">Custom Extension</option>
-												<option value="PHONE">Phone</option>
-												<option value="VOICEMAIL">Voicemail</option>
-												<option value="AGI">AGI</option>
-											</select>
-										</div>
-										<div class="col-lg-1 btn-remove"></div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-lg-12 option_menu_1 mb mt">
-										<!-- CALL MENU -->
-											<div class="route_callmenu_1" style="display:none;">
-												<label class="col-sm-3 control-label">Call Menu: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ivr->menu_id);$i++){
-															echo "<option value=".$ivr->menu_id[$i].">".$ivr->menu_id[$i]." - ".$ivr->menu_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- IN GROUP -->
-											<div class="route_ingroup_1" style="display:none;">
-												<label class="col-sm-3 control-label">In Group: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- DID -->
-											<div class="route_did_1" style="display:none;">
-												<label class="col-sm-3 control-label">DID: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- HANGUP -->
-											<div class="route_hangup_1" style="display:none;">
-												<label class="col-sm-3 control-label">Audio File: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i<count($voicefiles->file_name);$i++){
-															$file = substr($voicefiles->file_name[$i], 0, -4);
-															echo "<option value=".$file.">".$file."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- EXTENSION -->
-											<div class="route_exten_1" style="display:none;">
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Extension: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_0" />
-													</div>
-												</div>
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Context: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_0" />
-													</div>
-												</div>
-											</div>
-										<!-- PHONE -->
-											<div class="route_phone_1" style="display:none;">
-												<label class="col-sm-3 control-label">Phone: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phones->extension);$i++){
-															echo "<option value=".$phones->extension[$i].">".$phones->extension[$i]." - ".$phones->server_ip[$i]." - ".$phones->dialplan_number[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- VOICEMAIL -->
-											<div class="route_voicemail_1" style="display:none;">
-												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-9">
-													<div class="col-sm-6">
-														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_1" maxlength="255" size="15">
-													</div>
-													<div class="col-sm-6">
-														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_1">
-															<option value="" selected> - - - NONE - - - </option>
-														<?php
-															for($i=0;$i < count($voicemails->voicemail_id);$i++){
-																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
-															}
-														?>
-														</select>
-													</div>
-												</div>
-											</div>
-										<!-- AGI -->
-											<div class="route_agi_1" style="display:none;">
-												<label class="col-sm-3 control-label">AGI: </label>
-												<div class="col-sm-6">
-													<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
-												</div>
-											</div>
-									</div>
-								</div>
-							</div>
-							<div class="option_div_2">
-								<div class="form-group">
-									<div class="col-lg-12">
-										<div class="col-lg-2">
-											Option:
-											<select class="form-control route_option" name="option[]">
-												<option selected></option>
-												<?php
-													for($i=0; $i <= 9; $i++){
-														echo '<option value="'.$i.'">'.$i.'</option>';
-													}
-												?>
-												<option value="#">#</option>
-												<option value="*">*</option>
-												<option value="TIMECHECK">TIMECHECK</option>
-												<option value="INVALID">INVALID</option>
-											</select>
-										</div>
-										<div class="col-lg-7">
-											Desription: 
-											<input type="text" name="route_desc[]" id="" class="form-control route_desc_2" placeholder="Description"/>
-										</div>
-										<div class="col-lg-3">
-											Route:
-											<select class="form-control route_menu_2" name="route_menu[]">
-												<option selected value=""></option>
-												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="INGROUP">In-group</option>
-												<option value="DID">DID</option>
-												<option value="HANGUP">Hangup</option>
-												<option value="EXTENSION">Custom Extension</option>
-												<option value="PHONE">Phone</option>
-												<option value="VOICEMAIL">Voicemail</option>
-												<option value="AGI">AGI</option>
-											</select>
-										</div>
-										<div class="col-lg-1 btn-remove"></div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-lg-12 option_menu_2 mb mt">
-										<!-- CALL MENU -->
-											<div class="route_callmenu_2" style="display:none;">
-												<label class="col-sm-3 control-label">Call Menu: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ivr->menu_id);$i++){
-															echo "<option value=".$ivr->menu_id[$i].">".$ivr->menu_id[$i]." - ".$ivr->menu_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- IN GROUP -->
-											<div class="route_ingroup_2" style="display:none;">
-												<label class="col-sm-3 control-label">In Group: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- DID -->
-											<div class="route_did_2" style="display:none;">
-												<label class="col-sm-3 control-label">DID: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- HANGUP -->
-											<div class="route_hangup_2" style="display:none;">
-												<label class="col-sm-3 control-label">Audio File: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i<count($voicefiles->file_name);$i++){
-															$file = substr($voicefiles->file_name[$i], 0, -4);
-															echo "<option value=".$file.">".$file."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- EXTENSION -->
-											<div class="route_exten_2" style="display:none;">
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Extension: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_0" />
-													</div>
-												</div>
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Context: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_0" />
-													</div>
-												</div>
-											</div>
-										<!-- PHONE -->
-											<div class="route_phone_2" style="display:none;">
-												<label class="col-sm-3 control-label">Phone: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phones->extension);$i++){
-															echo "<option value=".$phones->extension[$i].">".$phones->extension[$i]." - ".$phones->server_ip[$i]." - ".$phones->dialplan_number[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- VOICEMAIL -->
-											<div class="route_voicemail_2" style="display:none;">
-												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-9">
-													<div class="col-sm-6">
-														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_2" maxlength="255" size="15">
-													</div>
-													<div class="col-sm-6">
-														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_2">
-															<option value="" selected> - - - NONE - - - </option>
-														<?php
-															for($i=0;$i < count($voicemails->voicemail_id);$i++){
-																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
-															}
-														?>
-														</select>
-													</div>
-												</div>
-											</div>
-										<!-- AGI -->
-											<div class="route_agi_2" style="display:none;">
-												<label class="col-sm-3 control-label">AGI: </label>
-												<div class="col-sm-6">
-													<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
-												</div>
-											</div>
-									</div>
-								</div>
-							</div>
-							<div class="option_div_3">
-								<div class="form-group">
-									<div class="col-lg-12">
-										<div class="col-lg-2">
-											Option:
-											<select class="form-control route_option" name="option[]">
-												<option selected></option>
-												<?php
-													for($i=0; $i <= 9; $i++){
-														echo '<option value="'.$i.'">'.$i.'</option>';
-													}
-												?>
-												<option value="#">#</option>
-												<option value="*">*</option>
-												<option value="TIMECHECK">TIMECHECK</option>
-												<option value="INVALID">INVALID</option>
-											</select>
-										</div>
-										<div class="col-lg-7">
-											Desription: 
-											<input type="text" name="route_desc[]" id="" class="form-control route_desc_3" placeholder="Description"/>
-										</div>
-										<div class="col-lg-3">
-											Route:
-											<select class="form-control route_menu_3" name="route_menu[]">
-												<option selected value=""></option>
-												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="INGROUP">In-group</option>
-												<option value="DID">DID</option>
-												<option value="HANGUP">Hangup</option>
-												<option value="EXTENSION">Custom Extension</option>
-												<option value="PHONE">Phone</option>
-												<option value="VOICEMAIL">Voicemail</option>
-												<option value="AGI">AGI</option>
-											</select>
-										</div>
-										<div class="col-lg-1 btn-remove"></div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-lg-12 option_menu_3 mb mt">
-										<!-- CALL MENU -->
-											<div class="route_callmenu_3" style="display:none;">
-												<label class="col-sm-3 control-label">Call Menu: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ivr->menu_id);$i++){
-															echo "<option value=".$ivr->menu_id[$i].">".$ivr->menu_id[$i]." - ".$ivr->menu_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- IN GROUP -->
-											<div class="route_ingroup_3" style="display:none;">
-												<label class="col-sm-3 control-label">In Group: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- DID -->
-											<div class="route_did_3" style="display:none;">
-												<label class="col-sm-3 control-label">DID: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- HANGUP -->
-											<div class="route_hangup_3" style="display:none;">
-												<label class="col-sm-3 control-label">Audio File: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i<count($voicefiles->file_name);$i++){
-															$file = substr($voicefiles->file_name[$i], 0, -4);
-															echo "<option value=".$file.">".$file."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- EXTENSION -->
-											<div class="route_exten_3" style="display:none;">
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Extension: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_0" />
-													</div>
-												</div>
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Context: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_0" />
-													</div>
-												</div>
-											</div>
-										<!-- PHONE -->
-											<div class="route_phone_3" style="display:none;">
-												<label class="col-sm-3 control-label">Phone: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phones->extension);$i++){
-															echo "<option value=".$phones->extension[$i].">".$phones->extension[$i]." - ".$phones->server_ip[$i]." - ".$phones->dialplan_number[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- VOICEMAIL -->
-											<div class="route_voicemail_3" style="display:none;">
-												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-9">
-													<div class="col-sm-6">
-														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_3" maxlength="255" size="15">
-													</div>
-													<div class="col-sm-6">
-														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_3">
-															<option value="" selected> - - - NONE - - - </option>
-														<?php
-															for($i=0;$i < count($voicemails->voicemail_id);$i++){
-																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
-															}
-														?>
-														</select>
-													</div>
-												</div>
-											</div>
-										<!-- AGI -->
-											<div class="route_agi_3" style="display:none;">
-												<label class="col-sm-3 control-label">AGI: </label>
-												<div class="col-sm-6">
-													<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
-												</div>
-											</div>
-									</div>
-								</div>
-							</div>
-							<div class="option_div_4">
-								<div class="form-group">
-									<div class="col-lg-12">
-										<div class="col-lg-2">
-											Option:
-											<select class="form-control route_option" name="option[]">
-												<option selected></option>
-												<?php
-													for($i=0; $i <= 9; $i++){
-														echo '<option value="'.$i.'">'.$i.'</option>';
-													}
-												?>
-												<option value="#">#</option>
-												<option value="*">*</option>
-												<option value="TIMECHECK">TIMECHECK</option>
-												<option value="INVALID">INVALID</option>
-											</select>
-										</div>
-										<div class="col-lg-7">
-											Desription: 
-											<input type="text" name="route_desc[]" id="" class="form-control route_desc_4" placeholder="Description"/>
-										</div>
-										<div class="col-lg-3">
-											Route:
-											<select class="form-control route_menu_4" name="route_menu[]">
-												<option selected value=""></option>
-												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="INGROUP">In-group</option>
-												<option value="DID">DID</option>
-												<option value="HANGUP">Hangup</option>
-												<option value="EXTENSION">Custom Extension</option>
-												<option value="PHONE">Phone</option>
-												<option value="VOICEMAIL">Voicemail</option>
-												<option value="AGI">AGI</option>
-											</select>
-										</div>
-										<div class="col-lg-1 btn-remove"></div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-lg-12 option_menu_4 mb mt">
-										<!-- CALL MENU -->
-											<div class="route_callmenu_1" style="display:none;">
-												<label class="col-sm-3 control-label">Call Menu: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ivr->menu_id);$i++){
-															echo "<option value=".$ivr->menu_id[$i].">".$ivr->menu_id[$i]." - ".$ivr->menu_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- IN GROUP -->
-											<div class="route_ingroup_4" style="display:none;">
-												<label class="col-sm-3 control-label">In Group: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- DID -->
-											<div class="route_did_4" style="display:none;">
-												<label class="col-sm-3 control-label">DID: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- HANGUP -->
-											<div class="route_hangup_4" style="display:none;">
-												<label class="col-sm-3 control-label">Audio File: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i<count($voicefiles->file_name);$i++){
-															$file = substr($voicefiles->file_name[$i], 0, -4);
-															echo "<option value=".$file.">".$file."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- EXTENSION -->
-											<div class="route_exten_4" style="display:none;">
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Extension: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_0" />
-													</div>
-												</div>
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Context: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_0" />
-													</div>
-												</div>
-											</div>
-										<!-- PHONE -->
-											<div class="route_phone_4" style="display:none;">
-												<label class="col-sm-3 control-label">Phone: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phones->extension);$i++){
-															echo "<option value=".$phones->extension[$i].">".$phones->extension[$i]." - ".$phones->server_ip[$i]." - ".$phones->dialplan_number[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- VOICEMAIL -->
-											<div class="route_voicemail_4" style="display:none;">
-												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-9">
-													<div class="col-sm-6">
-														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_4" maxlength="255" size="15">
-													</div>
-													<div class="col-sm-6">
-														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_4">
-															<option value="" selected> - - - NONE - - - </option>
-														<?php
-															for($i=0;$i < count($voicemails->voicemail_id);$i++){
-																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
-															}
-														?>
-														</select>
-													</div>
-												</div>
-											</div>
-										<!-- AGI -->
-											<div class="route_agi_4" style="display:none;">
-												<label class="col-sm-3 control-label">AGI: </label>
-												<div class="col-sm-6">
-													<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
-												</div>
-											</div>
-									</div>
-								</div>
-							</div>
-							<div class="option_div_5">
-								<div class="form-group">
-									<div class="col-lg-12">
-										<div class="col-lg-2">
-											Option:
-											<select class="form-control route_option" name="option[]">
-												<option selected></option>
-												<?php
-													for($i=0; $i <= 9; $i++){
-														echo '<option value="'.$i.'">'.$i.'</option>';
-													}
-												?>
-												<option value="#">#</option>
-												<option value="*">*</option>
-												<option value="TIMECHECK">TIMECHECK</option>
-												<option value="INVALID">INVALID</option>
-											</select>
-										</div>
-										<div class="col-lg-7">
-											Desription: 
-											<input type="text" name="route_desc[]" id="" class="form-control route_desc_5" placeholder="Description"/>
-										</div>
-										<div class="col-lg-3">
-											Route:
-											<select class="form-control route_menu_5" name="route_menu[]">
-												<option selected value=""></option>
-												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="INGROUP">In-group</option>
-												<option value="DID">DID</option>
-												<option value="HANGUP">Hangup</option>
-												<option value="EXTENSION">Custom Extension</option>
-												<option value="PHONE">Phone</option>
-												<option value="VOICEMAIL">Voicemail</option>
-												<option value="AGI">AGI</option>
-											</select>
-										</div>
-										<div class="col-lg-1 btn-remove"></div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-lg-12 option_menu_5 mb mt">
-										<!-- CALL MENU -->
-											<div class="route_callmenu_5" style="display:none;">
-												<label class="col-sm-3 control-label">Call Menu: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ivr->menu_id);$i++){
-															echo "<option value=".$ivr->menu_id[$i].">".$ivr->menu_id[$i]." - ".$ivr->menu_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- IN GROUP -->
-											<div class="route_ingroup_5" style="display:none;">
-												<label class="col-sm-3 control-label">In Group: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- DID -->
-											<div class="route_did_5" style="display:none;">
-												<label class="col-sm-3 control-label">DID: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- HANGUP -->
-											<div class="route_hangup_5" style="display:none;">
-												<label class="col-sm-3 control-label">Audio File: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i<count($voicefiles->file_name);$i++){
-															$file = substr($voicefiles->file_name[$i], 0, -4);
-															echo "<option value=".$file.">".$file."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- EXTENSION -->
-											<div class="route_exten_5" style="display:none;">
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Extension: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_0" />
-													</div>
-												</div>
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Context: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_0" />
-													</div>
-												</div>
-											</div>
-										<!-- PHONE -->
-											<div class="route_phone_5" style="display:none;">
-												<label class="col-sm-3 control-label">Phone: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phones->extension);$i++){
-															echo "<option value=".$phones->extension[$i].">".$phones->extension[$i]." - ".$phones->server_ip[$i]." - ".$phones->dialplan_number[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- VOICEMAIL -->
-											<div class="route_voicemail_5" style="display:none;">
-												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-9">
-													<div class="col-sm-6">
-														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_5" maxlength="255" size="15">
-													</div>
-													<div class="col-sm-6">
-														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_5">
-															<option value="" selected> - - - NONE - - - </option>
-														<?php
-															for($i=0;$i < count($voicemails->voicemail_id);$i++){
-																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
-															}
-														?>
-														</select>
-													</div>
-												</div>
-											</div>
-										<!-- AGI -->
-											<div class="route_agi_5" style="display:none;">
-												<label class="col-sm-3 control-label">AGI: </label>
-												<div class="col-sm-6">
-													<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
-												</div>
-											</div>
-									</div>
-								</div>
-							</div>
-							<div class="option_div_6">
-								<div class="form-group">
-									<div class="col-lg-12">
-										<div class="col-lg-2">
-											Option:
-											<select class="form-control route_option" name="option[]">
-												<option selected></option>
-												<?php
-													for($i=0; $i <= 9; $i++){
-														echo '<option value="'.$i.'">'.$i.'</option>';
-													}
-												?>
-												<option value="#">#</option>
-												<option value="*">*</option>
-												<option value="TIMECHECK">TIMECHECK</option>
-												<option value="INVALID">INVALID</option>
-											</select>
-										</div>
-										<div class="col-lg-7">
-											Desription: 
-											<input type="text" name="route_desc[]" id="" class="form-control route_desc_6" placeholder="Description"/>
-										</div>
-										<div class="col-lg-3">
-											Route:
-											<select class="form-control route_menu_6" name="route_menu[]">
-												<option selected value=""></option>
-												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="INGROUP">In-group</option>
-												<option value="DID">DID</option>
-												<option value="HANGUP">Hangup</option>
-												<option value="EXTENSION">Custom Extension</option>
-												<option value="PHONE">Phone</option>
-												<option value="VOICEMAIL">Voicemail</option>
-												<option value="AGI">AGI</option>
-											</select>
-										</div>
-										<div class="col-lg-1 btn-remove"></div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-lg-12 option_menu_6 mb mt">
-										<!-- CALL MENU -->
-											<div class="route_callmenu_6" style="display:none;">
-												<label class="col-sm-3 control-label">Call Menu: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ivr->menu_id);$i++){
-															echo "<option value=".$ivr->menu_id[$i].">".$ivr->menu_id[$i]." - ".$ivr->menu_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- IN GROUP -->
-											<div class="route_ingroup_6" style="display:none;">
-												<label class="col-sm-3 control-label">In Group: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- DID -->
-											<div class="route_did_6" style="display:none;">
-												<label class="col-sm-3 control-label">DID: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- HANGUP -->
-											<div class="route_hangup_6" style="display:none;">
-												<label class="col-sm-3 control-label">Audio File: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i<count($voicefiles->file_name);$i++){
-															$file = substr($voicefiles->file_name[$i], 0, -4);
-															echo "<option value=".$file.">".$file."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- EXTENSION -->
-											<div class="route_exten_6" style="display:none;">
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Extension: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_0" />
-													</div>
-												</div>
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Context: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_0" />
-													</div>
-												</div>
-											</div>
-										<!-- PHONE -->
-											<div class="route_phone_6" style="display:none;">
-												<label class="col-sm-3 control-label">Phone: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phones->extension);$i++){
-															echo "<option value=".$phones->extension[$i].">".$phones->extension[$i]." - ".$phones->server_ip[$i]." - ".$phones->dialplan_number[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- VOICEMAIL -->
-											<div class="route_voicemail_6" style="display:none;">
-												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-9">
-													<div class="col-sm-6">
-														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_6" maxlength="255" size="15">
-													</div>
-													<div class="col-sm-6">
-														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_6">
-															<option value="" selected> - - - NONE - - - </option>
-														<?php
-															for($i=0;$i < count($voicemails->voicemail_id);$i++){
-																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
-															}
-														?>
-														</select>
-													</div>
-												</div>
-											</div>
-										<!-- AGI -->
-											<div class="route_agi_6" style="display:none;">
-												<label class="col-sm-3 control-label">AGI: </label>
-												<div class="col-sm-6">
-													<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
-												</div>
-											</div>
-									</div>
-								</div>
-							</div>
-							<div class="option_div_7">
-								<div class="form-group">
-									<div class="col-lg-12">
-										<div class="col-lg-2">
-											Option:
-											<select class="form-control route_option" name="option[]">
-												<option selected></option>
-												<?php
-													for($i=0; $i <= 9; $i++){
-														echo '<option value="'.$i.'">'.$i.'</option>';
-													}
-												?>
-												<option value="#">#</option>
-												<option value="*">*</option>
-												<option value="TIMECHECK">TIMECHECK</option>
-												<option value="INVALID">INVALID</option>
-											</select>
-										</div>
-										<div class="col-lg-7">
-											Desription: 
-											<input type="text" name="route_desc[]" id="" class="form-control route_desc_7" placeholder="Description"/>
-										</div>
-										<div class="col-lg-3">
-											Route:
-											<select class="form-control route_menu_7" name="route_menu[]">
-												<option selected value=""></option>
-												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="INGROUP">In-group</option>
-												<option value="DID">DID</option>
-												<option value="HANGUP">Hangup</option>
-												<option value="EXTENSION">Custom Extension</option>
-												<option value="PHONE">Phone</option>
-												<option value="VOICEMAIL">Voicemail</option>
-												<option value="AGI">AGI</option>
-											</select>
-										</div>
-										<div class="col-lg-1 btn-remove"></div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-lg-12 option_menu_7 mb mt">
-										<!-- CALL MENU -->
-											<div class="route_callmenu_7" style="display:none;">
-												<label class="col-sm-3 control-label">Call Menu: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ivr->menu_id);$i++){
-															echo "<option value=".$ivr->menu_id[$i].">".$ivr->menu_id[$i]." - ".$ivr->menu_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- IN GROUP -->
-											<div class="route_ingroup_7" style="display:none;">
-												<label class="col-sm-3 control-label">In Group: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- DID -->
-											<div class="route_did_7" style="display:none;">
-												<label class="col-sm-3 control-label">DID: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- HANGUP -->
-											<div class="route_hangup_7" style="display:none;">
-												<label class="col-sm-3 control-label">Audio File: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i<count($voicefiles->file_name);$i++){
-															$file = substr($voicefiles->file_name[$i], 0, -4);
-															echo "<option value=".$file.">".$file."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- EXTENSION -->
-											<div class="route_exten_7" style="display:none;">
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Extension: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_0" />
-													</div>
-												</div>
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Context: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_0" />
-													</div>
-												</div>
-											</div>
-										<!-- PHONE -->
-											<div class="route_phone_7" style="display:none;">
-												<label class="col-sm-3 control-label">Phone: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phones->extension);$i++){
-															echo "<option value=".$phones->extension[$i].">".$phones->extension[$i]." - ".$phones->server_ip[$i]." - ".$phones->dialplan_number[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- VOICEMAIL -->
-											<div class="route_voicemail_7" style="display:none;">
-												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-9">
-													<div class="col-sm-6">
-														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_7" maxlength="255" size="15">
-													</div>
-													<div class="col-sm-6">
-														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_7">
-															<option value="" selected> - - - NONE - - - </option>
-														<?php
-															for($i=0;$i < count($voicemails->voicemail_id);$i++){
-																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
-															}
-														?>
-														</select>
-													</div>
-												</div>
-											</div>
-										<!-- AGI -->
-											<div class="route_agi_7" style="display:none;">
-												<label class="col-sm-3 control-label">AGI: </label>
-												<div class="col-sm-6">
-													<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
-												</div>
-											</div>
-									</div>
-								</div>
-							</div>
-							<div class="option_div_8">
-								<div class="form-group">
-									<div class="col-lg-12">
-										<div class="col-lg-2">
-											Option:
-											<select class="form-control route_option" name="option[]">
-												<option selected></option>
-												<?php
-													for($i=0; $i <= 9; $i++){
-														echo '<option value="'.$i.'">'.$i.'</option>';
-													}
-												?>
-												<option value="#">#</option>
-												<option value="*">*</option>
-												<option value="TIMECHECK">TIMECHECK</option>
-												<option value="INVALID">INVALID</option>
-											</select>
-										</div>
-										<div class="col-lg-7">
-											Desription: 
-											<input type="text" name="route_desc[]" id="" class="form-control route_desc_8" placeholder="Description"/>
-										</div>
-										<div class="col-lg-3">
-											Route:
-											<select class="form-control route_menu_8" name="route_menu[]">
-												<option selected value=""></option>
-												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="INGROUP">In-group</option>
-												<option value="DID">DID</option>
-												<option value="HANGUP">Hangup</option>
-												<option value="EXTENSION">Custom Extension</option>
-												<option value="PHONE">Phone</option>
-												<option value="VOICEMAIL">Voicemail</option>
-												<option value="AGI">AGI</option>
-											</select>
-										</div>
-										<div class="col-lg-1 btn-remove"></div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-lg-12 option_menu_8 mb mt">
-										<!-- CALL MENU -->
-											<div class="route_callmenu_8" style="display:none;">
-												<label class="col-sm-3 control-label">Call Menu: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ivr->menu_id);$i++){
-															echo "<option value=".$ivr->menu_id[$i].">".$ivr->menu_id[$i]." - ".$ivr->menu_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- IN GROUP -->
-											<div class="route_ingroup_8" style="display:none;">
-												<label class="col-sm-3 control-label">In Group: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- DID -->
-											<div class="route_did_8" style="display:none;">
-												<label class="col-sm-3 control-label">DID: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- HANGUP -->
-											<div class="route_hangup_8" style="display:none;">
-												<label class="col-sm-3 control-label">Audio File: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i<count($voicefiles->file_name);$i++){
-															$file = substr($voicefiles->file_name[$i], 0, -4);
-															echo "<option value=".$file.">".$file."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- EXTENSION -->
-											<div class="route_exten_8" style="display:none;">
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Extension: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_0" />
-													</div>
-												</div>
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Context: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_0" />
-													</div>
-												</div>
-											</div>
-										<!-- PHONE -->
-											<div class="route_phone_8" style="display:none;">
-												<label class="col-sm-3 control-label">Phone: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phones->extension);$i++){
-															echo "<option value=".$phones->extension[$i].">".$phones->extension[$i]." - ".$phones->server_ip[$i]." - ".$phones->dialplan_number[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- VOICEMAIL -->
-											<div class="route_voicemail_8" style="display:none;">
-												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-9">
-													<div class="col-sm-6">
-														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_8" maxlength="255" size="15">
-													</div>
-													<div class="col-sm-6">
-														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_8">
-															<option value="" selected> - - - NONE - - - </option>
-														<?php
-															for($i=0;$i < count($voicemails->voicemail_id);$i++){
-																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
-															}
-														?>
-														</select>
-													</div>
-												</div>
-											</div>
-										<!-- AGI -->
-											<div class="route_agi_8" style="display:none;">
-												<label class="col-sm-3 control-label">AGI: </label>
-												<div class="col-sm-6">
-													<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
-												</div>
-											</div>
-									</div>
-								</div>
-							</div>
-							<div class="option_div_9">
-								<div class="form-group">
-									<div class="col-lg-12">
-										<div class="col-lg-2">
-											Option:
-											<select class="form-control route_option" name="option[]">
-												<option selected></option>
-												<?php
-													for($i=0; $i <= 9; $i++){
-														echo '<option value="'.$i.'">'.$i.'</option>';
-													}
-												?>
-												<option value="#">#</option>
-												<option value="*">*</option>
-												<option value="TIMECHECK">TIMECHECK</option>
-												<option value="INVALID">INVALID</option>
-											</select>
-										</div>
-										<div class="col-lg-7">
-											Desription: 
-											<input type="text" name="route_desc[]" id="" class="form-control route_desc_9" placeholder="Description"/>
-										</div>
-										<div class="col-lg-3">
-											Route:
-											<select class="form-control route_menu_9" name="route_menu[]">
-												<option selected value=""></option>
-												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="INGROUP">In-group</option>
-												<option value="DID">DID</option>
-												<option value="HANGUP">Hangup</option>
-												<option value="EXTENSION">Custom Extension</option>
-												<option value="PHONE">Phone</option>
-												<option value="VOICEMAIL">Voicemail</option>
-												<option value="AGI">AGI</option>
-											</select>
-										</div>
-										<div class="col-lg-1 btn-remove"></div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-lg-12 option_menu_9 mb mt">
-										<!-- CALL MENU -->
-											<div class="route_callmenu_9" style="display:none;">
-												<label class="col-sm-3 control-label">Call Menu: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ivr->menu_id);$i++){
-															echo "<option value=".$ivr->menu_id[$i].">".$ivr->menu_id[$i]." - ".$ivr->menu_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- IN GROUP -->
-											<div class="route_ingroup_9" style="display:none;">
-												<label class="col-sm-3 control-label">In Group: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($ingroup->group_id);$i++){
-															echo "<option value=".$ingroup->group_id[$i].">".$ingroup->group_id[$i]." - ".$ingroup->group_name[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- DID -->
-											<div class="route_did_9" style="display:none;">
-												<label class="col-sm-3 control-label">DID: </label>
-												<div class="col-sm-6">
-													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phonenumber->did_pattern);$i++){
-															echo "<option value=".$phonenumber->did_pattern[$i].">".$phonenumber->did_pattern[$i]." - ".$phonenumber->did_description[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- HANGUP -->
-											<div class="route_hangup_9" style="display:none;">
-												<label class="col-sm-3 control-label">Audio File: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i<count($voicefiles->file_name);$i++){
-															$file = substr($voicefiles->file_name[$i], 0, -4);
-															echo "<option value=".$file.">".$file."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- EXTENSION -->
-											<div class="route_exten_9" style="display:none;">
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Extension: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_0" />
-													</div>
-												</div>
-												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Context: </label>
-													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_0" />
-													</div>
-												</div>
-											</div>
-										<!-- PHONE -->
-											<div class="route_phone_9" style="display:none;">
-												<label class="col-sm-3 control-label">Phone: </label>
-												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
-													<?php
-														for($i=0;$i < count($phones->extension);$i++){
-															echo "<option value=".$phones->extension[$i].">".$phones->extension[$i]." - ".$phones->server_ip[$i]." - ".$phones->dialplan_number[$i]."</option>";
-														}
-													?>
-													</select>
-												</div>
-											</div>
-										<!-- VOICEMAIL -->
-											<div class="route_voicemail_9" style="display:none;">
-												<label class="col-sm-3 control-label">Voicemail Box: </label>
-												<div class="col-sm-9">
-													<div class="col-sm-6">
-														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_9" maxlength="255" size="15">
-													</div>
-													<div class="col-sm-6">
-														<select class="col-sm-6 select2-2 form-control" " style="width:100%;" id="option_voicemail_select_9">
-															<option value="" selected> - - - NONE - - - </option>
-														<?php
-															for($i=0;$i < count($voicemails->voicemail_id);$i++){
-																echo "<option value=".$voicemails->voicemail_id[$i].">".$voicemails->voicemail_id[$i]." - ".$voicemails->fullname[$i]."</option>";
-															}
-														?>
-														</select>
-													</div>
-												</div>
-											</div>
-										<!-- AGI -->
-											<div class="route_agi_9" style="display:none;">
-												<label class="col-sm-3 control-label">AGI: </label>
-												<div class="col-sm-6">
-													<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
-												</div>
-											</div>
-									</div>
-								</div>
-							</div>
+						<?php
+							}
+						?>
 						</div><!--static div -->
 					</fieldset>
 					</div><!-- End of Step -->
@@ -2747,9 +1479,7 @@
 			        }
 			    }); // end of wizard
 			
-			//$(document).on("click","#next",function(e) {
-			//	$("#create_ivr").find( ".content.clearfix" ).css( "height", "75%" );
-			//});
+			
 			/*********
 			** EDIT IVR
 			*********/
@@ -2978,6 +1708,7 @@
 					       return false;
 					    }
 					});
+					
 				$(document).on('change', '.route_option',function(){
 					//alert(this.value);
 					var id = this.value;
@@ -3015,1724 +1746,1038 @@
 					
 				}
 				
-				$(document).on('change', '.route_menu_0',function(){
+				<?php for($i=0;$i < 10; $i++){ ?>
+				$(document).on('change', '.route_menu_<?php echo $i;?>',function(){
 					if(this.value == "CALLMENU") {
-						$('.route_callmenu_0').show();
-						$(".route_callmenu_0 :input").prop('required',true);
+						$('.route_callmenu_<?php echo $i;?>').show();
+						$(".route_callmenu_<?php echo $i;?> :input").prop('required',true);
 						
-						$('.route_ingroup_0').hide();
-							$(".route_ingroup_0 :input").prop('required',false);
-						$('.route_did_0').hide();
-							$(".route_did_0 :input").prop('required',false);
-						$('.route_hangup_0').hide();
-							$(".route_hangup_0 :input").prop('required',false);
-						$('.route_exten_0').hide();
-							$(".route_exten_0 :input").prop('required',false);
-						$('.route_phone_0').hide();
-							$(".route_phone_0 :input").prop('required',false);
-						$('.route_voicemail_0').hide();
-							$(".route_voicemail_0 :input").prop('required',false);
-						$('.route_agi_0').hide();
-							$(".route_agi_0 :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 					
 					}if(this.value == "INGROUP") {
-						$('.route_ingroup_0').show();
-						$(".route_ingroup_0 :input").prop('required',true);
+						$('.route_ingroup_<?php echo $i;?>').show();
+						$(".route_ingroup_<?php echo $i;?> :input").prop('required',true);
 
-						$('.route_callmenu_0').hide();
-							$(".route_callmenu_0 :input").prop('required',false);
-						$('.route_did_0').hide();
-							$(".route_did_0 :input").prop('required',false);
-						$('.route_hangup_0').hide();
-							$(".route_hangup_0 :input").prop('required',false);
-						$('.route_exten_0').hide();
-							$(".route_exten_0 :input").prop('required',false);
-						$('.route_phone_0').hide();
-							$(".route_phone_0 :input").prop('required',false);
-						$('.route_voicemail_0').hide();
-							$(".route_voicemail_0 :input").prop('required',false);
-						$('.route_agi_0').hide();
-							$(".route_agi_0 :input").prop('required',false);
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 						
 					}if(this.value == "DID") {
-						$('.route_did_0').show();
-						$(".route_did_0 :input").prop('required',true);
+						$('.route_did_<?php echo $i;?>').show();
+						$(".route_did_<?php echo $i;?> :input").prop('required',true);
 
-						$('.route_callmenu_0').hide();
-							$(".route_callmenu_0 :input").prop('required',false);
-						$('.route_ingroup_0').hide();
-							$(".route_ingroup_0 :input").prop('required',false);
-						$('.route_hangup_0').hide();
-							$(".route_hangup_0 :input").prop('required',false);
-						$('.route_exten_0').hide();
-							$(".route_exten_0 :input").prop('required',false);
-						$('.route_phone_0').hide();
-							$(".route_phone_0 :input").prop('required',false);
-						$('.route_voicemail_0').hide();
-							$(".route_voicemail_0 :input").prop('required',false);
-						$('.route_agi_0').hide();
-							$(".route_agi_0 :input").prop('required',false);
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 						
 					}if(this.value == "HANGUP") {
-						$('.route_hangup_0').show();
-						$(".route_hangup_0 :input").prop('required',true);
+						$('.route_hangup_<?php echo $i;?>').show();
+						$(".route_hangup_<?php echo $i;?> :input").prop('required',true);
 						
-						$('.route_callmenu_0').hide();
-							$(".route_callmenu_0 :input").prop('required',false);
-						$('.route_ingroup_0').hide();
-							$(".route_ingroup_0 :input").prop('required',false);
-						$('.route_did_0').hide();
-							$(".route_did_0 :input").prop('required',false);
-						$('.route_exten_0').hide();
-							$(".route_exten_0 :input").prop('required',false);
-						$('.route_phone_0').hide();
-							$(".route_phone_0 :input").prop('required',false);
-						$('.route_voicemail_0').hide();
-							$(".route_voicemail_0 :input").prop('required',false);
-						$('.route_agi_0').hide();
-							$(".route_agi_0 :input").prop('required',false);
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 						
 					}if(this.value == "EXTENSION") {
-						$('.route_exten_0').show();
-						$(".route_exten_0 :input").prop('required',true);
+						$('.route_exten_<?php echo $i;?>').show();
+						$(".route_exten_<?php echo $i;?> :input").prop('required',true);
 						
-						$('.route_callmenu_0').hide();
-							$(".route_callmenu_0 :input").prop('required',false);
-						$('.route_ingroup_0').hide();
-							$(".route_ingroup_0 :input").prop('required',false);
-						$('.route_did_0').hide();
-							$(".route_did_0 :input").prop('required',false);
-						$('.route_hangup_0').hide();
-							$(".route_hangup_0 :input").prop('required',false);
-						$('.route_phone_0').hide();
-							$(".route_phone_0 :input").prop('required',false);
-						$('.route_voicemail_0').hide();
-							$(".route_voicemail_0 :input").prop('required',false);
-						$('.route_agi_0').hide();
-							$(".route_agi_0 :input").prop('required',false);
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 						
 					}if(this.value == "PHONE") {
-						$('.route_phone_0').show();
-						$(".route_phone_0 :input").prop('required',true);
+						$('.route_phone_<?php echo $i;?>').show();
+						$(".route_phone_<?php echo $i;?> :input").prop('required',true);
 						
-						$('.route_callmenu_0').hide();
-							$(".route_callmenu_0 :input").prop('required',false);
-						$('.route_ingroup_0').hide();
-							$(".route_ingroup_0 :input").prop('required',false);
-						$('.route_did_0').hide();
-							$(".route_did_0 :input").prop('required',false);
-						$('.route_hangup_0').hide();
-							$(".route_hangup_0 :input").prop('required',false);
-						$('.route_exten_0').hide();
-							$(".route_exten_0 :input").prop('required',false);
-						$('.route_voicemail_0').hide();
-							$(".route_voicemail_0 :input").prop('required',false);
-						$('.route_agi_0').hide();
-							$(".route_agi_0 :input").prop('required',false);
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 						
 					}if(this.value == "VOICEMAIL") {
-						$('.route_voicemail_0').show();
-						$(".route_voicemail_0 :input").prop('required',true);
+						$('.route_voicemail_<?php echo $i;?>').show();
+						$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
 						
-						$('.route_callmenu_0').hide();
-							$(".route_callmenu_0 :input").prop('required',false);
-						$('.route_ingroup_0').hide();
-							$(".route_ingroup_0 :input").prop('required',false);
-						$('.route_did_0').hide();
-							$(".route_did_0 :input").prop('required',false);
-						$('.route_hangup_0').hide();
-							$(".route_hangup_0 :input").prop('required',false);
-						$('.route_exten_0').hide();
-							$(".route_exten_0 :input").prop('required',false);
-						$('.route_phone_0').hide();
-							$(".route_phone_0 :input").prop('required',false);
-						$('.route_agi_0').hide();
-							$(".route_agi_0 :input").prop('required',false);
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 						
 					}if(this.value == "AGI") {
-						$('.route_agi_0').show();
-						$(".route_agi_0 :input").prop('required',true);
+						$('.route_agi_<?php echo $i;?>').show();
+						$(".route_agi_<?php echo $i;?> :input").prop('required',true);
 						
-						$('.route_callmenu_0').hide();
-							$(".route_callmenu_0 :input").prop('required',false);
-						$('.route_ingroup_0').hide();
-							$(".route_ingroup_0 :input").prop('required',false);
-						$('.route_did_0').hide();
-							$(".route_did_0 :input").prop('required',false);
-						$('.route_hangup_0').hide();
-							$(".route_hangup_0 :input").prop('required',false);
-						$('.route_exten_0').hide();
-							$(".route_exten_0 :input").prop('required',false);
-						$('.route_phone_0').hide();
-							$(".route_phone_0 :input").prop('required',false);
-						$('.route_voicemail_0').hide();
-							$(".route_voicemail_0 :input").prop('required',false);
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
 					}
 					if(this.value == "") {
-						$('.route_callmenu_0').hide();
-							$(".route_callmenu_0 :input").prop('required',false);
-						$('.route_ingroup_0').hide();
-							$(".route_ingroup_0 :input").prop('required',false);
-						$('.route_did_0').hide();
-							$(".route_did_0 :input").prop('required',false);
-						$('.route_hangup_0').hide();
-							$(".route_hangup_0 :input").prop('required',false);
-						$('.route_exten_0').hide();
-							$(".route_exten_0 :input").prop('required',false);
-						$('.route_phone_0').hide();
-							$(".route_phone_0 :input").prop('required',false);
-						$('.route_voicemail_0').hide();
-							$(".route_voicemail_0 :input").prop('required',false);
-						$('.route_agi_0').hide();
-							$(".route_agi_0 :input").prop('required',false);
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 					}
 				});
-				$(document).on('change', '.route_menu_1',function(){
+				<?php } ?>
+				$(document).on('change', '.route_menu_A',function(){
 					if(this.value == "CALLMENU") {
-						$('.route_callmenu_1').show();
-						$(".route_callmenu_1 :input").prop('required',true);
+						$('.route_callmenu_A').show();
+						$(".route_callmenu_A :input").prop('required',true);
 						
-						$('.route_ingroup_1').hide();
-							$(".route_ingroup_1 :input").prop('required',false);
-						$('.route_did_1').hide();
-							$(".route_did_1 :input").prop('required',false);
-						$('.route_hangup_1').hide();
-							$(".route_hangup_1 :input").prop('required',false);
-						$('.route_exten_1').hide();
-							$(".route_exten_1 :input").prop('required',false);
-						$('.route_phone_1').hide();
-							$(".route_phone_1 :input").prop('required',false);
-						$('.route_voicemail_1').hide();
-							$(".route_voicemail_1 :input").prop('required',false);
-						$('.route_agi_1').hide();
-							$(".route_agi_1 :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
 					
 					}if(this.value == "INGROUP") {
-						$('.route_ingroup_1').show();
-						$(".route_ingroup_1 :input").prop('required',true);
+						$('.route_ingroup_A').show();
+						$(".route_ingroup_A :input").prop('required',true);
 
-						$('.route_callmenu_1').hide();
-							$(".route_callmenu_1 :input").prop('required',false);
-						$('.route_did_1').hide();
-							$(".route_did_1 :input").prop('required',false);
-						$('.route_hangup_1').hide();
-							$(".route_hangup_1 :input").prop('required',false);
-						$('.route_exten_1').hide();
-							$(".route_exten_1 :input").prop('required',false);
-						$('.route_phone_1').hide();
-							$(".route_phone_1 :input").prop('required',false);
-						$('.route_voicemail_1').hide();
-							$(".route_voicemail_1 :input").prop('required',false);
-						$('.route_agi_1').hide();
-							$(".route_agi_1 :input").prop('required',false);
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
 						
 					}if(this.value == "DID") {
-						$('.route_did_1').show();
-						$(".route_did_1 :input").prop('required',true);
+						$('.route_did_A').show();
+						$(".route_did_A :input").prop('required',true);
 
-						$('.route_callmenu_1').hide();
-							$(".route_callmenu_1 :input").prop('required',false);
-						$('.route_ingroup_1').hide();
-							$(".route_ingroup_1 :input").prop('required',false);
-						$('.route_hangup_1').hide();
-							$(".route_hangup_1 :input").prop('required',false);
-						$('.route_exten_1').hide();
-							$(".route_exten_1 :input").prop('required',false);
-						$('.route_phone_1').hide();
-							$(".route_phone_1 :input").prop('required',false);
-						$('.route_voicemail_1').hide();
-							$(".route_voicemail_1 :input").prop('required',false);
-						$('.route_agi_1').hide();
-							$(".route_agi_1 :input").prop('required',false);
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
 						
 					}if(this.value == "HANGUP") {
-						$('.route_hangup_1').show();
-						$(".route_hangup_1 :input").prop('required',true);
+						$('.route_hangup_A').show();
+						$(".route_hangup_A :input").prop('required',true);
 						
-						$('.route_callmenu_1').hide();
-							$(".route_callmenu_1 :input").prop('required',false);
-						$('.route_ingroup_1').hide();
-							$(".route_ingroup_1 :input").prop('required',false);
-						$('.route_did_1').hide();
-							$(".route_did_1 :input").prop('required',false);
-						$('.route_exten_1').hide();
-							$(".route_exten_1 :input").prop('required',false);
-						$('.route_phone_1').hide();
-							$(".route_phone_1 :input").prop('required',false);
-						$('.route_voicemail_1').hide();
-							$(".route_voicemail_1 :input").prop('required',false);
-						$('.route_agi_1').hide();
-							$(".route_agi_1 :input").prop('required',false);
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
 						
 					}if(this.value == "EXTENSION") {
-						$('.route_exten_1').show();
-						$(".route_exten_1 :input").prop('required',true);
+						$('.route_exten_A').show();
+						$(".route_exten_A :input").prop('required',true);
 						
-						$('.route_callmenu_1').hide();
-							$(".route_callmenu_1 :input").prop('required',false);
-						$('.route_ingroup_1').hide();
-							$(".route_ingroup_1 :input").prop('required',false);
-						$('.route_did_1').hide();
-							$(".route_did_1 :input").prop('required',false);
-						$('.route_hangup_1').hide();
-							$(".route_hangup_1 :input").prop('required',false);
-						$('.route_phone_1').hide();
-							$(".route_phone_1 :input").prop('required',false);
-						$('.route_voicemail_1').hide();
-							$(".route_voicemail_1 :input").prop('required',false);
-						$('.route_agi_1').hide();
-							$(".route_agi_1 :input").prop('required',false);
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
 						
 					}if(this.value == "PHONE") {
-						$('.route_phone_1').show();
-						$(".route_phone_1 :input").prop('required',true);
+						$('.route_phone_A').show();
+						$(".route_phone_A :input").prop('required',true);
 						
-						$('.route_callmenu_1').hide();
-							$(".route_callmenu_1 :input").prop('required',false);
-						$('.route_ingroup_1').hide();
-							$(".route_ingroup_1 :input").prop('required',false);
-						$('.route_did_1').hide();
-							$(".route_did_1 :input").prop('required',false);
-						$('.route_hangup_1').hide();
-							$(".route_hangup_1 :input").prop('required',false);
-						$('.route_exten_1').hide();
-							$(".route_exten_1 :input").prop('required',false);
-						$('.route_voicemail_1').hide();
-							$(".route_voicemail_1 :input").prop('required',false);
-						$('.route_agi_1').hide();
-							$(".route_agi_1 :input").prop('required',false);
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
 						
 					}if(this.value == "VOICEMAIL") {
-						$('.route_voicemail_1').show();
-						$(".route_voicemail_1 :input").prop('required',true);
+						$('.route_voicemail_A').show();
+						$(".route_voicemail_A :input").prop('required',true);
 						
-						$('.route_callmenu_1').hide();
-							$(".route_callmenu_1 :input").prop('required',false);
-						$('.route_ingroup_1').hide();
-							$(".route_ingroup_1 :input").prop('required',false);
-						$('.route_did_1').hide();
-							$(".route_did_1 :input").prop('required',false);
-						$('.route_hangup_1').hide();
-							$(".route_hangup_1 :input").prop('required',false);
-						$('.route_exten_1').hide();
-							$(".route_exten_1 :input").prop('required',false);
-						$('.route_phone_1').hide();
-							$(".route_phone_1 :input").prop('required',false);
-						$('.route_agi_1').hide();
-							$(".route_agi_1 :input").prop('required',false);
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
 						
 					}if(this.value == "AGI") {
-						$('.route_agi_1').show();
-						$(".route_agi_1 :input").prop('required',true);
+						$('.route_agi_A').show();
+						$(".route_agi_A :input").prop('required',true);
 						
-						$('.route_callmenu_1').hide();
-							$(".route_callmenu_1 :input").prop('required',false);
-						$('.route_ingroup_1').hide();
-							$(".route_ingroup_1 :input").prop('required',false);
-						$('.route_did_1').hide();
-							$(".route_did_1 :input").prop('required',false);
-						$('.route_hangup_1').hide();
-							$(".route_hangup_1 :input").prop('required',false);
-						$('.route_exten_1').hide();
-							$(".route_exten_1 :input").prop('required',false);
-						$('.route_phone_1').hide();
-							$(".route_phone_1 :input").prop('required',false);
-						$('.route_voicemail_1').hide();
-							$(".route_voicemail_1 :input").prop('required',false);
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
 					}
 					if(this.value == "") {
-						$('.route_callmenu_1').hide();
-							$(".route_callmenu_1 :input").prop('required',false);
-						$('.route_ingroup_1').hide();
-							$(".route_ingroup_1 :input").prop('required',false);
-						$('.route_did_1').hide();
-							$(".route_did_1 :input").prop('required',false);
-						$('.route_hangup_1').hide();
-							$(".route_hangup_1 :input").prop('required',false);
-						$('.route_exten_1').hide();
-							$(".route_exten_1 :input").prop('required',false);
-						$('.route_phone_1').hide();
-							$(".route_phone_1 :input").prop('required',false);
-						$('.route_voicemail_1').hide();
-							$(".route_voicemail_1 :input").prop('required',false);
-						$('.route_agi_1').hide();
-							$(".route_agi_1 :input").prop('required',false);
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
 					}
 				});
-				$(document).on('change', '.route_menu_2',function(){
+				$(document).on('change', '.route_menu_B',function(){
 					if(this.value == "CALLMENU") {
-						$('.route_callmenu_2').show();
-						$(".route_callmenu_2 :input").prop('required',true);
+						$('.route_callmenu_B').show();
+						$(".route_callmenu_B :input").prop('required',true);
 						
-						$('.route_ingroup_2').hide();
-							$(".route_ingroup_2 :input").prop('required',false);
-						$('.route_did_2').hide();
-							$(".route_did_2 :input").prop('required',false);
-						$('.route_hangup_2').hide();
-							$(".route_hangup_2 :input").prop('required',false);
-						$('.route_exten_2').hide();
-							$(".route_exten_2 :input").prop('required',false);
-						$('.route_phone_2').hide();
-							$(".route_phone_2 :input").prop('required',false);
-						$('.route_voicemail_2').hide();
-							$(".route_voicemail_2 :input").prop('required',false);
-						$('.route_agi_2').hide();
-							$(".route_agi_2 :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
 					
 					}if(this.value == "INGROUP") {
-						$('.route_ingroup_2').show();
-						$(".route_ingroup_2 :input").prop('required',true);
+						$('.route_ingroup_B').show();
+						$(".route_ingroup_B :input").prop('required',true);
 
-						$('.route_callmenu_2').hide();
-							$(".route_callmenu_2 :input").prop('required',false);
-						$('.route_did_2').hide();
-							$(".route_did_2 :input").prop('required',false);
-						$('.route_hangup_2').hide();
-							$(".route_hangup_2 :input").prop('required',false);
-						$('.route_exten_2').hide();
-							$(".route_exten_2 :input").prop('required',false);
-						$('.route_phone_2').hide();
-							$(".route_phone_2 :input").prop('required',false);
-						$('.route_voicemail_2').hide();
-							$(".route_voicemail_2 :input").prop('required',false);
-						$('.route_agi_2').hide();
-							$(".route_agi_2 :input").prop('required',false);
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
 						
 					}if(this.value == "DID") {
-						$('.route_did_2').show();
-						$(".route_did_2 :input").prop('required',true);
+						$('.route_did_B').show();
+						$(".route_did_B :input").prop('required',true);
 
-						$('.route_callmenu_2').hide();
-							$(".route_callmenu_2 :input").prop('required',false);
-						$('.route_ingroup_2').hide();
-							$(".route_ingroup_2 :input").prop('required',false);
-						$('.route_hangup_2').hide();
-							$(".route_hangup_2 :input").prop('required',false);
-						$('.route_exten_2').hide();
-							$(".route_exten_2 :input").prop('required',false);
-						$('.route_phone_2').hide();
-							$(".route_phone_2 :input").prop('required',false);
-						$('.route_voicemail_2').hide();
-							$(".route_voicemail_2 :input").prop('required',false);
-						$('.route_agi_2').hide();
-							$(".route_agi_2 :input").prop('required',false);
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
 						
 					}if(this.value == "HANGUP") {
-						$('.route_hangup_2').show();
-						$(".route_hangup_2 :input").prop('required',true);
+						$('.route_hangup_B').show();
+						$(".route_hangup_B :input").prop('required',true);
 						
-						$('.route_callmenu_2').hide();
-							$(".route_callmenu_2 :input").prop('required',false);
-						$('.route_ingroup_2').hide();
-							$(".route_ingroup_2 :input").prop('required',false);
-						$('.route_did_2').hide();
-							$(".route_did_2 :input").prop('required',false);
-						$('.route_exten_2').hide();
-							$(".route_exten_2 :input").prop('required',false);
-						$('.route_phone_2').hide();
-							$(".route_phone_2 :input").prop('required',false);
-						$('.route_voicemail_2').hide();
-							$(".route_voicemail_2 :input").prop('required',false);
-						$('.route_agi_2').hide();
-							$(".route_agi_2 :input").prop('required',false);
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
 						
 					}if(this.value == "EXTENSION") {
-						$('.route_exten_2').show();
-						$(".route_exten_2 :input").prop('required',true);
+						$('.route_exten_B').show();
+						$(".route_exten_B :input").prop('required',true);
 						
-						$('.route_callmenu_2').hide();
-							$(".route_callmenu_2 :input").prop('required',false);
-						$('.route_ingroup_2').hide();
-							$(".route_ingroup_2 :input").prop('required',false);
-						$('.route_did_2').hide();
-							$(".route_did_2 :input").prop('required',false);
-						$('.route_hangup_2').hide();
-							$(".route_hangup_2 :input").prop('required',false);
-						$('.route_phone_2').hide();
-							$(".route_phone_2 :input").prop('required',false);
-						$('.route_voicemail_2').hide();
-							$(".route_voicemail_2 :input").prop('required',false);
-						$('.route_agi_2').hide();
-							$(".route_agi_2 :input").prop('required',false);
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
 						
 					}if(this.value == "PHONE") {
-						$('.route_phone_2').show();
-						$(".route_phone_2 :input").prop('required',true);
+						$('.route_phone_B').show();
+						$(".route_phone_B :input").prop('required',true);
 						
-						$('.route_callmenu_2').hide();
-							$(".route_callmenu_2 :input").prop('required',false);
-						$('.route_ingroup_2').hide();
-							$(".route_ingroup_2 :input").prop('required',false);
-						$('.route_did_2').hide();
-							$(".route_did_2 :input").prop('required',false);
-						$('.route_hangup_2').hide();
-							$(".route_hangup_2 :input").prop('required',false);
-						$('.route_exten_2').hide();
-							$(".route_exten_2 :input").prop('required',false);
-						$('.route_voicemail_2').hide();
-							$(".route_voicemail_2 :input").prop('required',false);
-						$('.route_agi_2').hide();
-							$(".route_agi_2 :input").prop('required',false);
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
 						
 					}if(this.value == "VOICEMAIL") {
-						$('.route_voicemail_2').show();
-						$(".route_voicemail_2 :input").prop('required',true);
+						$('.route_voicemail_B').show();
+						$(".route_voicemail_B :input").prop('required',true);
 						
-						$('.route_callmenu_2').hide();
-							$(".route_callmenu_2 :input").prop('required',false);
-						$('.route_ingroup_2').hide();
-							$(".route_ingroup_2 :input").prop('required',false);
-						$('.route_did_2').hide();
-							$(".route_did_2 :input").prop('required',false);
-						$('.route_hangup_2').hide();
-							$(".route_hangup_2 :input").prop('required',false);
-						$('.route_exten_2').hide();
-							$(".route_exten_2 :input").prop('required',false);
-						$('.route_phone_2').hide();
-							$(".route_phone_2 :input").prop('required',false);
-						$('.route_agi_2').hide();
-							$(".route_agi_2 :input").prop('required',false);
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
 						
 					}if(this.value == "AGI") {
-						$('.route_agi_2').show();
-						$(".route_agi_2 :input").prop('required',true);
+						$('.route_agi_B').show();
+						$(".route_agi_B :input").prop('required',true);
 						
-						$('.route_callmenu_2').hide();
-							$(".route_callmenu_2 :input").prop('required',false);
-						$('.route_ingroup_2').hide();
-							$(".route_ingroup_2 :input").prop('required',false);
-						$('.route_did_2').hide();
-							$(".route_did_2 :input").prop('required',false);
-						$('.route_hangup_2').hide();
-							$(".route_hangup_2 :input").prop('required',false);
-						$('.route_exten_2').hide();
-							$(".route_exten_2 :input").prop('required',false);
-						$('.route_phone_2').hide();
-							$(".route_phone_2 :input").prop('required',false);
-						$('.route_voicemail_2').hide();
-							$(".route_voicemail_2 :input").prop('required',false);
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
 					}
 					if(this.value == "") {
-						$('.route_callmenu_2').hide();
-							$(".route_callmenu_2 :input").prop('required',false);
-						$('.route_ingroup_2').hide();
-							$(".route_ingroup_2 :input").prop('required',false);
-						$('.route_did_2').hide();
-							$(".route_did_2 :input").prop('required',false);
-						$('.route_hangup_2').hide();
-							$(".route_hangup_2 :input").prop('required',false);
-						$('.route_exten_2').hide();
-							$(".route_exten_2 :input").prop('required',false);
-						$('.route_phone_2').hide();
-							$(".route_phone_2 :input").prop('required',false);
-						$('.route_voicemail_2').hide();
-							$(".route_voicemail_2 :input").prop('required',false);
-						$('.route_agi_2').hide();
-							$(".route_agi_2 :input").prop('required',false);
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
 					}
 				});
-				$(document).on('change', '.route_menu_3',function(){
+				$(document).on('change', '.route_menu_C',function(){
 					if(this.value == "CALLMENU") {
-						$('.route_callmenu_3').show();
-						$(".route_callmenu_3 :input").prop('required',true);
+						$('.route_callmenu_C').show();
+						$(".route_callmenu_C :input").prop('required',true);
 						
-						$('.route_ingroup_3').hide();
-							$(".route_ingroup_3 :input").prop('required',false);
-						$('.route_did_3').hide();
-							$(".route_did_3 :input").prop('required',false);
-						$('.route_hangup_3').hide();
-							$(".route_hangup_3 :input").prop('required',false);
-						$('.route_exten_3').hide();
-							$(".route_exten_3 :input").prop('required',false);
-						$('.route_phone_3').hide();
-							$(".route_phone_3 :input").prop('required',false);
-						$('.route_voicemail_3').hide();
-							$(".route_voicemail_3 :input").prop('required',false);
-						$('.route_agi_3').hide();
-							$(".route_agi_3 :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
 					
 					}if(this.value == "INGROUP") {
-						$('.route_ingroup_3').show();
-						$(".route_ingroup_3 :input").prop('required',true);
+						$('.route_ingroup_C').show();
+						$(".route_ingroup_C :input").prop('required',true);
 
-						$('.route_callmenu_3').hide();
-							$(".route_callmenu_3 :input").prop('required',false);
-						$('.route_did_3').hide();
-							$(".route_did_3 :input").prop('required',false);
-						$('.route_hangup_3').hide();
-							$(".route_hangup_3 :input").prop('required',false);
-						$('.route_exten_3').hide();
-							$(".route_exten_3 :input").prop('required',false);
-						$('.route_phone_3').hide();
-							$(".route_phone_3 :input").prop('required',false);
-						$('.route_voicemail_3').hide();
-							$(".route_voicemail_3 :input").prop('required',false);
-						$('.route_agi_3').hide();
-							$(".route_agi_3 :input").prop('required',false);
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
 						
 					}if(this.value == "DID") {
-						$('.route_did_3').show();
-						$(".route_did_3 :input").prop('required',true);
+						$('.route_did_C').show();
+						$(".route_did_C :input").prop('required',true);
 
-						$('.route_callmenu_3').hide();
-							$(".route_callmenu_3 :input").prop('required',false);
-						$('.route_ingroup_3').hide();
-							$(".route_ingroup_3 :input").prop('required',false);
-						$('.route_hangup_3').hide();
-							$(".route_hangup_3 :input").prop('required',false);
-						$('.route_exten_3').hide();
-							$(".route_exten_3 :input").prop('required',false);
-						$('.route_phone_3').hide();
-							$(".route_phone_3 :input").prop('required',false);
-						$('.route_voicemail_3').hide();
-							$(".route_voicemail_3 :input").prop('required',false);
-						$('.route_agi_3').hide();
-							$(".route_agi_3 :input").prop('required',false);
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
 						
 					}if(this.value == "HANGUP") {
-						$('.route_hangup_3').show();
-						$(".route_hangup_3 :input").prop('required',true);
+						$('.route_hangup_C').show();
+						$(".route_hangup_C :input").prop('required',true);
 						
-						$('.route_callmenu_3').hide();
-							$(".route_callmenu_3 :input").prop('required',false);
-						$('.route_ingroup_3').hide();
-							$(".route_ingroup_3 :input").prop('required',false);
-						$('.route_did_3').hide();
-							$(".route_did_3 :input").prop('required',false);
-						$('.route_exten_3').hide();
-							$(".route_exten_3 :input").prop('required',false);
-						$('.route_phone_3').hide();
-							$(".route_phone_3 :input").prop('required',false);
-						$('.route_voicemail_3').hide();
-							$(".route_voicemail_3 :input").prop('required',false);
-						$('.route_agi_3').hide();
-							$(".route_agi_3 :input").prop('required',false);
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
 						
 					}if(this.value == "EXTENSION") {
-						$('.route_exten_3').show();
-						$(".route_exten_3 :input").prop('required',true);
+						$('.route_exten_C').show();
+						$(".route_exten_C :input").prop('required',true);
 						
-						$('.route_callmenu_3').hide();
-							$(".route_callmenu_3 :input").prop('required',false);
-						$('.route_ingroup_3').hide();
-							$(".route_ingroup_3 :input").prop('required',false);
-						$('.route_did_3').hide();
-							$(".route_did_3 :input").prop('required',false);
-						$('.route_hangup_3').hide();
-							$(".route_hangup_3 :input").prop('required',false);
-						$('.route_phone_3').hide();
-							$(".route_phone_3 :input").prop('required',false);
-						$('.route_voicemail_3').hide();
-							$(".route_voicemail_3 :input").prop('required',false);
-						$('.route_agi_3').hide();
-							$(".route_agi_3 :input").prop('required',false);
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
 						
 					}if(this.value == "PHONE") {
-						$('.route_phone_3').show();
-						$(".route_phone_3 :input").prop('required',true);
+						$('.route_phone_C').show();
+						$(".route_phone_C :input").prop('required',true);
 						
-						$('.route_callmenu_3').hide();
-							$(".route_callmenu_3 :input").prop('required',false);
-						$('.route_ingroup_3').hide();
-							$(".route_ingroup_3 :input").prop('required',false);
-						$('.route_did_3').hide();
-							$(".route_did_3 :input").prop('required',false);
-						$('.route_hangup_3').hide();
-							$(".route_hangup_3 :input").prop('required',false);
-						$('.route_exten_3').hide();
-							$(".route_exten_3 :input").prop('required',false);
-						$('.route_voicemail_3').hide();
-							$(".route_voicemail_3 :input").prop('required',false);
-						$('.route_agi_3').hide();
-							$(".route_agi_3 :input").prop('required',false);
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
 						
 					}if(this.value == "VOICEMAIL") {
-						$('.route_voicemail_3').show();
-						$(".route_voicemail_3 :input").prop('required',true);
+						$('.route_voicemail_C').show();
+						$(".route_voicemail_C :input").prop('required',true);
 						
-						$('.route_callmenu_3').hide();
-							$(".route_callmenu_3 :input").prop('required',false);
-						$('.route_ingroup_3').hide();
-							$(".route_ingroup_3 :input").prop('required',false);
-						$('.route_did_3').hide();
-							$(".route_did_3 :input").prop('required',false);
-						$('.route_hangup_3').hide();
-							$(".route_hangup_3 :input").prop('required',false);
-						$('.route_exten_3').hide();
-							$(".route_exten_3 :input").prop('required',false);
-						$('.route_phone_3').hide();
-							$(".route_phone_3 :input").prop('required',false);
-						$('.route_agi_3').hide();
-							$(".route_agi_3 :input").prop('required',false);
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
 						
 					}if(this.value == "AGI") {
-						$('.route_agi_3').show();
-						$(".route_agi_3 :input").prop('required',true);
+						$('.route_agi_C').show();
+						$(".route_agi_C :input").prop('required',true);
 						
-						$('.route_callmenu_3').hide();
-							$(".route_callmenu_3 :input").prop('required',false);
-						$('.route_ingroup_3').hide();
-							$(".route_ingroup_3 :input").prop('required',false);
-						$('.route_did_3').hide();
-							$(".route_did_3 :input").prop('required',false);
-						$('.route_hangup_3').hide();
-							$(".route_hangup_3 :input").prop('required',false);
-						$('.route_exten_3').hide();
-							$(".route_exten_3 :input").prop('required',false);
-						$('.route_phone_3').hide();
-							$(".route_phone_3 :input").prop('required',false);
-						$('.route_voicemail_3').hide();
-							$(".route_voicemail_3 :input").prop('required',false);
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
 					}
 					if(this.value == "") {
-						$('.route_callmenu_3').hide();
-							$(".route_callmenu_3 :input").prop('required',false);
-						$('.route_ingroup_3').hide();
-							$(".route_ingroup_3 :input").prop('required',false);
-						$('.route_did_3').hide();
-							$(".route_did_3 :input").prop('required',false);
-						$('.route_hangup_3').hide();
-							$(".route_hangup_3 :input").prop('required',false);
-						$('.route_exten_3').hide();
-							$(".route_exten_3 :input").prop('required',false);
-						$('.route_phone_3').hide();
-							$(".route_phone_3 :input").prop('required',false);
-						$('.route_voicemail_3').hide();
-							$(".route_voicemail_3 :input").prop('required',false);
-						$('.route_agi_3').hide();
-							$(".route_agi_3 :input").prop('required',false);
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
 					}
 				});
-				$(document).on('change', '.route_menu_4',function(){
+				$(document).on('change', '.route_menu_D',function(){
 					if(this.value == "CALLMENU") {
-						$('.route_callmenu_4').show();
-						$(".route_callmenu_4 :input").prop('required',true);
+						$('.route_callmenu_D').show();
+						$(".route_callmenu_D :input").prop('required',true);
 						
-						$('.route_ingroup_4').hide();
-							$(".route_ingroup_4 :input").prop('required',false);
-						$('.route_did_4').hide();
-							$(".route_did_4 :input").prop('required',false);
-						$('.route_hangup_4').hide();
-							$(".route_hangup_4 :input").prop('required',false);
-						$('.route_exten_4').hide();
-							$(".route_exten_4 :input").prop('required',false);
-						$('.route_phone_4').hide();
-							$(".route_phone_4 :input").prop('required',false);
-						$('.route_voicemail_4').hide();
-							$(".route_voicemail_4 :input").prop('required',false);
-						$('.route_agi_4').hide();
-							$(".route_agi_4 :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
 					
 					}if(this.value == "INGROUP") {
-						$('.route_ingroup_4').show();
-						$(".route_ingroup_4 :input").prop('required',true);
+						$('.route_ingroup_D').show();
+						$(".route_ingroup_D :input").prop('required',true);
 
-						$('.route_callmenu_4').hide();
-							$(".route_callmenu_4 :input").prop('required',false);
-						$('.route_did_4').hide();
-							$(".route_did_4 :input").prop('required',false);
-						$('.route_hangup_4').hide();
-							$(".route_hangup_4 :input").prop('required',false);
-						$('.route_exten_4').hide();
-							$(".route_exten_4 :input").prop('required',false);
-						$('.route_phone_4').hide();
-							$(".route_phone_4 :input").prop('required',false);
-						$('.route_voicemail_4').hide();
-							$(".route_voicemail_4 :input").prop('required',false);
-						$('.route_agi_4').hide();
-							$(".route_agi_4 :input").prop('required',false);
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
 						
 					}if(this.value == "DID") {
-						$('.route_did_4').show();
-						$(".route_did_4 :input").prop('required',true);
+						$('.route_did_D').show();
+						$(".route_did_D :input").prop('required',true);
 
-						$('.route_callmenu_4').hide();
-							$(".route_callmenu_4 :input").prop('required',false);
-						$('.route_ingroup_4').hide();
-							$(".route_ingroup_4 :input").prop('required',false);
-						$('.route_hangup_4').hide();
-							$(".route_hangup_4 :input").prop('required',false);
-						$('.route_exten_4').hide();
-							$(".route_exten_4 :input").prop('required',false);
-						$('.route_phone_4').hide();
-							$(".route_phone_4 :input").prop('required',false);
-						$('.route_voicemail_4').hide();
-							$(".route_voicemail_4 :input").prop('required',false);
-						$('.route_agi_4').hide();
-							$(".route_agi_4 :input").prop('required',false);
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
 						
 					}if(this.value == "HANGUP") {
-						$('.route_hangup_4').show();
-						$(".route_hangup_4 :input").prop('required',true);
+						$('.route_hangup_D').show();
+						$(".route_hangup_D :input").prop('required',true);
 						
-						$('.route_callmenu_4').hide();
-							$(".route_callmenu_4 :input").prop('required',false);
-						$('.route_ingroup_4').hide();
-							$(".route_ingroup_4 :input").prop('required',false);
-						$('.route_did_4').hide();
-							$(".route_did_4 :input").prop('required',false);
-						$('.route_exten_4').hide();
-							$(".route_exten_4 :input").prop('required',false);
-						$('.route_phone_4').hide();
-							$(".route_phone_4 :input").prop('required',false);
-						$('.route_voicemail_4').hide();
-							$(".route_voicemail_4 :input").prop('required',false);
-						$('.route_agi_4').hide();
-							$(".route_agi_4 :input").prop('required',false);
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
 						
 					}if(this.value == "EXTENSION") {
-						$('.route_exten_4').show();
-						$(".route_exten_4 :input").prop('required',true);
+						$('.route_exten_D').show();
+						$(".route_exten_D :input").prop('required',true);
 						
-						$('.route_callmenu_4').hide();
-							$(".route_callmenu_4 :input").prop('required',false);
-						$('.route_ingroup_4').hide();
-							$(".route_ingroup_4 :input").prop('required',false);
-						$('.route_did_4').hide();
-							$(".route_did_4 :input").prop('required',false);
-						$('.route_hangup_4').hide();
-							$(".route_hangup_4 :input").prop('required',false);
-						$('.route_phone_4').hide();
-							$(".route_phone_4 :input").prop('required',false);
-						$('.route_voicemail_4').hide();
-							$(".route_voicemail_4 :input").prop('required',false);
-						$('.route_agi_4').hide();
-							$(".route_agi_4 :input").prop('required',false);
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
 						
 					}if(this.value == "PHONE") {
-						$('.route_phone_4').show();
-						$(".route_phone_4 :input").prop('required',true);
+						$('.route_phone_D').show();
+						$(".route_phone_D :input").prop('required',true);
 						
-						$('.route_callmenu_4').hide();
-							$(".route_callmenu_4 :input").prop('required',false);
-						$('.route_ingroup_4').hide();
-							$(".route_ingroup_4 :input").prop('required',false);
-						$('.route_did_4').hide();
-							$(".route_did_4 :input").prop('required',false);
-						$('.route_hangup_4').hide();
-							$(".route_hangup_4 :input").prop('required',false);
-						$('.route_exten_4').hide();
-							$(".route_exten_4 :input").prop('required',false);
-						$('.route_voicemail_4').hide();
-							$(".route_voicemail_4 :input").prop('required',false);
-						$('.route_agi_4').hide();
-							$(".route_agi_4 :input").prop('required',false);
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
 						
 					}if(this.value == "VOICEMAIL") {
-						$('.route_voicemail_4').show();
-						$(".route_voicemail_4 :input").prop('required',true);
+						$('.route_voicemail_D').show();
+						$(".route_voicemail_D :input").prop('required',true);
 						
-						$('.route_callmenu_4').hide();
-							$(".route_callmenu_4 :input").prop('required',false);
-						$('.route_ingroup_4').hide();
-							$(".route_ingroup_4 :input").prop('required',false);
-						$('.route_did_4').hide();
-							$(".route_did_4 :input").prop('required',false);
-						$('.route_hangup_4').hide();
-							$(".route_hangup_4 :input").prop('required',false);
-						$('.route_exten_4').hide();
-							$(".route_exten_4 :input").prop('required',false);
-						$('.route_phone_4').hide();
-							$(".route_phone_4 :input").prop('required',false);
-						$('.route_agi_4').hide();
-							$(".route_agi_4 :input").prop('required',false);
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
 						
 					}if(this.value == "AGI") {
-						$('.route_agi_4').show();
-						$(".route_agi_4 :input").prop('required',true);
+						$('.route_agi_D').show();
+						$(".route_agi_D :input").prop('required',true);
 						
-						$('.route_callmenu_4').hide();
-							$(".route_callmenu_4 :input").prop('required',false);
-						$('.route_ingroup_4').hide();
-							$(".route_ingroup_4 :input").prop('required',false);
-						$('.route_did_4').hide();
-							$(".route_did_4 :input").prop('required',false);
-						$('.route_hangup_4').hide();
-							$(".route_hangup_4 :input").prop('required',false);
-						$('.route_exten_4').hide();
-							$(".route_exten_4 :input").prop('required',false);
-						$('.route_phone_4').hide();
-							$(".route_phone_4 :input").prop('required',false);
-						$('.route_voicemail_4').hide();
-							$(".route_voicemail_4 :input").prop('required',false);
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
 					}
 					if(this.value == "") {
-						$('.route_callmenu_4').hide();
-							$(".route_callmenu_4 :input").prop('required',false);
-						$('.route_ingroup_4').hide();
-							$(".route_ingroup_4 :input").prop('required',false);
-						$('.route_did_4').hide();
-							$(".route_did_4 :input").prop('required',false);
-						$('.route_hangup_4').hide();
-							$(".route_hangup_4 :input").prop('required',false);
-						$('.route_exten_4').hide();
-							$(".route_exten_4 :input").prop('required',false);
-						$('.route_phone_4').hide();
-							$(".route_phone_4 :input").prop('required',false);
-						$('.route_voicemail_4').hide();
-							$(".route_voicemail_4 :input").prop('required',false);
-						$('.route_agi_4').hide();
-							$(".route_agi_4 :input").prop('required',false);
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
 					}
 				});
-				$(document).on('change', '.route_menu_5',function(){
+				$(document).on('change', '.route_menu_E',function(){
 					if(this.value == "CALLMENU") {
-						$('.route_callmenu_5').show();
-						$(".route_callmenu_5 :input").prop('required',true);
+						$('.route_callmenu_E').show();
+						$(".route_callmenu_E :input").prop('required',true);
 						
-						$('.route_ingroup_5').hide();
-							$(".route_ingroup_5 :input").prop('required',false);
-						$('.route_did_5').hide();
-							$(".route_did_5 :input").prop('required',false);
-						$('.route_hangup_5').hide();
-							$(".route_hangup_5 :input").prop('required',false);
-						$('.route_exten_5').hide();
-							$(".route_exten_5 :input").prop('required',false);
-						$('.route_phone_5').hide();
-							$(".route_phone_5 :input").prop('required',false);
-						$('.route_voicemail_5').hide();
-							$(".route_voicemail_5 :input").prop('required',false);
-						$('.route_agi_5').hide();
-							$(".route_agi_5 :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
 					
 					}if(this.value == "INGROUP") {
-						$('.route_ingroup_5').show();
-						$(".route_ingroup_5 :input").prop('required',true);
+						$('.route_ingroup_E').show();
+						$(".route_ingroup_E :input").prop('required',true);
 
-						$('.route_callmenu_5').hide();
-							$(".route_callmenu_5 :input").prop('required',false);
-						$('.route_did_5').hide();
-							$(".route_did_5 :input").prop('required',false);
-						$('.route_hangup_5').hide();
-							$(".route_hangup_5 :input").prop('required',false);
-						$('.route_exten_5').hide();
-							$(".route_exten_5 :input").prop('required',false);
-						$('.route_phone_5').hide();
-							$(".route_phone_5 :input").prop('required',false);
-						$('.route_voicemail_5').hide();
-							$(".route_voicemail_5 :input").prop('required',false);
-						$('.route_agi_5').hide();
-							$(".route_agi_5 :input").prop('required',false);
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
 						
 					}if(this.value == "DID") {
-						$('.route_did_5').show();
-						$(".route_did_5 :input").prop('required',true);
+						$('.route_did_E').show();
+						$(".route_did_E :input").prop('required',true);
 
-						$('.route_callmenu_5').hide();
-							$(".route_callmenu_5 :input").prop('required',false);
-						$('.route_ingroup_5').hide();
-							$(".route_ingroup_5 :input").prop('required',false);
-						$('.route_hangup_5').hide();
-							$(".route_hangup_5 :input").prop('required',false);
-						$('.route_exten_5').hide();
-							$(".route_exten_5 :input").prop('required',false);
-						$('.route_phone_5').hide();
-							$(".route_phone_5 :input").prop('required',false);
-						$('.route_voicemail_5').hide();
-							$(".route_voicemail_5 :input").prop('required',false);
-						$('.route_agi_5').hide();
-							$(".route_agi_5 :input").prop('required',false);
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
 						
 					}if(this.value == "HANGUP") {
-						$('.route_hangup_5').show();
-						$(".route_hangup_5 :input").prop('required',true);
+						$('.route_hangup_E').show();
+						$(".route_hangup_E :input").prop('required',true);
 						
-						$('.route_callmenu_5').hide();
-							$(".route_callmenu_5 :input").prop('required',false);
-						$('.route_ingroup_5').hide();
-							$(".route_ingroup_5 :input").prop('required',false);
-						$('.route_did_5').hide();
-							$(".route_did_5 :input").prop('required',false);
-						$('.route_exten_5').hide();
-							$(".route_exten_5 :input").prop('required',false);
-						$('.route_phone_5').hide();
-							$(".route_phone_5 :input").prop('required',false);
-						$('.route_voicemail_5').hide();
-							$(".route_voicemail_5 :input").prop('required',false);
-						$('.route_agi_5').hide();
-							$(".route_agi_5 :input").prop('required',false);
-						
-					}if(this.value == "EXTENSION") {
-						$('.route_exten_5').show();
-						$(".route_exten_5 :input").prop('required',true);
-						
-						$('.route_callmenu_5').hide();
-							$(".route_callmenu_5 :input").prop('required',false);
-						$('.route_ingroup_5').hide();
-							$(".route_ingroup_5 :input").prop('required',false);
-						$('.route_did_5').hide();
-							$(".route_did_5 :input").prop('required',false);
-						$('.route_hangup_5').hide();
-							$(".route_hangup_5 :input").prop('required',false);
-						$('.route_phone_5').hide();
-							$(".route_phone_5 :input").prop('required',false);
-						$('.route_voicemail_5').hide();
-							$(".route_voicemail_5 :input").prop('required',false);
-						$('.route_agi_5').hide();
-							$(".route_agi_5 :input").prop('required',false);
-						
-					}if(this.value == "PHONE") {
-						$('.route_phone_5').show();
-						$(".route_phone_5 :input").prop('required',true);
-						
-						$('.route_callmenu_5').hide();
-							$(".route_callmenu_5 :input").prop('required',false);
-						$('.route_ingroup_5').hide();
-							$(".route_ingroup_5 :input").prop('required',false);
-						$('.route_did_5').hide();
-							$(".route_did_5 :input").prop('required',false);
-						$('.route_hangup_5').hide();
-							$(".route_hangup_5 :input").prop('required',false);
-						$('.route_exten_5').hide();
-							$(".route_exten_5 :input").prop('required',false);
-						$('.route_voicemail_5').hide();
-							$(".route_voicemail_5 :input").prop('required',false);
-						$('.route_agi_5').hide();
-							$(".route_agi_5 :input").prop('required',false);
-						
-					}if(this.value == "VOICEMAIL") {
-						$('.route_voicemail_5').show();
-						$(".route_voicemail_5 :input").prop('required',true);
-						
-						$('.route_callmenu_5').hide();
-							$(".route_callmenu_5 :input").prop('required',false);
-						$('.route_ingroup_5').hide();
-							$(".route_ingroup_5 :input").prop('required',false);
-						$('.route_did_5').hide();
-							$(".route_did_5 :input").prop('required',false);
-						$('.route_hangup_5').hide();
-							$(".route_hangup_5 :input").prop('required',false);
-						$('.route_exten_5').hide();
-							$(".route_exten_5 :input").prop('required',false);
-						$('.route_phone_5').hide();
-							$(".route_phone_5 :input").prop('required',false);
-						$('.route_agi_5').hide();
-							$(".route_agi_5 :input").prop('required',false);
-						
-					}if(this.value == "AGI") {
-						$('.route_agi_5').show();
-						$(".route_agi_5 :input").prop('required',true);
-						
-						$('.route_callmenu_5').hide();
-							$(".route_callmenu_5 :input").prop('required',false);
-						$('.route_ingroup_5').hide();
-							$(".route_ingroup_5 :input").prop('required',false);
-						$('.route_did_5').hide();
-							$(".route_did_5 :input").prop('required',false);
-						$('.route_hangup_5').hide();
-							$(".route_hangup_5 :input").prop('required',false);
-						$('.route_exten_5').hide();
-							$(".route_exten_5 :input").prop('required',false);
-						$('.route_phone_5').hide();
-							$(".route_phone_5 :input").prop('required',false);
-						$('.route_voicemail_5').hide();
-							$(".route_voicemail_5 :input").prop('required',false);
-					}
-					if(this.value == "") {
-						$('.route_callmenu_5').hide();
-							$(".route_callmenu_5 :input").prop('required',false);
-						$('.route_ingroup_5').hide();
-							$(".route_ingroup_5 :input").prop('required',false);
-						$('.route_did_5').hide();
-							$(".route_did_5 :input").prop('required',false);
-						$('.route_hangup_5').hide();
-							$(".route_hangup_5 :input").prop('required',false);
-						$('.route_exten_5').hide();
-							$(".route_exten_5 :input").prop('required',false);
-						$('.route_phone_5').hide();
-							$(".route_phone_5 :input").prop('required',false);
-						$('.route_voicemail_5').hide();
-							$(".route_voicemail_5 :input").prop('required',false);
-						$('.route_agi_5').hide();
-							$(".route_agi_5 :input").prop('required',false);
-					}
-				});
-				$(document).on('change', '.route_menu_6',function(){
-					if(this.value == "CALLMENU") {
-						$('.route_callmenu_6').show();
-						$(".route_callmenu_6 :input").prop('required',true);
-						
-						$('.route_ingroup_6').hide();
-							$(".route_ingroup_6 :input").prop('required',false);
-						$('.route_did_6').hide();
-							$(".route_did_6 :input").prop('required',false);
-						$('.route_hangup_6').hide();
-							$(".route_hangup_6 :input").prop('required',false);
-						$('.route_exten_6').hide();
-							$(".route_exten_6 :input").prop('required',false);
-						$('.route_phone_6').hide();
-							$(".route_phone_6 :input").prop('required',false);
-						$('.route_voicemail_6').hide();
-							$(".route_voicemail_6 :input").prop('required',false);
-						$('.route_agi_6').hide();
-							$(".route_agi_6 :input").prop('required',false);
-					
-					}if(this.value == "INGROUP") {
-						$('.route_ingroup_6').show();
-						$(".route_ingroup_6 :input").prop('required',true);
-
-						$('.route_callmenu_6').hide();
-							$(".route_callmenu_6 :input").prop('required',false);
-						$('.route_did_6').hide();
-							$(".route_did_6 :input").prop('required',false);
-						$('.route_hangup_6').hide();
-							$(".route_hangup_6 :input").prop('required',false);
-						$('.route_exten_6').hide();
-							$(".route_exten_6 :input").prop('required',false);
-						$('.route_phone_6').hide();
-							$(".route_phone_6 :input").prop('required',false);
-						$('.route_voicemail_6').hide();
-							$(".route_voicemail_6 :input").prop('required',false);
-						$('.route_agi_6').hide();
-							$(".route_agi_6 :input").prop('required',false);
-						
-					}if(this.value == "DID") {
-						$('.route_did_6').show();
-						$(".route_did_6 :input").prop('required',true);
-
-						$('.route_callmenu_6').hide();
-							$(".route_callmenu_6 :input").prop('required',false);
-						$('.route_ingroup_6').hide();
-							$(".route_ingroup_6 :input").prop('required',false);
-						$('.route_hangup_6').hide();
-							$(".route_hangup_6 :input").prop('required',false);
-						$('.route_exten_6').hide();
-							$(".route_exten_6 :input").prop('required',false);
-						$('.route_phone_6').hide();
-							$(".route_phone_6 :input").prop('required',false);
-						$('.route_voicemail_6').hide();
-							$(".route_voicemail_6 :input").prop('required',false);
-						$('.route_agi_6').hide();
-							$(".route_agi_6 :input").prop('required',false);
-						
-					}if(this.value == "HANGUP") {
-						$('.route_hangup_6').show();
-						$(".route_hangup_6 :input").prop('required',true);
-						
-						$('.route_callmenu_6').hide();
-							$(".route_callmenu_6 :input").prop('required',false);
-						$('.route_ingroup_6').hide();
-							$(".route_ingroup_6 :input").prop('required',false);
-						$('.route_did_6').hide();
-							$(".route_did_6 :input").prop('required',false);
-						$('.route_exten_6').hide();
-							$(".route_exten_6 :input").prop('required',false);
-						$('.route_phone_6').hide();
-							$(".route_phone_6 :input").prop('required',false);
-						$('.route_voicemail_6').hide();
-							$(".route_voicemail_6 :input").prop('required',false);
-						$('.route_agi_6').hide();
-							$(".route_agi_6 :input").prop('required',false);
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
 						
 					}if(this.value == "EXTENSION") {
-						$('.route_exten_6').show();
-						$(".route_exten_6 :input").prop('required',true);
+						$('.route_exten_E').show();
+						$(".route_exten_E :input").prop('required',true);
 						
-						$('.route_callmenu_6').hide();
-							$(".route_callmenu_6 :input").prop('required',false);
-						$('.route_ingroup_6').hide();
-							$(".route_ingroup_6 :input").prop('required',false);
-						$('.route_did_6').hide();
-							$(".route_did_6 :input").prop('required',false);
-						$('.route_hangup_6').hide();
-							$(".route_hangup_6 :input").prop('required',false);
-						$('.route_phone_6').hide();
-							$(".route_phone_6 :input").prop('required',false);
-						$('.route_voicemail_6').hide();
-							$(".route_voicemail_6 :input").prop('required',false);
-						$('.route_agi_6').hide();
-							$(".route_agi_6 :input").prop('required',false);
-						
-					}if(this.value == "PHONE") {
-						$('.route_phone_6').show();
-						$(".route_phone_6 :input").prop('required',true);
-						
-						$('.route_callmenu_6').hide();
-							$(".route_callmenu_6 :input").prop('required',false);
-						$('.route_ingroup_6').hide();
-							$(".route_ingroup_6 :input").prop('required',false);
-						$('.route_did_6').hide();
-							$(".route_did_6 :input").prop('required',false);
-						$('.route_hangup_6').hide();
-							$(".route_hangup_6 :input").prop('required',false);
-						$('.route_exten_6').hide();
-							$(".route_exten_6 :input").prop('required',false);
-						$('.route_voicemail_6').hide();
-							$(".route_voicemail_6 :input").prop('required',false);
-						$('.route_agi_6').hide();
-							$(".route_agi_6 :input").prop('required',false);
-						
-					}if(this.value == "VOICEMAIL") {
-						$('.route_voicemail_6').show();
-						$(".route_voicemail_6 :input").prop('required',true);
-						
-						$('.route_callmenu_6').hide();
-							$(".route_callmenu_6 :input").prop('required',false);
-						$('.route_ingroup_6').hide();
-							$(".route_ingroup_6 :input").prop('required',false);
-						$('.route_did_6').hide();
-							$(".route_did_6 :input").prop('required',false);
-						$('.route_hangup_6').hide();
-							$(".route_hangup_6 :input").prop('required',false);
-						$('.route_exten_6').hide();
-							$(".route_exten_6 :input").prop('required',false);
-						$('.route_phone_6').hide();
-							$(".route_phone_6 :input").prop('required',false);
-						$('.route_agi_6').hide();
-							$(".route_agi_6 :input").prop('required',false);
-						
-					}if(this.value == "AGI") {
-						$('.route_agi_6').show();
-						$(".route_agi_6 :input").prop('required',true);
-						
-						$('.route_callmenu_6').hide();
-							$(".route_callmenu_6 :input").prop('required',false);
-						$('.route_ingroup_6').hide();
-							$(".route_ingroup_6 :input").prop('required',false);
-						$('.route_did_6').hide();
-							$(".route_did_6 :input").prop('required',false);
-						$('.route_hangup_6').hide();
-							$(".route_hangup_6 :input").prop('required',false);
-						$('.route_exten_6').hide();
-							$(".route_exten_6 :input").prop('required',false);
-						$('.route_phone_6').hide();
-							$(".route_phone_6 :input").prop('required',false);
-						$('.route_voicemail_6').hide();
-							$(".route_voicemail_6 :input").prop('required',false);
-					}
-					if(this.value == "") {
-						$('.route_callmenu_6').hide();
-							$(".route_callmenu_6 :input").prop('required',false);
-						$('.route_ingroup_6').hide();
-							$(".route_ingroup_6 :input").prop('required',false);
-						$('.route_did_6').hide();
-							$(".route_did_6 :input").prop('required',false);
-						$('.route_hangup_6').hide();
-							$(".route_hangup_6 :input").prop('required',false);
-						$('.route_exten_6').hide();
-							$(".route_exten_6 :input").prop('required',false);
-						$('.route_phone_6').hide();
-							$(".route_phone_6 :input").prop('required',false);
-						$('.route_voicemail_6').hide();
-							$(".route_voicemail_6 :input").prop('required',false);
-						$('.route_agi_6').hide();
-							$(".route_agi_6 :input").prop('required',false);
-					}
-				});
-				$(document).on('change', '.route_menu_7',function(){
-					if(this.value == "CALLMENU") {
-						$('.route_callmenu_7').show();
-						$(".route_callmenu_7 :input").prop('required',true);
-						
-						$('.route_ingroup_7').hide();
-							$(".route_ingroup_7 :input").prop('required',false);
-						$('.route_did_7').hide();
-							$(".route_did_7 :input").prop('required',false);
-						$('.route_hangup_7').hide();
-							$(".route_hangup_7 :input").prop('required',false);
-						$('.route_exten_7').hide();
-							$(".route_exten_7 :input").prop('required',false);
-						$('.route_phone_7').hide();
-							$(".route_phone_7 :input").prop('required',false);
-						$('.route_voicemail_7').hide();
-							$(".route_voicemail_7 :input").prop('required',false);
-						$('.route_agi_7').hide();
-							$(".route_agi_7 :input").prop('required',false);
-					
-					}if(this.value == "INGROUP") {
-						$('.route_ingroup_7').show();
-						$(".route_ingroup_7 :input").prop('required',true);
-
-						$('.route_callmenu_7').hide();
-							$(".route_callmenu_7 :input").prop('required',false);
-						$('.route_did_7').hide();
-							$(".route_did_7 :input").prop('required',false);
-						$('.route_hangup_7').hide();
-							$(".route_hangup_7 :input").prop('required',false);
-						$('.route_exten_7').hide();
-							$(".route_exten_7 :input").prop('required',false);
-						$('.route_phone_7').hide();
-							$(".route_phone_7 :input").prop('required',false);
-						$('.route_voicemail_7').hide();
-							$(".route_voicemail_7 :input").prop('required',false);
-						$('.route_agi_7').hide();
-							$(".route_agi_7 :input").prop('required',false);
-						
-					}if(this.value == "DID") {
-						$('.route_did_7').show();
-						$(".route_did_7 :input").prop('required',true);
-
-						$('.route_callmenu_7').hide();
-							$(".route_callmenu_7 :input").prop('required',false);
-						$('.route_ingroup_7').hide();
-							$(".route_ingroup_7 :input").prop('required',false);
-						$('.route_hangup_7').hide();
-							$(".route_hangup_7 :input").prop('required',false);
-						$('.route_exten_7').hide();
-							$(".route_exten_7 :input").prop('required',false);
-						$('.route_phone_7').hide();
-							$(".route_phone_7 :input").prop('required',false);
-						$('.route_voicemail_7').hide();
-							$(".route_voicemail_7 :input").prop('required',false);
-						$('.route_agi_7').hide();
-							$(".route_agi_7 :input").prop('required',false);
-						
-					}if(this.value == "HANGUP") {
-						$('.route_hangup_7').show();
-						$(".route_hangup_7 :input").prop('required',true);
-						
-						$('.route_callmenu_7').hide();
-							$(".route_callmenu_7 :input").prop('required',false);
-						$('.route_ingroup_7').hide();
-							$(".route_ingroup_7 :input").prop('required',false);
-						$('.route_did_7').hide();
-							$(".route_did_7 :input").prop('required',false);
-						$('.route_exten_7').hide();
-							$(".route_exten_7 :input").prop('required',false);
-						$('.route_phone_7').hide();
-							$(".route_phone_7 :input").prop('required',false);
-						$('.route_voicemail_7').hide();
-							$(".route_voicemail_7 :input").prop('required',false);
-						$('.route_agi_7').hide();
-							$(".route_agi_7 :input").prop('required',false);
-						
-					}if(this.value == "EXTENSION") {
-						$('.route_exten_7').show();
-						$(".route_exten_7 :input").prop('required',true);
-						
-						$('.route_callmenu_7').hide();
-							$(".route_callmenu_7 :input").prop('required',false);
-						$('.route_ingroup_7').hide();
-							$(".route_ingroup_7 :input").prop('required',false);
-						$('.route_did_7').hide();
-							$(".route_did_7 :input").prop('required',false);
-						$('.route_hangup_7').hide();
-							$(".route_hangup_7 :input").prop('required',false);
-						$('.route_phone_7').hide();
-							$(".route_phone_7 :input").prop('required',false);
-						$('.route_voicemail_7').hide();
-							$(".route_voicemail_7 :input").prop('required',false);
-						$('.route_agi_7').hide();
-							$(".route_agi_7 :input").prop('required',false);
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
 						
 					}if(this.value == "PHONE") {
-						$('.route_phone_7').show();
-						$(".route_phone_7 :input").prop('required',true);
+						$('.route_phone_E').show();
+						$(".route_phone_E :input").prop('required',true);
 						
-						$('.route_callmenu_7').hide();
-							$(".route_callmenu_7 :input").prop('required',false);
-						$('.route_ingroup_7').hide();
-							$(".route_ingroup_7 :input").prop('required',false);
-						$('.route_did_7').hide();
-							$(".route_did_7 :input").prop('required',false);
-						$('.route_hangup_7').hide();
-							$(".route_hangup_7 :input").prop('required',false);
-						$('.route_exten_7').hide();
-							$(".route_exten_7 :input").prop('required',false);
-						$('.route_voicemail_7').hide();
-							$(".route_voicemail_7 :input").prop('required',false);
-						$('.route_agi_7').hide();
-							$(".route_agi_7 :input").prop('required',false);
-						
-					}if(this.value == "VOICEMAIL") {
-						$('.route_voicemail_7').show();
-						$(".route_voicemail_7 :input").prop('required',true);
-						
-						$('.route_callmenu_7').hide();
-							$(".route_callmenu_7 :input").prop('required',false);
-						$('.route_ingroup_7').hide();
-							$(".route_ingroup_7 :input").prop('required',false);
-						$('.route_did_7').hide();
-							$(".route_did_7 :input").prop('required',false);
-						$('.route_hangup_7').hide();
-							$(".route_hangup_7 :input").prop('required',false);
-						$('.route_exten_7').hide();
-							$(".route_exten_7 :input").prop('required',false);
-						$('.route_phone_7').hide();
-							$(".route_phone_7 :input").prop('required',false);
-						$('.route_agi_7').hide();
-							$(".route_agi_7 :input").prop('required',false);
-						
-					}if(this.value == "AGI") {
-						$('.route_agi_7').show();
-						$(".route_agi_7 :input").prop('required',true);
-						
-						$('.route_callmenu_7').hide();
-							$(".route_callmenu_7 :input").prop('required',false);
-						$('.route_ingroup_7').hide();
-							$(".route_ingroup_7 :input").prop('required',false);
-						$('.route_did_7').hide();
-							$(".route_did_7 :input").prop('required',false);
-						$('.route_hangup_7').hide();
-							$(".route_hangup_7 :input").prop('required',false);
-						$('.route_exten_7').hide();
-							$(".route_exten_7 :input").prop('required',false);
-						$('.route_phone_7').hide();
-							$(".route_phone_7 :input").prop('required',false);
-						$('.route_voicemail_7').hide();
-							$(".route_voicemail_7 :input").prop('required',false);
-					}
-					if(this.value == "") {
-						$('.route_callmenu_7').hide();
-							$(".route_callmenu_7 :input").prop('required',false);
-						$('.route_ingroup_7').hide();
-							$(".route_ingroup_7 :input").prop('required',false);
-						$('.route_did_7').hide();
-							$(".route_did_7 :input").prop('required',false);
-						$('.route_hangup_7').hide();
-							$(".route_hangup_7 :input").prop('required',false);
-						$('.route_exten_7').hide();
-							$(".route_exten_7 :input").prop('required',false);
-						$('.route_phone_7').hide();
-							$(".route_phone_7 :input").prop('required',false);
-						$('.route_voicemail_7').hide();
-							$(".route_voicemail_7 :input").prop('required',false);
-						$('.route_agi_7').hide();
-							$(".route_agi_7 :input").prop('required',false);
-					}
-				});
-				$(document).on('change', '.route_menu_8',function(){
-					if(this.value == "CALLMENU") {
-						$('.route_callmenu_8').show();
-						$(".route_callmenu_8 :input").prop('required',true);
-						
-						$('.route_ingroup_8').hide();
-							$(".route_ingroup_8 :input").prop('required',false);
-						$('.route_did_8').hide();
-							$(".route_did_8 :input").prop('required',false);
-						$('.route_hangup_8').hide();
-							$(".route_hangup_8 :input").prop('required',false);
-						$('.route_exten_8').hide();
-							$(".route_exten_8 :input").prop('required',false);
-						$('.route_phone_8').hide();
-							$(".route_phone_8 :input").prop('required',false);
-						$('.route_voicemail_8').hide();
-							$(".route_voicemail_8 :input").prop('required',false);
-						$('.route_agi_8').hide();
-							$(".route_agi_8 :input").prop('required',false);
-					
-					}if(this.value == "INGROUP") {
-						$('.route_ingroup_8').show();
-						$(".route_ingroup_8 :input").prop('required',true);
-
-						$('.route_callmenu_8').hide();
-							$(".route_callmenu_8 :input").prop('required',false);
-						$('.route_did_8').hide();
-							$(".route_did_8 :input").prop('required',false);
-						$('.route_hangup_8').hide();
-							$(".route_hangup_8 :input").prop('required',false);
-						$('.route_exten_8').hide();
-							$(".route_exten_8 :input").prop('required',false);
-						$('.route_phone_8').hide();
-							$(".route_phone_8 :input").prop('required',false);
-						$('.route_voicemail_8').hide();
-							$(".route_voicemail_8 :input").prop('required',false);
-						$('.route_agi_8').hide();
-							$(".route_agi_8 :input").prop('required',false);
-						
-					}if(this.value == "DID") {
-						$('.route_did_8').show();
-						$(".route_did_8 :input").prop('required',true);
-
-						$('.route_callmenu_8').hide();
-							$(".route_callmenu_8 :input").prop('required',false);
-						$('.route_ingroup_8').hide();
-							$(".route_ingroup_8 :input").prop('required',false);
-						$('.route_hangup_8').hide();
-							$(".route_hangup_8 :input").prop('required',false);
-						$('.route_exten_8').hide();
-							$(".route_exten_8 :input").prop('required',false);
-						$('.route_phone_8').hide();
-							$(".route_phone_8 :input").prop('required',false);
-						$('.route_voicemail_8').hide();
-							$(".route_voicemail_8 :input").prop('required',false);
-						$('.route_agi_8').hide();
-							$(".route_agi_8 :input").prop('required',false);
-						
-					}if(this.value == "HANGUP") {
-						$('.route_hangup_8').show();
-						$(".route_hangup_8 :input").prop('required',true);
-						
-						$('.route_callmenu_8').hide();
-							$(".route_callmenu_8 :input").prop('required',false);
-						$('.route_ingroup_8').hide();
-							$(".route_ingroup_8 :input").prop('required',false);
-						$('.route_did_8').hide();
-							$(".route_did_8 :input").prop('required',false);
-						$('.route_exten_8').hide();
-							$(".route_exten_8 :input").prop('required',false);
-						$('.route_phone_8').hide();
-							$(".route_phone_8 :input").prop('required',false);
-						$('.route_voicemail_8').hide();
-							$(".route_voicemail_8 :input").prop('required',false);
-						$('.route_agi_8').hide();
-							$(".route_agi_8 :input").prop('required',false);
-						
-					}if(this.value == "EXTENSION") {
-						$('.route_exten_8').show();
-						$(".route_exten_8 :input").prop('required',true);
-						
-						$('.route_callmenu_8').hide();
-							$(".route_callmenu_8 :input").prop('required',false);
-						$('.route_ingroup_8').hide();
-							$(".route_ingroup_8 :input").prop('required',false);
-						$('.route_did_8').hide();
-							$(".route_did_8 :input").prop('required',false);
-						$('.route_hangup_8').hide();
-							$(".route_hangup_8 :input").prop('required',false);
-						$('.route_phone_8').hide();
-							$(".route_phone_8 :input").prop('required',false);
-						$('.route_voicemail_8').hide();
-							$(".route_voicemail_8 :input").prop('required',false);
-						$('.route_agi_8').hide();
-							$(".route_agi_8 :input").prop('required',false);
-						
-					}if(this.value == "PHONE") {
-						$('.route_phone_8').show();
-						$(".route_phone_8 :input").prop('required',true);
-						
-						$('.route_callmenu_8').hide();
-							$(".route_callmenu_8 :input").prop('required',false);
-						$('.route_ingroup_8').hide();
-							$(".route_ingroup_8 :input").prop('required',false);
-						$('.route_did_8').hide();
-							$(".route_did_8 :input").prop('required',false);
-						$('.route_hangup_8').hide();
-							$(".route_hangup_8 :input").prop('required',false);
-						$('.route_exten_8').hide();
-							$(".route_exten_8 :input").prop('required',false);
-						$('.route_voicemail_8').hide();
-							$(".route_voicemail_8 :input").prop('required',false);
-						$('.route_agi_8').hide();
-							$(".route_agi_8 :input").prop('required',false);
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
 						
 					}if(this.value == "VOICEMAIL") {
-						$('.route_voicemail_8').show();
-						$(".route_voicemail_8 :input").prop('required',true);
+						$('.route_voicemail_E').show();
+						$(".route_voicemail_E :input").prop('required',true);
 						
-						$('.route_callmenu_8').hide();
-							$(".route_callmenu_8 :input").prop('required',false);
-						$('.route_ingroup_8').hide();
-							$(".route_ingroup_8 :input").prop('required',false);
-						$('.route_did_8').hide();
-							$(".route_did_8 :input").prop('required',false);
-						$('.route_hangup_8').hide();
-							$(".route_hangup_8 :input").prop('required',false);
-						$('.route_exten_8').hide();
-							$(".route_exten_8 :input").prop('required',false);
-						$('.route_phone_8').hide();
-							$(".route_phone_8 :input").prop('required',false);
-						$('.route_agi_8').hide();
-							$(".route_agi_8 :input").prop('required',false);
-						
-					}if(this.value == "AGI") {
-						$('.route_agi_8').show();
-						$(".route_agi_8 :input").prop('required',true);
-						
-						$('.route_callmenu_8').hide();
-							$(".route_callmenu_8 :input").prop('required',false);
-						$('.route_ingroup_8').hide();
-							$(".route_ingroup_8 :input").prop('required',false);
-						$('.route_did_8').hide();
-							$(".route_did_8 :input").prop('required',false);
-						$('.route_hangup_8').hide();
-							$(".route_hangup_8 :input").prop('required',false);
-						$('.route_exten_8').hide();
-							$(".route_exten_8 :input").prop('required',false);
-						$('.route_phone_8').hide();
-							$(".route_phone_8 :input").prop('required',false);
-						$('.route_voicemail_8').hide();
-							$(".route_voicemail_8 :input").prop('required',false);
-					}
-					if(this.value == "") {
-						$('.route_callmenu_8').hide();
-							$(".route_callmenu_8 :input").prop('required',false);
-						$('.route_ingroup_8').hide();
-							$(".route_ingroup_8 :input").prop('required',false);
-						$('.route_did_8').hide();
-							$(".route_did_8 :input").prop('required',false);
-						$('.route_hangup_8').hide();
-							$(".route_hangup_8 :input").prop('required',false);
-						$('.route_exten_8').hide();
-							$(".route_exten_8 :input").prop('required',false);
-						$('.route_phone_8').hide();
-							$(".route_phone_8 :input").prop('required',false);
-						$('.route_voicemail_8').hide();
-							$(".route_voicemail_8 :input").prop('required',false);
-						$('.route_agi_8').hide();
-							$(".route_agi_8 :input").prop('required',false);
-					}
-				});
-				$(document).on('change', '.route_menu_9',function(){
-					if(this.value == "CALLMENU") {
-						$('.route_callmenu_9').show();
-						$(".route_callmenu_9 :input").prop('required',true);
-						
-						$('.route_ingroup_9').hide();
-							$(".route_ingroup_9 :input").prop('required',false);
-						$('.route_did_9').hide();
-							$(".route_did_9 :input").prop('required',false);
-						$('.route_hangup_9').hide();
-							$(".route_hangup_9 :input").prop('required',false);
-						$('.route_exten_9').hide();
-							$(".route_exten_9 :input").prop('required',false);
-						$('.route_phone_9').hide();
-							$(".route_phone_9 :input").prop('required',false);
-						$('.route_voicemail_9').hide();
-							$(".route_voicemail_9 :input").prop('required',false);
-						$('.route_agi_9').hide();
-							$(".route_agi_9 :input").prop('required',false);
-					
-					}if(this.value == "INGROUP") {
-						$('.route_ingroup_9').show();
-						$(".route_ingroup_9 :input").prop('required',true);
-
-						$('.route_callmenu_9').hide();
-							$(".route_callmenu_9 :input").prop('required',false);
-						$('.route_did_9').hide();
-							$(".route_did_9 :input").prop('required',false);
-						$('.route_hangup_9').hide();
-							$(".route_hangup_9 :input").prop('required',false);
-						$('.route_exten_9').hide();
-							$(".route_exten_9 :input").prop('required',false);
-						$('.route_phone_9').hide();
-							$(".route_phone_9 :input").prop('required',false);
-						$('.route_voicemail_9').hide();
-							$(".route_voicemail_9 :input").prop('required',false);
-						$('.route_agi_9').hide();
-							$(".route_agi_9 :input").prop('required',false);
-						
-					}if(this.value == "DID") {
-						$('.route_did_9').show();
-						$(".route_did_9 :input").prop('required',true);
-
-						$('.route_callmenu_9').hide();
-							$(".route_callmenu_9 :input").prop('required',false);
-						$('.route_ingroup_9').hide();
-							$(".route_ingroup_9 :input").prop('required',false);
-						$('.route_hangup_9').hide();
-							$(".route_hangup_9 :input").prop('required',false);
-						$('.route_exten_9').hide();
-							$(".route_exten_9 :input").prop('required',false);
-						$('.route_phone_9').hide();
-							$(".route_phone_9 :input").prop('required',false);
-						$('.route_voicemail_9').hide();
-							$(".route_voicemail_9 :input").prop('required',false);
-						$('.route_agi_9').hide();
-							$(".route_agi_9 :input").prop('required',false);
-						
-					}if(this.value == "HANGUP") {
-						$('.route_hangup_9').show();
-						$(".route_hangup_9 :input").prop('required',true);
-						
-						$('.route_callmenu_9').hide();
-							$(".route_callmenu_9 :input").prop('required',false);
-						$('.route_ingroup_9').hide();
-							$(".route_ingroup_9 :input").prop('required',false);
-						$('.route_did_9').hide();
-							$(".route_did_9 :input").prop('required',false);
-						$('.route_exten_9').hide();
-							$(".route_exten_9 :input").prop('required',false);
-						$('.route_phone_9').hide();
-							$(".route_phone_9 :input").prop('required',false);
-						$('.route_voicemail_9').hide();
-							$(".route_voicemail_9 :input").prop('required',false);
-						$('.route_agi_9').hide();
-							$(".route_agi_9 :input").prop('required',false);
-						
-					}if(this.value == "EXTENSION") {
-						$('.route_exten_9').show();
-						$(".route_exten_9 :input").prop('required',true);
-						
-						$('.route_callmenu_9').hide();
-							$(".route_callmenu_9 :input").prop('required',false);
-						$('.route_ingroup_9').hide();
-							$(".route_ingroup_9 :input").prop('required',false);
-						$('.route_did_9').hide();
-							$(".route_did_9 :input").prop('required',false);
-						$('.route_hangup_9').hide();
-							$(".route_hangup_9 :input").prop('required',false);
-						$('.route_phone_9').hide();
-							$(".route_phone_9 :input").prop('required',false);
-						$('.route_voicemail_9').hide();
-							$(".route_voicemail_9 :input").prop('required',false);
-						$('.route_agi_9').hide();
-							$(".route_agi_9 :input").prop('required',false);
-						
-					}if(this.value == "PHONE") {
-						$('.route_phone_9').show();
-						$(".route_phone_9 :input").prop('required',true);
-						
-						$('.route_callmenu_9').hide();
-							$(".route_callmenu_9 :input").prop('required',false);
-						$('.route_ingroup_9').hide();
-							$(".route_ingroup_9 :input").prop('required',false);
-						$('.route_did_9').hide();
-							$(".route_did_9 :input").prop('required',false);
-						$('.route_hangup_9').hide();
-							$(".route_hangup_9 :input").prop('required',false);
-						$('.route_exten_9').hide();
-							$(".route_exten_9 :input").prop('required',false);
-						$('.route_voicemail_9').hide();
-							$(".route_voicemail_9 :input").prop('required',false);
-						$('.route_agi_9').hide();
-							$(".route_agi_9 :input").prop('required',false);
-						
-					}if(this.value == "VOICEMAIL") {
-						$('.route_voicemail_9').show();
-						$(".route_voicemail_9 :input").prop('required',true);
-						
-						$('.route_callmenu_9').hide();
-							$(".route_callmenu_9 :input").prop('required',false);
-						$('.route_ingroup_9').hide();
-							$(".route_ingroup_9 :input").prop('required',false);
-						$('.route_did_9').hide();
-							$(".route_did_9 :input").prop('required',false);
-						$('.route_hangup_9').hide();
-							$(".route_hangup_9 :input").prop('required',false);
-						$('.route_exten_9').hide();
-							$(".route_exten_9 :input").prop('required',false);
-						$('.route_phone_9').hide();
-							$(".route_phone_9 :input").prop('required',false);
-						$('.route_agi_9').hide();
-							$(".route_agi_9 :input").prop('required',false);
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
 						
 					}if(this.value == "AGI") {
-						$('.route_agi_9').show();
-						$(".route_agi_9 :input").prop('required',true);
+						$('.route_agi_E').show();
+						$(".route_agi_E :input").prop('required',true);
 						
-						$('.route_callmenu_9').hide();
-							$(".route_callmenu_9 :input").prop('required',false);
-						$('.route_ingroup_9').hide();
-							$(".route_ingroup_9 :input").prop('required',false);
-						$('.route_did_9').hide();
-							$(".route_did_9 :input").prop('required',false);
-						$('.route_hangup_9').hide();
-							$(".route_hangup_9 :input").prop('required',false);
-						$('.route_exten_9').hide();
-							$(".route_exten_9 :input").prop('required',false);
-						$('.route_phone_9').hide();
-							$(".route_phone_9 :input").prop('required',false);
-						$('.route_voicemail_9').hide();
-							$(".route_voicemail_9 :input").prop('required',false);
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
 					}
 					if(this.value == "") {
-						$('.route_callmenu_9').hide();
-							$(".route_callmenu_9 :input").prop('required',false);
-						$('.route_ingroup_9').hide();
-							$(".route_ingroup_9 :input").prop('required',false);
-						$('.route_did_9').hide();
-							$(".route_did_9 :input").prop('required',false);
-						$('.route_hangup_9').hide();
-							$(".route_hangup_9 :input").prop('required',false);
-						$('.route_exten_9').hide();
-							$(".route_exten_9 :input").prop('required',false);
-						$('.route_phone_9').hide();
-							$(".route_phone_9 :input").prop('required',false);
-						$('.route_voicemail_9').hide();
-							$(".route_voicemail_9 :input").prop('required',false);
-						$('.route_agi_9').hide();
-							$(".route_agi_9 :input").prop('required',false);
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
 					}
 				});
 				
@@ -4811,47 +2856,54 @@
 					});
 				
 			// for voicemail
-				$(document).on('change', '#option_voicemail_select_0',function(){
+				<?php for($i=0;$i < 10; $i++){ ?>
+				$(document).on('change', '#option_voicemail_select_<?php echo $i;?>',function(){
 					var val = $(this).val();
-					$('#option_voicemail_input_0').val(val);
+					$('#option_voicemail_input_<?php echo $i;?>').val(val);
 				});
-				$(document).on('change', '#option_voicemail_select_1',function(){
+				<?php } ?>
+				$(document).on('change', '#option_voicemail_select_A',function(){
 					var val = $(this).val();
-					$('#option_voicemail_input_1').val(val);
+					$('#option_voicemail_input_A').val(val);
 				});
-				$(document).on('change', '#option_voicemail_select_2',function(){
+				$(document).on('change', '#option_voicemail_select_B',function(){
 					var val = $(this).val();
-					$('#option_voicemail_input_2').val(val);
+					$('#option_voicemail_input_B').val(val);
 				});
-				$(document).on('change', '#option_voicemail_select_3',function(){
+				$(document).on('change', '#option_voicemail_select_C',function(){
 					var val = $(this).val();
-					$('#option_voicemail_input_3').val(val);
+					$('#option_voicemail_input_C').val(val);
 				});
-				$(document).on('change', '#option_voicemail_select_4',function(){
+				$(document).on('change', '#option_voicemail_select_D',function(){
 					var val = $(this).val();
-					$('#option_voicemail_input_4').val(val);
+					$('#option_voicemail_input_D').val(val);
 				});
-				$(document).on('change', '#option_voicemail_select_5',function(){
+				$(document).on('change', '#option_voicemail_select_E',function(){
 					var val = $(this).val();
-					$('#option_voicemail_input_5').val(val);
+					$('#option_voicemail_input_E').val(val);
 				});
-				$(document).on('change', '#option_voicemail_select_6',function(){
+			
+			//advanced ingroup settings
+				<?php for($i=0;$i < 10; $i++){ ?>
+				$(document).on('change', '#enter_filename_select_<?php echo $i;?>',function(){
 					var val = $(this).val();
-					$('#option_voicemail_input_6').val(val);
+					$('#edit_enter_filename_<?php echo $i;?>').val(val);
 				});
-				$(document).on('change', '#option_voicemail_select_7',function(){
-					var val = $(this).val();
-					$('#option_voicemail_input_7').val(val);
-				});
-				$(document).on('change', '#option_voicemail_select_8',function(){
-					var val = $(this).val();
-					$('#option_voicemail_input_8').val(val);
-				});
-				$(document).on('change', '#option_voicemail_select_9',function(){
-					var val = $(this).val();
-					$('#option_voicemail_input_9').val(val);
-				});
+				<?php } ?>
 				
+				<?php for($i=0;$i < 10; $i++){ ?>
+				$(document).on('change', '#edit_id_number_filename_select_<?php echo $i;?>',function(){
+					var val = $(this).val();
+					$('#edit_id_number_filename_<?php echo $i;?>').val(val);
+				});
+				<?php } ?>
+				
+				<?php for($i=0;$i < 10; $i++){ ?>
+				$(document).on('change', '#edit_confirm_filename_select_<?php echo $i;?>',function(){
+					var val = $(this).val();
+					$('#edit_confirm_filename_<?php echo $i;?>').val(val);
+				});
+				<?php } ?>
 	});
 </script>
 		
