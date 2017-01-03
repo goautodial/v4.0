@@ -31,7 +31,7 @@
   if(in_array($_POST['dial_status'], $statuses)){
     $new_status = $_POST['old_dial_status'];
   }else{
-    $new_status = $_POST['dial_status']." ".$_POST['old_dial_status'];
+    $new_status = " ".$_POST['dial_status']." ".$_POST['old_dial_status'];
   }
 
   $postfields['dial_status']  			= $new_status;
