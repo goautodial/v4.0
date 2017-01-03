@@ -534,7 +534,7 @@ error_reporting(E_ALL);*/
 									</div>
 			    				</div>
 			    			</div> -->
-				    			<div class="form-group">
+				    			<div class="form-group dial-method-row">
 				    				<label class="control-label col-lg-5">Dial Method:</label>
 				    				<div class="col-lg-7 mb">
 				    					<select class="form-control" id="dial-method" name="dial_method">
@@ -709,9 +709,10 @@ error_reporting(E_ALL);*/
 				    				<label class="control-label col-lg-5">Upload WAV:</label>
 				    				<div class="col-lg-7 mb">
 				    					<div class="input-group">
-											<input type="text" class="form-control" placeholder="WAV upload">
+											<input type="file" class="hide uploaded_wav" name="uploaded_wav" accept="audio/*">
+											<input type="text" class="form-control wav-text-label" placeholder="WAV upload">
 											<span class="input-group-btn">
-												<button class="btn btn-default" type="button">Browse</button>
+												<button class="btn btn-default btn-browse-wav" type="button">Browse</button>
 											</span>
 										</div><!-- /input-group -->
 				    				</div>
@@ -1431,6 +1432,18 @@ error_reporting(E_ALL);*/
 			//$('#modal_form_lists').modal('show');
 			$('.select2').select2({
 				theme: 'bootstrap'
+			});
+			
+			$(document).on('click', '.btn-browse-wav', function(){
+				$('.uploaded_wav').click();
+			});
+			
+			$(document).on('change', '.uploaded_wav', function(){
+				var myFile = $(this).prop('files');
+				var Filename = myFile[0].name;
+				
+				$('.wav-text-label').val(Filename);
+				console.log(myFile);
 			});
 			
 			$(document).on('click','.edit-list',function() {
@@ -2545,6 +2558,8 @@ error_reporting(E_ALL);*/
 								$('.copy-from').addClass('hide');
 								$('.survey').removeClass('hide');
 								$('.carrier-to-use').addClass('hide');
+								$('.dial-method-row').addClass('hide');
+								$('.auto-dial-level').addClass('hide');
 							}else if(selectedTypeVal == 'copy'){
 								$('.outbound').addClass('hide');
 								$('.blended').addClass('hide');

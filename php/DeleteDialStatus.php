@@ -22,8 +22,22 @@
 	$postfields["hostname"] 					= $_SERVER['REMOTE_ADDR']; #Default value
 
 	$postfields['campaign_id']  			= $_POST['campaign_id'];
-  $new_status = str_replace($_POST['selected_status'], "", $_POST['dial_status']);
-  $postfields['dial_status']  			= $new_status;
+	
+	$old_statuses = explode(" ",$_POST['dial_status']);
+	$oldStats = array();
+	foreach($old_statuses as $old){
+		if(!empty($old) && $old != $_POST['selected_status']){
+			array_push($oldStats, $old);
+		}
+	}
+	
+	$new_status = ' ';
+	foreach($oldStats as $OLD){
+		$new_status .= $OLD.' ';
+	}
+	$new_status = rtrim($new_status, " ");
+	
+	$postfields['dial_status'] = $new_status;
 
 
   $ch = curl_init();

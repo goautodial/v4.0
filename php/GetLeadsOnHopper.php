@@ -26,11 +26,18 @@
 		$data = '';
 		$i=0;
 		$count = 0;
-		$dial_status = '';
+		$dial_status = explode(" ", $output->camp_dial_status[0]);
+		$statuses = array();
+		foreach($dial_status as $status){
+			if(!empty($status)){
+				array_push($statuses, $status);
+			}
+		}
+		$availableStats = array();
 		for($i=0;$i<=count($output->lead_id);$i++) {
-			if(!empty($output->lead_id[$i])){
+			array_push($availableStats, $output->status[$i]);
+			if(!empty($output->hopper_id[$i]) && in_array($output->status[$i], $statuses)){
 				$count = $count + 1;
-				$dial_status = $output->camp_dial_status[$i];
 				$data .= '<tr>';
 				$data .= '<td>'.$output->hopper_id[$i].'</td>';
 				$data .= '<td>'.$output->priority[$i].'</td>';
@@ -46,10 +53,11 @@
 				$data .= '</tr>';
 			}
 		}
-
+		
 		$details['count'] = $count;
 		$details['data'] = $data;
-		$details['dial_statuses'] = $dial_status;
+		$details['stats'] = $statuses;
+		$details['data_stats'] = $availableStats;
 		echo json_encode($details, true);
 	}else{
 		echo json_encode("empty", true);

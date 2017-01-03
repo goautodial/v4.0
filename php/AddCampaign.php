@@ -55,6 +55,7 @@
 	$postfields['phone_numbers'] 				= $_POST['phone_numbers'];
 	if(!empty($_FILES["lead_file"]["name"])) $postfields['lead_file'] = curl_file_create($_FILES['lead_file']['tmp_name'], $_FILES['lead_file']['type'], $_FILES["lead_file"]["name"]);
 	if(!empty($_FILES["leads"]["name"])) $postfields['leads'] = curl_file_create($_FILES['leads']['tmp_name'], $_FILES['leads']['type'], $_FILES["leads"]["name"]);
+    if(!empty($_FILES["uploaded_wav"]["name"])) $postfields['uploaded_wav'] = curl_file_create($_FILES['uploaded_wav']['tmp_name'], $_FILES['uploaded_wav']['type'], $_FILES["uploaded_wav"]["name"]);
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
