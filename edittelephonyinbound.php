@@ -356,7 +356,7 @@ if (isset($_POST["did"])) {
 																$script .= '<option value="NONE" > NONE </option>';
 															}
 
-															for($x=0; $x<count($scripts->script_id);$x++){									
+															for($x=0; $x<count($scripts->script_id);$x++){
 																if($output->data->ingroup_script == $scripts->script_id[$x]){
 																	$script .= '<option value="'.$scripts->script_id[$x].'" selected> '.$scripts->script_id[$x].' - '.$scripts->script_name[$x].' </option>';
 																}else{
@@ -432,7 +432,7 @@ if (isset($_POST["did"])) {
 																<select class="form-control select2" id="drop_exten" name="drop_exten" style="width:100%;">
 																	<?php
 																		$drop_action_exten = NULL;
-																			for($x=0; $x < count($voicefiles->file_name);$x++){					
+																			for($x=0; $x < count($voicefiles->file_name);$x++){
 																				if($output->data->drop_exten == $voicefiles->file_name[$x]){
 																					$drop_action_exten .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
 																				}else{
@@ -452,7 +452,7 @@ if (isset($_POST["did"])) {
 																<select class="form-control select2" id="voicemail_ext" name="voicemail_ext" style="width:100%;">
 																	<?php
 																		$drop_action_voicemail = NULL;
-																			for($x=0; $x < count($voicemail->voicemail_id);$x++){					
+																			for($x=0; $x < count($voicemail->voicemail_id);$x++){
 																				if($output->data->voicemail_ext == $voicemail->voicemail_id[$x]){
 																					$drop_action_voicemail .= '<option value="'.$voicemail->voicemail_id[$x].'" selected> '.$voicemail->voicemail_id[$x].' - '.$voicemail->fullname[$x].' </option>';
 																				}else{
@@ -472,7 +472,7 @@ if (isset($_POST["did"])) {
 																<select class="form-control select2" id="drop_inbound_group" name="drop_inbound_group" style="width:100%;">
 																	<?php
 																		$drop_action_ingroup = NULL;
-																			for($x=0; $x<count($ingroup->group_id);$x++){									
+																			for($x=0; $x<count($ingroup->group_id);$x++){
 																				if($output->data->drop_inbound_group == $ingroup->voicemail_id[$x]){
 																					$drop_action_ingroup .= '<option value="'.$ingroup->group_id[$x].'" selected> '.$ingroup->group_id[$x].' - '.$ingroup->group_name[$x].' </option>';
 																				}else{
@@ -492,7 +492,7 @@ if (isset($_POST["did"])) {
 																<select class="form-control select2" id="drop_callmenu" name="drop_callmenu" style="width:100%;">
 																	<?php
 																		$drop_exten_callmenu = NULL;
-																			for($x=0; $x < count($call_menu->menu_id);$x++){									
+																			for($x=0; $x < count($call_menu->menu_id);$x++){
 																				if($output->data->drop_callmenu == $call_menu->menu_id[$x]){
 																					$drop_exten_callmenu .= '<option value="'.$call_menu->menu_id[$x].'" selected> '.$call_menu->menu_id[$x].' - '.$call_menu->menu_name[$x].' </option>';
 																				}else{
@@ -512,18 +512,17 @@ if (isset($_POST["did"])) {
 													<select class="form-control select2" id="call_time_id" name="call_time_id">
 														<?php
 														$call_time_id = NULL;
-																if($output->data->call_time_id == NULL){
-																	$call_time_id .= '<option value="NONE" selected> NONE </option>';
-																}else{
-																	$call_time_id .= '<option value="NONE" > NONE </option>';
-																}
-															for($x=0; $x<count($call_time->call_time_id);$x++){									
+															if($output->data->call_time_id == NULL){
+																$call_time_id .= '<option value="NONE" selected> NONE </option>';
+															}else{
+																$call_time_id .= '<option value="NONE" > NONE </option>';
+															}
+															for($x=0; $x<count($call_time->call_time_id);$x++){
 																if($output->data->call_time_id == $call_time->call_time_id[$x]){
 																	$call_time_id .= '<option value="'.$call_time->call_time_id[$x].'" selected> '.$call_time->call_time_id[$x].' - '.$call_time->call_time_name[$x].' </option>';
 																}else{
 																	$call_time_id .= '<option value="'.$call_time->call_time_id[$x].'"> '.$call_time->call_time_id[$x].' - '.$call_time->call_time_name[$x].' </option>';
 																}
-
 															}
 														echo $call_time_id;
 														?>
@@ -579,7 +578,7 @@ if (isset($_POST["did"])) {
 															<select class="form-control select2" id="after_hours_exten" name="after_hours_exten" style="width:100%;">
 																<?php
 																	$after_hours_exten = NULL;
-																		for($x=0; $x < count($voicefiles->file_name);$x++){					
+																		for($x=0; $x < count($voicefiles->file_name);$x++){
 																			if($output->data->after_hours_exten == $voicefiles->file_name[$x]){
 																				$after_hours_exten .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
 																			}else{
@@ -607,7 +606,7 @@ if (isset($_POST["did"])) {
 															<select class="form-control select2" id="after_hours_voicemail" name="after_hours_voicemail" style="width:100%;">
 																<?php
 																	$after_hour_voicemail = NULL;
-																		for($x=0; $x < count($voicemail->voicemail_id);$x++){					
+																		for($x=0; $x < count($voicemail->voicemail_id);$x++){
 																			if($output->data->after_hours_voicemail == $voicemail->voicemail_id[$x]){
 																				$after_hour_voicemail .= '<option value="'.$voicemail->voicemail_id[$x].'" selected> '.$voicemail->voicemail_id[$x].' - '.$voicemail->fullname[$x].' </option>';
 																			}else{
@@ -764,7 +763,7 @@ if (isset($_POST["did"])) {
 																<select class="form-control select2" id="no_agents_exten" name="no_agents_exten" style="width:100%;">
 																	<?php
 																		$no_agents_exten = NULL;
-																			for($x=0; $x < count($voicefiles->file_name);$x++){					
+																			for($x=0; $x < count($voicefiles->file_name);$x++){
 																				if($output->data->no_agent_action_value == $voicefiles->file_name[$x]){
 																					$no_agents_exten .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
 																				}else{
@@ -784,7 +783,7 @@ if (isset($_POST["did"])) {
 																<select class="form-control select2" id="no_agents_voicemail" name="no_agents_voicemail" style="width:100%;">
 																	<?php
 																		$no_agents_voicemail = NULL;
-																			for($x=0; $x < count($voicemail->voicemail_id);$x++){					
+																			for($x=0; $x < count($voicemail->voicemail_id);$x++){
 																				if($output->data->no_agent_action_value == $voicemail->voicemail_id[$x]){
 																					$no_agents_voicemail .= '<option value="'.$voicemail->voicemail_id[$x].'" selected> '.$voicemail->voicemail_id[$x].' - '.$voicemail->fullname[$x].' </option>';
 																				}else{
@@ -804,7 +803,7 @@ if (isset($_POST["did"])) {
 																<select class="form-control select2" id="no_agents_ingroup" name="no_agents_ingroup" style="width:100%;">
 																	<?php
 																		$no_agents_ingroup = NULL;
-																			for($x=0; $x<count($ingroup->group_id);$x++){									
+																			for($x=0; $x<count($ingroup->group_id);$x++){
 																				if($output->data->no_agent_action_value == $ingroup->group_id[$x]){
 																					$no_agents_ingroup .= '<option value="'.$ingroup->group_id[$x].'" selected> '.$ingroup->group_id[$x].' - '.$ingroup->group_name[$x].' </option>';
 																				}else{
@@ -824,7 +823,7 @@ if (isset($_POST["did"])) {
 																<select class="form-control select2" id="no_agents_callmenu" name="no_agents_callmenu" style="width:100%;">
 																	<?php
 																		$no_agents_callmenu = NULL;
-																			for($x=0; $x < count($call_menu->menu_id);$x++){									
+																			for($x=0; $x < count($call_menu->menu_id);$x++){
 																				if($output->data->no_agent_action_value == $call_menu->menu_id[$x]){
 																					$no_agents_callmenu .= '<option value="'.$call_menu->menu_id[$x].'" selected> '.$call_menu->menu_id[$x].' - '.$call_menu->menu_name[$x].' </option>';
 																				}else{
@@ -844,7 +843,7 @@ if (isset($_POST["did"])) {
 													<select class="form-control select2" id="welcome_message_filename" name="welcome_message_filename" style="width:100%;">
 														<?php
 															$welcome_message_filename = NULL;
-																for($x=0; $x < count($voicefiles->file_name);$x++){					
+																for($x=0; $x < count($voicefiles->file_name);$x++){
 																	if($output->data->welcome_message_filename == $voicefiles->file_name[$x]){
 																		$welcome_message_filename .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
 																	}else{
@@ -899,7 +898,7 @@ if (isset($_POST["did"])) {
 													<select class="form-control select2" id="moh_context" name="moh_context" style="width:100%;">
 														<?php
 															$moh_context = NULL;
-																for($x=0; $x < count($moh->moh_id);$x++){					
+																for($x=0; $x < count($moh->moh_id);$x++){
 																	if($output->data->moh_context == $moh->moh_id[$x]){
 																		$moh_context .= '<option value="'.$moh->moh_id[$x].'" selected> '.$moh->moh_name[$x].' </option>';
 																	}else{
@@ -917,7 +916,7 @@ if (isset($_POST["did"])) {
 													<select class="form-control select2" id="onhold_prompt_filename" name="onhold_prompt_filename" style="width:100%;">
 														<?php
 															$onhold_prompt_filename = NULL;
-																for($x=0; $x < count($voicefiles->file_name);$x++){					
+																for($x=0; $x < count($voicefiles->file_name);$x++){
 																	if($output->data->onhold_prompt_filename == $voicefiles->file_name[$x]){
 																		$onhold_prompt_filename .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
 																	}else{
@@ -1110,11 +1109,6 @@ if (isset($_POST["did"])) {
 												<a href="#tab_2" data-toggle="tab">
 												Options </a>
 											 </li>
-										<!-- Advance tab -->
-											 <li role="presentation">
-												<a href="#tab_3" data-toggle="tab">
-												Advance Settings </a>
-											 </li>
 										</ul>
 										<input type="hidden" name="modify_ivr" value="<?php echo $output->data->menu_id;?>">
 										<div class="tab-content">
@@ -1261,21 +1255,22 @@ if (isset($_POST["did"])) {
 													echo "<pre>";
 													var_dump($ivr_options);
 													echo "</pre>";
-												
-													for($i=0;$i < 10; $i++){
+													
+													for($i=0;$i < 14; $i++){
 												?>
 												<div class="option_div_<?php echo $i;?>">
 													<div class="form-group">
 														<div class="col-lg-12">
 															<div class="col-lg-2">
 																Option:
-																<select class="form-control route_option" name="option[]">
+																<select class="form-control route_option" name="option[]" <?php if($ivr_options->option_value[$i] != ""){echo 'id="option_'.$ivr_options->option_value[$i].'" ';}?>>
 																	<option selected></option>
 																	<?php
 																	$option = '';
 																		for($x=0; $x <= 9; $x++){
 																			$option .= '<option value="'.$x.'" ';
-																			if($ivr_options->option_value[$i] == $x && $ivr_options->option_value[$i] != ""){$option .= 'selected';}
+																			if($ivr_options->option_value[$i] == $x && $ivr_options->option_value[$i] != ""){$option .= 'selected ';}
+																			if (in_array($x, $ivr_options->option_value)){$option .= 'disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';}
 																			$option .= '>'.$x.'</option>';
 																		}
 																		echo $option;
@@ -1314,7 +1309,7 @@ if (isset($_POST["did"])) {
 																<div class="route_callmenu_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "CALLMENU")echo 'style="display:none;"'; ?> >
 																	<label class="col-sm-3 control-label">Call Menu: </label>
 																	<div class="col-sm-6">
-																		<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
+																		<select class="select2-2 form-control select2" name="option_route_value[]" style="width:100%;">
 																			<option value="" selected> - - - NONE - - - </option>
 																		<?php
 																			$callmenu_option = '';
@@ -1333,7 +1328,7 @@ if (isset($_POST["did"])) {
 																	<div class="row mb">
 																		<label class="col-sm-3 control-label">In Group: </label>
 																		<div class="col-sm-6">
-																			<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
+																			<select class="select2-2 form-control select2" name="option_route_value[]" style="width:100%;">
 																				<option value="" > - - - NONE - - - </option>
 																			<?php
 																				$ingroup_option = '';
@@ -1375,7 +1370,7 @@ if (isset($_POST["did"])) {
 																			<div class="col-sm-7">
 																				<label class="col-sm-4 control-label">Campaign ID: </label>
 																				<div class="col-sm-8">
-																					<select class="form-control" name="campaign_id_<?php echo $i;?>" style="width:100%;">
+																					<select class="form-control select2" name="campaign_id_<?php echo $i;?>" style="width:100%;">
 																					<?php
 																						for($x=0;$x < count($campaign->campaign_id);$x++){
 																							echo "<option value=".$campaign->campaign_id[$x].">".$campaign->campaign_id[$x]." - ".$campaign->campaign_name[$x]."</option>";
@@ -1422,7 +1417,7 @@ if (isset($_POST["did"])) {
 																					<input type="text" name="enter_filename_<?php echo $i;?>" value="sip-silence" id="edit_enter_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
 																				</div>
 																				<div class="col-sm-6">
-																					<select class="col-sm-6 form-control" style="width:100%;" id="enter_filename_select_<?php echo $i;?>">
+																					<select class="col-sm-6 form-control select2" style="width:100%;" id="enter_filename_select_<?php echo $i;?>">
 																						<option value="sip-silence" selected> - - - DEFAULT VALUE - - - </option>
 																					<?php
 																						for($x=0;$x<count($voicefiles->file_name);$x++){
@@ -1441,7 +1436,7 @@ if (isset($_POST["did"])) {
 																					<input type="text" name="id_number_filename_<?php echo $i;?>" value="sip-silence" id="edit_id_number_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
 																				</div>
 																				<div class="col-sm-6">
-																					<select class="col-sm-6 form-control" style="width:100%;" id="edit_id_number_filename_select_<?php echo $i;?>">
+																					<select class="col-sm-6 form-control select2" style="width:100%;" id="edit_id_number_filename_select_<?php echo $i;?>">
 																						<option value="sip-silence" selected> - - - DEFAULT VALUE - - - </option>
 																					<?php
 																						for($x=0;$x<count($voicefiles->file_name);$x++){
@@ -1460,7 +1455,7 @@ if (isset($_POST["did"])) {
 																					<input type="text" name="confirm_filename_<?php echo $i;?>" value="sip-silence" id="edit_confirm_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
 																				</div>
 																				<div class="col-sm-6">
-																					<select class="col-sm-6 form-control" style="width:100%;" id="edit_confirm_filename_select_<?php echo $i;?>">
+																					<select class="col-sm-6 form-control select2" style="width:100%;" id="edit_confirm_filename_select_<?php echo $i;?>">
 																						<option value="sip-silence" selected> - - - DEFAULT VALUE - - - </option>
 																					<?php
 																						for($x=0;$x<count($voicefiles->file_name);$x++){
@@ -1478,7 +1473,7 @@ if (isset($_POST["did"])) {
 																<div class="route_did_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "DID")echo 'style="display:none;"'; ?> >
 																	<label class="col-sm-3 control-label">DID: </label>
 																	<div class="col-sm-6">
-																		<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
+																		<select class="col-sm-6 select2-2 form-control select2" name="option_route_value[]" style="width:100%;">
 																			<option value="" selected> - - - NONE - - - </option>
 																		<?php
 																			$did_option = '';
@@ -1496,7 +1491,7 @@ if (isset($_POST["did"])) {
 																<div class="route_hangup_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "HANGUP")echo 'style="display:none;"'; ?> >
 																	<label class="col-sm-3 control-label">Audio File: </label>
 																	<div class="col-sm-6">
-																		<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
+																		<select class="select2-2 form-control select2" name="option_route_value[]" style="width:100%;">
 																			<option value=""> - - - NONE - - - </option>
 																		<?php
 																			if($ivr_options->option_route_value[$i] == "vm-goodbye"){echo '<option value="vm-goodbye" selected> vm-goodbye </option>';}
@@ -1531,7 +1526,7 @@ if (isset($_POST["did"])) {
 																<div class="route_phone_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "PHONE")echo 'style="display:none;"'; ?> >
 																	<label class="col-sm-3 control-label">Phone: </label>
 																	<div class="col-sm-6">
-																		<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
+																		<select class="select2-2 form-control select2" name="option_route_value[]" style="width:100%;">
 																			<option value="" > - - - NONE - - - </option>
 																		<?php
 																			$phones_option = '';
@@ -1553,7 +1548,7 @@ if (isset($_POST["did"])) {
 																			<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_<?php echo $i;?>" value="<?php if($ivr_options->option_route[$i] != "VOICEMAIL"){echo $ivr_options->option_route[$i];} ?>" maxlength="255" size="15">
 																		</div>
 																		<div class="col-sm-6">
-																			<select class="col-sm-6 select2-2 form-control" style="width:100%;" id="option_voicemail_select_<?php echo $i;?>">
+																			<select class="col-sm-6 select2 form-control" style="width:100%;" id="option_voicemail_select_<?php echo $i;?>">
 																				<option value="" > - - - NONE - - - </option>
 																			<?php
 																				$voicemail_option = '';
@@ -1584,9 +1579,6 @@ if (isset($_POST["did"])) {
 											</div><!--static div -->
 											</div>
 											<!-- /.tab-pane -->
-											<div class="tab-pane" id="tab_3">
-												Advance Settings Here
-											</div>
 
 											<div id="modifyIVRresult"></div>
 
@@ -2350,7 +2342,1131 @@ if (isset($_POST["did"])) {
 					
 					row.remove();
 				});
-			});
+				
+			// IVR
+				$(document).on('change', '.route_option',function(){
+					//alert(this.value);
+					var id = this.value;
+					var old = $(this).attr('id');
+					var object;
+					if(typeof old != 'undefined'){
+						$(this).attr('id', "option_"+id).attr('data-old', "option_"+old);
+						
+						object = "option_"+id;
+					}else{
+						$(this).attr('id', 'option_'+id);
+						old = "option_";
+					}
+					
+					showhide_option(object, id, old);
+					
+				});
+				
+				function showhide_option(object, id, old){
+					//var getId = object.attr('id');
+					var lastChar;
+					var old_lastChar;
+					
+					if (typeof object != 'undefined')
+						lastChar = object[object.length -1];
+					
+					if (typeof old != 'undefined')
+						old_lastChar = old[old.length -1];
+					
+					if(old_lastChar != "_"){
+						$(".route_option option[value="+old_lastChar+"]").attr("disabled", false).css({"background-color": "white", "color": "#3a3f51"});
+					}else{
+						$(".route_option option[value="+id+"]").attr("disabled", true).css({"background-color": "#c1c1c1", "color": "white"});
+					}
+					
+				}
+				
+				<?php for($i=0;$i < 14; $i++){ ?>
+				$(document).on('change', '.route_menu_<?php echo $i;?>',function(){
+					if(this.value == "CALLMENU") {
+						$('.route_callmenu_<?php echo $i;?>').show();
+						$(".route_callmenu_<?php echo $i;?> :input").prop('required',true);
+						
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
+					
+					}if(this.value == "INGROUP") {
+						$('.route_ingroup_<?php echo $i;?>').show();
+						$(".route_ingroup_<?php echo $i;?> :input").prop('required',true);
+
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
+						
+					}if(this.value == "DID") {
+						$('.route_did_<?php echo $i;?>').show();
+						$(".route_did_<?php echo $i;?> :input").prop('required',true);
+
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
+						
+					}if(this.value == "HANGUP") {
+						$('.route_hangup_<?php echo $i;?>').show();
+						$(".route_hangup_<?php echo $i;?> :input").prop('required',true);
+						
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
+						
+					}if(this.value == "EXTENSION") {
+						$('.route_exten_<?php echo $i;?>').show();
+						$(".route_exten_<?php echo $i;?> :input").prop('required',true);
+						
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
+						
+					}if(this.value == "PHONE") {
+						$('.route_phone_<?php echo $i;?>').show();
+						$(".route_phone_<?php echo $i;?> :input").prop('required',true);
+						
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
+						
+					}if(this.value == "VOICEMAIL") {
+						$('.route_voicemail_<?php echo $i;?>').show();
+						$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
+						
+					}if(this.value == "AGI") {
+						$('.route_agi_<?php echo $i;?>').show();
+						$(".route_agi_<?php echo $i;?> :input").prop('required',true);
+						
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+					}
+					if(this.value == "") {
+						$('.route_callmenu_<?php echo $i;?>').hide();
+							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
+						$('.route_ingroup_<?php echo $i;?>').hide();
+							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_did_<?php echo $i;?>').hide();
+							$(".route_did_<?php echo $i;?> :input").prop('required',false);
+						$('.route_hangup_<?php echo $i;?>').hide();
+							$(".route_hangup_<?php echo $i;?> :input").prop('required',false);
+						$('.route_exten_<?php echo $i;?>').hide();
+							$(".route_exten_<?php echo $i;?> :input").prop('required',false);
+						$('.route_phone_<?php echo $i;?>').hide();
+							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
+						$('.route_voicemail_<?php echo $i;?>').hide();
+							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
+						$('.route_agi_<?php echo $i;?>').hide();
+							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
+					}
+				});
+				<?php } ?>
+				$(document).on('change', '.route_menu_A',function(){
+					if(this.value == "CALLMENU") {
+						$('.route_callmenu_A').show();
+						$(".route_callmenu_A :input").prop('required',true);
+						
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
+					
+					}if(this.value == "INGROUP") {
+						$('.route_ingroup_A').show();
+						$(".route_ingroup_A :input").prop('required',true);
+
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
+						
+					}if(this.value == "DID") {
+						$('.route_did_A').show();
+						$(".route_did_A :input").prop('required',true);
+
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
+						
+					}if(this.value == "HANGUP") {
+						$('.route_hangup_A').show();
+						$(".route_hangup_A :input").prop('required',true);
+						
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
+						
+					}if(this.value == "EXTENSION") {
+						$('.route_exten_A').show();
+						$(".route_exten_A :input").prop('required',true);
+						
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
+						
+					}if(this.value == "PHONE") {
+						$('.route_phone_A').show();
+						$(".route_phone_A :input").prop('required',true);
+						
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
+						
+					}if(this.value == "VOICEMAIL") {
+						$('.route_voicemail_A').show();
+						$(".route_voicemail_A :input").prop('required',true);
+						
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
+						
+					}if(this.value == "AGI") {
+						$('.route_agi_A').show();
+						$(".route_agi_A :input").prop('required',true);
+						
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+					}
+					if(this.value == "") {
+						$('.route_callmenu_A').hide();
+							$(".route_callmenu_A :input").prop('required',false);
+						$('.route_ingroup_A').hide();
+							$(".route_ingroup_A :input").prop('required',false);
+						$('.route_did_A').hide();
+							$(".route_did_A :input").prop('required',false);
+						$('.route_hangup_A').hide();
+							$(".route_hangup_A :input").prop('required',false);
+						$('.route_exten_A').hide();
+							$(".route_exten_A :input").prop('required',false);
+						$('.route_phone_A').hide();
+							$(".route_phone_A :input").prop('required',false);
+						$('.route_voicemail_A').hide();
+							$(".route_voicemail_A :input").prop('required',false);
+						$('.route_agi_A').hide();
+							$(".route_agi_A :input").prop('required',false);
+					}
+				});
+				$(document).on('change', '.route_menu_B',function(){
+					if(this.value == "CALLMENU") {
+						$('.route_callmenu_B').show();
+						$(".route_callmenu_B :input").prop('required',true);
+						
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
+					
+					}if(this.value == "INGROUP") {
+						$('.route_ingroup_B').show();
+						$(".route_ingroup_B :input").prop('required',true);
+
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
+						
+					}if(this.value == "DID") {
+						$('.route_did_B').show();
+						$(".route_did_B :input").prop('required',true);
+
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
+						
+					}if(this.value == "HANGUP") {
+						$('.route_hangup_B').show();
+						$(".route_hangup_B :input").prop('required',true);
+						
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
+						
+					}if(this.value == "EXTENSION") {
+						$('.route_exten_B').show();
+						$(".route_exten_B :input").prop('required',true);
+						
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
+						
+					}if(this.value == "PHONE") {
+						$('.route_phone_B').show();
+						$(".route_phone_B :input").prop('required',true);
+						
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
+						
+					}if(this.value == "VOICEMAIL") {
+						$('.route_voicemail_B').show();
+						$(".route_voicemail_B :input").prop('required',true);
+						
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
+						
+					}if(this.value == "AGI") {
+						$('.route_agi_B').show();
+						$(".route_agi_B :input").prop('required',true);
+						
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+					}
+					if(this.value == "") {
+						$('.route_callmenu_B').hide();
+							$(".route_callmenu_B :input").prop('required',false);
+						$('.route_ingroup_B').hide();
+							$(".route_ingroup_B :input").prop('required',false);
+						$('.route_did_B').hide();
+							$(".route_did_B :input").prop('required',false);
+						$('.route_hangup_B').hide();
+							$(".route_hangup_B :input").prop('required',false);
+						$('.route_exten_B').hide();
+							$(".route_exten_B :input").prop('required',false);
+						$('.route_phone_B').hide();
+							$(".route_phone_B :input").prop('required',false);
+						$('.route_voicemail_B').hide();
+							$(".route_voicemail_B :input").prop('required',false);
+						$('.route_agi_B').hide();
+							$(".route_agi_B :input").prop('required',false);
+					}
+				});
+				$(document).on('change', '.route_menu_C',function(){
+					if(this.value == "CALLMENU") {
+						$('.route_callmenu_C').show();
+						$(".route_callmenu_C :input").prop('required',true);
+						
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
+					
+					}if(this.value == "INGROUP") {
+						$('.route_ingroup_C').show();
+						$(".route_ingroup_C :input").prop('required',true);
+
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
+						
+					}if(this.value == "DID") {
+						$('.route_did_C').show();
+						$(".route_did_C :input").prop('required',true);
+
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
+						
+					}if(this.value == "HANGUP") {
+						$('.route_hangup_C').show();
+						$(".route_hangup_C :input").prop('required',true);
+						
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
+						
+					}if(this.value == "EXTENSION") {
+						$('.route_exten_C').show();
+						$(".route_exten_C :input").prop('required',true);
+						
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
+						
+					}if(this.value == "PHONE") {
+						$('.route_phone_C').show();
+						$(".route_phone_C :input").prop('required',true);
+						
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
+						
+					}if(this.value == "VOICEMAIL") {
+						$('.route_voicemail_C').show();
+						$(".route_voicemail_C :input").prop('required',true);
+						
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
+						
+					}if(this.value == "AGI") {
+						$('.route_agi_C').show();
+						$(".route_agi_C :input").prop('required',true);
+						
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+					}
+					if(this.value == "") {
+						$('.route_callmenu_C').hide();
+							$(".route_callmenu_C :input").prop('required',false);
+						$('.route_ingroup_C').hide();
+							$(".route_ingroup_C :input").prop('required',false);
+						$('.route_did_C').hide();
+							$(".route_did_C :input").prop('required',false);
+						$('.route_hangup_C').hide();
+							$(".route_hangup_C :input").prop('required',false);
+						$('.route_exten_C').hide();
+							$(".route_exten_C :input").prop('required',false);
+						$('.route_phone_C').hide();
+							$(".route_phone_C :input").prop('required',false);
+						$('.route_voicemail_C').hide();
+							$(".route_voicemail_C :input").prop('required',false);
+						$('.route_agi_C').hide();
+							$(".route_agi_C :input").prop('required',false);
+					}
+				});
+				$(document).on('change', '.route_menu_D',function(){
+					if(this.value == "CALLMENU") {
+						$('.route_callmenu_D').show();
+						$(".route_callmenu_D :input").prop('required',true);
+						
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
+					
+					}if(this.value == "INGROUP") {
+						$('.route_ingroup_D').show();
+						$(".route_ingroup_D :input").prop('required',true);
+
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
+						
+					}if(this.value == "DID") {
+						$('.route_did_D').show();
+						$(".route_did_D :input").prop('required',true);
+
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
+						
+					}if(this.value == "HANGUP") {
+						$('.route_hangup_D').show();
+						$(".route_hangup_D :input").prop('required',true);
+						
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
+						
+					}if(this.value == "EXTENSION") {
+						$('.route_exten_D').show();
+						$(".route_exten_D :input").prop('required',true);
+						
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
+						
+					}if(this.value == "PHONE") {
+						$('.route_phone_D').show();
+						$(".route_phone_D :input").prop('required',true);
+						
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
+						
+					}if(this.value == "VOICEMAIL") {
+						$('.route_voicemail_D').show();
+						$(".route_voicemail_D :input").prop('required',true);
+						
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
+						
+					}if(this.value == "AGI") {
+						$('.route_agi_D').show();
+						$(".route_agi_D :input").prop('required',true);
+						
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+					}
+					if(this.value == "") {
+						$('.route_callmenu_D').hide();
+							$(".route_callmenu_D :input").prop('required',false);
+						$('.route_ingroup_D').hide();
+							$(".route_ingroup_D :input").prop('required',false);
+						$('.route_did_D').hide();
+							$(".route_did_D :input").prop('required',false);
+						$('.route_hangup_D').hide();
+							$(".route_hangup_D :input").prop('required',false);
+						$('.route_exten_D').hide();
+							$(".route_exten_D :input").prop('required',false);
+						$('.route_phone_D').hide();
+							$(".route_phone_D :input").prop('required',false);
+						$('.route_voicemail_D').hide();
+							$(".route_voicemail_D :input").prop('required',false);
+						$('.route_agi_D').hide();
+							$(".route_agi_D :input").prop('required',false);
+					}
+				});
+				$(document).on('change', '.route_menu_E',function(){
+					if(this.value == "CALLMENU") {
+						$('.route_callmenu_E').show();
+						$(".route_callmenu_E :input").prop('required',true);
+						
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
+					
+					}if(this.value == "INGROUP") {
+						$('.route_ingroup_E').show();
+						$(".route_ingroup_E :input").prop('required',true);
+
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
+						
+					}if(this.value == "DID") {
+						$('.route_did_E').show();
+						$(".route_did_E :input").prop('required',true);
+
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
+						
+					}if(this.value == "HANGUP") {
+						$('.route_hangup_E').show();
+						$(".route_hangup_E :input").prop('required',true);
+						
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
+						
+					}if(this.value == "EXTENSION") {
+						$('.route_exten_E').show();
+						$(".route_exten_E :input").prop('required',true);
+						
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
+						
+					}if(this.value == "PHONE") {
+						$('.route_phone_E').show();
+						$(".route_phone_E :input").prop('required',true);
+						
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
+						
+					}if(this.value == "VOICEMAIL") {
+						$('.route_voicemail_E').show();
+						$(".route_voicemail_E :input").prop('required',true);
+						
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
+						
+					}if(this.value == "AGI") {
+						$('.route_agi_E').show();
+						$(".route_agi_E :input").prop('required',true);
+						
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+					}
+					if(this.value == "") {
+						$('.route_callmenu_E').hide();
+							$(".route_callmenu_E :input").prop('required',false);
+						$('.route_ingroup_E').hide();
+							$(".route_ingroup_E :input").prop('required',false);
+						$('.route_did_E').hide();
+							$(".route_did_E :input").prop('required',false);
+						$('.route_hangup_E').hide();
+							$(".route_hangup_E :input").prop('required',false);
+						$('.route_exten_E').hide();
+							$(".route_exten_E :input").prop('required',false);
+						$('.route_phone_E').hide();
+							$(".route_phone_E :input").prop('required',false);
+						$('.route_voicemail_E').hide();
+							$(".route_voicemail_E :input").prop('required',false);
+						$('.route_agi_E').hide();
+							$(".route_agi_E :input").prop('required',false);
+					}
+				});
+				
+				
+				// for voicemail
+					<?php for($i=0;$i < 14; $i++){ ?>
+					$(document).on('change', '#option_voicemail_select_<?php echo $i;?>',function(){
+						var val = $(this).val();
+						$('#option_voicemail_input_<?php echo $i;?>').val(val);
+					});
+					<?php } ?>
+					$(document).on('change', '#option_voicemail_select_A',function(){
+						var val = $(this).val();
+						$('#option_voicemail_input_A').val(val);
+					});
+					$(document).on('change', '#option_voicemail_select_B',function(){
+						var val = $(this).val();
+						$('#option_voicemail_input_B').val(val);
+					});
+					$(document).on('change', '#option_voicemail_select_C',function(){
+						var val = $(this).val();
+						$('#option_voicemail_input_C').val(val);
+					});
+					$(document).on('change', '#option_voicemail_select_D',function(){
+						var val = $(this).val();
+						$('#option_voicemail_input_D').val(val);
+					});
+					$(document).on('change', '#option_voicemail_select_E',function(){
+						var val = $(this).val();
+						$('#option_voicemail_input_E').val(val);
+					});
+				
+				//advanced ingroup settings
+					<?php for($i=0;$i < 14; $i++){ ?>
+					$(document).on('change', '#enter_filename_select_<?php echo $i;?>',function(){
+						var val = $(this).val();
+						$('#edit_enter_filename_<?php echo $i;?>').val(val);
+					});
+					<?php } ?>
+					
+					<?php for($i=0;$i < 14; $i++){ ?>
+					$(document).on('change', '#edit_id_number_filename_select_<?php echo $i;?>',function(){
+						var val = $(this).val();
+						$('#edit_id_number_filename_<?php echo $i;?>').val(val);
+					});
+					<?php } ?>
+					
+					<?php for($i=0;$i < 14; $i++){ ?>
+					$(document).on('change', '#edit_confirm_filename_select_<?php echo $i;?>',function(){
+						var val = $(this).val();
+						$('#edit_confirm_filename_<?php echo $i;?>').val(val);
+					});
+					<?php } ?>
+		});
 		
 			function checkdatas(groupID) {
 		        if (groupID != undefined) {
