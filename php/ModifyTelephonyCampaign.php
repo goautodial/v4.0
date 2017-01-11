@@ -60,6 +60,26 @@
 	$postfields["url_tab_first_url"]			= $_POST["url_tab_first_url"];
 	$postfields["url_tab_second_title"]			= $_POST["url_tab_second_title"];
 	$postfields["url_tab_second_url"]			= $_POST["url_tab_second_url"];
+	$postfields["amd_send_to_vmx"]				= $_POST["amd_send_to_vmx"];
+	$postfields["waitforsilence_options"]		= $_POST["waitforsilence_options"];
+	
+	$postfields["survey_first_audio_file"] 		= (isset($_POST["survey_first_audio_file"]))? $_POST["survey_first_audio_file"] : "";
+	$postfields["survey_method"] 				= (isset($_POST["survey_method"]))? $_POST["survey_method"] : "";
+	$postfields["survey_menu_id"] 				= (isset($_POST["survey_menu_id"]))? $_POST["survey_menu_id"] : "";
+	$postfields["survey_dtmf_digits"] 			= (isset($_POST["survey_dtmf_digits"]))? $_POST["survey_dtmf_digits"] : "";
+	$postfields["survey_xfer_exten"] 			= (isset($_POST["survey_xfer_exten"]))? $_POST["survey_xfer_exten"] : "";
+	$postfields["survey_ni_digit"] 				= (isset($_POST["survey_ni_digit"]))? $_POST["survey_ni_digit"] : "";
+	$postfields["survey_ni_audio_file"] 		= (isset($_POST["survey_ni_audio_file"]))? $_POST["survey_ni_audio_file"] : "";
+	$postfields["survey_ni_status"] 			= (isset($_POST["survey_ni_status"]))? $_POST["survey_ni_status"] : "";
+	$postfields["survey_third_digit"] 			= (isset($_POST["survey_third_digit"]))? $_POST["survey_third_digit"] : "";
+	$postfields["survey_third_audio_file"] 		= (isset($_POST["survey_third_audio_file"]))? $_POST["survey_third_audio_file"] : "";
+	$postfields["survey_third_status"] 			= (isset($_POST["survey_third_status"]))? $_POST["survey_third_status"] : "";
+	$postfields["survey_third_exten"] 			= (isset($_POST["survey_third_exten"]))? $_POST["survey_third_exten"] : "";
+	$postfields["survey_fourth_digit"] 			= (isset($_POST["survey_fourth_digit"]))? $_POST["survey_fourth_digit"] : "";
+	$postfields["survey_fourth_audio_file"] 	= (isset($_POST["survey_fourth_audio_file"]))? $_POST["survey_fourth_audio_file"] : "";
+	$postfields["survey_fourth_status"] 		= (isset($_POST["survey_fourth_status"]))? $_POST["survey_fourth_status"] : "";
+	$postfields["survey_fourth_exten"] 			= (isset($_POST["survey_fourth_exten"]))? $_POST["survey_fourth_exten"] : "";
+	
 
 	if(is_array($_POST["closer_campaigns"])){
 		$closerCampaigns = "";
