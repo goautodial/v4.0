@@ -374,6 +374,7 @@ if ($did != NULL) {
 	if($_POST['route'] == "AGENT"){
 	    $postfields["user"]                     = $_POST['route_agentid']; #Desired user (required if did_route is AGENT)
 	    $postfields["user_unavailable_action"]  = $_POST['route_unavail']; #Desired user unavailable action (required if did_route is AGENT)
+		$postfields["user_route_settings_ingroup"] = $_POST['user_route_settings_ingroup'];
 	}
 
 	if($_POST['route'] == "IN_GROUP"){
