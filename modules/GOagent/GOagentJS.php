@@ -6338,7 +6338,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         }
 
                         if (get_call_launch == 'EMAIL') {
-                            EmailPanelToFront();
+                            //EmailPanelToFront();
                         }
 
                         if (get_call_launch == 'WEBFORM') {
