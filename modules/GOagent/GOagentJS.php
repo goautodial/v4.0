@@ -3334,7 +3334,7 @@ function CheckForIncoming () {
                     delayed_script_load = 'YES';
                     //RefresHScript('CLEAR');
                 } else {
-                    //load_script_contents();
+                    LoadScriptContents();
                 }
             }
 
@@ -3348,9 +3348,10 @@ function CheckForIncoming () {
             }
             if (Call_Auto_Launch == 'SCRIPT') {
                 if (delayed_script_load == 'YES') {
-                    //load_script_contents();
+                    LoadScriptContents();
                 }
                 //ScriptPanelToFront();
+                $('#agent_tablist a[href="#scripts"]').tab('show');
             }
             if (Call_Auto_Launch == 'FORM') {
                 //FormPanelToFront();
@@ -5699,7 +5700,7 @@ function ManualDialOnly(taskaltnum) {
                     delayed_script_load = 'YES';
                     //RefresHScript('CLEAR');
                 } else {
-                    //load_script_contents();
+                    LoadScriptContents();
                 }
             }
 
@@ -5714,9 +5715,10 @@ function ManualDialOnly(taskaltnum) {
             }
             if (get_call_launch == 'SCRIPT') {
                 if (delayed_script_load == 'YES') {
-                    //load_script_contents();
+                    LoadScriptContents();
                 }
                 //ScriptPanelToFront();
+                $('#agent_tablist a[href="#scripts"]').tab('show');
             }
             if (get_call_launch == 'FORM') {
                 //FormPanelToFront();
@@ -6325,9 +6327,10 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         }
                         if (get_call_launch == 'SCRIPT') {
                             if (delayed_script_load == 'YES') {
-                                //load_script_contents();
+                                LoadScriptContents();
                             }
                             //ScriptPanelToFront();
+                            $('#agent_tablist a[href="#scripts"]').tab('show');
                         }
 
                         if (get_call_launch == 'FORM') {
@@ -7906,6 +7909,9 @@ function LoadScriptContents() {
     .done(function (result) {
         if (result.result == 'success') {
             new_script_content = result.content;
+            new_script_content = new_script_content.replace(" + ", "!PLUS!");
+            new_script_content = new_script_content.replace(/\+/, " ");
+            new_script_content = new_script_content.replace("!PLUS!", " + ");
             $("#ScriptContents").html(new_script_content);
         }
     });
