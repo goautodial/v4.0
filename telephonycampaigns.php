@@ -41,7 +41,7 @@ error_reporting(E_ALL);*/
     	<link href="css/style.css" rel="stylesheet" type="text/css" />
 
         <?php print $ui->creamyThemeCSS(); ?>
-
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
@@ -58,6 +58,56 @@ error_reporting(E_ALL);*/
 				.select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
 					margin-top: 1px;
 				}
+				
+				.ui-autocomplete {
+					position: absolute;
+					top: 100%;
+					left: 0;
+					z-index: 1000;
+					float: left;
+					display: none;
+					min-width: 160px;
+					_width: 160px;
+					padding: 5px 4px;
+					/*margin: 2px 0 0 0;*/
+					list-style: none;
+					background-color: #ffffff;
+					border-color: #ccc;
+					border-color: rgba(0, 0, 0, 0.2);
+					border-style: solid;
+					border-width: 1px;
+					-webkit-border-radius: 5px;
+					-moz-border-radius: 5px;
+					border-radius: 5px;
+					-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+					-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+					box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+					-webkit-background-clip: padding-box;
+					-moz-background-clip: padding;
+					background-clip: padding-box;
+					/**border-right-width: 2px;*/
+					/**border-bottom-width: 2px;*/
+				  
+					.ui-menu-item > a.ui-corner-all {
+					  display: block;
+					  padding: 3px 15px;
+					  clear: both;
+					  font-weight: normal;
+					  line-height: 18px;
+					  color: #555555;
+					  white-space: nowrap;
+				  
+					  &.ui-state-hover, &.ui-state-active {
+						color: #ffffff;
+						text-decoration: none;
+						background-color: #0088cc;
+						border-radius: 0px;
+						-webkit-border-radius: 0px;
+						-moz-border-radius: 0px;
+						background-image: none;
+					  }
+					}
+				  }
 			</style>
     </head>
      <?php print $ui->creamyBody(); ?>
@@ -98,6 +148,10 @@ error_reporting(E_ALL);*/
 	$leadfilter = $ui->API_getAllLeadFilters();
 	$country_codes = $ui->getCountryCodes();
 	$list = $ui->API_goGetAllLists();
+	$ingroup = $ui->API_getInGroups();
+	$ivr = $ui->API_getIVR();
+	$voicemails = $ui->API_goGetVoiceMails();
+	$users = $ui->API_goGetAllUserLists();
 ?>
 							 <div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
@@ -410,7 +464,7 @@ error_reporting(E_ALL);*/
 				    			<div class="form-group inbound blended hide">
 				    				<label class="control-label col-lg-4">DID/TFN Extension:</label>
 				    				<div class="col-lg-8 mb">
-				    					<input id="did-tfn-extension" name="did_tfn_extension" type="number" class="form-control" min="0" required>
+				    					<input id="did-tfn-extension" name="did_tfn_extension" type="number" class="did-tfn-extension form-control" required>
 				    				</div>
 				    			</div>
 				    			<div class="form-group inbound blended hide">
@@ -425,6 +479,48 @@ error_reporting(E_ALL);*/
 				                        </select>
 				    				</div>
 				    			</div>
+								<div class="form-group inbound blended hide">
+									<label class="call-route-div-label control-label col-lg-4">Select Call Route:</label>
+									<div class="callroute-dummy-div col-lg-8 mb">
+										<input name="call_route_text" type="text" class="form-control">
+									</div>
+									<div class="ingroup-div col-lg-8 mb hide">
+										<select id="ingroup-text" name="call_route_text" class="form-control">
+											<?php
+												for($i=0;$i < count($ingroup->group_id);$i++){
+													echo '<option value="'.$ingroup->group_id[$i].'">'.$ingroup->group_name[$i].'</option>';
+												}
+											?>
+										</select>
+									</div>
+									<div class="ivr-div col-lg-8 mb hide">
+										<select id="ivr-text" name="call_route_text" class="form-control">
+											<?php
+												for($i=0;$i < count($ivr->menu_id);$i++){
+													echo '<option value="'.$ivr->menu_id[$i].'">'.$ivr->menu_name[$i].'</option>';
+												}
+											?>
+										</select>
+									</div>
+									<div class="agent-div col-lg-8 mb hide">
+										<select id="agent-text" name="call_route_text" class="form-control">
+											<?php
+												for($i=0;$i < count($users->user_id);$i++){
+													echo '<option value="'.$users->user_id[$i].'">'.$users->full_name[$i].'</option>';
+												}
+											?>
+										</select>
+									</div>
+									<div class="voicemail-div col-lg-8 mb hide">
+										<select id="voicemail-text" name="call_route_text" class="form-control">
+											<?php
+												for($i=0;$i < count($voicemails->voicemail_id);$i++){
+													echo '<option value="'.$voicemails->voicemail_id[$i].'">'.$voicemails->fullname[$i].'</option>';
+												}
+											?>
+										</select>
+									</div>
+								</div>
 				    			<div class="form-group inbound blended hide">
 				    				<label class="control-label col-lg-4">Group Color:</label>
 				    				<div class="col-lg-8 mb">
@@ -1432,6 +1528,73 @@ error_reporting(E_ALL);*/
 			//$('#modal_form_lists').modal('show');
 			$('.select2').select2({
 				theme: 'bootstrap'
+			});
+			
+			$('#add_campaign').on('shown.bs.modal', function () {
+				$('#did-tfn-extension').autocomplete({
+					//source: "php/searchDID.php",
+					source: function(request,response) {
+						$.ajax({
+							url: "./php/searchDID.php",
+							type: 'POST',
+							data: {
+								term : request.term
+							},
+							dataType: 'json',
+							success: function(responsedata) {
+								console.log(responsedata);
+									response($.parseJSON(responsedata))
+							}
+						});
+					},
+					minLength: 2
+				});
+				$( "#did-tfn-extension" ).autocomplete( "option", "appendTo", "#campaign_form" );
+			});
+			//#did-tfn-extension
+			//$(document).on('keypress', '#did-tfn-extension', function(){
+			//	console.log('test');
+			//});
+			
+			$(document).on('change', '#call-route', function(){
+				var callroute = $(this).val();
+				
+				if (callroute == "INGROUP") {
+                    $('.call-route-div-label').html("INGROUP:");
+					$('.ingroup-div').removeClass('hide');
+					$('.ivr-div').addClass('hide');
+					$('.agent-div').addClass('hide');
+					$('.voicemail-div').addClass('hide');
+					$('.callroute-dummy-div').addClass('hide');
+                }else if (callroute == "IVR") {
+                    $('.call-route-div-label').html("IVR:");
+					$('.ivr-div').removeClass('hide');
+					$('.ingroup-div').addClass('hide');
+					$('.agent-div').addClass('hide');
+					$('.voicemail-div').addClass('hide');
+					$('.callroute-dummy-div').addClass('hide');
+                }else if (callroute == "AGENT") {
+                    $('.call-route-div-label').html("AGENT:");
+					$('.agent-div').removeClass('hide');
+					$('.ingroup-div').addClass('hide');
+					$('.ivr-div').addClass('hide');
+					$('.voicemail-div').addClass('hide');
+					$('.callroute-dummy-div').addClass('hide');
+                }else if (callroute == "VOICEMAIL") {
+                    $('.call-route-div-label').html("VOICEMAIL:");
+					$('.voicemail-div').removeClass('hide');
+					$('.ingroup-div').addClass('hide');
+					$('.ivr-div').addClass('hide');
+					$('.agent-div').addClass('hide');
+					$('.callroute-dummy-div').addClass('hide');
+                }else{
+					$('.call-route-div-label').html("Select Call Route");
+					$('.ingroup-div').addClass('hide');
+					$('.ivr-div').addClass('hide');
+					$('.agent-div').addClass('hide');
+					$('.voicemail-div').addClass('hide');
+					$('.callroute-dummy-div').removeClass('hide');
+				}
 			});
 			
 			$(document).on('click', '.btn-browse-wav', function(){

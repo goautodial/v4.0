@@ -32,6 +32,7 @@
 	$postfields['campaign_name'] 				= $_POST['campaign_name'];
 	$postfields['did_tfn_extension']  			= $_POST['did_tfn_extension'];
 	$postfields['call_route'] 					= $_POST['call_route'];
+    $postfields['call_route_text'] 				= $_POST['call_route_text'];
 	$postfields['group_color'] 					= $_POST['group_color'];
 	$postfields['survey_type'] 					= $_POST['survey_type'];
 	$postfields['no_channels']  				= $_POST['no_channels'];
