@@ -1248,7 +1248,347 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 											<!-- /.tab-pane -->
-											
+											<div class="tab-pane" id="tab_2">
+												<div id="static_div">
+												<?php
+													
+													// echo "<pre>";
+													// var_dump($ivr_options);
+													// echo "</pre>";
+													
+													for($i=0;$i < 14; $i++){
+												?>
+												<div class="option_div_<?php echo $i;?>">
+													<div class="form-group">
+														<div class="col-lg-12">
+															<div class="col-lg-2">
+																Option:
+																<select class="form-control route_option" name="option[]" <?php if($ivr_options->option_value[$i] != ""){echo 'id="option_'.$ivr_options->option_value[$i].'" ';}?>>
+																	<option selected></option>
+																	<?php
+																	$option = '';
+																		for($x=0; $x <= 9; $x++){
+																			$option .= '<option value="'.$x.'" ';
+																			if($ivr_options->option_value[$i] == $x && $ivr_options->option_value[$i] != ""){$option .= 'selected ';}
+																			if (in_array($x, $ivr_options->option_value)){$option .= 'disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';}
+																			$option .= '>'.$x.'</option>';
+																		}
+																		echo $option;
+																	?>
+																	<option value="A" <?php if($ivr_options->option_value[$i] == "#")echo "selected"; ?> >#</option>
+																	<option value="B" <?php if($ivr_options->option_value[$i] == "*")echo "selected"; ?> >*</option>
+																	<option value="C" <?php if($ivr_options->option_value[$i] == "TIMECHECK")echo "selected"; ?> >TIMECHECK</option>
+																	<option value="D" <?php if($ivr_options->option_value[$i] == "TIMEOUT")echo "selected"; ?> >TIMEOUT</option>
+																	<option value="E" <?php if($ivr_options->option_value[$i] == "INVALID")echo "selected"; ?> >INVALID</option>
+																</select>
+															</div>
+															<div class="col-lg-7">
+																Desription: 
+																<input type="text" name="route_desc[]" id="" class="form-control route_desc_<?php echo $i;?>" placeholder="Description" value="<?php echo $ivr_options->option_description[$i]; ?>" />
+															</div>
+															<div class="col-lg-3">
+																Route:
+																<select class="form-control route_menu_<?php echo $i;?>" name="route_menu[]">
+																	<option selected value=""></option>
+																	<option value="CALLMENU" <?php if($ivr_options->option_route[$i] == "CALLMENU")echo "selected"; ?> >Call Menu / IVR</option>
+																	<option value="INGROUP" <?php if($ivr_options->option_route[$i] == "INGROUP")echo "selected"; ?> >In-group</option>
+																	<option value="DID" <?php if($ivr_options->option_route[$i] == "DID")echo "selected"; ?> >DID</option>
+																	<option value="HANGUP" <?php if($ivr_options->option_route[$i] == "HANGUP")echo "selected"; ?> >Hangup</option>
+																	<option value="EXTENSION" <?php if($ivr_options->option_route[$i] == "EXTENSION")echo "selected"; ?> >Custom Extension</option>
+																	<option value="PHONE" <?php if($ivr_options->option_route[$i] == "PHONE")echo "selected"; ?> >Phone</option>
+																	<option value="VOICEMAIL" <?php if($ivr_options->option_route[$i] == "VOICEMAIL")echo "selected"; ?> >Voicemail</option>
+																	<option value="AGI" <?php if($ivr_options->option_route[$i] == "AGI")echo "selected"; ?> >AGI</option>
+																</select>
+															</div>
+															<div class="col-lg-1 btn-remove"></div>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-lg-12 option_menu_<?php echo $i;?> mb mt">
+															<!-- CALL MENU -->
+																<div class="route_callmenu_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "CALLMENU")echo 'style="display:none;"'; ?> >
+																	<label class="col-sm-3 control-label">Call Menu: </label>
+																	<div class="col-sm-6">
+																		<select class="select2-2 form-control select2" name="option_route_value[]" style="width:100%;">
+																			<option value="" selected> - - - NONE - - - </option>
+																		<?php
+																			$callmenu_option = '';
+																			for($x=0;$x < count($ivr->menu_id);$x++){
+																				$callmenu_option .= '<option value="'.$ivr->menu_id[$x].'"';
+																					if($ivr_options->option_route_value[$i] == $ivr->menu_id[$x]){$callmenu_option .= ' selected';}
+																				$callmenu_option .= '>'.$ivr->menu_id[$x].' - '.$ivr->menu_name[$x].'</option>';
+																			}
+																			echo $callmenu_option;
+																		?>
+																		</select>
+																	</div>
+																</div>
+															<!-- IN GROUP -->
+																<div class="route_ingroup_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "INGROUP")echo 'style="display:none;"'; ?> >
+																	<div class="row mb">
+																		<label class="col-sm-3 control-label">In Group: </label>
+																		<div class="col-sm-6">
+																			<select class="select2-2 form-control select2" name="option_route_value[]" style="width:100%;">
+																				<option value="" > - - - NONE - - - </option>
+																			<?php
+																				$ingroup_option = '';
+																				for($x=0;$x < count($ingroups->group_id);$x++){
+																					$ingroup_option .= '<option value="'.$ingroups->group_id[$x].'"';
+																						if($ivr_options->option_route[$i] == "INGROUP" && $ivr_options->option_route_value[$i] == $ingroups->group_id[$x]){$ingroup_option .= ' selected';}
+																					$ingroup_option .= '>'.$ingroups->group_id[$x].' - '.$ingroups->group_name[$x].'</option>';
+																				}
+																				echo $ingroup_option;
+																			?>
+																			</select>
+																		</div>
+																	</div>
+																	<?php 
+																		if($ivr_options->option_route[$i] == "INGROUP"){
+																			$explode_ingroup_context = explode(",", $ivr_options->option_route_value_context[$i]);
+																	?>
+																	<div class="col-sm-11">
+																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
+																			<label class="col-sm-3 control-label">Handle Method:</label>
+																			<div class="col-sm-7">
+																				<select class="form-control" name="handle_method_<?php echo $i;?>" id="edit_handle_method_<?php echo $i;?>">
+																					<option value="CID" <?php if($explode_ingroup_context[0] == "CID")echo "selected"; ?> >CID</option>
+																					<option value="CIDLOOKUP" <?php if($explode_ingroup_context[0] == "CIDLOOKUP")echo "selected"; ?> >CIDLOOKUP</option>
+																					<option value="CIDLOOKUPRL" <?php if($explode_ingroup_context[0] == "CIDLOOKUPRL")echo "selected"; ?> >CIDLOOKUPRL</option>
+																					<option value="CIDLOOKUPRC" <?php if($explode_ingroup_context[0] == "CIDLOOKUPRC")echo "selected"; ?> >CIDLOOKUPRC</option>
+																					<option value="ANI" <?php if($explode_ingroup_context[0] == "ANI")echo "selected"; ?> >ANI</option>
+																					<option value="ANILOOKUP" <?php if($explode_ingroup_context[0] == "ANILOOKUP")echo "selected"; ?> >ANILOOKUP</option>
+																					<option value="ANILOOKUPRL" <?php if($explode_ingroup_context[0] == "ANILOOKUPRL")echo "selected"; ?> >ANILOOKUPRL</option>
+																					<option value="VIDPROMPT" <?php if($explode_ingroup_context[0] == "VIDPROMPT")echo "selected"; ?> >VIDPROMPT</option>
+																					<option value="VIDPROMPTLOOKUP" <?php if($explode_ingroup_context[0] == "VIDPROMPTLOOKUP")echo "selected"; ?> >VIDPROMPTLOOKUP</option>
+																					<option value="VIDPROMPTLOOKUPRL" <?php if($explode_ingroup_context[0] == "VIDPROMPTLOOKUPRL")echo "selected"; ?> >VIDPROMPTLOOKUPRL</option>
+																					<option value="VIDPROMPTLOOKUPRC" <?php if($explode_ingroup_context[0] == "VIDPROMPTLOOKUPRC")echo "selected"; ?> >VIDPROMPTLOOKUPRC</option>
+																					<option value="CLOSER" <?php if($explode_ingroup_context[0] == "CLOSER")echo "selected"; ?> >CLOSER</option>
+																					<option value="3DIGITID" <?php if($explode_ingroup_context[0] == "3DIGITID")echo "selected"; ?> >3DIGITID</option>
+																					<option value="4DIGITID" <?php if($explode_ingroup_context[0] == "4DIGITID")echo "selected"; ?> >4DIGITID</option>
+																					<option value="5DIGITID" <?php if($explode_ingroup_context[0] == "5DIGITID")echo "selected"; ?> >5DIGITID</option>
+																					<option value="10DIGITID" <?php if($explode_ingroup_context[0] == "10DIGITID")echo "selected"; ?> >10DIGITID</option>
+																				</select>
+																			</div>
+																		</div>
+																		<div class="row mb">
+																			<div class="col-sm-7">
+																				<label class="col-sm-4 control-label">Campaign ID: </label>
+																				<div class="col-sm-8">
+																					<select class="form-control select2" name="campaign_id_<?php echo $i;?>" style="width:100%;">
+																					<?php
+																						$campaign_id_ingroup = '';
+																						for($x=0;$x < count($campaign->campaign_id);$x++){
+																							$campaign_id_ingroup .= '<option value="'.$campaign->campaign_id[$x].'"';
+																								if($explode_ingroup_context[3] == $campaign->campaign_id[$x]){$campaign_id_ingroup .= ' selected';}
+																							$campaign_id_ingroup .= '>'.$campaign->campaign_id[$x].' - '.$campaign->campaign_name[$x].'</option>';
+																						}
+																						echo $campaign_id_ingroup;
+																					?>
+																					</select>
+																				</div>
+																			</div>
+																			<div class="col-sm-5 ingroup_advanced_settings_<?php echo $i;?>">
+																				<label class="col-sm-5 control-label">Phone Code: </label>
+																				<div class="col-sm-7">
+																					<input type="text" class="form-control" name="phone_code<?php echo $i;?>" value="<?php echo $explode_ingroup_context[4]; ?>" id="edit_phone_code_<?php echo $i;?>" maxlength="14" size="4">
+																				</div>
+																			</div>
+																		</div>
+																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
+																			<div class="col-sm-7">
+																				<label class="col-sm-4 control-label">Search Method:</label>
+																				<div class="col-sm-8">
+																					<select class="form-control" name="search_method_<?php echo $i;?>" id="edit_search_method_<?php echo $i;?>">
+																						<option value="LB" <?php if($explode_ingroup_context[1] == "LB")echo "selected"; ?> >LB - Load Balanced</option>
+																						<option value="LO" <?php if($explode_ingroup_context[1] == "LO")echo "selected"; ?> >LO - Load Balanced Overflow</option>
+																						<option value="SO" <?php if($explode_ingroup_context[1] == "SO")echo "selected"; ?> >Server Only</option>
+																					</select>
+																				</div>
+																			</div>
+																			<div class="col-sm-5">
+																				<label class="col-sm-5 control-label" for="search_method_list_id">List ID: </label>
+																				<div class="col-sm-7">
+																					<input type="text" name="list_id_<?php echo $i;?>" value="<?php echo $explode_ingroup_context[2]; ?>" id="edit_list_id_<?php echo $i;?>" class="form-control" maxlength="14" size="8">
+																				</div>
+																			</div>
+																		</div>
+																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
+																			<label class="col-sm-3 control-label">VID Digits: </label>
+																			<div class="col-sm-7">
+																				<input type="text" class="form-control" name="vid_digits_<?php echo $i;?>" value="<?php echo $explode_ingroup_context[8]; ?>" id="edit_validate_digits_<?php echo $i;?>" maxlength="3" size="3">
+																			</div>
+																		</div>
+																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
+																			<label class="col-sm-4 control-label">VID Enter Filename: </label>
+																			<div class="col-sm-8">
+																				<div class="col-sm-6">
+																					<input type="text" name="enter_filename_<?php echo $i;?>" value="<?php echo $explode_ingroup_context[5]; ?>" id="edit_enter_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
+																				</div>
+																				<div class="col-sm-6">
+																					<select class="col-sm-6 form-control select2" style="width:100%;" id="enter_filename_select_<?php echo $i;?>">
+																						<option value="sip-silence" <?php if($explode_ingroup_context[5] == "sip-silence")echo "selected"; ?> > - - - DEFAULT VALUE - - - </option>
+																					<?php
+																						for($x=0;$x<count($voicefiles->file_name);$x++){
+																							$file = substr($voicefiles->file_name[$x], 0, -4);
+																							echo "<option value=".$file.">".$file."</option>";
+																						}
+																					?>
+																					</select>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
+																			<label class="col-sm-4 control-label">VID ID Number Filename: </label>
+																			<div class="col-sm-8">
+																				<div class="col-sm-6">
+																					<input type="text" name="id_number_filename_<?php echo $i;?>" value="<?php echo $explode_ingroup_context[6]; ?>" id="edit_id_number_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
+																				</div>
+																				<div class="col-sm-6">
+																					<select class="col-sm-6 form-control select2" style="width:100%;" id="edit_id_number_filename_select_<?php echo $i;?>">
+																						<option value="sip-silence" <?php if($explode_ingroup_context[6] == "sip-silence")echo "selected"; ?> > - - - DEFAULT VALUE - - - </option>
+																					<?php
+																						for($x=0;$x<count($voicefiles->file_name);$x++){
+																							$file = substr($voicefiles->file_name[$x], 0, -4);
+																							echo "<option value=".$file.">".$file."</option>";
+																						}
+																					?>
+																					</select>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
+																			<label class="col-sm-4 control-label">VID Confirm Filename: </label>
+																			<div class="col-sm-8">
+																				<div class="col-sm-6">
+																					<input type="text" name="confirm_filename_<?php echo $i;?>" value="<?php echo $explode_ingroup_context[7]; ?>" id="edit_confirm_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
+																				</div>
+																				<div class="col-sm-6">
+																					<select class="col-sm-6 form-control select2" style="width:100%;" id="edit_confirm_filename_select_<?php echo $i;?>">
+																						<option value="sip-silence" <?php if($explode_ingroup_context[7] == "sip-silence")echo "selected"; ?> > - - - DEFAULT VALUE - - - </option>
+																					<?php
+																						for($x=0;$x<count($voicefiles->file_name);$x++){
+																							$file = substr($voicefiles->file_name[$x], 0, -4);
+																							echo "<option value=".$file.">".$file."</option>";
+																						}
+																					?>
+																					</select>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<?php
+																		}
+																	?>
+																</div>
+															<!-- DID -->
+																<div class="route_did_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "DID")echo 'style="display:none;"'; ?> >
+																	<label class="col-sm-3 control-label">DID: </label>
+																	<div class="col-sm-6">
+																		<select class="col-sm-6 select2-2 form-control select2" name="option_route_value[]" style="width:100%;">
+																			<option value="" selected> - - - NONE - - - </option>
+																		<?php
+																			$did_option = '';
+																			for($x=0;$x < count($phonenumber->did_pattern);$x++){
+																				$did_option .= '<option value="'.$phonenumber->did_pattern[$x].'"';
+																					if($ivr_options->option_route_value[$i] == $phonenumber->did_pattern[$x]){ $did_option .= ' selected';}
+																				$did_option .= '>'.$phonenumber->did_pattern[$x].' - '.$phonenumber->did_description[$x].'</option>';
+																			}
+																			echo $did_option;
+																		?>
+																		</select>
+																	</div>
+																</div>
+															<!-- HANGUP -->
+																<div class="route_hangup_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "HANGUP")echo 'style="display:none;"'; ?> >
+																	<label class="col-sm-3 control-label">Audio File: </label>
+																	<div class="col-sm-6">
+																		<select class="select2-2 form-control select2" name="option_route_value[]" style="width:100%;">
+																			<option value=""> - - - NONE - - - </option>
+																		<?php
+																			if($ivr_options->option_route_value[$i] == "vm-goodbye"){echo '<option value="vm-goodbye" selected> vm-goodbye </option>';}
+																			$hangup_option = '';
+																			for($x=0;$x<count($voicefiles->file_name);$x++){
+																				$file = substr($voicefiles->file_name[$x], 0, -4);
+																				$hangup_option .= '<option value="'.$file.'"';
+																					if($ivr_options->option_route_value[$i] == $file){$hangup_option .= 'selected';}
+																				$hangup_option .= '>'.$file.'</option>';
+																			}
+																			echo $hangup_option;
+																		?>
+																		</select>
+																	</div>
+																</div>
+															<!-- EXTENSION -->
+																<div class="route_exten_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "EXTENSION")echo 'style="display:none;"'; ?> >
+																	<div class="col-sm-6">
+																		<label class="col-sm-3 control-label">Extension: </label>
+																		<div class="col-sm-9">
+																			<input type="text" class="form-control" name="option_route_value[]" id="option_route_value_<?php echo $i;?>" value="<?php if($ivr_options->option_route[$i] == "EXTENSION"){echo $ivr_options->option_route_value[$i];} ?>" />
+																		</div>
+																	</div>
+																	<div class="col-sm-6">
+																		<label class="col-sm-3 control-label">Context: </label>
+																		<div class="col-sm-9">
+																			<input type="text" class="form-control" name="option_route_value_context[]" id="option_route_value_context_<?php echo $i;?>" value="<?php if($ivr_options->option_route[$i] == "EXTENSION"){echo $ivr_options->option_route_value_context[$i];} ?>" />
+																		</div>
+																	</div>
+																</div>
+															<!-- PHONE -->
+																<div class="route_phone_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "PHONE")echo 'style="display:none;"'; ?> >
+																	<label class="col-sm-3 control-label">Phone: </label>
+																	<div class="col-sm-6">
+																		<select class="select2-2 form-control select2" name="option_route_value[]" style="width:100%;">
+																			<option value="" > - - - NONE - - - </option>
+																		<?php
+																			$phones_option = '';
+																			for($x=0;$x < count($phones->extension);$x++){
+																				$phones_option .= '<option value="'.$phones->extension[$x].'"';
+																					if($ivr_options->option_route_value[$i] == $phones->extension[$x]){ $phones_option .= ' selected';}
+																				$phones_option .= '>'.$phones->extension[$x]." - ".$phones->server_ip[$x]." - ".$phones->dialplan_number[$x]."</option>";
+																			}
+																			echo $phones_option;
+																		?>
+																		</select>
+																	</div>
+																</div>
+															<!-- VOICEMAIL -->
+																<div class="route_voicemail_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "VOICEMAIL")echo 'style="display:none;"'; ?> >
+																	<label class="col-sm-3 control-label">Voicemail Box: </label>
+																	<div class="col-sm-9">
+																		<div class="col-sm-6">
+																			<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_<?php echo $i;?>" value="<?php if($ivr_options->option_route[$i] != "VOICEMAIL"){echo $ivr_options->option_route_value[$i];} ?>" maxlength="255" size="15">
+																		</div>
+																		<div class="col-sm-6">
+																			<select class="col-sm-6 select2 form-control" style="width:100%;" id="option_voicemail_select_<?php echo $i;?>">
+																				<option value="" > - - - NONE - - - </option>
+																			<?php
+																				$voicemail_option = '';
+																				for($x=0;$x < count($voicemails->voicemail_id);$x++){
+																					$voicemail_option .= '<option value="'.$voicemails->voicemail_id[$x].'"';
+																						if($ivr_options->option_route_value[$i] == $voicemail_option->voicemail_id[$x] && $ivr_options->option_route[$i] == "VOICEMAIL"){ $voicemail_option .= ' selected';}
+																					$voicemail_option .= '>'.$voicemails->voicemail_id[$x].' - '.$voicemails->fullname[$x].'</option>';
+																				}
+																				echo $voicemail_option;
+																			?>
+																			</select>
+																		</div>
+																	</div>
+																</div>
+															<!-- AGI -->
+																<div class="route_agi_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "AGI")echo 'style="display:none;"'; ?> >
+																	<label class="col-sm-3 control-label">AGI: </label>
+																	<div class="col-sm-6">
+																		<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50" value="<?php if($ivr_options->option_route[$i] == "AGI"){echo $ivr_options->option_route_value[$i];} ?>">
+																	</div>
+																</div>
+														</div>
+													</div>
+												</div>
+												<?php
+													}
+												?>
+											</div><!--static div -->
+											</div>
 											<!-- /.tab-pane -->
 
 											<div id="modifyIVRresult"></div>

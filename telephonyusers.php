@@ -287,7 +287,7 @@
 								<div class="form-group">		
 									<label class="col-sm-4 control-label" for="confirm"> Confirm Password </label>
 									<div class="col-sm-8 mb">
-										<input type="password" class="form-control" id="confirm" name="confirm" placeholder="Re-enter password here (Mandatory)" value="Go2016" required>
+										<input type="password" class="form-control" id="confirm" name="confirm" placeholder="Re-enter password here (Mandatory)" value="Go<?php echo date('Y');?>" required>
 									</div> 
 								</div>
 								<!--
