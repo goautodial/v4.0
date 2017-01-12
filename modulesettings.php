@@ -34,9 +34,9 @@ $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
 
-if ($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_AGENT) {
-	header("location: crm.php");
-}
+//if ($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_AGENT) {
+//	header("location: crm.php");
+//}
 
 $error = false;
 if (isset($_GET["module_name"])) {
