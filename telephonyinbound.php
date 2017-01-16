@@ -720,7 +720,7 @@
 											<div class="route_callmenu_<?php echo $i;?>" style="display:none;">
 												<label class="col-sm-3 control-label">Call Menu: </label>
 												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_callmenu_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($x=0;$x < count($ivr->menu_id);$x++){
@@ -735,7 +735,7 @@
 												<div class="row mb">
 													<label class="col-sm-3 control-label">In Group: </label>
 													<div class="col-sm-6">
-														<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
+														<select class="select2-2 form-control" name="option_ingroup_value[]" style="width:100%;">
 															<option value="" selected> - - - NONE - - - </option>
 														<?php
 															for($x=0;$x < count($ingroup->group_id);$x++){
@@ -876,7 +876,7 @@
 											<div class="route_did_<?php echo $i;?>" style="display:none;">
 												<label class="col-sm-3 control-label">DID: </label>
 												<div class="col-sm-6">
-													<select class="col-sm-6 select2-2 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="col-sm-6 select2-2 form-control" name="option_did_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($x=0;$x < count($phonenumber->did_pattern);$x++){
@@ -890,7 +890,7 @@
 											<div class="route_hangup_<?php echo $i;?>" style="display:none;">
 												<label class="col-sm-3 control-label">Audio File: </label>
 												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_hangup_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($x=0;$x<count($voicefiles->file_name);$x++){
@@ -906,7 +906,7 @@
 												<div class="col-sm-6">
 													<label class="col-sm-3 control-label">Extension: </label>
 													<div class="col-sm-9">
-														<input type="text" class="form-control" name="option_route_value[]" value="" id="option_route_value_<?php echo $i;?>" />
+														<input type="text" class="form-control" name="option_extension_value[]" value="" id="option_route_value_<?php echo $i;?>" />
 													</div>
 												</div>
 												<div class="col-sm-6">
@@ -920,7 +920,7 @@
 											<div class="route_phone_<?php echo $i;?>" style="display:none;">
 												<label class="col-sm-3 control-label">Phone: </label>
 												<div class="col-sm-6">
-													<select class="select2-2 form-control" name="option_route_value[]" style="width:100%;">
+													<select class="select2-2 form-control" name="option_phone_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
 													<?php
 														for($x=0;$x < count($phones->extension);$x++){
@@ -935,7 +935,7 @@
 												<label class="col-sm-3 control-label">Voicemail Box: </label>
 												<div class="col-sm-9">
 													<div class="col-sm-6">
-														<input type="text" name="option_route_value[]" value="" class="form-control" id="option_voicemail_input_<?php echo $i;?>" maxlength="255" size="15">
+														<input type="text" name="option_voicemail_value[]" value="" class="form-control" id="option_voicemail_input_<?php echo $i;?>" maxlength="255" size="15">
 													</div>
 													<div class="col-sm-6">
 														<select class="col-sm-6 select2-2 form-control" style="width:100%;" id="option_voicemail_select_<?php echo $i;?>">
@@ -953,7 +953,7 @@
 											<div class="route_agi_<?php echo $i;?>" style="display:none;">
 												<label class="col-sm-3 control-label">AGI: </label>
 												<div class="col-sm-6">
-													<input type="text" class="form-control" name="option_route_value[]" value="" maxlength="255" size="50">
+													<input type="text" class="form-control" name="option_agi_value[]" value="" maxlength="255" size="50">
 												</div>
 											</div>
 									</div>

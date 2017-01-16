@@ -28,21 +28,50 @@ require_once('goCRMAPISettings.php');
 	$postfields['tracking_group'] = $_POST['tracking_group'];
     
 	$route_option = $_POST['option'];
-	$route_option = array_diff($route_option, array( '' ));
-	
 	$route_desc = $_POST['route_desc'];
-	$route_desc = array_diff($route_desc, array( '' ));
-	
 	$route_menu = $_POST['route_menu'];
-	$route_menu = array_diff($route_menu, array( '' ));
-	
-	$option_route_value = $_POST['option_route_value'];
-	$option_route_value = array_filter($option_route_value);
-	$implode_value = implode(",", $option_route_value);
-	$option_route_value = explode(",", $implode_value);
+	$option_callmenu_value = $_POST['option_callmenu_value'];
+	$option_ingroup_value = $_POST['option_ingroup_value'];
+	$option_did_value = $_POST['option_did_value'];
+	$option_hangup_value = $_POST['option_hangup_value'];
+	$option_extension_value = $_POST['option_extension_value'];
+	$option_phone_value = $_POST['option_phone_value'];
+	$option_voicemail_value = $_POST['option_voicemail_value'];
+	$option_agi_value = $_POST['option_agi_value'];
 	
 	$option_route_context = $_POST['option_route_value_context'];
 	//$option_route_context_post = array_filter($option_route_context_post);
+	
+	$route_value = "";
+	for($i=0; $i < 14; $i++){
+		if($route_menu[$i] == "CALLMENU"){
+			$route_value .= $option_callmenu_value[$i];
+		}
+		if($route_menu[$i] == "INGROUP"){
+			$route_value .= $option_ingroup_value[$i];
+		}
+		if($route_menu[$i] == "DID"){
+			$route_value .= $option_did_value[$i];
+		}
+		if($route_menu[$i] == "HANGUP"){
+			$route_value .= $option_hangup_value[$i];
+		}
+		if($route_menu[$i] == "EXTENSION"){
+			$route_value .= $option_extension_value[$i];
+		}
+		if($route_menu[$i] == "PHONE"){
+			$route_value .= $option_phone_value[$i];
+		}
+		if($route_menu[$i] == "VOICEMAIL"){
+			$route_value .= $option_voicemail_value[$i];
+		}
+		if($route_menu[$i] == "AGI"){
+			$route_value .= $option_agi_value[$i];
+		}
+		$route_value .= "+";
+	}
+	//echo $route_value;
+	$option_route_value = explode("+", $route_value);
 	
 	$ingroup_context = "";
 	for($i=0; $i < 10; $i++){

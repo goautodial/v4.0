@@ -299,8 +299,86 @@ if ($ivr != NULL) {
 	$postfields["call_time_id"] = $call_time_id; 
 	$postfields["track_in_vdac"] = $track_in_vdac; 
 	$postfields["tracking_group"] = $tracking_group; 
-	$postfields["user_group"] = $user_group; 
-
+	$postfields["user_group"] = $user_group;
+	
+	// options
+	$route_option = $_POST['option'];
+	$route_menu = $_POST['route_menu'];
+	$route_desc = $_POST['route_desc'];
+	
+	$option_callmenu_value = $_POST['option_callmenu_value'];
+	$option_ingroup_value = $_POST['option_ingroup_value'];
+	$option_did_value = $_POST['option_did_value'];
+	$option_hangup_value = $_POST['option_hangup_value'];
+	$option_extension_value = $_POST['option_extension_value'];
+	$option_phone_value = $_POST['option_phone_value'];
+	$option_voicemail_value = $_POST['option_voicemail_value'];
+	$option_agi_value = $_POST['option_agi_value'];
+	
+	$option_route_context = $_POST['option_route_value_context'];
+	
+	$route_value = "";
+	for($i=0; $i < 14; $i++){
+		if($route_menu[$i] == "CALLMENU"){
+			$route_value .= $option_callmenu_value[$i];
+		}
+		if($route_menu[$i] == "INGROUP"){
+			$route_value .= $option_ingroup_value[$i];
+		}
+		if($route_menu[$i] == "DID"){
+			$route_value .= $option_did_value[$i];
+		}
+		if($route_menu[$i] == "HANGUP"){
+			$route_value .= $option_hangup_value[$i];
+		}
+		if($route_menu[$i] == "EXTENSION"){
+			$route_value .= $option_extension_value[$i];
+		}
+		if($route_menu[$i] == "PHONE"){
+			$route_value .= $option_phone_value[$i];
+		}
+		if($route_menu[$i] == "VOICEMAIL"){
+			$route_value .= $option_voicemail_value[$i];
+		}
+		if($route_menu[$i] == "AGI"){
+			$route_value .= $option_agi_value[$i];
+		}
+		$route_value .= "+";
+	}
+	//echo $route_value;
+	$option_route_value = explode("+", $route_value);
+	
+	$ingroup_context = "";
+	for($i=0; $i < 14; $i++){
+		if($route_menu[$i] == "INGROUP"){
+			$ingroup_context .= $_POST['handle_method_'.$i].",";
+			$ingroup_context .= $_POST['search_method_'.$i].",";
+			$ingroup_context .= $_POST['list_id_'.$i].",";
+			$ingroup_context .= $_POST['campaign_id_'.$i].",";
+			$ingroup_context .= $_POST['phone_code'.$i].",";
+			$ingroup_context .= $_POST['enter_filename_'.$i].",";
+			$ingroup_context .= $_POST['id_number_filename_'.$i].",";
+			$ingroup_context .= $_POST['confirm_filename_'.$i].",";
+			$ingroup_context .= $_POST['vid_digits_'.$i];
+			
+			$option_route_context[$i] = $ingroup_context;
+			$ingroup_context = "";
+		}
+	}
+	
+	$items = "";
+	for($i=0;$i < count($route_option);$i++){
+		if($route_option[$i] == "A") $route_option[$i] = '#';
+		if($route_option[$i] == "B") $route_option[$i] = '*';
+		if($route_option[$i] == "C") $route_option[$i] = 'TIMECHECK';
+		if($route_option[$i] == "D") $route_option[$i] = 'TIMEOUT';
+		if($route_option[$i] == "E") $route_option[$i] = 'INVALID';
+		$items .= $route_option[$i]."+".$route_desc[$i]."+".$route_menu[$i]."+".$option_route_value[$i]."+".$option_route_context[$i];
+		$items .= "|";
+	}
+	//$items_array = explode("|", $items);
+	$postfields['items'] = $items;
+	
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
