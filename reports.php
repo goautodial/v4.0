@@ -327,6 +327,7 @@ if($output->result == "success"){
 
 // DIAL STATUSES SUMMARY
 	if($pageTitle == "dispo"){
+		//var_dump($output->getReports->queryx);
 		echo '<div class="table-responsive">'.$output->getReports->TOPsorted_output.'</div>';
 	}// end of dispo
 
