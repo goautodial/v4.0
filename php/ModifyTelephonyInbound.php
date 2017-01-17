@@ -377,6 +377,9 @@ if ($ivr != NULL) {
 	}
 	//$items_array = explode("|", $items);
 	$postfields['items'] = $items;
+	//echo "<pre>";
+	//var_dump($items_array);
+	//echo "</pre>";
 	
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     $ch = curl_init();

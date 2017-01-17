@@ -1586,7 +1586,7 @@ if (isset($_POST["did"])) {
 																	<label class="col-sm-3 control-label">Voicemail Box: </label>
 																	<div class="col-sm-9">
 																		<div class="col-sm-6">
-																			<input type="text" name="option_voicemail_value[]" class="form-control" id="option_voicemail_input_<?php echo $i;?>" value="<?php if($ivr_options->option_route[$i] != "VOICEMAIL"){echo $ivr_options->option_route_value[$i];} ?>" maxlength="255" size="15">
+																			<input type="text" name="option_voicemail_value[]" class="form-control" id="option_voicemail_input_<?php echo $i;?>" value="<?php if($ivr_options->option_route[$i] == "VOICEMAIL"){echo $ivr_options->option_route_value[$i];} ?>" maxlength="255" size="15">
 																		</div>
 																		<div class="col-sm-6">
 																			<select class="col-sm-6 select2 form-control" style="width:100%;" id="option_voicemail_select_<?php echo $i;?>">
@@ -1595,7 +1595,7 @@ if (isset($_POST["did"])) {
 																				$voicemail_option = '';
 																				for($x=0;$x < count($voicemails->voicemail_id);$x++){
 																					$voicemail_option .= '<option value="'.$voicemails->voicemail_id[$x].'"';
-																						if($ivr_options->option_route_value[$i] == $voicemail_option->voicemail_id[$x] && $ivr_options->option_route[$i] == "VOICEMAIL"){ $voicemail_option .= ' selected';}
+																						if($ivr_options->option_route_value[$i] == $voicemails->voicemail_id[$x]){ $voicemail_option .= ' selected';}
 																					$voicemail_option .= '>'.$voicemails->voicemail_id[$x].' - '.$voicemails->fullname[$x].'</option>';
 																				}
 																				echo $voicemail_option;
