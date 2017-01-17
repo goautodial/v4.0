@@ -135,7 +135,14 @@ if ($validated == 1) {
 	$group_permission .= '},';
 	
 	$group_permission .= '"reportsanalytics":{';
-	$group_permission .= '"reportsanalytics_display":' . (isset($_POST["reportsanalytics_display"]) ? '"Y"' : '"N"');
+	$group_permission .= '"reportsanalytics_statistical_display":' . (isset($_POST["reportsanalytics_statistical_display"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"reportsanalytics_agent_time_display":' . (isset($_POST["reportsanalytics_agent_time_display"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"reportsanalytics_agent_performance_display":' . (isset($_POST["reportsanalytics_agent_performance_display"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"reportsanalytics_dial_status_display":' . (isset($_POST["reportsanalytics_dial_status_display"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"reportsanalytics_agent_sales_display":' . (isset($_POST["reportsanalytics_agent_sales_display"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"reportsanalytics_sales_tracker_display":' . (isset($_POST["reportsanalytics_sales_tracker_display"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"reportsanalytics_inbound_call_display":' . (isset($_POST["reportsanalytics_inbound_call_display"]) ? '"Y"' : '"N"') . ',';
+	$group_permission .= '"reportsanalytics_export_call_display":' . (isset($_POST["reportsanalytics_export_call_display"]) ? '"Y"' : '"N"');
 	$group_permission .= '},';
 	
 	$group_permission .= '"recordings":{';

@@ -9,6 +9,13 @@
 	$user = \creamy\CreamyUser::currentUser();
 	
 	$perm = $ui->goGetPermissions('reportsanalytics', $_SESSION['usergroup']);
+	
+	$allowed_page = 0;
+	foreach ($perm as $key => $value) {
+		if ($value == 'Y') {
+			$allowed_page++;
+		}
+	}
 ?>
 <html>
     <head>
@@ -78,7 +85,7 @@
             ?>
                 <!-- Main content -->
                 <section class="content">
-                <?php if ($perm->reportsanalytics_display !== 'N') { ?>
+                <?php if ($allowed_page > 0) { ?>
                     <div class="row">
                         <div class="col-lg-9">
                             <div class="panel panel-default">
@@ -114,14 +121,16 @@
                                 <div class="form-group">
                                     <label for="filter_type">Type</label>
                                     <select class="form-control select2" id="filter_type" style="width:100%;">
-                                        <option value="stats">Statistical Report</option>
-                                        <option value="agent_detail">Agent Time Detail</option>
-                                        <option value="agent_pdetail">Agent Performance Detail</option>
-                                        <option value="dispo">Dial Statuses Summary</option>
-                                        <option value="sales_agent">Sales Per Agent</option>
-                                        <option value="sales_tracker">Sales Tracker</option>
-                                        <option value="inbound_report">Inbound Call Report</option>
-                                        <option value="call_export_report">Export Call Report</option>
+									<?php
+                                        if ($perm->reportsanalytics_statistical_display == 'Y') { echo '<option value="stats">Statistical Report</option>'; }
+                                        if ($perm->reportsanalytics_agent_time_display == 'Y') { echo '<option value="agent_detail">Agent Time Detail</option>'; }
+                                        if ($perm->reportsanalytics_agent_performance_display == 'Y') { echo '<option value="agent_pdetail">Agent Performance Detail</option>'; }
+                                        if ($perm->reportsanalytics_dial_status_display == 'Y') { echo '<option value="dispo">Dial Statuses Summary</option>'; }
+                                        if ($perm->reportsanalytics_agent_sales_display == 'Y') { echo '<option value="sales_agent">Sales Per Agent</option>'; }
+                                        if ($perm->reportsanalytics_sales_tracker_display == 'Y') { echo '<option value="sales_tracker">Sales Tracker</option>'; }
+                                        if ($perm->reportsanalytics_inbound_call_display == 'Y') { echo '<option value="inbound_report">Inbound Call Report</option>'; }
+                                        if ($perm->reportsanalytics_export_call_display == 'Y') { echo '<option value="call_export_report">Export Call Report</option>'; }
+									?>
                                         <!--<option value="dashboard">Dashboard</option>
                                         <option value="cdr">Call History (CDRs)</option>-->
                                     </select>
