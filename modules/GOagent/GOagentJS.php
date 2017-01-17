@@ -1212,6 +1212,9 @@ $(document).ready(function() {
         e.preventDefault();
         var inbArray = '';
         var CloserSelectList = '';
+        var origPreloader = $(".preloader center").html();
+        $(".preloader center").append('<br><br><span style="font-size: 24px; color: white;"><?=$lh->translationFor('logging_in_phones')?>...</span>');
+        $(".preloader").fadeIn('slow');
         $("#scSubmit").addClass('disabled');
         $("#selectedINB").find('abbr').each(function(index) {
             inbArray += $(this).text() + "|";
@@ -1221,12 +1224,12 @@ $(document).ready(function() {
         
         if (use_webrtc && !phone.isConnected()) {
             phone.start();
-            
-            phoneRegistered = true;
         }
         
-        setTimeout(function() {
-            if (!registrationFailed) {
+        var loggingInUser = setInterval(function() {
+            if (!registrationFailed && phoneRegistered) {
+                clearInterval(loggingInUser);
+                
                 var postData = {
                     goAction: 'goLoginUser',
                     goUser: uName,
@@ -1249,10 +1252,13 @@ $(document).ready(function() {
                     }
                 })
                 .done(function (result) {
+                    $(".preloader").fadeOut('slow');
+                    $(".preloader center").html(origPreloader);
                     if (result.result != 'error') {
                         $("#select-campaign").modal('hide');
                         MainPanelToFront();
                         
+                        updateButtons();
                         refresh_interval = 1000;
                         is_logged_in = 1;
                         check_if_logged_out = 1;
@@ -1438,14 +1444,20 @@ $(document).ready(function() {
                     }
                 })
                 .fail(function() {
+                    $(".preloader").fadeOut('slow');
+                    $(".preloader center").html(origPreloader);
                     refresh_interval = 730000;
                     is_logged_in = 0;
                     $("#scSubmit").removeClass('disabled');
                 });
             } else {
                 $("#select-campaign").modal('hide');
+                if (registrationFailed && !phoneRegistered) {
+                    $(".preloader").fadeOut('slow');
+                    $(".preloader center").html(origPreloader);
+                }
             }
-        }, 6000);
+        }, 3000);
     });
     
     $("input.digits-only, input.phonenumbers-only").keypress(function (e) {
@@ -3325,7 +3337,7 @@ function CheckForIncoming () {
             if ( (LIVE_campaign_recording == 'ALLCALLS') || (LIVE_campaign_recording == 'ALLFORCE') )
                 {all_record = 'YES';}
 
-            if ( (view_scripts == 1) && (Call_Script_ID.length > 0) ) {
+            if ( (view_scripts == 1) && (Call_Script_ID.length > 0 || campaign_script.length > 0) ) {
                 var SCRIPT_web_form = "http://"+hostURL+"/testing.php";
                 var TEMP_SCRIPT_web_form = URLDecode(SCRIPT_web_form,'YES','DEFAULT','1');
                 //$("#ScriptButtonSpan").html("<A HREF=\"#\" onClick=\"ScriptPanelToFront();\"><IMG SRC=\"./images/script_tab.png\" ALT=\"SCRIPT\" WIDTH=143 HEIGHT=27 BORDER=0></A>");
@@ -3346,24 +3358,24 @@ function CheckForIncoming () {
             if (email_enabled > 0) {
                 //EmailContentsLoad();
             }
-            if (Call_Auto_Launch == 'SCRIPT') {
+            if (get_call_launch == 'SCRIPT') {
                 if (delayed_script_load == 'YES') {
                     LoadScriptContents();
                 }
                 //ScriptPanelToFront();
                 $('#agent_tablist a[href="#scripts"]').tab('show');
             }
-            if (Call_Auto_Launch == 'FORM') {
+            if (get_call_launch == 'FORM') {
                 //FormPanelToFront();
             }
-            if (Call_Auto_Launch == 'EMAIL') {
+            if (get_call_launch == 'EMAIL') {
                 //EmailPanelToFront();
             }
 
-            if (Call_Auto_Launch == 'WEBFORM') {
+            if (get_call_launch == 'WEBFORM') {
                 window.open(TEMP_VDIC_web_form_address, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
             }
-            if (Call_Auto_Launch == 'WEBFORMTWO') {
+            if (get_call_launch == 'WEBFORMTWO') {
                 window.open(TEMP_VDIC_web_form_address_two, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
             }
 
@@ -7910,7 +7922,7 @@ function LoadScriptContents() {
         if (result.result == 'success') {
             new_script_content = result.content;
             new_script_content = new_script_content.replace(" + ", "!PLUS!");
-            new_script_content = new_script_content.replace(/\+/, " ");
+            new_script_content = new_script_content.replace(/\+/g, " ");
             new_script_content = new_script_content.replace("!PLUS!", " + ");
             $("#ScriptContents").html(new_script_content);
         }
