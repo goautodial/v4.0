@@ -1129,12 +1129,12 @@ if (isset($_POST["did"])) {
 													<label class="col-sm-3 control-label" for="menu_prompt">Menu Greeting: </label>
 													<div class="col-sm-9">
 														<select name="menu_prompt" id="menu_prompt" class="form-control select2" style="width:100%;">
-															<option value="goWelcomeIVR" selected>-- Default Value --</option>
+															<option value="goWelcomeIVR">-- Default Value --</option>
 															<?php
 																for($i=0;$i<count($voicefiles->file_name);$i++){
 																	$file = substr($voicefiles->file_name[$i], 0, -4);
 															?>
-																<option value="<?php echo $file;?>" <?php if($voicefiles->file[$i] == $output->data->menu_prompt){echo "selected";}?> ><?php echo $file;?></option>
+																<option value="<?php echo $file;?>" <?php if($file == $output->data->menu_prompt){echo "selected";}?> ><?php echo $file;?></option>
 															<?php
 																}
 															?>
@@ -1144,19 +1144,19 @@ if (isset($_POST["did"])) {
 												<div class="form-group">
 													<label class="col-sm-3 control-label" for="menu_timeout">Menu Timeout: </label>
 													<div class="col-sm-9">
-														<input type="number" name="menu_timeout" id="menu_timeout" class="form-control" value="10" min="0" required>
+														<input type="number" name="menu_timeout" id="menu_timeout" class="form-control" value="<?php echo $output->data->menu_timeout;?>" min="0" required>
 													</div>
 												</div>
 												<div class="form-group">
 													<label class="col-sm-3 control-label" for="menu_timeout_prompt">Menu Timeout Greeting: </label>
 													<div class="col-sm-9">
-														<select name="menu_timeout_prompt " id="menu_timeout_prompt" class="form-control select2" style="width:100%;">
-															<option value="" selected>-- Default Value --</option>
+														<select name="menu_timeout_prompt" id="menu_timeout_prompt" class="form-control select2" style="width:100%;">
+															<option value="">-- Default Value --</option>
 															<?php
 																for($i=0;$i<count($voicefiles->file_name);$i++){
 																	$file = substr($voicefiles->file_name[$i], 0, -4);
 															?>
-																<option value="<?php echo $file;?>" <?php if($voicefiles->file[$i] == $output->data->menu_timeout_prompt){echo "selected";}?> ><?php echo $file;?></option>
+																<option value="<?php echo $file;?>" <?php if($file == $output->data->menu_timeout_prompt){echo "selected";}?> ><?php echo $file;?></option>
 															<?php
 																}
 															?>				
@@ -1167,12 +1167,12 @@ if (isset($_POST["did"])) {
 													<label class="col-sm-3 control-label" for="menu_invalid_prompt">Menu Invalid Greeting: </label>
 													<div class="col-sm-9">
 														<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control select2" style="width:100%;">
-															<option value="" selected>-- Default Value --</option>
+															<option value="">-- Default Value --</option>
 															<?php
 																for($i=0;$i<count($voicefiles->file_name);$i++){
 																	$file = substr($voicefiles->file_name[$i], 0, -4);
 															?>
-																<option value="<?php echo $file;?>" <?php if($voicefiles->file[$i] == $output->data->menu_invalid_prompt){echo "selected";}?> ><?php echo $file;?></option>
+																<option value="<?php echo $file;?>" <?php if($file == $output->data->menu_invalid_prompt){echo "selected";}?> ><?php echo $file;?></option>
 															<?php
 																}
 															?>				
@@ -1188,7 +1188,9 @@ if (isset($_POST["did"])) {
 												<div class="form-group">
 													<label class="col-sm-3 control-label" for="menu_time_check">Menu Time Check: </label>
 													<div class="col-sm-9">
-														<select name="menu_time_check" id="menu_time_check" class="form-control"><option value="0" <?php if($output->data->menu_time_check == "0"){echo "selected";}?> > 0 - No Realtime Tracking </option><option value="1" <?php if($output->data->menu_time_check == "1"){echo "selected";}?> > 1 - Realtime Tracking </option>	
+														<select name="menu_time_check" id="menu_time_check" class="form-control">
+															<option value="0" <?php if($output->data->menu_time_check == "0"){echo "selected";}?> > 0 - No Realtime Tracking </option>
+															<option value="1" <?php if($output->data->menu_time_check == "1"){echo "selected";}?> > 1 - Realtime Tracking </option>
 														</select>
 													</div>
 												</div>
@@ -1199,7 +1201,7 @@ if (isset($_POST["did"])) {
 															<?php
 																for($x=0; $x<count($calltimes->call_time_id);$x++){
 															?>
-																<option value="<?php echo $calltimes->call_time_id[$x];?>" <?php if($calltimes->call_time_id[$i] == $output->data->call_time_id){echo "selected";} ?> > <?php echo $calltimes->call_time_id[$x].' - '.$calltimes->call_time_name[$x]; ?> </option>
+																<option value="<?php echo $calltimes->call_time_id[$x];?>" <?php if($calltimes->call_time_id[$x] == $output->data->call_time_id){echo "selected";} ?> > <?php echo $calltimes->call_time_id[$x].' - '.$calltimes->call_time_name[$x]; ?> </option>
 															<?php
 																}
 															?>
@@ -2330,7 +2332,7 @@ if (isset($_POST["did"])) {
 								swal({title: "Success!",text: "IVR has been successfully updated!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 							} else {
 								sweetAlert("Oops...","Something went wrong! " + data, "error");
-								location.reload();
+								//location.reload();
 							}
 							
 						});

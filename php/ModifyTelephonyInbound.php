@@ -232,20 +232,20 @@ if ($ivr != NULL) {
 		$menu_name = stripslashes($menu_name);
 	}
 	
-    $menu_prompt = NULL; if (isset($_POST["menu_prompt"])) { 
+    $menu_prompt = NULL; if (isset($_POST["menu_prompt"])) {
 		$menu_prompt = $_POST["menu_prompt"]; 
 		$menu_prompt = stripslashes($menu_prompt);
 	}
 	
-    $menu_timeout = NULL; if (isset($_POST["menu_timeout"])) { 
+    $menu_timeout = NULL; if (isset($_POST["menu_timeout"])) {
 		$menu_timeout = $_POST["menu_timeout"]; 
 		$menu_timeout = stripslashes($menu_timeout);
-	}	
+	}
 
-	$menu_timeout_prompt = NULL; if (isset($_POST["menu_timeout_prompt"])) { 
+	$menu_timeout_prompt = NULL; if (isset($_POST["menu_timeout_prompt"])) {
 		$menu_timeout_prompt = $_POST["menu_timeout_prompt"]; 
 		$menu_timeout_prompt = stripslashes($menu_timeout_prompt);
-	}	
+	}
 	
 	$menu_invalid_prompt = NULL; if (isset($_POST["menu_invalid_prompt"])) { 
 		$menu_invalid_prompt = $_POST["menu_invalid_prompt"]; 
@@ -294,7 +294,6 @@ if ($ivr != NULL) {
 	$postfields["menu_timeout_prompt"] = $menu_timeout_prompt; 
 	$postfields["menu_invalid_prompt"] = $menu_invalid_prompt; 
 	$postfields["menu_repeat"] = $menu_repeat; 
-
 	$postfields["menu_time_check"] = $menu_time_check; 
 	$postfields["call_time_id"] = $call_time_id; 
 	$postfields["track_in_vdac"] = $track_in_vdac; 
