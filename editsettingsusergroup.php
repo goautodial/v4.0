@@ -211,6 +211,28 @@ if (isset($_POST["usergroup_id"])) {
 												</select>
 											</div>
 										</div>
+										<div class="form-group row">
+											<label for="group_level" class="col-sm-2 control-label">Allowed Campaigns</label>
+											<div class="col-sm-10 mb">
+												<div class="checkbox c-checkbox" style="margin-right: 15px;">
+													<?php
+													$checkAllCamp = (preg_match("/ALL-CAMPAIGNS/", $output->data->allowed_campaigns) ? ' checked' : '');
+													?>
+													<label><input id="camp-all" name="allowed_camp[]" type="checkbox" value="-ALL-CAMPAIGNS-"<?=$checkAllCamp?>><span class="fa fa-check"></span> <strong>ALL-CAMPAIGNS - USERS CAN VIEW ANY CAMPAIGN</strong></label>
+												</div>
+												<?php
+												$camp_list = $ui->API_getListAllCampaigns();
+												if (count($camp_list->campaign_id) > 0) {
+													foreach ($camp_list->campaign_id as $k => $camp) {
+														$checkCamp = (preg_match("/\s{$camp}\s/", $output->data->allowed_campaigns) ? ' checked' : '');
+														echo '<div class="checkbox c-checkbox" style="margin-right: 15px;">';
+														echo '<label><input id="camp-'.$camp.'" name="allowed_camp[]" type="checkbox" value="'.$camp.'"'.$checkCamp.'><span class="fa fa-check"></span> '.$camp.' - '.$camp_list->campaign_name[$k].'</label>';
+														echo '</div>';
+													}
+												}
+												?>
+											</div>
+										</div>
 										<!--
 										<div class="form-group row">
 											<label for="group_list_id" class="col-sm-2 control-label">Group List ID</label>

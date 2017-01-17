@@ -39,6 +39,15 @@ if ($validated == 1) {
 		$shift_enforcement = stripslashes($shift_enforcement);
 	}
 	
+	$allowed_campaigns = " ";
+	$allowed_camp = $_REQUEST['allowed_camp'];
+	if (count($allowed_camp) > 0) {
+		foreach ($allowed_camp as $camp) {
+			$allowed_campaigns .= "{$camp} ";
+		}
+	}
+	$allowed_campaigns .= "-";
+	
 	$group_permission  = '{';
 	
 	$group_permission .= '"dashboard":{';
@@ -176,6 +185,7 @@ if ($validated == 1) {
 	$postfields["group_level"] = $group_level; #Desired value for user (required)
 	$postfields["forced_timeclock_login"] = $forced_timeclock_login; #Desired value for user (required)
 	$postfields["shift_enforcement"] = $shift_enforcement; #Desired value for user (required)
+	$postfields["allowed_campaigns"] = $allowed_campaigns;
 	$postfields["permissions"] = $group_permission;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

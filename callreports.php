@@ -79,7 +79,7 @@
                 </section>
             
             <?php
-                $campaigns = $ui->API_getListAllCampaigns();
+                $campaigns = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
 				$ingroups = $ui->API_getInGroups();
 				$disposition = $ui->API_getAllDispositions();
             ?>

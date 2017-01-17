@@ -3900,11 +3900,13 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 
-	public function API_getListAllCampaigns($goUser, $goPass, $goAction, $responsetype){
+	#### OLD PARAMS: $goUser, $goPass, $goAction, $responsetype
+	public function API_getListAllCampaigns($user_group = ''){
 	    $url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
+		 $postfields["user_group"] = $user_group;
 	    $postfields["responsetype"] = responsetype; #json. (required)
 
 	    $ch = curl_init();
