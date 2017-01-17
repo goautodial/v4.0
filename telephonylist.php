@@ -229,7 +229,7 @@
 		                	<div class="panel panel-default">
 								<div class="panel-body">
 									<legend>Lists</legend>
-
+									<button type="button" class="btn btn-primary view-dnc">View DNC</button>
 									<table class="table table-striped table-bordered table-hover" id="table_lists">
 									   <thead>
 										  <tr>
@@ -552,6 +552,42 @@
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 	<!-- End of modal -->
+	
+	<!-- Modal -->
+	<div id="modal_view_list_dnc" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title"><b>DNC List</b></h4>
+	      </div>
+	      <div class="modal-body">
+			<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
+				<div class="table-responsive">
+					<table id="dnc_list" class="table table-bordered" style="width: 100%;">
+						<thead>
+							<tr>
+								<th>Phone NUmber</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody id="dnc_container">
+							<!-- Data Here -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+			<button type="button" class="btn btn-primary add-dnc">Add DNC</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	    <!-- End of modal content -->
+	  </div>
+	</div>
 
 		<?php print $ui->standardizedThemeJS();?>
 
@@ -560,8 +596,36 @@
    		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
 
 		<script type="text/javascript">
+			function get_list_dnc(){
+				$.ajax({
+					url: "./php/GetListDNC.php",
+					type: 'POST',
+					data: {
+						
+					},
+					dataType: 'json',
+					success: function(response) {
+							// var values = JSON.parse(response.result);
+							// console.log(response);
+
+							$('#modal_view_list_dnc').modal('show');
+							var table = $('#dnc_list').DataTable();
+							table.fnClearTable();
+							table.fnDestroy();
+							$('#dnc_container').html(response);
+							$('#dnc_list').DataTable({
+								"searching": true,
+								bFilter: true
+							});
+							$("#dnc_list").css("width","100%");
+						}
+				});
+			}
 
 			$(document).ready(function() {
+				$(document).on('click', '.view-dnc', function(){
+					get_list_dnc();
+				});
 				/*****
 				** Functions for List
 				*****/
