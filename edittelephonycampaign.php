@@ -295,8 +295,14 @@ $lists = $ui->API_goGetAllLists();
 																	<select name="dial_prefix" id="dial_prefix" class="form-control">
 																		<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
 																		<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
-																			<?php if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') { ?>
-																				<option value="<?php echo $carriers->carrier_id[$i]; ?>" <?php if($campaign->data->dial_prefix == $carriers->carrier_id[$i]) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
+																			<?php
+																			if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') {
+																				$prefixes = explode("\n", $carriers->dialplan_entry[$i]);
+																				$prefix = explode(",", $prefixes[0]);
+																				$dial_prefix = substr(ltrim($prefix[0], "exten => _ "), 0, (strpos(".",$prefix[0]) - 1));
+																				$dial_prefix = str_replace("N", "", str_replace("X", "", $dial_prefix));
+																			?>
+																				<option value="<?php echo $dial_prefix; ?>" <?php if($campaign->data->dial_prefix == $dial_prefix) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
 																			<?php } ?>
 																		<?php } ?>
 																	</select>
