@@ -9,10 +9,6 @@
 	### License: AGPLv2		   ###
 	###########################################################
 
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
@@ -39,17 +35,24 @@ error_reporting(E_ALL);*/
 
     	<!-- Wizard Form style -->
     	<link href="css/style.css" rel="stylesheet" type="text/css" />
+		
 
         <?php print $ui->creamyThemeCSS(); ?>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+		<!-- Bootstrap Color Picker -->
+  		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
+		<!-- bootstrap color picker -->
+		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
         <!-- SELECT2-->
    		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
    		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
    		<!-- SELECT2-->
    		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
+		
+		<
 			<style type="text/css">
 				.select2-container{
 					width: 100% !important;
@@ -107,7 +110,7 @@ error_reporting(E_ALL);*/
 						background-image: none;
 					  }
 					}
-				  }
+				}
 			</style>
     </head>
      <?php print $ui->creamyBody(); ?>
@@ -152,6 +155,7 @@ error_reporting(E_ALL);*/
 	$ivr = $ui->API_getIVR();
 	$voicemails = $ui->API_goGetVoiceMails();
 	$users = $ui->API_goGetAllUserLists();
+	$carriers = $ui->getCarriers();
 ?>
 							 <div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
@@ -471,7 +475,6 @@ error_reporting(E_ALL);*/
 				    				<label class="control-label col-lg-4">Call Route:</label>
 				    				<div class="col-lg-8 mb">
 				    					<select id="call-route" name="call_route" class="form-control">
-				                            <option value="NONE"></option>
 				                            <option value="INGROUP">INGROUP (campaign)</option>
 				                            <option value="IVR">IVR (callmenu)</option>
 				                            <option value="AGENT">AGENT</option>
@@ -480,12 +483,12 @@ error_reporting(E_ALL);*/
 				    				</div>
 				    			</div>
 								<div class="form-group inbound blended hide">
-									<label class="call-route-div-label control-label col-lg-4">Select Call Route:</label>
-									<div class="callroute-dummy-div col-lg-8 mb">
-										<input name="call_route_text" type="text" class="form-control">
-									</div>
-									<div class="ingroup-div col-lg-8 mb hide">
-										<select id="ingroup-text" name="call_route_text" class="form-control">
+									<label class="call-route-div-label control-label col-lg-4">INGROUP:</label>
+									<!--<div class="callroute-dummy-div col-lg-8 mb">-->
+									<!--	<input name="call_route_text" type="text" class="form-control">-->
+									<!--</div>-->
+									<div class="ingroup-div col-lg-8 mb">
+										<select id="ingroup-text" name="ingroup_text" class="form-control">
 											<?php
 												for($i=0;$i < count($ingroup->group_id);$i++){
 													echo '<option value="'.$ingroup->group_id[$i].'">'.$ingroup->group_name[$i].'</option>';
@@ -494,7 +497,7 @@ error_reporting(E_ALL);*/
 										</select>
 									</div>
 									<div class="ivr-div col-lg-8 mb hide">
-										<select id="ivr-text" name="call_route_text" class="form-control">
+										<select id="ivr-text" name="ivr_text" class="form-control">
 											<?php
 												for($i=0;$i < count($ivr->menu_id);$i++){
 													echo '<option value="'.$ivr->menu_id[$i].'">'.$ivr->menu_name[$i].'</option>';
@@ -503,7 +506,7 @@ error_reporting(E_ALL);*/
 										</select>
 									</div>
 									<div class="agent-div col-lg-8 mb hide">
-										<select id="agent-text" name="call_route_text" class="form-control">
+										<select id="agent-text" name="agent_text" class="form-control">
 											<?php
 												for($i=0;$i < count($users->user_id);$i++){
 													echo '<option value="'.$users->user_id[$i].'">'.$users->full_name[$i].'</option>';
@@ -512,7 +515,7 @@ error_reporting(E_ALL);*/
 										</select>
 									</div>
 									<div class="voicemail-div col-lg-8 mb hide">
-										<select id="voicemail-text" name="call_route_text" class="form-control">
+										<select id="voicemail-text" name="voicemail_text" class="form-control">
 											<?php
 												for($i=0;$i < count($voicemails->voicemail_id);$i++){
 													echo '<option value="'.$voicemails->voicemail_id[$i].'">'.$voicemails->fullname[$i].'</option>';
@@ -524,7 +527,7 @@ error_reporting(E_ALL);*/
 				    			<div class="form-group inbound blended hide">
 				    				<label class="control-label col-lg-4">Group Color:</label>
 				    				<div class="col-lg-8 mb">
-				    					<input id="group-color" name="group_color" type="text" class="form-control">
+				    					<input id="group-color" name="group_color" type="text" class="form-control colorpicker" val="#ffffff">
 				    				</div>
 				    			</div>
 				    			<div class="form-group survey hide">
@@ -536,6 +539,25 @@ error_reporting(E_ALL);*/
 				                        </select>
 				    				</div>
 				    			</div>
+								<div class="form-group carrier-to-use">
+									<label class="control-label col-lg-4"><small>Carrier use for Campaign</small>:</label>
+									<div class="col-lg-8 mb">
+										<select name="dial_prefix" id="dial_prefix" class="form-control">
+											<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
+											<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
+												<?php if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') { ?>
+													<option value="<?php echo $carriers->carrier_id[$i]; ?>" <?php if($campaign->data->dial_prefix == $carriers->carrier_id[$i]) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
+												<?php } ?>
+											<?php } ?>
+										</select>
+									</div>
+								</div>
+								<div class="form-group carrier-to-use custom-prefix">
+									<label class="control-label col-lg-4 ">Custom Prefix:</label>
+									<div class="col-lg-8 mb">
+										<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if(($campaign->data->dial_prefix == "CUSTOM") && ($campaign->data->dial_prefix == 0) || ($campaign->data->dial_prefix == '')){echo 9;}else{echo $campaign->data->dial_prefix;} ?>" minlength="9" maxlength="20">
+									</div>							
+								</div>
 				    			<div class="form-group survey hide">
 				    				<label class="control-label col-lg-4">Number of Channels:</label>
 				    				<div class="col-lg-8 mb">
@@ -558,7 +580,7 @@ error_reporting(E_ALL);*/
 				    		</fieldset>
 
 				    		<!-- STEP 2 -->
-							<h4>Selecting a Dial Method
+							<h4>Additional Information
 	                           <br>
 	                           <small>Assign then Enter Account and Login Details</small>
 	                        </h4>
@@ -700,33 +722,6 @@ error_reporting(E_ALL);*/
 											<option value="20.0">20.0</option>
 										</select>
 				    				</div>
-				    			</div>
-				    			<?php $carriers = $ui->getCarriers(); ?>
-				    			<div class="form-group col-lg-12 carrier-to-use">
-				    				<label class="control-label col-lg-5">Carrier to use for this campaign:</label>
-				    				<div class="col-lg-7 mb">
-										<div class="col-lg-12">
-											<div class="row">
-												<select name="dial_prefix" id="dial_prefix" class="form-control">
-													<option value="CUSTOM" selected="selected">CUSTOM DIAL PREFIX</option>
-													<?php
-														for($i=0;$i<=count($carriers->carrier_id);$i++) {
-															if(!empty($carriers->carrier_id[$i])) {
-																if($carriers->active[$i] == "Y"){
-													?>
-															<option value="<?php echo $carriers->carrier_id[$i]; ?>" <?php if($campaign->data->dial_prefix == $carriers->carrier_id[$i]) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
-													<?php
-																}
-															}
-														}
-													?>
-												</select>
-											</div>
-											<div class="row mt custom-prefix">
-												<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="9" min="0" maxlength="15" required>
-											</div>
-										</div>
-									</div>
 				    			</div>
 			    			<!-- <div class="form-group">
 			    				<label class="control-label col-lg-4">Description:</label>
@@ -1523,6 +1518,16 @@ error_reporting(E_ALL);*/
 					}
 			});
 		}
+		
+		function dialPrefix(value){
+			if(value == "CUSTOM"){
+				$('#custom_prefix').removeClass('hide');
+				$("#custom_prefix").attr("required", true);
+			}else{
+				$('#custom_prefix').addClass('hide');
+				$("#custom_prefix").attr("required", false);
+			}
+		}
 
 		$(document).ready(function(){
 			//$('#modal_form_lists').modal('show');
@@ -1530,7 +1535,17 @@ error_reporting(E_ALL);*/
 				theme: 'bootstrap'
 			});
 			
+			
+			
+			var dial_prefix = $('#dial_prefix').val();
+			dialPrefix(dial_prefix);
+
+			$('#dial_prefix').change(function(){
+				dialPrefix($(this).val());
+			});
+			$(".colorpicker").colorpicker();
 			$('#add_campaign').on('shown.bs.modal', function () {
+				$(".colorpicker").colorpicker();
 				$('#did-tfn-extension').autocomplete({
 					//source: "php/searchDID.php",
 					source: function(request,response) {
@@ -1543,11 +1558,41 @@ error_reporting(E_ALL);*/
 							dataType: 'json',
 							success: function(responsedata) {
 								console.log(responsedata);
-									response($.parseJSON(responsedata))
+								response($.parseJSON(responsedata))
 							}
 						});
 					},
-					minLength: 2
+					minLength: 2,
+					select: function( event, ui ) {
+						var did = ui.item.value;
+						$.ajax({
+							url: "./php/getDIDSettings.php",
+							type: 'POST',
+							data: {
+								did : did
+							},
+							dataType: 'json',
+							success: function(response) {
+								//console.log(response);
+								$('#did-tfn-extension').val(did);
+								if (response.did_route == "IN_GROUP") {
+									$('#call-route').val("INGROUP").trigger('change');
+									$('#ingroup-text').val(response.group_id).trigger('change');
+                                }else if (response.did_route == "IVR") {
+									$('#call-route').val("IVR").trigger('change');
+									$('#ivr-text').val(response.menu_id).trigger('change');
+                                }else if (response.did_route == "AGENT") {
+									$('#call-route').val("AGENT").trigger('change');
+                                    $('#agent-text').val(response.user).trigger('change');
+                                }else if (response.did_route == "VOICEMAIL") {
+									$('#call-route').val("VOICEMAIL").trigger('change');
+                                    $('#voicemail-text').val(response.voicemail_ext).trigger('change');
+                                }
+								$('#group-color').val(response.group_color);
+							}
+						});
+						return false;
+					}
 				});
 				$( "#did-tfn-extension" ).autocomplete( "option", "appendTo", "#campaign_form" );
 			});
@@ -1605,8 +1650,8 @@ error_reporting(E_ALL);*/
 				var myFile = $(this).prop('files');
 				var Filename = myFile[0].name;
 				
-				$('.wav-text-label').val(Filename);
-				console.log(myFile);
+				$('.wav-text-label').val(Filename.slice(0, -4));
+				//console.log(myFile);
 			});
 			
 			$(document).on('click','.edit-list',function() {
@@ -2713,14 +2758,16 @@ error_reporting(E_ALL);*/
 								$('.survey').addClass('hide');
 								$('.copy-from').addClass('hide');
 								$('.inbound').removeClass('hide');
-								$('.carrier-to-use').addClass('hide');
+								$('.carrier-to-use').removeClass('hide');
+								$('#dial-method').val("RATIO").trigger('change');
+								dialMethod("RATIO");
 							}else if(selectedTypeVal == 'survey'){
 								$('.outbound').addClass('hide');
 								$('.blended').addClass('hide');
 								$('.inbounce').addClass('hide');
 								$('.copy-from').addClass('hide');
 								$('.survey').removeClass('hide');
-								$('.carrier-to-use').addClass('hide');
+								$('.carrier-to-use').removeClass('hide');
 								$('.dial-method-row').addClass('hide');
 								$('.auto-dial-level').addClass('hide');
 							}else if(selectedTypeVal == 'copy'){
@@ -2741,6 +2788,8 @@ error_reporting(E_ALL);*/
 								$('.copy-from').addClass('hide');
 								$('.blended').removeClass('hide');
 								$('.carrier-to-use').removeClass('hide');
+								$('#dial-method').val("RATIO").trigger('change');
+								dialMethod("RATIO");
 							}else if(selectedTypeVal == 'outbound'){
 								$('.inbound').addClass('hide');
 								$('.blended').addClass('hide');
@@ -2846,6 +2895,7 @@ error_reporting(E_ALL);*/
 		}
 	
 		function dialMethod(value){
+			//console.log(value);
 			if(value == "RATIO"){
 				$('#auto-dial-level').prop('disabled', false);
 				$('#auto-dial-level option[value=OFF]').prop('disabled', true);

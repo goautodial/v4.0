@@ -687,7 +687,7 @@ $lists = $ui->API_goGetAllLists();
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="col-sm-3 control-label">Answering Machine Mesage:</label>
+															<label class="col-sm-3 control-label">Answering Machine Message:</label>
 															<div class="col-sm-9 mb">
 																<div class="input-group">
 																	<input type="text" class="form-control" id="am_message_exten" name="am_message_exten" value="<?php echo $campaign->data->am_message_exten;?>">
@@ -696,28 +696,13 @@ $lists = $ui->API_goGetAllLists();
 																	</span>
 																</div><!-- /input-group -->
 																<select class="form-control am_message_chooser" id="am_message_chooser" name="am_message_chooser">
-																	<option value="" selected="">-- Default Value --</option>
+																	<option value="">-- Default Value --</option>
 																	<?php for($i=0;$i<=count($voicefiles->file_name);$i++) { ?>
 																		<?php if(!empty($voicefiles->file_name[$i])) { ?>
-																			<option value="<?php echo $carriers->file_name[$i]; ?>"><?php echo $voicefiles->file_name[$i]; ?></option>
+																			<option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>"><?php echo substr($voicefiles->file_name[$i], 0, -4); ?></option>
 																		<?php } ?>
 																	<?php } ?>
 																</select>
-															</div>
-														</div>
-														<div class="form-group">
-															<label class="col-sm-3 control-label">AMD send to Action:</label>
-															<div class="col-sm-9 mb">
-																<select class="form-control" id="amd_send_to_vmx" name="amd_send_to_vmx">
-																	<option value="Y" <?php if($campaign->data->amd_send_to_vmx == "Y") echo "selected";?>>YES</option>
-																	<option value="N" <?php if($campaign->data->amd_send_to_vmx == "N") echo "selected";?>>NO</option>
-																</select>
-															</div>
-														</div>
-														<div class="form-group">
-															<label class="col-sm-3 control-label">WaitForSilence Options:</label>
-															<div class="col-sm-9 mb">
-																<input type="text" class="form-control" id="waitforsilence_options" name="waitforsilence_options" value="<?php echo $campaign->data->waitforsilence_options; ?>">
 															</div>
 														</div>
 														<div class="form-group">
@@ -862,7 +847,7 @@ $lists = $ui->API_goGetAllLists();
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="col-sm-3 control-label">Answering Machine Mesage:</label>
+															<label class="col-sm-3 control-label">Answering Machine Message:</label>
 															<div class="col-sm-9 mb">
 																<div class="input-group">
 																	<input type="text" class="form-control" id="am_message_exten" name="am_message_exten" value="<?php echo $campaign->data->am_message_exten;?>">
@@ -871,7 +856,12 @@ $lists = $ui->API_goGetAllLists();
 																	</span>
 																</div><!-- /input-group -->
 																<select class="form-control am_message_chooser" id="am_message_chooser" name="am_message_chooser">
-																	<option value="">-- DEFAULT VALUE --</option>
+																	<option value="">-- Default Value --</option>
+																	<?php for($i=0;$i<=count($voicefiles->file_name);$i++) { ?>
+																		<?php if(!empty($voicefiles->file_name[$i])) { ?>
+																			<option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>"><?php echo substr($voicefiles->file_name[$i], 0, -4); ?></option>
+																		<?php } ?>
+																	<?php } ?>
 																</select>
 															</div>
 														</div>
@@ -1228,7 +1218,7 @@ $lists = $ui->API_goGetAllLists();
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="col-sm-3 control-label">Answering Machine Mesage:</label>
+															<label class="col-sm-3 control-label">Answering Machine Message:</label>
 															<div class="col-sm-9 mb">
 																<div class="input-group">
 																	<input type="text" class="form-control" id="am_message_exten" name="am_message_exten" value="<?php echo $campaign->data->am_message_exten;?>">
@@ -1237,7 +1227,12 @@ $lists = $ui->API_goGetAllLists();
 																	</span>
 																</div><!-- /input-group -->
 																<select class="form-control am_message_chooser" id="am_message_chooser" name="am_message_chooser">
-																	<option value="">-- DEFAULT VALUE --</option>
+																	<option value="">-- Default Value --</option>
+																	<?php for($i=0;$i<=count($voicefiles->file_name);$i++) { ?>
+																		<?php if(!empty($voicefiles->file_name[$i])) { ?>
+																			<option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>"><?php echo substr($voicefiles->file_name[$i], 0, -4); ?></option>
+																		<?php } ?>
+																	<?php } ?>
 																</select>
 															</div>
 														</div>
@@ -1837,7 +1832,7 @@ $lists = $ui->API_goGetAllLists();
 					var name = $(this).data('name');
 					var target = $('#audio_file_list_container').data("target");
 					
-					$('#' + target).val(name);
+					$('#' + target).val(name.slice(0, -4));
 				});
 
 				var campaign_allow_inbound = $('#campaign_allow_inbound').val();

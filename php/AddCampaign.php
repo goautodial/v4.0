@@ -32,7 +32,23 @@
 	$postfields['campaign_name'] 				= $_POST['campaign_name'];
 	$postfields['did_tfn_extension']  			= $_POST['did_tfn_extension'];
 	$postfields['call_route'] 					= $_POST['call_route'];
-    $postfields['call_route_text'] 				= $_POST['call_route_text'];
+    switch ($_POST['call_route']){
+        case "INGROUP":
+            $postfields['call_route_text'] 		= $_POST['ingroup_text'];
+        break;
+
+        case "IVR":
+            $postfields['call_route_text'] 		= $_POST['ivr_text'];
+        break;
+
+        case "AGENT":
+            $postfields['call_route_text'] 		= $_POST['agent_text'];
+        break;
+
+        case "VOICEMAIL":
+            $postfields['call_route_text'] 		= $_POST['voicemail_text'];
+        break;
+    }
 	$postfields['group_color'] 					= $_POST['group_color'];
 	$postfields['survey_type'] 					= $_POST['survey_type'];
 	$postfields['no_channels']  				= $_POST['no_channels'];
@@ -73,7 +89,7 @@
 
 	$output = json_decode($data);
     //echo "<pre>";
-    //print_r($output);die;
+    //print_r($postfields);die;
 	$home = $_SERVER['HTTP_REFERER'];
 	if ($output->result=="success") {
 		# Result was OK!
