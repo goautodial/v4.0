@@ -169,9 +169,9 @@ $lists = $ui->API_goGetAllLists();
 							<?php
 							if($campaign_id != NULL) {
 								if ($campaign->result=="success") {
-									//echo "<pre>";
-									//var_dump($campaign);
-									//echo "</pre>";
+									echo "<pre>";
+									var_dump($campaign);
+									echo "</pre>";
 							?>
 							<div class="panel-body">
 								<legend>MODIFY CAMPAIGN ID : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u>

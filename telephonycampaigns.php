@@ -38,7 +38,7 @@
 		
 
         <?php print $ui->creamyThemeCSS(); ?>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> <<< THIS IS CAUSING THE TOOLTIP PROBLEM -->
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
@@ -52,7 +52,6 @@
    		<!-- SELECT2-->
    		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
 		
-		<
 			<style type="text/css">
 				.select2-container{
 					width: 100% !important;
@@ -328,25 +327,23 @@
 									print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								}
 							?>
+							<div class="bottom-menu skin-blue <?php if ($perm->campaign->campaign_create == 'N' && $perm->disposition->disposition_create == 'N') { echo "hidden"; } ?>">
+								<div class="action-button-circle" data-toggle="modal">
+									<?php print $ui->getCircleButton("campaigns", "plus"); ?>
+								</div>
+								<div class="fab-div-area" id="fab-div-area">
+									<ul class="fab-ul" style="height: <?php if ($perm->campaign->campaign_create == 'N' || $perm->disposition->disposition_create == 'N') { echo "110px"; } else { echo "170px"; } ?>;">
+										<li class="li-style<?=($perm->campaign->campaign_create == 'N' ? ' hidden' : '')?>"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaign" title="Add Campaign"></a></li><br/>
+										<li class="li-style<?=($perm->disposition->disposition_create == 'N' ? ' hidden' : '')?>"><a class="fa fa-tty fab-div-item" data-toggle="modal" data-target="#add_disposition" title="Add Disposition"></a></li><br/>
+										<!--<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_leadfilter" title="Add Phone Numbers"> </a></li>-->
+									</ul>
+								</div>
+							</div>
 						</div><!-- /.body -->
 					</div><!-- /.panel -->
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
-
-        <div class="bottom-menu skin-blue <?php if ($perm->campaign->campaign_create == 'N' && $perm->disposition->disposition_create == 'N') { echo "hidden"; } ?>">
-			<div class="action-button-circle" data-toggle="modal">
-				<?php print $ui->getCircleButton("campaigns", "plus"); ?>
-			</div>
-			<div class="fab-div-area" id="fab-div-area">
-				<ul class="fab-ul" style="height: <?php if ($perm->campaign->campaign_create == 'N' || $perm->disposition->disposition_create == 'N') { echo "110px"; } else { echo "170px"; } ?>;">
-					<li class="li-style<?=($perm->campaign->campaign_create == 'N' ? ' hidden' : '')?>"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaign" title="Add Campaign"></a></li><br/>
-					<li class="li-style<?=($perm->disposition->disposition_create == 'N' ? ' hidden' : '')?>"><a class="fa fa-tty fab-div-item" data-toggle="modal" data-target="#add_disposition" title="Add Disposition"></a></li><br/>
-					<!--<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_leadfilter" title="Add Phone Numbers"> </a></li>-->
-				</ul>
-			</div>
-		</div>
-
 	</div><!-- ./wrapper -->
 
 
@@ -1531,12 +1528,15 @@
 
 		$(document).ready(function(){
 			//$('#modal_form_lists').modal('show');
-			$('.select2').select2({
-				theme: 'bootstrap'
-			});
+				$('.select2').select2({
+					theme: 'bootstrap'
+				});
 			
-			
-			
+			// FAB HOVER
+				$(".bottom-menu").on('mouseenter mouseleave', function () {
+				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
+				});
+		
 			var dial_prefix = $('#dial_prefix').val();
 			dialPrefix(dial_prefix);
 
@@ -2188,11 +2188,6 @@
 						}]
 					});
 					$('#table_leadfilter').dataTable();
-
-				// FAB HOVER
-					$(".bottom-menu").on('mouseenter mouseleave', function () {
-					  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
-					});
 
 				//reloads page when modal closes
 				/*	$('#add_campaign').on('hidden.bs.modal', function () {

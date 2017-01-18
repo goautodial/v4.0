@@ -264,6 +264,9 @@ $user_groups = $ui->API_goGetUserGroupsList();
 																<option value="" selected>--No Voicemails Available--</option>
 															<?php
 																}else{
+															?>
+																<option value="">- - - NONE - - -</option>
+															<?php
 																for($a=0;$a<count($voicemails->voicemail_id);$a++){
 
 															?>
