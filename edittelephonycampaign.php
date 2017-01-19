@@ -156,7 +156,7 @@ $lists = $ui->API_goGetAllLists();
 					<?php	}	?>
 						});
 					</script>
-					<?php	
+					<?php
 						}
 					?>
 					
@@ -177,7 +177,6 @@ $lists = $ui->API_goGetAllLists();
 								<legend>MODIFY CAMPAIGN ID : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u>
 									<span class="pull-right">MANUAL DIAL LIST ID: <u><?php echo $campaign->data->manual_dial_list_id;?></u></span>
 								</legend>
-
 								<!-- Custom Tabs -->
 								<div role="tabpanel">
 								<!--<div class="nav-tabs-custom">-->
