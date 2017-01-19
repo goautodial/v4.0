@@ -3341,7 +3341,7 @@ function CheckForIncoming () {
                 Call_Script_ID = '';
             }
             if ( (view_scripts == 1) && (Call_Script_ID.length > 0 || campaign_script.length > 0) ) {
-                var SCRIPT_web_form = "http://"+hostURL+"/testing.php";
+                var SCRIPT_web_form = "http://127.0.0.1/testing.php";
                 var TEMP_SCRIPT_web_form = URLDecode(SCRIPT_web_form,'YES','DEFAULT','1');
                 //$("#ScriptButtonSpan").html("<A HREF=\"#\" onClick=\"ScriptPanelToFront();\"><IMG SRC=\"./images/script_tab.png\" ALT=\"SCRIPT\" WIDTH=143 HEIGHT=27 BORDER=0></A>");
 
