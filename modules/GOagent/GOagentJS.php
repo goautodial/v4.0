@@ -3338,7 +3338,7 @@ function CheckForIncoming () {
                 {all_record = 'YES';}
 
             if (typeof Call_Script_ID === 'undefined') {
-                Call_Script_ID == campaign_script;
+                Call_Script_ID = '';
             }
             if ( (view_scripts == 1) && (Call_Script_ID.length > 0 || campaign_script.length > 0) ) {
                 var SCRIPT_web_form = "http://"+hostURL+"/testing.php";
