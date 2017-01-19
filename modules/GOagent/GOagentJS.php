@@ -3337,6 +3337,9 @@ function CheckForIncoming () {
             if ( (LIVE_campaign_recording == 'ALLCALLS') || (LIVE_campaign_recording == 'ALLFORCE') )
                 {all_record = 'YES';}
 
+            if (typeof Call_Script_ID === 'undefined') {
+                Call_Script_ID == campaign_script;
+            }
             if ( (view_scripts == 1) && (Call_Script_ID.length > 0 || campaign_script.length > 0) ) {
                 var SCRIPT_web_form = "http://"+hostURL+"/testing.php";
                 var TEMP_SCRIPT_web_form = URLDecode(SCRIPT_web_form,'YES','DEFAULT','1');
