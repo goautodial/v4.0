@@ -817,7 +817,7 @@ $lists = $ui->API_goGetAllLists();
 																// old condition
 																// if(!empty($campaign->data->three_way_dial_prefix)){echo $campaign->data->three_way_dial_prefix;}else{echo "88";}
 																?>	
-																<input type="text" class="form-control" value="<?php echo $campaign->data->three_way_dial_prefix; ?>" id="three_way_dial_prefix" name="three_way_dial_prefix">
+																<input type="text" class="form-control" value="<?php echo $campaign->data->three_way_dial_prefix; ?>" id="three_way_dial_prefix" name="three_way_dial_prefix" maxlength="20">
 															</div>
 														</div>
 														<div class="form-group">
