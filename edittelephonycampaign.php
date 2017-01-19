@@ -973,7 +973,11 @@ $lists = $ui->API_goGetAllLists();
 															<div class="form-group">
 																<label class="col-sm-3 control-label">Dial Prefix for 3-way Calls:</label>
 																<div class="col-sm-9 mb">
-																	<input type="text" class="form-control" value="<?php if(!empty($campaign->data->three_way_dial_prefix)){echo $campaign->data->three_way_dial_prefix;}else{echo "88";}?>" id="three_way_dial_prefix" name="three_way_dial_prefix">
+																	<?php
+																	// old condition
+																	// if(!empty($campaign->data->three_way_dial_prefix)){echo $campaign->data->three_way_dial_prefix;}else{echo "88";}
+																	?>
+																	<input type="text" class="form-control" value="<?php echo $campaign->data->three_way_dial_prefix; ?>" id="three_way_dial_prefix" name="three_way_dial_prefix">
 																</div>
 															</div>
 															<div class="form-group">
