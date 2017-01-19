@@ -1064,7 +1064,7 @@ $(document).ready(function() {
     $("a[id^='manual-dial-'], button[id^='manual-dial-']").click(function() {
         //$('#manual-dial-box').modal('hide');
         var btnID = $(this).attr('id').replace('manual-dial-', '');
-        if (btnID != 'dropdown' && ! $(this).hasClass('disabled')) {
+        if (btnID != 'dropdown' && ! $(this).hasClass('disabled') && agentcall_manual > 0) {
             NewManualDialCall(btnID.toUpperCase());
             activateLinks();
         }
@@ -1964,7 +1964,7 @@ function enableDialOnEnter(e) {
     if (live_customer_call < 1) {
         var phoneNumber = $('#MDPhonENumbeR').val();
     
-        if (phoneNumber.length > 5) {
+        if (phoneNumber.length > 5 && agentcall_manual > 0) {
             NewManualDialCall('NOW');
             activateLinks();
         }
@@ -1980,7 +1980,7 @@ function activateLinks() {
     }
     var phoneNumber = $('#MDPhonENumbeR').val();
 
-    if (phoneNumber.length > 5) {
+    if (phoneNumber.length > 5 && agentcall_manual > 0) {
         $("a[id^='manual-dial-'], button[id^='manual-dial-']").removeClass('disabled');
     } else {
         $("a[id^='manual-dial-'], button[id^='manual-dial-']").addClass('disabled');
