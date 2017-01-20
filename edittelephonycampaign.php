@@ -484,6 +484,7 @@ $lists = $ui->API_goGetAllLists();
 													<div class="form-group">
 														<label class="col-sm-3 control-label">Call Notes Per Call:</label>
 														<div class="col-sm-9 mb">
+															<?php echo $campaign->data->per_call_notes; ?>
 															<select class="form-control" id="per_call_notes" name="per_call_notes">
 																<option value="DISABLED" <?php if($campaign->data->per_call_notes == "DISABLED") echo "selected";?>>DISABLED</option>
 																<option value="ENABLED" <?php if($campaign->data->per_call_notes == "ENABLED") echo "selected";?>>ENABLED</option>
