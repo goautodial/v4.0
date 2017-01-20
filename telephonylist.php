@@ -391,8 +391,19 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	* APIs for add form
 	*/
 	$campaign = $ui->API_getListAllCampaigns();
-	$next_list = max($lists->list_id);
-	$next_list = $next_list + 1;
+	$max_list = max($lists->list_id);
+	if($max_list <= 99999999){
+		$min_list = min($lists->list_id);
+		while($min_list >= $max_list){
+			$min_list = $min_list + 1;
+			if(!in_array($min_list, $lists->list_id)){
+				$next_array = $min_list;
+				$min_list = $max_list;
+			}
+		}
+	}else{
+		$next_list = $max_list + 1;
+	}
 	$next_listname = "ListID ".$next_list;
 	$datenow = date("j-n-Y");
 	$next_listdesc = "Auto-generated - ListID - ".$datenow;
@@ -405,7 +416,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title animate-header" id="scripts"><b>List Wizard » Add New List</b></h4>
 				</div>
-				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
+				<div class="modal-body wizard-content">
 
 				<form method="POST" id="create_form" role="form">
 				<div class="row">
@@ -426,13 +437,13 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					<div class="form-group">
 						<label class="col-sm-3 control-label" for="add_list_id">List ID:</label>
 						<div class="col-sm-9 mb">
-							<input type="number" class="form-control" name="add_list_id" id="add_list_id" placeholder="List ID" value="<?php echo $next_list;?>" minlength="1" maxlength="8" disabled />
+							<input type="number" class="form-control" name="add_list_id" id="add_list_id" placeholder="List ID" value="<?php echo $next_list;?>" minlength="1" maxlength="8" disabled required/>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-3 control-label" for="list_name">List Name:</label>
 						<div class="col-sm-9 mb">
-							<input type="text" pattern=".{2,20}" class="form-control" name="list_name" id="list_name" placeholder="List Name" value="<?php echo $next_listname;?>" maxlength="30" />
+							<input type="text" class="form-control" name="list_name" id="list_name" placeholder="List Name" value="<?php echo $next_listname;?>" maxlength="30" required/>
 						</div>
 					</div>
 					<div class="form-group">
@@ -706,7 +717,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							}
 		
 							form.validate().settings.ignore = ":disabled";
-							return uform.valid();
+							return form.valid();
 						},
 						onFinishing: function (event, currentIndex)
 						{
@@ -723,18 +734,17 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							$.ajax({
 	                            url: "./php/AddTelephonyList.php",
 	                            type: 'POST',
-	                            data: serialized,
+	                            data: $('#create_form').serialize(),
 	                            success: function(data) {
 	                              // console.log(data);
 	                                  if(data == 1){
 										swal("Success!", "List Successfully Created!", "success");
 										window.setTimeout(function(){location.reload();},3000);
-										$('#submit_list').val("Loading");
 	                                  }
 	                                  else{
 	                                      sweetAlert("Oops...", "Something went wrong!", "error");
-	                                      $('#submit_list').val("Submit");
-	                                      $('#submit_list').prop("disabled", false);
+	                                      $('#finish').val("Submit");
+	                                      $('#finish').prop("disabled", false);
 	                                  }
 	                            }
 	                        });
