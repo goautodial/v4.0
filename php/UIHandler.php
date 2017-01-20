@@ -4205,7 +4205,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i], $details, $perm);
 
 		$result .= "<tr>
-			<td><a class='play_voice_file' data-location='".$file_link."' data-details='".$details."'>".$output->file_name[$i]."</td>
+			<td><a class='play_voice_file' data-location='".$file_link."' data-details='".$details."'>".$output->file_name[$i]." -- ".$this->check_url($file_link)."</td>
 			<td class ='hide-on-medium hide-on-low'>".$output->file_date[$i]."</td>
 			<td nowrap>".$action."</td>
 		    </tr>";
@@ -4219,7 +4219,16 @@ error_reporting(E_ERROR | E_PARSE);
 
 	private function getUserActionMenuForVoiceFiles($filename, $details, $perm) {
 		$web_ip = getenv("SERVER_ADDR");
-	    $file_link = "http://".$web_ip."/sounds/".$filename;
+	    
+		 $httpsIs = getenv("HTTPS");
+		 if ($httpsIs === 'on') {$HTTPprotocol = 'https://';}
+		    else {$HTTPprotocol = 'http://';}
+	    $web_ip = getenv("SERVER_ADDR");
+	    $file_link = $HTTPprotocol."".$web_ip."/sounds/".$filename;
+		 if (!$this->check_url($file_link)) {
+			 $web_host = getenv("SERVER_NAME");
+			 $file_link = $HTTPprotocol."".$web_host."/sounds/".$filename;
+		 }
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
