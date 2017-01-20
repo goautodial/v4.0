@@ -4187,8 +4187,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    for($i=0;$i<count($output->file_name);$i++){
 
-		 $server_port = getenv("SERVER_PORT");
-		 if (preg_match("/443/",$server_port)) {$HTTPprotocol = 'https://';}
+		 $httpsIs = getenv("HTTPS");
+		 if ($httpsIs === 'on') {$HTTPprotocol = 'https://';}
 		    else {$HTTPprotocol = 'http://';}
 	    $web_ip = getenv("SERVER_ADDR");
 	    $file_link = $HTTPprotocol."".$web_ip."/sounds/".$output->file_name[$i];
