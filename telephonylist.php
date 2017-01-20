@@ -226,169 +226,167 @@
 		?>
                 	<div class="row">
                         <div class="col-lg-<?=($perm->list->list_upload === 'N' ? '12' : '9')?>">
-		                	<div class="panel panel-default">
-								<div class="panel-body">
-									<legend>Lists</legend>
-									<button type="button" class="btn btn-primary view-dnc">View DNC</button>
-									<table class="table table-striped table-bordered table-hover" id="table_lists">
-									   <thead>
-										  <tr>
-                                                                                         <th style="color: white;">Pic</th>
-											 <th class='hide-on-medium hide-on-low'>List ID</th>
-											 <th>Name</th>
-											 <th class='hide-on-medium hide-on-low'>Status</th>
-											 <th class='hide-on-medium hide-on-low'>Leads Count</th>
-											 <th class='hide-on-medium hide-on-low'>Campaign</th>
-											 <th class='hide-on-medium hide-on-low'>Fields</th>
-											 <th class='hide-on-medium hide-on-low'>Action</th>
-										  </tr>
-									   </thead>
-									   <tbody>
-										   	<?php
-										   		for($i=0;$i < count($lists->list_id);$i++){
-												// if no entry in user list
-
-												if($lists->active[$i] == "Y"){
-													$lists->active[$i] = "Active";
-												}else{
-													$lists->active[$i] = "Inactive";
-												}
-
-												$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i], $perm);
-											?>
-												<tr>
-                                                                                    <td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>
-								                    <td class='hide-on-low'><strong><a class='edit-list' data-id='<?php echo $lists->list_id[$i];?>'><?php echo $lists->list_id[$i];?></strong></td>
-								                    <td><?php echo $lists->list_name[$i];?></td>
-													<td class='hide-on-medium hide-on-low'><?php echo $lists->active[$i];?></td>
-								                    <td class='hide-on-medium hide-on-low'><?php echo $lists->tally[$i];?></td>
-													<td class='hide-on-medium hide-on-low'><?php echo $lists->campaign_id[$i];?></td>
-													<td class='hide-on-medium hide-on-low'><?php echo $lists->cf_count[$i];?></td>
-								                    <td><?php echo $action_list;?></td>
-									            </tr>
-											<?php
-
-												}
-											?>
-									   </tbody>
-									</table>
-		               			</div><!-- /.body -->
-		               		</div><!-- /.panel -->
-		               	</div><!-- /.col-lg-9 -->
-						
-						<?php
-						if ($perm->list->list_upload !== 'N') {
-						?>
-			            <div class="col-lg-3">
-	           				<h3 class="m0 pb-lg">Upload/Import Leads</h3>
-	           				<form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data" id="upload_form" name="upload_form">
-								<div class="form-group">
-									<label>List ID:</label>
-									<div class="form-group">
-										<!-- <select id="select2-1" class="form-control" name="list_id"> -->
-										<select id="list_id" class="form-control select2" name="list_id" required>
-										<option value="" selected disabled></option>
-											<?php
-												for($i=0;$i<count($lists->list_id);$i++){
-		                                			echo '<option value="'.$lists->list_id[$i].'">'.$lists->list_id[$i].' - '.$lists->list_name[$i].'</option>';
-		                                		}
-											?>
-										</select>
-									</div>
+		                <div class="panel panel-default">
+							<div class="panel-body">
+							<legend>Lists</legend>
+							<button type="button" class="btn btn-primary view-dnc">View DNC</button>
+								<table class="table table-striped table-bordered table-hover" id="table_lists">
+									<thead>
+										<tr>
+										<th style="color: white;">Pic</th>
+										<th class='hide-on-medium hide-on-low'>List ID</th>
+										<th>Name</th>
+										<th class='hide-on-medium hide-on-low'>Status</th>
+										<th class='hide-on-medium hide-on-low'>Leads Count</th>
+										<th class='hide-on-medium hide-on-low'>Campaign</th>
+										<th class='hide-on-medium hide-on-low'>Fields</th>
+										<th class='hide-on-medium hide-on-low'>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+									<?php
+									for($i=0;$i < count($lists->list_id);$i++){
+									// if no entry in user list
 									
-									<div class="form-group">
-									<label>Duplicate Check:</label>
-										<SELECT size="1" NAME="goDupcheck" ID="goDupcheck" TITLE="Duplicate Check - Will check phone numbers on the lead file and cross reference it with all phone numbers on a specific campaign or in all List ID." class="form-control select2">
-											<OPTION value="NONE">NO DUPLICATE CHECK</OPTION>
-											<OPTION value="DUPLIST">CHECK PHONES IN LIST ID</OPTION>
-											<OPTION value="DUPCAMP">CHECK PHONES IN CAMPAIGN-LISTS</OPTION>
-										</SELECT>
-									</div>
+									if($lists->active[$i] == "Y"){
+									$lists->active[$i] = "Active";
+									}else{
+									$lists->active[$i] = "Inactive";
+									}
 									
-								</div>
-								<div class="form-group">
-
-									<label>CSV File:</label>
-									<div class="form-group" id="dvImportSegments">
-										<div class="input-group">
-									      <input type="text" class="form-control file-name" name="file_name" placeholder="CSV File" required>
-									      <span class="input-group-btn">
-									        <button type="button" class="btn browse-btn  btn-primary" type="button">Browse</button>
-									      </span>
-									    </div>
-									    <input type="file" class="file-box hide" name="file_upload" id="txtFileUpload" accept=".csv">
-
-									</div>
+									$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i], $perm);
+									?>
+									<tr>
+									<td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>
+									<td class='hide-on-low'><strong><a class='edit-list' data-id='<?php echo $lists->list_id[$i];?>'><?php echo $lists->list_id[$i];?></strong></td>
+									<td><?php echo $lists->list_name[$i];?></td>
+									<td class='hide-on-medium hide-on-low'><?php echo $lists->active[$i];?></td>
+									<td class='hide-on-medium hide-on-low'><?php echo $lists->tally[$i];?></td>
+									<td class='hide-on-medium hide-on-low'><?php echo $lists->campaign_id[$i];?></td>
+									<td class='hide-on-medium hide-on-low'><?php echo $lists->cf_count[$i];?></td>
+									<td><?php echo $action_list;?></td>
+									</tr>
+									<?php
 									
-									<div id="goMappingContainer"></div>
-									<div id="goValuesContainer"></div> 
+									}
+									?>
+									</tbody>
+								</table>
+							</div><!-- /.body -->
+						</div><!-- /.panel -->
+					</div><!-- /.col-lg-9 -->
 
-								</div>
-								
-								<!-- Progress bar -->
-								<div class="form-group">
-									<div id="progress-wrp">
-										<div class="progress-bar"></div >
-										<div class="status">0%</div>
-									</div>
-									<div id="output"><!-- error or success results --></div>
-									<br />
-									<div>
-										<div class="alert alert-success" style="display:none;" id="dStatus"> 
-											<div id="qstatus">  </div>
-										</div>
-									</div>
-								</div>
-								<!-- End Progress bar -->
-						
-								<div class="form-group">
-										<input type="button" id="btnUpload" name="btnUpload" value="Upload" class="btn btn-primary" onClick="goProgressBar();">
+<?php
+if ($perm->list->list_upload !== 'N') {
+?>
+<div class="col-lg-3">
+<h3 class="m0 pb-lg">Upload/Import Leads</h3>
+<form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data" id="upload_form" name="upload_form">
+<div class="form-group">
+<label>List ID:</label>
+<div class="form-group">
+<!-- <select id="select2-1" class="form-control" name="list_id"> -->
+<select id="list_id" class="form-control select2" name="list_id" required>
+<option value="" selected disabled></option>
+<?php
+for($i=0;$i<count($lists->list_id);$i++){
+echo '<option value="'.$lists->list_id[$i].'">'.$lists->list_id[$i].' - '.$lists->list_name[$i].'</option>';
+}
+?>
+</select>
+</div>
+
+<div class="form-group">
+<label>Duplicate Check:</label>
+<SELECT size="1" NAME="goDupcheck" ID="goDupcheck" TITLE="Duplicate Check - Will check phone numbers on the lead file and cross reference it with all phone numbers on a specific campaign or in all List ID." class="form-control select2">
+<OPTION value="NONE">NO DUPLICATE CHECK</OPTION>
+<OPTION value="DUPLIST">CHECK PHONES IN LIST ID</OPTION>
+<OPTION value="DUPCAMP">CHECK PHONES IN CAMPAIGN-LISTS</OPTION>
+</SELECT>
+</div>
+
+</div>
+<div class="form-group">
+
+<label>CSV File:</label>
+<div class="form-group" id="dvImportSegments">
+<div class="input-group">
+<input type="text" class="form-control file-name" name="file_name" placeholder="CSV File" required>
+<span class="input-group-btn">
+<button type="button" class="btn browse-btn  btn-primary" type="button">Browse</button>
+</span>
+</div>
+<input type="file" class="file-box hide" name="file_upload" id="txtFileUpload" accept=".csv">
+</div>
+
+<div id="goMappingContainer"></div>
+<div id="goValuesContainer"></div>
+</div>
+
+<!-- Progress bar -->
+<div class="form-group">
+<div id="progress-wrp">
+<div class="progress-bar"></div >
+<div class="status">0%</div>
+</div>
+<div id="output"><!-- error or success results --></div>
+<br />
+<div>
+<div class="alert alert-success" style="display:none;" id="dStatus"> 
+<div id="qstatus">  </div>
+</div>
+</div>
+</div>
+<!-- End Progress bar -->
+
+<div class="form-group">
+<input type="button" id="btnUpload" name="btnUpload" value="Upload" class="btn btn-primary" onClick="goProgressBar();">
 <!--										<div class="col-lg-12" style="margin-top: 10px;">
-											<div class="alert alert-success" style="display:none;" id="dStatus"> 
-												<div id="qstatus">  </div>
-											</div>
-										</div>-->
-								</div>
-								
-								<div id="jMapFieldsdiv">
-									<span id="jMapFieldsSpan"></span>
-								</div>
-							</form> 
-							<?php
-                        		if(isset($_GET['message'])){
-                        			echo '<div class="col-lg-12" style="margin-top: 10px;">';
-                        			if($_GET['message'] == "success"){
-                        				echo '<div class="alert alert-success"> <strong>Succes: </strong>'.$_GET['RetMesg']." leads uploaded</div>";
-                        			}else{
-                        				echo '<div class="alert alert-success"> <strong>Error: </strong>'.$_GET['RetMesg']."</div>";
-                        			}
-                        			echo '</div>';
-                        		}
-								#var_dump($_GET);
-                        	?>
-							
-								
-							
-	           			</div><!-- ./upload leads -->
-						<?php
-						}
-						?>
+<div class="alert alert-success" style="display:none;" id="dStatus"> 
+<div id="qstatus">  </div>
+</div>
+</div>-->
+</div>
 
-                	</div>
-				<?php
-					} else {
-						print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
-					}
-				?>
-                </section><!-- /.content -->
-            </aside><!-- /.right-side -->
-			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
-        </div><!-- ./wrapper -->
+<div id="jMapFieldsdiv">
+<span id="jMapFieldsSpan"></span>
+</div>
+</form>
+<?php
+if(isset($_GET['message'])){
+echo '<div class="col-lg-12" style="margin-top: 10px;">';
+if($_GET['message'] == "success"){
+echo '<div class="alert alert-success"> <strong>Succes: </strong>'.$_GET['RetMesg']." leads uploaded</div>";
+}else{
+echo '<div class="alert alert-success"> <strong>Error: </strong>'.$_GET['RetMesg']."</div>";
+}
+echo '</div>';
+}
+#var_dump($_GET);
+?>
 
-	<!-- FIXED ACTION BUTTON -->
-	<div class="action-button-circle" data-toggle="modal" data-target="#list-modal">
-		<?php print $ui->getCircleButton("list_and_call_recording", "plus"); ?>
-	</div>
+
+
+</div><!-- ./upload leads -->
+<?php
+}
+?>
+
+</div>
+<?php
+} else {
+print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
+}
+?>
+</section><!-- /.content -->
+</aside><!-- /.right-side -->
+<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
+</div><!-- ./wrapper -->
+
+<!-- FIXED ACTION BUTTON -->
+<div class="action-button-circle" data-toggle="modal" data-target="#list-modal">
+<?php print $ui->getCircleButton("list_and_call_recording", "plus"); ?>
+</div>
 <?php
 	/*
 	* APIs for add form
@@ -556,7 +554,6 @@
 	<!-- Modal -->
 	<div id="modal_view_list_dnc" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
-
 	    <!-- Modal content-->
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -581,8 +578,44 @@
 			</div>
 	      </div>
 	      <div class="modal-footer">
-			<button type="button" class="btn btn-primary add-dnc">Add DNC</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_delete-dnc">Add / Delete DNC</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	    <!-- End of modal content -->
+	  </div>
+	</div>
+	
+	<!-- Modal -->
+	<div id="add_delete-dnc" class="modal" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title"><b>List</b></h4>
+	      </div>
+	      <div class="modal-body">
+			<div id="example1_wrapper" class="form-inline dt-bootstrap">
+				<div class="table-responsive">
+					<table id="dnc_list" class="table table-bordered" style="width: 100%;">
+						<thead>
+							<tr>
+								<th>Phone NUmber</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody id="dnc_container">
+							<!-- Data Here -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+			<button type="button" class="btn btn-primary" data-target="#add_delete-dnc">Add / Delete DNC</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal" href="#add_delete-dnc">Close</button>
 	      </div>
 	    </div>
 	    <!-- End of modal content -->
