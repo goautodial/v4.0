@@ -482,6 +482,15 @@ $lists = $ui->API_goGetAllLists();
 														</div>
 													</div>
 													<div class="form-group">
+														<label class="col-sm-3 control-label">Call Notes Per Call:</label>
+														<div class="col-sm-9 mb">
+															<select class="form-control" id="custom_fields_launch" name="custom_fields_launch">
+																<option value="DISABLED" <?php if($campaign->data->per_call_notes == "DISABLED") echo "selected";?>>DISABLED</option>
+																<option value="ENABLED" <?php if($campaign->data->per_call_notes == "ENABLED") echo "selected";?>>ENABLED</option>
+															</select>
+														</div>
+													</div>
+													<div class="form-group">
 														<label class="col-sm-3 control-label">URL Tab 1:</label>
 														<div class="col-sm-3 mb">
 															<input type="text" class="form-control" placeholder="Enter Title" value="<?php if(!empty($campaign->url_tab_first_title)){echo $campaign->url_tab_first_title;}?>" id="url_tab_first_title" name="url_tab_first_title">
