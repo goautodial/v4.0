@@ -767,7 +767,7 @@ EOF;
 			</div>
 			<div class="modal-footer">
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-4" id="my_callback_only">
 						<p class="pull-left">
 							My Callback Only
 						</p>

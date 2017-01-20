@@ -5195,6 +5195,11 @@ function DispoSelectSubmit() {
         //console.log((VARCBstatusesLIST.match(regCBstatus)), (DispoChoice.length > 0), scheduled_callbacks, (DispoChoice != 'CBHOLD'));
         if ((VARCBstatusesLIST.match(regCBstatus)) && (DispoChoice.length > 0) && (scheduled_callbacks > 0) && (DispoChoice != 'CBHOLD')) {
             console.info("Open Callback Selection Box");
+            if (agentonly_callbacks > 0) {
+                $("#my_callback_only p, #my_callback_only div").show();
+            } else {
+                $("#my_callback_only p, #my_callback_only div").hide();
+            }
             $("#select-disposition").modal('hide');
             $("#callback-datepicker").modal({
                 backdrop: 'static',
