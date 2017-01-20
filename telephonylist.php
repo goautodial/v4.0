@@ -651,10 +651,10 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								bFilter: true,
 								"aoColumnDefs": [{
 									"bSearchable": false,
-									"aTargets": [ 3 ]
+									"aTargets": [ 1 ]
 								},{
 									"bSortable": false,
-									"aTargets": [ 3 ]
+									"aTargets": [ 1 ]
 								}]
 							});
 							$("#dnc_list").css("width","100%");
