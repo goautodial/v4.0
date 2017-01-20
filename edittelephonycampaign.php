@@ -156,7 +156,7 @@ $lists = $ui->API_goGetAllLists();
 					<?php	}	?>
 						});
 					</script>
-					<?php	
+					<?php
 						}
 					?>
 					
@@ -177,7 +177,6 @@ $lists = $ui->API_goGetAllLists();
 								<legend>MODIFY CAMPAIGN ID : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u>
 									<span class="pull-right">MANUAL DIAL LIST ID: <u><?php echo $campaign->data->manual_dial_list_id;?></u></span>
 								</legend>
-
 								<!-- Custom Tabs -->
 								<div role="tabpanel">
 								<!--<div class="nav-tabs-custom">-->
@@ -818,7 +817,7 @@ $lists = $ui->API_goGetAllLists();
 																// old condition
 																// if(!empty($campaign->data->three_way_dial_prefix)){echo $campaign->data->three_way_dial_prefix;}else{echo "88";}
 																?>	
-																<input type="text" class="form-control" value="<?php echo $campaign->data->three_way_dial_prefix; ?>" id="three_way_dial_prefix" name="three_way_dial_prefix">
+																<input type="text" class="form-control" value="<?php echo $campaign->data->three_way_dial_prefix; ?>" id="three_way_dial_prefix" name="three_way_dial_prefix" maxlength="20">
 															</div>
 														</div>
 														<div class="form-group">

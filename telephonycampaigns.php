@@ -449,7 +449,7 @@
 				    				<label class="control-label col-lg-4">Campaign ID:</label>
 				    				<div class="col-lg-8 mb">
 				    					<div class="input-group">
-									      <input id="campaign-id" name="campaign_id" type="number" class="form-control" placeholder="" value="<?php echo str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT); ?>" maxlength="8" readonly onkeydown="return FilterInput(event)">
+									      <input id="campaign-id" name="campaign_id" type="number" class="form-control" placeholder="" value="<?php echo str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT); ?>" minlength="3" maxlength="8" readonly onkeydown="return FilterInput(event)">
 									      <span class="input-group-btn">
 									        <button id="campaign-id-edit-btn" class="btn btn-default" type="button" style="min-height: 34px;"><i class="fa fa-pencil"></i></button>
 									      </span>
@@ -542,8 +542,13 @@
 										<select name="dial_prefix" id="dial_prefix" class="form-control">
 											<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
 											<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
-												<?php if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') { ?>
-													<option value="<?php echo $carriers->carrier_id[$i]; ?>" <?php if($campaign->data->dial_prefix == $carriers->carrier_id[$i]) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
+												<?php if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') {
+													$prefixes = explode("\n", $carriers->dialplan_entry[$i]);
+													$prefix = explode(",", $prefixes[0]);
+													$dial_prefix = substr(ltrim($prefix[0], "exten => _ "), 0, (strpos(".",$prefix[0]) - 1));
+													$dial_prefix = str_replace("N", "", str_replace("X", "", $dial_prefix));
+												?>
+													<option value="<?php echo $dial_prefix; ?>" <?php if($campaign->data->dial_prefix == $carriers->carrier_id[$i]) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
 												<?php } ?>
 											<?php } ?>
 										</select>
@@ -552,7 +557,7 @@
 								<div class="form-group carrier-to-use custom-prefix">
 									<label class="control-label col-lg-4 ">Custom Prefix:</label>
 									<div class="col-lg-8 mb">
-										<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if(($campaign->data->dial_prefix == "CUSTOM") && ($campaign->data->dial_prefix == 0) || ($campaign->data->dial_prefix == '')){echo 9;}else{echo $campaign->data->dial_prefix;} ?>" minlength="9" maxlength="20">
+										<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if(($campaign->data->dial_prefix == "CUSTOM") && ($campaign->data->dial_prefix == 0) || ($campaign->data->dial_prefix == '')){echo 9;}else{echo $campaign->data->dial_prefix;} ?>" minlength="1" maxlength="20">
 									</div>							
 								</div>
 				    			<div class="form-group survey hide">
@@ -2664,7 +2669,7 @@
 									}
 								);
 						<?php
-							}elseif($_GET['message'] == "error"){
+							}elseif($_GET['message'] == "Error"){
 						?>
 								sweetAlert("Oops...", "Something went wrong.", "error");
 						<?php
