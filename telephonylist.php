@@ -566,7 +566,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					<table id="dnc_list" class="table table-bordered" style="width: 100%;">
 						<thead>
 							<tr>
-								<th>Phone NUmber</th>
+								<th>Phone Number</th>
 								<th>Delete</th>
 							</tr>
 						</thead>
@@ -648,7 +648,14 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							$('#dnc_container').html(response);
 							$('#dnc_list').DataTable({
 								"searching": true,
-								bFilter: true
+								bFilter: true,
+								"aoColumnDefs": [{
+									"bSearchable": false,
+									"aTargets": [ 3 ]
+								},{
+									"bSortable": false,
+									"aTargets": [ 3 ]
+								}]
 							});
 							$("#dnc_list").css("width","100%");
 						}
