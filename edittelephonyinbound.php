@@ -565,15 +565,15 @@ if (isset($_POST["did"])) {
 														<div class="col-sm-9 mb">
 															<select class="form-control select2" id="after_hours_message_filename" name="after_hours_message_filename" style="width:100%;">
 																<?php
-																	$after_hours_exten = NULL;
+																	$after_hours_message_filename = NULL;
 																		for($x=0; $x < count($voicefiles->file_name);$x++){
 																			if($output->data->after_hours_message_filename == $voicefiles->file_name[$x]){
-																				$after_hours_exten .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
+																				$after_hours_message_filename .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
 																			}else{
-																				$after_hours_exten .= '<option value="'.$voicefiles->file_name[$x].'"> '.$voicefiles->file_name[$x].' </option>';
+																				$after_hours_message_filename .= '<option value="'.$voicefiles->file_name[$x].'"> '.$voicefiles->file_name[$x].' </option>';
 																			}
 																		}
-																	echo $after_hours_exten;
+																	echo $after_hours_message_filename;
 																?>
 															</select>
 														</div>
