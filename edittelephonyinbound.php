@@ -429,19 +429,7 @@ if (isset($_POST["did"])) {
 														<div class="drop_exten_message" <?php if($output->data->drop_action != "MESSAGE"){?> style="display:none;"<?php }?> >
 															<label for="drop_exten" class="col-sm-3 control-label">Drop Exten</label>
 															<div class="col-sm-9 mb">
-																<select class="form-control select2" id="drop_exten" name="drop_exten" style="width:100%;">
-																	<?php
-																		$drop_action_exten = NULL;
-																			for($x=0; $x < count($voicefiles->file_name);$x++){
-																				if($output->data->drop_exten == $voicefiles->file_name[$x]){
-																					$drop_action_exten .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
-																				}else{
-																					$drop_action_exten .= '<option value="'.$voicefiles->file_name[$x].'"> '.$voicefiles->file_name[$x].' </option>';
-																				}
-																			}
-																		echo $drop_action_exten;
-																	?>
-																</select>
+																<input type="number" class="form-control" name="drop_exten" id="drop_exten" value="<?php echo $output->data->drop_exten;?>" />
 															</div>
 														</div><!-- /. message -->
 													
@@ -575,11 +563,11 @@ if (isset($_POST["did"])) {
 													<!-- MESSAGE -->
 														<label for="after_hours_exten" class="col-sm-3 control-label">After Hours Message Filename</label>
 														<div class="col-sm-9 mb">
-															<select class="form-control select2" id="after_hours_exten" name="after_hours_exten" style="width:100%;">
+															<select class="form-control select2" id="after_hours_message_filename" name="after_hours_message_filename" style="width:100%;">
 																<?php
 																	$after_hours_exten = NULL;
 																		for($x=0; $x < count($voicefiles->file_name);$x++){
-																			if($output->data->after_hours_exten == $voicefiles->file_name[$x]){
+																			if($output->data->after_hours_message_filename == $voicefiles->file_name[$x]){
 																				$after_hours_exten .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
 																			}else{
 																				$after_hours_exten .= '<option value="'.$voicefiles->file_name[$x].'"> '.$voicefiles->file_name[$x].' </option>';
