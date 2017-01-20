@@ -4192,6 +4192,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    else {$HTTPprotocol = 'http://';}
 	    $web_ip = getenv("SERVER_ADDR");
 	    $file_link = $HTTPprotocol."".$web_ip."/sounds/".$output->file_name[$i];
+		 $test = $file_link;
 		 if (!$this->check_url($file_link)) {
 			 $web_host = getenv("SERVER_NAME");
 			 $file_link = $HTTPprotocol."".$web_host."/sounds/".$output->file_name[$i];
@@ -4205,7 +4206,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i], $details, $perm);
 
 		$result .= "<tr>
-			<td><a class='play_voice_file' data-location='".$file_link."' data-details='".$details."'>".$output->file_name[$i]." -- ".$this->check_url($file_link)."</td>
+			<td><a class='play_voice_file' data-location='".$file_link."' data-details='".$details."'>".$output->file_name[$i]." -- ".$test."</td>
 			<td class ='hide-on-medium hide-on-low'>".$output->file_date[$i]."</td>
 			<td nowrap>".$action."</td>
 		    </tr>";
