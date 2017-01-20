@@ -4187,14 +4187,11 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    for($i=0;$i<count($output->file_name);$i++){
 
-		 $httpsIs = getenv("HTTPS");
-		 if ($httpsIs === 'on') {$HTTPprotocol = 'https://';}
-		    else {$HTTPprotocol = 'http://';}
 	    $web_ip = getenv("SERVER_ADDR");
-	    $file_link = $HTTPprotocol."".$web_ip."/sounds/".$output->file_name[$i];
+	    $file_link = "http://".$web_ip."/sounds/".$output->file_name[$i];
 		 if (!$this->check_url($file_link)) {
 			 $web_host = getenv("SERVER_NAME");
-			 $file_link = $HTTPprotocol."".$web_host."/sounds/".$output->file_name[$i];
+			 $file_link = "http://".$web_host."/sounds/".$output->file_name[$i];
 		 }
 
 	    //$file_link = "http://69.46.6.35/sounds/".$output->file_name[$i];
@@ -4218,16 +4215,11 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	private function getUserActionMenuForVoiceFiles($filename, $details, $perm) {
-		$web_ip = getenv("SERVER_ADDR");
-	    
-		 $httpsIs = getenv("HTTPS");
-		 if ($httpsIs === 'on') {$HTTPprotocol = 'https://';}
-		    else {$HTTPprotocol = 'http://';}
 	    $web_ip = getenv("SERVER_ADDR");
-	    $file_link = $HTTPprotocol."".$web_ip."/sounds/".$filename;
+	    $file_link = "http://".$web_ip."/sounds/".$filename;
 		 if (!$this->check_url($file_link)) {
 			 $web_host = getenv("SERVER_NAME");
-			 $file_link = $HTTPprotocol."".$web_host."/sounds/".$filename;
+			 $file_link = "http://".$web_host."/sounds/".$filename;
 		 }
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
