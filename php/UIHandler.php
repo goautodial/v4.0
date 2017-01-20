@@ -4187,8 +4187,15 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    for($i=0;$i<count($output->file_name);$i++){
 
+		 $server_port = getenv("SERVER_PORT");
+		 if (preg_match("/443/",$server_port)) {$HTTPprotocol = 'https://';}
+		    else {$HTTPprotocol = 'http://';}
 	    $web_ip = getenv("SERVER_ADDR");
-	    $file_link = "http://".$web_ip."/sounds/".$output->file_name[$i];
+	    $file_link = $HTTPprotocol."".$web_ip."/sounds/".$output->file_name[$i];
+		 if (!check_url($file_link)) {
+			 $web_host = getenv("SERVER_NAME");
+			 $file_link = $HTTPprotocol."".$web_host."/sounds/".$output->file_name[$i];
+		 }
 
 	    //$file_link = "http://69.46.6.35/sounds/".$output->file_name[$i];
 
@@ -6010,6 +6017,13 @@ error_reporting(E_ERROR | E_PARSE);
 		//var_dump($output);
 		return $output;
 
+	}
+	
+	private function check_url($url) {
+		$headers = @get_headers( $url);
+		$headers = (is_array($headers)) ? implode( "\n ", $headers) : $headers;
+		
+		return (bool)preg_match('#^HTTP/.*\s+[(200|301|302)]+\s#i', $headers);
 	}
 }
 
