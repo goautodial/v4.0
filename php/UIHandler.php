@@ -4192,7 +4192,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    else {$HTTPprotocol = 'http://';}
 	    $web_ip = getenv("SERVER_ADDR");
 	    $file_link = $HTTPprotocol."".$web_ip."/sounds/".$output->file_name[$i];
-		 if (!check_url($file_link)) {
+		 if (!$this->check_url($file_link)) {
 			 $web_host = getenv("SERVER_NAME");
 			 $file_link = $HTTPprotocol."".$web_host."/sounds/".$output->file_name[$i];
 		 }
