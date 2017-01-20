@@ -31,7 +31,6 @@
         <!-- Wizard Form style -->
         <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="css/easyWizard.css">
 
         <!-- DATA TABLES CSS -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
@@ -408,70 +407,66 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				</div>
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 
-				<form method="POST" id="create_form" class="form-horizontal " role="form">
-				<!-- STEP 1 -->
-					<div class="wizard-step">
-						<div class="form-group mt">
-							<label class="col-sm-3 control-label" for="auto_generate">Auto-generated:</label>
-							<div class="col-sm-9 mb">
-								<div class="row">
-									<label class="col-sm-3 checkbox-inline c-checkbox" for="auto_generate">
-										<input type="checkbox" id="auto_generate" checked>
-										<span class="fa fa-check"></span>
-									</label>
-								</div>
-							</div>
+				<form method="POST" id="create_form" role="form">
+				<div class="row">
+				<h4>List Information
+				   <br>
+				   <small>List Details</small>
+				</h4>
+				<fieldset>
+					<div class="form-group mt">
+						<label class="col-sm-3 control-label" for="auto_generate">Auto-generated:</label>
+						<div class="col-sm-9 mb">
+							<label class="col-sm-3 checkbox-inline c-checkbox" for="auto_generate">
+								<input type="checkbox" id="auto_generate" checked>
+								<span class="fa fa-check"></span>
+							</label>
 						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="add_list_id">List ID:</label>
-							<div class="col-sm-9 mb">
-								<input type="number" pattern=".{2,8}" class="form-control" name="add_list_id" id="add_list_id" placeholder="List ID" value="<?php echo $next_list;?>" maxlength="14" disabled />
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="list_name">List Name:</label>
-							<div class="col-sm-9 mb">
-								<input type="text" pattern=".{2,20}" class="form-control" name="list_name" id="list_name" placeholder="List Name" value="<?php echo $next_listname;?>" maxlength="30" />
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="list_desc">List Description:</label>
-							<div class="col-sm-9 mb">
-								<input type="text" class="form-control" name="list_desc" id="list_desc" placeholder="List Description"  value="<?php echo $next_listdesc;?>" maxlength="255" />
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="campaign_select">Campaign: </label>
-							<div class="col-sm-9 mb">
-								<select name="campaign_select" class="form-control">
-									<?php
-										for($i=0; $i < count($campaign->campaign_id);$i++){
-											echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_name[$i]." </option>";
-										}
-									?>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label" for="status">Active: </label>
-							<div class="col-sm-9 mb">
-								<select name="status" class="form-control">
-									<option value="Y" selected>Yes</option>
-									<option value="N" >No</option>
-								</select>
-							</div>
-						</div>
-
 					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="add_list_id">List ID:</label>
+						<div class="col-sm-9 mb">
+							<input type="number" class="form-control" name="add_list_id" id="add_list_id" placeholder="List ID" value="<?php echo $next_list;?>" minlength="1" maxlength="8" disabled />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="list_name">List Name:</label>
+						<div class="col-sm-9 mb">
+							<input type="text" pattern=".{2,20}" class="form-control" name="list_name" id="list_name" placeholder="List Name" value="<?php echo $next_listname;?>" maxlength="30" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="list_desc">List Description:</label>
+						<div class="col-sm-9 mb">
+							<input type="text" class="form-control" name="list_desc" id="list_desc" placeholder="List Description"  value="<?php echo $next_listdesc;?>" maxlength="255" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="campaign_select">Campaign: </label>
+						<div class="col-sm-9 mb">
+							<select name="campaign_select" class="form-control">
+								<?php
+									for($i=0; $i < count($campaign->campaign_id);$i++){
+										echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_name[$i]." </option>";
+									}
+								?>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="status">Active: </label>
+						<div class="col-sm-9 mb">
+							<select name="status" class="form-control">
+								<option value="Y" selected>Yes</option>
+								<option value="N" >No</option>
+							</select>
+						</div>
+					</div>
+				</fieldset>
+				</div>
 				</form>
 
 				</div> <!-- end of modal body -->
-
-				<div class="modal-footer">
-                <!-- The wizard button will be inserted here. -->
-                    <button type="button" class="btn btn-default wizard-button-exit" data-dismiss="modal" style="display: inline-block;">Cancel</button>
-                    <input type="submit" class="btn btn-primary" id="submit_list" value="Submit" style="display: inline-block;">
-                </div>
 			</div>
 		</div>
 	</div><!-- end of modal -->
@@ -623,8 +618,8 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	</div>
 
 		<?php print $ui->standardizedThemeJS();?>
-
-		<script src="js/easyWizard.js" type="text/javascript"></script>
+		<!-- JQUERY STEPS-->
+  		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 		<!-- SELECT2-->
    		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
 
@@ -641,31 +636,28 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							// var values = JSON.parse(response.result);
 							// console.log(response);
 
-							$('#modal_view_list_dnc').modal('show');
-							var table = $('#dnc_list').DataTable();
-							table.fnClearTable();
-							table.fnDestroy();
-							$('#dnc_container').html(response);
-							$('#dnc_list').DataTable({
-								"searching": true,
-								bFilter: true,
-								"aoColumnDefs": [{
-									"bSearchable": false,
-									"aTargets": [ 1 ]
-								},{
-									"bSortable": false,
-									"aTargets": [ 1 ]
-								}]
-							});
-							$("#dnc_list").css("width","100%");
-						}
+						$('#modal_view_list_dnc').modal('show');
+						var table = $('#dnc_list').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('#dnc_container').html(response);
+						$('#dnc_list').DataTable({
+							"searching": true,
+							bFilter: true,
+							"aoColumnDefs": [{
+								"bSearchable": false,
+								"aTargets": [ 1 ]
+							},{
+								"bSortable": false,
+								"aTargets": [ 1 ]
+							}]
+						});
+						$("#dnc_list").css("width","100%");
+					}
 				});
 			}
 
 			$(document).ready(function() {
-				$(document).on('click', '.view-dnc', function(){
-					get_list_dnc();
-				});
 				/*****
 				** Functions for List
 				*****/
@@ -688,46 +680,56 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					/**
 					* Add list
 					**/
-					$('#submit_list').click(function(){
+					var form = $("#create_form"); // init form wizard
 
-	                $('#submit_list').val("Saving, Please Wait.....");
-	                $('#submit_list').prop("disabled", true);
-
-        			var validate = 0;
-	                var list_id = $("#add_list_id").val();
-	                var list_name = $("#list_name").val();
-	                var list_desc = $("#list_desc").val();
-
-	               	var form = $("#create_form");
-	               	// Find disabled inputs, and remove the "disabled" attribute
-					var disabled = form.find(':input:disabled').removeAttr('disabled');
-					var serialized = form.serialize();
-
-	                if(list_id === ""){
-	                    validate = 1;
-	                }
-
-	                if(list_name === ""){
-	                    validate = 1;
-	                }
-
-	                //if(list_desc == ""){
-	                //    validate = 1;
-	                //}
-
-	                    if(validate < 1){
-	                    //alert("Validated !");
-
-	                        $.ajax({
+				    form.validate({
+				        errorPlacement: function errorPlacement(error, element) { element.after(error); }
+				    });
+					
+					form.children("div").steps({
+						headerTag: "h4",
+						bodyTag: "fieldset",
+						transitionEffect: "slideLeft",
+						onStepChanging: function (event, currentIndex, newIndex)
+						{
+							// Allways allow step back to the previous step even if the current step is not valid!
+							if (currentIndex > newIndex) {
+								return true;
+							}
+		
+							// Clean up if user went backward before
+							if (currentIndex < newIndex)
+							{
+								// To remove error styles
+								$(".body:eq(" + newIndex + ") label.error", form).remove();
+								$(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+							}
+		
+							form.validate().settings.ignore = ":disabled";
+							return uform.valid();
+						},
+						onFinishing: function (event, currentIndex)
+						{
+							form.validate().settings.ignore = ":disabled";
+							return form.valid();
+						},
+						onFinished: function (event, currentIndex)
+						{
+		
+							$('#finish').text("Loading...");
+							$('#finish').attr("disabled", true);
+		
+							// Submit form via ajax
+							$.ajax({
 	                            url: "./php/AddTelephonyList.php",
 	                            type: 'POST',
 	                            data: serialized,
 	                            success: function(data) {
 	                              // console.log(data);
 	                                  if(data == 1){
-	                                        swal("Success!", "List Successfully Created!", "success");
-	                                        window.setTimeout(function(){location.reload();},3000);
-	                                        $('#submit_list').val("Loading");
+										swal("Success!", "List Successfully Created!", "success");
+										window.setTimeout(function(){location.reload();},3000);
+										$('#submit_list').val("Loading");
 	                                  }
 	                                  else{
 	                                      sweetAlert("Oops...", "Something went wrong!", "error");
@@ -736,13 +738,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	                                  }
 	                            }
 	                        });
-
-	                    }else{
-	                        sweetAlert("Oops...", "Something went wrong!", "error");
-	                        validate = 0;
-	                        $('#submit_list').val("Submit");
-	                        $('#submit_list').prop("disabled", false);
-	                    }
+						}
 					});
 
 					/**
@@ -773,49 +769,45 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					/***
 					** Delete
 					***/
-
-		             $(document).on('click','.delete-list',function() {
-		             	var id = $(this).attr('data-id');
-		                swal({
-		                	title: "Are you sure?",
-		                	text: "This action cannot be undone.",
-		                	type: "warning",
-		                	showCancelButton: true,
-		                	confirmButtonColor: "#DD6B55",
-		                	confirmButtonText: "Yes, delete this list!",
-		                	cancelButtonText: "No, cancel please!",
-		                	closeOnConfirm: false,
-		                	closeOnCancel: false
-		                	},
-		                	function(isConfirm){
-		                		if (isConfirm) {
-
-		                			$.ajax({
-				                        url: "./php/DeleteTelephonyList.php",
-				                        type: 'POST',
-				                        data: {
-				                            listid:id,
-				                        },
-				                        success: function(data) {
-				                        console.log(data);
-				                            if(data == 1){
-				                                swal("Deleted!", "List has been successfully deleted.", "success");
-				                                window.setTimeout(function(){location.reload()},1000)
-				                            }else{
-				                               sweetAlert("Oops...", "Something went wrong!", "error");
-				                            }
-				                        }
-				                    });
-
-		                		} else {
-		                			swal("Cancelled", "No action has been done :)", "error");
-		                		}
-		                	}
-		                );
-
-
-
-		             });
+		            $(document).on('click','.delete-list',function() {
+						var id = $(this).attr('data-id');
+						swal({
+							title: "Are you sure?",
+							text: "This action cannot be undone.",
+							type: "warning",
+							showCancelButton: true,
+							confirmButtonColor: "#DD6B55",
+							confirmButtonText: "Yes, delete this list!",
+							cancelButtonText: "No, cancel please!",
+							closeOnConfirm: false,
+							closeOnCancel: false
+							},
+							function(isConfirm){
+								if (isConfirm) {
+	
+									$.ajax({
+										url: "./php/DeleteTelephonyList.php",
+										type: 'POST',
+										data: {
+											listid:id,
+										},
+										success: function(data) {
+										console.log(data);
+											if(data == 1){
+												swal("Deleted!", "List has been successfully deleted.", "success");
+												window.setTimeout(function(){location.reload()},1000)
+											}else{
+											   sweetAlert("Oops...", "Something went wrong!", "error");
+											}
+										}
+									});
+	
+								} else {
+									swal("Cancelled", "No action has been done :)", "error");
+								}
+							}
+						);
+		            });
 
 					$(document).on('click', '.copy-custom-fields', function(){
 						var list_id = $(this).data('id');
@@ -828,7 +820,6 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 
 					$(document).on('click', '.btn-copy-cf', function(){
 						var form_data = new FormData($("#copy_cf_form")[0]);
-
 						swal({
 							title: "Are you sure?",
 							text: "This action cannot be undone.",
@@ -843,55 +834,54 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							function(isConfirm){
 								if (isConfirm) {
 									$.ajax({
-													url: "./php/CopyCustomFields.php",
-													type: 'POST',
-													data: form_data,
-													// dataType: 'json',
-													cache: false,
-	                        contentType: false,
-	                        processData: false,
-													success: function(data) {
-															// console.log(data);
-															if(data == "success"){
-																swal({
-																		title: "Success",
-																		text: "Custom Fields Successfully Copied",
-																		type: "success"
-																	},
-																	function(){
-																		location.reload();
-																		$(".preloader").fadeIn();
-																	}
-																);
-															}else{
-																	sweetAlert("Oops...", "Something went wrong! "+ data, "error");
-															}
+										url: "./php/CopyCustomFields.php",
+										type: 'POST',
+										data: form_data,
+										// dataType: 'json',
+										cache: false,
+										contentType: false,
+										processData: false,
+										success: function(data) {
+											// console.log(data);
+											if(data == "success"){
+												swal({
+														title: "Success",
+														text: "Custom Fields Successfully Copied",
+														type: "success"
+													},
+													function(){
+														location.reload();
+														$(".preloader").fadeIn();
 													}
-										});
-									} else {
-											swal("Cancelled", "No action has been done :)", "error");
-									}
+												);
+											}else{
+													sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+											}
+										}
+									});
+								} else {
+								swal("Cancelled", "No action has been done :)", "error");
+								}
 							}
 						);
 					});
 
-					$('#list-modal').wizard();
 					// $('#call-playback-modal').modal('show');
-
-					$('#auto_generate').on('change', function() {
+					
+					$(document).on('click', '#auto_generate', function(){
 					//  alert( this.value ); // or $(this).val()
 						if($('#auto_generate').is(":checked")){
-		            		$('#add_list_id').val("<?php echo $next_list;?>");
-		            		$('#list_name').val("<?php echo $next_listname;?>");
-		            		$('#list_desc').val("<?php echo $next_listdesc;?>");
-		            		$('#add_list_id').prop("disabled", true);
-		            	}
-		            	if(!$('#auto_generate').is(":checked")){
-		            		$('#add_list_id').val("");
-		            		$('#list_name').val("");
-		            		$('#list_desc').val("");
-		            		$('#add_list_id').prop("disabled", false);
-		            	}
+							$('#add_list_id').val("<?php echo $next_list;?>");
+							$('#list_name').val("<?php echo $next_listname;?>");
+							$('#list_desc').val("<?php echo $next_listdesc;?>");
+							$('#add_list_id').prop("disabled", true);
+						}
+						if(!$('#auto_generate').is(":checked")){
+							$('#add_list_id').val("");
+							$('#list_name').val("");
+							$('#list_desc').val("");
+							$('#add_list_id').prop("disabled", false);
+						}
 					});
 
 				/****
