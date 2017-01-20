@@ -392,13 +392,13 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	*/
 	$campaign = $ui->API_getListAllCampaigns();
 	$max_list = max($lists->list_id);
-	if($max_list <= 99999999){
-		$min_list = min($lists->list_id);
-		while($min_list >= $max_list){
-			$min_list = $min_list + 1;
-			if(!in_array($min_list, $lists->list_id)){
-				$next_array = $min_list;
-				$min_list = $max_list;
+	$min_list = min($lists->list_id);
+	
+	if($max_list >= 99999999 || $min_list <= 99999999){
+		for($i=1;$i < $max_list;$i++){
+			if(!in_array($i, $lists->list_id)){
+				$next_list = $i;
+				$i = $max_list;
 			}
 		}
 	}else{
