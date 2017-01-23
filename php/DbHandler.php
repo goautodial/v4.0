@@ -1804,7 +1804,7 @@ class DbHandler {
 		$this->dbConnectorAsterisk->where('user', array('goautodial','admin'), 'in');
 		$this->dbConnectorAsterisk->get('vicidial_users');
 		$isAdmin = $this->dbConnectorAsterisk->getRowCount();
-		if ($isAdmin > 0) {
+		if ($isAdmin < 1) {
 			$this->dbConnector->where("user_id", $userid);
 		}
 		$this->dbConnector->where("start_date IS NOT NULL");
