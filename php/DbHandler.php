@@ -1800,7 +1800,11 @@ class DbHandler {
 	}
 	
 	public function getAssignedEventsForUser($userid) {
-		if (!preg_match("/^(goautodial|admin)$/", $userid)) {
+		$this->dbConnectorAsterisk->where('user_id', $userid);
+		$this->dbConnectorAsterisk->where('user', array('goautodial','admin'), 'in');
+		$this->dbConnectorAsterisk->get('vicidial_users');
+		$isAdmin = $this->dbConnectorAsterisk->getRowCount();
+		if ($isAdmin > 0) {
 			$this->dbConnector->where("user_id", $userid);
 		}
 		$this->dbConnector->where("start_date IS NOT NULL");
