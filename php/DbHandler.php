@@ -1787,38 +1787,20 @@ class DbHandler {
 	}
 	
 	public function getUnassignedEventsForUser($userid) {
-		$this->dbConnectorAsterisk->where('user_id', $userid);
-		$this->dbConnectorAsterisk->where('user', array('goautodial','admin'), 'in');
-		$this->dbConnectorAsterisk->get('vicidial_users');
-		$isAdmin = $this->dbConnectorAsterisk->getRowCount();
-		if ($isAdmin < 1) {
-			$this->dbConnector->where("user_id", $userid);
-		}
+		$this->dbConnector->where("user_id", $userid);
 		$this->dbConnector->where("start_date IS NULL");
 		return $this->dbConnector->get(CRM_EVENTS_TABLE_NAME);
 	}	
 	
 	//added for edit events
 	public function editAssignedEventsForUser($userid) {
-		$this->dbConnectorAsterisk->where('user_id', $userid);
-		$this->dbConnectorAsterisk->where('user', array('goautodial','admin'), 'in');
-		$this->dbConnectorAsterisk->get('vicidial_users');
-		$isAdmin = $this->dbConnectorAsterisk->getRowCount();
-		if ($isAdmin < 1) {
-			$this->dbConnector->where("user_id", $userid);
-		}
+		$this->dbConnector->where("user_id", $userid);
 		$this->dbConnector->where("start_date IS NOT NULL");
 		return $this->dbConnector->get(CRM_EVENTS_TABLE_NAME);
 	}
 	
 	public function getAssignedEventsForUser($userid) {
-		$this->dbConnectorAsterisk->where('user_id', $userid);
-		$this->dbConnectorAsterisk->where('user', array('goautodial','admin'), 'in');
-		$this->dbConnectorAsterisk->get('vicidial_users');
-		$isAdmin = $this->dbConnectorAsterisk->getRowCount();
-		if ($isAdmin < 1) {
-			$this->dbConnector->where("user_id", $userid);
-		}
+		$this->dbConnector->where("user_id", $userid);
 		$this->dbConnector->where("start_date IS NOT NULL");
 		return $this->dbConnector->get(CRM_EVENTS_TABLE_NAME);
 	}
