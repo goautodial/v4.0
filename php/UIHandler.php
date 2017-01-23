@@ -2852,7 +2852,6 @@ error_reporting(E_ERROR | E_PARSE);
 	public function getAssignedEventsListForCalendar($userid) {
 		$result = "events: [ ";
 		$events = $this->db->getAssignedEventsForUser($userid);
-		var_dump($events);
 		foreach ($events as $event) {
 			// id
 			$eventId = $event["id"];
