@@ -2857,6 +2857,8 @@ error_reporting(E_ERROR | E_PARSE);
 			$eventId = $event["id"];
 			// title
 			$title = str_replace("'", "\\'", $event["title"]);
+			// description
+			$description = str_replace("'", "\\'", $event["description"]);
 			// end and start date.
 			$startDate = strtotime($event["start_date"]);
 			if (empty($event["end_date"])) { continue; } // no end date? no way!
@@ -2877,7 +2879,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$color = $event["color"];
 			$colorCode = ", backgroundColor: '$color', borderColor: '$color'";
 
-			$result .= "{ id: $eventId, title: '$title' $startCode $endCode $allDayCode $urlCode $colorCode},";
+			$result .= "{ id: $eventId, title: '$title', description: '$description' $startCode $endCode $allDayCode $urlCode $colorCode},";
 		}
 		$result = rtrim($result, ",");
 		$result .= "]";
