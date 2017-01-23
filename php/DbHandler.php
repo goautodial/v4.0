@@ -1800,7 +1800,9 @@ class DbHandler {
 	}
 	
 	public function getAssignedEventsForUser($userid) {
-		$this->dbConnector->where("user_id", $userid);
+		if (!preg_match("/^(goautodial|admin)$/", $userid)) {
+			$this->dbConnector->where("user_id", $userid);
+		}
 		$this->dbConnector->where("start_date IS NOT NULL");
 		return $this->dbConnector->get(CRM_EVENTS_TABLE_NAME);
 	}
