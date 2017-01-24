@@ -88,9 +88,6 @@
 		</style>
 		
         <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			});
 			
 			// Progress bar function
 			function goProgressBar() {
@@ -227,50 +224,90 @@
                         <div class="col-lg-<?=($perm->list->list_upload === 'N' ? '12' : '9')?>">
 		                <div class="panel panel-default">
 							<div class="panel-body">
-							<legend>Lists</legend>
-							<button type="button" class="btn btn-primary view-dnc">View DNC</button>
-								<table class="table table-striped table-bordered table-hover" id="table_lists">
-									<thead>
-										<tr>
-										<th style="color: white;">Pic</th>
-										<th class='hide-on-medium hide-on-low'>List ID</th>
-										<th>Name</th>
-										<th class='hide-on-medium hide-on-low'>Status</th>
-										<th class='hide-on-medium hide-on-low'>Leads Count</th>
-										<th class='hide-on-medium hide-on-low'>Campaign</th>
-										<th class='hide-on-medium hide-on-low'>Fields</th>
-										<th class='hide-on-medium hide-on-low'>Action</th>
-										</tr>
-									</thead>
-									<tbody>
-									<?php
-									for($i=0;$i < count($lists->list_id);$i++){
-									// if no entry in user list
-									
-									if($lists->active[$i] == "Y"){
-									$lists->active[$i] = "Active";
-									}else{
-									$lists->active[$i] = "Inactive";
-									}
-									
-									$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i], $perm);
-									?>
-									<tr>
-									<td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>
-									<td class='hide-on-low'><strong><a class='edit-list' data-id='<?php echo $lists->list_id[$i];?>'><?php echo $lists->list_id[$i];?></strong></td>
-									<td><?php echo $lists->list_name[$i];?></td>
-									<td class='hide-on-medium hide-on-low'><?php echo $lists->active[$i];?></td>
-									<td class='hide-on-medium hide-on-low'><?php echo $lists->tally[$i];?></td>
-									<td class='hide-on-medium hide-on-low'><?php echo $lists->campaign_id[$i];?></td>
-									<td class='hide-on-medium hide-on-low'><?php echo $lists->cf_count[$i];?></td>
-									<td><?php echo $action_list;?></td>
-									</tr>
-									<?php
-									
-									}
-									?>
-									</tbody>
-								</table>
+							<legend id="legend_title">Lists</legend>
+								<div role="tabpanel">
+							
+									<ul role="tablist" class="nav nav-tabs nav-justified">
+			
+									<!-- List panel tabs-->
+										 <li role="presentation" class="active">
+											<a href="#list_tab" aria-controls="list_tab" role="tab" data-toggle="tab" class="bb0">
+												List</a>
+										 </li>
+									<!-- DNC panel tab -->
+										 <li role="presentation">
+											<a href="#dnc_tab" aria-controls="dnc_tab" role="tab" data-toggle="tab" class="bb0">
+												DNC </a>
+										 </li>
+									</ul>
+									  
+									<!-- Tab panes-->
+									<div class="tab-content bg-white">
+										<!--==== List ====-->
+										<div id="list_tab" role="tabpanel" class="tab-pane active">
+											<table class="table table-striped table-bordered table-hover" id="table_lists">
+												<thead>
+													<tr>
+													<th style="color: white;">Pic</th>
+													<th class='hide-on-medium hide-on-low'>List ID</th>
+													<th>Name</th>
+													<th class='hide-on-medium hide-on-low'>Status</th>
+													<th class='hide-on-medium hide-on-low'>Leads Count</th>
+													<th class='hide-on-medium hide-on-low'>Campaign</th>
+													<th class='hide-on-medium hide-on-low'>Fields</th>
+													<th class='hide-on-medium hide-on-low'>Action</th>
+													</tr>
+												</thead>
+												<tbody>
+												<?php
+												for($i=0;$i < count($lists->list_id);$i++){
+												// if no entry in user list
+												
+												if($lists->active[$i] == "Y"){
+												$lists->active[$i] = "Active";
+												}else{
+												$lists->active[$i] = "Inactive";
+												}
+												
+												$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i], $perm);
+												?>
+												<tr>
+												<td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>
+												<td class='hide-on-low'><strong><a class='edit-list' data-id='<?php echo $lists->list_id[$i];?>'><?php echo $lists->list_id[$i];?></strong></td>
+												<td><?php echo $lists->list_name[$i];?></td>
+												<td class='hide-on-medium hide-on-low'><?php echo $lists->active[$i];?></td>
+												<td class='hide-on-medium hide-on-low'><?php echo $lists->tally[$i];?></td>
+												<td class='hide-on-medium hide-on-low'><?php echo $lists->campaign_id[$i];?></td>
+												<td class='hide-on-medium hide-on-low'><?php echo $lists->cf_count[$i];?></td>
+												<td><?php echo $action_list;?></td>
+												</tr>
+												<?php
+												
+												}
+												?>
+												</tbody>
+											</table>
+										</div><!-- /.list-tab -->
+										<!--==== DNC ====-->
+										<div id="dnc_tab" role="tabpanel" class="tab-pane">
+											<table class="table table-striped table-bordered table-hover" id="table_dnc">
+												<thead>
+													<tr>
+													<th>Phone Number</th>
+													<th class='hide-on-medium hide-on-low'>Campaign</th>
+													<th>Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr id="#dnc_result">
+														<td colspan="3"><center><span id="dnc_error">- - - Search or filter DNC to display results - - -</span></center></td>
+													</tr>
+												</tbody>
+											</table>
+										</div><!-- /.dnc-tab -->
+										
+									</div><!-- /.tab-content -->
+								</div><!-- /.tab-panel -->
 							</div><!-- /.body -->
 						</div><!-- /.panel -->
 					</div><!-- /.col-lg-9 -->
@@ -278,95 +315,107 @@
 <?php
 if ($perm->list->list_upload !== 'N') {
 ?>
-<div class="col-lg-3">
-<h3 class="m0 pb-lg">Upload/Import Leads</h3>
-<form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data" id="upload_form" name="upload_form">
-<div class="form-group">
-<label>List ID:</label>
-<div class="form-group">
-<!-- <select id="select2-1" class="form-control" name="list_id"> -->
-<select id="list_id" class="form-control select2" name="list_id" required>
-<option value="" selected disabled></option>
-<?php
-for($i=0;$i<count($lists->list_id);$i++){
-echo '<option value="'.$lists->list_id[$i].'">'.$lists->list_id[$i].' - '.$lists->list_name[$i].'</option>';
-}
-?>
-</select>
-</div>
-
-<div class="form-group">
-<label>Duplicate Check:</label>
-<SELECT size="1" NAME="goDupcheck" ID="goDupcheck" TITLE="Duplicate Check - Will check phone numbers on the lead file and cross reference it with all phone numbers on a specific campaign or in all List ID." class="form-control select2">
-<OPTION value="NONE">NO DUPLICATE CHECK</OPTION>
-<OPTION value="DUPLIST">CHECK PHONES IN LIST ID</OPTION>
-<OPTION value="DUPCAMP">CHECK PHONES IN CAMPAIGN-LISTS</OPTION>
-</SELECT>
-</div>
-
-</div>
-<div class="form-group">
-
-<label>CSV File:</label>
-<div class="form-group" id="dvImportSegments">
-<div class="input-group">
-<input type="text" class="form-control file-name" name="file_name" placeholder="CSV File" required>
-<span class="input-group-btn">
-<button type="button" class="btn browse-btn  btn-primary" type="button">Browse</button>
-</span>
-</div>
-<input type="file" class="file-box hide" name="file_upload" id="txtFileUpload" accept=".csv">
-</div>
-
-<div id="goMappingContainer"></div>
-<div id="goValuesContainer"></div>
-</div>
-
-<!-- Progress bar -->
-<div class="form-group">
-<div id="progress-wrp">
-<div class="progress-bar"></div >
-<div class="status">0%</div>
-</div>
-<div id="output"><!-- error or success results --></div>
-<br />
-<div>
-<div class="alert alert-success" style="display:none;" id="dStatus"> 
-<div id="qstatus">  </div>
-</div>
-</div>
-</div>
-<!-- End Progress bar -->
-
-<div class="form-group">
-<input type="button" id="btnUpload" name="btnUpload" value="Upload" class="btn btn-primary" onClick="goProgressBar();">
-<!--										<div class="col-lg-12" style="margin-top: 10px;">
-<div class="alert alert-success" style="display:none;" id="dStatus"> 
-<div id="qstatus">  </div>
-</div>
-</div>-->
-</div>
-
-<div id="jMapFieldsdiv">
-<span id="jMapFieldsSpan"></span>
-</div>
-</form>
-<?php
-if(isset($_GET['message'])){
-echo '<div class="col-lg-12" style="margin-top: 10px;">';
-if($_GET['message'] == "success"){
-echo '<div class="alert alert-success"> <strong>Succes: </strong>'.$_GET['RetMesg']." leads uploaded</div>";
-}else{
-echo '<div class="alert alert-success"> <strong>Error: </strong>'.$_GET['RetMesg']."</div>";
-}
-echo '</div>';
-}
-#var_dump($_GET);
-?>
-
-
-
-</div><!-- ./upload leads -->
+	<div class="col-lg-3" id="list_sidebar">
+	<h3 class="m0 pb-lg">Upload/Import Leads</h3>
+		<form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data" id="upload_form" name="upload_form">
+			<div class="form-group">
+			<label>List ID:</label>
+				<div class="form-group">
+				<!-- <select id="select2-1" class="form-control" name="list_id"> -->
+					<select id="list_id" class="form-control select2" name="list_id" required>
+					<option value="" selected disabled></option>
+					<?php
+					for($i=0;$i<count($lists->list_id);$i++){
+					echo '<option value="'.$lists->list_id[$i].'">'.$lists->list_id[$i].' - '.$lists->list_name[$i].'</option>';
+					}
+					?>
+					</select>
+				</div>
+			
+			<div class="form-group">
+				<label>Duplicate Check:</label>
+				<SELECT size="1" NAME="goDupcheck" ID="goDupcheck" TITLE="Duplicate Check - Will check phone numbers on the lead file and cross reference it with all phone numbers on a specific campaign or in all List ID." class="form-control select2">
+				<OPTION value="NONE">NO DUPLICATE CHECK</OPTION>
+				<OPTION value="DUPLIST">CHECK PHONES IN LIST ID</OPTION>
+				<OPTION value="DUPCAMP">CHECK PHONES IN CAMPAIGN-LISTS</OPTION>
+				</SELECT>
+			</div>
+			
+			</div>
+			<div class="form-group">
+			
+			<label>CSV File:</label>
+				<div class="form-group" id="dvImportSegments">
+				<div class="input-group">
+				<input type="text" class="form-control file-name" name="file_name" placeholder="CSV File" required>
+				<span class="input-group-btn">
+				<button type="button" class="btn browse-btn  btn-primary" type="button">Browse</button>
+				</span>
+				</div>
+				<input type="file" class="file-box hide" name="file_upload" id="txtFileUpload" accept=".csv">
+			</div>
+			
+			<div id="goMappingContainer"></div>
+			<div id="goValuesContainer"></div>
+			</div>
+			
+			<!-- Progress bar -->
+			<div class="form-group">
+				<div id="progress-wrp">
+				<div class="progress-bar"></div >
+				<div class="status">0%</div>
+				</div>
+				<div id="output"><!-- error or success results --></div>
+				<br />
+				<div>
+				<div class="alert alert-success" style="display:none;" id="dStatus"> 
+				<div id="qstatus">  </div>
+				</div>
+				</div>
+			</div>
+			<!-- End Progress bar -->
+			
+			<div class="form-group">
+			<input type="button" id="btnUpload" name="btnUpload" value="Upload" class="btn btn-primary" onClick="goProgressBar();">
+			<!--										<div class="col-lg-12" style="margin-top: 10px;">
+			<div class="alert alert-success" style="display:none;" id="dStatus"> 
+			<div id="qstatus">  </div>
+			</div>
+			</div>-->
+			</div>
+			
+			<div id="jMapFieldsdiv">
+			<span id="jMapFieldsSpan"></span>
+			</div>
+		</form>
+	<?php
+	if(isset($_GET['message'])){
+	echo '<div class="col-lg-12" style="margin-top: 10px;">';
+	if($_GET['message'] == "success"){
+	echo '<div class="alert alert-success"> <strong>Succes: </strong>'.$_GET['RetMesg']." leads uploaded</div>";
+	}else{
+	echo '<div class="alert alert-success"> <strong>Error: </strong>'.$_GET['RetMesg']."</div>";
+	}
+	echo '</div>';
+	}
+	#var_dump($_GET);
+	?>
+	
+	</div><!-- ./upload leads -->
+	
+	<div class="col-lg-3" id="dnc_sidebar" style="display:none;">
+	<h3 class="m0 pb-lg">Filter DNC</h3>
+		<div class="form-group">
+			<label for="search_dnc">Search</label>
+			<div class="has-clear">
+				<input type="text" placeholder="Search Phone Number" id="search_dnc" class="form-control mb">
+				<span class="form-control-clear fa fa-close form-control-feedback"></span>
+			</div>
+		</div>
+		<div class="clearfix">
+			<button type="button" class="pull-left btn btn-default" id="dnc_search_button"> Search</button>
+		</div>
+	</div><!-- ./ dnc search -->
 <?php
 }
 ?>
@@ -383,8 +432,11 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 </div><!-- ./wrapper -->
 
 <!-- FIXED ACTION BUTTON -->
-<div class="action-button-circle" data-toggle="modal" data-target="#list-modal">
+<div class="action-button-circle" data-toggle="modal" data-target="#list-modal" id="list_fab" title="Add List Wizard">
 <?php print $ui->getCircleButton("list_and_call_recording", "plus"); ?>
+</div>
+<div class="action-button-circle" data-toggle="modal" data-target="#dnc-modal" id="dnc_fab" style="display:none;" title="Add/Delete DNC Numbers">
+<?php print $ui->getCircleButton("list_and_call_recording", "pencil-square-o"); ?>
 </div>
 <?php
 	/*
@@ -394,7 +446,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	$max_list = max($lists->list_id);
 	$min_list = min($lists->list_id);
 	
-	if($max_list >= 99999999 || $min_list <= 99999999){
+	if($max_list >= 99999999){
 		for($i=1;$i < $max_list;$i++){
 			if(!in_array($i, $lists->list_id)){
 				$next_list = $i;
@@ -540,7 +592,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							<label class="control-label col-lg-4">Copy Option:</label>
 							<div class="col-lg-8">
 								<select class="form-control select2" name="copy_option">
-									<!-- <option value="APPEND">APPEND</option> -->
+									<option value="APPEND">APPEND</option>
 									<option value="UPDATE">UPDATE</option>
 									<option value="REPLACE">REPLACE</option>
 								</select>
@@ -558,33 +610,51 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	<!-- End of modal -->
 	
 	<!-- Modal -->
-	<div id="modal_view_list_dnc" class="modal fade" role="dialog">
+	<div id="dnc-modal" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
 	    <!-- Modal content-->
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>DNC List</b></h4>
+	        <h4 class="modal-title"><b>Add/Delete DNC</b></h4>
 	      </div>
 	      <div class="modal-body">
-			<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
-				<div class="table-responsive">
-					<table id="dnc_list" class="table table-bordered" style="width: 100%;">
-						<thead>
-							<tr>
-								<th>Phone Number</th>
-								<th>Delete</th>
-							</tr>
-						</thead>
-						<tbody id="dnc_container">
-							<!-- Data Here -->
-						</tbody>
-					</table>
+			<form id="dnc_form">
+				<input type="hidden" name="user_id" value="<?php echo $user->getUserId();?>">
+				<div class="form-group mt">
+					<label class="col-md-3 control-label">List:</label>
+					<div class="col-md-9 mb">
+						<select id="campaign_id" class="form-control select2" name="campaign_id" required>
+							<option value="INTERNAL">INTERNAL DNC LIST</option>
+							<?php
+								for($i=0;$i<count($campaign->campaign_id);$i++){
+									echo '<option value="'.$campaign->campaign_id[$i].'">'.$campaign->campaign_id[$i].' - '.$campaign->campaign_name[$i].'</option>';
+								}
+							?>
+						</select>
+					</div>
 				</div>
-			</div>
+				<div class="form-group mt">
+					<label class="col-md-3 control-label">Phone Numbers:</label>
+					<div class="col-md-9 mb">
+						<textarea rows="15" cols="17" name="phone_numbers" id="phone_numbers" style="resize:none"></textarea><br/>
+						<small class="text-danger">(one phone number per line, limit of 25 lines per submit.)</small>
+					</div>
+				</div>
+				<div class="form-group mt">
+					<label class="col-md-3 control-label">Add or Delete:</label>
+					<div class="col-md-4">
+						<select id="stageDNC" class="form-control" name="stageDNC" required>
+							<option value="ADD">ADD DNC LIST</option>
+							<option value="DELETE">DELETE DNC LIST</option>
+						</select>
+					</div>
+				</div>
+			</form>
 	      </div>
+		  
 	      <div class="modal-footer">
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_delete-dnc">Add / Delete DNC</button>
+			<button type="button" class="btn btn-primary" id="submit_dnc">Add / Delete DNC</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	      </div>
 	    </div>
@@ -592,42 +662,6 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	  </div>
 	</div>
 	
-	<!-- Modal -->
-	<div id="add_delete-dnc" class="modal" role="dialog">
-	  <div class="modal-dialog">
-
-	    <!-- Modal content-->
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>List</b></h4>
-	      </div>
-	      <div class="modal-body">
-			<div id="example1_wrapper" class="form-inline dt-bootstrap">
-				<div class="table-responsive">
-					<table id="dnc_list" class="table table-bordered" style="width: 100%;">
-						<thead>
-							<tr>
-								<th>Phone NUmber</th>
-								<th>Delete</th>
-							</tr>
-						</thead>
-						<tbody id="dnc_container">
-							<!-- Data Here -->
-						</tbody>
-					</table>
-				</div>
-			</div>
-	      </div>
-	      <div class="modal-footer">
-			<button type="button" class="btn btn-primary" data-target="#add_delete-dnc">Add / Delete DNC</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal" href="#add_delete-dnc">Close</button>
-	      </div>
-	    </div>
-	    <!-- End of modal content -->
-	  </div>
-	</div>
-
 		<?php print $ui->standardizedThemeJS();?>
 		<!-- JQUERY STEPS-->
   		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
@@ -635,40 +669,34 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
    		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
 
 		<script type="text/javascript">
-			function get_list_dnc(){
-				$.ajax({
-					url: "./php/GetListDNC.php",
-					type: 'POST',
-					data: {
-						
-					},
-					dataType: 'json',
-					success: function(response) {
-							// var values = JSON.parse(response.result);
-							// console.log(response);
-
-						$('#modal_view_list_dnc').modal('show');
-						var table = $('#dnc_list').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#dnc_container').html(response);
-						$('#dnc_list').DataTable({
-							"searching": true,
-							bFilter: true,
-							"aoColumnDefs": [{
-								"bSearchable": false,
-								"aTargets": [ 1 ]
-							},{
-								"bSortable": false,
-								"aTargets": [ 1 ]
-							}]
-						});
-						$("#dnc_list").css("width","100%");
+			$(document).ready(function() {
+				// on tab change, change sidebar
+				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+					var target = $(e.target).attr("href"); // activated tab
+					
+					if(target == "#list_tab"){
+						$("#list_sidebar").show();
+						$("#list_fab").show();
+						$("#dnc_sidebar").hide();
+						$("#dnc_fab").hide();
+						$("#legend_title").text("Lists");
+					}
+					if(target == "#dnc_tab"){
+						$("#dnc_sidebar").show();
+						$("#dnc_fab").show();
+						$("#list_sidebar").hide();
+						$("#list_fab").hide();
+						$("#legend_title").text("DNC");
 					}
 				});
-			}
-
-			$(document).ready(function() {
+				
+				$('body').on('keypress', '#search_dnc', function(args) {
+				    if (args.keyCode == 13) {
+				        $("#dnc_search_button").click();
+				        return false;
+				    }
+				});
+				
 				/*****
 				** Functions for List
 				*****/
@@ -687,7 +715,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							"aTargets": [ 0, 7 ]
 						}]
 					});
-
+					
 					/**
 					* Add list
 					**/
@@ -716,20 +744,17 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								$(".body:eq(" + newIndex + ") .error", form).removeClass("error");
 							}
 		
-							form.validate().settings.ignore = ":disabled";
+							form.validate().settings.ignore = "";
 							return form.valid();
 						},
-						onFinishing: function (event, currentIndex)
-						{
-							form.validate().settings.ignore = ":disabled";
+						onFinishing: function (){
+							form.validate().settings.ignore = "";
 							return form.valid();
 						},
-						onFinished: function (event, currentIndex)
-						{
-		
+						onFinished: function (){
 							$('#finish').text("Loading...");
 							$('#finish').attr("disabled", true);
-		
+							$('#add_list_id').attr("disabled", false);
 							// Submit form via ajax
 							$.ajax({
 	                            url: "./php/AddTelephonyList.php",
@@ -737,15 +762,13 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	                            data: $('#create_form').serialize(),
 	                            success: function(data) {
 	                              // console.log(data);
-	                                  if(data == 1){
-										swal("Success!", "List Successfully Created!", "success");
-										window.setTimeout(function(){location.reload();},3000);
-	                                  }
-	                                  else{
-	                                      sweetAlert("Oops...", "Something went wrong!", "error");
-	                                      $('#finish').val("Submit");
-	                                      $('#finish').prop("disabled", false);
-	                                  }
+									$('#finish').text("Submit");
+									$('#finish').attr("disabled", false);
+									if(data == 1){
+									  swal({title: "Success",text: "List Successfully Created!",type: "success"},function(){window.location.href = 'telephonylist.php';});
+									}else{
+										sweetAlert("Oops...", "Something went wrong!", "error");
+									}
 	                            }
 	                        });
 						}
@@ -805,7 +828,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 										console.log(data);
 											if(data == 1){
 												swal("Deleted!", "List has been successfully deleted.", "success");
-												window.setTimeout(function(){location.reload()},1000)
+												window.setTimeout(function(){location.reload()},1000);
 											}else{
 											   sweetAlert("Oops...", "Something went wrong!", "error");
 											}
@@ -919,6 +942,123 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					});
 
 				//-- end
+				
+				// DNC Search
+					$(document).on('click','#dnc_search_button',function() {
+					//init_contacts_table.destroy();
+						if($('#search_dnc').val() != ""){
+							$('#dnc_search_button').text("Searching...");
+							$('#dnc_search_button').attr("disabled", true);
+						}else{
+							$('#dnc_search_button').text("Search");
+							$('#dnc_search_button').attr("disabled", false);
+						}
+						
+						$.ajax({
+							url: "search_dnc.php",
+							type: 'POST',
+							data: {
+								search_dnc : $('#search_dnc').val()
+							},
+							success: function(data) {
+								$('#dnc_search_button').text("Search");
+								$('#dnc_search_button').attr("disabled", false);
+								//console.log(data);
+								if(data != ""){
+									$('#table_dnc').html(data);
+									$('#table_dnc').DataTable({
+									"bDestroy" : true
+									});
+									$('#dnc_error').html("");
+								}else{
+									$('#dnc_error').text("No Results");
+								}
+							}
+						});
+					});
+				
+				// DNC Submit
+					$(document).on('click','#submit_dnc',function() {
+						$('#submit_dnc').text("Submitting...");
+						$('#submit_dnc').attr("disabled", true);
+						
+						if ($('#phone_numbers').val() !== ''){
+							$.ajax({
+								url: "php/ActionDNC.php",
+								type: 'POST',
+								data: $('#dnc_form').serialize(),
+								success: function(data) {
+									$('#submit_dnc').text("Add / Delete DNC");
+									$('#submit_dnc').attr("disabled", false);
+									
+									if(data == "added"){
+										swal({title: "Added", text: "Successfully Added DNC!", type: "success"},function(){location.reload();});
+									} else if(data == "deleted"){
+										swal({title: "Deleted", text: "Successfully Deleted DNC! ", type: "success"},function(){location.reload();});
+									} else if(data == "already exist"){
+										swal({title: "Oops...", text: "DNC Number/s Already Exist... ", type: "error"},function(){location.reload();});
+									} else if(data == "does not exist"){
+										swal({title: "Oops...", text: "DNC Number/s Do Not Exist... ", type: "error"},function(){location.reload();});
+									} else{
+										sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+									}
+								}
+							});
+						} else {
+							$('#submit_dnc').text("Add / Delete DNC");
+							$('#submit_dnc').attr("disabled", false);
+							swal("You're not done yet!", "Please input a phone number on the textbox.", "error");
+						}
+					});
+				
+				// Delete DNC
+					$(document).on('click','.delete-dnc',function() {
+						var phone_number = $(this).data('id');
+						var campaign = $(this).data('campaign');
+						
+						$.ajax({
+							url: "php/ActionDNC.php",
+							type: 'POST',
+							data: {
+								phone_numbers : phone_number,
+								campaign_id : campaign,
+								stageDNC : "DELETE",
+								user_id : <?php echo $user->getUserId();?>
+							},
+							success: function(data) {
+								//console.log(data);
+								if(data == "deleted"){
+									swal({title: "Deleted", text: "Successfully Deleted DNC! ", type: "success"},function(){location.reload();});
+								} else if(data == "already exist"){
+									swal({title: "Oops...", text: "DNC Number/s Already Exist... ", type: "error"},function(){location.reload();});
+								} else if(data == "does not exist"){
+									sweetAlert("Oops...", "DNC Number/s Do Not Exist... ", "error");
+								} else{
+									sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+								}
+							}
+						});
+					});
+				
+				$('#phone_numbers').keypress(function(event){
+					if((event.ctrlKey === false && ((event.which < 48 || event.which > 57) && event.which !== 13 && event.which !== 8)) && (event.keyCode !== 9 && event.keyCode !== 46 && (event.keyCode < 37 || event.keyCode > 40)))
+					return false;
+				});
+				
+				var lines = 25;
+				
+				$('#phone_numbers').keydown(function(e) {
+					newLines = $(this).val().split("\n").length;
+				
+					if(e.keyCode == 13 && newLines >= lines) {
+						return false;
+					}
+				});
+
+				$('#phone_numbers').blur(function() {
+					this.value = this.value.replace('/[^0-9\r\n]/g','');
+				});
+				
 			});
 		</script>
 

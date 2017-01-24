@@ -6026,6 +6026,53 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		return (bool)preg_match('#^HTTP/.*\s+[(200|301|302)]+\s#i', $headers);
 	}
+	
+	// get dnc
+	public function API_GetDNC($search){
+	$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
+    $postfields["goUser"] = goUser; #Username goes here. (required)
+    $postfields["goPass"] = goPass; #Password goes here. (required)
+    $postfields["goAction"] = "getAllDNC"; #action performed by the [[API:Functions]]. (required)
+	$postfields["search"] = $search; #get DNC by this list_id search
+    $postfields["responsetype"] = responsetype; #json. (required)
+	 $ch = curl_init();
+	 curl_setopt($ch, CURLOPT_URL, $url);
+	 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		 curl_setopt($ch, CURLOPT_POST, 1);
+		 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		 $data = curl_exec($ch);
+		 curl_close($ch);
+		 $output = json_decode($data);
+
+		 return $output;
+	}
+
+	// get dnc table
+	public function GetDNC($search) {
+		//$limit = 10;
+		$output = $this->API_GetDNC($search);
+	       if($output->result=="success") {
+			$columns = array( "Phone Numbers", "Campaign", "Action" );
+			$hideOnMedium = array();
+			$hideOnLow = array( "Campaign");
+			$result = $this->generateTableHeaderWithItems($columns, "table_dnc", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+
+			for($i=0;$i < count($output->phone_number);$i++){
+				$result .= '<tr>
+								<td>' .$output->phone_number[$i]. '</td>
+								<td class="hide-on-low">' .$output->campaign[$i].'</td>
+								<td><a class="delete-dnc btn btn-danger" data-id="'.$output->phone_number[$i].'" data-campaign="'.$output->campaign[$i].'" title="Delete DNC Number: '.$output->phone_number[$i].'"><i class="fa fa-trash"></i></a></td>
+							</tr> ';
+			}
+
+			return $result.'</table>';
+       }else{
+       		//display nothing
+       }
+	}
+	
 }
 
 ?>
