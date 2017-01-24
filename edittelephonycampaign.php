@@ -393,7 +393,7 @@ $lists = $ui->API_goGetAllLists();
 															<?php } ?>
 														</span>
 													</div>
-													<div class="form-group">
+													<!--<div class="form-group">
 														<label class="col-sm-2 control-label">Inbound Man:</label>
 														<div class="col-sm-10 mb">
 															<select class="form-control" id="inbound_man" name="inbound_man">
@@ -401,7 +401,7 @@ $lists = $ui->API_goGetAllLists();
 																<option value="N" <?php if($campaign->data->dial_method == "AUTO_DIAL") echo "selected";?>>No</option>
 															</select>
 														</div>
-													</div>
+													</div>-->
 												<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
 													<div class="form-group">
 														<label class="col-sm-2 control-label">Phone Numbers (DID/TFN) on this campaign:</label>
@@ -854,6 +854,52 @@ $lists = $ui->API_goGetAllLists();
 															</div>
 														</div>
 													<?php } elseif($campaign->campaign_type == "INBOUND") { ?>
+														<div class="form-group" style="margin-bottom: 10px;">
+															<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=1;?>
+															<?php foreach($dial_statuses as $dial_status) { ?>
+																<?php if(!empty($dial_status)) { ?>
+																	<label class="col-sm-3 control-label">Active Dial Status <?php echo $i; ?>:</label>
+																	<span class="col-sm-8 control-label" style="text-align: left;">
+																		<label><?php echo $dial_status; ?></label> - <span><?php $lh->translateText($dial_status); ?></span>
+																	</span>
+																	<span class="col-sm-1 control-label">
+																		<a href="#" class="remove-this-dial-status"  data-campaign="<?php echo $campaign_id; ?>" data-dial-status="<?php echo $campaign->data->dial_statuses;?>" data-selected-status="<?php echo $dial_status; ?>">Remove</a>
+																	</span>
+																	<?php $i++; ?>
+																<?php } ?>
+															<?php } ?>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label">Dial Status:</label>
+															<div class="col-sm-8 mb">
+																<select class="form-control" id="dial_status" name="dial_status">
+																	<option value="" selected>NONE</option>
+																	<optgroup label="System Statuses">
+																	<?php for($i=0;$i<=count($dialStatus->status);$i++) { ?>
+																		<?php if( !empty($dialStatus->status[$i]) && !in_array($dialStatus->status[$i], $dial_statuses) ){ ?>
+																			<option value="<?php echo $dialStatus->status[$i]?>">
+																				<?php echo $dialStatus->status[$i]." - ".$dialStatus->status_name[$i]?>
+																			</option>
+																		<?php } ?>
+																	<?php } ?>
+																	</optgroup>
+																	<?php if(count($campdialStatus->status) > 0){ ?>
+																		<optgroup label="Campaign Statuses">
+																		<?php for($i=0;$i<=count($campdialStatus->status);$i++) { ?>
+																			<?php if( !empty($campdialStatus->status[$i])  && !in_array($campdialStatus->status[$i], $dial_statuses) ){ ?>
+																				<option value="<?php echo $campdialStatus->status[$i]?>">
+																					<?php echo $campdialStatus->status[$i]." - ".$campdialStatus->status_name[$i]?>
+																				</option>
+																			<?php } ?>
+																		<?php } ?>
+																		</optgroup>
+																	<?php } ?>
+																</select>
+															</div>
+															<div class="col-sm-1 mb">
+																<button type="button" class="btn btn-default btn-add-dial-status" data-campaign="<?php echo $campaign_id; ?>" data-dial-status="<?php echo $campaign->data->dial_statuses;?>">Add</button>
+															</div>
+														</div>
 														<div class="form-group">
 															<label class="col-sm-3 control-label">Get Call Launch:</label>
 															<div class="col-sm-9 mb">

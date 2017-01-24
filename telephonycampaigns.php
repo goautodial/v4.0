@@ -449,7 +449,7 @@
 				    				<label class="control-label col-lg-4">Campaign ID:</label>
 				    				<div class="col-lg-8 mb">
 				    					<div class="input-group">
-									      <input id="campaign-id" name="campaign_id" type="number" class="form-control" placeholder="" value="<?php echo str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT); ?>" minlength="3" maxlength="8" readonly onkeydown="return FilterInput(event)">
+									      <input id="campaign-id" name="campaign_id" type="number" class="form-control" placeholder="" value="<?php echo str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT); ?>" min="0" minlength="3" maxlength="8" readonly onkeydown="return FilterInput(event)">
 									      <span class="input-group-btn">
 									        <button id="campaign-id-edit-btn" class="btn btn-default" type="button" style="min-height: 34px;"><i class="fa fa-pencil"></i></button>
 									      </span>
@@ -472,10 +472,10 @@
 				    				<label class="control-label col-lg-4">Call Route:</label>
 				    				<div class="col-lg-8 mb">
 				    					<select id="call-route" name="call_route" class="form-control">
-				                            <option value="INGROUP">INGROUP (campaign)</option>
+				                            <option value="INGROUP">INGROUP (default)</option>
 				                            <option value="IVR">IVR (callmenu)</option>
-				                            <option value="AGENT">AGENT</option>
-				                            <option value="VOICEMAIL">VOICEMAIL</option>
+				                            <!--<option value="AGENT">AGENT</option>-->
+				                            <!--<option value="VOICEMAIL">VOICEMAIL</option>-->
 				                        </select>
 				    				</div>
 				    			</div>
@@ -2758,7 +2758,7 @@
 								$('.survey').addClass('hide');
 								$('.copy-from').addClass('hide');
 								$('.inbound').removeClass('hide');
-								$('.carrier-to-use').removeClass('hide');
+								$('.carrier-to-use').addClass('hide');
 								$('#dial-method').val("RATIO").trigger('change');
 								dialMethod("RATIO");
 							}else if(selectedTypeVal == 'survey'){
