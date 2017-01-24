@@ -753,10 +753,11 @@ if (isset($_POST["did"])) {
 																	<?php
 																		$no_agents_exten = NULL;
 																			for($x=0; $x < count($voicefiles->file_name);$x++){
-																				if($output->data->no_agent_action_value == $voicefiles->file_name[$x]){
-																					$no_agents_exten .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
+																				$this_file_name = preg_replace("/\.(wav|mp3)$/", "", $voicefiles->file_name[$x]);
+																				if($output->data->no_agent_action_value == $this_file_name){
+																					$no_agents_exten .= '<option value="'.$this_file_name.'" selected> '.$this_file_name.' </option>';
 																				}else{
-																					$no_agents_exten .= '<option value="'.$voicefiles->file_name[$x].'"> '.$voicefiles->file_name[$x].' </option>';
+																					$no_agents_exten .= '<option value="'.$this_file_name.'"> '.$this_file_name.' </option>';
 																				}
 																			}
 																		echo $no_agents_exten;
@@ -901,7 +902,7 @@ if (isset($_POST["did"])) {
 												</div>
 							       			</div>
 							       			<div class="form-group">
-							       				<label for="onhold_prompt_filename" class="col-sm-4 control-label">On Hold Prompt</label>
+							       				<label for="onhold_prompt_filename" class="col-sm-4 control-label">On Hold Prompt Filename</label>
 							       				<div class="col-sm-8 mb">
 													<select class="form-control select2" id="onhold_prompt_filename" name="onhold_prompt_filename" style="width:100%;">
 														<?php
