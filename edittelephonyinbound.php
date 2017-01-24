@@ -474,8 +474,8 @@ if (isset($_POST["did"])) {
 														</div><!-- /. ingroup -->
 
 													<!-- IF CALLMENU IS SELECTED -->
-														<div class="drop_callmenu" <?php if($output->data->drop_action != "CALLMENU"){ ?>style="display:none;"<?php }?>>
-															<label for="drop_exten_callmenu" class="col-sm-3 control-label">Drop Callmenu </label>
+														<div class="drop_exten_callmenu" <?php if($output->data->drop_action != "CALLMENU"){ ?>style="display:none;"<?php }?>>
+															<label for="drop_callmenu" class="col-sm-3 control-label">Drop Callmenu </label>
 															<div class="col-sm-9 mb">
 																<select class="form-control select2" id="drop_callmenu" name="drop_callmenu" style="width:100%;">
 																	<?php
@@ -567,10 +567,11 @@ if (isset($_POST["did"])) {
 																<?php
 																	$after_hours_message_filename = NULL;
 																		for($x=0; $x < count($voicefiles->file_name);$x++){
-																			if($output->data->after_hours_message_filename == $voicefiles->file_name[$x]){
-																				$after_hours_message_filename .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
+																			$this_file_name = preg_replace("/\.(wav|mp3)$/", "", $voicefiles->file_name[$x]);
+																			if($output->data->after_hours_message_filename == $this_file_name){
+																				$after_hours_message_filename .= '<option value="'.$this_file_name.'" selected> '.$this_file_name.' </option>';
 																			}else{
-																				$after_hours_message_filename .= '<option value="'.$voicefiles->file_name[$x].'"> '.$voicefiles->file_name[$x].' </option>';
+																				$after_hours_message_filename .= '<option value="'.$this_file_name.'"> '.$this_file_name.' </option>';
 																			}
 																		}
 																	echo $after_hours_message_filename;
@@ -832,10 +833,11 @@ if (isset($_POST["did"])) {
 														<?php
 															$welcome_message_filename = NULL;
 																for($x=0; $x < count($voicefiles->file_name);$x++){
-																	if($output->data->welcome_message_filename == $voicefiles->file_name[$x]){
-																		$welcome_message_filename .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
+																	$this_file_name = preg_replace("/\.(wav|mp3)$/", "", $voicefiles->file_name[$x]);
+																	if($output->data->welcome_message_filename == $this_file_name){
+																		$welcome_message_filename .= '<option value="'.$this_file_name.'" selected> '.$this_file_name.' </option>';
 																	}else{
-																		$welcome_message_filename .= '<option value="'.$voicefiles->file_name[$x].'"> '.$voicefiles->file_name[$x].' </option>';
+																		$welcome_message_filename .= '<option value="'.$this_file_name.'"> '.$this_file_name.' </option>';
 																	}
 																}
 															echo $welcome_message_filename;
@@ -905,10 +907,11 @@ if (isset($_POST["did"])) {
 														<?php
 															$onhold_prompt_filename = NULL;
 																for($x=0; $x < count($voicefiles->file_name);$x++){
-																	if($output->data->onhold_prompt_filename == $voicefiles->file_name[$x]){
-																		$onhold_prompt_filename .= '<option value="'.$voicefiles->file_name[$x].'" selected> '.$voicefiles->file_name[$x].' </option>';
+																	$this_file_name = preg_replace("/\.(wav|mp3)$/", "", $voicefiles->file_name[$x]);
+																	if($output->data->onhold_prompt_filename == $this_file_name){
+																		$onhold_prompt_filename .= '<option value="'.$this_file_name.'" selected> '.$this_file_name.' </option>';
 																	}else{
-																		$onhold_prompt_filename .= '<option value="'.$voicefiles->file_name[$x].'"> '.$voicefiles->file_name[$x].' </option>';
+																		$onhold_prompt_filename .= '<option value="'.$this_file_name.'"> '.$this_file_name.' </option>';
 																	}
 																}
 															echo $onhold_prompt_filename;
