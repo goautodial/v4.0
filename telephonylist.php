@@ -654,7 +654,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	      </div>
 		  
 	      <div class="modal-footer">
-			<button type="button" class="btn btn-primary" id="submit_dnc">Add / Delete DNC</button>
+			<button type="button" class="btn btn-primary" id="submit_dnc">Submit</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	      </div>
 	    </div>
@@ -996,16 +996,16 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 									} else if(data == "deleted"){
 										swal({title: "Deleted", text: "Successfully Deleted DNC! ", type: "success"},function(){location.reload();});
 									} else if(data == "already exist"){
-										swal({title: "Oops...", text: "DNC Number/s Already Exist... ", type: "error"},function(){location.reload();});
+										sweetAlert("Wait A Minute", "DNC Number/s Already Exist...", "error");
 									} else if(data == "does not exist"){
-										swal({title: "Oops...", text: "DNC Number/s Do Not Exist... ", type: "error"},function(){location.reload();});
+										sweetAlert("Oh no!", "DNC Number/s Do Not Exist...", "error");
 									} else{
 										sweetAlert("Oops...", "Something went wrong! "+ data, "error");
 									}
 								}
 							});
 						} else {
-							$('#submit_dnc').text("Add / Delete DNC");
+							$('#submit_dnc').text("Submit");
 							$('#submit_dnc').attr("disabled", false);
 							swal("You're not done yet!", "Please input a phone number on the textbox.", "error");
 						}
