@@ -130,7 +130,6 @@
 	// print_r($output);die;
 	$home = $_SERVER['HTTP_REFERER'];
 	if ($output->result == "success") {
-		var_dump($output);die();
 		# Result was OK!
 		$url = str_replace("?message=Success&campaign=".$_POST["campaign_id"], "", $home);
 		header("Location: ".$url."?message=Success&campaign=".$_POST["campaign_id"]);
