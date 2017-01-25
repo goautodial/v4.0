@@ -521,7 +521,7 @@
 										</select>
 									</div>
 								</div>
-				    			<div class="form-group inbound blended hide">
+				    			<div class="form-group group-color inbound blended hide">
 				    				<label class="control-label col-lg-4">Group Color:</label>
 				    				<div class="col-lg-8 mb">
 				    					<input id="group-color" name="group_color" type="text" class="form-control colorpicker" val="#ffffff">
@@ -1578,14 +1578,16 @@
 							},
 							dataType: 'json',
 							success: function(response) {
-								//console.log(response);
+								console.log(response);
 								$('#did-tfn-extension').val(did);
 								if (response.did_route == "IN_GROUP") {
 									$('#call-route').val("INGROUP").trigger('change');
 									$('#ingroup-text').val(response.group_id).trigger('change');
-                                }else if (response.did_route == "IVR") {
+									$('.group-color').removeClass('hide');
+                                }else if (response.did_route == "CALLMENU") {
 									$('#call-route').val("IVR").trigger('change');
 									$('#ivr-text').val(response.menu_id).trigger('change');
+									$('.group-color').addClass('hide');
                                 }else if (response.did_route == "AGENT") {
 									$('#call-route').val("AGENT").trigger('change');
                                     $('#agent-text').val(response.user).trigger('change');
@@ -1616,6 +1618,7 @@
 					$('.agent-div').addClass('hide');
 					$('.voicemail-div').addClass('hide');
 					$('.callroute-dummy-div').addClass('hide');
+					$('.group-color').removeClass('hide');
                 }else if (callroute == "IVR") {
                     $('.call-route-div-label').html("IVR:");
 					$('.ivr-div').removeClass('hide');
@@ -1623,6 +1626,7 @@
 					$('.agent-div').addClass('hide');
 					$('.voicemail-div').addClass('hide');
 					$('.callroute-dummy-div').addClass('hide');
+					$('.group-color').addClass('hide');
                 }else if (callroute == "AGENT") {
                     $('.call-route-div-label').html("AGENT:");
 					$('.agent-div').removeClass('hide');
