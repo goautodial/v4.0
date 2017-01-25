@@ -307,7 +307,7 @@ $lists = $ui->API_goGetAllLists();
 																	</select>
 																</div>
 																<div class="col-lg-3">
-																	<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if(($campaign->data->dial_prefix == "CUSTOM") && ($campaign->data->dial_prefix == 0) || ($campaign->data->dial_prefix == '')){echo 9;}else{echo $campaign->data->dial_prefix;} ?>" minlength="9" maxlength="20">
+																	<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" min="0" value="<?php if(($campaign->data->dial_prefix == "CUSTOM") && ($campaign->data->dial_prefix == 0) || ($campaign->data->dial_prefix == '')){echo 9;}else{echo $campaign->data->dial_prefix;} ?>" minlength="9" maxlength="20">
 																</div>
 															</div>
 														</div>
@@ -841,7 +841,7 @@ $lists = $ui->API_goGetAllLists();
 														<div class="form-group">
 															<label class="col-sm-3 control-label">Customer 3-way Hangup Seconds:</label>
 															<div class="col-sm-9 mb">
-																<input type="number" class="form-control" id="customer_3way_hangup_seconds" name="customer_3way_hangup_seconds" value="<?php if(!empty($campaign->data->customer_3way_hangup_seconds)){echo $campaign->data->customer_3way_hangup_seconds;}else{echo "5";} ?>" onkeydown="return FilterInput(event)">
+																<input type="number" class="form-control" id="customer_3way_hangup_seconds" name="customer_3way_hangup_seconds" min="0" value="<?php if(!empty($campaign->data->customer_3way_hangup_seconds)){echo $campaign->data->customer_3way_hangup_seconds;}else{echo "5";} ?>" onkeydown="return FilterInput(event)">
 															</div>
 														</div>
 														<div class="form-group">
@@ -1050,7 +1050,7 @@ $lists = $ui->API_goGetAllLists();
 															<div class="form-group">
 																<label class="col-sm-3 control-label">Customer 3-way Hangup Seconds:</label>
 																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="customer_3way_hangup_seconds" name="customer_3way_hangup_seconds" value="<?php if(!empty($campaign->data->customer_3way_hangup_seconds)){echo $campaign->data->customer_3way_hangup_seconds;}else{echo "5";} ?>" onkeydown="return FilterInput(event)">
+																	<input type="number" class="form-control" id="customer_3way_hangup_seconds" name="customer_3way_hangup_seconds" min="0" value="<?php if(!empty($campaign->data->customer_3way_hangup_seconds)){echo $campaign->data->customer_3way_hangup_seconds;}else{echo "5";} ?>" onkeydown="return FilterInput(event)">
 																</div>
 															</div>
 															<div class="form-group">
@@ -1402,7 +1402,7 @@ $lists = $ui->API_goGetAllLists();
 														<div class="form-group">
 															<label class="col-sm-3 control-label">Customer 3-way Hangup Seconds:</label>
 															<div class="col-sm-9 mb">
-																<input type="number" class="form-control" id="customer_3way_hangup_seconds" name="customer_3way_hangup_seconds" value="<?php if(!empty($campaign->data->customer_3way_hangup_seconds)){echo $campaign->data->customer_3way_hangup_seconds;}else{echo "5";} ?>" onkeydown="return FilterInput(event)">
+																<input type="number" class="form-control" id="customer_3way_hangup_seconds" name="customer_3way_hangup_seconds" min="0" value="<?php if(!empty($campaign->data->customer_3way_hangup_seconds)){echo $campaign->data->customer_3way_hangup_seconds;}else{echo "5";} ?>" onkeydown="return FilterInput(event)">
 															</div>
 														</div>
 														<div class="form-group">
@@ -1419,21 +1419,21 @@ $lists = $ui->API_goGetAllLists();
 															<div class="form-group">
 																<label class="col-sm-3 control-label">Survey DTMF Digits:</label>
 																<div class="col-sm-5 mb">
-																	<input type="number" class="form-control" id="survey_dtmf_digits" name="survey_dtmf_digits" value="<?php echo $campaign->data->survey_dtmf_digits; ?>">
+																	<input type="number" class="form-control" id="survey_dtmf_digits" name="survey_dtmf_digits" min="0" value="<?php echo $campaign->data->survey_dtmf_digits; ?>">
 																</div>
 																<span class="col-sm-4 control-label">* Customer define key press e.g.0123456789*#</span>
 															</div>
 															<div class="form-group">
 																<label class="col-sm-3 control-label">DID:</label>
 																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="survey_xfer_exten" name="survey_xfer_exten" value="<?php echo $campaign->data->survey_xfer_exten; ?>">
+																	<input type="number" class="form-control" id="survey_xfer_exten" name="survey_xfer_exten" min="0" value="<?php echo $campaign->data->survey_xfer_exten; ?>">
 																</div>
 															</div>
 															<br />
 															<div class="form-group">
 																<label class="col-sm-3 control-label">Press 8 Not interested digit:</label>
 																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="survey_ni_digit" name="survey_ni_digit" maxlength="10" value="<?php echo $campaign->data->survey_ni_digit; ?>">
+																	<input type="number" class="form-control" id="survey_ni_digit" name="survey_ni_digit" min="0" maxlength="10" value="<?php echo $campaign->data->survey_ni_digit; ?>">
 																</div>
 															</div>
 															<div class="form-group">
@@ -1458,7 +1458,7 @@ $lists = $ui->API_goGetAllLists();
 															<div class="form-group">
 																<label class="col-sm-3 control-label">Press 3 digit:</label>
 																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="survey_third_digit" name="survey_third_digit" maxlength="10" value="<?php echo $campaign->data->survey_third_digit; ?>">
+																	<input type="number" class="form-control" id="survey_third_digit" name="survey_third_digit" min="0" maxlength="10" value="<?php echo $campaign->data->survey_third_digit; ?>">
 																</div>
 															</div>
 															<div class="form-group">
@@ -1479,14 +1479,14 @@ $lists = $ui->API_goGetAllLists();
 															<div class="form-group">
 																<label class="col-sm-3 control-label">Press 3 DID:</label>
 																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="survey_third_exten" name="survey_third_exten" value="<?php echo $campaign->data->survey_third_exten; ?>">
+																	<input type="number" class="form-control" id="survey_third_exten" name="survey_third_exten" min="0" value="<?php echo $campaign->data->survey_third_exten; ?>">
 																</div>
 															</div>
 															<br />
 															<div class="form-group">
 																<label class="col-sm-3 control-label">Press 4 Digit:</label>
 																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="survey_fourth_digit" maxlength="10" name="survey_fourth_digit" value="<?php echo $campaign->data->survey_fourth_digit; ?>">
+																	<input type="number" class="form-control" id="survey_fourth_digit" maxlength="10" name="survey_fourth_digit" min="0" value="<?php echo $campaign->data->survey_fourth_digit; ?>">
 																</div>
 															</div>
 															<div class="form-group">
@@ -1507,7 +1507,7 @@ $lists = $ui->API_goGetAllLists();
 															<div class="form-group">
 																<label class="col-sm-3 control-label">Press 4 DID:</label>
 																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="survey_fourth_exten" name="survey_fourth_exten" value="<?php echo $campaign->data->survey_fourth_exten; ?>">
+																	<input type="number" class="form-control" id="survey_fourth_exten" name="survey_fourth_exten" min="0" value="<?php echo $campaign->data->survey_fourth_exten; ?>">
 																</div>
 															</div>
 														<?php } ?>
