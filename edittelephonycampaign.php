@@ -372,13 +372,12 @@ $lists = $ui->API_goGetAllLists();
 													<div class="form-group">
 														<label class="col-sm-2 control-label">Minimum Hopper Level:</label>
 														<div class="col-sm-10 mb">
-															<?php echo $campaign->data->hopper_level; ?>
 															<select class="form-control" id="hopper_level" name="hopper_level">
 																<?php
 																$hopper_level = array (1, 5, 10, 20, 50, 100, 200, 500, 700, 1000, 2000);
 																foreach ($hopper_level as $level) {
 																	$selectThis = '';
-																	if ($level === $campaign->data->hopper_level) { $selectThis = 'selected'; }
+																	if ($level == $campaign->data->hopper_level) { $selectThis = 'selected'; }
 																	echo '<option value="'.$level.'" '.$selectThis.'>'.$level.'</option>';
 																}
 																?>
