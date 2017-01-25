@@ -1353,7 +1353,7 @@ if (isset($_POST["did"])) {
 																		</div>
 																	</div>
 																	<?php 
-																		if($ivr_options->option_route[$i] == "INGROUP"){
+																		if($ivr_options->option_route[$i] == "INGROUP" || !isset($ivr_options->option_route[$i]) ){
 																			$explode_ingroup_context = explode(",", $ivr_options->option_route_value_context[$i]);
 																	?>
 																	<div class="col-sm-11">
@@ -1400,7 +1400,12 @@ if (isset($_POST["did"])) {
 																			<div class="col-sm-5 ingroup_advanced_settings_<?php echo $i;?>">
 																				<label class="col-sm-5 control-label">Phone Code: </label>
 																				<div class="col-sm-7">
-																					<input type="text" class="form-control" name="phone_code<?php echo $i;?>" value="<?php echo $explode_ingroup_context[4]; ?>" id="edit_phone_code_<?php echo $i;?>" maxlength="14" size="4">
+																					<input type="text" class="form-control" name="phone_code<?php echo $i;?>" value="<?php 
+																						if(isset($ivr_options->option_route[$i])) 
+																							echo $explode_ingroup_context[4];
+																						else
+																							echo 1;
+																					?>" id="edit_phone_code_<?php echo $i;?>" maxlength="14" size="4">
 																				</div>
 																			</div>
 																		</div>
@@ -1418,21 +1423,36 @@ if (isset($_POST["did"])) {
 																			<div class="col-sm-5">
 																				<label class="col-sm-5 control-label" for="search_method_list_id">List ID: </label>
 																				<div class="col-sm-7">
-																					<input type="text" name="list_id_<?php echo $i;?>" value="<?php echo $explode_ingroup_context[2]; ?>" id="edit_list_id_<?php echo $i;?>" class="form-control" maxlength="14" size="8">
+																					<input type="text" name="list_id_<?php echo $i;?>" value="<?php 
+																						if(isset($ivr_options->option_route[$i])) 
+																							echo $explode_ingroup_context[2];
+																						else
+																							echo 998;
+																					?>" id="edit_list_id_<?php echo $i;?>" class="form-control" maxlength="14" size="8">
 																				</div>
 																			</div>
 																		</div>
 																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
 																			<label class="col-sm-3 control-label">VID Digits: </label>
 																			<div class="col-sm-7">
-																				<input type="text" class="form-control" name="vid_digits_<?php echo $i;?>" value="<?php echo $explode_ingroup_context[8]; ?>" id="edit_validate_digits_<?php echo $i;?>" maxlength="3" size="3">
+																				<input type="text" class="form-control" name="vid_digits_<?php echo $i;?>" value="<?php 
+																					if(isset($ivr_options->option_route[$i]))
+																						echo $explode_ingroup_context[8];
+																					else
+																						echo 1;
+																				?>" id="edit_validate_digits_<?php echo $i;?>" maxlength="3" size="3">
 																			</div>
 																		</div>
 																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-																			<label class="col-sm-4 control-label">VID Enter Filename: </label>
+																			<label class="col-sm-3 control-label">VID Enter Filename: </label>
 																			<div class="col-sm-8">
 																				<div class="col-sm-6">
-																					<input type="text" name="enter_filename_<?php echo $i;?>" value="<?php echo $explode_ingroup_context[5]; ?>" id="edit_enter_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
+																					<input type="text" name="enter_filename_<?php echo $i;?>" value="<?php 
+																						if(isset($ivr_options->option_route[$i]))
+																							echo $explode_ingroup_context[5];
+																						else
+																							echo "sip-silence";
+																					?>" id="edit_enter_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
 																				</div>
 																				<div class="col-sm-6">
 																					<select class="col-sm-6 form-control select2" style="width:100%;" id="enter_filename_select_<?php echo $i;?>">
@@ -1452,10 +1472,15 @@ if (isset($_POST["did"])) {
 																			</div>
 																		</div>
 																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-																			<label class="col-sm-4 control-label">VID ID Number Filename: </label>
+																			<label class="col-sm-3 control-label">VID ID Number Filename: </label>
 																			<div class="col-sm-8">
 																				<div class="col-sm-6">
-																					<input type="text" name="id_number_filename_<?php echo $i;?>" value="<?php echo $explode_ingroup_context[6]; ?>" id="edit_id_number_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
+																					<input type="text" name="id_number_filename_<?php echo $i;?>" value="<?php 
+																						if(isset($ivr_options->option_route[$i]))
+																							echo $explode_ingroup_context[6];
+																						else
+																							echo "sip-silence";
+																					?>" id="edit_id_number_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
 																				</div>
 																				<div class="col-sm-6">
 																					<select class="col-sm-6 form-control select2" style="width:100%;" id="edit_id_number_filename_select_<?php echo $i;?>">
@@ -1475,10 +1500,15 @@ if (isset($_POST["did"])) {
 																			</div>
 																		</div>
 																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-																			<label class="col-sm-4 control-label">VID Confirm Filename: </label>
+																			<label class="col-sm-3 control-label">VID Confirm Filename: </label>
 																			<div class="col-sm-8">
 																				<div class="col-sm-6">
-																					<input type="text" name="confirm_filename_<?php echo $i;?>" value="<?php echo $explode_ingroup_context[7]; ?>" id="edit_confirm_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
+																					<input type="text" name="confirm_filename_<?php echo $i;?>" value="<?php 
+																						if(isset($ivr_options->option_route[$i]))
+																							echo $explode_ingroup_context[7];
+																						else
+																							echo "sip-silence";
+																					?>" id="edit_confirm_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
 																				</div>
 																				<div class="col-sm-6">
 																					<select class="col-sm-6 form-control select2" style="width:100%;" id="edit_confirm_filename_select_<?php echo $i;?>">
