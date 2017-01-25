@@ -479,7 +479,7 @@
 				                        </select>
 				    				</div>
 				    			</div>
-								<div class="form-group inbound blended hide">
+								<div class="form-group call-route-mode inbound blended hide">
 									<label class="call-route-div-label control-label col-lg-4">INGROUP:</label>
 									<!--<div class="callroute-dummy-div col-lg-8 mb">-->
 									<!--	<input name="call_route_text" type="text" class="form-control">-->
@@ -1562,8 +1562,17 @@
 							},
 							dataType: 'json',
 							success: function(responsedata) {
-								console.log(responsedata);
-								response($.parseJSON(responsedata))
+								//console.log(responsedata);
+								if (responsedata){ 
+                                    response($.parseJSON(responsedata));
+									$('.call-route-mode').removeClass('hide');
+									$('.group-color').removeClass('hide');
+                                }else{
+									response('');
+									$('.call-route-mode').addClass('hide');
+									$('.group-color').addClass('hide');
+								}
+								
 							}
 						});
 					},
@@ -1578,7 +1587,7 @@
 							},
 							dataType: 'json',
 							success: function(response) {
-								console.log(response);
+								//console.log(response);
 								$('#did-tfn-extension').val(did);
 								if (response.did_route == "IN_GROUP") {
 									$('#call-route').val("INGROUP").trigger('change');
@@ -1619,6 +1628,25 @@
 					$('.voicemail-div').addClass('hide');
 					$('.callroute-dummy-div').addClass('hide');
 					$('.group-color').removeClass('hide');
+					$.ajax({
+						url: "./php/searchDID.php",
+						type: 'POST',
+						data: {
+							term : $('#did-tfn-extension').val()
+						},
+						dataType: 'json',
+						success: function(responsedata) {
+							//console.log(responsedata);
+							if (responsedata){ 
+								$('.call-route-mode').removeClass('hide');
+								$('.group-color').removeClass('hide');
+							}else{
+								$('.call-route-mode').addClass('hide');
+								$('.group-color').addClass('hide');
+							}
+							
+						}
+					});
                 }else if (callroute == "IVR") {
                     $('.call-route-div-label').html("IVR:");
 					$('.ivr-div').removeClass('hide');
@@ -1627,6 +1655,25 @@
 					$('.voicemail-div').addClass('hide');
 					$('.callroute-dummy-div').addClass('hide');
 					$('.group-color').addClass('hide');
+					$.ajax({
+						url: "./php/searchDID.php",
+						type: 'POST',
+						data: {
+							term : $('#did-tfn-extension').val()
+						},
+						dataType: 'json',
+						success: function(responsedata) {
+							//console.log(responsedata);
+							if (responsedata){ 
+								$('.call-route-mode').removeClass('hide');
+								$('.group-color').addClass('hide');
+							}else{
+								$('.call-route-mode').addClass('hide');
+								$('.group-color').addClass('hide');
+							}
+							
+						}
+					});
                 }else if (callroute == "AGENT") {
                     $('.call-route-div-label').html("AGENT:");
 					$('.agent-div').removeClass('hide');
