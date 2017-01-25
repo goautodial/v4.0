@@ -30,6 +30,7 @@
 	$postfields["campaign_recording"] 			= $_POST["campaign_recording"];
 	$postfields["campaign_vdad_exten"] 			= $_POST["campaign_vdad_exten"];
 	$postfields["local_call_time"] 				= $_POST["local_call_time"];
+	$postfields["hopper_level"] 				= $_POST["hopper_level"];
 	$postfields["force_reset_hopper"] 			= $_POST["force_reset_hopper"];
 	$postfields["dial_status"] 					= $_POST["dial_status"];
 	$postfields["lead_order"] 					= $_POST["lead_order"];
@@ -129,6 +130,7 @@
 	// print_r($output);die;
 	$home = $_SERVER['HTTP_REFERER'];
 	if ($output->result == "success") {
+		var_dump($output);die();
 		# Result was OK!
 		$url = str_replace("?message=Success&campaign=".$_POST["campaign_id"], "", $home);
 		header("Location: ".$url."?message=Success&campaign=".$_POST["campaign_id"]);
