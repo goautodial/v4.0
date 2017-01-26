@@ -42,6 +42,8 @@
 	$postfields["am_message_chooser"] 			= $_POST["am_message_chooser"];
 	$postfields["agent_pause_codes_active"] 	= $_POST["agent_pause_codes_active"];
 	$postfields["manual_dial_filter"] 			= $_POST["manual_dial_filter"];
+	$postfields["use_internal_dnc"]				= $_POST["use_internal_dnc"];
+	$postfields["use_campaign_dnc"]				= $_POST["use_campaign_dnc"];
 	$postfields["manual_dial_list_id"] 			= $_POST["manual_dial_list_id"];
 	$postfields["available_only_ratio_tally"] 	= $_POST["available_only_ratio_tally"];
 	$postfields["campaign_rec_filename"] 		= $_POST["campaign_rec_filename"];

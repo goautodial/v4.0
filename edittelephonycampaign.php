@@ -772,6 +772,26 @@ $lists = $ui->API_goGetAllLists();
 															</div>
 														</div>
 														<div class="form-group">
+															<label class="col-sm-3 control-label">Use Internal DNC:</label>
+															<div class="col-sm-9 mb">
+																<select class="form-control" id="use_internal_dnc" name="use_internal_dnc">
+																	<option value="Y" <?php if($campaign->data->use_internal_dnc == "Y") echo "selected";?>>YES</option>
+																	<option value="N" <?php if($campaign->data->use_internal_dnc == "N") echo "selected";?>>NO</option>
+																	<option value="AREACODE" <?php if($campaign->data->use_internal_dnc == "AREACODE") echo "selected";?>>AREACODE</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label">Use Campaign DNC:</label>
+															<div class="col-sm-9 mb">
+																<select class="form-control" id="use_campaign_dnc" name="use_campaign_dnc">
+																	<option value="Y" <?php if($campaign->data->use_campaign_dnc == "Y") echo "selected";?>>YES</option>
+																	<option value="N" <?php if($campaign->data->use_campaign_dnc == "N") echo "selected";?>>NO</option>
+																	<option value="AREACODE" <?php if($campaign->data->use_campaign_dnc == "AREACODE") echo "selected";?>>AREACODE</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group">
 															<label class="col-sm-3 control-label">Manual Dial List ID:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control select2" id="manual_dial_list_id" name="manual_dial_list_id">
