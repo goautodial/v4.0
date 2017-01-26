@@ -555,7 +555,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="menu_timeout_prompt">Timeout Greeting</label>
 							<div class="col-sm-8 mb">
-								<select name="menu_timeout_prompt " id="menu_timeout_prompt" class="form-control select2-1" style="width:100%;">
+								<select name="menu_timeout_prompt" id="menu_timeout_prompt" class="form-control select2-1" style="width:100%;">
 									<option value="" selected>-- Default Value --</option>
 									<?php
 										for($i=0;$i<count($voicefiles->file_name);$i++){
