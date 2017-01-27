@@ -710,8 +710,8 @@ $(document).ready(function() {
                 }
                 
                 if (INgroupCOUNT > 0) {
-                    if (closer_default_blended == 1)
-                        {$("#closerSelectBlended").prop('checked', true);}
+                    //if (closer_default_blended == 1)
+                    //    {$("#closerSelectBlended").prop('checked', true);}
                     //CloserSelectContent_create();
                     //showDiv('CloserSelectBox');
                     //CloserSelecting = 1;
@@ -1128,6 +1128,7 @@ $(document).ready(function() {
             $("#scSubmit").removeClass('disabled');
             if (agent_choose_ingroups == '1') {
                 $("#logSpinner").removeClass('hidden');
+                $("#scButton").html('<?=$lh->translationFor('select_all')?>');
                 var postData = {
                     goAction: 'goGetInboundGroups',
                     goUser: uName,
