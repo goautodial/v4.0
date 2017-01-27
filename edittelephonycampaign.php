@@ -2082,6 +2082,13 @@ $lists = $ui->API_goGetAllLists();
 						$('.show_am_message_chooser').on('click', function(event) {
 					        $('.am_message_chooser').toggle('show');
 					    });
+						
+						$(document).on('change', '.am_message_chooser', function(){
+							var AMmessage = $(this).val();
+							
+							$('#am_message_exten').val(AMmessage);
+							$(this).hide();
+						});
 
 						//var dial_method = $('#dial_method').val();
 						//dialMethod(dial_method);
