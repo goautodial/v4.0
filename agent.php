@@ -2055,7 +2055,7 @@ if (isset($_GET["message"])) {
 					if (!$("#contents-messages").is(':visible')) {
 						updateMessages(<?=$user->getUserId()?>, 0);
 					}
-				}, 1000);
+				}, 5000);
 			});
 			
 			// generates the reply-to or forward message text. This text will be suitable for placing in the reply-to/forward content
