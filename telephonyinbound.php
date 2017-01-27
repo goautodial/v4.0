@@ -419,6 +419,9 @@
 											<option value="" selected>--No Voicemails Available--</option>
 										<?php
 											}else{
+										?>
+											<option value="" selected>--- NONE ---</option>
+										<?php
 											for($i=0;$i<count($voicemails->voicemail_id);$i++){
 										?>
 												<option value="<?php echo $voicemails->voicemail_id[$i];?>">
