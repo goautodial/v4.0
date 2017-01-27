@@ -682,11 +682,7 @@ $(document).ready(function() {
                 }
                 
                 //Check if Agent is still logged in
-                checkLogin++;
-                if (checkLogin > 2) {
-                    checkLogin = 0;
-                    checkIfStillLoggedIn(check_if_logged_out);
-                }
+                checkIfStillLoggedIn(check_if_logged_out);
             } else {
                 updateButtons();
                 
@@ -744,7 +740,11 @@ $(document).ready(function() {
                 }
                 
                 //Check if Agent is still logged in
-                checkIfStillLoggedIn(false);
+                checkLogin++;
+                if (checkLogin > 2) {
+                    checkLogin = 0;
+                    checkIfStillLoggedIn(false);
+                }
             }
         }, refresh_interval);
         
