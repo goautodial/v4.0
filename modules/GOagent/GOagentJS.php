@@ -349,6 +349,7 @@ var defaultFields = "vendor_lead_code,source_id,list_id,gmt_offset_now,called_si
 $(document).ready(function() {
     // Load current server time
     setInterval("displaytime()", 1000);
+    checkLogin = 0;
     
     $(window).load(function() {
         var refreshId = setInterval(function() {
@@ -681,7 +682,11 @@ $(document).ready(function() {
                 }
                 
                 //Check if Agent is still logged in
-                checkIfStillLoggedIn(check_if_logged_out);
+                checkLogin++;
+                if (checkLogin > 2) {
+                    checkLogin = 0;
+                    checkIfStillLoggedIn(check_if_logged_out);
+                }
             } else {
                 updateButtons();
                 
