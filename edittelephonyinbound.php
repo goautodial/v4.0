@@ -877,13 +877,14 @@ if (isset($_POST["did"])) {
 															<label for="no_agents_exten" class="col-sm-4 control-label">Audio File</label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_exten" name="no_agents_exten" value="<?php if($output->data->after_hours_voicemail == NULL)echo ""; else echo $output->data->after_hours_voicemail;?>">
+																	<input type="text" class="form-control" id="no_agents_exten" name="no_agents_exten" value="<?php if($output->data->no_agents_exten == NULL)echo "vm-goodbye"; else echo $output->data->no_agents_exten;?>">
 																	<span class="input-group-btn">
 																		<button class="btn btn-default show_no_agents_exten" type="button">[Audio Chooser...]</button>
 																	</span>
 																</div><!-- /input-group -->
 																<div class="row col-sm-12 select_no_agents_exten">
 																	<select class="form-control select2-2" id="select_no_agents_exten" style="width:100%;">
+																		<option value="vm-goodbye">- - - Default - - -</option>
 																		<?php
 																			$no_agents_exten = NULL;
 																				for($x=0; $x < count($voicefiles->file_name);$x++){
@@ -906,13 +907,14 @@ if (isset($_POST["did"])) {
 															<label for="no_agents_voicemail" class="col-sm-4 control-label">Voicemail</label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_voicemail" name="no_agents_voicemail" value="<?php if($output->data->after_hours_voicemail == NULL)echo ""; else echo $output->data->after_hours_voicemail;?>">
+																	<input type="text" class="form-control" id="no_agents_voicemail" name="no_agents_voicemail" value="<?php if($output->data->no_agents_voicemail == NULL)echo ""; else echo $output->data->no_agents_voicemail;?>">
 																	<span class="input-group-btn">
 																		<button class="btn btn-default show_no_agents_voicemail" type="button">[Audio Chooser...]</button>
 																	</span>
 																</div><!-- /input-group -->
 																<div class="row col-sm-12 select_no_agents_voicemail">
 																	<select class="form-control select2-2" id="select_no_agents_voicemail" style="width:100%;">
+																		<option value="">- - - NONE - - -</option>
 																		<?php
 																			$no_agents_voicemail = NULL;
 																				for($x=0; $x < count($voicemail->voicemail_id);$x++){
@@ -934,13 +936,14 @@ if (isset($_POST["did"])) {
 															<label for="no_agents_ingroup" class="col-sm-4 control-label">In-Group </label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_ingroup" name="no_agents_ingroup" value="<?php if($output->data->after_hours_voicemail == NULL)echo ""; else echo $output->data->after_hours_voicemail;?>">
+																	<input type="text" class="form-control" id="no_agents_ingroup" name="no_agents_ingroup" value="<?php if($output->data->no_agents_ingroup == NULL)echo ""; else echo $output->data->no_agents_ingroup;?>">
 																	<span class="input-group-btn">
 																		<button class="btn btn-default show_no_agents_ingroup" type="button">[Audio Chooser...]</button>
 																	</span>
 																</div><!-- /input-group -->
 																<div class="row col-sm-12 select_no_agents_ingroup">
 																	<select class="form-control select2-2" id="select_no_agents_ingroup" style="width:100%;">
+																		<option value="">- - - NONE - - -</option>
 																		<?php
 																			$no_agents_ingroup = NULL;
 																				for($x=0; $x<count($ingroup->group_id);$x++){
@@ -962,13 +965,14 @@ if (isset($_POST["did"])) {
 															<label for="no_agents_callmenu" class="col-sm-4 control-label">Callmenu </label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_callmenu" name="no_agents_callmenu" value="<?php if($output->data->after_hours_voicemail == NULL)echo ""; else echo $output->data->after_hours_voicemail;?>">
+																	<input type="text" class="form-control" id="no_agents_callmenu" name="no_agents_callmenu" value="<?php if($output->data->no_agents_callmenu == NULL)echo ""; else echo $output->data->no_agents_callmenu;?>">
 																	<span class="input-group-btn">
 																		<button class="btn btn-default show_no_agents_callmenu" type="button">[Audio Chooser...]</button>
 																	</span>
 																</div><!-- /input-group -->
 																<div class="row col-sm-12 select_no_agents_callmenu">
 																	<select class="form-control select2-2" id="select_no_agents_callmenu" style="width:100%;">
+																		<option value="">- - - NONE - - -</option>
 																		<?php
 																			$no_agents_callmenu = NULL;
 																				for($x=0; $x < count($call_menu->menu_id);$x++){
@@ -2500,9 +2504,9 @@ if (isset($_POST["did"])) {
 					$('.show_after_hours_message_filename').on('click', function(event) {
 						 $('.select_after_hours_message_filename').toggle('show');
 					});
-					$(document).on('change', '#select_after_hours_voicemail',function(){
+					$(document).on('change', '#select_after_hours_message_filename',function(){
 						var val = $(this).val();
-						$('#after_hours_voicemail').val(val);
+						$('#after_hours_message_filename').val(val);
 						$('.select_after_hours_message_filename').toggle('hide');
 					});
 				$('.select_after_hours_voicemail').hide();
@@ -2514,7 +2518,44 @@ if (isset($_POST["did"])) {
 						$('#after_hours_voicemail').val(val);
 						$('.select_after_hours_voicemail').toggle('hide');
 					});
-			
+				
+				$('.select_no_agents_exten').hide();
+					$('.show_no_agents_exten').on('click', function(event) {
+						 $('.select_no_agents_exten').toggle('show');
+					});
+					$(document).on('change', '#select_no_agents_exten',function(){
+						var val = $(this).val();
+						$('#no_agents_exten').val(val);
+						$('.select_no_agents_exten').toggle('hide');
+					});
+				$('.select_no_agents_voicemail').hide();
+					$('.show_no_agents_voicemail').on('click', function(event) {
+						 $('.select_no_agents_voicemail').toggle('show');
+					});
+					$(document).on('change', '#select_no_agents_voicemail',function(){
+						var val = $(this).val();
+						$('#no_agents_voicemail').val(val);
+						$('.select_no_agents_voicemail').toggle('hide');
+					});
+				$('.select_no_agents_ingroup').hide();
+					$('.show_no_agents_ingroup').on('click', function(event) {
+						 $('.select_no_agents_ingroup').toggle('show');
+					});
+					$(document).on('change', '#select_no_agents_ingroup',function(){
+						var val = $(this).val();
+						$('#no_agents_ingroup').val(val);
+						$('.select_no_agents_ingroup').toggle('hide');
+					});
+				$('.select_no_agents_callmenu').hide();
+					$('.show_no_agents_callmenu').on('click', function(event) {
+						 $('.select_no_agents_callmenu').toggle('show');
+					});
+					$(document).on('change', '#select_no_agents_callmenu',function(){
+						var val = $(this).val();
+						$('#no_agents_callmenu').val(val);
+						$('.select_no_agents_callmenu').toggle('hide');
+					});
+				
 			// IVR
 				$(document).on('change', '.route_option',function(){
 					//alert(this.value);
