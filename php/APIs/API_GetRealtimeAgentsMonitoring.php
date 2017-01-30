@@ -99,7 +99,7 @@
             }
         
             if ($vla_callerid != $vac_callerid){
-                    $last_call_time = $last_state_change;
+                    $last_state_change = $last_call_time;
                     $status = "HUNGUP";
             }        
             
