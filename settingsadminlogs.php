@@ -38,6 +38,7 @@
 			overflow: hidden;
 			max-width:1px;
 		}
+		
 		.nowrap_text {
 			white-space: nowrap;
 		}
