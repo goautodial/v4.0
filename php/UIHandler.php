@@ -3666,13 +3666,13 @@ error_reporting(E_ERROR | E_PARSE);
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$output = json_decode($data);
-		var_dump($output);
-		//return $output;
+		//var_dump($output);
+		return $output;
 	}
 
 	public function getAdminLogsList($group, $limit) {
 		$output = $this->API_goGetAdminLogsList($group, $limit);
-
+var_dump($output);
 		if ($output->result=="success") {
 		# Result was OK!
 
