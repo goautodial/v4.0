@@ -77,14 +77,14 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
                 $('#adminlogs_table').dataTable({
-					"aaSorting": [[ 2, "desc" ]],
 					"aoColumnsDefs": [{
 						"sClass": "hidden-xs hidden-sm",
 						"aTargets": [ 4, 5 ]
 					},{
 						"sClass": "hidden-xs",
 						"aTargets": [ 1 ]
-					}]
+					}],
+					"aaSorting": [[ 2, "desc" ]]
 				});
 			});
 		</script>
