@@ -3686,7 +3686,7 @@ error_reporting(E_ERROR | E_PARSE);
 				$db_query = (strlen($db_query) > 25) ? substr($db_query, 0, 25) . "..." : $db_query;
 				$result = $result."<tr>
 					<td>".$log->name. " (".$log->user.")</td>
-					<td><a class=''>".$log->ip_address."</a></td>
+					<td><a href='http://www.ip-tracker.org/locator/ip-lookup.php?ip=".$log->ip_address."' target='_new'>".$log->ip_address."</a></td>
 					<td>".$log->event_date."</td>
 					<td>".$log->action."</td>
 					<td title=\"".stripslashes($log->details)."\">".$details."</td>

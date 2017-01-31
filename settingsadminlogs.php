@@ -72,5 +72,13 @@
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 
+		<script type="text/javascript">
+			$(document).ready(function() {
+                $('#adminlogs_table').dataTable({
+					stateSave: true,
+					"aaSorting": [[ 2, "desc" ]],
+				});
+			});
+		</script>
     </body>
 </html>
