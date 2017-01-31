@@ -38,6 +38,9 @@
 			overflow: hidden;
 			max-width:1px;
 		}
+		.nowrap_text {
+			white-space: nowrap;
+		}
 		</style>
     </head>
     <?php print $ui->creamyBody(); ?>
@@ -88,11 +91,14 @@
                 $('#adminlogs_table').dataTable({
 					"aoColumnDefs": [{
 						"sClass": "hidden-xs hidden-sm truncate_td",
-						"sWidth": "20%",
+						"sWidth": "25%",
 						"aTargets": [ 4, 5 ]
 					},{
 						"sClass": "hidden-xs",
 						"aTargets": [ 1 ]
+					},{
+						"sClass": "nowrap_text",
+						"aTargets": [ 0, 2, 3 ]
 					}],
 					"aaSorting": [[ 2, "desc" ]]
 				});
