@@ -90,7 +90,7 @@
 						"sClass": "hidden-xs hidden-sm truncate_td",
 						"aTargets": [ 4, 5 ]
 					},{
-						"sClass": "hidden-xs truncate_td",
+						"sClass": "hidden-xs",
 						"aTargets": [ 1 ]
 					}],
 					"aaSorting": [[ 2, "desc" ]]
