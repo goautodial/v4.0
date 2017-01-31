@@ -1,4 +1,3 @@
-
 <?php	
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
@@ -12,7 +11,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial</title>
+        <title><?php $lh->translateText('portal_title'); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -45,7 +44,7 @@
         <script type="text/javascript">
             $(window).ready(function() {
                 $(".preloader").fadeOut("slow");
-            })
+            });
         </script>
     </head>
     <?php print $ui->creamyBody(); ?>
@@ -65,7 +64,8 @@
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-phone"></i> <?php $lh->translateText("home"); ?></a></li>
-                        <li class="active"><?php $lh->translateText("settings"); ?></li>
+                        <li><?php $lh->translateText("settings"); ?></li>
+						<li class="active"><?php $lh->translateText("admin_logs"); ?>
                     </ol>
                 </section>
 

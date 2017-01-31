@@ -3647,11 +3647,13 @@ error_reporting(E_ERROR | E_PARSE);
 	 *
 	*/
 	// Settings > Admin Logs
-	public function API_goGetAdminLogsList(){
+	public function API_goGetAdminLogsList($group, $limit){
 		$url = gourl."/goAdminLogs/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAdminLogsList"; #action performed by the [[API:Functions]]. (required)
+		$postfields["goUserGroup"] = $group;
+		$postfields["limit"] = $limit;
 		$postfields["responsetype"] = responsetype; #json. (required)
 
 		$ch = curl_init();
@@ -3664,12 +3666,12 @@ error_reporting(E_ERROR | E_PARSE);
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$output = json_decode($data);
-		var_dump($output);
-		//return $output;
+		//var_dump($output);
+		return $output;
 	}
 
-	public function getAdminLogsList() {
-		$output = $this->API_goGetAdminLogsList();
+	public function getAdminLogsList($group, $limit) {
+		$output = $this->API_goGetAdminLogsList($group, $limit);
 
 		if ($output->result=="success") {
 		# Result was OK!
