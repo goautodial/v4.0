@@ -226,7 +226,7 @@ class DbHandler {
      * @param String $password User login password
      * @return object an associative array containing the user's data if credentials are valid and login succeed, NULL otherwise.
      */
-    public function checkLoginByName($name, $password) {
+    public function checkLoginByName($name, $password, $ip_address) {
         // fetching user by name and password
         //$this->dbConnector->where("name", $name);
         //$userobj = $this->dbConnector->getOne(CRM_USERS_TABLE_NAME);
@@ -248,7 +248,7 @@ class DbHandler {
 			'goAction' => 'goUserLogin',
 			'user_name' => $name,
 			'user_pass' => $password,
-			'ip_address' => $_SERVER['REMOTE_ADDR']
+			'ip_address' => $ip_address
 		);
 
 
@@ -340,7 +340,7 @@ class DbHandler {
      * @param String $password User login password
      * @return object an associative array containing the user's data if credentials are valid and login succeed, NULL otherwise.
      */
-    public function checkLoginByEmail($email, $password) {
+    public function checkLoginByEmail($email, $password, $ip_address) {
         // fetching user by name and password
         //$this->dbConnector->where("email", $email);
         //$userobj = $this->dbConnector->getOne(CRM_USERS_TABLE_NAME);
@@ -353,7 +353,7 @@ class DbHandler {
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["user_email"] = $email;
 		$postfields["user_pass"] = $password;
-		$postfields["ip_address"] = $_SERVER['REMOTE_ADDR'];
+		$postfields["ip_address"] = $ip_address;
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);

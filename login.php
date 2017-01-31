@@ -64,11 +64,11 @@
 			$result = null;
 			if(filter_var($username, FILTER_VALIDATE_EMAIL)) {
 		        // valid email address
-				$result = $db->checkLoginByEmail($username, $password);
+				$result = $db->checkLoginByEmail($username, $password, $_SERVER['REMOTE_ADDR']);
 		    }
 		    else {
 		        // not an email. User name?
-				$result = $db->checkLoginByName($username, $password);
+				$result = $db->checkLoginByName($username, $password, $_SERVER['REMOTE_ADDR']);
 		    }
 			if ($result == NULL) { // login failed
 				$error = $lh->translationFor("invalid_login_password");
