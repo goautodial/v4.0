@@ -3682,8 +3682,8 @@ error_reporting(E_ERROR | E_PARSE);
 			foreach ($output->data as $log) {
 				$details = stripslashes($log->details);
 				$db_query = stripslashes($log->db_query);
-				$details = (strlen($details) > 30) ? substr($details, 0, 30) . "..." : $details;
-				$db_query = (strlen($db_query) > 30) ? substr($db_query, 0, 30) . "..." : $db_query;
+				//$details = (strlen($details) > 30) ? substr($details, 0, 30) . "..." : $details;
+				//$db_query = (strlen($db_query) > 30) ? substr($db_query, 0, 30) . "..." : $db_query;
 				$result = $result."<tr>
 					<td>".$log->name. " (".$log->user.")</td>
 					<td><a href='http://www.ip-tracker.org/locator/ip-lookup.php?ip=".$log->ip_address."' target='_new'>".$log->ip_address."</a></td>

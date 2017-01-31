@@ -30,6 +30,15 @@
                 $(".preloader").fadeOut("slow");
             });
         </script>
+		
+		<style>
+		.truncate_td {
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			max-width:1px;
+		}
+		</style>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -78,10 +87,10 @@
 			$(document).ready(function() {
                 $('#adminlogs_table').dataTable({
 					"aoColumnDefs": [{
-						"sClass": "hidden-xs hidden-sm",
+						"sClass": "hidden-xs hidden-sm truncate_td",
 						"aTargets": [ 4, 5 ]
 					},{
-						"sClass": "hidden-xs",
+						"sClass": "hidden-xs truncate_td",
 						"aTargets": [ 1 ]
 					}],
 					"aaSorting": [[ 2, "desc" ]]
