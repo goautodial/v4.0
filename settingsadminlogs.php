@@ -83,7 +83,10 @@
 				?>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         </div><!-- ./wrapper -->
+		
+        <?php print $ui->creamyFooter(); ?>
 		
         <?php print $ui->standardizedThemeJS(); ?> 
 
