@@ -77,7 +77,7 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
                 $('#adminlogs_table').dataTable({
-					"aoColumnsDefs": [{
+					"aoColumnDefs": [{
 						"sClass": "hidden-xs hidden-sm",
 						"aTargets": [ 4, 5 ]
 					},{
