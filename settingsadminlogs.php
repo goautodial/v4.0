@@ -71,6 +71,8 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
+		
+        <?php print $ui->standardizedThemeJS(); ?> 
 
 		<script type="text/javascript">
 			$(document).ready(function() {
