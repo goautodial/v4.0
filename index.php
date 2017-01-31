@@ -1077,6 +1077,7 @@ function goGetInSession(type) {
 			var who = document.getElementById("modal-username").innerText;
 			var agent_session_id = document.getElementById("modal-conf-exten").innerText;
 			var server_ip = document.getElementById("modal-server-ip").innerText;
+			var ip_address = '<?=$_SERVER['REMOTE_ADDR']?>';
 			var thisTimer,
 				bTitle,
 				bText,
@@ -1102,6 +1103,7 @@ function goGetInSession(type) {
 				goSessionID: agent_session_id,
 				goServerIP: server_ip,
 				goStage: type,
+				goUserIP: ip_address,
 				responsetype: 'json'
 			};
 			
