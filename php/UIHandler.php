@@ -3682,8 +3682,8 @@ error_reporting(E_ERROR | E_PARSE);
 			foreach ($output->data as $log) {
 				$details = stripslashes($log->details);
 				$db_query = stripslashes($log->db_query);
-				$details = (strlen($details) > 20) ? substr($details, 0, 20) . "..." : $details;
-				$db_query = (strlen($db_query) > 20) ? substr($db_query, 0, 20) . "..." : $db_query;
+				$details = (strlen($details) > 25) ? substr($details, 0, 25) . "..." : $details;
+				$db_query = (strlen($db_query) > 25) ? substr($db_query, 0, 25) . "..." : $db_query;
 				$result = $result."<tr>
 					<td>".$log->name. " (".$log->user.")</td>
 					<td><a class=''>".$log->ip_address."</a></td>

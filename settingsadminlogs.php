@@ -72,16 +72,10 @@
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box box-default">
-                                <div class="box-header">
-                                    <h3 class="box-title"><?php $lh->translateText("admin_logs"); ?></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body table" id="scripts_table">
-									<?php echo $ui->getAdminLogsList($_SESSION['usergroup']);?>
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box -->
+                    <div class="panel panel-default">
+                        <div class="panel-body table" id="admin_logs">
+                            <legend><?php $lh->translateText("admin_logs"); ?></legend>
+							<?php print $ui->getAdminLogsList($_SESSION['usergroup']); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
