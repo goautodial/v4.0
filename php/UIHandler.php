@@ -3689,8 +3689,8 @@ error_reporting(E_ERROR | E_PARSE);
 					<td><a class=''>".$log->ip_address."</a></td>
 					<td>".$log->event_date."</td>
 					<td>".$log->action."</td>
-					<td title='".stripslashes($log->details)."'>".$details."</td>
-					<td title='".stripslashes($log->db_query)."'>".$db_query."</td></tr>";
+					<td title=\"".stripslashes($log->details)."\">".$details."</td>
+					<td title=\"".stripslashes($log->db_query)."\">".$db_query."</td></tr>";
 			}
 
 			return $result.'</table>';
