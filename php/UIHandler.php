@@ -3676,19 +3676,17 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 
-		$columns = array("User", "IP Address", "Date & Time", "Event", "Details", "Action");
-	    //$hideOnMedium = array("call_time_id","queue_priority", "active");
-	   // $hideOnLow = array("call_time_id","queue_priority", "active");
-		$result = $this->generateTableHeaderWithItems($columns, "adminlogs_table", "table-bordered table-striped", true, false);
-
-			for($i=0;$i < count($output->admin_log_id);$i++){
-
-				$action = $this->ActionMenuForAdminLogs($output->admin_log_id[$i]);
-
+			$columns = array("User", "IP Address", "Date & Time", "Action", "Details", "SQL Query");
+			$result = $this->generateTableHeaderWithItems($columns, "adminlogs_table", "table-bordered table-striped", true, false);
+	
+			foreach ($output->data as $log) {
 				$result = $result."<tr>
-	                    <td>".$output->user[$i]."</td>
-	                    <td><a class=''>".$output->ip_address[$i]."</a></td>
-						<td>".$output->event_date[$i]."</td>";
+					<td>".$log->name. "(".$log->user.")</td>
+					<td><a class=''>".$log->ip_address."</a></td>
+					<td>".$log->event_date."</td>
+					<td>".$log->action."</td>
+					<td>".$log->details."</td>
+					<td>".$log->db_query."</td></tr>";
 			}
 
 			return $result.'</table>';
