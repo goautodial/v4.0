@@ -79,6 +79,13 @@
                 $('#adminlogs_table').dataTable({
 					stateSave: true,
 					"aaSorting": [[ 2, "desc" ]],
+					"aoColumnsDefs": [{
+						"sClass": "hidden-xs hidden-sm",
+						"aTargets": [4, 5]
+					},{
+						"sClass": "hidden-xs",
+						"aTargets": [2]
+					}],
 				});
 			});
 		</script>
