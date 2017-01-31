@@ -46,6 +46,9 @@
         $postfields["call_time_name"]     = $_POST['call_time_name'];
         $postfields["call_time_comments"] = $_POST['call_time_comments'];
         $postfields["user_group"]         = $_POST['call_time_user_group'];
+	
+	$postfields["log_group"]          = $_POST['log_group'];
+	$postfields["log_user"]           = $_POST['log_user'];
 
         $postfields["ct_default_start"]   = $start_default;
         $postfields["ct_default_stop"]    = $stop_default;

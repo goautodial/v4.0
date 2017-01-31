@@ -121,6 +121,8 @@
 	      	</div>
 	      	<div class="modal-body">
 				<form id="form_calltimes">
+					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
 						<h4>
 							Basic Settings<br/>

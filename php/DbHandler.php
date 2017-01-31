@@ -247,7 +247,8 @@ class DbHandler {
 			'responsetype' => 'json',
 			'goAction' => 'goUserLogin',
 			'user_name' => $name,
-			'user_pass' => $password
+			'user_pass' => $password,
+			'ip_address' => $_SERVER['REMOTE_ADDR']
 		);
 
 
@@ -352,6 +353,7 @@ class DbHandler {
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["user_email"] = $email;
 		$postfields["user_pass"] = $password;
+		$postfields["ip_address"] = $_SERVER['REMOTE_ADDR'];
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
