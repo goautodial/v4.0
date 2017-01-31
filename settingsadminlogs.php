@@ -13,33 +13,17 @@
         <meta charset="UTF-8">
         <title><?php $lh->translateText('portal_title'); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- bootstrap wysihtml5 - text editor -->
-        <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+
+        <?php print $ui->standardizedThemeCSS(); ?>
+
         <?php print $ui->creamyThemeCSS(); ?>
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <!-- Bootstrap WYSIHTML5 -->
-        <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+		<!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
+		<!-- Data Tables -->
+        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
         <script type="text/javascript">
             $(window).ready(function() {
