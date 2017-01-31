@@ -3672,7 +3672,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	public function getAdminLogsList($group, $limit) {
 		$output = $this->API_goGetAdminLogsList($group, $limit);
-var_dump($output);
+
 		if ($output->result=="success") {
 		# Result was OK!
 
@@ -3680,13 +3680,17 @@ var_dump($output);
 			$result = $this->generateTableHeaderWithItems($columns, "adminlogs_table", "table-bordered table-striped", true, false);
 	
 			foreach ($output->data as $log) {
+				$details = stripslashes($log->details);
+				$db_query = stripslashes($log->db_query);
+				$details = (strlen($details) > 20) ? substr($details, 0, 20) . "..." : $details;
+				$db_query = (strlen($db_query) > 20) ? substr($db_query, 0, 20) . "..." : $db_query;
 				$result = $result."<tr>
 					<td>".$log->name. " (".$log->user.")</td>
 					<td><a class=''>".$log->ip_address."</a></td>
 					<td>".$log->event_date."</td>
 					<td>".$log->action."</td>
-					<td>".$log->details."</td>
-					<td>".$log->db_query."</td></tr>";
+					<td>".$details."</td>
+					<td>".$db_query."</td></tr>";
 			}
 
 			return $result.'</table>';
