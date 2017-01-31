@@ -3666,8 +3666,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$output = json_decode($data);
-		//var_dump($output);
-		return $output;
+		var_dump($output);
+		//return $output;
 	}
 
 	public function getAdminLogsList($group, $limit) {
@@ -3681,7 +3681,7 @@ error_reporting(E_ERROR | E_PARSE);
 	
 			foreach ($output->data as $log) {
 				$result = $result."<tr>
-					<td>".$log->name. "(".$log->user.")</td>
+					<td>".$log->name. " (".$log->user.")</td>
 					<td><a class=''>".$log->ip_address."</a></td>
 					<td>".$log->event_date."</td>
 					<td>".$log->action."</td>
