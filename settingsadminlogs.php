@@ -88,6 +88,7 @@
                 $('#adminlogs_table').dataTable({
 					"aoColumnDefs": [{
 						"sClass": "hidden-xs hidden-sm truncate_td",
+						"sWidth": "20%",
 						"aTargets": [ 4, 5 ]
 					},{
 						"sClass": "hidden-xs",
