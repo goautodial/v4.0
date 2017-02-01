@@ -22,6 +22,8 @@ if ($validated == 1) {
         $postfields["campaign_id"] = $disposition_id; #Desired User ID. (required)
         $postfields["statuses"] = $status;
         $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+		$postfields["log_user"] = $_POST['log_user'];
+		$postfields["log_group"] = $_POST['log_group'];
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

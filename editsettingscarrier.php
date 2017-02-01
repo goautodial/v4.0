@@ -89,6 +89,9 @@ if (isset($_POST["cid"])) {
 					        $postfields["goAction"] = "goGetCarrierInfo"; #action performed by the [[API:Functions]]. (required)
 					        $postfields["responsetype"] = responsetype; #json. (required)
 					        $postfields["carrier_id"] = $cid; #Desired exten ID. (required)
+							$postfields["log_user"] = $_SESSION['user'];
+							$postfields["log_group"] = $_SESSION['usergroup'];
+							$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
 					         $ch = curl_init();
 					         curl_setopt($ch, CURLOPT_URL, $url);
@@ -112,6 +115,8 @@ if (isset($_POST["cid"])) {
 					
 						<form id="modifycarrier">
 							<input type="hidden" name="modifyid" value="<?php echo $cid;?>">
+							<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+							<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 						
 					<!-- Custom Tabs -->
 					<div role="tabpanel">

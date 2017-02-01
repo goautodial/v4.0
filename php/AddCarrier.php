@@ -12,7 +12,10 @@
 	$postfields["goPass"]	= goPass; #Password goes here. (required)
 	$postfields["goAction"]	= "goAddCarrier"; #action performed by the [[API:Functions]]. (required)
 	$postfields["responsetype"] 	= responsetype; #json. (required)
-	$postfields["hostname"]	= $_SERVER['REMOTE_ADDR']; 
+	$postfields["hostname"]	= $_SERVER['REMOTE_ADDR'];
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
+	
 	$postfields["carrier_type"]	= $_POST['carrier_type'];
 	$postfields["carrier_id"]	= $_POST['carrier_id']; 
 	$postfields["carrier_name"]	= $_POST['carrier_name'];

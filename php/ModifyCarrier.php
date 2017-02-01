@@ -78,7 +78,11 @@ if ($validated == 1) {
 	$postfields["account_entry"] = $account_entry;
 	$postfields["globals_string"] = $globals_string;
 	$postfields["dialplan_entry"] = $dialplan_entry;
-	$postfields["active"] = $active; 
+	$postfields["active"] = $active;
+	
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
+	$postfields["hostname"] = $_SERVER['REMOTE_ADDR'];
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

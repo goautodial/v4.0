@@ -165,7 +165,6 @@ $lists = $ui->API_goGetAllLists();
 							<input type="hidden" name="campaign_type" value="<?php echo $campaign->campaign_type;?>">
 							<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>">
 							<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>">
-							<input type="hidden" name="log_ip" value="<?php echo $_SERVER['REMOTE_ADDR'];?>">
 							<?php $errormessage = NULL; ?>
 
 						<!-- IF CAMPAIGN -->
@@ -2008,6 +2007,8 @@ $lists = $ui->API_goGetAllLists();
 					var campaign_id = $(this).data('campaign');
 					var dial_status = $(this).data('dial-status');
 					var selected_status = $(this).data('selected-status');
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
 
 					swal({
 						title: "Are you sure?",
@@ -2028,7 +2029,9 @@ $lists = $ui->API_goGetAllLists();
 												data: {
 														campaign_id:campaign_id,
 														dial_status:dial_status,
-														selected_status:selected_status
+														selected_status:selected_status,
+														log_user: log_user,
+														log_group: log_group
 												},
 												// dataType: 'json',
 												success: function(data) {
@@ -2479,6 +2482,8 @@ $lists = $ui->API_goGetAllLists();
 				        $(document).on('click','.delete_disposition', function() {
 				            var id = $(this).attr('data-id');
 				            var status = $(this).attr('data-status');
+							var log_user = '<?=$_SESSION['user']?>';
+							var log_group = '<?=$_SESSION['usergroup']?>';
 				            swal({
 				            	title: "Are you sure?",
 				            	text: "This action cannot be undone.",
@@ -2497,7 +2502,9 @@ $lists = $ui->API_goGetAllLists();
 					                        type: 'POST',
 					                        data: {
 					                            disposition_id:id,
-					                            status: status
+					                            status: status,
+												log_user: log_user,
+												log_group: log_group
 					                        },
 					                        success: function(data) {
 					                        console.log(data);

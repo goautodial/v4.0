@@ -18,6 +18,9 @@
         $postfields["goAction"] = "goDeleteCarrier"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
         $postfields["carrier_id"] = $_POST['carrier_id']; #Desired uniqueid. (required)
+	$postfields["ip_address"] = $_POST['hostname'];
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
