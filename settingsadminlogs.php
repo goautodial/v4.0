@@ -110,14 +110,17 @@
 					}],
 					"aaSorting": [[ 2, "desc" ]],
 					"fnDrawCallback": function() {
-						console.log('test');
+						$(".log-details").click(function() {
+							var log_details = $(this).attr('title');
+							swal("Log Details", log_details, "info");
+						});
+						
+						$(".log-query").click(function() {
+							var log_query = $(this).attr('title');
+							swal("Log Query", log_query, "info");
+						});
 					}
 				});
-			});
-			
-			$(".log-details").click(function() {
-				var log_details = $(this).attr('title');
-				swal("Log Details", log_details);
 			});
 		</script>
     </body>
