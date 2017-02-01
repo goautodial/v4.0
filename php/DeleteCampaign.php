@@ -22,6 +22,8 @@
 	$postfields["responsetype"] 	        = responsetype; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["campaign_id"] 		= $campaign_id;; #Desired campaign id. (required)
+	$postfields["log_user"]			= $_POST['log_user'];
+	$postfields["log_group"]		= $_POST['log_group'];
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);

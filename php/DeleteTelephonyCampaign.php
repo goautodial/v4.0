@@ -37,6 +37,8 @@ if ($campaign != NULL) {
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["campaign_id"] = $campaign; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

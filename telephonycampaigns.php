@@ -427,6 +427,8 @@
 							</div>
 					<!-- Custom Tabs (Pulled to the right) -->
 					<form id="campaign_form" method="POST" action="./php/AddCampaign.php" enctype="multipart/form-data">
+						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 						<div class="row">
 							<h4>Campaign Information
 	                           <br>
@@ -2405,6 +2407,8 @@
 				//delete campaign
 			         $(document).on('click','.delete-campaign',function() {
 			            var id = $(this).attr('data-id');
+						var log_user = '<?=$_SESSION['user']?>';
+						var log_group = '<?=$_SESSION['usergroup']?>';
 			                swal({
 			                	title: "Are you sure?",
 			                	text: "This action cannot be undone.",
@@ -2423,6 +2427,8 @@
 					                        type: 'POST',
 					                        data: {
 					                            campaign_id:id,
+												log_user: log_user,
+												log_group: log_group
 					                        },
 					                        success: function(data) {
 					                        console.log(data);
