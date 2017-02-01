@@ -97,45 +97,7 @@
                 <section class="content">
                 <?php if ($user->userHasAdminPermission()) { ?>
 					<!-- Filas con acciones, formularios y demás -->
-                    
-                    <div class="row">
-                        <section class="col-lg-12">
-                            <!-- version -->
-                            <?php
-								require_once('./php/Updater.php');
-								$upd = \creamy\Updater::getInstance();
-								$currentVersion = $upd->getCurrentVersion();
-							?>
-                            <div class="box box-default">
-                                <div class="box-header">
-                                    <i class="fa fa-refresh"></i>
-                                    <h3 class="box-title"><?php print $lh->translationFor("version")." ".number_format($currentVersion, 1); ?></h3>
-                                </div>
-                                <div class="box-body">
-									<?php
-										if ($upd->CRMIsUpToDate()) { // CRM is up to date.
-											$lh->translateText("crm_up_to_date");
-										} else { // check if we can update.
-											if ($upd->canUpdateFromVersion($currentVersion)) { // update needed
-												$contentText = $lh->translationFor("crm_update_available")." [ ".
-															   $lh->translationFor("version")." ".CRM_INSTALL_VERSION." ]";
-												print $ui->formWithContent(
-													"update_form", 						// form id
-													$contentText, 						// form content
-													$lh->translationFor("update"), 		// submit text
-													CRM_UI_STYLE_DEFAULT,				// submit style
-													CRM_UI_DEFAULT_RESULT_MESSAGE_TAG,	// resulting message tag
-													"update.php");						// form PHP action URL.
-											} else { // we cannot update?
-												$lh->translateText("crm_update_impossible");
-											}
-										}
-									?>
-                                </div>
-                            </div>
-                        </section>
-                    </div>   <!-- /.row -->
-
+					
                     <div class="row">
                         <section class="col-lg-12 connectedSortable">
                             <!-- quick email widget -->
