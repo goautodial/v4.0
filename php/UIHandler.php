@@ -3981,6 +3981,9 @@ error_reporting(E_ERROR | E_PARSE);
 	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
 	    $postfields["requestDataPhone"] = $search_phone;
+		 $postfields["log_user"] = $_SESSION['user'];
+		 $postfields["log_group"] = $_SESSION['usergroup'];
+		 $postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
 	    if(isset($start_filterdate))
 	    $postfields["start_filterdate"] = $start_filterdate;
