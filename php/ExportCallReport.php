@@ -1,4 +1,5 @@
 <?php
+ini_set('memory_limit', '2048M');
 /*
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -100,11 +101,14 @@ error_reporting(E_ALL);
         $filename = "Export_Call_Report.".date("Y-m-d").".csv";
         //$fp = fopen($filename, 'w');
         
-        header('Content-type: application/csv');
-        header('Content-Disposition: attachment; filename='.$filename);
+        //header('Content-type: application/csv');
+        //header('Content-Disposition: attachment; filename='.$filename);
         
-        echo $header."\n";
-        
+		echo $header."\n";
+		
+//        echo '<pre>';
+//		print_r($output->getReports->return_this);
+//		echo '</pre>';
         $count = 0;
         for($i=0; $i <= count($output->getReports->header); $i++){
             $count_row = $output->getReports->rows[$i];
@@ -114,9 +118,10 @@ error_reporting(E_ALL);
                 }else{
                     echo $count_row[$x].",";
                 }
+				//echo "\n\n";
             }
         }
-        //echo $row;
+        echo $row;
         
         //fputcsv($fp, implode(",",$header));
         
