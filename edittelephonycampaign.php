@@ -2133,6 +2133,8 @@ $lists = $ui->API_goGetAllLists();
 					        var validate = 0;
 					        var status = $("#add_status").val();
 					        var status_name = $("#add_status_name").val();
+							var log_user = '<?=$_SESSION['user']?>';
+							var log_group = '<?=$_SESSION['usergroup']?>';
 
 					        if(status == ""){
 					            validate = 1;
@@ -2190,6 +2192,8 @@ $lists = $ui->API_goGetAllLists();
 								    		customer_contact : customer_contact,
 								    		not_interested : not_interested,
 								    		unworkable : unworkable,
+											log_user: log_user,
+											log_group: log_group
 					                    },
 					                    success: function(data) {
 					                      // console.log(data);
@@ -2229,13 +2233,17 @@ $lists = $ui->API_goGetAllLists();
 						$(document).on('click','.edit_disposition',function() {
 							var id = $(this).attr('data-id');
 							var status = $(this).attr('data-status');
+							var log_user = '<?=$_SESSION['user']?>';
+							var log_group = '<?=$_SESSION['usergroup']?>';
 
 							$.ajax({
 							  url: "./php/ViewDisposition.php",
 							  type: 'POST',
 							  data: {
 							  	campaign_id : id,
-							  	status : status
+							  	status : status,
+								log_user: log_user,
+								log_group: log_group
 							  },
 							  dataType: 'json',
 							  success: function(data) {
@@ -2306,10 +2314,12 @@ $lists = $ui->API_goGetAllLists();
 						$(document).on('click','#modify_disposition',function() {
 							$('#update_button').html("<i class='fa fa-edit'></i> Updating...");
 							$('#modify_disposition').attr("disabled", true);
+							var log_user = '<?=$_SESSION['user']?>';
+							var log_group = '<?=$_SESSION['usergroup']?>';
 
 								var selectable = "Y";
 				            	if(!$('#edit_selectable').is(":checked")){
-				            		selectable = "N"
+				            		selectable = "N";
 				            	}
 				            		var human_answered = "Y";
 				            	if(!$('#edit_human_answered').is(":checked")){
@@ -2335,7 +2345,7 @@ $lists = $ui->API_goGetAllLists();
 				            	if(!$('#edit_not_interested').is(":checked")){
 				            		not_interested = "N";
 				            	}
-				            		var unworkable = "Y"
+				            		var unworkable = "Y";
 				            	if(!$('#edit_unworkable').is(":checked")){
 				            		unworkable = "N";
 				            	}
@@ -2355,14 +2365,16 @@ $lists = $ui->API_goGetAllLists();
 							    		customer_contact : customer_contact,
 							    		not_interested : not_interested,
 							    		unworkable : unworkable,
+										log_user: log_user,
+										log_group: log_group
 				                    },
 				                    success: function(data) {
 				                    console.log(data);
 				                        if(data == 1){
-			                                swal("Success!", "Disposition Successfully Updated!", "success")
+			                                swal("Success!", "Disposition Successfully Updated!", "success");
 			                                $('#update_button').html("<i class='fa fa-check'></i> Update");
 											$('#modify_disposition').attr("disabled", false);
-			                                window.setTimeout(function(){location.reload()},2000)
+			                                window.setTimeout(function(){location.reload();},2000);
 				                        }else{
 				                        	swal("Ooops!", "Something went wrong! "+ data, "error");
 				                            $('#update_button').html("<i class='fa fa-check'></i> Update");

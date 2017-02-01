@@ -25,6 +25,9 @@
     $postfields["goAction"] = "goGetLeadsInfo"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["lead_id"] = $_REQUEST['lead_id']; #Desired exten ID. (required)
+    $postfields["log_user"] = $_REQUEST['log_user'];
+    $postfields["log_group"] = $_REQUEST['log_group'];
+    $postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

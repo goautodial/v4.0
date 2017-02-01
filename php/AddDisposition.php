@@ -57,6 +57,9 @@ if(!isset($_POST['unworkable'])){
 	$postfields['customer_contact'] 	=  $_POST['customer_contact'];
 	$postfields['not_interested'] 		=  $_POST['not_interested'];
 	$postfields['unworkable'] 			=  $_POST['unworkable'];
+	
+	$postfields['log_user']				=  $_POST['log_user'];
+	$postfields['log_group']			=  $_POST['log_group'];
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);

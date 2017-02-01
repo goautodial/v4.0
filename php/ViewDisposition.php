@@ -9,7 +9,10 @@
         $postfields["goAction"] = "getDispositionInfo";
         $postfields["responsetype"] = responsetype; 
         $postfields["status"] = $_POST['status']; 
-        $postfields["campaign_id"] = $_POST['campaign_id']; 
+        $postfields["campaign_id"] = $_POST['campaign_id'];
+        $postfields["log_user"] = $_POST['log_user'];
+        $postfields["log_group"] = $_POST['log_group'];
+        $postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

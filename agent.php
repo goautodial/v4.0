@@ -1822,10 +1822,12 @@ if (isset($_GET["message"])) {
 					    	if($('#contact_details_form')[0].checkValidity()) {
 								
 								//alert("Form Submitted!");
+								var log_user = '<?=$_SESSION['user']?>';
+								var log_group = '<?=$_SESSION['usergroup']?>';
 								$.ajax({
 									url: "./php/ModifyCustomer.php",
 									type: 'POST',
-									data: $("#name_form, #gender_form, #contact_details_form, #comment_form").serialize(),
+									data: $("#name_form, #gender_form, #contact_details_form, #comment_form").serialize() + '&log_user=' + log_user + '&log_group=' + log_group,
 									success: function(data) {
 									  // console.log(data);
 										  if(data == 1){

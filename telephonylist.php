@@ -571,6 +571,8 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				</div>
 				<div class="modal-body">
 					<form id="copy_cf_form" class="form-horizontal" style="margin-top: 10px;">
+						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 						<div class="form-group">
 							<label class="control-label col-lg-4">List ID to copy Fields from:</label>
 							<div class="col-lg-8">

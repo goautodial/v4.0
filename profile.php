@@ -918,11 +918,13 @@
         // Get lead information 
         $(document).on('click','#onclick-leadinfo',function(){
             var leadid = $(this).attr('data-id');
+            var log_user = '<?=$_SESSION['log_user']?>';
+            var log_group = '<?=$_SESSION['log_group']?>';
 
             $.ajax({
                 type: 'POST',
                 url: "./php/ViewContact.php",
-                data: {lead_id: leadid},
+                data: {lead_id: leadid, log_user: log_user, log_group: log_group},
                 cache: false,
                 //dataType: 'json',
                 success: function(data){ 

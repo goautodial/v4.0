@@ -1086,6 +1086,8 @@ $disposition = $ui->API_getAllDispositions();
 				*****/
 				$(document).on('click','.delete-contact', function() {
 						var id = $(this).attr('data-id');
+						var log_user = '<?=$_SESSION['user']?>';
+						var log_group = '<?=$_SESSION['usergroup']?>';
 						swal({
 							title: "Are you sure?",
 							text: "This action cannot be undone.",
@@ -1103,7 +1105,9 @@ $disposition = $ui->API_getAllDispositions();
 											url: "./php/DeleteContact.php",
 												type: 'POST',
 												data: {
-														leadid:id,
+														leadid: id,
+														log_user: log_user,
+														log_group: log_group
 												},
 												success: function(data) {
 												console.log(data);

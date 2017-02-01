@@ -17,6 +17,7 @@
   $postfields["goPass"] = goPass; #Password goes here. (required)
   $postfields["goAction"] = "goModifyCustomField"; #action performed by the [[API:Functions]]. (required)
   $postfields["responsetype"] = responsetype; #json. (required)
+	$postfields["hostname"] = $_SERVER['REMOTE_ADDR'];
 	$postfields["list_id"] 								= $_POST['list_id'];
 	$postfields["field_id"] 							= $_POST['field_id'];
 	$postfields["field_name"] 						= $_POST['field_name'];
@@ -33,6 +34,9 @@
 	$postfields["field_max"] 							= $_POST['field_max'];
 	$postfields["field_default"] 					= $_POST['field_default'];
 	$postfields["field_required"] 				= $_POST['field_required'];
+	
+	$postfields["log_user"]								= $_POST['log_user'];
+	$postfields["log_group"]							= $_POST['log_group'];
 
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);

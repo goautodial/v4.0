@@ -4709,6 +4709,9 @@ error_reporting(E_ERROR | E_PARSE);
         $postfields["goAction"] = "getDispositionInfo"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
         $postfields["campaign_id"] = $id;
+		  $postfields["log_user"] = $_SESSION['user'];
+		  $postfields["log_group"] = $_SESSION['usergroup'];
+		  $postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
@@ -5541,6 +5544,9 @@ error_reporting(E_ERROR | E_PARSE);
 	$postfields["goAction"] = "goGetLeadsInfo"; #action performed by the [[API:Functions]]. (required)
 	$postfields["responsetype"] = responsetype; #json. (required)
 	$postfields["lead_id"] = $lead_id; #Desired exten ID. (required)
+	$postfields["log_user"] = $_SESSION['user'];
+	$postfields["log_group"] = $_SESSION['usergroup'];
+	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 	 $ch = curl_init();
 	 curl_setopt($ch, CURLOPT_URL, $url);
 	 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -5874,6 +5880,9 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goAction"] = "goEmergencyLogout"; #action performed by the [[API:Functions]]
 		$postfields["responsetype"] = responsetype;
 		$postfields["goUserAgent"] = $username;
+		$postfields["log_user"] = $_SESSION['user'];
+		$postfields["log_group"] = $_SESSION['usergroup'];
+		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);

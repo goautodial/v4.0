@@ -542,13 +542,15 @@ if ($list_id_ct != NULL) {
 					$('#submit_edit_form').prop("disabled", true);
 
 					var validate = 0;
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
 
 					if($('#name_form')[0].checkValidity()) {
 					    if($('#gender_form')[0].checkValidity()) {
 					    	if($('#contact_details_form')[0].checkValidity()) {
 								
 								//alert("Form Submitted!");
-								var postData = $("#name_form, #gender_form, #contact_details_form, #comment_form").serialize() + '&is_customer=' + $('#convert-customer').is(':checked') + '&user_id=' + <?php echo $user->getUserId(); ?>;
+								var postData = $("#name_form, #gender_form, #contact_details_form, #comment_form").serialize() + '&is_customer=' + $('#convert-customer').is(':checked') + '&user_id=' + <?php echo $user->getUserId(); ?> + '&log_user=' + log_user + '&log_group=' + log_group;
 								$.ajax({
 									url: "./php/ModifyContact.php",
 									type: 'POST',

@@ -20,6 +20,10 @@
 	$postfields["list_to"]	= $_POST['list_to'];
 	$postfields["list_from"]	= $_POST['list_from'];
 	$postfields["copy_option"]	= $_POST['copy_option'];
+	
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
+	$postfields["hostname"] = $_SERVER['REMOTE_ADDR'];
 
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);

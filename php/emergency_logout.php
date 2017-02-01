@@ -17,6 +17,9 @@ require_once('goCRMAPISettings.php');
 	$postfields["goAction"] = "goEmergencyLogout"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype;
 	$postfields["goUserAgent"] = $_POST['goUserAgent'];
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
+	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);

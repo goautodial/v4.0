@@ -404,12 +404,16 @@ error_reporting(E_ALL);*/
 				//VIEW CONTACT INFO
 				$('.view-contact').click(function(){
 					var cont_id = $(this).attr('data-id');
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
 					// alert(camp_id);
 					$.ajax({
 					  url: "./php/ViewContact.php",
 					  type: 'POST',
 					  data: { 
 					  	contact_id :cont_id,
+						log_user: log_user,
+						log_group: log_group
 					  },
 					  dataType: 'json',
 					  success: function(data) {
@@ -512,10 +516,12 @@ error_reporting(E_ALL);*/
 				//DELETE CONTACT
 				 $(".delete-contact").click(function(e) {
 					var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
 					e.preventDefault();
-					if (r == true) {
+					if (r === true) {
 						var leadid = $(this).attr('href');
-						$.post("./php/DeleteContact.php", { leadid: leadid } ,function(data){
+						$.post("./php/DeleteContact.php", { leadid: leadid, log_user: log_user, log_group: log_group } ,function(data){
 							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
 							else { alert ("<?php $lh->translateText("unable_delete_list"); ?>"); }
 						});

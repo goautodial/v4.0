@@ -79,6 +79,8 @@ if ($disposition != NULL) {
     $postfields["campaign_id"] = $disposition; #Desired campaign id. (required)
     $postfields["statuses"] = ""; #Desired campaign status. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

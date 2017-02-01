@@ -434,6 +434,8 @@ if ($perm->customfields_read === 'N') {
 								<form id="wizard-form" class="form-horizontal" style="margin-top: 10px;">
 									<input type="hidden" name="field_id" class="field-id" value="">
 									<input type="hidden" name="field_label_old" class="form-control field-label" id="field_label_old" value="">
+									<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+									<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 									<div class="form-group">
 										<label class="control-label col-lg-3">List ID:</label>
 										<div class="col-lg-9">

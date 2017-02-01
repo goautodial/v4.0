@@ -154,6 +154,8 @@ $user_id = $_POST['user_id'];
 	$postfields["user_id"]			= $user_id;
 	
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

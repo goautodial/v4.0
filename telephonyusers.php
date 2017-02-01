@@ -743,6 +743,8 @@
 				$(document).on('click','.emergency-logout',function() {
 					var userid = $(this).attr('data-emergency-logout-username');
 					var name = $(this).attr('data-name');
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
 					swal({   
 	                	title: "Emergency Log Out : " + name,
 	                	type: "warning",   
@@ -758,7 +760,11 @@
 	                			$.ajax({
 									type: 'POST',
 									url: "php/emergency_logout.php",
-									data: {goUserAgent: userid},
+									data: {
+										goUserAgent: userid,
+										log_user: log_user,
+										log_group: log_group
+									},
 									cache: false,
 									//dataType: 'json',
 									success: function(data){

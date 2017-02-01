@@ -2519,6 +2519,8 @@
 						var customer_contact = "Y";
 						var not_interested = "Y";
 						var unworkable = "Y";
+						var log_user = '<?=$_SESSION['user']?>';
+						var log_group = '<?=$_SESSION['usergroup']?>';
 
 			            	if(!$('#selectable').is(":checked")){
 			            		selectable = "N";
@@ -2561,7 +2563,9 @@
 						    		scheduled_callback : scheduled_callback,
 						    		customer_contact : customer_contact,
 						    		not_interested : not_interested,
-						    		unworkable : unworkable
+						    		unworkable : unworkable,
+									log_user: log_user,
+									log_group: log_group
 			                    },
 		                    success: function(data) {
 		                      // console.log(data);
@@ -2599,6 +2603,8 @@
 				//delete disposition
 			        $(document).on('click','.delete_disposition', function() {
 			            var id = $(this).attr('data-id');
+						var log_user = '<?=$_SESSION['user']?>';
+						var log_group = '<?=$_SESSION['usergroup']?>';
 			            swal({
 			            	title: "Are you sure?",
 			            	text: "This action cannot be undone.",
@@ -2617,6 +2623,8 @@
 				                        type: 'POST',
 				                        data: {
 				                            disposition_id:id,
+											log_user: log_user,
+											log_group: log_group
 				                        },
 				                        success: function(data) {
 				                        console.log(data);
