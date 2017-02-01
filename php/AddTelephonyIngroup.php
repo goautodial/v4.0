@@ -31,6 +31,8 @@ if($validate == 0){
 	$postfields["goAction"] 		= "goAddInbound"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] 	= responsetype; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["log_user"]			= $_POST['log_user'];
+	$postfields["log_group"]		= $_POST['log_group'];
 
     
     $postfields["group_id"]         = $_POST['groupid']; #Desired group ID (required)

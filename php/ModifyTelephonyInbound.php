@@ -208,6 +208,9 @@ if ($groupid != NULL) {
     $postfields["moh_context"] = $moh_context; 
     $postfields["onhold_prompt_filename"] = $onhold_prompt_filename; 
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -389,6 +392,9 @@ if ($ivr != NULL) {
 	//echo "</pre>";
 	
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -487,6 +493,9 @@ if ($did != NULL) {
 	}
 	
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $header);

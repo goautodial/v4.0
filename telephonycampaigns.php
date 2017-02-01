@@ -1059,6 +1059,8 @@
 		      </div>
 		      <div class="modal-body">
 						<form id="form_hotkeys" class="form-horizontal" style="margin-top: 10px;">
+							<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+							<input type="button" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 							<div class="form-group">
 								<label class="control-label col-lg-3" style="text-align: left;">Campaign ID:</label>
 								<div class="col-lg-9">
@@ -1950,6 +1952,8 @@
 			$(document).on('click', '.btn-delete-hk', function(){
 				var campaign_id = $(this).data('camp-id');
 				var hotkey = $(this).data('hotkey');
+				var log_user = '<?=$_SESSION['user']?>';
+				var log_group = '<?=$_SESSION['usergroup']?>';
 				swal({
 					title: "Are you sure?",
 					text: "This action cannot be undone.",
@@ -1967,8 +1971,10 @@
 											url: "./php/DeleteHotkey.php",
 											type: 'POST',
 											data: {
-												campaign_id:campaign_id,
-												hotkey:hotkey
+												campaign_id: campaign_id,
+												hotkey: hotkey,
+												log_user: log_user,
+												log_group: log_group
 											},
 											// dataType: 'json',
 											success: function(data) {

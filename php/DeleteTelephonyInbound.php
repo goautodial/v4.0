@@ -38,6 +38,8 @@ if ($groupid != NULL) {
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["group_id"] = $groupid; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["log_user"]			= $_POST['log_user'];
+	$postfields["log_group"]		= $_POST['log_group'];
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -77,6 +79,8 @@ if ($ivr != NULL) {
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["menu_id"] = $ivr; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["log_user"]			= $_POST['log_user'];
+	$postfields["log_group"]		= $_POST['log_group'];
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -116,6 +120,8 @@ if ($did != NULL) {
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["did_id"] = $did; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["log_user"]			= $_POST['log_user'];
+	$postfields["log_group"]		= $_POST['log_group'];
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

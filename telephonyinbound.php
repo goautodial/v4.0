@@ -350,6 +350,8 @@
 				<div class="modal-body wizard-content">
 				
 				<form action="AddTelephonyIngroup.php" method="POST" id="create_ingroup" role="form">
+					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
 						<h4>Group Details
                            <br>
@@ -514,6 +516,8 @@
 				<div class="modal-body wizard-content">
 				
 				<form action="AddTelephonyIVR.php" method="POST" id="create_ivr" role="form">
+					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
 					<h4>Call Menu Details
 					   <br>
@@ -990,6 +994,8 @@
 				<div class="modal-body wizard-content">
 				
 				<form action="AddTelephonyPhonenumber.php" method="POST" id="create_phonenumber" role="form">
+					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
 						<!-- STEP 1 -->
 						<h4>DID Details
@@ -1373,6 +1379,8 @@
 			*********/
 				$(document).on('click','.delete-ingroup',function() {
 				 	var id = $(this).attr('data-id');
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
 	                swal({   
 	                	title: "Are you sure?",   
 	                	text: "This action cannot be undone.",   
@@ -1390,7 +1398,9 @@
 									url: "./php/DeleteTelephonyInbound.php",
 									type: 'POST',
 									data: { 
-										groupid:id,
+										groupid: id,
+										log_user: log_user,
+										log_group: log_group
 									},
 									success: function(data) {
 									console.log(data);
@@ -1500,6 +1510,8 @@
 
 				$(document).on('click','.delete-ivr',function() {
 				 	var id = $(this).attr('data-id');
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
 	                swal({   
 	                	title: "Are you sure?",   
 	                	text: "This action cannot be undone.",   
@@ -1517,7 +1529,9 @@
 									url: "./php/DeleteTelephonyInbound.php",
 									type: 'POST',
 									data: { 
-										ivr:id,
+										ivr: id,
+										log_user: log_user,
+										log_group: log_group
 									},
 									success: function(data) {
 									console.log(data);
@@ -1623,6 +1637,8 @@
 
 				$(document).on('click','.delete-phonenumber',function() {
 				 	var id = $(this).attr('data-id');
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
 	                swal({
 	                	title: "Are you sure?",   
 	                	text: "This action cannot be undone.",   
@@ -1640,7 +1656,9 @@
 									url: "./php/DeleteTelephonyInbound.php",
 									type: 'POST',
 									data: { 
-										modify_did:id,
+										modify_did: id,
+										log_user: log_user,
+										log_group: log_group
 									},
 									
 									success: function(data) {

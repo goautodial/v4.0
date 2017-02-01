@@ -16,6 +16,10 @@
 		$postfields["hotkey"] = $_POST['hotkey'];
 		$postfields["status"] = $_POST['status'];
 		$postfields["status_name"] = $_POST['status_name'];
+	
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
+	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

@@ -12,6 +12,8 @@ require_once('goCRMAPISettings.php');
 	$postfields["goAction"] 		= "goAddIVRmenu"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] 	= responsetype; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["log_user"]			= $_POST['log_user'];
+	$postfields["log_group"]		= $_POST['log_group'];
 
     $postfields['menu_id'] = $_POST['menu_id'];
 	$postfields['menu_name'] = $_POST['menu_name'];

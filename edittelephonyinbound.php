@@ -152,6 +152,8 @@ if (isset($_POST["did"])) {
 							<legend>MODIFY IN-GROUP : <u><?php echo $groupid;?></u></legend>
 
 							<form id="modifyingroup">
+								<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+								<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 
 							<div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
@@ -1157,6 +1159,8 @@ if (isset($_POST["did"])) {
 									<legend>MODIFY IVR : <u><?php echo $output->data->menu_id;?></u></legend>
 
 									<form id="modifyivr" class="form-horizontal">
+										<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+										<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 
 									<div role="tabpanel">
 										<ul role="tablist" class="nav nav-tabs nav-justified">
@@ -1784,6 +1788,8 @@ if (isset($_POST["did"])) {
 							<legend>MODIFY DID RECORD : <u><?php echo $output->data->did_pattern;?></u></legend>
 								
 								<form id="modifydid">
+									<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+									<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 
 							<!-- Custom Tabs -->
 							<div role="tabpanel">
@@ -2344,7 +2350,7 @@ if (isset($_POST["did"])) {
 	
 			// on tab change hide footer
 				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-				  var target = $(e.target).attr("href") // activated tab
+				  var target = $(e.target).attr("href"); // activated tab
 				  if(target == "#agents"){
 				  	$('#not_agent_rank').hide();
 				  }else{
@@ -2369,7 +2375,7 @@ if (isset($_POST["did"])) {
                           //if message is sent
 							if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
 								swal("Updated!", "Inbound has been successfully updated.", "success");
-								window.setTimeout(function(){location.replace("./telephonyinbound.php")},2000);
+								window.setTimeout(function(){location.replace("./telephonyinbound.php");},2000);
 							} else {
 								sweetAlert("Oops...","Something went wrong! " + data, "error");
 								$('#update_button').html("<i class='fa fa-check'></i> Update");
@@ -2384,6 +2390,8 @@ if (isset($_POST["did"])) {
 				$('#submit_agent_rank').click(function(){
 					var groupID = $(this).attr('data-id');
 					var itemdatas = $('#agentrankform').serialize();
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
 					
 	                $('input:checkbox[id^="CHECK"]').each(function() {
                         if (!this.checked) {
@@ -2394,7 +2402,7 @@ if (isset($_POST["did"])) {
 					$.ajax({
 						url: "php/ModifyAgentRank.php",
 						type: 'POST',
-						data: {	itemrank: itemdatas, idgroup: groupID },
+						data: {	itemrank: itemdatas, idgroup: groupID, log_user: log_user, log_group: log_group },
 						success: function(data) {
 						$('#submit_agent_rank').html("<i class='fa fa-check'></i> Submit");
 						$('#submit_agent_rank').prop("disabled", false);
@@ -3685,7 +3693,9 @@ if (isset($_POST["did"])) {
 		});
 		
 			function checkdatas(groupID) {
-		        if (groupID != undefined) {
+		        if (groupID !== undefined) {
+						var log_user = '<?=$_SESSION['user']?>';
+						var log_group = '<?=$_SESSION['usergroup']?>';
 		                var itemdatas = $('#agentrankform').serialize();
 		                $('input:checkbox[id^="CHECK"]').each(function() {
 		                        if (!this.checked) {
@@ -3698,7 +3708,9 @@ if (isset($_POST["did"])) {
 						    type: 'POST',
 						    data: {
 						    	itemrank: itemdatas,
-						    	idgroup: groupID
+						    	idgroup: groupID,
+								log_user: log_user,
+								log_group: log_group
 						    },
 							success: function(data) {
 								$('#submit_agent_rank').html("<i class='fa fa-check'></i> Submit");
