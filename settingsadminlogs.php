@@ -94,9 +94,13 @@
 			$(document).ready(function() {
                 $('#adminlogs_table').dataTable({
 					"aoColumnDefs": [{
-						"sClass": "hidden-xs hidden-sm truncate_td",
-						"sWidth": "25%",
-						"aTargets": [ 4, 5 ]
+						"sClass": "log-details hidden-xs hidden-sm truncate_td",
+						"sWidth": "20%",
+						"aTargets": [ 4 ]
+					},{
+						"sClass": "log-query hidden-xs hidden-sm truncate_td",
+						"sWidth": "30%",
+						"aTargets": [ 5 ]
 					},{
 						"sClass": "hidden-xs",
 						"aTargets": [ 1 ]
@@ -106,6 +110,11 @@
 					}],
 					"aaSorting": [[ 2, "desc" ]]
 				});
+			});
+			
+			$(".log-details").click(function() {
+				var log_details = $(this).attr('title');
+				swal("Log Details", log_details);
 			});
 		</script>
     </body>
