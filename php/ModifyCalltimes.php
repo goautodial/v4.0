@@ -119,6 +119,9 @@ if ($validated == 1) {
     $postfields["call_time_name"]     = $calltime_name;
     $postfields["call_time_comments"] = $calltime_comments;
     $postfields["user_group"]         = $usergroup;
+	
+	$postfields["log_group"]          = $_POST['log_group'];
+	$postfields["log_user"]           = $_POST['log_user'];
 
     $postfields["ct_default_start"]   = $start_default;
     $postfields["ct_default_stop"]    = $stop_default;
