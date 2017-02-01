@@ -99,6 +99,9 @@ if (isset($_POST["cid"])) {
 						$postfields["goAction"] = "getCalltimesInfo"; #action performed by the [[API:Functions]]. (required)
 						$postfields["responsetype"] = responsetype; #json. (required)
 						$postfields["call_time_id"] = $_POST['cid']; #Desired uniqueid. (required)
+						$postfields["log_user"] = $_SESSION['user'];
+						$postfields["log_group"] = $_SESSION['usergroup'];
+						$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 						
 						$ch = curl_init();
 						curl_setopt($ch, CURLOPT_URL, $url);
