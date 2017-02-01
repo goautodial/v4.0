@@ -45,7 +45,8 @@
 		}
 		
 		.new-width {
-			width: 80%;
+			width: 750px;
+			margin-left: -375px;
 		}
 		</style>
     </head>
