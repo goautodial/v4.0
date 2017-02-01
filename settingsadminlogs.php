@@ -43,6 +43,10 @@
 		.nowrap_text {
 			white-space: nowrap;
 		}
+		
+		.new-width {
+			width: 80%;
+		}
 		</style>
     </head>
     <?php print $ui->creamyBody(); ?>
@@ -130,7 +134,8 @@
 									title: "Log Query",
 									text: log_query,
 									type: "info",
-									html: true
+									html: true,
+									customClass: "new-width"
 								});
 							}
 						});
