@@ -18,6 +18,9 @@ $postfields["goPass"] = goPass; #Password goes here. (required)
 $postfields["goAction"] = "getCampaignInfo"; #action performed by the [[API:Functions]]
 $postfields["responsetype"] = responsetype; #json (required)
 $postfields["campaign_id"] = $_POST['campaign_id']; #Desired campaign id (required)
+$postfields["log_user"] = $_POST['log_user'];
+$postfields["log_group"] = $_POST['log_group'];
+$postfields["log_ip"] = $_POST['log_ip'];
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);

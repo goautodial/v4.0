@@ -163,6 +163,9 @@ $lists = $ui->API_goGetAllLists();
 						<form id="campaign_form_edit" class="form-horizontal"  action="./php/ModifyTelephonyCampaign.php" method="POST" enctype="multipart/form-data">
 							<input type="hidden" name="campaign_id" value="<?php echo $campaign->data->campaign_id;?>">
 							<input type="hidden" name="campaign_type" value="<?php echo $campaign->campaign_type;?>">
+							<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>">
+							<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>">
+							<input type="hidden" name="log_ip" value="<?php echo $_SERVER['REMOTE_ADDR'];?>">
 							<?php $errormessage = NULL; ?>
 
 						<!-- IF CAMPAIGN -->
