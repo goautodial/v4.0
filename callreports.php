@@ -207,7 +207,7 @@
                                     <label>Start Date</label>
                                     <div class="form-group">
                                         <div class='input-group date' id='datetimepicker1'>
-                                            <input type='text' class="form-control" id="start_filterdate" name="start_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
+                                            <input type='text' class="form-control" id="start_filterdate" name="start_filterdate" placeholder="<?php echo date("m/d/Y");?> 12:00 AM" value="<?php echo date("m/d/Y");?> 00:00:00" />
                                             <span class="input-group-addon">
                                                 <!-- <span class="glyphicon glyphicon-calendar"></span>-->
                                                 <span class="fa fa-calendar"></span>
@@ -221,7 +221,7 @@
                                     <label>End Date</label>
                                     <div class="form-group">
                                         <div class='input-group date' id='datetimepicker2'>
-                                            <input type='text' class="form-control" id="end_filterdate" name="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
+                                            <input type='text' class="form-control" id="end_filterdate" name="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>" />
                                             <span class="input-group-addon">
                                                 <!-- <span class="glyphicon glyphicon-calendar"></span>-->
                                                 <span class="fa fa-calendar"></span>
