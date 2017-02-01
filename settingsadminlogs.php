@@ -108,7 +108,10 @@
 						"sClass": "nowrap_text",
 						"aTargets": [ 0, 2, 3 ]
 					}],
-					"aaSorting": [[ 2, "desc" ]]
+					"aaSorting": [[ 2, "desc" ]],
+					"fnDrawCallback": function() {
+						console.log('test');
+					}
 				});
 			});
 			
