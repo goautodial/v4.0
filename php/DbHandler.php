@@ -271,8 +271,8 @@ class DbHandler {
 		$data = curl_exec($ch);
 		$userobj = json_decode($data);
 		curl_close($ch);
-var_dump($userobj);
-		if ($userobj) { // first match valid?
+
+		if ($userobj->result === "success") { // first match valid?
 			//$password_hash = $userobj["password_hash"];
 			//$status = $userobj["status"];
 			$pass_hash = '';
