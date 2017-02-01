@@ -18,6 +18,9 @@
         $postfields["goAction"] = "goDeleteCalltime"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
         $postfields["call_time_id"] = $_POST['call_time_id']; #Desired uniqueid. (required)
+	$postfields["log_group"] = $_POST['log_group'];
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_ip"] = $_POST['log_ip'];
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

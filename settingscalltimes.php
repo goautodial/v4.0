@@ -499,6 +499,9 @@
 		*********************/	
                  $(document).on('click','.delete-calltime',function() {
                     var id = $(this).attr('data-id');
+					var log_ip = '<?=$_SERVER['REMOTE_ADDR']?>';
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
                     swal({
                         title: "Are you sure?",
                         text: "This action cannot be undone.",
@@ -517,6 +520,9 @@
 		                            type: 'POST',
 		                            data: { 
 		                                call_time_id:id,
+										log_user: log_user,
+										log_group: log_group,
+										log_ip: log_ip
 		                            },
 		                            success: function(data) {
 		                            console.log(data);
