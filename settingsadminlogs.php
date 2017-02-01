@@ -112,12 +112,22 @@
 					"fnDrawCallback": function() {
 						$(".log-details").click(function() {
 							var log_details = $(this).attr('title');
-							swal("Log Details", log_details, "info");
+							swal({
+								title: "Log Details",
+								text: log_details,
+								type: "info",
+								html: true
+							});
 						});
 						
 						$(".log-query").click(function() {
 							var log_query = $(this).attr('title');
-							swal("Log Query", log_query, "info");
+							swal({
+								title: "Log Query",
+								text: log_query,
+								type: "info",
+								html: true
+							});
 						});
 					}
 				});
