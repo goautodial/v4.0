@@ -813,8 +813,8 @@
 										type: 'POST',
 										data: { 
 											userid: id,
-											log_user: '<?=$_SESSION['log_user']?>',
-											log_group: '<?=$_SESSION['log_group']?>'
+											log_user: '<?=$_SESSION['user']?>',
+											log_group: '<?=$_SESSION['usergroup']?>'
 										},
 										success: function(data) {
 										console.log(data);

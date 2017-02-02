@@ -918,8 +918,8 @@
         // Get lead information 
         $(document).on('click','#onclick-leadinfo',function(){
             var leadid = $(this).attr('data-id');
-            var log_user = '<?=$_SESSION['log_user']?>';
-            var log_group = '<?=$_SESSION['log_group']?>';
+            var log_user = '<?=$_SESSION['user']?>';
+            var log_group = '<?=$_SESSION['usergroup']?>';
 
             $.ajax({
                 type: 'POST',
