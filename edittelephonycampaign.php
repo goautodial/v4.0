@@ -212,6 +212,7 @@ $lists = $ui->API_goGetAllLists();
 															</select>
 														</div>
 													</div>
+													<?php if($campaign->campaign_type != "SURVEY") { ?>
 													<div class="form-group">
 														<label class="col-sm-2 control-label">Dial Method:</label>
 														<div class="col-sm-10 mb">
@@ -288,6 +289,7 @@ $lists = $ui->API_goGetAllLists();
 															</div>
 														</div>
 													</div>
+													<?php } ?>
 													<div class="form-group">
 														<label class="col-sm-2 control-label">Carrier to use for Campaign:</label>
 														<div class="col-sm-10 mb">
@@ -314,6 +316,7 @@ $lists = $ui->API_goGetAllLists();
 															</div>
 														</div>
 													</div>
+													<?php if($campaign->campaign_type != "SURVEY") { ?>
 													<div class="form-group">
 														<label class="col-sm-2 control-label">Web Form:</label>
 														<div class="col-sm-10 mb">
@@ -333,12 +336,14 @@ $lists = $ui->API_goGetAllLists();
 															</select>
 														</div>
 													</div>
+													<?php } ?>
 													<div class="form-group">
 														<label class="col-sm-2 control-label">Campaign Caller ID:</label>
 														<div class="col-sm-10 mb">
 															<input type="text" class="form-control" id="campaign_cid" name="campaign_cid" value="<?php echo $campaign->data->campaign_cid; ?>">
 														</div>
 													</div>
+													<?php if($campaign->campaign_type != "SURVEY") { ?>
 													<div class="form-group">
 														<label class="col-sm-2 control-label">Campaign Recording:</label>
 														<div class="col-sm-10 mb">
@@ -358,6 +363,7 @@ $lists = $ui->API_goGetAllLists();
 															</select>
 														</div>
 													</div>
+													<?php } ?>
 													<div class="form-group">
 														<label class="col-sm-2 control-label">Local Calltime:</label>
 														<div class="col-sm-10 mb">
@@ -444,13 +450,13 @@ $lists = $ui->API_goGetAllLists();
 															<button type="button" class="view-audio-files btn btn-default" data-label="survey_first_audio_file">Audio</button>
 														</div>
 													</div>
-													<div class="form-group">
+													<!--<div class="form-group">
 														<label class="col-sm-2 control-label">Survey Method:</label>
 														<div class="col-sm-10 mb">
 															<select class="form-control" id="survey_method" name="survey_method">
-																<option value="AGENT_XFER" <?php if($campaign->data->survey_method == "AGENT_XFER") echo "selected";?>>CAMPAIGN</option>
-																<option value="EXTENSION" <?php if($campaign->data->survey_method == "EXTENSION") echo "selected";?>>DID</option>
-																<option value="CALLMENU" <?php if($campaign->data->survey_method == "CALLMENU") echo "selected";?>>CALLMENU</option>
+																<option value="AGENT_XFER" <?php //if($campaign->data->survey_method == "AGENT_XFER") echo "selected";?>>CAMPAIGN</option>
+																<option value="EXTENSION" <?php //if($campaign->data->survey_method == "EXTENSION") echo "selected";?>>DID</option>
+																<option value="CALLMENU" <?php //if($campaign->data->survey_method == "CALLMENU") echo "selected";?>>CALLMENU</option>
 															</select>
 														</div>
 													</div>
@@ -458,11 +464,99 @@ $lists = $ui->API_goGetAllLists();
 														<label class="col-sm-2 control-label">Survey Call Menu:</label>
 														<div class="col-sm-10 mb">
 															<select id="survey_menu_id" name="survey_menu_id" class="form-control">
-																<option value="" <?php if($campaign->data->survey_menu_id == "") echo "selected";?>>-- NONE --</option>
-																<?php for($i=0;$i < count($ivr->menu_id);$i++){ ?>
-																		<option value="<?php echo $ivr->menu_id[$i]; ?>" <?php if($campaign->data->survey_menu_id == $ivr->menu_id[$i]) echo "selected";?>><?php echo $ivr->menu_id[$i]." - ".$ivr->menu_name[$i]; ?></option>
-																<?php } ?>
+																<option value="" <?php //if($campaign->data->survey_menu_id == "") echo "selected";?>>-- NONE --</option>
+																<?php //for($i=0;$i < count($ivr->menu_id);$i++){ ?>
+																		<option value="<?php //echo $ivr->menu_id[$i]; ?>" <?php //if($campaign->data->survey_menu_id == $ivr->menu_id[$i]) echo "selected";?>><?php //echo $ivr->menu_id[$i]." - ".$ivr->menu_name[$i]; ?></option>
+																<?php //} ?>
 															</select>
+														</div>
+													</div>-->
+													<?php if($campaign->data->campaign_vdad_exten != 8373) { ?>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Survey Not interested digit:</label>
+															<div class="col-sm-10 mb">
+																<input type="number" class="form-control" id="survey_ni_digit" name="survey_ni_digit" min="0" maxlength="10" value="<?php if(!empty($campaign->data->survey_ni_digit)){echo $campaign->data->survey_ni_digit;}else{echo "8";} ?>">
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Survey Not interested audio file:</label>
+															<div class="col-sm-8 mb">
+																<input type="text" class="form-control" id="survey_ni_audio_file" name="survey_ni_audio_file" value="<?php if(!empty($campaign->data->survey_ni_audio_file)){echo $campaign->data->survey_ni_audio_file;}else{echo "sip-silence";} ?>">
+															</div>
+															<div class="col-sm-2 mb">
+																<button type="button" class="view-audio-files btn btn-default" data-label="survey_ni_audio_file">Audio</button>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Survey Not interested status:</label>
+															<div class="col-sm-10 mb">
+																<select id="survey_ni_status" name="survey_ni_status" class="form-control">
+																	<option value="NI" <?php if($campaign->data->survey_ni_status == "NI") echo "selected";?>>NI - Not Interested</option>
+																	<option value="DNC" <?php if($campaign->data->survey_ni_status == "DNC") echo "selected";?>>DNC - Do Not Call</option>
+																</select>
+															</div>
+														</div>
+														<br />
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Survey Third digit:</label>
+															<div class="col-sm-10 mb">
+																<input type="number" class="form-control" id="survey_third_digit" name="survey_third_digit" min="0" maxlength="10" value="<?php echo $campaign->data->survey_third_digit; ?>">
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Survey Third Audio File:</label>
+															<div class="col-sm-8 mb">
+																<input type="text" class="form-control" id="survey_third_audio_file" name="survey_third_audio_file" value="<?php if(!empty($campaign->data->survey_third_audio_file)){echo $campaign->data->survey_third_audio_file;}else{echo "sip-silence";} ?>">
+															</div>
+															<div class="col-sm-2 mb">
+																<button type="button" class="view-audio-files btn btn-default" data-label="survey_third_audio_file">Audio</button>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Survey Third Status:</label>
+															<div class="col-sm-10 mb">
+																<input type="text" class="form-control" id="survey_third_status" name="survey_third_status" value="<?php echo $campaign->data->survey_third_status; ?>">
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Survey Third Extension:</label>
+															<div class="col-sm-10 mb">
+																<input type="number" class="form-control" id="survey_third_exten" name="survey_third_exten" min="0" value="<?php if(!empty($campaign->data->survey_third_exten)){echo $campaign->data->survey_third_exten;}else{echo "8300";} ?>">
+															</div>
+														</div>
+														<br />
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Survey Fourth Digit:</label>
+															<div class="col-sm-10 mb">
+																<input type="number" class="form-control" id="survey_fourth_digit" maxlength="10" name="survey_fourth_digit" min="0" value="<?php echo $campaign->data->survey_fourth_digit; ?>">
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Survey Fourth Audio File:</label>
+															<div class="col-sm-8 mb">
+																<input type="text" class="form-control" id="survey_fourth_audio_file" name="survey_fourth_audio_file" value="<?php if(!empty($campaign->data->survey_fourth_audio_file)){echo $campaign->data->survey_fourth_audio_file;}else{echo "sip-silence";} ?>">
+															</div>
+															<div class="col-sm-2 mb">
+																<button type="button" class="view-audio-files btn btn-default" data-label="survey_fourth_audio_file">Audio</button>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Survey Fourth Status:</label>
+															<div class="col-sm-10 mb">
+																<input type="text" class="form-control" id="survey_fourth_status" name="survey_fourth_status" value="<?php echo $campaign->data->survey_fourth_status; ?>">
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Survey Fourth Extension:</label>
+															<div class="col-sm-10 mb">
+																<input type="number" class="form-control" id="survey_fourth_exten" name="survey_fourth_exten" min="0" value="<?php if(!empty($campaign->data->survey_fourth_exten)){echo $campaign->data->survey_fourth_exten;}else{echo "8300";} ?>">
+															</div>
+														</div>
+													<?php } ?>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Number of Channels:</label>
+														<div class="col-sm-10">
+															<input id="no-channels" name="no_channels" type="number" value="1" min="1" class="form-control">
 														</div>
 													</div>
 												<?php } else { ?>
@@ -1452,6 +1546,77 @@ $lists = $ui->API_goGetAllLists();
 															</div>
 														</div>
 													<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Force Reset of Hopper:</label>
+															<div class="col-sm-10 mb">
+																<select class="form-control" id="force_reset_hopper" name="force_reset_hopper">
+																	<option value="Y">Y</option>
+																	<option value="N" selected>N</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group" style="margin-bottom: 10px;">
+															<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=1;?>
+															<?php foreach($dial_statuses as $dial_status) { ?>
+																<?php if(!empty($dial_status)) { ?>
+																	<label class="col-sm-3 control-label">Active Dial Status <?php echo $i; ?>:</label>
+																	<span class="col-sm-8 control-label" style="text-align: left;">
+																		<label><?php echo $dial_status; ?></label> - <span><?php $lh->translateText($dial_status); ?></span>
+																	</span>
+																	<span class="col-sm-1 control-label">
+																		<a href="#" class="remove-this-dial-status"  data-campaign="<?php echo $campaign_id; ?>" data-dial-status="<?php echo $campaign->data->dial_statuses;?>" data-selected-status="<?php echo $dial_status; ?>">Remove</a>
+																	</span>
+																<?php $i++; ?>
+																<?php } ?>
+															<?php } ?>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label">Dial Status:</label>
+															<div class="col-sm-8 mb">
+																<select class="form-control" id="dial_status" name="dial_status">
+																	<option value="" selected>NONE</option>
+																	<optgroup label="System Statuses">
+																		<?php for($i=0;$i<=count($dialStatus->status);$i++) { ?>
+																			<?php if( !empty($dialStatus->status[$i]) && !in_array($dialStatus->status[$i], $dial_statuses) ){ ?>
+																				<option value="<?php echo $dialStatus->status[$i]?>">
+																					<?php echo $dialStatus->status[$i]." - ".$dialStatus->status_name[$i]?>
+																				</option>
+																			<?php } ?>
+																		<?php } ?>
+																	</optgroup>
+																	<?php if(count($campdialStatus->status) > 0){ ?>
+																		<optgroup label="Campaign Statuses">
+																		<?php for($i=0;$i<=count($campdialStatus->status);$i++) { ?>
+																			<?php if( !empty($campdialStatus->status[$i])  && !in_array($campdialStatus->status[$i], $dial_statuses) ){ ?>
+																				<option value="<?php echo $campdialStatus->status[$i]?>">
+																					<?php echo $campdialStatus->status[$i]." - ".$campdialStatus->status_name[$i]?>
+																				</option>
+																			<?php } ?>
+																		<?php } ?>
+																		</optgroup>
+																	<?php } ?>
+																</select>
+															</div>
+															<div class="col-sm-1 mb">
+																<button type="button" class="btn btn-default btn-add-dial-status" data-campaign="<?php echo $campaign_id; ?>" data-dial-status="<?php echo $campaign->data->dial_statuses;?>">Add</button>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-2 control-label">Minimum Hopper Level:</label>
+															<div class="col-sm-10 mb">
+																<select class="form-control" id="hopper_level" name="hopper_level">
+																	<?php
+																	$hopper_level = array (1, 5, 10, 20, 50, 100, 200, 500, 700, 1000, 2000);
+																	foreach ($hopper_level as $level) {
+																		$selectThis = '';
+																		if ($level == $campaign->data->hopper_level) { $selectThis = 'selected'; }
+																		if ($level == 100) { $selectThis = 'selected'; }
+																		echo '<option value="'.$level.'" '.$selectThis.'>'.$level.'</option>';
+																	}
+																	?>
+																</select>
+															</div>
+														</div>
 														<?php if($campaign->data->campaign_vdad_exten != 8373) { ?>
 															<div class="form-group">
 																<label class="col-sm-3 control-label">Survey DTMF Digits:</label>
@@ -1464,87 +1629,6 @@ $lists = $ui->API_goGetAllLists();
 																<label class="col-sm-3 control-label">DID:</label>
 																<div class="col-sm-9 mb">
 																	<input type="number" class="form-control" id="survey_xfer_exten" name="survey_xfer_exten" min="0" value="<?php echo $campaign->data->survey_xfer_exten; ?>">
-																</div>
-															</div>
-															<br />
-															<div class="form-group">
-																<label class="col-sm-3 control-label">Press 8 Not interested digit:</label>
-																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="survey_ni_digit" name="survey_ni_digit" min="0" maxlength="10" value="<?php echo $campaign->data->survey_ni_digit; ?>">
-																</div>
-															</div>
-															<div class="form-group">
-																<label class="col-sm-3 control-label">Press 8 Not interested audio file:</label>
-																<div class="col-sm-7 mb">
-																	<input type="text" class="form-control" id="survey_ni_audio_file" name="survey_ni_audio_file" value="<?php echo $campaign->data->survey_ni_audio_file; ?>">
-																</div>
-																<div class="col-sm-2 mb">
-																	<button type="button" class="view-audio-files btn btn-default" data-label="survey_ni_audio_file">Audio</button>
-																</div>
-															</div>
-															<div class="form-group">
-																<label class="col-sm-3 control-label">Press 8 Not interested status:</label>
-																<div class="col-sm-9 mb">
-																	<select id="survey_ni_status" name="survey_ni_status" class="form-control">
-																		<option value="NI" <?php if($campaign->data->survey_ni_status == "NI") echo "selected";?>>NI - Not Interested</option>
-																		<option value="DNC" <?php if($campaign->data->survey_ni_status == "DNC") echo "selected";?>>DNC - Do Not Call</option>
-																	</select>
-																</div>
-															</div>
-															<br />
-															<div class="form-group">
-																<label class="col-sm-3 control-label">Press 3 digit:</label>
-																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="survey_third_digit" name="survey_third_digit" min="0" maxlength="10" value="<?php echo $campaign->data->survey_third_digit; ?>">
-																</div>
-															</div>
-															<div class="form-group">
-																<label class="col-sm-3 control-label">Press 3 Audio File:</label>
-																<div class="col-sm-7 mb">
-																	<input type="text" class="form-control" id="survey_third_audio_file" name="survey_third_audio_file" value="<?php echo $campaign->data->survey_third_audio_file; ?>">
-																</div>
-																<div class="col-sm-2 mb">
-																	<button type="button" class="view-audio-files btn btn-default" data-label="survey_third_audio_file">Audio</button>
-																</div>
-															</div>
-															<div class="form-group">
-																<label class="col-sm-3 control-label">Press 3 Status:</label>
-																<div class="col-sm-9 mb">
-																	<input type="text" class="form-control" id="survey_third_status" name="survey_third_status" value="<?php echo $campaign->data->survey_third_status; ?>">
-																</div>
-															</div>
-															<div class="form-group">
-																<label class="col-sm-3 control-label">Press 3 DID:</label>
-																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="survey_third_exten" name="survey_third_exten" min="0" value="<?php echo $campaign->data->survey_third_exten; ?>">
-																</div>
-															</div>
-															<br />
-															<div class="form-group">
-																<label class="col-sm-3 control-label">Press 4 Digit:</label>
-																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="survey_fourth_digit" maxlength="10" name="survey_fourth_digit" min="0" value="<?php echo $campaign->data->survey_fourth_digit; ?>">
-																</div>
-															</div>
-															<div class="form-group">
-																<label class="col-sm-3 control-label">Press 4 Audio File:</label>
-																<div class="col-sm-7 mb">
-																	<input type="text" class="form-control" id="survey_fourth_audio_file" name="survey_fourth_audio_file" value="<?php echo $campaign->data->survey_fourth_audio_file; ?>">
-																</div>
-																<div class="col-sm-2 mb">
-																	<button type="button" class="view-audio-files btn btn-default" data-label="survey_fourth_audio_file">Audio</button>
-																</div>
-															</div>
-															<div class="form-group">
-																<label class="col-sm-3 control-label">Press 4 Status:</label>
-																<div class="col-sm-9 mb">
-																	<input type="text" class="form-control" id="survey_fourth_status" name="survey_fourth_status" value="<?php echo $campaign->data->survey_fourth_status; ?>">
-																</div>
-															</div>
-															<div class="form-group">
-																<label class="col-sm-3 control-label">Press 4 DID:</label>
-																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="survey_fourth_exten" name="survey_fourth_exten" min="0" value="<?php echo $campaign->data->survey_fourth_exten; ?>">
 																</div>
 															</div>
 														<?php } ?>
