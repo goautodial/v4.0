@@ -13,6 +13,9 @@ require_once('goCRMAPISettings.php');
 	$postfields["user_group"] 		= $_POST['user_group'];
 	$postfields["active"] 			= $_POST['active']; 
 	$postfields["random"] 			= $_POST['random'];
+	
+	$postfields["log_user"]			= $_POST['log_user'];
+	$postfields["log_group"]		= $_POST['log_group'];
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);

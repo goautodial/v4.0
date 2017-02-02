@@ -140,6 +140,8 @@
 	        <h4 class="modal-title"><b>Upload Voice Files</b></h4>
 	      </div>
         <form action="./php/AddVoiceFiles.php" method="POST" enctype="multipart/form-data">
+			<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+			<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
   	      <div class="modal-body" style="min-height: 15%;">
     				<div class="form-horizontal col-lg-12">
     					<div class="form-group" style="margin-bottom: 0px; margin-top: 10px;">

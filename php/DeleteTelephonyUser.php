@@ -36,6 +36,9 @@ if ($validated == 1) {
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["user_id"] = "$userid"; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	
+	$postfields["log_user"]			= $_POST["log_user"];
+	$postfields["log_group"]		= $_POST["log_group"];
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

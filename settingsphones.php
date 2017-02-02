@@ -97,6 +97,8 @@
 				<div class="modal-body wizard-content">
 				
 				<form name="create_form" id="create_form" role="form">
+					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
 						<h4>
 							Add Phones
@@ -342,6 +344,8 @@
 		*********************/	
 			$(document).on('click','.delete-phone',function() {
 			 	var id = $(this).attr('data-id');
+				var log_user = '<?=$_SESSION['user']?>';
+				var log_group = '<?=$_SESSION['usergroup']?>';
                 swal({   
                     title: "Are you sure?",   
                     text: "This action cannot be undone.",   
@@ -359,13 +363,15 @@
 							  url: "./php/DeleteSettingsPhones.php",
 							  type: 'POST',
 							  data: { 
-							  	exten_id :id,
+							  	exten_id: id,
+								log_user: log_user,
+								log_group: log_group
 							  },
 							  success: function(data) {
 							  		// console.log(data);
 							  		if(data == 1){
 							  			swal("Success!", "Phone Successfully Deleted!", "success");
-										window.setTimeout(function(){location.reload()},3000)
+										window.setTimeout(function(){location.reload();},3000);
 									}else{
 										sweetAlert("Oops...", "Something went wrong!"+data, "error");
 									}

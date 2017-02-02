@@ -19,6 +19,9 @@
         $postfields["responsetype"] = responsetype; #json. (required)
         $postfields["script_id"] = $_POST['script_id']; #Desired script id. (required)
         $postfields['hostname'] = $_SERVER['SERVER_ADDR'];
+	
+        $postfields['log_user'] = $_POST['log_user'];
+        $postfields['log_group'] = $_POST['log_group'];
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

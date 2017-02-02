@@ -39,6 +39,9 @@ require_once('goCRMAPISettings.php');
         $postfields["script_comments"]  = $script_comments;
         $postfields["script_text"]      = $script_text;
         $postfields["active"]           = $active;
+        
+        $postfields["log_user"]         = $_POST['log_user'];
+        $postfields["log_group"]        = $_POST['log_group'];
 
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);

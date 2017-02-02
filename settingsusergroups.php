@@ -104,6 +104,8 @@
                     <div class="modal-body">
                     
                     <form action="" method="POST" id="create_usergroup" role="form">
+						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
                         <div class="row">
                     <!-- STEP 1 -->
                             <h4>
@@ -266,8 +268,10 @@
                                 $.ajax({
                                 url: "./php/DeleteUserGroup.php",
                                 type: 'POST',
-                                data: { 
-                                    usergroup_id:id,
+                                data: {
+                                    usergroup_id: id,
+									log_user: '<?=$_SESSION['user']?>',
+									log_group: '<?=$_SESSION['usergroup']?>'
                                 },
                                 success: function(data) {
                                 console.log(data);

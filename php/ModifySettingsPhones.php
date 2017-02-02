@@ -69,6 +69,8 @@ if ($validated == 1) {
 	$postfields["fullname"] = $fullname; #Desired value for user (required)
     $postfields["protocol"] = $protocol; #Desired value for user (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $header);

@@ -303,16 +303,16 @@
 						var campaignID = $("#campaign_id").val();
 						
 						if($("#filter_type").val() == "stats"){
-							request = $("#request1").val()
+							request = $("#request1").val();
 						}
 						if($("#filter_type").val() == "sales_agent"){
-							request = $("#request2").val()
+							request = $("#request2").val();
 						}
 						if($("#filter_type").val() == "sales_tracker"){
-							request = $("#request2").val()
+							request = $("#request2").val();
 						}
 						if($("#filter_type").val() == "inbound_report"){
-							campaignID = $("#ingroup_id").val()
+							campaignID = $("#ingroup_id").val();
 						}
 							$.ajax({
 								url: "reports.php",
@@ -324,12 +324,14 @@
 									userID : $("#userID").val(),
 									userGroup : $("#userGroup").val(),
 									fromDate : $("#start_filterdate").val(),
-									toDate : $("#end_filterdate").val()
+									toDate : $("#end_filterdate").val(),
+									log_user: '<?php echo $_SESSION['user']?>',
+									log_group: '<?php echo $_SESSION['usergroup']?>'
 								},
 								success: function(data) {
 									console.log(data);
 	
-									if(data != ""){
+									if(data !== ""){
 										$(".report-loader").fadeOut("slow");
 										$('#table').html(data);
 										
@@ -414,7 +416,9 @@
 									userID : $("#userID").val(),
 									userGroup : $("#userGroup").val(),
 									fromDate : $("#start_filterdate").val(),
-									toDate : $("#end_filterdate").val()
+									toDate : $("#end_filterdate").val(),
+									log_user: '<?php echo $_SESSION['user']?>',
+									log_group: '<?php echo $_SESSION['usergroup']?>'
 								},
 								success: function(data) {
 									console.log(data);
@@ -539,12 +543,14 @@
                                 userID : $("#userID").val(),
                                 userGroup : $("#userGroup").val(),
                                 fromDate : $("#start_filterdate").val(),
-                                toDate : $("#end_filterdate").val()
+                                toDate : $("#end_filterdate").val(),
+								log_user: '<?php echo $_SESSION['user']?>',
+								log_group: '<?php echo $_SESSION['usergroup']?>'
                             },
                             success: function(data) {
                                 console.log(data);
 
-                                if(data != ""){
+                                if(data !== ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
 
@@ -606,13 +612,13 @@
                     var request = "";
 
                     if($("#filter_type").val() == "stats"){
-                        request = $("#request1").val()
+                        request = $("#request1").val();
                     }
                     if($("#filter_type").val() == "sales_agent"){
-                        request = $("#request2").val()
+                        request = $("#request2").val();
                     }
 					if($("#filter_type").val() == "sales_tracker"){
-                        request = $("#request2").val()
+                        request = $("#request2").val();
                     }
                         $.ajax({
                             url: "reports.php",
@@ -624,12 +630,14 @@
                                 userID : $("#userID").val(),
                                 userGroup : $("#userGroup").val(),
                                 fromDate : $("#start_filterdate").val(),
-                                toDate : $("#end_filterdate").val()
+                                toDate : $("#end_filterdate").val(),
+								log_user: '<?php echo $_SESSION['user']?>',
+								log_group: '<?php echo $_SESSION['usergroup']?>'
                             },
                             success: function(data) {
                                 console.log(data);
 
-                                if(data != ""){
+                                if(data !== ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
 
@@ -723,13 +731,13 @@
                     var request = "";
 
                     if($("#filter_type").val() == "stats"){
-                        request = $("#request1").val()
+                        request = $("#request1").val();
                     }
                     if($("#filter_type").val() == "sales_agent"){
-                        request = $("#request2").val()
+                        request = $("#request2").val();
                     }
 					if($("#filter_type").val() == "sales_tracker"){
-                        request = $("#request2").val()
+                        request = $("#request2").val();
                     }
                         $.ajax({
                             url: "reports.php",
@@ -741,12 +749,14 @@
                                 userID : $("#userID").val(),
                                 userGroup : $("#userGroup").val(),
                                 fromDate : $("#start_filterdate").val(),
-                                toDate : $("#end_filterdate").val()
+                                toDate : $("#end_filterdate").val(),
+								log_user: '<?php echo $_SESSION['user']?>',
+								log_group: '<?php echo $_SESSION['usergroup']?>'
                             },
                             success: function(data) {
                                 console.log(data);
 
-                                if(data != ""){
+                                if(data !== ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
 
@@ -840,13 +850,13 @@
                     var request = "";
 
                     if($("#filter_type").val() == "stats"){
-                        request = $("#request1").val()
+                        request = $("#request1").val();
                     }
                     if($("#filter_type").val() == "sales_agent"){
-                        request = $("#request2").val()
+                        request = $("#request2").val();
                     }
 					if($("#filter_type").val() == "sales_tracker"){
-                        request = $("#request2").val()
+                        request = $("#request2").val();
                     }
 					
                         $.ajax({
@@ -859,12 +869,14 @@
                                 userID : $("#userID").val(),
                                 userGroup : $("#userGroup").val(),
                                 fromDate : $("#start_filterdate").val(),
-                                toDate : $("#end_filterdate").val()
+                                toDate : $("#end_filterdate").val(),
+								log_user: '<?php echo $_SESSION['user']?>',
+								log_group: '<?php echo $_SESSION['usergroup']?>'
                             },
                             success: function(data) {
                                 console.log(data);
 
-                                if(data != ""){
+                                if(data !== ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
 
@@ -968,12 +980,14 @@
                                 userGroup : $("#userGroup").val(),
                                 fromDate : $("#start_filterdate").val(),
                                 toDate : $("#end_filterdate").val(),
-								statuses : $("#statuses").val()
+								statuses : $("#statuses").val(),
+								log_user: '<?php echo $_SESSION['user']?>',
+								log_group: '<?php echo $_SESSION['usergroup']?>'
                             },
                             success: function(data) {
                                 console.log(data);
 
-                                if(data != ""){
+                                if(data !== ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
 
@@ -1010,12 +1024,14 @@
                                 userGroup : $("#userGroup").val(),
                                 fromDate : $("#start_filterdate").val(),
                                 toDate : $("#end_filterdate").val(),
-								statuses : $("#statuses").val()
+								statuses : $("#statuses").val(),
+								log_user: '<?php echo $_SESSION['user']?>',
+								log_group: '<?php echo $_SESSION['usergroup']?>'
                             },
                             success: function(data) {
                                 console.log(data);
 
-                                if(data != ""){
+                                if(data !== ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
 

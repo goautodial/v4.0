@@ -15,6 +15,9 @@
 		$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
     $postfields["pauseCampID"] = $_POST['campaign_id'];
 		$postfields["pause_code"] = $_POST['pause_code'];
+	
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

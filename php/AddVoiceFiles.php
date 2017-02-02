@@ -22,6 +22,9 @@
    $postfields["hostname"]       = $_SERVER['REMOTE_ADDR']; #Default value
    $postfields["files"]          = curl_file_create($_FILES['voice_file']['tmp_name'], $_FILES['voice_file']['type'], $_FILES["voice_file"]["name"]);
    $postfields["stage"]          = "upload";
+	
+	$postfields["log_user"]			= $_POST['log_user'];
+	$postfields["log_group"]		= $_POST['log_group'];
 
    $ch = curl_init();
    curl_setopt($ch, CURLOPT_URL, $url);

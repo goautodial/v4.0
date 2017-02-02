@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 require_once('goCRMAPISettings.php');	
 
@@ -17,6 +17,10 @@ require_once('goCRMAPISettings.php');
 	$postfields["script_text"] 			= $_POST['script_text']; 
 	$postfields["active"] 				= $_POST['active'];
 	$postfields["user"]					= $_POST['script_user'];
+	
+	$postfields["hostname"] 			= $_SERVER['REMOTE_ADDR']; 
+	$postfields["log_user"] 			= $_POST['log_user'];
+	$postfields["log_group"]			= $_POST['log_group'];
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);

@@ -27,6 +27,10 @@ error_reporting(E_ALL);
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["pageTitle"] = "call_export_report";
 	
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
+	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
+	
     if(isset($_POST['campaigns']) && $_POST['campaigns'] != NULL){
 		$campaigns = $_POST['campaigns'];
 		$campaigns = implode(" ", $campaigns);

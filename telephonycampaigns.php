@@ -1906,6 +1906,8 @@
 			$(document).on('click', '.btn-delete-pc', function(){
 				var campaign_id = $(this).data('camp-id');
 				var pause_code = $(this).data('code');
+				var log_user = '<?=$_SESSION['user']?>';
+				var log_group = '<?=$_SESSION['usergroup']?>';
 				swal({
 					title: "Are you sure?",
 					text: "This action cannot be undone.",
@@ -1923,8 +1925,10 @@
 											url: "./php/DeletePauseCode.php",
 											type: 'POST',
 											data: {
-												campaign_id:campaign_id,
-												pause_code:pause_code
+												campaign_id: campaign_id,
+												pause_code: pause_code,
+												log_user: log_user,
+												log_group: log_group
 											},
 											// dataType: 'json',
 											success: function(data) {

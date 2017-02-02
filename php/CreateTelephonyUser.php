@@ -21,6 +21,9 @@ require_once('goCRMAPISettings.php');
 	$postfields["seats"]			= $_POST["seats"];
 	$postfields["phone_login"]		= $_POST["phone_logins"];
 	$postfields["phone_pass"]		= $_POST["phone_pass"];
+	
+	$postfields["log_user"]			= $_POST["log_user"];
+	$postfields["log_group"]		= $_POST["log_group"];
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);

@@ -263,6 +263,8 @@ $callrecs = $ui->API_getListAllRecordings();
 				<div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
 				
 				<form action="CreateTelephonyUser.php" method="POST" id="create_form" class="form-horizontal " role="form">
+					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 				<!-- STEP 1 -->
 					<div class="wizard-step">
 						<div class="form-group">

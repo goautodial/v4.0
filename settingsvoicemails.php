@@ -107,6 +107,8 @@
                     <div class="modal-body">
                     
                     <form action="" method="POST" id="create_voicemail" name="create_voicemail" role="form">
+						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
                         <div class="row">
                     <!-- STEP 1 -->
                             <h4>
@@ -281,7 +283,9 @@
                                     url: "./php/DeleteVoicemail.php",
                                     type: 'POST',
                                     data: { 
-                                        voicemail_id:id,
+                                        voicemail_id: id,
+										log_user: '<?=$_SESSION['user']?>',
+										log_group: '<?=$_SESSION['usergroup']?>'
                                     },
                                     success: function(data) {
                                     console.log(data);

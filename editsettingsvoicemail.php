@@ -119,6 +119,8 @@ if (isset($_POST["vmid"])) {
 	
 							<form id="modifyform">
 								<input type="hidden" name="modifyid" value="<?php echo $vmid;?>">
+								<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>" />
+								<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>" />
 							
 						<!-- Custom Tabs -->
 						<div role="tabpanel">

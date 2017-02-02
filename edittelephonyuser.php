@@ -108,6 +108,8 @@ $user_groups = $ui->API_goGetUserGroupsList();
 							<legend>MODIFY USER : <u><?php echo $output->data->user;?></u></legend>
 
 								<form id="modifyuser">
+									<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+									<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 
 								<!-- Custom Tabs -->
 								<div role="tabpanel">

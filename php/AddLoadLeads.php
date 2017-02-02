@@ -27,6 +27,8 @@ ini_set('memory_limit','1024M');
 	$postfields["goFileMe"]       = curl_file_create($_FILES['file_upload']['tmp_name'], $_FILES['file_upload']['type'], $_FILES["file_upload"]["name"]);
 	$postfields["goListId"]       = $_REQUEST['list_id'];
 	$postfields["goDupcheck"]       = $_REQUEST['goDupcheck'];
+	$postfields["log_user"]		  = $_REQUEST['log_user'];
+	$postfields["log_group"]	  = $_REQUEST['log_group'];
 	$home = "../telephonylist.php";
 	
 	$ch = curl_init();

@@ -1190,7 +1190,11 @@ function goGetInSession(type) {
 				$.ajax({                            
 					type: 'POST',
 					url: "./php/ViewUserInfo.php",
-					data: {user: userid},
+					data: {
+						user: userid,
+						log_user: '<?=$_SESSION['user']?>',
+						log_group: '<?=$_SESSION['usergroup']?>'
+					},
 					cache: false,
 					//dataType: 'json',
 						success: function(data){ 

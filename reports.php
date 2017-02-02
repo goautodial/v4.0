@@ -7,12 +7,18 @@ ini_set('memory_limit', '2048M');
 require_once('php/goCRMAPISettings.php');
 
 $pageTitle = $_POST['pageTitle'];
+$log_user = $_POST['log_user'];
+$log_group = $_POST['log_group'];
 		
 		$url = gourl."/goReports/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetReports"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
+		
+		$postfields["log_user"] = $log_user;
+		$postfields["log_group"] = $log_group;
+		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 		
 		if($pageTitle != "call_export_report"){
 			$postfields["pageTitle"] = $pageTitle;
@@ -1091,6 +1097,8 @@ if($output->result == "success"){
 		$display = '';
 		$display .= '
 				<form action="./php/ExportCallReport.php" id="export_callreport_form" method="POST">
+					<input type="hidden" name="log_user" value="'.$log_user.'" />
+					<input type="hidden" name="log_group" value="'.$log_group.'" />
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">

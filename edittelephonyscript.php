@@ -117,6 +117,8 @@ if (isset($_POST["script_id"])) {
                     	
 							<form id="modifyform">
 								<input type="hidden" name="modifyid" value="<?php echo $script_id;?>">
+								<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>">
+								<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>">
 							
 						<!-- Custom Tabs -->
 						<div role="tabpanel">

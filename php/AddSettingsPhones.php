@@ -24,6 +24,9 @@ require_once('goCRMAPISettings.php');
 	$postfields["messages"] 		= "0"; #Desire message (required)
 	$postfields["old_messages"] 	= "0"; #Desired old message (required)
 	$postfields["user_group"] 		= $_POST['user_group']; #Assign to user group (required)
+	
+	$postfields["log_user"]			= $_POST['log_user'];
+	$postfields["log_group"]		= $_POST['log_group'];
  
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);

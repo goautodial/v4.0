@@ -181,6 +181,8 @@
                 <div class="modal-body wizard-content" style="min-height: 50%; overflow-y:auto; overflow-x:hidden;">
                 
                 <form action="" method="POST" id="create_moh" name="create_moh" class="form-horizontal " role="form">
+					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
                 <!-- STEP 1 -->
                     <div class="wizard-step">
                         <div class="form-group">
@@ -311,6 +313,8 @@
 						type: 'POST',
 						data: { 
 						      moh_id : moh_id,
+							  log_user: '<?=$_SESSION['user']?>',
+							  log_group: '<?=$_SESSION['usergroup']?>'
 						},
 						dataType: 'json',
 						success: function(data) {
@@ -338,12 +342,14 @@
 						      user_group : $('.mog_user_group').val(),
 						      active : $('.moh_status').val(),
 						      random : $('.moh_rand_order').val(),
+							  log_user: '<?=$_SESSION['user']?>',
+							  log_group: '<?=$_SESSION['usergroup']?>'
 						},
 						dataType: 'json',
 						success: function(data) {
 						      if (data.result == "success") {
 							    swal("Success!", "Music On Hold Successfully Updated!", "success");
-                                window.setTimeout(function(){location.reload()},2000)   
+                                window.setTimeout(function(){location.reload();},2000);
                                 
                                 $('#update_button').html("<i class='fa fa-check'></i> Update");
                                 $('.btn-update-moh-info').attr("disabled", false);
@@ -364,6 +370,8 @@
 				 */
 				 $(document).on('click','.delete-moh',function() {
 				 	var id = $(this).attr('data-id');
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
                     swal({   
                         title: "Are you sure?",   
                         text: "This action cannot be undone.",   
@@ -381,13 +389,15 @@
                                     url: "./php/DeleteMOH.php",
                                     type: 'POST',
                                     data: { 
-                                        moh_id:id,
+                                        moh_id: id,
+										log_user: log_user,
+										log_group: log_group
                                     },
                                     success: function(data) {
                                     console.log(data);
                                         if(data == 1){
                                            swal("Success!", "Music On Hold Successfully Deleted!", "success");
-                                           window.setTimeout(function(){location.reload()},1000)
+                                           window.setTimeout(function(){location.reload();},1000);
                                         }else{
                                             sweetAlert("Oops...", "Something went wrong! "+data, "error");
                                         }

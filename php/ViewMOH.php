@@ -18,6 +18,10 @@
         $postfields["goAction"] = "goGetMOHInfo"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
         $postfields["moh_id"] = $_POST['moh_id']; #Desired uniqueid. (required)
+	
+	$postfields["log_ip"]			= $_SERVER['REMOTE_ADDR'];
+	$postfields["log_user"]			= $_POST['log_user'];
+	$postfields["log_group"]		= $_POST['log_group'];
         
         
         $ch = curl_init();

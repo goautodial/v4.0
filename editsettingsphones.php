@@ -87,6 +87,9 @@ if (isset($_POST["extenid"])) {
 				        $postfields["goAction"] = "goGetPhoneInfo"; #action performed by the [[API:Functions]]. (required)
 				        $postfields["responsetype"] = responsetype; #json. (required)
 				        $postfields["exten_id"] = $extenid; #Desired exten ID. (required)
+						$postfields["log_user"] = $_SESSION['user'];
+						$postfields["log_group"] = $_SESSION['usergroup'];
+						$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
 				         $ch = curl_init();
 				         curl_setopt($ch, CURLOPT_URL, $url);
@@ -110,6 +113,8 @@ if (isset($_POST["extenid"])) {
                    
 							<form id="modifyphones">
 								<input type="hidden" name="modifyid" value="<?php echo $extenid;?>">
+								<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>" />
+								<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>" />
 							
 						<!-- BASIC SETTINGS -->
 							<div role="tabpanel">

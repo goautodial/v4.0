@@ -88,6 +88,9 @@ if (isset($_POST["usergroup_id"])) {
 				        $postfields["goAction"] = "goGetUserGroupInfo"; #action performed by the [[API:Functions]]. (required)
 				        $postfields["responsetype"] = responsetype; #json. (required)
 				        $postfields["agent_id"] = $usergroup_id; #Desired exten ID. (required)
+						$postfields["log_user"] = $_SESSION['user'];
+						$postfields["log_group"] = $_SESSION['usergroup'];
+						$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
 				         $ch = curl_init();
 				         curl_setopt($ch, CURLOPT_URL, $url);
@@ -113,6 +116,8 @@ if (isset($_POST["usergroup_id"])) {
                     	
 							<form id="modifyvoicemail">
 								<input type="hidden" name="modifyid" value="<?php echo $usergroup_id;?>">
+								<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>">
+								<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>">
 							
 						<!-- Custom Tabs -->
 						<div role="tabpanel">

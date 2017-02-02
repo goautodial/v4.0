@@ -318,6 +318,8 @@ if ($perm->list->list_upload !== 'N') {
 	<div class="col-lg-3" id="list_sidebar">
 	<h3 class="m0 pb-lg">Upload/Import Leads</h3>
 		<form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data" id="upload_form" name="upload_form">
+			<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+			<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 			<div class="form-group">
 			<label>List ID:</label>
 				<div class="form-group">

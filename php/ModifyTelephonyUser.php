@@ -119,6 +119,9 @@ if ($validated == 1) {
     $postfields["phone_pass"] = $phone_pass;
     $postfields["hotkeys_active"] = $hotkeys_active;
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	
+    $postfields["log_user"] = $_POST['log_user'];
+    $postfields["log_group"] = $_POST['log_group'];
 
     if (isset($_POST["api_access"])) { 
     	$postfields["vdc_agent_api_access"] = $vdc_agent_api_access;

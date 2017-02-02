@@ -108,6 +108,8 @@
 				<div class="modal-body">
 				
 					<form id="create_form" role="form">
+						<input type="hidden" name="log_user" value="<?php echo $_SESSION['user']; ?>" />
+						<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup']; ?>" />
 						<div class="row">
 							<h4>Script Details
 	                           <br>
@@ -377,7 +379,9 @@
 								url: "./php/DeleteScript.php",
 								type: 'POST',
 								data: { 
-									script_id:id,
+									script_id: id,
+									log_user: '<?=$_SESSION['user']?>',
+									log_group: '<?=$_SESSION['usergroup']?>'
 								},
 								success: function(data) {
 								console.log(data);

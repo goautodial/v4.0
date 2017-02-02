@@ -22,6 +22,10 @@
         $postfields["user_group"] = $_POST['user_group'];
         $postfields["active"] = $_POST['active'];
         $postfields["random"] = $_POST['random'];
+	
+	$postfields["log_ip"]			= $_SERVER['REMOTE_ADDR'];
+	$postfields["log_user"]			= $_POST['log_user'];
+	$postfields["log_group"]		= $_POST['log_group'];
         
         
         $ch = curl_init();
