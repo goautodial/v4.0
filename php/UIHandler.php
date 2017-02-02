@@ -1948,6 +1948,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
 			$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
 			$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "book", $this->lh->translationFor("admin_logs"));
+			$settings .= $this-> getSidebarItem("./settingsservers.php", "server", $this->lh->translationFor("servers"));
 			$settings .= '</ul></li>';
 
 			$callreports = '<li class="treeview"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>'.$this->lh->translationFor("call_reports").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
@@ -4444,6 +4445,62 @@ error_reporting(E_ERROR | E_PARSE);
 	    $output = json_decode($data);
 
 	    return $output;
+	}
+	
+	public function getServerList(){
+		$output = $this->getServers();
+
+	    if ($output->result=="success") {
+	    # Result was OK!
+
+        $columns = array("Server ID", "Server Name", "Server IP", "Status", "Asterisk", "Trunks", "GMT", "Action");
+        $hideOnMedium = array("Asterisk", "Trunks", "GMT");
+		$hideOnLow = array("Server IP", "Server Name", "Status", "Asterisk", "Trunks", "GMT");
+
+		$result = $this->generateTableHeaderWithItems($columns, "servers_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+
+	        for($i=0;$i<count($output->server_id);$i++){
+
+		    	$action = $this->ActionMenuForServers($output->server_id[$i]);
+
+			    if($output->active[$i] == "Y"){
+				    $active = "Active";
+				}else{
+				    $active = "Inactive";
+				}
+                    $result .= "<tr>
+	                    <td class ='hide-on-low'><a class='edit-server' data-id='".$output->server_id[$i]."'>".$output->server_id[$i]."</td>
+	                    <td>".$output->server_description[$i]."</td>
+	                    <td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
+						<td class ='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
+						<td class ='hide-on-low'>".$output->asterisk_version[$i]."</td>
+						<td class ='hide-on-low'>".$output->max_vicidial_trunks[$i]."</td>
+						<td class ='hide-on-low'>".$output->local_gmt[$i]."</td>
+	                    <td nowrap>".$action."</td>
+	                </tr>";
+            }
+
+		    return $result.'</table>';
+
+	    } else {
+	       # An error occured
+	       return $output->result;
+	    }
+	}
+	
+	public function ActionMenuForServers($id) {
+
+	    return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="edit-server" href="#" data-id="'.$id.'">Modify</a></li>
+			<li><a class="delete-server" href="#" data-id="'.$id.'">Delete</a></li>
+		    </ul>
+		</div>';
 	}
 	
 	/** Carriers API - Get all list of carriers */

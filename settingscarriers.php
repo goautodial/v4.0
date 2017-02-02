@@ -670,14 +670,18 @@ host=</textarea>
 
 						if(carrier_type == "manual"){
 							$('.manual_div').show();
+							$('#active').val("Y").attr("selected");
 						}else{
 							$('.manual_div').hide();
+							$('#active').val("N").attr("selected");
 						}
 
 						if(carrier_type == "copy"){
 							$('.copy_div').show();
+							$('#active').val("N").attr("selected");
 						}else{
 							$('.copy_div').hide();
+							$('#active').val("Y").attr("selected");
 						}
 
 						if(carrier_type == "justgo"){
