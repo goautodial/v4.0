@@ -30,15 +30,20 @@ require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
 require_once('./php/LanguageHandler.php');
 require_once('./php/DbHandler.php');
-require('./php/Session.php');
 
 define('GO_BASE_DIRECTORY', str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(__FILE__)));
 
 // initialize structures
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$db = new \creamy\DbHandler();
-$user = \creamy\CreamyUser::currentUser();
+require_once('./php/Session.php');
+try {
+	$ui = \creamy\UIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$db = new \creamy\DbHandler();
+	$user = \creamy\CreamyUser::currentUser();
+} catch (\Exception $e) {
+	header("location: ./logout.php");
+	die();
+}
 
 if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_AGENT){
     header("location: index.php");
