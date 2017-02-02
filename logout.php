@@ -27,9 +27,14 @@
 	session_start();
 	
 	$log_user = $_SESSION['user'];
-	$log_group = $_SESSION['usergroup'];
-	$ip_address = $_SERVER['REMOTE_ADDR'];
-	$details = "User {$log_user} logging out";
+	
+	if (strlen($log_user) > 0) {
+		$log_group = $_SESSION['usergroup'];
+		$details = "User {$log_user} logging out";
+	} else {
+		$log_user = 'sess_expired';
+		$details = "Session Expired";
+	}
 	if(session_destroy()) // Destroying All Sessions
 	{
 		$url = gourl."/goAdminLogs/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -40,7 +45,7 @@
 		$postfields["user"] = $log_user;
 		$postfields["user_group"] = $log_group;
 		$postfields["details"] = $details;
-		$postfields["ip_address"] = $ip_address;
+		$postfields["ip_address"] = $_SERVER['REMOTE_ADDR'];
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);

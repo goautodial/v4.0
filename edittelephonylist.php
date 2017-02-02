@@ -93,6 +93,9 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 				        $postfields["goAction"] = "goGetListInfo"; #action performed by the [[API:Functions]]. (required)
 				        $postfields["responsetype"] = responsetype; #json. (required)
 				        $postfields["list_id"] = $modifyid; #Desired exten ID. (required)
+						$postfields["log_user"] = $_SESSION['user'];
+						$postfields["log_group"] = $_SESSION['usergroup'];
+						$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
 				         $ch = curl_init();
 				         curl_setopt($ch, CURLOPT_URL, $url);

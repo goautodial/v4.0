@@ -810,6 +810,8 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					***/
 		            $(document).on('click','.delete-list',function() {
 						var id = $(this).attr('data-id');
+						var log_user = '<?=$_SESSION['user']?>';
+						var log_group = '<?=$_SESSION['usergroup']?>';
 						swal({
 							title: "Are you sure?",
 							text: "This action cannot be undone.",
@@ -828,7 +830,9 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 										url: "./php/DeleteTelephonyList.php",
 										type: 'POST',
 										data: {
-											listid:id,
+											listid: id,
+											log_user: log_user,
+											log_group: log_group
 										},
 										success: function(data) {
 										console.log(data);
