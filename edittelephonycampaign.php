@@ -1674,7 +1674,6 @@ $lists = $ui->API_goGetAllLists();
 						                           </div>
 						                        </div>
 						                    </fieldset>
-
 										</div>
 										<!-- /.tab-content -->
 								</div>
