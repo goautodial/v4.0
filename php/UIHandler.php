@@ -5917,9 +5917,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goAction"] = "goGetUserGroupInfo"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["agent_id"] = $group; #json. (required)
-		$postfields["log_user"] = $_SESSION['user'];
-		$postfields["log_group"] = $_SESSION['usergroup'];
-		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 		
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);
