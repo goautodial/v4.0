@@ -119,6 +119,8 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 
 							<form id="modifylist">
 								<input type="hidden" name="modifyid" value="<?php echo $modifyid;?>">
+								<input type="hidden" name="log_user" value="<?php echo $_SESSION['user']; ?>" />
+								<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup']; ?>" />
 
 						<!-- Custom Tabs -->
 						<div role="tabpanel">

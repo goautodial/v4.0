@@ -471,6 +471,8 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				<div class="modal-body wizard-content">
 
 				<form method="POST" id="create_form" role="form">
+					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 				<div class="row">
 				<h4>List Information
 				   <br>
@@ -623,6 +625,8 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	      <div class="modal-body">
 			<form id="dnc_form">
 				<input type="hidden" name="user_id" value="<?php echo $user->getUserId();?>">
+				<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>">
+				<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>">
 				<div class="form-group mt">
 					<label class="col-md-3 control-label">List:</label>
 					<div class="col-md-9 mb">
@@ -1025,7 +1029,9 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								phone_numbers : phone_number,
 								campaign_id : campaign,
 								stageDNC : "DELETE",
-								user_id : <?php echo $user->getUserId();?>
+								user_id : <?php echo $user->getUserId();?>,
+								log_user: '<?php echo $_SESSION['user'];?>',
+								log_group: '<?php echo $_SESSION['usergroup'];?>'
 							},
 							success: function(data) {
 								//console.log(data);

@@ -13,9 +13,12 @@
     $postfields["goAction"] = "goAddPauseCode"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["pauseCampID"] = $_POST['campaign_id'];
-		$postfields["pause_code"] = $_POST['pause_code'];
-		$postfields["pause_code_name"] = $_POST['pause_code_name'];
-		$postfields["billable"] = $_POST['billable'];
+	$postfields["pause_code"] = $_POST['pause_code'];
+	$postfields["pause_code_name"] = $_POST['pause_code_name'];
+	$postfields["billable"] = $_POST['billable'];
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
+	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

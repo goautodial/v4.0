@@ -47,6 +47,10 @@ if($validate == 0){
      $postfields["lead_filter_comments"] = $lf_comments; #lead filter comments. (optional)
      $postfields["lead_filter_sql"] = $lf_sql; #lead filter SQL. (required)
      $postfields["user_group"] = $user_group; #user group. (required)
+	 
+	 $postfields["log_user"] = $_POST['log_user'];
+	 $postfields["log_group"] = $_POST['log_group'];
+	 $postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
 
      $ch = curl_init();

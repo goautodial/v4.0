@@ -973,6 +973,8 @@
 		      </div>
 		      <div class="modal-body">
 						<form id="form_pause_codes" class="form-horizontal" style="margin-top: 10px;">
+							<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+							<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 							<div class="form-group">
 								<label class="control-label col-lg-3">Campaign ID:</label>
 								<div class="col-lg-9">
@@ -2056,6 +2058,8 @@
 			
 			$(document).on('click', '.btn-update-lists', function(){
 				var campaign_id = $(this).data('campaign');
+				var log_user = '<?=$_SESSION['user']?>';
+				var log_group = '<?=$_SESSION['usergroup']?>';
 				swal({
 					title: "Are you sure?",
 					text: "This action cannot be undone.",
@@ -2088,7 +2092,9 @@
 										'xferconf_b_number' : $('.lists-xferconf-b-number').val(),
 										'xferconf_c_number' : $('.lists-xferconf-c-number').val(),
 										'xferconf_d_number' : $('.lists-xferconf-d-number').val(),
-										'xferconf_e_number' : $('.lists-xferconf-e-number').val()
+										'xferconf_e_number' : $('.lists-xferconf-e-number').val(),
+										'log_user' : log_user,
+										'log_group' : log_group
 									},
 									// dataType: 'json',
 									success: function(data) {
@@ -2674,6 +2680,8 @@
 		        //delete leadfilter
 			        $(document).on('click','.delete_leadfilter',function() {
 			            var id = $(this).attr('data-id');
+						var log_user = '<?=$_SESSION['user']?>';
+						var log_group = '<?=$_SESSION['usergroup']?>';
 			            swal({
 			            	title: "Are you sure?",
 			            	text: "This action cannot be undone.",
@@ -2691,7 +2699,9 @@
 				                        url: "./php/DeleteLeadFilter.php",
 				                        type: 'POST',
 				                        data: {
-				                            leadfilter_id:id,
+				                            leadfilter_id: id,
+											log_user: log_user,
+											log_group: log_group
 				                        },
 				                        success: function(data) {
 				                        console.log(data);

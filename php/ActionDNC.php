@@ -15,7 +15,9 @@
 	$postfields['phone_numbers'] = $phone_numbers;
 	$postfields['stage'] = $stage;
     $postfields["responsetype"] = responsetype; #json. (required)
-	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
 	
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

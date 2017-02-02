@@ -114,6 +114,8 @@ if ($validated == 1) {
 	$postfields["campaign_cid_override"] = $campaign_cid_override;
 	$postfields["web_form_address"] = $web_form;
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
