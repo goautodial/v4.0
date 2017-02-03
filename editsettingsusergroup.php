@@ -262,6 +262,8 @@ if (isset($_POST["usergroup_id"])) {
 											$list_perms .= '<div class="col-sm-8 mb">';
 											
 											foreach ($perm as $idx => $value) {
+												if (preg_match("/^(moh_read)$/", $idx)) { return true; }
+												
 												$checkThis = '';
 												if ($value !== 'N') { $checkThis = ' checked'; }
 												$disableThis = '';
