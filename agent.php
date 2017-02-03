@@ -410,8 +410,9 @@ if (isset($_GET["message"])) {
 				background-color: #2196F3;
 			}
 			
-			#contact_info label {
-				opacity: 0.8;
+			#contact_info label, #comments label, #custom_form label {
+				color: #000;
+				opacity: 0.75;
 			}
 		</style>
     </head>
