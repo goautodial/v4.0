@@ -367,7 +367,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 											<div class="col-sm-12">
 												<a href="telephonylist.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
 												<button type="submit" class="btn btn-primary" id="modifyListOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-												<button type="button" class="btn btn-success<?=($perm->customfields_create === 'N' ? ' hidden' : '')?>" id="add_custom_field" data-id="<?php echo $modifyid; ?>"><i class="fa fa-th-list"></i> Custom Fields </button>
+												<button type="button" class="btn btn-success<?php if ($perm->customfields_create === 'N' && $perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $perm->customfields_delete === 'N') { echo ' hidden'; } ?>" id="add_custom_field" data-id="<?php echo $modifyid; ?>"><i class="fa fa-th-list"></i> Custom Fields </button>
 											</div>
 			                           </div>
 										</div>
