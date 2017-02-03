@@ -87,12 +87,12 @@
 						$toggleMOH = '';
 						$activeVoicefiles = ' active';
 						$activeMOH = '';
-						if ($perm->voicefiles->voicefiles_play === 'N') {
+						if ($perm->voicefiles->voicefiles_upload === 'N') {
 							$toggleVoicefiles = ' class="hidden"';
 							$activeVoicefiles = '';
 						}
 						if ($perm->moh->moh_read === 'N') { $toggleMOH = ' class="hidden"'; }
-						if ($perm->moh->moh_read !== 'N' && $perm->voicefiles->voicefiles_play === 'N') {
+						if ($perm->moh->moh_read !== 'N' && $perm->voicefiles->voicefiles_upload === 'N') {
 							$toggleMOH = ' class="active"';
 							$activeMOH = ' active';
 						}

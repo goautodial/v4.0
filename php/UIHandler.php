@@ -4300,9 +4300,16 @@ error_reporting(E_ERROR | E_PARSE);
 			}else{
 			    $active = "Inactive";
 			}
+			
+			$preFix = "<a class='edit_script' data-id='".$output->script_id[$i]."'>";
+			$sufFix = "</a>";
+			if ($perm->script_update === 'N') {
+				$preFix = '';
+				$sufFix = '';
+			}
 
 			$result .= "<tr>
-				<td class='hide-on-low'><a class='edit_script' data-id='".$output->script_id[$i]."'>".$output->script_id[$i]."</td>
+				<td class='hide-on-low'>".$preFix."".$output->script_id[$i]."".$sufFix."</td>
 				<td>".$output->script_name[$i]."</td>
 				<td class='hide-on-medium hide-on-low'>".$active."</td>
 				<td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
