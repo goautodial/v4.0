@@ -2174,7 +2174,9 @@ if (isset($_POST["did"])) {
 				});
 
 			//Colorpicker
-    			$(".colorpicker").colorpicker();
+    			$(".colorpicker").colorpicker({
+					format: 'hex'
+				});
 
 				$(document).on("change","#route_unavail",function() {
 					//  alert( this.value ); // or $(this).val()
