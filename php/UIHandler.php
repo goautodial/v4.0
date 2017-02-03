@@ -4217,8 +4217,15 @@ error_reporting(E_ERROR | E_PARSE);
 
 		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i], $details, $perm);
 
+		$preFix = "<a class='play_voice_file' data-location='".$file_link."' data-details='".$details."'>";
+		$sufFix = "</a>";
+		if ($perm->voicefiles_play === 'N') {
+			$preFix = '';
+			$sufFix = '';
+		}
+		
 		$result .= "<tr>
-			<td><a class='play_voice_file' data-location='".$file_link."' data-details='".$details."'>".$output->file_name[$i]."</td>
+			<td>{$preFix}".$output->file_name[$i]."{$sufFix}</td>
 			<td class ='hide-on-medium hide-on-low'>".$output->file_date[$i]."</td>
 			<td nowrap>".$action."</td>
 		    </tr>";
