@@ -409,6 +409,10 @@ if (isset($_GET["message"])) {
 			.mail-preloader span.dots div, .cust-preloader span.dots div {
 				background-color: #2196F3;
 			}
+			
+			#contact_info label {
+				opacity: 0.8;
+			}
 		</style>
     </head>
     <?php print $ui->creamyAgentBody(); ?>
