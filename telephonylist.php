@@ -273,7 +273,15 @@
 												?>
 												<tr>
 												<td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>
-												<td class='hide-on-low'><strong><a class='edit-list' data-id='<?php echo $lists->list_id[$i];?>'><?php echo $lists->list_id[$i];?></strong></td>
+												<td class='hide-on-low'><strong>
+													<?php
+													if (($perm->list->list_update !== 'N' && !preg_match("/^(998|999)$/", $listid)) {
+													?>
+													<a class='edit-list' data-id='<?php echo $lists->list_id[$i];?>'>
+													<?php
+													}
+													?><?php echo $lists->list_id[$i];?>
+												</strong></td>
 												<td><?php echo $lists->list_name[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $lists->active[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $lists->tally[$i];?></td>
