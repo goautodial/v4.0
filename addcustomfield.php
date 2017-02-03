@@ -34,7 +34,7 @@ $customs = $customFields->data;
 // die;
 
 $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
-if ($perm->customfields_read === 'N') {
+if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $perm->customfields_delete === 'N') {
 	header("location: telephonylist.php");
 }
 ?>
