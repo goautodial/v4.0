@@ -132,7 +132,7 @@
 								}
 							?>
 
-						<div class="bottom-menu skin-blue<?php if ($perm->voicefiles->voicefiles_play == 'N' && $perm->moh->moh_create == 'N') { echo " hidden"; } ?>">
+						<div class="bottom-menu skin-blue<?php if ($perm->voicefiles->voicefiles_upload == 'N' && $perm->moh->moh_create == 'N') { echo " hidden"; } ?>">
 							<div class="action-button-circle" data-toggle="modal">
 								<?php print $ui->getCircleButton("inbound", "plus"); ?>
 							</div>
@@ -142,7 +142,7 @@
 								$menuHeight = '170px';
 								$hideVoicefiles = '';
 								$hideMOH = '';
-								if ($perm->voicefiles->voicefiles_play === 'N') {
+								if ($perm->voicefiles->voicefiles_upload === 'N') {
 									$menu--;
 									$hideVoicefiles = ' hidden';
 								}
