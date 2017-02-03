@@ -255,11 +255,11 @@
 				** EDIT EVENT
 				*********************/
 						$(document).on('click','.edit-server',function() {
-							var url = './editsettingsservers.php';
+							var url = './editsettingsserver.php';
 							var id = $(this).attr('data-id');
 							//alert(extenid);
 							var form = 
-							$('<form action="' + url + '" method="post"><input type="hidden" name="usergroup_id" value="'+id+'" /></form>');
+							$('<form action="' + url + '" method="post"><input type="hidden" name="id" value="'+id+'" /></form>');
 							//$('body').append(form);  // This line is not necessary
 							$(form).submit();
 						});
