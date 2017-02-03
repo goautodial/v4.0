@@ -1117,8 +1117,8 @@ error_reporting(E_ERROR | E_PARSE);
 			<li'.(($perm->list->list_update === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Modify</a></li>
 			<li'.($perm->customfields->customfields_create === 'N' ? ' class="hidden"' : '').'><a class="copy-custom-fields" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Copy List Custom Fields</a></li>
 			<li'.($perm->list->list_download === 'N' ? ' class="hidden"' : '').'><a class="download-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Download List</a></li>
-			<li class="divider'.($perm->list->list_delete === 'N' ? ' hidden' : '').'"></li>
-			<li'.($perm->list->list_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Delete</a></li>
+			<li class="divider'.(($perm->list->list_delete === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' hidden' : '').'"></li>
+			<li'.(($perm->list->list_delete === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Delete</a></li>
 		    </ul>
 		</div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
