@@ -189,13 +189,13 @@
 			<div class="form-group">
 				<label class="control-label col-lg-4">Music on Hold Name:</label>
 				<div class="col-lg-7">
-					<input type="text" class="form-control moh_name">
+					<input type="text" class="form-control moh_name" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-lg-4">Status:</label>
 				<div class="col-lg-5">
-					<select class="form-control moh_status">
+					<select class="form-control moh_status" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 						<option value="Y">Active</option>
 						<option value="N">Inactive</option>
 					</select>
@@ -204,7 +204,7 @@
 			<div class="form-group">
 				<label class="control-label col-lg-4">User Group:</label>
 				<div class="col-lg-7">
-					<select class="form-control moh_user_group select2-1" style="width:100%;">
+					<select class="form-control moh_user_group select2-1" style="width:100%;" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 						<?php
                             for($i=0;$i<count($user_groups->user_group);$i++){
                         ?>
@@ -218,7 +218,7 @@
 			<div class="form-group">
 				<label class="control-label col-lg-4">Random Order:</label>
 				<div class="col-lg-5">
-					<select class="form-control moh_rand_order">
+					<select class="form-control moh_rand_order" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 						<option value="Y">Yes</option>
 						<option value="N">No</option>
 					</select>
@@ -228,8 +228,17 @@
 	      </div>
           <div class="message_box"></div>
 	      <div class="modal-footer">
-	           <button type="button" class="btn btn-primary btn-update-moh-info" data-id=""><span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-	           <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+	           <?php
+			   if ($perm->moh->moh_update !== 'N') {
+			   ?>
+			   <button type="button" class="btn btn-primary btn-update-moh-info" data-id=""><span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+			   <?php
+			   } else {
+			   ?>			   
+	           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			   <?php
+			   }
+			   ?>
 	      </div>
 	    </div>
 	    <!-- End of modal content -->
