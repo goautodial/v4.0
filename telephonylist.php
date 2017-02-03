@@ -275,7 +275,7 @@
 												<td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>
 												<td class='hide-on-low'><strong>
 													<?php
-													if (($perm->list->list_update !== 'N' && !preg_match("/^(998|999)$/", $listid))) {
+													if (($perm->list->list_update !== 'N' && !preg_match("/^(998|999)$/", $lists->list_id[$i]))) {
 													?>
 													<a class='edit-list' data-id='<?php echo $lists->list_id[$i];?>'>
 													<?php
