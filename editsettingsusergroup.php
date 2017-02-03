@@ -262,33 +262,33 @@ if (isset($_POST["usergroup_id"])) {
 											$list_perms .= '<div class="col-sm-8 mb">';
 											
 											foreach ($perm as $idx => $value) {
-												if (preg_match("/^(moh_read)$/", $idx)) { return; }
-												
-												$checkThis = '';
-												if ($value !== 'N') { $checkThis = ' checked'; }
-												$disableThis = '';
-												if (preg_match("/^(ADMIN|AGENTS)$/", $usergroup_id)) { $disableThis = ' disabled'; }
-												
-												$defaultValue = 'Y';
-												$list_options = '';
-												$label = $idx;
-												if (!preg_match("/dashboard|reportsanalytics|recordings|support/", $type)) {
-													if (preg_match("/_create$/", $idx)) { $defaultValue = 'C'; $label = 'Create'; }
-													if (preg_match("/_read$/", $idx)) { $defaultValue = 'R'; $label = 'Read'; }
-													if (preg_match("/_update$/", $idx)) { $defaultValue = 'U'; $label = 'Update'; }
-													if (preg_match("/_delete$/", $idx)) { $defaultValue = 'D'; $label = 'Delete'; }
-													if (preg_match("/_upload$/", $idx)) { $defaultValue = 'C'; $label = 'Upload'; }
-													if (preg_match("/_play/", $idx)) { $defaultValue = 'Y'; $label = 'Play'; }
-													if (preg_match("/_download/", $idx)) { $defaultValue = 'Y'; $label = 'Download'; }
-													$list_options = ' display: inline-block;';
+												if (!preg_match("/^(moh_read)$/", $idx)) {
+													$checkThis = '';
+													if ($value !== 'N') { $checkThis = ' checked'; }
+													$disableThis = '';
+													if (preg_match("/^(ADMIN|AGENTS)$/", $usergroup_id)) { $disableThis = ' disabled'; }
 													
-													if ($type == 'multi-tenant' && !preg_match("/(_create|_display|_update|_delete)$/", $idx)) {
-														$list_options = '';
+													$defaultValue = 'Y';
+													$list_options = '';
+													$label = $idx;
+													if (!preg_match("/dashboard|reportsanalytics|recordings|support/", $type)) {
+														if (preg_match("/_create$/", $idx)) { $defaultValue = 'C'; $label = 'Create'; }
+														if (preg_match("/_read$/", $idx)) { $defaultValue = 'R'; $label = 'Read'; }
+														if (preg_match("/_update$/", $idx)) { $defaultValue = 'U'; $label = 'Update'; }
+														if (preg_match("/_delete$/", $idx)) { $defaultValue = 'D'; $label = 'Delete'; }
+														if (preg_match("/_upload$/", $idx)) { $defaultValue = 'C'; $label = 'Upload'; }
+														if (preg_match("/_play/", $idx)) { $defaultValue = 'Y'; $label = 'Play'; }
+														if (preg_match("/_download/", $idx)) { $defaultValue = 'Y'; $label = 'Download'; }
+														$list_options = ' display: inline-block;';
+														
+														if ($type == 'multi-tenant' && !preg_match("/(_create|_display|_update|_delete)$/", $idx)) {
+															$list_options = '';
+														}
 													}
+													$list_perms .= '<div class="checkbox c-checkbox" style="margin-right: 15px;'.$list_options.'">';
+													$list_perms .= '<label><input name="'.$idx.'" id="'.$idx.'" type="checkbox"'.$checkThis.' value="'.$defaultValue.'"'.$disableThis.'><span class="fa fa-check"></span> '.$lh->translationFor($label).'</label>';
+													$list_perms .= '</div>';
 												}
-												$list_perms .= '<div class="checkbox c-checkbox" style="margin-right: 15px;'.$list_options.'">';
-												$list_perms .= '<label><input name="'.$idx.'" id="'.$idx.'" type="checkbox"'.$checkThis.' value="'.$defaultValue.'"'.$disableThis.'><span class="fa fa-check"></span> '.$lh->translationFor($label).'</label>';
-												$list_perms .= '</div>';
 											}
 											
 											$list_perms .= '</div>';
