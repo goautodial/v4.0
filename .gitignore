@@ -1,8 +1,5 @@
-php\Config.php
 php/Config.php
-php/DatabaseConnectorFactory.php
-php\DatabaseConnectorFactory.php
 php/goCRMAPISettings.php
-php\goCRMAPISettings.php
-php/DbHandler.php
-php\DbHandler.php
+.gitignore
+astguiclient.conf
+goautodial.conf
