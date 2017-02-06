@@ -1940,15 +1940,14 @@ error_reporting(E_ERROR | E_PARSE);
 			$telephonyArea .= '</ul></li>';
 
 			$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
-			//$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "tasks", $this->lh->translationFor("admin_logs"));
 			$settings .= $this-> getSidebarItem("./settingscalltimes.php", "list-ol", $this->lh->translationFor("call_times"));
 			$settings .= $this-> getSidebarItem("./settingscarriers.php", "signal", $this->lh->translationFor("carriers"));
 			//$settings .= $this-> getSidebarItem("./settingsphones.php", "phone", $this->lh->translationFor("phones"));
 			//$settings .= $this-> getSidebarItem("./settingssystemsettings.php", "gear", $this->lh->translationFor("system_settings"));
 			$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
 			$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
-			$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "book", $this->lh->translationFor("admin_logs"));
 			$settings .= $this-> getSidebarItem("./settingsservers.php", "server", $this->lh->translationFor("servers"));
+			$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "book", $this->lh->translationFor("admin_logs"));
 			$settings .= '</ul></li>';
 
 			$callreports = '<li class="treeview"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>'.$this->lh->translationFor("call_reports").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
