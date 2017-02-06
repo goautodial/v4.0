@@ -82,7 +82,7 @@ if (isset($_POST["id"])) {
 					        $postfields["server_id"] = $id; #Desired exten ID. (required)
 							$postfields["log_user"] = $_SESSION['user'];
 							$postfields["log_group"] = $_SESSION['usergroup'];
-							$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
+							$postfields["hostname"] = $_SERVER['REMOTE_ADDR'];
 
 							$ch = curl_init();
 							curl_setopt($ch, CURLOPT_URL, $url);

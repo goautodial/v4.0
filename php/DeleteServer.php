@@ -8,7 +8,7 @@
         $postfields["goAction"] = "goDeleteServer"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
         $postfields["server_id"] = $_POST['server_id']; #Desired script id. (required)
-        $postfields['hostname'] = $_SERVER['SERVER_ADDR'];
+        $postfields['hostname'] = $_SERVER['REMOTE_ADDR'];
 	
         $postfields['log_user'] = $_POST['log_user'];
         $postfields['log_group'] = $_POST['log_group'];

@@ -60,7 +60,7 @@ require_once('goCRMAPISettings.php');
 	$postfields["goPass"]           = goPass; #Password goes here. (required)
 	$postfields["goAction"]         = "goEditServer"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"]     = responsetype; #json. (required)
-	$postfields["hostname"] = $_SERVER['SERVER_ADDR']; #Default value
+	$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	
 	$postfields["server_id"] 	= $modifyid; #Desired script id. (required)
 	$postfields["server_description"]   	= $server_description;
