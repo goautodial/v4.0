@@ -650,6 +650,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 					$('.btn-create-field').removeClass('hide');
 					$('.btn-update-field').addClass('hide');
 					$('#modal_custom_field').modal('show');
+					$('#wizard-form input[name="field_label"]').removeAttr('disabled');
 				});
 
 				$(document).on('click', '.btn-view-cf', function(){
@@ -877,6 +878,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 					$('.field-position').val(data.name_position).change();
 					$('.field-option-position').val(data.multi_position).change();
 					$('.field-requireds').val(data.field_required).change();
+					$('#wizard-form input[name="field_label"]').attr('disabled', true);
 
 					$('#modal_custom_field_list').modal('hide');
 					$('.btn-create-field').addClass('hide');
@@ -965,40 +967,37 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 						cancelButtonText: "No, cancel please!",
 						closeOnConfirm: false,
 						closeOnCancel: false
-						},
-						function(isConfirm){
-							if (isConfirm) {
-								$.ajax({
-												url: "./php/ModifyCustomField.php",
-												type: 'POST',
-												data: form_data,
-												// dataType: 'json',
-												cache: false,
-                        contentType: false,
-                        processData: false,
-												success: function(data) {
-														// console.log(data);
-														if(data == "success"){
-															swal({
-																	title: "Success",
-																	text: "Custom Field Successfully Updated/Modified",
-																	type: "success"
-																},
-																function(){
-																	location.reload();
-																	$(".preloader").fadeIn();
-																}
-															);
-														}else{
-																sweetAlert("Oops...", "Something went wrong! "+ data, "error");
-														}
-												}
-									});
-								} else {
-										swal("Cancelled", "No action has been done :)", "error");
+					}, function(isConfirm){
+						if (isConfirm) {
+							$.ajax({
+								url: "./php/ModifyCustomField.php",
+								type: 'POST',
+								data: form_data,
+								// dataType: 'json',
+								cache: false,
+								contentType: false,
+								processData: false,
+								success: function(data) {
+									// console.log(data);
+									if(data == "success"){
+										$('#wizard-form input[name="field_label"]').removeAttr('disabled');
+										swal({
+											title: "Success",
+											text: "Custom Field Successfully Updated/Modified",
+											type: "success"
+										}, function() {
+											location.reload();
+											$(".preloader").fadeIn();
+										});
+									}else{
+										sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+									}
 								}
+							});
+						} else {
+								swal("Cancelled", "No action has been done :)", "error");
 						}
-					);
+					});
 				});
 
 				$(document).on('click', '.btn-add-field', function(){
