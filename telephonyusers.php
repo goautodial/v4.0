@@ -22,7 +22,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Users</title>
+        <title><?php $lh->translateText("portal_title"); ?> <?php $lh->translateText("users"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -78,14 +78,13 @@
                     <div class="panel panel-default">
                     	<div class="panel-body">
                     		<legend><?php $lh->translateText("users"); ?></legend>
-
                     		<div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
 
 								<!-- Users panel tab -->
 									 <li role="presentation" class="active">
 										<a href="#users_tab" aria-controls="users_tab" role="tab" data-toggle="tab" class="bb0">
-										    Users </a>
+										    <?php $lh->translateText("users"); ?> </a>
 									 </li>
 									 <?php
 										 if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
@@ -94,7 +93,7 @@
 									 <!-- Phones panel tabs-->
 									 <li role="presentation" >
 										<a href="#phone_tab" aria-controls="phone_tab" role="tab" data-toggle="tab" class="bb0">
-										    Phones</a>
+										    <?php $lh->translateText("phones"); ?></a>
 									 </li>
 									 
 									 <?php	
@@ -177,8 +176,8 @@
 					<div class="modal-header">
 						
 						<h4 class="modal-title animated bounceInRight" id="T_User">
-							<i class="fa fa-info-circle" title="A step by step wizard that allows you to create users."></i> 
-							<b>User Wizard » Add New User</b>
+							<i class="fa fa-info-circle" title="<?php $lh->translateText("user_wizard_desc"); ?>"></i> 
+							<b><?php $lh->translateText("user_wizard"); ?> » <?php $lh->translateText("add_new_user"); ?></b>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						</h4>
 					</div>
@@ -221,16 +220,16 @@
 									</div>
 								</div>
 								<div class="form-group" id="custom_seats" style="display:none;">
-									<label class="col-sm-4 control-label" for="custom_num_seats">Number of Seats: </label>
+									<label class="col-sm-4 control-label" for="custom_num_seats"><?php $lh->translateText("account_details"); ?>Number of Seats: </label>
 									<div class="col-sm-6 mb">
 										<input type="number" name="custom_num_seats" id="custom_num_seats" class="form-control" min="1" max="99" value="1">
 									</div>
 								</div>
 							-->
 	                        </fieldset>
-	                        <h4>Account Details
+	                        <h4><?php $lh->translateText("account_details"); ?>
 	                           <br>
-	                           <small>Assign then Enter Account and Login Details</small>
+	                           <small><?php $lh->translateText("account_details_sub_header"); ?></small>
 	                        </h4>
 	                        <fieldset>
 	                           <?php
@@ -241,17 +240,16 @@
 								$fullname = "Agent ".$num_padded;
 								$user_id_for_form = "agent".$num_padded;
 								?>
-								
-								<div class="form-group">		
-									<label class="col-sm-4 control-label"> Users ID </label>
+								<div class="form-group">
+									<label class="col-sm-4 control-label"> <?php $lh->translateText("user_id"); ?> </label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="user_form" id="user_form" placeholder="User ID (Mandatory)" 
-											value="<?php echo $user_id_for_form;?>" title="Please enter alphanumeric characters only" maxlength="20" required>
+										<input type="text" class="form-control" name="user_form" id="user_form" placeholder="<?php $lh->translateText("user_id"); ?> (<?php $lh->translateText("mandatory"); ?>)" 
+											value="<?php echo $user_id_for_form;?>" title="<?php $lh->translateText("alphanumberic_only_instruction"); ?>" maxlength="20" required>
 										<label id="user-duplicate-error"></label>
 									</div>
 								</div>
 								<div class="form-group mt">
-									<label class="col-sm-4 control-label" for="user_group">User Group</label>
+									<label class="col-sm-4 control-label" for="user_group"> <?php $lh->translateText("user_group"); ?> </label>
 									<div class="col-sm-8 mb">
 										<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
 											<?php
@@ -265,31 +263,31 @@
 									</div>
 								</div>
 								<div class="form-group" id="phone_logins_form" style="display:none;">
-									<label class="col-sm-4 control-label" for="phone_logins"> Phone Login </label>
+									<label class="col-sm-4 control-label" for="phone_logins"> <?php $lh->translateText("phone_login"); ?> </label>
 									<div class="col-sm-8 mb">
-										<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="Phone Login (Mandatory)" 
+										<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="<?php $lh->translateText("phone_login"); ?> (<?php $lh->translateText("mandatory"); ?>)" 
 											value="<?php echo $output->last_phone_login;?>" pattern=".{3,}" title="Minimum of 3 characters" maxlength="20" required>
 										<label id="phone_login-duplicate-error"></label>
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-4 control-label" for="fullname"> Fullname </label>
+									<label class="col-sm-4 control-label" for="fullname"> <?php $lh->translateText("full_name"); ?> </label>
 									<div class="col-sm-8 mb">
-										<input type="text" name="fullname" id="fullname" class="form-control" placeholder="FullName (Mandatory)"
-											   value="<?php echo $fullname;?>" title="Please enter alphanumeric characters only" maxlength="50" required>
+										<input type="text" name="fullname" id="fullname" class="form-control" placeholder="<?php $lh->translateText("full_name"); ?> (<?php $lh->translateText("mandatory"); ?>)"
+											   value="<?php echo $fullname;?>" title="<?php $lh->translateText("alphanumberic_only_instruction"); ?>" maxlength="50" required>
 									</div>
 								</div>
-								<div class="form-group">	
-									<label class="col-sm-4 control-label" for="password"><i class="fa fa-info-circle" title="Default Password is: Go<?php echo date('Y');?>"></i>  Password </label>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="password"><i class="fa fa-info-circle" title="<?php $lh->translateText("default_pass_is"); ?>: Go<?php echo date('Y');?>"></i>  <?php $lh->translateText("password"); ?> </label>
 									
 									<div class="col-sm-8 mb">
-										<input type="password" class="form-control" name="password" id="password" placeholder="Password (Mandatory)" value="Go<?php echo date('Y');?>" maxlength="20" required>
+										<input type="password" class="form-control" name="password" id="password" placeholder="Password (<?php $lh->translateText("mandatory"); ?>)" value="Go<?php echo date('Y');?>" maxlength="20" required>
 									</div>
 								</div>
-								<div class="form-group">		
-									<label class="col-sm-4 control-label" for="confirm"> Confirm Password </label>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="confirm"> <?php $lh->translateText("confirm_password"); ?> </label>
 									<div class="col-sm-8 mb">
-										<input type="password" class="form-control" id="confirm" name="confirm" placeholder="Re-enter password here (Mandatory)" value="Go<?php echo date('Y');?>" required>
+										<input type="password" class="form-control" id="confirm" name="confirm" placeholder="<?php $lh->translateText("reenter_pass"); ?> (<?php $lh->translateText("mandatory"); ?>)" value="Go<?php echo date('Y');?>" required>
 									</div> 
 								</div>
 								<!--
@@ -299,51 +297,50 @@
 								<input type="hidden" name="phone_pass" id="phone_pass" class="form-control">
 
 								<div class="form-group">
-									<label class="col-sm-4 control-label" for="status">Active </label>
+									<label class="col-sm-4 control-label" for="status"><?php $lh->translateText("active"); ?> </label>
 									<div class="col-sm-8 mb">
 										<select name="status" id="status" class="form-control">
-											<option value="Y" selected>Yes</option>
-											<option value="N" >No</option>						
+											<option value="Y" selected><?php $lh->translateText("go_yes"); ?></option>
+											<option value="N" ><?php $lh->translateText("go_no"); ?></option>
 										</select>
 									</div>
 								</div>
 	                        </fieldset>
-	                        <h4>Review & Submit
+	                        <h4><?php $lh->translateText("review_and_submit"); ?>
 	                           <br>
-	                           <small>Review Details Before Saving</small>
+	                           <small><?php $lh->translateText("review_and_submit_sub_header"); ?></small>
 	                        </h4>
 	                        <fieldset>
-	                        	<div class="form-group">
-	                           		<label class="col-lg-6 control-label">User Group: </label>
-	                           		<div class="col-lg-6 reverse_control_label mb">
-	                           			<span id="submit-usergroup"></span>
-	                           		</div>
-	                           	</div>
-	                           	<div class="form-group">
-	                           		<label class="col-lg-6 control-label">User ID: </label>
-	                           		<div class="col-lg-6 reverse_control_label mb">
-	                           			<span id="submit-userid"></span>
-	                           		</div>
-	                           	</div>
-	                           	<div class="form-group">
-	                           		<label class="col-lg-6 control-label">Full Name: </label>
-	                           		<div class="col-lg-6 reverse_control_label mb">
-	                           			<span id="submit-fullname"></span>
-	                           		</div>
-	                           	</div>
-	                           	<div class="form-group">
-	                           		<label class="col-lg-6 control-label">Password: </label>
-	                           		<div class="col-lg-6 reverse_control_label mb">
-	                           			<span id="submit-password"></span>
-	                           		</div>
-	                           	</div>
-	                           	<div class="form-group">
-	                           		<label class="col-lg-6 control-label">Active: </label>
-	                           		<div class="col-lg-6 reverse_control_label mb">
-	                           			<span id="submit-active"></span>
-	                           		</div>
-	                           	</div>
-
+							<div class="form-group">
+								<label class="col-lg-6 control-label"><?php $lh->translateText("user_group"); ?>: </label>
+								<div class="col-lg-6 reverse_control_label mb">
+									<span id="submit-usergroup"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-6 control-label"><?php $lh->translateText("user_id"); ?>: </label>
+								<div class="col-lg-6 reverse_control_label mb">
+									<span id="submit-userid"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-6 control-label"><?php $lh->translateText("full_name"); ?>: </label>
+								<div class="col-lg-6 reverse_control_label mb">
+									<span id="submit-fullname"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-6 control-label"><?php $lh->translateText("password"); ?>: </label>
+								<div class="col-lg-6 reverse_control_label mb">
+									<span id="submit-password"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-6 control-label"><?php $lh->translateText("active"); ?>: </label>
+								<div class="col-lg-6 reverse_control_label mb">
+									<span id="submit-active"></span>
+								</div>
+							</div>
 	                        </fieldset>
 	                     </div>
 					</form>
@@ -356,6 +353,7 @@
 
  <?php
 	if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
+		$servers = $ui->getServers();
 ?>
 	<!-- ADD PHONE MODAL -->
 	    <div class="modal fade" id="phone-wizard-modal" aria-labelledby="T_Phones" >
@@ -364,8 +362,8 @@
 					<div class="modal-header">
 						
 						<h4 class="modal-title animated bounceInRight" id="T_Phones">
-							<i class="fa fa-info-circle" title="A step by step wizard that allows you to create phones."></i> 
-							<b>Phone Wizard » Add New Phone</b>
+							<i class="fa fa-info-circle" title="<?php $lh->translateText("phone_wizard_desc"); ?>"></i> 
+							<b><?php $lh->translateText("phone_wizard"); ?> » <?php $lh->translateText("add_new_phone"); ?></b>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						</h4>
 					</div>
@@ -376,8 +374,8 @@
 						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 						<div class="row">
 							<h4>
-								Add Phones <br/>
-								<small>Specify a number of phones to be added</small>
+								<?php $lh->translateText("add_new_phone"); ?> <br/>
+								<small><?php $lh->translateText("add_phone_sub_header"); ?></small>
 							</h4>
 							<fieldset>
 								<div class="form-group mt">
@@ -396,10 +394,10 @@
 										<input type="number" class="form-control" name="custom_seats" value="1" min="1" max="99" required>
 									</div>
 								</div>
-								<div class="form-group">		
-									<label class="col-sm-4 control-label" for="start_ext">Starting Extension</label>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="start_ext"><?php $lh->translateText("starting_extention"); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="number" name="start_ext" id="start_ext" placeholder="Starting Phone Extension" value="<?php echo $output->last_phone_login;?>" class="form-control">
+										<input type="number" name="start_ext" id="start_ext" placeholder="<?php $lh->translateText("starting_extention"); ?>" value="<?php echo $output->last_phone_login;?>" class="form-control">
 									</div>
 								</div>
 							</fieldset>
@@ -410,19 +408,19 @@
 							</h4>
 							<fieldset>
 								<div class="form-group mt">
-									<label class="col-sm-4 control-label" for="phone_ext">Phone Extension/Login</label>
+									<label class="col-sm-4 control-label" for="phone_ext"><?php $lh->translateText("phone_login"); ?></label>
 									<div class="col-sm-8 mb">
-										<input text="number" name="phone_ext" id="phone_ext" class="form-control" placeholder="Phone Login (Mandatory)" title="Must be 3 - 20 characters and contains only numerical values." minlength="3" maxlength="20" required/>
+										<input text="number" name="phone_ext" id="phone_ext" class="form-control" placeholder="<?php $lh->translateText("phone_login"); ?> (<?php $lh->translateText("mandatory"); ?>)" title="Must be 3 - 20 characters and contains only numerical values." minlength="3" maxlength="20" required/>
 									</div>
 								</div>
-								<div class="form-group">		
-									<label class="col-sm-4 control-label" for="phone_pass">Phone Login Password</label>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="phone_pass"><?php $lh->translateText("phone_login_password"); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" value="G016gO" name="phone_pass" id="phone_pass" class="form-control"  placeholder="Phone Password (Mandatory)" title="Default Password is: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" maxlength="20" required>
+										<input type="text" name="phone_pass" id="phone_pass" class="form-control"  placeholder="<?php $lh->translateText("phone_login_password"); ?> (<?php $lh->translateText("mandatory"); ?>)" title="<?php $lh->translateText("default_pass_is"); ?>: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" maxlength="20" required>
 									</div>
 								</div>
-								<div class="form-group">		
-									<label class="col-sm-4 control-label" for="start_ext">User Group</label>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="start_ext"><?php $lh->translateText("user_group"); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="user_group" id="user_group" class="form-control select2-1" style="width:100%;" required>
 											<option value="ALL">ALL USER GROUPS</option>
@@ -436,25 +434,31 @@
 										</select>
 									</div>
 								</div>
-								<div class="form-group">		
-									<label class="col-sm-4 control-label" for="ip">Server IP	</label>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="ip"><?php $lh->translateText("server_ip"); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="ip" id="ip" class="form-control" required>
-											<option value="69.46.6.35">
-												<?php echo $_SERVER['REMOTE_ADDR'];?>
+											<?php
+												for($i=0;$i < count($servers->server_id);$i++){
+											?>
+											<option value="<?php echo $servers->server_ip[$i];?>">
+												<?php echo $servers->server_ip[$i].' - '.$servers->server_id[$i].' - '.$servers->server_description[$i];?>
 											</option>
+											<?php
+												}
+											?>
 										</select>
 									</div>
 								</div>
 
-								<div class="form-group">		
-									<label class="col-sm-4 control-label" for="pfullname">Full Name</label>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="pfullname"><?php $lh->translateText("full_name"); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" name="pfullname" id="pfullname" placeholder="Full Name (Mandatory)" class="form-control" required>
 									</div>
 								</div>
-								<div class="form-group">		
-									<label class="col-sm-4 control-label" for="gmt">Local GMT	</label>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="gmt"></label>
 									<div class="col-sm-8 mb">
 										<div class="row">
 											<div class="col-sm-6">
@@ -486,7 +490,7 @@
 													<option value="-5:00" selected> -5:00 </option>
 													<option value="-6:00"> -6:00 </option>
 													<option value="-7:00"> -7:00 </option>
-													<option value="-8:00"> -8:00 </option>	
+													<option value="-8:00"> -8:00 </option>
 													<option value="-9:00"> -9:00 </option>
 													<option value="-10:00"> -10:00 </option>
 													<option value="-11:00"> -11:00 </option>
@@ -494,7 +498,7 @@
 												</select>
 											</div>
 											<div class="col-sm-6">
-												<p class="text-muted">( Do NOT adjust for DST)</p>
+												<p class="text-muted">( <?php $lh->translateText("do_not_adjust_gmt"); ?> )</p>
 											</div>
 										</div>
 									</div>
@@ -631,11 +635,13 @@
 						data: $("#wizard_form").serialize(),
 						success: function(data) {
 						  // console.log(data);
+						$('#finish').text("Submit");
+    					$('#finish').attr("disabled", false);
 							  if(data == 1){
 							  	  swal(
 									{
-										title: "Success",
-										text: "User Successfully Created!",
+										title: "<?php $lh->translateText("add_user_success"); ?>",
+										text: "<?php $lh->translateText("user_has_been_saved"); ?>",
 										type: "success"
 									},
 									function(){
@@ -643,9 +649,7 @@
 									}
 								  );
 							  }else{
-							  	  sweetAlert("Oops...", "Something went wrong. "+data, "error");
-							  	  $('#finish').val("Submit");
-    							  $('#finish').attr("disabled", false);
+							  	  sweetAlert("<?php $lh->translateText("add_user_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
 							  }
 						}
 					});
@@ -699,14 +703,12 @@
 							data: $("#create_form").serialize(),
 							success: function(data) {
 							  // console.log(data);
+							$('#finish').text("Submit");
+							$('#finish').attr("disabled", false);
 								  if(data == 1){
-										swal({title: "Success",text: "Phone Successfully Created!",type: "success"},function(){window.location.href = 'settingsphones.php';});
-										$('#finish').val("Submit");
-										$('#finish').attr("disabled", false);
+									swal({title: "<?php $lh->translateText("add_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_saved"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
 								  }else{
-									  sweetAlert("Oops...", "Something went wrong! "+data, "error");
-								  	  $('#finish').val("Submit");
-								  	  $('#finish').attr("disabled", false);
+									sweetAlert("<?php $lh->translateText("add_phone_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
 								  }
 							}
 						});
@@ -725,7 +727,7 @@
 					var role = $(this).attr('data-role');
 					//alert(userid);
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="userid" value="'+userid+'" /><input type="hidden" name="role" value="'+role+'"></form>');
-					//$('body').append(form);  // This line is not necessary
+					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				 });
 			//phone edit event
@@ -734,7 +736,7 @@
 					var extenid = $(this).attr('data-id');
 					//alert(extenid);
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="extenid" value="'+extenid+'" /></form>');
-					//$('body').append(form);  // This line is not necessary
+					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				});
 
@@ -750,12 +752,12 @@
 					var log_user = '<?=$_SESSION['user']?>';
 					var log_group = '<?=$_SESSION['usergroup']?>';
 					swal({   
-	                	title: "Emergency Log Out : " + name,
+	                	title: "<?php $lh->translateText("emergency_logout"); ?> : " + name,
 	                	type: "warning",   
 	                	showCancelButton: true,   
 	                	confirmButtonColor: "#DD6B55",   
-	                	confirmButtonText: "Log Out this agent",   
-	                	cancelButtonText: "Cancel Emergency Log Out",   
+	                	confirmButtonText: "<?php $lh->translateText("agent_logout"); ?>",   
+	                	cancelButtonText: "<?php $lh->translateText("cancel_agent_logout"); ?>",   
 	                	closeOnConfirm: false,   
 	                	closeOnCancel: false 
 	                	}, 
@@ -773,14 +775,14 @@
 									//dataType: 'json',
 									success: function(data){
 										if(data == "success"){
-											sweetAlert("Agent Logged Out Successfully", "", "success");
+											sweetAlert("<?php $lh->translateText("agent_logout_notif"); ?>", "", "success");
 										}else{
-											sweetAlert("Emergency Logout",data, "warning");
+											sweetAlert("<?php $lh->translateText("emergency_logout"); ?>",data, "warning");
 										}
 									}
 								}); 
 							} else {     
-	                			swal("Cancelled", "No action has been done :)", "error");   
+	                			swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
 	                		} 
 	                	}
 	                );
@@ -793,45 +795,44 @@
 		** Delete Event
 		*********/
 			//delete user 
-				 $(document).on('click','.delete-T_user',function() {
-				 	var id = $(this).attr('data-id');
-		                swal({   
-		                	title: "Are you sure?",   
-		                	text: "This action cannot be undone.",   
-		                	type: "warning",   
-		                	showCancelButton: true,   
-		                	confirmButtonColor: "#DD6B55",   
-		                	confirmButtonText: "Yes, delete this user!",   
-		                	cancelButtonText: "No, cancel please!",   
-		                	closeOnConfirm: false,   
-		                	closeOnCancel: false 
-		                	}, 
-		                	function(isConfirm){   
-		                		if (isConfirm) { 
-		                			$.ajax({
-										url: "./php/DeleteTelephonyUser.php",
-										type: 'POST',
-										data: { 
-											userid: id,
-											log_user: '<?=$_SESSION['user']?>',
-											log_group: '<?=$_SESSION['usergroup']?>'
-										},
-										success: function(data) {
-										console.log(data);
-									  		if(data == 1){
-									  			swal({title: "Deleted",text: "User Successfully Deleted!",type: "success"},function(){window.location.href = 'telephonyusers.php';});
-											}else{
-												sweetAlert("Oops...", "Something went wrong! "+data, "error");
-											 	window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-											}
-										}
-									});
-								} else {     
-		                			swal("Cancelled", "No action has been done :)", "error");   
-		                		} 
-		                	}
-		                );
-				 });
+				$(document).on('click','.delete-T_user',function() {
+					var id = $(this).attr('data-id');
+					swal({
+						title: "<?php $lh->translateText("are_you_sure"); ?>",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
+						type: "warning",
+						showCancelButton: true, 
+						confirmButtonColor: "#DD6B55", 
+						confirmButtonText: "<?php $lh->translateText("confirm_delete_user"); ?>", 
+						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>", 
+						closeOnConfirm: false,
+						closeOnCancel: false
+					},
+					function(isConfirm){
+						if (isConfirm) {
+							$.ajax({
+								url: "./php/DeleteTelephonyUser.php",
+								type: 'POST',
+								data: { 
+								userid: id,
+								log_user: '<?=$_SESSION['user']?>',
+								log_group: '<?=$_SESSION['usergroup']?>'
+							},
+							success: function(data) {
+								console.log(data);
+								if(data == 1){
+									swal({title: "<?php $lh->translateText("delete_user_success"); ?>",text: "<?php $lh->translateText("user_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
+								}else{
+									sweetAlert("<?php $lh->translateText("delete_user_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
+								}
+							}
+							});
+						} else {     
+						swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+						}
+					}
+					);
+				});
 			
 			//delete phone
 				$(document).on('click','.delete-phone',function() {
@@ -839,38 +840,37 @@
 					var log_user = '<?=$_SESSION['user']?>';
 					var log_group = '<?=$_SESSION['usergroup']?>';
 	                swal({   
-	                    title: "Are you sure?",   
-	                    text: "This action cannot be undone.",   
+	                    title: "<?php $lh->translateText("are_you_sure"); ?>",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
 	                    type: "warning",   
 	                    showCancelButton: true,   
 	                    confirmButtonColor: "#DD6B55",   
-	                    confirmButtonText: "Yes, delete this phones!",   
-	                    cancelButtonText: "No, cancel please!",   
+	                    confirmButtonText: "<?php $lh->translateText("confirm_delete_phone"); ?>",   
+	                    cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
 	                    closeOnConfirm: false,   
 	                    closeOnCancel: false 
 	                    }, 
 	                    function(isConfirm){   
 	                        if (isConfirm) { 
-	                        	$.ajax({
-								  url: "./php/DeleteSettingsPhones.php",
-								  type: 'POST',
-								  data: { 
-								  	exten_id: id,
-									log_user: log_user,
-									log_group: log_group
-								  },
-								  success: function(data) {
-								  		// console.log(data);
-								  		if(data == 1){
-								  			swal("Success!", "Phone Successfully Deleted!", "success");
-											window.setTimeout(function(){location.reload();},3000);
-										}else{
-											sweetAlert("Oops...", "Something went wrong!"+data, "error");
-										}
-								    }
-								});
+							$.ajax({
+							  url: "./php/DeleteSettingsPhones.php",
+							  type: 'POST',
+							  data: { 
+								exten_id: id,
+								log_user: log_user,
+								log_group: log_group
+							  },
+							  success: function(data) {
+									// console.log(data);
+									if(data == 1){
+										swal({title: "<?php $lh->translateText("delete_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
+									}else{
+										sweetAlert("<?php $lh->translateText("cancel_please"); ?>", "<?php $lh->translateText("delete_phone_failed"); ?>"+data, "error");
+									}
+								}
+							});
 	                        } else {     
-	                                swal("Cancelled", "No action has been done :)", "error");   
+	                                swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");   
 	                        } 
 	                    }
 	                );
@@ -945,11 +945,11 @@
 							if(data == "success"){
 								checker = 0;
 								$( "#user_form" ).removeClass("error");
-								$( "#user-duplicate-error" ).text( "User ID is available." ).removeClass("error").addClass("avail");
+								$( "#user-duplicate-error" ).text( "<?php $lh->translateText("dup_check_success"); ?>" ).removeClass("error").addClass("avail");
 							}else{
 								if(data == "user"){
 									$( "#user_form" ).removeClass("valid").addClass( "error" );
-									$( "#user-duplicate-error" ).text( "There are 1 or more users with this User ID." ).removeClass("avail").addClass("error");
+									$( "#user-duplicate-error" ).text( "<?php $lh->translateText("dup_check_error"); ?>" ).removeClass("avail").addClass("error");
 								}
 								
 								checker = 1;

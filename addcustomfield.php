@@ -638,7 +638,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 					var id = $(this).attr('data-id');
 					//alert(extenid);
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
-					//$('body').append(form);  // This line is not necessary
+					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				});
 

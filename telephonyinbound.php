@@ -91,7 +91,7 @@
 ?>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<legend>Inbound: <small>Ingroups, Call Menus, Phone Numbers</small> </legend>
+					<legend>Inbound: <small>Ingroups, Call Menus, <?php $lh->translateText('phone_numbers'); ?></small> </legend>
 
 		            <div role="tabpanel">
 						
@@ -987,7 +987,7 @@
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="did_modal">
 						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create DID/TFN."></i> 
-						<b>DID Wizard » Create new DID</b>
+						<b><?php $lh->translateText('did_wizard'); ?> » <?php $lh->translateText('create_new_did'); ?></b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
@@ -998,25 +998,25 @@
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
 						<!-- STEP 1 -->
-						<h4>DID Details
+						<h4><?php $lh->translateText('did_details'); ?>
                            <br>
-                           <small>Enter the basic details of your DID then assign it to a user group</small>
+                           <small><?php $lh->translateText('did_basic_details'); ?></small>
                         </h4>
                         <fieldset>
 							<div class="form-group mt">
-								<label class="col-sm-4 control-label" for="did_exten">DID Extention:</label>
+								<label class="col-sm-4 control-label" for="did_exten"><?php $lh->translateText('did_extension'); ?></label>
 								<div class="col-sm-8 mb">
 									<input type="text" name="did_exten" id="did_exten" class="form-control" placeholder="DID Extention (Mandatory)" maxlength="20" minlength="2" required title="Must be 2-20 characters in length." />
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="desc">DID Description</label>
+								<label class="col-sm-4 control-label" for="desc"><?php $lh->translateText('did_description'); ?></label>
 								<div class="col-sm-8 mb">
 									<input type="text" name="desc" id="desc" class="form-control" placeholder="DID Description (Mandatory)" maxlength="20" minlength="2" title="Must be  2-20 characters in length"  required />
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="active">Active</label>
+								<label class="col-sm-4 control-label" for="active"><?php $lh->translateText('active'); ?></label>
 								<div class="col-sm-8 mb">
 									<select name="active" id="active" class="form-control">
 										<option value="Y" selected>Yes</option>
@@ -1025,7 +1025,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="route" >DID Route</label>
+								<label class="col-sm-4 control-label" for="route" ><?php $lh->translateText('did_route'); ?></label>
 								<div class="col-sm-8 mb">
 									<select class="form-control" id="route" name="route">
 										<option value="AGENT"> Agent </option>
@@ -1038,7 +1038,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="user_groups">User Groups</label>
+								<label class="col-sm-4 control-label" for="user_groups"><?php $lh->translateText('user_groups'); ?></label>
 								<div class="col-sm-8 mb">
 									<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
 										<?php
@@ -1052,16 +1052,16 @@
 								</div>
 							</div>
 						</fieldset>
-						<h4>Route Settings
+						<h4><?php $lh->translateText('route_settings'); ?>
                            <br>
-                           <small>Fill up details needed for the chosen route.</small>
+                           <small><?php $lh->translateText('fill_up_route'); ?></small>
                         </h4>
                         <fieldset>
 						<!-- IF DID ROUTE = AGENT-->
 
 							<div id="form_route_agent">
 								<div class="form-group">
-									<label class="col-sm-4 control-label" for="route_agentid">Agent ID</label>
+									<label class="col-sm-4 control-label" for="route_agentid"><?php $lh->translateText('agent_id'); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="route_agentid" id="route_agentid" class="form-control select2-1" style="width:100%;">
 											<option value="" > -- NONE -- </option>
@@ -1078,7 +1078,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-4 control-label" for="route_unavail">Agent Unavailable Action</label>
+									<label class="col-sm-4 control-label" for="route_unavail"><?php $lh->translateText('agent_unavailable_action'); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="route_unavail" id="route_unavail" class="form-control">
 											<option value="VOICEMAIL" > Voicemail </option>
@@ -1093,7 +1093,7 @@
 						<!-- IF DID ROUTE = IN-GROUP-->
 						
 							<div id="form_route_ingroup" style="display: none;">
-								<label class="col-sm-4 control-label" for="route_ingroupid">In-Group ID</label>
+								<label class="col-sm-4 control-label" for="route_ingroupid"><?php $lh->translateText('agent_unavailable_action'); ?>In-Group ID</label>
 								<div class="col-sm-8 mb">
 									<select name="route_ingroupid" id="route_ingroupid" class="form-control select2-1" style="width:100%;">
 										<?php
@@ -1113,7 +1113,7 @@
 
 							<div id="form_route_phone" style="display: none;">
 								<div class="form-group">
-									<label class="col-sm-4 control-label" for="route_phone_exten">Phone Extension</label>
+									<label class="col-sm-4 control-label" for="route_phone_exten"><?php $lh->translateText('phone_extension'); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="route_phone_exten" id="route_phone_exten" class="form-control select2-1" style="width:100%;">
 											<?php
@@ -1129,7 +1129,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-4 control-label" for="route_phone_server">Server IP</label>
+									<label class="col-sm-4 control-label" for="route_phone_server"><?php $lh->translateText('server_ip'); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="route_phone_server" id="route_phone_server" class="form-control select2-1" style="width:100%;">
 											<option value="" > -- NONE -- </option>
@@ -1151,7 +1151,7 @@
 
 							<div id="form_route_callmenu" style="display: none;">
 								<div class="form-group">
-									<label class="col-sm-4 control-label" for="route_ivr">Call Menu</label>
+									<label class="col-sm-4 control-label" for="route_ivr"><?php $lh->translateText('call_menu'); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="route_ivr" id="route_ivr" class="form-control select2-1" style="width:100%;">
 											<?php
@@ -1178,7 +1178,7 @@
 
 							<div id="form_route_voicemail" style="display: none;">
 								<div class="form-group">
-									<label class="col-sm-4 control-label" for="route_voicemail">Voicemail Box</label>
+									<label class="col-sm-4 control-label" for="route_voicemail"><?php $lh->translateText('voicemail_box'); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="route_voicemail" id="route_voicemail" class="form-control select2-1" style="width:100%;">
 											
@@ -1201,13 +1201,13 @@
 
 							<div id="form_route_exten" style="display: none;">
 								<div class="form-group">
-									<label class="col-sm-4 control-label" for="route_exten">Extension</label>
+									<label class="col-sm-4 control-label" for="route_exten"><?php $lh->translateText('custom_extension'); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" name="route_exten" id="route_exten" placeholder="Extension" class="form-control" required>
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-4 control-label" for="route_exten_context">Extension Context</label>
+									<label class="col-sm-4 control-label" for="route_exten_context"><?php $lh->translateText('extension_content'); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" name="route_exten_context" id="route_exten_context" placeholder="Extension Context" class="form-control" required>
 									</div>
@@ -1370,7 +1370,7 @@
 					e.preventDefault();
 					var url = './edittelephonyinbound.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="groupid" value="' + $(this).attr('data-id') + '" /></form>');
-					//$('body').append(form);  // This line is not necessary
+					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				});
 
@@ -1500,7 +1500,7 @@
 					e.preventDefault();
 					var url = './edittelephonyinbound.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="ivr" value="' + $(this).attr('data-id') + '" /></form>');
-					//$('body').append(form);  // This line is not necessary
+					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				});
 
@@ -1608,9 +1608,9 @@
 								   $('#submit_did').val("Submit");
 											$('#submit_did').attr("disabled", false);
 									  if(data == 1){
-									  		swal({title: "Success!",text: "Phone Number Successfully Created!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+									  		swal({title: "<?php $lh->translateText('success'); ?>",text: "<?php $lh->translateText('add_phone_number_success'); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 									  }else{
-											sweetAlert("Oops...", "Something went wrong! "+data, "error");
+											sweetAlert("<?php $lh->translateText('oups'); ?>", "<?php $lh->translateText('something_went_wrong'); ?>"+data, "error");
 									  }
 								}
 							});
@@ -1627,7 +1627,7 @@
 				$(document).on('click','.edit-phonenumber',function() {
 					var url = './edittelephonyinbound.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="did" value="' + $(this).attr('data-id') + '" /></form>');
-					//$('body').append(form);  // This line is not necessary
+					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				});
 
@@ -1640,13 +1640,13 @@
 					var log_user = '<?=$_SESSION['user']?>';
 					var log_group = '<?=$_SESSION['usergroup']?>';
 	                swal({
-	                	title: "Are you sure?",   
-	                	text: "This action cannot be undone.",   
+	                	title: "<?php $lh->translateText('are_you_sure'); ?>",   
+	                	text: "<?php $lh->translateText('action_cannot_be_undone'); ?>",   
 	                	type: "warning",   
 	                	showCancelButton: true,   
 	                	confirmButtonColor: "#DD6B55",   
-	                	confirmButtonText: "Yes, delete this phonenumber!",   
-	                	cancelButtonText: "No, cancel please!",   
+	                	confirmButtonText: "<?php $lh->translateText('confirm_delete_phonenumber'); ?>",   
+	                	cancelButtonText: "<?php $lh->translateText('cancel_please'); ?>",   
 	                	closeOnConfirm: false,   
 	                	closeOnCancel: false 
 					}, 
@@ -1665,14 +1665,14 @@
 									//console.log(modify_did);
 									console.log(data);
 								  		if(data == 1){
-											swal({title: "Success!",text: "Phone Number Successfully Deleted!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+											swal({title: "<?php $lh->translateText('success'); ?>",text: "<?php $lh->translateText('phonenumber_delete_success'); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 										}else{
-											sweetAlert("Oops...", "Something went wrong! "+data, "error");
+											sweetAlert("<?php $lh->translateText('oups'); ?>", "<?php $lh->translateText('something_went_wrong'); ?> "+data, "error");
 										}
 									}
 								});
 	                		} else {     
-		                			swal("Cancelled", "No action has been done :)", "error");   
+		                			swal("<?php $lh->translateText('cancelled'); ?>", "<?php $lh->translateText('cancel_msg'); ?>", "error");   
 		                	} 
 	                	}
 	                );

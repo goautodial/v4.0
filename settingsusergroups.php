@@ -21,7 +21,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>User Groups</title>
+        <title><?php $lh->translateText("portal_title"); ?> - <?php $lh->translateText("user_groups"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?> 
@@ -97,7 +97,7 @@
                 <!-- Header -->
                     <div class="modal-header">
                         <h4 class="modal-title animated bounceInRight" id="ingroup_modal">
-                            <b>User Group Wizard » Add New User Group</b>
+                            <b><?php $lh->translateText("user_group_wizard"); ?> » <?php $lh->translateText("add_user_group"); ?> </b>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </h4>
                     </div>
@@ -109,24 +109,24 @@
                         <div class="row">
                     <!-- STEP 1 -->
                             <h4>
-                                Create a User Group<br/>
-                                <small>Enter basic settings</small>
+                                <?php $lh->translateText("user_group_header"); ?><br/>
+                                <small><?php $lh->translateText("user_group_sub_header"); ?></small>
                             </h4>
                             <fieldset>
                             <div class="form-group mt">
-                                <label class="col-sm-3 control-label" for="usergroup_id">User Group</label>
+                                <label class="col-sm-3 control-label" for="usergroup_id"><?php $lh->translateText("user_groups"); ?></label>
                                 <div class="col-sm-9 mb">
                                     <input type="text" name="usergroup_id" id="usergroup_id" class="form-control" placeholder="User Group" minlength="3" maxlength="20" title="Must be 3-40 alphanumeric characters." required>
                                 </div>
                             </div>
                             <div class="form-group">        
-                                <label class="col-sm-3 control-label" for="groupname">Group Name</label>
+                                <label class="col-sm-3 control-label" for="groupname"><?php $lh->translateText("group_name"); ?></label>
                                 <div class="col-sm-9 mb">
                                     <input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name" minlength="3" maxlength="40" title="Must be 3-40 alphanumeric characters." required>
                                 </div>
                             </div>
                             <div class="form-group">        
-                                <label class="col-sm-3 control-label" for="grouplevel">Group Level</label>
+                                <label class="col-sm-3 control-label" for="grouplevel"><?php $lh->translateText("group_level"); ?></label>
                                 <div class="col-sm-9 mb">
                                     <select id="grouplevel" name="grouplevel" class="form-control">
                                         <option value="1"> 1 </option>
@@ -221,11 +221,11 @@
                                 success: function(data) {
                                   // console.log(data);
                                       if(data == 1){
-                                            swal({title: "Success",text: "Usergroup Successfully Created!",type: "success"},function(){window.location.href = 'settingsusergroups.php';});
+                                            swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_usergroup_success"); ?>",type: "success"},function(){window.location.href = 'settingsusergroups.php';});
                                             $('#finish').val("Submit");
                                       }
                                       else{
-                                          sweetAlert("Oops...", "Something went wrong! "+data, "error");
+                                          sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
                                           $('#finish').val("Submit");
                                           $('#finish').prop("disabled", false);
                                       }
@@ -243,7 +243,7 @@
                     //alert(extenid);
                     var form = 
                     $('<form action="' + url + '" method="post"><input type="hidden" name="usergroup_id" value="'+id+'" /></form>');
-                    //$('body').append(form);  // This line is not necessary
+                    $('body').append(form);  // This line is not necessary
                     $(form).submit();
                 });
 
@@ -253,13 +253,13 @@
                  $(document).on('click','.delete-usergroup',function() {
                     var id = $(this).attr('data-id');
                     swal({   
-                        title: "Are you sure?",   
-                        text: "This action cannot be undone.",   
+                        title: "<?php $lh->translateText("are_you_sure"); ?>",   
+                        text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",   
                         type: "warning",   
                         showCancelButton: true,   
                         confirmButtonColor: "#DD6B55",   
-                        confirmButtonText: "Yes, delete this usergroup!",   
-                        cancelButtonText: "No, cancel please!",   
+                        confirmButtonText: "<?php $lh->translateText("confirm_delete_usergroup"); ?>",   
+                        cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
                         closeOnConfirm: false,   
                         closeOnCancel: false 
                         }, 
@@ -276,15 +276,15 @@
                                 success: function(data) {
                                 console.log(data);
                                     if(data == 1){
-                                        swal({title: "Deleted",text: "Usergroup Successfully Deleted!",type: "success"},function(){window.location.href = 'settingsusergroups.php';});
+                                        swal({title: "Deleted",text: "<?php $lh->translateText("usergroup_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingsusergroups.php';});
                                         
                                     }else{
-                                        sweetAlert("Oops...", "Something went wrong! "+data, "error");
+                                        sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
                                     }
                                 }
                             });
                         } else {     
-                                    swal("Cancelled", "No action has been done :)", "error");   
+                                    swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
                             } 
                         }
                     );

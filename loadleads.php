@@ -241,7 +241,7 @@
 					e.preventDefault();
 					var url = 'edittelephonyuser.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="userid" value="' + $(this).attr('href') + '" /></form>');
-					//$('body').append(form);  // This line is not necessary
+					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				 });
 				

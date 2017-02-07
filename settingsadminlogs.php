@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?php $lh->translateText('portal_title'); ?> - Admin Logs</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText('admin_logs'); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <?php print $ui->standardizedThemeCSS(); ?>

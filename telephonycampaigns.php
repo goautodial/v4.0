@@ -22,7 +22,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Campaigns</title>
+        <title><?php $lh->translateText("campaigns"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -138,7 +138,7 @@
                 <section class="content">
                 	<div class="panel panel-default">
                 		<div class="panel-body">
-                			<legend>Campaigns</legend>
+                			<legend><?php $lh->translateText("Campaigns"); ?></legend>
                 <?php if ($perm->campaign->campaign_read !== 'N') { ?>
 <?php
 
@@ -162,12 +162,12 @@
 								 <!-- Campaign panel tabs-->
 									 <li role="presentation" class="active">
 										<a href="#T_campaign" aria-controls="T_campaign" role="tab" data-toggle="tab" class="bb0">
-										   Campaigns </a>
+										   <?php $lh->translateText("compaigns"); ?> </a>
 									 </li>
 								<!-- Disposition panel tab -->
 									 <li role="presentation">
 										<a href="#T_disposition" aria-controls="T_disposition" role="tab" data-toggle="tab" class="bb0">
-										   Dispositions </a>
+										   <?php $lh->translateText("disposition"); ?> </a>
 									 </li>
 								<!-- LeadFilter panel tab
 									 <li role="presentation">
@@ -186,11 +186,11 @@
 										   <thead>
 											  <tr>
                                                  <th style="color: white;">Pic</th>
-												 <th class='hide-on-medium hide-on-low' style='width:0px;'>Campaign ID</th>
-												 <th >Campaign Name</th>
-												 <th class='hide-on-medium hide-on-low'>Dial Method</th>
-												 <th class='hide-on-medium hide-on-low'>Status</th>
-												 <th style="width:16%;">Action</th>
+												 <th class='hide-on-medium hide-on-low' style='width:0px;'><?php $lh->translateText("campaign_id"); ?></th>
+												 <th><?php $lh->translateText("campaign_name"); ?></th>
+												 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("dial_method"); ?></th>
+												 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("status"); ?></th>
+												 <th style="width:16%;"><?php $lh->translateText("action"); ?></th>
 											  </tr>
 										   </thead>
 										   <tbody>
@@ -243,10 +243,10 @@
 										   <thead>
 											  <tr>
                          <th style="color: white;">Pic</th>
-												 <th class='hide-on-medium hide-on-low'>Campaign ID</th>
-												 <th>Campaign Name</th>
-												 <th class='hide-on-medium hide-on-low'>Custom Disposition</th>
-												 <th class='action_disposition'>Action</th>
+												 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("campaign_id"); ?></th>
+												 <th><?php $lh->translateText("campaign_name"); ?></th>
+												 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("custom_disposition"); ?></th>
+												 <th class='action_disposition'><?php $lh->translateText("action"); ?></th>
 											  </tr>
 										   </thead>
 										   <tbody>
@@ -295,9 +295,9 @@
 										   <thead>
 											  <tr>
                                                  <th style="color: white;">Pic</th>
-												 <th>Filter ID</th>
-												 <th>Filter Name</th>
-												 <th>Action</th>
+												 <th><?php $lh->translateText("filter_id"); ?></th>
+												 <th><?php $lh->translateText("filter_name"); ?></th>
+												 <th><?php $lh->translateText("action"); ?></th>
 											  </tr>
 										   </thead>
 										   <tbody>
@@ -355,50 +355,50 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Campaign Information</b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
+	        <h4 class="modal-title"><b><?php $lh->translateText("campaign_information"); ?></b>&nbsp;<span class="badge label-info"><span class="fa fa-info"></span></span></h4>
 	      </div>
 	      <div class="modal-body">
 	      	<div class="output-message-no-result hide">
 		      	<div class="alert alert-warning alert-dismissible" role="alert">
 				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				  <strong>Notice!</strong> There was an error retrieving details. Either error or no result.
+				  <strong><?php $lh->translateText("error_retrieving"); ?></strong><?php $lh->translateText("error_retrieving"); ?>
 				</div>
 			</div>
 	        <div id="content" class="view-form hide">
 			    <div class="form-horizontal">
 			    	<div class="form-group">
-			    		<label class="control-label col-lg-5">Campaign ID:</label>
+			    		<label class="control-label col-lg-5"><?php $lh->translateText("campaign_id"); ?>:</label>
 			    		<span class="info-camp-id control-label align-left col-lg-7"></span>
 			    	</div>
 			    	<div class="form-group">
-			    		<label class="control-label col-lg-5">Campaign Name:</label>
+			    		<label class="control-label col-lg-5"><?php $lh->translateText("campaign_name"); ?>:</label>
 			    		<span class="info-camp-name control-label align-left col-lg-7"></span>
 			    	</div>
 			    	<div class="form-group">
-			    		<label class="control-label col-lg-5">Campaign Description:</label>
+			    		<label class="control-label col-lg-5"><?php $lh->translateText("campaign_description"); ?>:</label>
 			    		<span class="info-camp-desc control-label align-left col-lg-7"></span>
 			    	</div>
 			    	<div class="form-group">
-			    		<label class="control-label col-lg-5">Allowed Inbound and Blended:</label>
+			    		<label class="control-label col-lg-5"><?php $lh->translateText("inbound_blended"); ?>:</label>
 			    		<span class="info-allowed control-label align-left col-lg-7"></span>
 			    	</div>
 			    	<div class="form-group">
-			    		<label class="control-label col-lg-5">Dial Method:</label>
+			    		<label class="control-label col-lg-5"><?php $lh->translateText("dial_method"); ?>:</label>
 			    		<span class="info-dial-method control-label align-left col-lg-7"></span>
 			    	</div>
 			    	<div class="form-group">
-			    		<label class="control-label col-lg-5">AutoDial Level:</label>
+			    		<label class="control-label col-lg-5"><?php $lh->translateText("autodial_level"); ?>:</label>
 			    		<span class="info-autodial-level control-label align-left col-lg-7"></span>
 			    	</div>
 			    	<div class="form-group">
-			    		<label class="control-label col-lg-5">Answering Machine Detection:</label>
+			    		<label class="control-label col-lg-5"><?php $lh->translateText("answering"); ?>:</label>
 			    		<span class="info-ans-mach control-label align-left col-lg-7"></span>
 			    	</div>
 			    </div>
 			</div>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
 	      </div>
 	    </div>
 	    <!-- End of modal content -->
@@ -416,39 +416,39 @@
 
 		        <h4 class="modal-title animated bounceInRight">
 		        	<i class="fa fa-info-circle" title="A step by step wizard that allows you to create campaigns."></i>
-		        	<b>Campaign Wizard » <span class="wizard-type">Outbound</span></b>
+		        	<b><?php $lh->translateText("wizard"); ?> » <span class="wizard-type"><?php $lh->translateText("outbound"); ?></span></b>
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
 		       	</h4>
 		      </div>
 		      <div class="modal-body">
 		        <div id="content">
 							<div class="alert alert-danger campaign-checker-message hide">
-							  <strong>Error!</strong> Campaign ID already exist. Eneter a new Campaign ID.
+							  <strong><?php $lh->translateText("error"); ?>!</strong> <?php $lh->translateText("id_already"); ?>
 							</div>
 					<!-- Custom Tabs (Pulled to the right) -->
 					<form id="campaign_form" method="POST" action="./php/AddCampaign.php" enctype="multipart/form-data">
 						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 						<div class="row">
-							<h4>Campaign Information
+							<h4><?php $lh->translateText("campaign_info"); ?>
 	                           <br>
-	                           <small>Campaign Details</small>
+	                           <small><?php $lh->translateText("campaign_det"); ?></small>
 	                        </h4>
 	                        <fieldset>
 								<div class="form-group">
-				    				<label class="control-label col-lg-4">Campaign Type:</label>
+				    				<label class="control-label col-lg-4"><?php $lh->translateText("campaign_det"); ?>:</label>
 				    				<div class="col-lg-8 mb">
 				    					<select id="campaignType" name="campaign_type" class="form-control">
-				    						<option value="outbound">Outbound</option>
-				    						<option value="inbound">Inbound</option>
-				    						<option value="blended">Blended</option>
-				    						<option value="survey">Survey</option>
-				    						<option value="copy">Copy Campaign</option>
+				    						<option value="outbound"><?php $lh->translateText("outbound"); ?></option>
+				    						<option value="inbound"><?php $lh->translateText("inbound"); ?></option>
+				    						<option value="blended"><?php $lh->translateText("blended"); ?></option>
+				    						<option value="survey"><?php $lh->translateText("survey"); ?></option>
+				    						<option value="copy"><?php $lh->translateText("copy_campaign"); ?></option>
 				    					</select>
 				    				</div>
 				    			</div>
 				    			<div class="form-group campaign-id">
-				    				<label class="control-label col-lg-4">Campaign ID:</label>
+				    				<label class="control-label col-lg-4"><?php $lh->translateText("campaign_id"); ?>:</label>
 				    				<div class="col-lg-8 mb">
 				    					<div class="input-group">
 									      <input id="campaign-id" name="campaign_id" type="number" class="form-control" placeholder="" value="<?php echo str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT); ?>" min="0" minlength="3" maxlength="8" readonly onkeydown="return FilterInput(event)">
@@ -459,30 +459,30 @@
 				    				</div>
 				    			</div>
 				    			<div class="form-group">
-				    				<label class="control-label col-lg-4">Campaign Name:</label>
+				    				<label class="control-label col-lg-4"><?php $lh->translateText("campaign_name"); ?>:</label>
 				    				<div class="col-lg-8 mb">
 				    					<input id="campaign-name" name="campaign_name" type="text" class="form-control" title="Must be 6 to 40 characters in length." minlength="6" maxlength="40" required>
 				    				</div>
 				    			</div>
 				    			<div class="form-group inbound blended hide">
-				    				<label class="control-label col-lg-4">DID/TFN Extension:</label>
+				    				<label class="control-label col-lg-4"><?php $lh->translateText("did_tfn"); ?>:</label>
 				    				<div class="col-lg-8 mb">
 				    					<input id="did-tfn-extension" name="did_tfn_extension" type="number" class="did-tfn-extension form-control" required>
 				    				</div>
 				    			</div>
 				    			<div class="form-group inbound blended hide">
-				    				<label class="control-label col-lg-4">Call Route:</label>
+				    				<label class="control-label col-lg-4"><?php $lh->translateText("call_route"); ?>:</label>
 				    				<div class="col-lg-8 mb">
 				    					<select id="call-route" name="call_route" class="form-control">
-				                            <option value="INGROUP">INGROUP (default)</option>
-				                            <option value="IVR">IVR (callmenu)</option>
+				                            <option value="INGROUP"><?php $lh->translateText("ingroup"); ?> (default)</option>
+				                            <option value="IVR"><?php $lh->translateText("ivr"); ?> (callmenu)</option>
 				                            <!--<option value="AGENT">AGENT</option>-->
 				                            <!--<option value="VOICEMAIL">VOICEMAIL</option>-->
 				                        </select>
 				    				</div>
 				    			</div>
 								<div class="form-group call-route-mode inbound blended hide">
-									<label class="call-route-div-label control-label col-lg-4">INGROUP:</label>
+									<label class="call-route-div-label control-label col-lg-4"><?php $lh->translateText("ingroup"); ?>:</label>
 									<!--<div class="callroute-dummy-div col-lg-8 mb">-->
 									<!--	<input name="call_route_text" type="text" class="form-control">-->
 									<!--</div>-->
@@ -524,22 +524,22 @@
 									</div>
 								</div>
 				    			<div class="form-group group-color inbound blended hide">
-				    				<label class="control-label col-lg-4">Group Color:</label>
+				    				<label class="control-label col-lg-4"><?php $lh->translateText("group_color"); ?>:</label>
 				    				<div class="col-lg-8 mb">
 				    					<input id="group-color" name="group_color" type="text" class="form-control colorpicker" val="#ffffff">
 				    				</div>
 				    			</div>
-				    			<div class="form-group survey hide">
-				    				<label class="control-label col-lg-4">Survey Type:</label>
+				    			<div class="form-group hide">
+				    				<label class="control-label col-lg-4"><?php $lh->translateText("survey_type"); ?>:</label>
 				    				<div class="col-lg-8 mb">
 				    					<select id="survey-type" name="survey_type" class="form-control">
-				                            <option value="BROADCAST">VOICE BROADCAST</option>
-				                            <option value="PRESS1">SURVEY PRESS 1</option>
+				                            <option value="BROADCAST"><?php $lh->translateText("voice"); ?></option>
+				                            <option value="PRESS1"><?php $lh->translateText("survey"); ?></option>
 				                        </select>
 				    				</div>
 				    			</div>
 								<div class="form-group carrier-to-use">
-									<label class="control-label col-lg-4"><small>Carrier use for Campaign</small>:</label>
+									<label class="control-label col-lg-4"><small><?php $lh->translateText("carrier_campaign"); ?></small>:</label>
 									<div class="col-lg-8 mb">
 										<select name="dial_prefix" id="dial_prefix" class="form-control">
 											<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
@@ -557,19 +557,19 @@
 									</div>
 								</div>
 								<div class="form-group carrier-to-use custom-prefix">
-									<label class="control-label col-lg-4 ">Custom Prefix:</label>
+									<label class="control-label col-lg-4 "><?php $lh->translateText("custom_prefix"); ?>:</label>
 									<div class="col-lg-8 mb">
 										<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if(($campaign->data->dial_prefix == "CUSTOM") && ($campaign->data->dial_prefix == 0) || ($campaign->data->dial_prefix == '')){echo 9;}else{echo $campaign->data->dial_prefix;} ?>" minlength="1" maxlength="20">
 									</div>							
 								</div>
 				    			<div class="form-group survey hide">
-				    				<label class="control-label col-lg-4">Number of Channels:</label>
+				    				<label class="control-label col-lg-4"><?php $lh->translateText("number_channels"); ?>:</label>
 				    				<div class="col-lg-8 mb">
 				    					<input id="no-channels" name="no_channels" type="number" value="1" min="1" class="form-control">
 				    				</div>
 				    			</div>
 				    			<div class="form-group copy-from hide">
-				    				<label class="control-label col-lg-4">Copy from campaign:</label>
+				    				<label class="control-label col-lg-4"><?php $lh->translateText("copy_campaign"); ?>:</label>
 				    				<div class="col-lg-8 mb">
 				    					<!--<input id="copy-from-campaign" name="copy_from_campaign" type="text" class="form-control">-->
 										<select id="copy-from-campaign" name="copy_from_campaign" class="form-control">
@@ -657,7 +657,7 @@
 			    				</div>
 			    			</div> -->
 				    			<div class="form-group dial-method-row">
-				    				<label class="control-label col-lg-5">Dial Method:</label>
+				    				<label class="control-label col-lg-5"><?php $lh->translateText("dial_method"); ?>:</label>
 				    				<div class="col-lg-7 mb">
 				    					<select class="form-control" id="dial-method" name="dial_method">
 				    						<option value="MANUAL">MANUAL</option>
@@ -668,7 +668,7 @@
 				    				</div>
 				    			</div>
 				    			<div class="form-group auto-dial-level hide">
-				    				<label class="control-label col-lg-5">Auto Dial Level:</label>
+				    				<label class="control-label col-lg-5"><?php $lh->translateText("auto_dial"); ?>:</label>
 				    				<div class="col-lg-7 mb">
 				    					<select class="form-control" id="auto-dial-level" name="auto_dial_level">
 				    						<option value="OFF">OFF</option>
@@ -743,7 +743,7 @@
 			    				</div>
 			    			</div> -->
 				    			<div class="form-group blended">
-				    				<label class="control-label col-lg-5">Campaign Recordings:</label>
+				    				<label class="control-label col-lg-5"><?php $lh->translateText("campaign_recording"); ?>:</label>
 				    				<div class="col-lg-7 mb">
 				    					<select class="form-control" id="call-recordings" name="campaign_recording">
 				    						<option value="NEVER">OFF</option>
@@ -759,7 +759,7 @@
 			    				</div>
 			    			</div> -->
 				    			<div class="form-group outbound blended">
-				    				<label class="control-label col-lg-5">Answering machine detection:</label>
+				    				<label class="control-label col-lg-5"><?php $lh->translateText("answering_machine"); ?>:</label>
 				    				<div class="col-lg-7 mb">
 				    					<select class="form-control" id="answering-machine-detection" name="answering_machine_detection">
 				    						<option value="8369">ON</option>
@@ -801,13 +801,13 @@
 			    				</div>
 			    			</div> -->
 				    			<div class="form-group survey hide">
-				    				<label class="control-label col-lg-5">Upload WAV:</label>
+				    				<label class="control-label col-lg-5"><?php $lh->translateText("upload"); ?>:</label>
 				    				<div class="col-lg-7 mb">
 				    					<div class="input-group">
 											<input type="file" class="hide uploaded_wav" name="uploaded_wav" accept="audio/*">
 											<input type="text" class="form-control wav-text-label" placeholder="WAV upload">
 											<span class="input-group-btn">
-												<button class="btn btn-default btn-browse-wav" type="button">Browse</button>
+												<button class="btn btn-default btn-browse-wav" type="button"><?php $lh->translateText("browse"); ?></button>
 											</span>
 										</div><!-- /input-group -->
 				    				</div>
@@ -831,7 +831,7 @@
 	            <!-- Header -->
 	                <div class="modal-header">
 	                    <h4 class="modal-title animated bounceInRight" id="ingroup_modal">
-	                    	<b>Status Wizard » Create New Status</b>
+	                    	<b><?php $lh->translateText("status_wizard"); ?> » <?php $lh->translateText("create_status"); ?></b>
 	                    	<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
 	                    </h4>
 	                </div>
@@ -840,13 +840,13 @@
 	                <form action="#" method="POST" id="create_disposition" role="form">
 	                	<input type="hidden" name="userid" id="userid" value="<?php echo $user->getUserId();?>"/>
 	                    <div class="row">
-	                    	<h4>Create Disposition
+	                    	<h4><?php $lh->translateText("create_disposition"); ?>
 	                           <br>
-	                           <small>Assign a status in a campaign then fill up the information below </small>
+	                           <small><?php $lh->translateText("assign_status"); ?></small>
 	                        </h4>
 	                        <fieldset>
 		                    	<div class="form-group mt">
-		                            <label class="col-sm-3 control-label" for="disposition_campaign">Campaign: </label>
+		                            <label class="col-sm-3 control-label" for="disposition_campaign"><?php $lh->translateText("campaign"); ?>: </label>
 		                            <div class="col-sm-9 mb">
 		                                <select id="disposition_campaign" name="disposition_campaign" class="form-control select2-1" style="width:100%;">
 		                                		<option value="ALL"> - - - ALL CAMPAIGNS - - - </option>
@@ -859,14 +859,14 @@
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
-		                            <label class="col-sm-3 control-label" for="status">Status</label>
+		                            <label class="col-sm-3 control-label" for="status"><?php $lh->translateText("status"); ?></label>
 		                            <div class="col-sm-9 mb">
 		                                <input type="text" name="status" id="status" class="form-control" placeholder="Status (Mandatory)" minlength="1" maxlength="6" required>
 		                            	<label id="status-duplicate-error"></label>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
-		                            <label class="col-sm-3 control-label" for="status_name">Status Name </label>
+		                            <label class="col-sm-3 control-label" for="status_name"><?php $lh->translateText("status_name"); ?></label>
 		                            <div class="col-sm-9 mb">
 		                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="Status Name (Mandatory)" maxlength="30" required>
 		                            </div>
@@ -879,39 +879,39 @@
 				                    	<div class="row">
 				                    		<label class="col-sm-3 checkbox-inline c-checkbox" for="selectable">
 												<input type="checkbox" id="selectable" name="selectable" checked>
-												<span class="fa fa-check"></span> Selectable
+												<span class="fa fa-check"></span> <?php $lh->translateText("selectable"); ?>
 											</label>
 											<label class="col-sm-4 checkbox-inline c-checkbox" for="human_answered">
 												<input type="checkbox" id="human_answered" name="human_answered">
-												<span class="fa fa-check"></span> Human Answered
+												<span class="fa fa-check"></span> <?php $lh->translateText("human_answered"); ?>
 											</label>
 											<label class="col-sm-3 checkbox-inline c-checkbox" for="sale">
 												<input type="checkbox" id="sale" name="sale">
-												<span class="fa fa-check"></span> Sale
+												<span class="fa fa-check"></span> <?php $lh->translateText("sale"); ?>
 											</label>
 								        </div>
 								        <div class="row">
 								        	<label class="col-sm-3 checkbox-inline c-checkbox" for="dnc">
 												<input type="checkbox" id="dnc" name="dnc">
-												<span class="fa fa-check"></span> DNC
+												<span class="fa fa-check"></span> <?php $lh->translateText("dnc"); ?>
 											</label>
 											<label class="col-sm-4 checkbox-inline c-checkbox" for="customer_contact">
 												<input type="checkbox" id="customer_contact" name="customer_contact">
-												<span class="fa fa-check"></span> Customer Contact
+												<span class="fa fa-check"></span> <?php $lh->translateText("customer_contact"); ?>
 											</label>
 											<label class="col-sm-4 checkbox-inline c-checkbox" for="not_interested">
 												<input type="checkbox" id="not_interested" name="not_interested">
-												<span class="fa fa-check"></span> Not Interested
+												<span class="fa fa-check"></span> <?php $lh->translateText("not_interested"); ?>
 											</label>
 							            </div>
 								        <div class="row">
 								        	<label class="col-sm-3 checkbox-inline c-checkbox" for="unworkable">
 												<input type="checkbox" id="unworkable" name="unworkable">
-												<span class="fa fa-check"></span> Unworkable
+												<span class="fa fa-check"></span> <?php $lh->translateText("unworkable"); ?>
 											</label>
 											<label class="col-sm-4 checkbox-inline c-checkbox" for="scheduled_callback">
 												<input type="checkbox" id="scheduled_callback" name="scheduled_callback">
-												<span class="fa fa-check"></span> Scheduled Callback
+												<span class="fa fa-check"></span> <?php $lh->translateText("scheduled_callback"); ?>
 											</label>
 							            </div>
 				                    </div>
@@ -933,7 +933,7 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b>Pause Codes</b></h4>
+		        <h4 class="modal-title"><b><?php $lh->translateText("pause_code"); ?></b></h4>
 		      </div>
 		      <div class="modal-body">
 						<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
@@ -941,10 +941,10 @@
 								<table id="pause_codes_list" class="table table-bordered" style="width: 100%;">
 	                <thead>
 	                    <tr>
-	                        <th>Pause Code</th>
-	                        <th>Pause Code Name</th>
-	                        <th>Billable</th>
-	                        <th>Action</th>
+	                        <th><?php $lh->translateText("pause_codes"); ?></th>
+	                        <th><?php $lh->translateText("pause_name"); ?></th>
+	                        <th><?php $lh->translateText("billable"); ?></th>
+	                        <th><?php $lh->translateText("action"); ?></th>
 	                    </tr>
 	                </thead>
 									<tbody id="pause_code_data_container">
@@ -955,7 +955,7 @@
 						</div>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
 						<button type="button" class="btn btn-success btn-new-pause-code<?=($perm->pausecodes->pausecodes_create === 'N' ? ' hidden' : '')?>" data-campaign="">Create New</button>
 		      </div>
 		    </div>
@@ -969,32 +969,32 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b>Pause Codes</b></h4>
+		        <h4 class="modal-title"><b><?php $lh->translateText("pause_codes"); ?></b></h4>
 		      </div>
 		      <div class="modal-body">
 						<form id="form_pause_codes" class="form-horizontal" style="margin-top: 10px;">
 							<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 							<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 							<div class="form-group">
-								<label class="control-label col-lg-3">Campaign ID:</label>
+								<label class="control-label col-lg-3"><?php $lh->translateText("campaign_id"); ?>:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control campaign-id" name="campaign_id" readonly>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-3">Pause Code:</label>
+								<label class="control-label col-lg-3"><?php $lh->translateText("pause_code"); ?>:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control pause-code" name="pause_code">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-3">Pause Code Name:</label>
+								<label class="control-label col-lg-3"><?php $lh->translateText("pause_name"); ?>:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control pause-code-name" name="pause_code_name">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-3">Billable:</label>
+								<label class="control-label col-lg-3"><?php $lh->translateText("billable"); ?>:</label>
 								<div class="col-lg-9">
 									<select class="form-control billable" name="billable">
 										<option value="YES">YES</option>
@@ -1006,9 +1006,9 @@
 						</form>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary btn-save-pause-code">Save</button>
-						<button type="button" class="btn btn-success btn-update-pause-code hide">Update</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
+						<button type="button" class="btn btn-primary btn-save-pause-code"><?php $lh->translateText("save"); ?></button>
+						<button type="button" class="btn btn-success btn-update-pause-code hide"><?php $lh->translateText("update"); ?></button>
 		      </div>
 		    </div>
 		    <!-- End of modal content -->
@@ -1021,7 +1021,7 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b>Hotkeys</b></h4>
+		        <h4 class="modal-title"><b><?php $lh->translateText("hotkeys"); ?></b></h4>
 		      </div>
 		      <div class="modal-body">
 						<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
@@ -1029,10 +1029,10 @@
 								<table id="hotkeys_list" class="table table-bordered" style="width: 100%;">
 	                <thead>
 	                    <tr>
-	                        <th>Hotkey</th>
-	                        <th>Status</th>
-	                        <th>Description</th>
-	                        <th>Action</th>
+	                        <th><?php $lh->translateText("hotkeys"); ?></th>
+	                        <th><?php $lh->translateText("status"); ?></th>
+	                        <th><?php $lh->translateText("description"); ?></th>
+	                        <th><?php $lh->translateText("action"); ?></th>
 	                    </tr>
 	                </thead>
 									<tbody id="hotkey_data_container">
@@ -1057,20 +1057,20 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b>Hotkeys</b></h4>
+		        <h4 class="modal-title"><b><?php $lh->translateText("hotkey"); ?></b></h4>
 		      </div>
 		      <div class="modal-body">
 						<form id="form_hotkeys" class="form-horizontal" style="margin-top: 10px;">
 							<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 							<input type="button" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 							<div class="form-group">
-								<label class="control-label col-lg-3" style="text-align: left;">Campaign ID:</label>
+								<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("compaign_id"); ?>:</label>
 								<div class="col-lg-9">
 									<input type="text" class="form-control campaign-id" name="campaign_id" readonly>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-3" style="text-align: left;">Hotkey:</label>
+								<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("hotket"); ?>:</label>
 								<div class="col-lg-9">
 									<select class="form-control select2 hotkey" name="hotkey">
 										<option value="1">1</option>
@@ -1086,7 +1086,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-3" style="text-align: left;">Status:</label>
+								<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("status"); ?>:</label>
 								<div class="col-lg-9">
 									<input type="hidden" id="hotkey_status_name" name="status_name" value="">
 									<select class="form-control select2 status" name="status">
@@ -1112,7 +1112,7 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b>Lists</b></h4>
+		        <h4 class="modal-title"><b><?php $lh->translateText("lists"); ?></b></h4>
 		      </div>
 		      <div class="modal-body">
 		      		<div class="form-group">
@@ -1146,13 +1146,13 @@
 						</p>
 						<p>
 							<a href="#" style="color: green;" class="view-leads-on-hopper" data-campaign="">
-								View Leads in the hopper for this campaign
+								<?php $lh->translateText("view_leads"); ?>
 							</a>
 						</p>
 					</div>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
 				<!--<button type="button" class="btn btn-success btn-new-lists" data-campaign="">Create New</button>-->
 		      </div>
 		    </div>
@@ -1166,7 +1166,7 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b>Lists</b> <small>(Form)</small></h4>
+		        <h4 class="modal-title"><b><?php $lh->translateText("lists"); ?></b> <small>(<?php $lh->translateText("form"); ?>)</small></h4>
 		      </div>
 		      <div class="modal-body">
 				<form id="form_lists" class="form-horizontal" style="margin-top: 10px;">
@@ -1174,27 +1174,27 @@
 					<div role="tabpanel">
 						<!--<div class="nav-tabs-custom">-->
 							<ul role="tablist" class="nav nav-tabs nav-justified">
-								<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
-								<li><a href="#tab_2" data-toggle="tab"> Statuses</a></li>
-								<li><a href="#tab_3" data-toggle="tab"> Timezones</a></li>
+								<li class="active"><a href="#tab_1" data-toggle="tab"> <?php $lh->translateText("basic_settings"); ?></a></li>
+								<li><a href="#tab_2" data-toggle="tab"> <?php $lh->translateText("statuses"); ?></a></li>
+								<li><a href="#tab_3" data-toggle="tab"> <?php $lh->translateText("timezones"); ?></a></li>
 							</ul>
 			               <!-- Tab panes-->
 			               <div class="tab-content">
 			               		<div id="tab_1" class="tab-pane fade in active">
 			               			<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;">Name:</label>
+										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("name"); ?>:</label>
 										<div class="col-lg-8">
 											<input type="text" class="form-control lists-name" name="lists_name">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;">Description:</label>
+										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("description"); ?>:</label>
 										<div class="col-lg-8">
 											<input type="text" class="form-control lists-description" name="lists_description">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;">Campaign:</label>
+										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("compaign"); ?>:</label>
 										<div class="col-lg-8">
 											<select name="lists_campaign" class="form-control select2 lists-campaign">
 												<?php
@@ -1206,20 +1206,20 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;">Reset Time:</label>
+										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("reset_time"); ?>:</label>
 										<div class="col-lg-8">
 											<input type="text" class="form-control lists-reset-time" name="lists_reset_time">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;">Reset Lead Called Status:</label>
+										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("reset_lead"); ?>:</label>
 										<div class="col-lg-3">
 											<select name="lists_lead_called_status" class="form-control select2 lists-lead-called-status">
 												<option value="N">N</option>
 												<option value="Y">Y</option>
 											</select>
 										</div>
-										<label class="control-label col-lg-2" style="text-align: left;">Active:</label>
+										<label class="control-label col-lg-2" style="text-align: left;"><?php $lh->translateText("active"); ?>:</label>
 										<div class="col-lg-3">
 											<select name="lists_active" class="form-control select2 lists-active">
 												<option value="N">N</option>
@@ -1228,7 +1228,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;">Agent Script Override:</label>
+										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("agent_script"); ?>:</label>
 										<div class="col-lg-8">
 											<select name="lists_agent_script_override" class="form-control lists-agent-script-override">
 												<option value="" selected="selected">NONE - INACTIVE</option>
@@ -1236,7 +1236,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;">Campaign CID Override:</label>
+										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("campaign_override"); ?>:</label>
 										<div class="col-lg-8">
 											<input type="text" class="form-control lists-cid-override" name="lists_cid_override">
 										</div>
@@ -1250,13 +1250,13 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;">Web Form:</label>
+										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("Web Form"); ?>:</label>
 										<div class="col-lg-8">
 											<input type="text" class="form-control lists-web-form" name="lists_web_form">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;">Transfer Conf No. Override:</label>
+										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("transfor"); ?>:</label>
 										<div class="col-lg-4">
 											<input type="text" class="form-control lists-xferconf-a-number" name="xferconf_a_number">
 										</div>
@@ -1286,10 +1286,10 @@
 											<table id="lists_statuses" class="table table-bordered" style="width: 100%;">
 												<thead>
 													<tr>
-														<th>Status</th>
-														<th>Description</th>
-														<th>Called</th>
-														<th>Not Called</th>
+														<th><?php $lh->translateText("status"); ?></th>
+														<th><?php $lh->translateText("description"); ?></th>
+														<th><?php $lh->translateText("called"); ?></th>
+														<th><?php $lh->translateText("not_called"); ?></th>
 													</tr>
 												</thead>
 												<tbody id="lists_statuses_container">
@@ -1305,9 +1305,9 @@
 											<table id="lists_statuses" class="table table-bordered" style="width: 100%;">
 												<thead>
 													<tr>
-														<th>GMT OFF SET NOW (local time)</th>
-														<th>Called</th>
-														<th>Not Called</th>
+														<th><?php $lh->translateText("local_time"); ?></th>
+														<th><?php $lh->translateText("called"); ?></th>
+														<th><?php $lh->translateText("not_called"); ?></th>
 													</tr>
 												</thead>
 												<tbody id="lists_timezone_container">
@@ -1323,8 +1323,8 @@
 				</form>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-success btn-update-lists" data-campaign="">Update</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("closed"); ?></button>
+				<button type="button" class="btn btn-success btn-update-lists" data-campaign=""><?php $lh->translateText("update"); ?></button>
 		      </div>
 		    </div>
 		    <!-- End of modal content -->
@@ -1337,7 +1337,7 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b>Lists</b></h4>
+		        <h4 class="modal-title"><b><?php $lh->translateText("lists"); ?></b></h4>
 		      </div>
 		      <div class="modal-body">
 					<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
@@ -1345,17 +1345,17 @@
 							<table id="leads_on_hopper" class="table table-bordered" style="width: 100%;">
 								<thead>
 									<tr>
-										<th>Order</th>
-										<th>Priority</th>
-										<th>Lead ID</th>
-										<th>List ID</th>
-										<th>Phone Number</th>
-										<th>State</th>
-										<th>Status</th>
-										<th>Count</th>
-										<th>GMT</th>
-										<th>ALT</th>
-										<th>Source</th>
+										<th><?php $lh->translateText("order"); ?></th>
+										<th><?php $lh->translateText("priority"); ?></th>
+										<th><?php $lh->translateText("lead_id"); ?></th>
+										<th><?php $lh->translateText("list_id"); ?></th>
+										<th><?php $lh->translateText("phone_number"); ?></th>
+										<th><?php $lh->translateText("state"); ?></th>
+										<th><?php $lh->translateText("status"); ?></th>
+										<th><?php $lh->translateText("count"); ?></th>
+										<th><?php $lh->translateText("gmt"); ?></th>
+										<th><?php $lh->translateText("alt"); ?></th>
+										<th><?php $lh->translateText("source"); ?></th>
 									</tr>
 								</thead>
 								<tbody id="leads_hopper_container">
@@ -1366,7 +1366,7 @@
 					</div>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
 				<!--<button type="button" class="btn btn-success btn-new-lists" data-campaign="">Create New</button>-->
 		      </div>
 		    </div>
@@ -1909,13 +1909,13 @@
 				var log_user = '<?=$_SESSION['user']?>';
 				var log_group = '<?=$_SESSION['usergroup']?>';
 				swal({
-					title: "Are you sure?",
-					text: "This action cannot be undone.",
+					title: "<?php $lh->translateText("are_you_sure"); ?>?",
+					text: "<?php $lh->translateText("cannot_be"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "Yes, delete pause code!",
-					cancelButtonText: "No, cancel please!",
+					confirmButtonText: "<?php $lh->translateText("pause_code"); ?>!",
+					cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 					closeOnConfirm: false,
 					closeOnCancel: false
 					},
@@ -1944,7 +1944,7 @@
 															}
 														);
 													}else{
-															sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+															sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
 													}
 											}
 								});
@@ -1961,13 +1961,13 @@
 				var log_user = '<?=$_SESSION['user']?>';
 				var log_group = '<?=$_SESSION['usergroup']?>';
 				swal({
-					title: "Are you sure?",
-					text: "This action cannot be undone.",
+					title: "<?php $lh->translateText("are_you_sure"); ?>?",
+					text: "<?php $lh->translateText("cannot_be"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "Yes, delete hotkey!",
-					cancelButtonText: "No, cancel please!",
+					confirmButtonText: "<?php $lh->translateText("delete_hotkey"); ?>!",
+					cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 					closeOnConfirm: false,
 					closeOnCancel: false
 					},
@@ -1987,8 +1987,8 @@
 													// console.log(data);
 													if(data == "success"){
 														swal({
-																title: "Success",
-																text: "Hotkey Successfully Deleted",
+																title: "<?php $lh->translateText("success"); ?>",
+																text: "<?php $lh->translateText("success_deleted"); ?>",
 																type: "success"
 															},
 															function(){
@@ -1996,7 +1996,7 @@
 															}
 														);
 													}else{
-															sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+															sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
 													}
 											}
 								});
@@ -2011,13 +2011,13 @@
 				var form_data = new FormData($("#form_pause_codes")[0]);
 				var campaign_id = $('.campaign-id').val();
 				swal({
-					title: "Are you sure?",
-					text: "This action cannot be undone.",
+					title: "<?php $lh->translateText("are_you_sure"); ?>?",
+					text: "<?php $lh->translateText("cannot_be"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "Yes, create pause code!",
-					cancelButtonText: "No, cancel please!",
+					confirmButtonText: "<?php $lh->translateText("pause_code"); ?>!",
+					cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 					closeOnConfirm: false,
 					closeOnCancel: false
 					},
@@ -2048,7 +2048,7 @@
 															}
 														);
 													}else{
-															sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+															sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
 													}
 											}
 								});
@@ -2065,13 +2065,13 @@
 				var log_user = '<?=$_SESSION['user']?>';
 				var log_group = '<?=$_SESSION['usergroup']?>';
 				swal({
-					title: "Are you sure?",
-					text: "This action cannot be undone.",
+					title: "<?php $lh->translateText("are_you_sure"); ?>?",
+					text: "<?php $lh->translateText("cannot_be"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "Yes, modify list!",
-					cancelButtonText: "No, cancel please!",
+					confirmButtonText: "<?php $lh->translateText("modify_list"); ?>!",
+					cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 					closeOnConfirm: false,
 					closeOnCancel: false
 					},
@@ -2105,8 +2105,8 @@
 											console.log(data);
 											if(data == "success"){
 												swal({
-														title: "Success",
-														text: "List Successfully Modified",
+														title: "<?php $lh->translateText("success"); ?>",
+														text: "<?php $lh->translateText("success_modified"); ?>",
 														type: "success"
 													},
 													function(){
@@ -2115,7 +2115,7 @@
 													}
 												);
 											}else{
-													sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+													sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
 											}
 									}
 								});
@@ -2136,13 +2136,13 @@
 				var form_data = new FormData($("#form_hotkeys")[0]);
 				var campaign_id = $('.campaign-id').val();
 				swal({
-					title: "Are you sure?",
-					text: "This action cannot be undone.",
+					title: "<?php $lh->translateText("are_you_sure"); ?>?",
+					text: "<?php $lh->translateText("cannot_be"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "Yes, create hotkey!",
-					cancelButtonText: "No, cancel please!",
+					confirmButtonText: "<?php $lh->translateText("create_hotkey"); ?>!",
+					cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 					closeOnConfirm: false,
 					closeOnCancel: false
 					},
@@ -2160,8 +2160,8 @@
 													// console.log(data);
 													if(data == "success"){
 														swal({
-																title: "Success",
-																text: "Hotkey Successfully Created",
+																title: "<?php $lh->translateText("success"); ?>",
+																text: "<?php $lh->translateText("success_create"); ?>",
 																type: "success"
 															},
 															function(){
@@ -2171,7 +2171,7 @@
 															}
 														);
 													}else{
-														sweetAlert("Oops...", "Something went wrong! "+ data, "error");	
+														sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");	
 													}
 											}
 								});
@@ -2186,13 +2186,13 @@
 				var form_data = new FormData($("#form_pause_codes")[0]);
 				var campaign_id = $('.campaign-id').val();
 				swal({
-					title: "Are you sure?",
-					text: "This action cannot be undone.",
+					title: "<?php $lh->translateText("are_you_sure"); ?>?",
+					text: "<?php $lh->translateText("cannot_be"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "Yes, update pause code!",
-					cancelButtonText: "No, cancel please!",
+					confirmButtonText: "<?php $lh->translateText("pause_code"); ?>!",
+					cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 					closeOnConfirm: false,
 					closeOnCancel: false
 					},
@@ -2211,7 +2211,7 @@
 													if(data == "success"){
 														swal({
 																title: "Success",
-																text: "Pause Code Successfully Updated",
+																text: "<?php $lh->translateText("pause_success"); ?>",
 																type: "success"
 															},
 															function(){
@@ -2223,7 +2223,7 @@
 															}
 														);
 													}else{
-															sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+															sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
 													}
 											}
 								});
@@ -2322,13 +2322,13 @@
 									console.log(resultCheck);
 									if(resultCheck == 1){
 										swal({
-											title: "Proceed with saving campaign?",
-											text: "This action cannot be undone.",
+											title: "<?php $lh->translateText("saving_campaign"); ?>?",
+											text: "<?php $lh->translateText("action_cannot_be_undon"); ?>.",
 											type: "warning",
 											showCancelButton: true,
 											confirmButtonColor: "#DD6B55",
-											confirmButtonText: "Yes, save Campaign!",
-											cancelButtonText: "No",
+											confirmButtonText: "<?php $lh->translateText("save_campaign"); ?>!",
+											cancelButtonText: "<?php $lh->translateText("no"); ?>",
 											closeOnConfirm: false,
 											closeOnCancel: false
 											},
@@ -2339,7 +2339,7 @@
 
 								        	$('#campaign_form').submit();
 												} else {
-													swal("Cancelled", "Campaign not saved)", "error");
+													swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("save_not"); ?>)", "error");
 													$('#campaign-name').val('');
 													campaign_form.children("div").steps("previous");
 													$('#add_campaign').modal('hide');
@@ -2416,7 +2416,7 @@
 					$(document).on('click','.edit-campaign',function() {
 						var url = './edittelephonycampaign.php';
 						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="campaign" value="' + $(this).attr('data-id') + '" /></form>');
-						//$('body').append(form);  // This line is not necessary
+						$('body').append(form);  // This line is not necessary
 						$(form).submit();
 					});
 
@@ -2426,13 +2426,13 @@
 						var log_user = '<?=$_SESSION['user']?>';
 						var log_group = '<?=$_SESSION['usergroup']?>';
 			                swal({
-			                	title: "Are you sure?",
-			                	text: "This action cannot be undone.",
+			                	title: "<?php $lh->translateText("are_you_sure"); ?>?",
+			                	text: "<?php $lh->translateText("cannot_undo"); ?>e.",
 			                	type: "warning",
 			                	showCancelButton: true,
 			                	confirmButtonColor: "#DD6B55",
-			                	confirmButtonText: "Yes, delete this campaign!",
-			                	cancelButtonText: "No, cancel please!",
+			                	confirmButtonText: "<?php $lh->translateText("delete_campaign"); ?>!",
+			                	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 			                	closeOnConfirm: false,
 			                	closeOnCancel: false
 			                	},
@@ -2451,8 +2451,8 @@
 					                            if(data == 1){
 					                            	swal(
 														{
-															title: "Success",
-															text: "Campaign Successfully Deleted!",
+															title: "<?php $lh->translateText("success"); ?>",
+															text: "<?php $lh->translateText("campaign_deleted"); ?>!",
 															type: "success"
 														},
 														function(){
@@ -2460,13 +2460,13 @@
 														}
 													);
 					                            }else{
-					                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
+					                                sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
 					                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
 					                            }
 					                        }
 					                    });
 													} else {
-				                			swal("Cancelled", "No action has been done :)", "error");
+				                			swal("Cancelled", "<?php $lh->translateText("been_done"); ?> :)", "error");
 				                	}
 			                	}
 			                );
@@ -2588,8 +2588,8 @@
 		                          if(data == 1){
 		                                swal(
 											{
-												title: "Success",
-												text: "Disposition Statuses Successfully Created!",
+												title: "<?php $lh->translateText("success"); ?>",
+												text: "<?php $lh->translateText("statuses"); ?>!",
 												type: "success"
 											},
 											function(){
@@ -2599,7 +2599,7 @@
 										);
 		                          }
 		                          else{
-		                              sweetAlert("Oops...", "Something went wrong! "+data, "error");
+		                              sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
 		                              $('#finish').val("Submit");
 									  $('#finish').prop("disabled", false);
 		                          }
@@ -2613,6 +2613,7 @@
 					$(document).on('click','.edit_disposition',function() {
 						var url = './edittelephonycampaign.php';
 						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="disposition_id" value="' + $(this).attr('data-id') + '" /></form>');
+						$('body').append(form);
 						$(form).submit();
 					});
 
@@ -2622,13 +2623,13 @@
 						var log_user = '<?=$_SESSION['user']?>';
 						var log_group = '<?=$_SESSION['usergroup']?>';
 			            swal({
-			            	title: "Are you sure?",
-			            	text: "This action cannot be undone.",
+			            	title: "<?php $lh->translateText("are_you_sure"); ?>?",
+			            	text: "<?php $lh->translateText("cannot_undo"); ?>.",
 			            	type: "warning",
 			            	showCancelButton: true,
 			            	confirmButtonColor: "#DD6B55",
-			            	confirmButtonText: "Yes, delete this disposition!",
-			            	cancelButtonText: "No, cancel please!",
+			            	confirmButtonText: "<?php $lh->translateText("dispostion"); ?>!",
+			            	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 			            	closeOnConfirm: false,
 			            	closeOnCancel: false
 			            	},
@@ -2646,8 +2647,8 @@
 				                        console.log(data);
 				                            if(data == 1){
 				                            	swal({
-														title: "Success",
-														text: "Disposition Successfully Deleted!",
+														title: "<?php $lh->translateText("success"); ?>",
+														text: "<?php $lh->translateText("disposition_delete"); ?>!",
 														type: "success"
 													},
 													function(){
@@ -2656,13 +2657,13 @@
 													}
 												);
 				                            }else{
-				                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
+				                                sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
 				                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
 				                            }
 				                        }
 				                    });
 												} else {
-			                			swal("Cancelled", "No action has been done :)", "error");
+			                			swal("Cancelled", "<?php $lh->translateText("been_done"); ?> :)", "error");
 			                	}
 			            	}
 			            );
@@ -2677,7 +2678,7 @@
 					$(document).on('click','.edit-leadfilter',function() {
 						var url = './edittelephonycampaign.php';
 						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="leadfilter" value="' + $(this).attr('data-id') + '" /></form>');
-						//$('body').append(form);  // This line is not necessary
+						$('body').append(form);  // This line is not necessary
 						$(form).submit();
 					});
 
@@ -2687,13 +2688,13 @@
 						var log_user = '<?=$_SESSION['user']?>';
 						var log_group = '<?=$_SESSION['usergroup']?>';
 			            swal({
-			            	title: "Are you sure?",
-			            	text: "This action cannot be undone.",
+			            	title: "<?php $lh->translateText("are_you_sure"); ?>?",
+			            	text: "<?php $lh->translateText("cannot_undo"); ?>.",
 			            	type: "warning",
 			            	showCancelButton: true,
 			            	confirmButtonColor: "#DD6B55",
-			            	confirmButtonText: "Yes, delete this leadfilter!",
-			            	cancelButtonText: "No, cancel please!",
+			            	confirmButtonText: "<?php $lh->translateText("leadfilter"); ?>!",
+			            	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 			            	closeOnConfirm: false,
 			            	closeOnCancel: false
 			            	},
@@ -2712,8 +2713,8 @@
 				                            if(data == 1){
 				                            	swal(
 													{
-														title: "Success",
-														text: "Lead Filter Successfully Deleted!",
+														title: "<?php $lh->translateText("success"); ?>",
+														text: "<?php $lh->translateText("filter_success"); ?>!",
 														type: "success"
 													},
 													function(){
@@ -2721,13 +2722,13 @@
 													}
 												);
 				                            }else{
-				                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
+				                                sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
 				                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
 				                            }
 				                        }
 				                    });
 								} else {
-			                			swal("Cancelled", "No action has been done :)", "error");
+			                			swal("Cancelled", "<?php $lh->translateText("been_done"); ?> :)", "error");
 			                	}
 			            	}
 			            );
@@ -2745,8 +2746,8 @@
 						?>
 								swal(
 									{
-										title: "Success",
-										text: "Campaign Successfully Created!",
+										title: "<?php $lh->translateText("success"); ?>",
+										text: "<?php $lh->translateText("campaign_success"); ?>!",
 										type: "success"
 									},
 									function(){
@@ -2756,7 +2757,7 @@
 						<?php
 							}elseif($_GET['message'] == "Error"){
 						?>
-								sweetAlert("Oops...", "Something went wrong.", "error");
+								sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>.", "error");
 						<?php
 
 							}

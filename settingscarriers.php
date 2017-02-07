@@ -22,7 +22,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Carriers</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("carriers"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -102,7 +102,7 @@
 
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight">
-						<b>Carrier Wizard » Add New Carrier</b>
+						<b><?php $lh->translateText('carrier_wizard'); ?> » <?php $lh->translateText('add_new_carrier'); ?></b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
@@ -113,40 +113,40 @@
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
 				<!-- STEP 1 -->
-						<h4>Choose Carrier Type
+						<h4><?php $lh->translateText('choose_carrier_type'); ?>
 							<br>
-							<small>Choose what carrier type should be created</small>
+							<small><?php $lh->translateText('choose_carrier_sub_header'); ?></small>
 						</h4>
 						<fieldset>
 							<br/><br/><br/><br/><br/><br/>
 							<div class="form-group mt">
-								<label class="col-sm-3 control-label" for="carrier_type">Carrier Type</label>
+								<label class="col-sm-3 control-label" for="carrier_type"><?php $lh->translateText('carrier_type'); ?></label>
 								<div class="col-sm-7">
 									<select id="carrier_type" class="form-control" name="carrier_type">
-										<option value="justgo">  GoAutodial - JustGoVoIP </option>
-										<option value="manual">  Manual </option>
-										<option value="copy">  Copy Carrier </option>
+										<option value="justgo">GoAutodial - JustGoVoIP</option>
+										<option value="manual">Manual</option>
+										<option value="copy">Copy Carrier</option>
 									</select>
 								</div>
 							</div>
 						</fieldset>
 	
 				<!-- STEP 2 -->
-						<h4>Set Chosen Carrier
+						<h4><?php $lh->translateText('set_chosen_carrier'); ?>
 							<br>
-							<small>Set the details of your chosen carrier</small>
+							<small><?php $lh->translateText('set_details_chosen_carrier'); ?></small>
 						</h4>
 						<fieldset>
 						<!-- IF MANUAL / COPY -->
 							<div class="manual_copy_div" style="display:none;">
 								<div class="form-group mt">
-												<label for="carrier_id" class="col-sm-3 control-label">Carrier ID</label>
+												<label for="carrier_id" class="col-sm-3 control-label"><?php $lh->translateText('carrier_id'); ?></label>
 												<div class="col-sm-8 mb">
 													<input type="text" class="form-control" name="carrier_id" id="carrier_id" placeholder="Carrier ID" maxlength="15" required />
 												</div>
 											</div>
 								<div class="form-group">
-									<label for="carrier_name" class="col-sm-3 control-label">Carrier Name</label>
+									<label for="carrier_name" class="col-sm-3 control-label"><?php $lh->translateText('carrier_name'); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="carrier_name" id="carrier_name" placeholder="Carrier Name" required />
 									</div>
@@ -155,16 +155,16 @@
 						<!-- IF MANUAL -->
 							<div class="manual_div" style="display:none;">
 								<div class="form-group">
-									<label for="carrier_description" class="col-sm-3 control-label">Carrier Description</label>
+									<label for="carrier_description" class="col-sm-3 control-label"><?php $lh->translateText('carrier_description'); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="Carrier Description" />
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="carrier_description" class="col-sm-3 control-label">User Group</label>
+									<label for="carrier_description" class="col-sm-3 control-label"><?php $lh->translateText('user_groups'); ?></label>
 									<div class="col-sm-8 mb">
 										<select id="user_group" class="form-control" name="user_group">
-												<option value="---ALL---">  ALL USERGROUPS  </option>
+												<option value="---ALL---"><?php $lh->translateText('all_usergroups'); ?>   </option>
 											<?php
 												for($i=0;$i<count($user_groups->user_group);$i++){
 											?>
@@ -176,13 +176,13 @@
 									</div>
 								</div>
 								<div class="form-group custom_protocol" style="display:none;">
-									<label for="registration_string" class="col-sm-3 control-label">Registration String</label>
+									<label for="registration_string" class="col-sm-3 control-label"><?php $lh->translateText('registration_string'); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="registration_string" value="" id="registration_string" maxlength="255" size="50">
 									</div>
 								</div>
 								<div class="form-group custom_protocol" style="display:none;">
-									<label for="account_entry" class="col-sm-3 control-label">Account Entry</label>
+									<label for="account_entry" class="col-sm-3 control-label"><?php $lh->translateText('account_entry'); ?></label>
 									<div class="col-sm-8 mb">
 										<textarea name="account_entry" class="form-control note-editor valid" cols="55" rows="10" id="account_entry" style="resize: none;">
 []
@@ -199,7 +199,7 @@ host=</textarea>
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
-									<label for="carrier_desc" class="col-sm-3 control-label">Authentication</label>
+									<label for="carrier_desc" class="col-sm-3 control-label"><?php $lh->translateText('authentication'); ?></label>
 									<div class="col-sm-8 mb">
 										<div class="row mt">
 											<label class="col-sm-1">
@@ -207,53 +207,53 @@ host=</textarea>
 											</label>
 											<label class="col-sm-4 radio-inline c-radio" for="auth_ip">
 												<input id="auth_ip" type="radio" name="authentication" value="auth_ip" checked>
-												<span class="fa fa-circle"></span> IP Based
+												<span class="fa fa-circle"></span><?php $lh->translateText('ip_based'); ?> 
 											</label>
 											<label class="col-sm-4 radio-inline c-radio" for="auth_reg">
 												<input id="auth_reg" type="radio" name="authentication" value="auth_reg">
-												<span class="fa fa-circle"></span> Registration
+												<span class="fa fa-circle"></span><?php $lh->translateText('registration'); ?> 
 											</label>
 										</div>
 									</div>
 								</div>
 								<div class="form-group registration_div" style="display:none;">
-									<label for="username" class="col-sm-3 control-label">Username</label>
+									<label for="username" class="col-sm-3 control-label"><?php $lh->translateText('username'); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="username" id="username" placeholder="Username" required />
 									</div>
 								</div>
 								<div class="form-group registration_div" style="display:none;">
-									<label for="password" class="col-sm-3 control-label">Password</label>
+									<label for="password" class="col-sm-3 control-label"><?php $lh->translateText('password'); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="password" id="password" placeholder="Password" required />
 									</div>
 								</div>
 								<div class="form-group registration_div" style="display:none;">
-									<label for="server_ip" class="col-sm-3 control-label">Server IP/Host</label>
+									<label for="server_ip" class="col-sm-3 control-label"><?php $lh->translateText('server_ip_host'); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="reg_host" id="reg_host" placeholder="Server IP/Host" />
 									</div>
 								</div>
 								<div class="form-group registration_div" style="display:none;">
-									<label for="reg_port" class="col-sm-3 control-label">Port</label>
+									<label for="reg_port" class="col-sm-3 control-label"><?php $lh->translateText('port'); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="reg_port" id="reg_host" placeholder="Port" maxlength="10" value="5060" required />
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol sip_server">
-									<label for="server_ip" class="col-sm-3 control-label">SIP Server</label>
+									<label for="server_ip" class="col-sm-3 control-label"><?php $lh->translateText('sip_server'); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="sip_server_ip" id="sip_server_ip" placeholder="Server IP/Host" />
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
-									<label for="dialprefix" class="col-sm-3 control-label">Dial Prefix</label>
+									<label for="dialprefix" class="col-sm-3 control-label"><?php $lh->translateText('dial_prefix'); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="number" class="form-control" name="dialprefix" id="dialprefix" placeholder="Dial Prefix" maxlength="15" minlength="3" min="0" required />
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
-									<label for="carrier_desc" class="col-sm-3 control-label">Codecs</label>
+									<label for="carrier_desc" class="col-sm-3 control-label"><?php $lh->translateText('codecs'); ?></label>
 									<div class="col-sm-8 mb">
 										<div class="row mt">
 											<label class="col-sm-1">
@@ -261,25 +261,25 @@ host=</textarea>
 											</label>
 											<label class="col-sm-2 checkbox-inline c-checkbox" for="gsm">
 												<input type="checkbox" id="gsm" name="codecs[]" value="GSM" checked>
-												<span class="fa fa-check"></span> GSM
+												<span class="fa fa-check"></span>GSM
 											</label>
 											<label class="col-sm-2 checkbox-inline c-checkbox" for="ulaw">
 												<input type="checkbox" id="ulaw" name="codecs[]" value="ULAW" checked>
-												<span class="fa fa-check"></span> ULAW
+												<span class="fa fa-check"></span>ULAW 
 											</label>
 											<label class="col-sm-2 checkbox-inline c-checkbox" for="alaw">
 												<input type="checkbox" id="alaw" name="codecs[]" value="ALAW">
-												<span class="fa fa-check"></span> ALAW
+												<span class="fa fa-check"></span>ALAW 
 											</label>
 											<label class="col-sm-2 checkbox-inline c-checkbox" for="g729">
 												<input type="checkbox" id="g729" name="codecs[]" value="G729">
-												<span class="fa fa-check"></span> G729
+												<span class="fa fa-check"></span>G729
 											</label>
 										</div>
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
-									<label for="carrier_desc" class="col-sm-3 control-label">DTMF Mode</label>
+									<label for="carrier_desc" class="col-sm-3 control-label"><?php $lh->translateText('dtmf_mode'); ?></label>
 									<div class="col-sm-8 mb">
 										<div class="row mt">
 											<label class="col-sm-1">
@@ -287,15 +287,15 @@ host=</textarea>
 											</label>
 											<label class="col-sm-3 radio-inline c-radio" for="dtmf_1">
 												<input id="dtmf_1" type="radio" name="dtmf" value="rfc2833" checked>
-												<span class="fa fa-circle"></span> RFC2833
+												<span class="fa fa-circle"></span>RFC2833
 											</label>
 											<label class="col-sm-3 radio-inline c-radio" for="dtmf_2">
 												<input id="dtmf_2" type="radio" name="dtmf" value="inband">
-												<span class="fa fa-circle"></span> Inband
+												<span class="fa fa-circle"></span>Inband
 											</label>
 											<label class="col-sm-3 radio-inline c-radio" for="dtmf_3">
 												<input id="dtmf_3" type="radio" name="dtmf" value="custom">
-												<span class="fa fa-circle"></span> Custom
+												<span class="fa fa-circle"></span>Custom  
 											</label>
 										</div>
 									</div>
@@ -307,7 +307,7 @@ host=</textarea>
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="protocol" class="col-sm-3 control-label">Protocol</label>
+									<label for="protocol" class="col-sm-3 control-label"><?php $lh->translateText('protocol'); ?></label>
 									<div class="col-sm-8 mb">
 										<div class="row">
 											<div class="col-sm-6">
@@ -333,19 +333,20 @@ host=</textarea>
 									</div>
 								</div>
 								<div class="form-group custom_protocol" style="display:none;">
-									<label for="globals_string" class="col-sm-3 control-label">Global String</label>
+									<label for="globals_string" class="col-sm-3 control-label"><?php $lh->translateText('global_string'); ?>Global String</label>
 									<div class="col-sm-8 mb">
 										<input type="text" name="globals_string" class="form-control" value="" id="globals_string" maxlength="255" size="50">
 									</div>
 								</div>
 								<div class="form-group custom_protocol" style="display:none;">
-									<label for="dialplan_entry" class="col-sm-3 control-label">Dialplan Entry</label>
+									<label for="dialplan_entry" class="col-sm-3 control-label"><?php $lh->translateText('dialplan_entry'); ?></label>
 									<div class="col-sm-8 mb">
 										<textarea name="dialplan_entry" class="form-control note-editor valid"  cols="65" rows="10" id="dialplan_entry" style="resize: none;"></textarea>
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="server_ip" class="col-sm-3 control-label">Server IP</label>
+									<label for="server_ip" class="col-sm-3 control-label"><?php $lh->translateText('server_ip'); ?>
+									</label>
 									<div class="col-sm-8 mb">
 										<select name="server_ip" class="form-control">
 											<?php
@@ -362,7 +363,7 @@ host=</textarea>
 						<!-- IF COPY -->
 							<div class="copy_div" style="display:none;">
 								<div class="form-group mt">
-									<label for="server_ip" class="col-sm-3 control-label">Server IP</label>
+									<label for="server_ip" class="col-sm-3 control-label"><?php $lh->translateText('server_ip'); ?></label>
 									<div class="col-sm-8 mb">
 										<select class="form-control" name="copy_server_ip">
 											<?php
@@ -374,7 +375,7 @@ host=</textarea>
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="carrier_name" class="col-sm-3 control-label">Source Carrier</label>
+									<label for="carrier_name" class="col-sm-3 control-label"><?php $lh->translateText('source_carrier'); ?></label>
 									<div class="col-sm-8 mb">
 										<select class="form-control" name="source_carrier">
 											<?php
@@ -393,7 +394,7 @@ host=</textarea>
 						<!-- IF MANUAL & COPY -->
 							<div class="manual_copy_div" style="display:none;">
 								<div class="form-group">
-									<label for="status" class="col-sm-3 control-label">Active</label>
+									<label for="status" class="col-sm-3 control-label"><?php $lh->translateText('active'); ?></label>
 									<div class="col-sm-8 mb">
 										<select class="form-control" name="active" id="active">
 										<?php
@@ -417,9 +418,9 @@ host=</textarea>
 								<fieldset>
 									<div class="form-group mb">
 										<div class="welcome-header">
-										  <span>Welcome to</span><br class="clear"><br class="clear">
+										  <span><?php $lh->translateText('justgo_welcome'); ?></span><br class="clear"><br class="clear">
 										  <span><a href="https://webrtc.goautodial.com/justgocloud/" target="_new"><img src="https://webrtc.goautodial.com/img/goautodial_logo.png"></a></span><br class="clear"><br class="clear">
-										  <span>GoAutoDial Cloud Call Center Cloud Call Center</span><br>
+										  <span><?php $lh->translateText('justgo_title'); ?></span><br>
 										  <br>
 										  <span align="center" style="padding-left: 100px;">
 	
@@ -434,77 +435,77 @@ host=</textarea>
 								<fieldset>
 									<div class="form-group">
 										<div class="col-sm-12 mb">
-											<center class="mb text-muted">Please fill out the information below:</center>
+											<center class="mb text-muted"><?php $lh->translateText('justgo_fillout'); ?></center>
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="company" class="col-sm-3 control-label">Company</label>
+										<label for="company" class="col-sm-3 control-label"><?php $lh->translateText('justgo_company'); ?></label>
 										<div class="col-sm-8 mb">
 											<input type="text" class="form-control" id="company" name="company" placeholder="Company" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="firstname" class="col-sm-3 control-label">First Name</label>
+										<label for="firstname" class="col-sm-3 control-label"><?php $lh->translateText('carrier_first_name'); ?></label>
 										<div class="col-sm-8 mb">
 											<input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="lastname" class="col-sm-3 control-label">Last Name</label>
+										<label for="lastname" class="col-sm-3 control-label"><?php $lh->translateText('carrier_last_name'); ?></label>
 										<div class="col-sm-8 mb">
 											<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="address" class="col-sm-3 control-label">Address</label>
+										<label for="address" class="col-sm-3 control-label"><?php $lh->translateText('address'); ?></label>
 										<div class="col-sm-8 mb">
 											<input type="text" class="form-control" id="address" name="address" placeholder="Address" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="city" class="col-sm-3 control-label">City</label>
+										<label for="city" class="col-sm-3 control-label"><?php $lh->translateText('city'); ?></label>
 										<div class="col-sm-8 mb">
 											<input type="text" class="form-control" id="city" name="city" placeholder="City" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="state" class="col-sm-3 control-label">State</label>
+										<label for="state" class="col-sm-3 control-label"><?php $lh->translateText('state'); ?></label>
 										<div class="col-sm-8 mb">
 											<input type="text" class="form-control" id="state" name="state" placeholder="State" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="postal" class="col-sm-3 control-label">Postal Code</label>
+										<label for="postal" class="col-sm-3 control-label"><?php $lh->translateText('postal_code'); ?></label>
 										<div class="col-sm-8 mb">
 											<input type="text" class="form-control" id="postal" name="postal" placeholder="Postal Code" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="country" class="col-sm-3 control-label">Country</label>
+										<label for="country" class="col-sm-3 control-label"><?php $lh->translateText('country'); ?></label>
 										<div class="col-sm-8 mb">
 											<input type="text" class="form-control" id="country" name="country" placeholder="Country" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="timezone" class="col-sm-3 control-label">Time Zone</label>
+										<label for="timezone" class="col-sm-3 control-label"><?php $lh->translateText('time_zone'); ?></label>
 										<div class="col-sm-8 mb">
 											<input type="text" class="form-control" id="timezone" name="timezone" placeholder="Time Zone" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="phone" class="col-sm-3 control-label">Phone</label>
+										<label for="phone" class="col-sm-3 control-label"><?php $lh->translateText('phones'); ?></label>
 										<div class="col-sm-8 mb">
 											<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="mobilephone" class="col-sm-3 control-label">Mobile Phone</label>
+										<label for="mobilephone" class="col-sm-3 control-label"><?php $lh->translateText('mobile_phones'); ?>Mobile Phone</label>
 										<div class="col-sm-8 mb">
 											<input type="text" class="form-control" id="mobilephone" name="mobilephone" placeholder="Mobile Phone" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="email" class="col-sm-3 control-label">Email</label>
+										<label for="email" class="col-sm-3 control-label"><?php $lh->translateText('email'); ?></label>
 										<div class="col-sm-8 mb">
 											<input type="text" class="form-control" id="email" name="email" placeholder="Email" required />
 										</div>
@@ -513,7 +514,7 @@ host=</textarea>
 								<fieldset>
 									<div class="form-group">
 										<div class="col-lg-12 mb">
-											<label class="col-sm-6">Terms and Condition</label>
+											<label class="col-sm-6"><?php $lh->translateText('terms_and_condition'); ?></label>
 										</div>
 										<div class="col-lg-12 pull-right">
 											<div class="boxviewnew form-control text-muted" style="height:250px;overflow-y:scroll; overflow-x:hidden; text-align: justify;">
@@ -615,13 +616,13 @@ host=</textarea>
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Call Time Details</b></h4>
+	        <h4 class="modal-title"><b><?php $lh->translateText('call_time_details'); ?></b></h4>
 	      </div>
 	      <div class="modal-body">
 		<div class="form-horizontal">
 			<div class="message_box"></div>
 			<div class="form-group">
-				<label class="control-label col-lg-4">Music on Hold Name:</label>
+				<label class="control-label col-lg-4"><?php $lh->translateText('moh_name'); ?></label>
 				<div class="col-lg-8">
 					<input type="text" class="form-control moh_name">
 				</div>
@@ -724,13 +725,13 @@ host=</textarea>
 								$('#finish').attr("disabled", false);
 								
 								if(data == 1){
-									swal({	title: "Success",
-											text: "Carrier Successfully Created!",
+									swal({	title: "<?php $lh->translateText("success"); ?>",
+											text: "<?php $lh->translateText("add_carriers_success"); ?>",
 											type: "success" },
 										function(){ window.location.href = 'settingscarriers.php'; }
 									);
 								}else{
-									sweetAlert("Oops...", "Something went wrong. "+data, "error");
+									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 								}
 							}
 						});
@@ -782,7 +783,7 @@ host=</textarea>
 					var role = $(this).attr('data-role');
 					//alert(userid);
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="cid" value="'+cid+'" /><input type="hidden" name="role" value="'+role+'"></form>');
-					//$('body').append(form);  // This line is not necessary
+					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				 });
 				
@@ -791,13 +792,13 @@ host=</textarea>
 					var log_user = '<?=$_SESSION['user']?>';
 					var log_group = '<?=$_SESSION['usergrou']?>';
                     swal({
-                        title: "Are you sure?",
-                        text: "This action cannot be undone.",
+                        title: "<?php $lh->translateText("are_you_sure"); ?>",
+                        text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
                         type: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Yes, delete this carrier!",
-                        cancelButtonText: "No, cancel please!",
+                        confirmButtonText: "<?php $lh->translateText("confirm_delete_carrier"); ?>",
+                        cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
                         closeOnConfirm: false,
                         closeOnCancel: false
                         },
@@ -814,16 +815,16 @@ host=</textarea>
 									dataType: 'json',
 									success: function(data) {
 										if(data == 1){
-											swal("Success!", "Carrier Successfully Deleted!", "success");
+											swal("Deleted!", "<?php $lh->translateText("carrier_delete_success"); ?>", "success");
                                             window.setTimeout(function(){location.reload();},1000);
 										}else{
-											sweetAlert("Oops...", "Something went wrong! "+data, "error");
+											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 										}
 									}
 								});
 
 							 } else {
-                                swal("Cancelled", "No action has been done :)", "error");
+                                swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
                             }
                         }
                     );

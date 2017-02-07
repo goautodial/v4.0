@@ -21,7 +21,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?php $lh->translateText("voice_mails"); ?></title>
+        <title><?php $lh->translateText("title_portal"); ?> - <?php $lh->translateText("voice_mails"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?> 
@@ -100,7 +100,7 @@
                 <!-- Header -->
                     <div class="modal-header">
                         <h4 class="modal-title animated bounceInRight" id="ingroup_modal">
-                            <b>Voice Mail Wizard » Add New Voice Mail</b>
+                            <b><?php $lh->translateText("voice_mail_wizard"); ?> » <?php $lh->translateText("add_voice_mail"); ?> </b>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </h4>
                     </div>
@@ -112,30 +112,30 @@
                         <div class="row">
                     <!-- STEP 1 -->
                             <h4>
-                                Create a Voice Mail<br/>
-                                <small>Enter basic settings and assign to a user group</small>
+                                <?php $lh->translateText("create_voice_mail"); ?><br/>
+                                <small><?php $lh->translateText("voicemail_sub_header"); ?></small>
                             </h4>
                             <fieldset>
                                 <div class="form-group mt">
-                                    <label class="col-sm-3 control-label" for="voicemail_id">Voicemail ID</label>
+                                    <label class="col-sm-3 control-label" for="voicemail_id"><?php $lh->translateText("voicemail_id"); ?></label>
                                     <div class="col-sm-9 mb">
                                         <input type="number" name="voicemail_id" id="voicemail_id" class="form-control" placeholder="Voicemail ID (Mandatory)" minlength="2" maxlength="10">
                                     </div>
                                 </div>
                                 <div class="form-group">        
-                                    <label class="col-sm-3 control-label" for="password">Password: </label>
+                                    <label class="col-sm-3 control-label" for="password"><?php $lh->translateText("password"); ?> </label>
                                     <div class="col-sm-9 mb">
                                         <input type="text" name="password" id="password" class="form-control" placeholder="Password (Mandatory)" required>
                                     </div>
                                 </div>
                                 <div class="form-group">        
-                                    <label class="col-sm-3 control-label" for="name">Name </label>
+                                    <label class="col-sm-3 control-label" for="name"><?php $lh->translateText("name"); ?></label>
                                     <div class="col-sm-9 mb">
                                         <input type="text" name="name" id="name" class="form-control" placeholder="Name (Mandatory)" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="active">Active </label>
+                                    <label class="col-sm-3 control-label" for="active"><?php $lh->translateText("active"); ?> </label>
                                     <div class="col-sm-9 mb">
                                         <select name="active" id="active" class="form-control">
                                             <option value="N" selected>No</option>
@@ -144,13 +144,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group">        
-                                    <label class="col-sm-3 control-label" for="email">Email </label>
+                                    <label class="col-sm-3 control-label" for="email"><?php $lh->translateText("email"); ?> </label>
                                     <div class="col-sm-9 mb">
                                         <input type="email" name="email" id="email" class="form-control" placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="user_group">User Group </label>
+                                    <label class="col-sm-3 control-label" for="user_group"><?php $lh->translateText("user_groups"); ?> </label>
                                     <div class="col-sm-9 mb">
                                         <select id="user_group" class="form-control" name="user_group">
                                             <?php
@@ -237,11 +237,11 @@
                                 success: function(data) {
                                   // console.log(data);
                                       if(data == 1){
-                                            swal({title: "Success",text: "Voicemail Successfully Created!",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
+                                            swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_voicemail_success"); ?>",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
                                             $('#finish').val("Submit");
                                       }
                                       else{
-                                          sweetAlert("Oops...", "Something went wrong! "+data, "error");
+                                          sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
                                           $('#finish').val("Submit");
                                           $('#finish').prop("disabled", false);
                                       }
@@ -257,7 +257,7 @@
                 var url = './editsettingsvoicemail.php';
                 var vmid = $(this).attr('data-id');
                 var form = $('<form action="' + url + '" method="post"><input type="hidden" name="vmid" value="'+vmid+'" /></form>');
-                //$('body').append(form);  // This line is not necessary
+                $('body').append(form);  // This line is not necessary
                 $(form).submit();
             });
 
@@ -267,13 +267,13 @@
             $(document).on('click','.delete-voicemail',function() {
                 var id = $(this).attr('data-id');
                     swal({   
-                        title: "Are you sure?",   
-                        text: "This action cannot be undone.",   
+                        title: "<?php $lh->translateText("are_you_sure"); ?>",   
+                        text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",   
                         type: "warning",   
                         showCancelButton: true,   
                         confirmButtonColor: "#DD6B55",   
-                        confirmButtonText: "Yes, delete this voicemail!",   
-                        cancelButtonText: "No, cancel please!",   
+                        confirmButtonText: "<?php $lh->translateText("confirm_delete_voicemail"); ?>",   
+                        cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
                         closeOnConfirm: false,   
                         closeOnCancel: false 
                         }, 
@@ -290,14 +290,14 @@
                                     success: function(data) {
                                     console.log(data);
                                         if(data == 1){
-                                            swal({title: "Deleted",text: "Voicemail Successfully Deleted!",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
+                                            swal({title: "Deleted",text: "<?php $lh->translateText("voicemail_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
                                         }else{
-                                            sweetAlert("Oops...", "Something went wrong! "+data, "error");
+                                            sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
                                         }
                                     }
                                 });
                             } else {     
-                                    swal("Cancelled", "No action has been done :)", "error");   
+                                    swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
                             } 
                         }
                     );

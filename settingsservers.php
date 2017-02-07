@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?php $lh->translateText('portal_title'); ?></title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("servers"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -90,7 +90,7 @@
                 <!-- Header -->
                     <div class="modal-header">
                         <h4 class="modal-title animated bounceInRight">
-                            <b>Server Wizard » Add New Server</b>
+                            <b><?php $lh->translateText("server_wizard"); ?> » <?php $lh->translateText("add_server_wizard"); ?> </b>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </h4>
                     </div>
@@ -102,36 +102,36 @@
                         <div class="row">
                     <!-- STEP 1 -->
                             <h4>
-                                Create a Server<br/>
-                                <small>Enter basic settings</small>
+                                <?php $lh->translateText("create_server_header"); ?><br/>
+                                <small><?php $lh->translateText("create_server_sub_header"); ?></small>
                             </h4>
                             <fieldset>
                             <div class="form-group mt">
-                                <label class="col-sm-4 control-label" for="server_id">Server ID</label>
+                                <label class="col-sm-4 control-label" for="server_id"><?php $lh->translateText("server_id"); ?></label>
                                 <div class="col-sm-8 mb">
                                     <input type="text" name="server_id" id="server_id" class="form-control" placeholder="Server ID" maxlength="10" title="Must be 1-10 alphanumeric characters." required>
                                 </div>
                             </div>
                             <div class="form-group">        
-                                <label class="col-sm-4 control-label" for="server_description">Server Description</label>
+                                <label class="col-sm-4 control-label" for="server_description"><?php $lh->translateText("server_description"); ?>Server Description</label>
                                 <div class="col-sm-8 mb">
                                     <input type="text" name="server_description" id="server_description" class="form-control" placeholder="Server Description" maxlength="255" title="Must be 1-255 alphanumeric characters." required>
                                 </div>
                             </div>
 							<div class="form-group">        
-                                <label class="col-sm-4 control-label" for="server_ip">Server IP</label>
+                                <label class="col-sm-4 control-label" for="server_ip"><?php $lh->translateText("server_ip"); ?></label>
                                 <div class="col-sm-8 mb">
                                     <input type="text" name="server_ip" id="server_ip" class="form-control" data-inputmask="'alias': 'ip'" data-mask="" placeholder="Server IP" required>
 								</div>
                             </div>
                             <div class="form-group">        
-                                <label class="col-sm-4 control-label" for="server_ip">Asterisk Version</label>
+                                <label class="col-sm-4 control-label" for="server_ip"><?php $lh->translateText("asterisk_version"); ?></label>
                                 <div class="col-sm-8 mb">
 									<input type="text" class="form-control" name="asterisk_version" id="asterisk_version" maxlength="20" size="20" placeholder="Asterisk Version" required>
 								</div>
                             </div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="active">Active </label>
+								<label class="col-sm-4 control-label" for="active"><?php $lh->translateText("active"); ?> </label>
 								<div class="col-sm-8 mb">
 									<select name="active" id="active" class="form-control">
 										<option value="Y" selected>Yes</option>
@@ -140,7 +140,7 @@
 								</div>
 							</div>
 							<div class="form-group mt">
-								<label class="col-sm-4 control-label" for="user_group">User Group</label>
+								<label class="col-sm-4 control-label" for="user_group"><?php $lh->translateText("userp_groups"); ?></label>
 								<div class="col-sm-8 mb">
 									<select id="user_group" class="form-control select2" name="user_group" style="width:100%;">
 										<option value="---ALL---">ALL USERGROUPS</option>
@@ -241,10 +241,10 @@
 										$('#finish').text("Submit");
 										$('#finish').attr("disabled", false);
 											if(data == "success"){
-												swal({title: "Success",text: "Server Successfully Created!",type: "success"},function(){window.location.href = 'settingsservers.php';});
+												swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_server_success"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
 											}
 											else{
-												sweetAlert("Oops...", "Something went wrong! "+data, "error");
+												sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 											}
 										}
 									});
@@ -260,7 +260,7 @@
 							//alert(extenid);
 							var form = 
 							$('<form action="' + url + '" method="post"><input type="hidden" name="id" value="'+id+'" /></form>');
-							//$('body').append(form);  // This line is not necessary
+							$('body').append(form);  // This line is not necessary
 							$(form).submit();
 						});
 		
@@ -270,13 +270,13 @@
 						 $(document).on('click','.delete-server',function() {
 							var id = $(this).attr('data-id');
 							swal({   
-								title: "Are you sure?",   
-								text: "This action cannot be undone.",   
+								title: "<?php $lh->translateText("are_you_sure"); ?>",   
+								text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",   
 								type: "warning",   
 								showCancelButton: true,   
 								confirmButtonColor: "#DD6B55",   
-								confirmButtonText: "Yes, delete this server!",   
-								cancelButtonText: "No, cancel please!",   
+								confirmButtonText: "<?php $lh->translateText("confirm_delete_server"); ?>",   
+								cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
 								closeOnConfirm: false,   
 								closeOnCancel: false 
 								}, 
@@ -293,14 +293,14 @@
 										success: function(data) {
 										console.log(data);
 											if(data == "success"){
-												swal({title: "Deleted",text: "Server Successfully Deleted!",type: "success"},function(){window.location.href = 'settingsservers.php';});
+												swal({title: "Deleted",text: "<?php $lh->translateText("server_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
 											}else{
-												sweetAlert("Oops...", "Something went wrong! "+data, "error");
+												sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 											}
 										}
 									});
 								} else {     
-											swal("Cancelled", "No action has been done :)", "error");   
+											swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
 									} 
 								}
 							);

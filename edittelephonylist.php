@@ -33,7 +33,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Edit List</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("edit_list"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <?php print $ui->standardizedThemeCSS();?>
         <?php print $ui->creamyThemeCSS(); ?>
@@ -66,7 +66,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
                 <section class="content-header">
                     <h1 style="font-weight:normal;">
                         <?php $lh->translateText("lists"); ?>
-                        <small><?php $lh->translateText("List Edit"); ?></small>
+                        <small><?php $lh->translateText("edit_list"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -118,7 +118,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
             <section class="content">
 				<div class="panel panel-default">
                     <div class="panel-body">
-						<legend>MODIFY LIST ID : <u><?php echo $modifyid;?></u></legend>
+						<legend><?php $lh->translateText("modify_list_id"); ?><u><?php echo $modifyid;?></u></legend>
 
 							<form id="modifylist">
 								<input type="hidden" name="modifyid" value="<?php echo $modifyid;?>">
@@ -129,9 +129,9 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 						<div role="tabpanel">
 						<!--<div class="nav-tabs-custom">-->
 							<ul role="tablist" class="nav nav-tabs nav-justified">
-								<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
-								<li><a href="#tab_2" data-toggle="tab"> Statuses</a></li>
-								<li><a href="#tab_3" data-toggle="tab"> Timezones</a></li>
+								<li class="active"><a href="#tab_1" data-toggle="tab"><?php $lh->translateText("basic_settings"); ?></a></li>
+								<li><a href="#tab_2" data-toggle="tab"><?php $lh->translateText("statuses"); ?> </a></li>
+								<li><a href="#tab_3" data-toggle="tab"> <?php $lh->translateText("timezones"); ?></a></li>
 							</ul>
 			               <!-- Tab panes-->
 			               <div class="tab-content">
@@ -139,19 +139,19 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 				               	<!-- BASIC SETTINGS -->
 				                <div id="tab_1" class="tab-pane fade in active">
 									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;">Name:</label>
+										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("name"); ?>:</label>
 										<div class="col-lg-9">
 											<input type="text" pattern=".{2,20}" class="form-control" name="name" value="<?php echo $output->list_name[$i];?>" maxlength="30">
 										</div>
 									</div>
 									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;">Description:</label>
+										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("description"); ?>:</label>
 										<div class="col-lg-9">
 											<input type="text" class="form-control" name="desc" value="<?php echo $output->list_description[$i];?>" maxlength="255">
 										</div>
 									</div>
 									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;">Campaign:</label>
+										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("campaign"); ?>:</label>
 										<div class="col-lg-9">
 											<select class="form-control" name="campaign" id="campaign">
 											<?php
@@ -172,20 +172,20 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 										</div>
 									</div>
 									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;">Reset Time:</label>
+										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("reset_time"); ?>:</label>
 										<div class="col-lg-9">
 											<input type="text" class="form-control" name="reset_time" value="<?php echo $output->reset_time[$i];?>">
 										</div>
 									</div>
 									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;">Reset Lead Called Status:</label>
+										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("reset_lead"); ?>:</label>
 										<div class="col-lg-4">
 											<select name="reset_list" class="form-control select2">
 												<option value="N">N</option>
 												<option value="Y">Y</option>
 											</select>
 										</div>
-										<label class="control-label col-lg-2" style="text-align: left;">Active:</label>
+										<label class="control-label col-lg-2" style="text-align: left;"><?php $lh->translateText("active"); ?>:</label>
 										<div class="col-lg-3">
 											<select name="active" class="form-control select2">
 												<option value="N"  <?php if($output->active[$i] == 'N') echo 'selected';?>>N</option>
@@ -194,7 +194,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 										</div>
 									</div>
 									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;">Agent Script Override:</label>
+										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("agent_script"); ?>:</label>
 										<div class="col-lg-9">
 											<select name="agent_script_override" class="form-control">
 												<option value="" selected="selected">NONE - INACTIVE</option>
@@ -202,7 +202,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 										</div>
 									</div>
 									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;">Campaign CID Override:</label>
+										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("campaign_override"); ?>:</label>
 										<div class="col-lg-9">
 											<input type="text" class="form-control" name="campaign_cid_override" value="<?php echo $output->campaign_cid_override[$i];?>">
 										</div>
@@ -216,13 +216,13 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 										</div>
 									</div>
 									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;">Web Form:</label>
+										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("web"); ?>:</label>
 										<div class="col-lg-9">
 											<input type="text" class="form-control" name="web_form">
 										</div>
 									</div>
 									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;">Transfer Conf No. Override:</label>
+										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("transfer"); ?>:</label>
 										<div class="col-lg-4">
 											<input type="text" class="form-control" name="xferconf_a_number">
 										</div>
@@ -253,10 +253,10 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 											<table id="lists_statuses" class="table table-bordered" style="width: 100%;">
 												<thead>
 													<tr>
-														<th>Status</th>
-														<th>Description</th>
-														<th>Called</th>
-														<th>Not Called</th>
+														<th><?php $lh->translateText("status"); ?>Status</th>
+														<th><?php $lh->translateText("description"); ?></th>
+														<th><?php $lh->translateText("called"); ?></th>
+														<th><?php $lh->translateText("not_callerd"); ?></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -310,9 +310,9 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 											<table id="lists_statuses" class="table table-bordered" style="width: 100%;">
 												<thead>
 													<tr>
-														<th>GMT OFF SET NOW (local time)</th>
-														<th>Called</th>
-														<th>Not Called</th>
+														<th><?php $lh->translateText("local_time"); ?></th>
+														<th><?php $lh->translateText("called"); ?></th>
+														<th><?php $lh->translateText("not_called"); ?></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -409,7 +409,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
                 //	submitHandler: function() {
 
 				$(document).on('click', '#cancel', function(){
-					swal("Cancelled", "No action has been done :)", "error");
+					swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
 				});
 
 				$(document).on('click','#modifyListOkButton',function() {
@@ -426,10 +426,10 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 							$('#update_button').html("<i class='fa fa-check'></i> Update");
 							$('#modifyListOkButton').prop("disabled", false);
 							if(data == "success"){
-								swal("Success!", "List Successfully Updated!", "success");
+								swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("list_update_success"); ?>", "success");
 								window.setTimeout(function(){location.reload();},2000);
 							} else {
-								sweetAlert("Oops...", "Something went wrong! " + data, "error");
+								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
 							}
 						}
 					});
@@ -442,7 +442,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 					var id = $(this).attr('data-id');
 					//alert(extenid);
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
-					//$('body').append(form);  // This line is not necessary
+					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				});
 

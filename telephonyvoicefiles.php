@@ -21,7 +21,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Voicefiles</title>
+        <title><?php $lh->translateText("voicefiles"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -109,7 +109,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Voice Files Playback</b></h4>
+	        <h4 class="modal-title"><b><?php $lh->translateText("voice_playback"); ?></b></h4>
 	      </div>
 	      <div class="modal-body">
 		<div class="voice-player"></div>
@@ -120,8 +120,8 @@
 		</audio> -->
 	      </div>
 	      <div class="modal-footer">
-		<a href="" class="btn btn-primary download-audio-file" download>Download File</a>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<a href="" class="btn btn-primary download-audio-file" download><?php $lh->translateText("download_file"); ?></a>
+	        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
 	      </div>
 	    </div>
 	    <!-- End of modal content -->
@@ -137,7 +137,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Upload Voice Files</b></h4>
+	        <h4 class="modal-title"><b><?php $lh->translateText("upload_voice"); ?></b></h4>
 	      </div>
         <form action="./php/AddVoiceFiles.php" method="POST" enctype="multipart/form-data">
 			<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
@@ -156,8 +156,8 @@
     				</div>
   	      </div>
   	      <div class="modal-footer">
-  	      	<button type="submit" class="btn btn-primary btn-save-voicefiles">Save</button>
-  	        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+  	      	<button type="submit" class="btn btn-primary btn-save-voicefiles"><?php $lh->translateText("save"); ?></button>
+  	        <button type="button" class="btn btn-warning" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
   	      </div>
         </form>
 	    </div>

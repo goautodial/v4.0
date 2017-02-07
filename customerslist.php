@@ -509,7 +509,7 @@ error_reporting(E_ALL);*/
 					e.preventDefault();
 					var url = './editcustomer.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="lead_id" value="' + $(this).attr('href') + '" /></form>');
-					//$('body').append(form);  // This line is not necessary
+					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				 });
 

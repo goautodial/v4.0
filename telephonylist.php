@@ -22,7 +22,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Lists</title>
+        <title><?php $lh->translateText("Lists"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!-- Call for standardized css -->
@@ -224,7 +224,7 @@
                         <div class="col-lg-<?=($perm->list->list_upload === 'N' ? '12' : '9')?>">
 		                <div class="panel panel-default">
 							<div class="panel-body">
-							<legend id="legend_title">Lists</legend>
+							<legend id="legend_title"><?php $lh->translateText("lists"); ?></legend>
 								<div role="tabpanel">
 							
 									<ul role="tablist" class="nav nav-tabs nav-justified">
@@ -232,12 +232,12 @@
 									<!-- List panel tabs-->
 										 <li role="presentation" class="active">
 											<a href="#list_tab" aria-controls="list_tab" role="tab" data-toggle="tab" class="bb0">
-												List</a>
+												<?php $lh->translateText("list"); ?></a>
 										 </li>
 									<!-- DNC panel tab -->
 										 <li role="presentation">
 											<a href="#dnc_tab" aria-controls="dnc_tab" role="tab" data-toggle="tab" class="bb0">
-												DNC </a>
+												<?php $lh->translateText("dnc"); ?> </a>
 										 </li>
 									</ul>
 									  
@@ -249,13 +249,13 @@
 												<thead>
 													<tr>
 													<th style="color: white;">Pic</th>
-													<th class='hide-on-medium hide-on-low'>List ID</th>
-													<th>Name</th>
-													<th class='hide-on-medium hide-on-low'>Status</th>
+													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("list_id"); ?></th>
+													<th><?php $lh->translateText("name"); ?></th>
+													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("status"); ?></th>
 													<th class='hide-on-medium hide-on-low'>Leads Count</th>
-													<th class='hide-on-medium hide-on-low'>Campaign</th>
-													<th class='hide-on-medium hide-on-low'>Fields</th>
-													<th class='hide-on-medium hide-on-low'>Action</th>
+													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("campaign"); ?></th>
+													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("field"); ?></th>
+													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("action"); ?></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -301,9 +301,9 @@
 											<table class="table table-striped table-bordered table-hover" id="table_dnc">
 												<thead>
 													<tr>
-													<th>Phone Number</th>
-													<th class='hide-on-medium hide-on-low'>Campaign</th>
-													<th>Action</th>
+													<th><?php $lh->translateText("phone_numer"); ?></th>
+													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("campaign"); ?></th>
+													<th><?php $lh->translateText("action"); ?></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -324,12 +324,12 @@
 if ($perm->list->list_upload !== 'N') {
 ?>
 	<div class="col-lg-3" id="list_sidebar">
-	<h3 class="m0 pb-lg">Upload/Import Leads</h3>
+	<h3 class="m0 pb-lg"><?php $lh->translateText("upload_import"); ?></h3>
 		<form action="./php/AddLoadLeads.php" method="POST" enctype="multipart/form-data" id="upload_form" name="upload_form">
 			<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 			<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 			<div class="form-group">
-			<label>List ID:</label>
+			<label><?php $lh->translateText("list_id"); ?>:</label>
 				<div class="form-group">
 				<!-- <select id="select2-1" class="form-control" name="list_id"> -->
 					<select id="list_id" class="form-control select2" name="list_id" required>
@@ -343,7 +343,7 @@ if ($perm->list->list_upload !== 'N') {
 				</div>
 			
 			<div class="form-group">
-				<label>Duplicate Check:</label>
+				<label><?php $lh->translateText("duplicate"); ?>:</label>
 				<SELECT size="1" NAME="goDupcheck" ID="goDupcheck" TITLE="Duplicate Check - Will check phone numbers on the lead file and cross reference it with all phone numbers on a specific campaign or in all List ID." class="form-control select2">
 				<OPTION value="NONE">NO DUPLICATE CHECK</OPTION>
 				<OPTION value="DUPLIST">CHECK PHONES IN LIST ID</OPTION>
@@ -354,12 +354,12 @@ if ($perm->list->list_upload !== 'N') {
 			</div>
 			<div class="form-group">
 			
-			<label>CSV File:</label>
+			<label><?php $lh->translateText("csv_file"); ?>:</label>
 				<div class="form-group" id="dvImportSegments">
 				<div class="input-group">
 				<input type="text" class="form-control file-name" name="file_name" placeholder="CSV File" required>
 				<span class="input-group-btn">
-				<button type="button" class="btn browse-btn  btn-primary" type="button">Browse</button>
+				<button type="button" class="btn browse-btn  btn-primary" type="button"><?php $lh->translateText("browse"); ?></button>
 				</span>
 				</div>
 				<input type="file" class="file-box hide" name="file_upload" id="txtFileUpload" accept=".csv">
@@ -414,9 +414,9 @@ if ($perm->list->list_upload !== 'N') {
 	</div><!-- ./upload leads -->
 	
 	<div class="col-lg-3" id="dnc_sidebar" style="display:none;">
-	<h3 class="m0 pb-lg">Filter DNC</h3>
+	<h3 class="m0 pb-lg"><?php $lh->translateText("filter_dnc"); ?></h3>
 		<div class="form-group">
-			<label for="search_dnc">Search</label>
+			<label for="search_dnc"><?php $lh->translateText("search"); ?></label>
 			<div class="has-clear">
 				<input type="text" placeholder="Search Phone Number" id="search_dnc" class="form-control mb">
 				<span class="form-control-clear fa fa-close form-control-feedback"></span>
@@ -476,7 +476,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title animate-header" id="scripts"><b>List Wizard » Add New List</b></h4>
+					<h4 class="modal-title animate-header" id="scripts"><b><?php $lh->translateText("list_wizard"); ?> » <?php $lh->translateText("add_list"); ?></b></h4>
 				</div>
 				<div class="modal-body wizard-content">
 
@@ -484,13 +484,13 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 				<div class="row">
-				<h4>List Information
+				<h4><?php $lh->translateText("list_info"); ?>
 				   <br>
-				   <small>List Details</small>
+				   <small><?php $lh->translateText("list_details"); ?></small>
 				</h4>
 				<fieldset>
 					<div class="form-group mt">
-						<label class="col-sm-3 control-label" for="auto_generate">Auto-generated:</label>
+						<label class="col-sm-3 control-label" for="auto_generate"><?php $lh->translateText("generated"); ?>:</label>
 						<div class="col-sm-9 mb">
 							<label class="col-sm-3 checkbox-inline c-checkbox" for="auto_generate">
 								<input type="checkbox" id="auto_generate" checked>
@@ -499,25 +499,25 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label" for="add_list_id">List ID:</label>
+						<label class="col-sm-3 control-label" for="add_list_id"><?php $lh->translateText("list_id"); ?>:</label>
 						<div class="col-sm-9 mb">
 							<input type="number" class="form-control" name="add_list_id" id="add_list_id" placeholder="List ID" value="<?php echo $next_list;?>" minlength="1" maxlength="8" disabled required/>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label" for="list_name">List Name:</label>
+						<label class="col-sm-3 control-label" for="list_name"><?php $lh->translateText("list_name"); ?>:</label>
 						<div class="col-sm-9 mb">
 							<input type="text" class="form-control" name="list_name" id="list_name" placeholder="List Name" value="<?php echo $next_listname;?>" maxlength="30" required/>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label" for="list_desc">List Description:</label>
+						<label class="col-sm-3 control-label" for="list_desc"><?php $lh->translateText("list_des"); ?>:</label>
 						<div class="col-sm-9 mb">
 							<input type="text" class="form-control" name="list_desc" id="list_desc" placeholder="List Description"  value="<?php echo $next_listdesc;?>" maxlength="255" />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label" for="campaign_select">Campaign: </label>
+						<label class="col-sm-3 control-label" for="campaign_select"><?php $lh->translateText("campaign"); ?>: </label>
 						<div class="col-sm-9 mb">
 							<select name="campaign_select" class="form-control">
 								<?php
@@ -529,7 +529,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label" for="status">Active: </label>
+						<label class="col-sm-3 control-label" for="status"><?php $lh->translateText("active"); ?>: </label>
 						<div class="col-sm-9 mb">
 							<select name="status" class="form-control">
 								<option value="Y" selected>Yes</option>
@@ -554,7 +554,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Call Recording Playback</b></h4>
+	        <h4 class="modal-title"><b><?php $lh->translateText("call_des"); ?></b></h4>
 	      </div>
 	      <div class="modal-body">
 		<div class="audio-player"></div>
@@ -565,8 +565,8 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 		</audio> -->
 	      </div>
 	      <div class="modal-footer">
-		<a href="" class="btn btn-primary download-audio-file" download>Download File</a>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<a href="" class="btn btn-primary download-audio-file" download><?php $lh->translateText("download"); ?></a>
+	        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
 	      </div>
 	    </div>
 	    <!-- End of modal content -->
@@ -579,21 +579,21 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Copy Custom Fields Wizard</h4>
+					<h4 class="modal-title"><?php $lh->translateText("copy_custom"); ?></h4>
 				</div>
 				<div class="modal-body">
 					<form id="copy_cf_form" class="form-horizontal" style="margin-top: 10px;">
 						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 						<div class="form-group">
-							<label class="control-label col-lg-4">List ID to copy Fields from:</label>
+							<label class="control-label col-lg-4"><?php $lh->translateText("copy_fields"); ?>:</label>
 							<div class="col-lg-8">
 								<input type="hidden" class="form-control list-from" value="" name="list_from">
 								<input type="text" class="form-control list-from-label" value="" readonly>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-lg-4">Copy fields to another list :</label>
+							<label class="control-label col-lg-4"><?php $lh->translateText("copy_list"); ?>:</label>
 							<div class="col-lg-8">
 								<select class="form-control select2" name="list_to">
 									<?php for($i=0;$i < count($lists->list_id);$i++){ ?>
@@ -603,7 +603,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-lg-4">Copy Option:</label>
+							<label class="control-label col-lg-4"><?php $lh->translateText("copy_option"); ?>:</label>
 							<div class="col-lg-8">
 								<select class="form-control select2" name="copy_option">
 									<option value="APPEND">APPEND</option>
@@ -615,8 +615,8 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-success btn-copy-cf" data-dismiss="modal">Copy</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
+					<button type="button" class="btn btn-success btn-copy-cf" data-dismiss="modal"><?php $lh->translateText("copy"); ?></button>
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
@@ -630,7 +630,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Add/Delete DNC</b></h4>
+	        <h4 class="modal-title"><b><?php $lh->translateText("add_delete"); ?>/b></h4>
 	      </div>
 	      <div class="modal-body">
 			<form id="dnc_form">
@@ -638,10 +638,10 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>">
 				<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>">
 				<div class="form-group mt">
-					<label class="col-md-3 control-label">List:</label>
+					<label class="col-md-3 control-label"><?php $lh->translateText("list"); ?>:</label>
 					<div class="col-md-9 mb">
 						<select id="campaign_id" class="form-control select2" name="campaign_id" required>
-							<option value="INTERNAL">INTERNAL DNC LIST</option>
+							<option value="INTERNAL"><?php $lh->translateText("internal_dnc"); ?></option>
 							<?php
 								for($i=0;$i<count($campaign->campaign_id);$i++){
 									echo '<option value="'.$campaign->campaign_id[$i].'">'.$campaign->campaign_id[$i].' - '.$campaign->campaign_name[$i].'</option>';
@@ -651,14 +651,14 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					</div>
 				</div>
 				<div class="form-group mt">
-					<label class="col-md-3 control-label">Phone Numbers:</label>
+					<label class="col-md-3 control-label"><?php $lh->translateText("phone_number"); ?>:</label>
 					<div class="col-md-9 mb">
 						<textarea rows="15" cols="17" name="phone_numbers" id="phone_numbers" style="resize:none"></textarea><br/>
-						<small class="text-danger">(one phone number per line, limit of 25 lines per submit.)</small>
+						<small class="text-danger"><?php $lh->translateText("per_line"); ?></small>
 					</div>
 				</div>
 				<div class="form-group mt">
-					<label class="col-md-3 control-label">Add or Delete:</label>
+					<label class="col-md-3 control-label"><?php $lh->translateText("add_delete"); ?>:</label>
 					<div class="col-md-4">
 						<select id="stageDNC" class="form-control" name="stageDNC" required>
 							<option value="ADD">ADD DNC LIST</option>
@@ -670,8 +670,8 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	      </div>
 		  
 	      <div class="modal-footer">
-			<button type="button" class="btn btn-primary" id="submit_dnc">Submit</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary" id="submit_dnc"><?php $lh->translateText("submit"); ?></button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
 	      </div>
 	    </div>
 	    <!-- End of modal content -->
@@ -686,6 +686,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 
 		<script type="text/javascript">
 			$(document).ready(function() {
+				
 				// on tab change, change sidebar
 				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 					var target = $(e.target).attr("href"); // activated tab
@@ -781,9 +782,9 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 									$('#finish').text("Submit");
 									$('#finish').attr("disabled", false);
 									if(data == 1){
-									  swal({title: "Success",text: "List Successfully Created!",type: "success"},function(){window.location.href = 'telephonylist.php';});
+									  swal({title: "Success",text: "<?php $lh->translateText("list_succes"); ?>!",type: "success"},function(){window.location.href = 'telephonylist.php';});
 									}else{
-										sweetAlert("Oops...", "Something went wrong!", "error");
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>!", "error");
 									}
 	                            }
 	                        });
@@ -798,7 +799,8 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						var id = $(this).attr('data-id');
 						//alert(extenid);
 						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
-						//$('body').append(form);  // This line is not necessary
+						$('body').append(form);  // This line is not necessary
+						
 						$(form).submit();
 					});
 					
@@ -810,7 +812,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						var id = $(this).attr('data-id');
 						//alert(extenid);
 						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="listid" value="'+id+'" /></form>');
-						//$('body').append(form);  // This line is not necessary
+						$('body').append(form);  // This line is not necessary
 						$(form).submit();
 					});
 					
@@ -823,13 +825,13 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						var log_user = '<?=$_SESSION['user']?>';
 						var log_group = '<?=$_SESSION['usergroup']?>';
 						swal({
-							title: "Are you sure?",
-							text: "This action cannot be undone.",
+							title: "<?php $lh->translateText("are_you_sure"); ?>?",
+							text: "<?php $lh->translateText("cannot_undo"); ?>.",
 							type: "warning",
 							showCancelButton: true,
 							confirmButtonColor: "#DD6B55",
-							confirmButtonText: "Yes, delete this list!",
-							cancelButtonText: "No, cancel please!",
+							confirmButtonText: "<?php $lh->translateText("list_delete"); ?>!",
+							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 							closeOnConfirm: false,
 							closeOnCancel: false
 							},
@@ -847,16 +849,16 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 										success: function(data) {
 										console.log(data);
 											if(data == 1){
-												swal("Deleted!", "List has been successfully deleted.", "success");
+												swal("Deleted!", "<?php $lh->translateText("list_succes_deleted"); ?>.", "success");
 												window.setTimeout(function(){location.reload()},1000);
 											}else{
-											   sweetAlert("Oops...", "Something went wrong!", "error");
+											   sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>!", "error");
 											}
 										}
 									});
 	
 								} else {
-									swal("Cancelled", "No action has been done :)", "error");
+									swal("Cancelled", "<?php $lh->translateText("been_done"); ?> :)", "error");
 								}
 							}
 						);
@@ -874,13 +876,13 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					$(document).on('click', '.btn-copy-cf', function(){
 						var form_data = new FormData($("#copy_cf_form")[0]);
 						swal({
-							title: "Are you sure?",
-							text: "This action cannot be undone.",
+							title: "<?php $lh->translateText("are_you_sure"); ?>?",
+							text: "<?php $lh->translateText("cannot_undo"); ?>.",
 							type: "warning",
 							showCancelButton: true,
 							confirmButtonColor: "#DD6B55",
-							confirmButtonText: "Yes, Copy Custom Fields.",
-							cancelButtonText: "No, cancel please!",
+							confirmButtonText: "<?php $lh->translateText("custom_fields"); ?>.",
+							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 							closeOnConfirm: false,
 							closeOnCancel: false
 							},
@@ -898,8 +900,8 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 											// console.log(data);
 											if(data == "success"){
 												swal({
-														title: "Success",
-														text: "Custom Fields Successfully Copied",
+														title: "<?php $lh->translateText("success"); ?>",
+														text: "<?php $lh->translateText("custom_fields_copied"); ?>",
 														type: "success"
 													},
 													function(){
@@ -908,7 +910,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 													}
 												);
 											}else{
-													sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+													sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
 											}
 										}
 									});

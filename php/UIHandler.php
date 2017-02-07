@@ -1187,9 +1187,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-phone" href="#" data-id="'.$exten.'">'.$this->lh->translationFor("Modify").'</a></li>
+	                    <li><a class="edit-phone" href="#" data-id="'.$exten.'">'.$this->lh->translationFor("modify").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-phone" href="#" data-id="'.$exten.'">'.$this->lh->translationFor("Delete").'</a></li>
+	                    <li><a class="delete-phone" href="#" data-id="'.$exten.'">'.$this->lh->translationFor("delete").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -3316,18 +3316,18 @@ error_reporting(E_ERROR | E_PARSE);
 
 	$output = $this->API_goGetAllUserLists($user);
        if($output->result=="success") {
-       	   $columns = array("     ", "Agent ID", "Agent Name", "Group", "Status", "Action");
-	       $hideOnMedium = array("Group", "Status");
-	       $hideOnLow = array( "Agent ID", "Group", "Status");
+       	   $columns = array("     ", $this->lh->translationFor("agent_id"), $this->lh->translationFor("agent_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
+	       $hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
+	       $hideOnLow = array($this->lh->translationFor("agent_id"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		
 	       // iterate through all users
 	       for($i=0;$i<count($output->user_id);$i++){
 				
 					if($output->active[$i] == "Y"){
-						$output->active[$i] = "Active";
+						$output->active[$i] = $this->lh->translationFor("active");
 					}else{
-						$output->active[$i] = "Inactive";
+						$output->active[$i] = $this->lh->translationFor("inactive");
 					}
 
 					$action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i], $output->user[$i], $perm);
@@ -3397,9 +3397,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-list" href="#" data-id="'.$id.'" data-name="'.$name.'">Modify</a></li>
+			<li><a class="edit-list" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("modify").'</a></li>
 			<li class="divider"></li>
-			<li><a class="delete-list" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li><a class="delete-list" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3732,17 +3732,17 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 
-		$columns = array("    ","Exten", "Server IP", "Status", "VMail", "Action");
-	    $hideOnMedium = array("Server IP", "Status", "VMail");
-	    $hideOnLow = array("Server IP", "Status", "VMail");
+		$columns = array("    ",$this->lh->translationFor("exten"), $this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"), $this->lh->translationFor("action"));
+	    $hideOnMedium = array($this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"));
+	    $hideOnLow = array($this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"));
 		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
 			for($i=0;$i < count($output->extension);$i++){
 
 				if($output->active[$i] == "Y"){
-					$output->active[$i] = "Active";
+					$output->active[$i] = $this->lh->translationFor("active");
 				}else{
-					$output->active[$i] = "Inactive";
+					$output->active[$i] = $this->lh->translationFor("inactive");
 				}
 
 				if($output->messages[$i] == NULL){
@@ -3753,10 +3753,10 @@ error_reporting(E_ERROR | E_PARSE);
 				}
 
 				$action = $this->getUserActionMenuForPhones($output->extension[$i]);
-                                $sessionAvatar = "<avatar username='".$output->messages[$i]."' :size='36'></avatar>";
+                $sessionAvatar = "<avatar username='".$output->messages[$i]."' :size='36'></avatar>";
 
 				$result = $result."<tr>
-                                                         <td>".$sessionAvatar."</a></td>
+                        <td>".$sessionAvatar."</a></td>
 	                    <td><a class='edit-phone' data-id='".$output->extension[$i]."'><strong>".$output->extension[$i]."</strong></a></td>
 						<td class='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
@@ -5768,7 +5768,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 
-	public function API_getAllDialStatuses($campaign_id){
+	public function API_getAllDialStatuses($campaign_id, $hotkey){
 		$url = gourl."/goDialStatus/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -6185,6 +6185,48 @@ error_reporting(E_ERROR | E_PARSE);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+		
+		return $output;
+	}
+	
+	public function API_getListAudioFiles(){
+		$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "getAllAudioFiles"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+		
+		return $output;
+	}
+	
+	public function getDialStatusesforSurvey($campaign_id){
+		$url = gourl."/goDialStatus/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "getAllDialStatuses"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["campaign_id"] = $campaign_id;
+		$postfields["hotkeys_only"] = 1;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

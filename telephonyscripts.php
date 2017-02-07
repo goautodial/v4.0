@@ -101,7 +101,7 @@
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="scripts">
 						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create scripts."></i> 
-						<b>Script Wizard » Add New Script</b>
+						<b><?php $lh->translateText("script_wizard"); ?> » <?php $lh->translateText("new_script"); ?></b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
@@ -111,13 +111,13 @@
 						<input type="hidden" name="log_user" value="<?php echo $_SESSION['user']; ?>" />
 						<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup']; ?>" />
 						<div class="row">
-							<h4>Script Details
+							<h4><?php $lh->translateText("script_details"); ?>
 	                           <br>
-	                           <small>Fill in the needed details in the form.</small>
+	                           <small><?php $lh->translateText("fill_form"); ?>.</small>
 	                        </h4>
 	                        <fieldset>
 								<div class="form-group">
-									<label class="col-sm-3 control-label" for="script_id">Script ID</label>
+									<label class="col-sm-3 control-label" for="script_id"><?php $lh->translateText("script_id"); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="script_id" id="script_id" value="<?php print_r($scripts->script_count);?>" maxlength="15" disabled required />
 										<input type="hidden" name="script_id" value="<?php print_r($scripts->script_count);?>">
@@ -126,21 +126,21 @@
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label" for="script_name">Script Name</label>
+									<label class="col-sm-3 control-label" for="script_name"><?php $lh->translateText("script_name"); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="script_name" id="script_name" placeholder="Script Name" maxlength="50" required />
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label" for="script_comments">Script Comments</label>
+									<label class="col-sm-3 control-label" for="script_comments"><?php $lh->translateText("script_comment"); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" class="form-control" name="script_comments" id="script_comments" maxlength="255" placeholder="Script Comments" />
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label" for="active">Active: </label>
+									<label class="col-sm-3 control-label" for="active"><?php $lh->translateText("active"); ?>: </label>
 									<div class="col-sm-8 mb">
 										<select name="active" class="form-control">
 											<option value="Y" selected>Yes</option>
@@ -150,7 +150,7 @@
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
-									<label for="script_text" class="col-sm-3 control-label">Script Text</label>
+									<label for="script_text" class="col-sm-3 control-label"><?php $lh->translateText("script_text"); ?></label>
 									<div class="col-sm-8 mb">
 										<div class="row">
 											<div class="col-sm-12 mb">
@@ -329,13 +329,13 @@
 								success: function(data) {
 								  // console.log(data);
 									  if(data == "success"){
-									  		swal({title: "Success",text: "Script Successfully Created!",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
+									  		swal({title: "Success",text: "<?php $lh->translateText("script_success"); ?>!",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
 
 									  		$('#finish').text("Submit");
 											$('#finish').attr("disabled", false);
 									  }
 									  else{
-										  sweetAlert("Oops...", "Something went wrong! "+data, "error");
+										  sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
 
 										  $('#finish').text("Submit");
 										  $('#finish').attr("disabled", false);
@@ -353,7 +353,7 @@
 				var id = $(this).attr('data-id');
 				//alert(extenid);
 				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="script_id" value="'+id+'" /></form>');
-				//$('body').append(form);  // This line is not necessary
+				$('body').append(form);  // This line is not necessary
 				$(form).submit();
 			});
 
@@ -363,13 +363,13 @@
 			 $(document).on('click','.delete_script',function() {
 			 	var id = $(this).attr('data-id');
 			 	swal({   
-	            	title: "Are you sure?",   
-	            	text: "This action cannot be undone.",   
+	            	title: "<?php $lh->translateText("are_you_sure"); ?>?",   
+	            	text: "<?php $lh->translateText("cannot_undo"); ?>.",   
 	            	type: "warning",   
 	            	showCancelButton: true,   
 	            	confirmButtonColor: "#DD6B55",   
-	            	confirmButtonText: "Yes, delete this script!",   
-	            	cancelButtonText: "No, cancel please!",   
+	            	confirmButtonText: "<?php $lh->translateText("delete_script"); ?>!",   
+	            	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",   
 	            	closeOnConfirm: false,   
 	            	closeOnCancel: false 
 	            	}, 
@@ -386,7 +386,7 @@
 								success: function(data) {
 								console.log(data);
 							  		if(data == 1){
-							  			swal({title: "Deleted",text: "Script Successfully Deleted!",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
+							  			swal({title: "Deleted",text: "<?php $lh->translateText("succesfully_deleted"); ?>!",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
 									}else{
 										sweetAlert("Oops...", data, "error");
 									}

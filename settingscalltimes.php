@@ -21,7 +21,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Call Times</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("call_times"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -115,7 +115,7 @@
 	    <div class="modal-content">
 	      	<div class="modal-header">
 	       		<h4 class="modal-title animated bounceInRight">
-	       			<b>Call Time Wizard » Add New Call Time</b>
+	       			<b><?php $lh->translateText("call_time_wizard"); ?> » <?php $lh->translateText("add_new_call_time"); ?> </b>
 	       			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	       		</h4>
 	      	</div>
@@ -125,12 +125,12 @@
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
 						<h4>
-							Basic Settings<br/>
-							<small>Enter your basic call time details and assign a usergroup.</small>
+							<?php $lh->translateText("call_time_header"); ?><br/>
+							<small><?php $lh->translateText("call_sub_time_header"); ?></small>
 						</h4>
 						<fieldset>
 							<div class="form-group mt">
-								<label class="control-label col-lg-4">Call Time ID</label>
+								<label class="control-label col-lg-4"><?php $lh->translateText("call_time_id"); ?></label>
 								<div class="col-lg-8 mb">
 									<label class="control-label call-time-id hide"></label>
 									<input type="text" class="form-control call-time-id-textbox" name="call_time_id" id="call_time_id" placeholder="Call Time ID (Mandatory)" title="Must be 2-10 characters only." minlength="2" maxlength="10" required>
@@ -138,19 +138,19 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-4">Call Time Name</label>
+								<label class="control-label col-lg-4"><?php $lh->translateText("call_time_name"); ?></label>
 								<div class="col-lg-8 mb">
 									<input type="text" class="form-control call-time-name" name="call_time_name" id="call_time_name" placeholder="Call Time Name (Mandatory)" maxlength="30" required>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-4">Call Time Comments</label>
+								<label class="control-label col-lg-4"><?php $lh->translateText("call_time_comments"); ?></label>
 								<div class="col-lg-8 mb">
 									<input type="text" class="form-control call-time-comments" name="call_time_comments" id="call_time_comments" placeholder="Call Time Comments (Mandatory)" maxlength="255" >
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-4">User Group</label>
+								<label class="control-label col-lg-4"><?php $lh->translateText("user_groups"); ?></label>
 								<div class="col-lg-8 mb">
 									<select class="form-control call-time-user-group select2-1" name="call_time_user_group" style="width:100%;">
 										<option value="ALL"> ALL USER GROUPS </option>
@@ -166,22 +166,22 @@
 							</div>
 						</fieldset>
 						<h4>
-							Add a Voice File<br/>
-							<small>Apply a voice file in a specific day and the time.</small>
+							<?php $lh->translateText("voice_file_header"); ?><br/>
+							<small><?php $lh->translateText("voice_file_sub_header"); ?></small>
 						</h4>
 						<fieldset>
 							<div class="form-group mt">
 								<label class="control-label col-lg-2">&nbsp;</label>
 								<div class="col-lg-10 mb">
 									<div class="row">
-										<label class="col-lg-3">Start</label>
-										<label class="col-lg-3">Stop</label>
-										<label class="col-lg-6">After Hours Audio</label>
+										<label class="col-lg-3"><?php $lh->translateText("start"); ?></label>
+										<label class="col-lg-3"><?php $lh->translateText("stop"); ?></label>
+										<label class="col-lg-6"><?php $lh->translateText("after_hours"); ?></label>
 									</div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Default</label>
+								<label class="control-label col-lg-2"><?php $lh->translateText("default"); ?></label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -207,7 +207,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Sunday</label>
+								<label class="control-label col-lg-2"><?php $lh->translateText("sunday"); ?></label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -233,7 +233,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Monday</label>
+								<label class="control-label col-lg-2"><?php $lh->translateText("monday"); ?></label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -259,7 +259,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Tuesday</label>
+								<label class="control-label col-lg-2"><?php $lh->translateText("tuesday"); ?></label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -285,7 +285,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Wednesday</label>
+								<label class="control-label col-lg-2"><?php $lh->translateText("wednesday"); ?></label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -311,7 +311,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Thursday</label>
+								<label class="control-label col-lg-2"><?php $lh->translateText("thursday"); ?></label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -337,7 +337,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Friday</label>
+								<label class="control-label col-lg-2"><?php $lh->translateText("friday"); ?></label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -363,7 +363,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-lg-2">Saturday</label>
+								<label class="control-label col-lg-2"><?php $lh->translateText("saturday"); ?></label>
 								<div class="col-lg-10 mb">
 									<div class="row">
 										<div class="col-lg-3">
@@ -470,11 +470,11 @@
 								success: function(data) {
 								    console.log(data);
 								    if(data == 1){
-								    	swal({title: "Success",text: "Call Times Successfully Created!",type: "success"},function(){window.location.href = 'settingscalltimes.php';});
+								    	swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_calltime_success"); ?>",type: "success"},function(){window.location.href = 'settingscalltimes.php';});
 		                                $('#finish').val("Submit");
 		                                $('#finish').prop("disabled", false);
 								    }else{
-								    	sweetAlert("Oops...", "Something went wrong! " + data, "error");
+								    	sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
 				                        $('#finish').val("Submit");
 				                        $('#finish').prop("disabled", false);
 								    }
@@ -490,7 +490,7 @@
 					var url = './editsettingscalltimes.php';
 					var id = $(this).attr('data-id');
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="cid" value="'+id+'" /></form>');
-					//$('body').append(form);  // This line is not necessary
+					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				});
 				
@@ -503,13 +503,13 @@
 					var log_user = '<?=$_SESSION['user']?>';
 					var log_group = '<?=$_SESSION['usergroup']?>';
                     swal({
-                        title: "Are you sure?",
-                        text: "This action cannot be undone.",
+                        title: "<?php $lh->translateText("are_you_sure"); ?>",
+                        text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
                         type: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Yes, delete this call time!",
-                        cancelButtonText: "No, cancel please!",
+                        confirmButtonText: "<?php $lh->translateText("confirm_delete_calltime"); ?>",
+                        cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
                         closeOnConfirm: false,
                         closeOnCancel: false
                         },
@@ -527,14 +527,14 @@
 		                            success: function(data) {
 		                            console.log(data);
 		                                if(data == 1){
-		                                	swal({title: "Deleted",text: "Call Time Successfully Deleted!",type: "success"},function(){window.location.href = 'settingscalltimes.php';});
+		                                	swal({title: "Deleted",text: "<?php $lh->translateText("calltime_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingscalltimes.php';});
 		                                }else{
-		                                	sweetAlert("Oops...", "Something went wrong! "+data, "error");
+		                                	sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 		                                }
 		                            }
 		                        });
 							} else {
-                                swal("Cancelled", "No action has been done :)", "error");
+                                swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
                             }
                         }
                     );

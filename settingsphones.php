@@ -334,7 +334,7 @@
 				var extenid = $(this).attr('data-id');
 				//alert(extenid);
 				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="extenid" value="'+extenid+'" /></form>');
-				//$('body').append(form);  // This line is not necessary
+				$('body').append(form);  // This line is not necessary
 				$(form).submit();
 			});
 						

@@ -21,7 +21,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?php $lh->translateText("crm"); ?></title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("crm"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
    		<!-- Call for standardized css -->
@@ -691,7 +691,7 @@ $disposition = $ui->API_getAllDispositions();
 					var id = $(this).attr('data-id');
 					//alert(extenid);
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
-					//$('body').append(form);  // This line is not necessary
+					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				});
 
