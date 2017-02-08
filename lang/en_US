@@ -851,7 +851,7 @@ per_line = "(one phone number per line, limit of 25 lines per submit.)"
 edit_list = "Edit list"
 modify_list_id = "MODIFY LIST ID :"
 list_update_success = "List Successfully Updated!"
-csv_upload = "CSV file upload complete."
+csv_upload_complete = "CSV file upload complete."
 data_processing = "Data Now Processing. Please Wait. DO NOT refresh the page."
 data_processing_complete = "Data Processing Complete !"
 

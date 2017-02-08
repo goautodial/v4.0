@@ -100,7 +100,6 @@
 				var my_form_id 				= '#upload_form'; //ID of an element for response output
 				var submit_btn  = $(this).find("input[type=button]"); //btnUpload
 	
-				  
 				formData.append('tax_file', $('input[type=file]')[0].files);
 				
 				$.ajax({
@@ -141,7 +140,7 @@
 									//var uploadMsgTotal = "Total Leads Uploaded: "+res;
 					
 									swal({
-										title: "<?php $lh->translateText('csv_upload'); ?>",
+										title: "<?php $lh->translateText('csv_upload_complete'); ?>",
 										text: "<?php $lh->translateText('data_processing'); ?>",
 										type: "info",
 										showCancelButton: false,
@@ -156,7 +155,7 @@
 						return xhr;
 					},
 					mimeType:"multipart/form-data"
-				}).done(function(res){ //
+				}).done(function(res){
 					
 					//$(result_output).html(res); //output response from server
 					//submit_btn.val("Upload").prop( "disabled", false); //enable submit button once ajax is done
@@ -264,9 +263,9 @@
 												// if no entry in user list
 												
 												if($lists->active[$i] == "Y"){
-												$lists->active[$i] = "Active";
+												$lists->active[$i] = $lh->translationFor("active");
 												}else{
-												$lists->active[$i] = "Inactive";
+												$lists->active[$i] = $lh->translationFor("inactive");
 												}
 												
 												$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i], $perm);
