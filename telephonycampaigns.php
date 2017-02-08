@@ -22,7 +22,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?php $lh->translateText("campaigns"); ?></title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("campaigns"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -138,7 +138,7 @@
                 <section class="content">
                 	<div class="panel panel-default">
                 		<div class="panel-body">
-                			<legend><?php $lh->translateText("Campaigns"); ?></legend>
+                			<legend><?php $lh->translateText("campaigns"); ?></legend>
                 <?php if ($perm->campaign->campaign_read !== 'N') { ?>
 <?php
 
@@ -162,7 +162,7 @@
 								 <!-- Campaign panel tabs-->
 									 <li role="presentation" class="active">
 										<a href="#T_campaign" aria-controls="T_campaign" role="tab" data-toggle="tab" class="bb0">
-										   <?php $lh->translateText("compaigns"); ?> </a>
+										   <?php $lh->translateText("campaigns"); ?> </a>
 									 </li>
 								<!-- Disposition panel tab -->
 									 <li role="presentation">
@@ -2323,7 +2323,7 @@
 									if(resultCheck == 1){
 										swal({
 											title: "<?php $lh->translateText("saving_campaign"); ?>?",
-											text: "<?php $lh->translateText("action_cannot_be_undon"); ?>.",
+											text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 											type: "warning",
 											showCancelButton: true,
 											confirmButtonColor: "#DD6B55",

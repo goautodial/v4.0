@@ -112,7 +112,7 @@ error_reporting(E_ALL)
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Admin Dashboard</title>
+        <title><?=$lh->translateText("portal_title")?> <?=$lh->translateText("Dashboard")?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
      
 		<!--<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />-->
@@ -184,7 +184,7 @@ error_reporting(E_ALL)
                 <section class="content-heading">
                         <!-- Page title -->
                         <?=$lh->translateText("Dashboard")?>
-                        <small class="ng-binding animated fadeInUpShort">Welcome to GOautodial !</small>
+                        <small class="ng-binding"><?=$lh->translateText("dashboard_sub-header")?></small>
                 </section>
 
 				<!-- Main content -->
@@ -192,53 +192,53 @@ error_reporting(E_ALL)
 					
 					<!-- STATUS BOXES -->
 					<div class="row">
-						<div class="col-lg-3 col-sm-6 animated fadeInUpShort">
+						<div class="col-lg-3 col-sm-6">
 							<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" data-status="ACTIVE" data-id="" style="text-decoration : none">
 								<div class="panel widget bg-purple" style="height: 95px;">
 									<div class="row status-box">
-										<div class="col-xs-4 text-center bg-purple-dark pv-md animated fadeInUpShort">
+										<div class="col-xs-4 text-center bg-purple-dark pv-md">
 											<em class="icon-earphones fa-3x"></em>
 										</div>
 										<div class="col-xs-8 pv-lg" style="padding-top:10px !important;">
 											<div class="h2 mt0"><span class="text-lg" id="refresh_totalagentscall"></span></div>
-											<div class="text-sm">Agent(s) On Call</div>
+											<div class="text-sm"><?=$lh->translateText("agents_on_call")?></div>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
-						<div class="col-lg-3 col-md-6 animated fadeInUpShort">
+						<div class="col-lg-3 col-md-6">
 							<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" data-id="" style="text-decoration : none">
 								<div class="panel widget bg-purple" style="height: 95px;">
 									<div class="row status-box">
-										<div class="col-xs-4 text-center bg-purple-dark pv-md animated fadeInUpShort">
+										<div class="col-xs-4 text-center bg-purple-dark pv-md">
 											<em class="icon-clock fa-3x"></em>
 										</div>
 										<div class="col-xs-8 pv-lg" style="padding-top:10px !important;">
 											<div class="h2 mt0"><span class="text-lg" id="refresh_totalagentswaitcalls"></span></div>
-											<div class="text-sm">Agent(s) Waiting</div>
+											<div class="text-sm"><?=$lh->translateText("agents_waiting")?></div>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
-						<div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
+						<div class="col-lg-3 col-md-6 col-sm-12">
 							<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" data-status="PAUSED" data-id="" style="text-decoration : none">
 								<div class="panel widget bg-green" style="height: 95px;">
 										<div class="row status-box">
-										<div class="col-xs-4 text-center bg-gray-dark pv-md animated fadeInUpShort">
+										<div class="col-xs-4 text-center bg-gray-dark pv-md">
 											<em class="icon-hourglass fa-3x"></em>
 										</div>
 										<div class="col-xs-8 pv-lg" style="padding-top:10px !important;">
 											<div class="h2 mt0"><span class="text-lg" id="refresh_totalagentspaused"></span></div>
-											<div class="text-sm">Agent(s) On Paused</div>
+											<div class="text-sm"><?=$lh->translateText("agents_on_pause")?></div>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
 						<!-- date widget    -->
-						<div class="col-lg-3 col-md-6 col-sm-12 animated fadeInUpShort">
+						<div class="col-lg-3 col-md-6 col-sm-12">
 							<div class="panel widget" style="height: 95px;">
 								<div class="row status-box">
 									<div class="col-xs-4 text-center bg-green pv-lg">
@@ -263,7 +263,7 @@ error_reporting(E_ALL)
 							<div class="row">
 							  <div id="panelChart9" ng-controller="FlotChartController" class="panel panel-default">
 								 <div class="panel-heading">
-									<div class="panel-title">Calls Per Hour</div>
+									<div class="panel-title"><?=$lh->translateText("calls_per_hour")?></div>
 								 </div>
 								 <div collapse="panelChart9" class="panel-wrapper">
 									<div class="panel-body">
@@ -281,27 +281,27 @@ error_reporting(E_ALL)
 									<a href="#" data-toggle="modal" data-target="#realtime_calls_monitoring">
 										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info pv-xl info_sun_boxes">
 											<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
-											<div class="text-white">Realtime Calls Monitoring</div></a>                                        
+											<div class="text-white"><?=$lh->translateText("realtime_calls_monitor")?></div></a>                                        
 										</div>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_RingingCalls"></span></div>
-										<div class="text">Ringing Calls</div>
+										<div class="text"><?=$lh->translateText("ringing_calls")?></div>
 									</div>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_IncomingQueue"></span></div>
-										<div class="text">Incoming Calls</div>
+										<div class="text"><?=$lh->translateText("incoming_calls")?></div>
 									</div>	                	
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_AnsweredCalls"></span></div>
-											<div class="text">Answered Calls</div>
+											<div class="text"><?=$lh->translateText("answered_calls")?></div>
 									</div>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalInCalls"></span></div>
-										<div class="text">Inbound Calls Today</div>
+										<div class="text"><?=$lh->translateText("inbound_calls_today")?></div>
 									</div>	                	
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalOutCalls"></span></div>
-											<div class="text" style="font-size: small;">Outbound Calls Today</div>
+											<div class="text" style="font-size: small;"><?=$lh->translateText("outbound_calls_today")?></div>
 									</div>
 								</div>
 							</div>
@@ -310,7 +310,7 @@ error_reporting(E_ALL)
 							<div class="row">
 								<div class="panel panel-default" tabindex="-1">
 									<div class="panel-heading">
-										<div class="panel-title"><h4>Cluster Status</h4></div>
+										<div class="panel-title"><h4><?=$lh->translateText("cluster_status")?></h4></div>
 									</div>
 									<div class="responsive">
 										<div class="col-sm-12">
@@ -318,13 +318,13 @@ error_reporting(E_ALL)
 												<thead>
 													<tr>
 														<th style="color: white;">Pic</th>
-														<th style="font-size: small;">Server ID</th>
-														<th style="font-size: small;">Server IP</th>
-														<th style="font-size: small;">Active</th>
-														<th style="font-size: small;">Load</th>
-														<th style="font-size: small;">Channels</th>
-														<th style="font-size: small;">Disk</th>
-														<th style="font-size: small;">Date and Time</th>
+														<th style="font-size: small;"><?=$lh->translateText("server_id")?></th>
+														<th style="font-size: small;"><?=$lh->translateText("server_ip")?></th>
+														<th style="font-size: small;"><?=$lh->translateText("active")?></th>
+														<th style="font-size: small;"><?=$lh->translateText("load")?></th>
+														<th style="font-size: small;"><?=$lh->translateText("channels")?></th>
+														<th style="font-size: small;"><?=$lh->translateText("disk")?></th>
+														<th style="font-size: small;"><?=$lh->translateText("date_and_time")?></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -361,7 +361,7 @@ error_reporting(E_ALL)
 									}
 								?>
 							   <div class="panel-body">
-									<div class="panel-title">Dropped Calls Percentage</div>
+									<div class="panel-title"><?=$lh->translateText("dropped_calls_percentage")?></div>
 									<center>
 										<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 											<input type="text"
@@ -391,7 +391,7 @@ error_reporting(E_ALL)
 								   <div class="panel-footer">
 										<p class="text-muted">
 											<em class="fa fa-upload fa-fw"></em>
-											<span>Dropped Calls: </span>
+											<span><?=$lh->translateText("dropped_calls")?>: </span>
 											<span class="text-dark" id="refresh_DroppedCalls"></span>
 										</p>
 								   </div>
@@ -402,7 +402,7 @@ error_reporting(E_ALL)
 							<!-- TASK ACTIVITIES -->
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<div class="panel-title">Campaign Leads Resources</div>
+									<div class="panel-title"><?=$lh->translateText("campaign_leads_resources")?></div>
 								</div>
 								<div class="list-group">
 									<div class="list-group-item">
@@ -411,7 +411,7 @@ error_reporting(E_ALL)
 								 </div>                     
 								<div class="panel-footer clearfix">
 									<a href="#" data-toggle="modal" data-target="#campaigns_monitoring" class="pull-right">
-										<medium>View more</medium> <em class="fa fa-arrow-right"></em>
+										<medium><?=$lh->translateText("view_more")?></medium> <em class="fa fa-arrow-right"></em>
 									</a>
 								</div>
 							</div>
@@ -425,14 +425,14 @@ error_reporting(E_ALL)
 						<div class="col-lg-3">
 							<div class="panel panel-default">
 							   <div class="panel-heading">
-								  <div class="panel-title">Agent Monitoring Summary</div>
+								  <div class="panel-title"><?=$lh->translateText("agent_monitoring_summary")?></div>
 							   </div>
 							   <div data-height="230" data-scrollable="yes" class="list-group">
 									<span id="refresh_agents_monitoring_summary"></span>
 							   </div>
 							   <div class="panel-footer clearfix">
 									<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" class="pull-right">
-										<medium>View more</medium> <em class="fa fa-arrow-right"></em>
+										<medium><?=$lh->translateText("view_more")?></medium> <em class="fa fa-arrow-right"></em>
 									</a>
 							   </div>
 							</div>
@@ -470,23 +470,22 @@ error_reporting(E_ALL)
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4>Realtime Agents Monitoring</h4>
+						<h4><?=$lh->translateText("realtime_agents_monitoring")?></h4>
 					</div>
 					<div class="modal-body">
 						<div class="content table-responsive table-full-width">
 						<!-- <div class="col-sm-12">-->
 							<table class="table table-striped table-hover display compact" id="realtime_agents_monitoring_table" style="width: 100%">
 								<thead>                                            
-										<th style="color: white;">Pic</th>
-										<th style="font-size: small;">Agent Name</th>                                                    
-										<th style="font-size: small;">Group</th>
-										<th style="font-size: small;">Status</th>
-										<th style="font-size: small;">Phone Number</th>
-										<th style="font-size: small;">MM:SS</th>
-										<th style="font-size: small;">Campaign</th>                                                    
+									<th style="color: white;">Pic</th>
+									<th style="font-size: small;"><?=$lh->translateText("agent_name")?></th>                                                    
+									<th style="font-size: small;"><?=$lh->translateText("user_group")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("status")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("phone_number")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("mm:ss")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("campaign")?></th>                                                    
 								</thead>
 								<tbody>
-
 								</tbody>
 							</table>
 						<!--</div>-->
@@ -503,7 +502,7 @@ error_reporting(E_ALL)
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4>Realtime Calls Monitoring</h4>
+						<h4><?=$lh->translateText("realtime_calls_monitoring")?></h4>
 					</div>
 					<div class="modal-body">
 						<div class="responsive">
@@ -511,11 +510,11 @@ error_reporting(E_ALL)
 							<table class="table table-striped table-hover display compact" id="realtime_calls_monitoring_table" style="width: 100%">
 								<thead>
 										<th style="color: white;">Pic</th>
-										<th style="font-size: small;">Status</th>                                                    
-										<th style="font-size: small;">Phone Number </th>
-										<th style="font-size: small;">Call Type</th>                                                    
-										<th style="font-size: small;">Campaign</th>
-										<th style="font-size: small;">MM:SS</th>
+										<th style="font-size: small;"><?=$lh->translateText("status")?></th>                                                    
+										<th style="font-size: small;"><?=$lh->translateText("phone_number")?></th>
+										<th style="font-size: small;"><?=$lh->translateText("call_type")?></th>                                                    
+										<th style="font-size: small;"><?=$lh->translateText("campaign")?></th>
+										<th style="font-size: small;"><?=$lh->translateText("mm:ss")?></th>
 										<!-- <th>User Group</th> -->
 								</thead>
 								<tbody>
@@ -536,7 +535,7 @@ error_reporting(E_ALL)
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4>Campaigns Monitoring</h4>
+						<h4><?=$lh->translateText("campaigns_monitoring")?></h4>
 					</div>
 					<div class="modal-body">
 						<div class="responsive">
@@ -544,11 +543,11 @@ error_reporting(E_ALL)
 							<table id="campaigns_monitoring_table" class="table table-striped table-hover display compact" cellspacing="0" style="width: 100%">
 								<thead>
 										<th style="color: white;">Pic</th>
-										<th style="font-size: small;">Campaign ID</th>                                                    
-										<th style="font-size: small;">Campaign Name</th>
-										<th style="font-size: small;">Leads on Hopper</th>
-										<th style="font-size: small;">Call Times</th>                                                  
-										<th style="font-size: small;">User Group</th>                                                    
+										<th style="font-size: small;"><?=$lh->translateText("campaign_id")?></th>                                                    
+										<th style="font-size: small;"><?=$lh->translateText("campaign_name")?></th>
+										<th style="font-size: small;"><?=$lh->translateText("leads_on_hopper")?></th>
+										<th style="font-size: small;"><?=$lh->translateText("call_times")?></th>                                                  
+										<th style="font-size: small;"><?=$lh->translateText("user_group")?></th>                                                    
 								</thead>
 								<tbody>
 								
@@ -568,7 +567,7 @@ error_reporting(E_ALL)
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4>Service Level Agreement Monitoring</h4>
+						<h4><?=$lh->translateText("service_level_agreement_monitoring")?></h4>
 					</div>
 					<div class="modal-body">
 						<div class="responsive">
@@ -576,13 +575,13 @@ error_reporting(E_ALL)
 							<table class="table table-striped table-hover display compact" id="realtime_sla_monitoring_table" style="width: 100%">
 								<thead>
 										<th style="color: white;">Pic</th>
-										<th style="font-size: small;">User Groups</th>                                                    
-										<th style="font-size: small;">Calls Today</th>
-										<th style="font-size: small;">Answered Calls</th>                                                    
-										<th style="font-size: small;">Ans Calls Less 20s</th>
-										<th style="font-size: small;">Abandon</th>
-										<th style="font-size: small;">SLA</th>
-										<th style="font-size: small;">AHT</th>                                                    
+										<th style="font-size: small;"><?=$lh->translateText("user_groups")?></th>                                                    
+										<th style="font-size: small;"><?=$lh->translateText("calls_today")?></th>
+										<th style="font-size: small;"><?=$lh->translateText("answered_calls")?></th>                                                    
+										<th style="font-size: small;"><?=$lh->translateText("ans_calls_less_20s")?></th>
+										<th style="font-size: small;"><?=$lh->translateText("abandon")?></th>
+										<th style="font-size: small;"><?=$lh->translateText("sla")?>SLA</th>
+										<th style="font-size: small;"><?=$lh->translateText("aht")?>AHT</th>                                                    
 										<!-- <th>User Group</th> -->
 								</thead>
 								<tbody>
@@ -603,14 +602,14 @@ error_reporting(E_ALL)
 				<div class="modal-content"> 
 					<div class="modal-header"> 
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-						<h4 class="modal-title">More about <span id="modal-username"></span>:</h4> 
+						<h4 class="modal-title"><?=$lh->translateText("more_about")?><span id="modal-username"></span>:</h4> 
 					</div>
 					<div class="modal-body" style="min-height: initial;"> 
 						<center> 
 							<div id="modal-avatar"></div>
 							<!--<img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle">-->
 							<h3 class="media-heading"><span id="modal-fullname"></span> <small></small></h3>
-							<span><strong>Logged-in to:</strong></span> 
+							<span><strong><?=$lh->translateText("logged_into")?>:</strong></span> 
 							<span class="label label-warning" id="modal-phonelogin-vu"></span> 
 							<span class="label label-info" id="modal-campaign"></span> 
 							<!-- <span class="label label-info" id="modal-userlevel-vu"></span> -->
@@ -621,11 +620,11 @@ error_reporting(E_ALL)
 						<div class="responsive hidden">
 							<table class="table table-striped table-hover" id="view_agent_information_table" style="width: 100%">
 								<thead>
-									<th style="font-size: small;">Agent ID</th> 
+									<th style="font-size: small;"><?=$lh->translateText("agent_id")?></th> 
 									<!-- <th style="font-size: small;">Agent Phone</th> -->
-									<th style="font-size: small;">Status</th>                                                                
-									<th style="font-size: small;">Cust Phone</th>
-									<th style="font-size: small;">MM:SS</th>
+									<th style="font-size: small;"><?=$lh->translateText("status")?></th>                                                                
+									<th style="font-size: small;"><?=$lh->translateText("cust_phone")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("mm:ss")?></th>
 								</thead>
 								<tbody>
 								</tbody>
@@ -634,14 +633,14 @@ error_reporting(E_ALL)
 					</div>
 					<div class="modal-footer">
 						<a href="#" class="pull-right" onClick="goGetModalUsernameValue();">
-							<button class="btn btn-danger btn-sm">Emergency Logout &nbsp;<i class="fa fa-arrow-right"></i></button>
+							<button class="btn btn-danger btn-sm"><?=$lh->translateText("emergency_logout")?> &nbsp;<i class="fa fa-arrow-right"></i></button>
 						</a>
 						<div class="pull-left">
 							<a href="#" onClick="goGetInSession('BARGE');">
-								<button class="btn btn-success btn-sm">Barge &nbsp;<i class="fa fa-microphone"></i></button>
+								<button class="btn btn-success btn-sm"><?=$lh->translateText("barge")?> &nbsp;<i class="fa fa-microphone"></i></button>
 							</a>
 							<a href="#" onClick="goGetInSession('MONITOR');">
-								<button class="btn btn-primary btn-sm">Listen &nbsp;<i class="fa fa-microphone-slash"></i></button>
+								<button class="btn btn-primary btn-sm"><?=$lh->translateText("listen")?> &nbsp;<i class="fa fa-microphone-slash"></i></button>
 							</a>
 						</div>
 					</div> 
@@ -656,14 +655,14 @@ error_reporting(E_ALL)
 				<div class="modal-content"> 
 					<div class="modal-header"> 
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-						<h4 class="modal-title">More about campaign ID: <span id="modal-campaignid-mod"></span></h4> 
+						<h4 class="modal-title"><?=$lh->translateText("more_about_campaign_id")?>: <span id="modal-campaignid-mod"></span></h4> 
 					</div>
 					<div class="modal-body"> 
 						<center> 
 							<div id="modal-avatar-campaign"></div>
 							<!--<img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle">-->
 							<h3 class="media-heading"><span id="modal-campaignname-mod"></span></h3> 
-							<span>Campaign Details: </span> 
+							<span><?=$lh->translateText("campaign_details")?>: </span> 
 							<span class="label label-info" id="modal-camptype"></span> 
 							<span class="label label-info" id="modal-dial_method"></span> 
 							<span class="label label-info" id="modal-auto_dial_level-mod"></span>                                    
@@ -672,12 +671,12 @@ error_reporting(E_ALL)
 						<div class="responsive">
 							<table class="table table-striped table-hover" id="view_campaign_information_table" style="width: 100%">
 								<thead>
-									<th style="font-size: small;">Campaign CID</th> 
-									<th style="font-size: small;">Call Recordings</th>
+									<th style="font-size: small;"><?=$lh->translateText("campaign_cid")?></th> 
+									<th style="font-size: small;"><?=$lh->translateText("call_recordings")?></th>
 									<!-- <th style="font-size: small;">Campaign ID</th> -->                                                            
 									<!-- <th style="font-size: small;">Phone Number</th> -->
-									<th style="font-size: small;">Calling Hours</th>
-									<th style="font-size: small;">Script</th>
+									<th style="font-size: small;"><?=$lh->translateText("calling_hours")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("script")?></th>
 								</thead>
 								<tbody>
 									<tr>

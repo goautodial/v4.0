@@ -225,36 +225,9 @@ error_reporting(E_ERROR | E_PARSE);
 	    $table = "<table id=\"$id\" class=\"table $styles\"><thead $theadStyle><tr>";
 	    if (is_array($items)) {
 			foreach ($items as $item) {
-				//telephony
-					if($item == "active"){$item = "status";}
-					if($item == "agentid"){$item = "Agent ID";}
-					if($item == "full_name"){$item = "Agent Name";}
-					if($item == "user_level"){$item = "Level";}
-					if($item == "user_group"){$item = "Group";}
-					if($item == "campaign_id"){$item = "Campaign ID";}
-					if($item == "campaign_name"){$item = "Campaign Name";}
-					if($item == "dial_method"){$item = "Dial Method";}
-					if($item == "list_id"){$item = "List ID";}
-					if($item == "list_name"){$item = "Name";}
-					if($item == "list_lastcalldate"){$item = "Last Call Date";}
-					if($item == "tally"){$item = "Leads Count";}
-					if($item == "moh_id"){$item = "MOH ID";}
-					if($item == "moh_name"){$item = "MOH Name";}
-					if($item == "random"){$item = "Random Order";}
-					if($item == "file_name"){$item = "FileName";}
-					if($item == "file_date"){$item = "Date";}
-					if($item == "file_size"){$item = "Size";}
-					//inbound
-						if($item == "group_id"){$item = "In-Group";}
-						if($item == "group_name"){$item = "Descriptions";}
-						if($item == "queue_priority"){$item = "Priority";}
-						if($item == "call_time_id"){$item = "Time";}
-				//contacts
-				if($item == "lead_id"){$item = "id";}
 		    	if($item == "CONCAT_WS(' ', first_name, middle_initial, last_name)"){
 		    		$item = "Name";
 		    	}
-		    	if($item == "phone_number"){$item = "Phone";}
 			    // class modifiers for hiding classes in medium or low resolutions.
 			    $classModifiers = "class=\"";
 			    if (in_array($item, $hideOnMedium)) { $classModifiers .= " hide-on-medium "; }
@@ -1062,9 +1035,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li><a class="edit-contact" data-id="'.$lead_id.'">'.$this->lh->translationFor("Contact Details").'</a></li>
+	                    <li><a class="edit-contact" data-id="'.$lead_id.'">'.$this->lh->translationFor("contact_details").'</a></li>
 	                    <li class="divider"></li>
-	                    <li><a class="delete-contact" data-id="'.$lead_id.'">'.$this->lh->translationFor("Delete").'</a></li>
+	                    <li><a class="delete-contact" data-id="'.$lead_id.'">'.$this->lh->translationFor("delete").'</a></li>
 	                </ul>
 	            </div>';
 	}
@@ -1096,10 +1069,10 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li'.($perm->user_update === 'N' ? ' class="hidden"' : '').'><a class="edit-T_user" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("Modify").'</a></li>
-	                    <li><a class="emergency-logout" href="#" data-emergency-logout-username="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("Emergency Logout").'</a></li>
+	                    <li'.($perm->user_update === 'N' ? ' class="hidden"' : '').'><a class="edit-T_user" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li><a class="emergency-logout" href="#" data-emergency-logout-username="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("emergency_logout").'</a></li>
 	                    <li class="divider'.($perm->user_delete === 'N' ? ' hidden' : '').'"></li>
-	                    <li'.($perm->user_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("Delete").'</a></li>
+	                    <li'.($perm->user_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1114,11 +1087,11 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li'.(($perm->list->list_update === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Modify</a></li>
-			<li'.(($perm->customfields->customfields_create === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="copy-custom-fields" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Copy List Custom Fields</a></li>
-			<li'.($perm->list->list_download === 'N' ? ' class="hidden"' : '').'><a class="download-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Download List</a></li>
+			<li'.(($perm->list->list_update === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li'.(($perm->customfields->customfields_create === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="copy-custom-fields" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("copy_list_custom_fields").'</a></li>
+			<li'.($perm->list->list_download === 'N' ? ' class="hidden"' : '').'><a class="download-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("download_list").'</a></li>
 			<li class="divider'.(($perm->list->list_delete === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' hidden' : '').'"></li>
-			<li'.(($perm->list->list_delete === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">Delete</a></li>
+			<li'.(($perm->list->list_delete === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1135,9 +1108,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li'.($perm->inbound->inbound_update === 'N' ? ' class="hidden"' : '').'><a class="edit-ingroup" href="#" data-id="'.$groupid.'">Modify</a></li>
+	                    <li'.($perm->inbound->inbound_update === 'N' ? ' class="hidden"' : '').'><a class="edit-ingroup" href="#" data-id="'.$groupid.'">'.$this->lh->translationFor("modify").'</a></li>
 	                    <li class="divider'.(($perm->inbound->inbound_update === 'N' || $perm->inbound->inbound_delete === 'N') ? ' hidden' : '').'"></li>
-	                    <li'.($perm->inbound->inbound_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-ingroup" href="#" data-id="'.$groupid.'">Delete</a></li>
+	                    <li'.($perm->inbound->inbound_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-ingroup" href="#" data-id="'.$groupid.'">'.$this->lh->translationFor("delete").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1152,9 +1125,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li'.($perm->ivr->ivr_update === 'N' ? ' class="hidden"' : '').'><a class="edit-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Modify</a></li>
+	                    <li'.($perm->ivr->ivr_update === 'N' ? ' class="hidden"' : '').'><a class="edit-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">'.$this->lh->translationFor("modify").'</a></li>
 	                    <li class="divider'.(($perm->ivr->ivr_update === 'N' || $perm->ivr->ivr_delete === 'N') ? ' hidden' : '').'"></li>
-	                    <li'.($perm->ivr->ivr_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">Delete</a></li>
+	                    <li'.($perm->ivr->ivr_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-ivr" href="#" data-id="'.$ivr.'" data-desc="'.$desc.'">'.$this->lh->translationFor("delete").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1169,9 +1142,9 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li'.($perm->did->did_update === 'N' ? ' class="hidden"' : '').'><a class="edit-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Modify</a></li>
+	                    <li'.($perm->did->did_update === 'N' ? ' class="hidden"' : '').'><a class="edit-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">'.$this->lh->translationFor("modify").'</a></li>
 	                    <li class="divider'.(($perm->did->did_update === 'N' || $perm->did->did_delete === 'N') ? ' hidden' : '').'"></li>
-	                    <li'.($perm->did->did_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">Delete</a></li>
+	                    <li'.($perm->did->did_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-phonenumber" href="#" data-id="'.$did.'" data-desc="'.$desc.'">'.$this->lh->translationFor("delete").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -3447,9 +3420,9 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 
-		$columns = array("User Group", "Group Name", "Type", "Forced Timeclock", "Action");
-	    $hideOnMedium = array("Type", "Forced Timeclock");
-	    $hideOnLow = array("User Group", "Type", "Forced Timeclock");
+		$columns = array($this->lh->translationFor('user_group'), $this->lh->translationFor('group_name'), $this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock'), $this->lh->translationFor('action'));
+	    $hideOnMedium = array($this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock'));
+	    $hideOnLow = array($this->lh->translationFor('user_group'), $this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock'));
 		$result = $this->generateTableHeaderWithItems($columns, "usergroups_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
 
@@ -3490,9 +3463,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">Modify</a></li>
+			<li><a class="edit-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("modify").'</a></li>
 			<li class="divider"></li>
-			<li><a class="delete-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li><a class="delete-usergroup" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3806,9 +3779,9 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 
-		$columns = array("Voicemail ID", "Name", "Status", "New Messages", "Old Messages", "Delete", "User Group", "Action");
-	    $hideOnMedium = array("Status", "New Messages", "Old Messages", "Delete", "User Group");
-	    $hideOnLow = array("Voicemail ID", "Status", "New Messages", "Old Messages", "Delete", "User Group");
+		$columns = array($this->lh->translationFor('voicemail_id'), $this->lh->translationFor('name'), $this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
+	    $hideOnMedium = array($this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group'));
+	    $hideOnLow = array($this->lh->translationFor('voicemail_id'), $this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group'));
 		$result = $this->generateTableHeaderWithItems($columns, "voicemails_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
 			for($i=0;$i < count($output->voicemail_id);$i++){
@@ -3851,9 +3824,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">Modify</a></li>
+			<li><a class="edit-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("modify").'</a></li>
 			<li class="divider"></li>
-			<li><a class="delete-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li><a class="delete-voicemail" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
@@ -3940,11 +3913,11 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li'.($perm->campaign->campaign_update === 'N' ? ' class="hidden"' : '').'><a class="edit-campaign" href="#" data-id="'.$id.'">View Details</a></li>
-      <li'.($perm->pausecodes->pausecodes_read === 'N' ? ' class="hidden"' : '').'><a class="view-pause-codes" href="#" data-id="'.$id.'">View Pause Codes</a></li>
-      <li'.($perm->hotkeys->hotkeys_read === 'N' ? ' class="hidden"' : '').'><a class="view-hotkeys" href="#" data-id="'.$id.'">View Hotkeys</a></li>
-	  <li'.($perm->list->list_read === 'N' ? ' class="hidden"' : '').'><a class="view-lists" href="#" data-id="'.$id.'">View Lists</a></li>
-			<li'.($perm->campaign->campaign_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li'.($perm->campaign->campaign_update === 'N' ? ' class="hidden"' : '').'><a class="edit-campaign" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_details").'</a></li>
+      <li'.($perm->pausecodes->pausecodes_read === 'N' ? ' class="hidden"' : '').'><a class="view-pause-codes" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_pause_codes").'</a></li>
+      <li'.($perm->hotkeys->hotkeys_read === 'N' ? ' class="hidden"' : '').'><a class="view-hotkeys" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_hotkeys").'</a></li>
+	  <li'.($perm->list->list_read === 'N' ? ' class="hidden"' : '').'><a class="view-lists" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_lists").'</a></li>
+			<li'.($perm->campaign->campaign_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4064,8 +4037,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class='sr-only'>Toggle Dropdown</span>
 		    </button>
 		    <ul class='dropdown-menu' role='menu'>
-			<li><a class='play_audio' href='#' data-location='".$location."' data-details='".$details."'>Play Call Recording</a></li>
-			<li><a class='download-call-recording' href='".$location."' download>Download Call Recording</a></li>
+			<li><a class='play_audio' href='#' data-location='".$location."' data-details='".$details."'>".$this->lh->translationFor('play_call_recording')."</a></li>
+			<li><a class='download-call-recording' href='".$location."' download>".$this->lh->translationFor('download_call_recording')."</a></li>
 		    </ul>
 		</div>";
 	}
@@ -4153,8 +4126,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li'.($perm->moh_update === 'N' ? ' class="hidden"' : '').'><a class="edit-moh" href="#" data-id="'.$id.'">Modify</a></li>
-			<li'.($perm->moh_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-moh" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li'.($perm->moh_update === 'N' ? ' class="hidden"' : '').'><a class="edit-moh" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li'.($perm->moh_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-moh" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4250,7 +4223,7 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li'.($perm->voicefiles_play === 'N' ? ' class="hidden"' : '').'><a class="play_voice_file" href="#" data-location="'.$file_link.'" data-details="'.$details.'">Play Voice File</a></li>
+			<li'.($perm->voicefiles_play === 'N' ? ' class="hidden"' : '').'><a class="play_voice_file" href="#" data-location="'.$file_link.'" data-details="'.$details.'">'.$this->lh->translationFor("play_voice_file").'</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4340,8 +4313,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li'.($perm->script_update === 'N' ? ' class="hidden"' : '').'><a class="edit_script" href="#" data-id="'.$id.'">Modify</a></li>
-			<li'.($perm->script_delete === 'N' ? ' class="hidden"' : '').'><a class="delete_script" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li'.($perm->script_update === 'N' ? ' class="hidden"' : '').'><a class="edit_script" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li'.($perm->script_delete === 'N' ? ' class="hidden"' : '').'><a class="delete_script" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4383,9 +4356,9 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 	    # Result was OK!
 
-        $columns = array("Call Time ID", "Call Time Name", "Default Start", "Default Stop", "Group", "Action");
-        $hideOnMedium = array("Call Time ID", "Default Start", "Default Stop", "Group");
-		$hideOnLow = array( "Call Time ID", "Default Start", "Default Stop", "Group");
+        $columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
+        $hideOnMedium = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'));
+		$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'));
 
 		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
@@ -4426,8 +4399,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">Modify</a></li>
-			<li><a class="delete-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li><a class="edit-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li><a class="delete-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4466,9 +4439,9 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 	    # Result was OK!
 
-        $columns = array("Server ID", "Server Name", "Server IP", "Status", "Asterisk", "Trunks", "GMT", "Action");
-        $hideOnMedium = array("Asterisk", "Trunks", "GMT");
-		$hideOnLow = array("Server IP", "Server Name", "Status", "Asterisk", "Trunks", "GMT");
+        $columns = array($this->lh->translationFor('server_id'), $this->lh->translationFor('server_name'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'), $this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'), $this->lh->translationFor('action'));
+        $hideOnMedium = array($this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'));
+		$hideOnLow = array($this->lh->translationFor('server_ip'), $this->lh->translationFor('server_name'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'),$this->lh->translationFor('gmt'));
 
 		$result = $this->generateTableHeaderWithItems($columns, "servers_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
@@ -4510,8 +4483,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-server" href="#" data-id="'.$id.'">Modify</a></li>
-			<li><a class="delete-server" href="#" data-id="'.$id.'">Delete</a></li>
+			<li><a class="edit-server" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li><a class="delete-server" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4550,9 +4523,9 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 	    # Result was OK!
 
-        $columns = array("Carrier ID", "Carrier Name", "Server IP", "Protocol", "Status", "Action");
-        $hideOnMedium = array("Server IP", "Protocol");
-		$hideOnLow = array( "Carrier ID", "Server IP", "Protocol", "Status");
+        $columns = array($this->lh->translationFor('carrier_id'), $this->lh->translationFor('carrier_name'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('protocol'), $this->lh->translationFor('status'), $this->lh->translationFor('action'));
+        $hideOnMedium = array($this->lh->translationFor('server_ip'), $this->lh->translationFor('protocol'));
+		$hideOnLow = array( $this->lh->translationFor('carrier_id'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('protocol'), $this->lh->translationFor('status'));
 
 		$result = $this->generateTableHeaderWithItems($columns, "carriers", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
@@ -4592,8 +4565,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-carrier" href="#" data-id="'.$id.'">Modify</a></li>
-			<li><a class="delete-carrier" href="#" data-id="'.$id.'">Delete</a></li>
+			<li><a class="edit-carrier" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li><a class="delete-carrier" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
@@ -5641,9 +5614,9 @@ error_reporting(E_ERROR | E_PARSE);
 		$output = $this->API_GetLeads($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit, $search_customers);
 	       if($output->result=="success") {
 
-       	   $columns = array("Lead ID", "Full Name", "Phone Number", "Status", "Action");
-	       $hideOnMedium = array("Lead ID", "Status");
-	       $hideOnLow = array( "Lead ID", "Phone Number", "Status");
+       	   $columns = array($this->lh->translationFor('lead_id'), $this->lh->translationFor('full_name'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('status'), $this->lh->translationFor('action'));
+	       $hideOnMedium = array($this->lh->translationFor('lead_id'), $this->lh->translationFor('status'));
+	       $hideOnLow = array( $this->lh->translationFor('lead_id'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('status'));
 		   $result = $this->generateTableHeaderWithItems($columns, "table_contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
 			for($i=0;$i<=count($output->list_id);$i++){
@@ -5768,7 +5741,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 
-	public function API_getAllDialStatuses($campaign_id, $hotkey){
+	public function API_getAllDialStatuses($campaign_id){
 		$url = gourl."/goDialStatus/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -6195,27 +6168,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		return $output;
 	}
-	
-	public function API_getListAudioFiles(){
-		$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "getAllAudioFiles"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = responsetype; #json. (required)
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
 		
-		return $output;
-	}
-	
 	public function getDialStatusesforSurvey($campaign_id){
 		$url = gourl."/goDialStatus/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)

@@ -55,8 +55,8 @@ $dids = $ui->API_getAllDIDs($campaign->data->campaign_id);
 $voicefiles = $ui->API_GetVoiceFilesList();
 $ingroups = $ui->API_getInGroups();
 $ivr = $ui->API_getIVR();
-$lists = $ui->API_goGetAllLists();
-$audiofiles = $ui->API_getListAudioFiles();
+//$lists = $ui->API_goGetAllLists();
+//$audiofiles = $ui->API_getListAudioFiles();
 ?>
 <html>
     <head>

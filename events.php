@@ -50,7 +50,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Creamy</title>
+        <title><?php $lh->translateText("portal_title"); ?> - <?php $lh->translateText("events"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -91,11 +91,6 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 
-        <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			})
-		</script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -177,7 +172,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 		            <!-- EDIT events -->
 		             <div class="box box-default">
 		                <div class="box-header with-border">
-		                  <h4 class="box-title">Edit Events</h4>
+		                  <h4 class="box-title"><?php $lh->translateText("edit_events"); ?></h4>
 		                </div>
 		                <div class="box-body">
 		                  <!-- edit events -->
@@ -214,8 +209,6 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 			    </div><!-- /.modal -->		
 
 				<!-- /CHANGE TASK MODAL -->
-
-
 		            <div class="col-md-8">
 		              <div class="box box-default">
 		                <div class="box-body no-padding">
@@ -224,12 +217,8 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 		                </div><!-- /.box-body -->
 		              </div><!-- /. box -->
 		            </div><!-- /.col -->
+					
 		          </div><!-- /.row -->
-
-		       
-
-
-
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
             <?php print $ui->creamyFooter(); ?>

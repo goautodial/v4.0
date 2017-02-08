@@ -32,7 +32,7 @@ if (isset($_POST["cid"])) {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Edit Carrier</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("Carrier Edit"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!-- Call for standardized css -->
@@ -58,7 +58,7 @@ if (isset($_POST["cid"])) {
                 <section class="content-header">
                     <h1 style="font-weight:normal;">
                         <?php $lh->translateText("settings"); ?>
-                        <small><?php $lh->translateText("Carrier Edit"); ?></small>
+                        <small><?php $lh->translateText("carrier_edit"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -122,7 +122,7 @@ if (isset($_POST["cid"])) {
 					<div role="tabpanel">
 					<!--<div class="nav-tabs-custom">-->
 						<ul role="tablist" class="nav nav-tabs nav-justified">
-							<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
+							<li class="active"><a href="#tab_1" data-toggle="tab"><?php $lh->translateText("basic_settings"); ?></a></li>
 							<!--<li><a href="#tab_2" data-toggle="tab"> Advanced Settings</a></li>-->
 						</ul>
 					   <!-- Tab panes-->
@@ -132,13 +132,13 @@ if (isset($_POST["cid"])) {
 				                <div id="tab_1" class="tab-pane fade in active">
 				                	<fieldset>
 						<div class="form-group mt">
-							<label for="carrier_name" class="col-sm-2 control-label">Carrier Name</label>
+							<label for="carrier_name" class="col-sm-2 control-label"><?php $lh->translateText("carrier_name"); ?></label>
 							<div class="col-sm-10 mb">
 								<input type="text" class="form-control" name="carrier_name" id="carrier_name" placeholder="Carrier Name" value="<?php echo $output->data->carrier_name;?>" required />
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="carrier_description" class="col-sm-2 control-label">Carrier Description</label>
+							<label for="carrier_description" class="col-sm-2 control-label"><?php $lh->translateText("carrier_description"); ?></label>
 							<div class="col-sm-10 mb">
 								<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="Carrier Description" value="<?php echo $output->data->carrier_description;?>">
 							</div>
@@ -163,7 +163,7 @@ if (isset($_POST["cid"])) {
 							</div>
 						</div>-->
 						<div class="form-group mt">
-							<label for="registration_string" class="col-sm-2 control-label">Registration String</label>
+							<label for="registration_string" class="col-sm-2 control-label"><?php $lh->translateText("registration_string"); ?></label>
 							<div class="col-sm-10 mb">
 								<input type="text" class="form-control" name="registration_string" id="registration_string" placeholder="Registration String" value="<?php echo $output->data->registration_string;?>">
 							</div>
@@ -182,7 +182,7 @@ if (isset($_POST["cid"])) {
 							</div>
 						</div>-->
 						<div class="form-group">
-							<label for="status" class="col-sm-2 control-label">Account Entry</label>
+							<label for="status" class="col-sm-2 control-label"><?php $lh->translateText("account_entry"); ?></label>
 							<div class="col-sm-10 mb">
 								<div class="panel">
 									<div class="panel-body">
@@ -192,7 +192,7 @@ if (isset($_POST["cid"])) {
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="server_ip" class="col-sm-2 control-label">Server IP/Host</label>
+							<label for="server_ip" class="col-sm-2 control-label"><?php $lh->translateText("server_ip_host"); ?></label>
 							<div class="col-sm-10 mb">
 								<select name="server_ip" class="form-control">
 								<?php
@@ -267,7 +267,7 @@ if (isset($_POST["cid"])) {
 							</div>
 						</div>-->
 						<div class="form-group">
-							<label for="protocol" class="col-sm-2 control-label">Protocol</label>
+							<label for="protocol" class="col-sm-2 control-label"><?php $lh->translateText("protocol"); ?></label>
 							<div class="col-sm-10 mb">
 								<select class="form-control" name="protocol" id="protocol">
 									<?php
@@ -302,13 +302,13 @@ if (isset($_POST["cid"])) {
 										</div>
 									</div>
 									<div class="form-group mt">
-										<label for="globals_string" class="col-sm-2 control-label">Global String</label>
+										<label for="globals_string" class="col-sm-2 control-label"><?php $lh->translateText("global_string"); ?></label>
 										<div class="col-sm-10 mb">
 											<input type="text" class="form-control" name="globals_string" id="globals_string" maxlength="255" size="50" placeholder="Global String" value="<?php echo $output->data->globals_string;?>">
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="status" class="col-sm-2 control-label">Dial Plan Entry</label>
+										<label for="status" class="col-sm-2 control-label"><?php $lh->translateText("dialplan_entry"); ?></label>
 										<div class="col-sm-10 mb">
 											<div class="panel">
 												<div class="panel-body">
@@ -318,7 +318,7 @@ if (isset($_POST["cid"])) {
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="status" class="col-sm-2 control-label">Active</label>
+										<label for="status" class="col-sm-2 control-label"><?php $lh->translateText("active"); ?></label>
 										<div class="col-sm-10 mb">
 											<select class="form-control" name="active" id="active">
 											<?php
@@ -384,7 +384,7 @@ if (isset($_POST["cid"])) {
 							<div id="notifications">
 								<div class="output-message-success" style="display:none;">
 									<div class="alert alert-success alert-dismissible" role="alert">
-									  <strong>Success!</strong> Carrier ID <?php echo $cid?> modified !
+									  <strong><?php $lh->translateText("success"); ?></strong> <?php $lh->translateText("carrier_id"); ?> <?php echo $cid?> modified !
 									</div>
 								</div>
 								<div class="output-message-error" style="display:none;">
@@ -470,9 +470,9 @@ if (isset($_POST["cid"])) {
 									$('#modifyCarrierOkButton').prop("disabled", false);
 									
 									if (data == 1) {
-										sweetAlert("Carrier Modified Successfully", "Carrier is now updated! ", "success");
+										sweetAlert("<?php $lh->translateText("carrier_modify_success"); ?>", "<?php $lh->translateText("carrier_updated"); ?>", "success");
 									} else {
-										sweetAlert("Oops...", "Something went wrong! "+data, "error");
+										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 									}
 									//
 								});

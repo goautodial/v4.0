@@ -23,7 +23,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Inbound</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("inbound"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -91,7 +91,7 @@
 ?>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<legend>Inbound: <small>Ingroups, Call Menus, <?php $lh->translateText('phone_numbers'); ?></small> </legend>
+					<legend><?php $lh->translateText("inbound"); ?>: <small><?php $lh->translateText("ingroup"); ?>, <?php $lh->translateText("call_menu"); ?>, <?php $lh->translateText('phone_numbers'); ?></small> </legend>
 
 		            <div role="tabpanel">
 						

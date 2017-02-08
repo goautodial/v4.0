@@ -23,7 +23,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Audio Files</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("audiofiles"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -76,7 +76,7 @@
 
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<legend>Audio Files </legend>
+					<legend><?php $lh->translateText("audiofiles"); ?></legend>
 
 		            <div role="tabpanel">
 
@@ -100,12 +100,12 @@
 						<!-- Voicefiles panel tab -->
 							 <li role="presentation"<?=$toggleVoicefiles?>>
 								<a href="#voicefiles_tab" aria-controls="voicefiles_tab" role="tab" data-toggle="tab" class="bb0">
-								    Voice Files </a>
+								   <?php $lh->translateText("voice_files"); ?> </a>
 							 </li>
 						 <!-- MOH panel tabs-->
 							 <li role="presentation"<?=$toggleMOH?>>
 								<a href="#moh_tab" aria-controls="moh_tab" role="tab" data-toggle="tab" class="bb0">
-								    Music On-Hold</a>
+								    <?php $lh->translateText("moh"); ?> </a>
 							 </li>
 
 						  </ul>
@@ -181,19 +181,19 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Music On Hold Details</b></h4>
+	        <h4 class="modal-title"><b><?php $lh->translateText("moh_details"); ?></b></h4>
 	      </div>
 	      <div class="modal-body">
 		<div class="form-horizontal">
 			<br />
 			<div class="form-group">
-				<label class="control-label col-lg-4">Music on Hold Name:</label>
+				<label class="control-label col-lg-4"><?php $lh->translateText("moh_name"); ?></label>
 				<div class="col-lg-7">
 					<input type="text" class="form-control moh_name" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-lg-4">Status:</label>
+				<label class="control-label col-lg-4"><?php $lh->translateText("status"); ?>:</label>
 				<div class="col-lg-5">
 					<select class="form-control moh_status" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 						<option value="Y">Active</option>
@@ -202,7 +202,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-lg-4">User Group:</label>
+				<label class="control-label col-lg-4"><?php $lh->translateText("user_group"); ?></label>
 				<div class="col-lg-7">
 					<select class="form-control moh_user_group select2-1" style="width:100%;" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 						<?php
@@ -216,7 +216,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-lg-4">Random Order:</label>
+				<label class="control-label col-lg-4"><?php $lh->translateText("random_order"); ?></label>
 				<div class="col-lg-5">
 					<select class="form-control moh_rand_order" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 						<option value="Y">Yes</option>
@@ -254,7 +254,7 @@
             <!-- Header -->
                 <div class="modal-header">
                     <h4 class="modal-title animated bounceInRight">
-                    	<b>Music On Hold Wizard » Add New Music On Hold</b>
+                    	<b><?php $lh->translateText("moh_wizard_title"); ?> » <?php $lh->translateText("moh_wizard_subtitle"); ?> </b>
                     	<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
                     </h4>
                 </div>
@@ -264,24 +264,24 @@
 					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
                     <div class="row">
-                    	<h4>Music On-Hold<br/>
-                    	<small>Music On-Hold details and assign to a user group.</small>
+                    	<h4><?php $lh->translateText("music_on_hold"); ?> <br/>
+                    	<small><?php $lh->translateText("moh_sub_header"); ?></small>
                     	</h4>
                     	<fieldset>
 	                        <div class="form-group">
-	                            <label class="col-sm-4 control-label" for="moh_id">Music On Hold ID:</label>
+	                            <label class="col-sm-4 control-label" for="moh_id"><?php $lh->translateText("moh_id"); ?></label>
 	                            <div class="col-sm-8 mb">
 	                                <input type="text" name="moh_id" id="moh_id" class="form-control" placeholder="Music on Hold ID (Mandatory)" required />
 	                            </div>
 	                        </div>
 	                        <div class="form-group">
-	                            <label class="col-sm-4 control-label" for="moh_name">Music On Hold Name: </label>
+	                            <label class="col-sm-4 control-label" for="moh_name"><?php $lh->translateText("moh_name"); ?></label>
 	                            <div class="col-sm-8 mb">
 	                                <input type="text" name="moh_name" id="moh_name" class="form-control" placeholder="Music On Hold Name (Mandatory)" required />
 	                            </div>
 	                        </div>
 	                        <div class="form-group">
-	                            <label class="col-sm-4 control-label" for="active">Status: </label>
+	                            <label class="col-sm-4 control-label" for="active"><?php $lh->translateText("status"); ?>: </label>
 	                            <div class="col-sm-8 mb">
 	                                <select name="active" id="active" class="form-control">
 	                                    <option value="N" selected>INACTIVE</option>
@@ -290,7 +290,7 @@
 	                            </div>
 	                        </div>
 	                        <div class="form-group">
-	                            <label class="col-sm-4 control-label" for="user_group">User Group: </label>
+	                            <label class="col-sm-4 control-label" for="user_group"><?php $lh->translateText("user_group"); ?>: </label>
 	                            <div class="col-sm-8 mb">
 	                                <select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
 	                                	<option value="---ALL---">  ALL USER GROUPS  </option>
@@ -305,7 +305,7 @@
 	                            </div>
 	                        </div>
 	                        <div class="form-group">
-	                            <label class="col-sm-4 control-label" for="random">Random Order: </label>
+	                            <label class="col-sm-4 control-label" for="random"><?php $lh->translateText("random_order"); ?>: </label>
 	                            <div class="col-sm-8 mb">
 	                                <select name="random" id="random" class="form-control">
 	                                    <option value="N" selected>NO</option>
@@ -333,7 +333,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Voice Files Playback</b></h4>
+	        <h4 class="modal-title"><b>><?php $lh->translateText("voice_files_playback"); ?></b></h4>
 	      </div>
 	      <div class="modal-body">
 	      	<center class="mt"><em class="fa fa-music fa-5x"></em></center>
@@ -349,7 +349,7 @@
 		</audio> -->
 	      </div>
 	      <div class="modal-footer">
-		<a href="" class="btn btn-primary download-audio-file<?=($perm->voicefiles->voicefiles_download === 'N' ? ' hidden' : '')?>" download>Download File</a>
+		<a href="" class="btn btn-primary download-audio-file<?=($perm->voicefiles->voicefiles_download === 'N' ? ' hidden' : '')?>" download>><?php $lh->translateText("download_file"); ?></a>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	      </div>
 	    </div>
@@ -366,7 +366,7 @@
 	    <div class="modal-content">
 	      	<div class="modal-header">
 	       		<h4 class="modal-title animated bounceInRight">
-	       			<b>Upload Voice Files</b>
+	       			<b><?php $lh->translateText("upload_voice_file"); ?></b>
 	       			<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
 	       		</h4>
 	      	</div>
@@ -376,8 +376,8 @@
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 		  	      	<div class="row">
 		  	      		<h4>
-		  	      			Upload a Voice File<br/>
-		  	      			<small>Browse for the file and click on Submit.</small>
+		  	      			<?php $lh->translateText("voice_file_wizard_header"); ?><br/>
+		  	      			<small><?php $lh->translateText("voice_file_wizard_sub_header"); ?></small>
 		  	      		</h4>
 		  	      		<fieldset>
 		    				<div class="col-lg-12">
@@ -385,7 +385,7 @@
 		    						<div class="input-group">
 		    					      	<input type="text" class="form-control voice_file_holder" placeholder="Choose a file" required>
 		    					      	<span class="input-group-btn">
-		    					        	<button class="btn btn-default btn-browse-file" type="button">Browse...</button>
+		    					        	<button class="btn btn-default btn-browse-file" type="button"><?php $lh->translateText("browse"); ?></button>
 		    					     	</span>
 		    					    </div><!-- /input-group -->
 		    					    <input type="file" name="voice_file" class="hide" id="voice_file" accept="audio/*">
@@ -413,7 +413,7 @@
 					    						<div class="circle3"></div>
 					    						<div class="circle4"></div>
 					    					</div>
-					    					<h4 class="upload-text"><b>Uploading...</b></h4>
+					    					<h4 class="upload-text"><b><?php $lh->translateText("uploading"); ?></b></h4>
 					    				</div>
 					    			</center>
 					    		</div>
@@ -522,13 +522,13 @@
 		                            success: function(data) {
 		                              // console.log(data);
 		                                  if(data == 1){
-		                                        swal("Success!", "Music On Hold Successfully Created!", "success");
+		                                        swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("add_moh_success"); ?>", "success");
 		                                        window.setTimeout(function(){location.reload()},3000)
 		                                        $('#submit_moh').val("Submit");
 		                                        $('#submit_moh').attr("disabled", false);
 		                                  }
 		                                  else{
-		                                      sweetAlert("Oops...", "Something went wrong!"+data, "error");
+		                                      sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 		                                      $('#submit_moh').val("Submit");
 		                                      $('#submit_moh').attr("disabled", false);
 		                                  }
@@ -593,13 +593,13 @@
 						dataType: 'json',
 						success: function(data) {
 						      if (data.result == "success") {
-							    swal("Success!", "Music On Hold Successfully Updated!", "success");
+							    swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("moh_update_success"); ?>", "success");
                                 window.setTimeout(function(){location.reload();},2000);
 
                                 $('#update_button').html("<i class='fa fa-check'></i> Update");
                                 $('.btn-update-moh-info').attr("disabled", false);
 						      } else {
-    							sweetAlert("Oops...", "Something went wrong! "+data, "error");
+    							sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 
                                 $('#update_button').html("<i class='fa fa-check'></i> Update");
                                 $('.btn-update-moh-info').attr("disabled", false);
@@ -619,13 +619,13 @@
 						var log_user = '<?=$_SESSION['user']?>';
 						var log_group = '<?=$_SESSION['usergroup']?>';
 	                    swal({
-	                        title: "Are you sure?",
-	                        text: "This action cannot be undone.",
+	                        title: "<?php $lh->translateText("are_you_sure"); ?>",
+	                        text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
 	                        type: "warning",
 	                        showCancelButton: true,
 	                        confirmButtonColor: "#DD6B55",
-	                        confirmButtonText: "Yes, delete this moh!",
-	                        cancelButtonText: "No, cancel please!",
+	                        confirmButtonText: "<?php $lh->translateText("confirm_delete_moh"); ?>",
+	                        cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
 	                        closeOnConfirm: false,
 	                        closeOnCancel: false
 	                        },
@@ -642,15 +642,15 @@
 	                                    success: function(data) {
 	                                    console.log(data);
 	                                        if(data == 1){
-	                                           swal("Success!", "Music On Hold Successfully Deleted!", "success");
+	                                           swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("moh_delete_success"); ?>", "success");
 	                                           window.setTimeout(function(){location.reload()},1000)
 	                                        }else{
-	                                            sweetAlert("Oops...", "Something went wrong! "+data, "error");
+	                                            sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 	                                        }
 	                                    }
 	                                });
 	                            } else {
-	                                    swal("Cancelled", "No action has been done :)", "error");
+	                                    swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
 	                            }
 	                        }
 	                    );
@@ -718,8 +718,8 @@
 				?>
 						swal(
 							{
-								title: "Success",
-								text: "Voice File Successfully Uploaded!",
+								title: "<?php $lh->translateText("success"); ?>",
+								text: "<?php $lh->translateText("upload_voicefile_success"); ?>",
 								type: "success"
 							},
 							function(){
@@ -731,8 +731,8 @@
 				?>
 						swal(
 							{
-								title: "Oops...",
-								text: "Something went wrong.",
+								title: "<?php $lh->translateText("oups"); ?>",
+								text: "<?php $lh->translateText("something_went_wrong"); ?>",
 								type: "error"
 							},
 							function(){

@@ -67,7 +67,7 @@
                 <?php if ($user->userHasAdminPermission()) { ?>
                     <div class="panel panel-default">
                         <div class="panel-body table" id="scripts_table">
-                            <legend>Voicemails</legend>
+                            <legend><?php $lh->translateText("voice_mails"); ?></legend>
 							<?php print $ui->getVoiceMails(); ?>
                         </div>
                     </div> 

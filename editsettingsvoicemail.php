@@ -31,7 +31,7 @@ if (isset($_POST["vmid"])) {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Edit Voicemail</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("edit_voice_mail"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
        	
        	<?php print $ui->standardizedThemeCSS(); ?> 
@@ -62,8 +62,8 @@ if (isset($_POST["vmid"])) {
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1 style="font-weight:normal;">
-                        <?php $lh->translateText("Settings"); ?>
-                        <small><?php $lh->translateText("Voice Mail Edit"); ?></small>
+                        <?php $lh->translateText("settings"); ?>
+                        <small><?php $lh->translateText("edit_voice_mail"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -126,7 +126,7 @@ if (isset($_POST["vmid"])) {
 						<div role="tabpanel">
 						<!--<div class="nav-tabs-custom">-->
 							<ul role="tablist" class="nav nav-tabs nav-justified">
-								<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
+								<li class="active"><a href="#tab_1" data-toggle="tab"> <?php $lh->translateText("basic_settings"); ?></a></li>
 							</ul>
 			               <!-- Tab panes-->
 			               <div class="tab-content">
@@ -135,26 +135,26 @@ if (isset($_POST["vmid"])) {
 				                <div id="tab_1" class="tab-pane fade in active">
 				                	<fieldset>
 										<div class="form-group mt">
-											<label for="password" class="col-sm-3 control-label">Your Password</label>
+											<label for="password" class="col-sm-3 control-label"><?php $lh->translateText("your_password"); ?></label>
 											<div class="col-sm-9 mb">
 												<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="<?php echo $output->password[$i];?>">
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="fullname" class="col-sm-3 control-label">Name</label>
+											<label for="fullname" class="col-sm-3 control-label"><?php $lh->translateText("name"); ?></label>
 											<div class="col-sm-9 mb">
 												<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->fullname[$i];?>">
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="email" class="col-sm-3 control-label">Email</label>
+											<label for="email" class="col-sm-3 control-label"><?php $lh->translateText("email"); ?></label>
 											<div class="col-sm-9 mb">
 												<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->email[$i];?>">
 											</div>
 										</div>
 									
 										<div class="form-group">
-											<label for="active" class="col-sm-3 control-label">Active</label>
+											<label for="active" class="col-sm-3 control-label"><?php $lh->translateText("active"); ?></label>
 											<div class="col-sm-9 mb">
 												<select class="form-control" name="active" id="active">
 												<?php
@@ -176,7 +176,7 @@ if (isset($_POST["vmid"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="delete_vm_after_email" class="col-sm-3 control-label">Delete Voicemail After Email</label>
+											<label for="delete_vm_after_email" class="col-sm-3 control-label"><?php $lh->translateText("delete_voicemail_after_email"); ?></label>
 											<div class="col-sm-9 mb">
 												<select class="form-control" name="delete_vm_after_email" id="delete_vm_after_email">
 												<?php
@@ -198,12 +198,12 @@ if (isset($_POST["vmid"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-sm-3 control-label">New Messages: </label>
+											<label class="col-sm-3 control-label"><?php $lh->translateText("new_message"); ?></label>
 												<span style="padding-left:20px; font-size: 20;"><?php echo $output->messages[$i];?></span>
 											
 										</div>
 										<div class="form-group">
-											<label class="col-sm-3 control-label">Old Messages: </label>
+											<label class="col-sm-3 control-label"><?php $lh->translateText("old_message"); ?></label>
 												<span style="padding-left:20px; font-size: 20;"><?php echo $output->old_messages[$i];?></span>
 											
 										</div>
@@ -270,12 +270,12 @@ if (isset($_POST["vmid"])) {
 								function(data){
 									//if message is sent
 									if (data == 1) {
-										swal("Success!", "Voicemail Successfully Updated!", "success");
+										swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("voicemail_modify_success"); ?>", "success");
                                         window.setTimeout(function(){location.replace("settingsvoicemails.php")},2000)
                                         $('#update_button').html("<i class='fa fa-check'></i> Update");
                                         $('#modifyVoicemailOkButton').prop("disabled", false);
 									} else {
-										sweetAlert("Oops...", "Something went wrong! "+data, "error");
+										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 										$('#update_button').html("<i class='fa fa-check'></i> Update");
 										$('#modifyVoicemailOkButton').prop("disabled", false);
 									}

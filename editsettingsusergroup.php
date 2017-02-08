@@ -30,7 +30,7 @@ if (isset($_POST["usergroup_id"])) {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Edit User Group</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("edit_user_group"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
        	
        	<?php print $ui->standardizedThemeCSS(); ?> 
@@ -61,7 +61,7 @@ if (isset($_POST["usergroup_id"])) {
                 <section class="content-header">
                     <h1 style="font-weight:normal;">
                         <?php $lh->translateText("settings"); ?>
-                        <small><?php $lh->translateText("User Group Edit"); ?></small>
+                        <small><?php $lh->translateText("edit_user_group"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -112,7 +112,7 @@ if (isset($_POST["usergroup_id"])) {
             <section class="content">
 				<div class="panel panel-default">
                     <div class="panel-body">
-						<legend>MODIFY USER GROUP : <u><?php echo $usergroup_id;?></u></legend>
+						<legend<?php $lh->translateText("modify_user_group"); ?><u><?php echo $usergroup_id;?></u></legend>
                     	
 							<form id="modifyvoicemail">
 								<input type="hidden" name="modifyid" value="<?php echo $usergroup_id;?>">
@@ -123,8 +123,8 @@ if (isset($_POST["usergroup_id"])) {
 						<div role="tabpanel">
 						<!--<div class="nav-tabs-custom">-->
 							<ul role="tablist" class="nav nav-tabs nav-justified">
-								<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
-								<li><a href="#tab_2" data-toggle="tab"> Group Permissions</a></li>
+								<li class="active"><a href="#tab_1" data-toggle="tab"><?php $lh->translateText("basic_settings"); ?></a></li>
+								<li><a href="#tab_2" data-toggle="tab"><?php $lh->translateText("group_permissions"); ?> </a></li>
 							</ul>
 			               <!-- Tab panes-->
 			               <div class="tab-content">
@@ -133,13 +133,13 @@ if (isset($_POST["usergroup_id"])) {
 				                <div id="tab_1" class="tab-pane fade in active">
 				                	<fieldset>
 										<div class="form-group row mt">
-											<label for="group_name" class="col-sm-2 control-label">Group Name</label>
+											<label for="group_name" class="col-sm-2 control-label"><?php $lh->translateText("group_name"); ?></label>
 											<div class="col-sm-10 mb">
 												<input type="text" class="form-control" name="group_name" id="group_name" placeholder="Group Name (Mandatory)" value="<?php echo $output->data->group_name;?>">
 											</div>
 										</div>
 										<div class="form-group row">
-											<label for="forced_timeclock_login" class="col-sm-2 control-label">Force Timeclock Login</label>
+											<label for="forced_timeclock_login" class="col-sm-2 control-label"><?php $lh->translateText("force_timelock"); ?></label>
 											<div class="col-sm-10 mb">
 												<select class="form-control" name="forced_timeclock_login" id="forced_timeclock_login">
 												<?php
@@ -168,7 +168,7 @@ if (isset($_POST["usergroup_id"])) {
 										</div>
 								
 										<div class="form-group row">
-											<label for="shift_enforcement" class="col-sm-2 control-label">Shift Enforcement</label>
+											<label for="shift_enforcement" class="col-sm-2 control-label"><?php $lh->translateText("shift_enforcement"); ?></label>
 											<div class="col-sm-10 mb">
 												<select class="form-control" id="shift_enforcement" name="shift_enforcement">
 													<?php
@@ -198,7 +198,7 @@ if (isset($_POST["usergroup_id"])) {
 											</div>
 										</div>
 										<div class="form-group row">
-											<label for="group_level" class="col-sm-2 control-label">Group Level</label>
+											<label for="group_level" class="col-sm-2 control-label"><?php $lh->translateText("group_level"); ?></label>
 											<div class="col-sm-10 mb">
 												<select class="form-control" name="group_level" id="group_level">
 												<?php
@@ -217,7 +217,7 @@ if (isset($_POST["usergroup_id"])) {
 											</div>
 										</div>
 										<div class="form-group row">
-											<label for="group_level" class="col-sm-2 control-label">Allowed Campaigns</label>
+											<label for="group_level" class="col-sm-2 control-label"><?php $lh->translateText("allowed_campaigns"); ?></label>
 											<div class="col-sm-10 mb">
 												<div class="checkbox c-checkbox" style="margin-right: 15px;">
 													<?php
@@ -338,7 +338,7 @@ if (isset($_POST["usergroup_id"])) {
 				
 				// for cancelling
 				$(document).on('click', '#cancel', function(){
-					swal("Cancelled", "No action has been done :)", "error");
+					swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
 				});
 
 				/** 
@@ -358,12 +358,12 @@ if (isset($_POST["usergroup_id"])) {
 									//if message is sent
 									console.log($("#modifyvoicemail").serialize());
 									if (data == 1) {
-										swal("Success!", "Usergroup Successfully Updated!", "success");
+										swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("usergroup_modify_success"); ?>", "success");
                                         //window.setTimeout(function(){location.reload()},2000);
                                         $('#update_button').html("<i class='fa fa-check'></i> Update");
                                         $('#modifyUserGroupOkButton').prop("disabled", false);
 									} else {
-										sweetAlert("Oops...", "Something went wrong! "+data, "error");
+										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 										$('#update_button').html("<i class='fa fa-check'></i> Update");
 										$('#modifyUserGroupOkButton').prop("disabled", false);
 									}

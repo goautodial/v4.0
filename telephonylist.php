@@ -22,7 +22,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?php $lh->translateText("Lists"); ?></title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("Lists"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!-- Call for standardized css -->
@@ -141,8 +141,8 @@
 									//var uploadMsgTotal = "Total Leads Uploaded: "+res;
 					
 									swal({
-										title: "CSV file upload complete.",
-										text: "Data Now Processing. Please Wait. DO NOT refresh the page.",
+										title: "<?php $lh->translateText('csv_upload'); ?>",
+										text: "<?php $lh->translateText('data_processing'); ?>",
 										type: "info",
 										showCancelButton: false,
 										closeOnConfirm: false
@@ -168,7 +168,7 @@
 					var uploadMsgTotal = "Total Leads Uploaded: "+res;
 					
 					swal({
-							title: "Data Processing Complete!",
+							title: "<?php $lh->translateText('data_processing_complete'); ?>",
 							text: uploadMsgTotal,
 							type: "success"
 						},
@@ -301,7 +301,7 @@
 											<table class="table table-striped table-bordered table-hover" id="table_dnc">
 												<thead>
 													<tr>
-													<th><?php $lh->translateText("phone_numer"); ?></th>
+													<th><?php $lh->translateText("phone_number"); ?></th>
 													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("campaign"); ?></th>
 													<th><?php $lh->translateText("action"); ?></th>
 													</tr>
@@ -565,7 +565,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 		</audio> -->
 	      </div>
 	      <div class="modal-footer">
-		<a href="" class="btn btn-primary download-audio-file" download><?php $lh->translateText("download"); ?></a>
+		<a href="" class="btn btn-primary download-audio-file" download><?php $lh->translateText("download_file"); ?></a>
 	        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
 	      </div>
 	    </div>

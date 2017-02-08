@@ -108,11 +108,11 @@
 				<span class="form-control-clear fa fa-close form-control-feedback"></span>
 			</div>
 			<div class="clearfix">
-				<button type="button" class="pull-left btn btn-default" id="search_button"> Search</button>
+				<button type="button" class="pull-left btn btn-default" id="search_button"> <?php $lh->translateText("search"); ?></button>
 				<div class="pull-right">
 					<label class="checkbox-inline c-checkbox" for="search_recordings">
 						<input id="search_recordings" name="table_filter" type="checkbox" checked disabled>
-						<span class="fa fa-check"></span> Recordings
+						<span class="fa fa-check"></span><?php $lh->translateText("recordings"); ?>
 					</label>
 				</div>
 			</div>
@@ -122,26 +122,26 @@
 				
 				<div class="callrecordings_div">
 				<!-- Call Recordings panel tab -->
-					<legend>Call Recordings</legend>
+					<legend><?php $lh->translateText("call_recordings"); ?></legend>
 		
 					<!--==== Call Recordings ====-->
 					<table class="table table-striped table-bordered table-hover" id="table_callrecordings">
 					   <thead>
 						  <tr>
-							 <th nowrap>Date</th>
-							 <th nowrap class='hide-on-low'>Customer</th>
-							 <th nowrap class='hide-on-low'>Phone Number</th>
-							 <th nowrap class='hide-on-medium hide-on-low'>Agent</th>
-							 <th nowrap class='hide-on-medium hide-on-low'>Duration</th>
-							 <th nowrap>Action</th>
+							 <th nowrap><?php $lh->translateText("date"); ?></th>
+							 <th nowrap class='hide-on-low'><?php $lh->translateText("customer"); ?></th>
+							 <th nowrap class='hide-on-low'><?php $lh->translateText("phone_number"); ?></th>
+							 <th nowrap class='hide-on-medium hide-on-low'><?php $lh->translateText("agent"); ?></th>
+							 <th nowrap class='hide-on-medium hide-on-low'><?php $lh->translateText("duration"); ?></th>
+							 <th nowrap><?php $lh->translateText("action"); ?></th>
 						  </tr>
 					   </thead>
 					   <tbody>
 							<?php
 								for($i=0;$i < count($callrecs->uniqueid);$i++){
-									$details = "<strong>Phone</strong>: <i>".$callrecs->phone_number[$i]."</i><br/>";
-									$details .= "<strong>Agent</strong>: <i>".$callrecs->users[$i]."</i><br/>";
-									$details .= "<strong>Date</strong>: <i>".date("M.d,Y h:i A", strtotime($callrecs->end_last_local_call_time[$i]))."</i><br/>";
+									$details = "<strong>".$lh->translationFor("phone")."</strong>: <i>".$callrecs->phone_number[$i]."</i><br/>";
+									$details .= "<strong>".$lh->translationFor("agent")."</strong>: <i>".$callrecs->users[$i]."</i><br/>";
+									$details .= "<strong>".$lh->translationFor("date")."</strong>: <i>".date("M.d,Y h:i A", strtotime($callrecs->end_last_local_call_time[$i]))."</i><br/>";
 									
 									$d1 = strtotime($callrecs->start_last_local_call_time[$i]);
 									$d2 = strtotime($callrecs->end_last_local_call_time[$i]);
@@ -170,14 +170,14 @@
 $agents = $ui->API_goGetAllUserLists();
 ?>
 	               		<div class="col-lg-3">
-	           				<h3 class="m0 pb-lg">Filters</h3>
+	           				<h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>
 	           				<form id="search_form">
 						<div class="form-group">
-						   <label>Add Filters:</label>
+						   <label><?php $lh->translateText("add_filters"); ?>:</label>
 						   <div class="mb">
 							<div class="add_callrecording_filters">
 									<select multiple="multiple" class="select2-3 form-control add_filters2" style="width:100%;">
-										<option value="filter_agent" class="contacts_filters" >Agent </option>
+										<option value="filter_agent" class="contacts_filters" ><?php $lh->translateText("agent"); ?> </option>
 									</select>
 								</div>
 						   </div>
@@ -188,10 +188,10 @@ $agents = $ui->API_goGetAllUserLists();
 		                        <div class="callrecordings_filter_div">
 		                        	<div class="agent_filter_div" style="display:none;">
 				<div class="form-group">
-					<label>Agent: </label>
+					<label><?php $lh->translateText("agent"); ?>: </label>
 					<div class="mb">
 						<select name="agent_filter" id="agent_filter" class="form-control">
-							<option value="" selected DISABLED> -- SELECT AN AGENT -- </option>
+							<option value="" selected DISABLED> <?php $lh->translateText("select_an_agent"); ?> </option>
 							<?php
 								for($i=0; $i < count($agents->user_id);$i++){
 									echo '<option value="'.$agents->user[$i].'"> '.$agents->user[$i].' - '.$agents->full_name[$i].' </option>';
@@ -271,7 +271,7 @@ $agents = $ui->API_goGetAllUserLists();
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>Call Recording Playback</b></h4>
+	        <h4 class="modal-title"><b><?php $lh->translateText("call_recording_playback"); ?></b></h4>
 	      </div>
 	      <div class="modal-body">
 		<center class="mt"><em class="fa fa-music fa-5x"></em></center>
@@ -287,8 +287,8 @@ $agents = $ui->API_goGetAllUserLists();
 			</audio> -->
 	      </div>
 	      <div class="modal-footer">
-		<a href="" class="btn btn-primary download-audio-file" download>Download File</a>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<a href="" class="btn btn-primary download-audio-file" download><?php $lh->translateText("download_file"); ?></a>
+	        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
 	      </div>
 	    </div>
 	    <!-- End of modal content -->
@@ -405,10 +405,10 @@ $agents = $ui->API_goGetAllUserLists();
 
 		                	if($('#search').val() == ""){
 		                		$('#search_button').attr("disabled", false);
-		                		$('#search_button').text("Searching...");
+		                		$('#search_button').text('<?php $lh->translateText("searching"); ?>');
 		                	}else{
-			                	$('#search_button').text("Searching...");
-			                	$('#search_button').attr("disabled", true);
+				$('#search_button').text('<?php $lh->translateText("searching"); ?>');
+				$('#search_button').attr("disabled", true);
 		                	}
 
 		                	if($('#agent_filter').is(':visible')) {
@@ -430,7 +430,7 @@ $agents = $ui->API_goGetAllUserLists();
 							    	agent_filter : agent_filter_val
 							    },
 								success: function(data) {
-									$('#search_button').text("Search");
+									$('#search_button').text('<?php $lh->translateText("search"); ?>');
 	                				$('#search_button').attr("disabled", false)
 									console.log(data);
 									if(data != ""){
@@ -452,9 +452,9 @@ $agents = $ui->API_goGetAllUserLists();
 
 		                	if($('#search').val() == ""){
 		                		$('#search_button').attr("disabled", false);
-		                		$('#search_button').text("Searching...");
+		                		$('#search_button').text('<?php $lh->translateText("searching"); ?>');
 		                	}else{
-			                	$('#search_button').text("Searching...");
+			                	$('#search_button').text('<?php $lh->translateText("searching"); ?>');
 			                	$('#search_button').attr("disabled", true);
 		                	}
 
@@ -477,7 +477,7 @@ $agents = $ui->API_goGetAllUserLists();
 							    	agent_filter : agent_filter_val
 							    },
 								success: function(data) {
-									$('#search_button').text("Search");
+									$('#search_button').text('<?php $lh->translateText("search"); ?>');
 	                				$('#search_button').attr("disabled", false)
 									console.log(data);
 									if(data != ""){
@@ -497,9 +497,9 @@ $agents = $ui->API_goGetAllUserLists();
 		            	$(document).on('change','#agent_filter',function() {
 		            		if($('#search').val() == ""){
 		                		$('#search_button').attr("disabled", false);
-		                		$('#search_button').text("Searching...");
+		                		$('#search_button').text('<?php $lh->translateText("searching"); ?>');
 		                	}else{
-			                	$('#search_button').text("Searching...");
+			                	$('#search_button').text('<?php $lh->translateText("searching"); ?>');
 			                	$('#search_button').attr("disabled", true);
 		                	}
 
@@ -526,7 +526,7 @@ $agents = $ui->API_goGetAllUserLists();
 							    	agent_filter : agent_filter_val
 							    },
 								success: function(data) {
-									$('#search_button').text("Search");
+									$('#search_button').text('<?php $lh->translateText("search"); ?>');
 	                				$('#search_button').attr("disabled", false)
 									console.log(data);
 									if(data != ""){
@@ -551,9 +551,9 @@ $agents = $ui->API_goGetAllUserLists();
 
 		                	if($('#search').val() == ""){
 		                		$('#search_button').attr("disabled", false); 
-		                		$('#search_button').text("Searching...");
+		                		$('#search_button').text('<?php $lh->translateText("searching"); ?>');
 		                	}else{
-			                	$('#search_button').text("Searching...");
+			                	$('#search_button').text('<?php $lh->translateText("searching"); ?>');
 			                	$('#search_button').attr("disabled", true);
 		                	}
 
@@ -576,8 +576,8 @@ $agents = $ui->API_goGetAllUserLists();
 								    	agent_filter : agent_filter_val
 								    },
 									success: function(data) {
-										$('#search_button').text("Search");
-	                					$('#search_button').attr("disabled", false);
+										$('#search_button').text('<?php $lh->translateText("search"); ?>');
+										$('#search_button').attr("disabled", false);
 										console.log(data);
 										if(data != ""){
 											$('#table_callrecordings').html(data);

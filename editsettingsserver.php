@@ -23,7 +23,7 @@ if (isset($_POST["id"])) {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Edit Server</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("edit_server"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
         <!-- Call for standardized css -->
@@ -102,7 +102,7 @@ if (isset($_POST["id"])) {
 							$user_groups = $ui->API_goGetUserGroupsList();
 						?>
 
-				<legend>MODIFY SERVER ID : <u><?php echo $id;?></u></legend>
+				<legend><?php $lh->translateText("modify_server_id"); ?><u><?php echo $id;?></u></legend>
 				
 				<form id="modifyform">
 					<input type="hidden" name="modifyid" value="<?php echo $id;?>">
@@ -113,8 +113,8 @@ if (isset($_POST["id"])) {
 				<div role="tabpanel">
 				<!--<div class="nav-tabs-custom">-->
 					<ul role="tablist" class="nav nav-tabs nav-justified">
-						<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
-						<li><a href="#tab_2" data-toggle="tab"> Advanced Settings</a></li>
+						<li class="active"><a href="#tab_1" data-toggle="tab"> <?php $lh->translateText("basic_settings"); ?></a></li>
+						<li><a href="#tab_2" data-toggle="tab"><?php $lh->translateText("advance_settings"); ?></a></li>
 					</ul>
 				   <!-- Tab panes-->
 				   <div class="tab-content">
@@ -123,19 +123,19 @@ if (isset($_POST["id"])) {
 						<div id="tab_1" class="tab-pane fade in active">
 							<fieldset>
 							<div class="form-group mt">
-								<label for="server_description" class="col-sm-2 control-label">Server Name</label>
+								<label for="server_description" class="col-sm-2 control-label"><?php $lh->translateText("server_description"); ?></label>
 								<div class="col-sm-10 mb">
 									<input type="text" class="form-control" name="server_description" id="server_description" placeholder="Server Name" value="<?php echo $output->data->server_description;?>" required />
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="server_ip" class="col-sm-2 control-label">Server IP</label>
+								<label for="server_ip" class="col-sm-2 control-label"><?php $lh->translateText("server_ip"); ?></label>
 								<div class="col-sm-10 mb">
 									<input type="text" class="form-control" name="server_ip" id="server_ip" data-inputmask="'alias': 'ip'" data-mask="" placeholder="Server IP" value="<?php echo $output->data->server_ip;?>" required>
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="status" class="col-sm-2 control-label">Active</label>
+								<label for="status" class="col-sm-2 control-label"><?php $lh->translateText("active"); ?></label>
 								<div class="col-sm-10 mb">
 									<select class="form-control" name="active" id="active">
 									<?php
@@ -157,7 +157,7 @@ if (isset($_POST["id"])) {
 								</div>
 							</div>
 							<div class="form-group mt">
-								<label class="col-sm-2 control-label" for="user_group">User Group</label>
+								<label class="col-sm-2 control-label" for="user_group"><?php $lh->translateText("user_groups"); ?></label>
 								<div class="col-sm-10 mb">
 									<select id="user_group" class="form-control select2" name="user_group" style="width:100%;">
 										<option value="---ALL---" <?php if($output->data->user_group == "---ALL---")echo "selected";?> >ALL USERGROUPS</option>
@@ -172,19 +172,19 @@ if (isset($_POST["id"])) {
 								</div>
 							</div>
 							<div class="form-group">        
-                                <label class="col-sm-2 control-label" for="asterisk_version">Asterisk Version</label>
+                                <label class="col-sm-2 control-label" for="asterisk_version"><?php $lh->translateText("asterisk_version"); ?></label>
                                 <div class="col-sm-10 mb">
 									<input type="text" class="form-control" name="asterisk_version" id="asterisk_version" maxlength="20" size="20" placeholder="Asterisk Version" value="<?php echo $output->data->asterisk_version; ?>" required>
 								</div>
                             </div>
 							<div class="form-group">        
-                                <label class="col-sm-2 control-label" for="max_vicidial_trunks">Max Trunks</label>
+                                <label class="col-sm-2 control-label" for="max_vicidial_trunks"><?php $lh->translateText("max_trunks"); ?></label>
                                 <div class="col-sm-10 mb">
 									<input type="number" class="form-control" name="max_vicidial_trunks" id="max_vicidial_trunks" value="<?php if($output->data->max_vicidial_trunks == "NULL")echo "120"; else echo $output->data->max_vicidial_trunks; ?>" maxlength="4" >
 								</div>
                             </div>
 							<div class="form-group">        
-                                <label class="col-sm-2 control-label" for="outbound_calls_per_second">Max Call per Second</label>
+                                <label class="col-sm-2 control-label" for="outbound_calls_per_second"><?php $lh->translateText("max_call_per_second"); ?></label>
                                 <div class="col-sm-10 mb">
 									<input type="number" class="form-control" name="outbound_calls_per_second" value="<?php if($output->data->outbound_calls_per_second == "NULL")echo "10"; else echo $output->data->outbound_calls_per_second; ?>" id="outbound_calls_per_second" maxlength="4">
 								</div>
@@ -195,7 +195,7 @@ if (isset($_POST["id"])) {
 						<div id="tab_2" class="tab-pane fade in">
 							<fieldset>
 							<div class="form-group mt">        
-                                <label class="col-sm-2 control-label" for="vicidial_balance_active">Balance Dialing</label>
+                                <label class="col-sm-2 control-label" for="vicidial_balance_active"><?php $lh->translateText("balance_dialing"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="vicidial_balance_active" id="vicidial_balance_active" class="form-control">
 										<option value="N" <?php if($output->data->vicidial_balance_active == "N")echo "selected"; ?> >NO</option>
@@ -204,7 +204,7 @@ if (isset($_POST["id"])) {
 								</div>
                             </div>
 							<div class="form-group">        
-                                <label class="col-sm-2 control-label" for="local_gmt">Local GMT</label>
+                                <label class="col-sm-2 control-label" for="local_gmt"><?php $lh->translateText("local_gmt"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="local_gmt" id="local_gmt" class="form-control" required>
 										<option value="12.75" <?php if($output->data->local_gmt == "12.75")echo "selected"; ?> > 12.75 </option>
@@ -243,7 +243,7 @@ if (isset($_POST["id"])) {
 								</div>
                             </div>
 							<div class="form-group mt">        
-                                <label class="col-sm-2 control-label" for="generate_vicidial_conf">Generate Conf Files</label>
+                                <label class="col-sm-2 control-label" for="generate_vicidial_conf"><?php $lh->translateText("generate_conf_files"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="generate_vicidial_conf" id="generate_vicidial_conf" class="form-control">
 										<option value="Y" <?php if($output->data->generate_vicidial_conf == "Y")echo "selected"; ?> >YES</option>
@@ -252,7 +252,7 @@ if (isset($_POST["id"])) {
 								</div>
                             </div>
 							<div class="form-group mt">        
-                                <label class="col-sm-2 control-label" for="rebuild_conf_files">Rebuild Conf Files</label>
+                                <label class="col-sm-2 control-label" for="rebuild_conf_files"><?php $lh->translateText("rebuild_conf_files"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="rebuild_conf_files" id="rebuild_conf_files" class="form-control">
 										<option value="N" <?php if($output->data->rebuild_conf_files == "N")echo "selected"; ?> >NO</option>
@@ -341,9 +341,9 @@ if (isset($_POST["id"])) {
 								$('#modifyButton').attr("disabled", false);
 								
 								if (data == "success") {
-									sweetAlert({title: "Server Modified Successfully",text: "Server is now updated! ",type: "success"},function(){window.location.href = 'settingsservers.php';});
+									sweetAlert({title: "<?php $lh->translateText("server_modify_success"); ?>",text: "<?php $lh->translateText("server_updated"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
 								} else {
-									sweetAlert("Oops...", "Something went wrong! "+data, "error");
+									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 								}
 								//
 							});

@@ -23,7 +23,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Scripts</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("scripts"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <!-- Call for standardized css -->

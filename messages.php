@@ -47,7 +47,7 @@
   <head>
 	  
     <meta charset="UTF-8">
-    <title>GOautodial - Messages</title>
+    <title><?php print $lh->translationFor("portal_title"); ?> - <?php print $lh->translationFor("messages"); ?></title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- DATA TABLES -->
     <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
@@ -73,12 +73,6 @@
     <script src="js/plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <!-- FastClick -->
     <!--<script src="js/plugins/fastclick/fastclick.min.js" type="text/javascript"></script>-->
-
-	<script type="text/javascript">
-		$(window).ready(function() {
-			$(".preloader").fadeOut("slow");
-		});
-	</script>
   </head>
   <?php print $ui->creamyBody(); ?>
     <div class="wrapper">

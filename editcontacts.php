@@ -56,7 +56,7 @@ if ($list_id_ct != NULL) {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Contact Details</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("contact_information"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
 		<!-- Call for standardized css -->
@@ -124,7 +124,7 @@ if ($list_id_ct != NULL) {
                 <!-- Content Header (Page header) -->
                 <section class="content-heading">
 					<!-- Page title -->
-                    <?php $lh->translateText("Contact Information"); ?>
+                    <?php $lh->translateText("contact_information"); ?>
                     <small class="ng-binding animated fadeInUpShort"></small>
                 </section>
 
@@ -276,21 +276,21 @@ if ($list_id_ct != NULL) {
 														<div class="mda-form-group label-floating">
 															<input id="first_name" name="first_name" type="text" maxlength="30"  value="<?php echo $first_name;?>"
 																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" required>
-															<label for="first_name">First Name</label>
+															<label for="first_name"><?php $lh->translateText("first_name"); ?></label>
 														</div>
 													</div>
 													<div class="col-sm-4">
 														<div class="mda-form-group label-floating">
 															<input id="middle_initial" name="middle_initial" type="text" maxlength="2" value="<?php echo $middle_initial;?>"
 																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-															<label for="middle_initial">Middle Name</label>
+															<label for="middle_initial"><?php $lh->translateText("middle_name"); ?></label>
 														</div>
 													</div>
 													<div class="col-sm-4">
 														<div class="mda-form-group label-floating">
 															<input id="last_name" name="last_name" type="text" maxlength="30" value="<?php echo $last_name;?>"
 																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" required>
-															<label for="last_name">Last Name</label>
+															<label for="last_name"><?php $lh->translateText("last_name"); ?></label>
 														</div>
 													</div>
 												</div>
@@ -305,7 +305,7 @@ if ($list_id_ct != NULL) {
 																<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
 																<input id="phone_number" name="phone_number" type="number" min="0" width="auto" value="<?php echo $phone_number;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" required>
-																<label for="phone_number">Phone Number</label>
+																<label for="phone_number"><?php $lh->translateText("phone_number"); ?></label>
 																<!--
 																<span class="mda-input-group-addon">
 																	<em class="fa fa-phone fa-lg"></em>
@@ -316,7 +316,7 @@ if ($list_id_ct != NULL) {
 															<div class="mda-form-group label-floating">
 																<input id="alt_phone" name="alt_phone" type="number" min="0" width="100" value="<?php echo $alt_phone;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-																<label for="alt_phone">Alternative Phone Number</label>
+																<label for="alt_phone"><?php $lh->translateText("alternative_phone_number"); ?></label>
 															</div>
 														</div>
 													</div>
@@ -325,7 +325,7 @@ if ($list_id_ct != NULL) {
 													<div class="mda-form-group label-floating">
 														<input id="address1" name="address1" type="text" width="auto" value="<?php echo $address1;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-														<label for="address1">Address</label> 
+														<label for="address1"><?php $lh->translateText("address"); ?></label> 
 														<!--<span class="mda-input-group-addon">
 															<em class="fa fa-home fa-lg"></em>
 														</span>-->
@@ -334,7 +334,7 @@ if ($list_id_ct != NULL) {
 													<div class="mda-form-group label-floating">
 														<input id="address2" name="address2" type="text" value="<?php echo $address2;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-														<label for="address2">Address 2</label>
+														<label for="address2"><?php $lh->translateText("address2"); ?></label>
 													</div>
 
 													<input type="hidden" name="address3" value="<?php echo $address3;?>">
@@ -344,21 +344,21 @@ if ($list_id_ct != NULL) {
 															<div class="mda-form-group label-floating">
 																<input id="city" name="city" type="text" value="<?php echo $city;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-																<label for="city">City</label>
+																<label for="city"><?php $lh->translateText("city"); ?></label>
 															</div>
 														</div>
 														<div class="col-sm-4">
 															<div class="mda-form-group label-floating">
 																<input id="state" name="state" type="text" value="<?php echo $state;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-																<label for="state">State</label>
+																<label for="state"><?php $lh->translateText("state"); ?></label>
 															</div>
 														</div>
 														<div class="col-sm-4">
 															<div class="mda-form-group label-floating">
 																<input id="postal_code" name="postal_code" type="text" value="<?php echo $postal_code;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-																<label for="postal_code">Postal Code</label>
+																<label for="postal_code"><?php $lh->translateText("postal_code"); ?></label>
 															</div>
 														</div>
 													</div><!-- /.city,state,postalcode -->
@@ -366,12 +366,12 @@ if ($list_id_ct != NULL) {
 													<div class="mda-form-group label-floating">
 														<input id="country" name="country" type="text" value="<?php echo $country;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-														<label for="country">Country</label>
+														<label for="country"><?php $lh->translateText("country"); ?></label>
 													</div>
 													<div class="mda-form-group label-floating"><!-- add "mda-input-group" if with image -->
 														<input id="email" name="email" type="text" width="auto" value="<?php echo $email;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-														<label for="email">E-mail Address</label>
+														<label for="email"><?php $lh->translateText("email_add"); ?></label>
 														<!--<span class="mda-input-group-addon">
 															<em class="fa fa-at fa-lg"></em>
 														</span>-->
@@ -383,7 +383,7 @@ if ($list_id_ct != NULL) {
 															<div class="mda-form-group label-floating">
 																<input id="title" name="title" type="text" maxlength="4" value="<?php echo $title;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-																<label for="title">Title</label>
+																<label for="title"><?php $lh->translateText("title"); ?></label>
 															</div>
 														</div>
 														<div class="col-sm-3">
@@ -411,14 +411,14 @@ if ($list_id_ct != NULL) {
 																		}
 																	?>
 																</select>
-																<label for="gender">Gender</label>
+																<label for="gender"><?php $lh->translateText("gender"); ?></label>
 															</div>
 														</div>
 														<div class="col-sm-6">
 															<div class="mda-form-group label-floating">
 																<input type="text" id="date_of_birth" value="<?php echo $date_of_birth;?>" name="date_of_birth"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-																<label for="date_of_birth">Date Of Birth</label>
+																<label for="date_of_birth"><?php $lh->translateText("date_of_birth"); ?></label>
 															</div>
 														</div>
 													</div><!-- /.gender & title -->                   
@@ -433,7 +433,7 @@ if ($list_id_ct != NULL) {
 														<input id="convert-customer" name="convert-customer" value="0" type="checkbox"/>
 														<label for="convert-customer" class="label-primary" style="width: 0px;"></label>
 													</div>
-													<div style="font-weight: bold;">Convert to Customer</div>
+													<div style="font-weight: bold;"><?php $lh->translateText("convert_to_customer"); ?></div>
 												</div>
 					                           <div class="col-sm-3 pull-right">
 														<a href="crm.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
@@ -448,12 +448,12 @@ if ($list_id_ct != NULL) {
 											<div class="row">
 												<div class="col-sm-12">
 													<h4><!--Comments-->
-														<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
+														<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile"><?php $lh->translateText("edit_information"); ?></a>
 													</h4>
 													<form role="form" id="comment_form" class="formMain form-inline" >
 														<div class="mda-form-group label-floating" style="float: left; width:100%;">
 															<textarea rows="5" id="comments" name="comments" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea" style="resize:none; width: 100%;" ><?php echo $comments;?></textarea>
-															<label for="comments">Comments</label>
+															<label for="comments"><?php $lh->translateText("comments"); ?></label>
 														</div>
 														<div style="clear:both;"></div>
 														<br>
@@ -558,12 +558,12 @@ if ($list_id_ct != NULL) {
 									success: function(data) {
 									  // console.log(data);
 										if(data == 1){
-											swal("Success!", "Contact Successfully Updated!", "success");
+											swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("contact_update_success"); ?>", "success");
 											window.setTimeout(function(){location.reload();},2000);
 											$('#update_button').html("<i class='fa fa-check'></i> Update");
 											$('#submit_edit_form').prop("disabled", false);
 										}else{
-											sweetAlert("Oops...", "Something went wrong!", "error");
+											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
 											$('#update_button').html("<i class='fa fa-check'></i> Update");
 											$('#submit_edit_form').prop("disabled", false);
 										}
@@ -581,7 +581,7 @@ if ($list_id_ct != NULL) {
 					}
 
 					if(validate == 1){
-						sweetAlert("Oops...", "Incomplete!", "error");
+						sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("incomplete"); ?>", "error");
 						validate = 0;
 					}
 				

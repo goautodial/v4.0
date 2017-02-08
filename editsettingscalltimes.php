@@ -30,7 +30,7 @@ if (isset($_POST["cid"])) {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Edit Call Times</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("edit_call_times"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -68,7 +68,7 @@ if (isset($_POST["cid"])) {
                 <section class="content-header">
                     <h1 style="font-weight:normal;">
                         <?php $lh->translateText("settings"); ?>
-                        <small><?php $lh->translateText("Call Times Edit"); ?></small>
+                        <small><?php $lh->translateText("edit_call_times"); ?></small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -188,7 +188,7 @@ if (isset($_POST["cid"])) {
 							
 						?>
 
-						<legend>MODIFY CALL TIME ID : <u><?php echo $cid;?></u></legend>
+						<legend><?php $lh->translateText("modify_calltime_id"); ?> <u><?php echo $cid;?></u></legend>
                     	
 							<form id="modifyform">
 								<input type="hidden" name="modifyid" value="<?php echo $cid;?>">
@@ -199,7 +199,7 @@ if (isset($_POST["cid"])) {
 						<div role="tabpanel">
 						<!--<div class="nav-tabs-custom">-->
 							<ul role="tablist" class="nav nav-tabs nav-justified">
-								<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
+								<li class="active"><a href="#tab_1" data-toggle="tab"> <?php $lh->translateText("basic_settings"); ?></a></li>
 							</ul>
 			               <!-- Tab panes-->
 			               <div class="tab-content">
@@ -208,19 +208,19 @@ if (isset($_POST["cid"])) {
 				                <div id="tab_1" class="tab-pane fade in active">
 				                	<fieldset>
 										<div class="form-group mt">
-											<label for="calltime_name" class="col-sm-2 control-label">Call Time Name</label>
+											<label for="calltime_name" class="col-sm-2 control-label"><?php $lh->translateText("call_time_name"); ?></label>
 											<div class="col-sm-10 mb">
 												<input type="text" class="form-control" name="calltime_name" id="calltime_name" placeholder="Call Time Name" value="<?php echo $output->call_time_name;?>">
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="calltime_comments" class="col-sm-2 control-label">Call Time Comments</label>
+											<label for="calltime_comments" class="col-sm-2 control-label"><?php $lh->translateText("call_time_comments"); ?></label>
 											<div class="col-sm-10 mb">
 												<input type="text" class="form-control" name="calltime_comments" id="calltime_comments" placeholder="Call Time Comments" value="<?php echo $output->call_time_comments;?>">
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="protocol" class="col-sm-2 control-label">User Group</label>
+											<label for="protocol" class="col-sm-2 control-label"><?php $lh->translateText("user_groups"); ?></label>
 											<div class="col-sm-10 mb">
 												<select class="form-control" id="usergroup" name="usergroup">
 													<option value="---ALL---">ALL USER GROUPS</option>
@@ -242,14 +242,14 @@ if (isset($_POST["cid"])) {
 												<label class="col-lg-2">&nbsp;</label>
 											<div class="col-lg-10">
 												<div class="row">
-													<label class="col-lg-3">Start</label>
-													<label class="col-lg-3">Stop</label>
-													<label class="col-lg-6">After Hours Audio</label>
+													<label class="col-lg-3"><?php $lh->translateText("start"); ?></label>
+													<label class="col-lg-3"><?php $lh->translateText("stop"); ?></label>
+													<label class="col-lg-6"><?php $lh->translateText("after_hours"); ?></label>
 												</div>
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="control-label col-lg-2">Default:</label>
+											<label class="control-label col-lg-2"><?php $lh->translateText("default"); ?></label>
 											<div class="col-lg-10 mb">
 												<div class="row">
 													<div class="col-lg-3">
@@ -275,7 +275,7 @@ if (isset($_POST["cid"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="control-label col-lg-2">Sunday:</label>
+											<label class="control-label col-lg-2"><?php $lh->translateText("sunday"); ?></label>
 											<div class="col-lg-10 mb">
 												<div class="row">
 													<div class="col-lg-3">
@@ -301,7 +301,7 @@ if (isset($_POST["cid"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="control-label col-lg-2">Monday:</label>
+											<label class="control-label col-lg-2"><?php $lh->translateText("monday"); ?></label>
 											<div class="col-lg-10 mb">
 												<div class="row">
 													<div class="col-lg-3">
@@ -327,7 +327,7 @@ if (isset($_POST["cid"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="control-label col-lg-2">Tuesday:</label>
+											<label class="control-label col-lg-2"><?php $lh->translateText("tuesday"); ?></label>
 											<div class="col-lg-10 mb">
 												<div class="row">
 													<div class="col-lg-3">
@@ -353,7 +353,7 @@ if (isset($_POST["cid"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="control-label col-lg-2">Wednesday:</label>
+											<label class="control-label col-lg-2"><?php $lh->translateText("wednesday"); ?></label>
 											<div class="col-lg-10 mb">
 												<div class="row">
 													<div class="col-lg-3">
@@ -379,7 +379,7 @@ if (isset($_POST["cid"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="control-label col-lg-2">Thursday:</label>
+											<label class="control-label col-lg-2"><?php $lh->translateText("thursday"); ?></label>
 											<div class="col-lg-10 mb">
 												<div class="row">
 													<div class="col-lg-3">
@@ -405,7 +405,7 @@ if (isset($_POST["cid"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="control-label col-lg-2">Friday:</label>
+											<label class="control-label col-lg-2"><?php $lh->translateText("friday"); ?></label>
 											<div class="col-lg-10 mb">
 												<div class="row">
 													<div class="col-lg-3">
@@ -431,7 +431,7 @@ if (isset($_POST["cid"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="control-label col-lg-2">Saturday:</label>
+											<label class="control-label col-lg-2"><?php $lh->translateText("saturday"); ?></label>
 											<div class="col-lg-10 mb">
 												<div class="row">
 													<div class="col-lg-3">
@@ -521,15 +521,15 @@ if (isset($_POST["cid"])) {
                         success: function(data) {
                           // console.log(data);
                               if(data == 1){
-                                    swal("Success!", "Call Times Successfully Updated!", "success");
+                                    swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("calltime_modify_success"); ?>", "success");
                                     window.setTimeout(function(){location.reload();},2000);
                                     $('#update_button').html("<i class='fa fa-check'></i> Update");
                                     $('#modifyCalltimesOkButton').prop("disabled", false);
                               }
                               else{
-                                  	sweetAlert("Oops...", "Something went wrong!", "error");
-	$('#update_button').html("<i class='fa fa-check'></i> Update");
-	$('#modifyCalltimesOkButton').prop("disabled", false);
+                                  	sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
+									$('#update_button').html("<i class='fa fa-check'></i> Update");
+									$('#modifyCalltimesOkButton').prop("disabled", false);
                               }
                         }
                     });

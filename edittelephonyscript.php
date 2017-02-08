@@ -30,7 +30,7 @@ if (isset($_POST["script_id"])) {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Edit Script</title>
+        <title><?php $lh->translateText("edit_script"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <!-- Call for standardized css -->
@@ -113,7 +113,7 @@ if (isset($_POST["script_id"])) {
             <section class="content">
 				<div class="panel panel-default">
                     <div class="panel-body">
-						<legend>MODIFY SCRIPT ID : <u><?php echo $script_id;?></u></legend>
+						<legend><?php $lh->translateText("modify_script"); ?> : <u><?php echo $script_id;?></u></legend>
                     	
 							<form id="modifyform">
 								<input type="hidden" name="modifyid" value="<?php echo $script_id;?>">
@@ -133,19 +133,19 @@ if (isset($_POST["script_id"])) {
 				                <div id="tab_1" class="tab-pane fade in active">
 				                	<fieldset>
 										<div class="form-group mt">
-											<label for="script_name" class="col-sm-2 control-label">Script Name</label>
+											<label for="script_name" class="col-sm-2 control-label"><?php $lh->translateText("script_name"); ?></label>
 											<div class="col-sm-10 mb">
 												<input type="text" class="form-control" name="script_name" id="script_name" placeholder="Script Name (Required)" value="<?php echo $output->script_name[$i];?>">
 											</div>
 										</div>
 										<div class="form-group mt">
-											<label for="script_comments" class="col-sm-2 control-label">Script Comments</label>
+											<label for="script_comments" class="col-sm-2 control-label"><?php $lh->translateText("script_comments"); ?></label>
 											<div class="col-sm-10 mb">
 												<input type="text" class="form-control" name="script_comments" id="script_comments" placeholder="Script Comments (Optional)" value="<?php echo $output->script_comments[$i];?>">
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="status" class="col-sm-2 control-label">Active</label>
+											<label for="status" class="col-sm-2 control-label"><?php $lh->translateText("active"); ?></label>
 											<div class="col-sm-10 mb">
 												<select class="form-control" name="active" id="active">
 												<?php
@@ -167,7 +167,7 @@ if (isset($_POST["script_id"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="script_text" class="col-sm-2 control-label">Script Text</label>
+											<label for="script_text" class="col-sm-2 control-label"><?php $lh->translateText("script_text"); ?></label>
 											<div class="col-sm-10 mb">
 												<div class="row">
 													<div class="col-sm-12 mb">
@@ -305,7 +305,7 @@ if (isset($_POST["script_id"])) {
 			$(document).ready(function() {
 				
 				$(document).on('click', '#cancel', function(){
-					sweetAlert("Cancelled", "No action has been done :)", "error");
+					sweetAlert("Cancelled", "<?php $lh->translateText("been_done"); ?> :)", "error");
 				});
 
 				/** 

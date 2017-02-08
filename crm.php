@@ -103,15 +103,15 @@ $leads = $ui->API_GetLeads($_SESSION['user']);
 									<span class="form-control-clear fa fa-close form-control-feedback"></span>
 								</div>
 								<div class="clearfix">
-									<button type="button" class="pull-left btn btn-default" id="search_button"> Search</button>
+									<button type="button" class="pull-left btn btn-default" id="search_button"> <?php $lh->translateText("search"); ?></button>
 									<div class="pull-right">
 										<label class="checkbox-inline c-checkbox" for="search_customers">
 											<input id="search_customers" name="search_customers" type="checkbox">
-											<span class="fa fa-check"></span> Customers
+											<span class="fa fa-check"></span><?php $lh->translateText("customers"); ?> 
 										</label>
 										<label class="checkbox-inline c-checkbox" for="search_contacts">
 											<input id="search_contacts" name="table_filter" type="checkbox" checked>
-											<span class="fa fa-check"></span> Contacts
+											<span class="fa fa-check"></span> <?php $lh->translateText("contacts"); ?>
 										</label>
 									</div>
 								</div>
@@ -120,17 +120,17 @@ $leads = $ui->API_GetLeads($_SESSION['user']);
 								<div class="panel-body">
 									<div class="contacts_div">
 									<!-- Contacts panel tab -->
-									<legend>Contacts</legend>
+									<legend><?php $lh->translateText("contacts"); ?></legend>
 
 										<!--==== Contacts ====-->
 										<table class="table table-striped table-bordered table-hover" id="table_contacts">
 										   <thead>
 											  <tr>
-												 <th nowrap>Lead ID</th>
-												 <th nowrap class='hide-on-low'>Full Name</th>
-												 <th nowrap class='hide-on-low'>Phone Number</th>
-												 <th nowrap class='hide-on-medium hide-on-low'>Status</th>
-												 <th nowrap>Action</th>
+												 <th nowrap><?php $lh->translateText("lead_id"); ?></th>
+												 <th nowrap class='hide-on-low'><?php $lh->translateText("full_name"); ?></th>
+												 <th nowrap class='hide-on-low'><?php $lh->translateText("phone_number"); ?></th>
+												 <th nowrap class='hide-on-medium hide-on-low'><?php $lh->translateText("status"); ?></th>
+												 <th nowrap><?php $lh->translateText("action"); ?></th>
 											  </tr>
 										   </thead>
 										   <tbody>
@@ -165,19 +165,19 @@ $agents = $ui->API_goGetAllUserLists();
 $disposition = $ui->API_getAllDispositions();
 ?>
 	               		<div class="col-lg-3">
-	           				<h3 class="m0 pb-lg">Filters</h3>
+	           				<h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>
 	           				<form id="search_form">
 
 		                        <div class="form-group">
-		                           <label>Add Filters:</label>
+		                           <label><?php $lh->translateText("add_filters"); ?></label>
 		                           <div class="mb">
 		                           		<div class="add_contact_filters">
 			                              	<select multiple="multiple" class="select2-3 form-control add_filters1" style="width:100%;">
-			                                    <option value="filter_disposition" class="contacts_filters">Disposition</option>
-			                                    <option value="filter_list" class="contacts_filters">List ID</option>
-			                                    <option value="filter_address" class="contacts_filters">Address </option>
-			                                    <option value="filter_city" class="contacts_filters">City </option>
-			                                    <option value="filter_state" class="contacts_filters">State </option>
+			                                    <option value="filter_disposition" class="contacts_filters"><?php $lh->translateText("filter_disposition"); ?></option>
+			                                    <option value="filter_list" class="contacts_filters"><?php $lh->translateText("filter_list_id"); ?></option>
+			                                    <option value="filter_address" class="contacts_filters"><?php $lh->translateText("filter_address"); ?> </option>
+			                                    <option value="filter_city" class="contacts_filters"><?php $lh->translateText("filter_city"); ?></option>
+			                                    <option value="filter_state" class="contacts_filters"><?php $lh->translateText("filter_state"); ?></option>
 			                             	</select>
 			                            </div>
 		                           </div>
@@ -188,7 +188,7 @@ $disposition = $ui->API_getAllDispositions();
 		                    <div class="all_contact_filters">
 		                    	<div class="disposition_filter_div" style="display:none;">
 								    <div class="form-group">
-										<label>Disposition: </label>
+										<label><?php $lh->translateText("crm_dispotition"); ?> </label>
 										<div class="mb">
 											<select name="disposition_filter" id="disposition_filter" class="form-control select2-3" style="width:100%;">
 													<option value="">- - - NO DISPOSITION SELECTED - - -</option>
@@ -206,7 +206,7 @@ $disposition = $ui->API_getAllDispositions();
 								</div>
 		                        <div class="list_filter_div" style="display:none;">
 									<div class="form-group">
-										<label>List ID: </label>
+										<label><?php $lh->translateText("list_id"); ?>:</label>
 										<div class="mb">
 											<select name="list_filter" id="list_filter" class="form-control">
 													<option value="">- - - NO LIST SELECTED - - -</option>
@@ -221,7 +221,7 @@ $disposition = $ui->API_getAllDispositions();
 								</div>
 								<div class="address_filter_div" style="display:none;">
 									<div class="form-group">
-										<label>Address: </label>
+										<label><?php $lh->translateText("address"); ?>:</label>
 										<div class="mb has-clear">
 											<input type="text" class="form-control" id="address_filter" name="address_filter" placeholder="Address" />
 											<span class="form-control-clear fa fa-close form-control-feedback"></span>
@@ -230,7 +230,7 @@ $disposition = $ui->API_getAllDispositions();
 								</div>
 								<div class="city_filter_div" style="display:none;">
 									<div class="form-group has-clear">
-										<label>City: </label>
+										<label><?php $lh->translateText("city"); ?>: </label>
 										<div class="mb has-clear">
 											<input type="text" class="form-control" id="city_filter" name="city_filter" placeholder="City" />
 											<span class="form-control-clear fa fa-close form-control-feedback"></span>
@@ -239,7 +239,7 @@ $disposition = $ui->API_getAllDispositions();
 								</div>
 								<div class="state_filter_div" style="display:none;">
 									<div class="form-group has-clear">
-										<label>State: </label>
+										<label><?php $lh->translateText("state"); ?>: </label>
 										<div class="mb has-clear">
 											<input type="text" class="form-control" id="state_filter" name="state_filter" placeholder="State" />
 											<span class="form-control-clear fa fa-close form-control-feedback"></span>
@@ -248,7 +248,7 @@ $disposition = $ui->API_getAllDispositions();
 								</div>
 
 	               				<div class="form-group">
-		               				<label>Start Date:</label>
+		               				<label><?php $lh->translateText("start_date"); ?>:</label>
 						            <div class="form-group">
 						                <div class='input-group date' id='datetimepicker1'>
 						                    <input type='text' class="form-control" id="start_contact_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
@@ -260,7 +260,7 @@ $disposition = $ui->API_getAllDispositions();
 						            </div>
 						        </div>
 						        <div class="form-group">
-						            <label>End Date:</label>
+						            <label><?php $lh->translateText("end_date"); ?>:</label>
 						            <div class="form-group">
 						                <div class='input-group date' id='datetimepicker2'>
 						                    <input type='text' class="form-control" id="end_contact_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
@@ -703,13 +703,13 @@ $disposition = $ui->API_getAllDispositions();
 						var log_user = '<?=$_SESSION['user']?>';
 						var log_group = '<?=$_SESSION['usergroup']?>';
 						swal({
-							title: "Are you sure?",
-							text: "This action cannot be undone.",
+							title: "<?php $lh->translateText("are_you_sure"); ?>",
+							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
 							type: "warning",
 							showCancelButton: true,
 							confirmButtonColor: "#DD6B55",
-							confirmButtonText: "Yes, delete this contact!",
-							cancelButtonText: "No, cancel please!",
+							confirmButtonText: "<?php $lh->translateText("confirm_delete_contact"); ?>",
+							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
 							closeOnConfirm: false,
 							closeOnCancel: false
 							},
@@ -727,8 +727,8 @@ $disposition = $ui->API_getAllDispositions();
 												console.log(data);
 													if(data == "success"){
 														swal({
-																title: "Success",
-																text: "Contact Successfully Deleted!",
+																title: "<?php $lh->translateText("success"); ?>",
+																text: "<?php $lh->translateText("contact_delete_success"); ?>",
 																type: "success"
 															},
 															function(){
@@ -736,13 +736,13 @@ $disposition = $ui->API_getAllDispositions();
 															}
 														);
 													}else{
-															sweetAlert("Oops...", "Something went wrong! "+data, "error");
+															sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 															window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
 													}
 												}
 										});
 									} else {
-											swal("Cancelled", "No action has been done :)", "error");
+											swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_message"); ?>", "error");
 									}
 							}
 						);

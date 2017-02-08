@@ -36,7 +36,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Edit Users</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("edit_user"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?>
@@ -70,7 +70,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
                         <?php
 							if(isset($_POST["userid"])){
 						?>	
-							<li><a href="./telephonyusers.php"><?php $lh->translateText("Users"); ?></a></li>
+							<li><a href="./telephonyusers.php"><?php $lh->translateText("users"); ?></a></li>
                         <?php
 							}
                         ?>	                    
@@ -105,7 +105,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 							?>
 
 							<div class="panel-body">
-							<legend>MODIFY USER : <u><?php echo $output->data->user;?></u></legend>
+							<legend><?php $lh->translateText("modify_user"); ?>  <u><?php echo $output->data->user;?></u></legend>
 
 								<form id="modifyuser">
 									<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
@@ -115,8 +115,8 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								<div role="tabpanel">
 								<!--<div class="nav-tabs-custom">-->
 									<ul role="tablist" class="nav nav-tabs nav-justified">
-										<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
-										<li><a href="#tab_2" data-toggle="tab"> Advanced Settings</a></li>
+										<li class="active"><a href="#tab_1" data-toggle="tab"><?php $lh->translateText("basic_settings"); ?></a></li>
+										<li><a href="#tab_2" data-toggle="tab"><?php $lh->translateText("advance_settings"); ?> </a></li>
 									</ul>
 					               <!-- Tab panes-->
 					               <div class="tab-content">
@@ -128,14 +128,14 @@ $user_groups = $ui->API_goGetUserGroupsList();
 										
 											<fieldset>
 												<div class="form-group mt">
-													<label for="fullname" class="col-sm-2 control-label">Fullname</label>
+													<label for="fullname" class="col-sm-2 control-label"><?php $lh->translateText("full_name"); ?></label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="fullname" id="fullname" 
 															value="<?php echo $output->data->full_name;?>" maxlength="50" placeholder="Fullname" />
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="email" class="col-sm-2 control-label">Email</label>
+													<label for="email" class="col-sm-2 control-label"><?php $lh->translateText("email"); ?></label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="email" id="email" 
 															value="<?php echo $output->data->email;?>"  maxlength="100" placeholder="Email" />
@@ -143,7 +143,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="usergroup" class="col-sm-2 control-label">User Group</label>
+													<label for="usergroup" class="col-sm-2 control-label"><?php $lh->translateText("user_group"); ?></label>
 													<div class="col-sm-10 mb">
 														<select class="form-control select2-1" id="usergroup" name="usergroup">
 															<?php
@@ -160,7 +160,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="status" class="col-sm-2 control-label">Status</label>
+													<label for="status" class="col-sm-2 control-label"><?php $lh->translateText("status"); ?></label>
 													<div class="col-sm-10 mb">
 														<select class="form-control" name="status" id="status">
 														<?php
@@ -182,7 +182,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="userlevel" class="col-sm-2 control-label">User Level</label>
+													<label for="userlevel" class="col-sm-2 control-label"><?php $lh->translateText("user_level"); ?></label>
 													<div class="col-sm-10 mb">
 														<select class="form-control" name="userlevel" id="userlevel">
 														<?php
@@ -257,7 +257,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div> -->									
 												<div class="form-group">
-													<label for="voicemail" class="col-sm-2 control-label">Voicemail</label>
+													<label for="voicemail" class="col-sm-2 control-label"><?php $lh->translateText("voicemail"); ?></label>
 													<div class="col-sm-10 mb">
 														<select class="form-control select2-1" name="voicemail" id="voicemail">
 															<?php
@@ -284,7 +284,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="change_pass" class="col-sm-2 control-label">Change Password?</label>
+													<label for="change_pass" class="col-sm-2 control-label"><?php $lh->translateText("change_password"); ?></label>
 													<div class="col-sm-10 mb">
 														<select class="form-control " name="change_pass" id="change_pass">
 															<option value="N" selected> No </option>
@@ -293,7 +293,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group form_password" style="display:none;">
-													<label for="password" class="col-sm-2 control-label">Password</label>
+													<label for="password" class="col-sm-2 control-label"><?php $lh->translateText("password"); ?></label>
 													<div class="col-sm-10 mb">
 														<input type="password" class="form-control" name="password" id="password" 
 															value="<?php echo $output->data->password;?>" maxlength="20" placeholder="Password" />
@@ -301,7 +301,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group form_password" style="display:none;">		
-													<label for="conf_password" class="col-sm-2 control-label">Confirm Password: </label>
+													<label for="conf_password" class="col-sm-2 control-label"><?php $lh->translateText("confirm_password"); ?></label>
 													<div class="col-sm-10 mb">
 														<input type="password" class="form-control" id="conf_password" placeholder="Confirm Password" required />
 														<span id="pass_result"></span></i></small>
@@ -315,7 +315,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 							       			<fieldset>
 							       				<div class="form-group mt">
-													<label for="hotkeys" class="col-sm-3 control-label">HotKeys</label>
+													<label for="hotkeys" class="col-sm-3 control-label"><?php $lh->translateText("hotkeys"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="hotkeys" id="hotkeys">
 														<?php
@@ -337,7 +337,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="vicidial_recording_override" class="col-sm-3 control-label">Agent Recordings</label>
+													<label for="vicidial_recording_override" class="col-sm-3 control-label"><?php $lh->translateText("agent_recordings"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="vicidial_recording_override" id="vicidial_recording_override">
 															<?php
@@ -377,7 +377,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="vicidial_transfers" class="col-sm-3 control-label">Agent Transfers</label>
+													<label for="vicidial_transfers" class="col-sm-3 control-label"><?php $lh->translateText("agent_transfers"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="vicidial_transfers" id="vicidial_transfers">
 															<?php
@@ -399,7 +399,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="closer_default_blended" class="col-sm-3 control-label">Closer Default Blended</label>
+													<label for="closer_default_blended" class="col-sm-3 control-label"><?php $lh->translateText("closer_default_blended"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="closer_default_blended" id="closer_default_blended">
 															<?php
@@ -421,7 +421,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="agentcall_manual" class="col-sm-3 control-label">Agent Call Manual</label>
+													<label for="agentcall_manual" class="col-sm-3 control-label"><?php $lh->translateText("agent_call_manual"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="agentcall_manual" id="agentcall_manual">
 															<?php
@@ -443,8 +443,8 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="scheduled_callbacks" class="col-sm-3 control-label">Scheduled Callbacks</label>
 													<div class="col-sm-9 mb">
+													<label for="scheduled_callbacks" class="col-sm-3 control-label"><?php $lh->translateText("scheduled_callbacks"); ?></label>
 														<select class="form-control" name="scheduled_callbacks" id="scheduled_callbacks">
 															<?php
 																$scheduled_callbacks = NULL;
@@ -465,7 +465,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="agentonly_callbacks" class="col-sm-3 control-label">Agent-Only Callbacks</label>
+													<label for="agentonly_callbacks" class="col-sm-3 control-label"><?php $lh->translateText("agent_only_callbacks"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="agentonly_callbacks" id="agentonly_callbacks">
 															<?php
@@ -509,7 +509,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="choose_ingroup" class="col-sm-3 control-label"> Agent Choose Ingroup</label>
+													<label for="choose_ingroup" class="col-sm-3 control-label"><?php $lh->translateText("agent_choose_ingroup"); ?> </label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="choose_ingroup" id="choose_ingroup">
 															<?php
@@ -697,8 +697,8 @@ $user_groups = $ui->API_goGetUserGroupsList();
 									$('#modifyUserOkButton').prop("disabled", false);
 									swal(
 										{
-											title: "Success",
-											text: "User Successfully Updated!",
+											title: "<?php $lh->translateText("success"); ?>",
+											text: "<?php $lh->translateText("user_update_success"); ?>",
 											type: "success"
 										},
 										function(){
@@ -706,7 +706,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 										}
 									);
 								} else {
-									sweetAlert("Oops...", "Something went wrong! " + data, "error");
+									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> " + data, "error");
 									$('#update_button').html("<i class='fa fa-check'></i> Update");
 									$('#modifyUserOkButton').prop("disabled", false);	
 								}
