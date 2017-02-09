@@ -314,7 +314,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 									   	<div id="tab_2" class="tab-pane fade in">
 
 							       			<fieldset>
-							       				<div class="form-group mt">
+							       				<div class="row form-group mt">
 													<label for="hotkeys" class="col-sm-3 control-label"><?php $lh->translateText("hotkeys"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="hotkeys" id="hotkeys">
@@ -336,7 +336,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														</select>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="row form-group">
 													<label for="vicidial_recording_override" class="col-sm-3 control-label"><?php $lh->translateText("agent_recordings"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="vicidial_recording_override" id="vicidial_recording_override">
@@ -376,7 +376,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														</select>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="row form-group">
 													<label for="vicidial_transfers" class="col-sm-3 control-label"><?php $lh->translateText("agent_transfers"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="vicidial_transfers" id="vicidial_transfers">
@@ -398,7 +398,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														</select>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="row form-group">
 													<label for="closer_default_blended" class="col-sm-3 control-label"><?php $lh->translateText("closer_default_blended"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="closer_default_blended" id="closer_default_blended">
@@ -420,7 +420,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														</select>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="row form-group">
 													<label for="agentcall_manual" class="col-sm-3 control-label"><?php $lh->translateText("agent_call_manual"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="agentcall_manual" id="agentcall_manual">
@@ -442,7 +442,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														</select>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="row form-group">
 													<div class="col-sm-9 mb">
 													<label for="scheduled_callbacks" class="col-sm-3 control-label"><?php $lh->translateText("scheduled_callbacks"); ?></label>
 														<select class="form-control" name="scheduled_callbacks" id="scheduled_callbacks">
@@ -464,7 +464,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														</select>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="row form-group">
 													<label for="agentonly_callbacks" class="col-sm-3 control-label"><?php $lh->translateText("agent_only_callbacks"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="agentonly_callbacks" id="agentonly_callbacks">
@@ -486,7 +486,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														</select>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="row form-group">
 													<label for="api_access" class="col-sm-3 control-label"><i class="fa fa-info-circle" title="If disabled, agent won't be able to take calls."></i> Allow API Access</label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="api_access" id="api_access">
@@ -508,7 +508,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														</select>
 													</div>
 												</div>
-												<div class="form-group">
+												<div class="row form-group">
 													<label for="choose_ingroup" class="col-sm-3 control-label"><?php $lh->translateText("agent_choose_ingroup"); ?> </label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="choose_ingroup" id="choose_ingroup">
@@ -527,6 +527,16 @@ $user_groups = $ui->API_goGetUserGroupsList();
 																}
 																echo $choose_ingroup;
 															?>
+														</select>
+													</div>
+												</div>
+												<div class="row form-group">
+													<label for="agent_lead_search_override" class="col-sm-3 control-label"><?php $lh->translateText("agent_lead_search_override"); ?></label>
+													<div class="col-sm-9 mb">
+														<select class="form-control" name="agent_lead_search_override" id="agent_lead_search_override">
+															<option value="ENABLED" <?php if ($output->data->agent_lead_search_override == 'NOT_ACTIVE') { echo "selected"; }?>>ENABLED</option>
+															<option value="DISABLED" <?php if ($output->data->agent_lead_search_override == 'NOT_ACTIVE') { echo "selected"; }?>>DISABLED</option>
+															<option value="NOT_ACTIVE" <?php if ($output->data->agent_lead_search_override == 'NOT_ACTIVE') { echo "selected"; }?>>NOT ACTIVE</option>
 														</select>
 													</div>
 												</div>

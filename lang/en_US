@@ -573,6 +573,7 @@ confirm_delete_phone = "Yes, delete this !"
 delete_phone_success = "User Successfully Deleted!"
 phone_has_been_deleted = "User has been successfully deleted and cannot be retrieved again."
 delete_phone_failed = "An Error Occured while Creating a User!"
+agent_lead_search_override = "Agent Lead Search Override"
 
 carrier_wizard = "Carrier Wizard"
 add_new_carrier = "Add New Carrier"
