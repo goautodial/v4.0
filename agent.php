@@ -1682,6 +1682,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 			var selectedMessages = [];
 			
 			$(document).ready(function() {
+				$("#contacts-list").DataTable();
+				
 			    //iCheck for checkbox and radio inputs
 		        $('input[type="checkbox"].message-selection-checkbox').iCheck({
 					checkboxClass: 'icheckbox_minimal-blue',
