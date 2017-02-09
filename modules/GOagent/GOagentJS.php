@@ -8149,6 +8149,15 @@ function getContactList() {
                     $("button[id^='dial-lead-']").removeClass('disabled');
                 }
             });
+        } else {
+            $(".preloader").fadeOut('slow');
+            
+            swal({
+                title: '<?=$lh->translationFor('error')?>',
+                text: resule.message + "<br>" + '<?=$lh->translationFor('please_check_campaign_settings')?>',
+                type: 'error',
+                html: true
+            });
         }
     });
 }
