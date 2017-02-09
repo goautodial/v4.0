@@ -91,6 +91,8 @@ if ($folder < 0 || $folder > MESSAGES_MAX_FOLDER) { $folder = MESSAGES_GET_INBOX
 if (isset($_GET["message"])) {
 	$message = $_GET["message"];
 } else $message = NULL;
+
+$user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 ?>
 
 <html>
@@ -1636,7 +1638,9 @@ if (isset($_GET["message"])) {
 				$numMessages = $db->getUnreadMessagesNumber($user->getUserId());
 				echo $ui->getSidebarItem("#messages", "", $lh->translationFor("messages"), $numMessages, "green");
 				echo $ui->getSidebarItem("#callbackslist", "", $lh->translationFor("callbacks"), "0", "blue");
-				echo $ui->getSidebarItem("#customerslist", "", $lh->translationFor("contacts"));
+				if ($user_info->data->agent_lead_search_override != 'DISABLED') {
+					echo $ui->getSidebarItem("#customerslist", "", $lh->translationFor("contacts"));
+				}
 			}
 			?>
 			<li id="pause_code_link" class="hidden">
