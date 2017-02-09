@@ -8151,6 +8151,17 @@ function getContactList() {
             });
         } else {
             $(".preloader").fadeOut('slow');
+            
+            $("#contacts-list").dataTable().fnDestroy();
+            $("#contacts-list tbody").empty();
+            $("#contacts-list").DataTable();
+            
+            swal({
+                title: '<?=$lh->translationFor('error')?>',
+                text: resule.message,
+                type: 'error',
+                html: true
+            });
         }
     });
 }
