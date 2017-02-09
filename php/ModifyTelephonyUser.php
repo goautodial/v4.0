@@ -101,6 +101,10 @@ if ($validated == 1) {
 		$agentonly_callbacks = $_POST["agentonly_callbacks"]; 
 		$agentonly_callbacks = stripslashes($agentonly_callbacks);
 	}
+	$agent_lead_search_override = NULL; if (isset($_POST["agent_lead_search_override"])) { 
+		$agent_lead_search_override = $_POST["agent_lead_search_override"]; 
+		$agent_lead_search_override = stripslashes($agent_lead_search_override);
+	}
 
 	$url = gourl."/goUsers/goAPI.php"; # URL to GoAutoDial API file
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -118,6 +122,7 @@ if ($validated == 1) {
     $postfields["phone_login"] = $phone_login;
     $postfields["phone_pass"] = $phone_pass;
     $postfields["hotkeys_active"] = $hotkeys_active;
+	$postfields["agent_lead_search_override"] = $agent_lead_search_override;
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	
     $postfields["log_user"] = $_POST['log_user'];
