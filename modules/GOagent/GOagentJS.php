@@ -8065,6 +8065,9 @@ function TimerActionRun(taskaction, taskdialalert) {
 }
 
 function getContactList() {
+    $("#contacts-list").dataTable().fnDestroy();
+    $("#contacts-list tbody").empty();
+    
     var postData = {
         goAction: 'goGetContactList',
         goUser: uName,
@@ -8089,8 +8092,6 @@ function getContactList() {
     .done(function (result) {
         if (result.result == 'success') {
             var leadsList = result.leads;
-            $("#contacts-list").dataTable().fnDestroy();
-            $("#contacts-list tbody").empty();
             $.each(leadsList, function(key, value) {
                 var thisComments = value.comments;
                 var commentTitle = '';
@@ -8151,14 +8152,11 @@ function getContactList() {
             });
         } else {
             $(".preloader").fadeOut('slow');
-            
-            $("#contacts-list").dataTable().fnDestroy();
-            $("#contacts-list tbody").empty();
             $("#contacts-list").DataTable();
             
             swal({
                 title: '<?=$lh->translationFor('error')?>',
-                text: resule.message,
+                text: result.message,
                 type: 'error',
                 html: true
             });
