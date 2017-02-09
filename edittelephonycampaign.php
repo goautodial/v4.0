@@ -1819,8 +1819,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 														<label class="col-sm-3 control-label">Agent Lead Search:</label>
 														<div class="col-sm-9 mb">
 															<select id="agent_lead_search" name="agent_lead_search" class="form-control">
-																<option value="" <?php if($campaign->data->agent_lead_search == "ENABLED") echo "selected";?>>ENABLED</option>
-																<option value="" <?php if($campaign->data->agent_lead_search == "DISABLED") echo "selected";?>>DISABLED</option>
+																<option value="ENABLED" <?php if($campaign->data->agent_lead_search == "ENABLED") echo "selected";?>>ENABLED</option>
+																<option value="DISABLED" <?php if($campaign->data->agent_lead_search == "DISABLED") echo "selected";?>>DISABLED</option>
 															</select>
 														</div>
 													</div>
@@ -1828,8 +1828,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 														<label class="col-sm-3 control-label">Agent Lead Search Method:</label>
 														<div class="col-sm-9 mb">
 															<select id="agent_lead_search_method" name="agent_lead_search_method" class="form-control">
-																<option value="" <?php if($campaign->data->agent_lead_search_method == "SYSTEM") echo "selected";?>>SYSTEM</option>
-																<option value="" <?php if($campaign->data->agent_lead_search_method == "CAMPLISTS") echo "selected";?>>CAMPLISTS</option>
+																<option value="SYSTEM" <?php if($campaign->data->agent_lead_search_method == "SYSTEM") echo "selected";?>>SYSTEM</option>
+																<option value="CAMPLISTS" <?php if($campaign->data->agent_lead_search_method == "CAMPLISTS") echo "selected";?>>CAMPLISTS</option>
 															</select>
 														</div>
 													</div>
