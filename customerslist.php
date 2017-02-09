@@ -124,7 +124,7 @@ error_reporting(E_ALL);*/
                             </div><!-- /.box-header -->
 							
                            <div class="box-body">	
-                           		<form class="form-horizontal clearfix" method="POST" action="searchLeads.php">
+                           		<form class="form-horizontal clearfix" method="POST" action="searchleads.php">
                            			<input type="hidden" name="lists" value="<?php echo $list; ?>">
                            			<div class="fom-group">
                            				<label class="control-label col-lg-2">Last Name:</label>
