@@ -491,6 +491,12 @@ $(document).ready(function() {
                     ManualDialNext('','','','','','0');
                 }
                 if (manual_auto_hotkey > 1) {manual_auto_hotkey = (manual_auto_hotkey - 1);}
+                
+                if (agent_lead_search == 'ENABLED') {
+                    $("#agent-lead-search").removeClass('hidden');
+                } else {
+                    $("#agent-lead-search").addClass('hidden');
+                }
 
                 if (WaitingForNextStep == 0) {
                     if (trigger_ready > 0) {
@@ -8063,6 +8069,7 @@ function getContactList() {
         goPass: uPass,
         goLimit: 1000,
         goCampaign: campaign,
+        goLeadSearchMethod: agent_lead_search_method,
         responsetype: 'json'
     };
     

@@ -1829,7 +1829,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 														<div class="col-sm-9 mb">
 															<select id="agent_lead_search_method" name="agent_lead_search_method" class="form-control">
 																<option value="SYSTEM" <?php if($campaign->data->agent_lead_search_method == "SYSTEM") echo "selected";?>>SYSTEM</option>
-																<option value="CAMPLISTS" <?php if($campaign->data->agent_lead_search_method == "CAMPLISTS") echo "selected";?>>CAMPLISTS</option>
+																<option value="CAMPLISTS_ALL" <?php if($campaign->data->agent_lead_search_method == "CAMPLISTS_ALL") echo "selected";?>>CAMPLISTS ALL</option>
 															</select>
 														</div>
 													</div>
