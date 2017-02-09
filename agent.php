@@ -1639,7 +1639,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				echo $ui->getSidebarItem("#messages", "", $lh->translationFor("messages"), $numMessages, "green");
 				echo $ui->getSidebarItem("#callbackslist", "", $lh->translationFor("callbacks"), "0", "blue");
 				if ($user_info->data->agent_lead_search_override != 'DISABLED') {
-					echo $ui->getSidebarItem("#customerslist", "", $lh->translationFor("contacts"));
+					echo $ui->getSidebarItem("#customerslist", "", $lh->translationFor("contacts"), null, "", "agent-lead-search");
 				}
 			}
 			?>

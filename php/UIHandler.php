@@ -2093,9 +2093,10 @@ error_reporting(E_ERROR | E_PARSE);
 	/**
 	 * Generates the HTML code for a sidebar link.
 	 */
-	public function getSidebarItem($url, $icon, $title, $includeBadge = null, $badgeColor = "green") {
+	public function getSidebarItem($url, $icon, $title, $includeBadge = null, $badgeColor = "green", $listId = null) {
 		$badge = (isset($includeBadge)) ? '<small class="badge pull-right bg-'.$badgeColor.'">'.$includeBadge.'</small>' : '';
-		return '<li><a href="'.$url.'"><i class="fa fa-'.$icon.'"></i> <span>'.$title.'</span>'.$badge.'</a></li>';
+		$thisID = (isset($listId)) ? ' id="'.$listId.'"' : '';
+		return '<li'.$thisID.'><a href="'.$url.'"><i class="fa fa-'.$icon.'"></i> <span>'.$title.'</span>'.$badge.'</a></li>';
 	}
 
 	/** Customers */
