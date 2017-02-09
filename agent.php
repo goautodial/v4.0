@@ -1634,9 +1634,9 @@ if (isset($_GET["message"])) {
 				//</li>';
 				//echo $ui->getSidebarItem("./agent.php", "", $lh->translationFor("Home"));
 				$numMessages = $db->getUnreadMessagesNumber($user->getUserId());
-				echo $ui->getSidebarItem("messages.php", "", $lh->translationFor("messages"), $numMessages, "green");
-				echo $ui->getSidebarItem("callbackslist.php", "", $lh->translationFor("callbacks"), "0", "blue");
-				echo $ui->getSidebarItem("customerslist.php", "", $lh->translationFor("contacts"));
+				echo $ui->getSidebarItem("#messages", "", $lh->translationFor("messages"), $numMessages, "green");
+				echo $ui->getSidebarItem("#callbackslist", "", $lh->translationFor("callbacks"), "0", "blue");
+				echo $ui->getSidebarItem("#customerslist", "", $lh->translationFor("contacts"));
 			}
 			?>
 			<li id="pause_code_link" class="hidden">
@@ -1647,7 +1647,7 @@ if (isset($_GET["message"])) {
         <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
 			<li>
 				<div class="center-block" style="text-align: center">
-					<a href="./profile.php" class="btn btn-warning"><i class='fa fa-user'></i> <?=$lh->translationFor("my_profile")?></a>
+					<a href="#profile" class="btn btn-warning"><i class='fa fa-user'></i> <?=$lh->translationFor("my_profile")?></a>
 					 &nbsp; 
 					<a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class='fa fa-sign-out'></i> <?=$lh->translationFor("exit")?></a>
 				</div>
