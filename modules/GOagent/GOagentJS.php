@@ -1757,6 +1757,8 @@ function hijackThisLink(e) {
     $(".content-heading ol").html(breadCrumb);
     $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail|readmail)").off('click', hijackThisLink).on('click', hijackThisLink);
     
+    history.pushState('', document.title, window.location.pathname);
+    
     if (origHash !== hash && hash != 'contacts') {
         $(".preloader").fadeOut('slow');
     }
