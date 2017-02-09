@@ -443,8 +443,8 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													</div>
 												</div>
 												<div class="row form-group">
-													<div class="col-sm-9 mb">
 													<label for="scheduled_callbacks" class="col-sm-3 control-label"><?php $lh->translateText("scheduled_callbacks"); ?></label>
+													<div class="col-sm-9 mb">
 														<select class="form-control" name="scheduled_callbacks" id="scheduled_callbacks">
 															<?php
 																$scheduled_callbacks = NULL;
@@ -534,8 +534,8 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<label for="agent_lead_search_override" class="col-sm-3 control-label"><?php $lh->translateText("agent_lead_search_override"); ?></label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" name="agent_lead_search_override" id="agent_lead_search_override">
-															<option value="ENABLED" <?php if ($output->data->agent_lead_search_override == 'NOT_ACTIVE') { echo "selected"; }?>>ENABLED</option>
-															<option value="DISABLED" <?php if ($output->data->agent_lead_search_override == 'NOT_ACTIVE') { echo "selected"; }?>>DISABLED</option>
+															<option value="ENABLED" <?php if ($output->data->agent_lead_search_override == 'ENABLED') { echo "selected"; }?>>ENABLED</option>
+															<option value="DISABLED" <?php if ($output->data->agent_lead_search_override == 'DISABLED') { echo "selected"; }?>>DISABLED</option>
 															<option value="NOT_ACTIVE" <?php if ($output->data->agent_lead_search_override == 'NOT_ACTIVE') { echo "selected"; }?>>NOT ACTIVE</option>
 														</select>
 													</div>
