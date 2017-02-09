@@ -492,10 +492,12 @@ $(document).ready(function() {
                 }
                 if (manual_auto_hotkey > 1) {manual_auto_hotkey = (manual_auto_hotkey - 1);}
                 
-                if (agent_lead_search == 'ENABLED') {
-                    $("#agent-lead-search").removeClass('hidden');
-                } else {
-                    $("#agent-lead-search").addClass('hidden');
+                if (agent_lead_search_override == 'NOT_ACTIVE') {
+                    if (agent_lead_search == 'ENABLED') {
+                        $("#agent-lead-search").removeClass('hidden');
+                    } else {
+                        $("#agent-lead-search").addClass('hidden');
+                    }
                 }
 
                 if (WaitingForNextStep == 0) {
