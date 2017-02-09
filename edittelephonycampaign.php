@@ -1811,6 +1811,28 @@ $audiofiles = $ui->API_getListAudioFiles();
 														<?php } ?>
 													<?php } else { ?>
 														<!--Default-->
+													<?php }
+													
+													if ($campaign->campaign_type != "SURVEY") {
+													?>
+													<div class="form-group">
+														<label class="col-sm-3 control-label">Agent Lead Search:</label>
+														<div class="col-sm-9 mb">
+															<select id="agent_lead_search" name="agent_lead_search" class="form-control">
+																<option value="" <?php if($campaign->data->agent_lead_search == "ENABLED") echo "selected";?>>ENABLED</option>
+																<option value="" <?php if($campaign->data->agent_lead_search == "DISABLED") echo "selected";?>>DISABLED</option>
+															</select>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-3 control-label">Agent Lead Search Method:</label>
+														<div class="col-sm-9 mb">
+															<select id="agent_lead_search_method" name="agent_lead_search_method" class="form-control">
+																<option value="" <?php if($campaign->data->agent_lead_search_method == "SYSTEM") echo "selected";?>>SYSTEM</option>
+																<option value="" <?php if($campaign->data->agent_lead_search_method == "CAMPLISTS") echo "selected";?>>CAMPLISTS</option>
+															</select>
+														</div>
+													</div>
 													<?php } ?>
 													<div class="campaign_allow_inbound_div hide">
 														<div class="form-group">

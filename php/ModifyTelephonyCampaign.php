@@ -68,6 +68,8 @@
 	$postfields["url_tab_second_url"]			= $_POST["url_tab_second_url"];
 	$postfields["amd_send_to_vmx"]				= $_POST["amd_send_to_vmx"];
 	$postfields["waitforsilence_options"]		= $_POST["waitforsilence_options"];
+	$postfields["agent_lead_search"]			= $_POST["agent_lead_search"];
+	$postfields["agent_lead_search_method"]		= $_POST["agent_lead_search"];
 	
 	$postfields["survey_first_audio_file"] 		= (isset($_POST["survey_first_audio_file"]))? $_POST["survey_first_audio_file"] : "";
 	$postfields["survey_method"] 				= (isset($_POST["survey_method"]))? $_POST["survey_method"] : "";
