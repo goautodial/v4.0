@@ -112,7 +112,7 @@ if (isset($_POST["usergroup_id"])) {
             <section class="content">
 				<div class="panel panel-default">
                     <div class="panel-body">
-						<legend><?php $lh->translationFor("modify_user_group"); ?> : <u><?php echo $usergroup_id;?></u></legend>
+						<legend><?php $lh->translateText("modify_user_group"); ?> : <u><?php echo $usergroup_id;?></u></legend>
                     	
 							<form id="modifyvoicemail">
 								<input type="hidden" name="modifyid" value="<?php echo $usergroup_id;?>">
