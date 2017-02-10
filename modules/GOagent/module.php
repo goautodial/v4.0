@@ -142,6 +142,31 @@ class GOagent extends Module {
 		$contactAdmin = $this->lh()->translationFor('contact_admin');
 		$customerInformation = $this->lh()->translationFor('contact_information');
 		$convertToCustomer = $this->lh()->translationFor('convert_to_customer');
+		$youTurnOnMic = $this->lh()->translationFor('you_have_turn_on_mic');
+		$youTurnOffMic = $this->lh()->translationFor('you_have_turn_off_mic');
+		$phoneIsRegistered = $this->lh()->translationFor('phone_is_now_registered');
+		$registrationFailed = $this->lh()->translationFor('registration_failed_refresh');
+		$transferSelection = $this->lh()->translationFor('transfer_selection');
+		$closerGroups = $this->lh()->translationFor('closer_groups');
+		$localCloser = $this->lh()->translationFor('local_closer');
+		$seconds = $this->lh()->translationFor('seconds');
+		$channel = $this->lh()->translationFor('channel');
+		$consultative = $this->lh()->translationFor('consultative');
+		$numberToDial = $this->lh()->translationFor('number_to_dial');
+		$send = $this->lh()->translationFor('send');
+		$sendDTMF = $this->lh()->translationFor('send_dtmf');
+		$hangupXferLine = $this->lh()->translationFor('hangup_xfer_line');
+		$hangupBotnLine = $this->lh()->translationFor('hangup_both_line');
+		$leave3wayCall = $this->lh()->translationFor('leave_3way_call');
+		$blindTransfer = $this->lh()->translationFor('blind_transfer');
+		$dialWithCustomer = $this->lh()->translationFor('dial_with_customer');
+		$parkCustomerDial = $this->lh()->translationFor('park_customer_dial');
+		$blindTransferVM = $this->lh()->translationFor('blind_transfer_vmail');
+		$selectedDateAndTime = $this->lh()->translationFor('selected_date_time');
+		$comments = $this->lh()->translationFor('comments');
+		$myCallbackOnly = $this->lh()->translationFor('my_callback_only');
+		$save = $this->lh()->translationFor('save');
+		$close = $this->lh()->translationFor('close');
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -431,13 +456,13 @@ EOF;
 	
 		session.on('muted', function (data) {
 			console.log('session::muted', data);
-            $.snackbar({id: "mutedMic", content: "<i class='fa fa-microphone-slash fa-lg text-danger' aria-hidden='true'></i>&nbsp; You have turned off your microphone.", timeout: 0, htmlAllowed: true});
+            $.snackbar({id: "mutedMic", content: "<i class='fa fa-microphone-slash fa-lg text-danger' aria-hidden='true'></i>&nbsp; $youTurnOffMic", timeout: 0, htmlAllowed: true});
 		});
 	
 		session.on('unmuted', function (data) {
 			console.log('session::unmuted', data);
 			$("#mutedMic").snackbar('hide');
-            $.snackbar({content: "<i class='fa fa-microphone fa-lg text-success' aria-hidden='true'></i>&nbsp; You have turned on your microphone.", timeout: 5000, htmlAllowed: true});
+            $.snackbar({content: "<i class='fa fa-microphone fa-lg text-success' aria-hidden='true'></i>&nbsp; $youTurnOnMic", timeout: 5000, htmlAllowed: true});
 		});
 	
 		session.on('reinvite', function (data) {
@@ -478,7 +503,7 @@ EOF;
 		phoneRegistered = true;
 		registrationFailed = false;
 		if ( !!$.prototype.snackbar ) {
-			$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
+			$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; $phoneIsRegistered", timeout: 5000, htmlAllowed: true});
 		}
 	});
 	
@@ -499,7 +524,7 @@ EOF;
 		});
 		
 		if ( !!$.prototype.snackbar ) {
-			$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000, htmlAllowed: true});
+			$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; $registrationFailed", timeout: 5000, htmlAllowed: true});
 		}
 	});
 	
@@ -652,7 +677,7 @@ EOF;
 									<option value="CLOSER">Transfer to Agent / Closer Group</option>
 									<option value="REGULAR">Regular 3-Way</option>
 								</select>
-								<label for="transfer-selection">Transfer Selection</label>
+								<label for="transfer-selection">$transferSelection</label>
 							</div>
 						</div>
 					</div>
@@ -663,11 +688,11 @@ EOF;
 									<select id="transfer-local-closer" name="transfer-local-closer" onchange="XferAgentSelectLink();" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select">
 										<option>-- $selectGroupsToSendCalls --</option>
 									</select>
-									<label for="transfer-local-closer">Closer Groups</label>
+									<label for="transfer-local-closer" style="text-transform: uppercase;">$closerGroups</label>
 								</div>
 							</div>
 							<div class="col-md-3" style="padding: 10px;">
-								<button id="btnLocalCloser" class="btn btn-primary"> LOCAL CLOSER </button>
+								<button id="btnLocalCloser" class="btn btn-primary" style="text-transform: uppercase;"> $localCloser </button>
 							</div>
 						</div>
 					</div>
@@ -676,13 +701,13 @@ EOF;
 							<div class="col-md-2">
 								<div class="mda-form-group label-floating">
 									<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="xferlength" name="xferlength" disabled>
-									<label for="xferlength">SECONDS</label>
+									<label for="xferlength" style="text-transform: uppercase;">$seconds</label>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="mda-form-group label-floating">
 									<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" id="xferchannel" name="xferchannel" disabled>
-									<label for="xferchannel">CHANNEL</label>
+									<label for="xferchannel" style="text-transform: uppercase;">$channel</label>
 								</div>
 							</div>
 							<div class="col-md-4" style="padding-top: 15px;">
@@ -690,7 +715,7 @@ EOF;
 									<input id="consultativexfer" name="consultativexfer" value="1" type="checkbox" onchange="$('#xferoverride').prop('checked', this.checked);"/>
 									<label for="consultativexfer" class="label-primary"></label>
 								</div>
-								<div><b style="opacity: .5;">CONSULTATIVE</b></div>
+								<div><b style="opacity: .5; text-transform: uppercase;">$consultative</b></div>
 								<input type="checkbox" name="xferoverride" id="xferoverride" value="0" class="hidden">
 							</div>
 							<div class="col-md-2" style="text-align: center;"><button class="btn btn-default btn-sm" style="margin-bottom: 2px;" onclick="DTMF_Preset_a();">D1</button><br><button class="btn btn-default btn-sm" onclick="DTMF_Preset_b();">D2</button></div>
@@ -699,31 +724,31 @@ EOF;
 							<div class="col-md-9">
 								<div class="mda-form-group label-floating">
 									<input type="text" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" id="xfernumber" name="xfernumber">
-									<label for="xfernumber">NUMBER TO DIAL</label>
+									<label for="xfernumber" style="text-transform: uppercase;">$numberToDial</label>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="mda-form-group label-floating">
 								  <div class="input-group" style="margin-top: -18px;">
 									<input type="text" id="xferdtmf" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" style="margin-top: 18px;">
-									<label for="xferdtmf">SEND DTMF</label>
+									<label for="xferdtmf" style="text-transform: uppercase;">$sendDTMF</label>
 									<span class="input-group-btn" style="padding-top: 18px;">
-										<button class="btn btn-primary btn-sm" type="button" onclick="sendXFERdtmf();">SEND</button>
+										<button class="btn btn-primary btn-sm" type="button" onclick="sendXFERdtmf();" style="text-transform: uppercase;">$send</button>
 									</span>
 								  </div>
 								</div>
 							</div>
 						</div>
 						<div class="row" style="margin-bottom: 5px;">
-							<div class="col-md-3"><button id="btnHangupXferLine" class="btn btn-default btn-sm disabled">HANGUP XFER LINE</button></div>
-							<div class="col-md-3"><button id="btnHangupBothLines" onclick="BothCallHangup();" class="btn btn-danger btn-sm disabled">&nbsp; HANGUP BOTH LINE &nbsp;</button></div>
-							<div class="col-md-4" style="padding-left: 30px;"><button id="btnLeave3WayCall" onclick="Leave3WayCall('FIRST');" class="btn btn-primary btn-sm disabled">&nbsp; &nbsp;LEAVE 3-WAY CALL&nbsp; &nbsp;&nbsp;</button></div>
+							<div class="col-md-3"><button id="btnHangupXferLine" class="btn btn-default btn-sm disabled" style="text-transform: uppercase;">$hangupXferLine</button></div>
+							<div class="col-md-3"><button id="btnHangupBothLines" onclick="BothCallHangup();" class="btn btn-danger btn-sm disabled" style="text-transform: uppercase;">&nbsp; $hangupBothLine &nbsp;</button></div>
+							<div class="col-md-4" style="padding-left: 30px;"><button id="btnLeave3WayCall" onclick="Leave3WayCall('FIRST');" class="btn btn-primary btn-sm disabled" style="text-transform: uppercase;">&nbsp; &nbsp;$leave3wayCall&nbsp; &nbsp;&nbsp;</button></div>
 						</div>
 						<div class="row">
-							<div class="col-md-3"><button id="btnDialBlindTransfer" class="btn btn-primary btn-sm disabled">&nbsp; BLIND TRANSFER &nbsp;</button></div>
-							<div class="col-md-3"><button id="btnDialWithCustomer" onclick="SendManualDial('YES');" class="btn btn-primary btn-sm">DIAL WITH CUSTOMER</button></div>
-							<div class="col-md-4" style="padding-left: 30px;"><button id="btnParkCustomerDial" onclick="XFERParkDial();" class="btn btn-primary btn-sm">PARK CUSTOMER DIAL</button></div>
-							<div class="col-md-2" style="text-align: center;"><button id="btnDialBlindVMail" class="btn btn-primary btn-sm disabled" title="BLIND TRANSFER VMAIL"><i class="fa fa-phone-square"></i> VM</button></div>
+							<div class="col-md-3"><button id="btnDialBlindTransfer" class="btn btn-primary btn-sm disabled" style="text-transform: uppercase;">&nbsp; $blindTransfer &nbsp;</button></div>
+							<div class="col-md-3"><button id="btnDialWithCustomer" onclick="SendManualDial('YES');" class="btn btn-primary btn-sm" style="text-transform: uppercase;">$dialWithCustomer</button></div>
+							<div class="col-md-4" style="padding-left: 30px;"><button id="btnParkCustomerDial" onclick="XFERParkDial();" class="btn btn-primary btn-sm" style="text-transform: uppercase;">$parkCustomerDial</button></div>
+							<div class="col-md-2" style="text-align: center;"><button id="btnDialBlindVMail" class="btn btn-primary btn-sm disabled" title="$blindTransferVM"><i class="fa fa-phone-square"></i> VM</button></div>
 						</div>
 					</div>
 				</form>
@@ -745,7 +770,7 @@ EOF;
 					<div class="col-md-12">
 						<div class="well well-sm bg-info-dark">
 							<p class="m0">
-								<span class="hidden-xs">Selected Date and Time:</span> <em id="date-selected"></em>
+								<span class="hidden-xs">$selectedDateAndTime:</span> <em id="date-selected"></em>
 								<i id="show-cb-calendar" class="fa fa-calendar pull-right" style="cursor: pointer;"></i>
 							</p>
 						</div>
@@ -760,7 +785,7 @@ EOF;
 					<div class="col-md-12">
 						<div class="mda-form-group label-floating">
 							<textarea id="callback-comments" name="callback-comments" rows="5" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea" style="resize:none; width: 100%;"></textarea>
-							<label for="callback-comments">Comments</label>
+							<label for="callback-comments">$comments</label>
 						</div>
 					</div>
 				</div>
@@ -769,7 +794,7 @@ EOF;
 				<div class="row">
 					<div class="col-md-4" id="my_callback_only">
 						<p class="pull-left">
-							My Callback Only
+							$myCallbackOnly
 						</p>
 						<div class="material-switch pull-right">
 							<input type="checkbox" name="CallBackOnlyMe" id="CallBackOnlyMe" value="0" />
@@ -806,7 +831,7 @@ EOF;
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-default btn-raised pull-left" id="cust-info-back" data-dismiss="modal">Close</button>
+				<button class="btn btn-default btn-raised pull-left" id="cust-info-back" data-dismiss="modal">$close</button>
 				<span class="pull-right">
 					<div style="display: inline-block; width: 250px; padding-right: 70px;">
 						<div class="material-switch pull-right" style="margin-left: 20px;">
@@ -815,7 +840,7 @@ EOF;
 						</div>
 						<div style="font-weight: bold;">$convertToCustomer</div>
 					</div>
-					<button class="btn btn-warning btn-raised" id="cust-info-submit">Save</button>
+					<button class="btn btn-warning btn-raised" id="cust-info-submit">$save</button>
 				</span>
 			</div>
 		</div>
@@ -831,6 +856,9 @@ EOF;
 		$userrole = $this->userrole;
 		$_SESSION['module_dir'] = $goModuleDIR;
 		$_SESSION['campaign_id'] = (strlen($_SESSION['campaign_id']) > 0) ? $_SESSION['campaign_id'] : '';
+		
+		$phoneIsRegistered = $this->lh()->translationFor('phone_is_now_registered');
+		$registrationFailed = $this->lh()->translationFor('registration_failed_refresh');
 		
 		//$webProtocol = (preg_match("/Windows/", $_SERVER['HTTP_USER_AGENT'])) ? "wss" : "ws";
 		$webProtocol = (strlen($_SERVER['HTTPS']) > 0) ? "wss" : "ws";
@@ -1019,7 +1047,7 @@ EOF;
 			phoneRegistered = true;
 			$("#dialer-tab").css('display', 'table-cell');
 			if ( !!$.prototype.snackbar ) {
-				$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Your phone extension is now registered.", timeout: 5000, htmlAllowed: true});
+				$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; $phoneIsRegistered", timeout: 5000, htmlAllowed: true});
 			}
 		});
 		
@@ -1031,7 +1059,7 @@ EOF;
 		phone.on('registrationFailed', function(e) {
 			console.log('registrationFailed', e);
 			if ( !!$.prototype.snackbar ) {
-				$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; Registration failed. Kindly refresh your browser.", timeout: 5000});
+				$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; $registrationFailed", timeout: 5000});
 			}
 		});
 		

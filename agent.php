@@ -211,7 +211,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('shown', function() {
 					var thisID = $(this).attr('id');
 					var oldValue = $(this).editable('getValue', true);
-					console.log(oldValue);
+					//console.log(oldValue);
 					if ($(this).html() !== '&nbsp;') {
 						//$('div.editable-input input').val($(this).text());
 						//$(this).editable('setValue', oldValue, true);
@@ -224,8 +224,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				
 				$("a[id='first_name']").editable({
 					type: 'text',
-					title: 'Enter First Name',
-					placeholder: 'Enter First Name',
+					title: '<?=$lh->translationFor('enter_first_name')?>',
+					placeholder: '<?=$lh->translationFor('enter_first_name')?>',
 					emptytext: '&nbsp;',
 					unsavedclass: null,
 					inputclass: 'text-color-black',
@@ -233,8 +233,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				});
 				$("a[id='middle_initial']").editable({
 					type: 'text',
-					title: 'Enter Middle Initial',
-					placeholder: 'Enter Middle Initial',
+					title: '<?=$lh->translationFor('enter_middle_initial')?>',
+					placeholder: '<?=$lh->translationFor('enter_middle_initial')?>',
 					emptytext: '&nbsp;',
 					unsavedclass: null,
 					inputclass: 'text-color-black',
@@ -243,8 +243,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				$("a[id='last_name']").editable({
 					type: 'text',
 					value: '',
-					title: 'Enter Last Name',
-					placeholder: 'Enter Last Name',
+					title: '<?=$lh->translationFor('enter_last_name')?>',
+					placeholder: '<?=$lh->translationFor('enter_last_name')?>',
 					emptytext: '&nbsp;',
 					unsavedclass: null,
 					inputclass: 'text-color-black',
@@ -478,85 +478,15 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 												<span class="fa fa-file-text-o hidden"></span>
 												<?=$lh->translationFor('script')?></a>
 										 </li>
-										 <li role="presentation" class="hidden">
-											<a href="#activity" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-												<span class="fa fa-calendar hidden"></span>
-												<?=$lh->translationFor('activity')?></a>
-										 </li>
 									  </ul>
 									</div>
 									<!-- Tab panes-->
 									<div id="agent_tabs" class="tab-content bg-white">
-										<div id="activity" role="tabpanel" class="tab-pane hidden">
-											<table class="table table-striped">
-							                    <tr>
-							                    	<td>
-							                    		<center>
-							                    		<em class="fa fa-user fa-fw"></em>
-							                    		</center>
-							                    	</td>
-							                        <td>
-							                           <div>1238: Outbound call to + 1650233332342</div>
-							                           <div class="text-muted">
-							                           		<small>March 10, 2015</small>
-							                           </div>
-							                        </td>
-							                        <td class="text-muted text-center hidden-xs hidden-sm">
-							                           <strong>254</strong>
-							                        </td>
-							                        <td class="hidden-xs hidden-sm"><a href="">Arnold Gray</a>
-							                           <br>
-							                           <small>March 10, 2015</small>
-							                        </td>
-							                    </tr>
-							                    <tr>
-							                    	<td>
-							                    		<center>
-							                    		<em class="fa fa-user fa-fw"></em>
-							                    		</center>
-							                    	</td>
-							                        <td>
-							                           <div>1238: Call missed from + 1273934031</div>
-							                           <div class="text-muted">
-							                           		<small>March 10, 2015</small>
-							                           </div>
-							                        </td>
-							                        <td class="text-muted text-center hidden-xs hidden-sm">
-							                           <strong>28</strong>
-							                        </td>
-							                        <td class="hidden-xs hidden-sm"><a href="">Erika Mckinney</a>
-							                           <br>
-							                           <small>March 10, 2015</small>
-							                        </td>
-							                    </tr>
-							                    <tr>
-							                    	<td>
-							                    		<center>
-							                    		<em class="fa fa-user fa-fw"></em>
-							                    		</center>
-							                    	</td>
-							                        <td>
-							                           <div>Latest udpates and news about this forum</div>
-							                           <div class="text-muted">
-							                           		<small>March 10, 2015</small>
-							                           </div>
-							                        </td>
-							                        <td class="text-muted text-center hidden-xs hidden-sm">
-							                           <strong>561</strong>
-							                        </td>
-							                        <td class="hidden-xs hidden-sm"><a href="">Annette Ruiz</a>
-							                           <br>
-							                           <small>March 10, 2015</small>
-							                        </td>
-							                    </tr>
-								            </table>
-										</div>
-									
 										<div id="contact_info" role="tabpanel" class="tab-pane active">
 
 											<fieldset style="padding-bottom: 0px; margin-bottom: 0px;">
 												<h4>
-													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
+													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile"><?=$lh->translationFor('edit_information')?></a>
 												</h4>
 												<br/>
 												<form role="form" id="name_form" class="formMain form-inline" >
@@ -618,7 +548,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 																<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
 																<input id="phone_number" name="phone_number" type="number" min="0" width="auto" value="<?php echo $phone_number;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled required>
-																<label for="phone_number">Phone Number</label>
+																<label for="phone_number"><?=$lh->translationFor('phone_number')?></label>
 																<!--
 																<span class="mda-input-group-addon">
 																	<em class="fa fa-phone fa-lg"></em>
@@ -629,7 +559,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 															<div class="mda-form-group label-floating">
 																<input id="alt_phone" name="alt_phone" type="number" min="0" width="100" value="<?php echo $alt_phone;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-																<label for="alt_phone">Alternative Phone Number</label>
+																<label for="alt_phone"><?=$lh->translationFor('alternative_phone_number')?></label>
 															</div>
 														</div>
 													</div>
@@ -638,7 +568,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 													<div class="mda-form-group label-floating">
 														<input id="address1" name="address1" type="text" width="auto" value="<?php echo $address1;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="address1">Address</label> 
+														<label for="address1"><?=$lh->translationFor('address')?></label> 
 														<!--<span class="mda-input-group-addon">
 															<em class="fa fa-home fa-lg"></em>
 														</span>-->
@@ -647,7 +577,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 													<div class="mda-form-group label-floating">
 														<input id="address2" name="address2" type="text" value="<?php echo $address2;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="address2">Address 2</label>
+														<label for="address2"><?=$lh->translationFor('address2')?></label>
 													</div>
 													
 													<div class="row">
@@ -655,21 +585,21 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 															<div class="mda-form-group label-floating">
 																<input id="city" name="city" type="text" value="<?php echo $city;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-																<label for="city">City</label>
+																<label for="city"><?=$lh->translationFor('city')?></label>
 															</div>
 														</div>
 														<div class="col-sm-4">
 															<div class="mda-form-group label-floating">
 																<input id="state" name="state" type="text" value="<?php echo $state;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-																<label for="state">State</label>
+																<label for="state"><?=$lh->translationFor('state')?></label>
 															</div>
 														</div>
 														<div class="col-sm-4">
 															<div class="mda-form-group label-floating">
 																<input id="postal_code" name="postal_code" type="text" value="<?php echo $postal_code;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-																<label for="postal_code">Postal Code</label>
+																<label for="postal_code"><?=$lh->translationFor('postal_code')?></label>
 															</div>
 														</div>
 													</div><!-- /.city,state,postalcode -->
@@ -679,12 +609,12 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
 															<option value=""></option>
 														</select>
-														<label for="country">Country Code</label>
+														<label for="country"><?=$lh->translationFor('country_code')?></label>
 													</div>
 													<div class="mda-form-group label-floating"><!-- add "mda-input-group" if with image -->
 														<input id="email" name="email" type="text" width="auto" value="<?php echo $email;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="email">E-mail Address</label>
+														<label for="email"><?=$lh->translationFor('email_add')?></label>
 														<!--<span class="mda-input-group-addon">
 															<em class="fa fa-at fa-lg"></em>
 														</span>-->
@@ -696,53 +626,36 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 															<div class="mda-form-group label-floating">
 																<input id="title" name="title" type="text" maxlength="4" value="<?php echo $title;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-																<label for="title">Title</label>
+																<label for="title"><?=$lh->translationFor('title')?></label>
 															</div>
 														</div>
 														<div class="col-sm-3">
 															<div class="mda-form-group label-floating">
-																<select id="gender" name="gender" value="<?php echo $gender;?>"
-																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
-																	<?php 
-																		if ($gender == "M") {
-																	?>
-																		<option selected value="M">Male</option>
-																		<option value="F">Female</option>
-																	<?php
-																		} else if($gender == "F") {
-																	?>
-																		<option selected value="F">Female</option>
-																		<option value="M">Male</option>
-																	<?php
-																		} else {
-																	?>
-																		<option selected disabled value=""></option>
-																		<option value="M">Male</option>
-																		<option value="F">Female</option>
-																	<?php
-																		}
-																	?>
+																<select id="gender" name="gender" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
+																	<option disabled value=""<?php if ($gender != 'M' && $gender != 'F') { echo " selected"; }?>></option>
+																	<option value="M"<?php if ($gender == 'M') { echo " selected"; }?>><?=$lh->translationFor('male')?></option>
+																	<option value="F"<?php if ($gender == 'F') { echo " selected"; }?>><?=$lh->translationFor('female')?></option>
 																</select>
-																<label for="gender">Gender</label>
+																<label for="gender"><?=$lh->translationFor('gender')?></label>
 															</div>
 														</div>
 														<div class="col-sm-6">
 															<div class="mda-form-group label-floating">
 																<input type="date" id="date_of_birth" value="" name="date_of_birth" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-																<label for="date_of_birth">Date Of Birth</label>
+																<label for="date_of_birth"><?=$lh->translationFor('date_of_birth')?></label>
 															</div>
 														</div>
 														<div id="call_notes_content" class="col-sm-12">
 															<div class="form-group" style="float: left; width:100%;">
 																<textarea rows="5" id="call_notes" name="call_notes" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin" style="resize:none; width: 100%;"></textarea>
-																<label for="call_notes">Call Notes</label>
+																<label for="call_notes"><?=$lh->translationFor('call_notes')?></label>
 															</div>
 														</div>
 													</div><!-- /.gender & title -->                   
 												</form>
 											
 							                <!-- NOTIFICATIONS -->
-											<div id="notifications_list">
+											<!--<div id="notifications_list">
 												<div class="output-message-success" style="display:none;">
 													<div class="alert alert-success alert-dismissible" role="alert">
 													  <strong>Success!</strong> Successfuly updated contact.
@@ -758,10 +671,10 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 													  Please fill-up all the fields correctly and do not leave any highlighted fields blank.
 													</div>
 												</div>
-											</div>
+											</div>-->
 
 							                <div class="hide_div">
-							                	<button type="submit" name="submit" id="submit_edit_form" class="btn btn-primary btn-block btn-flat">Submit</button>
+							                	<button type="submit" name="submit" id="submit_edit_form" class="btn btn-primary btn-block btn-flat"><?=$lh->translationFor('submit')?></button>
 							                </div>
 							               </fieldset>
 										</div><!--End of Profile-->
@@ -775,12 +688,12 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 												
 													<form role="form" id="comment_form" class="formMain form-inline" >
 														<div class="mda-form-group hidden">
-															<p style="padding-right:0px;padding-top: 20px;">Comments:</p> 
+															<p style="padding-right:0px;padding-top: 20px;"><?=$lh->translationFor('comments')?>:</p> 
 															<button id="ViewCommentButton" onClick="ViewComments('ON');" value="-History-" class="hidden"></button>
 														</div>
 														<div class="form-group" style="float: left; width:100%;">
 															<textarea rows="10" id="comments" name="comments" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled note-editor note-editor-margin" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
-															<label for="comments">Comments</label>
+															<label for="comments"><?=$lh->translationFor('comments')?></label>
 														</div>
 													</form>
 												</div>
@@ -793,7 +706,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 												<div class="col-sm-12">
 													<fieldset style="padding-bottom: 5px; margin-bottom: 5px;">
 														<h4>
-															<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="reload-script" style="padding: 5px;">Reload Script</a>
+															<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="reload-script" style="padding: 5px;"><?=$lh->translationFor('reload_script')?></a>
 														</h4>
 														<div id="ScriptContents" style="min-height: 200px; border: dashed 1px #c0c0c0; padding: 20px 5px 5px;">
 															<?php echo $output_script;?>
@@ -826,7 +739,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 									
 						                <div class="modal-header">
 						                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						                    <h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translateText("Script"); ?></b></h4>
+						                    <h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translationFor("script"); ?></b></h4>
 						                </div>
 
 						                    <div class="modal-body">
@@ -966,11 +879,11 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 									<div id="read-message-attachment"></div>
 									<div class="box-footer">
 										<div class="pull-right">
-											<button class="btn btn-default mail-reply hidden"><i class="fa fa-reply"></i> Reply</button>
-											<button class="btn btn-default mail-forward hidden"><i class="fa fa-share"></i> Forward</button>
+											<button class="btn btn-default mail-reply hidden"><i class="fa fa-reply"></i> <?=$lh->translationFor('reply')?></button>
+											<button class="btn btn-default mail-forward hidden"><i class="fa fa-share"></i> <?=$lh->translationFor('forward')?></button>
 										</div>
-										<button class="btn btn-default mail-delete"><i class="fa fa-trash-o"></i> Delete</button>
-										<button class="btn btn-default mail-print"><i class="fa fa-print"></i> Print</button>
+										<button class="btn btn-default mail-delete"><i class="fa fa-trash-o"></i> <?=$lh->translationFor('delete')?></button>
+										<button class="btn btn-default mail-print"><i class="fa fa-print"></i> <?=$lh->translationFor('print')?></button>
 									</div><!-- /.box-footer -->
 								</div><!-- /. box -->
 							</div><!-- /.col -->
@@ -983,25 +896,25 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 									<thead>
 										<tr>
 											<th>
-												Customer Name
+												<?=$lh->translationFor('customer_name')?>
 											</th>
 											<th>
-												Phone Number
+												<?=$lh->translationFor('phone_number')?>
 											</th>
 											<th>
-												Last Call Time
+												<?=$lh->translationFor('last_call_time')?>
 											</th>
 											<th>
-												Callback Time
+												<?=$lh->translationFor('callback_time')?>
 											</th>
 											<th>
-												Campaign
+												<?=$lh->translationFor('campaign')?>
 											</th>
 											<th>
-												Comments
+												<?=$lh->translationFor('comments')?>
 											</th>
 											<th>
-												Action
+												<?=$lh->translationFor('action')?>
 											</th>
 										</tr>
 									</thead>
@@ -1027,17 +940,17 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 								  <div class="col-xs-4 br">
 									 <h3 class="m0"><?php echo $totalcallstoday; ?></h3>
 									 <p class="m0">
-										<span class="hidden-xs">Calls Today</span>
+										<span class="hidden-xs"><?=$lh->translationFor('calls_today')?></span>
 										<!-- <span>Views</span> -->
 									 </p>
 								  </div>                    
 								  <div class="col-xs-4 br">
 									 <h3 class="m0"><?php echo $totalsalestoday; ?></h3>
-									 <p class="m0">Sales Today</p>
+									 <p class="m0"><?=$lh->translationFor('sales_today')?></p>
 								  </div>
 								  <div class="col-xs-4">
 									 <h3 class="m0">100</h3>
-									 <p class="m0">Tickets</p>
+									 <p class="m0"><?=$lh->translationFor('tickets')?></p>
 								  </div>
 							   </div>
 							</div>
@@ -1466,28 +1379,28 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 									<thead>
 										<tr>
 											<th>
-												Lead ID
+												<?=$lh->translationFor('lead_id')?>
 											</th>
 											<th>
-												Customer Name
+												<?=$lh->translationFor('customer_name')?>
 											</th>
 											<th>
-												Phone Number
+												<?=$lh->translationFor('phone_number')?>
 											</th>
 											<th>
-												Last Call Time
+												<?=$lh->translationFor('last_call_time')?>
 											</th>
 											<th>
-												Campaign
+												<?=$lh->translationFor('campaign')?>
 											</th>
 											<th>
-												Status
+												<?=$lh->translationFor('status')?>
 											</th>
 											<th>
-												Comments
+												<?=$lh->translationFor('comments')?>
 											</th>
 											<th>
-												Action
+												<?=$lh->translationFor('action')?>
 											</th>
 										</tr>
 									</thead>
@@ -1558,7 +1471,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 					<input id="LeadPreview" name="LeadPreview" value="0" type="checkbox"/>
 					<label for="LeadPreview" class="label-primary"></label>
 				</div>
-				<div style="font-weight: bold;"><?=$lh->translateText('LEAD PREVIEW')?></div>
+				<div style="font-weight: bold; text-transform: uppercase;"><?=$lh->translationFor('lead_preview')?></div>
 			</li>
 			<li style="font-size: 5px;">
 				&nbsp;
@@ -1568,14 +1481,14 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 					<input id="enableHotKeys" name="enableHotKeys" type="checkbox"/>
 					<label for="enableHotKeys" class="label-primary"></label>
 				</div>
-				<div style="font-weight: bold;"><?=$lh->translateText('ENABLE HOT KEYS')?></div>
+				<div style="font-weight: bold; text-transform: uppercase;"><?=$lh->translationFor('enable_hotkeys')?></div>
 			</li>
 			<li id="toggleMute" style="padding: 0 5px 15px;">
 				<div class="material-switch pull-right">
 					<input id="muteMicrophone" name="muteMicrophone" type="checkbox" checked/>
 					<label for="muteMicrophone" class="label-primary"></label>
 				</div>
-				<div style="font-weight: bold;"><?=$lh->translateText('MICROPHONE')?></div>
+				<div style="font-weight: bold; text-transform: uppercase;"><?=$lh->translationFor('microphone')?></div>
 			</li>
 			<li style="font-size: 5px;">
 				<div id="GOdebug" class="material-switch pull-right">&nbsp;</div>
