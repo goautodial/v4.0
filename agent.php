@@ -469,7 +469,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 												<?=$lh->translationFor('contact_information')?></a>
 										 </li>
 										 <li role="presentation">
-											<a href="#comments" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+											<a href="#comments_tab" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
 												<span class="fa fa-comments-o hidden"></span>
 											    <?=$lh->translationFor('comments')?></a>
 										 </li>
@@ -679,7 +679,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 							               </fieldset>
 										</div><!--End of Profile-->
 										
-										<div id="comments" role="tabpanel" class="tab-pane">
+										<div id="comments_tab" role="tabpanel" class="tab-pane">
 											<div class="row">
 												<div class="col-sm-12">
 													<h4><!--Comments-->
