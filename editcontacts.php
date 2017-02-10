@@ -448,12 +448,12 @@ if ($list_id_ct != NULL) {
 											<div class="row">
 												<div class="col-sm-12">
 													<h4>
-														<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">edit_information</a>
+														<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile"><?php $lh->translateText('edit_information'); ?></a>
 													</h4>
 													<form role="form" id="comment_form" class="formMain form-inline" >
 														<div class="mda-form-group label-floating" style="float: left; width:100%;">
 															<textarea rows="5" id="comments" name="comments" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea" style="resize:none; width: 100%;" ><?php echo $comments;?></textarea>
-															<label for="comments">comments</label>
+															<label for="comments"><?php $lh->translateText('comments'); ?></label>
 														</div>
 														<div style="clear:both;"></div>
 														<br>
