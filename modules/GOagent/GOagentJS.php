@@ -7701,6 +7701,9 @@ function ViewCustInfo(leadid) {
                         replaceCustomFields(true);
                         $(".cust-preloader").hide();
                         GetCustomFields(null, true, false, true);
+                    } else {
+                        unloadPreloader = true;
+                        $(".cust-preloader").hide();
                     }
                 }, 3000);
             }
