@@ -433,7 +433,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 					<!-- Page title -->
                     <span><?php $lh->translateText("contact_information"); ?></span>
                     <ol class="breadcrumb hidden-xs pull-right">
-						<li class="active"><i class="fa fa-home"></i> Home</li>
+						<li class="active"><i class="fa fa-home"></i> <?php $lh->translateText('home'); ?></li>
 					</ol>
                 </section>
 
