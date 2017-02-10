@@ -226,8 +226,8 @@ var registrationFailed = false;
 ?>
 
 var currenttime = '<?=date("F d, Y H:i:s", time())?>' //PHP method of getting server date
-var todayarray=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
-var montharray=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+var todayarray=new Array("<?=$lh->translationFor('sunday')?>","<?=$lh->translationFor('monday')?>","<?=$lh->translationFor('tuesday')?>","<?=$lh->translationFor('wednesday')?>","<?=$lh->translationFor('thursday')?>","<?=$lh->translationFor('friday')?>","<?=$lh->translationFor('saturday')?>");
+var montharray=new Array("<?=$lh->translationFor('january')?>","<?=$lh->translationFor('february')?>","<?=$lh->translationFor('march')?>","<?=$lh->translationFor('april')?>","<?=$lh->translationFor('may')?>","<?=$lh->translationFor('june')?>","<?=$lh->translationFor('july')?>","<?=$lh->translationFor('august')?>","<?=$lh->translationFor('september')?>","<?=$lh->translationFor('october')?>","<?=$lh->translationFor('november')?>","<?=$lh->translationFor('december')?>");
 var serverdate=new Date(currenttime);
 
 <?php  
@@ -764,15 +764,6 @@ $(document).ready(function() {
         
         if (is_logged_in && phoneRegistered) {
             $("aside.control-sidebar").addClass('control-sidebar-open');
-        }
-        
-        if (!opener) {
-            //<?=GO_AGENT_DIRECTORY?>/jsSIP.php
-            //var GOagentWebRTC = window.open('http://google.com','GOagentWebRTC', 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=yes,left=100000, top=100000, width=10, height=10');
-            //opener = GOagentWebRTC;
-            //console.log('a new window is opened', opener);
-        } else {
-            //console.log('window is still open');
         }
     
         $("aside.control-sidebar").css({
