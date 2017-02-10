@@ -704,7 +704,7 @@ usergroup_delete_success = "Usergroup Successfully Deleted!"
 
 group_permissions = "Group Permissions"
 edit_user_group = "Edit User Group"
-modify_user_group = "MODIFY USER GROUP :"
+modify_user_group = "MODIFY USER GROUP"
 force_timelock = "Force Timeclock Login"
 shift_enforcment = "Shift Enforcement"	
 allowed_campaigns = "Allowed Campaigns"
