@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
+//ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 
 require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
@@ -445,23 +445,21 @@ if ($list_id_ct != NULL) {
 										</div><!--End of Profile-->
 										
 										<div id="comments" role="tabpanel" class="tab-pane">
-											<fieldset>
-												<div class="row">
-													<div class="col-sm-12">
-														<h4><!--Comments-->
-															<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">edit_information</a>
-														</h4>
-														<form role="form" id="comment_form" class="formMain form-inline" >
-															<div class="mda-form-group label-floating" style="float: left; width:100%;">
-																<textarea rows="5" id="comments" name="comments" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea" style="resize:none; width: 100%;" ><?php echo $comments;?></textarea>
-																<label for="comments">comments</label>
-															</div>
-															<div style="clear:both;"></div>
-															<br>
-														</form>
-													</div>
+											<!--<div class="row">
+												<div class="col-sm-12">
+													<h4>
+														<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">edit_information</a>
+													</h4>
+													<form role="form" id="comment_form" class="formMain form-inline" >
+														<div class="mda-form-group label-floating" style="float: left; width:100%;">
+															<textarea rows="5" id="comments" name="comments" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea" style="resize:none; width: 100%;" ><?php echo $comments;?></textarea>
+															<label for="comments">comments</label>
+														</div>
+														<div style="clear:both;"></div>
+														<br>
+													</form>
 												</div>
-											</fieldset>
+											</div>-->
 										</div>
 									</div>
 								</div>
