@@ -8077,7 +8077,7 @@ function getContactList() {
         goAction: 'goGetContactList',
         goUser: uName,
         goPass: uPass,
-        goLimit: 5000,
+        goLimit: 5500,
         goCampaign: campaign,
         goLeadSearchMethod: agent_lead_search_method,
         goIsLoggedIn: is_logged_in,
