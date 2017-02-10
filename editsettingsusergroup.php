@@ -253,6 +253,7 @@ if (isset($_POST["usergroup_id"])) {
 				                	<fieldset>
 										<?php
 										$perms = json_decode($output->data->permissions);
+										var_dump($perms);
 										$list_perms = '';
 										foreach ($perms as $type => $perm) {
 											$hiddenRow = '';
