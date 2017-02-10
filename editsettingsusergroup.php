@@ -258,7 +258,7 @@ if (isset($_POST["usergroup_id"])) {
 											$hiddenRow = '';
 											if (preg_match("/support|multi-tenant|chat|osticket/", $type)) { $hiddenRow = ' hidden'; }
 											$list_perms .= '<div class="form-group row mt'.$hiddenRow.'">';
-											$list_perms .= '<label for="group_name" class="col-sm-4 control-label">'.$lh->translationFor($type).'</label>';
+											$list_perms .= '<label for="group_name" class="col-sm-4 control-label">'.$lh->translateText($type).'</label>';
 											$list_perms .= '<div class="col-sm-8 mb">';
 											
 											foreach ($perm as $idx => $value) {
