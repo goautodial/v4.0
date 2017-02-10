@@ -49,7 +49,7 @@ class GOagent extends Module {
 			$this->goDB->where('setting', 'GO_agent_sip_server');
 			$rslt = $this->goDB->getOne('settings', 'value');
 			$_SESSION['SIPserver'] = (strlen($rslt['value']) > 0) ? $rslt['value'] : 'kamailio';
-
+var_dump($customLanguageFile);
 			echo $this->getGOagentContent();
 		} else {
 			if (count($_POST) < 1) {
