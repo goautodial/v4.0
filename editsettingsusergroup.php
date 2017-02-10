@@ -112,7 +112,7 @@ if (isset($_POST["usergroup_id"])) {
             <section class="content">
 				<div class="panel panel-default">
                     <div class="panel-body">
-						<legend><?php $lh->translateText("modify_user_group"); ?> : <u><?php echo $usergroup_id;?></u></legend>
+						<legend><?php echo $lh->translationFor("modify_user_group"); ?> : <u><?php echo $usergroup_id;?></u></legend>
                     	
 							<form id="modifyvoicemail">
 								<input type="hidden" name="modifyid" value="<?php echo $usergroup_id;?>">
@@ -258,7 +258,7 @@ if (isset($_POST["usergroup_id"])) {
 											$hiddenRow = '';
 											if (preg_match("/support|multi-tenant|chat|osticket/", $type)) { $hiddenRow = ' hidden'; }
 											$list_perms .= '<div class="form-group row mt'.$hiddenRow.'">';
-											$list_perms .= '<label for="group_name" class="col-sm-4 control-label">'.$lh->translateText($type).'</label>';
+											$list_perms .= '<label for="group_name" class="col-sm-4 control-label">'.$lh->translationFor($type).'</label>';
 											$list_perms .= '<div class="col-sm-8 mb">';
 											
 											foreach ($perm as $idx => $value) {
