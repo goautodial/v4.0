@@ -7437,6 +7437,8 @@ function GetCustomFields(listid, show, getData, viewFields) {
                     
                     getFields = true;
                 }
+            } else {
+                $(".cust-preloader").hide();
             }
         });
     }
