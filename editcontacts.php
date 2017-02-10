@@ -163,7 +163,7 @@ if ($list_id_ct != NULL) {
 												<?=$lh->translationFor('contact_information')?></a>
 										 </li>
 										 <li role="presentation">
-											<a href="#comments" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+											<a href="#comments_tab" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
 												<span class="fa fa-comments-o hidden"></span>
 											    <?=$lh->translationFor('comments')?></a>
 										 </li>
@@ -444,8 +444,8 @@ if ($list_id_ct != NULL) {
 						                    </fieldset>
 										</div><!--End of Profile-->
 										
-										<div id="comments" role="tabpanel" class="tab-pane">
-											<!--<div class="row">
+										<div id="comments_tab" role="tabpanel" class="tab-pane">
+											<div class="row">
 												<div class="col-sm-12">
 													<h4>
 														<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">edit_information</a>
@@ -459,7 +459,7 @@ if ($list_id_ct != NULL) {
 														<br>
 													</form>
 												</div>
-											</div>-->
+											</div>
 										</div>
 									</div>
 								</div>
