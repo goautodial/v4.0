@@ -1688,14 +1688,14 @@ function hijackThisLink(e) {
     var thisLink = $(this).attr('href');
     var hash = '';
     var origHash = window.location.hash.replace("#","");
-    var breadCrumb = '<li><a href="agent.php"><i class="fa fa-home"></i> Home</a></li>';
+    var breadCrumb = '<li><a href="agent.php"><i class="fa fa-home"></i> <?=$lh->translationFor('home')?></a></li>';
     if (/customerslist/g.test(thisLink)) {
         $(".content-heading span").html("<?=$lh->translationFor('contacts')?>");
         breadCrumb += '<li class="active"><?=$lh->translationFor('contacts')?></li>';
         hash = 'contacts';
     } else if (/agent|index/g.test(thisLink)) {
         $(".content-heading span").html("<?=$lh->translationFor('contact_information')?>");
-        breadCrumb = '<li class="active"><i class="fa fa-home"></i> Home</li>';
+        breadCrumb = '<li class="active"><i class="fa fa-home"></i> <?=$lh->translationFor('home')?></li>';
     } else if (/edituser/g.test(thisLink)) {
         $(".content-heading span").html("<?=$lh->translationFor('my_profile')?>");
         breadCrumb += '<li class="active"><?=$lh->translationFor('profile')?></li>';
@@ -8192,7 +8192,7 @@ function MainPanelToFront() {
     
     $("#cust_info").show();
     $("#loaded-contents").hide();
-    $(".content-heading ol").html('<li class="active"><i class="fa fa-home"></i> Home</li>');
+    $(".content-heading ol").html('<li class="active"><i class="fa fa-home"></i> <?=$lh->translationFor('home')?></li>');
 }
 
 function padlength(what){
