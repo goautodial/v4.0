@@ -435,7 +435,7 @@ if ($list_id_ct != NULL) {
 													</div>
 													<div style="font-weight: bold;"><?php $lh->translateText("convert_to_customer"); ?></div>
 												</div>
-					                           <div class="col-sm-3 pull-right">
+					                           <div class="col-sm-4 pull-right">
 														<a href="crm.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
 					                           	
 					                                	<button type="submit" class="btn btn-primary" name="submit" id="submit_edit_form"> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
