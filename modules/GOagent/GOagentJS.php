@@ -707,6 +707,12 @@ $(document).ready(function() {
                     toggleButton('LocalCloser', 'hide');
 				}
                 
+                if (agent_lead_search_override !== 'DISABLED') {
+                    $("#agent-lead-search").removeClass('hidden');
+                } else {
+                    $("#agent-lead-search").addClass('hidden');
+                }
+                
                 $("#sessionIDspan").html(session_id);
                 if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') ) {
                     $("#RecordControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
