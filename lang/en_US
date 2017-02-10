@@ -706,7 +706,7 @@ group_permissions = "Group Permissions"
 edit_user_group = "Edit User Group"
 modify_user_group = "MODIFY USER GROUP"
 force_timelock = "Force Timeclock Login"
-shift_enforcment = "Shift Enforcement"	
+shift_enforcement = "Shift Enforcement"	
 allowed_campaigns = "Allowed Campaigns"
 usergroup_modify_success = "Usergroup Successfully Updated!"
 

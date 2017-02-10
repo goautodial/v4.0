@@ -305,11 +305,9 @@ if (isset($_POST["usergroup_id"])) {
 			                    <!-- FOOTER BUTTONS -->
 			                    <fieldset class="footer-buttons">
 			                        <div class="box-footer">
-			                           <div class="col-sm-3 pull-right">
-				<a href="settingsusergroups.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-			                           	
-			                                	<button type="submit" class="btn btn-primary" id="modifyUserGroupOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-											
+			                           <div class="col-sm-4 pull-right">
+											<a href="settingsusergroups.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> <?php $lh->translateText('cancel'); ?> </a>
+											<button type="submit" class="btn btn-primary" id="modifyUserGroupOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText('update'); ?> </span></button>
 			                           </div>
 			                        </div>
 			                    </fieldset>
