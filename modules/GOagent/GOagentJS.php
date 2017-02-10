@@ -8066,6 +8066,7 @@ function TimerActionRun(taskaction, taskdialalert) {
 
 function getContactList() {
     $("#contacts-list").dataTable().fnDestroy();
+    $("#contacts-list").css('width', '100%');
     $("#contacts-list tbody").empty();
     
     var postData = {
