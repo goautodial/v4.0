@@ -87,6 +87,7 @@
 	$postfields["survey_fourth_audio_file"] 	= (isset($_POST["survey_fourth_audio_file"]))? $_POST["survey_fourth_audio_file"] : "";
 	$postfields["survey_fourth_status"] 		= (isset($_POST["survey_fourth_status"]))? $_POST["survey_fourth_status"] : "";
 	$postfields["survey_fourth_exten"] 			= (isset($_POST["survey_fourth_exten"]))? $_POST["survey_fourth_exten"] : "";
+	$postfields["no_channels"] 					= (isset($_POST["no_channels"]))? $_POST["no_channels"] : 1;
 	
 
 	if(is_array($_POST["closer_campaigns"])){

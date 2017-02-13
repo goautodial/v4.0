@@ -100,7 +100,7 @@
             <div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="scripts">
-						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create scripts."></i> 
+						<i class="fa fa-info-circle" title="<?php $lh->translateText("script_wizard_description"); ?>"></i> 
 						<b><?php $lh->translateText("script_wizard"); ?> » <?php $lh->translateText("new_script"); ?></b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</h4>
@@ -128,14 +128,14 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="script_name"><?php $lh->translateText("script_name"); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="script_name" id="script_name" placeholder="Script Name" maxlength="50" required />
+										<input type="text" class="form-control" name="script_name" id="script_name" placeholder="<?php $lh->translateText("script_name"); ?>" maxlength="50" required />
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="script_comments"><?php $lh->translateText("script_comment"); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="script_comments" id="script_comments" maxlength="255" placeholder="Script Comments" />
+										<input type="text" class="form-control" name="script_comments" id="script_comments" maxlength="255" placeholder="<?php $lh->translateText("script_comment"); ?>" />
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
@@ -143,8 +143,8 @@
 									<label class="col-sm-3 control-label" for="active"><?php $lh->translateText("active"); ?>: </label>
 									<div class="col-sm-8 mb">
 										<select name="active" class="form-control">
-											<option value="Y" selected>Yes</option>
-											<option value="N" >No</option>						
+											<option value="Y" selected><?php $lh->translateText("go_yes"); ?></option>
+											<option value="N" ><?php $lh->translateText("go_no"); ?></option>
 										</select>
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
@@ -155,8 +155,8 @@
 										<div class="row">
 											<div class="col-sm-12 mb">
 												<div class="input-group">
-													<span class="input-group-btn" title="Add a Preset Text to the Script Text">
-														<button type="button" class="btn btn-default" onClick="addtext();">Insert!</button>
+													<span class="input-group-btn" title="<?php $lh->translateText("script_text_insert_description"); ?>">
+														<button type="button" class="btn btn-default" onClick="addtext();"><?php $lh->translateText("insert"); ?></button>
 													</span>
 													<select class="form-control" name="script_text_dropdown" id="script_text_dropdown">
 														<option value="--A--fullname--B-- ">Agent Name</option>
@@ -314,34 +314,29 @@
 		        },
 		        onFinished: function (event, currentIndex)
 		        {
-
-		        	$('#finish').text("Loading...");
-		        	$('#finish').attr("disabled", true);
-
-		        	/*********
+					
+					$('#finish').text("<?php $lh->translateText("loading"); ?>");
+					$('#finish').attr("disabled", true);
+					
+					/*********
 					** ADD EVENT 
 					*********/
-			            // Submit form via ajax
-				            $.ajax({
-								url: "./php/AddScript.php",
-								type: 'POST',
-								data: $("#create_form").serialize(),
-								success: function(data) {
-								  // console.log(data);
-									  if(data == "success"){
-									  		swal({title: "Success",text: "<?php $lh->translateText("script_success"); ?>!",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
-
-									  		$('#finish').text("Submit");
-											$('#finish').attr("disabled", false);
-									  }
-									  else{
-										  sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-
-										  $('#finish').text("Submit");
-										  $('#finish').attr("disabled", false);
-									  }
+						// Submit form via ajax
+						$.ajax({
+							url: "./php/AddScript.php",
+							type: 'POST',
+							data: $("#create_form").serialize(),
+							success: function(data) {
+								// console.log(data);
+								$('#finish').text("<?php $lh->translateText("submit"); ?>");
+								$('#finish').attr("disabled", false);
+								if(data == "success"){
+									swal({title: "<?php $lh->translateText("add_script_success"); ?>",text: "<?php $lh->translateText("add_script_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
+								}else{
+									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
 								}
-							});
+							}
+						});
 		        }
 		    }); // end of wizard
 
@@ -360,44 +355,44 @@
 		/*******************
 		** DELETE SCRIPT EVENT
 		*******************/
-			 $(document).on('click','.delete_script',function() {
-			 	var id = $(this).attr('data-id');
-			 	swal({   
-	            	title: "<?php $lh->translateText("are_you_sure"); ?>?",   
-	            	text: "<?php $lh->translateText("cannot_undo"); ?>.",   
-	            	type: "warning",   
-	            	showCancelButton: true,   
-	            	confirmButtonColor: "#DD6B55",   
-	            	confirmButtonText: "<?php $lh->translateText("delete_script"); ?>!",   
-	            	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",   
-	            	closeOnConfirm: false,   
-	            	closeOnCancel: false 
-	            	}, 
-	            	function(isConfirm){   
-	            		if (isConfirm) { 
-	            			$.ajax({
+			$(document).on('click','.delete_script',function() {
+				var id = $(this).attr('data-id');
+				swal({
+					title: "<?php $lh->translateText("are_you_sure"); ?>?",
+					text: "<?php $lh->translateText("cannot_undo"); ?>.",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "<?php $lh->translateText("confirm_delete_script"); ?>!",
+					cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+					closeOnConfirm: false,
+					closeOnCancel: false
+					},
+					function(isConfirm){
+						if (isConfirm) {
+							$.ajax({
 								url: "./php/DeleteScript.php",
 								type: 'POST',
-								data: { 
-									script_id: id,
-									log_user: '<?=$_SESSION['user']?>',
-									log_group: '<?=$_SESSION['usergroup']?>'
+								data: {
+									script_id: id, 
+									log_user: '<?=$_SESSION['user']?>', 
+									log_group: '<?=$_SESSION['usergroup']?>' 
 								},
 								success: function(data) {
-								console.log(data);
-							  		if(data == 1){
-							  			swal({title: "Deleted",text: "<?php $lh->translateText("succesfully_deleted"); ?>!",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
+								//console.log(data);
+									if(data == 1){
+										swal({title: "<?php $lh->translateText("delete_script_success"); ?>",text: "<?php $lh->translateText("delete_script_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
 									}else{
-										sweetAlert("Oops...", data, "error");
+										sweetAlert("<?php $lh->translateText("oups"); ?>", data, "error");
 									}
 								}
 							});
-						} else {     
-		                	swal("Cancelled", "No action has been done :)", "error");   
-		                } 
-                	}
-                );
-			 });
+						} else {
+							swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+						}
+					}
+				);
+			});
 		
 		/*******************
 		** FILTERS

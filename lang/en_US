@@ -519,6 +519,7 @@ submitting = "Submitting..."
 deleted = "Deleted"
 added_new = "Added New"
 
+smtp_settings = "SMTP Settings"
 dashboard = "Dashboard"
 campaign = "Campaign"
 disposition = "Disposition"

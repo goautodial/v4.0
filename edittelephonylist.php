@@ -24,6 +24,8 @@
 $modifyid = NULL;
 if (isset($_POST["modifyid"])) {
 	$modifyid = $_POST["modifyid"];
+}else{
+	header("location: telephonylist.php");
 }
 $statuses = $ui->API_ListsStatuses($modifyid);
 $timezones = $ui->API_ListsTimezone($modifyid);
@@ -118,7 +120,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
             <section class="content">
 				<div class="panel panel-default">
                     <div class="panel-body">
-						<legend><?php $lh->translateText("modify_list_id"); ?><u><?php echo $modifyid;?></u></legend>
+						<legend><?php $lh->translateText("modify_list_id"); ?> :<u><?php echo $modifyid;?></u></legend>
 
 							<form id="modifylist">
 								<input type="hidden" name="modifyid" value="<?php echo $modifyid;?>">
@@ -181,15 +183,15 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("reset_lead"); ?>:</label>
 										<div class="col-lg-4">
 											<select name="reset_list" class="form-control select2">
-												<option value="N">N</option>
-												<option value="Y">Y</option>
+												<option value="N"><?php $lh->translateText("go_no"); ?></option>
+												<option value="Y"><?php $lh->translateText("go_yes"); ?></option>
 											</select>
 										</div>
 										<label class="control-label col-lg-2" style="text-align: left;"><?php $lh->translateText("active"); ?>:</label>
 										<div class="col-lg-3">
 											<select name="active" class="form-control select2">
-												<option value="N"  <?php if($output->active[$i] == 'N') echo 'selected';?>>N</option>
-												<option value="Y"  <?php if($output->active[$i] == 'Y') echo 'selected';?>>Y</option>
+												<option value="N"  <?php if($output->active[$i] == 'N') echo 'selected';?>><?php $lh->translateText("go_no"); ?></option>
+												<option value="Y"  <?php if($output->active[$i] == 'Y') echo 'selected';?>><?php $lh->translateText("go_yes"); ?></option>
 											</select>
 										</div>
 									</div>
@@ -253,7 +255,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 											<table id="lists_statuses" class="table table-bordered" style="width: 100%;">
 												<thead>
 													<tr>
-														<th><?php $lh->translateText("status"); ?>Status</th>
+														<th><?php $lh->translateText("status"); ?></th>
 														<th><?php $lh->translateText("description"); ?></th>
 														<th><?php $lh->translateText("called"); ?></th>
 														<th><?php $lh->translateText("not_callerd"); ?></th>
@@ -285,12 +287,12 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 														</tr>
 													<?php } ?>
 													<tr>
-														<td colspan="2" style="text-align: right;"><b>SUBTOTAL</b></td>
+														<td colspan="2" style="text-align: right;"><b><?php $lh->translateText("SUB_TOTAL"); ?></b></td>
 														<td style="text-align: center; width: 15%;"><?php echo array_sum($called); ?></td>
 														<td style="text-align: center; width: 15%;"><?php echo array_sum($ncalled); ?></td>
 													</tr>
 													<tr>
-														<td colspan="2" style="text-align: right;"><b>TOTAL</b></td>
+														<td colspan="2" style="text-align: right;"><b><?php $lh->translateText("TOTAL"); ?></b></td>
 														<td colspan="2" style="text-align: center; width: 30%;">
 															<?php 
 																$total = array_sum($called) + array_sum($ncalled);
@@ -340,12 +342,12 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 														</tr>
 													<?php } ?>
 													<tr>
-														<td style="text-align: right;"><b>SUBTOTAL</b></td>
+														<td style="text-align: right;"><b><?php $lh->translateText("SUB_TOTAL"); ?></b></td>
 														<td style="text-align: center; width: 15%;"><?php echo array_sum($tcalled); ?></td>
 														<td style="text-align: center; width: 15%;"><?php echo array_sum($tncalled); ?></td>
 													</tr>
 													<tr>
-														<td style="text-align: right;"><b>TOTAL</b></td>
+														<td style="text-align: right;"><b><?php $lh->translateText("TOTAL"); ?></b></td>
 														<td colspan="2" style="text-align: center; width: 30%;">
 															<?php 
 																$totalt = array_sum($tcalled) + array_sum($tncalled);
@@ -365,8 +367,8 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 										<div class="row">
 				                          <div class="pull-right">
 											<div class="col-sm-12">
-												<a href="telephonylist.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> Cancel </a>
-												<button type="submit" class="btn btn-primary" id="modifyListOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+												<a href="telephonylist.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> <?php $lh->translateText("cancel"); ?> </a>
+												<button type="submit" class="btn btn-primary" id="modifyListOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText("update"); ?></span></button>
 												<button type="button" class="btn btn-success<?php if ($perm->customfields_create === 'N' && $perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $perm->customfields_delete === 'N') { echo ' hidden'; } ?>" id="add_custom_field" data-id="<?php echo $modifyid; ?>"><i class="fa fa-th-list"></i> Custom Fields </button>
 											</div>
 			                           </div>
@@ -383,60 +385,55 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 					<?php
 							}
 						}
-
 					?>
 
 				<!-- /.content -->
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 
-			<?php print $ui->creamyFooter(); ?>
-
         </div><!-- ./wrapper -->
-
-
+		
         <?php print $ui->standardizedThemeJS();?>
+		
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-
+		
 		<script type="text/javascript">
 			$(document).ready(function() {
-
+				
 				/**
 				 * Modifies a telephony list
-			 	 */
+				 */
 				//$("#modifylist").validate({
-                //	submitHandler: function() {
-
+				//	submitHandler: function() {
+				
 				$(document).on('click', '#cancel', function(){
-					swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+					swal({title: "<?php $lh->translateText("cancelled"); ?>", text: "<?php $lh->translateText("cancel_msg"); ?>", type: "error"},function(){window.location.href = 'telephonylist.php';});
 				});
-
+				
 				$(document).on('click','#modifyListOkButton',function() {
 					//submit the form
-					$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+					$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 					$('#modifyListOkButton').prop("disabled", true);
-
-                	$.ajax({
-						url: "./php/ModifyTelephonyList.php",
-						type: 'POST',
-						data: $("#modifylist").serialize(),
-						success: function(data) {
-							// console.log(data);
-							$('#update_button').html("<i class='fa fa-check'></i> Update");
-							$('#modifyListOkButton').prop("disabled", false);
-							if(data == "success"){
-								swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("list_update_success"); ?>", "success");
-								window.setTimeout(function(){location.reload();},2000);
-							} else {
-								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
-							}
+					$.ajax({
+					url: "./php/ModifyTelephonyList.php",
+					type: 'POST',
+					data: $("#modifylist").serialize(),
+					success: function(data) {
+						// console.log(data);
+						$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
+						$('#modifyListOkButton').prop("disabled", false);
+						if(data == "success"){
+							swal({title: "<?php $lh->translateText("success"); ?>", text: "<?php $lh->translateText("list_update_success"); ?>", type: "success"}, function(){window.location.href = 'telephonylist.php';});
+							window.setTimeout(function(){location.reload();},2000);
+						} else {
+							sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
 						}
-					});
-
+					}
+				});
 					//return false; //don't let the form refresh the page...
 				});
-
+	
 				$(document).on('click','#add_custom_field',function() {
 					var url = './addcustomfield.php';
 					var id = $(this).attr('data-id');
@@ -445,9 +442,10 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				});
-
+	
 			});
 		</script>
-
+		
+		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

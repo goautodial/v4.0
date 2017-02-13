@@ -248,28 +248,6 @@ error_reporting(E_ERROR | E_PARSE);
 	    $table = "</tbody><tfoot $theadStyle><tr>";
 	    if (is_array($items)) {
 		    foreach ($items as $item) {
-		    	//telephony
-					if($item == "active"){$item = "status";}
-					if($item == "full_name"){$item = "Name";}
-					if($item == "user_level"){$item = "Level";}
-					if($item == "user_group"){$item = "Group";}
-					if($item == "campaign_id"){$item = "Campaign ID";}
-					if($item == "campaign_name"){$item = "Campaign Name";}
-					if($item == "dial_method"){$item = "Dial Method";}
-					if($item == "list_id"){$item = "List ID";}
-					if($item == "list_name"){$item = "Name";}
-					if($item == "list_lastcalldate"){$item = "Last Call Date";}
-					if($item == "tally"){$item = "Leads Count";}
-					if($item == "moh_id"){$item = "MOH ID";}
-					if($item == "moh_name"){$item = "MOH Name";}
-					if($item == "random"){$item = "Random Order";}
-					if($item == "file_name"){$item = "FileName";}
-					if($item == "file_date"){$item = "Date";}
-					if($item == "file_size"){$item = "Size";}
-				//contacts
-					if($item == "lead_id"){$item = "id";}
-					if($item == "CONCAT_WS(' ', first_name, middle_initial, last_name)"){$item = "Name";}
-					if($item == "phone_number"){$item = "Phone";}
 			    // class modifiers for hiding classes in medium or low resolutions.
 			    $classModifiers = "class=\"";
 			    if (in_array($item, $hideOnMedium)) { $classModifiers .= " hide-on-medium "; }
@@ -442,7 +420,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                    <h4 class="modal-title">'.$iconCode.$title.'</h4>
 	                    '.$subtitleCode.'
 	                </div>
-	                <form action="" method="post" name="'.$formid.'" id="'.$formid.'">
+	                <form action="" method="post" class="form-horizontal" name="'.$formid.'" id="'.$formid.'">
 	                    <div class="modal-body">
 	                        '.$body.'
 	                        <div id="'.$messagetag.'" style="display: none;"></div>
@@ -1888,6 +1866,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$adminArea = '<li class="treeview"><a href="#"><i class="fa fa-dashboard"></i> <span>'.$this->lh->translationFor("administration").'</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">';
 			$adminArea .= $this->getSidebarItem("./adminsettings.php", "gears", $this->lh->translationFor("settings")); // admin settings
+			$adminArea .= $this->getSidebarItem("./settingssmtp.php", "envelope-square", $this->lh->translationFor("smtp_settings")); // smtp settings
 			//$adminArea .= $this->getSidebarItem("./telephonyusers.php", "user", $this->lh->translationFor("users")); // admin settings
 			$adminArea .= $this->getSidebarItem("./adminmodules.php", "archive", $this->lh->translationFor("modules")); // admin settings
 			//$adminArea .= $this->getSidebarItem("./admincustomers.php", "users", $this->lh->translationFor("customers")); // admin settings
@@ -2416,7 +2395,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$usersarray = $this->db->getAllEnabledUsers();
 
 		// iterate through all users and generate the select
-		$response = '<select class="form-control required" id="touserid" name="touserid"><option value="0">'.$customMessage.'</option>';
+		$response = '<select class="form-control required select2" id="touserid" name="touserid"><option value="0">'.$customMessage.'</option>';
 		foreach ($usersarray as $userobj) {
 			// don't include ourselves.
 			//if ($userobj["id"] != $myuserid) {
@@ -3471,60 +3450,6 @@ error_reporting(E_ERROR | E_PARSE);
 		</div>';
 	}
 
-
-	/**
-     * Returns a HTML representation of the wizard form for Telephony Lists
-     *
-     */
-
-	public function GetAllLists() {
-		$output = $this->API_goGetAllLists();
-
-		if ($output->result=="success") {
-		# Result was OK!
-
-		$columns = array("List ID", "Name", "Status", "Last Call Date", "Leads Count", "Campaign", "Action");
-	    $hideOnMedium = array("Status", "Last Call Date", "Leads Count", "Campaign");
-	    $hideOnLow = array("List ID", "Status", "Last Call Date", "Leads Count", "Campaign");
-		$result = $this->generateTableHeaderWithItems($columns, "table_lists", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-
-
-			for($i=0;$i < count($output->list_id);$i++){
-				// if no entry in user list
-
-				if($output->active[$i] == "Y"){
-					$output->active[$i] = "Active";
-				}else{
-					$output->active[$i] = "Inactive";
-				}
-
-				$action = $this->getUserActionMenuForLists($output->list_id[$i], $output->list_name[$i]);
-
-				$result = $result."<tr>
-	                    <td class='hide-on-low'><a class='edit-ingroup' data-id='".$output->list_id[$i]."'>".$output->list_id[$i]."</td>
-	                    <td>".$output->list_name[$i]."</td>
-						<td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->list_lastcalldate[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->tally[$i]."</td>
-						<td class='hide-on-medium hide-on-low'>".$output->campaign_id[$i]."</td>
-	                    <td nowrap>".$action."</td>
-	                </tr>";
-
-
-
-			}
-
-			return $result.'</table>';
-
-		} else {
-		# An error occured
-			return $this->calloutErrorMessage($this->lh->translationFor("unable_get_list"));
-		}
-	       // print suffix
-	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
-	}
-
-
 // TELEPHONY INBOUND
 	//ingroups
 	public function API_getInGroups() {
@@ -4266,19 +4191,19 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    if ($output->result=="success") {
 	    # Result was OK!
-	    $columns = array("Script ID", "Script Name", "Status", "Type", "User Group", "Actions");
-	    $hideOnMedium = array("Type", "Status", "User Group");
-	    $hideOnLow = array( "Script ID", "Type", "Status", "User Group");
+	    $columns = array($this->lh->translationFor("script_id"), $this->lh->translationFor("script_name"), $this->lh->translationFor("status"), $this->lh->translationFor("type"), $this->lh->translationFor("user_group"), $this->lh->translationFor("actions"));
+	    $hideOnMedium = array($this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
+	    $hideOnLow = array($this->lh->translationFor("script_id"), $this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
 
-		    $result = $this->generateTableHeaderWithItems($columns, "scripts_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$result = $this->generateTableHeaderWithItems($columns, "scripts_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
 	    for($i=0;$i<count($output->script_id);$i++){
 		$action = $this->getUserActionMenuForScripts($output->script_id[$i], $output->script_name[$i], $perm);
 
 			if($output->active[$i] == "Y"){
-			    $active = "Active";
+			    $active = $this->lh->translationFor("active");
 			}else{
-			    $active = "Inactive";
+			    $active = $this->lh->translationFor("inactive");
 			}
 			
 			$preFix = "<a class='edit_script' data-id='".$output->script_id[$i]."'>";
@@ -4744,8 +4669,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li'.($perm->disposition->disposition_update === 'N' ? ' class="hidden"' : '').'><a class="edit_disposition" href="#" data-id="'.$id.'">Modify</a></li>
-			<li'.($perm->disposition->disposition_delete === 'N' ? ' class="hidden"' : '').'><a class="delete_disposition" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li'.($perm->disposition->disposition_update === 'N' ? ' class="hidden"' : '').'><a class="edit_disposition" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li'.($perm->disposition->disposition_delete === 'N' ? ' class="hidden"' : '').'><a class="delete_disposition" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4810,9 +4735,9 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="view_leadfilter" href="#" data-id="'.$id.'">View</a></li>
-				<li><a class="edit_leadfilter" href="#" data-id="'.$id.'">Modify</a></li>
-				<li><a class="delete_leadfilter" href="#" data-id="'.$id.'" data-name="'.$name.'">Delete</a></li>
+			<li><a class="view_leadfilter" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view").'</a></li>
+				<li><a class="edit_leadfilter" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+				<li><a class="delete_leadfilter" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 			    </ul>
 			</div>';
 		}
@@ -5172,7 +5097,6 @@ error_reporting(E_ERROR | E_PARSE);
 
                         return($data);
 		}
-
 		/*
 		 * Displaying Call(s) Ringing
 		 * [[API: Function]] - goGetRingingCalls
@@ -5198,7 +5122,6 @@ error_reporting(E_ERROR | E_PARSE);
 			$output = json_decode($data);
 
 			return $output;
-
 		}
 
 		/*
@@ -5206,7 +5129,6 @@ error_reporting(E_ERROR | E_PARSE);
 		 * [[API: Function]] - goGetHopperLeadsWarning
 		 * This application is used to get the list of campaigns < 100
 		*/
-
 		public function API_goGetHopperLeadsWarning() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -5261,7 +5183,6 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get the list online agents
 		 * for realtime monitoring
 		*/
-
 		public function API_goGetRealtimeAgentsMonitoring() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -5291,7 +5212,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goAction"] = "goGetIncomingQueue"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
 
-                        $ch = curl_init();
+            $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
@@ -5467,27 +5388,27 @@ error_reporting(E_ERROR | E_PARSE);
 		 * [[API: Function]] - goGetDroppedPercentage
 		 * This application is used to get dropped call percentage.
 		*/
-                public function API_goGetDroppedPercentage() {
-                        $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-                        $postfields["goUser"] = goUser; #Username goes here. (required)
-                        $postfields["goPass"] = goPass;
-                        $postfields["goAction"] = "goGetDroppedPercentage"; #action performed by the [[API:Functions]]
-                        $postfields["responsetype"] = responsetype;
+		public function API_goGetDroppedPercentage() {
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
+			$postfields["goAction"] = "goGetDroppedPercentage"; #action performed by the [[API:Functions]]
+			$postfields["responsetype"] = responsetype;
 
-                        $ch = curl_init();
-                        curl_setopt($ch, CURLOPT_URL, $url);
-                        curl_setopt($ch, CURLOPT_POST, 1);
-                        curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-                        $data = curl_exec($ch);
-                        curl_close($ch);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 
-                        $output = json_decode($data);
+			$output = json_decode($data);
 
-                        return $output;
-
-                }
+			return $output;
+			
+		}
 
 		/*
 		 * Display SLA Percentage
@@ -6125,16 +6046,16 @@ error_reporting(E_ERROR | E_PARSE);
 		//$limit = 10;
 		$output = $this->API_GetDNC($search);
 	       if($output->result=="success") {
-			$columns = array( "Phone Numbers", "Campaign", "Action" );
+			$columns = array($this->lh->translationFor("phone_number"), $this->lh->translationFor("campaign"), $this->lh->translationFor("action"));
 			$hideOnMedium = array();
-			$hideOnLow = array( "Campaign");
+			$hideOnLow = array( $this->lh->translationFor("campaign") );
 			$result = $this->generateTableHeaderWithItems($columns, "table_dnc", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
 			for($i=0;$i < count($output->phone_number);$i++){
 				$result .= '<tr>
 								<td>' .$output->phone_number[$i]. '</td>
 								<td class="hide-on-low">' .$output->campaign[$i].'</td>
-								<td><a class="delete-dnc btn btn-danger" data-id="'.$output->phone_number[$i].'" data-campaign="'.$output->campaign[$i].'" title="Delete DNC Number: '.$output->phone_number[$i].'"><i class="fa fa-trash"></i></a></td>
+								<td><a class="delete-dnc btn btn-danger" data-id="'.$output->phone_number[$i].'" data-campaign="'.$output->campaign[$i].'" title="'.$this->lh->translationFor("delete").' DNC Number: '.$output->phone_number[$i].'"><i class="fa fa-trash"></i></a></td>
 							</tr> ';
 			}
 

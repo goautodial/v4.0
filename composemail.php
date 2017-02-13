@@ -57,27 +57,15 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
     <meta charset="UTF-8">
     <title>Compose Message</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link href="./css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="./css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- bootstrap wysihtml5 - text editor -->
     <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
     <!-- multiple emails plugin -->
     <link href="css/multiple-emails/multiple-emails.css" rel="stylesheet" type="text/css" />
-    <!-- Creamy style -->
-    <link href="./css/creamycrm.css" rel="stylesheet" type="text/css" />
+    
+	<?php print $ui->standardizedThemeCSS(); ?>
+	
     <?php print $ui->creamyThemeCSS(); ?>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-      <script src="js/respond.min.js"></script>
-    <![endif]-->
-
-	<!-- Javascript -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="js/jquery-ui.min.js" type="text/javascript"></script>
     <!-- Bootstrap WYSIHTML5 -->
     <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
 	<!-- Forms and actions -->
@@ -86,16 +74,12 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
     <script src="js/plugins/multifile/jQuery.MultiFile.min.js" type="text/javascript"></script>
     <!-- Multiple emails -->
     <script src="js/plugins/multiple-emails/multiple-emails.js" type="text/javascript"></script>
-    <!-- Creamy App -->
-    <script src="js/app.min.js" type="text/javascript"></script>
-    <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
-
-        <script type="text/javascript">
-      $(window).ready(function() {
-        $(".preloader").fadeOut("slow");
-      });
-    </script>
+	
+	<!-- SELECT2-->
+   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+   		<!-- SELECT2-->
+   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
   </head>
   <?php print $ui->creamyBody(); ?>
     <div class="wrapper">
@@ -186,7 +170,6 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
           </div><!-- /.row -->
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
-      <?php print $ui->creamyFooter(); ?>
     </div><!-- ./wrapper -->
     
     <!-- WYSIHTML5 edition -->
@@ -194,6 +177,11 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 
 	<script type="text/javascript">
 		$(document).ready(function() {
+			/* initialize select2 */
+			$('.select2').select2({
+				theme: 'bootstrap'
+			});
+			
 			// external recipients
 			$('#external_recipients').multiple_emails();
 
@@ -269,5 +257,6 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 		// hooks
 		<?php print $ui->getComposeMessageActionJS(); ?>		    
 	</script>
+	<?php print $ui->creamyFooter(); ?>
   </body>
 </html>

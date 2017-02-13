@@ -926,186 +926,152 @@
 	        </div>
 	    </div>
     <!-- end of modal -->
-
-		<div id="modal_view_pause_codes" class="modal fade" role="dialog">
-		  <div class="modal-dialog">
-		    <!-- Modal content-->
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b><?php $lh->translateText("pause_code"); ?></b></h4>
-		      </div>
-		      <div class="modal-body">
-						<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
-							<div class="table-responsive">
-								<table id="pause_codes_list" class="table table-bordered" style="width: 100%;">
-	                <thead>
-	                    <tr>
-	                        <th><?php $lh->translateText("pause_codes"); ?></th>
-	                        <th><?php $lh->translateText("pause_name"); ?></th>
-	                        <th><?php $lh->translateText("billable"); ?></th>
-	                        <th><?php $lh->translateText("action"); ?></th>
-	                    </tr>
-	                </thead>
-									<tbody id="pause_code_data_container">
-										<!-- Data Here -->
-									</tbody>
-								</table>
-							</div>
-						</div>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
-						<button type="button" class="btn btn-success btn-new-pause-code<?=($perm->pausecodes->pausecodes_create === 'N' ? ' hidden' : '')?>" data-campaign="">Create New</button>
-		      </div>
-		    </div>
-		    <!-- End of modal content -->
-		  </div>
-		</div>
-
-		<div id="modal_form_pause_codes" class="modal fade" role="dialog">
-		  <div class="modal-dialog">
-		    <!-- Modal content-->
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b><?php $lh->translateText("pause_codes"); ?></b></h4>
-		      </div>
-		      <div class="modal-body">
-						<form id="form_pause_codes" class="form-horizontal" style="margin-top: 10px;">
-							<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
-							<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
-							<div class="form-group">
-								<label class="control-label col-lg-3"><?php $lh->translateText("campaign_id"); ?>:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control campaign-id" name="campaign_id" readonly>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="control-label col-lg-3"><?php $lh->translateText("pause_code"); ?>:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control pause-code" name="pause_code">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="control-label col-lg-3"><?php $lh->translateText("pause_name"); ?>:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control pause-code-name" name="pause_code_name">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="control-label col-lg-3"><?php $lh->translateText("billable"); ?>:</label>
-								<div class="col-lg-9">
-									<select class="form-control billable" name="billable">
-										<option value="YES">YES</option>
-										<option value="NO">NO</option>
-										<option value="HALF">HALF</option>
-									</select>
-								</div>
-							</div>
-						</form>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
-						<button type="button" class="btn btn-primary btn-save-pause-code"><?php $lh->translateText("save"); ?></button>
-						<button type="button" class="btn btn-success btn-update-pause-code hide"><?php $lh->translateText("update"); ?></button>
-		      </div>
-		    </div>
-		    <!-- End of modal content -->
-		  </div>
-		</div>
-
-		<div id="modal_view_hotkeys" class="modal fade" role="dialog">
-		  <div class="modal-dialog">
-		    <!-- Modal content-->
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b><?php $lh->translateText("hotkeys"); ?></b></h4>
-		      </div>
-		      <div class="modal-body">
-						<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
-							<div class="table-responsive">
-								<table id="hotkeys_list" class="table table-bordered" style="width: 100%;">
-	                <thead>
-	                    <tr>
-	                        <th><?php $lh->translateText("hotkeys"); ?></th>
-	                        <th><?php $lh->translateText("status"); ?></th>
-	                        <th><?php $lh->translateText("description"); ?></th>
-	                        <th><?php $lh->translateText("action"); ?></th>
-	                    </tr>
-	                </thead>
-									<tbody id="hotkey_data_container">
-										<!-- Data Here -->
-									</tbody>
-								</table>
-							</div>
-						</div>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-success btn-new-hotkey<?=($perm->hotkeys->hotkeys_create === 'N' ? ' hidden' : '')?>" data-campaign="">Create New</button>
-		      </div>
-		    </div>
-		    <!-- End of modal content -->
-		  </div>
-		</div>
-
-		<div id="modal_form_hotkeys" class="modal fade" role="dialog">
-		  <div class="modal-dialog">
-		    <!-- Modal content-->
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b><?php $lh->translateText("hotkey"); ?></b></h4>
-		      </div>
-		      <div class="modal-body">
-						<form id="form_hotkeys" class="form-horizontal" style="margin-top: 10px;">
-							<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
-							<input type="button" name="log_group" value="<?=$_SESSION['usergroup']?>" />
-							<div class="form-group">
-								<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("compaign_id"); ?>:</label>
-								<div class="col-lg-9">
-									<input type="text" class="form-control campaign-id" name="campaign_id" readonly>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("hotket"); ?>:</label>
-								<div class="col-lg-9">
-									<select class="form-control select2 hotkey" name="hotkey">
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-										<option value="6">6</option>
-										<option value="7">7</option>
-										<option value="8">8</option>
-										<option value="9">9</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("status"); ?>:</label>
-								<div class="col-lg-9">
-									<input type="hidden" id="hotkey_status_name" name="status_name" value="">
-									<select class="form-control select2 status" name="status">
-										<option>Select a Status</option>
-									</select>
-								</div>
-							</div>
-						</form>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary btn-save-hotkey">Save</button>
-						<button type="button" class="btn btn-success btn-update-hotkey hide">Update</button>
-		      </div>
-		    </div>
-		    <!-- End of modal content -->
-		  </div>
-		</div>
+	
+	<?php
+		$pausecodeTable = '
+			<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
+				<div class="table-responsive">
+					<table id="pause_codes_list" class="table table-bordered" style="width: 100%;">
+						<thead>
+							<tr>
+								<th>'.$lh->translationFor("pause_codes").'</th>
+								<th>'.$lh->translationFor("pause_name").'</th>
+								<th>'.$lh->translationFor("billable").'</th>
+								<th>'.$lh->translationFor("action").'</th>
+							</tr>
+						</thead>
+						<tbody id="pause_code_data_container">
+							<!-- Data Here -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		';
+		$footer_pc = '
+			<button type="button" class="btn btn-default" data-dismiss="modal">'.$lh->translationFor("close").'</button>
+			<button type="button" class="btn btn-success btn-new-pause-code'.($perm->pausecodes->pausecodes_create === "N" ? " hidden": "").'" data-campaign="">Create New</button>
+		';
 		
+		echo $ui->modalFormStructure('modal_view_pause_codes', '', $lh->translationFor("pause_codes"), '', $pausecodeTable, $footer_pc, '', '');
+	?>
+		
+	<?php
+		$pausecodeForm = '
+			<input type="hidden" name="log_user" value="'.$_SESSION['user'].'" />
+			<input type="hidden" name="log_group" value="'.$_SESSION['usergroup'].'" />
+			<div class="form-group">
+				<label class="control-label col-lg-3">'.$lh->translationFor("campaign_id").':</label>
+				<div class="col-lg-9">
+					<input type="text" class="form-control campaign-id" name="campaign_id" readonly>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-3">'.$lh->translationFor("pause_code").':</label>
+				<div class="col-lg-9">
+					<input type="text" class="form-control pause-code" name="pause_code">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-3">'.$lh->translationFor("pause_name").':</label>
+				<div class="col-lg-9">
+					<input type="text" class="form-control pause-code-name" name="pause_code_name">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-3">'.$lh->translationFor("billable").':</label>
+				<div class="col-lg-9">
+					<select class="form-control billable" name="billable">
+						<option value="YES">YES</option>
+						<option value="NO">NO</option>
+						<option value="HALF">HALF</option>
+					</select>
+				</div>
+			</div>
+		';
+		
+		$footer_pc_form = '
+			<button type="button" class="btn btn-default" data-dismiss="modal">'.$lh->translationFor("close").'</button>
+			<button type="button" class="btn btn-primary btn-save-pause-code">'.$lh->translationFor("save").'</button>
+			<button type="button" class="btn btn-success btn-update-pause-code hide">'.$lh->translationFor("update").'</button>
+		';
+		
+		echo $ui->modalFormStructure('modal_form_pause_codes', 'form_pause_codes', $lh->translationFor("pause_codes"), '', $pausecodeForm, $footer_pc_form, '', '');
+	?>
+		
+	<?php
+		$hotkeyTable = '
+			<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
+				<div class="table-responsive">
+					<table id="hotkeys_list" class="table table-bordered" style="width: 100%;">
+						<thead>
+							<tr>
+								<th>'.$lh->translationFor("hotkeys").'</th>
+								<th>'.$lh->translationFor("status").'</th>
+								<th>'.$lh->translationFor("description").'</th>
+								<th>'.$lh->translationFor("action").'</th>
+							</tr>
+						</thead>
+						<tbody id="hotkey_data_container">
+							<!-- Data Here -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		';
+		$footer_hk = '
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-success btn-new-hotkey'.($perm->hotkeys->hotkeys_create === "N" ? " hidden" : "").'" data-campaign="">Create New</button>
+		';
+		
+		echo $ui->modalFormStructure('modal_view_hotkeys', '', $lh->translationFor("hotkeys"), '', $hotkeyTable, $footer_hk, '', '');
+	?>
+		
+	<?php
+		$hotkeyForm = '
+			<input type="hidden" name="log_user" value="'.$_SESSION['user'].'" />
+			<input type="button" name="log_group" value="'.$_SESSION['usergroup'].'" />
+			<div class="form-group">
+				<label class="control-label col-lg-3" style="text-align: left;">'.$lh->translationFor("campaign_id").':</label>
+				<div class="col-lg-9">
+					<input type="text" class="form-control campaign-id" name="campaign_id" readonly>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-3" style="text-align: left;">'.$lh->translationFor("hotkeys").':</label>
+				<div class="col-lg-9">
+					<select class="form-control select2 hotkey" name="hotkey">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-lg-3" style="text-align: left;">'.$lh->translationFor("status").':</label>
+				<div class="col-lg-9">
+					<input type="hidden" id="hotkey_status_name" name="status_name" value="">
+					<select class="form-control select2 status" name="status">
+						<option>Select a Status</option>
+					</select>
+				</div>
+			</div>
+		';
+		
+		$footer_hk_form = '
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary btn-save-hotkey">Save</button>
+			<button type="button" class="btn btn-success btn-update-hotkey hide">Update</button>
+		';
+		
+		echo $ui->modalFormStructure('modal_form_hotkeys', 'form_hotkeys', $lh->translationFor("hotkey"), '', $hotkeyForm, $footer_hk_form, '', '');
+	?>
+
 		<div id="modal_view_lists" class="modal fade" role="dialog">
 		  <div class="modal-dialog" style="width: 70%;">
 		    <!-- Modal content-->
@@ -1156,7 +1122,6 @@
 				<!--<button type="button" class="btn btn-success btn-new-lists" data-campaign="">Create New</button>-->
 		      </div>
 		    </div>
-		    <!-- End of modal content -->
 		  </div>
 		</div>
 		

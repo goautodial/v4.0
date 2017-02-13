@@ -1548,9 +1548,9 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</div>
 															</div>
 															<div class="form-group">
-																<label class="col-sm-3 control-label">Dial Method:</label>
+																<label class="col-sm-3 control-label">Dial Method:<?php echo $campaign->data->dial_method;?></label>
 																<div class="col-sm-9 mb">
-																	<select name="dial_method" id="survey_dial_method" class="form-control" name="dial_method" disabled>
+																	<select name="dial_method" id="survey_dial_method" class="form-control" name="dial_method">
 																		<option value="MANUAL" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?> disabled>MANUAL</option>
 																		<option value="RATIO" <?php if($campaign->data->dial_method == "RATIO") echo "selected";?>>AUTO DIAL</option>
 																		<option value="ADAPT_TAPERED" <?php if($campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?>>PREDICTIVE</option>
@@ -1566,7 +1566,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																			$autodial_level = $campaign->data->auto_dial_level;
 																		?>
 																		<div class="col-lg-8">
-																			<select id="survey_auto_dial_level" class="form-control" name="auto_dial_level" <?php if($campaign->data->dial_method !== "RATIO") echo "disabled";?> disabled>
+																			<select id="survey_auto_dial_level" class="form-control" name="auto_dial_level" <?php if($campaign->data->dial_method !== "RATIO") echo "disabled";?>>
 																			<option value="OFF" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?> disabled>OFF</option>
 																			<option value="SLOW"<?php if($autodial_level == "1") echo "selected";?>>SLOW</option>
 																			<option VALUE="NORMAL" <?php if($autodial_level == "2") echo "selected";?>>NORMAL</option>
@@ -1577,7 +1577,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																			</select>
 																		</div>
 																		<div class="col-lg-4">
-																			<select id="auto_dial_level_adv" class="form-control <?php if($autodial_level == "0" || $autodial_level == "1" || $autodial_level == "2" || $autodial_level == "4" || $autodial_level == "6" || $autodial_level == "10") echo "hide";?> " name="auto_dial_level_adv">
+																			<select id="survey_auto_dial_level_adv" class="form-control <?php if($autodial_level == "0" || $autodial_level == "1" || $autodial_level == "2" || $autodial_level == "4" || $autodial_level == "6" || $autodial_level == "10") echo "hide";?> " name="auto_dial_level_adv">
 																				<option value="1">1.0</option>
 																				<option value="1.5" <?php if($autodial_level == "1.5") echo "selected"; ?> >1.5</option>
 																				<option value="2">2.0</option>
@@ -2192,6 +2192,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 			}
 			
 			function checkSurveyMethod(value) {
+				$("#survey_dial_method").val("RATIO").trigger('change');
+				$("#survey_auto_dial_level").val("SLOW").trigger('change');
 				if (value == "AGENT_XFER") {
 					$("#survey_dial_method").prop("disabled", false);
 					$("#survey_auto_dial_level").prop("disabled", false);
@@ -2199,10 +2201,10 @@ $audiofiles = $ui->API_getListAudioFiles();
 				}else{
 					$("#survey_dial_method").prop("disabled", true);
 					$("#survey_auto_dial_level").prop("disabled", true);
+					$("#survey_auto_dial_level_adv").addClass('hide');
 					$("#no-channels").prop("disabled", false);
 				}
-				$("#survey_dial_method").val("RATIO").trigger('change');
-				$("#survey_auto_dial_level").val("SLOW").trigger('change');
+				
             }
 			
 			$(document).ready(function() {
@@ -2805,11 +2807,19 @@ $audiofiles = $ui->API_getListAudioFiles();
 							});
 					/*** end of disposition filters ***/
 
-					$('#auto_dial_level, #survey_auto_dial_level').change(function(){
+					$(document).on('change', '#auto_dial_level',function(){
 						if($(this).val() == 'ADVANCE'){
 							$('#auto_dial_level_adv').removeClass('hide');
 						}else{
 							$('#auto_dial_level_adv').addClass('hide');
+						}
+					});
+					
+					$(document).on('change', '#survey_auto_dial_level',function(){
+						if($(this).val() == 'ADVANCE'){
+							$('#survey_auto_dial_level_adv').removeClass('hide');
+						}else{
+							$('#survey_auto_dial_level_adv').addClass('hide');
 						}
 					});
 

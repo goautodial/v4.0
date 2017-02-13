@@ -251,7 +251,7 @@
 													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("list_id"); ?></th>
 													<th><?php $lh->translateText("name"); ?></th>
 													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("status"); ?></th>
-													<th class='hide-on-medium hide-on-low'>Leads Count</th>
+													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("leads_count"); ?></th>
 													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("campaign"); ?></th>
 													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("field"); ?></th>
 													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("action"); ?></th>
@@ -307,7 +307,7 @@
 												</thead>
 												<tbody>
 													<tr id="#dnc_result">
-														<td colspan="3"><center><span id="dnc_error">- - - Search or filter DNC to display results - - -</span></center></td>
+														<td colspan="3"><center><span id="dnc_error">- - - <?php $lh->translateText("search_filter_dnc");?> - - -</span></center></td>
 													</tr>
 												</tbody>
 											</table>
@@ -328,35 +328,33 @@ if ($perm->list->list_upload !== 'N') {
 			<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 			<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 			<div class="form-group">
-			<label><?php $lh->translateText("list_id"); ?>:</label>
+				<label><?php $lh->translateText("list_id"); ?>:</label>
+					<div class="form-group">
+					<!-- <select id="select2-1" class="form-control" name="list_id"> -->
+						<select id="list_id" class="form-control select2" name="list_id" required>
+						<option value="" selected disabled></option>
+						<?php
+						for($i=0;$i<count($lists->list_id);$i++){
+						echo '<option value="'.$lists->list_id[$i].'">'.$lists->list_id[$i].' - '.$lists->list_name[$i].'</option>';
+						}
+						?>
+						</select>
+					</div>
 				<div class="form-group">
-				<!-- <select id="select2-1" class="form-control" name="list_id"> -->
-					<select id="list_id" class="form-control select2" name="list_id" required>
-					<option value="" selected disabled></option>
-					<?php
-					for($i=0;$i<count($lists->list_id);$i++){
-					echo '<option value="'.$lists->list_id[$i].'">'.$lists->list_id[$i].' - '.$lists->list_name[$i].'</option>';
-					}
-					?>
-					</select>
+					<label><?php $lh->translateText("duplicate_check"); ?> :</label>
+					<SELECT size="1" NAME="goDupcheck" ID="goDupcheck" TITLE="Duplicate Check - Will check phone numbers on the lead file and cross reference it with all phone numbers on a specific campaign or in all List ID." class="form-control select2">
+					<OPTION value="NONE"><?php $lh->translateText("no_duplicate_check"); ?></OPTION>
+					<OPTION value="DUPLIST"><?php $lh->translateText("check_phones_in_list_id"); ?></OPTION>
+					<OPTION value="DUPCAMP"><?php $lh->translateText("check_phones_in_campaign-lists"); ?></OPTION>
+					</SELECT>
 				</div>
-			
-			<div class="form-group">
-				<label><?php $lh->translateText("duplicate"); ?>:</label>
-				<SELECT size="1" NAME="goDupcheck" ID="goDupcheck" TITLE="Duplicate Check - Will check phone numbers on the lead file and cross reference it with all phone numbers on a specific campaign or in all List ID." class="form-control select2">
-				<OPTION value="NONE">NO DUPLICATE CHECK</OPTION>
-				<OPTION value="DUPLIST">CHECK PHONES IN LIST ID</OPTION>
-				<OPTION value="DUPCAMP">CHECK PHONES IN CAMPAIGN-LISTS</OPTION>
-				</SELECT>
-			</div>
-			
 			</div>
 			<div class="form-group">
 			
 			<label><?php $lh->translateText("csv_file"); ?>:</label>
 				<div class="form-group" id="dvImportSegments">
 				<div class="input-group">
-				<input type="text" class="form-control file-name" name="file_name" placeholder="CSV File" required>
+				<input type="text" class="form-control file-name" name="file_name" placeholder="<?php $lh->translateText("csv_file"); ?>" required>
 				<span class="input-group-btn">
 				<button type="button" class="btn browse-btn  btn-primary" type="button"><?php $lh->translateText("browse"); ?></button>
 				</span>
@@ -385,7 +383,7 @@ if ($perm->list->list_upload !== 'N') {
 			<!-- End Progress bar -->
 			
 			<div class="form-group">
-			<input type="button" id="btnUpload" name="btnUpload" value="Upload" class="btn btn-primary" onClick="goProgressBar();">
+			<input type="button" id="btnUpload" name="btnUpload" value="<?php $lh->translateText("update"); ?>" class="btn btn-primary" onClick="goProgressBar();">
 			<!--										<div class="col-lg-12" style="margin-top: 10px;">
 			<div class="alert alert-success" style="display:none;" id="dStatus"> 
 			<div id="qstatus">  </div>
@@ -417,12 +415,12 @@ if ($perm->list->list_upload !== 'N') {
 		<div class="form-group">
 			<label for="search_dnc"><?php $lh->translateText("search"); ?></label>
 			<div class="has-clear">
-				<input type="text" placeholder="Search Phone Number" id="search_dnc" class="form-control mb">
+				<input type="text" placeholder="<?php $lh->translateText("search_phone"); ?>" id="search_dnc" class="form-control mb">
 				<span class="form-control-clear fa fa-close form-control-feedback"></span>
 			</div>
 		</div>
 		<div class="clearfix">
-			<button type="button" class="pull-left btn btn-default" id="dnc_search_button"> Search</button>
+			<button type="button" class="pull-left btn btn-default" id="dnc_search_button"> <?php $lh->translateText("search"); ?></button>
 		</div>
 	</div><!-- ./ dnc search -->
 <?php
@@ -441,10 +439,10 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 </div><!-- ./wrapper -->
 
 <!-- FIXED ACTION BUTTON -->
-<div class="action-button-circle" data-toggle="modal" data-target="#list-modal" id="list_fab" title="Add List Wizard">
+<div class="action-button-circle" data-toggle="modal" data-target="#list-modal" id="list_fab" title="<?php $lh->translateText("list_wizard"); ?>">
 <?php print $ui->getCircleButton("list_and_call_recording", "plus"); ?>
 </div>
-<div class="action-button-circle" data-toggle="modal" data-target="#dnc-modal" id="dnc_fab" style="display:none;" title="Add/Delete DNC Numbers">
+<div class="action-button-circle" data-toggle="modal" data-target="#dnc-modal" id="dnc_fab" style="display:none;" title="<?php $lh->translateText("add_delete_dnc"); ?>">
 <?php print $ui->getCircleButton("list_and_call_recording", "pencil-square-o"); ?>
 </div>
 <?php
@@ -489,7 +487,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				</h4>
 				<fieldset>
 					<div class="form-group mt">
-						<label class="col-sm-3 control-label" for="auto_generate"><?php $lh->translateText("generated"); ?>:</label>
+						<label class="col-sm-3 control-label" for="auto_generate"><?php $lh->translateText("auto_generated"); ?>:</label>
 						<div class="col-sm-9 mb">
 							<label class="col-sm-3 checkbox-inline c-checkbox" for="auto_generate">
 								<input type="checkbox" id="auto_generate" checked>
@@ -500,19 +498,19 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					<div class="form-group">
 						<label class="col-sm-3 control-label" for="add_list_id"><?php $lh->translateText("list_id"); ?>:</label>
 						<div class="col-sm-9 mb">
-							<input type="number" class="form-control" name="add_list_id" id="add_list_id" placeholder="List ID" value="<?php echo $next_list;?>" minlength="1" maxlength="8" disabled required/>
+							<input type="number" class="form-control" name="add_list_id" id="add_list_id" placeholder="<?php $lh->translateText("list_id"); ?>" value="<?php echo $next_list;?>" minlength="1" maxlength="8" disabled required/>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-3 control-label" for="list_name"><?php $lh->translateText("list_name"); ?>:</label>
 						<div class="col-sm-9 mb">
-							<input type="text" class="form-control" name="list_name" id="list_name" placeholder="List Name" value="<?php echo $next_listname;?>" maxlength="30" required/>
+							<input type="text" class="form-control" name="list_name" id="list_name" placeholder="<?php $lh->translateText("list_name"); ?>" value="<?php echo $next_listname;?>" maxlength="30" required/>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label" for="list_desc"><?php $lh->translateText("list_des"); ?>:</label>
+						<label class="col-sm-3 control-label" for="list_desc"><?php $lh->translateText("list_description"); ?>:</label>
 						<div class="col-sm-9 mb">
-							<input type="text" class="form-control" name="list_desc" id="list_desc" placeholder="List Description"  value="<?php echo $next_listdesc;?>" maxlength="255" />
+							<input type="text" class="form-control" name="list_desc" id="list_desc" placeholder="<?php $lh->translateText("list_description"); ?>"  value="<?php echo $next_listdesc;?>" maxlength="255" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -531,8 +529,8 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						<label class="col-sm-3 control-label" for="status"><?php $lh->translateText("active"); ?>: </label>
 						<div class="col-sm-9 mb">
 							<select name="status" class="form-control">
-								<option value="Y" selected>Yes</option>
-								<option value="N" >No</option>
+								<option value="Y" selected><?php $lh->translateText("go_yes"); ?></option>
+								<option value="N" ><?php $lh->translateText("go_no"); ?></option>
 							</select>
 						</div>
 					</div>
@@ -545,54 +543,26 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 		</div>
 	</div><!-- end of modal -->
 
-	<!-- Modal -->
-	<div id="call-playback-modal" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
-
-	    <!-- Modal content-->
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b><?php $lh->translateText("call_des"); ?></b></h4>
-	      </div>
-	      <div class="modal-body">
-		<div class="audio-player"></div>
-	      	<!-- <audio controls>
-			<source src="http://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
-			<source src="http://www.w3schools.com/html/horse.mp3" type="audio/mpeg" />
-			<a href="http://www.w3schools.com/html/horse.mp3">horse</a>
-		</audio> -->
-	      </div>
-	      <div class="modal-footer">
-		<a href="" class="btn btn-primary download-audio-file" download><?php $lh->translateText("download_file"); ?></a>
-	        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
-	      </div>
-	    </div>
-	    <!-- End of modal content -->
-	  </div>
-	</div>
-
-
 	<div id="modal_custom_field_copy" class="modal fade" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title"><?php $lh->translateText("copy_custom"); ?></h4>
+					<h4 class="modal-title"><?php $lh->translateText("copy_custom_wizard"); ?></h4>
 				</div>
 				<div class="modal-body">
 					<form id="copy_cf_form" class="form-horizontal" style="margin-top: 10px;">
 						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 						<div class="form-group">
-							<label class="control-label col-lg-4"><?php $lh->translateText("copy_fields"); ?>:</label>
+							<label class="control-label col-lg-4"><?php $lh->translateText("copy_from_list_id"); ?>:</label>
 							<div class="col-lg-8">
 								<input type="hidden" class="form-control list-from" value="" name="list_from">
 								<input type="text" class="form-control list-from-label" value="" readonly>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-lg-4"><?php $lh->translateText("copy_list"); ?>:</label>
+							<label class="control-label col-lg-4"><?php $lh->translateText("copy_to_list_id"); ?>:</label>
 							<div class="col-lg-8">
 								<select class="form-control select2" name="list_to">
 									<?php for($i=0;$i < count($lists->list_id);$i++){ ?>
@@ -605,9 +575,9 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							<label class="control-label col-lg-4"><?php $lh->translateText("copy_option"); ?>:</label>
 							<div class="col-lg-8">
 								<select class="form-control select2" name="copy_option">
-									<option value="APPEND">APPEND</option>
-									<option value="UPDATE">UPDATE</option>
-									<option value="REPLACE">REPLACE</option>
+									<option value="APPEND"><?php $lh->translateText("append"); ?></option>
+									<option value="UPDATE"><?php $lh->translateText("UPDATE"); ?></option>
+									<option value="REPLACE"><?php $lh->translateText("replace"); ?></option>
 								</select>
 							</div>
 						</div>
@@ -629,7 +599,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b><?php $lh->translateText("add_delete"); ?>/b></h4>
+	        <h4 class="modal-title"><b><?php $lh->translateText("add_delete"); ?></b></h4>
 	      </div>
 	      <div class="modal-body">
 			<form id="dnc_form">
@@ -653,15 +623,15 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					<label class="col-md-3 control-label"><?php $lh->translateText("phone_number"); ?>:</label>
 					<div class="col-md-9 mb">
 						<textarea rows="15" cols="17" name="phone_numbers" id="phone_numbers" style="resize:none"></textarea><br/>
-						<small class="text-danger"><?php $lh->translateText("per_line"); ?></small>
+						<small class="text-danger"><?php $lh->translateText("limit25_per_submit"); ?></small>
 					</div>
 				</div>
 				<div class="form-group mt">
-					<label class="col-md-3 control-label"><?php $lh->translateText("add_delete"); ?>:</label>
+					<label class="col-md-3 control-label"><?php $lh->translateText("add_delete_dnc"); ?>:</label>
 					<div class="col-md-4">
 						<select id="stageDNC" class="form-control" name="stageDNC" required>
-							<option value="ADD">ADD DNC LIST</option>
-							<option value="DELETE">DELETE DNC LIST</option>
+							<option value="ADD"><?php $lh->translateText("ADD"); ?> DNC LIST</option>
+							<option value="DELETE"><?php $lh->translateText("DELETE"); ?> DNC LIST</option>
 						</select>
 					</div>
 				</div>
@@ -768,7 +738,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							return form.valid();
 						},
 						onFinished: function (){
-							$('#finish').text("Loading...");
+							$('#finish').text("<?php $lh->translateText("loading"); ?>");
 							$('#finish').attr("disabled", true);
 							$('#add_list_id').attr("disabled", false);
 							// Submit form via ajax
@@ -778,12 +748,12 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	                            data: $('#create_form').serialize(),
 	                            success: function(data) {
 	                              // console.log(data);
-									$('#finish').text("Submit");
+									$('#finish').text("<?php $lh->translateText("submit"); ?>");
 									$('#finish').attr("disabled", false);
 									if(data == 1){
-									  swal({title: "Success",text: "<?php $lh->translateText("list_succes"); ?>!",type: "success"},function(){window.location.href = 'telephonylist.php';});
+									  swal({title: "<?php $lh->translateText("add_list_success"); ?>",text: "<?php $lh->translateText("add_list_success"); ?>",type: "success"},function(){window.location.href = 'telephonylist.php';});
 									}else{
-										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>!", "error");
+										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
 									}
 	                            }
 	                        });
@@ -825,7 +795,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						var log_group = '<?=$_SESSION['usergroup']?>';
 						swal({
 							title: "<?php $lh->translateText("are_you_sure"); ?>?",
-							text: "<?php $lh->translateText("cannot_undo"); ?>.",
+							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 							type: "warning",
 							showCancelButton: true,
 							confirmButtonColor: "#DD6B55",
@@ -848,16 +818,15 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 										success: function(data) {
 										console.log(data);
 											if(data == 1){
-												swal("Deleted!", "<?php $lh->translateText("list_succes_deleted"); ?>.", "success");
-												window.setTimeout(function(){location.reload()},1000);
+												swal({title: "<?php $lh->translateText("delete_list_success"); ?>",text: "<?php $lh->translateText("delete_list_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonylist.php';});
 											}else{
-											   sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>!", "error");
+											   sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>!", "error");
 											}
 										}
 									});
 	
 								} else {
-									swal("Cancelled", "<?php $lh->translateText("been_done"); ?> :)", "error");
+									swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
 								}
 							}
 						);
@@ -909,12 +878,12 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 													}
 												);
 											}else{
-													sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
+													sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
 											}
 										}
 									});
 								} else {
-								swal("Cancelled", "No action has been done :)", "error");
+								swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
 								}
 							}
 						);
@@ -968,10 +937,10 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					$(document).on('click','#dnc_search_button',function() {
 					//init_contacts_table.destroy();
 						if($('#search_dnc').val() != ""){
-							$('#dnc_search_button').text("Searching...");
+							$('#dnc_search_button').text("<?php $lh->translateText("searching"); ?>");
 							$('#dnc_search_button').attr("disabled", true);
 						}else{
-							$('#dnc_search_button').text("Search");
+							$('#dnc_search_button').text("<?php $lh->translateText("search"); ?>");
 							$('#dnc_search_button').attr("disabled", false);
 						}
 						
@@ -982,7 +951,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								search_dnc : $('#search_dnc').val()
 							},
 							success: function(data) {
-								$('#dnc_search_button').text("Search");
+								$('#dnc_search_button').text("<?php $lh->translateText("searching"); ?>");
 								$('#dnc_search_button').attr("disabled", false);
 								//console.log(data);
 								if(data != ""){
@@ -992,7 +961,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 									});
 									$('#dnc_error').html("");
 								}else{
-									$('#dnc_error').text("No Results");
+									$('#dnc_error').text("<?php $lh->translateText("no_results"); ?>");
 								}
 							}
 						});
@@ -1000,7 +969,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				
 				// DNC Submit
 					$(document).on('click','#submit_dnc',function() {
-						$('#submit_dnc').text("Submitting...");
+						$('#submit_dnc').text("<?php $lh->translateText("submitting"); ?>");
 						$('#submit_dnc').attr("disabled", true);
 						
 						if ($('#phone_numbers').val() !== ''){
@@ -1009,26 +978,26 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								type: 'POST',
 								data: $('#dnc_form').serialize(),
 								success: function(data) {
-									$('#submit_dnc').text("Add / Delete DNC");
+									$('#submit_dnc').text("<?php $lh->translateText("add_delete_dnc"); ?>");
 									$('#submit_dnc').attr("disabled", false);
 									
 									if(data == "added"){
-										swal({title: "Added", text: "Successfully Added DNC!", type: "success"},function(){location.reload();});
+										swal({title: "<?php $lh->translateText("added_new"); ?> DNC", text: "<?php $lh->translateText("add_dnc"); ?>", type: "success"},function(){location.reload();});
 									} else if(data == "deleted"){
-										swal({title: "Deleted", text: "Successfully Deleted DNC! ", type: "success"},function(){location.reload();});
+										swal({title: "<?php $lh->translateText("deleted"); ?> DNC", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){location.reload();});
 									} else if(data == "already exist"){
-										sweetAlert("Wait A Minute", "DNC Number/s Already Exist...", "error");
+										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("dnc_already_exist"); ?>", "error");
 									} else if(data == "does not exist"){
-										sweetAlert("Oh no!", "DNC Number/s Do Not Exist...", "error");
+										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("dnc_do_not_exist"); ?>", "error");
 									} else{
-										sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+ data, "error");
 									}
 								}
 							});
 						} else {
-							$('#submit_dnc').text("Submit");
+							$('#submit_dnc').text("<?php $lh->translateText("submit"); ?>");
 							$('#submit_dnc').attr("disabled", false);
-							swal("You're not done yet!", "Please input a phone number on the textbox.", "error");
+							swal("<?php $lh->translateText("dnc_incomplete"); ?>", "<?php $lh->translateText("dnc_incomplete_msg"); ?>", "error");
 						}
 					});
 				
@@ -1051,13 +1020,13 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							success: function(data) {
 								//console.log(data);
 								if(data == "deleted"){
-									swal({title: "Deleted", text: "Successfully Deleted DNC! ", type: "success"},function(){location.reload();});
+									swal({title: "<?php $lh->translateText("deleted"); ?>", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){location.reload();});
 								} else if(data == "already exist"){
-									swal({title: "Oops...", text: "DNC Number/s Already Exist... ", type: "error"},function(){location.reload();});
+									swal({title: "<?php $lh->translateText("oups"); ?>", text: "<?php $lh->translateText("dnc_already_exist"); ?>", type: "error"},function(){location.reload();});
 								} else if(data == "does not exist"){
-									sweetAlert("Oops...", "DNC Number/s Do Not Exist... ", "error");
+									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("dnc_do_not_exist"); ?>", "error");
 								} else{
-									sweetAlert("Oops...", "Something went wrong! "+ data, "error");
+									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+ data, "error");
 								}
 							}
 						});

@@ -105,7 +105,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 							?>
 
 							<div class="panel-body">
-							<legend><?php $lh->translateText("modify_user"); ?>  <u><?php echo $output->data->user;?></u></legend>
+							<legend><?php $lh->translateText("modify_user"); ?> : <u><?php echo $output->data->user;?></u></legend>
 
 								<form id="modifyuser">
 									<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
@@ -131,14 +131,14 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<label for="fullname" class="col-sm-2 control-label"><?php $lh->translateText("full_name"); ?></label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="fullname" id="fullname" 
-															value="<?php echo $output->data->full_name;?>" maxlength="50" placeholder="Fullname" />
+															value="<?php echo $output->data->full_name;?>" maxlength="50" placeholder="<?php $lh->translateText("full_name"); ?>" />
 													</div>
 												</div>
 												<div class="form-group">
 													<label for="email" class="col-sm-2 control-label"><?php $lh->translateText("email"); ?></label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="email" id="email" 
-															value="<?php echo $output->data->email;?>"  maxlength="100" placeholder="Email" />
+															value="<?php echo $output->data->email;?>"  maxlength="100" placeholder="<?php $lh->translateText("email"); ?>" />
 														<small><span id="email_check"></span></small>
 													</div>
 												</div>
@@ -244,7 +244,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<label for="phone_login" class="col-sm-2 control-label"><?php if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){ echo "<i class='fa fa-info-circle' title='You cannot edit this field since WebRTC is enabled.'></i> ";} ?> Phone Login</label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="phone_login" id="phone_login"  <?php if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){ echo "disabled";} ?>
-															value="<?php echo $output->data->phone_login;?>" maxlength="20" placeholder="Phone Login" />
+															value="<?php echo $output->data->phone_login;?>" maxlength="20" placeholder="<?php $lh->translateText("phone_login"); ?>" />
 														<label id="phone_login-error"></label>
 													</div>
 												</div>
@@ -270,7 +270,6 @@ $user_groups = $ui->API_goGetUserGroupsList();
 																<option value="">- - - NONE - - -</option>
 															<?php
 																for($a=0;$a<count($voicemails->voicemail_id);$a++){
-
 															?>
 																	<option value="<?php echo $voicemails->voicemail_id[$a];?>" 
 																			<?php if($output->data->voicemail_id == $voicemails->voicemail_id[$a]){echo "selected";}?> />
@@ -296,14 +295,14 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<label for="password" class="col-sm-2 control-label"><?php $lh->translateText("password"); ?></label>
 													<div class="col-sm-10 mb">
 														<input type="password" class="form-control" name="password" id="password" 
-															value="<?php echo $output->data->password;?>" maxlength="20" placeholder="Password" />
+															value="<?php echo $output->data->password;?>" maxlength="20" placeholder="<?php $lh->translateText("password"); ?>" />
 														<small><i><span id="pass_result"></span></i></small>
 													</div>
 												</div>
-												<div class="form-group form_password" style="display:none;">		
+												<div class="form-group form_password" style="display:none;">
 													<label for="conf_password" class="col-sm-2 control-label"><?php $lh->translateText("confirm_password"); ?></label>
 													<div class="col-sm-10 mb">
-														<input type="password" class="form-control" id="conf_password" placeholder="Confirm Password" required />
+														<input type="password" class="form-control" id="conf_password" placeholder="<?php $lh->translateText("confirm_password"); ?>" required />
 														<span id="pass_result"></span></i></small>
 													</div> 
 												</div>
@@ -471,9 +470,9 @@ $user_groups = $ui->API_goGetUserGroupsList();
 															<?php
 																$agentonly_callbacks = NULL;
 																if($output->data->agentonly_callbacks == "0"){
-																	$agentonly_callbacks .= '<option value="0" selected> NO </option>';
+																	$agentonly_callbacks .= '<option value="0" selected> '.$lh->translationFor("go_no").' </option>';
 																}else{
-																	$agentonly_callbacks .= '<option value="0" > NO </option>';
+																	$agentonly_callbacks .= '<option value="0" > '.$lh->translationFor("go_no").' </option>';
 																}
 																
 																if($output->data->agentonly_callbacks == "1" ){
@@ -521,9 +520,9 @@ $user_groups = $ui->API_goGetUserGroupsList();
 																}
 																
 																if($output->data->agent_choose_ingroups == "0" || $output->data->agent_choose_ingroups == NULL){
-																	$choose_ingroup .= '<option value="0" selected> NO </option>';
+																	$choose_ingroup .= '<option value="0" selected> '.$lh->translationFor("go_no").' </option>';
 																}else{
-																	$choose_ingroup .= '<option value="0" > NO </option>';
+																	$choose_ingroup .= '<option value="0" > '.$lh->translationFor("go_no").' </option>';
 																}
 																echo $choose_ingroup;
 															?>
@@ -545,22 +544,20 @@ $user_groups = $ui->API_goGetUserGroupsList();
 										
 									   	<!-- FOOTER BUTTONS -->
 									   	<div id="modifyUSERresult"></div>
-
-									   	<fieldset class="footer-buttons">
-					                        <div class="box-footer">
-					                           <div class="col-sm-4 pull-right">
-														<a href="telephonyusers.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-					                           	
-					                                	<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-													
-					                           </div>
-					                        </div>
-					                    </fieldset>
-
-								   		</div>
-					            	</div><!-- end of tab content -->
-					       		</form>
-		                    	</div><!-- tab panel -->
+										
+									<fieldset class="footer-buttons">
+										<div class="box-footer">
+										   <div class="col-sm-4 pull-right">
+												<a href="telephonyusers.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+												<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+										   </div>
+										</div>
+									</fieldset>
+										
+										</div>
+									</div><!-- end of tab content -->
+								</form>
+							</div><!-- tab panel -->
 
 							<?php
 								
