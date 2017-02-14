@@ -158,7 +158,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
                 </div>
                 <div class="box-footer">
                   <div class="pull-right">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> <?php $lh->translateText("send"); ?></button>
+                    <button type="submit" class="btn btn-primary" id="send_button"><i class="fa fa-envelope-o"></i> <?php $lh->translateText("send"); ?></button>
                   </div>
                   <button class="btn btn-default" id="compose-mail-discard"><i class="fa fa-times"></i> <?php $lh->translateText("discard"); ?></button>
                   <!-- Module hook footer -->
@@ -174,7 +174,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
     
     <!-- WYSIHTML5 edition -->
     <script type="text/javascript"> $("#compose-textarea").wysihtml5(); </script>
-
+	<?php print $ui->standardizedThemeJS(); ?>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			/* initialize select2 */
@@ -204,7 +204,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 					touserid: {
 					  	required: true,
 					  	min: 1,
-		        		number: true
+						number: true
 					}
 				},
 			    messages: {
@@ -216,14 +216,18 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 				    var formdata = false;
 					if (window.FormData){
 						formdata = new FormData(form[0]);
-    				}
+							}
 					<?php
 						$okMsg = $ui->dismissableAlertWithMessage($lh->translationFor("message_successfully_sent"), true, false);
 						$koMsg = $ui->dismissableAlertWithMessage($lh->translationFor("unable_send_message"), false, true);
 					?>
 					//submit the form
+				
 					$("#compose-mail-results").html();
 					$("#compose-mail-results").hide();
+					$('#send_button').html("<i class='fa fa-envelope-o'></i> Sending. Please Wait...");
+					$('#send_button').prop("disabled", true);
+					
 					$.ajax({
 				        url         : 'php/SendMessage.php',
 				        data        : formdata ? formdata : form.serialize(),
@@ -232,7 +236,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 				        processData : false,
 				        type        : 'POST',
 				        success     : function(data, textStatus, jqXHR){
-							if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
+							if (data == 'success') {
 								$("#compose-mail-results").html('<?php print $okMsg; ?>');
 								$("#compose-mail-results").fadeIn(); //show confirmation message
 								$("#send-message-form")[0].reset();
@@ -245,7 +249,34 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 							$("#compose-mail-results").fadeIn(); //show confirmation message
 				        }
 				    });
-
+					
+					//send to actual email account
+					$.ajax({
+				        url         : 'php/send_mail.php',
+				        data        : formdata ? formdata : form.serialize(),
+				        cache       : false,
+				        contentType : false,
+				        processData : false,
+				        type        : 'POST',
+				        success     : function(data, textStatus, jqXHR){
+						
+						$('#send_button').html("<i class='fa fa-envelope-o'></i> Send");
+						$('#send_button').attr("disabled", false);
+						
+							if (data == 'success') {
+								sweetAlert('Message Sent!', 'You have successfully sent your email.', 'success');
+							}
+							else if (data == 'no email account'){
+								sweetAlert("Message Sent to System Account!","No email accounts was defined for the user, but message was sent to the user's system account.", "warning");
+							}
+							else { // failure
+								sweetAlert('Mailer Error: ' + data, 'error');
+							}
+				        }, error: function(jqXHR, textStatus, errorThrown) {
+							sweetAlert('Mailer Error: ' + data, 'error');
+				        }
+				    });
+					
 					return false; //don't let the form refresh the page...
 				}					
 			});

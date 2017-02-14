@@ -63,6 +63,8 @@ if (isset($folder) && isset($messageid)) {
     <link href="./css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Creamy style -->
     <link href="./css/creamycrm.css" rel="stylesheet" type="text/css" />
+	
+	<?php print $ui->standardizedThemeCSS(); ?>
     <?php print $ui->creamyThemeCSS(); ?>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -166,7 +168,6 @@ if (isset($folder) && isset($messageid)) {
           </div><!-- /.row -->
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
-      <?php print $ui->creamyFooter(); ?>
     </div><!-- ./wrapper -->
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -234,5 +235,6 @@ if (isset($folder) && isset($messageid)) {
 
 		});
 	</script>
+	<?php print $ui->creamyFooter(); ?>
   </body>
 </html>

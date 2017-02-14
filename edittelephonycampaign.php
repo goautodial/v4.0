@@ -200,7 +200,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 														</div>
 													</div>
 													<div class="form-group">
-														<label class="col-sm-3 control-label" for="campaign_desc"><?php $lh->translateText("camapaign_description"); ?>:</label>
+														<label class="col-sm-3 control-label" for="campaign_desc"><?php $lh->translateText("campaign_description"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<input type="text" class="form-control" name="campaign_desc" id="campaign_desc" value="<?php echo $campaign->data->campaign_name; ?>" >
 														</div>
@@ -1719,7 +1719,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 															</div>
 															<br /><br />
 															<div class="form-group">
-																<label class="col-sm-3 control-label">Survey Third digit:</label>
+																<label class="col-sm-3 control-label"><?php $lh->translateText("survey_third_digit"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<input type="number" class="form-control" id="survey_third_digit" name="survey_third_digit" min="0" maxlength="10" value="<?php echo $campaign->data->survey_third_digit; ?>">
 																</div>
@@ -1734,7 +1734,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</div>
 															</div>-->
 															<div class="form-group">
-																<label class="col-sm-3 control-label">Survey Third Audio File:</label>
+																<label class="col-sm-3 control-label"><?php $lh->translateText("survey_third_audio_file"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<div class="input-group">
 																		<input type="text" class="form-control" id="survey_third_audio_file" name="survey_third_audio_file" value="<?php if(!empty($campaign->data->survey_third_audio_file)){echo $campaign->data->survey_third_audio_file;}else{echo "sip-silence";} ?>">
@@ -1753,20 +1753,20 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</div>
 															</div>
 															<div class="form-group">
-																<label class="col-sm-3 control-label">Survey Third Status:</label>
+																<label class="col-sm-3 control-label"><?php $lh->translateText("survey_third_status"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<input type="text" class="form-control" id="survey_third_status" name="survey_third_status" value="<?php echo $campaign->data->survey_third_status; ?>">
 																</div>
 															</div>
 															<div class="form-group">
-																<label class="col-sm-3 control-label">Survey Third Extension:</label>
+																<label class="col-sm-3 control-label"><?php $lh->translateText("survey_third_extension"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<input type="number" class="form-control" id="survey_third_exten" name="survey_third_exten" min="0" value="<?php if(!empty($campaign->data->survey_third_exten)){echo $campaign->data->survey_third_exten;}else{echo "8300";} ?>">
 																</div>
 															</div>
 															<br /><br />
 															<div class="form-group">
-																<label class="col-sm-3 control-label">Survey Fourth Digit:</label>
+																<label class="col-sm-3 control-label"><?php $lh->translateText("survey_fourth_digit"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<input type="number" class="form-control" id="survey_fourth_digit" maxlength="10" name="survey_fourth_digit" min="0" value="<?php echo $campaign->data->survey_fourth_digit; ?>">
 																</div>
@@ -1781,7 +1781,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</div>
 															</div>-->
 															<div class="form-group">
-																<label class="col-sm-3 control-label">Survey Fourth Audio File:</label>
+																<label class="col-sm-3 control-label"><?php $lh->translateText("survey_fourth_audio_file"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<div class="input-group">
 																		<input type="text" class="form-control" id="survey_fourth_audio_file" name="survey_fourth_audio_file" value="<?php if(!empty($campaign->data->survey_fourth_audio_file)){echo $campaign->data->survey_fourth_audio_file;}else{echo "sip-silence";} ?>">
@@ -1800,13 +1800,13 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</div>
 															</div>
 															<div class="form-group">
-																<label class="col-sm-3 control-label">Survey Fourth Status:</label>
+																<label class="col-sm-3 control-label"><?php $lh->translateText("survey_fourth_status"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<input type="text" class="form-control" id="survey_fourth_status" name="survey_fourth_status" value="<?php echo $campaign->data->survey_fourth_status; ?>">
 																</div>
 															</div>
 															<div class="form-group">
-																<label class="col-sm-3 control-label">Survey Fourth Extension:</label>
+																<label class="col-sm-3 control-label"><?php $lh->translateText("survey_fourth_extension"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<input type="number" class="form-control" id="survey_fourth_exten" name="survey_fourth_exten" min="0" value="<?php if(!empty($campaign->data->survey_fourth_exten)){echo $campaign->data->survey_fourth_exten;}else{echo "8300";} ?>">
 																</div>
@@ -1819,7 +1819,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 													if ($campaign->campaign_type != "SURVEY") {
 													?>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Agent Lead Search:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("agent_lead_search"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select id="agent_lead_search" name="agent_lead_search" class="form-control">
 																<option value="ENABLED" <?php if($campaign->data->agent_lead_search == "ENABLED") echo "selected";?>>ENABLED</option>
@@ -1828,7 +1828,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 														</div>
 													</div>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Agent Lead Search Method:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("agent_lead_search_method"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select id="agent_lead_search_method" name="agent_lead_search_method" class="form-control">
 																<option value="SYSTEM" <?php if($campaign->data->agent_lead_search_method == "SYSTEM") echo "selected";?>>SYSTEM</option>
@@ -1839,7 +1839,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 													<?php } ?>
 													<div class="campaign_allow_inbound_div hide">
 														<div class="form-group">
-															<label class="col-sm-3 control-label">Inbound Groups:</label>
+															<label class="col-sm-3 control-label"><?php $lh->translateText("inbound_groups"); ?>:</label>
 															<div class="col-sm-9 mb">
 																<?php for($i=0;$i<=count($ingroups->group_id);$i++) { ?>
 																	<?php if(!empty($ingroups->group_id[$i])) {?>
@@ -1849,7 +1849,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="col-sm-3 control-label">Allowed transfer groups:</label>
+															<label class="col-sm-3 control-label"><?php $lh->translateText("allowed_transfer_groups"); ?>:</label>
 															<div class="col-sm-9 mb">
 																<?php for($i=0;$i<=count($ingroups->group_id);$i++) { ?>
 																	<?php if(!empty($ingroups->group_id[$i])) {?>
@@ -2286,8 +2286,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 					var old_dial_status = $(this).data('dial-status');
 
 					swal({
-						title: "Are you sure?",
-						text: "This action cannot be undone.",
+						title: "<?php $lh->translateText("are_you_sure"); ?>?",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 						type: "warning",
 						showCancelButton: true,
 						confirmButtonColor: "#DD6B55",
@@ -2311,8 +2311,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 												console.log(data);
 														if(data == 1){
 															swal({
-																	title: "Success",
-																	text: "Campaign Dial Status Successfully Updated!",
+																	title: "<?php $lh->translateText("success"); ?>",
+																	text: "<?php $lh->translateText("campaign_dial_status_succesfully_updated"); ?>!",
 																	type: "success"
 																},
 																function(){
@@ -2320,12 +2320,12 @@ $audiofiles = $ui->API_getListAudioFiles();
 																}
 															);
 														}else{
-																sweetAlert("Oops...", "Something went wrong! "+data, "error");
+																sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
 														}
 												}
 										});
 								} else {
-										swal("Cancelled", "No action has been done :)", "error");
+										swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?> :)", "error");
 								}
 						}
 					);
@@ -2339,8 +2339,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 					var log_group = '<?=$_SESSION['usergroup']?>';
 
 					swal({
-						title: "Are you sure?",
-						text: "This action cannot be undone.",
+						title: "<?php $lh->translateText("are_you_sure"); ?>?",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
 						type: "warning",
 						showCancelButton: true,
 						confirmButtonColor: "#DD6B55",
@@ -2366,8 +2366,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 												// console.log(data);
 														if(data == 1){
 															swal({
-																	title: "Success",
-																	text: "Campaign Dial Status Successfully Updated!",
+																	title: "<?php $lh->translateText("success"); ?>",
+																	text: "<?php $lh->translateText("campaign_dial_status_succesfully_updated"); ?>!",
 																	type: "success"
 																},
 																function(){
@@ -2375,12 +2375,12 @@ $audiofiles = $ui->API_getListAudioFiles();
 																}
 															);
 														}else{
-																sweetAlert("Oops...", "Something went wrong! "+data, "error");
+																sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
 														}
 												}
 										});
 								} else {
-										swal("Cancelled", "No action has been done :)", "error");
+										swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?> :)", "error");
 								}
 						}
 					);
@@ -2528,8 +2528,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 					                          if(data == 1){
 					                          		swal(
 														{
-															title: "Success",
-															text: "New Status Successfully Added!",
+															title: "<?php $lh->translateText("success"); ?>",
+															text: "<?php $lh->translateText("new_status_successfully_added"); ?>!",
 															type: "success"
 														},
 														function(){
@@ -2833,8 +2833,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 							var log_user = '<?=$_SESSION['user']?>';
 							var log_group = '<?=$_SESSION['usergroup']?>';
 				            swal({
-				            	title: "Are you sure?",
-				            	text: "This action cannot be undone.",
+				            	title: "<?php $lh->translateText("are_you_sure"); ?>?",
+				            	text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 				            	type: "warning",
 				            	showCancelButton: true,
 				            	confirmButtonColor: "#DD6B55",
@@ -2858,8 +2858,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 					                        console.log(data);
 					                            if(data == 1){
 					                            	swal({
-															title: "Success",
-															text: "Disposition Successfully Deleted!",
+															title: "<?php $lh->translateText("success"); ?>",
+															text: "<?php $lh->translateText("disposition_delete"); ?>!",
 															type: "success"
 														},
 														function(){
@@ -2868,12 +2868,12 @@ $audiofiles = $ui->API_getListAudioFiles();
 														}
 													);
 					                            }else{
-					                                sweetAlert("Oops...", "Something went wrong! "+data, "error");
+					                                sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
 					                            }
 					                        }
 					                    });
 													} else {
-				                			swal("Cancelled", "No action has been done :)", "error");
+				                			swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?> :)", "error");
 				                	}
 				            	}
 				            );
