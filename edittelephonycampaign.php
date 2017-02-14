@@ -178,15 +178,15 @@ $audiofiles = $ui->API_getListAudioFiles();
 									//echo "</pre>";
 							?>
 							<div class="panel-body">
-								<legend>MODIFY CAMPAIGN ID : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u>
-									<span class="pull-right">MANUAL DIAL LIST ID: <u><?php echo $campaign->data->manual_dial_list_id;?></u></span>
+								<legend><?php $lh->translateText("modify_campaign_id"); ?> : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u>
+									<span class="pull-right"><?php $lh->translateText("manual_dial_list_id"); ?>: <u><?php echo $campaign->data->manual_dial_list_id;?></u></span>
 								</legend>
 								<!-- Custom Tabs -->
 								<div role="tabpanel">
 								<!--<div class="nav-tabs-custom">-->
 									<ul role="tablist" class="nav nav-tabs nav-justified">
-										<li class="active"><a href="#tab_1" data-toggle="tab">Basic Settings</a></li>
-										<li><a href="#tab_2" data-toggle="tab">Advanced Settings</a></li>
+										<li class="active"><a href="#tab_1" data-toggle="tab"><?php $lh->translateText("basic_settings"); ?></a></li>
+										<li><a href="#tab_2" data-toggle="tab"><?php $lh->translateText("advanced_settings"); ?></a></li>
 									</ul>
 					               		<!-- Tab contents-->
 					               		<div class="tab-content">
@@ -194,19 +194,19 @@ $audiofiles = $ui->API_getListAudioFiles();
 						                	<div id="tab_1" class="tab-pane fade in active">
 												<fieldset>
 													<div class="form-group mt">
-														<label class="col-sm-3 control-label" for="campaign_name">Campaign Name:</label>
+														<label class="col-sm-3 control-label" for="campaign_name"><?php $lh->translateText("campaign_name"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<input type="text" class="form-control" name="campaign_name" id="campaign_name" value="<?php echo $campaign->data->campaign_name; ?>" title="Must be 6 to 40 characters in length." minlength="6" maxlength="40" required>
 														</div>
 													</div>
 													<div class="form-group">
-														<label class="col-sm-3 control-label" for="campaign_desc">Campaign Description:</label>
+														<label class="col-sm-3 control-label" for="campaign_desc"><?php $lh->translateText("camapaign_description"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<input type="text" class="form-control" name="campaign_desc" id="campaign_desc" value="<?php echo $campaign->data->campaign_name; ?>" >
 														</div>
 													</div>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Active:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("active"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select class="form-control" name="active">
 																<option value="Y" <?php if($campaign->data->active == 'Y') echo "selected";?>>Y</option>
@@ -216,10 +216,13 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</div>
 													<?php if($campaign->campaign_type != "SURVEY") { ?>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Dial Method:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("dial_method"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select name="dial_method" id="dial_method" class="form-control" name="dial_method">
-																<option value="MANUAL" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?>>MANUAL</option>
+																<option value="MANUAL" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?>>
+
+
+</option>
 																<option value="RATIO" <?php if($campaign->data->dial_method == "RATIO") echo "selected";?>>AUTO DIAL</option>
 																<option value="ADAPT_TAPERED" <?php if($campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?>>PREDICTIVE</option>
 																<option value="INBOUND_MAN" <?php if($campaign->data->dial_method == "INBOUND_MAN") echo "selected";?>>INBOUND MAN</option>
@@ -227,7 +230,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 														</div>
 													</div>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">AutoDial Level:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("autodial_level"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<div class="row">
 																<?php
@@ -293,7 +296,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</div>
 													<?php } ?>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Carrier to use for Campaign:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("basic_settings"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<div class="row">
 																<div class="col-lg-9">
@@ -320,13 +323,13 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</div>
 													<?php if($campaign->campaign_type != "SURVEY") { ?>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Web Form:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("web"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<input type="text" id="web_form_address" name="web_form_address" class="form-control" value="<?php echo $campaign->data->web_form_address;?>">
 														</div>
 													</div>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Script:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("scripts"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select class="form-control" id="campaign_script" name="campaign_script">
 																<option value="" <?php if(empty($campaign->data->campaign_script)) echo "selected"; ?>>--- NONE ---</option>
@@ -340,14 +343,14 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</div>
 													<?php } ?>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Campaign Caller ID:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("campaign_caller_id"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<input type="text" class="form-control" id="campaign_cid" name="campaign_cid" value="<?php echo $campaign->data->campaign_cid; ?>">
 														</div>
 													</div>
 													<?php if($campaign->campaign_type != "SURVEY") { ?>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Campaign Recording:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recording"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select id="campaign_recording" class="form-control" name="campaign_recording">
 																<option value="NEVER" <?php if($campaign->data->campaign_recording == "NEVER") echo "selected";?>>OFF</option>
@@ -357,7 +360,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 														</div>
 													</div>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Answer Machine Detection:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("answer_machine_detection"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select id="campaign_vdad_exten" name="campaign_vdad_exten" class="form-control">
 																<option value="<?php if($campaign->campaign_type == "SURVEY"){ echo '8366';}else{ echo '8368';} ?>" <?php if ($campaign->data->campaign_vdad_exten == "8368" || $campaign->data->campaign_vdad_exten == "8366") echo "selected"; ?>>OFF</option>
@@ -367,7 +370,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</div>
 													<?php } ?>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Local Calltime:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("local_calltime"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select class="form-control" id="local_call_time" name="local_call_time">
 																<?php for($i=0;$i<=count($calltimes->call_time_id);$i++) { ?>
@@ -380,7 +383,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</div>
 												<?php if($campaign->campaign_type == "OUTBOUND") { ?>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Minimum Hopper Level:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("minimum_hopper_level"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select class="form-control" id="hopper_level" name="hopper_level">
 																<?php
@@ -395,7 +398,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 														</div>
 													</div>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Force Reset of Hopper:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("force_reset_of_hopper"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select class="form-control" id="force_reset_hopper" name="force_reset_hopper">
 																<option value="Y">Y</option>
@@ -405,7 +408,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</div>
 												<?php } elseif($campaign->campaign_type == "INBOUND") { ?>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Phone Numbers (DID/TFN) on this campaign:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("phone_numbers_did/ftn_on_this_campaign"); ?>:</label>
 														<span class="col-sm-9 control-label" style="text-align: left; vertical-align: top;">
 															<?php if(count($dids->did_id) != 0) {?>
 																<?php for($i=0;$i<=count($dids->did_id);$i++) { ?>
@@ -429,7 +432,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</div>-->
 												<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
 													<div class="form-group">
-														<label class="col-sm-3 control-label">Phone Numbers (DID/TFN) on this campaign:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("phone_numbers_did/ftn_on_this_campaign"); ?>:</label>
 														<span class="col-sm-9 control-label" style="text-align: left; vertical-align: top;">
 															<?php if(count($dids->did_id) != 0) {?>
 																<?php for($i=0;$i<=count($dids->did_id);$i++) { ?>

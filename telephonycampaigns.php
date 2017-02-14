@@ -185,7 +185,7 @@
 										<table class="table table-striped table-bordered table-hover" id="table_campaign">
 										   <thead>
 											  <tr>
-                                                 <th style="color: white;">Pic</th>
+												 <th style="color: white;">Pic</th>
 												 <th class='hide-on-medium hide-on-low' style='width:0px;'><?php $lh->translateText("campaign_id"); ?></th>
 												 <th><?php $lh->translateText("campaign_name"); ?></th>
 												 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("dial_method"); ?></th>
@@ -361,7 +361,7 @@
 	      	<div class="output-message-no-result hide">
 		      	<div class="alert alert-warning alert-dismissible" role="alert">
 				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				  <strong><?php $lh->translateText("error_retrieving"); ?></strong><?php $lh->translateText("error_retrieving"); ?>
+				  <strong><?php $lh->translateText("there_was_an_error_retrieving_details"); ?></strong>
 				</div>
 			</div>
 	        <div id="content" class="view-form hide">
@@ -379,7 +379,7 @@
 			    		<span class="info-camp-desc control-label align-left col-lg-7"></span>
 			    	</div>
 			    	<div class="form-group">
-			    		<label class="control-label col-lg-5"><?php $lh->translateText("inbound_blended"); ?>:</label>
+			    		<label class="control-label col-lg-5"><?php $lh->translateText("allowed_inbound_blended"); ?>:</label>
 			    		<span class="info-allowed control-label align-left col-lg-7"></span>
 			    	</div>
 			    	<div class="form-group">
@@ -391,7 +391,7 @@
 			    		<span class="info-autodial-level control-label align-left col-lg-7"></span>
 			    	</div>
 			    	<div class="form-group">
-			    		<label class="control-label col-lg-5"><?php $lh->translateText("answering"); ?>:</label>
+			    		<label class="control-label col-lg-5"><?php $lh->translateText("answering_machine_detection"); ?>:</label>
 			    		<span class="info-ans-mach control-label align-left col-lg-7"></span>
 			    	</div>
 			    </div>
@@ -423,27 +423,27 @@
 		      <div class="modal-body">
 		        <div id="content">
 							<div class="alert alert-danger campaign-checker-message hide">
-							  <strong><?php $lh->translateText("error"); ?>!</strong> <?php $lh->translateText("id_already"); ?>
+							  <strong><?php $lh->translateText("error"); ?>!</strong> <?php $lh->translateText("campaign_id_already_exist"); ?>
 							</div>
 					<!-- Custom Tabs (Pulled to the right) -->
 					<form id="campaign_form" method="POST" action="./php/AddCampaign.php" enctype="multipart/form-data">
 						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 						<div class="row">
-							<h4><?php $lh->translateText("campaign_info"); ?>
+							<h4><?php $lh->translateText("campaign_information"); ?>
 	                           <br>
-	                           <small><?php $lh->translateText("campaign_det"); ?></small>
+	                           <small><?php $lh->translateText("campaign_details"); ?></small>
 	                        </h4>
 	                        <fieldset>
 								<div class="form-group">
-				    				<label class="control-label col-lg-4"><?php $lh->translateText("campaign_det"); ?>:</label>
+				    				<label class="control-label col-lg-4"><?php $lh->translateText("campaign_details"); ?>:</label>
 				    				<div class="col-lg-8 mb">
 				    					<select id="campaignType" name="campaign_type" class="form-control">
 				    						<option value="outbound"><?php $lh->translateText("outbound"); ?></option>
 				    						<option value="inbound"><?php $lh->translateText("inbound"); ?></option>
 				    						<option value="blended"><?php $lh->translateText("blended"); ?></option>
 				    						<option value="survey"><?php $lh->translateText("survey"); ?></option>
-				    						<option value="copy"><?php $lh->translateText("copy_campaign"); ?></option>
+				    						<option value="copy"><?php $lh->translateText("copy_from_campaign"); ?></option>
 				    					</select>
 				    				</div>
 				    			</div>
@@ -465,7 +465,7 @@
 				    				</div>
 				    			</div>
 				    			<div class="form-group inbound blended hide">
-				    				<label class="control-label col-lg-4"><?php $lh->translateText("did_tfn"); ?>:</label>
+				    				<label class="control-label col-lg-4"><?php $lh->translateText("did_tfn_extension"); ?>:</label>
 				    				<div class="col-lg-8 mb">
 				    					<input id="did-tfn-extension" name="did_tfn_extension" type="number" class="did-tfn-extension form-control" required>
 				    				</div>
@@ -539,7 +539,7 @@
 				    				</div>
 				    			</div>
 								<div class="form-group carrier-to-use">
-									<label class="control-label col-lg-4"><small><?php $lh->translateText("carrier_campaign"); ?></small>:</label>
+									<label class="control-label col-lg-4"><small><?php $lh->translateText("carrier_use_for_campaign"); ?></small>:</label>
 									<div class="col-lg-8 mb">
 										<select name="dial_prefix" id="dial_prefix" class="form-control">
 											<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
@@ -563,7 +563,7 @@
 									</div>							
 								</div>
 				    			<div class="form-group survey hide">
-				    				<label class="control-label col-lg-4"><?php $lh->translateText("number_channels"); ?>:</label>
+				    				<label class="control-label col-lg-4"><?php $lh->translateText("number_of_channels"); ?>:</label>
 				    				<div class="col-lg-8 mb">
 				    					<input id="no-channels" name="no_channels" type="number" value="1" min="1" class="form-control">
 				    				</div>
@@ -759,7 +759,7 @@
 			    				</div>
 			    			</div> -->
 				    			<div class="form-group outbound blended">
-				    				<label class="control-label col-lg-5"><?php $lh->translateText("answering_machine"); ?>:</label>
+				    				<label class="control-label col-lg-5"><?php $lh->translateText("answering_machine_detection"); ?>:</label>
 				    				<div class="col-lg-7 mb">
 				    					<select class="form-control" id="answering-machine-detection" name="answering_machine_detection">
 				    						<option value="8369">ON</option>
@@ -801,7 +801,7 @@
 			    				</div>
 			    			</div> -->
 				    			<div class="form-group survey hide">
-				    				<label class="control-label col-lg-5"><?php $lh->translateText("upload"); ?>:</label>
+				    				<label class="control-label col-lg-5"><?php $lh->translateText("upload_wav"); ?>:</label>
 				    				<div class="col-lg-7 mb">
 				    					<div class="input-group">
 											<input type="file" class="hide uploaded_wav" name="uploaded_wav" accept="audio/*">
@@ -831,7 +831,7 @@
 	            <!-- Header -->
 	                <div class="modal-header">
 	                    <h4 class="modal-title animated bounceInRight" id="ingroup_modal">
-	                    	<b><?php $lh->translateText("status_wizard"); ?> » <?php $lh->translateText("create_status"); ?></b>
+	                    	<b><?php $lh->translateText("status_wizard"); ?> » <?php $lh->translateText("create_new_status"); ?></b>
 	                    	<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
 	                    </h4>
 	                </div>
@@ -842,7 +842,7 @@
 	                    <div class="row">
 	                    	<h4><?php $lh->translateText("create_disposition"); ?>
 	                           <br>
-	                           <small><?php $lh->translateText("assign_status"); ?></small>
+	                           <small><?php $lh->translateText("assign_a_status_in_a_campaign"); ?></small>
 	                        </h4>
 	                        <fieldset>
 		                    	<div class="form-group mt">

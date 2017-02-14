@@ -95,7 +95,7 @@ if (isset($_POST["id"])) {
 							curl_close($ch);
 							$output = json_decode($data);
 					        
-					        var_dump($output->data);
+					        //var_dump($output->data);
 							
 							if ($output->result=="success") {
 								
