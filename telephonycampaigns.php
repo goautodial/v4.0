@@ -1029,7 +1029,7 @@
 	<?php
 		$hotkeyForm = '
 			<input type="hidden" name="log_user" value="'.$_SESSION['user'].'" />
-			<input type="button" name="log_group" value="'.$_SESSION['usergroup'].'" />
+			<input type="hidden" name="log_group" value="'.$_SESSION['usergroup'].'" />
 			<div class="form-group">
 				<label class="control-label col-lg-3" style="text-align: left;">'.$lh->translationFor("campaign_id").':</label>
 				<div class="col-lg-9">
