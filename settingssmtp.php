@@ -198,7 +198,7 @@
 								$('#modifyOkButton').prop("disabled", false);
 								
 								if (data == "success") {
-									swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("usergroup_modify_success"); ?>",type: "success"},function(){window.location.href = 'settingssmtp.php';});
+									swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("smtp_modify_success"); ?>",type: "success"},function(){window.location.href = 'settingssmtp.php';});
 								} else {
 									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 								}

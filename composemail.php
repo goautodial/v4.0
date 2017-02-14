@@ -273,7 +273,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 								sweetAlert('Mailer Error: ' + data, 'error');
 							}
 				        }, error: function(jqXHR, textStatus, errorThrown) {
-							sweetAlert('Mailer Error: ' + data, 'error');
+							sweetAlert('System Error!', 'error');
 				        }
 				    });
 					

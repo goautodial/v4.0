@@ -1132,6 +1132,7 @@ smtp_security = "SMTP Security"
 smtp_security_info = "Set the encryption system to use - ssl (deprecated) or tls."
 smtp_auth = "SMTP Authentication"
 smtp_auth_info = "Whether to use SMTP authentication."
+smtp_modify_success = "SMTP Setting Modified Successfully"
 
 // CAMPAIGN - telephonycampaign.php, edittelephonycampaign.php
 
