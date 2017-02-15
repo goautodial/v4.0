@@ -1168,7 +1168,7 @@
     allowed_inbound_and_blended = "Allowed Inbound and Blended"
     launch_custom_fields = "Launch Custom Fields"
     custom_fields_list_id = "Custom Fields List ID"
-    call_notes_per_Call = "Call Notes Per Call"
+    call_notes_per_call = "Call Notes Per Call"
     dial_status = "Dial Status"
     list_order = "List Order"
     lead_filter = "Lead Filter"
@@ -1211,3 +1211,4 @@
     survey_call_menu = "Survey call menu"
     carrier_first_name = "First name"
     carrier_last_name = "Last name"
+	campaign_recording_filename = "Campaign Recording Filename"

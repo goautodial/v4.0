@@ -209,8 +209,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 														<label class="col-sm-3 control-label"><?php $lh->translateText("active"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select class="form-control" name="active">
-																<option value="Y" <?php if($campaign->data->active == 'Y') echo "selected";?>>Y</option>
-																<option value="N" <?php if($campaign->data->active == "N") echo "selected";?>>N</option>
+																<option value="Y" <?php if($campaign->data->active == 'Y') echo "selected";?>><?php $lh->translateText("go_yes"); ?></option>
+																<option value="N" <?php if($campaign->data->active == "N") echo "selected";?>><?php $lh->translateText("go_no"); ?></option>
 															</select>
 														</div>
 													</div>
@@ -219,10 +219,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 														<label class="col-sm-3 control-label"><?php $lh->translateText("dial_method"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select name="dial_method" id="dial_method" class="form-control" name="dial_method">
-																<option value="MANUAL" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?>>
-
-
-</option>
+																<option value="MANUAL" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?>>MANUAL</option>
 																<option value="RATIO" <?php if($campaign->data->dial_method == "RATIO") echo "selected";?>>AUTO DIAL</option>
 																<option value="ADAPT_TAPERED" <?php if($campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?>>PREDICTIVE</option>
 																<option value="INBOUND_MAN" <?php if($campaign->data->dial_method == "INBOUND_MAN") echo "selected";?>>INBOUND MAN</option>
@@ -350,7 +347,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</div>
 													<?php if($campaign->campaign_type != "SURVEY") { ?>
 													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recording"); ?>:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recordings"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select id="campaign_recording" class="form-control" name="campaign_recording">
 																<option value="NEVER" <?php if($campaign->data->campaign_recording == "NEVER") echo "selected";?>>OFF</option>
@@ -1028,7 +1025,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="col-sm-3 control-label"><?php $lh->translateText("camapaign_recording_filename"); ?>:</label>
+															<label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recording_filename"); ?>:</label>
 															<div class="col-sm-9 mb">
 																<input type="text" class="form-control" id="campaign_rec_filename" name="campaign_rec_filename" value="<?php echo $campaign->data->campaign_rec_filename; ?>">
 															</div>
@@ -2174,7 +2171,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 
     	<!-- iCheck 1.0.1 -->
 		<script src="js/plugins/iCheck/icheck.min.js"></script>
-		!-- SELECT2-->
+		<!-- SELECT2-->
    		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
 
 		<script type="text/javascript">
