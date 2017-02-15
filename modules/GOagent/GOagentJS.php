@@ -1773,7 +1773,7 @@ function btnLogMeIn () {
     logging_in = true;
     alertLogout = true;
     registrationFailed = false;
-    if (is_logged_in && !phoneRegistered) {
+    if (is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc)) {
         swal({
             title: '<?=$lh->translationFor('error')?>',
             text: "<?=$lh->translationFor('phone_already_logged_in')?>",
