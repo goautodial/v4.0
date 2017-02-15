@@ -353,7 +353,7 @@ $(document).ready(function() {
     
     $(window).load(function() {
         var refreshId = setInterval(function() {
-            if (is_logged_in && phoneRegistered) {
+            if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
                 //Start of checking for live calls
                 //if (live_customer_call == 1) {
                 //    live_call_seconds++;
@@ -762,7 +762,7 @@ $(document).ready(function() {
             }
         }, refresh_interval);
         
-        if (is_logged_in && phoneRegistered) {
+        if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
             $("aside.control-sidebar").addClass('control-sidebar-open');
         }
     
@@ -823,7 +823,7 @@ $(document).ready(function() {
         });
         
         if (!$("aside.control-sidebar").hasClass("control-sidebar-open")) {
-            if (!is_logged_in && !phoneRegistered) {
+            if (!is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc)) {
                 checkSidebarIfOpen(true);
                 //$.AdminLTE.controlSidebar.open($("aside.control-sidebar"), true);
             }
@@ -845,7 +845,7 @@ $(document).ready(function() {
             }, function(sureToLogout){
                 if (sureToLogout) {
                     swal.close();
-                    if (is_logged_in && phoneRegistered) {
+                    if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
                         logoutWarn = false;
                         btnLogMeOut();
                         loggedOut++;
@@ -1103,7 +1103,7 @@ $(document).ready(function() {
     }
 
     window.addEventListener("beforeunload", function (e) {
-        if (is_logged_in && phoneRegistered) {
+        if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
             var confirmationMessage = "<?=$lh->translationFor('currently_in_call')?>";
         
             (e || window.event).returnValue = confirmationMessage;     //Gecko + IE
@@ -1903,10 +1903,12 @@ function sendLogout (logMeOut) {
                 }
                 
                 setTimeout(function() {
-                    if (use_webrtc && phone.isConnected()) {
-                        phone.unregister(configuration);
-                        
-                        phone.stop();
+                    if (use_webrtc) {
+                        if (phone.isConnected()) {
+                            phone.unregister(configuration);
+                            
+                            phone.stop();
+                        }
                     }
                     
                     phoneRegistered = false;
@@ -2212,7 +2214,7 @@ function toggleButtons (taskaction, taskivr, taskrequeue, taskquickxfer) {
 }
 
 function updateButtons () {
-    if (is_logged_in && phoneRegistered) {
+    if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
         $("#go_nav_btn").removeClass('hidden');
         $("#go_agent_login").addClass('hidden');
         $("#go_agent_logout").removeClass('hidden');
@@ -2262,7 +2264,7 @@ function toggleStatus (status) {
 }
 
 function checkIfStillLoggedIn(logged_out) {
-    if (logged_out && phoneRegistered) {
+    if (logged_out && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
         var postData = {
             goAction: 'goCheckIfLoggedIn',
             goUser: uName,
@@ -2301,7 +2303,7 @@ function checkIfStillLoggedIn(logged_out) {
         });
     } else {
         if (!logging_in) {
-            var update_login = (phoneRegistered) ? 1 : 0;
+            var update_login = ((use_webrtc && phoneRegistered) || !use_webrtc) ? 1 : 0;
             $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'ChecKLogiN', 'is_logged_in': update_login}, function(result) {
                 is_logged_in = parseInt(result);
             });
@@ -4043,19 +4045,19 @@ function CallBacksCountCheck() {
                 $("#callback-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 $("#contents-callbacks").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 $("#contents-callbacks").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
-                if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
+                if (!is_logged_in || (is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc))) {
                     $("button[id^='dial-cb-']").addClass('disabled');
                 }
                 
                 $('#callback-list').on('draw.dt', function() {
-                    if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
+                    if (!is_logged_in || (is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc))) {
                         $("button[id^='dial-cb-']").addClass('disabled');
                     } else {
                         $("button[id^='dial-cb-']").removeClass('disabled');
                     }
                 });
             } else {
-                if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
+                if (!is_logged_in || (is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc))) {
                     $("button[id^='dial-cb-']").addClass('disabled');
                 } else {
                     $("button[id^='dial-cb-']").removeClass('disabled');
@@ -8142,14 +8144,14 @@ function getContactList() {
             $("#contacts-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
             $("#contents-contacts").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
             $("#contents-contacts").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
-            if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
+            if (!is_logged_in || (is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc))) {
                 $("button[id^='dial-lead-']").addClass('disabled');
             } else {
                 $("button[id^='dial-lead-']").removeClass('disabled');
             }
             
             $('#contacts-list').on('draw.dt', function() {
-                if (!is_logged_in || (is_logged_in && !phoneRegistered)) {
+                if (!is_logged_in || (is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc))) {
                     $("button[id^='dial-lead-']").addClass('disabled');
                 } else {
                     $("button[id^='dial-lead-']").removeClass('disabled');
