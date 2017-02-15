@@ -743,7 +743,7 @@
 			    				</div>
 			    			</div> -->
 				    			<div class="form-group blended">
-				    				<label class="control-label col-lg-5"><?php $lh->translateText("campaign_recording"); ?>:</label>
+				    				<label class="control-label col-lg-5"><?php $lh->translateText("campaign_recordings"); ?>:</label>
 				    				<div class="col-lg-7 mb">
 				    					<select class="form-control" id="call-recordings" name="campaign_recording">
 				    						<option value="NEVER">OFF</option>

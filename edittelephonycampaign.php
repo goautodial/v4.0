@@ -296,7 +296,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</div>
 													<?php } ?>
 													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("basic_settings"); ?>:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("carrier_to_use_for_campaign"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<div class="row">
 																<div class="col-lg-9">
@@ -1551,7 +1551,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</div>
 															</div>
 															<div class="form-group">
-																<label class="col-sm-3 control-label"><?php $lh->translateText("dial_method"); ?>:<?php echo $campaign->data->dial_method;?></label>
+																<label class="col-sm-3 control-label"><?php $lh->translateText("dial_method"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<select name="dial_method" id="survey_dial_method" class="form-control" name="dial_method">
 																		<option value="MANUAL" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?> disabled>MANUAL</option>
