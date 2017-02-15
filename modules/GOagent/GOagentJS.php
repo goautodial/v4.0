@@ -1925,11 +1925,17 @@ function sendLogout (logMeOut) {
                 }, 5000);
             } else {
                 refresh_interval = 1000;
+                var thisMessage = result.message;
                 swal({
                     title: '<?=$lh->translationFor('error')?>',
-                    text: result.message,
+                    text: thisMessage,
                     type: 'error'
                 });
+                
+                if (thisMessage.indexOf('NOT connected') > -1) {
+                    refresh_interval = 730000;
+                    is_logged_in = 0;
+                }
             }
         });
         logoutWarn = true;
