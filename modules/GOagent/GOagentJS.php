@@ -1463,7 +1463,7 @@ $(document).ready(function() {
                 });
             } else {
                 $("#select-campaign").modal('hide');
-                if (registrationFailed && !phoneRegistered) {
+                if ((use_webrtc && registrationFailed && !phoneRegistered) || !use_webrtc) {
                     $(".preloader").fadeOut('slow');
                     $(".preloader center").html(origPreloader);
                 }
