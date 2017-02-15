@@ -61,7 +61,7 @@ var isMobile = false; //initiate as false
 var is_logged_in = <?=$is_logged_in?>;
 var logging_in = false;
 var logoutWarn = true;
-var use_webrtc = <?=$use_webrtc?>;
+var use_webrtc = <?=($use_webrtc ? $use_webrtc : 0)?>;
 var NOW_TIME = '<?=$NOW_TIME?>';
 var SQLdate = '<?=$NOW_TIME?>';
 var filedate = '<?=$FILE_TIME?>';
