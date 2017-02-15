@@ -197,9 +197,11 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 					.removeClass( 'display' )
 					.addClass('table table-striped table-bordered');
 				
-				$.each(country_codes, function(key, value) {
-					$("#country_code").append('<option value="'+key+'">'+value+'</option>');
-				});
+				if (typeof country_codes !== 'undefined') {
+					$.each(country_codes, function(key, value) {
+						$("#country_code").append('<option value="'+key+'">'+value+'</option>');
+					});
+				}
 			});
 			
 			$(function() {
