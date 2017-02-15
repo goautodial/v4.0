@@ -2303,7 +2303,7 @@ function checkIfStillLoggedIn(logged_out) {
         });
     } else {
         if (!logging_in) {
-            var update_login = ((use_webrtc && phoneRegistered) || !use_webrtc) ? 1 : 0;
+            var update_login = ((use_webrtc && phoneRegistered) || (!use_webrtc && is_logged_in)) ? 1 : 0;
             $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'ChecKLogiN', 'is_logged_in': update_login}, function(result) {
                 is_logged_in = parseInt(result);
             });
