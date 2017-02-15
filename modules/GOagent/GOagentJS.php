@@ -1238,7 +1238,7 @@ $(document).ready(function() {
         }
         
         var loggingInUser = setInterval(function() {
-            if (!registrationFailed && phoneRegistered) {
+            if ((use_webrtc && !registrationFailed && phoneRegistered) || !use_webrtc) {
                 clearInterval(loggingInUser);
                 
                 var postData = {
