@@ -1270,7 +1270,6 @@ error_reporting(E_ERROR | E_PARSE);
 			// add module row
 			$table .= "<tr><td><b>$moduleName</b><br/><div class='small hide-on-low'>$moduleDescription</div></td><td class='small hide-on-low'>$moduleVersion</td><td class='small hide-on-low'>$status</td><td>$action</td></tr>";
 		}
-
 		// close table
 		$table .= $this->generateTableFooterWithItems($items, true, false, array(), array("version", "action"));
 
