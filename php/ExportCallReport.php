@@ -105,8 +105,8 @@ error_reporting(E_ALL);
         $filename = "Export_Call_Report.".date("Y-m-d").".csv";
         //$fp = fopen($filename, 'w');
         
-        //header('Content-type: application/csv');
-        //header('Content-Disposition: attachment; filename='.$filename);
+        header('Content-type: application/csv');
+        header('Content-Disposition: attachment; filename='.$filename);
         
 		echo $header."\n";
 		
