@@ -269,6 +269,28 @@ if (isset($_POST["id"])) {
 									</select>
 								</div>
                             </div>
+							<div class="form-group mt">        
+                                <label class="col-sm-2 control-label" for="recording_web_link">Recording Web Link</label>
+                                <div class="col-sm-10 mb">
+									<select name="recording_web_link" id="recording_web_link" class="form-control">
+										<option value="SERVER_IP" <?php if($output->data->recording_web_link == "SERVER_IP")echo "selected"; ?> >Server IP</option>
+										<option value="ALT_IP" <?php if($output->data->recording_web_link == "ALT_IP")echo "selected"; ?> >Alternative IP</option>
+										<option value="EXTERNAL_IP" <?php if($output->data->recording_web_link == "EXTERNAL_IP")echo "selected"; ?> >External IP</option>
+									</select>
+								</div>
+                            </div>
+							<div class="form-group mt">        
+                                <label class="col-sm-2 control-label" for="alt_server_ip">Alternate Recording Server IP</label>
+                                <div class="col-sm-10 mb">
+									<input type="text" class="form-control" name="alt_server_ip" value="<?php echo $output->data->alt_server_ip; ?>" id="alt_server_ip" maxlength="100">
+								</div>
+                            </div>
+							<div class="form-group mt">        
+                                <label class="col-sm-2 control-label" for="external_server_ip">External Server IP</label>
+                                <div class="col-sm-10 mb">
+									<input type="text" class="form-control" name="external_server_ip" value="<?php echo $output->data->external_server_ip; ?>" id="external_server_ip" maxlength="100">
+								</div>
+                            </div>
 							</fieldset>
 						</div>
 						

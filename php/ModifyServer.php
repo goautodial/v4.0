@@ -54,6 +54,18 @@ require_once('goCRMAPISettings.php');
 		$rebuild_music_on_hold = $_POST["rebuild_music_on_hold"]; 
 		$rebuild_music_on_hold = stripslashes($rebuild_music_on_hold);
 	}
+	$recording_web_link = NULL; if (isset($_POST["recording_web_link"])) { 
+		$recording_web_link = $_POST["recording_web_link"]; 
+		$recording_web_link = stripslashes($recording_web_link);
+	}
+	$alt_server_ip = NULL; if (isset($_POST["alt_server_ip"])) { 
+		$alt_server_ip = $_POST["alt_server_ip"]; 
+		$alt_server_ip = stripslashes($alt_server_ip);
+	}
+	$external_server_ip = NULL; if (isset($_POST["external_server_ip"])) { 
+		$external_server_ip = $_POST["external_server_ip"]; 
+		$external_server_ip = stripslashes($external_server_ip);
+	}
 
 	$url = gourl."/goServers/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"]           = goUser; #Username goes here. (required)
@@ -75,6 +87,9 @@ require_once('goCRMAPISettings.php');
 	$postfields["generate_vicidial_conf"]           	= $generate_vicidial_conf;
 	$postfields["rebuild_conf_files"]           	= $rebuild_conf_files;
 	$postfields["rebuild_music_on_hold"]           	= $rebuild_music_on_hold;
+	$postfields["recording_web_link"] 				= $recording_web_link;
+	$postfields["alt_server_ip"]					= $alt_server_ip;
+	$postfields["external_server_ip"]				= $external_server_ip;
 	
 	$postfields["log_user"]         = $_POST['log_user'];
 	$postfields["log_group"]        = $_POST['log_group'];
