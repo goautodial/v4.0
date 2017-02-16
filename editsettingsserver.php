@@ -194,7 +194,7 @@ if (isset($_POST["id"])) {
 						
 						<div id="tab_2" class="tab-pane fade in">
 							<fieldset>
-							<div class="form-group mt">        
+							<div class="row form-group mt">        
                                 <label class="col-sm-2 control-label" for="vicidial_balance_active"><?php $lh->translateText("balance_dialing"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="vicidial_balance_active" id="vicidial_balance_active" class="form-control">
@@ -203,7 +203,7 @@ if (isset($_POST["id"])) {
 									</select>
 								</div>
                             </div>
-							<div class="form-group">        
+							<div class="row form-group">        
                                 <label class="col-sm-2 control-label" for="local_gmt"><?php $lh->translateText("local_gmt"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="local_gmt" id="local_gmt" class="form-control" required>
@@ -242,7 +242,7 @@ if (isset($_POST["id"])) {
 									</select>
 								</div>
                             </div>
-							<div class="form-group mt">        
+							<div class="row form-group mt">        
                                 <label class="col-sm-2 control-label" for="generate_vicidial_conf"><?php $lh->translateText("generate_conf_files"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="generate_vicidial_conf" id="generate_vicidial_conf" class="form-control">
@@ -251,7 +251,7 @@ if (isset($_POST["id"])) {
 									</select>
 								</div>
                             </div>
-							<div class="form-group mt">        
+							<div class="row form-group mt">        
                                 <label class="col-sm-2 control-label" for="rebuild_conf_files"><?php $lh->translateText("rebuild_conf_files"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="rebuild_conf_files" id="rebuild_conf_files" class="form-control">
@@ -260,7 +260,7 @@ if (isset($_POST["id"])) {
 									</select>
 								</div>
                             </div>
-							<div class="form-group mt">        
+							<div class="row form-group mt">        
                                 <label class="col-sm-2 control-label" for="rebuild_music_on_hold">Rebuild Music On Hold</label>
                                 <div class="col-sm-10 mb">
 									<select name="rebuild_music_on_hold" id="rebuild_music_on_hold" class="form-control">
@@ -269,7 +269,7 @@ if (isset($_POST["id"])) {
 									</select>
 								</div>
                             </div>
-							<div class="form-group mt">        
+							<div class="row form-group mt">        
                                 <label class="col-sm-2 control-label" for="recording_web_link">Recording Web Link</label>
                                 <div class="col-sm-10 mb">
 									<select name="recording_web_link" id="recording_web_link" class="form-control">
@@ -279,13 +279,13 @@ if (isset($_POST["id"])) {
 									</select>
 								</div>
                             </div>
-							<div class="form-group mt">        
+							<div class="row form-group mt">        
                                 <label class="col-sm-2 control-label" for="alt_server_ip">Alternate Recording Server IP</label>
                                 <div class="col-sm-10 mb">
 									<input type="text" class="form-control" name="alt_server_ip" value="<?php echo $output->data->alt_server_ip; ?>" id="alt_server_ip" maxlength="100">
 								</div>
                             </div>
-							<div class="form-group mt">        
+							<div class="row form-group mt">        
                                 <label class="col-sm-2 control-label" for="external_server_ip">External Server IP</label>
                                 <div class="col-sm-10 mb">
 									<input type="text" class="form-control" name="external_server_ip" value="<?php echo $output->data->external_server_ip; ?>" id="external_server_ip" maxlength="100">
