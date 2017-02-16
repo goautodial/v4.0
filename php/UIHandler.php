@@ -3408,9 +3408,9 @@ error_reporting(E_ERROR | E_PARSE);
 			for($i=0;$i < count($output->user_group);$i++){
 
 				if($output->forced_timeclock_login[$i] == "Y"){
-					$output->forced_timeclock_login[$i] = "YES";
+					$output->forced_timeclock_login[$i] = $this->lh->translationFor('go_yes');
 				}else{
-					$output->forced_timeclock_login[$i] = "NO";
+					$output->forced_timeclock_login[$i] = $this->lh->translationFor('go_no');
 				}
 
 				$action = $this->ActionMenuForUserGroups($output->user_group[$i], $output->group_name[$i]);
@@ -3578,7 +3578,7 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 
-			$columns = array("User", "IP Address", "Date & Time", "Action", "Details", "SQL Query");
+			$columns = array($this->lh->translationFor('user'), $this->lh->translationFor('ip_adress'), $this->lh->translationFor('date_and_time'), $this->lh->translationFor('action'), $this->lh->translationFor('details'), $this->lh->translationFor('sql_query'));
 			$result = $this->generateTableHeaderWithItems($columns, "adminlogs_table", "table-bordered table-striped", true, false);
 	
 			foreach ($output->data as $log) {
@@ -3712,9 +3712,9 @@ error_reporting(E_ERROR | E_PARSE);
 			for($i=0;$i < count($output->voicemail_id);$i++){
 
 				if($output->active[$i] == "Y"){
-					$output->active[$i] = "Active";
+					$output->active[$i] = $this->lh->translationFor('active');
 				}else{
-					$output->active[$i] = "Inactive";
+					$output->active[$i] = $this->lh->translationFor('inactive');
 				}
 
 				$action = $this->ActionMenuForVoicemail($output->voicemail_id[$i], $output->fullname[$i]);
@@ -4375,15 +4375,15 @@ error_reporting(E_ERROR | E_PARSE);
 		    	$action = $this->ActionMenuForServers($output->server_id[$i]);
 
 			    if($output->active[$i] == "Y"){
-				    $active = "Active";
+				    $active = $this->lh->translationFor('active');
 				}else{
-				    $active = "Inactive";
+				    $active = $this->lh->translationFor('inactive');
 				}
                     $result .= "<tr>
 	                    <td class ='hide-on-low'><a class='edit-server' data-id='".$output->server_id[$i]."'>".$output->server_id[$i]."</td>
 	                    <td>".$output->server_description[$i]."</td>
 	                    <td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
-						<td class ='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
+						<td class ='hide-on-medium hide-on-low'>".$active."</td>
 						<td class ='hide-on-low'>".$output->asterisk_version[$i]."</td>
 						<td class ='hide-on-low'>".$output->max_vicidial_trunks[$i]."</td>
 						<td class ='hide-on-low'>".$output->local_gmt[$i]."</td>
@@ -4459,9 +4459,9 @@ error_reporting(E_ERROR | E_PARSE);
 		    	$action = $this->getUserActionMenuForCarriers($output->carrier_id[$i]);
 
 			    if($output->active[$i] == "Y"){
-				    $active = "Active";
+				    $active = $this->lh->translationFor('active');
 				}else{
-				    $active = "Inactive";
+				    $active = $this->lh->translationFor('inactive');
 				}
                     $result .= "<tr>
 	                    <td class ='hide-on-low'><a class='edit-carrier' data-id='".$output->carrier_id[$i]."'>".$output->carrier_id[$i]."</td>
@@ -4986,7 +4986,6 @@ error_reporting(E_ERROR | E_PARSE);
 			   # An error occured
 			   echo "0";
 			 }
-
 		}
 
 		/*
@@ -5026,7 +5025,6 @@ error_reporting(E_ERROR | E_PARSE);
 					$vars = 0;
 					return $vars;
 			 }
-
 		}
 
 		/*
@@ -5041,16 +5039,16 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalActiveLeads"; #action performed by the [[API:Functions]]
-                        $postfields["responsetype"] = responsetype;
+            $postfields["responsetype"] = responsetype;
 
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 
 			//var_dump($data);
 			 $data = explode(";",$data);
@@ -5081,9 +5079,9 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetActiveCampaignsToday"; #action performed by the [[API:Functions]]
-                        $postfields["responsetype"] = responsetype;
-
-                        $ch = curl_init();
+            $postfields["responsetype"] = responsetype;
+			
+            $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
@@ -5091,10 +5089,8 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			$data = curl_exec($ch);
 			curl_close($ch);
-
 			$output = json_decode($data);
-
-                        return($data);
+            return($data);
 		}
 		/*
 		 * Displaying Call(s) Ringing
@@ -5108,7 +5104,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetRingingCalls"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-
+			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5117,9 +5113,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			$data = curl_exec($ch);
 			curl_close($ch);
-
 			$output = json_decode($data);
-
 			return $output;
 		}
 
@@ -5134,8 +5128,8 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetHopperLeadsWarning"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-
-                        $ch = curl_init();
+			
+            $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
@@ -5143,9 +5137,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			$data = curl_exec($ch);
 			curl_close($ch);
-
 			$output = json_decode($data);
-
 			return $output;
 		}
 
@@ -5161,19 +5153,17 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetAgentsMonitoringSummary"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
-
-			 $output = json_decode($data);
-
-			 return $output;
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			$output = json_decode($data);
+			return $output;
 		}
 
 		/*
@@ -5188,20 +5178,17 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetRealtimeAgentsMonitoring"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
-
-			 $output = json_decode($data);
-
-			 return $output;
-
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			$output = json_decode($data);
+			return $output;
 		}
 
 		public function API_goGetIncomingQueue() {
@@ -5210,7 +5197,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetIncomingQueue"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-
+			
             $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5219,11 +5206,8 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			$data = curl_exec($ch);
 			curl_close($ch);
-
 			$output = json_decode($data);
-
 			return $output;
-
 		}
 
 		/*
@@ -5238,8 +5222,8 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalCalls"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-
-                        $ch = curl_init();
+            
+			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
@@ -5247,9 +5231,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			$data = curl_exec($ch);
 			curl_close($ch);
-
 			$output = json_decode($data);
-
 			return $output;
 		}
 
@@ -5265,8 +5247,8 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalAnsweredCalls"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-
-                        $ch = curl_init();
+            
+			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
@@ -5274,9 +5256,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			$data = curl_exec($ch);
 			curl_close($ch);
-
 			$output = json_decode($data);
-
 			return $output;
 		}
 		/*
@@ -5291,8 +5271,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalDroppedCalls"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-
-                        $ch = curl_init();
+            $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
@@ -5300,9 +5279,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			$data = curl_exec($ch);
 			curl_close($ch);
-
 			$output = json_decode($data);
-
 			return $output;
 		}
 		/*
@@ -5317,8 +5294,8 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetLiveOutbound"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-
-                        $ch = curl_init();
+			
+            $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
@@ -5326,11 +5303,8 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			$data = curl_exec($ch);
 			curl_close($ch);
-
 			$output = json_decode($data);
-
 			return $output;
-
 		}
 
 		/*
@@ -5414,7 +5388,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 * [[API: Function]] - goGetSLAPercentage
 		 * This application is used to get dropped call percentage.
 		*/
-            public function API_goGetSLAPercentage() {
+        public function API_goGetSLAPercentage() {
 		$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass;
@@ -5738,7 +5712,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$css = "";
 		$css .= '<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />'."\n"; // bootstrap basic css
 		$css .= '<link href="css/creamycrm.css" rel="stylesheet" type="text/css" />'."\n"; // creamycrm css
-    	$css .= '<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />'."\n"; // circle buttons css
+		$css .= '<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />'."\n"; // circle buttons css
 		$css .= '<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />'."\n"; // ionicons
 		$css .= '<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />'."\n"; // bootstrap3 css
 		$css .= '<link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">'."\n"; // font-awesome css
@@ -5746,6 +5720,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$css .= '<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css
 		$css .= '<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">'."\n"; // app css
 		$css .= '<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">'."\n";
+		$css .= '<link href="css/bootstrap-glyphicons.css" rel="stylesheet">'."\n";
 		$css .= '<link rel="stylesheet" href="css/customizedLoader.css">'."\n"; // preloader css
 		$css .= '<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'."\n"; // sweetalert
 		/* JS that needs to be declared first */

@@ -42,7 +42,7 @@ if (isset($_POST["did"])) {
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Edit 
+        <title><?php $lh->translateText("edit"); ?>
         	<?php 
         		if($groupid != NULL){echo "In-Group";}
         		if($ivr != NULL){echo "Interactive Voice Record";}
@@ -149,7 +149,7 @@ if (isset($_POST["did"])) {
                  <section class="content">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<legend>MODIFY IN-GROUP : <u><?php echo $groupid;?></u></legend>
+							<legend><?php $lh->translateText("modify_ingroup"); ?> <u><?php echo $groupid;?></u></legend>
 
 							<form id="modifyingroup">
 								<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
@@ -160,17 +160,17 @@ if (isset($_POST["did"])) {
 								 <!-- Settings panel tabs-->
 									 <li role="presentation" class="active">
 										<a href="#settings" data-toggle="tab">
-										Basic Settings</a>
+										<?php $lh->translateText("basic_settings"); ?></a>
 									 </li>
 								<!-- Advanced settings tab -->
 									 <li role="presentation">
 										<a href="#advanced_settings" data-toggle="tab">
-										Advanced Settings </a>
+										<?php $lh->translateText("advance_settings"); ?> </a>
 									 </li>
 								<!-- Agents tab -->
 									 <li role="presentation">
 										<a href="#agents" data-toggle="tab">
-										Agents </a>
+										<?php $lh->translateText("agents"); ?> </a>
 									 </li>
 								</ul>		
 
@@ -184,20 +184,20 @@ if (isset($_POST["did"])) {
 										<!-- BASIC SETTINGS -->
 										<fieldset>
 											<div class="form-group mt">
-												<label for="description" class="col-sm-3 control-label"> Description </label>
+												<label for="description" class="col-sm-3 control-label"> <?php $lh->translateText("description"); ?> </label>
 												<div class="col-sm-9 mb">
 													<input type="text" class="form-control" name="desc" id="description" value="<?php echo $output->data->group_name;?>">
 												</div>
 											</div>
 											<div class="form-group">
 												<?php $output->data->group_color = "#".$output->data->group_color;?>
-												<label for="color" class="col-sm-3 control-label"> Color </label>
+												<label for="color" class="col-sm-3 control-label"><?php $lh->translateText("color"); ?> </label>
 												<div class="col-sm-9 mb">
 									                <input type="text" class="form-control colorpicker" name="color" id="color" value="<?php echo $output->data->group_color;?>">
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="status" class="col-sm-3 control-label"> Status </label>
+												<label for="status" class="col-sm-3 control-label"><?php $lh->translateText("status"); ?> </label>
 												<div class="col-sm-9 mb">
 													<select class="form-control" name="status" id="status">
 													<?php
@@ -219,13 +219,13 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="webform" class="col-sm-3 control-label">Web Form</label>
+												<label for="webform" class="col-sm-3 control-label"><?php $lh->translateText("web"); ?></label>
 												<div class="col-sm-9 mb">
 													<input type="text" class="form-control" name="webform" id="webform" value="<?php echo $output->data->web_form_address;?>">
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="nextagent" class="col-sm-3 control-label">Next Agent Call</label>
+												<label for="nextagent" class="col-sm-3 control-label"><?php $lh->translateText("next_agent_call"); ?></label>
 												<div class="col-sm-9 mb">
 													<select class="form-control" id="nextagent" name="nextagent">
 														<?php
@@ -295,7 +295,7 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="priority" class="col-sm-3 control-label">Queue Priority</label>
+												<label for="priority" class="col-sm-3 control-label"><?php $lh->translateText("queue_priority"); ?></label>
 												<div class="col-sm-9 mb">
 													<select class="form-control" id="priority" name="priority">
 														<?php
@@ -324,7 +324,7 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="display" class="col-sm-3 control-label">Fronter Display</label>
+												<label for="display" class="col-sm-3 control-label"><?php $lh->translateText("fronter_display"); ?></label>
 												<div class="col-sm-9 mb">
 													<select class="form-control" id="display" name="display">
 														<?php
@@ -346,7 +346,7 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="script" class="col-sm-3 control-label">Script</label>
+												<label for="script" class="col-sm-3 control-label"><?php $lh->translateText("script"); ?></label>
 												<div class="col-sm-9 mb">
 													<select class="form-control select2" id="script" name="script">
 														<?php
@@ -372,13 +372,13 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="drop_call_seconds" class="col-sm-3 control-label">Drop Call Seconds</label>
+												<label for="drop_call_seconds" class="col-sm-3 control-label"><?php $lh->translateText("drop_call_seconds"); ?></label>
 												<div class="col-sm-9 mb">
 													<input type="number" class="form-control" name="drop_call_seconds" id="drop_call_seconds" value="<?php echo $output->data->drop_call_seconds;?>">
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="drop_action" class="col-sm-3 control-label">Drop Action</label>
+												<label for="drop_action" class="col-sm-3 control-label"><?php $lh->translateText("drop_action"); ?></label>
 												<div class="col-sm-9 mb">
 													<select class="form-control" id="drop_action" name="drop_action">
 														<?php
@@ -429,7 +429,7 @@ if (isset($_POST["did"])) {
 
 													<!-- IF MESSAGE IS SELECTED -->
 														<div class="drop_exten_message" <?php if($output->data->drop_action != "MESSAGE"){?> style="display:none;"<?php }?> >
-															<label for="drop_exten" class="col-sm-3 control-label">Drop Exten</label>
+															<label for="drop_exten" class="col-sm-3 control-label"><?php $lh->translateText("drop_exten"); ?></label>
 															<div class="col-sm-9 mb">
 																<input type="number" class="form-control" name="drop_exten" id="drop_exten" value="<?php echo $output->data->drop_exten;?>" />
 															</div>
@@ -437,7 +437,7 @@ if (isset($_POST["did"])) {
 													
 													<!-- IF VOICEMAIL IS SELECTED -->
 														<div class="drop_exten_voicemail" <?php if($output->data->drop_action != "VOICEMAIL"){?> style="display:none;" <?php }?> >
-															<label for="voicemail_ext" class="col-sm-3 control-label">Voicemail</label>
+															<label for="voicemail_ext" class="col-sm-3 control-label"><?php $lh->translateText("voicemail"); ?></label>
 															<div class="col-sm-9 mb">
 																<select class="form-control select2" id="voicemail_ext" name="voicemail_ext" style="width:100%;">
 																	<?php
@@ -457,7 +457,7 @@ if (isset($_POST["did"])) {
 
 													<!-- IF IN_GROUP IS SELECTED -->
 														<div class="drop_exten_ingroup" <?php if($output->data->drop_action != "IN_GROUP"){ ?>style="display:none;"<?php }?>>
-															<label for="drop_inbound_group" class="col-sm-3 control-label">Drop Transfer Group </label>
+															<label for="drop_inbound_group" class="col-sm-3 control-label"><?php $lh->translateText("drop_transfer_group"); ?> </label>
 															<div class="col-sm-9 mb">
 																<select class="form-control select2" id="drop_inbound_group" name="drop_inbound_group" style="width:100%;">
 																	<?php
@@ -477,7 +477,7 @@ if (isset($_POST["did"])) {
 
 													<!-- IF CALLMENU IS SELECTED -->
 														<div class="drop_exten_callmenu" <?php if($output->data->drop_action != "CALLMENU"){ ?>style="display:none;"<?php }?>>
-															<label for="drop_callmenu" class="col-sm-3 control-label">Drop Callmenu </label>
+															<label for="drop_callmenu" class="col-sm-3 control-label"><?php $lh->translateText("drop_callmenu"); ?> </label>
 															<div class="col-sm-9 mb">
 																<select class="form-control select2" id="drop_callmenu" name="drop_callmenu" style="width:100%;">
 																	<?php
@@ -497,7 +497,7 @@ if (isset($_POST["did"])) {
 												</div>
 
 											<div class="form-group">
-												<label for="call_time_id" class="col-sm-3 control-label">Call Time</label>
+												<label for="call_time_id" class="col-sm-3 control-label"><?php $lh->translateText("call_time"); ?></label>
 												<div class="col-sm-9 mb">
 													<select class="form-control select2" id="call_time_id" name="call_time_id">
 														<?php
@@ -520,7 +520,7 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="call_launch" class="col-sm-3 control-label">Get Call Launch</label>
+												<label for="call_launch" class="col-sm-3 control-label"><?php $lh->translateText("get_call_launch"); ?></label>
 												<div class="col-sm-9 mb">
 													<select class="form-control" id="call_launch" name="call_launch">
 														<?php
@@ -582,7 +582,7 @@ if (isset($_POST["did"])) {
 									<div id="advanced_settings" class="tab-pane fade in">
 										<fieldset>
 											<div class="form-group">
-												<label for="welcome_message_filename" class="col-sm-4 control-label">Welcome Message Filename</label>
+												<label for="welcome_message_filename" class="col-sm-4 control-label"><?php $lh->translateText("welcome_message_filename"); ?></label>
 												<div class="col-sm-8 mb">
 													<div class="input-group">
 														<input type="text" class="form-control" class="" id="welcome_message_filename" name="welcome_message_filename" value="<?php if($output->data->welcome_message_filename == NULL )echo "sip-silence"; else echo $output->data->welcome_message_filename;?>">
@@ -610,7 +610,7 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="play_welcome_message" class="col-sm-4 control-label">Play Welcome Message</label>
+												<label for="play_welcome_message" class="col-sm-4 control-label"><?php $lh->translateText("play_welcome_message"); ?></label>
 												<div class="col-sm-8 mb">
 													<select class="form-control" id="play_welcome_message" name="play_welcome_message">
 														<?php
@@ -645,7 +645,7 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="moh_context" class="col-sm-4 control-label">Music On Hold Context</label>
+												<label for="moh_context" class="col-sm-4 control-label"><?php $lh->translateText("music_on_hold_context"); ?></label>
 												<div class="col-sm-8 mb">
 													<div class="input-group">
 														<input type="text" class="form-control" id="moh_context" name="moh_context" value="<?php if($output->data->moh_context == NULL)echo "default"; else echo $output->data->moh_context;?>">
@@ -674,7 +674,7 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="onhold_prompt_filename" class="col-sm-4 control-label">On Hold Prompt Filename</label>
+												<label for="onhold_prompt_filename" class="col-sm-4 control-label"><?php $lh->translateText("on_hold_prompt_filename"); ?></label>
 												<div class="col-sm-8 mb mb">
 													<div class="input-group">
 														<input type="text" class="form-control" id="onhold_prompt_filename" name="onhold_prompt_filename" value="<?php if($output->data->onhold_prompt_filename == NULL)echo "generic_hold"; else echo $output->data->onhold_prompt_filename;?>">
@@ -704,7 +704,7 @@ if (isset($_POST["did"])) {
 											</div>
 											
 											<div class="form-group mt">
-												<label for="after_hours_action" class="col-sm-4 control-label">After Hours Action</label>
+												<label for="after_hours_action" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_action"); ?></label>
 												<div class="col-sm-8 mb">
 													<select class="form-control" id="after_hours_action" name="after_hours_action">
 														<?php
@@ -745,7 +745,7 @@ if (isset($_POST["did"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="after_hours_exten" class="col-sm-4 control-label">After Hours Message Filename</label>
+											<label for="after_hours_exten" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_message_filename"); ?></label>
 											<div class="col-sm-8 mb">
 												<div class="input-group">
 													<input type="text" class="form-control" id="after_hours_message_filename" name="after_hours_message_filename" value="<?php if($output->data->after_hours_message_filename == NULL)echo "vm-goodbye"; else echo $output->data->after_hours_message_filename;?>">
@@ -773,13 +773,13 @@ if (isset($_POST["did"])) {
 											</div>
 										</div>
 										<div class="form-group">
-												<label for="after_hours_exten" class="col-sm-4 control-label">After Hours Extension</label>
+												<label for="after_hours_exten" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_extension"); ?></label>
 												<div class="col-sm-8 mb">
 													<input type="number" class="form-control" name="after_hours_exten" id="after_hours_exten" value="<?php if($output->data->after_hours_exten != NULL)echo $output->data->after_hours_exten; else echo "8300";?>" />
 												</div>
 											</div>
 										<div class="form-group">
-											<label for="after_hours_voicemail" class="col-sm-4 control-label">After Hours Voicemail</label>
+											<label for="after_hours_voicemail" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_voicemail"); ?></label>
 											<div class="col-sm-8 mb">
 												<div class="input-group">
 													<input type="text" class="form-control" id="after_hours_voicemail" name="after_hours_voicemail" value="<?php if($output->data->after_hours_voicemail == NULL)echo ""; else echo $output->data->after_hours_voicemail;?>">
@@ -808,7 +808,7 @@ if (isset($_POST["did"])) {
 										</div>
 										
 							       			<div class="form-group">
-							       				<label for="no_agent_no_queue" class="col-sm-4 control-label">Accept Calls when there are No Available Agents?</label>
+							       				<label for="no_agent_no_queue" class="col-sm-4 control-label"><?php $lh->translateText("accept_calls_when_no_available_agent"); ?></label>
 							       				<div class="col-sm-8 mb">
 												<select class="form-control" id="no_agent_no_queue" name="no_agent_no_queue">
 													<?php
@@ -836,7 +836,7 @@ if (isset($_POST["did"])) {
 											</div>
 							       			</div>
 							       			<div class="form-group">
-							       				<label for="no_agent_action" class="col-sm-4 control-label">No Available Agents Routing</label>
+							       				<label for="no_agent_action" class="col-sm-4 control-label"><?php $lh->translateText("no_available_agent_routing"); ?></label>
 							       				<div class="col-sm-8 mb">
 												<select class="form-control" id="no_agent_action" name="no_agent_action">
 													<?php
@@ -876,7 +876,7 @@ if (isset($_POST["did"])) {
 												<div class="form-group no_agents_exten">
 													<!-- IF MESSAGE IS SELECTED -->
 														<div class="no_agents_message" <?php if($output->data->no_agent_action != "MESSAGE"){?> style="display:none;"<?php }?> >
-															<label for="no_agents_exten" class="col-sm-4 control-label">Audio File</label>
+															<label for="no_agents_exten" class="col-sm-4 control-label"><?php $lh->translateText("audio_file"); ?></label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
 																	<input type="text" class="form-control" id="no_agents_exten" name="no_agents_exten" value="<?php if($output->data->no_agents_exten == NULL)echo "vm-goodbye"; else echo $output->data->no_agents_exten;?>">
@@ -906,7 +906,7 @@ if (isset($_POST["did"])) {
 													
 													<!-- IF VOICEMAIL IS SELECTED -->
 														<div class="no_agents_voicemail" <?php if($output->data->no_agent_action != "VOICEMAIL"){?> style="display:none;" <?php }?> >
-															<label for="no_agents_voicemail" class="col-sm-4 control-label">Voicemail</label>
+															<label for="no_agents_voicemail" class="col-sm-4 control-label"><?php $lh->translateText("voicemail"); ?></label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
 																	<input type="text" class="form-control" id="no_agents_voicemail" name="no_agents_voicemail" value="<?php if($output->data->no_agents_voicemail == NULL)echo ""; else echo $output->data->no_agents_voicemail;?>">
@@ -935,7 +935,7 @@ if (isset($_POST["did"])) {
 
 													<!-- IF IN_GROUP IS SELECTED -->
 														<div class="no_agents_ingroup" <?php if($output->data->no_agent_action != "IN_GROUP"){ ?>style="display:none;"<?php }?>>
-															<label for="no_agents_ingroup" class="col-sm-4 control-label">In-Group </label>
+															<label for="no_agents_ingroup" class="col-sm-4 control-label"><?php $lh->translateText("ingroup"); ?></label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
 																	<input type="text" class="form-control" id="no_agents_ingroup" name="no_agents_ingroup" value="<?php if($output->data->no_agents_ingroup == NULL)echo ""; else echo $output->data->no_agents_ingroup;?>">
@@ -964,7 +964,7 @@ if (isset($_POST["did"])) {
 
 													<!-- IF CALLMENU IS SELECTED -->
 														<div class="no_agents_callmenu" <?php if($output->data->no_agent_action != "CALLMENU"){ ?>style="display:none;"<?php }?>>
-															<label for="no_agents_callmenu" class="col-sm-4 control-label">Callmenu </label>
+															<label for="no_agents_callmenu" class="col-sm-4 control-label"><?php $lh->translateText("call_menu"); ?> </label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
 																	<input type="text" class="form-control" id="no_agents_callmenu" name="no_agents_callmenu" value="<?php if($output->data->no_agents_callmenu == NULL)echo ""; else echo $output->data->no_agents_callmenu;?>">
@@ -997,8 +997,8 @@ if (isset($_POST["did"])) {
 
 									<fieldset class="footer-buttons" id="not_agent_rank">
 			                           <div class="col-sm-3 pull-right">
-										<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-									    <a type="submit" class="btn btn-primary" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></a>
+										<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> <?php $lh->translateText("cancel"); ?></a>
+									    <a type="submit" class="btn btn-primary" id="modifyInboundOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText("update"); ?></span></a>
 			                           </div>
 				                    </fieldset>
 								</form>
@@ -1013,11 +1013,11 @@ if (isset($_POST["did"])) {
 										<table class="table table-striped table-bordered table-hover" id="agent_rank_table">
 										   <thead>
 											  <tr>
-												 <th>User</th>
-												 <th>User Group</th>
-												 <th>Selected</th>
-												 <th>Rank</th>
-												 <th>Grade</th>
+												 <th><?php $lh->translateText("user"); ?></th>
+												 <th><?php $lh->translateText("user_group"); ?></th>
+												 <th><?php $lh->translateText("selected"); ?></th>
+												 <th><?php $lh->translateText("rank"); ?></th>
+												 <th><?php $lh->translateText("grade"); ?></th>
 												 <!--<th>Calls Today</th>-->
 											  </tr>
 										   </thead>
@@ -1087,9 +1087,9 @@ if (isset($_POST["did"])) {
 									<fieldset class="footer-buttons">
 										<div class="box-footer">
 										   <div class="col-sm-3 pull-right">
-													<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+													<a href="telephonyinbound.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> <?php $lh->translateText("cancel"); ?> </a>
 											
-													<a type="button" class="btn btn-primary" id="submit_agent_rank" data-id="<?php echo $groupid;?>"> <span id="submit_button"><i class="fa fa-check"></i> Submit</span></a>
+													<a type="button" class="btn btn-primary" id="submit_agent_rank" data-id="<?php echo $groupid;?>"> <span id="submit_button"><i class="fa fa-check"></i> <?php $lh->translateText("submit"); ?></span></a>
 												
 										   </div>
 										</div>
@@ -1156,7 +1156,7 @@ if (isset($_POST["did"])) {
 						<section class="content">
 							<div class="panel panel-default">
 								<div class="panel-body">
-									<legend>MODIFY IVR : <u><?php echo $output->data->menu_id;?></u></legend>
+									<legend><?php $lh->translateText("modify_ivr"); ?> : <u><?php echo $output->data->menu_id;?></u></legend>
 
 									<form id="modifyivr" class="form-horizontal">
 										<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
@@ -1167,31 +1167,31 @@ if (isset($_POST["did"])) {
 										 <!-- Settings panel tabs-->
 											 <li role="presentation" class="active">
 												<a href="#tab_1" data-toggle="tab">
-												Basic Settings</a>
+												<?php $lh->translateText("basic_settings"); ?></a>
 											 </li>
 										<!-- Options tab -->
 											 <li role="presentation">
 												<a href="#tab_2" data-toggle="tab">
-												Options </a>
+												<?php $lh->translateText("option"); ?> </a>
 											 </li>
 										</ul>
 										<input type="hidden" name="modify_ivr" value="<?php echo $output->data->menu_id;?>">
 										<div class="tab-content">
 											<div class="tab-pane active" id="tab_1">
 												<div class="form-group mt">
-													<label class="col-sm-3 control-label" for="menu_id">Menu ID:</label>
+													<label class="col-sm-3 control-label" for="menu_id"><?php $lh->translateText("menu_id"); ?>:</label>
 													<div class="col-sm-9">
 														<input type="text" name="menu_id" id="menu_id" class="form-control" placeholder="Menu ID" minlength="4" required title="No Spaces. Minimum of 4 characters" value="<?php echo $output->data->menu_id;?>">
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-sm-3 control-label" for="menu_name">Menu Name: </label>
+													<label class="col-sm-3 control-label" for="menu_name"><?php $lh->translateText("menu_name"); ?>: </label>
 													<div class="col-sm-9">
 														<input type="text" name="menu_name" id="menu_name" class="form-control" placeholder="Menu Name" required value="<?php echo $output->data->menu_name;?>">
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-sm-3 control-label" for="menu_prompt">Menu Greeting: </label>
+													<label class="col-sm-3 control-label" for="menu_prompt"><?php $lh->translateText("menu_greeting"); ?>: </label>
 													<div class="col-sm-9">
 														<select name="menu_prompt" id="menu_prompt" class="form-control select2" style="width:100%;">
 															<option value="goWelcomeIVR">-- Default Value --</option>
@@ -1207,13 +1207,13 @@ if (isset($_POST["did"])) {
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-sm-3 control-label" for="menu_timeout">Menu Timeout: </label>
+													<label class="col-sm-3 control-label" for="menu_timeout"><?php $lh->translateText("menu_timeout"); ?> </label>
 													<div class="col-sm-9">
 														<input type="number" name="menu_timeout" id="menu_timeout" class="form-control" value="<?php echo $output->data->menu_timeout;?>" min="0" required>
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-sm-3 control-label" for="menu_timeout_prompt">Menu Timeout Greeting: </label>
+													<label class="col-sm-3 control-label" for="menu_timeout_prompt"><?php $lh->translateText("menu_timeout_greeting"); ?>: </label>
 													<div class="col-sm-9">
 														<select name="menu_timeout_prompt" id="menu_timeout_prompt" class="form-control select2" style="width:100%;">
 															<option value="">-- Default Value --</option>
@@ -1229,7 +1229,7 @@ if (isset($_POST["did"])) {
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-sm-3 control-label" for="menu_invalid_prompt">Menu Invalid Greeting: </label>
+													<label class="col-sm-3 control-label" for="menu_invalid_prompt"><?php $lh->translateText("menu_invalid_greeting"); ?>: </label>
 													<div class="col-sm-9">
 														<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control select2" style="width:100%;">
 															<option value="">-- Default Value --</option>
@@ -1245,13 +1245,13 @@ if (isset($_POST["did"])) {
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-sm-3 control-label" for="menu_repeat">Menu Repeat: </label>
+													<label class="col-sm-3 control-label" for="menu_repeat"><?php $lh->translateText("menu_repeat"); ?>: </label>
 													<div class="col-sm-9">
 														<input type="number" name="menu_repeat" id="menu_repeat" class="form-control"value="<?php echo $output->data->menu_repeat;?>" min="0" required>
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-sm-3 control-label" for="menu_time_check">Menu Time Check: </label>
+													<label class="col-sm-3 control-label" for="menu_time_check"><?php $lh->translateText("menu_time_check"); ?>: </label>
 													<div class="col-sm-9">
 														<select name="menu_time_check" id="menu_time_check" class="form-control">
 															<option value="0" <?php if($output->data->menu_time_check == "0"){echo "selected";}?> > 0 - No Realtime Tracking </option>
@@ -1260,7 +1260,7 @@ if (isset($_POST["did"])) {
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-sm-3 control-label" for="call_time_id">Call Time: </label>
+													<label class="col-sm-3 control-label" for="call_time_id"><?php $lh->translateText("call_time"); ?>: </label>
 													<div class="col-sm-9">
 														<select name="call_time_id" id="call_time_id" class="form-control select2" style="width:100%;">
 															<?php
@@ -1274,7 +1274,7 @@ if (isset($_POST["did"])) {
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-sm-3 control-label" for="track_in_vdac">Track call in realtime report: </label>
+													<label class="col-sm-3 control-label" for="track_in_vdac"><?php $lh->translateText("track_call_realtime_report"); ?>: </label>
 													<div class="col-sm-9"> 
 														<select name="track_in_vdac" id="track_in_vdac" class="form-control">
 															<option value="0" <?php if($output->data->track_in_vdac == "0"){echo "selected";}?> >0 - No Realtime Tracking</option>
@@ -1283,7 +1283,7 @@ if (isset($_POST["did"])) {
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-sm-3 control-label" for="tracking_group">Tracking Groups: </label>
+													<label class="col-sm-3 control-label" for="tracking_group"><?php $lh->translateText("tracking_group"); ?>: </label>
 													<div class="col-sm-9">
 														<select name="tracking_group" id="tracking_group" class="form-control select2" style="width:100%;">
 														<?php
@@ -1299,7 +1299,7 @@ if (isset($_POST["did"])) {
 													</div>
 												</div>
 												<div class="form-group">
-													<label class="col-sm-3 control-label" for="user_group">User Groups: </label>
+													<label class="col-sm-3 control-label" for="user_group"><?php $lh->translateText("user_groups"); ?>: </label>
 													<div class="col-sm-9">
 														<select id="user_group" class="form-control select2" name="user_group" style="width:100%;">
 																<option value="---ALL---" <?php if($output->data->user_group == "---ALL---"){echo "selected";}?> > - - - ALL USER GROUPS - - - </option>
@@ -1329,7 +1329,7 @@ if (isset($_POST["did"])) {
 													<div class="form-group">
 														<div class="col-lg-12">
 															<div class="col-lg-2">
-																Option:
+																<?php $lh->translateText("option"); ?>:
 																<select class="form-control route_option" name="option[]"
 																<?php 
 																	if($ivr_options->option_value[$i] != ""){
@@ -1366,11 +1366,11 @@ if (isset($_POST["did"])) {
 																</select>
 															</div>
 															<div class="col-lg-7">
-																Desription: 
+																<?php $lh->translateText("description"); ?>: 
 																<input type="text" name="route_desc[]" id="" class="form-control route_desc_<?php echo $i;?>" placeholder="Description" value="<?php echo $ivr_options->option_description[$i]; ?>" />
 															</div>
 															<div class="col-lg-3">
-																Route:
+																<?php $lh->translateText("route"); ?>:
 																<select class="form-control route_menu_<?php echo $i;?>" name="route_menu[]">
 																	<option selected value=""></option>
 																	<option value="CALLMENU" <?php if($ivr_options->option_route[$i] == "CALLMENU")echo "selected"; ?> >Call Menu / IVR</option>
@@ -1390,7 +1390,7 @@ if (isset($_POST["did"])) {
 														<div class="col-lg-12 option_menu_<?php echo $i;?> mb mt">
 															<!-- CALL MENU -->
 																<div class="route_callmenu_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "CALLMENU")echo 'style="display:none;"'; ?> >
-																	<label class="col-sm-3 control-label">Call Menu: </label>
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("call_menu"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="select2-2 form-control select2" name="option_callmenu_value[]" style="width:100%;">
 																			<option value="" selected> - - - NONE - - - </option>
@@ -1409,7 +1409,7 @@ if (isset($_POST["did"])) {
 															<!-- IN GROUP -->
 																<div class="route_ingroup_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "INGROUP")echo 'style="display:none;"'; ?> >
 																	<div class="row mb">
-																		<label class="col-sm-3 control-label">In Group: </label>
+																		<label class="col-sm-3 control-label"><?php $lh->translateText("ingroups"); ?>: </label>
 																		<div class="col-sm-6">
 																			<select class="select2-2 form-control select2" name="option_ingroup_value[]" style="width:100%;">
 																				<option value="" > - - - NONE - - - </option>
@@ -1431,7 +1431,7 @@ if (isset($_POST["did"])) {
 																	?>
 																	<div class="col-sm-11">
 																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-																			<label class="col-sm-3 control-label">Handle Method:</label>
+																			<label class="col-sm-3 control-label"><?php $lh->translateText("handle_method"); ?>:</label>
 																			<div class="col-sm-7">
 																				<select class="form-control" name="handle_method_<?php echo $i;?>" id="edit_handle_method_<?php echo $i;?>">
 																					<option value="CID" <?php if($explode_ingroup_context[0] == "CID")echo "selected"; ?> >CID</option>
@@ -1455,7 +1455,7 @@ if (isset($_POST["did"])) {
 																		</div>
 																		<div class="row mb">
 																			<div class="col-sm-7">
-																				<label class="col-sm-4 control-label">Campaign ID: </label>
+																				<label class="col-sm-4 control-label"><?php $lh->translateText("campaign_id"); ?>: </label>
 																				<div class="col-sm-8">
 																					<select class="form-control select2" name="campaign_id_<?php echo $i;?>" style="width:100%;">
 																					<?php
@@ -1471,7 +1471,7 @@ if (isset($_POST["did"])) {
 																				</div>
 																			</div>
 																			<div class="col-sm-5 ingroup_advanced_settings_<?php echo $i;?>">
-																				<label class="col-sm-5 control-label">Phone Code: </label>
+																				<label class="col-sm-5 control-label"><?php $lh->translateText("phone_code"); ?>: </label>
 																				<div class="col-sm-7">
 																					<input type="text" class="form-control" name="phone_code<?php echo $i;?>" value="<?php 
 																						if(isset($ivr_options->option_route[$i])) 
@@ -1484,7 +1484,7 @@ if (isset($_POST["did"])) {
 																		</div>
 																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
 																			<div class="col-sm-7">
-																				<label class="col-sm-4 control-label">Search Method:</label>
+																				<label class="col-sm-4 control-label"><?php $lh->translateText("search_method"); ?>:</label>
 																				<div class="col-sm-8">
 																					<select class="form-control" name="search_method_<?php echo $i;?>" id="edit_search_method_<?php echo $i;?>">
 																						<option value="LB" <?php if($explode_ingroup_context[1] == "LB")echo "selected"; ?> >LB - Load Balanced</option>
@@ -1494,7 +1494,7 @@ if (isset($_POST["did"])) {
 																				</div>
 																			</div>
 																			<div class="col-sm-5">
-																				<label class="col-sm-5 control-label" for="search_method_list_id">List ID: </label>
+																				<label class="col-sm-5 control-label" for="search_method_list_id"><?php $lh->translateText("list_id"); ?>: </label>
 																				<div class="col-sm-7">
 																					<input type="text" name="list_id_<?php echo $i;?>" value="<?php 
 																						if(isset($ivr_options->option_route[$i])) 
@@ -1506,7 +1506,7 @@ if (isset($_POST["did"])) {
 																			</div>
 																		</div>
 																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-																			<label class="col-sm-3 control-label">VID Digits: </label>
+																			<label class="col-sm-3 control-label"><?php $lh->translateText("vid_digits"); ?>: </label>
 																			<div class="col-sm-7">
 																				<input type="text" class="form-control" name="vid_digits_<?php echo $i;?>" value="<?php 
 																					if(isset($ivr_options->option_route[$i]))
@@ -1517,7 +1517,7 @@ if (isset($_POST["did"])) {
 																			</div>
 																		</div>
 																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-																			<label class="col-sm-3 control-label">VID Enter Filename: </label>
+																			<label class="col-sm-3 control-label"><?php $lh->translateText("vid_enter_Filename"); ?>: </label>
 																			<div class="col-sm-8">
 																				<div class="col-sm-6">
 																					<input type="text" name="enter_filename_<?php echo $i;?>" value="<?php 
@@ -1545,7 +1545,7 @@ if (isset($_POST["did"])) {
 																			</div>
 																		</div>
 																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-																			<label class="col-sm-3 control-label">VID ID Number Filename: </label>
+																			<label class="col-sm-3 control-label"><?php $lh->translateText("vid_id_number_filename"); ?>VID ID Number Filename: </label>
 																			<div class="col-sm-8">
 																				<div class="col-sm-6">
 																					<input type="text" name="id_number_filename_<?php echo $i;?>" value="<?php 
@@ -1573,7 +1573,7 @@ if (isset($_POST["did"])) {
 																			</div>
 																		</div>
 																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-																			<label class="col-sm-3 control-label">VID Confirm Filename: </label>
+																			<label class="col-sm-3 control-label"><?php $lh->translateText("vid_confirm_filename"); ?>: </label>
 																			<div class="col-sm-8">
 																				<div class="col-sm-6">
 																					<input type="text" name="confirm_filename_<?php echo $i;?>" value="<?php 
@@ -1607,7 +1607,7 @@ if (isset($_POST["did"])) {
 																</div>
 															<!-- DID -->
 																<div class="route_did_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "DID")echo 'style="display:none;"'; ?> >
-																	<label class="col-sm-3 control-label">DID: </label>
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("did"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="col-sm-6 select2-2 form-control select2" name="option_did_value[]" style="width:100%;">
 																			<option value="" selected> - - - NONE - - - </option>
@@ -1625,7 +1625,7 @@ if (isset($_POST["did"])) {
 																</div>
 															<!-- HANGUP -->
 																<div class="route_hangup_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "HANGUP")echo 'style="display:none;"'; ?> >
-																	<label class="col-sm-3 control-label">Audio File: </label>
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("audio_file"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="select2-2 form-control select2" name="option_hangup_value[]" style="width:100%;">
 																			<option value=""> - - - NONE - - - </option>
@@ -1646,13 +1646,13 @@ if (isset($_POST["did"])) {
 															<!-- EXTENSION -->
 																<div class="route_exten_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "EXTENSION")echo 'style="display:none;"'; ?> >
 																	<div class="col-sm-6">
-																		<label class="col-sm-3 control-label">Extension: </label>
+																		<label class="col-sm-3 control-label"><?php $lh->translateText("custom_extension"); ?>: </label>
 																		<div class="col-sm-9">
 																			<input type="text" class="form-control" name="option_extension_value[]" id="option_route_value_<?php echo $i;?>" value="<?php if($ivr_options->option_route[$i] == "EXTENSION"){echo $ivr_options->option_route_value[$i];} ?>" />
 																		</div>
 																	</div>
 																	<div class="col-sm-6">
-																		<label class="col-sm-3 control-label">Context: </label>
+																		<label class="col-sm-3 control-label"><?php $lh->translateText("context"); ?>: </label>
 																		<div class="col-sm-9">
 																			<input type="text" class="form-control" name="option_route_value_context[]" id="option_route_value_context_<?php echo $i;?>" value="<?php if($ivr_options->option_route[$i] == "EXTENSION"){echo $ivr_options->option_route_value_context[$i];} ?>" />
 																		</div>
@@ -1660,7 +1660,7 @@ if (isset($_POST["did"])) {
 																</div>
 															<!-- PHONE -->
 																<div class="route_phone_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "PHONE")echo 'style="display:none;"'; ?> >
-																	<label class="col-sm-3 control-label">Phone: </label>
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("phone"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="select2-2 form-control select2" name="option_phone_value[]" style="width:100%;">
 																			<option value="" > - - - NONE - - - </option>
@@ -1678,7 +1678,7 @@ if (isset($_POST["did"])) {
 																</div>
 															<!-- VOICEMAIL -->
 																<div class="route_voicemail_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "VOICEMAIL")echo 'style="display:none;"'; ?> >
-																	<label class="col-sm-3 control-label">Voicemail Box: </label>
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("voicemail_box"); ?>: </label>
 																	<div class="col-sm-9">
 																		<div class="col-sm-6">
 																			<input type="text" name="option_voicemail_value[]" class="form-control" id="option_voicemail_input_<?php echo $i;?>" value="<?php if($ivr_options->option_route[$i] == "VOICEMAIL"){echo $ivr_options->option_route_value[$i];} ?>" maxlength="255" size="15">
@@ -1701,7 +1701,7 @@ if (isset($_POST["did"])) {
 																</div>
 															<!-- AGI -->
 																<div class="route_agi_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "AGI")echo 'style="display:none;"'; ?> >
-																	<label class="col-sm-3 control-label">AGI: </label>
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("agi"); ?>: </label>
 																	<div class="col-sm-6">
 																		<input type="text" class="form-control" name="option_agi_value[]" maxlength="255" size="50" value="<?php if($ivr_options->option_route[$i] == "AGI"){echo $ivr_options->option_route_value[$i];} ?>">
 																	</div>
@@ -1720,8 +1720,8 @@ if (isset($_POST["did"])) {
 											<fieldset>
 						                        <div class="box-footer">
 						                           <div class="col-sm-3 pull-right">
-														<a href="telephonyinbound.php" type="button"  id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-														<button type="submit" class="btn btn-primary" id="modifyIVROkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+														<a href="telephonyinbound.php" type="button"  id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> <?php $lh->translateText("cancel"); ?> </a>
+														<button type="submit" class="btn btn-primary" id="modifyIVROkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText("update"); ?></span></button>
 						                           </div>
 						                        </div>
 						                    </fieldset>
@@ -1785,7 +1785,7 @@ if (isset($_POST["did"])) {
                 <section class="content">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<legend>MODIFY DID RECORD : <u><?php echo $output->data->did_pattern;?></u></legend>
+							<legend><?php $lh->translateText("modify_did_record"); ?> : <u><?php echo $output->data->did_pattern;?></u></legend>
 								
 								<form id="modifydid">
 									<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
@@ -1795,8 +1795,8 @@ if (isset($_POST["did"])) {
 							<div role="tabpanel">
 							<!--<div class="nav-tabs-custom">-->
 								<ul role="tablist" class="nav nav-tabs nav-justified">
-									<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
-									<li><a href="#tab_2" data-toggle="tab"> Advanced Settings</a></li>
+									<li class="active"><a href="#tab_1" data-toggle="tab"><?php $lh->translateText("basic_settings"); ?> </a></li>
+									<li><a href="#tab_2" data-toggle="tab"> <?php $lh->translateText("advance_settings"); ?></a></li>
 								</ul>
 				               <!-- Tab panes-->
 				               <div class="tab-content">
@@ -1807,19 +1807,19 @@ if (isset($_POST["did"])) {
 										<input type="hidden" name="modify_did" value="<?php echo $output->data->did_id;?>">
 									<fieldset>
 										<div class="form-group mt">
-											<label for="did_pattern" class="col-sm-2 control-label">DID NUMBER</label>
+											<label for="did_pattern" class="col-sm-2 control-label"><?php $lh->translateText("did_number"); ?></label>
 											<div class="col-sm-10 mb">
 												<input type="text" class="form-control" name="did_pattern" id="did_pattern" value="<?php echo $output->data->did_pattern;?>">
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="desc" class="col-sm-2 control-label">Description</label>
+											<label for="desc" class="col-sm-2 control-label"><?php $lh->translateText("description"); ?></label>
 											<div class="col-sm-10 mb">
 												<input type="text" class="form-control" name="desc" id="desc" value="<?php echo $output->data->did_description;?>">
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="status" class="col-sm-2 control-label">Status</label>
+											<label for="status" class="col-sm-2 control-label"><?php $lh->translateText("status"); ?></label>
 											<div class="col-sm-10 mb">
 												<select class="form-control" name="status" id="status">
 												<?php
@@ -1841,7 +1841,7 @@ if (isset($_POST["did"])) {
 											</div>
 										</div>
 										<div class="form-group">
-											<label for="route" class="col-sm-2 control-label">DID Route</label>
+											<label for="route" class="col-sm-2 control-label"><?php $lh->translateText("did_route"); ?></label>
 											<div class="col-sm-10 mb">
 												<select class="form-control" id="route" name="route">
 													<?php
@@ -1891,7 +1891,7 @@ if (isset($_POST["did"])) {
 										<!-- IF DID ROUTE = AGENT-->
 										<div id="form_route_agent" <?php if($output->data->did_route  != "AGENT"){ ?> style="display: none;" <?php }?> >
 											<div class="form-group">
-												<label for="route_agentid" class="col-sm-3 control-label">Agent ID: </label>
+												<label for="route_agentid" class="col-sm-3 control-label"><?php $lh->translateText("agent_id"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_agentid" id="route_agentid" class="form-control select2" style="width:100%;">
 														<option value="" > -- NONE -- </option>
@@ -1908,7 +1908,7 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="route_unavail" class="col-sm-3 control-label">Agent Unavailable Action: </label>
+												<label for="route_unavail" class="col-sm-3 control-label"><?php $lh->translateText("agent_unavailable_action"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_unavail" id="route_unavail" class="form-control">
 														<option value="VOICEMAIL"  <?php if($output->data->user_unavailable_action == "VOICEMAIL") echo "selected";?> > Voicemail </option>
@@ -1968,7 +1968,7 @@ if (isset($_POST["did"])) {
 														</div>
 													</div>-->
 											<div class="form-group">
-												<label for="user_route_settings_ingroup" class="col-sm-3 control-label">Agent Route Settings: </label>
+												<label for="user_route_settings_ingroup" class="col-sm-3 control-label"><?php $lh->translateText("agent_route_settings"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="user_route_settings_ingroup" id="user_route_settings_ingroup" class="form-control">
 														<option value="">---NONE---</option>
@@ -1990,7 +1990,7 @@ if (isset($_POST["did"])) {
 										
 									<!-- IF DID ROUTE = IN-GROUP-->
 										<div id="form_route_ingroup" class="form-group" <?php if($output->data->did_route  != "IN_GROUP"){ ?> style="display: none;" <?php }?> >
-										<label for="route_ingroupid" class="col-sm-3 control-label">In-Group ID: </label>
+										<label for="route_ingroupid" class="col-sm-3 control-label"><?php $lh->translateText("ingroup_id"); ?>: </label>
 										<div class="col-sm-9 mb">
 											<select name="route_ingroupid" id="route_ingroupid" class="form-control">
 												<?php
@@ -2009,7 +2009,7 @@ if (isset($_POST["did"])) {
 									<!-- IF DID ROUTE = PHONE -->
 										<div id="form_route_phone" <?php if($output->data->did_route  != "PHONE"){ ?> style="display: none;" <?php }?> >
 											<div class="form-group">
-												<label  for="route_phone_exten" class="col-sm-3 control-label">Phone Extension: </label>
+												<label  for="route_phone_exten" class="col-sm-3 control-label"><?php $lh->translateText("phone_extension"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_phone_exten" id="route_phone_exten" class="form-control">
 														<?php
@@ -2025,7 +2025,7 @@ if (isset($_POST["did"])) {
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="route_phone_server" class="col-sm-3 control-label">Server IP: </label>
+												<label for="route_phone_server" class="col-sm-3 control-label"><?php $lh->translateText("server_ip"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_phone_server" id="route_phone_server" class="form-control">
 														<option value="" > -- NONE -- </option>
@@ -2046,7 +2046,7 @@ if (isset($_POST["did"])) {
 									<!-- IF DID ROUTE = IVR -->
 										<div id="form_route_callmenu" <?php if($output->data->did_route  != "CALLMENU"){ ?> style="display: none;" <?php }?> >
 											<div class="form-group">
-												<label for="route_ivr" class="col-sm-3 control-label">Call Menu: </label>
+												<label for="route_ivr" class="col-sm-3 control-label"><?php $lh->translateText("call_menu"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_ivr" id="route_ivr" class="form-control">
 														<?php
@@ -2066,7 +2066,7 @@ if (isset($_POST["did"])) {
 									<!-- IF DID ROUTE = VoiceMail -->
 										<div id="form_route_voicemail" <?php if($output->data->did_route  != "VOICEMAIL"){ ?> style="display: none;" <?php }?> >
 											<div class="form-group">
-												<label for="route_voicemail" class="col-sm-3 control-label">Voicemail Box: </label>
+												<label for="route_voicemail" class="col-sm-3 control-label"><?php $lh->translateText("voicemail_box"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_voicemail" id="route_voicemail" class="form-control">
 														<?php
@@ -2086,13 +2086,13 @@ if (isset($_POST["did"])) {
 										<!-- IF DID ROUTE = Custom Extension -->
 										<div id="form_route_exten" <?php if($output->data->did_route  != "EXTEN"){ ?> style="display: none;" <?php }?> >
 											<div class="form-group">
-												<label for="route_exten" class="col-sm-3 control-label">Extension: </label>
+												<label for="route_exten" class="col-sm-3 control-label"><?php $lh->translateText("custom_extension"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<input type="text" name="route_exten" id="route_exten" placeholder="Extension" class="form-control" value="<?php echo $ouput->data->extension; ?>" required>
 												</div>
 											</div>
 											<div class="form-group">
-												<label for="route_exten_context" class="col-sm-3 control-label">Extension Context: </label>
+												<label for="route_exten_context" class="col-sm-3 control-label"><?php $lh->translateText("extension_context"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<input type="text" name="route_exten_context" id="route_exten_context" placeholder="Extension Context" class="form-control" value="<?php echo $ouput->data->exten_context;?>" required>
 												</div>
@@ -2107,7 +2107,7 @@ if (isset($_POST["did"])) {
 						       		<div id="tab_2" class="tab-pane fade in">
 						       			<fieldset>
 							       			<div class="form-group mt">
-							       				<label for="cid_num" class="col-sm-2 control-label">Clean CID Number</label>
+							       				<label for="cid_num" class="col-sm-2 control-label"><?php $lh->translateText("clean_cid_number"); ?></label>
 							       				<div class="col-sm-10 mb">
 													<input type="text" class="form-control" name="cid_num" id="cid_num" value="<?php echo $output->data->filter_clean_cid_number;?>" maxlength="20">
 												</div>
@@ -2121,9 +2121,9 @@ if (isset($_POST["did"])) {
 				                    <fieldset class="footer-buttons">
 				                        <div class="box-footer">
 				                           <div class="col-sm-3 pull-right">
-													<a href="telephonyinbound.php" type="button"  id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+													<a href="telephonyinbound.php" type="button"  id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> <?php $lh->translateText("cancel"); ?></a>
 				                           	
-				                                	<button type="submit" class="btn btn-primary" id="modifyDIDOkButton" data-id="<?php echo $groupid;?>" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+				                                	<button type="submit" class="btn btn-primary" id="modifyDIDOkButton" data-id="<?php echo $groupid;?>" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText("update"); ?></span></button>
 												
 				                           </div>
 				                        </div>
@@ -2170,7 +2170,7 @@ if (isset($_POST["did"])) {
 
 			// for cancelling
 				$(document).on('click', '#cancel', function(){
-					swal("Cancelled", "No action has been done :)", "error");
+					swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
 				});
 
 			//Colorpicker
@@ -2376,10 +2376,10 @@ if (isset($_POST["did"])) {
                         success: function(data) {
                           //if message is sent
 							if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-								swal("Updated!", "Inbound has been successfully updated.", "success");
+								swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("inbound_update_success"); ?>", "success");
 								window.setTimeout(function(){location.replace("./telephonyinbound.php");},2000);
 							} else {
-								sweetAlert("Oops...","Something went wrong! " + data, "error");
+								sweetAlert("<?php $lh->translateText("oups"); ?>","<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
 								$('#update_button').html("<i class='fa fa-check'></i> Update");
 								$('#modifyInboundOkButton').prop("disabled", false);
 							}
@@ -2410,9 +2410,9 @@ if (isset($_POST["did"])) {
 						$('#submit_agent_rank').prop("disabled", false);
 							console.log(data);
 							if(data == "success"){
-								swal("Success!", "Agent Rank for this inbound Successfully Updated!", "success");
+								swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("agent_rank_update_success"); ?>", "success");
 							}else{
-								sweetAlert("Oops...", "Something went wrong! "+data, "error");
+								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 							}
 						}
 					});
@@ -2430,9 +2430,9 @@ if (isset($_POST["did"])) {
 						function(data){
 							//if message is sent
 							if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-								swal({title: "Success!",text: "IVR has been successfully updated!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+								swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("ivr_update_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 							} else {
-								sweetAlert("Oops...","Something went wrong! " + data, "error");
+								sweetAlert("<?php $lh->translateText("oups"); ?>","<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
 								//location.reload();
 							}
 							
@@ -2453,10 +2453,10 @@ if (isset($_POST["did"])) {
 							function(data){
 								//if message is sent
 								if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-									swal({title: "Success!",text: "DID has been successfully updated!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+									swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("did_update_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 									
 								} else {
-									sweetAlert("Oops...","Something went wrong! " + data, "error");
+									sweetAlert("<?php $lh->translateText("oups"); ?>","<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
 									$('#update_button').html("<i class='fa fa-check'></i> Update");
 									$('#modifyDIDOkButton').prop("disabled", false);	
 								}
@@ -3719,9 +3719,9 @@ if (isset($_POST["did"])) {
                 				$('#submit_agent_rank').prop("disabled", false)
 								console.log(data);
 								if(data == "success"){
-									swal("Success!", "Agent Rank for this inbound Successfully Updated!", "success");
+									swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("agent_rank_update_success"); ?>", "success");
 								}else{
-									sweetAlert("Oops...", "Something went wrong! "+data, "error");
+									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 								}
 							}
 						});

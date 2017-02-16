@@ -122,17 +122,17 @@
 						?>
 							 <li role="presentation"<?=$toggleInbound?>>
 								<a href="#T_ingroup" aria-controls="T_ingroup" role="tab" data-toggle="tab" class="bb0">
-								    In-Groups</a>
+								    <?php $lh->translateText('ingroups'); ?></a>
 							 </li>
 						<!-- IVR panel tab -->
 							 <li role="presentation"<?=$toggleIVR?>>
 								<a href="#T_ivr" aria-controls="T_ivr" role="tab" data-toggle="tab" class="bb0">
-								    Interactive Voice Response (IVR) Menus </a>
+								    <?php $lh->translateText('interactive_voice_resoponse'); ?> </a>
 							 </li>
 						<!-- DID panel tab -->
 							 <li role="presentation"<?=$toggleDID?>>
 								<a href="#T_phonenumber" aria-controls="T_phonenumber" role="tab" data-toggle="tab" class="bb0">
-								    Phone Numbers (DIDs/TFNs) </a>
+								    <?php $lh->translateText('phone_numbers_did_tfn'); ?> </a>
 							 </li>
 						  </ul>
 						  
@@ -145,12 +145,12 @@
 								   <thead>
 									  <tr>
                                          <th style="color: white;">Pic</th>
-										 <th>In-Group</th>
-										 <th class='hide-on-low hide-on-medium'>Descriptions</th>
-										 <th class='hide-on-low hide-on-medium'>Priority</th>
-										 <th class='hide-on-low'>Status</th>
-										 <th class='hide-on-low hide-on-medium'>Time</th>
-										 <th>Action</th>
+										 <th><?php $lh->translateText('ingroup'); ?></th>
+										 <th class='hide-on-low hide-on-medium'><?php $lh->translateText('description'); ?></th>
+										 <th class='hide-on-low hide-on-medium'><?php $lh->translateText('priority'); ?></th>
+										 <th class='hide-on-low'><?php $lh->translateText('status'); ?></th>
+										 <th class='hide-on-low hide-on-medium'><?php $lh->translateText('time'); ?></th>
+										 <th><?php $lh->translateText('action'); ?></th>
 									  </tr>
 								   </thead>
 								   <tbody>
@@ -158,9 +158,9 @@
 									   		for($i=0;$i < count($ingroup->group_id);$i++){
 							
 												if($ingroup->active[$i] == "Y"){
-													$ingroup->active[$i] = "Active";
+													$ingroup->active[$i] = $lh->translationFor('active');
 												}else{
-													$ingroup->active[$i] = "Inactive";
+													$ingroup->active[$i] = $lh->translationFor('inactive');
 												}
 
 											$action_INGROUP = $ui->getUserActionMenuForInGroups($ingroup->group_id[$i], $perm);
@@ -188,11 +188,11 @@
 								   <thead>
 									  <tr>
                                          <th style="color: white;">Pic</th>
-										 <th>Menu ID</th>
-										 <th class='hide-on-medium hide-on-low'>Descriptions</th>
-										 <th class='hide-on-medium hide-on-low'>Prompt</th>
-										 <th class='hide-on-medium hide-on-low'>Timeout</th>
-										 <th>Action</th>
+										 <th><?php $lh->translateText('menu_id'); ?></th>
+										 <th class='hide-on-medium hide-on-low'><?php $lh->translateText('description'); ?></th>
+										 <th class='hide-on-medium hide-on-low'><?php $lh->translateText('prompt'); ?></th>
+										 <th class='hide-on-medium hide-on-low'><?php $lh->translateText('timeout'); ?></th>
+										 <th><?php $lh->translateText('action'); ?></th>
 									  </tr>
 								   </thead>
 								   <tbody>
@@ -223,11 +223,11 @@
 								   <thead>
 									  <tr>
                                          <th style="color: white;">Pic</th>
-										 <th>Phone Numbers</th>
-										 <th class='hide-on-medium hide-on-low'>Description</th>
-										 <th class='hide-on-medium hide-on-low'>Status</th>
-										 <th class='hide-on-medium hide-on-low'>Route</th>
-										 <th>Action</th>
+										 <th><?php $lh->translateText('phone_numbers'); ?></th>
+										 <th class='hide-on-medium hide-on-low'><?php $lh->translateText('description'); ?></th>
+										 <th class='hide-on-medium hide-on-low'><?php $lh->translateText('status'); ?></th>
+										 <th class='hide-on-medium hide-on-low'><?php $lh->translateText('route'); ?></th>
+										 <th><?php $lh->translateText('action'); ?></th>
 									  </tr>
 								   </thead>
 								   <tbody>
@@ -235,9 +235,9 @@
 									   		for($i=0;$i < count($phonenumber->did_pattern);$i++){
 
 									   			if($phonenumber->active[$i] == "Y"){
-													$phonenumber->active[$i] = "Active";
+													$phonenumber->active[$i] = $lh->translationFor('active');
 												}else{
-													$phonenumber->active[$i] = "Inactive";
+													$phonenumber->active[$i] = $lh->translationFor('inactive');
 												}
 
 												if($phonenumber->did_route[$i] == "IN_GROUP"){
@@ -343,7 +343,7 @@
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="ingroup_modal">
 						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create ingroups."></i> 
-						<b>In-Group Wizard » Create New Ingroup</b>
+						<b><?php $lh->translateText("in_group_wizard"); ?> » <?php $lh->translateText("create_new_ingroup"); ?></b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
@@ -353,46 +353,46 @@
 					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
-						<h4>Group Details
+						<h4><?php $lh->translateText("group_details"); ?>
                            <br>
-                           <small>Fill up group details then assign to a user group.</small>
+                           <small><?php $lh->translateText("fill_up_group_details"); ?></small>
                         </h4>
                         <fieldset>
 							<div class="form-group mt">
-								<label class="col-sm-3 control-label" for="groupid">Group ID:</label>
+								<label class="col-sm-3 control-label" for="groupid"><?php $lh->translateText("group_id"); ?>:</label>
 								<div class="col-sm-9 mb">
-									<input type="text" name="groupid" id="groupid" class="form-control" placeholder="Group ID (Mandatory)" title="Must be 2-20 characters in length." maxlength="20" minlength="2" required>
+									<input type="text" name="groupid" id="groupid" class="form-control" placeholder="<?php $lh->translateText("group_id"); ?>" title="Must be 2-20 characters in length." maxlength="20" minlength="2" required>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label" for="groupname">Group Name</label>
+								<label class="col-sm-3 control-label" for="groupname"><?php $lh->translateText("group_name"); ?></label>
 								<div class="col-sm-9 mb">
-									<input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name (Mandatory)" title="Must be 2-20 characters in length." maxlength="20" minlength="2" required>
+									<input type="text" name="groupname" id="groupname" class="form-control" placeholder="<?php $lh->translateText("group_name"); ?>" title="Must be 2-20 characters in length." maxlength="20" minlength="2" required>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label" for="color">Group Color</label>
+								<label class="col-sm-3 control-label" for="color"><?php $lh->translateText("group_color"); ?></label>
 								<div class="col-sm-9 mb">
 						            <input type="text" class="form-control colorpicker" name="color" id="color" value="#fffff">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label" for="active">Active</label>
+								<label class="col-sm-3 control-label" for="active"><?php $lh->translateText("active"); ?></label>
 								<div class="col-sm-9 mb">
 									<select name="active" id="active" class="form-control">
-										<option value="Y" selected>Yes</option>
-										<option value="N">No</option>
+										<option value="Y" selected><?php $lh->translateText("go_yes"); ?></option>
+										<option value="N"><?php $lh->translateText("go_no"); ?></option>
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label" for="web_form">Web Form</label>
+								<label class="col-sm-3 control-label" for="web_form"><?php $lh->translateText("web"); ?></label>
 								<div class="col-sm-9 mb">
-									<input type="url" name="web_form" id="web_form" class="form-control" placeholder="Place a valid URL here... ">
+									<input type="url" name="web_form" id="web_form" class="form-control" placeholder="<?php $lh->translateText("web"); ?>">
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label" for="user_group">User Group</label>
+								<label class="col-sm-3 control-label" for="user_group"><?php $lh->translateText("user_group"); ?></label>
 								<div class="col-sm-9 mb">
 									<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
 										<?php
@@ -406,13 +406,13 @@
 								</div>
 							</div>
 						</fieldset>
-						<h4>Other Settings
+						<h4><?php $lh->translateText("other_settings"); ?>
                            <br>
-                           <small>Settings for the created group</small>
+                           <small><?php $lh->translateText("settings_for_created_group"); ?></small>
                         </h4>
                         <fieldset>
 							<div class="form-group mt">
-								<label class="col-sm-3 control-label" for="ingroup_voicemail">Voicemail</label>
+								<label class="col-sm-3 control-label" for="ingroup_voicemail"><?php $lh->translateText("voicemail"); ?></label>
 								<div class="col-sm-9 mb">
 									<select name="ingroup_voicemail" id="ingroup_voicemail" class="form-control select2-1" style="width:100%;">
 										<?php
@@ -437,7 +437,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label" for="next_agent_call">Next Agent Call</label>
+								<label class="col-sm-3 control-label" for="next_agent_call"><?php $lh->translateText("next_agent_call"); ?></label>
 								<div class="col-sm-9 mb">
 									<select name="next_agent_call" id="next_agent_call" class="form-control">
 											<option value="random"> Random </option>
@@ -454,16 +454,16 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label" for="display">Fronter Display</label>
+								<label class="col-sm-3 control-label" for="display"><?php $lh->translateText("fronter_display"); ?></label>
 								<div class="col-sm-9 mb">
 									<select name="display" id="display" class="form-control">
-										<option value="N" selected>No</option>
-										<option value="Y">Yes</option>
+										<option value="N" selected><?php $lh->translateText("go_no"); ?></option>
+										<option value="Y"><?php $lh->translateText("go_yes"); ?></option>
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label" for="script">Script</label>
+								<label class="col-sm-3 control-label" for="script"><?php $lh->translateText("script"); ?></label>
 								<div class="col-sm-9 mb">
 									<select name="script" id="script" class="form-control select2-1" style="width:100%;">
 										<option value="NONE">--- NONE --- </option>
@@ -480,7 +480,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label" for="call_launch">Get Call Launch</label>
+								<label class="col-sm-3 control-label" for="call_launch"><?php $lh->translateText("get_call_launch"); ?></label>
 								<div class="col-sm-9 mb">
 									<select name="call_launch" id="call_launch" class="form-control">
 											<option value="NONE"> NONE </option>
@@ -509,7 +509,7 @@
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="ivr_modal">
 						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create IVR."></i> 
-						<b>Call Menu Wizard » Create New Call Menu</b>
+						<b><?php $lh->translateText("call_menu_wizard"); ?> » <?php $lh->translateText("create_new_call_menu"); ?></b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
@@ -519,26 +519,26 @@
 					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
-					<h4>Call Menu Details
+					<h4><?php $lh->translateText("call_menu_details"); ?>
 					   <br>
-					   <small>Enter Call Menu Details</small>
+					   <small><?php $lh->translateText("enter_call_menu_details"); ?></small>
 					</h4>
 					<fieldset>
 						<div class="form-group mt">
-							<label class="col-sm-3 control-label" for="menu_id">Menu ID:</label>
+							<label class="col-sm-3 control-label" for="menu_id"><?php $lh->translateText("menu_id"); ?>:</label>
 							<div class="col-sm-8 mb">
-								<input type="text" name="menu_id" id="menu_id" class="form-control" placeholder="Menu ID (Mandatory)" minlength="4" title="Minimum of 4 characters" required>
+								<input type="text" name="menu_id" id="menu_id" class="form-control" placeholder="<?php $lh->translateText("menu_id"); ?>" minlength="4" title="Minimum of 4 characters" required>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="menu_name">Menu Name</label>
+							<label class="col-sm-3 control-label" for="menu_name"><?php $lh->translateText("menu_name"); ?></label>
 							<div class="col-sm-8 mb">
-								<input type="text" name="menu_name" id="menu_name" class="form-control" placeholder="Menu Name (Mandatory)" required>
+								<input type="text" name="menu_name" id="menu_name" class="form-control" placeholder="<?php $lh->translateText("menu_name"); ?>" required>
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="menu_prompt">Menu Greeting</label>
+							<label class="col-sm-3 control-label" for="menu_prompt"><?php $lh->translateText("menu_greeting"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="menu_prompt" id="menu_prompt" class="form-control select2-1" style="width:100%;">
 									<option value="goWelcomeIVR" selected>-- Default Value --</option>
@@ -554,13 +554,13 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="menu_timeout">Menu Timeout</label>
+							<label class="col-sm-3 control-label" for="menu_timeout"><?php $lh->translateText("menu_timeout"); ?></label>
 							<div class="col-sm-8 mb">
 								<input type="number" name="menu_timeout" id="menu_timeout" class="form-control" value="10" min="0" required>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="menu_timeout_prompt">Timeout Greeting</label>
+							<label class="col-sm-3 control-label" for="menu_timeout_prompt"><?php $lh->translateText("timeout_greeting"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="menu_timeout_prompt" id="menu_timeout_prompt" class="form-control select2-1" style="width:100%;">
 									<option value="" selected>-- Default Value --</option>
@@ -576,7 +576,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="menu_invalid_prompt">Invalid Greeting</label>
+							<label class="col-sm-3 control-label" for="menu_invalid_prompt"><?php $lh->translateText("invalid_greeting"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control select2-1" style="width:100%;">
 									<option value="" selected>-- Default Value --</option>
@@ -592,23 +592,23 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="menu_repeat">Menu Repeat</label>
+							<label class="col-sm-3 control-label" for="menu_repeat"><?php $lh->translateText("menu_repeat"); ?></label>
 							<div class="col-sm-8 mb">
 								<input type="number" name="menu_repeat" id="menu_repeat" class="form-control" value="2" min="0" required>
 							</div>
 						</div>
 						
 						<div class="form-group" style="display:none;">
-							<label class="col-sm-3 control-label" for="menu_time_check">Menu Time Check</label>
+							<label class="col-sm-3 control-label" for="menu_time_check"><?php $lh->translateText("menu_time_check"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="menu_time_check" id="menu_time_check" class="form-control">
-									<option value="0" > NO </option>
-									<option value="1" > YES </option>		
+									<option value="0" ><?php $lh->translateText("go_no"); ?> </option>
+									<option value="1" > <?php $lh->translateText("go_yes"); ?> </option>		
 								</select>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="call_time_id">Call Time: </label>
+							<label class="col-sm-3 control-label" for="call_time_id"><?php $lh->translateText("call_time"); ?>: </label>
 							<div class="col-sm-8 mb">
 								<select name="call_time_id" id="call_time_id" class="form-control select2-1" style="width:100%;">
 									<?php
@@ -622,7 +622,7 @@
 							</div>
 						</div>
 						<div class="form-group" style="display:none;">
-							<label class="col-sm-3 control-label" for="track_in_vdac">Track call in realtime report: </label>
+							<label class="col-sm-3 control-label" for="track_in_vdac"><?php $lh->translateText("track_call_realtime_report"); ?>: </label>
 							<div class="col-sm-8 mb"> 
 								<select name="track_in_vdac" id="track_in_vdac" class="form-control">
 									<option value="0" >0 - No Realtime Tracking</option>
@@ -631,7 +631,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="tracking_group">Tracking Group</label>
+							<label class="col-sm-3 control-label" for="tracking_group"><?php $lh->translateText("tracking_group"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="tracking_group" id="tracking_group" class="form-control select2-1" style="width:100%;">
 									<option value="CALLMENU">CALLMENU - Default</option>
@@ -648,7 +648,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="user_groups">User Groups</label>
+							<label class="col-sm-3 control-label" for="user_groups"><?php $lh->translateText("user_groups"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
 										<option value="---ALL---"> - - - ALL USER GROUPS - - - </option>
@@ -665,15 +665,15 @@
 					</fieldset>
 					
 					<!-- STEP 2 -->
-					<h4>Call Menu Entry
+					<h4><?php $lh->translateText("call_menu_entry"); ?>
 					   <br>
-					   <small>Set Default Call Menu Entry</small>
+					   <small><?php $lh->translateText("set_default_call_menu_entry"); ?></small>
 					</h4>
 					<fieldset>
 						<div class="form-group">
 							<div class="col-lg-4"><hr/></div>
 							<div class="col-lg-4 mt mb">
-								<center><strong>Add New Call Menu Options</strong></center>
+								<center><strong><?php $lh->translateText("add_new_call_options"); ?></strong></center>
 							</div>
 							<div class="col-lg-4"><hr/></div>
 						</div>
@@ -685,7 +685,7 @@
 								<div class="form-group">
 									<div class="col-lg-12">
 										<div class="col-lg-2">
-											Option:
+											<?php $lh->translateText("option"); ?>:
 											<select class="form-control route_option" name="option[]">
 												<option selected></option>
 												<?php
@@ -701,21 +701,21 @@
 											</select>
 										</div>
 										<div class="col-lg-7">
-											Desription: 
+											<?php $lh->translateText("description"); ?>: 
 											<input type="text" name="route_desc[]" id="" class="form-control route_desc_<?php echo $i;?>" placeholder="Description"/>
 										</div>
 										<div class="col-lg-3">
-											Route:
+											<?php $lh->translateText("route"); ?>:
 											<select class="form-control route_menu_<?php echo $i;?>" name="route_menu[]">
 												<option selected value=""></option>
-												<option value="CALLMENU">Call Menu / IVR</option>
-												<option value="INGROUP">In-group</option>
-												<option value="DID">DID</option>
-												<option value="HANGUP">Hangup</option>
-												<option value="EXTENSION">Custom Extension</option>
-												<option value="PHONE">Phone</option>
-												<option value="VOICEMAIL">Voicemail</option>
-												<option value="AGI">AGI</option>
+												<option value="CALLMENU"><?php $lh->translateText("call_menu_ivr"); ?></option>
+												<option value="INGROUP"><?php $lh->translateText("ingroup"); ?></option>
+												<option value="DID"><?php $lh->translateText("did"); ?></option>
+												<option value="HANGUP"><?php $lh->translateText("hangup"); ?></option>
+												<option value="EXTENSION"><?php $lh->translateText("custom_extensions"); ?></option>
+												<option value="PHONE"><?php $lh->translateText("phone"); ?></option>
+												<option value="VOICEMAIL"><?php $lh->translateText("voicemail"); ?></option>
+												<option value="AGI"><?php $lh->translateText("agi"); ?></option>
 											</select>
 										</div>
 										<div class="col-lg-1 btn-remove"></div>
@@ -725,7 +725,7 @@
 									<div class="col-lg-12 option_menu_<?php echo $i;?> mb mt">
 										<!-- CALL MENU -->
 											<div class="route_callmenu_<?php echo $i;?>" style="display:none;">
-												<label class="col-sm-3 control-label">Call Menu: </label>
+												<label class="col-sm-3 control-label"><?php $lh->translateText("call_menu"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_callmenu_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
@@ -740,7 +740,7 @@
 										<!-- IN GROUP -->
 											<div class="route_ingroup_<?php echo $i;?>" style="display:none;">
 												<div class="row mb">
-													<label class="col-sm-3 control-label">In Group: </label>
+													<label class="col-sm-3 control-label"><?php $lh->translateText("ingroup"); ?>In Group: </label>
 													<div class="col-sm-6">
 														<select class="select2-2 form-control" name="option_ingroup_value[]" style="width:100%;">
 															<option value="" selected> - - - NONE - - - </option>
@@ -754,7 +754,7 @@
 												</div>
 												<div class="col-sm-11">
 													<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-														<label class="col-sm-3 control-label">Handle Method:</label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("handle_method"); ?>:</label>
 														<div class="col-sm-7">
 															<select class="form-control" name="handle_method_<?php echo $i;?>" id="edit_handle_method_<?php echo $i;?>">
 																<option value="CID">CID</option>
@@ -778,7 +778,7 @@
 													</div>
 													<div class="row mb">
 														<div class="col-sm-7">
-															<label class="col-sm-4 control-label">Campaign ID: </label>
+															<label class="col-sm-4 control-label"><?php $lh->translateText("campaign_id"); ?>: </label>
 															<div class="col-sm-8">
 																<select class="form-control" name="campaign_id_<?php echo $i;?>" style="width:100%;">
 																<?php
@@ -790,7 +790,7 @@
 															</div>
 														</div>
 														<div class="col-sm-5 ingroup_advanced_settings_<?php echo $i;?>">
-															<label class="col-sm-5 control-label">Phone Code: </label>
+															<label class="col-sm-5 control-label"><?php $lh->translateText("phone_code"); ?>: </label>
 															<div class="col-sm-7">
 																<input type="text" class="form-control" name="phone_code<?php echo $i;?>" value="1" id="edit_phone_code_<?php echo $i;?>" maxlength="14" size="4">
 															</div>
@@ -798,7 +798,7 @@
 													</div>
 													<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
 														<div class="col-sm-7">
-															<label class="col-sm-4 control-label">Search Method:</label>
+															<label class="col-sm-4 control-label"><?php $lh->translateText("search_method"); ?>:</label>
 															<div class="col-sm-8">
 																<select class="form-control" name="search_method_<?php echo $i;?>" id="edit_search_method_<?php echo $i;?>">
 																	<option value="LB" selected="selected">LB - Load Balanced</option>
@@ -808,20 +808,20 @@
 															</div>
 														</div>
 														<div class="col-sm-5">
-															<label class="col-sm-5 control-label" for="search_method_list_id">List ID: </label>
+															<label class="col-sm-5 control-label" for="search_method_list_id"><?php $lh->translateText("list_id"); ?>: </label>
 															<div class="col-sm-7">
 																<input type="text" name="list_id_<?php echo $i;?>" value="998" id="edit_list_id_<?php echo $i;?>" class="form-control" maxlength="14" size="8">
 															</div>
 														</div>
 													</div>
 													<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-														<label class="col-sm-3 control-label">VID Digits: </label>
+														<label class="col-sm-3 control-label"><?php $lh->translateText("vid_digits"); ?>: </label>
 														<div class="col-sm-7">
 															<input type="text" class="form-control" name="vid_digits_<?php echo $i;?>" value="1" id="edit_validate_digits_<?php echo $i;?>" maxlength="3" size="3">
 														</div>
 													</div>
 													<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-														<label class="col-sm-4 control-label">VID Enter Filename: </label>
+														<label class="col-sm-4 control-label"><?php $lh->translateText("vid_enter_filename"); ?>: </label>
 														<div class="col-sm-8">
 															<div class="col-sm-6">
 																<input type="text" name="enter_filename_<?php echo $i;?>" value="sip-silence" id="edit_enter_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
@@ -840,7 +840,7 @@
 														</div>
 													</div>
 													<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-														<label class="col-sm-4 control-label">VID ID Number Filename: </label>
+														<label class="col-sm-4 control-label"><?php $lh->translateText("vid_id_number_filename"); ?>: </label>
 														<div class="col-sm-8">
 															<div class="col-sm-6">
 																<input type="text" name="id_number_filename_<?php echo $i;?>" value="sip-silence" id="edit_id_number_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
@@ -859,7 +859,7 @@
 														</div>
 													</div>
 													<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-														<label class="col-sm-4 control-label">VID Confirm Filename: </label>
+														<label class="col-sm-4 control-label"><?php $lh->translateText("vid_confirm_filename"); ?>: </label>
 														<div class="col-sm-8">
 															<div class="col-sm-6">
 																<input type="text" name="confirm_filename_<?php echo $i;?>" value="sip-silence" id="edit_confirm_filename_<?php echo $i;?>" class="form-control" maxlength="255" size="25">
@@ -881,7 +881,7 @@
 											</div>
 										<!-- DID -->
 											<div class="route_did_<?php echo $i;?>" style="display:none;">
-												<label class="col-sm-3 control-label">DID: </label>
+												<label class="col-sm-3 control-label"><?php $lh->translateText("did"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="col-sm-6 select2-2 form-control" name="option_did_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
@@ -895,7 +895,7 @@
 											</div>
 										<!-- HANGUP -->
 											<div class="route_hangup_<?php echo $i;?>" style="display:none;">
-												<label class="col-sm-3 control-label">Audio File: </label>
+												<label class="col-sm-3 control-label"><?php $lh->translateText("audio_file"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_hangup_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
@@ -911,13 +911,13 @@
 										<!-- EXTENSION -->
 											<div class="route_exten_<?php echo $i;?>" style="display:none;">
 												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Extension: </label>
+													<label class="col-sm-3 control-label"><?php $lh->translateText("extension"); ?>: </label>
 													<div class="col-sm-9">
 														<input type="text" class="form-control" name="option_extension_value[]" value="" id="option_route_value_<?php echo $i;?>" />
 													</div>
 												</div>
 												<div class="col-sm-6">
-													<label class="col-sm-3 control-label">Context: </label>
+													<label class="col-sm-3 control-label"><?php $lh->translateText("context"); ?>: </label>
 													<div class="col-sm-9">
 														<input type="text" class="form-control" name="option_route_value_context[]" value="" id="option_route_value_context_<?php echo $i;?>" />
 													</div>
@@ -925,7 +925,7 @@
 											</div>
 										<!-- PHONE -->
 											<div class="route_phone_<?php echo $i;?>" style="display:none;">
-												<label class="col-sm-3 control-label">Phone: </label>
+												<label class="col-sm-3 control-label"><?php $lh->translateText("phone"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_phone_value[]" style="width:100%;">
 														<option value="" selected> - - - NONE - - - </option>
@@ -939,7 +939,7 @@
 											</div>
 										<!-- VOICEMAIL -->
 											<div class="route_voicemail_<?php echo $i;?>" style="display:none;">
-												<label class="col-sm-3 control-label">Voicemail Box: </label>
+												<label class="col-sm-3 control-label"><?php $lh->translateText("voicemail_box"); ?>: </label>
 												<div class="col-sm-9">
 													<div class="col-sm-6">
 														<input type="text" name="option_voicemail_value[]" value="" class="form-control" id="option_voicemail_input_<?php echo $i;?>" maxlength="255" size="15">
@@ -958,7 +958,7 @@
 											</div>
 										<!-- AGI -->
 											<div class="route_agi_<?php echo $i;?>" style="display:none;">
-												<label class="col-sm-3 control-label">AGI: </label>
+												<label class="col-sm-3 control-label"><?php $lh->translateText("agi"); ?>: </label>
 												<div class="col-sm-6">
 													<input type="text" class="form-control" name="option_agi_value[]" value="" maxlength="255" size="50">
 												</div>
@@ -1006,21 +1006,21 @@
 							<div class="form-group mt">
 								<label class="col-sm-4 control-label" for="did_exten"><?php $lh->translateText('did_extension'); ?></label>
 								<div class="col-sm-8 mb">
-									<input type="text" name="did_exten" id="did_exten" class="form-control" placeholder="DID Extention (Mandatory)" maxlength="20" minlength="2" required title="Must be 2-20 characters in length." />
+									<input type="text" name="did_exten" id="did_exten" class="form-control" placeholder="<?php $lh->translateText('did_extension'); ?>" maxlength="20" minlength="2" required title="Must be 2-20 characters in length." />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="desc"><?php $lh->translateText('did_description'); ?></label>
 								<div class="col-sm-8 mb">
-									<input type="text" name="desc" id="desc" class="form-control" placeholder="DID Description (Mandatory)" maxlength="20" minlength="2" title="Must be  2-20 characters in length"  required />
+									<input type="text" name="desc" id="desc" class="form-control" placeholder="<?php $lh->translateText('did_description'); ?>" maxlength="20" minlength="2" title="Must be  2-20 characters in length"  required />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="active"><?php $lh->translateText('active'); ?></label>
 								<div class="col-sm-8 mb">
 									<select name="active" id="active" class="form-control">
-										<option value="Y" selected>Yes</option>
-										<option value="N">No</option>
+										<option value="Y" selected><?php $lh->translateText("go_yes"); ?></option>
+										<option value="N"><?php $lh->translateText("go_no"); ?></option>
 									</select>
 								</div>
 							</div>

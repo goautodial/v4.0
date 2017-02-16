@@ -164,7 +164,7 @@
 					//$('#dStatus').css("color", "#4CAF50");
 					//$('#qstatus').text("Total leads uploaded: "+res);
 					
-					var uploadMsgTotal = "Total Leads Uploaded: "+res;
+					var uploadMsgTotal = "<?php $lh->translateText('total_leads_upload'); ?>: "+res;
 					
 					swal({
 							title: "<?php $lh->translateText('data_processing_complete'); ?>",

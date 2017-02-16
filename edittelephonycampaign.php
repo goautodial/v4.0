@@ -1682,7 +1682,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</div>
 															</div>
 															<div class="form-group">
-																<label class="col-sm-3 control-label">Survey Not interested status:</label>
+																<label class="col-sm-3 control-label"><?php $lh->translateText("survey_not_interested_status"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<select id="survey_ni_status" name="survey_ni_status" class="form-control select2">
 																		<<!--option value="NI" <?php //if($campaign->data->survey_ni_status == "NI") echo "selected";?>>NI - Not Interested</option>
@@ -1916,17 +1916,17 @@ $audiofiles = $ui->API_getListAudioFiles();
 										}
 					              		</style>
 					                <tr>
-					                	<th> STATUS </th>
-										<th> STATUS NAME </th>
-										<th class="head_custom_statuses"> Selectable </th>
-										<th class="head_custom_statuses"> Human Answered </th>
-										<th class="head_custom_statuses"> Sale </th>
-										<th class="head_custom_statuses"> DNC </th>
-										<th class="head_custom_statuses"> Customer Contact </th>
-										<th class="head_custom_statuses"> Not Interested </th>
-										<th class="head_custom_statuses"> Unworkable </th>
-										<th class="head_custom_statuses"> Scheduled Callback </th>
-										<th class="head_custom_statuses"> Action </th>
+					                	<th><?php $lh->translateText("status"); ?> </th>
+										<th><?php $lh->translateText("status_name"); ?></th>
+										<th class="head_custom_statuses"> <?php $lh->translateText("selectable"); ?> </th>
+										<th class="head_custom_statuses"> <?php $lh->translateText("human_answered"); ?> </th>
+										<th class="head_custom_statuses"> <?php $lh->translateText("sale"); ?> </th>
+										<th class="head_custom_statuses"> <?php $lh->translateText("dnc"); ?> </th>
+										<th class="head_custom_statuses"> <?php $lh->translateText("customer_contact"); ?> </th>
+										<th class="head_custom_statuses"> <?php $lh->translateText("not_interested"); ?> </th>
+										<th class="head_custom_statuses"> <?php $lh->translateText("unworkable"); ?> </th>
+										<th class="head_custom_statuses"> <?php $lh->translateText("scheduled_callback"); ?> </th>
+										<th class="head_custom_statuses"> <?php $lh->translateText("action"); ?> </th>
 					                </tr>
 					            	</thead>
 					                <tbody>
@@ -2388,10 +2388,10 @@ $audiofiles = $ui->API_getListAudioFiles();
 
 					//init cancel msg
 						$(document).on('click', '#cancel_edit', function(){
-							swal("Cancelled", "No action has been done :)", "error");
+							swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?> :)", "error");
 						});
 						$(document).on('click', '#cancel', function(){
-							swal({title: "Cancelled",text: "No action has been done :)",type: "error"},function(){window.location.href = 'telephonycampaigns.php';});
+							swal({title: "Cancelled",text: "<?php $lh->translateText("cancel_msg"); ?> :)",type: "error"},function(){window.location.href = 'telephonycampaigns.php';});
 						});
 
 					//Flat red color scheme for iCheck

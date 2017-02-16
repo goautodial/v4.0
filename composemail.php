@@ -57,19 +57,15 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
     <meta charset="UTF-8">
     <title>Compose Message</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <!-- bootstrap wysihtml5 - text editor -->
-    <link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-    <!-- multiple emails plugin -->
-    <link href="css/multiple-emails/multiple-emails.css" rel="stylesheet" type="text/css" />
-    
-	<?php print $ui->standardizedThemeCSS(); ?>
 	
+	<!-- multiple emails plugin -->
+    <link href="css/multiple-emails/multiple-emails.css" rel="stylesheet" type="text/css" />
+	
+	<?php print $ui->standardizedThemeCSS(); ?>
     <?php print $ui->creamyThemeCSS(); ?>
-
+	
     <!-- Bootstrap WYSIHTML5 -->
     <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-	<!-- Forms and actions -->
-	<script src="js/jquery.validate.min.js" type="text/javascript"></script>
     <!-- Multi file upload -->
     <script src="js/plugins/multifile/jQuery.MultiFile.min.js" type="text/javascript"></script>
     <!-- Multiple emails -->
@@ -174,9 +170,12 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
     
     <!-- WYSIHTML5 edition -->
     <script type="text/javascript"> $("#compose-textarea").wysihtml5(); </script>
+	
 	<?php print $ui->standardizedThemeJS(); ?>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			$('#send_button').prop("disabled", true);
+			
 			/* initialize select2 */
 			$('.select2').select2({
 				theme: 'bootstrap'
@@ -195,17 +194,52 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 				}
 			});
 			
+			 /* if an agent is selected */
+			$('#touserid').on('change', function() {
+				var external_email = $('#external_recipients').val();
+				if(this.value !== "0") {
+					$('#send_button').attr("disabled", false);
+				}else if(external_email !== ""){
+					$('#send_button').attr("disabled", false);
+				}else{
+					$('#send_button').attr("disabled", true);
+				}
+			});
+			
+			 /* if external email is given */
+			$('#external_recipients').on('change', function() {
+				var touserid = $('#touserid').val();
+				if(this.value !== "[]") {
+					$('#send_button').attr("disabled", false);
+				}else if(touserid !== "0"){
+					$('#send_button').attr("disabled", false);
+				}else{
+					$('#send_button').attr("disabled", true);
+				}
+			});
+			
+			 /* if external email is given */
+			 $(document).on("click",".multiple_emails-close",function(e) {
+				var external_email = $('#external_recipients').val();
+				var touserid = $('#touserid').val();
+				alert(external_email);
+				
+				if(external_email !== "[]") {
+					$('#send_button').attr("disabled", false);
+				}else if(touserid !== "0"){
+					$('#send_button').attr("disabled", false);
+				}else{
+					$('#send_button').attr("disabled", true);
+				}
+			});
+			
+			
 			// send a message
 			$("#send-message-form").validate({
 				rules: {
                     mimeType: "multipart/form-data",
 					subject: "required",
-					message: "required",
-					touserid: {
-					  	required: true,
-					  	min: 1,
-						number: true
-					}
+					message: "required"
 				},
 			    messages: {
 			        touserid: "<?php $lh->translateText("you_must_choose_user"); ?>",
@@ -216,13 +250,13 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 				    var formdata = false;
 					if (window.FormData){
 						formdata = new FormData(form[0]);
-							}
+					}
 					<?php
 						$okMsg = $ui->dismissableAlertWithMessage($lh->translationFor("message_successfully_sent"), true, false);
 						$koMsg = $ui->dismissableAlertWithMessage($lh->translationFor("unable_send_message"), false, true);
 					?>
 					//submit the form
-				
+					
 					$("#compose-mail-results").html();
 					$("#compose-mail-results").hide();
 					$('#send_button').html("<i class='fa fa-envelope-o'></i> Sending. Please Wait...");
@@ -278,7 +312,15 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 				    });
 					
 					return false; //don't let the form refresh the page...
-				}					
+				}
+			});
+			
+			$('#send-message-form').on('keyup keypress', function(e) {
+				var keyCode = e.keyCode || e.which;
+				if (keyCode === 13) { 
+				  e.preventDefault();
+				  return false;
+				}
 			});
 			
 			// discard message

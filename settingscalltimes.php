@@ -133,20 +133,20 @@
 								<label class="control-label col-lg-4"><?php $lh->translateText("call_time_id"); ?></label>
 								<div class="col-lg-8 mb">
 									<label class="control-label call-time-id hide"></label>
-									<input type="text" class="form-control call-time-id-textbox" name="call_time_id" id="call_time_id" placeholder="Call Time ID (Mandatory)" title="Must be 2-10 characters only." minlength="2" maxlength="10" required>
+									<input type="text" class="form-control call-time-id-textbox" name="call_time_id" id="call_time_id" placeholder="<?php $lh->translateText("call_time_id"); ?>" title="Must be 2-10 characters only." minlength="2" maxlength="10" required>
 									<label id="calltime-duplicate-error"></label>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-lg-4"><?php $lh->translateText("call_time_name"); ?></label>
 								<div class="col-lg-8 mb">
-									<input type="text" class="form-control call-time-name" name="call_time_name" id="call_time_name" placeholder="Call Time Name (Mandatory)" maxlength="30" required>
+									<input type="text" class="form-control call-time-name" name="call_time_name" id="call_time_name" placeholder="<?php $lh->translateText("call_time_name"); ?>" maxlength="30" required>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-lg-4"><?php $lh->translateText("call_time_comments"); ?></label>
 								<div class="col-lg-8 mb">
-									<input type="text" class="form-control call-time-comments" name="call_time_comments" id="call_time_comments" placeholder="Call Time Comments (Mandatory)" maxlength="255" >
+									<input type="text" class="form-control call-time-comments" name="call_time_comments" id="call_time_comments" placeholder="<?php $lh->translateText("call_time_comments"); ?>" maxlength="255" >
 								</div>
 							</div>
 							<div class="form-group">

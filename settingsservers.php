@@ -109,33 +109,33 @@
                             <div class="form-group mt">
                                 <label class="col-sm-4 control-label" for="server_id"><?php $lh->translateText("server_id"); ?></label>
                                 <div class="col-sm-8 mb">
-                                    <input type="text" name="server_id" id="server_id" class="form-control" placeholder="Server ID" maxlength="10" title="Must be 1-10 alphanumeric characters." required>
+                                    <input type="text" name="server_id" id="server_id" class="form-control" placeholder="<?php $lh->translateText("server_id"); ?>" maxlength="10" title="Must be 1-10 alphanumeric characters." required>
                                 </div>
                             </div>
                             <div class="form-group">        
-                                <label class="col-sm-4 control-label" for="server_description"><?php $lh->translateText("server_description"); ?>Server Description</label>
+                                <label class="col-sm-4 control-label" for="server_description"><?php $lh->translateText("server_description"); ?></label>
                                 <div class="col-sm-8 mb">
-                                    <input type="text" name="server_description" id="server_description" class="form-control" placeholder="Server Description" maxlength="255" title="Must be 1-255 alphanumeric characters." required>
+                                    <input type="text" name="server_description" id="server_description" class="form-control" placeholder="<?php $lh->translateText("server_description"); ?>" maxlength="255" title="Must be 1-255 alphanumeric characters." required>
                                 </div>
                             </div>
 							<div class="form-group">        
                                 <label class="col-sm-4 control-label" for="server_ip"><?php $lh->translateText("server_ip"); ?></label>
                                 <div class="col-sm-8 mb">
-                                    <input type="text" name="server_ip" id="server_ip" class="form-control" data-inputmask="'alias': 'ip'" data-mask="" placeholder="Server IP" required>
+                                    <input type="text" name="server_ip" id="server_ip" class="form-control" data-inputmask="'alias': 'ip'" data-mask="" placeholder="<?php $lh->translateText("server_ip"); ?>" required>
 								</div>
                             </div>
                             <div class="form-group">        
                                 <label class="col-sm-4 control-label" for="server_ip"><?php $lh->translateText("asterisk_version"); ?></label>
                                 <div class="col-sm-8 mb">
-									<input type="text" class="form-control" name="asterisk_version" id="asterisk_version" maxlength="20" size="20" placeholder="Asterisk Version" required>
+									<input type="text" class="form-control" name="asterisk_version" id="asterisk_version" maxlength="20" size="20" placeholder="<?php $lh->translateText("asterisk_version"); ?>" required>
 								</div>
                             </div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="active"><?php $lh->translateText("active"); ?> </label>
 								<div class="col-sm-8 mb">
 									<select name="active" id="active" class="form-control">
-										<option value="Y" selected>Yes</option>
-										<option value="N" >No</option>
+										<option value="Y" selected><?php $lh->translateText("go_yes"); ?></option>
+										<option value="N" ><?php $lh->translateText("go_no"); ?></option>
 									</select>
 								</div>
 							</div>

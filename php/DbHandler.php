@@ -1306,6 +1306,60 @@ class DbHandler {
 	}
 	
 	/**
+	 * Sends a message from one user to another.
+	 * @param Int $fromuserid 				id of the user sending the message.
+	 * @param Int $touserid 				id of the user to send the message to.
+	 * @param String $subject 				A valid RFC 2047 subject. See http://www.faqs.org/rfcs/rfc2047
+	 * @param String $message 				body of the message to send (text/rich html).
+	 * @param Array $attachments 			array of $_FILES with the attachments.
+	 * @param String $attachmentTag		Tag that contains the attachment files in the $_FILES array.
+	 * @param Array $external_recipients 	A valid RFC 2822 recipients set. See http://www.faqs.org/rfcs/rfc2822
+	 * @return boolean 						true if successful, false otherwise
+	 */
+	public function SMTPsendMessage($fromuserid, $touserid, $subject, $message, $attachments, $external_recipients, $attachmentTag) {
+		// sanity checks
+		if (empty($fromuserid) || empty($touserid)) return false;
+		if (empty($subject)) $subject = "(".$this->lh->translationFor("no_subject").")";
+		if (empty($message)) $message = "(".$this->lh->translationFor("no_message").")";
+		
+		// first send to external recipients (if any), because we are moving them later with the call to move_uploaded_file.
+		if (!empty($external_recipients)) {
+			require_once('MailHandler.php');
+			$mh = \creamy\MailHandler::getInstance();
+			$result = $mh->sendMailWithAttachments($external_recipients, $subject, $message, $attachments, $attachmentTag);
+		}
+		
+		// Now store the message in our database.
+		// try to store the inbox message for the target user. Start transaction because we could have attachments.
+		$this->dbConnector->startTransaction();		
+		// message data.
+		$data = array(
+			"user_from" => $fromuserid,
+			"user_to" => $touserid,
+			"external_recepient" => $external_recepients,
+			"subject" => $subject,
+			"message" => $message,
+			"date" => $this->dbConnector->now(),
+			"message_read" => 0,
+			"favorite" => 0
+		);
+		
+		// insert the new message in the outbox of the sending user.
+		$data["message_read"] = 1;
+		$outboxmsgid = $this->dbConnector->insert(CRM_MESSAGES_OUTBOX_TABLE_NAME, $data);
+		if (!$outboxmsgid) { $this->dbConnector->rollback(); return false; }
+	
+		// insert attachments (if any).
+		if (!$this->addAttachmentsForMessage($inboxmsgid, $outboxmsgid, $fromuserid, $touserid, $attachments, $attachmentTag)) {
+			$this->dbConnector->rollback();
+			return false;			
+		}
+		// success! commit transactions.
+		$this->dbConnector->commit();
+		return true;
+	}
+	
+	/**
 	 * Adds the attachments for a given message idenfitied by messageid, from user fromuserid and to
 	 * user touserid. This method will create a new file in the /uploads directory for each attachment
 	 * and add a link in the attachments table to both the fromuserid (in the output folder) and the

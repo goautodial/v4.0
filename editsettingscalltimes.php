@@ -463,9 +463,9 @@ if (isset($_POST["cid"])) {
 			                    <fieldset class="footer-buttons">
 			                        <div class="box-footer">
 			                           <div class="col-sm-3 pull-right">
-												<a href="settingscalltimes.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+												<a href="settingscalltimes.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> <?php $lh->translateText('cancel'); ?> </a>
 			                           	
-			                                	<button type="submit" class="btn btn-primary" id="modifyCalltimesOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+			                                	<button type="submit" class="btn btn-primary" id="modifyCalltimesOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText('update'); ?></span></button>
 											
 			                           </div>
 			                        </div>
@@ -504,7 +504,7 @@ if (isset($_POST["cid"])) {
                 });
 
                 $(document).on('click', '#cancel', function(){
-					swal("Cancelled", "No action has been done :)", "error");
+					swal(<?php $lh->translateText('cancelled'); ?>, <?php $lh->translateText('cancel_msg'); ?>, "error");
 				});
 				/** 
 				 * Modifies a telephony list

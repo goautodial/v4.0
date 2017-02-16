@@ -119,34 +119,34 @@
                                 <div class="form-group mt">
                                     <label class="col-sm-3 control-label" for="voicemail_id"><?php $lh->translateText("voicemail_id"); ?></label>
                                     <div class="col-sm-9 mb">
-                                        <input type="number" name="voicemail_id" id="voicemail_id" class="form-control" placeholder="Voicemail ID (Mandatory)" minlength="2" maxlength="10">
+                                        <input type="number" name="voicemail_id" min="1" id="voicemail_id" class="form-control" placeholder="<?php $lh->translateText("voicemail_id"); ?>" minlength="2" maxlength="10">
                                     </div>
                                 </div>
                                 <div class="form-group">        
                                     <label class="col-sm-3 control-label" for="password"><?php $lh->translateText("password"); ?> </label>
                                     <div class="col-sm-9 mb">
-                                        <input type="text" name="password" id="password" class="form-control" placeholder="Password (Mandatory)" required>
+                                        <input type="text" name="password" id="password" class="form-control" placeholder="<?php $lh->translateText("password"); ?>" required>
                                     </div>
                                 </div>
                                 <div class="form-group">        
                                     <label class="col-sm-3 control-label" for="name"><?php $lh->translateText("name"); ?></label>
                                     <div class="col-sm-9 mb">
-                                        <input type="text" name="name" id="name" class="form-control" placeholder="Name (Mandatory)" required>
+                                        <input type="text" name="name" id="name" class="form-control" placeholder="<?php $lh->translateText("name"); ?>" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label" for="active"><?php $lh->translateText("active"); ?> </label>
                                     <div class="col-sm-9 mb">
                                         <select name="active" id="active" class="form-control">
-                                            <option value="N" selected>No</option>
-                                            <option value="Y">Yes</option>
+                                            <option value="N" selected><?php $lh->translateText("go_no"); ?></option>
+                                            <option value="Y"><?php $lh->translateText("go_yes"); ?></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">        
                                     <label class="col-sm-3 control-label" for="email"><?php $lh->translateText("email"); ?> </label>
                                     <div class="col-sm-9 mb">
-                                        <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+                                        <input type="email" name="email" id="email" class="form-control" placeholder="<?php $lh->translateText("email"); ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">

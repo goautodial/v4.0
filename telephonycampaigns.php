@@ -198,24 +198,24 @@
 											   		for($i=0;$i < count($campaign->campaign_id);$i++){
 
 														if($campaign->active[$i] == "Y"){
-															$campaign->active[$i] = "Active";
+															$campaign->active[$i] = $lh->translationFor("active");
 														}else{
-															$campaign->active[$i] = "Inactive";
+															$campaign->active[$i] = $lh->translationFor("inactive");
 														}
 
-														if($campaign->dial_method[$i] == "RATIO"){
+														if($campaign->dial_method[$i] == $lh->translationFor("ratio")){
 															$dial_method = "AUTO DIAL";
 														}
 
-														if($campaign->dial_method[$i] == "MANUAL"){
+														if($campaign->dial_method[$i] == $lh->translationFor("manual")){
 															$dial_method = "MANUAL";
 														}
 
-														if($campaign->dial_method[$i] == "ADAPT_TAPERED"){
+														if($campaign->dial_method[$i] == $lh->translationFor("adapt_tempered")){
 															$dial_method = "PREDICTIVE";
 														}
 
-														if($campaign->dial_method[$i] == "INBOUND_MAN"){
+														if($campaign->dial_method[$i] == $lh->translationFor("inbound_man")){
 															$dial_method = "INBOUND MAN";
 														}
 
@@ -584,9 +584,9 @@
 				    		</fieldset>
 
 				    		<!-- STEP 2 -->
-							<h4>Additional Information
+							<h4><?php $lh->translateText("additional_information"); ?>
 	                           <br>
-	                           <small>Assign then Enter Account and Login Details</small>
+	                           <small><?php $lh->translateText("assign_then_enter_account"); ?></small>
 	                        </h4>
 	                        <fieldset>
 			    			<!--<div class="form-group">
@@ -861,14 +861,14 @@
 		                        <div class="form-group">
 		                            <label class="col-sm-3 control-label" for="status"><?php $lh->translateText("status"); ?></label>
 		                            <div class="col-sm-9 mb">
-		                                <input type="text" name="status" id="status" class="form-control" placeholder="Status (Mandatory)" minlength="1" maxlength="6" required>
+		                                <input type="text" name="status" id="status" class="form-control" placeholder="<?php $lh->translateText("status_mandatory"); ?>" minlength="1" maxlength="6" required>
 		                            	<label id="status-duplicate-error"></label>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
 		                            <label class="col-sm-3 control-label" for="status_name"><?php $lh->translateText("status_name"); ?></label>
 		                            <div class="col-sm-9 mb">
-		                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="Status Name (Mandatory)" maxlength="30" required>
+		                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="<?php $lh->translateText("status_name"); ?>" maxlength="30" required>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
@@ -1087,13 +1087,13 @@
 								<table id="lists_list" class="table table-bordered" style="width: 100%;">
 									<thead>
 										<tr>
-											<th>List ID</th>
-											<th>List Name</th>
-											<th>Description</th>
-											<th>Leads Count</th>
-											<th>Active</th>
-											<th>Last Call Date</th>
-											<th>Action</th>
+											<th><?php $lh->translateText("list_id"); ?></th>
+											<th><?php $lh->translateText("list_name"); ?></th>
+											<th><?php $lh->translateText("description"); ?></th>
+											<th><?php $lh->translateText("leads_count"); ?></th>
+											<th><?php $lh->translateText("active"); ?></th>
+											<th><?php $lh->translateText("last_call_date"); ?></th>
+											<th><?php $lh->translateText("action"); ?></th>
 										</tr>
 									</thead>
 									<tbody id="lists_data_container">
@@ -2304,7 +2304,7 @@
 
 								        	$('#campaign_form').submit();
 												} else {
-													swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("save_not"); ?>)", "error");
+													swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("save_not"); ?>", "error");
 													$('#campaign-name').val('');
 													campaign_form.children("div").steps("previous");
 													$('#add_campaign').modal('hide');

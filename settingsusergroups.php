@@ -116,13 +116,13 @@
                             <div class="form-group mt">
                                 <label class="col-sm-3 control-label" for="usergroup_id"><?php $lh->translateText("user_groups"); ?></label>
                                 <div class="col-sm-9 mb">
-                                    <input type="text" name="usergroup_id" id="usergroup_id" class="form-control" placeholder="User Group" minlength="3" maxlength="20" title="Must be 3-40 alphanumeric characters." required>
+                                    <input type="text" name="usergroup_id" id="usergroup_id" class="form-control" placeholder="<?php $lh->translateText("user_groups"); ?>" minlength="3" maxlength="20" title="Must be 3-40 alphanumeric characters." required>
                                 </div>
                             </div>
                             <div class="form-group">        
                                 <label class="col-sm-3 control-label" for="groupname"><?php $lh->translateText("group_name"); ?></label>
                                 <div class="col-sm-9 mb">
-                                    <input type="text" name="groupname" id="groupname" class="form-control" placeholder="Group Name" minlength="3" maxlength="40" title="Must be 3-40 alphanumeric characters." required>
+                                    <input type="text" name="groupname" id="groupname" class="form-control" placeholder="<?php $lh->translateText("group_name"); ?>" minlength="3" maxlength="40" title="Must be 3-40 alphanumeric characters." required>
                                 </div>
                             </div>
                             <div class="form-group">        

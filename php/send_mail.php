@@ -51,10 +51,21 @@ if ($validated == 1) {
 	//Set who the message is to be sent from
 	$mail->setFrom($fromuserid_email, $fromuserid_fullname);
 	
+	$result = $db->SMTPsendMessage($fromuserid, $touserid, $subject, $message, $_FILES, $external_recipients, "attachment");
+	
 	//Set an alternative reply-to address
 	//$mail->addReplyTo('alex@goautodial.com', 'Alex Gwapo');
+	if($external_recipients != NULL){
+		$external_recipients_filter = str_replace('"','',$external_recipients);
+		$external_recipients = explode(",", $external_recipients_filter);
+		
+		for($i=0;$i < count($external_recipients);$i++){
+			$mail->addAddress($external_recipients[$i], $external_recipients[$i]);
+		}
+	}
 	
 	//Set who the message is to be sent to
+	if($touserid_email != NULL)
 	$mail->addAddress($touserid_email, $touserid_fullname);
 	
 	//Set the subject line
@@ -73,7 +84,7 @@ if ($validated == 1) {
 	
 	//send the message, check for errors
 	if (!$mail->send()) {
-		if($touserid_email == "" || $touserid_email == NULL)
+		if($touserid_email == "" || $touserid_email == NULL || $external_recipients_filter == NULL || $external_recipients_filter == "")
 			echo "no email account";
 		else
 			echo $mail->ErrorInfo;
