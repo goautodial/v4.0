@@ -734,7 +734,7 @@
     confirm_delete_server = "Yes, delete this server!"
     
     edit_server = "Edit Server"
-    modify_server_id = "MODIFY SERVER ID :"
+    modify_server_id = "MODIFY SERVER ID"
     max_trunks = "Max Trunks"
     max_call_per_second = "Maxx Call per Second"
     balance_dialing = "Balance Dialing"

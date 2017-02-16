@@ -102,7 +102,7 @@ if (isset($_POST["id"])) {
 							$user_groups = $ui->API_goGetUserGroupsList();
 						?>
 
-				<legend><?php $lh->translateText("modify_server_id"); ?><u><?php echo $id;?></u></legend>
+				<legend><?php $lh->translateText("modify_server_id"); ?> : <u><?php echo $id;?></u></legend>
 				
 				<form id="modifyform">
 					<input type="hidden" name="modifyid" value="<?php echo $id;?>">
