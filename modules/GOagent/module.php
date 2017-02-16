@@ -870,23 +870,25 @@ EOF;
 		$useWebRTC = (strlen($rslt['value']) > 0) ? $rslt['value'] : 0;
 		$_SESSION['use_webrtc'] = $useWebRTC;
 		
-		$this->goDB->where('setting', 'GO_agent_wss');
-		$rslt = $this->goDB->getOne('settings', 'value');
-		$websocketURL = (strlen($rslt['value']) > 0) ? $rslt['value'] : "webrtc.goautodial.com";
-		
-		$this->goDB->where('setting', 'GO_agent_wss_port');
-		$rslt = $this->goDB->getOne('settings', 'value');
-		$websocketPORT = (strlen($rslt['value']) > 0) ? $rslt['value'] : "10443";
-		
-		$this->goDB->where('setting', 'GO_agent_wss_sip');
-		$rslt = $this->goDB->getOne('settings', 'value');
-		$websocketSIP = (strlen($rslt['value']) > 0) ? "{$rslt['value']}" : "'+server_ip";
-		
-		$this->goDB->where('setting', 'GO_agent_wss_sip_port');
-		$rslt = $this->goDB->getOne('settings', 'value');
-		$websocketSIPPort = "";
-		if (!preg_match("/server_ip/", $websocketSIP)) {
-			$websocketSIPPort = (strlen($rslt['value']) > 0 && $rslt['value'] > 0) ? ":{$rslt['value']}'" : "'";
+		if ($useWebRTC) {
+			$this->goDB->where('setting', 'GO_agent_wss');
+			$rslt = $this->goDB->getOne('settings', 'value');
+			$websocketURL = (strlen($rslt['value']) > 0) ? $rslt['value'] : "webrtc.goautodial.com";
+			
+			$this->goDB->where('setting', 'GO_agent_wss_port');
+			$rslt = $this->goDB->getOne('settings', 'value');
+			$websocketPORT = (strlen($rslt['value']) > 0) ? $rslt['value'] : "10443";
+			
+			$this->goDB->where('setting', 'GO_agent_wss_sip');
+			$rslt = $this->goDB->getOne('settings', 'value');
+			$websocketSIP = (strlen($rslt['value']) > 0) ? "{$rslt['value']}" : "'+server_ip";
+			
+			$this->goDB->where('setting', 'GO_agent_wss_sip_port');
+			$rslt = $this->goDB->getOne('settings', 'value');
+			$websocketSIPPort = "";
+			if (!preg_match("/server_ip/", $websocketSIP)) {
+				$websocketSIPPort = (strlen($rslt['value']) > 0 && $rslt['value'] > 0) ? ":{$rslt['value']}'" : "'";
+			}
 		}
 		
 		$phone_login = $_SESSION['phone_login'];

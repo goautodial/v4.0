@@ -1068,10 +1068,15 @@ function goGetModalUsernameValue(){
 
 function goGetInSession(type) {
 	if (phone_login.length > 0 && phone_pass.length > 0) {
-		registerPhone(phone_login, phone_pass);
+		var use_webrtc = <?=($_SESSION['use_webrtc'] ? $_SESSION['use_webrtc'] : 0)?>;
+		if (use_webrtc) {
+			registerPhone(phone_login, phone_pass);
+		}
 		
-		if (typeof phone !== 'undefined') {
-			phone.start();
+		if ((use_webrtc && typeof phone !== 'undefined') || !use_webrtc) {
+			if (use_webrtc) {
+				phone.start();
+			}
 			
 			var who = document.getElementById("modal-username").innerText;
 			var agent_session_id = document.getElementById("modal-conf-exten").innerText;
@@ -1107,7 +1112,7 @@ function goGetInSession(type) {
 			};
 			
 			checkIfConnected = setInterval(function () {
-				if (phone.isConnected()) {
+				if ((use_webrtc && phone.isConnected()) || !use_webrtc) {
 					$.ajax({
 						type: 'POST',
 						url: '<?=$goAPI?>/goBarging/goAPI.php',
@@ -1137,12 +1142,14 @@ function goGetInSession(type) {
 			}, function() {
 				clearInterval(thisTimer);
 				isMonitoring = false;
-				phone.stop();
+				if (use_webrtc) {
+					phone.stop();
+				}
 				swal.close();
 			});
 			
 			thisTimer = setInterval(function() {
-				if (phone.isConnected() && isMonitoring) {
+				if (((use_webrtc && phone.isConnected()) || !use_webrtc) && isMonitoring) {
 					var bt = $("#bTimer").html().split(':');
 					var bHour = parseInt(bt[0]);
 					var bMin = parseInt(bt[1]);
