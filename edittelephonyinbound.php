@@ -38,6 +38,10 @@ if (isset($_POST["did"])) {
 	$did = $_POST["did"];
 }
 
+if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
+	header("location: telephonyinbound.php");
+}
+
 ?>
 <html>
     <head>
@@ -203,15 +207,15 @@ if (isset($_POST["did"])) {
 													<?php
 														$status = NULL;
 														if($output->data->active == "Y"){
-															$status .= '<option value="Y" selected> Active </option>';
+															$status .= '<option value="Y" selected> '.$lh->translationFor("active").' </option>';
 														}else{
-															$status .= '<option value="Y" > Active </option>';
+															$status .= '<option value="Y" > '.$lh->translationFor("active").' </option>';
 														}
 														
 														if($output->data->active == "N"){
-															$status .= '<option value="N" selected> Inactive </option>';
+															$status .= '<option value="N" selected> '.$lh->translationFor("inactive").' </option>';
 														}else{
-															$status .= '<option value="N" > Inactive </option>';
+															$status .= '<option value="N" > '.$lh->translationFor("inactive").' </option>';
 														}
 														echo $status;
 													?>
@@ -330,15 +334,15 @@ if (isset($_POST["did"])) {
 														<?php
 														$display = NULL;
 															if($output->data->fronter_display == "Y"){
-																$display .= '<option value="Y" selected> YES </option>';
+																$display .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
 															}else{
-																$display .= '<option value="Y" > YES </option>';
+																$display .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 															}
 															
 															if($output->data->fronter_display == "N"){
-																$display .= '<option value="N" selected> NO </option>';
+																$display .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
 															}else{
-																$display .= '<option value="N" > NO </option>';
+																$display .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
 															}
 														echo $display;
 														?>
@@ -814,15 +818,15 @@ if (isset($_POST["did"])) {
 													<?php
 													$no_agent_no_queue = NULL;
 														if($output->no_agent_no_queue[$i] == "N"){
-															$no_agent_no_queue .= '<option value="N" selected> NO </option>';
+															$no_agent_no_queue .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
 														}else{
-															$no_agent_no_queue .= '<option value="N" > NO </option>';
+															$no_agent_no_queue .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
 														}
 														
 														if($output->no_agent_no_queue[$i] == "Y"){
-															$no_agent_no_queue .= '<option value="Y" selected> YES </option>';
+															$no_agent_no_queue .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
 														}else{
-															$no_agent_no_queue .= '<option value="Y" > YES </option>';
+															$no_agent_no_queue .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 														}
 
 														if($output->no_agent_no_queue[$i] == "NO_PAUSED"){
@@ -1825,15 +1829,15 @@ if (isset($_POST["did"])) {
 												<?php
 													$status = NULL;
 													if($output->data->did_active == "Y"){
-														$status .= '<option value="Y" selected> Active </option>';
+														$status .= '<option value="Y" selected> '.$lh->translationFor("active").' </option>';
 													}else{
-														$status .= '<option value="Y" > Active </option>';
+														$status .= '<option value="Y" > '.$lh->translationFor("active").' </option>';
 													}
 													
 													if($output->data->did_active == "N" || $output->data->did_active == NULL){
-														$status .= '<option value="N" selected> Inactive </option>';
+														$status .= '<option value="N" selected> '.$lh->translationFor("inactive").' </option>';
 													}else{
-														$status .= '<option value="N" > Inactive </option>';
+														$status .= '<option value="N" > '.$lh->translationFor("inactive").' </option>';
 													}
 													echo $status;
 												?>

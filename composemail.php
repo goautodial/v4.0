@@ -222,7 +222,6 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 			 $(document).on("click",".multiple_emails-close",function(e) {
 				var external_email = $('#external_recipients').val();
 				var touserid = $('#touserid').val();
-				alert(external_email);
 				
 				if(external_email !== "[]") {
 					$('#send_button').attr("disabled", false);

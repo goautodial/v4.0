@@ -140,7 +140,7 @@ if (isset($_POST["cid"])) {
 						<div class="form-group">
 							<label for="carrier_description" class="col-sm-2 control-label"><?php $lh->translateText("carrier_description"); ?></label>
 							<div class="col-sm-10 mb">
-								<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="Carrier Description" value="<?php echo $output->data->carrier_description;?>">
+								<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="<?php $lh->translateText("carrier_description") ?>" value="<?php echo $output->data->carrier_description;?>">
 							</div>
 						</div>
 						<!--
@@ -324,15 +324,15 @@ if (isset($_POST["cid"])) {
 											<?php
 												$active = NULL;
 												if($output->data->active == "Y"){
-													$active .= '<option value="Y" selected> YES </option>';
+													$active .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
 												}else{
-													$active .= '<option value="Y" > YES </option>';
+													$active .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 												}
 												
 												if($output->data->active == "N" || $output->data->active == NULL){
-													$active .= '<option value="N" selected> NO </option>';
+													$active .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
 												}else{
-													$active .= '<option value="N" > NO </option>';
+													$active .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
 												}
 												echo $active;
 											?>
@@ -398,9 +398,9 @@ if (isset($_POST["cid"])) {
 							<fieldset class="footer-buttons">
 								<div class="box-footer">
 								   <div class="col-sm-3 pull-right">
-											<a href="settingscarriers.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+											<a href="settingscarriers.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> <?php $lh->translateText("cancel"); ?> </a>
 									
-											<button type="submit" class="btn btn-primary" id="modifyCarrierOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+											<button type="submit" class="btn btn-primary" id="modifyCarrierOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText("update"); ?></span></button>
 										
 								   </div>
 								</div>

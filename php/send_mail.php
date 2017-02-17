@@ -1,7 +1,9 @@
 <?php
-
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 include_once('smtp_settings.php');
-
+require_once('DbHandler.php');
 // check required fields
 $validated = 1;
 if (!isset($_POST["touserid"])) {
@@ -19,6 +21,7 @@ if (!isset($_POST["subject"])) {
 }
 
 if ($validated == 1) {
+	$db = new \creamy\DbHandler();
 	
 	// message parameters	
 	$touserid = $_POST["touserid"];
@@ -51,8 +54,6 @@ if ($validated == 1) {
 	//Set who the message is to be sent from
 	$mail->setFrom($fromuserid_email, $fromuserid_fullname);
 	
-	$result = $db->SMTPsendMessage($fromuserid, $touserid, $subject, $message, $_FILES, $external_recipients, "attachment");
-	
 	//Set an alternative reply-to address
 	//$mail->addReplyTo('alex@goautodial.com', 'Alex Gwapo');
 	if($external_recipients != NULL){
@@ -61,7 +62,10 @@ if ($validated == 1) {
 		
 		for($i=0;$i < count($external_recipients);$i++){
 			$mail->addAddress($external_recipients[$i], $external_recipients[$i]);
+			$result = $db->SMTPsendMessage($fromuserid, '0', $subject, $message, $_FILES, $external_recipients, "attachment");
 		}
+	}else{
+		$result = $db->SMTPsendMessage($fromuserid, $touserid, $subject, $message, $_FILES, $external_recipients, "attachment");
 	}
 	
 	//Set who the message is to be sent to

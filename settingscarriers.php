@@ -142,13 +142,13 @@
 								<div class="form-group mt">
 												<label for="carrier_id" class="col-sm-3 control-label"><?php $lh->translateText('carrier_id'); ?></label>
 												<div class="col-sm-8 mb">
-													<input type="text" class="form-control" name="carrier_id" id="carrier_id" placeholder="Carrier ID" maxlength="15" required />
+													<input type="text" class="form-control" name="carrier_id" id="carrier_id" placeholder="<?php $lh->translateText('carrier_id'); ?>" maxlength="15" required />
 												</div>
 											</div>
 								<div class="form-group">
 									<label for="carrier_name" class="col-sm-3 control-label"><?php $lh->translateText('carrier_name'); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="carrier_name" id="carrier_name" placeholder="Carrier Name" required />
+										<input type="text" class="form-control" name="carrier_name" id="carrier_name" placeholder="<?php $lh->translateText('carrier_name'); ?>" required />
 									</div>
 								</div>
 							</div>
@@ -157,7 +157,7 @@
 								<div class="form-group">
 									<label for="carrier_description" class="col-sm-3 control-label"><?php $lh->translateText('carrier_description'); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="Carrier Description" />
+										<input type="text" class="form-control" name="carrier_description" id="carrier_description" placeholder="<?php $lh->translateText('carrier_description'); ?>" />
 									</div>
 								</div>
 								<div class="form-group">
@@ -231,25 +231,25 @@ host=</textarea>
 								<div class="form-group registration_div" style="display:none;">
 									<label for="server_ip" class="col-sm-3 control-label"><?php $lh->translateText('server_ip_host'); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="reg_host" id="reg_host" placeholder="Server IP/Host" />
+										<input type="text" class="form-control" name="reg_host" id="reg_host" placeholder="<?php $lh->translateText('server_ip_host'); ?>" />
 									</div>
 								</div>
 								<div class="form-group registration_div" style="display:none;">
 									<label for="reg_port" class="col-sm-3 control-label"><?php $lh->translateText('port'); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="reg_port" id="reg_host" placeholder="Port" maxlength="10" value="5060" required />
+										<input type="text" class="form-control" name="reg_port" id="reg_host" placeholder="<?php $lh->translateText('port'); ?>" maxlength="10" value="5060" required />
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol sip_server">
 									<label for="server_ip" class="col-sm-3 control-label"><?php $lh->translateText('sip_server'); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="sip_server_ip" id="sip_server_ip" placeholder="Server IP/Host" />
+										<input type="text" class="form-control" name="sip_server_ip" id="sip_server_ip" placeholder="<?php $lh->translateText('sip_server'); ?>" />
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
 									<label for="dialprefix" class="col-sm-3 control-label"><?php $lh->translateText('dial_prefix'); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="number" class="form-control" name="dialprefix" id="dialprefix" placeholder="Dial Prefix" maxlength="15" minlength="3" min="0" required />
+										<input type="number" class="form-control" name="dialprefix" id="dialprefix" placeholder="<?php $lh->translateText('dial_prefix'); ?>" maxlength="15" minlength="3" min="0" required />
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
@@ -333,7 +333,7 @@ host=</textarea>
 									</div>
 								</div>
 								<div class="form-group custom_protocol" style="display:none;">
-									<label for="globals_string" class="col-sm-3 control-label"><?php $lh->translateText('global_string'); ?>Global String</label>
+									<label for="globals_string" class="col-sm-3 control-label"><?php $lh->translateText('global_string'); ?></label>
 									<div class="col-sm-8 mb">
 										<input type="text" name="globals_string" class="form-control" value="" id="globals_string" maxlength="255" size="50">
 									</div>
@@ -441,73 +441,73 @@ host=</textarea>
 									<div class="form-group">
 										<label for="company" class="col-sm-3 control-label"><?php $lh->translateText('justgo_company'); ?></label>
 										<div class="col-sm-8 mb">
-											<input type="text" class="form-control" id="company" name="company" placeholder="Company" required />
+											<input type="text" class="form-control" id="company" name="company" placeholder="<?php $lh->translateText('justgo_company'); ?>" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="firstname" class="col-sm-3 control-label"><?php $lh->translateText('carrier_first_name'); ?></label>
 										<div class="col-sm-8 mb">
-											<input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" required />
+											<input type="text" class="form-control" id="firstname" name="firstname" placeholder="<?php $lh->translateText('first_name'); ?>" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="lastname" class="col-sm-3 control-label"><?php $lh->translateText('carrier_last_name'); ?></label>
 										<div class="col-sm-8 mb">
-											<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" required />
+											<input type="text" class="form-control" id="lastname" name="lastname" placeholder="<?php $lh->translateText('last_name'); ?>" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="address" class="col-sm-3 control-label"><?php $lh->translateText('address'); ?></label>
 										<div class="col-sm-8 mb">
-											<input type="text" class="form-control" id="address" name="address" placeholder="Address" required />
+											<input type="text" class="form-control" id="address" name="address" placeholder="<?php $lh->translateText('address'); ?>" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="city" class="col-sm-3 control-label"><?php $lh->translateText('city'); ?></label>
 										<div class="col-sm-8 mb">
-											<input type="text" class="form-control" id="city" name="city" placeholder="City" required />
+											<input type="text" class="form-control" id="city" name="city" placeholder="<?php $lh->translateText('city'); ?>" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="state" class="col-sm-3 control-label"><?php $lh->translateText('state'); ?></label>
 										<div class="col-sm-8 mb">
-											<input type="text" class="form-control" id="state" name="state" placeholder="State" required />
+											<input type="text" class="form-control" id="state" name="state" placeholder="<?php $lh->translateText('state'); ?>" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="postal" class="col-sm-3 control-label"><?php $lh->translateText('postal_code'); ?></label>
 										<div class="col-sm-8 mb">
-											<input type="text" class="form-control" id="postal" name="postal" placeholder="Postal Code" required />
+											<input type="text" class="form-control" id="postal" name="postal" placeholder="<?php $lh->translateText('postal_code'); ?>" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="country" class="col-sm-3 control-label"><?php $lh->translateText('country'); ?></label>
 										<div class="col-sm-8 mb">
-											<input type="text" class="form-control" id="country" name="country" placeholder="Country" required />
+											<input type="text" class="form-control" id="country" name="country" placeholder="<?php $lh->translateText('country'); ?>" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="timezone" class="col-sm-3 control-label"><?php $lh->translateText('time_zone'); ?></label>
 										<div class="col-sm-8 mb">
-											<input type="text" class="form-control" id="timezone" name="timezone" placeholder="Time Zone" required />
+											<input type="text" class="form-control" id="timezone" name="timezone" placeholder="<?php $lh->translateText('time_zone'); ?>" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="phone" class="col-sm-3 control-label"><?php $lh->translateText('phones'); ?></label>
 										<div class="col-sm-8 mb">
-											<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" required />
+											<input type="text" class="form-control" id="phone" name="phone" placeholder="<?php $lh->translateText('phones'); ?>" required />
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="mobilephone" class="col-sm-3 control-label"><?php $lh->translateText('mobile_phones'); ?>Mobile Phone</label>
+										<label for="mobilephone" class="col-sm-3 control-label"><?php $lh->translateText('mobile_phones'); ?></label>
 										<div class="col-sm-8 mb">
-											<input type="text" class="form-control" id="mobilephone" name="mobilephone" placeholder="Mobile Phone" required />
+											<input type="text" class="form-control" id="mobilephone" name="mobilephone" placeholder="<?php $lh->translateText('mobile_phones'); ?>" required />
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="email" class="col-sm-3 control-label"><?php $lh->translateText('email'); ?></label>
 										<div class="col-sm-8 mb">
-											<input type="text" class="form-control" id="email" name="email" placeholder="Email" required />
+											<input type="text" class="form-control" id="email" name="email" placeholder="<?php $lh->translateText('email'); ?>" required />
 										</div>
 									</div>
 								</fieldset>
@@ -630,8 +630,8 @@ host=</textarea>
 		</div>
 	      </div>
 	      <div class="modal-footer">
-		<button type="button" class="btn btn-primary btn-update-calltime" data-id="">Modify</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-primary btn-update-calltime" data-id=""><?php $lh->translateText("modify"); ?></button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
 	      </div>
 	    </div>
 	    <!-- End of modal content -->

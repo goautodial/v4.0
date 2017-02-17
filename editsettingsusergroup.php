@@ -145,15 +145,15 @@ if (isset($_POST["usergroup_id"])) {
 												<?php
 													$forced_timeclock_login = NULL;
 													if($output->data->forced_timeclock_login == "N"){
-														$forced_timeclock_login .= '<option value="N" selected> NO </option>';
+														$forced_timeclock_login .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
 													}else{
-														$forced_timeclock_login .= '<option value="N" > NO </option>';
+														$forced_timeclock_login .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
 													}
 													
 													if($output->data->forced_timeclock_login == "Y"){
-														$forced_timeclock_login .= '<option value="Y" selected> YES </option>';
+														$forced_timeclock_login .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
 													}else{
-														$forced_timeclock_login .= '<option value="Y" > YES </option>';
+														$forced_timeclock_login .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 													}
 
 													if($output->data->forced_timeclock_login == "ADMIN_EXEMPT"){

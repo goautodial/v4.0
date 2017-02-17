@@ -749,6 +749,10 @@ rebuild_conf_files = "Rebuild Conf Files"
 rebuild_moh = "Rebuild Music On Hold"
 server_modify_success = "Server Modified Successfully"
 server_updated = "Server is now Updated"
+recorder_web_link = "Recorded Web Link"
+alt_recording_server_ip = "Alt Recording Server IP"
+external_server_ip = "External Server IP"
+
 
 phone_numbers = "Phone Numbers"
 did_wizard = "DID Wizard"

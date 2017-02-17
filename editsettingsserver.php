@@ -141,15 +141,15 @@ if (isset($_POST["id"])) {
 									<?php
 										$active = NULL;
 										if($output->data->active == "Y"){
-											$active .= '<option value="Y" selected> YES </option>';
+											$active .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
 										}else{
-											$active .= '<option value="Y" > YES </option>';
+											$active .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 										}
 										
 										if($output->data->active == "N" || $output->data->active == NULL){
-											$active .= '<option value="N" selected> NO </option>';
+											$active .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
 										}else{
-											$active .= '<option value="N" > NO </option>';
+											$active .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
 										}
 										echo $active;
 									?>
@@ -198,8 +198,8 @@ if (isset($_POST["id"])) {
                                 <label class="col-sm-2 control-label" for="vicidial_balance_active"><?php $lh->translateText("balance_dialing"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="vicidial_balance_active" id="vicidial_balance_active" class="form-control">
-										<option value="N" <?php if($output->data->vicidial_balance_active == "N")echo "selected"; ?> >NO</option>
-										<option value="Y" <?php if($output->data->vicidial_balance_active == "Y")echo "selected"; ?> >YES</option>
+										<option value="N" <?php if($output->data->vicidial_balance_active == "N")echo "selected"; ?> ><?php $lh->translateText("go_no"); ?></option>
+										<option value="Y" <?php if($output->data->vicidial_balance_active == "Y")echo "selected"; ?> ><?php $lh->translateText("go_yes"); ?></option>
 									</select>
 								</div>
                             </div>
@@ -246,8 +246,8 @@ if (isset($_POST["id"])) {
                                 <label class="col-sm-2 control-label" for="generate_vicidial_conf"><?php $lh->translateText("generate_conf_files"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="generate_vicidial_conf" id="generate_vicidial_conf" class="form-control">
-										<option value="Y" <?php if($output->data->generate_vicidial_conf == "Y")echo "selected"; ?> >YES</option>
-										<option value="N" <?php if($output->data->generate_vicidial_conf == "N")echo "selected"; ?> >NO</option>
+										<option value="Y" <?php if($output->data->generate_vicidial_conf == "Y")echo "selected"; ?> ><?php $lh->translateText("go_yes"); ?></option>
+										<option value="N" <?php if($output->data->generate_vicidial_conf == "N")echo "selected"; ?> ><?php $lh->translateText("go_no"); ?></option>
 									</select>
 								</div>
                             </div>
@@ -255,22 +255,22 @@ if (isset($_POST["id"])) {
                                 <label class="col-sm-2 control-label" for="rebuild_conf_files"><?php $lh->translateText("rebuild_conf_files"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="rebuild_conf_files" id="rebuild_conf_files" class="form-control">
-										<option value="N" <?php if($output->data->rebuild_conf_files == "N")echo "selected"; ?> >NO</option>
-										<option value="Y" <?php if($output->data->rebuild_conf_files == "Y")echo "selected"; ?> >YES</option>
+										<option value="N" <?php if($output->data->rebuild_conf_files == "N")echo "selected"; ?> ><?php $lh->translateText("go_no"); ?></option>
+										<option value="Y" <?php if($output->data->rebuild_conf_files == "Y")echo "selected"; ?> ><?php $lh->translateText("go_yes"); ?></option>
 									</select>
 								</div>
                             </div>
 							<div class="row form-group mt">        
-                                <label class="col-sm-2 control-label" for="rebuild_music_on_hold">Rebuild Music On Hold</label>
+                                <label class="col-sm-2 control-label" for="rebuild_music_on_hold"><?php $lh->translateText("rebuild_moh"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="rebuild_music_on_hold" id="rebuild_music_on_hold" class="form-control">
-										<option value="N" <?php if($output->data->rebuild_music_on_hold == "N")echo "selected"; ?> >NO</option>
-										<option value="Y" <?php if($output->data->rebuild_music_on_hold == "Y")echo "selected"; ?> >YES</option>
+										<option value="N" <?php if($output->data->rebuild_music_on_hold == "N")echo "selected"; ?> ><?php $lh->translateText("go_no"); ?></option>
+										<option value="Y" <?php if($output->data->rebuild_music_on_hold == "Y")echo "selected"; ?> ><?php $lh->translateText("go_yes"); ?></option>
 									</select>
 								</div>
                             </div>
 							<div class="row form-group mt">        
-                                <label class="col-sm-2 control-label" for="recording_web_link">Recording Web Link</label>
+                                <label class="col-sm-2 control-label" for="recording_web_link"><?php $lh->translateText("recording_web_link"); ?></label>
                                 <div class="col-sm-10 mb">
 									<select name="recording_web_link" id="recording_web_link" class="form-control">
 										<option value="SERVER_IP" <?php if($output->data->recording_web_link == "SERVER_IP")echo "selected"; ?> >Server IP</option>
@@ -280,13 +280,13 @@ if (isset($_POST["id"])) {
 								</div>
                             </div>
 							<div class="row form-group mt">        
-                                <label class="col-sm-2 control-label" for="alt_server_ip">Alt Recording Server IP</label>
+                                <label class="col-sm-2 control-label" for="alt_server_ip"><?php $lh->translateText("alt_recording_server_ip"); ?></label>
                                 <div class="col-sm-10 mb">
 									<input type="text" class="form-control" name="alt_server_ip" value="<?php echo $output->data->alt_server_ip; ?>" id="alt_server_ip" maxlength="100">
 								</div>
                             </div>
 							<div class="row form-group mt">        
-                                <label class="col-sm-2 control-label" for="external_server_ip">External Server IP</label>
+                                <label class="col-sm-2 control-label" for="external_server_ip"><?php $lh->translateText("external_erver_ip"); ?></label>
                                 <div class="col-sm-10 mb">
 									<input type="text" class="form-control" name="external_server_ip" value="<?php echo $output->data->external_server_ip; ?>" id="external_server_ip" maxlength="100">
 								</div>
@@ -297,8 +297,8 @@ if (isset($_POST["id"])) {
 						<fieldset class="footer-buttons">
 							<div class="box-footer">
 								<div class="col-sm-3 pull-right">
-									<a href="settingsservers.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-									<button type="submit" class="btn btn-primary" id="modifyButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>		
+									<a href="settingsservers.php" type="button" class="btn btn-danger"><i class="fa fa-close"></i><?php $lh->translateText("cancel"); ?> </a>
+									<button type="submit" class="btn btn-primary" id="modifyButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText("update"); ?></span></button>		
 								</div>
 							</div>
 						</fieldset>

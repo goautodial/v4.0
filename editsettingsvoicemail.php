@@ -160,15 +160,15 @@ if (isset($_POST["vmid"])) {
 												<?php
 													$active = NULL;
 													if($output->active[$i] == "Y"){
-														$active .= '<option value="Y" selected> YES </option>';
+														$active .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
 													}else{
-														$active .= '<option value="Y" > YES </option>';
+														$active .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 													}
 													
 													if($output->active[$i] == "N" || $output->active[$i] == NULL){
-														$active .= '<option value="N" selected> NO </option>';
+														$active .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
 													}else{
-														$active .= '<option value="N" > NO </option>';
+														$active .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
 													}
 													echo $active;
 												?>
@@ -182,15 +182,15 @@ if (isset($_POST["vmid"])) {
 												<?php
 													$delete_vm_after_email = NULL;
 													if($output->delete_vm_after_email[$i] == "Y"){
-														$delete_vm_after_email .= '<option value="Y" selected> YES </option>';
+														$delete_vm_after_email .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
 													}else{
-														$delete_vm_after_email .= '<option value="Y" > YES </option>';
+														$delete_vm_after_email .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 													}
 													
 													if($output->delete_vm_after_email[$i] == "N" || $output->delete_vm_after_email[$i] == NULL){
-														$delete_vm_after_email .= '<option value="N" selected> NO </option>';
+														$delete_vm_after_email .= '<option value="N" selected>'.$lh->translationFor("go_no").'</option>';
 													}else{
-														$delete_vm_after_email .= '<option value="N" > NO </option>';
+														$delete_vm_after_email .= '<option value="N" > '.$lh->translationFor("go_no").'</option>';
 													}
 													echo $delete_vm_after_email;
 												?>
