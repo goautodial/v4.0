@@ -1306,7 +1306,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<label class="col-sm-3 control-label" for="user_group"><?php $lh->translateText("user_groups"); ?>: </label>
 													<div class="col-sm-9">
 														<select id="user_group" class="form-control select2" name="user_group" style="width:100%;">
-																<option value="---ALL---" <?php if($output->data->user_group == "---ALL---"){echo "selected";}?> > - - - ALL USER GROUPS - - - </option>
+																<option value="---ALL---" <?php if($output->data->user_group == "---ALL---"){echo "selected";}?> > <?php $lh->translateText("all_usergroups"); ?> </option>
 															<?php
 																for($i=0;$i<count($user_groups->user_group);$i++){
 															?>
@@ -2370,7 +2370,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 
 				//an ingroup
 				$('#modifyInboundOkButton').click(function(){
-					$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+					$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 					$('#modifyInboundOkButton').prop("disabled", true);
 
 					$.ajax({
@@ -2384,7 +2384,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 								window.setTimeout(function(){location.replace("./telephonyinbound.php");},2000);
 							} else {
 								sweetAlert("<?php $lh->translateText("oups"); ?>","<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
-								$('#update_button').html("<i class='fa fa-check'></i> Update");
+								$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 								$('#modifyInboundOkButton').prop("disabled", false);
 							}
                         }

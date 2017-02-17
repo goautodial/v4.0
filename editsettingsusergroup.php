@@ -350,7 +350,7 @@ if (isset($_POST["usergroup_id"])) {
 				$("#modifyvoicemail").validate({
                 	submitHandler: function() {
 						//submit the form
-							$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+							$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 							$('#modifyUserGroupOkButton').prop("disabled", true);
 
 							$("#resultmessage").html();
@@ -363,11 +363,11 @@ if (isset($_POST["usergroup_id"])) {
 									if (data == 1) {
 										swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("usergroup_modify_success"); ?>", "success");
                                         //window.setTimeout(function(){location.reload()},2000);
-                                        $('#update_button').html("<i class='fa fa-check'></i> Update");
+                                        $('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
                                         $('#modifyUserGroupOkButton').prop("disabled", false);
 									} else {
 										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
-										$('#update_button').html("<i class='fa fa-check'></i> Update");
+										$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?> ");
 										$('#modifyUserGroupOkButton').prop("disabled", false);
 									}
 									//

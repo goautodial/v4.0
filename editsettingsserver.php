@@ -160,7 +160,7 @@ if (isset($_POST["id"])) {
 								<label class="col-sm-2 control-label" for="user_group"><?php $lh->translateText("user_groups"); ?></label>
 								<div class="col-sm-10 mb">
 									<select id="user_group" class="form-control select2" name="user_group" style="width:100%;">
-										<option value="---ALL---" <?php if($output->data->user_group == "---ALL---")echo "selected";?> >ALL USERGROUPS</option>
+										<option value="---ALL---" <?php if($output->data->user_group == "---ALL---")echo "selected";?> ><?php $lh->translateText("all_usergroups"); ?></option>
 										<?php
 											for($i=0;$i<count($user_groups->user_group);$i++){
 										?>
@@ -286,7 +286,7 @@ if (isset($_POST["id"])) {
 								</div>
                             </div>
 							<div class="row form-group mt">        
-                                <label class="col-sm-2 control-label" for="external_server_ip"><?php $lh->translateText("external_erver_ip"); ?></label>
+                                <label class="col-sm-2 control-label" for="external_server_ip"><?php $lh->translateText("external_server_ip"); ?></label>
                                 <div class="col-sm-10 mb">
 									<input type="text" class="form-control" name="external_server_ip" value="<?php echo $output->data->external_server_ip; ?>" id="external_server_ip" maxlength="100">
 								</div>
@@ -352,20 +352,20 @@ if (isset($_POST["id"])) {
 			$("#modifyform").validate({
 				submitHandler: function() {
 					//submit the form
-						$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+						$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 						$('#modifyButton').attr("disabled", true);
 
 						$.post("./php/ModifyServer.php", //post
 						$("#modifyform").serialize(), 
 							function(data){
 								//if message is sent
-								$('#update_button').html("<i class='fa fa-check'></i> Update");
+								$('#update_button').html("<i class='fa fa-check'></i><?php $lh->translateText("update"); ?>");
 								$('#modifyButton').attr("disabled", false);
 								
 								if (data == "success") {
-									sweetAlert({title: "<?php $lh->translateText("server_modify_success"); ?>",text: "<?php $lh->translateText("server_updated"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
+									swal({title: "<?php $lh->translateText("server_modify_success"); ?>",text: "<?php $lh->translateText("server_updated"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
 								} else {
-									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
+									swal("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 								}
 								//
 							});

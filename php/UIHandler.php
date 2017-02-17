@@ -4007,7 +4007,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $output = $this->API_goGetAllMusicOnHold();
 
 	    # Result was OK!
-	    $columns = array("MOH Name", "Status", "Random Order", "Group", "Actions");
+	    $columns = array($this->lh->translationFor('moh_name'), $this->lh->translationFor('status'), $this->lh->translationFor('random_order'), $this->lh->translationFor('group'), $this->lh->translationFor('action'));
 	    $hideOnMedium = array("Random Order", "Group", "Status");
 		$hideOnLow = array( "Random Order", "Group", "Status");
 	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
@@ -4092,7 +4092,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$output = $this->API_GetVoiceFilesList();
 	    if ($output->result=="success") {
 	    # Result was OK!
-	    $columns = array("File Name", "Date", "Actions");
+	    $columns = array($this->lh->translationFor('file_name'), $this->lh->translationFor('date'), $this->lh->translationFor('action'));
 	    $hideOnMedium = array("Date");
 		$hideOnLow = array( "Date");
 
@@ -4190,7 +4190,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    if ($output->result=="success") {
 	    # Result was OK!
-	    $columns = array($this->lh->translationFor("script_id"), $this->lh->translationFor("script_name"), $this->lh->translationFor("status"), $this->lh->translationFor("type"), $this->lh->translationFor("user_group"), $this->lh->translationFor("actions"));
+	    $columns = array($this->lh->translationFor("script_id"), $this->lh->translationFor("script_name"), $this->lh->translationFor("status"), $this->lh->translationFor("type"), $this->lh->translationFor("user_group"), $this->lh->translationFor("action"));
 	    $hideOnMedium = array($this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
 	    $hideOnLow = array($this->lh->translationFor("script_id"), $this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
 

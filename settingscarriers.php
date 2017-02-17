@@ -399,8 +399,8 @@ host=</textarea>
 										<select class="form-control" name="active" id="active">
 										<?php
 											$active = NULL;
-												$active .= '<option value="Y" > YES </option>';
-												$active .= '<option value="N" > NO </option>';
+												$active .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
+												$active .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
 											echo $active;
 										?>
 										</select>
@@ -711,7 +711,7 @@ host=</textarea>
 						return form.valid();
 					},
 					onFinished: function (){
-						$('#finish').text("Loading...");
+						$('#finish').text("<?php $lh->translateText("loading"); ?>");
 						$('#finish').attr("disabled", true);
 	
 						// Submit form via ajax
@@ -721,7 +721,7 @@ host=</textarea>
 							data: $("#create_form").serialize(),
 							success: function(data) {
 							   console.log(data);
-								$('#finish').text("Submit");
+								$('#finish').text("<?php $lh->translateText("submit"); ?>");
 								$('#finish').attr("disabled", false);
 								
 								if(data == 1){
@@ -815,7 +815,7 @@ host=</textarea>
 									dataType: 'json',
 									success: function(data) {
 										if(data == 1){
-											swal("Deleted!", "<?php $lh->translateText("carrier_delete_success"); ?>", "success");
+											swal("<?php $lh->translateText("deleted"); ?>", "<?php $lh->translateText("carrier_delete_success"); ?>", "success");
                                             window.setTimeout(function(){location.reload();},1000);
 										}else{
 											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");

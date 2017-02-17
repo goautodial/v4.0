@@ -202,7 +202,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-lg-4"><?php $lh->translateText("user_group"); ?></label>
+				<label class="control-label col-lg-4"><?php $lh->translateText("user_group"); ?>:</label>
 				<div class="col-lg-7">
 					<select class="form-control moh_user_group select2-1" style="width:100%;" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 						<?php
@@ -216,7 +216,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-lg-4"><?php $lh->translateText("random_order"); ?></label>
+				<label class="control-label col-lg-4"><?php $lh->translateText("random_order"); ?>:</label>
 				<div class="col-lg-5">
 					<select class="form-control moh_rand_order" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 						<option value="Y">Yes</option>
@@ -271,21 +271,21 @@
 	                        <div class="form-group">
 	                            <label class="col-sm-4 control-label" for="moh_id"><?php $lh->translateText("moh_id"); ?></label>
 	                            <div class="col-sm-8 mb">
-	                                <input type="text" name="moh_id" id="moh_id" class="form-control" placeholder="Music on Hold ID (Mandatory)" required />
+	                                <input type="text" name="moh_id" id="moh_id" class="form-control" placeholder="<?php $lh->translateText("music_onhold_id"); ?>" required />
 	                            </div>
 	                        </div>
 	                        <div class="form-group">
 	                            <label class="col-sm-4 control-label" for="moh_name"><?php $lh->translateText("moh_name"); ?></label>
 	                            <div class="col-sm-8 mb">
-	                                <input type="text" name="moh_name" id="moh_name" class="form-control" placeholder="Music On Hold Name (Mandatory)" required />
+	                                <input type="text" name="moh_name" id="moh_name" class="form-control" placeholder="<?php $lh->translateText("music_onhold_name"); ?>" required />
 	                            </div>
 	                        </div>
 	                        <div class="form-group">
 	                            <label class="col-sm-4 control-label" for="active"><?php $lh->translateText("status"); ?>: </label>
 	                            <div class="col-sm-8 mb">
 	                                <select name="active" id="active" class="form-control">
-	                                    <option value="N" selected>INACTIVE</option>
-	                                    <option value="Y">ACTIVE</option>
+	                                    <option value="N" selected><?php $lh->translateText("inactive"); ?></option>
+	                                    <option value="Y"><?php $lh->translateText("active"); ?></option>
 	                                </select>
 	                            </div>
 	                        </div>
@@ -308,8 +308,8 @@
 	                            <label class="col-sm-4 control-label" for="random"><?php $lh->translateText("random_order"); ?>: </label>
 	                            <div class="col-sm-8 mb">
 	                                <select name="random" id="random" class="form-control">
-	                                    <option value="N" selected>NO</option>
-	                                    <option value="Y">YES</option>
+	                                    <option value="N" selected><?php $lh->translateText("go_no"); ?></option>
+	                                    <option value="Y"><?php $lh->translateText("go_yes"); ?></option>
 	                                </select>
 	                            </div>
 	                        </div>
@@ -383,7 +383,7 @@
 		    				<div class="col-lg-12">
 		    					<div class="form-group mt">
 		    						<div class="input-group">
-		    					      	<input type="text" class="form-control voice_file_holder" placeholder="Choose a file" required>
+		    					      	<input type="text" class="form-control voice_file_holder" placeholder="<?php $lh->translateText("choose_a_file"); ?>" required>
 		    					      	<span class="input-group-btn">
 		    					        	<button class="btn btn-default btn-browse-file" type="button"><?php $lh->translateText("browse"); ?></button>
 		    					     	</span>

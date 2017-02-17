@@ -258,7 +258,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 														<th><?php $lh->translateText("status"); ?></th>
 														<th><?php $lh->translateText("description"); ?></th>
 														<th><?php $lh->translateText("called"); ?></th>
-														<th><?php $lh->translateText("not_callerd"); ?></th>
+														<th><?php $lh->translateText("not_called"); ?></th>
 													</tr>
 												</thead>
 												<tbody>

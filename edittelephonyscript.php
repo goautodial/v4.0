@@ -132,7 +132,7 @@ if (isset($_POST["script_id"])) {
 					</div>
 				</div>
 				<div class="form-group mt">
-					<label for="script_comments" class="col-sm-2 control-label"><?php $lh->translateText("script_comments"); ?></label>
+					<label for="script_comments" class="col-sm-2 control-label"><?php $lh->translateText("script_comment"); ?></label>
 					<div class="col-sm-10 mb">
 						<input type="text" class="form-control" name="script_comments" id="script_comments" placeholder="<?php $lh->translateText("script_comments"); ?>" value="<?php echo $output->script_comments[$i];?>">
 					</div>

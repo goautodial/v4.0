@@ -140,10 +140,10 @@
 								</div>
 							</div>
 							<div class="form-group mt">
-								<label class="col-sm-4 control-label" for="user_group"><?php $lh->translateText("userp_groups"); ?></label>
+								<label class="col-sm-4 control-label" for="user_group"><?php $lh->translateText("user_groups"); ?></label>
 								<div class="col-sm-8 mb">
 									<select id="user_group" class="form-control select2" name="user_group" style="width:100%;">
-										<option value="---ALL---">ALL USERGROUPS</option>
+										<option value="---ALL---"><?php $lh->translateText("all_usergroups"); ?></option>
 										<?php
 											for($i=0;$i<count($user_groups->user_group);$i++){
 										?>
@@ -228,7 +228,7 @@
 							},
 							onFinished: function (event, currentIndex)
 							{
-								$('#finish').text("Loading...");
+								$('#finish').text("<?php $lh->translateText("loading"); ?>");
 								$('#finish').attr("disabled", true);
 		
 								// Submit form via ajax
@@ -238,7 +238,7 @@
 										data: $("#create_server").serialize(),
 										success: function(data) {
 										  // console.log(data);
-										$('#finish').text("Submit");
+										$('#finish').text("<?php $lh->translateText("submit"); ?>");
 										$('#finish').attr("disabled", false);
 											if(data == "success"){
 												swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_server_success"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
@@ -293,7 +293,7 @@
 										success: function(data) {
 										console.log(data);
 											if(data == "success"){
-												swal({title: "Deleted",text: "<?php $lh->translateText("server_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
+												swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("server_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
 											}else{
 												sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 											}

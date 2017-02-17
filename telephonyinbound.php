@@ -244,7 +244,7 @@
 													$phonenumber->did_route[$i] = "IN-GROUP";
 												}
 												if($phonenumber->did_route[$i] == "EXTENSION"){
-													$phonenumber->did_route[$i] = "CUSTOM EXTENSIONSION";
+													$phonenumber->did_route[$i] = "CUSTOM EXTENSION";
 												}
 
 											$action_DID = $ui->getUserActionMenuForDID($phonenumber->did_id[$i], $phonenumber->did_description[$i], $perm);
@@ -418,11 +418,11 @@
 										<?php
 											if($voicemails == NULL){
 										?>
-											<option value="" selected>--No Voicemails Available--</option>
+											<option value="" selected><?php $lh->translateText('no_voicemail_available'); ?></option>
 										<?php
 											}else{
 										?>
-											<option value="" selected>--- NONE ---</option>
+											<option value="" selected><?php $lh->translateText('none'); ?></option>
 										<?php
 											for($i=0;$i<count($voicemails->voicemail_id);$i++){
 										?>
@@ -466,7 +466,7 @@
 								<label class="col-sm-3 control-label" for="script"><?php $lh->translateText("script"); ?></label>
 								<div class="col-sm-9 mb">
 									<select name="script" id="script" class="form-control select2-1" style="width:100%;">
-										<option value="NONE">--- NONE --- </option>
+										<option value="NONE"><?php $lh->translateText("none"); ?></option>
 										<?php
 											for($i=0;$i<count($scripts->script_id);$i++){
 										?>
@@ -651,7 +651,7 @@
 							<label class="col-sm-3 control-label" for="user_groups"><?php $lh->translateText("user_groups"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
-										<option value="---ALL---"> - - - ALL USER GROUPS - - - </option>
+										<option value="---ALL---"><?php $lh->translateText("all_usergroups"); ?></option>
 									<?php
 										for($i=0;$i<count($user_groups->user_group);$i++){
 									?>
@@ -728,7 +728,7 @@
 												<label class="col-sm-3 control-label"><?php $lh->translateText("call_menu"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_callmenu_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
+														<option value="" selected><?php $lh->translateText("none"); ?></option>
 													<?php
 														for($x=0;$x < count($ivr->menu_id);$x++){
 															echo "<option value=".$ivr->menu_id[$x].">".$ivr->menu_id[$x]." - ".$ivr->menu_name[$x]."</option>";
@@ -743,7 +743,7 @@
 													<label class="col-sm-3 control-label"><?php $lh->translateText("ingroup"); ?>In Group: </label>
 													<div class="col-sm-6">
 														<select class="select2-2 form-control" name="option_ingroup_value[]" style="width:100%;">
-															<option value="" selected> - - - NONE - - - </option>
+															<option value="" selected><?php $lh->translateText("none"); ?></option>
 														<?php
 															for($x=0;$x < count($ingroup->group_id);$x++){
 																echo "<option value=".$ingroup->group_id[$x].">".$ingroup->group_id[$x]." - ".$ingroup->group_name[$x]."</option>";
@@ -884,7 +884,7 @@
 												<label class="col-sm-3 control-label"><?php $lh->translateText("did"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="col-sm-6 select2-2 form-control" name="option_did_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
+														<option value="" selected> <?php $lh->translateText("none"); ?> </option>
 													<?php
 														for($x=0;$x < count($phonenumber->did_pattern);$x++){
 															echo "<option value=".$phonenumber->did_pattern[$x].">".$phonenumber->did_pattern[$x]." - ".$phonenumber->did_description[$x]."</option>";
@@ -898,7 +898,7 @@
 												<label class="col-sm-3 control-label"><?php $lh->translateText("audio_file"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_hangup_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
+														<option value="" selected><?php $lh->translateText("none"); ?></option>
 													<?php
 														for($x=0;$x<count($voicefiles->file_name);$x++){
 															$file = substr($voicefiles->file_name[$x], 0, -4);
@@ -928,7 +928,7 @@
 												<label class="col-sm-3 control-label"><?php $lh->translateText("phone"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_phone_value[]" style="width:100%;">
-														<option value="" selected> - - - NONE - - - </option>
+														<option value="" selected> <?php $lh->translateText("none"); ?> </option>
 													<?php
 														for($x=0;$x < count($phones->extension);$x++){
 															echo "<option value=".$phones->extension[$x].">".$phones->extension[$x]." - ".$phones->server_ip[$x]." - ".$phones->dialplan_number[$x]."</option>";
@@ -946,7 +946,7 @@
 													</div>
 													<div class="col-sm-6">
 														<select class="col-sm-6 select2-2 form-control" style="width:100%;" id="option_voicemail_select_<?php echo $i;?>">
-															<option value="" selected> - - - NONE - - - </option>
+															<option value="" selected> <?php $lh->translateText("none"); ?> </option>
 														<?php
 															for($x=0;$x < count($voicemails->voicemail_id);$x++){
 																echo "<option value=".$voicemails->voicemail_id[$x].">".$voicemails->voicemail_id[$x]." - ".$voicemails->fullname[$x]."</option>";
@@ -1064,7 +1064,7 @@
 									<label class="col-sm-4 control-label" for="route_agentid"><?php $lh->translateText('agent_id'); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="route_agentid" id="route_agentid" class="form-control select2-1" style="width:100%;">
-											<option value="" > -- NONE -- </option>
+											<option value="" > <?php $lh->translateText("none"); ?></option>
 											<?php
 												for($i=0;$i<count($users->user);$i++){
 											?>
@@ -1132,7 +1132,7 @@
 									<label class="col-sm-4 control-label" for="route_phone_server"><?php $lh->translateText('server_ip'); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="route_phone_server" id="route_phone_server" class="form-control select2-1" style="width:100%;">
-											<option value="" > -- NONE -- </option>
+											<option value="" ><?php $lh->translateText("none"); ?></option>
 											<?php
 												for($i=0;$i < 1;$i++){
 											?>
@@ -1203,13 +1203,13 @@
 								<div class="form-group">
 									<label class="col-sm-4 control-label" for="route_exten"><?php $lh->translateText('custom_extension'); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" name="route_exten" id="route_exten" placeholder="Extension" class="form-control" required>
+										<input type="text" name="route_exten" id="route_exten" placeholder="<?php $lh->translateText('custom_extension'); ?>" class="form-control" required>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-4 control-label" for="route_exten_context"><?php $lh->translateText('extension_content'); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" name="route_exten_context" id="route_exten_context" placeholder="Extension Context" class="form-control" required>
+										<input type="text" name="route_exten_context" id="route_exten_context" placeholder="<?php $lh->translateText('extension_content'); ?>" class="form-control" required>
 									</div>
 								</div>
 							</div><!-- end of custom extension div -->
@@ -1332,7 +1332,7 @@
 			        onFinished: function (event, currentIndex)
 			        {
 
-			        	$('#finish').text("Loading...");
+			        	$('#finish').text("<?php $lh->translateText("loading"); ?>");
 			        	$('#finish').attr("disabled", true);
 
 			        	/*********
@@ -1346,16 +1346,16 @@
 									success: function(data) {
 									  // console.log(data);
 										  if(data == "success"){
-												swal("Success!", "Ingroup Successfully Created!", "success");
+												swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("add_ingroup_success"); ?>", "success");
 										  		window.setTimeout(function(){location.reload()},1000);
 
-										  		$('#finish').text("Submit");
+										  		$('#finish').text("<?php $lh->translateText("submit"); ?>");
 												$('#finish').attr("disabled", false);
 										  }
 										  else{
-											  sweetAlert("Oops...", "Something went wrong! "+data, "error");
+											  sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 
-											  $('#finish').text("Submit");
+											  $('#finish').text("<?php $lh->translateText("submit"); ?>");
 											  $('#finish').attr("disabled", false);
 										  }
 									}
@@ -1382,13 +1382,13 @@
 					var log_user = '<?=$_SESSION['user']?>';
 					var log_group = '<?=$_SESSION['usergroup']?>';
 	                swal({   
-	                	title: "Are you sure?",   
-	                	text: "This action cannot be undone.",   
+	                	title: "<?php $lh->translateText("are_you_sure"); ?>",   
+	                	text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",   
 	                	type: "warning",   
 	                	showCancelButton: true,   
 	                	confirmButtonColor: "#DD6B55",   
-	                	confirmButtonText: "Yes, delete this inbound!",   
-	                	cancelButtonText: "No, cancel please!",   
+	                	confirmButtonText: "<?php $lh->translateText("confirm_delete_inbound"); ?>",   
+	                	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
 	                	closeOnConfirm: false,   
 	                	closeOnCancel: false 
 	                	}, 
@@ -1405,14 +1405,14 @@
 									success: function(data) {
 									console.log(data);
 								  		if(data == 1){
-											swal({title: "Success!",text: "Inbound Successfully Deleted!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("inbound_delete_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 										}else{
-											sweetAlert("Oops...", "Something went wrong! "+data, "error");
+											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 										}
 									}
 								});
 							} else {     
-		                			swal("Cancelled", "No action has been done :)", "error");   
+		                			swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
 		                	} 
 	                	}
 	                );
@@ -1465,7 +1465,7 @@
 			        {
 					$('select option').prop('disabled', false);
 					
-			        	$('#finish').text("Loading...");
+			        	$('#finish').text("<?php $lh->translateText("loading"); ?>");
 			        	$('#finish').attr("disabled", true);
 
 			        	/*********
@@ -1478,13 +1478,13 @@
 									data: $("#create_ivr").serialize(),
 									success: function(data) {
 									  // console.log(data);
-								  		$('#finish').text("Submit");
+								  		$('#finish').text("<?php $lh->translateText("submit"); ?>");
 										$('#finish').attr("disabled", false);
 										if(data == "success"){
-												swal({title: "Success!",text: "IVR Successfully Created!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+												swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_ivr_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 										}
 										else{
-											  sweetAlert("Oops...", "Something went wrong! "+data, "error");
+											  sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 										}
 									}
 								});
@@ -1513,13 +1513,13 @@
 					var log_user = '<?=$_SESSION['user']?>';
 					var log_group = '<?=$_SESSION['usergroup']?>';
 	                swal({   
-	                	title: "Are you sure?",   
-	                	text: "This action cannot be undone.",   
+	                	title: "<?php $lh->translateText("are_you_sure"); ?>",   
+	                	text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",   
 	                	type: "warning",   
 	                	showCancelButton: true,   
 	                	confirmButtonColor: "#DD6B55",   
-	                	confirmButtonText: "Yes, delete this IVR!",   
-	                	cancelButtonText: "No, cancel please!",   
+	                	confirmButtonText: "<?php $lh->translateText("confirm_delete_ivr"); ?>",   
+	                	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
 	                	closeOnConfirm: false,   
 	                	closeOnCancel: false 
 	                	}, 
@@ -1536,14 +1536,14 @@
 									success: function(data) {
 									console.log(data);
 								  		if(data == 1){
-											swal({title: "Success!",text: "IVR Successfully Deleted!",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("ivr_delete_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 										}else{
-											sweetAlert("Oops...", "Something went wrong! "+data, "error");
+											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 										}
 									}
 								});
 							} else {     
-		                			swal("Cancelled", "No action has been done :)", "error");   
+		                			swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
 		                	} 
 	                	}
 	                );
@@ -1593,7 +1593,7 @@
 			        onFinished: function (event, currentIndex)
 			        {
 
-			        	$('#finish').text("Loading...");
+			        	$('#finish').text("<?php $lh->translateText("loading"); ?>");
 			        	$('#finish').attr("disabled", true);
 
 			        	/*********
@@ -1605,7 +1605,7 @@
 								data: $("#create_phonenumber").serialize(),
 								success: function(data) {
 								   console.log(data);
-								   $('#submit_did').val("Submit");
+								   $('#submit_did').val("<?php $lh->translateText("submit"); ?>");
 											$('#submit_did').attr("disabled", false);
 									  if(data == 1){
 									  		swal({title: "<?php $lh->translateText('success'); ?>",text: "<?php $lh->translateText('add_phone_number_success'); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});

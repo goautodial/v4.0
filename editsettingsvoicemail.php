@@ -260,7 +260,7 @@ if (isset($_POST["vmid"])) {
                 	submitHandler: function() {
 						//submit the form
 						
-							$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+							$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 							$('#modifyVoicemailOkButton').prop("disabled", true);
 
 							$("#resultmessage").html();
@@ -272,11 +272,11 @@ if (isset($_POST["vmid"])) {
 									if (data == 1) {
 										swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("voicemail_modify_success"); ?>", "success");
                                         window.setTimeout(function(){location.replace("settingsvoicemails.php")},2000)
-                                        $('#update_button').html("<i class='fa fa-check'></i> Update");
+                                        $('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
                                         $('#modifyVoicemailOkButton').prop("disabled", false);
 									} else {
 										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
-										$('#update_button').html("<i class='fa fa-check'></i> Update");
+										$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 										$('#modifyVoicemailOkButton').prop("disabled", false);
 									}
 									//

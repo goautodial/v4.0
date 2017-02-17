@@ -866,7 +866,7 @@
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
-		                            <label class="col-sm-3 control-label" for="status_name"><?php $lh->translateText("status_name"); ?></label>
+		                            <label class="col-sm-3 control-label" for="status_name"><?php $lh->translateText("status_capital"); ?></label>
 		                            <div class="col-sm-9 mb">
 		                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="<?php $lh->translateText("status_name"); ?>" maxlength="30" required>
 		                            </div>

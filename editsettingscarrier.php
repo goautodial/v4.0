@@ -457,7 +457,7 @@ if (isset($_POST["cid"])) {
 			$("#modifycarrier").validate({
 				submitHandler: function() {
 					//submit the form
-						$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+						$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 						$('#modifyCarrierOkButton').prop("disabled", true);
 
 							$("#resultmessage").html();
@@ -466,7 +466,7 @@ if (isset($_POST["cid"])) {
 							$("#modifycarrier").serialize(), 
 								function(data){
 									//if message is sent
-									$('#update_button').html("<i class='fa fa-check'></i> Update");
+									$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 									$('#modifyCarrierOkButton').prop("disabled", false);
 									
 									if (data == 1) {

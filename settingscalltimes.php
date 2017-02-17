@@ -153,7 +153,7 @@
 								<label class="control-label col-lg-4"><?php $lh->translateText("user_groups"); ?></label>
 								<div class="col-lg-8 mb">
 									<select class="form-control call-time-user-group select2-1" name="call_time_user_group" style="width:100%;">
-										<option value="ALL"> ALL USER GROUPS </option>
+										<option value="ALL"> <?php $lh->translateText("all_usergroups"); ?> </option>
 											<?php
 												for($i=0;$i<count($user_groups->user_group);$i++){
 											?>
@@ -192,8 +192,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_default">
-												<option value="" selected disabled> - - - Audio Chooser - - - </option>
-												<option value=""> - - - NONE - - - </option>
+												<option value="" selected disabled><?php $lh->translateText("audio_chooser"); ?></option>
+												<option value=""><?php $lh->translateText("none"); ?></option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -218,8 +218,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_sunday">
-												<option value="" selected disabled> - - - Audio Chooser - - - </option>
-												<option value=""> - - - NONE - - - </option>
+												<option value="" selected disabled><?php $lh->translateText("audio_chooser"); ?></option>
+												<option value=""> <?php $lh->translateText("none"); ?> </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -244,8 +244,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_monday">
-												<option value="" selected disabled> - - - Audio Chooser - - - </option>
-												<option value=""> - - - NONE - - - </option>
+												<option value="" selected disabled> <?php $lh->translateText("audio_chooser"); ?></option>
+												<option value=""><?php $lh->translateText("none"); ?></option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -270,8 +270,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_tuesday">
-												<option value="" selected disabled> - - - Audio Chooser - - - </option>
-												<option value=""> - - - NONE - - - </option>
+												<option value="" selected disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
+												<option value=""> <?php $lh->translateText("none"); ?> </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -296,8 +296,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_wednesday">
-												<option value="" selected disabled> - - - Audio Chooser - - - </option>
-												<option value=""> - - - NONE - - - </option>
+												<option value="" selected disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
+												<option value=""><?php $lh->translateText("none"); ?> </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -322,8 +322,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_thursday">
-												<option value="" selected disabled> - - - Audio Chooser - - - </option>
-												<option value=""> - - - NONE - - - </option>
+												<option value="" selected disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
+												<option value=""> <?php $lh->translateText("none"); ?> </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -348,8 +348,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_friday">
-												<option value="" selected disabled> - - - Audio Chooser - - - </option>
-												<option value=""> - - - NONE - - - </option>
+												<option value="" selected disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
+												<option value=""> <?php $lh->translateText("none"); ?> </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -374,8 +374,8 @@
 										</div>
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_saturday">
-												<option value="" selected disabled> - - - Audio Chooser - - - </option>
-												<option value=""> - - - NONE - - - </option>
+												<option value="" selected disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
+												<option value=""> <?php $lh->translateText("none"); ?> </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -459,7 +459,7 @@
 			        },
 			        onFinished: function (event, currentIndex)
 			        {
-			        	$('#finish').text("Loading...");
+			        	$('#finish').text("<?php $lh->translateText("loading"); ?>");
 			        	$('#finish').attr("disabled", true);
 
 			            // Submit form via ajax
@@ -471,7 +471,7 @@
 								    console.log(data);
 								    if(data == 1){
 								    	swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_calltime_success"); ?>",type: "success"},function(){window.location.href = 'settingscalltimes.php';});
-		                                $('#finish').val("Submit");
+		                                $('#finish').val("<?php $lh->translateText("submit"); ?>");
 		                                $('#finish').prop("disabled", false);
 								    }else{
 								    	sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
@@ -496,7 +496,7 @@
 				
 		/*********************
 		** DELETE EVENT
-		*********************/	
+		*********************/
                  $(document).on('click','.delete-calltime',function() {
                     var id = $(this).attr('data-id');
 					var log_ip = '<?=$_SERVER['REMOTE_ADDR']?>';
@@ -527,9 +527,9 @@
 		                            success: function(data) {
 		                            console.log(data);
 		                                if(data == 1){
-		                                	swal({title: "Deleted",text: "<?php $lh->translateText("calltime_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingscalltimes.php';});
+		                                swal({title: "<?php $lh->translateText("deleted"); ?>",text: "<?php $lh->translateText("calltime_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingscalltimes.php';});
 		                                }else{
-		                                	sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
+		                                sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 		                                }
 		                            }
 		                        });
@@ -540,9 +540,9 @@
                     );
 				});
 		
-		/*********************
-		** FILTERS
-	*********************/	
+	/*********************
+	** FILTERS
+	*********************/
 
 		// disable special characters on Fullname
 			$('#call_time_id').bind('keypress', function (event) {

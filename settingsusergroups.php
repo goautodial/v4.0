@@ -210,7 +210,7 @@
                     },
                     onFinished: function (event, currentIndex)
                     {
-                        $('#finish').text("Loading...");
+                        $('#finish').text("<?php $lh->translateText("loading"); ?>");
                         $('#finish').attr("disabled", true);
 
                         // Submit form via ajax
@@ -220,14 +220,13 @@
                                 data: $("#create_usergroup").serialize(),
                                 success: function(data) {
                                   // console.log(data);
+								  $('#finish').val("<?php $lh->translateText("submit"); ?>");
+                                  $('#finish').prop("disabled", false);
                                       if(data == 1){
-                                            swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_usergroup_success"); ?>",type: "success"},function(){window.location.href = 'settingsusergroups.php';});
-                                            $('#finish').val("Submit");
+                                        swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_usergroup_success"); ?>",type: "success"},function(){window.location.href = 'settingsusergroups.php';});
                                       }
                                       else{
-                                          sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
-                                          $('#finish').val("Submit");
-                                          $('#finish').prop("disabled", false);
+                                        sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
                                       }
                                 }
                             });
@@ -276,7 +275,7 @@
                                 success: function(data) {
                                 console.log(data);
                                     if(data == 1){
-                                        swal({title: "Deleted",text: "<?php $lh->translateText("usergroup_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingsusergroups.php';});
+                                        swal({title: "<?php $lh->translateText("deleted"); ?>",text: "<?php $lh->translateText("usergroup_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingsusergroups.php';});
                                         
                                     }else{
                                         sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
