@@ -127,7 +127,7 @@
 						<!-- IVR panel tab -->
 							 <li role="presentation"<?=$toggleIVR?>>
 								<a href="#T_ivr" aria-controls="T_ivr" role="tab" data-toggle="tab" class="bb0">
-								    <?php $lh->translateText('interactive_voice_resoponse'); ?> </a>
+								    <?php $lh->translateText('interactive_voice_response'); ?> </a>
 							 </li>
 						<!-- DID panel tab -->
 							 <li role="presentation"<?=$toggleDID?>>
@@ -422,7 +422,7 @@
 										<?php
 											}else{
 										?>
-											<option value="" selected><?php $lh->translateText('none'); ?></option>
+											<option value="" selected><?php $lh->translateText('-none-'); ?></option>
 										<?php
 											for($i=0;$i<count($voicemails->voicemail_id);$i++){
 										?>
@@ -541,7 +541,7 @@
 							<label class="col-sm-3 control-label" for="menu_prompt"><?php $lh->translateText("menu_greeting"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="menu_prompt" id="menu_prompt" class="form-control select2-1" style="width:100%;">
-									<option value="goWelcomeIVR" selected>-- Default Value --</option>
+									<option value="goWelcomeIVR" selected><?php $lh->translateText("default_value"); ?></option>
 									<?php
 										for($i=0;$i<count($voicefiles->file_name);$i++){
 											$file = substr($voicefiles->file_name[$i], 0, -4);
@@ -563,7 +563,7 @@
 							<label class="col-sm-3 control-label" for="menu_timeout_prompt"><?php $lh->translateText("timeout_greeting"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="menu_timeout_prompt" id="menu_timeout_prompt" class="form-control select2-1" style="width:100%;">
-									<option value="" selected>-- Default Value --</option>
+									<option value="" selected><?php $lh->translateText("default_value"); ?></option>
 									<?php
 										for($i=0;$i<count($voicefiles->file_name);$i++){
 											$file = substr($voicefiles->file_name[$i], 0, -4);
@@ -579,7 +579,7 @@
 							<label class="col-sm-3 control-label" for="menu_invalid_prompt"><?php $lh->translateText("invalid_greeting"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control select2-1" style="width:100%;">
-									<option value="" selected>-- Default Value --</option>
+									<option value="" selected><?php $lh->translateText("defalut_value"); ?></option>
 									<?php
 										for($i=0;$i<count($voicefiles->file_name);$i++){
 											$file = substr($voicefiles->file_name[$i], 0, -4);
@@ -634,7 +634,7 @@
 							<label class="col-sm-3 control-label" for="tracking_group"><?php $lh->translateText("tracking_group"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="tracking_group" id="tracking_group" class="form-control select2-1" style="width:100%;">
-									<option value="CALLMENU">CALLMENU - Default</option>
+									<option value="CALLMENU"><?php $lh->translateText("callmenu_default"); ?></option>
 								<?php
 									for($i=0;$i<count($ingroups->group_id);$i++){
 								?>
@@ -695,14 +695,14 @@
 												?>
 												<option value="A">#</option>
 												<option value="B">*</option>
-												<option value="C">TIMECHECK</option>
-												<option value="D">TIMEOUT</option>
-												<option value="E">INVALID</option>
+												<option value="C"><?php $lh->translateText("timecheck"); ?></option>
+												<option value="D"><?php $lh->translateText("timeout"); ?></option>
+												<option value="E"><?php $lh->translateText("invalid"); ?></option>
 											</select>
 										</div>
 										<div class="col-lg-7">
 											<?php $lh->translateText("description"); ?>: 
-											<input type="text" name="route_desc[]" id="" class="form-control route_desc_<?php echo $i;?>" placeholder="Description"/>
+											<input type="text" name="route_desc[]" id="" class="form-control route_desc_<?php echo $i;?>" placeholder="<?php $lh->translateText("description"); ?>"/>
 										</div>
 										<div class="col-lg-3">
 											<?php $lh->translateText("route"); ?>:
@@ -801,9 +801,9 @@
 															<label class="col-sm-4 control-label"><?php $lh->translateText("search_method"); ?>:</label>
 															<div class="col-sm-8">
 																<select class="form-control" name="search_method_<?php echo $i;?>" id="edit_search_method_<?php echo $i;?>">
-																	<option value="LB" selected="selected">LB - Load Balanced</option>
-																	<option value="LO">LO - Load Balanced Overflow</option>
-																	<option value="SO">Server Only</option>
+																	<option value="LB" selected="selected"><?php $lh->translateText("lb_load_balance"); ?></option>
+																	<option value="LO"><?php $lh->translateText("lo_load_balance_overflow"); ?></option>
+																	<option value="SO"><?php $lh->translateText("server_only"); ?></option>
 																</select>
 															</div>
 														</div>
@@ -828,7 +828,7 @@
 															</div>
 															<div class="col-sm-6">
 																<select class="col-sm-6 form-control" style="width:100%;" id="enter_filename_select_<?php echo $i;?>">
-																	<option value="sip-silence" selected> - - - DEFAULT VALUE - - - </option>
+																	<option value="sip-silence" selected> <?php $lh->translateText("default_value"); ?> </option>
 																<?php
 																	for($x=0;$x<count($voicefiles->file_name);$x++){
 																		$file = substr($voicefiles->file_name[$x], 0, -4);
@@ -847,7 +847,7 @@
 															</div>
 															<div class="col-sm-6">
 																<select class="col-sm-6 form-control" style="width:100%;" id="edit_id_number_filename_select_<?php echo $i;?>">
-																	<option value="sip-silence" selected> - - - DEFAULT VALUE - - - </option>
+																	<option value="sip-silence" selected> <?php $lh->translateText("default_value"); ?> </option>
 																<?php
 																	for($x=0;$x<count($voicefiles->file_name);$x++){
 																		$file = substr($voicefiles->file_name[$x], 0, -4);
@@ -866,7 +866,7 @@
 															</div>
 															<div class="col-sm-6">
 																<select class="col-sm-6 form-control" style="width:100%;" id="edit_confirm_filename_select_<?php echo $i;?>">
-																	<option value="sip-silence" selected> - - - DEFAULT VALUE - - - </option>
+																	<option value="sip-silence" selected> <?php $lh->translateText("default_value"); ?> </option>
 																<?php
 																	for($x=0;$x<count($voicefiles->file_name);$x++){
 																		$file = substr($voicefiles->file_name[$x], 0, -4);
@@ -1028,12 +1028,12 @@
 								<label class="col-sm-4 control-label" for="route" ><?php $lh->translateText('did_route'); ?></label>
 								<div class="col-sm-8 mb">
 									<select class="form-control" id="route" name="route">
-										<option value="AGENT"> Agent </option>
-										<option value="IN_GROUP"> In-group </option>
-										<option value="PHONE"> Phone </option>
-										<option value="CALLMENU"> Call Menu / IVR </option>
-										<option value="VOICEMAIL"> Voicemail </option>
-										<option value="EXTENSION"> Custom Extension </option>
+										<option value="AGENT"><?php $lh->translateText('agent'); ?>  </option>
+										<option value="IN_GROUP"> <?php $lh->translateText('in_group'); ?> </option>
+										<option value="PHONE"><?php $lh->translateText('phone'); ?>  </option>
+										<option value="CALLMENU"><?php $lh->translateText('call_menu_ivr'); ?> </option>
+										<option value="VOICEMAIL"><?php $lh->translateText('voicemail'); ?>  </option>
+										<option value="EXTENSION"><?php $lh->translateText('custom_extension'); ?> </option>
 									</select>
 								</div>
 							</div>
@@ -1081,10 +1081,10 @@
 									<label class="col-sm-4 control-label" for="route_unavail"><?php $lh->translateText('agent_unavailable_action'); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="route_unavail" id="route_unavail" class="form-control">
-											<option value="VOICEMAIL" > Voicemail </option>
-											<option value="PHONE" > Phone </option>
-											<option value="IN_GROUP" > In-group </option>
-											<option value="EXTENSION" > Custom Extension </option>
+											<option value="VOICEMAIL" ><?php $lh->translateText('voicemail'); ?>  </option>
+											<option value="PHONE" > <?php $lh->translateText('phone'); ?> </option>
+											<option value="IN_GROUP" > <?php $lh->translateText('in_group'); ?> </option>
+											<option value="EXTENSION" > <?php $lh->translateText('custom_extension'); ?> </option>
 										</select>
 									</div>
 								</div>
@@ -1093,7 +1093,7 @@
 						<!-- IF DID ROUTE = IN-GROUP-->
 						
 							<div id="form_route_ingroup" style="display: none;">
-								<label class="col-sm-4 control-label" for="route_ingroupid"><?php $lh->translateText('agent_unavailable_action'); ?>In-Group ID</label>
+								<label class="col-sm-4 control-label" for="route_ingroupid"><?php $lh->translateText('agent_unavailable_action'); ?><?php $lh->translateText('ingroup_id'); ?></label>
 								<div class="col-sm-8 mb">
 									<select name="route_ingroupid" id="route_ingroupid" class="form-control select2-1" style="width:100%;">
 										<?php
@@ -1165,7 +1165,7 @@
 												}
 											}else{
 											?>
-												<option value="">- - - No Available Call Menu - - - </option>
+												<option value=""><?php $lh->translateText('no_available_call_menus'); ?> </option>
 											<?php
 											}
 											?>

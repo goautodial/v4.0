@@ -54,7 +54,7 @@ if ($error) { $title = $lh->translationFor("error"); }
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Creamy</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("$moduleName"); ?> <?php $lh->translateText("module_settings"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <?php print $ui->standardizedThemeCSS(); ?>
         <?php print $ui->creamyThemeCSS(); ?>
@@ -87,6 +87,7 @@ if ($error) { $title = $lh->translationFor("error"); }
 
                 <!-- Main content: this section will be filled with the module content. -->
                 <section class="content">
+					<div class="box">
 					<?php
 					if ($error) {
 						print $ui->boxWithMessage($title, $lh->translationFor("unable_load_module_content"), "warning", "danger");
@@ -118,16 +119,15 @@ if ($error) { $title = $lh->translationFor("error"); }
 						print $ui->formPostJS("module_settings", "./php/ConfigureModule.php", $successJS, $failureJS, $preambleJS);
 					}
 					?>
+					</div>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
-			
-			<?php print $ui->standardizedThemeJS(); ?>
-			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
-            <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
 
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-		
+		<?php print $ui->standardizedThemeJS(); ?>
+		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
+		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

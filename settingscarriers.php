@@ -134,7 +134,7 @@
 				<!-- STEP 2 -->
 						<h4><?php $lh->translateText('set_chosen_carrier'); ?>
 							<br>
-							<small><?php $lh->translateText('set_details_chosen_carrier'); ?></small>
+							<small><?php $lh->translateText('chosen_carrier_sub_header'); ?></small>
 						</h4>
 						<fieldset>
 						<!-- IF MANUAL / COPY -->
@@ -231,7 +231,7 @@ host=</textarea>
 								<div class="form-group registration_div" style="display:none;">
 									<label for="server_ip" class="col-sm-3 control-label"><?php $lh->translateText('server_ip_host'); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="reg_host" id="reg_host" placeholder="<?php $lh->translateText('server_ip_host'); ?>" />
+										<input type="text" class="form-control" name="reg_host" id="reg_host" data-inputmask="'alias': 'ip'" data-mask="" placeholder="<?php $lh->translateText('server_ip_host'); ?>" />
 									</div>
 								</div>
 								<div class="form-group registration_div" style="display:none;">
@@ -243,7 +243,7 @@ host=</textarea>
 								<div class="form-group not_custom_protocol sip_server">
 									<label for="server_ip" class="col-sm-3 control-label"><?php $lh->translateText('sip_server'); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="sip_server_ip" id="sip_server_ip" placeholder="<?php $lh->translateText('sip_server'); ?>" />
+										<input type="text" class="form-control" name="sip_server_ip" id="sip_server_ip" data-inputmask="'alias': 'ip'" data-mask="" placeholder="<?php $lh->translateText('sip_server'); ?>" />
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
@@ -643,7 +643,8 @@ host=</textarea>
 		<?php print $ui->standardizedThemeJS(); ?>
 		<!-- JQUERY STEPS-->
   		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-
+		<script src="js/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
+		<script src="js/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
 		<script type="text/javascript">
 
 			$(document).ready(function() {
@@ -790,7 +791,7 @@ host=</textarea>
 				$(document).on('click','.delete-carrier',function() {
 					var id = $(this).attr('data-id');
 					var log_user = '<?=$_SESSION['user']?>';
-					var log_group = '<?=$_SESSION['usergrou']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
                     swal({
                         title: "<?php $lh->translateText("are_you_sure"); ?>",
                         text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
@@ -840,6 +841,9 @@ host=</textarea>
 					   return false;
 					}
 				});
+				
+				//input mask
+					$("[data-mask]").inputmask();
 			});
 
 		</script>

@@ -359,7 +359,7 @@
 				var id = $(this).attr('data-id');
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>?",
-					text: "<?php $lh->translateText("cannot_undo"); ?>.",
+					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",

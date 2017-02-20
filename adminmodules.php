@@ -39,40 +39,14 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Creamy</title>
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("module_management"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <!-- Ionicons -->
-        <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
+        <?php print $ui->standardizedThemeCSS(); ?>
         <?php print $ui->creamyThemeCSS(); ?>
 
-		<!-- Scripts -->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <!-- Bootstrap WYSIHTML5 -->
         <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
 
-        <!-- Creamy App -->
-        <script src="js/app.min.js" type="text/javascript"></script>
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
-
-        <script type="text/javascript">
-            $(window).ready(function() {
-                $(".preloader").fadeOut("slow");
-            })
-        </script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <!-- header logo: style can be found in header.less -->
@@ -114,7 +88,7 @@
 			            <div class="col-xs-12">
 							<div class="box box-default collapsed-box">
 								<div class="box-header with-border">
-									<h3 class="box-title">Log</h3>
+									<h3 class="box-title"><?php $lh->translateText("log"); ?></h3>
 									<div class="box-tools pull-right"><button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button></div>
 								</div>
 								<div class="box-body"><pre><?php print $ui->getModuleHandlerLog(); ?></pre></div>
@@ -133,6 +107,7 @@
 
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-
+		<?php print $ui->standardizedThemeJS(); ?>
+		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

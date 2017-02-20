@@ -99,7 +99,7 @@ $leads = $ui->API_GetLeads($_SESSION['user']);
 						<div class="col-lg-9">
 							<div class="form-group mb-xl">
 								<div class="has-clear">
-									<input type="text" placeholder="Search Phone Number, First or Last Name" id="search" class="form-control mb">
+									<input type="text" placeholder="<?php $lh->translateText("search_crm"); ?>" id="search" class="form-control mb">
 									<span class="form-control-clear fa fa-close form-control-feedback"></span>
 								</div>
 								<div class="clearfix">
@@ -117,166 +117,158 @@ $leads = $ui->API_GetLeads($_SESSION['user']);
 								</div>
 							</div>
 		                	<div class="panel panel-default">
-								<div class="panel-body">
-									<div class="contacts_div">
-									<!-- Contacts panel tab -->
-									<legend><?php $lh->translateText("contacts"); ?></legend>
-
-										<!--==== Contacts ====-->
-										<table class="table table-striped table-bordered table-hover" id="table_contacts">
-										   <thead>
-											  <tr>
-												 <th nowrap><?php $lh->translateText("lead_id"); ?></th>
-												 <th nowrap class='hide-on-low'><?php $lh->translateText("full_name"); ?></th>
-												 <th nowrap class='hide-on-low'><?php $lh->translateText("phone_number"); ?></th>
-												 <th nowrap class='hide-on-medium hide-on-low'><?php $lh->translateText("status"); ?></th>
-												 <th nowrap><?php $lh->translateText("action"); ?></th>
-											  </tr>
-										   </thead>
-										   <tbody>
-											   	<?php
-											   		for($i=0;$i<=count($leads->list_id);$i++){
-
-												   		if($leads->phone_number[$i] != ""){
-
-														$action_lead = $ui->ActionMenuForContacts($leads->lead_id[$i]);
-
-											   	?>
-														<tr>
-															<td nowrap><a class="edit-contact" data-id="<?php echo $leads->lead_id[$i];?>"><?php echo $leads->lead_id[$i];?></a></td>
-															<td nowrap class='hide-on-low'><?php echo $leads->first_name[$i].' '.$leads->middle_initial[$i].' '.$leads->last_name[$i];?></td>
-															<td nowrap class='hide-on-low'><?php echo $leads->phone_number[$i];?></td>
-															<td nowrap class='hide-on-medium hide-on-low'><?php echo $leads->status[$i];?></td>
-															<td nowrap><?php echo $action_lead;?></td>
-														</tr>
-												<?php
-														}
-													}
-												?>
-										   </tbody>
-										</table>
-									</div>
-			               		</div><!-- /.body -->
-		               		</div><!-- /.panel -->
-	               		</div><!-- /.col-lg-9 -->
+			<div class="panel-body">
+				<div class="contacts_div">
+				<!-- Contacts panel tab -->
+				<legend><?php $lh->translateText("contacts"); ?></legend>
+					<!--==== Contacts ====-->
+					<table class="table table-striped table-bordered table-hover" id="table_contacts">
+					   <thead>
+						  <tr>
+							 <th nowrap><?php $lh->translateText("lead_id"); ?></th>
+							 <th nowrap class='hide-on-low'><?php $lh->translateText("full_name"); ?></th>
+							 <th nowrap class='hide-on-low'><?php $lh->translateText("phone_number"); ?></th>
+							 <th nowrap class='hide-on-medium hide-on-low'><?php $lh->translateText("status"); ?></th>
+							 <th nowrap><?php $lh->translateText("action"); ?></th>
+						  </tr>
+					   </thead>
+					   <tbody>
+							<?php
+								for($i=0;$i<=count($leads->list_id);$i++){
+									if($leads->phone_number[$i] != ""){
+									$action_lead = $ui->ActionMenuForContacts($leads->lead_id[$i]);
+							?>
+									<tr>
+										<td nowrap><a class="edit-contact" data-id="<?php echo $leads->lead_id[$i];?>"><?php echo $leads->lead_id[$i];?></a></td>
+										<td nowrap class='hide-on-low'><?php echo $leads->first_name[$i].' '.$leads->middle_initial[$i].' '.$leads->last_name[$i];?></td>
+										<td nowrap class='hide-on-low'><?php echo $leads->phone_number[$i];?></td>
+										<td nowrap class='hide-on-medium hide-on-low'><?php echo $leads->status[$i];?></td>
+										<td nowrap><?php echo $action_lead;?></td>
+									</tr>
+							<?php
+									}
+								}
+							?>
+					   </tbody>
+					</table>
+				</div>
+</div><!-- /.body -->
+</div><!-- /.panel -->
+</div><!-- /.col-lg-9 -->
 <?php
 $lists = $ui->API_goGetAllLists();
 $agents = $ui->API_goGetAllUserLists();
 $disposition = $ui->API_getAllDispositions();
 ?>
 	               		<div class="col-lg-3">
-	           				<h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>
-	           				<form id="search_form">
-
-		                        <div class="form-group">
-		                           <label><?php $lh->translateText("add_filters"); ?></label>
-		                           <div class="mb">
-		                           		<div class="add_contact_filters">
-			                              	<select multiple="multiple" class="select2-3 form-control add_filters1" style="width:100%;">
-			                                    <option value="filter_disposition" class="contacts_filters"><?php $lh->translateText("filter_disposition"); ?></option>
-			                                    <option value="filter_list" class="contacts_filters"><?php $lh->translateText("filter_list_id"); ?></option>
-			                                    <option value="filter_address" class="contacts_filters"><?php $lh->translateText("filter_address"); ?> </option>
-			                                    <option value="filter_city" class="contacts_filters"><?php $lh->translateText("filter_city"); ?></option>
-			                                    <option value="filter_state" class="contacts_filters"><?php $lh->translateText("filter_state"); ?></option>
-			                             	</select>
-			                            </div>
-		                           </div>
-		                        </div>
-
-
-		                    <!-- CONTACT FILTERS -->
-		                    <div class="all_contact_filters">
-		                    	<div class="disposition_filter_div" style="display:none;">
-								    <div class="form-group">
-										<label><?php $lh->translateText("crm_dispotition"); ?> </label>
-										<div class="mb">
-											<select name="disposition_filter" id="disposition_filter" class="form-control select2-3" style="width:100%;">
-													<option value="">- - - NO DISPOSITION SELECTED - - -</option>
-												<?php
-												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
-													for($a=0; $a<count($disposition->status); $a++){
-												?>
-														<option value="<?php echo $disposition->status[$a];?>"><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
-												<?php
-													}
-												?>
-											</select>
-										</div>
-									</div>
-								</div>
-		                        <div class="list_filter_div" style="display:none;">
-									<div class="form-group">
-										<label><?php $lh->translateText("list_id"); ?>:</label>
-										<div class="mb">
-											<select name="list_filter" id="list_filter" class="form-control">
-													<option value="">- - - NO LIST SELECTED - - -</option>
-												<?php
-													for($i=0; $i < count($lists->list_id);$i++){
-														echo "<option value='".$lists->list_id[$i]."'> ".$lists->list_name[$i]." </option>";
-													}
-												?>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="address_filter_div" style="display:none;">
-									<div class="form-group">
-										<label><?php $lh->translateText("address"); ?>:</label>
-										<div class="mb has-clear">
-											<input type="text" class="form-control" id="address_filter" name="address_filter" placeholder="Address" />
-											<span class="form-control-clear fa fa-close form-control-feedback"></span>
-										</div>
-									</div>
-								</div>
-								<div class="city_filter_div" style="display:none;">
-									<div class="form-group has-clear">
-										<label><?php $lh->translateText("city"); ?>: </label>
-										<div class="mb has-clear">
-											<input type="text" class="form-control" id="city_filter" name="city_filter" placeholder="City" />
-											<span class="form-control-clear fa fa-close form-control-feedback"></span>
-										</div>
-									</div>
-								</div>
-								<div class="state_filter_div" style="display:none;">
-									<div class="form-group has-clear">
-										<label><?php $lh->translateText("state"); ?>: </label>
-										<div class="mb has-clear">
-											<input type="text" class="form-control" id="state_filter" name="state_filter" placeholder="State" />
-											<span class="form-control-clear fa fa-close form-control-feedback"></span>
-										</div>
-									</div>
-								</div>
-
-	               				<div class="form-group">
-		               				<label><?php $lh->translateText("start_date"); ?>:</label>
-						            <div class="form-group">
-						                <div class='input-group date' id='datetimepicker1'>
-						                    <input type='text' class="form-control" id="start_contact_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
-						                    <span class="input-group-addon">
-						                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
-												<span class="fa fa-calendar"></span>
-						                    </span>
-						                </div>
-						            </div>
-						        </div>
-						        <div class="form-group">
-						            <label><?php $lh->translateText("end_date"); ?>:</label>
-						            <div class="form-group">
-						                <div class='input-group date' id='datetimepicker2'>
-						                    <input type='text' class="form-control" id="end_contact_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
-						                    <span class="input-group-addon">
-						                        <!-- <span class="glyphicon glyphicon-calendar"></span>-->
-						                        <span class="fa fa-calendar"></span>
-						                    </span>
-						                </div>
-						            </div>
-							    </div>
+				<h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>
+				<form id="search_form">
+					<div class="form-group">
+					   <label><?php $lh->translateText("add_filters"); ?></label>
+					   <div class="mb">
+						<div class="add_contact_filters">
+							<select multiple="multiple" class="select2-3 form-control add_filters1" style="width:100%;">
+								<option value="filter_disposition" class="contacts_filters"><?php $lh->translateText("filter_disposition"); ?></option>
+								<option value="filter_list" class="contacts_filters"><?php $lh->translateText("filter_list_id"); ?></option>
+								<option value="filter_address" class="contacts_filters"><?php $lh->translateText("filter_address"); ?> </option>
+								<option value="filter_city" class="contacts_filters"><?php $lh->translateText("filter_city"); ?></option>
+								<option value="filter_state" class="contacts_filters"><?php $lh->translateText("filter_state"); ?></option>
+							</select>
+						</div>
+					   </div>
+					</div>
+					
+					<!-- CONTACT FILTERS -->
+					<div class="all_contact_filters">
+					<div class="disposition_filter_div" style="display:none;">
+						<div class="form-group">
+							<label><?php $lh->translateText("crm_dispotition"); ?> </label>
+							<div class="mb">
+								<select name="disposition_filter" id="disposition_filter" class="form-control select2-3" style="width:100%;">
+										<option value="">- - - <?php $lh->translateText("-none-"); ?> - - -</option>
+									<?php
+									//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
+										for($a=0; $a<count($disposition->status); $a++){
+									?>
+											<option value="<?php echo $disposition->status[$a];?>"><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
+									<?php
+										}
+									?>
+								</select>
 							</div>
-
-							</form>
-						    <!--<button type="button" class="pull-left btn btn-default" id="search_button">Apply</button>-->
-	           			</div><!-- ./filters -->
-           			</div><!-- /. row -->
+						</div>
+					</div>
+					<div class="list_filter_div" style="display:none;">
+					<div class="form-group">
+						<label><?php $lh->translateText("list_id"); ?>:</label>
+						<div class="mb">
+							<select name="list_filter" id="list_filter" class="form-control">
+									<option value="">- - - <?php $lh->translateText("-none-"); ?> - - -</option>
+								<?php
+									for($i=0; $i < count($lists->list_id);$i++){
+										echo "<option value='".$lists->list_id[$i]."'> ".$lists->list_name[$i]." </option>";
+									}
+								?>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="address_filter_div" style="display:none;">
+					<div class="form-group">
+						<label><?php $lh->translateText("address"); ?>:</label>
+						<div class="mb has-clear">
+							<input type="text" class="form-control" id="address_filter" name="address_filter" placeholder="<?php $lh->translateText("address"); ?>" />
+							<span class="form-control-clear fa fa-close form-control-feedback"></span>
+						</div>
+					</div>
+				</div>
+				<div class="city_filter_div" style="display:none;">
+					<div class="form-group has-clear">
+						<label><?php $lh->translateText("city"); ?>: </label>
+						<div class="mb has-clear">
+							<input type="text" class="form-control" id="city_filter" name="city_filter" placeholder="<?php $lh->translateText("city"); ?>" />
+							<span class="form-control-clear fa fa-close form-control-feedback"></span>
+						</div>
+					</div>
+				</div>
+				<div class="state_filter_div" style="display:none;">
+					<div class="form-group has-clear">
+						<label><?php $lh->translateText("state"); ?>: </label>
+						<div class="mb has-clear">
+							<input type="text" class="form-control" id="state_filter" name="state_filter" placeholder="<?php $lh->translateText("state"); ?>" />
+							<span class="form-control-clear fa fa-close form-control-feedback"></span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label><?php $lh->translateText("start_date"); ?>:</label>
+					<div class="form-group">
+						<div class='input-group date' id='datetimepicker1'>
+							<input type='text' class="form-control" id="start_contact_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
+							<span class="input-group-addon">
+								<!-- <span class="glyphicon glyphicon-calendar"></span>-->
+								<span class="fa fa-calendar"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label><?php $lh->translateText("end_date"); ?>:</label>
+					<div class="form-group">
+						<div class='input-group date' id='datetimepicker2'>
+							<input type='text' class="form-control" id="end_contact_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
+							<span class="input-group-addon">
+								<!-- <span class="glyphicon glyphicon-calendar"></span>-->
+								<span class="fa fa-calendar"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+				</div>
+				</form>
+				<!--<button type="button" class="pull-left btn btn-default" id="search_button">Apply</button>-->
+			</div><!-- ./filters -->
+		</div><!-- /. row -->
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
@@ -292,16 +284,16 @@ $disposition = $ui->API_getAllDispositions();
 		<script type="text/javascript">
 
 			$(document).ready(function() {
-
-				$('body').on('keypress', '#search', function(args) {
-				    if (args.keyCode == 13) {
-				        $("#search_button").click();
-				        return false;
-				    }
-				});
-
-				// initialization of datatables
-				var init_contacts_table = $('#table_contacts').DataTable({
+				
+	$('body').on('keypress', '#search', function(args) {
+		if (args.keyCode == 13) {
+			$("#search_button").click();
+			return false;
+		}
+	});
+	
+	// initialization of datatables
+	var init_contacts_table = $('#table_contacts').DataTable({
                 	"bDestroy" : true
                 });
 
@@ -384,81 +376,78 @@ $disposition = $ui->API_getAllDispositions();
 				/****
 				** Contact filters
 				****/
+				
+			// ----- Disposition
+				$('#disposition_filter').on('change', function() {
+					var disposition_filter_val = $('#disposition_filter').val();
+					var list_filter_val = $('#list_filter').val();
+					var address_filter_val = $("#address_filter").val();
+					var city_filter_val = $("#city_filter").val();
+					var state_filter_val = $("#state_filter").val();
+				
+					$.ajax({
+						url: "filter_contacts.php",
+						type: 'POST',
+						data: {
+							search_contacts : $('#search').val(),
+							disposition : disposition_filter_val,
+							list : list_filter_val,
+							address : address_filter_val,
+							city : city_filter_val,
+							state : state_filter_val
+						},
+						success: function(data) {
+							$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
+							$('#search_button').attr("disabled", false);
+							console.log(data);
 
-					// ----- Disposition
-						$('#disposition_filter').on('change', function() {
-		            		var disposition_filter_val = $('#disposition_filter').val();
-		            		var list_filter_val = $('#list_filter').val();
-		            		var address_filter_val = $("#address_filter").val();
-		            		var city_filter_val = $("#city_filter").val();
-		            		var state_filter_val = $("#state_filter").val();
+							if(data !== ""){
+								$('#table_contacts').html(data);
+								$('#table_contacts').DataTable({
+									"bDestroy" : true
+								});
+							}else{
+								init_contacts_table.fnClearTable();
+							}
+						}
+					});
+				});
 
-		            		$.ajax({
-							    url: "filter_contacts.php",
-							    type: 'POST',
-							    data: {
-							    	search_contacts : $('#search').val(),
-							    	disposition : disposition_filter_val,
-							    	list : list_filter_val,
-							    	address : address_filter_val,
-							    	city : city_filter_val,
-							    	state : state_filter_val
-							    },
+				// ----- List ID
+					$('#list_filter').on('change', function() {
+						var disposition_filter_val = $('#disposition_filter').val();
+						var list_filter_val = $('#list_filter').val();
+						var address_filter_val = $("#address_filter").val();
+						var city_filter_val = $("#city_filter").val();
+						var state_filter_val = $("#state_filter").val();
+						$.ajax({
+								url: "filter_contacts.php",
+								type: 'POST',
+								data: {
+									search_contacts : $('#search').val(),
+									disposition : disposition_filter_val,
+									list : list_filter_val,
+									address : address_filter_val,
+									city : city_filter_val,
+									state : state_filter_val
+								},
 								success: function(data) {
-									$('#search_button').text("Search");
-	                				$('#search_button').attr("disabled", false);
+									$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
+									$('#search_button').attr("disabled", false);
 									console.log(data);
-
+					
 									if(data !== ""){
+					
 										$('#table_contacts').html(data);
 										$('#table_contacts').DataTable({
-						                	"bDestroy" : true
-						                });
+											"bDestroy" : true
+										});
 									}else{
 										init_contacts_table.fnClearTable();
 									}
 								}
-							});
-
 						});
-
-					// ----- List ID
-						$('#list_filter').on('change', function() {
-		            		var disposition_filter_val = $('#disposition_filter').val();
-		            		var list_filter_val = $('#list_filter').val();
-		            		var address_filter_val = $("#address_filter").val();
-		            		var city_filter_val = $("#city_filter").val();
-		            		var state_filter_val = $("#state_filter").val();
-
-		            		$.ajax({
-							    url: "filter_contacts.php",
-							    type: 'POST',
-							    data: {
-							    	search_contacts : $('#search').val(),
-							    	disposition : disposition_filter_val,
-							    	list : list_filter_val,
-							    	address : address_filter_val,
-							    	city : city_filter_val,
-							    	state : state_filter_val
-							    },
-								success: function(data) {
-									$('#search_button').text("Search");
-	                				$('#search_button').attr("disabled", false);
-									console.log(data);
-
-									if(data !== ""){
-
-										$('#table_contacts').html(data);
-										$('#table_contacts').DataTable({
-						                	"bDestroy" : true
-						                });
-									}else{
-										init_contacts_table.fnClearTable();
-									}
-								}
-							});
-
-						});
+					});
 
 					// ----- Address
 						$("#address_filter").keyup(function() {
@@ -468,33 +457,32 @@ $disposition = $ui->API_getAllDispositions();
 						});
 
 						function address_filter_ajax() {
-						    var disposition_filter_val = $('#disposition_filter').val();
-		            		var list_filter_val = $('#list_filter').val();
-		            		var address_filter_val = $("#address_filter").val();
-		            		var city_filter_val = $("#city_filter").val();
-		            		var state_filter_val = $("#state_filter").val();
-
-						    $.ajax({
-							    url: "filter_contacts.php",
-							    type: 'POST',
-							    data: {
-							    	search_contacts : $('#search').val(),
-							    	disposition : disposition_filter_val,
-							    	list : list_filter_val,
-							    	address : address_filter_val,
-							    	city : city_filter_val,
-							    	state : state_filter_val
-							    },
+							var disposition_filter_val = $('#disposition_filter').val();
+							var list_filter_val = $('#list_filter').val();
+							var address_filter_val = $("#address_filter").val();
+							var city_filter_val = $("#city_filter").val();
+							var state_filter_val = $("#state_filter").val();
+							
+							$.ajax({
+								url: "filter_contacts.php",
+								type: 'POST',
+								data: {
+									search_contacts : $('#search').val(),
+									disposition : disposition_filter_val,
+									list : list_filter_val,
+									address : address_filter_val,
+									city : city_filter_val,
+									state : state_filter_val
+								},
 								success: function(data) {
-									$('#search_button').text("Search");
-	                				$('#search_button').attr("disabled", false);
+									$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
+									$('#search_button').attr("disabled", false);
 									console.log(data);
-
 									if(data !== ""){
 										$('#table_contacts').html(data);
 										$('#table_contacts').DataTable({
-						                	"bDestroy" : true
-						                });
+											"bDestroy" : true
+										});
 									}else{
 										init_contacts_table.fnClearTable();
 									}
@@ -510,33 +498,33 @@ $disposition = $ui->API_getAllDispositions();
 						});
 
 						function city_filter_ajax() {
-						    var disposition_filter_val = $('#disposition_filter').val();
-		            		var list_filter_val = $('#list_filter').val();
-		            		var address_filter_val = $("#address_filter").val();
-		            		var city_filter_val = $("#city_filter").val();
-		            		var state_filter_val = $("#state_filter").val();
-
-						    $.ajax({
-							    url: "filter_contacts.php",
-							    type: 'POST',
-							    data: {
-							    	search_contacts : $('#search').val(),
-							    	disposition : disposition_filter_val,
-							    	list : list_filter_val,
-							    	address : address_filter_val,
-							    	city : city_filter_val,
-							    	state : state_filter_val
-							    },
+							var disposition_filter_val = $('#disposition_filter').val();
+							var list_filter_val = $('#list_filter').val();
+							var address_filter_val = $("#address_filter").val();
+							var city_filter_val = $("#city_filter").val();
+							var state_filter_val = $("#state_filter").val();
+	
+							$.ajax({
+								url: "filter_contacts.php",
+								type: 'POST',
+								data: {
+									search_contacts : $('#search').val(),
+									disposition : disposition_filter_val,
+									list : list_filter_val,
+									address : address_filter_val,
+									city : city_filter_val,
+									state : state_filter_val
+								},
 								success: function(data) {
 									$('#search_button').text("Search");
-	                				$('#search_button').attr("disabled", false);
+									$('#search_button').attr("disabled", false);
 									console.log(data);
-
+	
 									if(data !== ""){
 										$('#table_contacts').html(data);
 										$('#table_contacts').DataTable({
-						                	"bDestroy" : true
-						                });
+											"bDestroy" : true
+										});
 									}else{
 										init_contacts_table.fnClearTable();
 									}
@@ -552,33 +540,33 @@ $disposition = $ui->API_getAllDispositions();
 						});
 
 						function state_filter_ajax() {
-						    var disposition_filter_val = $('#disposition_filter').val();
-		            		var list_filter_val = $('#list_filter').val();
-		            		var address_filter_val = $("#address_filter").val();
-		            		var city_filter_val = $("#city_filter").val();
-		            		var state_filter_val = $("#state_filter").val();
-
-						    $.ajax({
-							    url: "filter_contacts.php",
-							    type: 'POST',
-							    data: {
-							    	search_contacts : $('#search').val(),
-							    	disposition : disposition_filter_val,
-							    	list : list_filter_val,
-							    	address : address_filter_val,
-							    	city : city_filter_val,
-							    	state : state_filter_val
-							    },
+							var disposition_filter_val = $('#disposition_filter').val();
+							var list_filter_val = $('#list_filter').val();
+							var address_filter_val = $("#address_filter").val();
+							var city_filter_val = $("#city_filter").val();
+							var state_filter_val = $("#state_filter").val();
+	
+							$.ajax({
+								url: "filter_contacts.php",
+								type: 'POST',
+								data: {
+									search_contacts : $('#search').val(),
+									disposition : disposition_filter_val,
+									list : list_filter_val,
+									address : address_filter_val,
+									city : city_filter_val,
+									state : state_filter_val
+								},
 								success: function(data) {
-									$('#search_button').text("Search");
-	                				$('#search_button').attr("disabled", false);
+									$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
+									$('#search_button').attr("disabled", false);
 									console.log(data);
-
+	
 									if(data !== ""){
 										$('#table_contacts').html(data);
 										$('#table_contacts').DataTable({
-						                	"bDestroy" : true
-						                });
+											"bDestroy" : true
+										});
 									}else{
 										init_contacts_table.fnClearTable();
 									}
@@ -625,13 +613,13 @@ $disposition = $ui->API_getAllDispositions();
 		                $(document).on('click','#search_button',function() {
 		                //init_contacts_table.destroy();
 
-		                	if($('#search').val() === ""){
-		                		$('#search_button').attr("disabled", false); 
-		                		$('#search_button').text("Searching...");
-		                	}else{
-			                	$('#search_button').text("Searching...");
-			                	$('#search_button').attr("disabled", true);
-		                	}
+						if($('#search').val() === ""){
+							$('#search_button').attr("disabled", false); 
+							$('#search_button').text("<?php print $lh->translationFor("searching"); ?>");
+						}else{
+							$('#search_button').text("<?php print $lh->translationFor("searching"); ?>");
+							$('#search_button').attr("disabled", true);
+						}
 
 		                	// if contacts is checked
 		                	if($("#search_customers").is(":checked") || $('#search_contacts').is(":checked")){
@@ -655,7 +643,7 @@ $disposition = $ui->API_getAllDispositions();
 										search_customers : search_customers
 								    },
 									success: function(data) {
-										$('#search_button').text("Search");
+										$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
 		                				$('#search_button').attr("disabled", false);
 										//console.log(data);
 										if(data !== ""){
@@ -672,12 +660,12 @@ $disposition = $ui->API_getAllDispositions();
 			            	} else {
 								swal({
 									title: 'ERROR',
-									text: 'Please check either <b>Customer</b> or <b>Contacts</b> checkbox<br>before clicking the <b>Search</b> button.',
+									text: '<?php print $lh->translationFor("check_customer_or_contacts"); ?>',
 									type: 'error',
 									html: true
 								});
 								//$("#search_contacts").prop("checked", true);
-								$('#search_button').text("Search");
+								$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
 								$('#search_button').attr("disabled", false);
 							}
 

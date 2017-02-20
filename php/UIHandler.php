@@ -1270,6 +1270,8 @@ error_reporting(E_ERROR | E_PARSE);
 			// add module row
 			$table .= "<tr><td><b>$moduleName</b><br/><div class='small hide-on-low'>$moduleDescription</div></td><td class='small hide-on-low'>$moduleVersion</td><td class='small hide-on-low'>$status</td><td>$action</td></tr>";
 		}
+		//insert smpt_custom
+		
 		// close table
 		$table .= $this->generateTableFooterWithItems($items, true, false, array(), array("version", "action"));
 
@@ -1506,7 +1508,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 		$footer = '<footer class="main-footer">
 			<div class="pull-right hidden-xs">
-				<b>Version</b> '.$version.'</div><strong>Copyright &copy; '.date("Y").' <a href="http://www.goautodial.com/">GOautodial Inc.</a> All rights reserved.
+				<b>Version</b> '.$version.'</div><strong>'.$this->lh->translationFor("copyright").' &copy; '.date("Y").' <a href="http://www.goautodial.com/">GOautodial Inc.</a> '.$this->lh->translationFor("all_rights_reserved").'.
 			</div>
 			</footer>';
 		$footer .= '			<!-- Modal -->

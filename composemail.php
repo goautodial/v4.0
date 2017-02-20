@@ -55,7 +55,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Compose Message</title>
+    <title><?php print $lh->translationFor("compose_message"); ?> </title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 	
 	<!-- multiple emails plugin -->
@@ -258,7 +258,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 					
 					$("#compose-mail-results").html();
 					$("#compose-mail-results").hide();
-					$('#send_button').html("<i class='fa fa-envelope-o'></i> Sending. Please Wait...");
+					$('#send_button').html('<i class="fa fa-envelope-o"></i> <?php print $lh->translationFor("sending"); ?>');
 					$('#send_button').prop("disabled", true);
 					
 					$.ajax({
@@ -293,20 +293,20 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 				        type        : 'POST',
 				        success     : function(data, textStatus, jqXHR){
 						
-						$('#send_button').html("<i class='fa fa-envelope-o'></i> Send");
+						$('#send_button').html('<i class="fa fa-envelope-o"></i> <?php print $lh->translationFor("send"); ?>');
 						$('#send_button').attr("disabled", false);
 						
 							if (data == 'success') {
-								sweetAlert('Message Sent!', 'You have successfully sent your email.', 'success');
+								sweetAlert('<?php print $lh->translationFor("message_sent"); ?>', '<?php print $lh->translationFor("message_sent_msg"); ?>', 'success');
 							}
 							else if (data == 'no email account'){
-								sweetAlert("Message Sent to System Account!","No email accounts was defined for the user, but message was sent to the user's system account.", "warning");
+								sweetAlert("<?php print $lh->translationFor("no_email_account"); ?>","<?php print $lh->translationFor("no_email_account_msg"); ?>", "warning");
 							}
 							else { // failure
-								sweetAlert('Mailer Error: ' + data, 'error');
+								sweetAlert('<?php print $lh->translationFor("message_error"); ?>' + data, 'error');
 							}
 				        }, error: function(jqXHR, textStatus, errorThrown) {
-							sweetAlert('System Error!', 'error');
+							sweetAlert('<?php print $lh->translationFor("system_error"); ?>', 'error');
 				        }
 				    });
 					
@@ -316,7 +316,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 			
 			$('#send-message-form').on('keyup keypress', function(e) {
 				var keyCode = e.keyCode || e.which;
-				if (keyCode === 13) { 
+				if (keyCode === 13) {
 				  e.preventDefault();
 				  return false;
 				}

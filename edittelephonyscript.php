@@ -262,7 +262,7 @@ if (isset($_POST["script_id"])) {
 				<div class="box-footer">
 				   <div class="col-sm-3 pull-right">
 						<a href="telephonyscripts.php" id="cancel" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-						<button type="submit" class="btn btn-primary" id="modifyOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>						
+						<button type="submit" class="btn btn-primary" id="modifyOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText("update"); ?></span></button>						
 				   </div>
 				</div>
 			</fieldset>

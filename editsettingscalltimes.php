@@ -223,7 +223,7 @@ if (isset($_POST["cid"])) {
 											<label for="protocol" class="col-sm-2 control-label"><?php $lh->translateText("user_groups"); ?></label>
 											<div class="col-sm-10 mb">
 												<select class="form-control" id="usergroup" name="usergroup">
-													<option value="---ALL---">ALL USER GROUPS</option>
+													<option value="---ALL---"><?php $lh->translateText("all_usergroups"); ?></option>
 													<?php
 														for($a=0;$a<count($user_groups->user_group);$a++){
 													?>
@@ -260,8 +260,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_default">
-															<option value="" disabled> - - - Audio Chooser - - - </option>
-															<option value="" <?php if ($output->default_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
+															<option value="" disabled><?php $lh->translateText("audio_chooser"); ?></option>
+															<option value="" <?php if ($output->default_afterhours_filename_override == "") echo "selected"; ?>> <?php $lh->translateText("none"); ?></option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -286,8 +286,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_sunday">
-															<option value="" disabled> - - - Audio Chooser - - - </option>
-															<option value="" <?php if ($output->sunday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
+															<option value="" disabled><?php $lh->translateText("audio_chooser"); ?> </option>
+															<option value="" <?php if ($output->sunday_afterhours_filename_override == "") echo "selected"; ?>><?php $lh->translateText("none"); ?></option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -312,8 +312,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_monday">
-															<option value="" disabled> - - - Audio Chooser - - - </option>
-															<option value="" <?php if ($output->monday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
+															<option value="" disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
+															<option value="" <?php if ($output->monday_afterhours_filename_override == "") echo "selected"; ?>> <?php $lh->translateText("none"); ?> </option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -338,8 +338,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_tuesday">
-															<option value="" disabled> - - - Audio Chooser - - - </option>
-															<option value="" <?php if ($output->tuesday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
+															<option value="" disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
+															<option value="" <?php if ($output->tuesday_afterhours_filename_override == "") echo "selected"; ?>><?php $lh->translateText("none"); ?></option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -364,8 +364,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_wednesday">
-															<option value="" disabled> - - - Audio Chooser - - - </option>
-															<option value="" <?php if ($output->wednesday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
+															<option value="" disabled><?php $lh->translateText("audio_chooser"); ?></option>
+															<option value="" <?php if ($output->wednesday_afterhours_filename_override == "") echo "selected"; ?>><?php $lh->translateText("none"); ?></option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -390,8 +390,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_thursday">
-															<option value="" disabled> - - - Audio Chooser - - - </option>
-															<option value="" <?php if ($output->thursday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
+															<option value="" disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
+															<option value="" <?php if ($output->thursday_afterhours_filename_override == "") echo "selected"; ?>> <?php $lh->translateText("none"); ?> </option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -416,8 +416,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_friday">
-															<option value="" disabled> - - - Audio Chooser - - - </option>
-															<option value="" <?php if ($output->friday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
+															<option value="" disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
+															<option value="" <?php if ($output->friday_afterhours_filename_override == "") echo "selected"; ?>> <?php $lh->translateText("none"); ?> </option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -442,8 +442,8 @@ if (isset($_POST["cid"])) {
 													</div>
 													<div class="col-lg-6">
 														<select class="form-control" name="audio_saturday">
-															<option value="" disabled> - - - Audio Chooser - - - </option>
-															<option value="" <?php if ($output->saturday_afterhours_filename_override == "") echo "selected"; ?>> - - - NONE - - - </option>
+															<option value="" disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
+															<option value="" <?php if ($output->saturday_afterhours_filename_override == "") echo "selected"; ?>><?php $lh->translateText("none"); ?> </option>
 															<?php
 																for($a=0;$a<count($voicefiles->file_name);$a++){
 															?>
@@ -522,7 +522,7 @@ if (isset($_POST["cid"])) {
                           // console.log(data);
                               if(data == 1){
                                     swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("calltime_modify_success"); ?>", "success");
-                                    window.setTimeout(function(){location.reload();},2000);
+                                    //window.setTimeout(function(){location.reload();},2000);
                                     $('#update_button').html("<i class='fa fa-check'></i> Update");
                                     $('#modifyCalltimesOkButton').prop("disabled", false);
                               }

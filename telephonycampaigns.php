@@ -1875,7 +1875,7 @@
 				var log_group = '<?=$_SESSION['usergroup']?>';
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>?",
-					text: "<?php $lh->translateText("cannot_be"); ?>.",
+					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
@@ -1927,7 +1927,7 @@
 				var log_group = '<?=$_SESSION['usergroup']?>';
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>?",
-					text: "<?php $lh->translateText("cannot_be"); ?>.",
+					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
@@ -1977,7 +1977,7 @@
 				var campaign_id = $('.campaign-id').val();
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>?",
-					text: "<?php $lh->translateText("cannot_be"); ?>.",
+					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
@@ -2031,7 +2031,7 @@
 				var log_group = '<?=$_SESSION['usergroup']?>';
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>?",
-					text: "<?php $lh->translateText("cannot_be"); ?>.",
+					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
@@ -2102,7 +2102,7 @@
 				var campaign_id = $('.campaign-id').val();
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>?",
-					text: "<?php $lh->translateText("cannot_be"); ?>.",
+					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
@@ -2152,7 +2152,7 @@
 				var campaign_id = $('.campaign-id').val();
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>?",
-					text: "<?php $lh->translateText("cannot_be"); ?>.",
+					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
@@ -2392,7 +2392,7 @@
 						var log_group = '<?=$_SESSION['usergroup']?>';
 			                swal({
 			                	title: "<?php $lh->translateText("are_you_sure"); ?>?",
-			                	text: "<?php $lh->translateText("cannot_undo"); ?>e.",
+			                	text: "<?php $lh->translateText("cannot_undo"); ?>.",
 			                	type: "warning",
 			                	showCancelButton: true,
 			                	confirmButtonColor: "#DD6B55",
@@ -2431,7 +2431,7 @@
 					                        }
 					                    });
 													} else {
-				                			swal("Cancelled", "<?php $lh->translateText("been_done"); ?> :)", "error");
+				                			swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?> :)", "error");
 				                	}
 			                	}
 			                );
@@ -2628,7 +2628,7 @@
 				                        }
 				                    });
 												} else {
-			                			swal("Cancelled", "<?php $lh->translateText("been_done"); ?> :)", "error");
+			                			swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?> :)", "error");
 			                	}
 			            	}
 			            );
@@ -2693,7 +2693,7 @@
 				                        }
 				                    });
 								} else {
-			                			swal("Cancelled", "<?php $lh->translateText("been_done"); ?> :)", "error");
+			                			swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?> :)", "error");
 			                	}
 			            	}
 			            );

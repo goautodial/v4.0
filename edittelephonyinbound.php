@@ -88,12 +88,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1 style="font-weight:normal;">
-                    	Inbound
-                        <small>Edit 
+                    	<?php $lh->translateText("inbound"); ?>
+                        <small><?php $lh->translateText("edit"); ?> 
                         	<?php 
-				        		if($groupid != NULL){echo "In-Group";}
-				        		if($ivr != NULL){echo "Interactive Voice Record";}
-				        		if($did != NULL){echo "DID/Phone Number";}
+				        		if($groupid != NULL){echo $lh->translateText('in_group');}
+				        		if($ivr != NULL){echo $lh->translateText('interactive_voice_record');}
+				        		if($did != NULL){echo $lh->translateText('did_phone_number');}
 					        ?>
 					    </small>
                     </h1>
@@ -357,9 +357,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														$script = NULL;
 
 															if($output->data->ingroup_script == NULL){
-																$script .= '<option value="NONE" selected> NONE </option>';
+																$script .= '<option value="NONE" selected> '.$lh->translationFor("-none-").' </option>';
 															}else{
-																$script .= '<option value="NONE" > NONE </option>';
+																$script .= '<option value="NONE" > '.$lh->translationFor("-none-").' </option>';
 															}
 
 															for($x=0; $x<count($scripts->script_id);$x++){
@@ -507,9 +507,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														<?php
 														$call_time_id = NULL;
 															if($call_time->call_time_id[0] == NULL){
-																$call_time_id .= '<option value="NONE" selected> NONE </option>';
+																$call_time_id .= '<option value="NONE" selected> '.$lh->translationFor("-none-").' </option>';
 															}else{
-																$call_time_id .= '<option value="NONE" > NONE </option>';
+																$call_time_id .= '<option value="NONE" > '.$lh->translationFor("-none-").' </option>';
 																for($x=0; $x<count($call_time->call_time_id);$x++){
 																	if($output->data->call_time_id == $call_time->call_time_id[$x]){
 																		$call_time_id .= '<option value="'.$call_time->call_time_id[$x].'" selected> '.$call_time->call_time_id[$x].' - '.$call_time->call_time_name[$x].' </option>';
@@ -530,9 +530,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														<?php
 														$call_launch = NULL;
 															if($output->data->get_call_launch == "NONE"){
-																$call_launch .= '<option value="NONE" selected> NONE </option>';
+																$call_launch .= '<option value="NONE" selected> '.$lh->translationFor("-none-").' </option>';
 															}else{
-																$call_launch .= '<option value="NONE" > NONE </option>';
+																$call_launch .= '<option value="NONE" > '.$lh->translationFor("-none-").' </option>';
 															}
 																
 															if($output->data->get_call_launch == "SCRIPT"){
@@ -591,12 +591,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<div class="input-group">
 														<input type="text" class="form-control" class="" id="welcome_message_filename" name="welcome_message_filename" value="<?php if($output->data->welcome_message_filename == NULL )echo "sip-silence"; else echo $output->data->welcome_message_filename;?>">
 														<span class="input-group-btn">
-															<button class="btn btn-default show_welcome_message_filename" type="button">[Audio Chooser...]</button>
+															<button class="btn btn-default show_welcome_message_filename" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 														</span>
 													</div><!-- /input-group -->
 													<div class="row col-sm-12 select_welcome_message_filename">
 														<select class="form-control select2" id="select_welcome_message_filename" style="width:100%;">
-															<option value="sip-silence">- - - Default - - -</option>
+															<option value="sip-silence"><?php $lh->translateText("default"); ?></option>
 															<?php
 																$welcome_message_filename = NULL;
 																	for($x=0; $x < count($voicefiles->file_name);$x++){
@@ -654,12 +654,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<div class="input-group">
 														<input type="text" class="form-control" id="moh_context" name="moh_context" value="<?php if($output->data->moh_context == NULL)echo "default"; else echo $output->data->moh_context;?>">
 														<span class="input-group-btn">
-															<button class="btn btn-default show_moh_context" type="button">[Audio Chooser...]</button>
+															<button class="btn btn-default show_moh_context" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 														</span>
 													</div><!-- /input-group -->
 													<div class="row col-sm-12 select_moh_context">
 														<select class="form-control select2" id="select_moh_context" style="width:100%;">
-															<option value="default">- - - Default - - -</option>
+															<option value="default"><?php $lh->translateText('default') ?></option>
 															<?php
 																$moh_context = NULL;
 																	for($x=0; $x < count($moh->moh_id);$x++){
@@ -683,12 +683,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<div class="input-group">
 														<input type="text" class="form-control" id="onhold_prompt_filename" name="onhold_prompt_filename" value="<?php if($output->data->onhold_prompt_filename == NULL)echo "generic_hold"; else echo $output->data->onhold_prompt_filename;?>">
 														<span class="input-group-btn">
-															<button class="btn btn-default show_onhold_prompt_filename" type="button">[Audio Chooser...]</button>
+															<button class="btn btn-default show_onhold_prompt_filename" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 														</span>
 													</div><!-- /input-group -->
 													<div class="row col-sm-12 select_onhold_prompt_filename">
 														<select class="form-control select2" id="select_onhold_prompt_filename" style="width:100%;">
-															<option value="generic_hold">- - - Default - - -</option>
+															<option value="generic_hold"><?php $lh->translateText("default"); ?></option>
 															<?php
 																$onhold_prompt_filename = NULL;
 																	for($x=0; $x < count($voicefiles->file_name);$x++){
@@ -754,12 +754,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<div class="input-group">
 													<input type="text" class="form-control" id="after_hours_message_filename" name="after_hours_message_filename" value="<?php if($output->data->after_hours_message_filename == NULL)echo "vm-goodbye"; else echo $output->data->after_hours_message_filename;?>">
 													<span class="input-group-btn">
-														<button class="btn btn-default show_after_hours_message_filename" type="button">[Audio Chooser...]</button>
+														<button class="btn btn-default show_after_hours_message_filename" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 													</span>
 												</div><!-- /input-group -->
 												<div class="row col-sm-12 select_after_hours_message_filename">
 													<select class="form-control select2" id="select_after_hours_message_filename" style="width:100%;">
-														<option value="vm-goodbye">- - - Default - - -</option>
+														<option value="vm-goodbye"><?php $lh->translateText("default"); ?></option>
 														<?php
 															$after_hours_message_filename = NULL;
 																for($x=0; $x < count($voicefiles->file_name);$x++){
@@ -788,12 +788,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<div class="input-group">
 													<input type="text" class="form-control" id="after_hours_voicemail" name="after_hours_voicemail" value="<?php if($output->data->after_hours_voicemail == NULL)echo ""; else echo $output->data->after_hours_voicemail;?>">
 													<span class="input-group-btn">
-														<button class="btn btn-default show_after_hours_voicemail" type="button">[Audio Chooser...]</button>
+														<button class="btn btn-default show_after_hours_voicemail" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 													</span>
 												</div><!-- /input-group -->
 												<div class="row col-sm-12 select_after_hours_voicemail">
 													<select class="form-control select2" id="select_after_hours_voicemail" style="width:100%;">
-														<option value=""> - - - NONE - - - </option>
+														<option value=""> <?php $lh->translateText("-none-"); ?> </option>
 														<?php
 															$after_hour_voicemail = NULL;
 																for($x=0; $x < count($voicemail->voicemail_id);$x++){
@@ -885,12 +885,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																<div class="input-group">
 																	<input type="text" class="form-control" id="no_agents_exten" name="no_agents_exten" value="<?php if($output->data->no_agents_exten == NULL)echo "vm-goodbye"; else echo $output->data->no_agents_exten;?>">
 																	<span class="input-group-btn">
-																		<button class="btn btn-default show_no_agents_exten" type="button">[Audio Chooser...]</button>
+																		<button class="btn btn-default show_no_agents_exten" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 																	</span>
 																</div><!-- /input-group -->
 																<div class="row col-sm-12 select_no_agents_exten">
 																	<select class="form-control select2-2" id="select_no_agents_exten" style="width:100%;">
-																		<option value="vm-goodbye">- - - Default - - -</option>
+																		<option value="vm-goodbye"><?php $lh->translateText("default"); ?></option>
 																		<?php
 																			$no_agents_exten = NULL;
 																				for($x=0; $x < count($voicefiles->file_name);$x++){
@@ -915,12 +915,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																<div class="input-group">
 																	<input type="text" class="form-control" id="no_agents_voicemail" name="no_agents_voicemail" value="<?php if($output->data->no_agents_voicemail == NULL)echo ""; else echo $output->data->no_agents_voicemail;?>">
 																	<span class="input-group-btn">
-																		<button class="btn btn-default show_no_agents_voicemail" type="button">[Audio Chooser...]</button>
+																		<button class="btn btn-default show_no_agents_voicemail" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 																	</span>
 																</div><!-- /input-group -->
 																<div class="row col-sm-12 select_no_agents_voicemail">
 																	<select class="form-control select2-2" id="select_no_agents_voicemail" style="width:100%;">
-																		<option value="">- - - NONE - - -</option>
+																		<option value=""><?php $lh->translateText("-none-"); ?></option>
 																		<?php
 																			$no_agents_voicemail = NULL;
 																				for($x=0; $x < count($voicemail->voicemail_id);$x++){
@@ -944,12 +944,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																<div class="input-group">
 																	<input type="text" class="form-control" id="no_agents_ingroup" name="no_agents_ingroup" value="<?php if($output->data->no_agents_ingroup == NULL)echo ""; else echo $output->data->no_agents_ingroup;?>">
 																	<span class="input-group-btn">
-																		<button class="btn btn-default show_no_agents_ingroup" type="button">[Audio Chooser...]</button>
+																		<button class="btn btn-default show_no_agents_ingroup" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 																	</span>
 																</div><!-- /input-group -->
 																<div class="row col-sm-12 select_no_agents_ingroup">
 																	<select class="form-control select2-2" id="select_no_agents_ingroup" style="width:100%;">
-																		<option value="">- - - NONE - - -</option>
+																		<option value=""><?php $lh->translateText("-none-"); ?></option>
 																		<?php
 																			$no_agents_ingroup = NULL;
 																				for($x=0; $x<count($ingroup->group_id);$x++){
@@ -973,12 +973,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																<div class="input-group">
 																	<input type="text" class="form-control" id="no_agents_callmenu" name="no_agents_callmenu" value="<?php if($output->data->no_agents_callmenu == NULL)echo ""; else echo $output->data->no_agents_callmenu;?>">
 																	<span class="input-group-btn">
-																		<button class="btn btn-default show_no_agents_callmenu" type="button">[Audio Chooser...]</button>
+																		<button class="btn btn-default show_no_agents_callmenu" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 																	</span>
 																</div><!-- /input-group -->
 																<div class="row col-sm-12 select_no_agents_callmenu">
 																	<select class="form-control select2-2" id="select_no_agents_callmenu" style="width:100%;">
-																		<option value="">- - - NONE - - -</option>
+																		<option value=""><?php $lh->translateText("-none-"); ?></option>
 																		<?php
 																			$no_agents_callmenu = NULL;
 																				for($x=0; $x < count($call_menu->menu_id);$x++){
@@ -1198,7 +1198,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<label class="col-sm-3 control-label" for="menu_prompt"><?php $lh->translateText("menu_greeting"); ?>: </label>
 													<div class="col-sm-9">
 														<select name="menu_prompt" id="menu_prompt" class="form-control select2" style="width:100%;">
-															<option value="goWelcomeIVR">-- Default Value --</option>
+															<option value="goWelcomeIVR"><?php $lh->translationText("default_value") ?></option>
 															<?php
 																for($i=0;$i<count($voicefiles->file_name);$i++){
 																	$file = substr($voicefiles->file_name[$i], 0, -4);
@@ -1220,7 +1220,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<label class="col-sm-3 control-label" for="menu_timeout_prompt"><?php $lh->translateText("menu_timeout_greeting"); ?>: </label>
 													<div class="col-sm-9">
 														<select name="menu_timeout_prompt" id="menu_timeout_prompt" class="form-control select2" style="width:100%;">
-															<option value="">-- Default Value --</option>
+															<option value=""><?php $lh->translationText("default_value") ?></option>
 															<?php
 																for($i=0;$i<count($voicefiles->file_name);$i++){
 																	$file = substr($voicefiles->file_name[$i], 0, -4);
@@ -1236,7 +1236,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<label class="col-sm-3 control-label" for="menu_invalid_prompt"><?php $lh->translateText("menu_invalid_greeting"); ?>: </label>
 													<div class="col-sm-9">
 														<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control select2" style="width:100%;">
-															<option value="">-- Default Value --</option>
+															<option value=""><?php $lh->translateText("default_value"); ?></option>
 															<?php
 																for($i=0;$i<count($voicefiles->file_name);$i++){
 																	$file = substr($voicefiles->file_name[$i], 0, -4);
@@ -1258,8 +1258,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<label class="col-sm-3 control-label" for="menu_time_check"><?php $lh->translateText("menu_time_check"); ?>: </label>
 													<div class="col-sm-9">
 														<select name="menu_time_check" id="menu_time_check" class="form-control">
-															<option value="0" <?php if($output->data->menu_time_check == "0"){echo "selected";}?> > 0 - No Realtime Tracking </option>
-															<option value="1" <?php if($output->data->menu_time_check == "1"){echo "selected";}?> > 1 - Realtime Tracking </option>
+															<option value="0" <?php if($output->data->menu_time_check == "0"){echo "selected";}?> >0 - <?php $lh->translationText("no_realtime_tracking") ?> </option>
+															<option value="1" <?php if($output->data->menu_time_check == "1"){echo "selected";}?> >1 - <?php $lh->translationText("realtime_tracking") ?> </option>
 														</select>
 													</div>
 												</div>
@@ -1281,8 +1281,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<label class="col-sm-3 control-label" for="track_in_vdac"><?php $lh->translateText("track_call_realtime_report"); ?>: </label>
 													<div class="col-sm-9"> 
 														<select name="track_in_vdac" id="track_in_vdac" class="form-control">
-															<option value="0" <?php if($output->data->track_in_vdac == "0"){echo "selected";}?> >0 - No Realtime Tracking</option>
-															<option value="1" <?php if($output->data->track_in_vdac == "1"){echo "selected";}?> >1 - Realtime Tracking</option>
+															<option value="0" <?php if($output->data->track_in_vdac == "0"){echo "selected";}?> >0 - <?php $lh->translateText("no_realtime_tracking"); ?></option>
+															<option value="1" <?php if($output->data->track_in_vdac == "1"){echo "selected";}?> >1 - <?php $lh->translateText("realtime_tracking"); ?></option>
 														</select>
 													</div>
 												</div>
@@ -1377,14 +1377,14 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																<?php $lh->translateText("route"); ?>:
 																<select class="form-control route_menu_<?php echo $i;?>" name="route_menu[]">
 																	<option selected value=""></option>
-																	<option value="CALLMENU" <?php if($ivr_options->option_route[$i] == "CALLMENU")echo "selected"; ?> >Call Menu / IVR</option>
-																	<option value="INGROUP" <?php if($ivr_options->option_route[$i] == "INGROUP")echo "selected"; ?> >In-group</option>
-																	<option value="DID" <?php if($ivr_options->option_route[$i] == "DID")echo "selected"; ?> >DID</option>
-																	<option value="HANGUP" <?php if($ivr_options->option_route[$i] == "HANGUP")echo "selected"; ?> >Hangup</option>
-																	<option value="EXTENSION" <?php if($ivr_options->option_route[$i] == "EXTENSION")echo "selected"; ?> >Custom Extension</option>
-																	<option value="PHONE" <?php if($ivr_options->option_route[$i] == "PHONE")echo "selected"; ?> >Phone</option>
-																	<option value="VOICEMAIL" <?php if($ivr_options->option_route[$i] == "VOICEMAIL")echo "selected"; ?> >Voicemail</option>
-																	<option value="AGI" <?php if($ivr_options->option_route[$i] == "AGI")echo "selected"; ?> >AGI</option>
+																	<option value="CALLMENU" <?php if($ivr_options->option_route[$i] == "CALLMENU")echo "selected"; ?> ><?php $lh->translationText("call_menu_ivr") ?></option>
+																	<option value="INGROUP" <?php if($ivr_options->option_route[$i] == "INGROUP")echo "selected"; ?> ><?php $lh->translationText("in_group") ?></option>
+																	<option value="DID" <?php if($ivr_options->option_route[$i] == "DID")echo "selected"; ?> ><?php $lh->translationText("did") ?></option>
+																	<option value="HANGUP" <?php if($ivr_options->option_route[$i] == "HANGUP")echo "selected"; ?> ><?php $lh->translationText("hangup") ?></option>
+																	<option value="EXTENSION" <?php if($ivr_options->option_route[$i] == "EXTENSION")echo "selected"; ?> ><?php $lh->translationText("custom_extension") ?></option>
+																	<option value="PHONE" <?php if($ivr_options->option_route[$i] == "PHONE")echo "selected"; ?> ><?php $lh->translationText("phone") ?></option>
+																	<option value="VOICEMAIL" <?php if($ivr_options->option_route[$i] == "VOICEMAIL")echo "selected"; ?> ><?php $lh->translationText("voicemail") ?></option>
+																	<option value="AGI" <?php if($ivr_options->option_route[$i] == "AGI")echo "selected"; ?> ><?php $lh->translationText("agi") ?></option>
 																</select>
 															</div>
 															<div class="col-lg-1 btn-remove"></div>
@@ -1397,7 +1397,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("call_menu"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="select2-2 form-control select2" name="option_callmenu_value[]" style="width:100%;">
-																			<option value="" selected> - - - NONE - - - </option>
+																			<option value="" selected> <?php $lh->translateText("-none-"); ?> </option>
 																		<?php
 																			$callmenu_option = '';
 																			for($x=0;$x < count($ivr->menu_id);$x++){
@@ -1416,7 +1416,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																		<label class="col-sm-3 control-label"><?php $lh->translateText("ingroups"); ?>: </label>
 																		<div class="col-sm-6">
 																			<select class="select2-2 form-control select2" name="option_ingroup_value[]" style="width:100%;">
-																				<option value="" > - - - NONE - - - </option>
+																				<option value="" > <?php $lh->translateText("-none-"); ?> </option>
 																			<?php
 																				$ingroup_option = '';
 																				for($x=0;$x < count($ingroups->group_id);$x++){
@@ -1491,9 +1491,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																				<label class="col-sm-4 control-label"><?php $lh->translateText("search_method"); ?>:</label>
 																				<div class="col-sm-8">
 																					<select class="form-control" name="search_method_<?php echo $i;?>" id="edit_search_method_<?php echo $i;?>">
-																						<option value="LB" <?php if($explode_ingroup_context[1] == "LB")echo "selected"; ?> >LB - Load Balanced</option>
-																						<option value="LO" <?php if($explode_ingroup_context[1] == "LO")echo "selected"; ?> >LO - Load Balanced Overflow</option>
-																						<option value="SO" <?php if($explode_ingroup_context[1] == "SO")echo "selected"; ?> >Server Only</option>
+																						<option value="LB" <?php if($explode_ingroup_context[1] == "LB")echo "selected"; ?> ><?php $lh->translateText("lb_load_balance"); ?></option>
+																						<option value="LO" <?php if($explode_ingroup_context[1] == "LO")echo "selected"; ?> ><?php $lh->translateText("lo_load_balance_overflow"); ?></option>
+																						<option value="SO" <?php if($explode_ingroup_context[1] == "SO")echo "selected"; ?> ><?php $lh->translateText("server_only"); ?></option>
 																					</select>
 																				</div>
 																			</div>
@@ -1533,7 +1533,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																				</div>
 																				<div class="col-sm-6">
 																					<select class="col-sm-6 form-control select2" style="width:100%;" id="enter_filename_select_<?php echo $i;?>">
-																						<option value="sip-silence" <?php if($explode_ingroup_context[5] == "sip-silence")echo "selected"; ?> > - - - DEFAULT VALUE - - - </option>
+																						<option value="sip-silence" <?php if($explode_ingroup_context[5] == "sip-silence")echo "selected"; ?> > <?php $lh->translateText("default_value") ?> </option>
 																					<?php
 																						$vid_enter = '';
 																						for($x=0;$x<count($voicefiles->file_name);$x++){
@@ -1549,7 +1549,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																			</div>
 																		</div>
 																		<div class="row mb ingroup_advanced_settings_<?php echo $i;?>">
-																			<label class="col-sm-3 control-label"><?php $lh->translateText("vid_id_number_filename"); ?>VID ID Number Filename: </label>
+																			<label class="col-sm-3 control-label"><?php $lh->translateText("vid_id_number_filename"); ?>: </label>
 																			<div class="col-sm-8">
 																				<div class="col-sm-6">
 																					<input type="text" name="id_number_filename_<?php echo $i;?>" value="<?php 
@@ -1561,7 +1561,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																				</div>
 																				<div class="col-sm-6">
 																					<select class="col-sm-6 form-control select2" style="width:100%;" id="edit_id_number_filename_select_<?php echo $i;?>">
-																						<option value="sip-silence" <?php if($explode_ingroup_context[6] == "sip-silence")echo "selected"; ?> > - - - DEFAULT VALUE - - - </option>
+																						<option value="sip-silence" <?php if($explode_ingroup_context[6] == "sip-silence")echo "selected"; ?> > <?php $lh->translateText("default_value"); ?> </option>
 																					<?php
 																						$vid_id = '';
 																						for($x=0;$x<count($voicefiles->file_name);$x++){
@@ -1589,7 +1589,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																				</div>
 																				<div class="col-sm-6">
 																					<select class="col-sm-6 form-control select2" style="width:100%;" id="edit_confirm_filename_select_<?php echo $i;?>">
-																						<option value="sip-silence" <?php if($explode_ingroup_context[7] == "sip-silence")echo "selected"; ?> > - - - DEFAULT VALUE - - - </option>
+																						<option value="sip-silence" <?php if($explode_ingroup_context[7] == "sip-silence")echo "selected"; ?> > <?php $lh->translateText("default_value"); ?> </option>
 																					<?php
 																						$vid_confirm = '';
 																						for($x=0;$x<count($voicefiles->file_name);$x++){
@@ -1614,7 +1614,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("did"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="col-sm-6 select2-2 form-control select2" name="option_did_value[]" style="width:100%;">
-																			<option value="" selected> - - - NONE - - - </option>
+																			<option value="" selected> <?php $lh->translateText("-none-"); ?> </option>
 																		<?php
 																			$did_option = '';
 																			for($x=0;$x < count($phonenumber->did_pattern);$x++){
@@ -1632,7 +1632,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("audio_file"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="select2-2 form-control select2" name="option_hangup_value[]" style="width:100%;">
-																			<option value=""> - - - NONE - - - </option>
+																			<option value=""> <?php $lh->translateText("-none-"); ?> </option>
 																		<?php
 																			if($ivr_options->option_route_value[$i] == "vm-goodbye"){echo '<option value="vm-goodbye" selected> vm-goodbye </option>';}
 																			$hangup_option = '';
@@ -1667,7 +1667,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("phone"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="select2-2 form-control select2" name="option_phone_value[]" style="width:100%;">
-																			<option value="" > - - - NONE - - - </option>
+																			<option value="" > <?php $lh->translateText("-none-"); ?> </option>
 																		<?php
 																			$phones_option = '';
 																			for($x=0;$x < count($phones->extension);$x++){
@@ -1689,7 +1689,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																		</div>
 																		<div class="col-sm-6">
 																			<select class="col-sm-6 select2 form-control" style="width:100%;" id="option_voicemail_select_<?php echo $i;?>">
-																				<option value="" > - - - NONE - - - </option>
+																				<option value="" > <?php $lh->translateText("-none-"); ?> </option>
 																			<?php
 																				$voicemail_option = '';
 																				for($x=0;$x < count($voicemails->voicemail_id);$x++){
@@ -1898,7 +1898,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<label for="route_agentid" class="col-sm-3 control-label"><?php $lh->translateText("agent_id"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_agentid" id="route_agentid" class="form-control select2" style="width:100%;">
-														<option value="" > -- NONE -- </option>
+														<option value="" > <?php $lh->translateText("-none-"); ?> </option>
 														<?php
 															for($i=0;$i<count($users->user);$i++){
 														?>
@@ -1975,7 +1975,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<label for="user_route_settings_ingroup" class="col-sm-3 control-label"><?php $lh->translateText("agent_route_settings"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="user_route_settings_ingroup" id="user_route_settings_ingroup" class="form-control">
-														<option value="">---NONE---</option>
+														<option value=""><?php $lh->translateText("-none-"); ?></option>
 													<?php
 														for($i=0;$i<count($ingroups->group_id);$i++){
 															if($ingroups->group_id[$i] != "AGENTDIRECT"){
@@ -2032,7 +2032,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<label for="route_phone_server" class="col-sm-3 control-label"><?php $lh->translateText("server_ip"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_phone_server" id="route_phone_server" class="form-control">
-														<option value="" > -- NONE -- </option>
+														<option value="" > <?php $lh->translateText("-none-"); ?> </option>
 														<?php
 															for($i=0;$i < 1;$i++){
 														?>
@@ -2449,7 +2449,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 				$("#modifydid").validate({
 					submitHandler: function() {
 					//submit the form
-						$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+						$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 						$('#modifyDIDOkButton').prop("disabled", true);
 						
 						$.post("./php/ModifyTelephonyInbound.php", //post

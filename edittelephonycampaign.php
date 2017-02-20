@@ -398,8 +398,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 														<label class="col-sm-3 control-label"><?php $lh->translateText("force_reset_of_hopper"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select class="form-control" id="force_reset_hopper" name="force_reset_hopper">
-																<option value="Y">Y</option>
-																<option value="N" selected>N</option>
+																<option value="Y">Yes</option>
+																<option value="N" selected>No</option>
 															</select>
 														</div>
 													</div>
@@ -414,7 +414,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																	<?php } ?>
 																<?php }?>
 															<?php } else { ?>
-																No <b>DID/'s</b> found for this campaign.
+																No <b>DID/'s</b> <?php $lh->translationFor("found_for_this_campaign"); ?>.
 															<?php } ?>
 														</span>
 													</div>
@@ -438,7 +438,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																	<?php } ?>
 																<?php }?>
 															<?php } else { ?>
-																No <b>DID/'s</b> found for this campaign.
+																No <b>DID/'s</b> <?php $lh->translationFor("found_for_this_campaign"); ?>.
 															<?php } ?>
 														</span>
 													</div>
@@ -490,8 +490,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 														<label class="col-sm-3 control-label"><?php $lh->translateText("allowed_inbound_and_blended"); ?>:</label>
 														<div class="col-sm-9 mb">
 															<select class="form-control" id="campaign_allow_inbound" name="campaign_allow_inbound">
-																<option value="N" <?php if($campaign->data->campaign_allow_inbound == "N") echo "selected";?>>N</option>
-																<option value="Y" <?php if($campaign->data->campaign_allow_inbound == "Y") echo "selected";?>>Y</option>
+																<option value="N" <?php if($campaign->data->campaign_allow_inbound == "N") echo "selected";?>>No</option>
+																<option value="Y" <?php if($campaign->data->campaign_allow_inbound == "Y") echo "selected";?>>Yes</option>
 															</select>
 														</div>
 													</div>
@@ -1543,7 +1543,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																	<select class="form-control" id="survey_method" name="survey_method">
 																		<option value="AGENT_XFER" <?php if($campaign->data->survey_method == "AGENT_XFER") echo "selected";?>>CAMPAIGN</option>
 																		<option value="EXTENSION" <?php if($campaign->data->survey_method == "EXTENSION") echo "selected";?>>DID</option>
-																		<option value="CALLMENU" <?php if($campaign->data->survey_method == "CALLMENU") echo "selected";?>>CALLMENU</option>
+																		<option value="CALLMENU" <?php if($campaign->data->survey_method == "CALLMENU") echo "selected";?>>CALL MENU</option>
 																	</select>
 																</div>
 															</div>
@@ -1867,9 +1867,9 @@ $audiofiles = $ui->API_getListAudioFiles();
 						                    <fieldset class="footer-buttons">
 						                        <div class="box-footer">
 						                           <div class="col-sm-3 pull-right">
-															<a href="telephonycampaigns.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+															<a href="telephonycampaigns.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i><?php $lh->translateText("cancel"); ?></a>
 
-						                                	<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+						                                	<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i><?php $lh->translateText("update"); ?></span></button>
 						                           </div>
 						                        </div>
 						                    </fieldset>
@@ -2010,7 +2010,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 											<input type="checkbox" name="add_scheduled_callback" id="add_scheduled_callback" class="flat-red" value="Y" />
 										</td>
 										<td>
-											<a type="button" id="add_new_status" data-id="<?php echo $did;?>" class="btn btn-primary" disabled><span id="add_button"><i class="fa fa-plus"></i> New Status</span></a>
+											<a type="button" id="add_new_status" data-id="<?php echo $did;?>" class="btn btn-primary" disabled><span id="add_button"><i class="fa fa-plus"></i> <?php $lh->translateText("new_status"); ?></span></a>
 										</td>
 									</tr>
 								<!------>
@@ -2019,7 +2019,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 					              </table>
 
 					              	<div class="box-footer pull-right">
-										<a href="#" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-remove"></i> Cancel</a>
+										<a href="#" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-remove"></i> <?php $lh->translateText("cancel"); ?></a>
 									</div>
 					            </div>
 
@@ -2075,14 +2075,14 @@ $audiofiles = $ui->API_getListAudioFiles();
 	                	<div class="form-group mt">
 		                	<input type="hidden" name="edit_campaign" id="edit_campaign">
 
-	                		<label class="col-sm-3 control-label" for="status">Status:</label>
+	                		<label class="col-sm-3 control-label" for="status"><?php $lh->translateText("status"); ?>:</label>
 	                        <div class="col-sm-9">
 	                            <input type="text" name="edit_status" id="edit_status" class="form-control" placeholder="Status" minlength="1" maxlenght="6" required readonly>
 	                            <br/><small><label id="status-duplicate-error"></label></small>
 	                    	</div>
 		                </div>
 		                <div class="form-group">
-		                	<label class="col-sm-3 control-label" for="status_name"> Status Name: </label>
+		                	<label class="col-sm-3 control-label" for="status_name"> <?php $lh->translateText("status_name"); ?>: </label>
 	                        <div class="col-sm-9 mb">
 	                            <input type="text" name="edit_status_name" id="edit_status_name" class="form-control" placeholder="Status Name" maxlenght="30" required>
 	                        </div>
@@ -2095,39 +2095,39 @@ $audiofiles = $ui->API_getListAudioFiles();
 		                    	<div class="row mb">
 		                    		<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_selectable">
 										<input type="checkbox" id="edit_selectable" name="edit_selectable" checked>
-										<span class="fa fa-check"></span> Selectable
+										<span class="fa fa-check"></span> <?php $lh->translateText("selectable"); ?> 
 									</label>
 									<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_human_answered">
 										<input type="checkbox" id="edit_human_answered" name="edit_human_answered">
-										<span class="fa fa-check"></span> Human Answered
+										<span class="fa fa-check"></span> <?php $lh->translateText("human_answered"); ?> 
 									</label>
 									<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_sale">
 										<input type="checkbox" id="edit_sale" name="edit_sale">
-										<span class="fa fa-check"></span> Sale
+										<span class="fa fa-check"></span> <?php $lh->translateText("sale"); ?> 
 									</label>
 						        </div>
 						        <div class="row mb">
 						        	<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_dnc">
 										<input type="checkbox" id="edit_dnc" name="edit_dnc">
-										<span class="fa fa-check"></span> DNC
+										<span class="fa fa-check"></span> <?php $lh->translateText("dnc"); ?> 
 									</label>
 									<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_customer_contact">
 										<input type="checkbox" id="edit_customer_contact" name="edit_customer_contact">
-										<span class="fa fa-check"></span> Customer Contact
+										<span class="fa fa-check"></span> <?php $lh->translateText("customer_contact"); ?> 
 									</label>
 									<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_not_interested">
 										<input type="checkbox" id="edit_not_interested" name="edit_not_interested">
-										<span class="fa fa-check"></span> Not Interested
+										<span class="fa fa-check"></span> <?php $lh->translateText("not_interested"); ?> 
 									</label>
 					            </div>
 						        <div class="row mb">
 						        	<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_unworkable">
 										<input type="checkbox" id="edit_unworkable" name="edit_unworkable">
-										<span class="fa fa-check"></span> Unworkable
+										<span class="fa fa-check"></span> <?php $lh->translateText("unworkable"); ?> 
 									</label>
 									<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_scheduled_callback">
 										<input type="checkbox" id="edit_scheduled_callback" name="edit_scheduled_callback">
-										<span class="fa fa-check"></span> Scheduled Callback
+										<span class="fa fa-check"></span> <?php $lh->translateText("scheduled_callback"); ?> 
 									</label>
 					            </div>
 		                    </div>
@@ -2136,8 +2136,8 @@ $audiofiles = $ui->API_getListAudioFiles();
                 </div>
                 <div class="modal-footer">
                 	<div class="col-sm-5 pull-right">
-                		<button type="button" class="btn btn-danger" id="cancel_edit" data-dismiss="modal"><i class='fa fa-remove'></i> Cancel</button>
-                    	<button type="button" class="btn btn-primary" id="modify_disposition"><span id="update_button"><i class='fa fa-check'></i> Update</span></button>
+                		<button type="button" class="btn btn-danger" id="cancel_edit" data-dismiss="modal"><i class='fa fa-remove'></i> <?php $lh->translateText("cancel"); ?></button>
+                    	<button type="button" class="btn btn-primary" id="modify_disposition"><span id="update_button"><i class='fa fa-check'></i> <?php $lh->translateText("update"); ?></span></button>
               		</div>
               	</div>
 

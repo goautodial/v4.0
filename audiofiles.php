@@ -231,11 +231,11 @@
 	           <?php
 			   if ($perm->moh->moh_update !== 'N') {
 			   ?>
-			   <button type="button" class="btn btn-primary btn-update-moh-info" data-id=""><span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+			   <button type="button" class="btn btn-primary btn-update-moh-info" data-id=""><span id="update_button"><i class="fa fa-check"></i> update</span></button>
 			   <?php
 			   } else {
 			   ?>			   
-	           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	           <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
 			   <?php
 			   }
 			   ?>
@@ -333,7 +333,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title"><b>><?php $lh->translateText("voice_files_playback"); ?></b></h4>
+	        <h4 class="modal-title"><b><?php $lh->translateText("voice_files_playback"); ?></b></h4>
 	      </div>
 	      <div class="modal-body">
 	      	<center class="mt"><em class="fa fa-music fa-5x"></em></center>
@@ -349,7 +349,7 @@
 		</audio> -->
 	      </div>
 	      <div class="modal-footer">
-		<a href="" class="btn btn-primary download-audio-file<?=($perm->voicefiles->voicefiles_download === 'N' ? ' hidden' : '')?>" download>><?php $lh->translateText("download_file"); ?></a>
+		<a href="" class="btn btn-primary download-audio-file<?=($perm->voicefiles->voicefiles_download === 'N' ? ' hidden' : '')?>" download><?php $lh->translateText("download_file"); ?></a>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	      </div>
 	    </div>

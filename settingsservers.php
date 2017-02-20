@@ -293,7 +293,7 @@
 										success: function(data) {
 										console.log(data);
 											if(data == "success"){
-												swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("server_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
+												swal({title: "<?php $lh->translateText("deleted"); ?>",text: "<?php $lh->translateText("server_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
 											}else{
 												sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 											}
