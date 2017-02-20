@@ -50,7 +50,7 @@ if (isset($_GET["reply_subject"])) {
 } else $reply_subject = "";
 
 $folder = MESSAGES_GET_INBOX_MESSAGES;
-
+$smtp_status = $ui->API_getSMTPActivation();
 ?>
 <html>
   <head>
@@ -128,9 +128,11 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 				  <div class="form-group">
 				    <?php print $ui->generateSendToUserSelect($user->getUserId(), false, null, $reply_user); ?>
 				  </div>
+				  <?php if($smtp_status == 1){?>
                   <div class="form-group">
                     <input id="external_recipients" name="external_recipients" class="form-control" placeholder="<?php $lh->translateText("external_message_recipients"); ?>"/>
                   </div>
+				  <?php } ?>
                   <div class="form-group">
                     <input id="subject" name="subject" class="form-control required" placeholder="<?php $lh->translateText("subject"); ?>:" value="<?php print $reply_subject; ?>"/>
                   </div>
@@ -282,7 +284,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 							$("#compose-mail-results").fadeIn(); //show confirmation message
 				        }
 				    });
-					
+					<?php if($smtp_status == 1){?>
 					//send to actual email account
 					$.ajax({
 				        url         : 'php/send_mail.php',
@@ -309,7 +311,7 @@ $folder = MESSAGES_GET_INBOX_MESSAGES;
 							sweetAlert('<?php print $lh->translationFor("system_error"); ?>', 'error');
 				        }
 				    });
-					
+					<?php } ?>
 					return false; //don't let the form refresh the page...
 				}
 			});

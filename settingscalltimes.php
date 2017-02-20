@@ -193,7 +193,7 @@
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_default">
 												<option value="" selected disabled><?php $lh->translateText("audio_chooser"); ?></option>
-												<option value=""><?php $lh->translateText("none"); ?></option>
+												<option value=""><?php $lh->translateText("-none-"); ?></option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -219,7 +219,7 @@
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_sunday">
 												<option value="" selected disabled><?php $lh->translateText("audio_chooser"); ?></option>
-												<option value=""> <?php $lh->translateText("none"); ?> </option>
+												<option value=""> <?php $lh->translateText("-none-"); ?> </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -245,7 +245,7 @@
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_monday">
 												<option value="" selected disabled> <?php $lh->translateText("audio_chooser"); ?></option>
-												<option value=""><?php $lh->translateText("none"); ?></option>
+												<option value=""><?php $lh->translateText("-none-"); ?></option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -271,7 +271,7 @@
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_tuesday">
 												<option value="" selected disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
-												<option value=""> <?php $lh->translateText("none"); ?> </option>
+												<option value=""> <?php $lh->translateText("-none-"); ?> </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -297,7 +297,7 @@
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_wednesday">
 												<option value="" selected disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
-												<option value=""><?php $lh->translateText("none"); ?> </option>
+												<option value=""><?php $lh->translateText("-none-"); ?> </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -323,7 +323,7 @@
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_thursday">
 												<option value="" selected disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
-												<option value=""> <?php $lh->translateText("none"); ?> </option>
+												<option value=""> <?php $lh->translateText("-none-"); ?> </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -349,7 +349,7 @@
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_friday">
 												<option value="" selected disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
-												<option value=""> <?php $lh->translateText("none"); ?> </option>
+												<option value=""> <?php $lh->translateText("-none-"); ?> </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>
@@ -375,7 +375,7 @@
 										<div class="col-lg-6">
 											<select class="form-control select2-1" style="width:100%;" name="audio_saturday">
 												<option value="" selected disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
-												<option value=""> <?php $lh->translateText("none"); ?> </option>
+												<option value=""> <?php $lh->translateText("-none-"); ?> </option>
 												<?php
 													for($i=0;$i<count($voicefiles->file_name);$i++){
 												?>

@@ -1270,7 +1270,17 @@ error_reporting(E_ERROR | E_PARSE);
 			// add module row
 			$table .= "<tr><td><b>$moduleName</b><br/><div class='small hide-on-low'>$moduleDescription</div></td><td class='small hide-on-low'>$moduleVersion</td><td class='small hide-on-low'>$status</td><td>$action</td></tr>";
 		}
-		//insert smpt_custom
+		//insert smtp_custom
+		$smtp_status = $this->API_getSMTPActivation();
+		if ($smtp_status == 1) { // module is enabled.
+			$status = "<i class='fa fa-check-square-o'></i>";
+		} else { // module is disabled.
+			$status = "<i class='fa fa-times-circle-o'></i>";
+		}
+		$moduleName = $this->lh->translationFor("smtp_settings");
+		$moduleDescription = $this->lh->translationFor("smtp_settings_desc");
+		$action = $this->getActionButtonForSMTP($smtp_status);
+		$table .= "<tr><td><b>$moduleName</b><br/><div class='small hide-on-low'>$moduleDescription</div></td><td class='small hide-on-low'>$moduleVersion</td><td class='small hide-on-low'>$status</td><td>$action</td></tr>";
 		
 		// close table
 		$table .= $this->generateTableFooterWithItems($items, true, false, array(), array("version", "action"));
@@ -1850,6 +1860,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$numTasks = $this->db->getUnfinishedTasksNumber($userid);
 		$numNotifications = $this->db->getNumberOfTodayNotifications($userid) + $this->db->getNumberOfTodayEvents($userid);
 		$mh = \creamy\ModuleHandler::getInstance();
+		$smtp_status = $this->API_getSMTPActivation(); // smtp_status
 		
 		$usergroup = (!isset($usergroup) ? $_SESSION['usergroup'] : $usergroup);
 		$perms = $this->goGetPermissions('sidebar', $usergroup);
@@ -1867,13 +1878,14 @@ error_reporting(E_ERROR | E_PARSE);
 			$adminArea = '<li class="treeview"><a href="#"><i class="fa fa-dashboard"></i> <span>'.$this->lh->translationFor("administration").'</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">';
 			$adminArea .= $this->getSidebarItem("./adminsettings.php", "gears", $this->lh->translationFor("settings")); // admin settings
-			$adminArea .= $this->getSidebarItem("./settingssmtp.php", "envelope-square", $this->lh->translationFor("smtp_settings")); // smtp settings
+			
 			//$adminArea .= $this->getSidebarItem("./telephonyusers.php", "user", $this->lh->translationFor("users")); // admin settings
 			$adminArea .= $this->getSidebarItem("./adminmodules.php", "archive", $this->lh->translationFor("modules")); // admin settings
 			//$adminArea .= $this->getSidebarItem("./admincustomers.php", "users", $this->lh->translationFor("customers")); // admin settings
 			foreach ($modulesWithSettings as $k => $m) { $adminArea .= $this->getSidebarItem("./modulesettings.php?module_name=".urlencode($k), $m->mainPageViewIcon(), $m->mainPageViewTitle()); }
-	        $adminArea .= '</ul></li>';
-
+			if ($smtp_status == 1)  // module is enabled.
+				$adminArea .= $this->getSidebarItem("./settingssmtp.php", "envelope-square", $this->lh->translationFor("smtp_settings")); // smtp settings
+			$adminArea .= '</ul></li>';
 			$telephonyArea = '<li class="treeview"><a href="#"><i class="fa fa-phone"></i> <span>'.$this->lh->translationFor("telephony").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
 			if ($perms->user->user_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "users", $this->lh->translationFor("users"));
@@ -6107,6 +6119,45 @@ error_reporting(E_ERROR | E_PARSE);
 		$output = json_decode($data);
 		
 		return $output;
+	}
+	
+	public function API_getSMTPActivation(){
+		$url = gourl."/goSMTP/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "goGetSMTPActivation"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+		if($output->result == "success")
+			return $output->data->value;
+		else
+			return '0';
+	}
+	
+	private function getActionButtonForSMTP($status) {
+	   $return = '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">';
+			if($status == 1){
+				$return .= '<li><a class="activate-smtp" href="#" data-id="0" >'.$this->lh->translationFor("disable").'</a></li>';
+			}else{
+				$return .= '<li><a class="activate-smtp" href="#" data-id="1" >'.$this->lh->translationFor("enable").'</a></li>';
+			}
+		$return .= '</ul>
+		</div>';
+		return $return;
 	}
 	
 }

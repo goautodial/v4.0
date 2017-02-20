@@ -108,6 +108,31 @@
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 		<?php print $ui->standardizedThemeJS(); ?>
+		<script type="text/javascript">
+			$(document).on('click','.activate-smtp',function() {
+				var url = './php/ActivateSMTP.php';
+				var id = $(this).attr('data-id');
+				$.ajax({
+					url: url,
+					type: 'POST',
+					data: {action_id: id},
+					success: function(data) {
+					   //console.log(data);
+						if(data == "success")
+							location.reload();
+						else
+							console.log(data);
+					   /*
+						if(data == "success"){
+							swal({title: "<?php //$lh->translateText("success"); ?>",text: "<?php //$lh->translateText("add_server_success"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
+						}
+						else{
+							sweetAlert("<?php //$lh->translateText("oups"); ?>", "<?php //$lh->translateText("something_went_wrong"); ?>"+data, "error");
+						}*/
+					}
+				});
+			});
+		</script>
 		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>
