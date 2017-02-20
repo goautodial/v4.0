@@ -275,13 +275,19 @@ $smtp_status = $ui->API_getSMTPActivation();
 								$("#compose-mail-results").html('<?php print $okMsg; ?>');
 								$("#compose-mail-results").fadeIn(); //show confirmation message
 								$("#send-message-form")[0].reset();
+								$("#select2-touserid-container").text('<?php print $lh->translationFor("send_this_message_to"); ?>');
+								
 							} else { // failure
+								<?php if($smtp_status != 1){?>
 								$("#compose-mail-results").html('<?php print $koMsg; ?>');
 								$("#compose-mail-results").fadeIn(); //show confirmation message
+								<?php }?>
 							}
 				        }, error: function(jqXHR, textStatus, errorThrown) {
+							<?php if($smtp_status != 1){?>
 							$("#compose-mail-results").html('<?php print $koMsg; ?>');
 							$("#compose-mail-results").fadeIn(); //show confirmation message
+							<?php }?>
 				        }
 				    });
 					<?php if($smtp_status == 1){?>
@@ -300,6 +306,7 @@ $smtp_status = $ui->API_getSMTPActivation();
 						
 							if (data == 'success') {
 								sweetAlert('<?php print $lh->translationFor("message_sent"); ?>', '<?php print $lh->translationFor("message_sent_msg"); ?>', 'success');
+								$("#send-message-form")[0].reset();
 							}
 							else if (data == 'no email account'){
 								sweetAlert("<?php print $lh->translationFor("no_email_account"); ?>","<?php print $lh->translationFor("no_email_account_msg"); ?>", "warning");
