@@ -145,7 +145,7 @@
 	/*
 	 * API used for display in tables
 	 */
-	$campaign = $ui->API_getListAllCampaigns();
+	$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
 	$disposition = $ui->API_getAllDispositions("custom");
 	$leadfilter = $ui->API_getAllLeadFilters();
 	$country_codes = $ui->getCountryCodes();
