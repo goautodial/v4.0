@@ -3282,7 +3282,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	$output = $this->API_goGetAllUserLists($user);
        if($output->result=="success") {
-       	   $columns = array("     ", $this->lh->translationFor("agent_id"), $this->lh->translationFor("agent_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
+       	   $columns = array("     ", $this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
 	       $hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 	       $hideOnLow = array($this->lh->translationFor("agent_id"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
