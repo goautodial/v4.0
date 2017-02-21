@@ -92,7 +92,8 @@
 	/*
 	* APIs for add form
 	*/
-	$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
+	$scripts = $ui->API_goGetAllScripts($user->getUserName());
+	var_dump($user->getUserName());
 
 ?>
 	<div class="modal fade" id="scripts-modal" tabindex="-1"aria-labelledby="scripts">
