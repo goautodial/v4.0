@@ -69,7 +69,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <legend><?php $lh->translateText("scripts"); ?></legend>
-							<?php print $ui->getListAllScripts($user->getUserName(), $perm); ?>
+							<?php print $ui->getListAllScripts($_SESSION['user'], $perm); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
