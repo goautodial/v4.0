@@ -82,11 +82,11 @@
 	 * APIs used
 	 */
 
-	$ingroup = $ui->API_getInGroups();
+	$ingroup = $ui->API_getInGroups($_SESSION['usergroup']);
 
-	$ivr = $ui->API_getIVR();
+	$ivr = $ui->API_getIVR($_SESSION['usergroup']);
 	
-	$phonenumber = $ui->API_getPhoneNumber();
+	$phonenumber = $ui->API_getPhoneNumber($_SESSION['usergroup']);
 
 ?>
 			<div class="panel panel-default">
