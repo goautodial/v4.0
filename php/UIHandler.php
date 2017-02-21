@@ -3333,12 +3333,13 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 
-	public function API_goGetAllLists(){
+	public function API_goGetAllLists($user_group = ''){
 		$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAllLists"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["user_group"] = $user_group;
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
