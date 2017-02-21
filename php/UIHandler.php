@@ -3466,12 +3466,13 @@ error_reporting(E_ERROR | E_PARSE);
 
 // TELEPHONY INBOUND
 	//ingroups
-	public function API_getInGroups() {
+	public function API_getInGroups($user_group = '') {
 		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAllInboundList"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["user_group"] = $user_group;
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -3488,12 +3489,13 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	// Telephony IVR
-	public function API_getIVR() {
+	public function API_getIVR($user_group = '') {
 		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetIVRMenusList"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["user_group"] = $user_group;
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -3511,12 +3513,13 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	//Telephony > phonenumber(DID)
-	public function API_getPhoneNumber() {
+	public function API_getPhoneNumber($user_group = '') {
 		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetDIDsList"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
+		$postfields["user_group"] = $user_group;
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
