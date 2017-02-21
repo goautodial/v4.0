@@ -217,7 +217,7 @@
 				/****
 				** API to get data of tables
 				****/
-				$lists = $ui->API_goGetAllLists();
+				$lists = $ui->API_goGetAllLists($_SESSION['usergroup']);
 		?>
                 	<div class="row">
                         <div class="col-lg-<?=($perm->list->list_upload === 'N' ? '12' : '9')?>">
