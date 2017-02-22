@@ -178,9 +178,15 @@ if ($list_id_ct != NULL) {
 									//var_dump($output);
 								?>
 								<div id="activity" role="tabpanel" class="tab-pane">
-									<fieldset class="mt">
-										<legend><small><em class="glyphicon glyphicon-earphone"></em> <?php $lh->translateText("lead_calls"); ?></small></legend>
-										<div class="table-responsive">
+									<div class="box collapsed-box">
+										<div class="box-header with-border">
+										  <h3 class="box-title"><em class="glyphicon glyphicon-earphone"></em><small> <?php $lh->translateText("lead_calls"); ?></small></h3>
+										  <div class="box-tools pull-right">
+											<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+											  <i class="fa fa-plus"></i></button>
+										  </div>
+										</div>
+										<div class="box-body table-responsive">
 											<table class="table table-hover table-striped" id="lead_calls">
 												<thead>
 													<tr>
@@ -214,11 +220,17 @@ if ($list_id_ct != NULL) {
 												</tbody>
 											</table>
 										</div>
-									</fieldset>
-									
-									<fieldset>
-										<legend><small><em class="glyphicon glyphicon-list-alt"></em> <?php $lh->translateText("lead_closer_records"); ?></small></legend>
-										<div class="table-responsive">
+										<!-- /.box-body -->
+									</div>
+									<div class="box collapsed-box">
+										<div class="box-header with-border">
+										  <h3 class="box-title"><em class="glyphicon glyphicon-list-alt"></em><small> <?php $lh->translateText("lead_closer_records"); ?></small></h3>
+										  <div class="box-tools pull-right">
+											<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+											  <i class="fa fa-plus"></i></button>
+										  </div>
+										</div>
+										<div class="box-body table-responsive">
 											<table class="table table-hover table-striped" id="lead_closer_records">
 												<thead>
 													<tr>
@@ -252,11 +264,18 @@ if ($list_id_ct != NULL) {
 												</tbody>
 											</table>
 										</div>
-									</fieldset>
-									
-									<fieldset>
-										<legend><small><em class="glyphicon glyphicon-user"></em> <?php $lh->translateText("lead_agent_log"); ?></small></legend>
-										<div class="table-responsive">
+										<!-- /.box-body -->
+									</div>
+									<div class="box collapsed-box">
+										<div class="box-header with-border">
+										  <h3 class="box-title"><em class="glyphicon glyphicon-user"></em><small> <?php $lh->translateText("lead_agent_log"); ?></small></h3>
+								
+										  <div class="box-tools pull-right">
+											<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+											  <i class="fa fa-plus"></i></button>
+										  </div>
+										</div>
+										<div class="box-body table-responsive">
 											<table class="table table-hover table-striped" id="lead_agent_log">
 												<thead>
 													<tr>
@@ -294,11 +313,18 @@ if ($list_id_ct != NULL) {
 												</tbody>
 											</table>
 										</div>
-									</fieldset>
-									
-									<fieldset>
-										<legend><small><em class="glyphicon glyphicon-record"></em> <?php $lh->translateText("lead_recordings"); ?></small></legend>
-										<div class="table-responsive">
+										<!-- /.box-body -->
+									</div>
+									<div class="box collapsed-box">
+										<div class="box-header with-border">
+										  <h3 class="box-title"><em class="glyphicon glyphicon-record"></em><small> <?php $lh->translateText("lead_recordings"); ?></small></h3>
+								
+										  <div class="box-tools pull-right">
+											<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+											  <i class="fa fa-plus"></i></button>
+										  </div>
+										</div>
+										<div class="box-body table-responsive">
 											<table class="table table-hover table-striped" id="lead_recordings">
 												<thead>
 													<tr>
@@ -328,7 +354,8 @@ if ($list_id_ct != NULL) {
 												</tbody>
 											</table>
 										</div>
-									</fieldset>
+										<!-- /.box-body -->
+									</div>
 								</div>
 								
 								<div id="profile" role="tabpanel" class="tab-pane active">
