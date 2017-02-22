@@ -1,13 +1,13 @@
 <?php
 
-	###################################################
-	### Name: crm.php 								###
+	######################################################
+	### Name: crm.php 		###
 	### Functions: Display, Search and Filter  		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016 		###
+	### Version: 4.0 		###
 	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
-	###################################################
+	### License: AGPLv2 		###
+	######################################################
 
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
@@ -323,8 +323,6 @@ $disposition = $ui->API_getAllDispositions();
 			****/
 				// shows contacts datatable if Contact tickbox is checked
 				$(document).on('change','#search_contacts, #search_customers',function() {
-					//$("#search_contacts").prop("disabled", true);
-					//$("#search_customers").prop("disabled", false);
 					if ($(this).prop('id') == 'search_contacts') {
 						if ($(this).is(":checked")) {
 							$("#search_customers").prop('checked', false);
@@ -337,20 +335,6 @@ $disposition = $ui->API_getAllDispositions();
 						}
 					}
 
-		//				if($('#search_contacts').is(":checked")){
-		//					$(".contacts_div").show(); // show contact table
-		//					//$(".callrecordings_div").hide(); // hide table
-		//
-		//					$(".all_contact_filters").show(); // show filters
-		//					$(".add_contact_filters").show(); // disable add filter
-		//					//$(".all_callrecording_filters").hide(); // hide filters
-		//					//$(".add_callrecording_filters").hide(); // disable add filter
-		//
-		//            	}else{
-		//            		$(".contacts_div").hide();
-		//            		$(".all_contact_filters").hide();
-		//            		$(".add_contact_filters").hide(); // disable add filter
-		//            	}
 					});
 
 				/***
