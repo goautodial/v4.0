@@ -95,63 +95,63 @@ $leads = $ui->API_GetLeads($_SESSION['user']);
 ?>
                 <!-- Main content -->
                 <section class="content">
-                	<div class="row">
-						<div class="col-lg-9">
-							<div class="form-group mb-xl">
-								<div class="has-clear">
-									<input type="text" placeholder="<?php $lh->translateText("search_crm"); ?>" id="search" class="form-control mb">
-									<span class="form-control-clear fa fa-close form-control-feedback"></span>
-								</div>
-								<div class="clearfix">
-									<button type="button" class="pull-left btn btn-default" id="search_button"> <?php $lh->translateText("search"); ?></button>
-									<div class="pull-right">
-										<label class="checkbox-inline c-checkbox" for="search_customers">
-											<input id="search_customers" name="search_customers" type="checkbox">
-											<span class="fa fa-check"></span><?php $lh->translateText("customers"); ?> 
-										</label>
-										<label class="checkbox-inline c-checkbox" for="search_contacts">
-											<input id="search_contacts" name="table_filter" type="checkbox" checked>
-											<span class="fa fa-check"></span> <?php $lh->translateText("contacts"); ?>
-										</label>
-									</div>
-								</div>
+                <div class="row">
+				<div class="col-lg-9">
+					<div class="form-group mb-xl">
+						<div class="has-clear">
+							<input type="text" placeholder="<?php $lh->translateText("search_crm"); ?>" id="search" class="form-control mb">
+							<span class="form-control-clear fa fa-close form-control-feedback"></span>
+						</div>
+						<div class="clearfix">
+							<button type="button" class="pull-left btn btn-default" id="search_button"> <?php $lh->translateText("search"); ?></button>
+							<div class="pull-right">
+								<label class="checkbox-inline c-checkbox" for="search_customers">
+									<input id="search_customers" name="search_customers" type="checkbox">
+									<span class="fa fa-check"></span><?php $lh->translateText("customers"); ?> 
+								</label>
+								<label class="checkbox-inline c-checkbox" for="search_contacts">
+									<input id="search_contacts" name="table_filter" type="checkbox" checked>
+									<span class="fa fa-check"></span> <?php $lh->translateText("contacts"); ?>
+								</label>
 							</div>
-		                	<div class="panel panel-default">
-			<div class="panel-body">
-				<div class="contacts_div">
-				<!-- Contacts panel tab -->
-				<legend><?php $lh->translateText("contacts"); ?></legend>
-					<!--==== Contacts ====-->
-					<table class="table table-striped table-bordered table-hover" id="table_contacts">
-					   <thead>
-						  <tr>
-							 <th nowrap><?php $lh->translateText("lead_id"); ?></th>
-							 <th nowrap class='hide-on-low'><?php $lh->translateText("full_name"); ?></th>
-							 <th nowrap class='hide-on-low'><?php $lh->translateText("phone_number"); ?></th>
-							 <th nowrap class='hide-on-medium hide-on-low'><?php $lh->translateText("status"); ?></th>
-							 <th nowrap><?php $lh->translateText("action"); ?></th>
-						  </tr>
-					   </thead>
-					   <tbody>
-							<?php
-								for($i=0;$i<=count($leads->list_id);$i++){
-									if($leads->phone_number[$i] != ""){
-									$action_lead = $ui->ActionMenuForContacts($leads->lead_id[$i]);
-							?>
-									<tr>
-										<td nowrap><a class="edit-contact" data-id="<?php echo $leads->lead_id[$i];?>"><?php echo $leads->lead_id[$i];?></a></td>
-										<td nowrap class='hide-on-low'><?php echo $leads->first_name[$i].' '.$leads->middle_initial[$i].' '.$leads->last_name[$i];?></td>
-										<td nowrap class='hide-on-low'><?php echo $leads->phone_number[$i];?></td>
-										<td nowrap class='hide-on-medium hide-on-low'><?php echo $leads->status[$i];?></td>
-										<td nowrap><?php echo $action_lead;?></td>
-									</tr>
-							<?php
-									}
-								}
-							?>
-					   </tbody>
-					</table>
-				</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="contacts_div">
+							<!-- Contacts panel tab -->
+							<legend><?php $lh->translateText("contacts"); ?></legend>
+								<!--==== Contacts ====-->
+								<table class="table table-striped table-bordered table-hover" id="table_contacts">
+								   <thead>
+									  <tr>
+										 <th nowrap><?php $lh->translateText("lead_id"); ?></th>
+										 <th nowrap class='hide-on-low'><?php $lh->translateText("full_name"); ?></th>
+										 <th nowrap class='hide-on-low'><?php $lh->translateText("phone_number"); ?></th>
+										 <th nowrap class='hide-on-medium hide-on-low'><?php $lh->translateText("status"); ?></th>
+										 <th nowrap><?php $lh->translateText("action"); ?></th>
+									  </tr>
+								   </thead>
+								   <tbody>
+										<?php
+											for($i=0;$i<=count($leads->list_id);$i++){
+												if($leads->phone_number[$i] != ""){
+												$action_lead = $ui->ActionMenuForContacts($leads->lead_id[$i]);
+										?>
+												<tr>
+													<td nowrap><a class="edit-contact" data-id="<?php echo $leads->lead_id[$i];?>"><?php echo $leads->lead_id[$i];?></a></td>
+													<td nowrap class='hide-on-low'><?php echo $leads->first_name[$i].' '.$leads->middle_initial[$i].' '.$leads->last_name[$i];?></td>
+													<td nowrap class='hide-on-low'><?php echo $leads->phone_number[$i];?></td>
+													<td nowrap class='hide-on-medium hide-on-low'><?php echo $leads->status[$i];?></td>
+													<td nowrap><?php echo $action_lead;?></td>
+												</tr>
+										<?php
+												}
+											}
+										?>
+								   </tbody>
+								</table>
+							</div>
 </div><!-- /.body -->
 </div><!-- /.panel -->
 </div><!-- /.col-lg-9 -->
@@ -318,24 +318,24 @@ $disposition = $ui->API_getAllDispositions();
 				  }
 				});
 
-				/****
-				** Change between Contacts and Recordings
-				****/
-					// shows contacts datatable if Contact tickbox is checked
-					$(document).on('change','#search_contacts, #search_customers',function() {
-						//$("#search_contacts").prop("disabled", true);
-		            	//$("#search_customers").prop("disabled", false);
-						if ($(this).prop('id') == 'search_contacts') {
-							if ($(this).is(":checked")) {
-								$("#search_customers").prop('checked', false);
-							}
+			/****
+			** Change between Contacts and Recordings
+			****/
+				// shows contacts datatable if Contact tickbox is checked
+				$(document).on('change','#search_contacts, #search_customers',function() {
+					//$("#search_contacts").prop("disabled", true);
+					//$("#search_customers").prop("disabled", false);
+					if ($(this).prop('id') == 'search_contacts') {
+						if ($(this).is(":checked")) {
+							$("#search_customers").prop('checked', false);
 						}
-						
-						if ($(this).prop('id') == 'search_customers') {
-							if ($(this).is(":checked")) {
-								$("#search_contacts").prop('checked', false);
-							}
+					}
+					
+					if ($(this).prop('id') == 'search_customers') {
+						if ($(this).is(":checked")) {
+							$("#search_contacts").prop('checked', false);
 						}
+					}
 
 		//				if($('#search_contacts').is(":checked")){
 		//					$(".contacts_div").show(); // show contact table
