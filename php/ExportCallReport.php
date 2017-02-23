@@ -65,12 +65,15 @@ error_reporting(E_ALL);
     
     $custom_fields = $_POST['custom_fields']; 
     $per_call_notes = $_POST['per_call_notes'];
-    $toDate = date('Y-m-d H:i:s', strtotime($_POST['toDate']));
+    $rec_location = $_POST['rec_location'];
+	
+	$toDate = date('Y-m-d H:i:s', strtotime($_POST['toDate']));
     $fromDate = date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
     
     $postfields["custom_fields"] = $custom_fields;
     $postfields["per_call_notes"] = $per_call_notes;
-    
+    $postfields["rec_location"] = $rec_location;
+	
     if($toDate != NULL)
     $postfields["toDate"] = $toDate;
     

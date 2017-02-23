@@ -62,8 +62,8 @@ if ($list_id_ct != NULL) {
 		<!-- Call for standardized css -->
         <?php print $ui->standardizedThemeCSS();?>
 
-        <!-- Customized Style -->
-        <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
+        <!-- Customized Style 
+        <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />-->
         <?php print $ui->creamyThemeCSS(); ?>
 		
 		<!-- DATA TABLES -->
@@ -179,12 +179,8 @@ if ($list_id_ct != NULL) {
 								?>
 								<div id="activity" role="tabpanel" class="tab-pane">
 									<div class="box collapsed-box">
-										<div class="box-header with-border">
-										  <h3 class="box-title"><em class="glyphicon glyphicon-earphone"></em><small> <?php $lh->translateText("lead_calls"); ?></small></h3>
-										  <div class="box-tools pull-right">
-											<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-											  <i class="fa fa-plus"></i></button>
-										  </div>
+										<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("lead_calls"); ?>">
+										  <em class="glyphicon glyphicon-earphone pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("lead_calls"); ?></h3>
 										</div>
 										<div class="box-body table-responsive">
 											<table class="table table-hover table-striped" id="lead_calls">
@@ -223,12 +219,8 @@ if ($list_id_ct != NULL) {
 										<!-- /.box-body -->
 									</div>
 									<div class="box collapsed-box">
-										<div class="box-header with-border">
-										  <h3 class="box-title"><em class="glyphicon glyphicon-list-alt"></em><small> <?php $lh->translateText("lead_closer_records"); ?></small></h3>
-										  <div class="box-tools pull-right">
-											<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-											  <i class="fa fa-plus"></i></button>
-										  </div>
+										<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("lead_closer_records"); ?>">
+										  <em class="glyphicon glyphicon-list-alt pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("lead_closer_records"); ?></h3>
 										</div>
 										<div class="box-body table-responsive">
 											<table class="table table-hover table-striped" id="lead_closer_records">
@@ -267,13 +259,8 @@ if ($list_id_ct != NULL) {
 										<!-- /.box-body -->
 									</div>
 									<div class="box collapsed-box">
-										<div class="box-header with-border">
-										  <h3 class="box-title"><em class="glyphicon glyphicon-user"></em><small> <?php $lh->translateText("lead_agent_log"); ?></small></h3>
-								
-										  <div class="box-tools pull-right">
-											<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-											  <i class="fa fa-plus"></i></button>
-										  </div>
+										<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("lead_agent_log"); ?>">
+										  <em class="glyphicon glyphicon-user pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("lead_agent_log"); ?></h3>
 										</div>
 										<div class="box-body table-responsive">
 											<table class="table table-hover table-striped" id="lead_agent_log">
@@ -316,13 +303,8 @@ if ($list_id_ct != NULL) {
 										<!-- /.box-body -->
 									</div>
 									<div class="box collapsed-box">
-										<div class="box-header with-border">
-										  <h3 class="box-title"><em class="glyphicon glyphicon-record"></em><small> <?php $lh->translateText("lead_recordings"); ?></small></h3>
-								
-										  <div class="box-tools pull-right">
-											<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-											  <i class="fa fa-plus"></i></button>
-										  </div>
+										<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("lead_recordings"); ?>">
+										  <em class="glyphicon glyphicon-play-circle pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("lead_recordings"); ?></h3>
 										</div>
 										<div class="box-body table-responsive">
 											<table class="table table-hover table-striped" id="lead_recordings">

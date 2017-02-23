@@ -1189,6 +1189,21 @@ if($output->result == "success"){
 							</div>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label>Recording Location:</label>
+								<div class="mb">
+									 <div class="">
+										 <select class="form-control" id="selected_rec_location" name="rec_location">
+											<option value="N">NO</option>
+											<option value="Y">YES</option>
+										 </select>
+									 </div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</form>
 					<div class="row">
 						<center><button class="btn btn-info" name="submit_export" id="submit_export"><li class="fa fa-download"> Submit & Download</button>
