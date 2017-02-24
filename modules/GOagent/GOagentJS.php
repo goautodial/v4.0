@@ -611,7 +611,7 @@ $(document).ready(function() {
                         if (all_record_count < allcalls_delay)
                             {all_record_count++;}
                         else {
-                            ConfSendRecording('MonitorConf', session_id , '');
+                            ConfSendRecording('Monitor', session_id , '');
                             all_record = 'NO';
                             all_record_count = 0;
                         }
@@ -2448,11 +2448,11 @@ function CheckForConfCalls (confnum, force) {
                 api_parkcustomer = confArray.api_park;
                 
             if (api_recording=='START') {
-                ConfSendRecording('MonitorConf', session_id,'','1');
+                ConfSendRecording('Monitor', session_id,'','1');
                 //sendToAPI('recording', 'START');
             }
             if (api_recording=='STOP') {
-                ConfSendRecording('StopMonitorConf', session_id, recording_filename, '1');
+                ConfSendRecording('StopMonitor', session_id, recording_filename, '1');
                 //sendToAPI('recording', 'STOP');
             }
             if (api_transferconf_function.length > 0) {
@@ -3727,7 +3727,7 @@ function DialLog(taskMDstage, nodeletevdac) {
         } else {
             MDlogEPOCH = MDlogResponse_array[1];
             if ( (taskMDstage != "start") && (VDstop_rec_after_each_call == 1) ) {
-                //var conf_rec_start_html = "<a href=\"#\" onclick=\"ConfSendRecording('MonitorConf','" + session_id + "','');return false;\"><img src=\"./images/vdc_LB_startrecording.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" /></a>";
+                //var conf_rec_start_html = "<a href=\"#\" onclick=\"ConfSendRecording('Monitor','" + session_id + "','');return false;\"><img src=\"./images/vdc_LB_startrecording.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" /></a>";
                 if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') ) {
                     //$("#RecorDControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
                 } else {
@@ -3765,7 +3765,7 @@ function ConfSendRecording(taskconfrectype, taskconfrec, taskconffile, taskfroma
     } else {
         tmp_vicidial_id = 'IN';
     }
-    if (taskconfrectype == 'MonitorConf') {
+    if (taskconfrectype == 'Monitor') {
         var REGrecCLEANvlc = new RegExp(" ","g");
         var recVendorLeadCode = $(".formMain input[name='vendor_lead_code']").val();
         recVendorLeadCode = recVendorLeadCode.replace(REGrecCLEANvlc, '');
@@ -3802,7 +3802,7 @@ function ConfSendRecording(taskconfrectype, taskconfrec, taskconffile, taskfroma
             //$("#RecorDControl").html(conf_rec_start_html);
         }
     }
-    if (taskconfrectype == 'StopMonitorConf') {
+    if (taskconfrectype == 'StopMonitor') {
         filename = taskconffile;
         var query_recording_exten = session_id;
         var channelrec = "Local/" + conf_silent_prefix + '' + taskconfrec + "@" + ext_context;
