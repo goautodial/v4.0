@@ -3758,6 +3758,8 @@ function DialLog(taskMDstage, nodeletevdac) {
 // ################################################################################
 // Send MonitorConf/StopMonitorConf command for recording of conferences
 function ConfSendRecording(taskconfrectype, taskconfrec, taskconffile, taskfromapi) {
+    console.log('Start recording of this call');
+    
     if (inOUT == 'OUT') {
         tmp_vicidial_id = $(".formMain input[name='uniqueid']").val();
     } else {
@@ -6346,8 +6348,9 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
 
                         toggleButton('DialHangup', 'hangup');
 
-                        if ( (LIVE_campaign_recording == 'ALLCALLS') || (LIVE_campaign_recording == 'ALLFORCE') )
-                            {all_record = 'YES';}
+                        if ( (LIVE_campaign_recording == 'ALLCALLS') || (LIVE_campaign_recording == 'ALLFORCE') ) {
+                            all_record = 'YES';
+                        }
 
                         if ( (view_scripts == 1) && (campaign_script.length > 0) ) {
                             var SCRIPT_web_form = 'http://127.0.0.1/testing.php';
