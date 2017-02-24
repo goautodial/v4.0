@@ -62,8 +62,8 @@ if ($list_id_ct != NULL) {
 		<!-- Call for standardized css -->
         <?php print $ui->standardizedThemeCSS();?>
 
-        <!-- Customized Style 
-        <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />-->
+        <!-- Customized Style -->
+        <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
 		
 		<!-- DATA TABLES -->

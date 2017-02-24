@@ -182,7 +182,7 @@ $disposition = $ui->API_getAllDispositions();
 					<div class="all_contact_filters">
 					<div class="disposition_filter_div" style="display:none;">
 						<div class="form-group">
-							<label><?php $lh->translateText("crm_dispotition"); ?> </label>
+							<label><?php $lh->translateText("disposition"); ?> </label>
 							<div class="mb">
 								<select name="disposition_filter" id="disposition_filter" class="form-control select2-3" style="width:100%;">
 										<option value="">- - - <?php $lh->translateText("-none-"); ?> - - -</option>
@@ -383,7 +383,7 @@ $disposition = $ui->API_getAllDispositions();
 						success: function(data) {
 							$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
 							$('#search_button').attr("disabled", false);
-							console.log(data);
+							//console.log(data);
 
 							if(data !== ""){
 								$('#table_contacts').html(data);
@@ -418,7 +418,7 @@ $disposition = $ui->API_getAllDispositions();
 								success: function(data) {
 									$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
 									$('#search_button').attr("disabled", false);
-									console.log(data);
+									//console.log(data);
 					
 									if(data !== ""){
 					
@@ -461,7 +461,7 @@ $disposition = $ui->API_getAllDispositions();
 								success: function(data) {
 									$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
 									$('#search_button').attr("disabled", false);
-									console.log(data);
+									//console.log(data);
 									if(data !== ""){
 										$('#table_contacts').html(data);
 										$('#table_contacts').DataTable({
@@ -502,7 +502,7 @@ $disposition = $ui->API_getAllDispositions();
 								success: function(data) {
 									$('#search_button').text("Search");
 									$('#search_button').attr("disabled", false);
-									console.log(data);
+									//console.log(data);
 	
 									if(data !== ""){
 										$('#table_contacts').html(data);
@@ -544,7 +544,7 @@ $disposition = $ui->API_getAllDispositions();
 								success: function(data) {
 									$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
 									$('#search_button').attr("disabled", false);
-									console.log(data);
+									//console.log(data);
 	
 									if(data !== ""){
 										$('#table_contacts').html(data);
@@ -696,7 +696,7 @@ $disposition = $ui->API_getAllDispositions();
 														log_group: log_group
 												},
 												success: function(data) {
-												console.log(data);
+												//console.log(data);
 													if(data == "success"){
 														swal({
 																title: "<?php $lh->translateText("success"); ?>",

@@ -117,27 +117,12 @@ error_reporting(E_ALL)
      
 		<!--<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />-->
 		
+		<?php print $ui->standardizedThemeCSS();?>
         <!-- Creamy style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
-
-        <!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="js/html5shiv.js"></script>
-          <script src="js/respond.min.js"></script>
-        <![endif]-->
-
-		<!-- javascript -->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>    
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="js/jquery.validate.min.js" type="text/javascript"></script>
-        
-            <!-- dashboard status boxes -->
+        <!-- dashboard status boxes -->
         <script src="js/bootstrap-editable.js" type="text/javascript"></script> 
         <script src="theme_dashboard/moment/min/moment-with-locales.min.js" type="text/javascript"></script>
         <script src="js/modules/now.js" type="text/javascript"></script>         
@@ -145,31 +130,17 @@ error_reporting(E_ALL)
 	    <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
 		
 		<!-- Data Tables -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <script src="js/plugins/datatables/FROMjquery.dataTables.js" type="text/javascript"></script>
         <script src="js/fnProcessingIndicator.js" type="text/javascript"></script>
 
          <!-- theme_dashboard folder -->
-					<!-- FONT AWESOME-->
-			<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
-					<!-- SIMPLE LINE ICONS-->
-			<link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">
-					<!-- ANIMATE.CSS-->
-			<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">
 					<!-- WHIRL (spinners)-->
 			<link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
 				<!-- =============== PAGE VENDOR STYLES ===============-->
 					<!-- WEATHER ICONS-->
 			<link rel="stylesheet" href="theme_dashboard/weather-icons/css/weather-icons.min.css">
-				<!-- =============== BOOTSTRAP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
-				<!-- =============== APP STYLES ===============-->
-			<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-		
-            <link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
-		<!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
-		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
-		<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+			
     </head>
     <?php print $ui->creamyBody(); ?>
         <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
@@ -279,27 +250,27 @@ error_reporting(E_ALL)
 								<div class="col-lg-12" style="padding: 0px;">
 									<!-- demian -->
 									<a href="#" data-toggle="modal" data-target="#realtime_calls_monitoring">
-										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info pv-xl info_sun_boxes">
+										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info info_sun_boxes" style="padding: 10px;">
 											<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
 											<div class="text-white"><?=$lh->translateText("realtime_calls_monitor")?></div></a>                                        
 										</div>
-									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_RingingCalls"></span></div>
 										<div class="text"><?=$lh->translateText("ringing_calls")?></div>
 									</div>
-									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_IncomingQueue"></span></div>
 										<div class="text"><?=$lh->translateText("incoming_calls")?></div>
 									</div>	                	
-									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_AnsweredCalls"></span></div>
 											<div class="text"><?=$lh->translateText("answered_calls")?></div>
 									</div>
-									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalInCalls"></span></div>
 										<div class="text"><?=$lh->translateText("inbound_calls_today")?></div>
 									</div>	                	
-									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes">
+									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalOutCalls"></span></div>
 											<div class="text" style="font-size: small;"><?=$lh->translateText("outbound_calls_today")?></div>
 									</div>
@@ -317,7 +288,6 @@ error_reporting(E_ALL)
 											<table id="cluster-status" class="table table-striped table-hover display compact" style="width: 100%">
 												<thead>
 													<tr>
-														<th style="color: white;">Pic</th>
 														<th style="font-size: small;"><?=$lh->translateText("server_id")?></th>
 														<th style="font-size: small;"><?=$lh->translateText("server_ip")?></th>
 														<th style="font-size: small;"><?=$lh->translateText("active")?></th>
@@ -457,7 +427,6 @@ error_reporting(E_ALL)
 			
 			<?php
 				print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar());
-				print $ui->creamyFooter();
 			?>
 			
         </div><!-- ./wrapper -->
@@ -1373,22 +1342,6 @@ function goGetInSession(type) {
 		
 	</script>
 	
-    <!-- =============== VENDOR SCRIPTS ===============-->
-   <!-- JQUERY EASING-->
-   <script src="theme_dashboard/js/jquery.easing/js/jquery.easing.js"></script>
-   <!-- ANIMO-->
-   <script src="theme_dashboard/js/animo.js/animo.js"></script>
-   <!-- SLIMSCROLL-->
-   <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
-   <!-- SCREENFULL-->
-   <script src="theme_dashboard/js/screenfull/dist/screenfull.js"></script>
-   <!-- LOCALIZE-->
-   <script src="theme_dashboard/js/jquery-localize-i18n/dist/jquery.localize.js"></script>
-   <!-- RTL demo-->
-   <script src="theme_dashboard/js/demo/demo-rtl.js"></script>
-   <!-- =============== PAGE VENDOR SCRIPTS ===============-->
-   <!-- SPARKLINE-->
-   <script src="theme_dashboard/js/sparkline/index.js"></script>
    <!-- FLOT CHART-->
    <script src="theme_dashboard/js/Flot/jquery.flot.js"></script>
    <script src="theme_dashboard/js/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
@@ -1440,6 +1393,6 @@ function goGetInSession(type) {
 		};
 		var goAvatar = new Vue(goOptions);
 	</script>
-
+		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

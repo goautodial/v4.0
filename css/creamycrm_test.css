@@ -568,10 +568,10 @@ a:focus {
 }
 .sidebar-menu li > a > .fa-angle-left {
   width: auto;
-  height: auto;
+  /*height: auto;
   padding: 0;
   margin-right: 10px;
-  margin-top: 3px;
+  margin-top: 3px;*/
 }
 .sidebar-menu li.active > a > .fa-angle-left {
   -webkit-transform: rotate(-90deg);

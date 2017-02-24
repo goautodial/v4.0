@@ -106,8 +106,7 @@
         $radial = "<canvas classyloader='' data-percentage='.$diskusage.' data-speed='20' data-font-size='20px' data-diameter='30' data-line-color='#f35839' data-remaining-line-color='#edf2f6' data-line-width='40' width=''40'' height='40' class='js-is-in-view'></canvas>";
         $sessionAvatar = "<div class='media'><avatar username='$serverid' :size='36'></avatar></div>";
         
-        $cluster .='[';
-        $cluster .= '"'.$sessionAvatar.'",';        
+        $cluster .='[';  
         $cluster .= '"'.$serverid.'",';   
         $cluster .= '"'.$serverip.'",';  
         $cluster .= '"<b class=\"'.$statustextclass.'\">'.$status.'</b>",';

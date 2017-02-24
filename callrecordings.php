@@ -598,16 +598,23 @@ $agents = $ui->API_goGetAllUserLists();
 				*****/
 				$(document).on('click','.play_audio',function() {
 					var audioFile = $(this).attr('data-location');
-
+					var voicedetails = "";
 					var sourceFile = '<audio class="audio_file" controls style="width:100%">';
 					    sourceFile += '<source src="'+ audioFile +'" type="audio/mpeg" download="true"/>';
 					    sourceFile += '</audio>';
-
-					var voicedetails = $(this).attr('data-details');
+						
+					if(audioFile === ""){
+						voicedetails = "Recording is being processed... Please wait a few minutes and try again.";
+						$('.download-audio-file').attr('disabled', true);
+					} else{
+						voicedetails = $(this).attr('data-details');
+						$('.download-audio-file').attr('href', audioFile);
+						$('.audio-player').html(sourceFile);
+					}
+					
 					$('.voice-details').html(voicedetails);
 					goAvatar._init(goOptions);
-					$('.download-audio-file').attr('href', audioFile);
-					$('.audio-player').html(sourceFile);
+					
 					$('#call-playback-modal').modal('show');
 
 					var aud = $('.audio_file').get(0);

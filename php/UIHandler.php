@@ -5734,6 +5734,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$css .= '<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />'."\n"; // ionicons
 		$css .= '<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />'."\n"; // bootstrap3 css
 		$css .= '<link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">'."\n"; // font-awesome css
+		$css .= '<link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">'; // line css
 		$css .= '<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">'."\n"; // animate css
 		$css .= '<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css
 		$css .= '<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">'."\n"; // app css
@@ -5741,6 +5742,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$css .= '<link href="css/bootstrap-glyphicons.css" rel="stylesheet">'."\n";
 		$css .= '<link rel="stylesheet" href="css/customizedLoader.css">'."\n"; // preloader css
 		$css .= '<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'."\n"; // sweetalert
+
 		/* JS that needs to be declared first */
 		$css .= '<script src="js/jquery.min.js"></script>'."\n"; // required JS
 		$css .= '<script src="js/bootstrap.min.js" type="text/javascript"></script>'."\n"; // required JS

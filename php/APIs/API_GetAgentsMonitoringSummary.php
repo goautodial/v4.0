@@ -43,80 +43,15 @@
     
     if (count($output->data) < 1){
     
-    echo '<a href="#" class="list-group-item">
+    echo '<span class="list-group-item">
             <div class="media-box">
-                    <div class="pull-left">
-                        <img src="'.$creamyAvatar.'" alt="Image" class="media-box-object img-circle thumb32">
-                    </div>
                     <div class="media-box-body clearfix">
                         <strong class="media-box-heading text-primary">
-                        <span class="circle circle-danger circle-lg text-left"></span>There are no available agents</strong><br/>
-                        <strong class=""style="padding-left:20px;">Showing sample data</strong>
+                        - - There are no available agents - -</strong>
                     </div>
                 </div>
-            </a>            
-            <a href="#" class="list-group-item">
-                <div class="media-box">
-                    <div class="pull-left">
-                        <img src="theme_dashboard/img/user/03.jpg" alt="Image" class="media-box-object img-circle thumb32">
-                    </div>
-                    <div class="media-box-body clearfix">
-                        <strong class="media-box-heading text-primary">
-                        <span class="circle circle-success circle-lg text-left"></span>Jackie "Baby boy" Alfonso</strong><br/>
-                        <strong class=""style="padding-left:20px;">CS HOTLINE</strong>
-                        <small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
-                    </div>
-                </div>
-            </a>
-            <!-- END list group item-->
-            <!-- START list group item-->
-            <a href="#" class="list-group-item">
-                <div class="media-box">
-                    <div class="pull-left">
-                        <img src="theme_dashboard/img/user/09.jpg" alt="Image" class="media-box-object img-circle thumb32">
-                    </div>
-                    <div class="media-box-body clearfix">
-                        <strong class="media-box-heading text-primary">
-                        <span class="circle circle-danger circle-lg text-left"></span>Kim Takahashi</strong><br/>
-                        <strong class=""style="padding-left:20px;">CS HOTLINE</strong>
-                        <small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
-                    </div>
-                </div>
-            </a>
-            <!-- END list group item-->
-            <!-- START list group item-->
-            <a href="#" class="list-group-item">
-            <div class="media-box">
-            <div class="pull-left">
-            <img src="theme_dashboard/img/user/12.jpg" alt="Image" class="media-box-object img-circle thumb32">
-            </div>
-            <div class="media-box-body clearfix">
-            <strong class="media-box-heading text-primary">
-            <span class="circle circle-danger circle-lg text-left"></span>Khristel Tonolete</strong>
-            <br/>
-            <strong class=""style="padding-left:20px;">CS HOTLINE</strong>
-            <small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
-            </div>
-            </div>
-            </a>
-            <!-- END list group item-->
-            <!-- START list group item-->
-            <a href="#" class="list-group-item">
-            <div class="media-box">
-            <div class="pull-left">
-            <img src="theme_dashboard/img/user/10.jpg" alt="Image" class="media-box-object img-circle thumb32">
-            </div>
-            <div class="media-box-body clearfix">
-            <strong class="media-box-heading text-primary">
-            <span class="circle circle-danger circle-lg text-left"></span>Andrew Gwaltney</strong>
-            <br/>
-            <strong class=""style="padding-left:20px;">CS HOTLINE</strong>
-            <small class="text-muted pull-right ml" style="padding-right:20px;">1:49</small>
-            </div>
-            </div>
-            </a>
-            <!-- END list group item-->
-            </div>';
+            </span>
+        </div>';
 
     } else {
         
