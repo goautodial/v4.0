@@ -318,6 +318,15 @@ $audiofiles = $ui->API_getListAudioFiles();
 															</div>
 														</div>
 													</div>
+													<div class="form-group">
+														<label class="col-sm-3 control-label"><?php $lh->translateText("omit_phone_code"); ?>:</label>
+														<div class="col-sm-9 mb">
+															<select name="omit_phone_code" id="omit_phone_code" class="form-control">
+																<option value="N" <?php if($campaign->data->omit_phone_code == '' && $campaign->data->omit_phone_code == 'N'){ echo 'selected';}?>>N</option>
+																<option value="Y" <?php if($campaign->data->omit_phone_code == 'Y'){ echo 'selected';}?>>Y</option>
+															</select>
+														</div>
+													</div>
 													<?php if($campaign->campaign_type != "SURVEY") { ?>
 													<div class="form-group">
 														<label class="col-sm-3 control-label"><?php $lh->translateText("web"); ?>:</label>
@@ -808,13 +817,14 @@ $audiofiles = $ui->API_getListAudioFiles();
 														<div class="form-group">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_list_id"); ?>:</label>
 															<div class="col-sm-9 mb">
-																<select class="form-control select2" id="manual_dial_list_id" name="manual_dial_list_id">
+																<!--<select class="form-control select2" id="manual_dial_list_id" name="manual_dial_list_id">-->
 																	<!-- <option value="998" <?php //if($campaign->data->manual_dial_list_id == 998 || $campaign->data->manual_dial_list_id == 0) echo "selected";?>>998</option>
 																	<option value="999" <?php //if($campaign->data->manual_dial_list_id == 999) echo "selected";?>>999</option> -->
-																	<?php for($i=0;$i<count($lists->list_id);$i++){ ?>
-								                        <option value="<?php echo $lists->list_id[$i];?>" <?php if($lists->list_id[$i] == $campaign->data->manual_dial_list_id) echo "selected";?>><?php echo $lists->list_id[$i]; ?></option>';
-													<?php } ?>
-																</select>
+																	<?php //for($i=0;$i<count($lists->list_id);$i++){ ?>
+																		<!--<option value="<?php //echo $lists->list_id[$i];?>" <?php //if($lists->list_id[$i] == $campaign->data->manual_dial_list_id) echo "selected";?>><?php //echo $lists->list_id[$i]; ?></option>';-->
+																	<?php //} ?>
+																<!--</select>-->
+																<input type="text" class="form-control" id="manual_dial_list_id" name="manual_dial_list_id" value="<?php if($campaign->data->manual_dial_list_id != ''){echo $campaign->data->manual_dial_list_id;}else{echo "998";} ?>">
 															</div>
 														</div>
 														<div class="form-group">
@@ -1013,6 +1023,19 @@ $audiofiles = $ui->API_getListAudioFiles();
 																	<option value="DNC_AND_CAMPLIST" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST") echo "selected";?>>DNC & CAMPLIST</option>
 																	<option value="DNC_AND_CAMPLIST_ALL" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
 																</select>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_list_id"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<!--<select class="form-control select2" id="manual_dial_list_id" name="manual_dial_list_id">-->
+																	<!-- <option value="998" <?php //if($campaign->data->manual_dial_list_id == 998 || $campaign->data->manual_dial_list_id == 0) echo "selected";?>>998</option>
+																	<option value="999" <?php //if($campaign->data->manual_dial_list_id == 999) echo "selected";?>>999</option> -->
+																	<?php //for($i=0;$i<count($lists->list_id);$i++){ ?>
+																		<!--<option value="<?php //echo $lists->list_id[$i];?>" <?php //if($lists->list_id[$i] == $campaign->data->manual_dial_list_id) echo "selected";?>><?php //echo $lists->list_id[$i]; ?></option>';-->
+																	<?php //} ?>
+																<!--</select>-->
+																<input type="text" class="form-control" id="manual_dial_list_id" name="manual_dial_list_id" value="<?php if($campaign->data->manual_dial_list_id != ''){echo $campaign->data->manual_dial_list_id;}else{echo "998";} ?>">
 															</div>
 														</div>
 														<div class="form-group">
@@ -1388,6 +1411,19 @@ $audiofiles = $ui->API_getListAudioFiles();
 																	<option value="DNC_AND_CAMPLIST" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST") echo "selected";?>>DNC & CAMPLIST</option>
 																	<option value="DNC_AND_CAMPLIST_ALL" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
 																</select>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_list_id"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<!--<select class="form-control select2" id="manual_dial_list_id" name="manual_dial_list_id">-->
+																	<!-- <option value="998" <?php //if($campaign->data->manual_dial_list_id == 998 || $campaign->data->manual_dial_list_id == 0) echo "selected";?>>998</option>
+																	<option value="999" <?php //if($campaign->data->manual_dial_list_id == 999) echo "selected";?>>999</option> -->
+																	<?php //for($i=0;$i<count($lists->list_id);$i++){ ?>
+																		<!--<option value="<?php //echo $lists->list_id[$i];?>" <?php //if($lists->list_id[$i] == $campaign->data->manual_dial_list_id) echo "selected";?>><?php //echo $lists->list_id[$i]; ?></option>';-->
+																	<?php //} ?>
+																<!--</select>-->
+																<input type="text" class="form-control" id="manual_dial_list_id" name="manual_dial_list_id" value="<?php if($campaign->data->manual_dial_list_id != ''){echo $campaign->data->manual_dial_list_id;}else{echo "998";} ?>">
 															</div>
 														</div>
 														<div class="form-group">

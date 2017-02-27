@@ -198,9 +198,9 @@
 											   		for($i=0;$i < count($campaign->campaign_id);$i++){
 
 														if($campaign->active[$i] == "Y"){
-															$campaign->active[$i] = $lh->translationFor("active");
+															$campaign->active[$i] = "active";
 														}else{
-															$campaign->active[$i] = $lh->translationFor("inactive");
+															$campaign->active[$i] = "inactive";
 														}
 
 														if($campaign->dial_method[$i] == $lh->translationFor("ratio")){
@@ -211,7 +211,7 @@
 															$dial_method = "MANUAL";
 														}
 
-														if($campaign->dial_method[$i] == $lh->translationFor("adapt_tempered")){
+														if($campaign->dial_method[$i] == $lh->translationFor("adapt_tapered")){
 															$dial_method = "PREDICTIVE";
 														}
 

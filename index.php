@@ -82,6 +82,13 @@ error_reporting(E_ALL)
 		$callsperhour = $ui->API_goGetCallsPerHour();
 		$max = 0;
 		$callsperhour = explode(";",trim($callsperhour, ';'));
+		
+	/* Sales */
+		$totalSales = $ui->API_goGetTotalSales();
+		$inboundSales =  $ui->API_goGetInboundSales();
+		$outboundSales = $ui->API_goGetOutboundSales();
+		$inSalesHour = $ui->API_goGetINSalesPerHour();
+		$outSalesHour = $ui->API_goGetOUTSalesPerHour();
 
 	foreach ($callsperhour AS $temp){
 	   $temp = explode("=",$temp);
@@ -244,6 +251,55 @@ error_reporting(E_ALL)
 							  </div>
 							</div>
 							<!-- END widget-->
+							
+							<!--  SALES -->
+							<div class="row">
+								<div class="panel panel-default" tabindex="-1">
+									<div class="panel-heading">
+										<div class="panel-title"><h4>SALES</h4></div>
+									</div>
+									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info info_sun_boxes" style="padding: 10px;">
+										<div class="h2 m0">
+											<span class="text-lg text-muted" id="total_sales">
+												<?php echo intval($inboundSales + $outboundSales);?>
+											</span>
+										</div>
+										<div class="text">Total Sales</div>
+									</div>
+									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
+										<div class="h2 m0">
+											<span class="text-lg text-muted" id="inbound_sales">
+												<?php echo intval($inboundSales); ?>
+											</span>
+										</div>
+										<div class="text">Inbound Sales</div>
+									</div>	                	
+									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
+										<div class="h2 m0">
+											<span class="text-lg text-muted" id="outbound_sales">
+												<?php echo intval($outboundSales); ?>
+											</span>
+										</div>
+										<div class="text">Outbound Sales</div>
+									</div>
+									<div class="panel widget col-md-3 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
+										<div class="h2 m0">
+											<span class="text-lg text-muted" id="in_sales_hour">
+												<?php echo intval($inSalesHour); ?>
+											</span>
+										</div>
+										<div class="text">In Sales / Hour</div>
+									</div>	                	
+									<div class="panel widget col-md-3 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
+										<div class="h2 m0">
+											<span class="text-lg text-muted" id="out_sales_hour">
+												<?php echo intval($outSalesHour); ?>
+											</span>
+										</div>
+										<div class="text" style="font-size: small;">OUT Sales / Hour</div>
+									</div>
+								</div>
+							</div>
 		
 							<!-- Today's Phone Calls --> 
 							<div class="row">
@@ -252,8 +308,9 @@ error_reporting(E_ALL)
 									<a href="#" data-toggle="modal" data-target="#realtime_calls_monitoring">
 										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info info_sun_boxes" style="padding: 10px;">
 											<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
-											<div class="text-white"><?=$lh->translateText("realtime_calls_monitor")?></div></a>                                        
+											<div class="text-white"><?=$lh->translateText("realtime_calls_monitor")?></div>                                 
 										</div>
+									</a>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_RingingCalls"></span></div>
 										<div class="text"><?=$lh->translateText("ringing_calls")?></div>

@@ -1393,3 +1393,10 @@ recording_id = "Record ID"
 filename = "Filename"
 location = "Location"
 TSR = "TSR"
+
+ratio = "RATIO"
+manual = "MANUAL"
+adapt_tapered = "ADAPT_TAPERED"
+inbound_man = "INBOUND_MAN"
+
+omit_phone_code = "Omit Phone Code"
