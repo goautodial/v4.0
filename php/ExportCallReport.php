@@ -117,7 +117,7 @@ error_reporting(E_ALL);
 //		print_r($output->getReports->return_this);
 //		echo '</pre>';
         $count = 0;
-        for($i=0; $i <= count($output->getReports->header); $i++){
+        for($i=0; $i <= count($output->getReports->rows); $i++){
             $count_row = $output->getReports->rows[$i];
             for($x=0; $x <= count($count_row); $x++){
                 if($x == count($count_row)){
