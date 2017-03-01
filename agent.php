@@ -1468,15 +1468,15 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 			<li id="toggleWebFormTwo" style="padding: 0 5px 15px;" class="hidden">
 				<button type="button" name="openWebFormTwo" id="openWebFormTwo" class="btn btn-warning btn-block disabled"><i class="fa fa-external-link"></i> <?=$lh->translationFor('webform_two')?></button>
 			</li>
-			<li style="padding: 0 5px 15px 0; display: none;">
+			<li style="font-size: 5px;">
+				&nbsp;
+			</li>
+			<li style="padding: 0 5px 15px;">
 				<div class="material-switch pull-right">
 					<input id="LeadPreview" name="LeadPreview" value="0" type="checkbox"/>
 					<label for="LeadPreview" class="label-primary"></label>
 				</div>
 				<div style="font-weight: bold; text-transform: uppercase;"><?=$lh->translationFor('lead_preview')?></div>
-			</li>
-			<li style="font-size: 5px;">
-				&nbsp;
 			</li>
 			<li id="toggleHotkeys" style="padding: 0 5px 15px;">
 				<div class="material-switch pull-right">

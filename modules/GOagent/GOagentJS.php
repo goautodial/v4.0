@@ -5997,6 +5997,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                 {manual_dial_only_type_flag = 'Address3';}
         }
 
+console.log($("#LeadPreview").prop('checked'));
         if ( ($("#LeadPreview").prop('checked')) && (active_ingroup_dial.length < 1) ) {
             reselect_preview_dial = 1;
             in_lead_preview_state = 1;
