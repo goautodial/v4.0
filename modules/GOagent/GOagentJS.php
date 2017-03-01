@@ -4667,14 +4667,15 @@ function NewManualDialCall(tempDiaLnow) {
             }
             MainPanelToFront();
 
-            if ( (tempDiaLnow == 'PREVIEW') && (active_ingroup_dial.length < 1) ) {
+            if ( ($("#LeadPreview").prop('checked') || tempDiaLnow == 'PREVIEW') && (active_ingroup_dial.length < 1) ) {
                 //alt_phone_dialing = 1;
                 agent_dialed_type='MANUAL_PREVIEW';
-                buildDiv('DiaLLeaDPrevieW');
-                if (alt_phone_dialing == 1)
-                    {buildDiv('DiaLDiaLAltPhonE');}
+                //buildDiv('DiaLLeaDPrevieW');
+                if (alt_phone_dialing == 1) {
+                    //buildDiv('DiaLDiaLAltPhonE');
+                }
                 $("#LeadPreview").prop('checked', true);
-                //$("#DialALTPhone").prop('checked', true);
+                $("#DialALTPhone").prop('checked', true);
             } else {
                 agent_dialed_type = 'MANUAL_DIALNOW';
                 $("#LeadPreview").prop('checked', false);
