@@ -565,9 +565,6 @@
 		/*********
 		** Add Wizard
 		*********/
-
-
-
 			//users form validate
 		    uform.validate({
 		        errorPlacement: function errorPlacement(error, element) { element.after(error); },
@@ -649,7 +646,7 @@
 									}
 								  );
 							  }else{
-							  	  sweetAlert("<?php $lh->translateText("add_user_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
+							  	  sweetAlert("<?php $lh->translateText("add_user_failed"); ?>", data, "error");
 							  }
 						}
 					});

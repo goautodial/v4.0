@@ -198,9 +198,9 @@
 											   		for($i=0;$i < count($campaign->campaign_id);$i++){
 
 														if($campaign->active[$i] == "Y"){
-															$campaign->active[$i] = "active";
+															$campaign->active[$i] = $lh->translationFor("active");
 														}else{
-															$campaign->active[$i] = "inactive";
+															$campaign->active[$i] = $lh->translationFor("inactive");
 														}
 
 														if($campaign->dial_method[$i] == $lh->translationFor("ratio")){

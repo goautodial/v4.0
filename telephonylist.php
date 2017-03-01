@@ -844,13 +844,13 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					$(document).on('click', '.btn-copy-cf', function(){
 						var form_data = new FormData($("#copy_cf_form")[0]);
 						swal({
-							title: "<?php $lh->translateText("are_you_sure"); ?>?",
-							text: "<?php $lh->translateText("cannot_undo"); ?>.",
+							title: "<?php $lh->translateText("are_you_sure"); ?>",
+							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 							type: "warning",
 							showCancelButton: true,
 							confirmButtonColor: "#DD6B55",
-							confirmButtonText: "<?php $lh->translateText("custom_fields"); ?>.",
-							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+							confirmButtonText: "<?php $lh->translateText("yes_copy_custom_fields"); ?>",
+							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
 							closeOnConfirm: false,
 							closeOnCancel: false
 							},

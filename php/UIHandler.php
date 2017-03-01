@@ -3596,7 +3596,7 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 
-			$columns = array($this->lh->translationFor('user'), $this->lh->translationFor('ip_adress'), $this->lh->translationFor('date_and_time'), $this->lh->translationFor('action'), $this->lh->translationFor('details'), $this->lh->translationFor('sql_query'));
+			$columns = array($this->lh->translationFor('user'), $this->lh->translationFor('ip_address'), $this->lh->translationFor('date_and_time'), $this->lh->translationFor('action'), $this->lh->translationFor('details'), $this->lh->translationFor('sql_query'));
 			$result = $this->generateTableHeaderWithItems($columns, "adminlogs_table", "table-bordered table-striped", true, false);
 	
 			foreach ($output->data as $log) {

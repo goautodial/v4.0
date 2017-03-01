@@ -47,7 +47,7 @@
         $userid = $value->vu_user_id;
         $agentid = $value->vla_user;
         $agentname =  $value->vu_full_name;
-        $campname = $value->vla_campaign_id;    
+        $campname = $value->vla_campaign_name;    
         $station = $value->vla_extension;
         $user_group = $value->vu_user_group;
         $sessionid = $value->vla_conf_exten;
