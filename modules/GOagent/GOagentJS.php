@@ -5651,52 +5651,45 @@ function CustomerData_update() {
     if (custom_fields_enabled > 0) {
         var defaultFieldsArray = defaultFields.split(',');
         var custom_fields = '';
-        var formCustFields = $(".formMain #custom_fields [id^='custom_']");
-        if (typeof formCustFields.html() === 'undefined') {
-            formCustFields = $(".formMain #custom_fields [id^='viewCustom_']");
-        }
-        
-        if (typeof formCustFields.html() !== 'undefined') {
-            $.each(formCustFields, function() {
-                var thisID = $(this).prop('id').replace(/^custom_/, '');
-                var fieldType = $(this).data('type');
-                var thisVal = $(this).val();
-                if (defaultFieldsArray.indexOf(thisID) > -1) return true;
-                if (/script|display|readonly/i.test(fieldType)) return true;
-                
-                switch (fieldType) {
-                    case "checkbox":
-                    case "radio":
-                        thisID = thisID.replace('[]', '');
-                        if ($(this).prop('checked')) {
-                            if (typeof postData[thisID] === 'undefined') {
-                                postData[thisID] = thisVal;
-                            } else {
-                                postData[thisID] += ',' + thisVal;
-                            }
+        $.each($(".formMain #custom_fields [id^='custom_']"), function() {
+            var thisID = $(this).prop('id').replace(/^custom_/, '');
+            var fieldType = $(this).data('type');
+            var thisVal = $(this).val();
+            if (defaultFieldsArray.indexOf(thisID) > -1) return true;
+            if (/script|display|readonly/i.test(fieldType)) return true;
+            
+            switch (fieldType) {
+                case "checkbox":
+                case "radio":
+                    thisID = thisID.replace('[]', '');
+                    if ($(this).prop('checked')) {
+                        if (typeof postData[thisID] === 'undefined') {
+                            postData[thisID] = thisVal;
+                        } else {
+                            postData[thisID] += ',' + thisVal;
                         }
-                        break;
-                    case "multi":
-                        if (thisVal !== null) {
-                            postData[thisID] = thisVal.join(',');
-                        }
-                        break;
-                    case "area":
-                        thisVal = thisVal.replace(REGcommentsAMP, "--AMP--");
-                        thisVal = thisVal.replace(REGcommentsQUES, "--QUES--");
-                        thisVal = thisVal.replace(REGcommentsPOUND, "--POUND--");
-                        postData[thisID] = thisVal;
-                        break;
-                    default:
-                        postData[thisID] = thisVal;
-                }
-                
-                if (custom_fields.indexOf(thisID) < 0) {
-                    custom_fields += thisID + ',';
-                }
-            });
-            postData['goCustomFields'] = custom_fields.slice(0,-1);
-        }
+                    }
+                    break;
+                case "multi":
+                    if (thisVal !== null) {
+                        postData[thisID] = thisVal.join(',');
+                    }
+                    break;
+                case "area":
+                    thisVal = thisVal.replace(REGcommentsAMP, "--AMP--");
+                    thisVal = thisVal.replace(REGcommentsQUES, "--QUES--");
+                    thisVal = thisVal.replace(REGcommentsPOUND, "--POUND--");
+                    postData[thisID] = thisVal;
+                    break;
+                default:
+                    postData[thisID] = thisVal;
+            }
+            
+            if (custom_fields.indexOf(thisID) < 0) {
+                custom_fields += thisID + ',';
+            }
+        });
+        postData['goCustomFields'] = custom_fields.slice(0,-1);
     }
 
     $.ajax({
@@ -5712,9 +5705,7 @@ function CustomerData_update() {
     .done(function (result) {
         console.log('Customer data updated...');
 
-        if (typeof formCustFields !== 'undefined') {
-            formCustFields.val('');
-        }
+        $(".formMain #custom_fields [id^='custom_']").val('');
         $('.input-disabled').prop('disabled', true);
         $('.hide_div').hide();
         $("input:required, select:required").removeClass("required_div");
