@@ -6131,7 +6131,6 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                 {manual_dial_only_type_flag = 'Address3';}
         }
 
-console.log($("#LeadPreview").prop('checked'));
         if ( ($("#LeadPreview").prop('checked')) && (active_ingroup_dial.length < 1) ) {
             reselect_preview_dial = 1;
             in_lead_preview_state = 1;
@@ -6321,7 +6320,7 @@ console.log($("#LeadPreview").prop('checked'));
                     called_count                            = thisVdata.called_count;
                     $(".formMain input[name='called_count']").val(called_count);
                     previous_called_count                   = thisVdata.called_count;
-                    previous_dispo                          = thisVdata.dispo;
+                    previous_dispo                          = thisVdata.status;
                     CBentry_time                            = thisVdata.CBentry_time;
                     CBcallback_time                         = thisVdata.CBcallback_time;
                     CBuser                                  = thisVdata.CBuser;
