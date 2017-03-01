@@ -733,6 +733,7 @@ error_reporting(E_ALL)
         */
         include_once ("./php/ModalPasswordDialogs.php");
 ?>
+<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 	/*
 	 * JQuery Knob = need for dropped calls percentage and other pie loader
