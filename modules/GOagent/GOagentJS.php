@@ -5598,7 +5598,7 @@ function ManualDialSkip() {
             Call_Script_ID = '';
             //RefresHScript('CLEAR');
             ClearScript();
-        }
+        });
     }
 }
 
