@@ -5704,7 +5704,7 @@ function CustomerData_update() {
     })
     .done(function (result) {
         console.log('Customer data updated...');
-
+        
         $(".formMain #custom_fields [id^='custom_']").val('');
         $(".formMain #custom_fields [id^='custom_']").prop('checked', false);
         $('.input-disabled').prop('disabled', true);
