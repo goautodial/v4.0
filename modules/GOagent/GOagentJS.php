@@ -3373,6 +3373,7 @@ function CheckForIncoming () {
                 if ( (script_recording_delay > 0) && ( (LIVE_campaign_recording == 'ALLCALLS') || (LIVE_campaign_recording == 'ALLFORCE') ) ) {
                     delayed_script_load = 'YES';
                     //RefresHScript('CLEAR');
+                    ClearScript();
                 } else {
                     LoadScriptContents();
                 }
@@ -5470,6 +5471,137 @@ function DispoSelectSubmit() {
     }
 }
 
+function ManualDialSkip() {
+    if (manual_dial_in_progress == 1) {
+        swal({
+            title: "<?=$lh->translationFor('error')?>",
+            text: "<?=$lh->translationFor('cannot_skip_call')?>",
+            type: 'error',
+        });
+    } else {
+        in_lead_preview_state = 0;
+        if (dial_method == "INBOUND_MAN") {
+            auto_dial_level = starting_dial_level;
+
+            toggleButton('ResumePause', 'off');
+            toggleButton('DialHangup', 'off');
+        } else {
+            toggleButton('DialHangup', 'off');
+        }
+
+        var postData = {
+            goServerIP: server_ip,
+            goSessionName: session_name,
+            goAction: 'goManualDialSkip',
+            goUser: uName,
+            goPass: uPass,
+            goLeadID: $(".formMain input[name='lead_id']").val(),
+            goCampaign: campaign,
+            goConfExten: session_id,
+            goStage: previous_dispo,
+            goCalledCount: previous_called_count,
+            responsetype: 'json'
+        };
+        
+        $.ajax({
+            type: 'POST',
+            url: '<?=$goAPI?>/goAgent/goAPI.php',
+            processData: true,
+            data: postData,
+            dataType: "json",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+        .done(function (result) {
+            if (result.result == 'success') {
+                if (result.message == "LEAD NOT REVERTED") {
+                    swal({
+                        title: "<?=$lh->translationFor('error')?>",
+                        text: "<?=$lh->translationFor('lead_not_reverted')?>",
+                        type: 'error',
+                    });
+                } else {
+                    $(".formMain input[name='lead_id']").val('');
+                    $(".formMain input[name='vendor_lead_code']").val('');
+                    $(".formMain input[name='list_id']").val('');
+                    $(".formMain input[name='entry_list_id']").val('');
+                    $(".formMain input[name='gmt_offset_now']").val('');
+                    $(".formMain input[name='phone_code']").val('');
+                    if ( (disable_alter_custphone == 'Y') || (disable_alter_custphone == 'HIDE') ) {
+                        var tmp_pn = $("#phone_numberDISP");
+                        tmp_pn.html(' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ');
+                    }
+                    $(".formMain input[name='phone_number']").val('');
+                    $(".formMain input[name='title']").val('');
+                    $("#cust_full_name a[id='first_name']").editable('setValue', '', true);
+                    $("#cust_full_name a[id='middle_initial']").editable('setValue', '', true);
+                    $("#cust_full_name a[id='last_name']").editable('setValue', '', true);
+                    //$(".formMain input[name='first_name.value		='';
+                    //$(".formMain input[name='middle_initial.value	='';
+                    //$(".formMain input[name='last_name.value		='';
+                    $(".formMain input[name='address1']").val('');
+                    $(".formMain input[name='address2']").val('');
+                    $(".formMain input[name='address3']").val('');
+                    $(".formMain input[name='city']").val('');
+                    $(".formMain input[name='state']").val('');
+                    $(".formMain input[name='province']").val('');
+                    $(".formMain input[name='postal_code']").val('');
+                    $(".formMain select[name='country_code']").val('');
+                    $(".formMain select[name='gender']").val('');
+                    $(".formMain input[name='date_of_birth']").val('');
+                    $(".formMain input[name='alt_phone']").val('');
+                    $(".formMain input[name='email']").val('');
+                    $(".formMain input[name='security_phrase']").val('');
+                    $(".formMain input[name='comments']").val('');
+                    $(".formMain input[name='audit_comments']").val('');
+                    if (qc_enabled > 0) {
+                        $(".formMain input[name='ViewCommentButton']").val('');
+                        $(".formMain input[name='audit_comments_button']").val('');
+                    }
+                    $(".formMain input[name='called_count']").val('');
+                    $(".formMain input[name='rank']").val('');
+                    $(".formMain input[name='owner']").val('');
+                    VDCL_group_id = '';
+                    fronter = '';
+                    previous_called_count = '';
+                    previous_dispo = '';
+                    custchannellive = 1;
+                    
+                    $("#cust_full_name").addClass('hidden');
+                    $("#cust_number").empty();
+                    $("#cust_avatar").html(goGetAvatar());
+                    goAvatar._init(goOptions);
+
+                    if (post_phone_time_diff_alert_message.length > 10) {
+                        $("#post_phone_time_diff_span_contents").html();
+                        //hideDiv('post_phone_time_diff_span');
+                        //post_phone_time_diff_alert_message = '';
+                    }
+
+                    $("#MainStatusSpan").html("<?=$lh->translationFor('lead_skipped')?>");
+
+                    if (dial_method == "INBOUND_MAN") {
+                        toggleButton('ResumePause', 'resume');
+                        toggleButton('DialHangup', 'dial');
+                    } else {
+                        toggleButton('DialHangup', 'dial');
+                    }
+                }
+            }
+            
+            active_group_alias = '';
+            cid_choice = '';
+            prefix_choice = '';
+            agent_dialed_number = '';
+            agent_dialed_type = '';
+            Call_Script_ID = '';
+            //RefresHScript('CLEAR');
+            ClearScript();
+        }
+    }
+}
+
 
 // ################################################################################
 // Update vicidial_list lead record with all altered values from form
@@ -5747,6 +5879,7 @@ function ManualDialOnly(taskaltnum) {
                 if ( (script_recording_delay > 0) && ( (LIVE_campaign_recording == 'ALLCALLS') || (LIVE_campaign_recording == 'ALLFORCE') ) ) {
                     delayed_script_load = 'YES';
                     //RefresHScript('CLEAR');
+                    ClearScript();
                 } else {
                     LoadScriptContents();
                 }
@@ -6362,6 +6495,7 @@ console.log($("#LeadPreview").prop('checked'));
                             if ( (script_recording_delay > 0) && ( (LIVE_campaign_recording == 'ALLCALLS') || (LIVE_campaign_recording == 'ALLFORCE') ) ) {
                                 delayed_script_load = 'YES';
                                 //RefresHScript('CLEAR');
+                                ClearScript();
                             } else {
                                 LoadScriptContents();
                             }
@@ -7972,6 +8106,10 @@ function LoadScriptContents() {
             $("#ScriptContents").html(new_script_content);
         }
     });
+}
+
+function ClearScript() {
+    $("#ScriptContents").html('');
 }
 
 // ################################################################################
