@@ -5579,7 +5579,7 @@ function ManualDialSkip() {
                         //post_phone_time_diff_alert_message = '';
                     }
 
-                    $("#MainStatusSpan").html("<?=$lh->translationFor('lead_skipped')?>");
+                    $("#MainStatusSpan").html("<center><?=$lh->translationFor('lead_skipped')?></center>");
 
                     if (dial_method == "INBOUND_MAN") {
                         toggleButton('ResumePause', 'resume');
@@ -5587,6 +5587,8 @@ function ManualDialSkip() {
                     } else {
                         toggleButton('DialHangup', 'dial');
                     }
+                    
+                    ManualDialNext('','','','','','0');
                 }
             }
             
