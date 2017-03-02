@@ -362,7 +362,7 @@ if (isset($_POST["usergroup_id"])) {
 									console.log($("#modifyvoicemail").serialize());
 									if (data == 1) {
 										swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("usergroup_modify_success"); ?>", "success");
-                                        //window.setTimeout(function(){location.reload()},2000);
+                                        window.setTimeout(function(){location.reload()},2000);
                                         $('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
                                         $('#modifyUserGroupOkButton').prop("disabled", false);
 									} else {

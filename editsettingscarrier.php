@@ -471,6 +471,7 @@ if (isset($_POST["cid"])) {
 									
 									if (data == 1) {
 										sweetAlert("<?php $lh->translateText("carrier_modify_success"); ?>", "<?php $lh->translateText("carrier_updated"); ?>", "success");
+										window.setTimeout(function(){location.reload()},2000);
 									} else {
 										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 									}

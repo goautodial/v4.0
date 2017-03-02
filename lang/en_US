@@ -514,7 +514,7 @@ campaign_dial_status_succesfully_updated = "Campaign Dial Status Successfully Up
 something_went_wrong = "Something went wrong while processing your request."
 new_status_successfully_added = "New Status Successfully Added"
 cancelled = "Cancelled"
-cancel_msg = "No action has been done :)"
+cancel_msg = "No action has been done"
 cancel_please = "No, Cancel Please"
 active = "Active"
 inactive = "Inactive"
@@ -640,6 +640,7 @@ mobile_phones = "Mobile Phone"
 terms_and_condition = "Terms and Condition"
 call_time_details = "Call Time Details"
 moh_name = "Music on Hold Name"
+
 
 add_carriers_success = "Carrier Successfully Created!"
 confirm_delete_carrier = "Yes, delete this carrier!"
@@ -1069,8 +1070,8 @@ inbound_delete_success = "Inbound Successfully Deleted!"
 add_ivr_success = "IVR Successfully Created"
 confirm_delete_ivr = "Yes, delete this IVR!"
 ivr_delete_success = "IVR Successfully Delete!"
-
-
+time = "Time"
+route = "Route"
 
 //  AUDIOFILES
 	

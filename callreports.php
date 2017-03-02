@@ -329,8 +329,7 @@
 									log_group: '<?php echo $_SESSION['usergroup']?>'
 								},
 								success: function(data) {
-									console.log(data);
-	
+									//console.log(data);
 									if(data !== ""){
 										$(".report-loader").fadeOut("slow");
 										$('#table').html(data);
@@ -421,7 +420,7 @@
 									log_group: '<?php echo $_SESSION['usergroup']?>'
 								},
 								success: function(data) {
-									console.log(data);
+									//console.log(data);
 	
 									if(data != ""){
 										$(".report-loader").fadeOut("slow");
@@ -548,8 +547,7 @@
 								log_group: '<?php echo $_SESSION['usergroup']?>'
                             },
                             success: function(data) {
-                                console.log(data);
-
+                                //console.log(data);
                                 if(data !== ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
@@ -635,8 +633,7 @@
 								log_group: '<?php echo $_SESSION['usergroup']?>'
                             },
                             success: function(data) {
-                                console.log(data);
-
+                                //console.log(data);
                                 if(data !== ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
@@ -754,8 +751,7 @@
 								log_group: '<?php echo $_SESSION['usergroup']?>'
                             },
                             success: function(data) {
-                                console.log(data);
-
+                                //console.log(data);
                                 if(data !== ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
@@ -874,8 +870,7 @@
 								log_group: '<?php echo $_SESSION['usergroup']?>'
                             },
                             success: function(data) {
-                                console.log(data);
-
+                                //console.log(data);
                                 if(data !== ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
@@ -985,8 +980,7 @@
 								log_group: '<?php echo $_SESSION['usergroup']?>'
                             },
                             success: function(data) {
-                                console.log(data);
-
+                                //console.log(data);
                                 if(data !== ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);
@@ -1029,8 +1023,7 @@
 								log_group: '<?php echo $_SESSION['usergroup']?>'
                             },
                             success: function(data) {
-                                console.log(data);
-
+                                //console.log(data);
                                 if(data !== ""){
                                     $(".report-loader").fadeOut("slow");
                                     $('#table').html(data);

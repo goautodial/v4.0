@@ -324,7 +324,7 @@ host=</textarea>
 											<div class="col-sm-6">
 												<select name="cust_protocol" id="cust_protocol" class="form-control custom_protocol" style="display:none;">
 													<option value="SIP">SIP</option>
-													<option value="Zap">Zap</option>
+													<option value="Zap">ZAP</option>
 													<option value="IAX2">IAX2</option>
 													<option value="EXTERNAL">EXTERNAL</option>
 												</select>

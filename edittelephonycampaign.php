@@ -2046,7 +2046,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 											<input type="checkbox" name="add_scheduled_callback" id="add_scheduled_callback" class="flat-red" value="Y" />
 										</td>
 										<td>
-											<a type="button" id="add_new_status" data-id="<?php echo $did;?>" class="btn btn-primary" disabled><span id="add_button"><i class="fa fa-plus"></i> <?php $lh->translateText("new_status"); ?></span></a>
+											<a type="button" id="add_new_status" data-id="<?php echo $did;?>" class="btn btn-primary" disabled><span id="add_button"><i class="fa fa-plus"></i> <?php $lh->translateText("create_new_status"); ?></span></a>
 										</td>
 									</tr>
 								<!------>
