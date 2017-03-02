@@ -669,6 +669,7 @@ audio_chooser = "Audio Chooser"
 
 call_time_wizard = "Call Time Wizard "
 add_new_call_time = "Add New Call Time"
+call_time_header = "Basic Settings"
 call_sub_time_header = "Enter your basic call time details and assign a usergroup."
 call_time_id = "Call Time ID"
 call_time_name = "Call Time Name"

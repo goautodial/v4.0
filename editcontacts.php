@@ -311,7 +311,7 @@ if ($list_id_ct != NULL) {
 												<thead>
 													<tr>
 														<th textwrap><?php $lh->translateText("start_time"); ?></th>
-														<th textwrap><?php $lh->translateText("seconds"); ?></th>
+														<th textwrap><?php $lh->translateText("length_in_sec"); ?></th>
 														<th textwrap><?php $lh->translateText("recording_id"); ?></th>
 														<th textwrap><?php $lh->translateText("filename"); ?></th>
 														<th textwrap><?php $lh->translateText("location"); ?></th>

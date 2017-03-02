@@ -210,13 +210,13 @@ if (isset($_POST["cid"])) {
 										<div class="form-group mt">
 											<label for="calltime_name" class="col-sm-2 control-label"><?php $lh->translateText("call_time_name"); ?></label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="calltime_name" id="calltime_name" placeholder="Call Time Name" value="<?php echo $output->call_time_name;?>">
+												<input type="text" class="form-control" name="calltime_name" id="calltime_name" placeholder="<?php $lh->translateText("call_time_name"); ?>" value="<?php echo $output->call_time_name;?>">
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="calltime_comments" class="col-sm-2 control-label"><?php $lh->translateText("call_time_comments"); ?></label>
 											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="calltime_comments" id="calltime_comments" placeholder="Call Time Comments" value="<?php echo $output->call_time_comments;?>">
+												<input type="text" class="form-control" name="calltime_comments" id="calltime_comments" placeholder="<?php $lh->translateText("call_time_comments"); ?>" value="<?php echo $output->call_time_comments;?>">
 											</div>
 										</div>
 										<div class="form-group">
