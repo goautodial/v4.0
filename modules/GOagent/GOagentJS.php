@@ -4095,7 +4095,7 @@ function NewCallbackCall(taskCBid, taskLEADid, taskCBalt) {
             agent_log_id = AutoDial_ReSume_PauSe("VDADpause", '', '', '', '', '1', auto_pause_precall_code);
         } else {
             move_on = 0;
-            swal("<?=$lang['must_be_paused_to_check_callbacks']?>");
+            swal("<?=$lh->translationFor('must_be_paused_to_check_callbacks')?>");
         }
     }
     if (move_on == 1) {
