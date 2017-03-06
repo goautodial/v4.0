@@ -4058,19 +4058,19 @@ function CallBacksCountCheck() {
                 $("#callback-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 $("#contents-callbacks").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
                 $("#contents-callbacks").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
-                if (!is_logged_in || (is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc))) {
+                if (!is_logged_in || (is_logged_in && (use_webrtc && !phoneRegistered))) {
                     $("button[id^='dial-cb-']").addClass('disabled');
                 }
                 
                 $('#callback-list').on('draw.dt', function() {
-                    if (!is_logged_in || (is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc))) {
+                    if (!is_logged_in || (is_logged_in && (use_webrtc && !phoneRegistered))) {
                         $("button[id^='dial-cb-']").addClass('disabled');
                     } else {
                         $("button[id^='dial-cb-']").removeClass('disabled');
                     }
                 });
             } else {
-                if (!is_logged_in || (is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc))) {
+                if (!is_logged_in || (is_logged_in && (use_webrtc && !phoneRegistered))) {
                     $("button[id^='dial-cb-']").addClass('disabled');
                 } else {
                     $("button[id^='dial-cb-']").removeClass('disabled');
@@ -8300,14 +8300,14 @@ function getContactList() {
             $("#contacts-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
             $("#contents-contacts").find("div.dataTables_info").parent('div').attr('class', 'col-xs-12 col-sm-6');
             $("#contents-contacts").find("div.dataTables_paginate").parent('div').attr('class', 'col-xs-12 col-sm-6');
-            if (!is_logged_in || (is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc))) {
+            if (!is_logged_in || (is_logged_in && (use_webrtc && !phoneRegistered))) {
                 $("button[id^='dial-lead-']").addClass('disabled');
             } else {
                 $("button[id^='dial-lead-']").removeClass('disabled');
             }
             
             $('#contacts-list').on('draw.dt', function() {
-                if (!is_logged_in || (is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc))) {
+                if (!is_logged_in || (is_logged_in && (use_webrtc && !phoneRegistered))) {
                     $("button[id^='dial-lead-']").addClass('disabled');
                 } else {
                     $("button[id^='dial-lead-']").removeClass('disabled');
