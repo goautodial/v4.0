@@ -3149,8 +3149,7 @@ function CheckForIncoming () {
 
             $("#MainStatusSpan").html("<b><?=$lh->translationFor('incoming_call')?>:</b> " + dial_display_number + " " + custom_call_id + " " + status_display_content + "<br>" + VDIC_fronter);
 
-            //if (CBentry_time.length > 2)
-            //{
+            if (CBentry_time.length > 2) {
             //    $("#CustInfoSpan").html(" <b> PREVIOUS CALLBACK </b>");
             //    $("#CustInfoSpan").css('background', CustCB_bgcolor);
             //    $("#CBcommentsBoxA").html("<b>Last Call: </b>" + CBentry_time);
@@ -3158,7 +3157,15 @@ function CheckForIncoming () {
             //    $("#CBcommentsBoxC").html("<b>Agent: </b>" + CBuser);
             //    $("#CBcommentsBoxD").html("<b>Comments: </b><br />" + CBcomments);
             //    //showDiv('CBcommentsBox');
-            //}
+                
+                swal({
+                    title: "<?=$lh->translationFor('previous_callback')?>",
+                    text: "<b><?=$lh->translationFor('last_call')?>:</b> " + CBentry_time + "<br /><b><?=$lh->translationFor('callback')?>:</b> " + CBcallback_time + "<br /><b><?=$lh->translationFor('agent')?>:</b> " + CBuser + "<br /><b><?=$lh->translationFor('comments')?>:</b><br />" + CBcomments,
+                    type: 'error',
+                    html: true
+                });
+            }
+            
             //if (dialed_label == 'ALT')
             //    {$("#CustInfoSpan").html(" <b> ALT DIAL NUMBER: ALT </b>");}
             //if (dialed_label == 'ADDR3')
@@ -6472,6 +6479,13 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         //document.getElementById("CBcommentsBoxC").innerHTML = "<b><?=$lang['agent']?>: </b>" + CBuser;
                         //document.getElementById("CBcommentsBoxD").innerHTML = "<b><?=$lang['comments']?>: </b><br />" + CBcomments;
                         //showDiv('CBcommentsBox');
+                        
+                        swal({
+                            title: "<?=$lh->translationFor('previous_callback')?>",
+                            text: "<b><?=$lh->translationFor('last_call')?>:</b> " + CBentry_time + "<br /><b><?=$lh->translationFor('callback')?>:</b> " + CBcallback_time + "<br /><b><?=$lh->translationFor('agent')?>:</b> " + CBuser + "<br /><b><?=$lh->translationFor('comments')?>:</b><br />" + CBcomments,
+                            type: 'error',
+                            html: true
+                        });
                     }
 
                     if (post_phone_time_diff_alert_message.length > 10) {
