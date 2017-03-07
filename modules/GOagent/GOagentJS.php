@@ -3160,8 +3160,8 @@ function CheckForIncoming () {
                 
                 swal({
                     title: "<?=$lh->translationFor('previous_callback')?>",
-                    text: "<b><?=$lh->translationFor('last_call')?>:</b> " + CBentry_time + "<br /><b><?=$lh->translationFor('callback')?>:</b> " + CBcallback_time + "<br /><b><?=$lh->translationFor('agent')?>:</b> " + CBuser + "<br /><b><?=$lh->translationFor('comments')?>:</b><br />" + CBcomments,
-                    type: 'error',
+                    text: "<div style='text-align: left; padding: 0 30px;'><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('last_call')?>:</b> " + CBentry_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('callback')?>:</b> " + CBcallback_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('agent')?>:</b> " + CBuser + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('comments')?>:</b><br />" + CBcomments + "</div></div>",
+                    type: 'info',
                     html: true
                 });
             }
@@ -6482,8 +6482,8 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         
                         swal({
                             title: "<?=$lh->translationFor('previous_callback')?>",
-                            text: "<b><?=$lh->translationFor('last_call')?>:</b> " + CBentry_time + "<br /><b><?=$lh->translationFor('callback')?>:</b> " + CBcallback_time + "<br /><b><?=$lh->translationFor('agent')?>:</b> " + CBuser + "<br /><b><?=$lh->translationFor('comments')?>:</b><br />" + CBcomments,
-                            type: 'error',
+                            text: "<div style='text-align: left; padding: 0 30px;'><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('last_call')?>:</b> " + CBentry_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('callback')?>:</b> " + CBcallback_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('agent')?>:</b> " + CBuser + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('comments')?>:</b><br />" + CBcomments + "</div></div>",
+                            type: 'info',
                             html: true
                         });
                     }
