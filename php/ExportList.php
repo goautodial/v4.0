@@ -26,6 +26,7 @@ error_reporting(E_ALL);
 //    echo "<pre>";
 //	print_r($output);
 //	echo "</pre>";
+var_dump($output);
 	
     if($output->result == "success"){
         //$filename = $output->getReports->filename;
