@@ -255,7 +255,7 @@
 											<?php
 												for($i=0;$i<count($user_groups->user_group);$i++){
 											?>
-												<option value="<?php echo $user_groups->user_group[$i];?>" <?php if($user_groups->user_group[$i] == "AGENT"){echo "selected";}?>>  <?php echo $user_groups->group_name[$i];?>  </option>
+												<option value="<?php echo $user_groups->user_group[$i];?>" <?php if($user_groups->user_group[$i] == "AGENTS"){echo "selected";}?>>  <?php echo $user_groups->group_name[$i];?>  </option>
 											<?php
 												}
 											?>
@@ -281,7 +281,7 @@
 									<label class="col-sm-4 control-label" for="password"><i class="fa fa-info-circle" title="<?php $lh->translateText("default_pass_is"); ?>: Go<?php echo date('Y');?>"></i>  <?php $lh->translateText("password"); ?> </label>
 									
 									<div class="col-sm-8 mb">
-										<input type="password" class="form-control" name="password" id="password" placeholder="Password (<?php $lh->translateText("mandatory"); ?>)" value="Go<?php echo date('Y');?>" maxlength="20" required>
+										<input type="password" class="form-control" name="password" id="password" placeholder="Password (<?php $lh->translateText("mandatory"); ?>)" value="Go<?php echo date('Y');?>" maxlength="10" required>
 									</div>
 								</div>
 								<div class="form-group">
@@ -422,7 +422,7 @@
 								<div class="form-group">
 									<label class="col-sm-4 control-label" for="start_ext"><?php $lh->translateText("user_group"); ?></label>
 									<div class="col-sm-8 mb">
-										<select name="user_group" id="user_group" class="form-control select2-1" style="width:100%;" required>
+										<select name="user_group" class="form-control select2-1" style="width:100%;" required>
 											<option value="ALL">ALL USER GROUPS</option>
 											<?php
 												for($i=0; $i < count($user_groups->user_group); $i++){
@@ -874,8 +874,17 @@
 				});
 
 	// -------------------------
-		
-
+	
+		$(document).on('change','#user_group',function() {
+			if($("#user_group").val() == "ADMIN" || $("#user_group").val() == "SUPERVISOR"){
+				$("#password").attr('maxlength','20');
+				$("#password").val('Go'+<?php echo date("Y");?>);
+			}else {
+				$("#password").attr('maxlength','10');
+				$("#password").val('Go'+<?php echo date("Y");?>);
+			}
+		});
+	
 		// disable special characters on User ID
 		$('#user_form').bind('keypress', function (event) {
 		    var regex = new RegExp("^[a-zA-Z0-9]+$");
