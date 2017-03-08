@@ -21,7 +21,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?php $lh->translateText("title_portal"); ?> - <?php $lh->translateText("voice_mails"); ?></title>
+        <title><?php $lh->translateText("portal_title"); ?> - <?php $lh->translateText("voice_mails"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?> 
@@ -235,16 +235,15 @@
                                 type: 'POST',
                                 data: $("#create_voicemail").serialize(),
                                 success: function(data) {
-                                  // console.log(data);
-                                      if(data == 1){
-                                            swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_voicemail_success"); ?>",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
-                                            $('#finish').val("<?php $lh->translateText("submit"); ?>");
-                                      }
-                                      else{
-                                          sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
-                                          $('#finish').val("<?php $lh->translateText("submit"); ?>");
-                                          $('#finish').prop("disabled", false);
-                                      }
+								// console.log(data);
+								$('#finish').text("<?php $lh->translateText("submit"); ?>");
+								$('#finish').prop("disabled", false);
+									if(data == 1){
+										  swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_voicemail_success"); ?>",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
+									}
+									else{
+										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
+									}
                                 }
                             });
                     }
@@ -288,7 +287,7 @@
 										log_group: '<?=$_SESSION['usergroup']?>'
                                     },
                                     success: function(data) {
-                                    console.log(data);
+                                    //console.log(data);
                                         if(data == 1){
                                             swal({title: "<?php $lh->translateText("deleted"); ?>",text: "<?php $lh->translateText("voicemail_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
                                         }else{

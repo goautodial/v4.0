@@ -460,6 +460,13 @@ ip_address = "IP Address"
 date_and_time = "Date & Time"
 details = "Details"
 sql_query = "SQL Query"
+sales = "Sales"
+sales_monitoring = "Realtime Sales Monitoring"
+total_sales = "Total Sales"
+inbound_sales = "Inbound Sales"
+outbound_sales = "Outbound Sales"
+in_sale = "In Sales / Hour"
+out_sale = "Out Sales / Hour"
 
 // DEFAULT DISPOSITIONS
 
