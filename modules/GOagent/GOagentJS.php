@@ -1678,10 +1678,11 @@ $(document).ready(function() {
     
     $("#manual-dial-dropdown").on('click', function() {
         var listVisible = $("#country_codes").is(':visible');
-        if (listVisible) {
+        console.log(listVisible);
+        if (!listVisible) {
             $("#country_codes").scrollTop(0);
         }
-    })
+    });
 });
 
 function checkSidebarIfOpen(startUp) {
