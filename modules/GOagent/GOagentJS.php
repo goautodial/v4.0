@@ -1659,7 +1659,7 @@ $(document).ready(function() {
         
             var obj = country_codes[key];
             
-            country_list .= "<li>"+ obj['name'] +"</li>";
+            country_list += "<li>"+ obj['name'] +"</li>";
         }
         
         $("#country_codes").html(country_list);
