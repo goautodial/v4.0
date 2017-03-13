@@ -1653,17 +1653,27 @@ $(document).ready(function() {
     var country_cnt = Object.keys(country_codes).length;
     var country_list = '';
     if (country_cnt > 0) {
+        country_list += '<li data-code="1"><i class="flag flag-us"></i> United States of America</li>';
+        country_list += '<li data-code="1"><i class="flag flag-ca"></i> Canada</li>';
+        country_list += '<li data-code="63"><i class="flag flag-ph"></i> Philippines</li>';
         for (var key in country_codes) {
             // skip loop if the property is from prototype
             if (!country_codes.hasOwnProperty(key)) continue;
         
             var obj = country_codes[key];
             
-            country_list += "<li>"+ obj['name'] +"</li>";
+            if (key !== 'USA' && key !== 'CAN' && key !== 'PHL') {
+                country_list += '<li data-code="'+obj['code']+'"><i class="flag flag-'+obj['tld']+'"></i> '+ obj['name'] +'</li>';
+            }
         }
         
         $("#country_codes").html(country_list);
     }
+    
+    $("#country_codes li").on('click', function() {
+        var thisCode = $(this).data('code');
+        $("#MDDiaLCodE").val(thisCode);
+    });
 });
 
 function checkSidebarIfOpen(startUp) {
