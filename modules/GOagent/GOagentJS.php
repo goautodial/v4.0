@@ -1680,7 +1680,9 @@ $(document).ready(function() {
         var listVisible = $("#country_codes").is(':visible');
         console.log(listVisible);
         if (!listVisible) {
-            $("#country_codes").scrollTop(0);
+            setTimeout(function() {
+                $("#country_codes").scrollTop(0);
+            }, 50);
         }
     });
 });
