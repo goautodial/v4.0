@@ -410,7 +410,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 			.text-color-black {
 				color: black;
 			}
-			::-webkit-scrollbar { 
+			.tab-content::-webkit-scrollbar { 
 				display: none;
 			}
 			.mail-preloader span.dots div, .cust-preloader span.dots div {
@@ -421,10 +421,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				color: #000;
 				opacity: 0.75;
 			}
-			#country_codes::-webkit-scrollbar {
-				display: block;
-			}
 			.scrollable-menu {
+				width: 200px;
 				height: auto;
 				max-height: 200px;
 				overflow-x: visible;
