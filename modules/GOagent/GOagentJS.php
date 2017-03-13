@@ -1663,7 +1663,7 @@ $(document).ready(function() {
         
             var obj = country_codes[key];
             
-            if (key !== 'USA_1' && key !== 'CAN_1' && key !== 'PHL_63') {
+            if (key !== 'USA_1' && key !== 'CAN_1' && key !== 'PHL_63' && key !== 'GBR_44') {
                 country_list += '<li data-code="'+obj['code']+'"><i class="flag flag-'+obj['tld']+'"></i> '+ obj['name'] +'</li>';
             }
         }
