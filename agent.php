@@ -425,8 +425,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				width: 200px;
 				height: auto;
 				max-height: 200px;
-				overflow-x: visible;
-				overflow-y: scroll;
+				overflow-x: hidden;
+				overflow-y: auto;
 			}
 		</style>
     </head>
