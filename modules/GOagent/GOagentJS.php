@@ -1675,6 +1675,13 @@ $(document).ready(function() {
         var thisCode = $(this).data('code');
         $("#MDDiaLCodE").val(thisCode);
     });
+    
+    $("#manual-dial-dropdown").on('click', function() {
+        var listVisible = $("#country_codes").is(':visible');
+        if (listVisible) {
+            $("#country_codes").scrollTop(0);
+        }
+    })
 });
 
 function checkSidebarIfOpen(startUp) {
