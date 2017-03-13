@@ -421,6 +421,12 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				color: #000;
 				opacity: 0.75;
 			}
+			.scrollable-menu {
+				height: auto;
+				max-height: 200px;
+				overflow-x: visible;
+				overflow-y: scroll;
+			}
 		</style>
     </head>
     <?php print $ui->creamyAgentBody(); ?>
