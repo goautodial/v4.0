@@ -1678,7 +1678,6 @@ $(document).ready(function() {
     
     $("#manual-dial-dropdown").on('click', function() {
         var listVisible = $("#country_codes").is(':visible');
-        console.log(listVisible);
         if (!listVisible) {
             setTimeout(function() {
                 $("#country_codes").scrollTop(0);
