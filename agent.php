@@ -421,6 +421,9 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				color: #000;
 				opacity: 0.75;
 			}
+			#country_codes::-webkit-scrollbar {
+				display: block;
+			}
 			.scrollable-menu {
 				height: auto;
 				max-height: 200px;
