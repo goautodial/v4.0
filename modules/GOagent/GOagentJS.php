@@ -1655,6 +1655,7 @@ $(document).ready(function() {
     if (country_cnt > 0) {
         country_list += '<li data-code="1"><i class="flag flag-us"></i> United States of America</li>';
         country_list += '<li data-code="1"><i class="flag flag-ca"></i> Canada</li>';
+        country_list += '<li data-code="44"><i class="flag flag-uk"></i> United Kingdom of Great Britain and Northern Ireland</li>';
         country_list += '<li data-code="63"><i class="flag flag-ph"></i> Philippines</li>';
         for (var key in country_codes) {
             // skip loop if the property is from prototype
