@@ -241,7 +241,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 										    						<option VALUE="NORMAL" <?php if($autodial_level == "2") echo "selected";?>>NORMAL</option>
 																	<option VALUE="HIGH" <?php if($autodial_level == "4") echo "selected";?>>HIGH</option>
 										    						<option VALUE="MAX"<?php if($autodial_level == "6") echo "selected";?>>MAX</option>
-										    						<option VALUE="MAX_PREDICTIVE"<?php if($autodial_level == "10" || $campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?> disabled>MAX_PREDICTIVE</option>
+										    						<option VALUE="MAX_PREDICTIVE"<?php if($autodial_level == "10" || $campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?> disabled>MAX PREDICTIVE</option>
 																	<option value="ADVANCE" <?php if($autodial_level != "0" && $autodial_level != "1" && $autodial_level != "2" && $autodial_level != "4" && $autodial_level != "6" && $autodial_level != "10") echo "selected";?> >ADVANCE</option>
 																	</select>
 																</div>
