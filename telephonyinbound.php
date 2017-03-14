@@ -321,11 +321,11 @@
 	 */
 	$users = $ui->API_goGetAllUserLists();
 	$user_groups = $ui->API_goGetUserGroupsList();
-	$ingroups = $ui->API_getInGroups();
+	$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
 	$campaign = $ui->API_getListAllCampaigns();
 	$voicemails = $ui->API_goGetVoiceMails();
 	$phones = $ui->API_getPhonesList();
-	$ivr = $ui->API_getIVR();
+	$ivr = $ui->API_getIVR($_SESSION['usergroup']);
 	$scripts = $ui->API_goGetAllScripts();
 	$voicefiles = $ui->API_GetVoiceFilesList();
 	$calltimes = $ui->getCalltimes();
@@ -579,7 +579,7 @@
 							<label class="col-sm-3 control-label" for="menu_invalid_prompt"><?php $lh->translateText("invalid_greeting"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control select2-1" style="width:100%;">
-									<option value="" selected><?php $lh->translateText("defalut_value"); ?></option>
+									<option value="" selected><?php $lh->translateText("default_value"); ?></option>
 									<?php
 										for($i=0;$i<count($voicefiles->file_name);$i++){
 											$file = substr($voicefiles->file_name[$i], 0, -4);
@@ -603,7 +603,7 @@
 							<div class="col-sm-8 mb">
 								<select name="menu_time_check" id="menu_time_check" class="form-control">
 									<option value="0" ><?php $lh->translateText("go_no"); ?> </option>
-									<option value="1" > <?php $lh->translateText("go_yes"); ?> </option>		
+									<option value="1" > <?php $lh->translateText("go_yes"); ?> </option>
 								</select>
 							</div>
 						</div>
@@ -640,7 +640,7 @@
 								?>
 									<option value="<?php echo $ingroups->group_id[$i];?>">
 										<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
-									</option>									
+									</option>
 								<?php
 									}
 								?>

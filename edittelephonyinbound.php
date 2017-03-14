@@ -119,11 +119,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					if($groupid != NULL) {
 
 					/* APIs used for forms */
-						$call_menu = $ui->API_getIVR();
+						$call_menu = $ui->API_getIVR($_SESSION['usergroup']);
 						$call_time = $ui->getCalltimes();
 						$scripts = $ui->API_goGetAllScripts();
 						$voicemail = $ui->API_goGetVoiceMails();
-						$ingroup = $ui->API_getInGroups();
+						$ingroup = $ui->API_getInGroups($_SESSION['usergroup']);
 						$voicefiles = $ui->API_GetVoiceFilesList();
 						$moh = $ui->API_goGetAllMusicOnHold();
 
@@ -1144,17 +1144,17 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 
 						if ($output->result=="success") {
 							$user_groups = $ui->API_goGetUserGroupsList();
-							$ingroups = $ui->API_getInGroups();
+							$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
 							$calltimes = $ui->getCalltimes();
 							$ivr_options = $ui->API_getIVROptions($ivr);
 							$campaign = $ui->API_getListAllCampaigns();
 							$voicemails = $ui->API_goGetVoiceMails();
 							$phones = $ui->API_getPhonesList();
-							$ivr = $ui->API_getIVR();
+							$ivr = $ui->API_getIVR($_SESSION['usergroup']);
 							$scripts = $ui->API_goGetAllScripts();
 							$voicefiles = $ui->API_GetVoiceFilesList();
 							$calltimes = $ui->getCalltimes();
-							$phonenumber = $ui->API_getPhoneNumber();
+							$phonenumber = $ui->API_getPhoneNumber($_SESSION['usergroup']);
 						# Result was OK!
 					?>
 						<section class="content">
@@ -1757,7 +1757,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 	$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
 	$voicemails = $ui->API_goGetVoiceMails();
 	$phones = $ui->API_getPhonesList();
-	$ivr = $ui->API_getIVR();
+	$ivr = $ui->API_getIVR($_SESSION['usergroup']);
 	$scripts = $ui->API_goGetAllScripts();
 	$voicefiles = $ui->API_GetVoiceFilesList();
 	//var_dump($ingroups);

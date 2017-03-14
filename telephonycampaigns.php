@@ -150,8 +150,8 @@
 	$leadfilter = $ui->API_getAllLeadFilters();
 	$country_codes = $ui->getCountryCodes();
 	$list = $ui->API_goGetAllLists();
-	$ingroup = $ui->API_getInGroups();
-	$ivr = $ui->API_getIVR();
+	$ingroup = $ui->API_getInGroups($_SESSION['usergroup']);
+	$ivr = $ui->API_getIVR($_SESSION['usergroup']);
 	$voicemails = $ui->API_goGetVoiceMails();
 	$users = $ui->API_goGetAllUserLists();
 	$carriers = $ui->getCarriers();

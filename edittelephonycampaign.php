@@ -53,8 +53,8 @@ $sdialStatus = $ui->getDialStatusesforSurvey($campaign->data->campaign_id);
 $campdialStatus = $ui->API_getAllCampaignDialStatuses($campaign->data->campaign_id);
 $dids = $ui->API_getAllDIDs($campaign->data->campaign_id);
 $voicefiles = $ui->API_GetVoiceFilesList();
-$ingroups = $ui->API_getInGroups();
-$ivr = $ui->API_getIVR();
+$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
+$ivr = $ui->API_getIVR($_SESSION['usergroup']);
 $lists = $ui->API_goGetAllLists();
 $audiofiles = $ui->API_getListAudioFiles();
 ?>

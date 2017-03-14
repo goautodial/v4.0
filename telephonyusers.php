@@ -46,7 +46,11 @@
    		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
    		<!-- SELECT2-->
    		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
-
+		<style>
+			.wizard > .steps > ul > li{
+				width: 33.33%!important;
+			}
+		</style>
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -76,15 +80,14 @@
                 <section class="content">
                 <?php if ($perm->user_read !== 'N') { ?>
                     <div class="panel panel-default">
-                    	<div class="panel-body">
-                    		<legend><?php $lh->translateText("users"); ?></legend>
-                    		<div role="tabpanel">
+						<div class="panel-body">
+						<legend><?php $lh->translateText("users"); ?></legend>
+							<div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
-
 								<!-- Users panel tab -->
 									 <li role="presentation" class="active">
 										<a href="#users_tab" aria-controls="users_tab" role="tab" data-toggle="tab" class="bb0">
-										    <?php $lh->translateText("users"); ?> </a>
+											<?php $lh->translateText("users"); ?> </a>
 									 </li>
 									 <?php
 										 if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
@@ -93,22 +96,18 @@
 									 <!-- Phones panel tabs-->
 									 <li role="presentation" >
 										<a href="#phone_tab" aria-controls="phone_tab" role="tab" data-toggle="tab" class="bb0">
-										    <?php $lh->translateText("phones"); ?></a>
+											<?php $lh->translateText("phones"); ?></a>
 									 </li>
-									 
 									 <?php	
 										}
 									 ?>
-								
-
-								  </ul>
-
+								</ul>
 								<!-- Tab panes-->
 								<div class="tab-content bg-white">
 									<!--==== users ====-->
 									<div id="users_tab" role="tabpanel" class="tab-pane active">
 										<?php print $ui->goGetAllUserList($_SESSION['user'], $perm); ?>
-			                        </div>
+									</div>
 									
 									<?php
 										if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
@@ -116,15 +115,14 @@
 									<!--==== Phones ====-->
 									<div id="phone_tab" role="tabpanel" class="tab-pane">
 										<?php print $ui->getPhonesList(); ?>
-			                        </div>
+									</div>
 									<?php
 										}
 									?>
 								</div><!-- END tab content-->
-
 							</div><!-- end of tabpanel -->
-	                    </div><!-- /.box-body -->
-                    </div><!-- /.box -->
+						</div><!-- /.box-body -->
+					</div><!-- /.box -->
 				<!-- /fila con acciones, formularios y demás -->
 				<?php
 					} else {
@@ -167,6 +165,9 @@
 	$phones = $ui->API_getPhonesList();
 	$max = max($phones->extension);
 	$suggested_extension = $max + 1;
+	$count_users = count($output->user);
+	$license_seats = intval($output->licensedSeats);
+	$avail_seats = $license_seats-$count_users;
 ?>
 	<!-- ADD USER MODAL -->
 	    <div class="modal fade" id="user-wizard-modal" aria-labelledby="T_User" >
@@ -187,45 +188,39 @@
 						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 						<div class="row">
-							<!--
 	                        <h4>Getting Started
 	                           <br>
-	                           <small>Assign User to a Usergroup</small>
+	                           <small>Number of Users to Create</small>
 	                        </h4>
 	                        <fieldset>
-							
-								<div class="form-group">		
-									<label class="col-sm-5 control-label">Current Users </label>
-									<div class="col-sm-7 mb">
-										<div class="row">
-											<h4 style="padding-left:20px;"><?php echo count($output->user); ?></h4>
-										</div>
+								<div class="form-group">
+									<label class="col-lg-4 control-label"><?php $lh->translateText("Current Users"); ?>: </label>
+									<div class="col-lg-8 reverse_control_label mb">
+										<?php echo $count_users; ?>
 									</div>
 								</div>
-							-->
-							<!-- ENABLE IF ADD MULTIPLE IS AVAILABLE 
-								<div class="form-group">		
-									<label class="col-sm-4 control-label" style="padding-top:15px;">Additional Seat(s): </label>
-									<div class="col-sm-8" style="padding-top:10px;">
+							<!-- ENABLE IF ADD MULTIPLE IS AVAILABLE -->
+								<div class="form-group">
+									<label class="col-sm-4 control-label">Number of Seat(s): </label>
+									<div class="col-sm-8">
 										<select name="seats" id="seats" class="form-control">
 										<?php
-											for($i=1; $i <= 9; $i++){ 
-										?>
-											<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-										<?php
+											if($avail_seats > 0 || $license_seats == 0){
+												if($avail_seats >= 99 || $license_seats == 0)
+													$max_create = 99;
+												else
+													$max_create = $avail_seats;
+												
+												for($i=1; $i <= $max_create; $i++){
+													echo '<option value="'.$i.'">'.$i.'</option>';
+												}
+											}else{
+												echo '<option value="1">1</option>';
 											}
 										?>
-											<option value="custom_seats">Custom</option>
 										</select>
 									</div>
 								</div>
-								<div class="form-group" id="custom_seats" style="display:none;">
-									<label class="col-sm-4 control-label" for="custom_num_seats"><?php $lh->translateText("account_details"); ?>Number of Seats: </label>
-									<div class="col-sm-6 mb">
-										<input type="number" name="custom_num_seats" id="custom_num_seats" class="form-control" min="1" max="99" value="1">
-									</div>
-								</div>
-							-->
 	                        </fieldset>
 	                        <h4><?php $lh->translateText("account_details"); ?>
 	                           <br>
@@ -277,14 +272,14 @@
 											   value="<?php echo $fullname;?>" title="<?php $lh->translateText("alphanumberic_only_instruction"); ?>" maxlength="50" required>
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group" id="password_div">
 									<label class="col-sm-4 control-label" for="password"><i class="fa fa-info-circle" title="<?php $lh->translateText("default_pass_is"); ?>: Go<?php echo date('Y');?>"></i>  <?php $lh->translateText("password"); ?> </label>
 									
 									<div class="col-sm-8 mb">
 										<input type="password" class="form-control" name="password" id="password" placeholder="Password (<?php $lh->translateText("mandatory"); ?>)" value="Go<?php echo date('Y');?>" maxlength="10" required>
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group" id="confirm_div">
 									<label class="col-sm-4 control-label" for="confirm"> <?php $lh->translateText("confirm_password"); ?> </label>
 									<div class="col-sm-8 mb">
 										<input type="password" class="form-control" id="confirm" name="confirm" placeholder="<?php $lh->translateText("reenter_pass"); ?> (<?php $lh->translateText("mandatory"); ?>)" value="Go<?php echo date('Y');?>" required>
@@ -330,7 +325,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-lg-6 control-label"><?php $lh->translateText("password"); ?>: </label>
+								<label class="col-lg-6 control-label" id="submit-password-lbl"><?php $lh->translateText("password"); ?>: </label>
 								<div class="col-lg-6 reverse_control_label mb">
 									<span id="submit-password"></span>
 								</div>
@@ -592,17 +587,26 @@
 			        	checker = 0;
 			            return true;
 			        }
-
+					
 			        console.log(checker);
 			        // Disable next if there are duplicates
 			        if(checker > 0){
 				        $(".body:eq(" + newIndex + ") .error", uform).addClass("error");
 			        	return false;
 			        }
-
+					
 			        // form review
 					show_form_review();
-
+					
+					if($('#seats').val() > 1){
+						$('#password_div').hide();
+						$('#confirm_div').hide();
+						$('#submit-password-lbl').text('<?php $lh->translateText("default_pass_is"); ?>: ');
+						$('#submit-password').html('<i><?php echo 'Go'.date("Y")?></i>');
+					}else{
+						$('#submit-password-lbl').text('<?php $lh->translateText("password"); ?>: ');
+					}
+					
 					// Clean up if user went backward before
 				    if (currentIndex < newIndex)
 				    {
@@ -621,10 +625,9 @@
 		        },
 		        onFinished: function (event, currentIndex)
 		        {
-
-		        	$('#finish').text("Loading...");
-		        	$('#finish').attr("disabled", true);
-
+					$('#finish').text("<?php $lh->translateText("loading"); ?>");
+					$('#finish').attr("disabled", true);
+					
 		            // Submit form via ajax
 		            $.ajax({
 						url: "./php/CreateTelephonyUser.php",
@@ -686,7 +689,7 @@
 		        onFinished: function (event, currentIndex)
 		        {
 
-		        	$('#finish').text("Loading...");
+		        	$('#finish').text("<?php $lh->translateText("loading"); ?>");
 		        	$('#finish').attr("disabled", true);
 
 		        	/*********

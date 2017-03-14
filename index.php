@@ -73,7 +73,7 @@ error_reporting(E_ALL)
 	
 	// APIs FOR FILTER LIST
 		$campaign = $ui->API_getListAllCampaigns();
-		$ingroup = $ui->API_getInGroups();
+		$ingroup = $ui->API_getInGroups($_SESSION['usergroup']);
 	/*
 	 * API for call statistics - Demian
 	*/

@@ -80,7 +80,7 @@
             
             <?php
                 $campaigns = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
-				$ingroups = $ui->API_getInGroups();
+				$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
 				$disposition = $ui->API_getAllDispositions();
             ?>
                 <!-- Main content -->
