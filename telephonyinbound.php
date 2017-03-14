@@ -466,7 +466,7 @@
 								<label class="col-sm-3 control-label" for="script"><?php $lh->translateText("script"); ?></label>
 								<div class="col-sm-9 mb">
 									<select name="script" id="script" class="form-control select2-1" style="width:100%;">
-										<option value="NONE"><?php $lh->translateText("none"); ?></option>
+										<option value="NONE"><?php $lh->translateText("-none-"); ?></option>
 										<?php
 											for($i=0;$i<count($scripts->script_id);$i++){
 										?>
@@ -728,7 +728,7 @@
 												<label class="col-sm-3 control-label"><?php $lh->translateText("call_menu"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_callmenu_value[]" style="width:100%;">
-														<option value="" selected><?php $lh->translateText("none"); ?></option>
+														<option value="" selected><?php $lh->translateText("-none-"); ?></option>
 													<?php
 														for($x=0;$x < count($ivr->menu_id);$x++){
 															echo "<option value=".$ivr->menu_id[$x].">".$ivr->menu_id[$x]." - ".$ivr->menu_name[$x]."</option>";
@@ -743,7 +743,7 @@
 													<label class="col-sm-3 control-label"><?php $lh->translateText("ingroup"); ?>In Group: </label>
 													<div class="col-sm-6">
 														<select class="select2-2 form-control" name="option_ingroup_value[]" style="width:100%;">
-															<option value="" selected><?php $lh->translateText("none"); ?></option>
+															<option value="" selected><?php $lh->translateText("-none-"); ?></option>
 														<?php
 															for($x=0;$x < count($ingroup->group_id);$x++){
 																echo "<option value=".$ingroup->group_id[$x].">".$ingroup->group_id[$x]." - ".$ingroup->group_name[$x]."</option>";
@@ -884,7 +884,7 @@
 												<label class="col-sm-3 control-label"><?php $lh->translateText("did"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="col-sm-6 select2-2 form-control" name="option_did_value[]" style="width:100%;">
-														<option value="" selected> <?php $lh->translateText("none"); ?> </option>
+														<option value="" selected> <?php $lh->translateText("-none-"); ?> </option>
 													<?php
 														for($x=0;$x < count($phonenumber->did_pattern);$x++){
 															echo "<option value=".$phonenumber->did_pattern[$x].">".$phonenumber->did_pattern[$x]." - ".$phonenumber->did_description[$x]."</option>";
@@ -898,7 +898,7 @@
 												<label class="col-sm-3 control-label"><?php $lh->translateText("audio_file"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_hangup_value[]" style="width:100%;">
-														<option value="" selected><?php $lh->translateText("none"); ?></option>
+														<option value="" selected><?php $lh->translateText("-none-"); ?></option>
 													<?php
 														for($x=0;$x<count($voicefiles->file_name);$x++){
 															$file = substr($voicefiles->file_name[$x], 0, -4);
@@ -928,7 +928,7 @@
 												<label class="col-sm-3 control-label"><?php $lh->translateText("phone"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_phone_value[]" style="width:100%;">
-														<option value="" selected> <?php $lh->translateText("none"); ?> </option>
+														<option value="" selected> <?php $lh->translateText("-none-"); ?> </option>
 													<?php
 														for($x=0;$x < count($phones->extension);$x++){
 															echo "<option value=".$phones->extension[$x].">".$phones->extension[$x]." - ".$phones->server_ip[$x]." - ".$phones->dialplan_number[$x]."</option>";
@@ -946,7 +946,7 @@
 													</div>
 													<div class="col-sm-6">
 														<select class="col-sm-6 select2-2 form-control" style="width:100%;" id="option_voicemail_select_<?php echo $i;?>">
-															<option value="" selected> <?php $lh->translateText("none"); ?> </option>
+															<option value="" selected> <?php $lh->translateText("-none-"); ?> </option>
 														<?php
 															for($x=0;$x < count($voicemails->voicemail_id);$x++){
 																echo "<option value=".$voicemails->voicemail_id[$x].">".$voicemails->voicemail_id[$x]." - ".$voicemails->fullname[$x]."</option>";
@@ -1064,7 +1064,7 @@
 									<label class="col-sm-4 control-label" for="route_agentid"><?php $lh->translateText('agent_id'); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="route_agentid" id="route_agentid" class="form-control select2-1" style="width:100%;">
-											<option value="" > <?php $lh->translateText("none"); ?></option>
+											<option value="" > <?php $lh->translateText("-none-"); ?></option>
 											<?php
 												for($i=0;$i<count($users->user);$i++){
 											?>
@@ -1132,13 +1132,13 @@
 									<label class="col-sm-4 control-label" for="route_phone_server"><?php $lh->translateText('server_ip'); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="route_phone_server" id="route_phone_server" class="form-control select2-1" style="width:100%;">
-											<option value="" ><?php $lh->translateText("none"); ?></option>
+											<option value="" ><?php $lh->translateText("-none-"); ?></option>
 											<?php
 												for($i=0;$i < 1;$i++){
 											?>
 												<option value="<?php echo $phones->server_ip[$i];?>">
 													<?php echo 'GOautodial - '.$phones->server_ip[$i];?>
-												</option>									
+												</option>
 											<?php
 												}
 											?>
