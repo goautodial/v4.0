@@ -1754,13 +1754,13 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 	 * APIs for getting lists for the some of the forms
 	 */
 	$users = $ui->API_goGetAllUserLists();
-	$ingroups = $ui->API_getInGroups();
+	$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
 	$voicemails = $ui->API_goGetVoiceMails();
 	$phones = $ui->API_getPhonesList();
 	$ivr = $ui->API_getIVR();
 	$scripts = $ui->API_goGetAllScripts();
 	$voicefiles = $ui->API_GetVoiceFilesList();
-
+	//var_dump($ingroups);
 						$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
 						$postfields["goUser"] = goUser; #Username goes here. (required)
 						$postfields["goPass"] = goPass; #Password goes here. (required)
