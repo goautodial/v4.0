@@ -36,13 +36,14 @@
 		exit();
 	}
 
-	// load DB handler and Language Handler.	
+	// load DB handler and Language Handler.
+	require_once('./php/UIHandler.php');
 	require_once('./php/DbHandler.php');
 	require_once('./php/LanguageHandler.php');
 
 	session_start(); // Starting Session
 	$lh = \creamy\LanguageHandler::getInstance();
-	
+	$ui = \creamy\UIHandler::getInstance();
 	$error = ''; // Variable To Store Error Message
 	if (isset($_POST['submit'])) {
 		if (empty($_POST['username']) || empty($_POST['password'])) {
@@ -120,7 +121,7 @@
   <body class="login-page" style="overflow: hidden;">
     <div class="login-box" id="login-box">
 	  <div class="margin text-center">
-		<img src="img/logo.png" width="auto" height="64">
+		<img src="<?php echo $ui->creamyHeaderLogo();?>" width="auto" height="64">
 	  </div>
       <div class="login-logo">
         <?php $lh->translateText("Welcome!"); ?>

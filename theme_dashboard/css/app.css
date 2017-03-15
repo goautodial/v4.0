@@ -5953,7 +5953,7 @@ body .dataTables_wrapper .dataTables_paginate {
 }
 .table .checkbox {
   margin: 0 auto;
-  width: 20px;
+  /*width: 20px;*/
 }
 .table .progress {
   margin-bottom: 0;

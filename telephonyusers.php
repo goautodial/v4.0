@@ -535,11 +535,12 @@
 					"aaSorting": [[ 1, "asc" ]],
 					"aoColumnDefs": [{
 						"bSearchable": false,
-						"aTargets": [ 0, 5 ]
+						"aTargets": [ 0, 1, 5 ]
 					},{
 						"bSortable": false,
-						"aTargets": [ 0, 5 ]
-					}]
+						"aTargets": [ 0, 1, 5 ]
+					}],
+					"bAutoWidth": false
 				});
 				//phones
 				$('#T_phones').dataTable({
@@ -815,6 +816,49 @@
 								type: 'POST',
 								data: { 
 								userid: id,
+								log_user: '<?=$_SESSION['user']?>',
+								log_group: '<?=$_SESSION['usergroup']?>'
+							},
+							success: function(data) {
+								console.log(data);
+								if(data == 1){
+									swal({title: "<?php $lh->translateText("delete_user_success"); ?>",text: "<?php $lh->translateText("user_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
+								}else{
+									sweetAlert("<?php $lh->translateText("delete_user_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
+								}
+							}
+							});
+						} else {     
+						swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+						}
+					}
+					);
+				});
+			
+			//delete user 
+				$(document).on('click','.delete-multiple',function() {
+					var arr = $('input:checkbox.check_user').filter(':checked').map(function () {
+						return this.id;
+					}).get();
+					swal({
+						title: "<?php $lh->translateText("are_you_sure"); ?>",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
+						type: "warning",
+						showCancelButton: true, 
+						confirmButtonColor: "#DD6B55", 
+						confirmButtonText: "<?php $lh->translateText("confirm_delete_multiple_user"); ?>", 
+						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>", 
+						closeOnConfirm: false,
+						closeOnCancel: false
+					},
+					function(isConfirm){
+						if (isConfirm) {
+							$.ajax({
+								url: "./php/DeleteTelephonyUser.php",
+								type: 'POST',
+								data: { 
+								userid: arr,
+								action: "delete_selected",
 								log_user: '<?=$_SESSION['user']?>',
 								log_group: '<?=$_SESSION['usergroup']?>'
 							},

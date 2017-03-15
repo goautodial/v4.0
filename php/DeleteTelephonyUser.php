@@ -15,6 +15,11 @@ if ($validated == 1) {
 
 	// sanity checks	
 	$userid = $_POST["userid"];
+	$action = $_POST["action"];
+	if($action == "delete_selected"){
+		$userid = implode(",",$userid);
+	}
+	//echo $userid;
 	//$currentMainAdminData = $db->getMainAdminUserData(); // check that we are not deleting the main admin user.
 	/*
     if (is_array($currentMainAdminData) && (array_key_exists("id", $currentMainAdminData))) {
@@ -28,16 +33,17 @@ if ($validated == 1) {
 	// delete user
 	//$result = $db->deleteUser($userid);
 
-//uncomment to work	
+//uncomment to work
     $url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goDeleteUser"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["user_id"] = "$userid"; #Desired User ID. (required)
+    $postfields["user_id"] = $userid; #Desired User ID. (required)
+	$postfields["action"] = $action;
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	
-	$postfields["log_user"]			= $_POST["log_user"];
+	$postfields["log_user"]		= $_POST["log_user"];
 	$postfields["log_group"]		= $_POST["log_group"];
     
     $ch = curl_init();
@@ -59,6 +65,5 @@ if ($validated == 1) {
     } else {
 		echo $output->result;
     }
-
 }
 ?>

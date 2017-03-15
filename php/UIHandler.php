@@ -3282,7 +3282,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 	$output = $this->API_goGetAllUserLists($user);
        if($output->result=="success") {
-       	   $columns = array("     ", $this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
+		$checkbox_all = $this->getCheckAll("user");
+       	    $columns = array("     ", $checkbox_all,$this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
 	       $hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 	       $hideOnLow = array($this->lh->translationFor("agent_id"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
@@ -3310,9 +3311,10 @@ error_reporting(E_ERROR | E_PARSE);
 						$preFix = '';
 						$sufFix = '';
 					}
-	
+					$checkbox = '<label for="'.$output->user_id[$i].'"><div class="checkbox c-checkbox" style="margin-left: 60%;"><label><input name="" class="check_user" id="'.$output->user_id[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
 					$result .= "<tr>
 							 <td>".$sessionAvatar."</a></td>
+							 <td style='width:10%;'>".$checkbox."</td>
 							 <td class='hide-on-low'>".$preFix."<strong>".$output->user[$i]."</strong>".$sufFix."</td>
 							 <td>".$output->full_name[$i]."</td>";
 					$result .="<td class=' hide-on-low hide-on-medium'>".$output->user_group[$i]."</td>
@@ -6244,6 +6246,35 @@ error_reporting(E_ERROR | E_PARSE);
 		return $return;
 	}
 	
+	public function getCheckAll($action){
+		$return = '<div class="btn-group">
+						<div class="checkbox c-checkbox" style="margin-right: 0; margin-left: 0;">
+							<label><input class="check-all_'.$action.'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label>
+						</div>
+						<div style="margin-left: 20%;">
+							<a type="button" class="btn dropdown-toggle" data-toggle="dropdown" style="height: 20px;">
+							<center><span class="caret"></span></center>
+							</a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a class="delete-multiple" href="#" >Delete Selected</a></li>
+							</ul>
+						</div>
+					</div>';
+		$return .= '
+		<script>
+			$(document).ready(function() {
+				$(document).on("change",".check-all_'.$action.'",function() {
+					var box = $(this);
+					if (box.is(":checked")) {
+						$(".check_'.$action.'").prop("checked", true);
+					}else{
+						$(".check_'.$action.'").prop("checked", false);
+					}
+				});
+			});
+		</script>';
+		return $return;
+	}
 }
 
 ?>
