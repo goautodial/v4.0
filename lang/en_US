@@ -1,7 +1,10 @@
+//white-labeling
+company_url = "http://www.goautodial.com/"
+portal_title = "GOautodial Inc."
+dashboard_sub-header = "welcome to GOautodial Inc. !"
 
 // DASHBOARD
 
-portal_title = "GOautodial"
 home = "Home"
 your_creamy_dashboard = "Your Creamy dashboard"
 notifications = "Notifications"
@@ -1109,8 +1112,6 @@ filter_success = "Lead Filter Successfully Deleted !"
 campaign_success = "Campaign Successfully Created !"
 
 // DASHBOARD 
-
-dashboard_sub-header = "welcome to GOautodial !"
 agents_on_call = "Agent(s) On Call"
 agents_waiting = "Agent(s) Waiting"
 agents_on_pause = "Agent(s) On Paused"

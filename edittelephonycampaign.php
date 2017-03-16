@@ -45,7 +45,7 @@ $campaign = $ui->API_getCampaignInfo($campaign_id);
 $disposition = $ui->API_getDispositionInfo($did);
 
 $calltimes = $ui->getCalltimes();
-$scripts = $ui->API_goGetAllScripts();
+$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
 $carriers = $ui->getCarriers();
 $leadfilter = $ui->API_getAllLeadFilters();
 $dialStatus = $ui->API_getAllDialStatuses($campaign->data->campaign_id);
@@ -57,6 +57,7 @@ $ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
 $ivr = $ui->API_getIVR($_SESSION['usergroup']);
 $lists = $ui->API_goGetAllLists();
 $audiofiles = $ui->API_getListAudioFiles();
+
 ?>
 <html>
     <head>
@@ -339,7 +340,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 														<div class="col-sm-9 mb">
 															<select class="form-control" id="campaign_script" name="campaign_script">
 																<option value="" <?php if(empty($campaign->data->campaign_script)) echo "selected"; ?>>--- NONE ---</option>
-																<?php for($i=0;$i<=count($scripts->script_id);$i++) { ?>
+																<?php for($i=0;$i<count($scripts->script_id);$i++) { ?>
 																	<?php if(!empty($scripts->script_id[$i])) { ?>
 																		<option value="<?php echo $scripts->script_id[$i]; ?>" <?php if($campaign->data->campaign_script == $scripts->script_id[$i]) echo "selected";?>><?php echo $scripts->script_name[$i]; ?></option>
 																	<?php } ?>

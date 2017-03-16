@@ -99,7 +99,7 @@
 		}
 	}
 ?>
-<html class="lockscreen">
+<html>
     <head>
         <meta charset="UTF-8">
         <title><?php $lh->translateText("system_access"); ?> </title>

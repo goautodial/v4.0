@@ -1353,7 +1353,7 @@ error_reporting(E_ERROR | E_PARSE);
     				<a type="button" class="close-preloader-button" aria-label="Close" style="color:white;"><i class="fa fa-close fa-lg"></i></a>
     			</div>
     			<center>
-    					<img src="'.$logo.'"/>
+    					<img src="'.$logo.'" style="max-width:50%;"/>
     					<span class="dots">
     					<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
     					</span>
@@ -1479,7 +1479,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function creamyHeaderName() {
 		$customName = $this->db->getSettingValueForKey(CRM_SETTING_COMPANY_NAME);
-		return (!empty($customName) ? $customName : "Creamy");
+		return (!empty($customName) ? $customName : "GOautodial Inc.");
 	}
 
 	/**
@@ -1513,12 +1513,13 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function creamyFooter() {
 		$version = $this->db->getSettingValueForKey(CRM_SETTING_CRM_VERSION);
+		$company_name = $this->creamyHeaderName();
 		if (empty($version)) { $version = "unknown"; }
 		$version = "4.0";
 
 		$footer = '<footer class="main-footer">
 			<div class="pull-right hidden-xs">
-				<b>Version</b> '.$version.'</div><strong>'.$this->lh->translationFor("copyright").' &copy; '.date("Y").' <a href="http://www.goautodial.com/">GOautodial Inc.</a> '.$this->lh->translationFor("all_rights_reserved").'.
+				<b>Version</b> '.$version.'</div><strong>'.$this->lh->translationFor("copyright").' &copy; '.date("Y").' <a href="'.$this->lh->translationFor("company_url").'">'.$company_name.'</a> '.$this->lh->translationFor("all_rights_reserved").'.
 			</div>
 			</footer>';
 		$footer .= '			<!-- Modal -->

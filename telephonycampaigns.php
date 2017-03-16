@@ -155,6 +155,7 @@
 	$voicemails = $ui->API_goGetVoiceMails();
 	$users = $ui->API_goGetAllUserLists();
 	$carriers = $ui->getCarriers();
+	$checkbox_all = $ui->getCheckAll("campaign");
 ?>
 							 <div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
@@ -179,13 +180,14 @@
 
 								<!-- Tab panes-->
 								<div class="tab-content bg-white">
-
+									
 								<!--==== Campaigns ====-->
 								  <div id="T_campaign" role="tabpanel" class="tab-pane active">
 										<table class="table table-striped table-bordered table-hover" id="table_campaign">
 										   <thead>
 											  <tr>
 												 <th style="color: white;">Pic</th>
+												 <th><?php echo $checkbox_all;?></th>
 												 <th class='hide-on-medium hide-on-low' style='width:0px;'><?php $lh->translateText("campaign_id"); ?></th>
 												 <th><?php $lh->translateText("campaign_name"); ?></th>
 												 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("dial_method"); ?></th>
@@ -218,12 +220,13 @@
 														if($campaign->dial_method[$i] == $lh->translationFor("inbound_man")){
 															$dial_method = "INBOUND MAN";
 														}
-
+														
 													$action_CAMPAIGN = $ui->ActionMenuForCampaigns($campaign->campaign_id[$i], $campaign->campaign_name[$i], $perm);
-
+													$checkbox = '<label for="'.$campaign->campaign_id[$i].'"><div class="checkbox c-checkbox"><label><input name="" class="check_campaign" id="'.$campaign->campaign_id[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
 											   	?>
 													<tr>
 														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
+														<td style="width:10%;"><?php echo $checkbox;?></td>
 														<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $dial_method;?></td>
@@ -2201,16 +2204,16 @@
 			/******
 			** Initializations
 			******/
-
+//alex
 				//initialization of the datatables
 					$('#table_campaign').dataTable({
 						"aaSorting": [[ 1, "asc" ]],
 						"aoColumnDefs": [{
 							"bSearchable": false,
-							"aTargets": [ 0, 5 ]
+							"aTargets": [ 0, 1, 5 ]
 						},{
 							"bSortable": false,
-							"aTargets": [ 0, 5 ]
+							"aTargets": [ 0, 1, 5 ]
 						}]
 					});
 					$('#table_disposition').dataTable({
@@ -2390,52 +2393,97 @@
 			            var id = $(this).attr('data-id');
 						var log_user = '<?=$_SESSION['user']?>';
 						var log_group = '<?=$_SESSION['usergroup']?>';
-			                swal({
-			                	title: "<?php $lh->translateText("are_you_sure"); ?>",
-			                	text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
-			                	type: "warning",
-			                	showCancelButton: true,
-			                	confirmButtonColor: "#DD6B55",
-			                	confirmButtonText: "<?php $lh->translateText("delete_campaign"); ?>!",
-			                	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
-			                	closeOnConfirm: false,
-			                	closeOnCancel: false
-			                	},
-			                	function(isConfirm){
-			                		if (isConfirm) {
-			                			$.ajax({
-					                        url: "./php/DeleteCampaign.php",
-					                        type: 'POST',
-					                        data: {
-					                            campaign_id:id,
-												log_user: log_user,
-												log_group: log_group
-					                        },
-					                        success: function(data) {
-					                        console.log(data);
-					                            if(data == 1){
-					                            	swal(
-														{
-															title: "<?php $lh->translateText("success"); ?>",
-															text: "<?php $lh->translateText("campaign_deleted"); ?>!",
-															type: "success"
-														},
-														function(){
-															window.location.href = 'telephonycampaigns.php';
-														}
-													);
-					                            }else{
-					                                sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-					                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-					                            }
-					                        }
-					                    });
-													} else {
-				                			swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-				                	}
-			                	}
-			                );
+			            swal({
+							title: "<?php $lh->translateText("are_you_sure"); ?>",
+							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+							type: "warning",
+							showCancelButton: true,
+							confirmButtonColor: "#DD6B55",
+							confirmButtonText: "<?php $lh->translateText("delete_campaign"); ?>!",
+							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+							closeOnConfirm: false,
+							closeOnCancel: false
+						},
+							function(isConfirm){
+								if (isConfirm) {
+									$.ajax({
+										url: "./php/DeleteCampaign.php",
+										type: 'POST',
+										data: {
+											campaign_id:id,
+											log_user: log_user,
+											log_group: log_group
+										},
+										success: function(data) {
+										console.log(data);
+											if(data == 1){
+												swal(
+													{
+														title: "<?php $lh->translateText("success"); ?>",
+														text: "<?php $lh->translateText("campaign_deleted"); ?>!",
+														type: "success"
+													},
+													function(){
+														window.location.href = 'telephonycampaigns.php';
+													}
+												);
+											}else{
+												sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+												window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+											}
+										}
+									});
+												} else {
+										swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+								}
+							}
+			            );
 			         });
+				
+				$(document).on('click','.delete-multiple',function() {
+					var arr = $('input:checkbox.check_campaign').filter(':checked').map(function () {
+						return this.id;
+					}).get();
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
+					swal({
+							title: "<?php $lh->translateText("are_you_sure"); ?>",
+							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+							type: "warning",
+							showCancelButton: true,
+							confirmButtonColor: "#DD6B55",
+							confirmButtonText: "<?php $lh->translateText("delete_multiple_campaign"); ?>!",
+							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+							closeOnConfirm: false,
+							closeOnCancel: false
+						},
+							function(isConfirm){
+								if (isConfirm) {
+									$.ajax({
+										url: "./php/DeleteCampaign.php",
+										type: 'POST',
+										data: {
+											campaign_id:arr,
+											action: "delete_selected",
+											log_user: log_user,
+											log_group: log_group
+										},
+										success: function(data) {
+										console.log(data);
+											if(data == 1){
+												swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("campaign_deleted"); ?>!",type: "success"},function(){window.location.href = 'telephonycampaigns.php';});
+											}else{
+												sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+												window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+											}
+										}
+									});
+								} else {
+										swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+								}
+							}
+			            );
+			        });
 			//------------------ end of campaign
 
 			/*************

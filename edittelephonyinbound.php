@@ -121,7 +121,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					/* APIs used for forms */
 						$call_menu = $ui->API_getIVR($_SESSION['usergroup']);
 						$call_time = $ui->getCalltimes();
-						$scripts = $ui->API_goGetAllScripts();
+						$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
 						$voicemail = $ui->API_goGetVoiceMails();
 						$ingroup = $ui->API_getInGroups($_SESSION['usergroup']);
 						$voicefiles = $ui->API_GetVoiceFilesList();
@@ -1151,7 +1151,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 							$voicemails = $ui->API_goGetVoiceMails();
 							$phones = $ui->API_getPhonesList();
 							$ivr = $ui->API_getIVR($_SESSION['usergroup']);
-							$scripts = $ui->API_goGetAllScripts();
+							$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
 							$voicefiles = $ui->API_GetVoiceFilesList();
 							$calltimes = $ui->getCalltimes();
 							$phonenumber = $ui->API_getPhoneNumber($_SESSION['usergroup']);
@@ -1758,7 +1758,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 	$voicemails = $ui->API_goGetVoiceMails();
 	$phones = $ui->API_getPhonesList();
 	$ivr = $ui->API_getIVR($_SESSION['usergroup']);
-	$scripts = $ui->API_goGetAllScripts();
+	$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
 	$voicefiles = $ui->API_GetVoiceFilesList();
 	//var_dump($ingroups);
 						$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)

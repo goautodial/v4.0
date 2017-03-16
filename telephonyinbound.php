@@ -326,7 +326,7 @@
 	$voicemails = $ui->API_goGetVoiceMails();
 	$phones = $ui->API_getPhonesList();
 	$ivr = $ui->API_getIVR($_SESSION['usergroup']);
-	$scripts = $ui->API_goGetAllScripts();
+	$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
 	$voicefiles = $ui->API_GetVoiceFilesList();
 	$calltimes = $ui->getCalltimes();
 ?>
