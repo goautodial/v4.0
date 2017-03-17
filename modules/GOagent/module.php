@@ -374,7 +374,7 @@ EOF;
 	};
 	
 	//init rtcninja libraries...
-	//rtcninja();
+	rtcninja();
 	
 	var phone = new JsSIP.UA(configuration);
 	
@@ -496,6 +496,10 @@ EOF;
 			mediaConstraints: {
 				audio: true,
 				video: false
+			},
+			mediaStream: localStream,
+			pcConfig: {
+				rtcpMuxPolicy: "negotiate"
 			}
 		});
 		
@@ -544,17 +548,17 @@ EOF;
 		}
 	});
 	
-	//rtcninja.getUserMedia({
-	//	audio: true,
-	//	video: false
-	//}, function (stream) {
-	//	localStream = stream;
-	//	//console.log('getUserMedia', stream);
-	//
-	//	//phone.start();
-	//}, function (err) {
-	//	console.error('getUserMedia failed: %s', err.toString());
-	//});
+	rtcninja.getUserMedia({
+		audio: true,
+		video: false
+	}, function (stream) {
+		localStream = stream;
+		//console.log('getUserMedia', stream);
+	
+		//phone.start();
+	}, function (err) {
+		console.error('getUserMedia failed: %s', err.toString());
+	});
 </script>
 EOF;
 		}
