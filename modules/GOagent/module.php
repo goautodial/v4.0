@@ -362,13 +362,12 @@ EOF;
 	var remoteStream;
 	var globalSession;
 	
-	var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}');
 	var configuration = {
-		'sockets' : [ socket ],
+		'ws_servers': '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
 		'uri': 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 		'password': phone_pass,
 		'session_timers': false,
-		'register': true
+		'register': false
 	};
 	
 	var rtcninja = JsSIP.rtcninja;
@@ -531,12 +530,11 @@ EOF;
 		}
 	});
 	
-	navigator.getUserMedia({
+	rtcninja.getUserMedia({
 		audio: true,
 		video: false
 	}, function successCb(stream) {
 		localStream = stream;
-		console.log('getUserMedia', stream);
 	
 		//phone.start();
 	}, function failureCb(e) {
