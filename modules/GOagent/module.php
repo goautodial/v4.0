@@ -372,6 +372,7 @@ EOF;
 		'hack_ip_in_contact': true
 	};
 	
+	var rtcninja = JsSIP.rtcninja;
 	var phone = new JsSIP.UA(configuration);
 	
 	phone.on('connected', function(e) {
@@ -531,7 +532,7 @@ EOF;
 		}
 	});
 	
-	navigator.getUserMedia({
+	rtcninja.getUserMedia({
 		audio: true,
 		video: false
 	}, function successCb(stream) {
