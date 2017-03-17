@@ -355,22 +355,23 @@ EOF;
 		if ($useWebRTC) {
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
-<script type="text/javascript" src="{$goModuleDIR}js/jsSIP.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.4.js"></script>
 <script>
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
 	var remoteStream;
 	var globalSession;
 	
+	var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}');
 	var configuration = {
-		'ws_servers': '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
+		'sockets' : [ socket ],
 		'uri': 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 		'password': phone_pass,
 		'session_timers': false,
-		'register': false
+		'register': true,
+		'hack_ip_in_contact': true
 	};
 	
-	var rtcninja = JsSIP.rtcninja;
 	var phone = new JsSIP.UA(configuration);
 	
 	phone.on('connected', function(e) {
@@ -530,7 +531,7 @@ EOF;
 		}
 	});
 	
-	rtcninja.getUserMedia({
+	navigator.getUserMedia({
 		audio: true,
 		video: false
 	}, function successCb(stream) {
