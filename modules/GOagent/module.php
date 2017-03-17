@@ -355,7 +355,7 @@ EOF;
 		if ($useWebRTC) {
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
-<script type="text/javascript" src="{$goModuleDIR}js/jsSIP.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.4.js"></script>
 <script>
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
