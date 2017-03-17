@@ -531,16 +531,17 @@ EOF;
 		}
 	});
 	
-	//rtcninja.getUserMedia({
-	//	audio: true,
-	//	video: false
-	//}, function successCb(stream) {
-	//	localStream = stream;
+	navigator.getUserMedia({
+		audio: true,
+		video: false
+	}, function successCb(stream) {
+		localStream = stream;
+		console.log('getUserMedia', stream);
 	
 		//phone.start();
-	//}, function failureCb(e) {
-	//	console.error('getUserMedia failed.', e);
-	//});
+	}, function failureCb(e) {
+		console.error('getUserMedia failed.', e);
+	});
 </script>
 EOF;
 		}
