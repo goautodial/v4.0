@@ -490,14 +490,18 @@ EOF;
 			mediaStream: localStream
 		});
 	
-		session.on('addstream', function (data) {
-			console.log('session::addstream', data);
-	
-			remoteStream = data.stream;
-			audioElement = document.querySelector('#remoteStream');
-			audioElement.src = window.URL.createObjectURL(remoteStream);
-			
-			globalSession = session;
+		//session.on('addstream', function (data) {
+		//	console.log('session::addstream', data);
+		//
+		//	remoteStream = data.stream;
+		//	audioElement = document.querySelector('#remoteStream');
+		//	audioElement.src = window.URL.createObjectURL(remoteStream);
+		//	
+		//	globalSession = session;
+		//});
+		session.connection.addEventListener('addstream', (event) => {
+			console.log("Debug: addstream: ", event);
+			//views.remoteView.src = event.stream;
 		});
 	});
 	
