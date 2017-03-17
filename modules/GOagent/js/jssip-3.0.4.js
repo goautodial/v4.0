@@ -15714,7 +15714,7 @@ function sendInitialRequest(mediaConstraints, rtcOfferConstraints, mediaStream) 
 
   function rtcFailed() {
     if (self.status === C.STATUS_TERMINATED) { return; }
-
+console.log('test');
     failed.call(self, 'system', null, JsSIP_C.causes.WEBRTC_ERROR);
   }
 }
