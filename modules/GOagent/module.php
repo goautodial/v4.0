@@ -355,23 +355,22 @@ EOF;
 		if ($useWebRTC) {
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
-<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.4.js"></script>
-<script type="text/javascript" src="{$goModuleDIR}js/rtcninja.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/jsSIP.js"></script>
 <script>
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
 	var remoteStream;
 	var globalSession;
 	
-	var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}');
 	var configuration = {
-		'sockets' : [ socket ],
+		'ws_servers': '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
 		'uri': 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 		'password': phone_pass,
 		'session_timers': false,
-		'register': true
+		'register': false
 	};
 	
+	var rtcninja = JsSIP.rtcninja;
 	var phone = new JsSIP.UA(configuration);
 	
 	phone.on('connected', function(e) {
@@ -531,15 +530,11 @@ EOF;
 		}
 	});
 	
-	//init rtcninja libraries...
-	rtcninja();
-	
 	rtcninja.getUserMedia({
 		audio: true,
 		video: false
 	}, function successCb(stream) {
 		localStream = stream;
-		console.log('getUserMedia', stream);
 	
 		//phone.start();
 	}, function failureCb(e) {
@@ -906,13 +901,13 @@ EOF;
 		if ($useWebRTC) {
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
-<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.4.js"></script>
-<script type="text/javascript" src="{$goModuleDIR}js/rtcninja.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/jsSIP.js"></script>
 <script>
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
 	var remoteStream;
 	var globalSession;
+	var rtcninja = JsSIP.rtcninja;
 	var phone;
 	var phone_login = '$phone_login';
 	var phone_pass = '$phone_pass';
@@ -1071,9 +1066,6 @@ EOF;
 				$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; $registrationFailed", timeout: 5000});
 			}
 		});
-		
-		//init rtcninja libraries...
-		rtcninja();
 		
 		rtcninja.getUserMedia({
 			audio: true,
