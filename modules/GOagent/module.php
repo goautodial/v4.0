@@ -370,7 +370,6 @@ EOF;
 		password: phone_pass,
 		session_timers: false,
 		register: true
-		
 	};
 	
 	//init rtcninja libraries...
@@ -937,8 +936,9 @@ EOF;
 	rtcninja();
 	
 	function registerPhone(login, pass) {
+		var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}/');
 		var configuration = {
-			ws_servers: '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
+			sockets : [ socket ],
 			uri: 'sip:'+login+'@{$websocketSIP}{$websocketSIPPort},
 			password: pass,
 			session_timers: false,
