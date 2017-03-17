@@ -14194,7 +14194,6 @@ RTCSession.prototype.answer = function(options) {
         .then(remoteDescriptionSucceededOrNotNeeded)
         .catch(function(error) {
           request.reply(488);
-          console.log('test');
           failed.call(self, 'system', null, JsSIP_C.causes.WEBRTC_ERROR);
 
           self.emit('peerconnection:setremotedescriptionfailed', error);
@@ -14252,7 +14251,7 @@ RTCSession.prototype.answer = function(options) {
     if (self.status === C.STATUS_TERMINATED) { return; }
 
     request.reply(500);
-    failed.call(self, 'system', null, JsSIP_C.causes.WEBRTC_ERROR);
+    failed.call(self, 'system', 'test', JsSIP_C.causes.WEBRTC_ERROR);
   }
 };
 
