@@ -505,7 +505,7 @@ EOF;
 			
 			remoteStream = event.stream;
 			audioElement = document.querySelector('#remoteStream');
-			audioElement.src = window.URL.createObjectURL(remoteStream);
+			audioElement.srcObject = remoteStream;
 			
 			globalSession = session;
 		});
