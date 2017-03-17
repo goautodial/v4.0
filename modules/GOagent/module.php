@@ -499,9 +499,15 @@ EOF;
 		//	
 		//	globalSession = session;
 		//});
+		
 		session.connection.addEventListener('addstream', (event) => {
-			console.log("Debug: addstream: ", event);
-			//views.remoteView.src = event.stream;
+			console.log("session::addstream", event);
+			
+			remoteStream = event.stream;
+			audioElement = document.querySelector('#remoteStream');
+			audioElement.src = window.URL.createObjectURL(remoteStream);
+			
+			globalSession = session;
 		});
 	});
 	
