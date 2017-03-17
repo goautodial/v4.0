@@ -371,7 +371,6 @@ EOF;
 		'register': true
 	};
 	
-	var rtcninja = JsSIP.rtcninja;
 	var phone = new JsSIP.UA(configuration);
 	
 	phone.on('connected', function(e) {
@@ -531,7 +530,7 @@ EOF;
 		}
 	});
 	
-	rtcninja.getUserMedia({
+	navigator.getUserMedia({
 		audio: true,
 		video: false
 	}, function successCb(stream) {
