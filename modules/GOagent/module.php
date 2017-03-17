@@ -550,7 +550,7 @@ EOF;
 		video: false
 	}, function (stream) {
 		localStream = stream;
-		console.log('getUserMedia', stream);
+		//console.log('getUserMedia', stream);
 	
 		//phone.start();
 	}, function (err) {
@@ -930,6 +930,9 @@ EOF;
 	var uName = '$user_id';
 	var uPass = '$user_pass';
 	
+	//init rtcninja libraries...
+	rtcninja();
+	
 	function registerPhone(login, pass) {
 		var configuration = {
 			ws_servers: '{$webProtocol}://{$websocketURL}:{$websocketPORT}/',
@@ -1093,18 +1096,15 @@ EOF;
 			}
 		});
 		
-		//init rtcninja libraries...
-		rtcninja();
-		
 		rtcninja.getUserMedia({
 			audio: true,
 			video: false
-		}, function successCb(stream) {
+		}, function (stream) {
 			localStream = stream;
 		
 			//phone.start();
-		}, function failureCb(e) {
-			console.error('getUserMedia failed.', e);
+		}, function (err) {
+			console.error('getUserMedia failed: %s', err.toString());
 		});
 	}
 </script>
