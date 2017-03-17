@@ -369,8 +369,7 @@ EOF;
 		'uri': 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 		'password': phone_pass,
 		'session_timers': false,
-		'register': true,
-		'hack_ip_in_contact': true
+		'register': true
 	};
 	
 	var phone = new JsSIP.UA(configuration);
@@ -907,7 +906,8 @@ EOF;
 		if ($useWebRTC) {
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
-<script type="text/javascript" src="{$goModuleDIR}js/jsSIP.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.4.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/rtcninja.js"></script>
 <script>
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
