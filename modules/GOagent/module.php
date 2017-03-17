@@ -365,11 +365,12 @@ EOF;
 	
 	var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}/');
 	var configuration = {
-		'sockets' : [ socket ],
-		'uri': 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
-		'password': phone_pass,
-		'session_timers': false,
-		'register': true,
+		sockets : [ socket ],
+		uri: 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
+		password: phone_pass,
+		session_timers: false,
+		register: true,
+		realm: 'asterisk'
 		
 	};
 	
