@@ -540,6 +540,7 @@ EOF;
 		video: false
 	}, function successCb(stream) {
 		localStream = stream;
+		console.error('getUserMedia', stream);
 	
 		//phone.start();
 	}, function failureCb(e) {
