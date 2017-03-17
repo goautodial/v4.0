@@ -913,7 +913,6 @@ EOF;
 	var localStream;
 	var remoteStream;
 	var globalSession;
-	var rtcninja = JsSIP.rtcninja;
 	var phone;
 	var phone_login = '$phone_login';
 	var phone_pass = '$phone_pass';
@@ -1072,6 +1071,9 @@ EOF;
 				$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; $registrationFailed", timeout: 5000});
 			}
 		});
+		
+		//init rtcninja libraries...
+		rtcninja();
 		
 		rtcninja.getUserMedia({
 			audio: true,
