@@ -368,7 +368,8 @@ EOF;
 		'uri': 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 		'password': phone_pass,
 		'session_timers': false,
-		'register': true
+		'register': true,
+		'hack_ip_in_contact': true
 	};
 	
 	var phone = new JsSIP.UA(configuration);
