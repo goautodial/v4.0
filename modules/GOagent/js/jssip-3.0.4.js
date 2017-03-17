@@ -14194,7 +14194,7 @@ RTCSession.prototype.answer = function(options) {
         .then(remoteDescriptionSucceededOrNotNeeded)
         .catch(function(error) {
           request.reply(488);
-          failed.call(self, 'system', null, JsSIP_C.causes.WEBRTC_ERROR);
+          failed.call(self, 'system', 'test1', JsSIP_C.causes.WEBRTC_ERROR);
 
           self.emit('peerconnection:setremotedescriptionfailed', error);
         });
@@ -14251,7 +14251,7 @@ RTCSession.prototype.answer = function(options) {
     if (self.status === C.STATUS_TERMINATED) { return; }
 
     request.reply(500);
-    failed.call(self, 'system', null, JsSIP_C.causes.WEBRTC_ERROR);
+    failed.call(self, 'system', 'test2', JsSIP_C.causes.WEBRTC_ERROR);
   }
 };
 
@@ -15715,7 +15715,7 @@ function sendInitialRequest(mediaConstraints, rtcOfferConstraints, mediaStream) 
   function rtcFailed() {
     if (self.status === C.STATUS_TERMINATED) { return; }
 
-    failed.call(self, 'system', null, JsSIP_C.causes.WEBRTC_ERROR);
+    failed.call(self, 'system', 'test3', JsSIP_C.causes.WEBRTC_ERROR);
   }
 }
 
