@@ -532,7 +532,10 @@ EOF;
 		}
 	});
 	
-	navigator.getUserMedia({
+	//init rtcninja libraries...
+	rtcninja();
+	
+	rtcninja.getUserMedia({
 		audio: true,
 		video: false
 	}, function successCb(stream) {
