@@ -162,7 +162,7 @@ error_reporting(E_ALL)
                 <section class="content-heading">
                         <!-- Page title -->
                         <?=$lh->translateText("Dashboard")?>
-                        <small class="ng-binding"><?=$lh->translateText("dashboard_sub-header")?></small>
+                        <small class="ng-binding"><?php $lh->translateText("welcome_to"); ?><?php print($ui->creamyHeaderName()); ?>! <?php /*$lh->translateText("dashboard_sub-header") */?></small>
                 </section>
 
 				<!-- Main content -->

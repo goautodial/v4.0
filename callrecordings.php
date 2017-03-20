@@ -191,7 +191,7 @@ $agents = $ui->API_goGetAllUserLists();
 					<label><?php $lh->translateText("agent"); ?>: </label>
 					<div class="mb">
 						<select name="agent_filter" id="agent_filter" class="form-control">
-							<option value="" selected DISABLED> <?php $lh->translateText("select_an_agent"); ?> </option>
+							<option value=""> <?php $lh->translateText("all_agents"); ?> </option>
 							<?php
 								for($i=0; $i < count($agents->user_id);$i++){
 									echo '<option value="'.$agents->user[$i].'"> '.$agents->user[$i].' - '.$agents->full_name[$i].' </option>';

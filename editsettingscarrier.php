@@ -1,15 +1,17 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-	###################################################
-	### Name: editsettingscarrier.php 				###
-	### Functions: Edit Carrier 			 		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
+
+	######################################################
+	### Name: editsettingscarrier.php 		###
+	### Functions: Edit Carrier 		###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016 		###
+	### Version: 4.0 		###
 	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
-	###################################################
+	### License: AGPLv2 		###
+	######################################################
+
+	//ini_set('display_errors', 1);
+	//ini_set('display_startup_errors', 1);
+	//error_reporting(E_ALL);
 
 	require_once('./php/CRMDefaults.php');
 	require_once('./php/UIHandler.php');

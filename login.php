@@ -124,7 +124,7 @@
 		<img src="<?php echo $ui->creamyHeaderLogo();?>" width="auto" height="64">
 	  </div>
       <div class="login-logo">
-        <?php $lh->translateText("Welcome!"); ?>
+        <?php $lh->translateText("welcome_to"); ?><?php print($ui->creamyHeaderName()); ?>!
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg"><?php $lh->translateText("sign_in"); ?></p>

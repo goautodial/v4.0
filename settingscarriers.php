@@ -231,7 +231,7 @@ host=</textarea>
 								<div class="form-group registration_div" style="display:none;">
 									<label for="server_ip" class="col-sm-3 control-label"><?php $lh->translateText('server_ip_host'); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="reg_host" id="reg_host" data-inputmask="'alias': 'ip'" data-mask="" placeholder="<?php $lh->translateText('server_ip_host'); ?>" />
+										<input type="text" class="form-control" name="reg_host" id="reg_host" placeholder="<?php $lh->translateText('server_ip_host'); ?>" />
 									</div>
 								</div>
 								<div class="form-group registration_div" style="display:none;">
@@ -243,7 +243,7 @@ host=</textarea>
 								<div class="form-group not_custom_protocol sip_server">
 									<label for="server_ip" class="col-sm-3 control-label"><?php $lh->translateText('sip_server'); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="sip_server_ip" id="sip_server_ip" data-inputmask="'alias': 'ip'" data-mask="" placeholder="<?php $lh->translateText('sip_server'); ?>" />
+										<input type="text" class="form-control" name="sip_server_ip" id="sip_server_ip" placeholder="<?php $lh->translateText('sip_server'); ?>" />
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">

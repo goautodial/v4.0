@@ -3312,7 +3312,7 @@ error_reporting(E_ERROR | E_PARSE);
 						$preFix = '';
 						$sufFix = '';
 					}
-					$checkbox = '<label for="'.$output->user_id[$i].'"><div class="checkbox c-checkbox" style="margin-left: 60%;"><label><input name="" class="check_user" id="'.$output->user_id[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
+					$checkbox = '<label for="'.$output->user_id[$i].'"><div class="checkbox c-checkbox"><label><input name="" class="check_user" id="'.$output->user_id[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
 					$result .= "<tr>
 							 <td>".$sessionAvatar."</a></td>
 							 <td style='width:10%;'>".$checkbox."</td>
@@ -3944,9 +3944,11 @@ error_reporting(E_ERROR | E_PARSE);
 			//$result .= "<tr><td colspan='6'>".$output->query."</tr>";
 
 	    for($i=0; $i < count($output->uniqueid); $i++){
+			
 			$details = "<strong>Phone</strong>: <i>".$output->phone_number[$i]."</i><br/>";
 			$details .= "<strong>Date</strong>: <i>".date("M.d,Y h:i A", strtotime($output->end_last_local_call_time[$i]))."</i><br/>";
-		
+			
+			//$action_Call = $output->query;
 			$action_Call = $this->getUserActionMenuForCallRecording($output->uniqueid[$i], $output->location[$i], $details);
 
 			$d1 = strtotime($output->start_last_local_call_time[$i]);
@@ -6252,7 +6254,7 @@ error_reporting(E_ERROR | E_PARSE);
 						<div class="checkbox c-checkbox" style="margin-right: 0; margin-left: 0;">
 							<label><input class="check-all_'.$action.'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label>
 						</div>
-						<div style="margin-left: 20%;">
+						<div>
 							<a type="button" class="btn dropdown-toggle" data-toggle="dropdown" style="height: 20px;">
 							<center><span class="caret"></span></center>
 							</a>

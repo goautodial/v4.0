@@ -96,6 +96,7 @@
 				?>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
+			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         </div><!-- ./wrapper -->
         <!-- Modal Dialogs -->
         <?php print $ui->standardizedThemeJS(); ?>
