@@ -583,10 +583,9 @@
 		        transitionEffect: "slideLeft",
 		        onStepChanging: function (event, currentIndex, newIndex)
 		        {
-		        	// Allways allow step back to the previous step even if the current step is not valid!
+					// Allways allow step back to the previous step even if the current step is not valid!
 			        if (currentIndex > newIndex) {
-			        	checker = 0;
-			            return true;
+						checker = 0;
 			        }
 					
 			        console.log(checker);

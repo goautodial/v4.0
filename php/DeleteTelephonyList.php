@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 require_once('CRMDefaults.php');
 require_once('goCRMAPISettings.php');
@@ -14,7 +14,10 @@ if (!isset($_POST["listid"])) {
 
 if ($validated == 1) {
 	$listid = $_POST["listid"];
-	
+	$action = $_POST["action"];
+	if($action == "delete_selected"){
+		$listid = implode(",",$listid);
+	}
 
 //uncomment to work	
     $url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -23,6 +26,7 @@ if ($validated == 1) {
     $postfields["goAction"] = "goDeleteList"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["list_id"] = $listid; #Desired User ID. (required)
+	$postfields["action"] = $action; 
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["log_user"] = $_POST['log_user'];
 	$postfields["log_group"] = $_POST['log_group'];

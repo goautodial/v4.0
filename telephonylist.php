@@ -18,6 +18,7 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	$perm = $ui->goGetPermissions('list,customfields', $_SESSION['usergroup']);
+	$checkbox_all = $ui->getCheckAll("list");
 ?>
 <html>
     <head>
@@ -248,6 +249,7 @@
 												<thead>
 													<tr>
 													<th style="color: white;">Pic</th>
+													<th><?php echo $checkbox_all;?></th>
 													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("list_id"); ?></th>
 													<th><?php $lh->translateText("name"); ?></th>
 													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("status"); ?></th>
@@ -269,9 +271,11 @@
 												}
 												
 												$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i], $perm);
+												$checkbox = '<label for="'.$lists->list_id[$i].'"><div class="checkbox c-checkbox"><label><input name="" class="check_list" id="'.$lists->list_id[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
 												?>
 												<tr>
 												<td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>
+												<td style="width:10%;"><?php echo $checkbox;?></td>
 												<td class='hide-on-low'><strong>
 													<?php
 													if (($perm->list->list_update !== 'N' && !preg_match("/^(998|999)$/", $lists->list_id[$i]))) {
@@ -650,8 +654,6 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 		<?php print $ui->standardizedThemeJS();?>
 		<!-- JQUERY STEPS-->
   		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-		<!-- SELECT2-->
-   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -695,10 +697,10 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						"aaSorting": [[ 1, "asc" ]],
 						"aoColumnDefs": [{
 							"bSearchable": false,
-							"aTargets": [ 0, 7 ]
+							"aTargets": [ 0, 1, 8 ]
 						},{
 							"bSortable": false,
-							"aTargets": [ 0, 7 ]
+							"aTargets": [ 0, 1, 8 ]
 						}]
 					});
 					
@@ -831,7 +833,51 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							}
 						);
 		            });
-
+					
+					$(document).on('click','.delete-multiple',function() {
+					var arr = $('input:checkbox.check_list').filter(':checked').map(function () {
+						return this.id;
+					}).get();
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
+					swal({
+							title: "<?php $lh->translateText("are_you_sure"); ?>",
+							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+							type: "warning",
+							showCancelButton: true,
+							confirmButtonColor: "#DD6B55",
+							confirmButtonText: "<?php $lh->translateText("delete_multiple_list"); ?>!",
+							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+							closeOnConfirm: false,
+							closeOnCancel: false
+						},
+							function(isConfirm){
+								if (isConfirm) {
+									$.ajax({
+										url: "./php/DeleteTelephonyList.php",
+										type: 'POST',
+										data: {
+											listid:arr,
+											action: "delete_selected",
+											log_user: log_user,
+											log_group: log_group
+										},
+										success: function(data) {
+										console.log(data);
+											if(data == 1){
+												swal({title: "<?php $lh->translateText("delete_list_success"); ?>",text: "<?php $lh->translateText("delete_list_success_msg"); ?>!",type: "success"},function(){window.location.href = 'telephonylist.php';});
+											}else{
+												sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+											}
+										}
+									});
+								} else {
+										swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+								}
+							}
+			            );
+			        });
+					
 					$(document).on('click', '.copy-custom-fields', function(){
 						var list_id = $(this).data('id');
 						var list_name = $(this).data('name');
