@@ -22,8 +22,8 @@
 	$user = \creamy\CreamyUser::currentUser();
 
 $userid = NULL;
-if (isset($_POST["userid"])) {
-	$userid = $_POST["userid"];
+if (isset($_POST["user_id"])) {
+	$userid = $_POST["user_id"];
 }
 
 if(isset($_POST["role"])){
@@ -90,7 +90,8 @@ $user_groups = $ui->API_goGetUserGroupsList();
 					<?php
 						$userobj = NULL;
 						$errormessage = NULL;
-						$output = $ui->goGetUserInfo($userid, "user_id", "userInfo");
+						$output = $ui->goGetUserInfo($userid, "user_id");
+						//echo "<pre>";
 						//var_dump($userid);
 						//var_dump($output);
 						if(isset($userid)) {
