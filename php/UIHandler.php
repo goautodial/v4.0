@@ -3314,7 +3314,7 @@ error_reporting(E_ERROR | E_PARSE);
 					}
 					$checkbox = '<label for="'.$output->user_id[$i].'"><div class="checkbox c-checkbox"><label><input name="" class="check_user" id="'.$output->user_id[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
 					$result .= "<tr>
-							 <td>".$sessionAvatar."</a></td>
+							 <td style='width:5%;'>".$sessionAvatar."</a></td>
 							 <td style='width:10%;'>".$checkbox."</td>
 							 <td class='hide-on-low'>".$preFix."<strong>".$output->user[$i]."</strong>".$sufFix."</td>
 							 <td>".$output->full_name[$i]."</td>";
