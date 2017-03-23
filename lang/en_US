@@ -899,6 +899,7 @@ searching = "Searching..."
 search = "Search"
 upload = "Upload"
 uploading = "Uploading..."
+total_leads_upload = "Total Uploaded Leads"
 SUB_TOTAL = "SUB-TOTAL"
 TOTAL = "TOTAL"
 

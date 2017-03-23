@@ -654,7 +654,10 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 		<?php print $ui->standardizedThemeJS();?>
 		<!-- JQUERY STEPS-->
   		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-
+		
+		<!-- SELECT2-->
+   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
+		
 		<script type="text/javascript">
 			$(document).ready(function() {
 				
