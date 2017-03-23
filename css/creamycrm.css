@@ -1880,13 +1880,26 @@ a:focus {
 }
 .btn-primary {
   background-color: #3f51b5;
+  /*background-color: #161916;*/
   border-color: #3e4fb1;
+  /*border-color: #1e1e1f;*/
 }
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary.hover {
   background-color: #3f51b5;
+  /*background-color: #161916;*/
+  /*border-color: #21212b;*/
+	-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+  -webkit-transform: translate3d(0, -1px, 0);
+  transform: translate3d(0, -1px, 0);
 }
+/*
+.btn-primary:focus,.btn-primary.focus{
+  background-color: #161916;
+  border-color: #21212b;
+}*/
 .btn-success {
   background-color: #00a65a;
   border-color: #008d4c;
@@ -2819,10 +2832,11 @@ tr.unread > td {
  */
 .login-logo,
 .register-logo {
-  font-size: 35px;
+  font-size: 2.5vw;
   text-align: center;
   margin-bottom: 25px;
   font-weight: 300;
+  /*color: rgba(255, 255, 255, 0.63);*/
 }
 .login-logo a,
 .register-logo a {
@@ -2830,7 +2844,10 @@ tr.unread > td {
 }
 .login-page,
 .register-page {
-  background: #abc4d6;
+background: #abc4d6;
+ /*background: #070315;*/
+ /*background: #161916*/
+
 }
 .login-box,
 .register-box {
@@ -2850,6 +2867,8 @@ tr.unread > td {
 .login-box-body,
 .register-box-body {
   background: #fff;
+  /*background: rgba(28, 23, 99, 0.48);*/
+/*background: rgba(39, 43, 45, 0.52);*/
   padding: 20px;
   color: #444;
   border-top: 0;
