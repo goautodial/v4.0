@@ -1285,6 +1285,14 @@ class DbHandler {
 			"message_read" => 0,
 			"favorite" => 0
 		);
+		// insert the new message in the inbox of the receiving user.
+		$inboxmsgid = $this->dbConnector->insert(CRM_MESSAGES_INBOX_TABLE_NAME, $data);
+		if (!$inboxmsgid) { $this->dbConnector->rollback(); return false; }
+		
+		// insert the new message in the outbox of the sending user.
+		$data["message_read"] = 1;
+		$outboxmsgid = $this->dbConnector->insert(CRM_MESSAGES_OUTBOX_TABLE_NAME, $data);
+		if (!$outboxmsgid) { $this->dbConnector->rollback(); return false; }
 		
 		// insert into timeline table                
 		$dataTL = array(
@@ -1297,15 +1305,6 @@ class DbHandler {
 			"start_date" => $date
 		);
 		$msgidTL = $this->dbConnector->insert(CRM_TIMELINE_TABLE_NAME, $dataTL);
-
-		// insert the new message in the inbox of the receiving user.
-		$inboxmsgid = $this->dbConnector->insert(CRM_MESSAGES_INBOX_TABLE_NAME, $data);
-		if (!$inboxmsgid) { $this->dbConnector->rollback(); return false; }
-		
-		// insert the new message in the outbox of the sending user.
-		$data["message_read"] = 1;
-		$outboxmsgid = $this->dbConnector->insert(CRM_MESSAGES_OUTBOX_TABLE_NAME, $data);
-		if (!$outboxmsgid) { $this->dbConnector->rollback(); return false; }
 	
 		// insert attachments (if any).
 		if (!$this->addAttachmentsForMessage($inboxmsgid, $outboxmsgid, $fromuserid, $touserid, $attachments, $attachmentTag)) {
