@@ -1274,14 +1274,15 @@ class DbHandler {
 		
 		// Now store the message in our database.
 		// try to store the inbox message for the target user. Start transaction because we could have attachments.
-		$this->dbConnector->startTransaction();		
+		$this->dbConnector->startTransaction();
+		$date = $this->dbConnector->now();
 		// message data.
 		$data = array(
 			"user_from" => $fromuserid,
 			"user_to" => $touserid,
 			"subject" => $subject,
 			"message" => $message,
-			"date" => $this->dbConnector->now(),
+			"date" => $date,
 			"message_read" => 0,
 			"favorite" => 0
 		);
