@@ -60,8 +60,7 @@ if ($validated == 1) {
 
 	// send message and analyze results
 	$result = $db->sendMessage($fromuserid, $touserid, $subject, $message, $_FILES, $external_recipients, "attachment");
-	$result2 = $db->sendMessageMaterial($fromuserid, $touserid, $subject, $message, $_FILES, $external_recipients, "attachment");
-	if ($result === true && $result2 === true) {
+	if ($result === true) {
 		ob_clean(); 
 		print CRM_DEFAULT_SUCCESS_RESPONSE;
 	} else { ob_clean(); $lh->translateText("unable_send_message"); die(); }

@@ -118,6 +118,7 @@ define ('CRM_UI_TOPBAR_MENU_STYLE_COMPLEX', 'messages');
 // timeline notification time
 define ('CRM_NOTIFICATION_PERIOD', 'period');
 define ('CRM_NOTIFICATION_PERIOD_TODAY', 'today');
+define ('CRM_NOTIFICATION_PERIOD_YESTERDAY', 'yesterday');
 define ('CRM_NOTIFICATION_PERIOD_PASTWEEK', 'past_week');
 
 // installation constants.
@@ -133,6 +134,7 @@ define('CRM_MESSAGES_INBOX_TABLE_NAME', "messages_inbox");
 define('CRM_MESSAGES_OUTBOX_TABLE_NAME', "messages_outbox");
 define('CRM_MESSAGES_JUNK_TABLE_NAME', "messages_junk");
 define('CRM_NOTIFICATIONS_TABLE_NAME', "notifications");
+define('CRM_TIMELINE_TABLE_NAME', "timeline");
 define('CRM_SETTINGS_TABLE_NAME', "settings");
 define('CRM_STATISTICS_TABLE_NAME', "statistics");
 define('CRM_TASKS_TABLE_NAME', "tasks");
@@ -143,6 +145,12 @@ define('CRM_EVENTS_TABLE_NAME', "events");
 
 define('CRM_RECORDINGLOGS_TABLE_NAME', "recording_log");
 define('CRM_CALLLOGS_TABLE_NAME', "call_log");
+define('CRM_CALLLOGS_OB_TABLE_NAME', "vicidial_call_log");
+define('CRM_CALLLOGS_IB_TABLE_NAME', "vicidial_closer_log");
+
+define('CRM_HELPDESK_TICKETS_TABLE_NAME', "ost_ticket");
+define('CRM_HELPDESK_TICKETS_CONTENT_TABLE_NAME', "ost_thread_entry");
+define('CRM_HELPDESK_USERS_TABLE_NAME', "ost_staff");
 
 // File constants
 define('CRM_MAX_ATTACHMENT_FILESIZE', 2);

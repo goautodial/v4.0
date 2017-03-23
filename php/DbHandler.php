@@ -1285,6 +1285,18 @@ class DbHandler {
 			"message_read" => 0,
 			"favorite" => 0
 		);
+		
+		// insert into timeline table                
+		$dataTL = array(
+                        "type_id" => $inboxmsgid,
+                        "type" => "message",
+			"user_id" => $touserid,
+			"user_from_id" => $fromuserid,
+			"title" => $subject,
+			"description" => $message,
+			"start_date" => $date
+		);
+		$msgidTL = $this->dbConnector->insert(CRM_TIMELINE_TABLE_NAME, $dataTL);
 
 		// insert the new message in the inbox of the receiving user.
 		$inboxmsgid = $this->dbConnector->insert(CRM_MESSAGES_INBOX_TABLE_NAME, $data);
@@ -1305,65 +1317,6 @@ class DbHandler {
 		return true;
 	}
 	
-	public function sendMessageMaterial($fromuserid, $touserid, $subject, $message, $attachments, $external_recipients = null, $attachmentTag) {
-		// sanity checks
-		if (empty($fromuserid) || empty($touserid)) return false;
-		if (empty($subject)) $subject = "(".$this->lh->translationFor("no_subject").")";
-		if (empty($message)) $message = "(".$this->lh->translationFor("no_message").")";
-		
-		// first send to external recipients (if any), because we are moving them later with the call to move_uploaded_file.
-		if (!empty($external_recipients)) {
-			require_once('MailHandler.php');
-			$mh = \creamy\MailHandler::getInstance();
-			$result = $mh->sendMailWithAttachments($external_recipients, $subject, $message, $attachments, $attachmentTag);
-		}
-		
-		// Now store the message in our database.
-		// try to store the inbox message for the target user. Start transaction because we could have attachments.
-		$this->dbConnector->startTransaction();		
-		// message data.
-		$date = $this->dbConnector->now();
-		$data = array(
-			"user_from" => $fromuserid,
-			"user_to" => $touserid,
-			"subject" => $subject,
-			"message" => $message,
-			//"date" => $this->dbConnector->now(),
-			"date" => $date,
-			"message_read" => 0,
-			"favorite" => 0
-		);
-
-		// insert the new message in the inbox of the receiving user.
-		$inboxmsgid = $this->dbConnector->insert(CRM_MESSAGES_INBOX_TABLE_NAME, $data);
-		if (!$inboxmsgid) { $this->dbConnector->rollback(); return false; }
-		
-		// insert the new message in the outbox of the sending user.
-		$data["message_read"] = 1;
-		$outboxmsgid = $this->dbConnector->insert(CRM_MESSAGES_OUTBOX_TABLE_NAME, $data);
-		if (!$outboxmsgid) { $this->dbConnector->rollback(); return false; }
-		
-		// insert into timeline table                
-		$dataTL = array(
-                        "type_id" => $inboxmsgid,
-                        "type" => "message",
-			"user_id" => $touserid,
-			"user_from_id" => $fromuserid,
-			"title" => $subject,
-			"description" => $message,
-			"start_date" => $date
-		);
-		$msgidTL = $this->dbConnector->insert(CRM_TIMELINE_TABLE_NAME, $dataTL);
-		
-		// insert attachments (if any).
-		if (!$this->addAttachmentsForMessage($inboxmsgid, $outboxmsgid, $fromuserid, $touserid, $attachments, $attachmentTag)) {
-			$this->dbConnector->rollback();
-			return false;			
-		}
-		// success! commit transactions.
-		$this->dbConnector->commit();
-		return true;
-	}	
 	
 	/**
 	 * Sends a message from one user to another.
