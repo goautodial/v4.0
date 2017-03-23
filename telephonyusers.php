@@ -78,7 +78,8 @@
 		
                 <!-- Main content -->
                 <section class="content">
-                <?php if ($perm->user_read !== 'N') { ?>
+                <?php if ($perm->user_read !== 'N') {
+					?>
                     <div class="panel panel-default">
 						<div class="panel-body">
 						<legend><?php $lh->translateText("users"); ?></legend>
@@ -583,10 +584,6 @@
 		        transitionEffect: "slideLeft",
 		        onStepChanging: function (event, currentIndex, newIndex)
 		        {
-					// Allways allow step back to the previous step even if the current step is not valid!
-			        if (currentIndex > newIndex) {
-						checker = 0;
-			        }
 					
 			        console.log(checker);
 			        // Disable next if there are duplicates
@@ -625,6 +622,7 @@
 		        },
 		        onFinished: function (event, currentIndex)
 		        {
+					
 					$('#finish').text("<?php $lh->translateText("loading"); ?>");
 					$('#finish').attr("disabled", true);
 					
@@ -976,9 +974,12 @@
 		*********/
 		// check duplicates
 			$("#user_form").keyup(function() {
+				$("#next").attr('disabled', true);
+				
 				clearTimeout($.data(this, 'timer'));
 				var wait = setTimeout(validate_user, 500);
 				$(this).data('timer', wait);
+				
 			});
 
 			function validate_user(){
@@ -994,6 +995,7 @@
 					    },
 						success: function(data) {
 							console.log(data);
+							$("#next").attr('disabled', false);
 							if(data == "success"){
 								checker = 0;
 								$( "#user_form" ).removeClass("error");
