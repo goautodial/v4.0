@@ -2,7 +2,7 @@
 	require_once('goCRMAPISettings.php');
 	
 	$campaign_id = $_POST['campaign_id'];
-	$phone_numbers = $_POST['phone_numbers'];
+	$phone_numbers = rawurlencode($_POST['phone_numbers']);
 	$stage = $_POST['stageDNC'];
 	$user_id = $_POST['user_id'];
 	

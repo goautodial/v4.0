@@ -72,7 +72,7 @@ error_reporting(E_ALL)
 		$goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 	
 	// APIs FOR FILTER LIST
-		$campaign = $ui->API_getListAllCampaigns();
+		$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
 		$ingroup = $ui->API_getInGroups($_SESSION['usergroup']);
 	/*
 	 * API for call statistics - Demian

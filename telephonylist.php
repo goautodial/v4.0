@@ -453,7 +453,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	/*
 	* APIs for add form
 	*/
-	$campaign = $ui->API_getListAllCampaigns();
+	$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
 	$max_list = max($lists->list_id);
 	$min_list = min($lists->list_id);
 	
@@ -1000,7 +1000,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								search_dnc : $('#search_dnc').val()
 							},
 							success: function(data) {
-								$('#dnc_search_button').text("<?php $lh->translateText("searching"); ?>");
+								$('#dnc_search_button').text("<?php $lh->translateText("search"); ?>");
 								$('#dnc_search_button').attr("disabled", false);
 								//console.log(data);
 								if(data != ""){
@@ -1027,6 +1027,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								type: 'POST',
 								data: $('#dnc_form').serialize(),
 								success: function(data) {
+									console.log(data);
 									$('#submit_dnc').text("<?php $lh->translateText("add_delete_dnc"); ?>");
 									$('#submit_dnc').attr("disabled", false);
 									

@@ -168,6 +168,7 @@ $smtp_status = $ui->API_getSMTPActivation();
           </div><!-- /.row -->
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
+	  <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
     </div><!-- ./wrapper -->
     
     <!-- WYSIHTML5 edition -->
@@ -271,6 +272,10 @@ $smtp_status = $ui->API_getSMTPActivation();
 				        processData : false,
 				        type        : 'POST',
 				        success     : function(data, textStatus, jqXHR){
+						
+						$('#send_button').html('<i class="fa fa-envelope-o"></i> <?php print $lh->translationFor("send"); ?>');
+						$('#send_button').attr("disabled", false);
+							
 							if (data == 'success') {
 								$("#compose-mail-results").html('<?php print $okMsg; ?>');
 								$("#compose-mail-results").fadeIn(); //show confirmation message
