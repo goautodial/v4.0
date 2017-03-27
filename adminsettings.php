@@ -34,9 +34,9 @@
 	$user = \creamy\CreamyUser::currentUser();
 
 	//var_dump($user->getUserRole());
-	//if ($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_AGENT) {
-	//	//header("location: crm.php");
-	//}
+	if($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") {
+		header("location: index.php");
+	}
 ?>
 <html>
     <head>

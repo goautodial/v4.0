@@ -62,7 +62,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Goautodial Edit
+        <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("campaigns"); ?>
         	<?php
         		if($campaign_id != NULL){echo "Campaign";}
         		if($did != NULL){echo "Disposition";}
@@ -118,11 +118,11 @@ $audiofiles = $ui->API_getListAudioFiles();
                         <?php $lh->translateText("telephony"); ?>
                         <small>Edit
                         	<?php
-				        		if($campaign_id != NULL){echo "Campaign";}
-				        		if($did != NULL){echo "Disposition";}
-				        		if($lf_id != NULL){echo "Lead Filter";}
-					        ?>
-					    </small>
+	if($campaign_id != NULL){echo "Campaign";}
+	if($did != NULL){echo "Disposition";}
+	if($lf_id != NULL){echo "Lead Filter";}
+	?>
+	</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -171,328 +171,328 @@ $audiofiles = $ui->API_getListAudioFiles();
 							<?php $errormessage = NULL; ?>
 
 						<!-- IF CAMPAIGN -->
-							<?php
-							if($campaign_id != NULL) {
-								if ($campaign->result=="success") {
-									//echo "<pre>";
-									//var_dump($campaign);
-									//echo "</pre>";
-							?>
-							<div class="panel-body">
-								<legend><?php $lh->translateText("modify_campaign_id"); ?> : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u>
-									<span class="pull-right"><?php $lh->translateText("manual_dial_list_id"); ?>: <u><?php echo $campaign->data->manual_dial_list_id;?></u></span>
-								</legend>
-								<!-- Custom Tabs -->
-								<div role="tabpanel">
-								<!--<div class="nav-tabs-custom">-->
-									<ul role="tablist" class="nav nav-tabs nav-justified">
-										<li class="active"><a href="#tab_1" data-toggle="tab"><?php $lh->translateText("basic_settings"); ?></a></li>
-										<li><a href="#tab_2" data-toggle="tab"><?php $lh->translateText("advanced_settings"); ?></a></li>
-									</ul>
-					               		<!-- Tab contents-->
-					               		<div class="tab-content">
-						               	<!-- BASIC SETTINGS -->
-						                	<div id="tab_1" class="tab-pane fade in active">
-												<fieldset>
-													<div class="form-group mt">
-														<label class="col-sm-3 control-label" for="campaign_name"><?php $lh->translateText("campaign_name"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<input type="text" class="form-control" name="campaign_name" id="campaign_name" value="<?php echo $campaign->data->campaign_name; ?>" title="Must be 6 to 40 characters in length." minlength="6" maxlength="40" required>
+						<?php
+						if($campaign_id != NULL) {
+							if ($campaign->result=="success") {
+								//echo "<pre>";
+								//var_dump($campaign);
+								//echo "</pre>";
+						?>
+						<div class="panel-body">
+							<legend><?php $lh->translateText("modify_campaign_id"); ?> : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u>
+								<span class="pull-right"><?php $lh->translateText("manual_dial_list_id"); ?>: <u><?php echo $campaign->data->manual_dial_list_id;?></u></span>
+							</legend>
+							<!-- Custom Tabs -->
+							<div role="tabpanel">
+							<!--<div class="nav-tabs-custom">-->
+								<ul role="tablist" class="nav nav-tabs nav-justified">
+									<li class="active"><a href="#tab_1" data-toggle="tab"><?php $lh->translateText("basic_settings"); ?></a></li>
+									<li><a href="#tab_2" data-toggle="tab"><?php $lh->translateText("advanced_settings"); ?></a></li>
+								</ul>
+									<!-- Tab contents-->
+									<div class="tab-content">
+									<!-- BASIC SETTINGS -->
+										<div id="tab_1" class="tab-pane fade in active">
+										<fieldset>
+											<div class="form-group mt">
+												<label class="col-sm-3 control-label" for="campaign_name"><?php $lh->translateText("campaign_name"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<input type="text" class="form-control" name="campaign_name" id="campaign_name" value="<?php echo $campaign->data->campaign_name; ?>" title="Must be 6 to 40 characters in length." minlength="6" maxlength="40" required>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label" for="campaign_desc"><?php $lh->translateText("campaign_description"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<input type="text" class="form-control" name="campaign_desc" id="campaign_desc" value="<?php echo $campaign->data->campaign_name; ?>" >
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("active"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<select class="form-control" name="active">
+														<option value="Y" <?php if($campaign->data->active == 'Y') echo "selected";?>><?php $lh->translateText("go_yes"); ?></option>
+														<option value="N" <?php if($campaign->data->active == "N") echo "selected";?>><?php $lh->translateText("go_no"); ?></option>
+													</select>
+												</div>
+											</div>
+											<?php if($campaign->campaign_type != "SURVEY") { ?>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("dial_method"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<select name="dial_method" id="dial_method" class="form-control" name="dial_method">
+														<option value="MANUAL" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?>>MANUAL</option>
+														<option value="RATIO" <?php if($campaign->data->dial_method == "RATIO") echo "selected";?>>AUTO DIAL</option>
+														<option value="ADAPT_TAPERED" <?php if($campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?>>PREDICTIVE</option>
+														<option value="INBOUND_MAN" <?php if($campaign->data->dial_method == "INBOUND_MAN") echo "selected";?>>INBOUND MAN</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("autodial_level"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<div class="row">
+														<?php
+															$autodial_level = $campaign->data->auto_dial_level;
+															
+														?>
+														<div class="col-lg-8">
+															<select id="auto_dial_level" class="form-control" name="auto_dial_level" <?php if($campaign->data->dial_method !== "RATIO") echo "disabled";?>>
+															<option value="OFF" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?> disabled>OFF</option>
+															<option value="SLOW"<?php if($autodial_level == "1") echo "selected";?>>SLOW</option>
+															<option VALUE="NORMAL" <?php if($autodial_level == "2") echo "selected";?>>NORMAL</option>
+															<option VALUE="HIGH" <?php if($autodial_level == "4") echo "selected";?>>HIGH</option>
+															<option VALUE="MAX"<?php if($autodial_level == "6") echo "selected";?>>MAX</option>
+															<option VALUE="MAX_PREDICTIVE"<?php if($autodial_level == "10" || $campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?> disabled>MAX PREDICTIVE</option>
+															<option value="ADVANCE" <?php if($autodial_level != "0" && $autodial_level != "1" && $autodial_level != "2" && $autodial_level != "4" && $autodial_level != "6" && $autodial_level != "10") echo "selected";?> >ADVANCE</option>
+															</select>
 														</div>
-													</div>
-													<div class="form-group">
-														<label class="col-sm-3 control-label" for="campaign_desc"><?php $lh->translateText("campaign_description"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<input type="text" class="form-control" name="campaign_desc" id="campaign_desc" value="<?php echo $campaign->data->campaign_name; ?>" >
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("active"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<select class="form-control" name="active">
-																<option value="Y" <?php if($campaign->data->active == 'Y') echo "selected";?>><?php $lh->translateText("go_yes"); ?></option>
-																<option value="N" <?php if($campaign->data->active == "N") echo "selected";?>><?php $lh->translateText("go_no"); ?></option>
+														<div class="col-lg-4">
+															<select id="auto_dial_level_adv" class="form-control <?php if($autodial_level == "0" || $autodial_level == "1" || $autodial_level == "2" || $autodial_level == "4" || $autodial_level == "6" || $autodial_level == "10") echo "hide";?> " name="auto_dial_level_adv">
+																<option value="1">1.0</option>
+																<option value="1.5" <?php if($autodial_level == "1.5") echo "selected"; ?> >1.5</option>
+																<option value="2">2.0</option>
+																<option value="2.5" <?php if($autodial_level == "2.5") echo "selected"; ?> >2.5</option>
+																<option value="3.0" <?php if($autodial_level == "3.0") echo "selected"; ?> >3.0</option>
+																<option value="3.5" <?php if($autodial_level == "3.5") echo "selected"; ?> >3.5</option>
+																<option value="4">4.0</option>
+																<option value="4.5" <?php if($autodial_level == "4.5") echo "selected"; ?> >4.5</option>
+																<option value="5.0" <?php if($autodial_level == "5.0") echo "selected"; ?> >5.0</option>
+																<option value="5.5" <?php if($autodial_level == "5.5") echo "selected"; ?> >5.5</option>
+																<option value="6">6.0</option>
+																<option value="6.5" <?php if($autodial_level == "6.5") echo "selected"; ?> >6.5</option>
+																<option value="7.0" <?php if($autodial_level == "7.0") echo "selected"; ?> >7.0</option>
+																<option value="7.5" <?php if($autodial_level == "7.5") echo "selected"; ?> >7.5</option>
+																<option value="8.0" <?php if($autodial_level == "8.0") echo "selected"; ?> >8.0</option>
+																<option value="8.5" <?php if($autodial_level == "8.5") echo "selected"; ?> >8.5</option>
+																<option value="9.0" <?php if($autodial_level == "9.0") echo "selected"; ?> >9.0</option>
+																<option value="9.5" <?php if($autodial_level == "9.5") echo "selected"; ?> >9.5</option>
+																<option value="10">10.0</option>
+																<option value="10.5" <?php if($autodial_level == "10.5") echo "selected"; ?> >10.5</option>
+																<option value="11.0" <?php if($autodial_level == "11.0") echo "selected"; ?> >11.0</option>
+																<option value="11.5" <?php if($autodial_level == "11.5") echo "selected"; ?> >11.5</option>
+																<option value="12.0" <?php if($autodial_level == "12.0") echo "selected"; ?> >12.0</option>
+																<option value="12.5" <?php if($autodial_level == "12.5") echo "selected"; ?> >12.5</option>
+																<option value="13.0" <?php if($autodial_level == "13.0") echo "selected"; ?> >13.0</option>
+																<option value="13.5" <?php if($autodial_level == "13.5") echo "selected"; ?> >13.5</option>
+																<option value="14.0" <?php if($autodial_level == "14.0") echo "selected"; ?> >14.0</option>
+																<option value="14.5" <?php if($autodial_level == "14.5") echo "selected"; ?> >14.5</option>
+																<option value="15.0" <?php if($autodial_level == "15.0") echo "selected"; ?> >15.0</option>
+																<option value="15.5" <?php if($autodial_level == "15.5") echo "selected"; ?> >15.5</option>
+																<option value="16.0" <?php if($autodial_level == "16.0") echo "selected"; ?> >16.0</option>
+																<option value="16.5" <?php if($autodial_level == "16.5") echo "selected"; ?> >16.5</option>
+																<option value="17.0" <?php if($autodial_level == "17.0") echo "selected"; ?> >17.0</option>
+																<option value="17.5" <?php if($autodial_level == "17.5") echo "selected"; ?> >17.5</option>
+																<option value="18.0" <?php if($autodial_level == "18.0") echo "selected"; ?> >18.0</option>
+																<option value="18.5" <?php if($autodial_level == "18.5") echo "selected"; ?> >18.5</option>
+																<option value="19.0" <?php if($autodial_level == "19.0") echo "selected"; ?> >19.0</option>
+																<option value="19.5" <?php if($autodial_level == "19.5") echo "selected"; ?> >19.5</option>
+																<option value="20.0" <?php if($autodial_level == "20.0") echo "selected"; ?> >20.0</option>
 															</select>
 														</div>
 													</div>
-													<?php if($campaign->campaign_type != "SURVEY") { ?>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("dial_method"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<select name="dial_method" id="dial_method" class="form-control" name="dial_method">
-																<option value="MANUAL" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?>>MANUAL</option>
-																<option value="RATIO" <?php if($campaign->data->dial_method == "RATIO") echo "selected";?>>AUTO DIAL</option>
-																<option value="ADAPT_TAPERED" <?php if($campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?>>PREDICTIVE</option>
-																<option value="INBOUND_MAN" <?php if($campaign->data->dial_method == "INBOUND_MAN") echo "selected";?>>INBOUND MAN</option>
-															</select>
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("autodial_level"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<div class="row">
-																<?php
-																	$autodial_level = $campaign->data->auto_dial_level;
-																	
-																?>
-																<div class="col-lg-8">
-																	<select id="auto_dial_level" class="form-control" name="auto_dial_level" <?php if($campaign->data->dial_method !== "RATIO") echo "disabled";?>>
-																	<option value="OFF" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?> disabled>OFF</option>
-										    						<option value="SLOW"<?php if($autodial_level == "1") echo "selected";?>>SLOW</option>
-										    						<option VALUE="NORMAL" <?php if($autodial_level == "2") echo "selected";?>>NORMAL</option>
-																	<option VALUE="HIGH" <?php if($autodial_level == "4") echo "selected";?>>HIGH</option>
-										    						<option VALUE="MAX"<?php if($autodial_level == "6") echo "selected";?>>MAX</option>
-										    						<option VALUE="MAX_PREDICTIVE"<?php if($autodial_level == "10" || $campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?> disabled>MAX PREDICTIVE</option>
-																	<option value="ADVANCE" <?php if($autodial_level != "0" && $autodial_level != "1" && $autodial_level != "2" && $autodial_level != "4" && $autodial_level != "6" && $autodial_level != "10") echo "selected";?> >ADVANCE</option>
-																	</select>
-																</div>
-																<div class="col-lg-4">
-																	<select id="auto_dial_level_adv" class="form-control <?php if($autodial_level == "0" || $autodial_level == "1" || $autodial_level == "2" || $autodial_level == "4" || $autodial_level == "6" || $autodial_level == "10") echo "hide";?> " name="auto_dial_level_adv">
-																		<option value="1">1.0</option>
-																		<option value="1.5" <?php if($autodial_level == "1.5") echo "selected"; ?> >1.5</option>
-																		<option value="2">2.0</option>
-																		<option value="2.5" <?php if($autodial_level == "2.5") echo "selected"; ?> >2.5</option>
-																		<option value="3.0" <?php if($autodial_level == "3.0") echo "selected"; ?> >3.0</option>
-																		<option value="3.5" <?php if($autodial_level == "3.5") echo "selected"; ?> >3.5</option>
-																		<option value="4">4.0</option>
-																		<option value="4.5" <?php if($autodial_level == "4.5") echo "selected"; ?> >4.5</option>
-																		<option value="5.0" <?php if($autodial_level == "5.0") echo "selected"; ?> >5.0</option>
-																		<option value="5.5" <?php if($autodial_level == "5.5") echo "selected"; ?> >5.5</option>
-																		<option value="6">6.0</option>
-																		<option value="6.5" <?php if($autodial_level == "6.5") echo "selected"; ?> >6.5</option>
-																		<option value="7.0" <?php if($autodial_level == "7.0") echo "selected"; ?> >7.0</option>
-																		<option value="7.5" <?php if($autodial_level == "7.5") echo "selected"; ?> >7.5</option>
-																		<option value="8.0" <?php if($autodial_level == "8.0") echo "selected"; ?> >8.0</option>
-																		<option value="8.5" <?php if($autodial_level == "8.5") echo "selected"; ?> >8.5</option>
-																		<option value="9.0" <?php if($autodial_level == "9.0") echo "selected"; ?> >9.0</option>
-																		<option value="9.5" <?php if($autodial_level == "9.5") echo "selected"; ?> >9.5</option>
-																		<option value="10">10.0</option>
-																		<option value="10.5" <?php if($autodial_level == "10.5") echo "selected"; ?> >10.5</option>
-																		<option value="11.0" <?php if($autodial_level == "11.0") echo "selected"; ?> >11.0</option>
-																		<option value="11.5" <?php if($autodial_level == "11.5") echo "selected"; ?> >11.5</option>
-																		<option value="12.0" <?php if($autodial_level == "12.0") echo "selected"; ?> >12.0</option>
-																		<option value="12.5" <?php if($autodial_level == "12.5") echo "selected"; ?> >12.5</option>
-																		<option value="13.0" <?php if($autodial_level == "13.0") echo "selected"; ?> >13.0</option>
-																		<option value="13.5" <?php if($autodial_level == "13.5") echo "selected"; ?> >13.5</option>
-																		<option value="14.0" <?php if($autodial_level == "14.0") echo "selected"; ?> >14.0</option>
-																		<option value="14.5" <?php if($autodial_level == "14.5") echo "selected"; ?> >14.5</option>
-																		<option value="15.0" <?php if($autodial_level == "15.0") echo "selected"; ?> >15.0</option>
-																		<option value="15.5" <?php if($autodial_level == "15.5") echo "selected"; ?> >15.5</option>
-																		<option value="16.0" <?php if($autodial_level == "16.0") echo "selected"; ?> >16.0</option>
-																		<option value="16.5" <?php if($autodial_level == "16.5") echo "selected"; ?> >16.5</option>
-																		<option value="17.0" <?php if($autodial_level == "17.0") echo "selected"; ?> >17.0</option>
-																		<option value="17.5" <?php if($autodial_level == "17.5") echo "selected"; ?> >17.5</option>
-																		<option value="18.0" <?php if($autodial_level == "18.0") echo "selected"; ?> >18.0</option>
-																		<option value="18.5" <?php if($autodial_level == "18.5") echo "selected"; ?> >18.5</option>
-																		<option value="19.0" <?php if($autodial_level == "19.0") echo "selected"; ?> >19.0</option>
-																		<option value="19.5" <?php if($autodial_level == "19.5") echo "selected"; ?> >19.5</option>
-																		<option value="20.0" <?php if($autodial_level == "20.0") echo "selected"; ?> >20.0</option>
-																	</select>
-																</div>
-															</div>
-														</div>
-													</div>
-													<?php } ?>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("carrier_to_use_for_campaign"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<div class="row">
-																<div class="col-lg-9">
-																	<select name="dial_prefix" id="dial_prefix" class="form-control">
-																		<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
-																		<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
-																			<?php
-																			if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') {
-																				$prefixes = explode("\n", $carriers->dialplan_entry[$i]);
-																				$prefix = explode(",", $prefixes[0]);
-																				$dial_prefix = substr(ltrim($prefix[0], "exten => _ "), 0, (strpos(".",$prefix[0]) - 1));
-																				$dial_prefix = str_replace("N", "", str_replace("X", "", $dial_prefix));
-																			?>
-																				<option value="<?php echo $dial_prefix; ?>" <?php if($campaign->data->dial_prefix == $dial_prefix) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
-																			<?php } ?>
-																		<?php } ?>
-																	</select>
-																</div>
-																<div class="col-lg-3">
-																	<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" min="0" value="<?php if(($campaign->data->dial_prefix == "CUSTOM") && ($campaign->data->dial_prefix == 0) || ($campaign->data->dial_prefix == '')){echo 9;}else{echo $campaign->data->dial_prefix;} ?>" minlength="9" maxlength="20">
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("omit_phone_code"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<select name="omit_phone_code" id="omit_phone_code" class="form-control">
-																<option value="N" <?php if($campaign->data->omit_phone_code == '' && $campaign->data->omit_phone_code == 'N'){ echo 'selected';}?>>N</option>
-																<option value="Y" <?php if($campaign->data->omit_phone_code == 'Y'){ echo 'selected';}?>>Y</option>
-															</select>
-														</div>
-													</div>
-													<?php if($campaign->campaign_type != "SURVEY") { ?>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("web"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<input type="text" id="web_form_address" name="web_form_address" class="form-control" value="<?php echo $campaign->data->web_form_address;?>">
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("scripts"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<select class="form-control" id="campaign_script" name="campaign_script">
-																<option value="" <?php if(empty($campaign->data->campaign_script)) echo "selected"; ?>>--- NONE ---</option>
-																<?php for($i=0;$i<count($scripts->script_id);$i++) { ?>
-																	<?php if(!empty($scripts->script_id[$i])) { ?>
-																		<option value="<?php echo $scripts->script_id[$i]; ?>" <?php if($campaign->data->campaign_script == $scripts->script_id[$i]) echo "selected";?>><?php echo $scripts->script_name[$i]; ?></option>
+												</div>
+											</div>
+											<?php } ?>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("carrier_to_use_for_campaign"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<div class="row">
+														<div class="col-lg-9">
+															<select name="dial_prefix" id="dial_prefix" class="form-control">
+																<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
+																<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
+																	<?php
+																	if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') {
+																		$prefixes = explode("\n", $carriers->dialplan_entry[$i]);
+																		$prefix = explode(",", $prefixes[0]);
+																		$dial_prefix = substr(ltrim($prefix[0], "exten => _ "), 0, (strpos(".",$prefix[0]) - 1));
+																		$dial_prefix = str_replace("N", "", str_replace("X", "", $dial_prefix));
+																	?>
+																		<option value="<?php echo $dial_prefix; ?>" <?php if($campaign->data->dial_prefix == $dial_prefix) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
 																	<?php } ?>
 																<?php } ?>
 															</select>
 														</div>
-													</div>
-													<?php } ?>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("campaign_caller_id"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<input type="text" class="form-control" id="campaign_cid" name="campaign_cid" value="<?php echo $campaign->data->campaign_cid; ?>">
+														<div class="col-lg-3">
+															<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" min="0" value="<?php if(($campaign->data->dial_prefix == "CUSTOM") && ($campaign->data->dial_prefix == 0) || ($campaign->data->dial_prefix == '')){echo 9;}else{echo $campaign->data->dial_prefix;} ?>" minlength="9" maxlength="20">
 														</div>
 													</div>
-													<?php if($campaign->campaign_type != "SURVEY") { ?>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recordings"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<select id="campaign_recording" class="form-control" name="campaign_recording">
-																<option value="NEVER" <?php if($campaign->data->campaign_recording == "NEVER") echo "selected";?>>OFF</option>
-																<option value="ALLFORCE" <?php if($campaign->data->campaign_recording == "ALLFORCE") echo "selected";?>>ON</option>
-																<option value="ONDEMAND" <?php if($campaign->data->campaign_recording == "ONDEMAND") echo "selected";?>>ONDEMAND</option>
-															</select>
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("answer_machine_detection"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<select id="campaign_vdad_exten" name="campaign_vdad_exten" class="form-control">
-																<option value="<?php if($campaign->campaign_type == "SURVEY"){ echo '8366';}else{ echo '8368';} ?>" <?php if ($campaign->data->campaign_vdad_exten == "8368" || $campaign->data->campaign_vdad_exten == "8366") echo "selected"; ?>>OFF</option>
-																<option value="<?php if($campaign->campaign_type == "SURVEY"){ echo '8373';}else{ echo '8369';}  ?>" <?php if ($campaign->data->campaign_vdad_exten == "8369" || $campaign->data->campaign_vdad_exten == "8373") echo "selected"; ?>>ON</option>
-															</select>
-														</div>
-													</div>
-													<?php } ?>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("local_calltime"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<select class="form-control" id="local_call_time" name="local_call_time">
-																<?php for($i=0;$i<=count($calltimes->call_time_id);$i++) { ?>
-																	<?php if(!empty($calltimes->call_time_id[$i])) { ?>
-																		<option value="<?php echo $calltimes->call_time_id[$i]; ?>"<?php if($campaign->data->local_call_time == $calltimes->call_time_id[$i]) echo "selected"; ?>><?php echo $calltimes->call_time_name[$i]; ?></option>
-																	<?php } ?>
-																<?php } ?>
-															</select>
-														</div>
-													</div>
-												<?php if($campaign->campaign_type == "OUTBOUND") { ?>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("minimum_hopper_level"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<select class="form-control" id="hopper_level" name="hopper_level">
-																<?php
-																$hopper_level = array (1, 5, 10, 20, 50, 100, 200, 500, 700, 1000, 2000);
-																foreach ($hopper_level as $level) {
-																	$selectThis = '';
-																	if ($level == $campaign->data->hopper_level) { $selectThis = 'selected'; }
-																	echo '<option value="'.$level.'" '.$selectThis.'>'.$level.'</option>';
-																}
-																?>
-															</select>
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("force_reset_of_hopper"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<select class="form-control" id="force_reset_hopper" name="force_reset_hopper">
-																<option value="Y">Yes</option>
-																<option value="N" selected>No</option>
-															</select>
-														</div>
-													</div>
-												<?php } elseif($campaign->campaign_type == "INBOUND") { ?>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("phone_numbers_did/ftn_on_this_campaign"); ?>:</label>
-														<span class="col-sm-9 control-label" style="text-align: left; vertical-align: top;">
-															<?php if(count($dids->did_id) != 0) {?>
-																<?php for($i=0;$i<=count($dids->did_id);$i++) { ?>
-																	<?php if(!empty($dids->did_id[$i])){ ?>
-																		<p><?php echo $dids->did_pattern[$i]; ?></p>
-																	<?php } ?>
-																<?php }?>
-															<?php } else { ?>
-																No <b>DID/'s</b> <?php $lh->translationFor("found_for_this_campaign"); ?>.
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("omit_phone_code"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<select name="omit_phone_code" id="omit_phone_code" class="form-control">
+														<option value="N" <?php if($campaign->data->omit_phone_code == '' && $campaign->data->omit_phone_code == 'N'){ echo 'selected';}?>>N</option>
+														<option value="Y" <?php if($campaign->data->omit_phone_code == 'Y'){ echo 'selected';}?>>Y</option>
+													</select>
+												</div>
+											</div>
+											<?php if($campaign->campaign_type != "SURVEY") { ?>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("web"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<input type="text" id="web_form_address" name="web_form_address" class="form-control" value="<?php echo $campaign->data->web_form_address;?>">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("scripts"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<select class="form-control" id="campaign_script" name="campaign_script">
+														<option value="" <?php if(empty($campaign->data->campaign_script)) echo "selected"; ?>>--- NONE ---</option>
+														<?php for($i=0;$i<count($scripts->script_id);$i++) { ?>
+															<?php if(!empty($scripts->script_id[$i])) { ?>
+																<option value="<?php echo $scripts->script_id[$i]; ?>" <?php if($campaign->data->campaign_script == $scripts->script_id[$i]) echo "selected";?>><?php echo $scripts->script_name[$i]; ?></option>
 															<?php } ?>
-														</span>
-													</div>
-													<!--<div class="form-group">
-														<label class="col-sm-2 control-label">Inbound Man:</label>
-														<div class="col-sm-10 mb">
-															<select class="form-control" id="inbound_man" name="inbound_man">
-																<option value="Y" <?php if($campaign->data->dial_method == "INBOUND_MAN") echo "selected";?>>Yes</option>
-																<option value="N" <?php if($campaign->data->dial_method == "AUTO_DIAL") echo "selected";?>>No</option>
-															</select>
-														</div>
-													</div>-->
-												<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("phone_numbers_did/ftn_on_this_campaign"); ?>:</label>
-														<span class="col-sm-9 control-label" style="text-align: left; vertical-align: top;">
-															<?php if(count($dids->did_id) != 0) {?>
-																<?php for($i=0;$i<=count($dids->did_id);$i++) { ?>
-																	<?php if(!empty($dids->did_id[$i])){ ?>
-																		<p><?php echo $dids->did_pattern[$i]; ?></p>
-																	<?php } ?>
-																<?php }?>
-															<?php } else { ?>
-																No <b>DID/'s</b> <?php $lh->translationFor("found_for_this_campaign"); ?>.
+														<?php } ?>
+													</select>
+												</div>
+											</div>
+											<?php } ?>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("campaign_caller_id"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<input type="text" class="form-control" id="campaign_cid" name="campaign_cid" value="<?php echo $campaign->data->campaign_cid; ?>">
+												</div>
+											</div>
+											<?php if($campaign->campaign_type != "SURVEY") { ?>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recordings"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<select id="campaign_recording" class="form-control" name="campaign_recording">
+														<option value="NEVER" <?php if($campaign->data->campaign_recording == "NEVER") echo "selected";?>>OFF</option>
+														<option value="ALLFORCE" <?php if($campaign->data->campaign_recording == "ALLFORCE") echo "selected";?>>ON</option>
+														<option value="ONDEMAND" <?php if($campaign->data->campaign_recording == "ONDEMAND") echo "selected";?>>ONDEMAND</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("answer_machine_detection"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<select id="campaign_vdad_exten" name="campaign_vdad_exten" class="form-control">
+														<option value="<?php if($campaign->campaign_type == "SURVEY"){ echo '8366';}else{ echo '8368';} ?>" <?php if ($campaign->data->campaign_vdad_exten == "8368" || $campaign->data->campaign_vdad_exten == "8366") echo "selected"; ?>>OFF</option>
+														<option value="<?php if($campaign->campaign_type == "SURVEY"){ echo '8373';}else{ echo '8369';}  ?>" <?php if ($campaign->data->campaign_vdad_exten == "8369" || $campaign->data->campaign_vdad_exten == "8373") echo "selected"; ?>>ON</option>
+													</select>
+												</div>
+											</div>
+											<?php } ?>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("local_calltime"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<select class="form-control" id="local_call_time" name="local_call_time">
+														<?php for($i=0;$i<=count($calltimes->call_time_id);$i++) { ?>
+															<?php if(!empty($calltimes->call_time_id[$i])) { ?>
+																<option value="<?php echo $calltimes->call_time_id[$i]; ?>"<?php if($campaign->data->local_call_time == $calltimes->call_time_id[$i]) echo "selected"; ?>><?php echo $calltimes->call_time_name[$i]; ?></option>
 															<?php } ?>
+														<?php } ?>
+													</select>
+												</div>
+											</div>
+										<?php if($campaign->campaign_type == "OUTBOUND") { ?>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("minimum_hopper_level"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<select class="form-control" id="hopper_level" name="hopper_level">
+														<?php
+														$hopper_level = array (1, 5, 10, 20, 50, 100, 200, 500, 700, 1000, 2000);
+														foreach ($hopper_level as $level) {
+															$selectThis = '';
+															if ($level == $campaign->data->hopper_level) { $selectThis = 'selected'; }
+															echo '<option value="'.$level.'" '.$selectThis.'>'.$level.'</option>';
+														}
+														?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("force_reset_of_hopper"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<select class="form-control" id="force_reset_hopper" name="force_reset_hopper">
+														<option value="Y">Yes</option>
+														<option value="N" selected>No</option>
+													</select>
+												</div>
+											</div>
+										<?php } elseif($campaign->campaign_type == "INBOUND") { ?>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("phone_numbers_did/ftn_on_this_campaign"); ?>:</label>
+												<span class="col-sm-9 control-label" style="text-align: left; vertical-align: top;">
+													<?php if(count($dids->did_id) != 0) {?>
+														<?php for($i=0;$i<=count($dids->did_id);$i++) { ?>
+															<?php if(!empty($dids->did_id[$i])){ ?>
+																<p><?php echo $dids->did_pattern[$i]; ?></p>
+															<?php } ?>
+														<?php }?>
+													<?php } else { ?>
+														No <b>DID/'s</b> <?php $lh->translationFor("found_for_this_campaign"); ?>.
+													<?php } ?>
+												</span>
+											</div>
+											<!--<div class="form-group">
+												<label class="col-sm-2 control-label">Inbound Man:</label>
+												<div class="col-sm-10 mb">
+													<select class="form-control" id="inbound_man" name="inbound_man">
+														<option value="Y" <?php if($campaign->data->dial_method == "INBOUND_MAN") echo "selected";?>>Yes</option>
+														<option value="N" <?php if($campaign->data->dial_method == "AUTO_DIAL") echo "selected";?>>No</option>
+													</select>
+												</div>
+											</div>-->
+										<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("phone_numbers_did/ftn_on_this_campaign"); ?>:</label>
+												<span class="col-sm-9 control-label" style="text-align: left; vertical-align: top;">
+													<?php if(count($dids->did_id) != 0) {?>
+														<?php for($i=0;$i<=count($dids->did_id);$i++) { ?>
+															<?php if(!empty($dids->did_id[$i])){ ?>
+																<p><?php echo $dids->did_pattern[$i]; ?></p>
+															<?php } ?>
+														<?php }?>
+													<?php } else { ?>
+														No <b>DID/'s</b> <?php $lh->translationFor("found_for_this_campaign"); ?>.
+													<?php } ?>
+												</span>
+											</div>
+										<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
+											<!--<div class="form-group">
+												<label class="col-sm-3 control-label">Audio File:</label>
+												<div class="col-sm-7 mb">
+													<input type="text" class="form-control" id="survey_first_audio_file" name="survey_first_audio_file" value="<?php echo $campaign->data->survey_first_audio_file; ?>">
+												</div>
+												<div class="col-sm-2 mb">
+													<button type="button" class="view-audio-files btn btn-default" data-label="survey_first_audio_file">Audio</button>
+												</div>
+											</div>-->
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("audiofiles"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<div class="input-group">
+														<input type="text" class="form-control" id="survey_first_audio_file" name="survey_first_audio_file" value="<?php echo $campaign->data->survey_first_audio_file;?>">
+														<span class="input-group-btn">
+															<button class="btn btn-default show-view-audio-files" data-label="survey_first_audio_file" type="button">[Audio Chooser...]</button>
 														</span>
-													</div>
-												<?php } elseif($campaign->campaign_type == "SURVEY") { ?>
-													<!--<div class="form-group">
-														<label class="col-sm-3 control-label">Audio File:</label>
-														<div class="col-sm-7 mb">
-															<input type="text" class="form-control" id="survey_first_audio_file" name="survey_first_audio_file" value="<?php echo $campaign->data->survey_first_audio_file; ?>">
-														</div>
-														<div class="col-sm-2 mb">
-															<button type="button" class="view-audio-files btn btn-default" data-label="survey_first_audio_file">Audio</button>
-														</div>
-													</div>-->
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("audiofiles"); ?>:</label>
-														<div class="col-sm-9 mb">
-															<div class="input-group">
-																<input type="text" class="form-control" id="survey_first_audio_file" name="survey_first_audio_file" value="<?php echo $campaign->data->survey_first_audio_file;?>">
-																<span class="input-group-btn">
-																	<button class="btn btn-default show-view-audio-files" data-label="survey_first_audio_file" type="button">[Audio Chooser...]</button>
-																</span>
-															</div><!-- /input-group -->
-															<select class="form-control survey_first_audio_file_dropdown" id="survey_first_audio_file_dropdown" data-label="survey_first_audio_file">
-																<option value="">-- Default Value --</option>
-																<?php for($i=0;$i<=count($audiofiles->data);$i++) { ?>
-																	<?php if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
-																		<option value="<?php echo substr($audiofiles->data[$i], 0, -4); ?>"><?php echo substr($audiofiles->data[$i], 0, -4); ?></option>
-																	<?php } ?>
-																<?php } ?>
-															</select>
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="col-sm-3 control-label"><?php $lh->translateText("number_of_channels"); ?>:</label>
-														<div class="col-sm-9">
-															<input id="no-channels" name="no_channels" type="number" value="<?php echo $campaign->number_of_lines; ?>" min="1" max="200" class="form-control">
-														</div>
-													</div>
-												<?php } else { ?>
-													<!-- Nothing to do -->
-												<?php } ?>
-												</fieldset><!-- /.fieldset -->
-											</div><!-- /.tab-pane -->
-
+													</div><!-- /input-group -->
+													<select class="form-control survey_first_audio_file_dropdown" id="survey_first_audio_file_dropdown" data-label="survey_first_audio_file">
+														<option value="">-- Default Value --</option>
+														<?php for($i=0;$i<=count($audiofiles->data);$i++) { ?>
+															<?php if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
+																<option value="<?php echo substr($audiofiles->data[$i], 0, -4); ?>"><?php echo substr($audiofiles->data[$i], 0, -4); ?></option>
+															<?php } ?>
+														<?php } ?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("number_of_channels"); ?>:</label>
+												<div class="col-sm-9">
+													<input id="no-channels" name="no_channels" type="number" value="<?php echo $campaign->number_of_lines; ?>" min="1" max="200" class="form-control">
+												</div>
+											</div>
+										<?php } else { ?>
+											<!-- Nothing to do -->
+										<?php } ?>
+										</fieldset><!-- /.fieldset -->
+							</div><!-- /.tab-pane -->
+						
 											<div class="tab-pane fade in" id="tab_2">
 												<fieldset>
 													<?php if($campaign->campaign_type != "SURVEY") { ?>
@@ -844,7 +844,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="col-sm-3 control-label"><?php $lh->translateText("next_agent_call"); ?>:</label>
+															<label class="col-sm-3 control-label"><?php $lh->translateText("next_agent_call");?>:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="next_agent_call" name="next_agent_call">
 																	<option value="RANDOM" <?php if(strtoupper($campaign->data->next_agent_call) == "RANDOM") echo "selected";?>>RANDOM</option>
@@ -852,7 +852,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																	<option value="OLDEST_CALL_FINISH" <?php if(strtoupper($campaign->data->next_agent_call) == "OLDEST_CALL_FINISH") echo "selected";?>>OLDEST CALL FINISH</option>
 																	<option value="OVERALL_USER_LEVEL" <?php if(strtoupper($campaign->data->next_agent_call) == "OVERALL_USER_LEVEL") echo "selected";?>>OVERALL USER LEVEL</option>
 																	<option value="FEWEST_CALLS" <?php if(strtoupper($campaign->data->next_agent_call) == "FEWEST_CALLS") echo "selected";?>>FEWEST CALLS</option>
-																	<option value="LONGEST_WAITING_TIME" <?php if(strtoupper($campaign->data->next_agent_call) == "LONGEST_WAITING_TIME") echo "selected";?>>LONGEST WAITING TIME</option>
+																	<option value="LONGEST_WAIT_TIME" <?php if(strtoupper($campaign->data->next_agent_call) == "LONGEST_WAIT_TIME") echo "selected";?>>LONGEST WAIT TIME</option>
 																</select>
 															</div>
 														</div>
