@@ -322,7 +322,7 @@
 	$users = $ui->API_goGetAllUserLists();
 	$user_groups = $ui->API_goGetUserGroupsList();
 	$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
-	$campaign = $ui->API_getListAllCampaigns();
+	$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
 	$voicemails = $ui->API_goGetVoiceMails();
 	$phones = $ui->API_getPhonesList();
 	$ivr = $ui->API_getIVR($_SESSION['usergroup']);
@@ -782,6 +782,7 @@
 															<div class="col-sm-8">
 																<select class="form-control" name="campaign_id_<?php echo $i;?>" style="width:100%;">
 																<?php
+																echo '<option value="">'.$lh->translationFor("-none-").'</option>';
 																	for($x=0;$x < count($campaign->campaign_id);$x++){
 																		echo "<option value=".$campaign->campaign_id[$x].">".$campaign->campaign_id[$x]." - ".$campaign->campaign_name[$x]."</option>";
 																	}

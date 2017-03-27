@@ -78,7 +78,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
                     </ol>
                 </section>
                 <?php
-				if($userrole == "9"){
+				if($_SESSION['level'] >= $userrole && $_SESSION['user'] !== "goautodial"){
 					echo "<br/><br/>";
 					print $ui->getUnauthotizedAccessMessage();
 				}else{

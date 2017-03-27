@@ -3285,9 +3285,12 @@ error_reporting(E_ERROR | E_PARSE);
 
 	$output = $this->API_goGetAllUserLists($user);
        if($output->result=="success") {
-		$checkbox_all = $this->getCheckAll("user");
+		$checkbox_all = $this->getCheckAll("user", $perm);
+		if($perm->user_delete !== 'N')
        	    $columns = array("     ", $checkbox_all,$this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
-	       $hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
+	    else
+		$columns = array("     ",$this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
+		   $hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 	       $hideOnLow = array($this->lh->translationFor("agent_id"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		
@@ -3314,16 +3317,18 @@ error_reporting(E_ERROR | E_PARSE);
 						$preFix = '';
 						$sufFix = '';
 					}
-					$checkbox = '<label for="'.$output->user_id[$i].'"><div class="checkbox c-checkbox"><label><input name="" class="check_user" id="'.$output->user_id[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
+					$checkbox = '<label for="'.$output->user_id[$i].'"'.($perm->user_delete === 'N' ? ' class="hidden"' : '').'><div class="checkbox c-checkbox"><label><input name="" class="check_user" id="'.$output->user_id[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
 					$result .= "<tr>
-							 <td style='width:5%;'>".$sessionAvatar."</a></td>
-							 <td style='width:10%;'>".$checkbox."</td>
-							 <td class='hide-on-low'>".$preFix."<strong>".$output->user[$i]."</strong>".$sufFix."</td>
-							 <td>".$output->full_name[$i]."</td>";
-					$result .="<td class=' hide-on-low hide-on-medium'>".$output->user_group[$i]."</td>
-							 <td class='hide-on-low hide-on-medium'>".$output->active[$i]."</td>
-							 <td nowrap>".$action."</td>
-							 </tr>";
+							 <td style='width:5%;'>".$sessionAvatar."</a></td>";
+					if($perm->user_delete !== 'N')
+					$result .= "<td style='width:10%;'>".$checkbox."</td>";
+					
+					$result .= "<td class='hide-on-low'>".$preFix."<strong>".$output->user[$i]."</strong>".$sufFix."</td>
+							<td>".$output->full_name[$i]."</td>
+							<td class=' hide-on-low hide-on-medium'>".$output->user_group[$i]."</td>
+							<td class='hide-on-low hide-on-medium'>".$output->active[$i]."</td>
+							<td nowrap style='width:16%;'>".$action."</td>
+							</tr>";
 				}
 
 	       // print suffix
@@ -3831,7 +3836,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	#### OLD PARAMS: $goUser, $goPass, $goAction, $responsetype
-	public function API_getListAllCampaigns($user_group = ''){
+	public function API_getListAllCampaigns($user_group){
 	    $url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -6253,7 +6258,7 @@ error_reporting(E_ERROR | E_PARSE);
 	
 	public function getCheckAll($action){
 		$return = '<div class="btn-group">
-						<div class="checkbox c-checkbox" style="margin-right: 0; margin-left: 0;">
+					<div class="checkbox c-checkbox" style="margin-right: 0; margin-left: 0;">
 							<label><input class="check-all_'.$action.'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label>
 						</div>
 						<div>

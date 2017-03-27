@@ -161,7 +161,7 @@
 	
 <!-- MODALS -->
 <?php
-	$output = $ui->API_goGetAllUserLists();
+	$output = $ui->API_goGetAllUserLists($_SESSION['user']);
 	$user_groups = $ui->API_goGetUserGroupsList();
 	$phones = $ui->API_getPhonesList();
 	$max = max($phones->extension);
@@ -536,10 +536,18 @@
 					"aaSorting": [[ 1, "asc" ]],
 					"aoColumnDefs": [{
 						"bSearchable": false,
+						<?php if($perm->user_delete !== 'N'){?>
 						"aTargets": [ 0, 1, 5 ]
+						<?php }else{ ?>
+						"aTargets": [ 0, 5 ]
+						<?php } ?>
 					},{
 						"bSortable": false,
+						<?php if($perm->user_delete !== 'N'){?>
 						"aTargets": [ 0, 1, 5 ]
+						<?php }else{ ?>
+						"aTargets": [ 0, 5 ]
+						<?php } ?>
 					}],
 					"bAutoWidth": false
 				});

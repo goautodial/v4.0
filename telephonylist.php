@@ -249,7 +249,9 @@
 												<thead>
 													<tr>
 													<th style="color: white;">Pic</th>
+													<?php if ($perm->list->list_delete !== 'N'){ ?>
 													<th><?php echo $checkbox_all;?></th>
+													<?php } ?>
 													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("list_id"); ?></th>
 													<th><?php $lh->translateText("name"); ?></th>
 													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("status"); ?></th>
@@ -275,7 +277,9 @@
 												?>
 												<tr>
 												<td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>
+												<?php if ($perm->list->list_delete !== 'N'){ ?>
 												<td style="width:10%;"><?php echo $checkbox;?></td>
+												<?php } ?>
 												<td class='hide-on-low'><strong>
 													<?php
 													if (($perm->list->list_update !== 'N' && !preg_match("/^(998|999)$/", $lists->list_id[$i]))) {
@@ -522,6 +526,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						<div class="col-sm-9 mb">
 							<select name="campaign_select" class="form-control">
 								<?php
+								echo '<option value="">'.$lh->translationFor("-none-").'</option>';
 									for($i=0; $i < count($campaign->campaign_id);$i++){
 										echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_name[$i]." </option>";
 									}
@@ -700,10 +705,18 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						"aaSorting": [[ 1, "asc" ]],
 						"aoColumnDefs": [{
 							"bSearchable": false,
+							<?php if($perm->list->list_delete !== 'N'){?>
 							"aTargets": [ 0, 1, 8 ]
+							<?php }else{ ?>
+							"aTargets": [ 0, 8 ]
+							<?php } ?>
 						},{
 							"bSortable": false,
+							<?php if($perm->list->list_delete !== 'N'){?>
 							"aTargets": [ 0, 1, 8 ]
+							<?php }else{ ?>
+							"aTargets": [ 0, 8 ]
+							<?php } ?>
 						}]
 					});
 					

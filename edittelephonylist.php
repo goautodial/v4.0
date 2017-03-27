@@ -1,13 +1,13 @@
 <?php
 
-	###################################################
-	### Name: edittelephonylist.php 				###
-	### Functions: Edit List Details 		  		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
-	###################################################
+	######################################################
+	### Name: edittelephonylist.php 		###
+	### Functions: Edit List Details 		###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016 		###
+	### Version: 4.0 		###
+	### Written by: Alexander Jim H. Abenoja 		###
+	### License: AGPLv2 		###
+	######################################################
 
 	require_once('./php/CRMDefaults.php');
 	require_once('./php/UIHandler.php');
@@ -86,7 +86,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 						<!-- standard custom edition form -->
 					<?php
 					$errormessage = NULL;
-					$campaign = $ui->API_getListAllCampaigns();
+					$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
 
 					//if(isset($extenid)) {
 						$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -158,7 +158,7 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 											<select class="form-control" name="campaign" id="campaign">
 											<?php
 												$campaign_option = NULL;
-
+												$campaign_option .= '<option value="">'.$lh->translationFor("-none-").'</option>';
 												for($a=0; $a < count($campaign->campaign_id);$a++){
 													if($campaign->campaign_id[$a] == $output->campaign_id[$i]){
 														echo "<option value='".$campaign->campaign_id[$a]."' selected> ".$campaign->campaign_name[$a]." </option>";

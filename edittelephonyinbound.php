@@ -1147,7 +1147,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 							$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
 							$calltimes = $ui->getCalltimes();
 							$ivr_options = $ui->API_getIVROptions($ivr);
-							$campaign = $ui->API_getListAllCampaigns();
+							$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
 							$voicemails = $ui->API_goGetVoiceMails();
 							$phones = $ui->API_getPhonesList();
 							$ivr = $ui->API_getIVR($_SESSION['usergroup']);
@@ -1463,7 +1463,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																				<div class="col-sm-8">
 																					<select class="form-control select2" name="campaign_id_<?php echo $i;?>" style="width:100%;">
 																					<?php
-																						$campaign_id_ingroup = '';
+																						$campaign_id_ingroup = '<option value="">'.$lh->translationFor("-none-").'</option>';
 																						for($x=0;$x < count($campaign->campaign_id);$x++){
 																							$campaign_id_ingroup .= '<option value="'.$campaign->campaign_id[$x].'"';
 																								if($explode_ingroup_context[3] == $campaign->campaign_id[$x]){$campaign_id_ingroup .= ' selected';}

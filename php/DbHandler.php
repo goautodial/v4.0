@@ -280,6 +280,7 @@ class DbHandler {
 			$password_hash = $userobj->pass;
 			$status = $userobj->active;
 			$user_role = $userobj->user_level;
+			$_SESSION['level'] = $userobj->user_level;
 			$bcrypt = $userobj->bcrypt;
 			$salt = $userobj->salt;
 			$cost = $userobj->cost;

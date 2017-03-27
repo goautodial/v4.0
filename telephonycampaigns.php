@@ -187,7 +187,9 @@
 										   <thead>
 											  <tr>
 												 <th style="color: white;">Pic</th>
+												 <?php if ($perm->campaign->campaign_delete !== 'N'){ ?>
 												 <th><?php echo $checkbox_all;?></th>
+												 <?php } ?>
 												 <th class='hide-on-medium hide-on-low' style='width:0px;'><?php $lh->translateText("campaign_id"); ?></th>
 												 <th><?php $lh->translateText("campaign_name"); ?></th>
 												 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("dial_method"); ?></th>
@@ -226,7 +228,9 @@
 											   	?>
 													<tr>
 														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
+														<?php if ($perm->campaign->campaign_delete !== 'N'){ ?>
 														<td style="width:10%;"><?php echo $checkbox;?></td>
+														<?php } ?>
 														<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'><?php echo $dial_method;?></td>
@@ -2210,10 +2214,18 @@
 						"aaSorting": [[ 1, "asc" ]],
 						"aoColumnDefs": [{
 							"bSearchable": false,
+							<?php if($perm->campaign->campaign_delete !== 'N'){?>
 							"aTargets": [ 0, 1, 5 ]
+							<?php }else{ ?>
+							"aTargets": [ 0, 5 ]
+							<?php } ?>
 						},{
 							"bSortable": false,
+							<?php if($perm->campaign->campaign_delete !== 'N'){?>
 							"aTargets": [ 0, 1, 5 ]
+							<?php }else{ ?>
+							"aTargets": [ 0, 5 ]
+							<?php } ?>
 						}]
 					});
 					$('#table_disposition').dataTable({
