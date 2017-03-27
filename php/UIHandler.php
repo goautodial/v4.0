@@ -1878,6 +1878,8 @@ error_reporting(E_ERROR | E_PARSE);
 			$modulesWithSettings = $mh->modulesWithSettings();
 			$adminArea = '<li class="treeview"><a href="#"><i class="fa fa-dashboard"></i> <span>'.$this->lh->translationFor("administration").'</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">';
+			
+			if($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI")
 			$adminArea .= $this->getSidebarItem("./adminsettings.php", "gears", $this->lh->translationFor("settings")); // admin settings
 			
 			//$adminArea .= $this->getSidebarItem("./telephonyusers.php", "user", $this->lh->translationFor("users")); // admin settings
