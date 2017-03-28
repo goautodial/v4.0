@@ -123,7 +123,8 @@ if($output->result == "success"){
 			    $agent_detail .= '<div class="table-responsive">
 					<table class="table table-striped table-bordered table-hover" id="agent_detail_login">
 						<thead>
-							<tr>';
+							<tr>
+								<th nowrap> &nbsp </th>';
 
 					            $agent_detail .= $output->getReports->sub_statusesTOP;
 				
