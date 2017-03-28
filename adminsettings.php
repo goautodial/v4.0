@@ -34,8 +34,7 @@
 	$user = \creamy\CreamyUser::currentUser();
 
 	//var_dump($user->getUserRole());
-	var_dump($_SESSION['user']);die();
-	if($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") {
+	if(!preg_match("/(goautodial|goAPI/", $_SESSION['user'])) {
 		header("location: index.php");
 	}
 ?>
