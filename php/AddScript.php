@@ -17,6 +17,7 @@ require_once('goCRMAPISettings.php');
 	$postfields["script_text"] 			= $_POST['script_text']; 
 	$postfields["active"] 				= $_POST['active'];
 	$postfields["user"]					= $_POST['script_user'];
+	$postfields["user_group"]			= $_POST['script_user_group'];
 	
 	$postfields["hostname"] 			= $_SERVER['REMOTE_ADDR']; 
 	$postfields["log_user"] 			= $_POST['log_user'];

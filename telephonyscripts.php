@@ -151,10 +151,10 @@
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group<?=($_SESSION['usergroup'] !== 'ADMIN' ? ' hidden' : '')?>">
 									<label class="col-sm-3 control-label" for="active"><?php $lh->translateText("user_group"); ?>: </label>
 									<div class="col-sm-8 mb">
-										<select name="user_group" class="form-control">
+										<select name="script_user_group" class="form-control">
 											<option value="" disabled selected> - - - <?php $lh->translateText('Select User Group'); ?> - - -</option>
 											<?php
 											if ($user_groups->result == 'success') {
@@ -163,7 +163,8 @@
 													if ($group == $_SESSION['usergroup']) {
 														$isSelected = ' selected';
 													}
-													echo '<option value="'.$group.'"'.$isSelected.'>'.$user_groups->group_name[$i].'</option>';
+													$group_name = (strlen($user_groups->group_name[$i]) > 0) ? $user_groups->group_name[$i] : $group;
+													echo '<option value="'.$group.'"'.$isSelected.'>'.$group_name.'</option>';
 												}
 											}
 											?>
