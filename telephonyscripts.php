@@ -154,11 +154,19 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="active"><?php $lh->translateText("user_group"); ?>: </label>
 									<div class="col-sm-8 mb">
-										<?php
-										var_dump($user_groups);
-										?>
 										<select name="user_group" class="form-control">
 											<option value="" disabled selected> - - - <?php $lh->translateText('Select User Group'); ?> - - -</option>
+											<?php
+											if ($user_groups->result == 'success') {
+												foreach ($user_groups->user_group as $i => $group) {
+													$isSelected = '';
+													if ($group == $_SESSION['usergroup']) {
+														$isSelected = ' selected';
+													}
+													echo '<option value="'.$group.'"'.$isSelected.'>'.$user_groups->group_name[$i].'</option>';
+												}
+											}
+											?>
 										</select>
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
