@@ -163,6 +163,9 @@
 				<div class="form-group<?=($_SESSION['usergroup'] !== 'ADMIN' ? ' hidden' : '')?>">
 					<label for="script_user_group" class="col-sm-2 control-label"><?php $lh->translateText("user_group"); ?>: </label>
 					<div class="col-sm-10 mb">
+						<?php
+						var_dump($output->user_group[$i]);
+						?>
 						<select class="form-control" name="script_user_group" id="script_user_group">
 							<option value="" disabled selected> - - - <?php $lh->translateText('Select User Group'); ?> - - -</option>
 							<?php
@@ -179,7 +182,6 @@
 							?>
 						</select>
 					</div>
-					<div class="col-sm-1">&nbsp;</div>
 				</div>
 				<div class="form-group">
 					<label for="script_text" class="col-sm-2 control-label"><?php $lh->translateText("script_text"); ?></label>
