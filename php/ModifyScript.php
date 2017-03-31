@@ -28,6 +28,11 @@ require_once('goCRMAPISettings.php');
                 $active = stripslashes($active);
         }
 
+        $script_user_group = NULL; if (isset($_POST["script_user_group"])) { 
+                $script_user_group = $_POST["script_user_group"]; 
+                $script_user_group = stripslashes($script_user_group);
+        }
+
         $url = gourl."/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"]           = goUser; #Username goes here. (required)
         $postfields["goPass"]           = goPass; #Password goes here. (required)
@@ -39,6 +44,7 @@ require_once('goCRMAPISettings.php');
         $postfields["script_comments"]  = $script_comments;
         $postfields["script_text"]      = $script_text;
         $postfields["active"]           = $active;
+        $postfields["user_group"]       = $script_user_group;
         
         $postfields["log_user"]         = $_POST['log_user'];
         $postfields["log_group"]        = $_POST['log_group'];
