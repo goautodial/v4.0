@@ -31,6 +31,8 @@ $statuses = $ui->API_ListsStatuses($modifyid);
 $timezones = $ui->API_ListsTimezone($modifyid);
 
 $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
+
+$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
 ?>
 <html>
     <head>
@@ -200,6 +202,17 @@ $perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
 										<div class="col-lg-9">
 											<select name="agent_script_override" class="form-control">
 												<option value="" selected="selected">NONE - INACTIVE</option>
+												<?php
+												if ($scripts->result == 'success') {
+													foreach($scripts->script_id as $x => $script) {
+														$isSelected = '';
+														if ($script == $output->agent_script_override[$i]) {
+															$isSelected = ' selected';
+														}
+														echo '<option value="'.$script.'"'.$isSelected.'>'.$scripts->script_name[$x].'</option>';
+													}
+												}
+												?>
 											</select>
 										</div>
 									</div>

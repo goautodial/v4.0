@@ -168,12 +168,12 @@
 							<?php
 							if ($user_groups->result == 'success') {
 								$myGroup = $output->user_group[$i];
-								foreach ($user_groups->user_group as $i => $group) {
+								foreach ($user_groups->user_group as $x => $group) {
 									$isSelected = '';
 									if ($group == $myGroup) {
 										$isSelected = ' selected';
 									}
-									$group_name = (strlen($user_groups->group_name[$i]) > 0) ? $user_groups->group_name[$i] : $group;
+									$group_name = (strlen($user_groups->group_name[$x]) > 0) ? $user_groups->group_name[$x] : $group;
 									echo '<option value="'.$group.'"'.$isSelected.'>'.$group_name.'</option>';
 								}
 							}
