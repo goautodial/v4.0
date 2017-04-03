@@ -5166,9 +5166,9 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
         }
         if (per_call_notes == 'ENABLED') {
             var test_notes = $("[name='call_notes_dispo']").val();
-            if (test_notes.length > 0)
-                {$(".formMain [name='call_notes']").val(test_notes);}
-            $("#PerCallNotesContent").html("<b><font size='3'><?=$lh->translationFor('call_notes')?>: </font></b><br /><textarea name='call_notes_dispo' id='call_notes_dispo' rows='2' class='form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin'>" + $(".formMain [name='call_notes']").val() + "</textarea><br>");
+            if (test_notes.length > 0 && test_notes !== '')
+                {$(".formMain textarea[name='call_notes']").val(test_notes);}
+            $("#PerCallNotesContent").html("<b><font size='3'><?=$lh->translationFor('call_notes')?>: </font></b><br /><textarea name='call_notes_dispo' id='call_notes_dispo' rows='2' class='form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin'>" + $(".formMain textarea[name='call_notes']").val() + "</textarea><br>");
         } else {
             $("#PerCallNotesContent").html("<input type='hidden' name='call_notes_dispo' id='call_notes_dispo' value='' />");
         }
@@ -5377,7 +5377,7 @@ function DispoSelectSubmit() {
                 $(".formMain input[name='audit_comments_button']").val('');
             }
             $(".formMain input[name='called_count']").val('');
-            $(".formMain [name='call_notes']").val('');
+            $(".formMain textarea[name='call_notes']").val('');
             $("[name='call_notes_dispo']").val('');
             $("#MainStatusSpan").html('&nbsp;');
             VDCL_group_id = '';
