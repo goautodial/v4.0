@@ -3080,6 +3080,7 @@ function CheckForIncoming () {
             EAalt_phone_count                           = this_VDIC_data.alt_phone_count;
             $(".formMain input[name='rank']").val(this_VDIC_data.rank);
             $(".formMain input[name='owner']").val(this_VDIC_data.owner);
+            $(".formMain textarea[name='comments']").val(this_VDIC_data.call_notes);
             script_recording_delay                      = this_VDIC_data.script_recording_delay;
             $(".formMain input[name='entry_list_id']").val(this_VDIC_data.entry_list_id);
             custom_field_names                          = this_VDIC_data.custom_field_names;
@@ -6378,6 +6379,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     source_id                               = thisVdata.source_id;
                     $(".formMain input[name='rank']").val(thisVdata.rank);
                     $(".formMain input[name='owner']").val(thisVdata.owner);
+                    $(".formMain textarea[name='call_notes']").val(thisVdata.call_notes).trigger('change');
                     Call_Script_ID                          = thisVdata.Call_Script_ID;
                     script_recording_delay                  = thisVdata.script_recording_delay;
                     Call_XC_a_Number                        = thisVdata.xferconf_a_number;
