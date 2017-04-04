@@ -23,6 +23,7 @@
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetRealtimeAgentsMonitoring"; #action performed by the [[API:Functions]]
+	$postfields["user"] = $_SESSION['user']; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; 
 
     $ch = curl_init();
@@ -64,7 +65,7 @@
         $vla_callerid = $value->vla_callerid;    
         $cust_phone = $value->vl_phone_number;
         $pausecode = $value->vla_pausecode;
-        
+		
         foreach ($output->callerids as $key => $callerids){
         
             $vac_callerid = $callerids->vac_callerid;        
@@ -224,5 +225,5 @@
     $barracks .= ']';
     
     echo json_encode($barracks);
-    
+    //print_r($output);
 ?>

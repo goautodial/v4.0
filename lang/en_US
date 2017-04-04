@@ -998,7 +998,7 @@ delete_script_success_msg = "Script has been deleted and can no longer be retrie
 edit_script = "Edit Script"
 modify_script = "MODIFY SCRIPT ID"
 edit_script_success = "Script Successfully Updated!"
-edit_script_msg = "Script is now updated. Clicking OK will redirect you to the script page"
+edit_script_success_msg = "Script is now updated. Clicking OK will redirect you to the script page"
 
 // INBOUND - telephonyinbound.php, edittelephonyinbound.php
 

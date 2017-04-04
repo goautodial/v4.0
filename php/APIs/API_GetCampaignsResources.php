@@ -9,11 +9,14 @@
     ####################################################
 
     require_once('../goCRMAPISettings.php');
+	require_once('../Session.php');
+	
     $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetCampaignsResources"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = responsetype; 
+    $postfields["responsetype"] = responsetype;
+	$postfields["user"] = $_SESSION['user']; #action performed by the [[API:Functions]]
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -27,24 +30,18 @@
     $output = json_decode($data);
 
     if (count($output->data) < 1){
-        echo   		                    '<div class="media-box">
-		                              <div class="pull-left">
-		                                 <span class="fa-stack">
-		                                    <em class="fa fa-circle fa-stack-2x text-success"></em>
-		                                    <em class="fa fa-clock-o fa-stack-1x fa-inverse text-white"></em>
-		                                 </span>
-		                              </div>
-		                              <div class="media-box-body clearfix">
-		                                 <small class="text-muted pull-right ml">150</small>
-		                                 <div class="media-box-heading"><a href="#" class="text-success m0">Sample Campaign</a>
-		                                 </div>
-		                                 <p class="m0">
-		                                    <small>On
-		                                       <em>10/12/2015 09:00 am</em>
-		                                    </small>
-		                                 </p>
-		                              </div>
-		                           </div>';
+        echo '<div class="media-box">
+				<div class="pull-left">
+				   <span class="fa-stack">
+					  <em class="fa fa-circle fa-stack-2x text-success"></em>
+					  <em class="fa fa-clock-o fa-stack-1x fa-inverse text-white"></em>
+				   </span>
+				</div>
+				<div class="media-box-body clearfix">
+				   <div class="media-box-heading"><a href="#" class="text-success m0">No Available Campaign</a>
+				   </div>
+				</div>
+			 </div>';
 
     } else {
   
@@ -68,47 +65,44 @@
             
                 $sessionAvatar = "<avatar username='$localcalltime' :size='32'></avatar>";
                 
-                    echo                            '<div class="media-box">
-                                                        <div class="pull-left">
-                                                            '.$sessionAvatar.'
-                                                        </div>                                                
-                                                            <div class="media-box-body clearfix">
-                                                                <small class="text-muted pull-right ml">'.$leadscount.'</small>
-                                                                <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
-                                                                </div>
-                                                                    <p class="m0">
-                                                                        <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
-                                                                        </small>
-                                                                    </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>';
-                                                    
+                    echo '<div class="media-box">
+							<div class="pull-left">
+								'.$sessionAvatar.'
+							</div>                                                
+								<div class="media-box-body clearfix">
+									<small class="text-muted pull-right ml">'.$leadscount.'</small>
+									<div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
+									</div>
+										<p class="m0">
+											<small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
+											</small>
+										</p>
+								</div>
+							</div>
+						</div>';
             }
             
             if ($leadscount > 0){ 
                 
                     $sessionAvatar = "<avatar username='$localcalltime' :size='32'></avatar>";
                     
-                    echo                            '<div class="media-box">
-                                                        <div class="pull-left">
-                                                            '.$sessionAvatar.'
-                                                        </div>                                                
-                                                            <div class="media-box-body clearfix">
-                                                                <small class="text-muted pull-right ml">'.$leadscount.'</small>
-                                                                <div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
-                                                                </div>
-                                                                    <p class="m0">
-                                                                        <small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
-                                                                        </small>
-                                                                    </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>';
-            }        
+                    echo '<div class="media-box">
+							<div class="pull-left">
+								'.$sessionAvatar.'
+							</div>                                                
+								<div class="media-box-body clearfix">
+									<small class="text-muted pull-right ml">'.$leadscount.'</small>
+									<div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
+									</div>
+										<p class="m0">
+											<small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
+											</small>
+										</p>
+								</div>
+							</div>
+						</div>';
+            }
         }
-        
     }
-    
     
 ?>

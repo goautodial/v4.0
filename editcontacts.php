@@ -21,32 +21,31 @@ $list_id_ct = $output->data->list_id;
 
 if ($list_id_ct != NULL) {
 	$first_name 	= $output->data->first_name;
-	$middle_initial = $output->data->middle_initial;
-	$last_name 		= $output->data->last_name;
-	
-	$email 			= $output->data->email;
+	$middle_initial 	= $output->data->middle_initial;
+	$last_name 	= $output->data->last_name;
+	$email 	= $output->data->email;
 	$phone_number 	= $output->data->phone_number;
-	$alt_phone 		= $output->data->alt_phone;
-	$address1 		= $output->data->address1;
-	$address2 		= $output->data->address2;
-	$address3 		= $output->data->address3;
-	$city 			= $output->data->city;
-	$state 			= $output->data->state;
-	$country 		= $output->data->country;
-	$gender 		= $output->data->gender;
+	$alt_phone 	= $output->data->alt_phone;
+	$address1 	= $output->data->address1;
+	$address2 	= $output->data->address2;
+	$address3 	= $output->data->address3;
+	$city 	= $output->data->city;
+	$state 	= $output->data->state;
+	$country 	= $output->data->country;
+	$postal_code	= $output->postal_code;
+	$gender 	= $output->data->gender;
 	$date_of_birth 	= $output->data->date_of_birth;
-	$comments 		= $output->data->comments;
-	$title 			= $output->data->title;
+	$comments 	= $output->data->comments;
+	$title 	= $output->data->title;
 	$call_count 	= $output->data->call_count;
-	$last_local_call_time = $output->data->last_local_call_time;
-	$is_customer	= $output->is_customer;
+	$last_local_call_time 	= $output->data->last_local_call_time;
+	$is_customer 	= $output->is_customer;
 }
-	$fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
-	$date_of_birth = date('m/d/Y', strtotime($date_of_birth));
-	//var_dump($output);
-	 $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
-	 									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
-
+	$fullname 			= $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
+	$date_of_birth 			= date('m/d/Y', strtotime($date_of_birth));
+	
+	$output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
+	
 	$avatarHash = md5( strtolower( trim( $user->getUserId() ) ) );
 	$avatarURL50 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=50&default=wavatar";
 	$avatarURL96 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=wavatar";

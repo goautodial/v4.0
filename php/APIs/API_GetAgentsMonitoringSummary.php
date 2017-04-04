@@ -23,6 +23,7 @@
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetAgentsMonitoringSummary"; #action performed by the [[API:Functions]]
+	$postfields["user"] = $_SESSION['user']; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; 
 
     $ch = curl_init();
