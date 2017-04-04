@@ -3080,6 +3080,7 @@ function CheckForIncoming () {
             EAalt_phone_count                           = this_VDIC_data.alt_phone_count;
             $(".formMain input[name='rank']").val(this_VDIC_data.rank);
             $(".formMain input[name='owner']").val(this_VDIC_data.owner);
+            $(".formMain textarea[name='comments']").val(this_VDIC_data.call_notes);
             script_recording_delay                      = this_VDIC_data.script_recording_delay;
             $(".formMain input[name='entry_list_id']").val(this_VDIC_data.entry_list_id);
             custom_field_names                          = this_VDIC_data.custom_field_names;
@@ -5166,9 +5167,9 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
         }
         if (per_call_notes == 'ENABLED') {
             var test_notes = $("[name='call_notes_dispo']").val();
-            if (test_notes.length > 0)
-                {$(".formMain [name='call_notes']").val(test_notes);}
-            $("#PerCallNotesContent").html("<b><font size='3'><?=$lh->translationFor('call_notes')?>: </font></b><br /><textarea name='call_notes_dispo' id='call_notes_dispo' rows='2' class='form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin'>" + $(".formMain [name='call_notes']").val() + "</textarea><br>");
+            if (test_notes.length > 0 && test_notes !== '')
+                {$(".formMain textarea[name='call_notes']").val(test_notes);}
+            $("#PerCallNotesContent").html("<b><font size='3'><?=$lh->translationFor('call_notes')?>: </font></b><br /><textarea name='call_notes_dispo' id='call_notes_dispo' rows='2' class='form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin'>" + $(".formMain textarea[name='call_notes']").val() + "</textarea><br>");
         } else {
             $("#PerCallNotesContent").html("<input type='hidden' name='call_notes_dispo' id='call_notes_dispo' value='' />");
         }
@@ -5377,7 +5378,7 @@ function DispoSelectSubmit() {
                 $(".formMain input[name='audit_comments_button']").val('');
             }
             $(".formMain input[name='called_count']").val('');
-            $(".formMain [name='call_notes']").val('');
+            $(".formMain textarea[name='call_notes']").val('');
             $("[name='call_notes_dispo']").val('');
             $("#MainStatusSpan").html('&nbsp;');
             VDCL_group_id = '';
@@ -6378,6 +6379,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     source_id                               = thisVdata.source_id;
                     $(".formMain input[name='rank']").val(thisVdata.rank);
                     $(".formMain input[name='owner']").val(thisVdata.owner);
+                    $(".formMain textarea[name='call_notes']").val(thisVdata.call_notes).trigger('change');
                     Call_Script_ID                          = thisVdata.Call_Script_ID;
                     script_recording_delay                  = thisVdata.script_recording_delay;
                     Call_XC_a_Number                        = thisVdata.xferconf_a_number;
