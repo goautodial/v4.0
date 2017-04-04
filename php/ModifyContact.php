@@ -20,6 +20,7 @@ $address3 	= $_POST['address3'];
 $city  = $_POST['city'];
 $state = $_POST['state'];
 $title = $_POST['title'];
+$dispo = $_POST['dispo'];
 $is_customer = (isset($_POST['is_customer'])) ? $_POST['is_customer'] : false;
 $user_id = $_POST['user_id'];
 
@@ -111,6 +112,12 @@ $user_id = $_POST['user_id'];
 		$gender = $_POST["gender"]; 
 		$gender = stripslashes($gender);
 	}
+	
+	// dispo
+	$dispo = NULL; if (isset($_POST["dispo"])) { 
+		$dispo = $_POST["dispo"]; 
+		$dispo = stripslashes($dispo);
+	}
 
 	// comments
 	$comments = NULL; if (isset($_POST["comments"])) { 
@@ -133,25 +140,27 @@ $user_id = $_POST['user_id'];
     $postfields["goAction"] = "goEditLeads"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; #json (required)
 	
-	$postfields["lead_id"] 			= $lead_id; #Desired value for user (required)
-	$postfields["first_name"] 		= $first_name; #Desired value for user (required)
-	$postfields["middle_initial"] 	= $middle_initial; #Desired value for user (required)
-	$postfields["last_name"] 		= $last_name; #Desired value for user (required)
-	$postfields["gender"] 			= $gender; #Desired value for user (required)
-	$postfields["email"] 			= $email; #Desired value for user (required)
-	$postfields["phone_number"] 	= $phone_number; #Desired value for user (required)
-	$postfields["alt_phone"] 		= $alt_phone; #Desired value for user (required)
-	$postfields["address1"]			= $address1; #Desired value for user (required)
-	$postfields["address2"] 		= $address2; #Desired value for user (required)
-	$postfields["address3"] 		= $address3; #Desired value for user (required)
-	$postfields["city"] 			= $city; #Desired value for user (required)
-	$postfields["province"] 		= $province; #Desired value for user (required)
-	$postfields["postal_code"] 		= $postal_code; #Desired value for user (required)
-	$postfields["country_code"] 	= $country; #Desired value for user (required)
-	$postfields["date_of_birth"] 	= $date_of_birth; #Desired value for user (required)
-	$postfields["title"] 			= $title; #Desired value for user (required)
+	$postfields["lead_id"] 	= $lead_id; 
+	$postfields["first_name"] 	= $first_name; 
+	$postfields["middle_initial"] 	= $middle_initial; 
+	$postfields["last_name"] 	= $last_name; 
+	$postfields["gender"] 	= $gender; 
+	$postfields["email"] 	= $email; 
+	$postfields["phone_number"] 	= $phone_number; 
+	$postfields["alt_phone"] 	= $alt_phone; 
+	$postfields["address1"]	= $address1; 
+	$postfields["address2"] 	= $address2; 
+	$postfields["address3"] 	= $address3; 
+	$postfields["city"] 	= $city; 
+	$postfields["province"] 	= $province; 
+	$postfields["postal_code"] 	= $postal_code; 
+	$postfields["country_code"] 	= $country; 
+	$postfields["date_of_birth"] 	= $date_of_birth; 
+	$postfields["title"] 	= $title; 
+	$postfields["status"] 	= $dispo; 
+	
 	$postfields["is_customer"]		= ($is_customer) ? 1 : 0;
-	$postfields["user_id"]			= $user_id;
+	$postfields["user_id"]		= $user_id;
 	
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["log_user"] = $_POST['log_user'];

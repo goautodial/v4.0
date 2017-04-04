@@ -31,8 +31,8 @@ if ($list_id_ct != NULL) {
 	$address3 	= $output->data->address3;
 	$city 	= $output->data->city;
 	$state 	= $output->data->state;
-	$country 	= $output->data->country;
-	$postal_code	= $output->postal_code;
+	$country 	= $output->data->country_code;
+	$postal_code	= $output->data->postal_code;
 	$gender 	= $output->data->gender;
 	$date_of_birth 	= $output->data->date_of_birth;
 	$comments 	= $output->data->comments;
@@ -43,8 +43,8 @@ if ($list_id_ct != NULL) {
 }
 	$fullname 			= $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
 	$date_of_birth 			= date('m/d/Y', strtotime($date_of_birth));
-	
 	$output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
+	$disposition = $ui->API_getAllDispositions();
 	
 	$avatarHash = md5( strtolower( trim( $user->getUserId() ) ) );
 	$avatarURL50 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=50&default=wavatar";
@@ -515,7 +515,21 @@ if ($list_id_ct != NULL) {
 														<label for="date_of_birth"><?php $lh->translateText("date_of_birth"); ?></label>
 													</div>
 												</div>
-											</div><!-- /.gender & title -->                   
+											</div><!-- /.gender & title -->
+											
+											<div class="mda-form-group label-floating">
+												<select name="dispo" id="dispo" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select" >
+													<option value=""><?php $lh->translateText("-none-"); ?></option>
+													<?php
+														for($a=0; $a<count($disposition->status); $a++){
+													?>
+														<option value="<?php echo $disposition->status[$a];?>" <?php if($disposition->status[$a] === $output->data-> status) echo "selected";?>><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
+													<?php
+														}
+													?>
+												</select>
+												<label for="gender"><?php $lh->translateText("disposition"); ?></label>
+											</div><!-- /.dispo -->
 										</form>
 									<br/>
 
@@ -634,7 +648,7 @@ if ($list_id_ct != NULL) {
 
 				$("#submit_edit_form").click(function(){
 				//alert("User Created!");
-					$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+					$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 					$('#submit_edit_form').prop("disabled", true);
 
 					var validate = 0;
@@ -655,11 +669,11 @@ if ($list_id_ct != NULL) {
 									  // console.log(data);
 										if(data == 1){
 											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("contact_update_success"); ?>",type: "success"},function(){location.reload();});
-											$('#update_button').html("<i class='fa fa-check'></i> Update");
+											$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 											$('#submit_edit_form').prop("disabled", false);
 										}else{
 											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
-											$('#update_button').html("<i class='fa fa-check'></i> Update");
+											$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 											$('#submit_edit_form').prop("disabled", false);
 										}
 									}
