@@ -21,7 +21,7 @@
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetTotalAgentsPaused"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype;
-    $postfields["user"] = $_SESSION['user']; #current user
+    $postfields["session_user"] = $_SESSION['user']; #current user
 	
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

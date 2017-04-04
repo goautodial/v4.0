@@ -22,7 +22,8 @@
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetCampaignsResources"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = responsetype; 
+    $postfields["responsetype"] = responsetype;
+	$postfields["session_user"] = $_SESSION['user']; #current user
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
