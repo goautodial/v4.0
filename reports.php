@@ -5,6 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);*/
 ini_set('memory_limit', '2048M');
 require_once('php/goCRMAPISettings.php');
+include('./php/Session.php');
 
 $pageTitle = $_POST['pageTitle'];
 $log_user = $_POST['log_user'];
@@ -15,7 +16,7 @@ $log_group = $_POST['log_group'];
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetReports"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
-		
+		$postfields["session_user"] = $_SESSION['user']; #json. (required)
 		$postfields["log_user"] = $log_user;
 		$postfields["log_group"] = $log_group;
 		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
@@ -1033,7 +1034,7 @@ if($output->result == "success"){
 			$postfields["goPass"] = goPass; #Password goes here. (required)
 			$postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
 			$postfields["responsetype"] = responsetype; #json. (required)
-	
+			$postfields["user_group"] = $_SESSION['usergroup'];
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -1050,7 +1051,7 @@ if($output->result == "success"){
 			$postfields["goPass"] = goPass; #Password goes here. (required)
 			$postfields["goAction"] = "goGetAllInboundList"; #action performed by the [[API:Functions]]. (required)
 			$postfields["responsetype"] = responsetype; #json. (required)
-	
+			$postfields["user_group"] = $_SESSION['usergroup'];
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -1067,7 +1068,7 @@ if($output->result == "success"){
 			$postfields["goPass"] = goPass; #Password goes here. (required)
 			$postfields["goAction"] = "goGetAllLists"; #action performed by the [[API:Functions]]. (required)
 			$postfields["responsetype"] = responsetype; #json. (required)
-	
+			$postfields["user_group"] = $_SESSION['usergroup'];
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);

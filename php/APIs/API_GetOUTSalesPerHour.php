@@ -1,16 +1,18 @@
 <?php
 require_once('../goCRMAPISettings.php');
+require_once('../Session.php');
 /*
 * Displaying OUT Sales / Hour
 * [[API: Function]] - goGetOutSalesPerHour
 * This application is used to get OUT sales per hour.
 */
 
-   $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-   $postfields["goUser"] = goUser; #Username goes here. (required)
-   $postfields["goPass"] = goPass;
-   $postfields["goAction"] = "goGetOutSalesPerHour"; #action performed by the [[API:Functions]]
-
+	$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+	$postfields["goUser"] = goUser; #Username goes here. (required)
+	$postfields["goPass"] = goPass;
+	$postfields["goAction"] = "goGetOutSalesPerHour"; #action performed by the [[API:Functions]]
+	$postfields["session_user"] = $_SESSION['user']; #current user
+	
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -30,9 +32,9 @@ require_once('../goCRMAPISettings.php');
     if ($results["result"]=="success") {
       # Result was OK!
       //var_dump($results); #to see the returned arrays.
-           echo $results["OutSalesPerHour"];
+        echo $results;
     } else {
       # An error occurred
-      echo 0;
+		echo $results;
     }
 ?>

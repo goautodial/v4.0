@@ -29,7 +29,7 @@ $user = \creamy\CreamyUser::currentUser();
     $agent = "";
   }
   
-    $output = $ui->getListAllRecordings($search, $start, $end, $agent);
+    $output = $ui->getListAllRecordings($search, $start, $end, $agent, $_SESSION['user']);
   
   echo $output;  
 

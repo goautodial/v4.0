@@ -1,5 +1,6 @@
 <?php
 require_once('../goCRMAPISettings.php');
+require_once('../Session.php');
 /*
 * Displaying Live Outbound
 * [[API: Function]] - goGetLiveOutbound
@@ -10,6 +11,7 @@ $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 $postfields["goUser"] = goUser; #Username goes here. (required)
 $postfields["goPass"] = goPass;
 $postfields["goAction"] = "goGetLiveOutbound"; #action performed by the [[API:Functions]]
+$postfields["session_user"] = $_SESSION['user']; #current user
 
  $ch = curl_init();
  curl_setopt($ch, CURLOPT_URL, $url);

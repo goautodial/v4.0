@@ -9,6 +9,7 @@
     ####################################################
     
     require_once('../goCRMAPISettings.php');
+	require_once('../Session.php');
     /*
     * Displaying Total Answered Calls
     * [[API: Function]] - goGetTotalAnsweredCalls
@@ -20,7 +21,8 @@
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetTotalAnsweredCalls"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype;
-    
+    $postfields["session_user"] = $_SESSION['user']; #current user
+	
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -39,5 +41,5 @@
     }
         
     echo number_format($total_answered_calls); 
-
+	//var_dump($output);
 ?>

@@ -9,6 +9,7 @@
     ####################################################
     
     require_once('../goCRMAPISettings.php');
+	require_once('../Session.php');
     /*
     * Displaying Call(s) Ringing
     * [[API: Function]] - goGetRingingCall
@@ -20,7 +21,8 @@
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetRingingCalls"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype;
-    
+    $postfields["user"] = $_SESSION['user']; #current user
+	
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_POST, 1);

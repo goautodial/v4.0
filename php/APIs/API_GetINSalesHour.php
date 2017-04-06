@@ -1,5 +1,6 @@
 <?php
 require_once('../goCRMAPISettings.php');
+require_once('../Session.php');
 /*
     * Displaying in Sales / Hour
     * [[API: Function]] - goGetINSalesHour
@@ -10,7 +11,8 @@ require_once('../goCRMAPISettings.php');
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass;
     $postfields["goAction"] = "goGetINSalesHour"; #action performed by the [[API:Functions]]
-    
+    $postfields["session_user"] = $_SESSION['user']; #current user
+	
      $ch = curl_init();
      curl_setopt($ch, CURLOPT_URL, $url);
      curl_setopt($ch, CURLOPT_POST, 1);

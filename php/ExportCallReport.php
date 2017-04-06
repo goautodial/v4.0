@@ -19,21 +19,21 @@ error_reporting(E_ALL);
     }*/
     
     require_once('./goCRMAPISettings.php');
-	
+	include('./Session.php');
     $url = gourl."/goReports/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goGetReports"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["pageTitle"] = "call_export_report";
-	
+	$postfields["session_user"] = $_SESSION['user']; #json. (required)
 	$postfields["log_user"] = $_POST['log_user'];
 	$postfields["log_group"] = $_POST['log_group'];
 	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 	
     if(isset($_POST['campaigns']) && $_POST['campaigns'] != NULL){
 		$campaigns = $_POST['campaigns'];
-		$campaigns = implode(" ", $campaigns);
+		$campaigns = implode(",", $campaigns);
 		$postfields["campaigns"] = $campaigns;
 	}else{
 		$postfields["campaigns"] = "";
@@ -41,7 +41,7 @@ error_reporting(E_ALL);
     
     if(isset($_POST['inbounds']) && $_POST['inbounds'] != NULL){
 		$inbounds = $_POST['inbounds'];
-		$inbounds = implode(" ", $inbounds);
+		$inbounds = implode(",", $inbounds);
 		$postfields["inbounds"] = $inbounds;
 	}else{
 		$postfields["inbounds"] = "";
@@ -49,7 +49,7 @@ error_reporting(E_ALL);
     
     if(isset($_POST['lists']) && $_POST['lists'] != NULL){
 		$lists = $_POST['lists'];
-		$lists = implode(" ", $lists);
+		$lists = implode(",", $lists);
 		$postfields["lists"] = $lists;
 	}else{
 		$postfields["lists"] = "";
@@ -57,7 +57,7 @@ error_reporting(E_ALL);
     
     if(isset($_POST['statuses']) && $_POST['statuses'] != NULL){
 		$statuses = $_POST['statuses'];
-		$statuses = implode(" ", $statuses);
+		$statuses = implode(",", $statuses);
 		$postfields["statuses"] = $statuses;
 	}else{
 		$postfields["statuses"] = "";

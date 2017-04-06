@@ -31,6 +31,7 @@ require_once('LanguageHandler.php');
 require_once('CRMUtils.php');
 require_once('ModuleHandler.php');
 require_once('goCRMAPISettings.php');
+require_once('Session.php');
 
 // constants
 define ('CRM_UI_DEFAULT_RESULT_MESSAGE_TAG', "resultmessage");
@@ -3229,7 +3230,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAllUserLists"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["user"] = $user; #json. (required)
+		$postfields["user"] = $_SESSION['user']; #json. (required)
 		
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);
@@ -3841,7 +3842,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
-		 $postfields["user_group"] = $user_group;
+		$postfields["user_group"] = $_SESSION['usergroup'];
 	    $postfields["responsetype"] = responsetype; #json. (required)
 
 	    $ch = curl_init();
@@ -3908,16 +3909,18 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 	public function API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter){
+		
 		$url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
 	    $postfields["requestDataPhone"] = $search_phone;
-		 $postfields["log_user"] = $_SESSION['user'];
-		 $postfields["log_group"] = $_SESSION['usergroup'];
-		 $postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
-
+		$postfields["log_user"] = $_SESSION['user'];
+		$postfields["session_user"] = $_SESSION['user'];
+		$postfields["log_group"] = $_SESSION['usergroup'];
+		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
+		
 	    if(isset($start_filterdate))
 	    $postfields["start_filterdate"] = $start_filterdate;
 
@@ -3938,8 +3941,8 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter){
-	    $output = $this->API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter);
+	public function getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter, $session_user){
+	    $output = $this->API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter, $_SESSION['user']);
 
 	    if ($output->result=="success") {
 
@@ -4784,39 +4787,38 @@ error_reporting(E_ERROR | E_PARSE);
 			 * [[API: Function]] - goGetTotalSales
 			 * This application is used to get total number of total sales.
 			*/
-
-			public function API_goGetTotalSales() {
-				$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-				$postfields["goUser"] = goUser; #Username goes here. (required)
-				$postfields["goPass"] = goPass;
-				$postfields["goAction"] = "goGetTotalSales"; #action performed by the [[API:Functions]]
-
-				 $ch = curl_init();
-				 curl_setopt($ch, CURLOPT_URL, $url);
-				 curl_setopt($ch, CURLOPT_POST, 1);
-				 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-				 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-				 $data = curl_exec($ch);
-				 curl_close($ch);
-
-				//var_dump($data);
-				 $data = explode(";",$data);
-				 foreach ($data AS $temp) {
-				   $temp = explode("=",$temp);
-				   $results[$temp[0]] = $temp[1];
-				 }
-
-				 if ($results["result"]=="success") {
-				   # Result was OK!
-				   //var_dump($results); #to see the returned arrays.
-						return $results["getTotalSales"];
-				 } else {
-				   # An error occurred
-						$vars = 0;
-						return $vars;
-			 }
-
+		public function API_goGetTotalSales($session_user) {
+			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; #Username goes here. (required)
+			$postfields["goPass"] = goPass;
+			$postfields["goAction"] = "goGetTotalSales"; #action performed by the [[API:Functions]]
+			$postfields["session_user"] = $session_user; #current user
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			$output = json_decode($data);
+			//var_dump($data);
+			/*$data = explode(";",$data);
+			foreach ($data AS $temp) {
+			  $temp = explode("=",$temp);
+			  $results[$temp[0]] = $temp[1];
+			}
+			if ($results["result"]=="success") {
+			  # Result was OK!
+			  //var_dump($results); #to see the returned arrays.
+				return $results["getTotalSales"];
+			} else {
+			  # An error occurred
+				$vars = 0;
+				return $vars;
+			}*/
+			return $output;
 		}
 
 		/*
@@ -4824,37 +4826,38 @@ error_reporting(E_ERROR | E_PARSE);
 		 * [[API: Function]] - goGetINSalesHour
 		 * This application is used to get total number of in Sales per hour
 		*/
-		public function API_goGetINSalesPerHour() {
+		public function API_goGetINSalesPerHour($session_user) {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetINSalesPerHour"; #action performed by the [[API:Functions]]
-
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+			$postfields["session_user"] = $session_user; #current user
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 
 			//var_dump($data);
-			 $data = explode(";",$data);
-			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			 }
+			$data = explode(";",$data);
+			foreach ($data AS $temp) {
+			  $temp = explode("=",$temp);
+			  $results[$temp[0]] = $temp[1];
+			}
 
-			 if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["getINSalesPerHour"];
-			 } else {
-			   # An error occurred
-					$vars = 0;
-					return $vars;
-			 }
+			if ($results["result"]=="success") {
+			  # Result was OK!
+			  //var_dump($results); #to see the returned arrays.
+				   return $results["getINSalesPerHour"];
+			} else {
+			  # An error occurred
+				   $vars = 0;
+				   return $vars;
+			}
 
 		}
 
@@ -4864,20 +4867,21 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get OUT sales per hour.
 		*/
 
-		public function API_goGetOUTSalesPerHour(){
+		public function API_goGetOUTSalesPerHour($session_user){
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetOutSalesPerHour"; #action performed by the [[API:Functions]]
-
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
+			$postfields["session_user"] = $session_user; #current user
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
 
 			//var_dump($data);
 			 $data = explode(";",$data);
@@ -4889,11 +4893,11 @@ error_reporting(E_ERROR | E_PARSE);
 			 if ($results["result"]=="success") {
 			   # Result was OK!
 			   //var_dump($results); #to see the returned arrays.
-					return $results["getOutSalesPerHour"];
+				return $results["getOutSalesPerHour"];
 			 } else {
 			   # An error occurred
-					$vars = 0;
-					return $vars;
+				$vars = 0;
+				return $vars;
 			 }
 		}
 		
@@ -4902,12 +4906,12 @@ error_reporting(E_ERROR | E_PARSE);
 		 * [[API: Function]] - goGetTotalInboundSales
 		 * This application is used to get total number of inbound sales
 		*/
-		public function API_goGetInboundSales() {
+		public function API_goGetInboundSales($session_user) {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalInboundSales"; #action performed by the [[API:Functions]]
-
+			$postfields["session_user"] = $session_user; #current user
 			 $ch = curl_init();
 			 curl_setopt($ch, CURLOPT_URL, $url);
 			 curl_setopt($ch, CURLOPT_POST, 1);
@@ -4941,38 +4945,36 @@ error_reporting(E_ERROR | E_PARSE);
 		 * [[API: Function]] - goGetTotalOutboundSales
 		 * This application is used to get total number of outbound sales
 		*/
-		public function API_goGetOutboundSales() {
+		public function API_goGetOutboundSales($session_user) {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalOutboundSales"; #action performed by the [[API:Functions]]
+			$postfields["session_user"] = $session_user; #current user
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			
+			$data = explode(";",$data);
+			foreach ($data AS $temp) {
+			  $temp = explode("=",$temp);
+			  $results[$temp[0]] = $temp[1];
+			}
 
-			 $ch = curl_init();
-			 curl_setopt($ch, CURLOPT_URL, $url);
-			 curl_setopt($ch, CURLOPT_POST, 1);
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			 $data = curl_exec($ch);
-			 curl_close($ch);
-
-			//var_dump($data);
-			 $data = explode(";",$data);
-			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
-			   $results[$temp[0]] = $temp[1];
-			 }
-
-			 if ($results["result"]=="success") {
-			   # Result was OK!
-			   //var_dump($results); #to see the returned arrays.
-					return $results["OutboundSales"];
-			 } else {
-			   # An error occurred
-					$vars = 0;
-					return $vars;
-			 }
-
+			if ($results["result"]=="success") {
+			  # Result was OK!
+			  //var_dump($results); #to see the returned arrays.
+				   return $results["OutboundSales"];
+			} else {
+			  # An error occurred
+				   $vars = 0;
+				   return $vars;
+			}
 		}
 
 		/*
@@ -5299,12 +5301,13 @@ error_reporting(E_ERROR | E_PARSE);
 			return $output;
 		}
 
-		public function API_goGetIncomingQueue() {
+		public function API_goGetIncomingQueue($session_user) {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetIncomingQueue"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
+			$postfields["session_user"] = $session_user; #current user
 			
             $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
@@ -5373,12 +5376,13 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get total calls.
 		*/
 
-		public function API_goGetTotalDroppedCalls(){
+		public function API_goGetTotalDroppedCalls($session_use){
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalDroppedCalls"; #action performed by the [[API:Functions]]
-			$postfields["responsetype"] = responsetype;
+			$postfields["session_user"] = $session_user; #current user
+			
             $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5421,12 +5425,13 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get calls per hour.
 		*/
 
-		public function API_goGetCallsPerHour() {
+		public function API_goGetCallsPerHour($session_user) {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetCallsPerHour"; #action performed by the [[API:Functions]]
-
+			$postfields["session_user"] = $session_user; #action performed by the [[API:Functions]]
+			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);

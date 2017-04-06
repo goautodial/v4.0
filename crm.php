@@ -156,8 +156,8 @@ $leads = $ui->API_GetLeads($_SESSION['user']);
 </div><!-- /.panel -->
 </div><!-- /.col-lg-9 -->
 <?php
-$lists = $ui->API_goGetAllLists();
-$agents = $ui->API_goGetAllUserLists();
+$lists = $ui->API_goGetAllLists($_SESSION['user']);
+$agents = $ui->API_goGetAllUserLists($_SESSION['user']);
 $disposition = $ui->API_getAllDispositions();
 ?>
 	               		<div class="col-lg-3">

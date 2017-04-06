@@ -219,6 +219,7 @@
 				** API to get data of tables
 				****/
 				$lists = $ui->API_goGetAllLists($_SESSION['usergroup']);
+				//var_dump($lists);
 		?>
                 	<div class="row">
                         <div class="col-lg-<?=($perm->list->list_upload === 'N' ? '12' : '9')?>">
@@ -244,7 +245,7 @@
 									<!-- Tab panes-->
 									<div class="tab-content bg-white">
 										<!--==== List ====-->
-										<div id="list_tab" role="tabpanel" class="tab-pane active">
+										<div id="list_tab" role="tabpanel" class="tab-pane active table-responsive">
 											<table class="table table-striped table-bordered table-hover" id="table_lists">
 												<thead>
 													<tr>
@@ -458,20 +459,21 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	* APIs for add form
 	*/
 	$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
-	$max_list = max($lists->list_id);
-	$min_list = min($lists->list_id);
+	//$max_list = max($lists->list_id);
+	//$min_list = min($lists->list_id);
+	//
+	//if($max_list >= 99999999){
+	//	for($i=1;$i < $max_list;$i++){
+	//		if(!in_array($i, $lists->list_id)){
+	//			$next_list = $i;
+	//			$i = $max_list;
+	//		}
+	//	}
+	//}else{
+	//	$next_list = $max_list + 1;
+	//}
 	
-	if($max_list >= 99999999){
-		for($i=1;$i < $max_list;$i++){
-			if(!in_array($i, $lists->list_id)){
-				$next_list = $i;
-				$i = $max_list;
-			}
-		}
-	}else{
-		$next_list = $max_list + 1;
-	}
-	$next_listname = "ListID ".$next_list;
+	$next_listname = "ListID ".$lists->next_listID;
 	$datenow = date("j-n-Y");
 	$next_listdesc = "Auto-generated - ListID - ".$datenow;
 ?>
@@ -506,7 +508,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					<div class="form-group">
 						<label class="col-sm-3 control-label" for="add_list_id"><?php $lh->translateText("list_id"); ?>:</label>
 						<div class="col-sm-9 mb">
-							<input type="number" class="form-control" name="add_list_id" id="add_list_id" placeholder="<?php $lh->translateText("list_id"); ?>" value="<?php echo $next_list;?>" minlength="1" maxlength="8" disabled required/>
+							<input type="number" class="form-control" name="add_list_id" id="add_list_id" placeholder="<?php $lh->translateText("list_id"); ?>" value="<?php echo $lists->next_listID;?>" minlength="1" maxlength="8" disabled required/>
 						</div>
 					</div>
 					<div class="form-group">
@@ -708,14 +710,14 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							<?php if($perm->list->list_delete !== 'N'){?>
 							"aTargets": [ 0, 1, 8 ]
 							<?php }else{ ?>
-							"aTargets": [ 0, 8 ]
+							"aTargets": [ 0, 7 ]
 							<?php } ?>
 						},{
 							"bSortable": false,
 							<?php if($perm->list->list_delete !== 'N'){?>
 							"aTargets": [ 0, 1, 8 ]
 							<?php }else{ ?>
-							"aTargets": [ 0, 8 ]
+							"aTargets": [ 0, 7 ]
 							<?php } ?>
 						}]
 					});

@@ -99,6 +99,7 @@
 				<?php
 				if ($perm->recordings_display !== 'N') {
 				$callrecs = $ui->API_getListAllRecordings();
+				//var_dump($callrecs);
 				?>
                 	<div class="row">
 		<div class="col-lg-9">
@@ -167,7 +168,7 @@
 		</div><!-- /.panel -->
 	</div><!-- /.col-lg-9 -->
 <?php
-$agents = $ui->API_goGetAllUserLists();
+$agents = $ui->API_goGetAllUserLists($_SESSION['user']);
 ?>
 	               		<div class="col-lg-3">
 	           				<h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>

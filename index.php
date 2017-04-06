@@ -77,19 +77,19 @@ error_reporting(E_ALL)
 	/*
 	 * API for call statistics - Demian
 	*/
-		$dropped_calls_today = $ui->API_goGetTotalDroppedCalls();
-		$calls_incoming_queue = $ui->API_goGetIncomingQueue();
-		$callsperhour = $ui->API_goGetCallsPerHour();
+		$dropped_calls_today = $ui->API_goGetTotalDroppedCalls($_SESSION['user']);
+		$calls_incoming_queue = $ui->API_goGetIncomingQueue($_SESSION['user']);
+		$callsperhour = $ui->API_goGetCallsPerHour($_SESSION['user']);
 		$max = 0;
 		$callsperhour = explode(";",trim($callsperhour, ';'));
 		
 	/* Sales */
-		$totalSales = $ui->API_goGetTotalSales();
-		$inboundSales =  $ui->API_goGetInboundSales();
-		$outboundSales = $ui->API_goGetOutboundSales();
-		$inSalesHour = $ui->API_goGetINSalesPerHour();
-		$outSalesHour = $ui->API_goGetOUTSalesPerHour();
-
+		$totalSales = $ui->API_goGetTotalSales($_SESSION['user']);
+		$inboundSales =  $ui->API_goGetInboundSales($_SESSION['user']);
+		$outboundSales = $ui->API_goGetOutboundSales($_SESSION['user']);
+		$inSalesHour = $ui->API_goGetINSalesPerHour($_SESSION['user']);
+		$outSalesHour = $ui->API_goGetOUTSalesPerHour($_SESSION['user']);
+	
 	foreach ($callsperhour AS $temp){
 	   $temp = explode("=",$temp);
 	   $results[$temp[0]] = $temp[1];
@@ -167,7 +167,7 @@ error_reporting(E_ALL)
 
 				<!-- Main content -->
                 <section class="content">
-					
+					<?php //var_dump($outSalesHour); ?>
 					<!-- STATUS BOXES -->
 					<div class="row">
 						<div class="col-lg-3 col-sm-6">
@@ -1341,7 +1341,7 @@ function goGetInSession(type) {
 					load_IncomingQueue();
 					load_AnsweredCalls();
 					load_DroppedCalls();
-					load_TotalCalls();
+					//load_TotalCalls();
 					load_TotalInboundCalls();
 					load_TotalOutboundCalls();
 					load_LiveOutbound();
@@ -1378,7 +1378,7 @@ function goGetInSession(type) {
 				setInterval(load_IncomingQueue,5000);
 				setInterval(load_AnsweredCalls,5000);
 				setInterval(load_DroppedCalls,5000);
-				setInterval(load_TotalCalls,5000);
+				//setInterval(load_TotalCalls,5000);
 				setInterval(load_TotalInboundCalls,5000);
 				setInterval(load_TotalOutboundCalls,5000);
 				setInterval(load_LiveOutbound,5000);

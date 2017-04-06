@@ -129,12 +129,19 @@
 				var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
 				//console.log(JSONStringrealtime);
 				//console.log(JSONObjectrealtime); 
-				var table = $('#realtime_agents_monitoring_table').dataTable({
+				$('#realtime_agents_monitoring_table').dataTable({
 					data:JSONObjectrealtime,
 					"destroy":true,
+					"aoColumnDefs": [{
+						"bSearchable": false,
+						"aTargets": [ 0 ]
+					},{
+						"bSortable": false,
+						"aTargets": [ 0 ]
+					}],
 					//"searching": false,
 					stateSave: true,
-					drawCallback: function(settings) {
+					drawCallback: function() {
 						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 						pagination.toggle(this.api().page.info().pages > 1);
 					},                                
