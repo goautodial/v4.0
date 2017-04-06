@@ -31,7 +31,7 @@ require_once('LanguageHandler.php');
 require_once('CRMUtils.php');
 require_once('ModuleHandler.php');
 require_once('goCRMAPISettings.php');
-require_once('Session.php');
+//require_once('Session.php');
 
 // constants
 define ('CRM_UI_DEFAULT_RESULT_MESSAGE_TAG', "resultmessage");
@@ -3225,6 +3225,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 
 	public function API_goGetAllUserLists($user = ''){
+		require_once('Session.php');
 		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
@@ -3909,7 +3910,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 	public function API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter){
-		
+		require_once('Session.php');
 		$url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
