@@ -3386,22 +3386,23 @@ error_reporting(E_ERROR | E_PARSE);
 
 	// API to get usergroups
 	public function API_goGetUserGroupsList() {
+		require_once('Session.php');
 		$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "goGetUserGroupsList"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = "json"; #json. (required)
-
-         $ch = curl_init();
-         curl_setopt($ch, CURLOPT_URL, $url);
-         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-         curl_setopt($ch, CURLOPT_POST, 1);
-         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-         $data = curl_exec($ch);
-         curl_close($ch);
-         $output = json_decode($data);
+		$postfields["session_user"] = $_SESSION['user']; #json. (required)
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
 
          return $output;
         /*
@@ -5456,6 +5457,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetSalesPerHour"; #action performed by the [[API:Functions]]
+			$postfields["session_user"] = $session_user; #action performed by the [[API:Functions]]
 
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
@@ -5475,12 +5477,13 @@ error_reporting(E_ERROR | E_PARSE);
 		 * [[API: Function]] - goGetDroppedPercentage
 		 * This application is used to get dropped call percentage.
 		*/
-		public function API_goGetDroppedPercentage() {
+		public function API_goGetDroppedPercentage($session_user) {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetDroppedPercentage"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
+			$postfields["session_user"] = $session_user; #action performed by the [[API:Functions]]
 
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);

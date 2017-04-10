@@ -11,7 +11,7 @@
 	 * @param campaign_id
 	 */
         require_once('goCRMAPISettings.php');
-        
+        require_once('../Session.php');
 	$campaign_id = $_POST['campaign_id'];
 	$action = $_POST["action"];
 	if($action == "delete_selected"){
@@ -29,6 +29,7 @@
 	$postfields["action"] 		= $action;
 	$postfields["log_user"]		= $_POST['log_user'];
 	$postfields["log_group"]		= $_POST['log_group'];
+	$postfields["session_user"] 				= $_SESSION['user']; #current user
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);

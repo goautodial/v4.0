@@ -1983,12 +1983,12 @@
 				var form_data = new FormData($("#form_pause_codes")[0]);
 				var campaign_id = $('.campaign-id').val();
 				swal({
-					title: "<?php $lh->translateText("are_you_sure"); ?>",
+					title: "<?php $lh->translateText("pause_code_create_question"); ?>",
 					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "<?php $lh->translateText("pause_code"); ?>!",
+					confirmButtonText: "<?php $lh->translateText("pause_code_create"); ?>!",
 					cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 					closeOnConfirm: false,
 					closeOnCancel: false

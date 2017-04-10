@@ -19,6 +19,7 @@
 	 */
 
     require_once('goCRMAPISettings.php');
+	require_once('../Session.php');
 
 	$url = gourl."/goCampaigns/goAPI.php"; # URL to GoAutoDial API file
 	$postfields["goUser"] 						= goUser; #Username goes here. (required)
@@ -28,7 +29,7 @@
 	$postfields["hostname"] 					= $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["log_user"]						= $_POST['log_user'];
 	$postfields["log_group"]					= $_POST['log_group'];
-
+	$postfields["session_user"] 				= $_SESSION['user']; #current user
 	$postfields['campaign_type'] 				= $_POST['campaign_type'];
 	$postfields['campaign_id']  				= $_POST['campaign_id'];
 	$postfields['campaign_name'] 				= $_POST['campaign_name'];

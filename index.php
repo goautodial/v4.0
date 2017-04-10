@@ -374,7 +374,7 @@ error_reporting(E_ALL)
 							<!-- DROPPED PERCENTAGE -->
 							<div class="panel panel-default">
 								<?php
-									$droppedpercentage = $ui->API_goGetDroppedPercentage();
+									$droppedpercentage = $ui->API_goGetDroppedPercentage($_SESSION['user']);
 									$dropped_percentage = $droppedpercentage->data->getDroppedPercentage;
 									
 									if ($dropped_percentage == NULL)
