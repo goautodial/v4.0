@@ -9104,6 +9104,24 @@ function phone_number_format(formatphone) {
     return status_display_number;
 };
 
+function minimizeModal(modal_id) {
+    $("#"+modal_id).animate({ 'top': '91%' }, 500, function() {
+        $("#"+modal_id).css('overflow', 'hidden');
+        $("body").css('overflow-y', 'auto');
+        $(".max-modal").removeClass('hidden');
+        $(".min-modal").addClass('hidden');
+    });
+}
+
+function maximizeModal(modal_id) {
+    $("#"+modal_id).animate({ 'top': '0' }, 500, function() {
+        $("#"+modal_id).css('overflow', 'auto');
+        $("body").css('overflow', 'hidden');
+        $(".max-modal").addClass('hidden');
+        $(".min-modal").removeClass('hidden');
+    });
+}
+
 String.prototype.toUpperFirst = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }

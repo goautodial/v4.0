@@ -167,6 +167,8 @@ class GOagent extends Module {
 		$myCallbackOnly = $this->lh()->translationFor('my_callback_only');
 		$save = $this->lh()->translationFor('save');
 		$close = $this->lh()->translationFor('close');
+		$maximize = $this->lh()->translationFor('maximize');
+		$minimize = $this->lh()->translationFor('minimize');
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -633,6 +635,8 @@ EOF;
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
+				<button type="button" class="max-modal close hidden" onclick="maximizeModal('select-disposition')" aria-hidden="true">$maximize</button>
+				<button type="button" class="min-modal close" onclick="minimizeModal('select-disposition')" aria-hidden="true">$minimize</button>
 				<h4 class="modal-title">$dispositionCall: <span id='DispoSelectPhone'></span></h4>
 			</div>
 			<div class="modal-body">
