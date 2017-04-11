@@ -635,8 +635,8 @@ EOF;
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="max-modal close hidden" onclick="maximizeModal('select-disposition')" aria-hidden="true">$maximize</button>
-				<button type="button" class="min-modal close" onclick="minimizeModal('select-disposition')" aria-hidden="true">$minimize</button>
+				<button type="button" class="max-modal hidden" onclick="maximizeModal('select-disposition')" aria-hidden="true" title="$maximize"><i class="fa fa-plus"></i></button>
+				<button type="button" class="min-modal" onclick="minimizeModal('select-disposition')" aria-hidden="true" title="$minimize"><i class="fa fa-minus"></i></button>
 				<h4 class="modal-title">$dispositionCall: <span id='DispoSelectPhone'></span></h4>
 			</div>
 			<div class="modal-body">

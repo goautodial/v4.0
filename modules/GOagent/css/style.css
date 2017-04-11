@@ -876,3 +876,12 @@
 ul.wysihtml5-toolbar div.btn-group a.btn:first-child {
   font-size: 14px;
 }
+.max-modal, .min-modal {
+    float: right;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
+    color: #000000;
+    text-shadow: 0 1px 0 #ffffff;
+    opacity: 0.2;
+}

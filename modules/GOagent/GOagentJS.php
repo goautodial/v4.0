@@ -9105,8 +9105,8 @@ function phone_number_format(formatphone) {
 };
 
 function minimizeModal(modal_id) {
+    $("#"+modal_id).css('overflow', 'hidden');
     $("#"+modal_id).animate({ 'top': '91%' }, 500, function() {
-        $("#"+modal_id).css('overflow', 'hidden');
         $("body").css('overflow-y', 'auto');
         $(".max-modal").removeClass('hidden');
         $(".min-modal").addClass('hidden');
