@@ -876,3 +876,11 @@
 ul.wysihtml5-toolbar div.btn-group a.btn:first-child {
   font-size: 14px;
 }
+
+.minimize-modal {
+	top: 0;
+	-webkit-transition: top 1s;
+	-moz-transition: top 1s;
+	-o-transition: top 1s;
+	transition: top 1s;
+}
