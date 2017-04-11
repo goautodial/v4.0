@@ -19,7 +19,7 @@
 	 */
 
     require_once('goCRMAPISettings.php');
-	require_once('../Session.php');
+	require_once('Session.php');
 
 	$url = gourl."/goCampaigns/goAPI.php"; # URL to GoAutoDial API file
 	$postfields["goUser"] 						= goUser; #Username goes here. (required)

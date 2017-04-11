@@ -11,7 +11,7 @@
 	 * @param campaign_id
 	 */
         require_once('goCRMAPISettings.php');
-        require_once('../Session.php');
+        require_once('Session.php');
 	$campaign_id = $_POST['campaign_id'];
 	$action = $_POST["action"];
 	if($action == "delete_selected"){
