@@ -888,3 +888,10 @@ ul.wysihtml5-toolbar div.btn-group a.btn:first-child {
 .max-modal:hover, .min-modal:hover {
 	opacity: 0.75;
 }
+button.max-modal, button.min-modal {
+	padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
