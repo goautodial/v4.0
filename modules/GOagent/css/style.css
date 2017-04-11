@@ -883,5 +883,8 @@ ul.wysihtml5-toolbar div.btn-group a.btn:first-child {
     line-height: 1;
     color: #000000;
     text-shadow: 0 1px 0 #ffffff;
-    opacity: 0.2;
+    opacity: 0.5;
+}
+.max-modal:hover, .min-modal:hover {
+	opacity: 0.75;
 }
