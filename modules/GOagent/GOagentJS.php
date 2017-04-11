@@ -9106,7 +9106,8 @@ function phone_number_format(formatphone) {
 
 function minimizeModal(modal_id) {
     $("#"+modal_id).css('overflow', 'hidden');
-    $("#"+modal_id).animate({ 'top': '91%' }, 500, function() {
+    $("#"+modal_id).animate({ 'top': '94%' }, 500, function() {
+        $("#"+modal_id+" div.modal-dialog").animate({ 'margin-top': '5px' }, 100);
         $("body").css('overflow-y', 'auto');
         $(".max-modal").removeClass('hidden');
         $(".min-modal").addClass('hidden');
@@ -9115,6 +9116,7 @@ function minimizeModal(modal_id) {
 
 function maximizeModal(modal_id) {
     $("#"+modal_id).animate({ 'top': '0' }, 500, function() {
+        $("#"+modal_id+" div.modal-dialog").animate({ 'margin-top': '30px' }, 100);
         $("#"+modal_id).css('overflow', 'auto');
         $("body").css('overflow', 'hidden');
         $(".max-modal").addClass('hidden');
