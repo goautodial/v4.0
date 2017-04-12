@@ -1701,6 +1701,43 @@ $audiofiles = $ui->API_getListAudioFiles();
 																<input type="text" class="form-control" id="dial_time_out" name="dial_timeout" value="<?php echo $campaign->data->dial_timeout; ?>">
 															</div>
 														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("agent_lead_search"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select id="agent_lead_search" name="agent_lead_search" class="form-control">
+																	<option value="ENABLED" <?php if($campaign->data->agent_lead_search == "ENABLED") echo "selected";?>>ENABLED</option>
+																	<option value="DISABLED" <?php if($campaign->data->agent_lead_search == "DISABLED") echo "selected";?>>DISABLED</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("agent_lead_search_method"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select id="agent_lead_search_method" name="agent_lead_search_method" class="form-control">
+																	<option value="SYSTEM" <?php if($campaign->data->agent_lead_search_method == "SYSTEM") echo "selected";?>>SYSTEM</option>
+																	<option value="CAMPLISTS_ALL" <?php if($campaign->data->agent_lead_search_method == "CAMPLISTS_ALL") echo "selected";?>>CAMPLISTS ALL</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("get_call_launch"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select class="form-control" id="get_call_launch" name="get_call_launch">
+																	<option value="NONE" <?php if($campaign->data->get_call_launch == "NONE") echo "selected";?>>NONE</option>
+																	<option value="SCRIPT" <?php if($campaign->data->get_call_launch == "SCRIPT") echo "selected";?>>SCRIPT</option>
+																	<option value="WEBFORM" <?php if($campaign->data->get_call_launch == "WEBFORM") echo "selected";?>>WEBFORM</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("amd_send_to_action"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select class="form-control" id="amd_send_to_vmx" name="amd_send_to_vmx">
+																	<option value="Y" <?php if($campaign->data->amd_send_to_vmx == "Y") echo "selected";?>>YES</option>
+																	<option value="N" <?php if($campaign->data->amd_send_to_vmx == "N") echo "selected";?>>NO</option>
+																</select>
+															</div>
+														</div>
 														<?php } ?>
 														<br /><br />
 														<?php if($campaign->data->campaign_vdad_exten != 8373) { ?>
@@ -1980,7 +2017,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 														<!--Default-->
 													<?php }
 													
-													if ($campaign->data->campaign_vdad_exten != 8373) {
+													if ($campaign->campaign_type != "SURVEY") {
 													?>
 													<div class="form-group">
 														<label class="col-sm-3 control-label"><?php $lh->translateText("agent_lead_search"); ?>:</label>
