@@ -227,6 +227,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</select>
 												</div>
 											</div>
+											<?php } ?>
 											<div class="form-group">
 												<label class="col-sm-3 control-label"><?php $lh->translateText("autodial_level"); ?>:</label>
 												<div class="col-sm-9 mb">
@@ -292,7 +293,6 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</div>
 												</div>
 											</div>
-											<?php } ?>
 											<div class="form-group">
 												<label class="col-sm-3 control-label"><?php $lh->translateText("carrier_to_use_for_campaign"); ?>:</label>
 												<div class="col-sm-9 mb">
@@ -1548,6 +1548,115 @@ $audiofiles = $ui->API_getListAudioFiles();
 															</div>
 														</div>
 														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("list_order"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select size="1" name="lead_order" id="lead_order" class="form-control">
+														            <option value="DOWN" <?php if($campaign->data->lead_order == "DOWN") echo "selected"; ?>>DOWN</option>
+														            <option value="UP" <?php if($campaign->data->lead_order == "UP") echo "selected"; ?>>UP</option>
+														            <option value="DOWN_PHONE" <?php if($campaign->data->lead_order == "DOWN_PHONE") echo "selected"; ?>>DOWN PHONE</option>
+														            <option value="UP_PHONE" <?php if($campaign->data->lead_order == "UP_PHONE") echo "selected"; ?>>UP PHONE</option>
+														            <option value="DOWN_LAST_NAME" <?php if($campaign->data->lead_order == "DOWN_LAST_NAME") echo "selected"; ?>>DOWN LAST NAME</option>
+														            <option value="UP_LAST_NAME" <?php if($campaign->data->lead_order == "UP_LAST_NAME") echo "selected"; ?>>UP LAST NAME</option>
+														            <option value="DOWN_COUNT" <?php if($campaign->data->lead_order == "DOWN_COUNT") echo "selected"; ?>>DOWN COUNT</option>
+														            <option value="UP_COUNT" <?php if($campaign->data->lead_order == "UP_COUNT") echo "selected"; ?>>UP COUNT</option>
+														            <option value="RANDOM" <?php if($campaign->data->lead_order == "RANDOM") echo "selected"; ?>>RANDOM</option>
+														            <option value="DOWN_LAST_CALL_TIME" <?php if($campaign->data->lead_order == "DOWN_LAST_CALL_TIME") echo "selected"; ?>>DOWN LAST CALL TIME</option>
+														            <option value="UP_LAST_CALL_TIME" <?php if($campaign->data->lead_order == "UP_LAST_CALL_TIME") echo "selected"; ?>>UP LAST CALL TIME</option>
+														            <option value="DOWN_RANK" <?php if($campaign->data->lead_order == "DOWN_RANK") echo "selected"; ?>>DOWN RANK</option>
+														            <option value="UP_RANK" <?php if($campaign->data->lead_order == "UP_RANK") echo "selected"; ?>>UP RANK</option>
+														            <option value="DOWN_OWNER" <?php if($campaign->data->lead_order == "DOWN_OWNER") echo "selected"; ?>>DOWN OWNER</option>
+														            <option value="UP_OWNER" <?php if($campaign->data->lead_order == "UP_OWNER") echo "selected"; ?>>UP OWNER</option>
+														            <option value="DOWN_TIMEZONE" <?php if($campaign->data->lead_order == "DOWN_TIMEZONE") echo "selected"; ?>>DOWN TIMEZONE</option>
+														            <option value="UP_TIMEZONE" <?php if($campaign->data->lead_order == "UP_TIMEZONE") echo "selected"; ?>>UP TIMEZONE</option>
+														            <option value="DOWN_2nd_NEW" <?php if($campaign->data->lead_order == "DOWN_2nd_NEW") echo "selected"; ?>>DOWN 2nd NEW</option>
+														            <option value="DOWN_3rd_NEW" <?php if($campaign->data->lead_order == "DOWN_3rd_NEW") echo "selected"; ?>>DOWN 3rd NEW</option>
+														            <option value="DOWN_4th_NEW" <?php if($campaign->data->lead_order == "DOWN_4th_NEW") echo "selected"; ?>>DOWN 4th NEW</option>
+														            <option value="DOWN_5th_NEW" <?php if($campaign->data->lead_order == "DOWN_5th_NEW") echo "selected"; ?>>DOWN 5th NEW</option>
+														            <option value="DOWN_6th_NEW" <?php if($campaign->data->lead_order == "DOWN_6th_NEW") echo "selected"; ?>>DOWN 6th NEW</option>
+														            <option value="UP_2nd_NEW" <?php if($campaign->data->lead_order == "UP_2nd_NEW") echo "selected"; ?>>UP 2nd NEW</option>
+														            <option value="UP_3rd_NEW" <?php if($campaign->data->lead_order == "UP_3rd_NEW") echo "selected"; ?>>UP 3rd NEW</option>
+														            <option value="UP_4th_NEW" <?php if($campaign->data->lead_order == "UP_4th_NEW") echo "selected"; ?>>UP 4th NEW</option>
+														            <option value="UP_5th_NEW" <?php if($campaign->data->lead_order == "UP_5th_NEW") echo "selected"; ?>>UP 5th NEW</option>
+														            <option value="UP_6th_NEW" <?php if($campaign->data->lead_order == "UP_6th_NEW") echo "selected"; ?>>UP 6th NEW</option>
+														            <option value="DOWN_PHONE_2nd_NEW" <?php if($campaign->data->lead_order == "DOWN_PHONE_2nd_NEW") echo "selected"; ?>>DOWN PHONE 2nd NEW</option>
+														            <option value="DOWN_PHONE_3rd_NEW" <?php if($campaign->data->lead_order == "DOWN_PHONE_3rd_NEW") echo "selected"; ?>>DOWN PHONE 3rd NEW</option>
+														            <option value="DOWN_PHONE_4th_NEW" <?php if($campaign->data->lead_order == "DOWN_PHONE_4th_NEW") echo "selected"; ?>>DOWN PHONE 4th NEW</option>
+														            <option value="DOWN_PHONE_5th_NEW" <?php if($campaign->data->lead_order == "DOWN_PHONE_5th_NEW") echo "selected"; ?>>DOWN PHONE 5th NEW</option>
+														            <option value="DOWN_PHONE_6th_NEW" <?php if($campaign->data->lead_order == "DOWN_PHONE_6th_NEW") echo "selected"; ?>>DOWN PHONE 6th NEW</option>
+														            <option value="UP_PHONE_2nd_NEW" <?php if($campaign->data->lead_order == "UP_PHONE_2nd_NEW") echo "selected"; ?>>UP PHONE 2nd NEW</option>
+														            <option value="UP_PHONE_3rd_NEW" <?php if($campaign->data->lead_order == "UP_PHONE_3rd_NEW") echo "selected"; ?>>UP PHONE 3rd NEW</option>
+														            <option value="UP_PHONE_4th_NEW" <?php if($campaign->data->lead_order == "UP_PHONE_4th_NEW") echo "selected"; ?>>UP PHONE 4th NEW</option>
+														            <option value="UP_PHONE_5th_NEW" <?php if($campaign->data->lead_order == "UP_PHONE_5th_NEW") echo "selected"; ?>>UP PHONE 5th NEW</option>
+														            <option value="UP_PHONE_6th_NEW" <?php if($campaign->data->lead_order == "UP_PHONE_6th_NEW") echo "selected"; ?>>UP PHONE 6th NEW</option>
+														            <option value="DOWN_LAST_NAME_2nd_NEW" <?php if($campaign->data->lead_order == "DOWN_LAST_NAME_2nd_NEW") echo "selected"; ?>>DOWN LAST NAME 2nd NEW</option>
+														            <option value="DOWN_LAST_NAME_3rd_NEW" <?php if($campaign->data->lead_order == "DOWN_LAST_NAME_3rd_NEW") echo "selected"; ?>>DOWN LAST NAME 3rd NEW</option>
+														            <option value="DOWN_LAST_NAME_4th_NEW" <?php if($campaign->data->lead_order == "DOWN_LAST_NAME_4th_NEW") echo "selected"; ?>>DOWN LAST NAME 4th NEW</option>
+														            <option value="DOWN_LAST_NAME_5th_NEW" <?php if($campaign->data->lead_order == "DOWN_LAST_NAME_5th_NEW") echo "selected"; ?>>DOWN LAST NAME 5th NEW</option>
+														            <option value="DOWN_LAST_NAME_6th_NEW" <?php if($campaign->data->lead_order == "DOWN_LAST_NAME_6th_NEW") echo "selected"; ?>>DOWN LAST NAME 6th NEW</option>
+														            <option value="UP_LAST_NAME_2nd_NEW" <?php if($campaign->data->lead_order == "UP_LAST_NAME_2nd_NEW") echo "selected"; ?>>UP LAST NAME 2nd NEW</option>
+														            <option value="UP_LAST_NAME_3rd_NEW" <?php if($campaign->data->lead_order == "UP_LAST_NAME_3rd_NEW") echo "selected"; ?>>UP LAST NAME 3rd NEW</option>
+														            <option value="UP_LAST_NAME_4th_NEW" <?php if($campaign->data->lead_order == "UP_LAST_NAME_4th_NEW") echo "selected"; ?>>UP LAST NAME 4th NEW</option>
+														            <option value="UP_LAST_NAME_5th_NEW" <?php if($campaign->data->lead_order == "UP_LAST_NAME_5th_NEW") echo "selected"; ?>>UP LAST NAME 5th NEW</option>
+														            <option value="UP_LAST_NAME_6th_NEW" <?php if($campaign->data->lead_order == "UP_LAST_NAME_6th_NEW") echo "selected"; ?>>UP LAST NAME 6th NEW</option>
+														            <option value="DOWN_COUNT_2nd_NEW" <?php if($campaign->data->lead_order == "DOWN_COUNT_2nd_NEW") echo "selected"; ?>>DOWN COUNT 2nd NEW</option>
+														            <option value="DOWN_COUNT_3rd_NEW" <?php if($campaign->data->lead_order == "DOWN_COUNT_3rd_NEW") echo "selected"; ?>>DOWN COUNT 3rd NEW</option>
+														            <option value="DOWN_COUNT_4th_NEW" <?php if($campaign->data->lead_order == "DOWN_COUNT_4th_NEW") echo "selected"; ?>>DOWN COUNT 4th NEW</option>
+														            <option value="DOWN_COUNT_5th_NEW" <?php if($campaign->data->lead_order == "DOWN_COUNT_5th_NEW") echo "selected"; ?>>DOWN COUNT 5th NEW</option>
+														            <option value="DOWN_COUNT_6th_NEW" <?php if($campaign->data->lead_order == "DOWN_COUNT_6th_NEW") echo "selected"; ?>>DOWN COUNT 6th NEW</option>
+														            <option value="UP_COUNT_2nd_NEW" <?php if($campaign->data->lead_order == "UP_COUNT_2nd_NEW") echo "selected"; ?>>UP COUNT 2nd NEW</option>
+														            <option value="UP_COUNT_3rd_NEW" <?php if($campaign->data->lead_order == "UP_COUNT_3rd_NEW") echo "selected"; ?>>UP COUNT 3rd NEW</option>
+														            <option value="UP_COUNT_4th_NEW" <?php if($campaign->data->lead_order == "UP_COUNT_4th_NEW") echo "selected"; ?>>UP COUNT 4th NEW</option>
+														            <option value="UP_COUNT_5th_NEW" <?php if($campaign->data->lead_order == "UP_COUNT_5th_NEW") echo "selected"; ?>>UP COUNT 5th NEW</option>
+														            <option value="UP_COUNT_6th_NEW" <?php if($campaign->data->lead_order == "UP_COUNT_6th_NEW") echo "selected"; ?>>UP COUNT 6th NEW</option>
+														            <option value="RANDOM_2nd_NEW" <?php if($campaign->data->lead_order == "RANDOM_2nd_NEW") echo "selected"; ?>>RANDOM 2nd NEW</option>
+														            <option value="RANDOM_3rd_NEW" <?php if($campaign->data->lead_order == "RANDOM_3rd_NEW") echo "selected"; ?>>RANDOM 3rd NEW</option>
+														            <option value="RANDOM_4th_NEW" <?php if($campaign->data->lead_order == "RANDOM_4th_NEW") echo "selected"; ?>>RANDOM 4th NEW</option>
+														            <option value="RANDOM_5th_NEW" <?php if($campaign->data->lead_order == "RANDOM_5th_NEW") echo "selected"; ?>>RANDOM 5th NEW</option>
+														            <option value="RANDOM_6th_NEW" <?php if($campaign->data->lead_order == "RANDOM_6th_NEW") echo "selected"; ?>>RANDOM 6th NEW</option>
+														            <option value="DOWN_LAST_CALL_TIME_2nd_NEW" <?php if($campaign->data->lead_order == "DOWN_LAST_CALL_TIME_2nd_NEW") echo "selected"; ?>>DOWN LAST CALL TIME 2nd NEW</option>
+														            <option value="DOWN_LAST_CALL_TIME_3rd_NEW" <?php if($campaign->data->lead_order == "DOWN_LAST_CALL_TIME_3rd_NEW") echo "selected"; ?>>DOWN LAST CALL TIME 3rd NEW</option>
+														            <option value="DOWN_LAST_CALL_TIME_4th_NEW" <?php if($campaign->data->lead_order == "DOWN_LAST_CALL_TIME_4th_NEW") echo "selected"; ?>>DOWN LAST CALL TIME 4th NEW</option>
+														            <option value="DOWN_LAST_CALL_TIME_5th_NEW" <?php if($campaign->data->lead_order == "DOWN_LAST_CALL_TIME_5th_NEW") echo "selected"; ?>>DOWN LAST CALL TIME 5th NEW</option>
+														            <option value="DOWN_LAST_CALL_TIME_6th_NEW" <?php if($campaign->data->lead_order == "DOWN_LAST_CALL_TIME_6th_NEW") echo "selected"; ?>>DOWN LAST CALL TIME 6th NEW</option>
+														            <option value="UP_LAST_CALL_TIME_2nd_NEW" <?php if($campaign->data->lead_order == "UP_LAST_CALL_TIME_2nd_NEW") echo "selected"; ?>>UP LAST CALL TIME 2nd NEW</option>
+														            <option value="UP_LAST_CALL_TIME_3rd_NEW" <?php if($campaign->data->lead_order == "UP_LAST_CALL_TIME_3rd_NEW") echo "selected"; ?>>UP LAST CALL TIME 3rd NEW</option>
+														            <option value="UP_LAST_CALL_TIME_4th_NEW" <?php if($campaign->data->lead_order == "UP_LAST_CALL_TIME_4th_NEW") echo "selected"; ?>>UP LAST CALL TIME 4th NEW</option>
+														            <option value="UP_LAST_CALL_TIME_5th_NEW" <?php if($campaign->data->lead_order == "UP_LAST_CALL_TIME_5th_NEW") echo "selected"; ?>>UP LAST CALL TIME 5th NEW</option>
+														            <option value="UP_LAST_CALL_TIME_6th_NEW" <?php if($campaign->data->lead_order == "UP_LAST_CALL_TIME_6th_NEW") echo "selected"; ?>>UP LAST CALL TIME 6th NEW</option>
+														            <option value="DOWN_RANK_2nd_NEW" <?php if($campaign->data->lead_order == "DOWN_RANK_2nd_NEW") echo "selected"; ?>>DOWN RANK 2nd NEW</option>
+														            <option value="DOWN_RANK_3rd_NEW" <?php if($campaign->data->lead_order == "DOWN_RANK_3rd_NEW") echo "selected"; ?>>DOWN RANK 3rd NEW</option>
+														            <option value="DOWN_RANK_4th_NEW" <?php if($campaign->data->lead_order == "DOWN_RANK_4th_NEW") echo "selected"; ?>>DOWN RANK 4th NEW</option>
+														            <option value="DOWN_RANK_5th_NEW" <?php if($campaign->data->lead_order == "DOWN_RANK_5th_NEW") echo "selected"; ?>>DOWN RANK 5th NEW</option>
+														            <option value="DOWN_RANK_6th_NEW" <?php if($campaign->data->lead_order == "DOWN_RANK_6th_NEW") echo "selected"; ?>>DOWN RANK 6th NEW</option>
+														            <option value="UP_RANK_2nd_NEW" <?php if($campaign->data->lead_order == "UP_RANK_2nd_NEW") echo "selected"; ?>>UP RANK 2nd NEW</option>
+														            <option value="UP_RANK_3rd_NEW" <?php if($campaign->data->lead_order == "UP_RANK_3rd_NEW") echo "selected"; ?>>UP RANK 3rd NEW</option>
+														            <option value="UP_RANK_4th_NEW" <?php if($campaign->data->lead_order == "UP_RANK_4th_NEW") echo "selected"; ?>>UP RANK 4th NEW</option>
+														            <option value="UP_RANK_5th_NEW" <?php if($campaign->data->lead_order == "UP_RANK_5th_NEW") echo "selected"; ?>>UP RANK 5th NEW</option>
+														            <option value="UP_RANK_6th_NEW" <?php if($campaign->data->lead_order == "UP_RANK_6th_NEW") echo "selected"; ?>>UP RANK 6th NEW</option>
+														            <option value="DOWN_OWNER_2nd_NEW" <?php if($campaign->data->lead_order == "DOWN_OWNER_2nd_NEW") echo "selected"; ?>>DOWN OWNER 2nd NEW</option>
+														            <option value="DOWN_OWNER_3rd_NEW" <?php if($campaign->data->lead_order == "DOWN_OWNER_3rd_NEW") echo "selected"; ?>>DOWN OWNER 3rd NEW</option>
+														            <option value="DOWN_OWNER_4th_NEW" <?php if($campaign->data->lead_order == "DOWN_OWNER_4th_NEW") echo "selected"; ?>>DOWN OWNER 4th NEW</option>
+														            <option value="DOWN_OWNER_5th_NEW" <?php if($campaign->data->lead_order == "DOWN_OWNER_5th_NEW") echo "selected"; ?>>DOWN OWNER 5th NEW</option>
+														            <option value="DOWN_OWNER_6th_NEW" <?php if($campaign->data->lead_order == "DOWN_OWNER_6th_NEW") echo "selected"; ?>>DOWN OWNER 6th NEW</option>
+														            <option value="UP_OWNER_2nd_NEW" <?php if($campaign->data->lead_order == "UP_OWNER_2nd_NEW") echo "selected"; ?>>UP OWNER 2nd NEW</option>
+														            <option value="UP_OWNER_3rd_NEW" <?php if($campaign->data->lead_order == "UP_OWNER_3rd_NEW") echo "selected"; ?>>UP OWNER 3rd NEW</option>
+														            <option value="UP_OWNER_4th_NEW" <?php if($campaign->data->lead_order == "UP_OWNER_4th_NEW") echo "selected"; ?>>UP OWNER 4th NEW</option>
+														            <option value="UP_OWNER_5th_NEW" <?php if($campaign->data->lead_order == "UP_OWNER_5th_NEW") echo "selected"; ?>>UP OWNER 5th NEW</option>
+														            <option value="UP_OWNER_6th_NEW" <?php if($campaign->data->lead_order == "UP_OWNER_6th_NEW") echo "selected"; ?>>UP OWNER 6th NEW</option>
+														            <option value="DOWN_TIMEZONE_2nd_NEW" <?php if($campaign->data->lead_order == "DOWN_TIMEZONE_2nd_NEW") echo "selected"; ?>>DOWN TIMEZONE 2nd NEW</option>
+														            <option value="DOWN_TIMEZONE_3rd_NEW" <?php if($campaign->data->lead_order == "DOWN_TIMEZONE_3rd_NEW") echo "selected"; ?>>DOWN TIMEZONE 3rd NEW</option>
+														            <option value="DOWN_TIMEZONE_4th_NEW" <?php if($campaign->data->lead_order == "DOWN_TIMEZONE_4th_NEW") echo "selected"; ?>>DOWN TIMEZONE 4th NEW</option>
+														            <option value="DOWN_TIMEZONE_5th_NEW" <?php if($campaign->data->lead_order == "DOWN_TIMEZONE_5th_NEW") echo "selected"; ?>>DOWN TIMEZONE 5th NEW</option>
+														            <option value="DOWN_TIMEZONE_6th_NEW" <?php if($campaign->data->lead_order == "DOWN_TIMEZONE_6th_NEW") echo "selected"; ?>>DOWN TIMEZONE 6th NEW</option>
+														            <option value="UP_TIMEZONE_2nd_NEW" <?php if($campaign->data->lead_order == "UP_TIMEZONE_2nd_NEW") echo "selected"; ?>>UP TIMEZONE 2nd NEW</option>
+														            <option value="UP_TIMEZONE_3rd_NEW" <?php if($campaign->data->lead_order == "UP_TIMEZONE_3rd_NEW") echo "selected"; ?>>UP TIMEZONE 3rd NEW</option>
+														            <option value="UP_TIMEZONE_4th_NEW" <?php if($campaign->data->lead_order == "UP_TIMEZONE_4th_NEW") echo "selected"; ?>>UP TIMEZONE 4th NEW</option>
+														            <option value="UP_TIMEZONE_5th_NEW" <?php if($campaign->data->lead_order == "UP_TIMEZONE_5th_NEW") echo "selected"; ?>>UP TIMEZONE 5th NEW</option>
+														            <option value="UP_TIMEZONE_6TH_NEW" <?php if($campaign->data->lead_order == "UP_TIMEZONE_6TH_NEW") echo "selected"; ?>>UP TIMEZONE 6th NEW</option>
+														        </select>
+															</div>
+														</div>
+														<div class="form-group">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("force_reset_of_hopper"); ?>:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="force_reset_hopper" name="force_reset_hopper">
@@ -1572,6 +1681,27 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</select>
 															</div>
 														</div>
+														<?php if($campaign->data->campaign_vdad_exten != 8373) { ?>
+														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("next_agent_call"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select class="form-control" id="next_agent_call" name="next_agent_call">
+																	<option value="RANDOM" <?php if(strtoupper($campaign->data->next_agent_call) == "RANDOM") echo "selected";?>>RANDOM</option>
+																	<option value="OLDEST_CALL_START" <?php if(strtoupper($campaign->data->next_agent_call) == "OLDEST_CALL_START") echo "selected";?>>OLDEST CALL START</option>
+																	<option value="OLDEST_CALL_FINISH" <?php if(strtoupper($campaign->data->next_agent_call) == "OLDEST_CALL_FINISH") echo "selected";?>>OLDEST CALL FINISH</option>
+																	<option value="OVERALL_USER_LEVEL" <?php if(strtoupper($campaign->data->next_agent_call) == "OVERALL_USER_LEVEL") echo "selected";?>>OVERALL USER LEVEL</option>
+																	<option value="FEWEST_CALLS" <?php if(strtoupper($campaign->data->next_agent_call) == "FEWEST_CALLS") echo "selected";?>>FEWEST CALLS</option>
+																	<option value="LONGEST_WAITING_TIME" <?php if(strtoupper($campaign->data->next_agent_call) == "LONGEST_WAITING_TIME") echo "selected";?>>LONGEST WAITING TIME</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("dial_timeout"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<input type="text" class="form-control" id="dial_time_out" name="dial_timeout" value="<?php echo $campaign->data->dial_timeout; ?>">
+															</div>
+														</div>
+														<?php } ?>
 														<br /><br />
 														<?php if($campaign->data->campaign_vdad_exten != 8373) { ?>
 															<div class="form-group">
@@ -1850,7 +1980,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 														<!--Default-->
 													<?php }
 													
-													if ($campaign->campaign_type != "SURVEY") {
+													if ($campaign->data->campaign_vdad_exten != 8373) {
 													?>
 													<div class="form-group">
 														<label class="col-sm-3 control-label"><?php $lh->translateText("agent_lead_search"); ?>:</label>
