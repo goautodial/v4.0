@@ -423,6 +423,13 @@ EOF;
 	
 		session.on('ended', function (data) {
 			console.log('session::ended', data);
+			alertLogout = false;
+			sendLogout(true);
+			swal({
+				title: data.cause,
+				text: "$contactAdmin",
+				type: 'error'
+			});
 		});
 	
 		session.on('failed', function (data) {
