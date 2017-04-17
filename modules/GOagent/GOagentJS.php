@@ -3066,7 +3066,7 @@ function CheckForIncoming () {
             $(".formMain input[name='alt_phone']").val(this_VDIC_data.alt_phone).trigger('change');
             $(".formMain input[name='email']").val(this_VDIC_data.email).trigger('change');
             $(".formMain input[name='security_phrase']").val(this_VDIC_data.security);
-            var REGcommentsNL = new RegExp("!N","g");
+            var REGcommentsNL = new RegExp("!N!","g");
             var thisComments = this_VDIC_data.comments;
             if (typeof thisComments !== 'undefined') {
                 thisComments = thisComments.replace(REGcommentsNL, "\n");
@@ -3087,7 +3087,7 @@ function CheckForIncoming () {
             EAalt_phone_count                           = this_VDIC_data.alt_phone_count;
             $(".formMain input[name='rank']").val(this_VDIC_data.rank);
             $(".formMain input[name='owner']").val(this_VDIC_data.owner);
-            $(".formMain textarea[name='comments']").val(this_VDIC_data.call_notes);
+            $(".formMain textarea[name='call_notes']").val(this_VDIC_data.call_notes);
             script_recording_delay                      = this_VDIC_data.script_recording_delay;
             $(".formMain input[name='entry_list_id']").val(this_VDIC_data.entry_list_id);
             custom_field_names                          = this_VDIC_data.custom_field_names;
@@ -4296,7 +4296,7 @@ function UpdateFieldsData() {
                 {$(".formMain input[name='security_phrase']").val(UDfieldsData.security);}
             var regUDcomments = new RegExp("comments,","ig");
             if (fields_list.match(regUDcomments)) {
-                var REGcommentsNL = new RegExp("!N","g");
+                var REGcommentsNL = new RegExp("!N!","g");
                 var UDfieldComments = UDfieldsData.comments;
                 if (typeof UDfieldComments !== 'undefined') {
                     UDfieldComments = UDfieldComments.replace(REGcommentsNL, "\n");
@@ -6368,7 +6368,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     cust_email                              = thisVdata.email;
                     $(".formMain input[name='email']").val(cust_email).trigger('change');
                     $(".formMain input[name='security_phrase']").val(thisVdata.security_phrase);
-                    var REGcommentsNL = new RegExp("!N","g");
+                    var REGcommentsNL = new RegExp("!N!","g");
                     if (typeof thisVdata.comments !== 'undefined') {
                         thisVdata.comments = thisVdata.comments.replace(REGcommentsNL, "\n");
                     }
