@@ -5198,6 +5198,11 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
             //dispo_HTML = dispo_HTML + "alert($('#DispoSelection').val());";
             dispo_HTML = dispo_HTML + "    });";
             dispo_HTML = dispo_HTML + "    $('[id^=dispo-sel-]').click(function() {";
+            dispo_HTML = dispo_HTML + "        if (minimizedDispo) {";
+            dispo_HTML = dispo_HTML + "            minimizedDispo = false;";
+            dispo_HTML = dispo_HTML + "            $('body').css('overflow-y', 'auto');";
+            dispo_HTML = dispo_HTML + "            CustomerData_update();";
+            dispo_HTML = dispo_HTML + "        }";
             dispo_HTML = dispo_HTML + "        DispoSelectSubmit();";
             dispo_HTML = dispo_HTML + "    });";
             dispo_HTML = dispo_HTML + "});";
