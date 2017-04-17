@@ -84,6 +84,7 @@ var last_filename = '';
 var alertLogout = true;
 var registrationFailed = false;
 var minimizedDispo = false;
+var check_login = false;
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -2358,9 +2359,14 @@ function checkIfStillLoggedIn(logged_out) {
     } else {
         if (!logging_in) {
             var update_login = ((use_webrtc && phoneRegistered) || (!use_webrtc && is_logged_in)) ? 1 : 0;
-            $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'ChecKLogiN', 'is_logged_in': update_login}, function(result) {
-                is_logged_in = parseInt(result);
-            });
+            if (check_login) {
+                check_login = false;
+                $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'ChecKLogiN', 'is_logged_in': update_login}, function(result) {
+                    is_logged_in = parseInt(result);
+                });
+            } else {
+                check_login = true;
+            }
         }
     }
 }
