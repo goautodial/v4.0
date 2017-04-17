@@ -5669,10 +5669,12 @@ function CustomerData_update() {
     var REGcommentsAMP = new RegExp('&',"g");
     var REGcommentsQUES = new RegExp("\\?","g");
     var REGcommentsPOUND = new RegExp("\\#","g");
+    var REGcommentsNEWLINE = new RegExp("\n","g");
     var REGcommentsRESULT = $(".formMain textarea[name='comments']").val();
         REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsAMP, "--AMP--");
         REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsQUES, "--QUES--");
         REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsPOUND, "--POUND--");
+        REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsNEWLINE, "!N!");
 
     var postData = {
         goAction: 'goUpdateLead',
