@@ -568,7 +568,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 															<div class="mda-form-group label-floating">
 																<span id="phone_numberDISP" class="hidden"></span>
 																<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
-																<input id="phone_number" name="phone_number" type="number" min="0" width="auto" value="<?php echo $phone_number;?>"
+																<input id="phone_number" name="phone_number" type="number" min="0" maxlength="18" width="auto" value="<?php echo $phone_number;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled required>
 																<label for="phone_number"><?=$lh->translationFor('phone_number')?></label>
 																<!--
@@ -579,7 +579,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 														</div>
 														<div class="col-sm-6">
 															<div class="mda-form-group label-floating">
-																<input id="alt_phone" name="alt_phone" type="number" min="0" width="100" value="<?php echo $alt_phone;?>"
+																<input id="alt_phone" name="alt_phone" type="number" min="0" maxlength="12" width="100" value="<?php echo $alt_phone;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 																<label for="alt_phone"><?=$lh->translationFor('alternative_phone_number')?></label>
 															</div>
@@ -588,7 +588,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 													<!-- /.phonenumber & alt phonenumber -->
 													
 													<div class="mda-form-group label-floating">
-														<input id="address1" name="address1" type="text" width="auto" value="<?php echo $address1;?>"
+														<input id="address1" name="address1" type="text" maxlength="100" width="auto" value="<?php echo $address1;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 														<label for="address1"><?=$lh->translationFor('address')?></label> 
 														<!--<span class="mda-input-group-addon">
@@ -597,7 +597,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 													</div>
 													
 													<div class="mda-form-group label-floating">
-														<input id="address2" name="address2" type="text" value="<?php echo $address2;?>"
+														<input id="address2" name="address2" type="text" maxlength="100" value="<?php echo $address2;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 														<label for="address2"><?=$lh->translationFor('address2')?></label>
 													</div>
@@ -605,21 +605,21 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 													<div class="row">
 														<div class="col-sm-4">
 															<div class="mda-form-group label-floating">
-																<input id="city" name="city" type="text" value="<?php echo $city;?>"
+																<input id="city" name="city" type="text" maxlength="50" value="<?php echo $city;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 																<label for="city"><?=$lh->translationFor('city')?></label>
 															</div>
 														</div>
 														<div class="col-sm-4">
 															<div class="mda-form-group label-floating">
-																<input id="state" name="state" type="text" value="<?php echo $state;?>"
+																<input id="state" name="state" type="text" maxlength="2" value="<?php echo $state;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 																<label for="state"><?=$lh->translationFor('state')?></label>
 															</div>
 														</div>
 														<div class="col-sm-4">
 															<div class="mda-form-group label-floating">
-																<input id="postal_code" name="postal_code" type="text" value="<?php echo $postal_code;?>"
+																<input id="postal_code" name="postal_code" type="text" maxlength="10" value="<?php echo $postal_code;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 																<label for="postal_code"><?=$lh->translationFor('postal_code')?></label>
 															</div>
@@ -714,7 +714,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 															<button id="ViewCommentButton" onClick="ViewComments('ON');" value="-History-" class="hidden"></button>
 														</div>
 														<div class="form-group" style="float: left; width:100%;">
-															<textarea rows="10" id="comments" name="comments" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled note-editor note-editor-margin" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
+															<textarea rows="10" id="comments" name="comments" maxlength="255" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea input-disabled note-editor note-editor-margin" style="resize:none; width: 100%;" disabled><?=$comments?></textarea>
 															<label for="comments"><?=$lh->translationFor('comments')?></label>
 														</div>
 													</form>

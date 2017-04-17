@@ -1494,6 +1494,7 @@ $(document).ready(function() {
     $("#btn-dispo-submit").click(function() {
         if (minimizedDispo) {
             minimizedDispo = false;
+            $("body").css('overflow-y', 'auto');
             CustomerData_update();
         }
         
