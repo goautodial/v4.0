@@ -9112,6 +9112,12 @@ function minimizeModal(modal_id) {
         $(".max-modal").removeClass('hidden');
         $(".min-modal").addClass('hidden');
     });
+    
+    $('.input-disabled').prop('disabled', false);
+    $("input:required, select:required").addClass("required_div");
+    
+    var txtBox=document.getElementById("first_name" );
+    txtBox.focus();
 }
 
 function maximizeModal(modal_id) {
