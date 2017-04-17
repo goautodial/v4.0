@@ -83,6 +83,7 @@ var filename = '';
 var last_filename = '';
 var alertLogout = true;
 var registrationFailed = false;
+var minimizedDispo = false;
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -1491,6 +1492,11 @@ $(document).ready(function() {
     });
     
     $("#btn-dispo-submit").click(function() {
+        if (minimizedDispo) {
+            minimizedDispo = false;
+            CustomerData_update();
+        }
+        
         DispoSelectSubmit();
     });
     
@@ -9105,6 +9111,7 @@ function phone_number_format(formatphone) {
 };
 
 function minimizeModal(modal_id) {
+    minimizedDispo = true;
     $("#"+modal_id).css('overflow', 'hidden');
     $("#"+modal_id+" div.modal-dialog").animate({ 'margin-top': '5px' }, 500);
     $("#"+modal_id).animate({ 'top': '94%' }, 500, function() {
@@ -9112,6 +9119,8 @@ function minimizeModal(modal_id) {
         $(".max-modal").removeClass('hidden');
         $(".min-modal").addClass('hidden');
     });
+    
+    $(document).off('focusin.modal');
     
     $('.input-disabled').prop('disabled', false);
     $("input:required, select:required").addClass("required_div");
