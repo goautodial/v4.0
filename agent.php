@@ -1614,10 +1614,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
         <script src="js/select2.js" type="text/javascript"></script>
 		
 		<script type="text/javascript">
-			$(".select2").select2({
-				theme: 'bootstrap'
-			});
-			
 			$("#compose-textarea").wysihtml5();
 			
 			var folder = <?php print $folder; ?>;
@@ -2017,6 +2013,10 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 						updateMessages(<?=$user->getUserId()?>, 0);
 					}
 				}, 5000);
+				
+				$(".select2").select2({
+					theme: 'bootstrap'
+				});
 			});
 			
 			// generates the reply-to or forward message text. This text will be suitable for placing in the reply-to/forward content
