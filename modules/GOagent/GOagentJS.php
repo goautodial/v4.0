@@ -5674,7 +5674,6 @@ function CustomerData_update() {
         REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsAMP, "--AMP--");
         REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsQUES, "--QUES--");
         REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsPOUND, "--POUND--");
-        REGcommentsRESULT = REGcommentsRESULT.replace(REGcommentsNEWLINE, "!N!");
 
     var postData = {
         goAction: 'goUpdateLead',
