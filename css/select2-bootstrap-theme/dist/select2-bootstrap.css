@@ -63,7 +63,7 @@
   border-radius: 4px;
   color: #555555;
   */
-  border: 0;
+  border: 0 !important;
   background-image: linear-gradient(#9c27b0, #9c27b0), linear-gradient(#dde6e9, #dde6e9);
   background-size: 0 2px, 100% 1px;
   background-repeat: no-repeat;
