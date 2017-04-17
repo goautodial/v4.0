@@ -131,6 +131,9 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
         <!--<script src="js/app.min.js" type="text/javascript"></script>-->
 		
         <!-- theme_dashboard folder -->
+  		<!-- Select2 style -->
+  		<link rel="stylesheet" href="css/select2/dist/css/select2.css">
+  		<link rel="stylesheet" href="css/select2-bootstrap-theme/dist/select2-bootstrap.css">
 		<!-- FONT AWESOME-->
 		<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
 		<!-- SIMPLE LINE ICONS-->
@@ -179,10 +182,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 
   		<!-- Theme style -->
   		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
-
-  		<!-- Select2 style -->
-  		<link rel="stylesheet" href="css/select2/dist/css/select2.css">
-  		<link rel="stylesheet" href="css/select2-bootstrap-theme/dist/select2-bootstrap.css">
 
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
@@ -630,7 +629,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 													<div class="mda-form-group label-floating">
 														<select id="country_code" name="country_code" type="text" maxlength="3"
 															class="mda-form-control select2 ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
-															<option value=""></option>
+															<option value="">- - -</option>
 														</select>
 														<label for="country"><?=$lh->translationFor('country_code')?></label>
 													</div>
