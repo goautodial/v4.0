@@ -182,7 +182,8 @@
   */
   outline: none;
   background-image: linear-gradient(#4caf50, #4caf50), linear-gradient(#D2D2D2, #D2D2D2);
-  background-size: 100% 2px, 100% 1px;
+  /*background-size: 100% 2px, 100% 1px;*/
+  background-size: 100% 0, 100% 0;
   box-shadow: none;
   transition-duration: 0.3s;
 }

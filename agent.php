@@ -628,8 +628,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 												
 													<div class="mda-form-group label-floating">
 														<select id="country_code" name="country_code" type="text" maxlength="3"
-															class="mda-form-control select2 ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
-															<option value="">- - -</option>
+															class="mda-form-control select2 ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" data-title="<?=$lh->translationFor('select_country_code')?>" disabled>
+															<option value="">- - - <?=$lh->translationFor('select_country_code')?> - - -</option>
 														</select>
 														<label for="country"><?=$lh->translationFor('country_code')?></label>
 													</div>
