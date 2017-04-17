@@ -180,6 +180,10 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
   		<!-- Theme style -->
   		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
 
+  		<!-- Select2 style -->
+  		<link rel="stylesheet" href="css/select2/dist/css/select2.css">
+  		<link rel="stylesheet" href="css/select2-bootstrap-theme/dist/select2-bootstrap.css">
+
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
 		
@@ -201,8 +205,15 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 					.addClass('table table-striped table-bordered');
 				
 				if (typeof country_codes !== 'undefined') {
+					$("#country_code").append('<option value="1">United States of America</option>');
+					$("#country_code").append('<option value="1">Canada</option>');
+					$("#country_code").append('<option value="63">Philippines</option>');
+					$("#country_code").append('<option value="61">Australia</option>');
+					$("#country_code").append('<option value="44">United Kingdom of Great Britain and Northern Ireland</option>');
 					$.each(country_codes, function(key, value) {
-						$("#country_code").append('<option value="'+value.code+'">'+value.name+'</option>');
+						if (! /^(USA_1|CAN_1|PHL_63|AUS_61|GBR_44)$/g.test(key)) {
+							$("#country_code").append('<option value="'+value.code+'">'+value.name+'</option>');
+						}
 					});
 				}
 			});
@@ -618,7 +629,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 												
 													<div class="mda-form-group label-floating">
 														<select id="country_code" name="country_code" type="text" maxlength="3"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
+															class="mda-form-control select2 ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
 															<option value=""></option>
 														</select>
 														<label for="country"><?=$lh->translationFor('country_code')?></label>
@@ -1599,7 +1610,14 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		<!-- AdminLTE App -->
 		<script src="adminlte/js/app.min.js"></script>
 		
+		<!-- Select2 -->
+        <script src="js/select2.js" type="text/javascript"></script>
+		
 		<script type="text/javascript">
+			$(".select2").select2({
+				theme: 'bootstrap'
+			});
+			
 			$("#compose-textarea").wysihtml5();
 			
 			var folder = <?php print $folder; ?>;
