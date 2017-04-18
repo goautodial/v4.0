@@ -1148,8 +1148,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="col-sm-2 control-label"><?php $lh->translateText("call_time"); ?>:</label>
-															<div class="col-sm-10 mb">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("call_time"); ?>:</label>
+															<div class="col-sm-9 mb">
 																<select class="form-control" id="local_call_time" name="local_call_time">
 																	<?php for($i=0;$i<=count($calltimes->call_time_id);$i++) { ?>
 																		<?php if(!empty($calltimes->call_time_id[$i])) { ?>
@@ -1328,8 +1328,8 @@ $audiofiles = $ui->API_getListAudioFiles();
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="col-sm-2 control-label"><?php $lh->translateText("force_reset_hopper"); ?>:</label>
-															<div class="col-sm-10 mb">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("force_reset_of_hopper"); ?>:</label>
+															<div class="col-sm-9 mb">
 																<select class="form-control" id="force_reset_hopper" name="force_reset_hopper">
 																	<option value="Y">Y</option>
 																	<option value="N" selected>N</option>
