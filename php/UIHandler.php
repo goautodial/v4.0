@@ -3393,6 +3393,7 @@ error_reporting(E_ERROR | E_PARSE);
         $postfields["goAction"] = "goGetUserGroupsList"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = "json"; #json. (required)
 		$postfields["session_user"] = $_SESSION['user']; #json. (required)
+		$postfields["group_id"] = $_SESSION['usergroup']; #json. (required)
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
