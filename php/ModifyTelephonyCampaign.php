@@ -30,7 +30,7 @@
 	$postfields["campaign_script"] 				= $_POST["campaign_script"];
 	$postfields["campaign_cid"] 				= $_POST["campaign_cid"];
 	$postfields["campaign_recording"] 			= $_POST["campaign_recording"];
-	$postfields["campaign_vdad_exten"] 			= $_POST["campaign_vdad_exten"];
+	$postfields["campaign_vdad_exten"] 			= ($_POST["campaign_type"] != "SURVEY")? $_POST["campaign_vdad_exten"] : 8366;
 	$postfields["local_call_time"] 				= $_POST["local_call_time"];
 	$postfields["hopper_level"] 				= $_POST["hopper_level"];
 	$postfields["force_reset_hopper"] 			= $_POST["force_reset_hopper"];
