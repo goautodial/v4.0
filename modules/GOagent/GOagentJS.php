@@ -1389,6 +1389,9 @@ $(document).ready(function() {
                                         $.globalEval("starting_"+key+" = "+value+";");
                                     } else if (key == 'closer_blended') {
                                         $.globalEval(key+" = "+value+";");
+                                    } else if (key == 'callback_statuses_list') {
+                                        $.globalEval(key+" = '"+value+"';");
+                                        $.globalEval("VARCBstatusesLIST = '"+value+"';");
                                     } else {
                                         $.globalEval(key+" = '"+value+"';");
                                     }
