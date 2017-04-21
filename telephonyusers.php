@@ -555,7 +555,7 @@
 				$('#T_phones').dataTable({
 					stateSave: true
 				});
-
+				
 			/* init wizards */
 				var uform = $("#wizard_form"); // init user form wizard 
 				var pform = $("#create_form"); // init phone form wizard 
@@ -730,9 +730,10 @@
 				$(document).on('click','.edit-T_user',function() {
 					var url = 'edittelephonyuser.php';
 					var userid = $(this).attr('data-id');
+					var user = $(this).attr('data-user');
 					var role = $(this).attr('data-role');
 					//alert(userid);
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="user_id" value="'+userid+'" /><input type="hidden" name="role" value="'+role+'"></form>');
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="user_id" value="'+userid+'" /><input type="hidden" name="user" value="'+user+'"><input type="hidden" name="role" value="'+role+'"></form>');
 					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				 });

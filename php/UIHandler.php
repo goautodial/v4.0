@@ -1048,7 +1048,7 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li'.($perm->user_update === 'N' ? ' class="hidden"' : '').'><a class="edit-T_user" href="#" data-id="'.$userid.'" data-role="'.$role.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li'.($perm->user_update === 'N' ? ' class="hidden"' : '').'><a class="edit-T_user" href="#" data-id="'.$userid.'" data-user="'.$user.'"  data-role="'.$role.'">'.$this->lh->translationFor("modify").'</a></li>
 	                    <li><a class="emergency-logout" href="#" data-emergency-logout-username="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("emergency_logout").'</a></li>
 	                    <li class="divider'.($perm->user_delete === 'N' ? ' hidden' : '').'"></li>
 	                    <li'.($perm->user_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
@@ -3231,7 +3231,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAllUserLists"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["user"] = $_SESSION['user']; #json. (required)
+		$postfields["session_user"] = $_SESSION['user']; #json. (required)
 		
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);
@@ -3320,17 +3320,17 @@ error_reporting(E_ERROR | E_PARSE);
 						$sufFix = '';
 					}
 					$checkbox = '<label for="'.$output->user_id[$i].'"'.($perm->user_delete === 'N' ? ' class="hidden"' : '').'><div class="checkbox c-checkbox"><label><input name="" class="check_user" id="'.$output->user_id[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
-					$result .= "<tr>
-							 <td style='width:5%;'>".$sessionAvatar."</a></td>";
-					if($perm->user_delete !== 'N')
-					$result .= "<td style='width:10%;'>".$checkbox."</td>";
 					
-					$result .= "<td class='hide-on-low'>".$preFix."<strong>".$output->user[$i]."</strong>".$sufFix."</td>
-							<td>".$output->full_name[$i]."</td>
-							<td class=' hide-on-low hide-on-medium'>".$output->user_group[$i]."</td>
-							<td class='hide-on-low hide-on-medium'>".$output->active[$i]."</td>
-							<td nowrap style='width:16%;'>".$action."</td>
-							</tr>";
+					$result .= "<tr>
+									<td style='width:5%;'>".$sessionAvatar."</a></td>";
+					if($perm->user_delete !== 'N')
+						$result .= "<td style='width:10%;'>".$checkbox."</td>";
+						$result .= "<td class='hide-on-low'>".$preFix."<strong>".$output->user[$i]."</strong>".$sufFix."</td>
+									<td>".$output->full_name[$i]."</td>
+									<td class=' hide-on-low hide-on-medium'>".$output->user_group[$i]."</td>
+									<td class='hide-on-low hide-on-medium'>".$output->active[$i]."</td>
+									<td nowrap style='width:16%;'>".$action."</td>
+								</tr>";
 				}
 
 	       // print suffix

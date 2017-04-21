@@ -25,7 +25,10 @@ $userid = NULL;
 if (isset($_POST["user_id"])) {
 	$userid = $_POST["user_id"];
 }
-
+$current_user = NULL;
+if (isset($_POST["user"])) {
+	$current_user = $_POST["user"];
+}
 if(isset($_POST["role"])){
 	$userrole = $_POST["role"];
 }
@@ -78,9 +81,11 @@ $user_groups = $ui->API_goGetUserGroupsList();
                     </ol>
                 </section>
                 <?php
-				if($_SESSION['level'] >= $userrole && $_SESSION['user'] !== "goautodial"){
-					echo "<br/><br/>";
-					print $ui->getUnauthotizedAccessMessage();
+				if($_SESSION['user'] !== $current_user && $_SESSION['user'] !== "goautodial"){
+					if($_SESSION['level'] >= $userrole){
+						echo "<br/><br/>";
+						print $ui->getUnauthotizedAccessMessage();
+					}
 				}else{
                 ?>
                <!-- Main content -->
