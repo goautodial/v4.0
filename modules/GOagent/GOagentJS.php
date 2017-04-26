@@ -222,8 +222,8 @@ var check_login = false;
         }
     }
     
-    $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, false);
-    if($tz === false) $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, true);
+    $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, -1);
+    if($tz === false) $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, 1);
     date_default_timezone_set($tz);
 ?>
 
