@@ -235,6 +235,7 @@ var check_login = false;
     date_default_timezone_set($tz);
 ?>
 
+var currentTZ = '<?=$tz?>';
 var currenttime = '<?=date("F d, Y H:i:s", time())?>' //PHP method of getting server date
 var todayarray=new Array("<?=$lh->translationFor('sunday')?>","<?=$lh->translationFor('monday')?>","<?=$lh->translationFor('tuesday')?>","<?=$lh->translationFor('wednesday')?>","<?=$lh->translationFor('thursday')?>","<?=$lh->translationFor('friday')?>","<?=$lh->translationFor('saturday')?>");
 var montharray=new Array("<?=$lh->translationFor('january')?>","<?=$lh->translationFor('february')?>","<?=$lh->translationFor('march')?>","<?=$lh->translationFor('april')?>","<?=$lh->translationFor('may')?>","<?=$lh->translationFor('june')?>","<?=$lh->translationFor('july')?>","<?=$lh->translationFor('august')?>","<?=$lh->translationFor('september')?>","<?=$lh->translationFor('october')?>","<?=$lh->translationFor('november')?>","<?=$lh->translationFor('december')?>");
