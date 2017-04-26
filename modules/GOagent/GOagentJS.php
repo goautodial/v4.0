@@ -222,8 +222,16 @@ var check_login = false;
         }
     }
     
-    $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, -1);
-    if($tz === false) $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, 1);
+    $tz = timezone_name_from_abbr('', $default_local_gmt);
+    if($tz === false) $tz = timezone_name_from_abbr('', $default_local_gmt * 3600);
+    
+    if ($default_local_gmt < 0) {
+        if($tz === false) $tz = timezone_name_from_abbr('', $default_local_gmt * 3600, 1);
+        if($tz === false) $tz = timezone_name_from_abbr('', $default_local_gmt, 0);
+    } else {
+        if($tz === false) $tz = timezone_name_from_abbr('', $default_local_gmt * 3600, 0);
+        if($tz === false) $tz = timezone_name_from_abbr('', $default_local_gmt * 3600, 1);
+    }
     date_default_timezone_set($tz);
 ?>
 
