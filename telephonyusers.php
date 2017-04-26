@@ -511,6 +511,25 @@
 <?php
 	}
 ?>
+	<!-- Stats -->
+	<div class="modal fade" id="stats-modal" aria-labelledby="T_User" >
+	        <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title animated bounceInRight" id="T_User">
+							<i class="fa fa-info-circle" title="<?php $lh->translateText("user_wizard_desc"); ?>"></i> 
+							<b><?php $lh->translateText("user_wizard"); ?> » <?php $lh->translateText("add_new_user"); ?></b>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						</h4>
+					</div>
+					<div class="modal-body">
+						<?php echo $ui->getAgentLog("<span id='user_stats'></span>");?>
+					</div> <!-- end of modal body -->
+				</div>
+			</div>
+		</div>
+	<!-- ./stats -->
+
 <!-- end of modals -->
 
 		<?php print $ui->standardizedThemeJS();?>
@@ -525,11 +544,8 @@
 		/*********************
 		** INITIALIZATION
 		*********************/
-
 			var checker = 0;
-
 			/* init data tables */
-
 				//users
 				$('#T_users').dataTable({
 					stateSave: true,
@@ -565,7 +581,6 @@
 				$(".bottom-menu").on('mouseenter mouseleave', function () {
 				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 				});
-
 			
 		/*********
 		** Add Wizard
@@ -748,53 +763,61 @@
 				});
 
 	//--------------------
-
+	
+		/*********
+		** View Agent Stats Event
+		*********/
+			//user edit event
+			$(document).on('click','.view-stats',function() {
+				var userid = $(this).attr('data-user');
+				$("#user_stats").text(userid);
+			});
+	
 		/*********
 		** Emergency Logout Event
 		*********/
 			//user edit event
-				$(document).on('click','.emergency-logout',function() {
-					var userid = $(this).attr('data-emergency-logout-username');
-					var name = $(this).attr('data-name');
-					var log_user = '<?=$_SESSION['user']?>';
-					var log_group = '<?=$_SESSION['usergroup']?>';
-					swal({   
-	                	title: "<?php $lh->translateText("emergency_logout"); ?> : " + name,
-	                	type: "warning",   
-	                	showCancelButton: true,   
-	                	confirmButtonColor: "#DD6B55",   
-	                	confirmButtonText: "<?php $lh->translateText("agent_logout"); ?>",   
-	                	cancelButtonText: "<?php $lh->translateText("cancel_agent_logout"); ?>",   
-	                	closeOnConfirm: false,   
-	                	closeOnCancel: false 
-	                	}, 
-	                	function(isConfirm){   
-	                		if (isConfirm) { 
-	                			$.ajax({
-									type: 'POST',
-									url: "php/emergency_logout.php",
-									data: {
-										goUserAgent: userid,
-										log_user: log_user,
-										log_group: log_group
-									},
-									cache: false,
-									//dataType: 'json',
-									success: function(data){
-										if(data == "success"){
-											sweetAlert("<?php $lh->translateText("agent_logout_notif"); ?>", "", "success");
-										}else{
-											sweetAlert("<?php $lh->translateText("emergency_logout"); ?>",data, "warning");
-										}
+			$(document).on('click','.emergency-logout',function() {
+				var userid = $(this).attr('data-emergency-logout-username');
+				var name = $(this).attr('data-name');
+				var log_user = '<?=$_SESSION['user']?>';
+				var log_group = '<?=$_SESSION['usergroup']?>';
+				swal({   
+					title: "<?php $lh->translateText("emergency_logout"); ?> : " + name,
+					type: "warning",   
+					showCancelButton: true,   
+					confirmButtonColor: "#DD6B55",   
+					confirmButtonText: "<?php $lh->translateText("agent_logout"); ?>",   
+					cancelButtonText: "<?php $lh->translateText("cancel_agent_logout"); ?>",   
+					closeOnConfirm: false,   
+					closeOnCancel: false 
+					}, 
+					function(isConfirm){   
+						if (isConfirm) { 
+							$.ajax({
+								type: 'POST',
+								url: "php/emergency_logout.php",
+								data: {
+									goUserAgent: userid,
+									log_user: log_user,
+									log_group: log_group
+								},
+								cache: false,
+								//dataType: 'json',
+								success: function(data){
+									if(data == "success"){
+										sweetAlert("<?php $lh->translateText("agent_logout_notif"); ?>", "", "success");
+									}else{
+										sweetAlert("<?php $lh->translateText("emergency_logout"); ?>",data, "warning");
 									}
-								}); 
-							} else {     
-	                			swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
-	                		} 
-	                	}
-	                );
-					
-				});
+								}
+							}); 
+						} else {     
+							swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+						} 
+					}
+	            );
+			});
 				
 	// ------------------
 				
