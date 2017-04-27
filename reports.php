@@ -71,7 +71,7 @@ if($output->result == "success"){
 // AGENT TIME DETAIL
 	if($pageTitle == "agent_detail"){
 		$agent_detail = '';
-		
+
 		// top table
 			$agent_detail .= '<div class="table-responsive">
 				<table class="table table-striped table-bordered table-hover" id="agent_detail_top">
@@ -126,7 +126,6 @@ if($output->result == "success"){
 						<thead>
 							<tr>
 								<th nowrap> &nbsp </th>';
-
 					            $agent_detail .= $output->getReports->sub_statusesTOP;
 				
 				$agent_detail .= '</tr>
@@ -161,7 +160,6 @@ if($output->result == "success"){
 // AGENT PERFORMANCE DETAIL
 	if($pageTitle == "agent_pdetail"){
 		$agent_pdetail = '';
-
 		// start of top table
 			$agent_pdetail .= '<div class="table-responsive">
 				<table class="table table-striped table-bordered table-hover" id="agent_pdetail_top">

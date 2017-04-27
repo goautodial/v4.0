@@ -35,10 +35,22 @@
     	<!-- Wizard Form style -->
 		<link href="css/style.css" rel="stylesheet" type="text/css" />
 
-		<!-- Data Tables -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+		<!-- DATA TABLES -->
+        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+		<link href="css/datatables/1.10.12/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+		<!--<link href="css/datatables/buttons/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />-->
+        <!-- Data Tables -->
+        <script src="js/plugins/datatables/1.10.12/jquery.dataTables.min.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-		
+			<!-- FOR EXPORT -->
+			<!--<script src="js/plugins/datatables/bpampuch/pdfmake/vfs_fonts.js" type="text/javascript"></script>
+			<script src="js/plugins/datatables/bpampuch/pdfmake/pdfmake.min.js" type="text/javascript"></script>-->
+			<script src="js/plugins/datatables/buttons/buttons.html5.min.js" type="text/javascript"></script>
+			<script src="js/plugins/datatables/buttons/buttons.print.min.js" type="text/javascript"></script>
+			<script src="js/plugins/datatables/buttons/buttons.flash.min.js" type="text/javascript"></script>
+			<script src="js/plugins/datatables/buttons/dataTables.buttons.min.js" type="text/javascript"></script>
+			<script src="js/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+			
         <!-- CHOSEN-->
    		<link rel="stylesheet" href="theme_dashboard/chosen_v1.2.0/chosen.min.css">
         <!-- SELECT2-->
@@ -513,21 +525,30 @@
 ?>
 	<!-- Stats -->
 	<div class="modal fade" id="stats-modal" aria-labelledby="T_User" >
-	        <div class="modal-dialog" role="document">
-	            <div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title animated bounceInRight" id="T_User">
-							<i class="fa fa-info-circle" title="<?php $lh->translateText("user_wizard_desc"); ?>"></i> 
-							<b><?php $lh->translateText("user_wizard"); ?> » <?php $lh->translateText("add_new_user"); ?></b>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						</h4>
-					</div>
-					<div class="modal-body">
-						<?php echo $ui->getAgentLog("<span id='user_stats'></span>");?>
-					</div> <!-- end of modal body -->
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title animated bounceInRight">
+						<i class="fa fa-info-circle" title="<?php $lh->translateText("agentlog_desc"); ?>"></i> 
+						<b><?php $lh->translateText("agent_log"); ?></b>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					</h4>
 				</div>
+				<div class="modal-body">
+					<br/>
+					<div class="report-loader" style="color:lightgray; display:none;">
+						<center>
+							<h3>
+								<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+								<?php $lh->translateText("loading..."); ?>
+							</h3>
+						</center>
+					</div>
+					<div id='user_stats'></div>
+				</div> <!-- end of modal body -->
 			</div>
 		</div>
+	</div>
 	<!-- ./stats -->
 
 <!-- end of modals -->
@@ -769,8 +790,29 @@
 		*********/
 			//user edit event
 			$(document).on('click','.view-stats',function() {
+				$(".report-loader").fadeIn("slow");
+				$("#user_stats").html("");
 				var userid = $(this).attr('data-user');
-				$("#user_stats").text(userid);
+				$('#stats-modal').modal('toggle');
+				$.ajax({
+					type: 'POST',
+					url: "agentlog.php",
+					data: {
+						user: userid,
+					},
+					cache: false,
+					success: function(data){
+						$(".report-loader").fadeOut("slow");
+						if(data !== ""){
+							var title = "<?php $lh->translateText("agent_log"); ?>";
+							$("#user_stats").html(data);
+							$('#table_stats').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
+						}else{
+							$('#user_stats').html("<?php $lh->translateText("no_data"); ?>");
+						}
+						
+					}
+				}); 
 			});
 	
 		/*********

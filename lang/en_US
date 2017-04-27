@@ -560,6 +560,8 @@ agent = "Agent"
 agent_id = "Agent ID"
 agent_name = "Agent Name"
 user_id = "User ID"
+agent_log = "Agent Log"
+agent_log_desc = "Shows the Call Logs of the agent."
 
 // USER WIZARD
 		
