@@ -26,7 +26,7 @@ error_reporting(E_ALL);
     $postfields["goAction"] = "goGetReports"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["pageTitle"] = "call_export_report";
-	$postfields["session_user"] = $_SESSION['user']; #json. (required)
+	$postfields["session_user"] = $_SESSION['user']; #current user
 	$postfields["log_user"] = $_POST['log_user'];
 	$postfields["log_group"] = $_POST['log_group'];
 	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
