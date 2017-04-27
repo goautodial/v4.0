@@ -2783,7 +2783,7 @@ function CheckForConfCalls (confnum, force) {
                                 if (volumecontrol_active!=1) {
                                     live_conf_HTML = live_conf_HTML + '<tr bgcolor="' + row_color + '"><td><font class="log_text">' + loop_ct + '</font></td><td><font class="' + chan_name_color + '">' + channelfieldA + '</font></td><td><font class="log_text"><a href="#" onclick="livehangup_send_hangup(\"' + channelfieldA + '\");return false;"><?=$lh->translationFor('hangup')?></a></font></td></tr>';
                                 } else {
-                                    live_conf_HTML = live_conf_HTML + '<tr bgcolor="' + row_color + '"><td><font class="log_text">' + loop_ct + '</font></td><td><font class="' + chan_name_color + '">' + channelfieldA + '</font></td><td><font class="log_text"><a href="#" onclick="livehangup_send_hangup(\"' + channelfieldA + '\");return false;"><?=$lh->translationFor('hangup')?></a></font></td><td><a href="#" onclick="volume_control(\"UP\",\"' + channelfieldA + '\",\"\");return false;"><img src="./images/vdc_volume_up.gif" border="0" /></a> &nbsp; <a href="#" onclick="volume_control(\"DOWN\",\"' + channelfieldA + '\",\"\");return false;"><img src="./images/vdc_volume_down.gif" border="0" /></a> &nbsp; &nbsp; &nbsp; <a href="#" onclick="volume_control(\"MUTING\",\"' + channelfieldA + '\",\"\");return false;"><img src="./images/vdc_volume_MUTE.gif" border="0" /></a> &nbsp; <a href="#" onclick="volume_control(\"UNMUTE\",\"' + channelfieldA + '\",\"\");return false;"><img src="./images/vdc_volume_UNMUTE.gif" border="0" /></a></td></tr>';
+                                    live_conf_HTML = live_conf_HTML + '<tr bgcolor="' + row_color + '"><td><font class="log_text">' + loop_ct + '</font></td><td><font class="' + chan_name_color + '">' + channelfieldA + '</font></td><td><font class="log_text"><a href="#" onclick="livehangup_send_hangup(\"' + channelfieldA + '\");return false;"><?=$lh->translationFor('hangup')?></a></font></td><td><a href="#" onclick="VolumeControl(\"UP\",\"' + channelfieldA + '\",\"\");return false;"><img src="./images/vdc_volume_up.gif" border="0" /></a> &nbsp; <a href="#" onclick="VolumeControl(\"DOWN\",\"' + channelfieldA + '\",\"\");return false;"><img src="./images/vdc_volume_down.gif" border="0" /></a> &nbsp; &nbsp; &nbsp; <a href="#" onclick="VolumeControl(\"MUTING\",\"' + channelfieldA + '\",\"\");return false;"><img src="./images/vdc_volume_MUTE.gif" border="0" /></a> &nbsp; <a href="#" onclick="VolumeControl(\"UNMUTE\",\"' + channelfieldA + '\",\"\");return false;"><img src="./images/vdc_volume_UNMUTE.gif" border="0" /></a></td></tr>';
                                 }
                             }
                         }
@@ -2806,13 +2806,13 @@ function CheckForConfCalls (confnum, force) {
                                 if  ( (channelfieldA.match(regAGNTchan)) && (agentchannel != channelfieldA) ) {
                                     agentchannel = channelfieldA;
     
-                                    //$("#AgentMuteSpan").html("<a href='#CHAN-" + agentchannel + "' onclick='volume_control(\"MUTING\",\"" + agentchannel + "\",\"AgenT\");return false;'><img src='./images/vdc_volume_MUTE.gif' border='0' /></a>");
+                                    //$("#AgentMuteSpan").html("<a href='#CHAN-" + agentchannel + "' onclick='VolumeControl(\"MUTING\",\"" + agentchannel + "\",\"AgenT\");return false;'><img src='./images/vdc_volume_MUTE.gif' border='0' /></a>");
                                 }
                             } else {
                                 if (agentchannel.length < 3) {
                                     agentchannel = channelfieldA;
     
-                                    //$("#AgentMuteSpan").html("<a href='#CHAN-" + agentchannel + "' onclick='volume_control(\"MUTING\",\"" + agentchannel + "\",\"AgenT\");return false;'><img src='./images/vdc_volume_MUTE.gif' border='0' /></a>");
+                                    //$("#AgentMuteSpan").html("<a href='#CHAN-" + agentchannel + "' onclick='VolumeControl(\"MUTING\",\"" + agentchannel + "\",\"AgenT\");return false;'><img src='./images/vdc_volume_MUTE.gif' border='0' /></a>");
                                 }
                             }
                             //document.getElementById("agentchannelSPAN").innerHTML = agentchannel;
@@ -3371,8 +3371,8 @@ function CheckForIncoming () {
             $("#transfer-local-closer").html(live_Xfer_HTML);
 
             if (lastcustserverip == server_ip) {
-                //$("#VolumeUpSpan").html("<a onclick=\"volume_control('UP','" + lastcustchannel + "','');return false;\"><img src='./images/vdc_volume_up.gif' border='0' /></a>");
-                //$("#VolumeDownSpan").html("<a onclick=\"volume_control('DOWN','" + lastcustchannel + "','');return false;\"><img src='./images/vdc_volume_down.gif' border='0' /></a>");
+                //$("#VolumeUpSpan").html("<a onclick=\"VolumeControl('UP','" + lastcustchannel + "','');return false;\"><img src='./images/vdc_volume_up.gif' border='0' /></a>");
+                //$("#VolumeDownSpan").html("<a onclick=\"VolumeControl('DOWN','" + lastcustchannel + "','');return false;\"><img src='./images/vdc_volume_down.gif' border='0' /></a>");
             }
 
             if (dial_method == "INBOUND_MAN") {
@@ -4576,8 +4576,8 @@ function ManualDialCheckChannel(taskCheckOR) {
                     toggleButton('DialBlindVMail', 'on');
                     $("#btnDialBlindVMail").attr('onclick', "mainxfer_send_redirect('XfeRVMAIL','" + lastcustchannel + "','" + lastcustserverip + "');");
 
-                    //volume_control('UP','" + MDchannel + "','');return false;
-                    //volume_control('DOWN','" + MDchannel + "','');return false;
+                    //VolumeControl('UP','" + MDchannel + "','');return false;
+                    //VolumeControl('DOWN','" + MDchannel + "','');return false;
 
                     if ( (quick_transfer_button == 'IN_GROUP') || (quick_transfer_button == 'LOCKED_IN_GROUP') ) {
                         quick_transfer_button_orig = '';
@@ -8216,6 +8216,53 @@ function CallBackDateSubmit() {
     $("#DispoSelection").val('CBHOLD');
     $("#callback-datepicker").modal('hide');
     DispoSelectSubmit();
+}
+
+
+function VolumeControl(taskdirection, taskvolchannel, taskagentmute) {
+    if (taskagentmute=='GOagent') {
+        taskvolchannel = agentchannel;
+    }
+    
+    var queryCID = "VCagcW" + epoch_sec + user_abb;
+    var volchanvalue = taskvolchannel;
+    
+    var postData = {
+        goAction: 'goVolumeControl',
+        goServerIP: server_ip,
+        goSessionName: session_name,
+        goUser: uName,
+        goPass: uPass,
+        goChannel: volchanvalue,
+        goStage: taskdirection,
+        goExten: session_id,
+        goExtContext: ext_context,
+        goQueryCID: queryCID,
+        responsetype: 'json'
+    };
+    
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    .done(function (result) {
+        //nothing to do here...
+    });
+    
+    if (taskagentmute=='GOagent') {
+        if (taskdirection=='MUTING') {
+            $.notifyClose('bottom-left');
+            notifyMe("<?=$lh->translationFor('you_have_turned_off_mic')?>", 'warning', 'mic_off', 0);
+        } else {
+            notifyMe("<?=$lh->translationFor('you_have_turned_on_mic')?>", 'success', 'mic');
+        }
+    }
 }
 
 
