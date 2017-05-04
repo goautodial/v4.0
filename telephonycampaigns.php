@@ -3012,12 +3012,18 @@
 				$('#auto-dial-level option[value=OFF]').prop('disabled', true);
 				$('#auto-dial-level option[value=SLOW]').prop('selected', true);
 				$('div.auto-dial-level').removeClass('hide');
+				$("#answering-machine-detection").val("8369").change();
+				$('#answering-machine-detection').prop('disabled', false);
 			}else if(value == "ADAPT_TAPERED"){
 				$('#auto-dial-level').prop('disabled', true);
 				$('#auto-dial-level option[value=MAX_PREDICTIVE]').prop('selected', true);
 				$('div.auto-dial-level').removeClass('hide');
+				$("#answering-machine-detection").val("8369").change();
+				$('#answering-machine-detection').prop('disabled', false);
 			}else if(value == "INBOUND_MAN"){
 				$('#auto-dial-level').prop('disabled', true);
+				$("#answering-machine-detection").val("8368").change();
+				$('#answering-machine-detection').prop('disabled', true);
 				$('#auto-dial-level option[value=SLOW]').prop('selected', true);
 				$('div.auto-dial-level').removeClass('hide');
 			}else{
@@ -3025,6 +3031,8 @@
 				$('#auto-dial-level option[value=OFF]').prop('selected', true);
 				$('div.auto-dial-level').removeClass('hide');
 				$('.auto-dial-level-adv').addClass('hide');
+				$("#answering-machine-detection").val("8368").change();
+				$('#answering-machine-detection').prop('disabled', true);
 			}
 			
 		}

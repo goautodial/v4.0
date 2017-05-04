@@ -6297,13 +6297,15 @@ error_reporting(E_ERROR | E_PARSE);
 		return $return;
 	}
 	
-	public function API_getAgentLog($user) {
+	public function API_getAgentLog($user, $sdate, $edate) {
 		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetAgentLog"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["user"] = $user; #json. (required)
+		$postfields["user"] = $user; 
+		$postfields["start_date"] = $sdate;
+		$postfields["end_date"] = $edate; 
 		$postfields["session_user"] = $_SESSION['user']; #json. (required)
 
 		$ch = curl_init();
@@ -6319,8 +6321,8 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 	
-	public function getAgentLog($user) {
-		$output = $this->API_getAgentLog($user);
+	public function getAgentLog($user, $sdate, $edate) {
+		$output = $this->API_getAgentLog($user, $sdate, $edate);
 		if($output->result=="success") {
 			$columns = array($this->lh->translationFor('event_time'), $this->lh->translationFor('status'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'), $this->lh->translationFor('list_id'), $this->lh->translationFor('lead_id'), $this->lh->translationFor('term_reason'));
 			$hideOnMedium = array();

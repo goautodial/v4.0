@@ -56,6 +56,11 @@
         <!-- SELECT2-->
    		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
    		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+		
+		<!-- Date Range Picker -->	
+        <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
+		<link rel="stylesheet" href="css/daterangepicker/daterangepicker-bs3.css"></link>
+		
    		<!-- SELECT2-->
    		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
 		<style>
@@ -529,8 +534,25 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight">
-						<i class="fa fa-info-circle" title="<?php $lh->translateText("agentlog_desc"); ?>"></i> 
-						<b><?php $lh->translateText("agent_log"); ?></b>
+						<div class="col-sm-12 col-md-8">
+							<i class="fa fa-info-circle" title="<?php $lh->translateText("agentlog_desc"); ?>"></i> 
+							<b><?php $lh->translateText("agent_log"); ?> </b>
+						</div>
+						<div class="col-sm-12 col-md-4 row" id="daterange">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<div class='input-group date'>
+										<input date-range-picker id="daterange_input" name="date_agentlog" class="form-control date-picker" type="text" ng-model="dateRange" clearable="true" options="dateRangeOptions" />
+										<!--<input type='text' class="form-control" name="date_agentlog" id="date_agentlog" placeholder="Filter Agent Log By Date"/>-->
+										<span class="input-group-addon">
+											<!-- <span class="glyphicon glyphicon-calendar"></span>-->
+											<span class="fa fa-calendar"></span>
+										</span>
+										<input type="hidden" id="user_agentlog">
+									</div>
+								</div>
+							</div>
+						</div>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
@@ -792,8 +814,42 @@
 			$(document).on('click','.view-stats',function() {
 				$(".report-loader").fadeIn("slow");
 				$("#user_stats").html("");
+				$("#daterange_input").val("");
 				var userid = $(this).attr('data-user');
 				$('#stats-modal').modal('toggle');
+				$("#user_agentlog").val(userid);
+				
+				$('#daterange_input').daterangepicker({
+					"opens": "left"
+				}, function(start, end, label) {
+					var userid = $("#user_agentlog").val();
+					var sdate = start.format('YYYY-MM-DD');
+					var edate = end.format('YYYY-MM-DD');
+					$(".report-loader").fadeIn("slow");
+					$("#user_stats").html("");
+					$.ajax({
+						type: 'POST',
+						url: "agentlog.php",
+						data: {
+							user: userid,
+							start_date: sdate,
+							end_date: edate
+						},
+						cache: false,
+						success: function(data){
+							$(".report-loader").fadeOut("slow");
+							if(data !== ""){
+								var title = "<?php $lh->translateText("agent_log"); ?>";
+								$("#user_stats").html(data);
+								$('#table_stats').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
+							}else{
+								$('#user_stats').html("<?php $lh->translateText("no_data"); ?>");
+							}
+							
+						}
+					});
+				});
+				
 				$.ajax({
 					type: 'POST',
 					url: "agentlog.php",
@@ -814,6 +870,7 @@
 					}
 				}); 
 			});
+			
 	
 		/*********
 		** Emergency Logout Event

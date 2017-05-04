@@ -869,6 +869,24 @@ $audiofiles = $ui->API_getListAudioFiles();
 															</div>
 														</div>
 														<div class="form-group">
+															<label class="col-sm-3 control-label">Disable Alter Customer Data:</label>
+															<div class="col-sm-9 mb">
+																<select class="form-control" id="disable_alter_custdata" name="disable_alter_custdata">
+																	<option value="N" <?php if($campaign->data->disable_alter_custdata == 'N') echo "selected";?>>NO</option>
+																	<option value="Y" <?php if($campaign->data->disable_alter_custdata == 'Y') echo "selected";?>>YES</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label">Disable Alter Customer Phone:</label>
+															<div class="col-sm-9 mb">
+																<select class="form-control" id="disable_alter_custphone" name="disable_alter_custphone">
+																	<option value="N" <?php if($campaign->data->disable_alter_custphone == 'N') echo "selected";?>>NO</option>
+																	<option value="Y" <?php if($campaign->data->disable_alter_custphone == 'Y') echo "selected";?>>YES</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group">
 															<label class="col-sm-3 control-label">Caller ID for 3-way Calls:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="three_way_call_cid" name="three_way_call_cid">
@@ -1079,7 +1097,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</div>
 															</div>
 															<div class="form-group">
-																<label class="col-sm-3 control-label"><?php $lh->translateText("dia_timeout"); ?>:</label>
+																<label class="col-sm-3 control-label"><?php $lh->translateText("dial_timeout"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<input type="text" class="form-control" id="dial_time_out" name="dial_timeout" value="<?php echo $campaign->data->dial_timeout; ?>">
 																</div>

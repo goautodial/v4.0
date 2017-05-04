@@ -293,7 +293,7 @@
 												<td><?php echo $lists->list_name[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $lists->active[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $lists->tally[$i];?></td>
-												<td class='hide-on-medium hide-on-low'><?php echo $lists->campaign_id[$i];?></td>
+												<td class='hide-on-medium hide-on-low'><?php echo $lists->campaign_name[$i];?></td>
 												<td class='hide-on-medium hide-on-low'><?php echo $lists->cf_count[$i];?></td>
 												<td><?php echo $action_list;?></td>
 												</tr>

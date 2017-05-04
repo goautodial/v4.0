@@ -89,6 +89,8 @@
 	$postfields["survey_fourth_status"] 		= (isset($_POST["survey_fourth_status"]))? $_POST["survey_fourth_status"] : "";
 	$postfields["survey_fourth_exten"] 			= (isset($_POST["survey_fourth_exten"]))? $_POST["survey_fourth_exten"] : "";
 	$postfields["no_channels"] 					= (isset($_POST["no_channels"]))? $_POST["no_channels"] : 1;
+	$postfields["disable_alter_custdata"] 		= (isset($_POST["disable_alter_custdata"]))? $_POST["disable_alter_custdata"] : 'N';
+	$postfields["disable_alter_custphone"] 		= (isset($_POST["disable_alter_custphone"]))? $_POST["disable_alter_custphone"] : 'Y';
 	
 
 	if(is_array($_POST["closer_campaigns"])){

@@ -562,6 +562,9 @@ agent_name = "Agent Name"
 user_id = "User ID"
 agent_log = "Agent Log"
 agent_log_desc = "Shows the Call Logs of the agent."
+show_agentlog_filter = "Filter"
+from = "From:"
+to = "To:"
 
 // USER WIZARD
 		
