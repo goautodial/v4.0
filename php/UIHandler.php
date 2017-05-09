@@ -5605,6 +5605,7 @@ error_reporting(E_ERROR | E_PARSE);
 	$postfields["goAction"] = "goGetLeadsInfo"; #action performed by the [[API:Functions]]. (required)
 	$postfields["responsetype"] = responsetype; #json. (required)
 	$postfields["lead_id"] = $lead_id; #Desired exten ID. (required)
+	$postfields["session_user"] = $_SESSION['user']; 
 	$postfields["log_user"] = $_SESSION['user'];
 	$postfields["log_group"] = $_SESSION['usergroup'];
 	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
