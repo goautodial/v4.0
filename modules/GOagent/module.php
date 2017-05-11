@@ -200,7 +200,11 @@ class GOagent extends Module {
 			$rslt = $this->goDB->getOne('settings', 'value');
 			$websocketSIPPort = "";
 			if (!preg_match("/server_ip/", $websocketSIP)) {
-				$websocketSIPPort = (strlen($rslt['value']) > 0 && $rslt['value'] > 0) ? ":{$rslt['value']}'" : "'";
+				if (strlen($rslt['value']) > 0 && $rslt['value'] > 0 && $rslt['value'] != 5060) {
+					$websocketSIPPort = ":{$rslt['value']}'";
+				} else {
+					$websocketSIPPort = "'";
+				}
 			}
 		}
 		
@@ -355,6 +359,14 @@ class GOagent extends Module {
 EOF;
 
 		if ($useWebRTC) {
+			$display_name = $_SESSION['user'];
+			$phone_login = $_SESSION['phone_login'];
+			$socketParams = "password: phone_pass,";
+			if ($_SESSION['bcrypt'] > 0) {
+				$ha1_pass = $_SESSION['ha1'];
+				$realm = $_SESSION['realm'];
+				$socketParams = "ha1: '$ha1_pass', realm: '$realm',";
+			}
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
 <script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.4.js"></script>
@@ -369,7 +381,7 @@ EOF;
 	var configuration = {
 		sockets : [ socket ],
 		uri: 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
-		password: phone_pass,
+		$socketParams
 		session_timers: false,
 		register: true
 	};
@@ -918,7 +930,11 @@ EOF;
 			$rslt = $this->goDB->getOne('settings', 'value');
 			$websocketSIPPort = "";
 			if (!preg_match("/server_ip/", $websocketSIP)) {
-				$websocketSIPPort = (strlen($rslt['value']) > 0 && $rslt['value'] > 0) ? ":{$rslt['value']}'" : "'";
+				if (strlen($rslt['value']) > 0 && $rslt['value'] > 0 && $rslt['value'] != 5060) {
+					$websocketSIPPort = ":{$rslt['value']}'";
+				} else {
+					$websocketSIPPort = "'";
+				}
 			}
 		}
 		
@@ -930,6 +946,13 @@ EOF;
 		$user_pass = (strlen($rslt['pass']) > 0) ? $rslt['pass'] : $rslt['pass_hash'];
 		
 		if ($useWebRTC) {
+			$display_name = $_SESSION['user'];
+			$socketParams = "password: pass,";
+			if ($_SESSION['bcrypt'] > 0) {
+				$ha1_pass = $_SESSION['ha1'];
+				$realm = $_SESSION['realm'];
+				$socketParams = "ha1: '$ha1_pass', realm: '$realm',";
+			}
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
 <script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.4.js"></script>
@@ -953,7 +976,7 @@ EOF;
 		var configuration = {
 			sockets : [ socket ],
 			uri: 'sip:'+login+'@{$websocketSIP}{$websocketSIPPort},
-			password: pass,
+			$socketParams
 			session_timers: false,
 			register: true
 		};

@@ -284,6 +284,9 @@ class DbHandler {
 			$bcrypt = $userobj->bcrypt;
 			$salt = $userobj->salt;
 			$cost = $userobj->cost;
+			$phone_login = $userobj->phone_login;
+			$realm = $userobj->realm;
+			$ha1_pass = md5("{$phone_login}:{$realm}:{$password}");
 			//if ($status == 1) { // user is active
 
 			if ($bcrypt > 0) {
@@ -320,6 +323,9 @@ class DbHandler {
 	                $arr["email"] = $userobj->email;
 	                $arr["phone_login"] = $userobj->phone_login;
 	                $arr["phone_pass"] = $userobj->phone_pass;
+					$arr["ha1"] = $ha1_pass;
+					$arr["realm"] = $realm;
+					$arr["bcrypt"] = $bcrypt;
 					$arr["role"] = $user_role;
 					$arr["avatar"] = $userobj->avatar;
 					$arr["user_group"] = $userobj->user_group;
