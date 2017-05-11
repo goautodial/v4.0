@@ -81,6 +81,9 @@
 				$_SESSION["usergroup"] = $result["user_group"];
 				$_SESSION["phone_login"] = $result["phone_login"];
 				$_SESSION["phone_pass"] = $result["phone_pass"];
+                $_SESSION["ha1"] = $result["ha1"];
+                $_SESSION["realm"] = $result["realm"];
+                $_SESSION["bcrypt"] = $result["bcrypt"];
 				
 				if (!empty($result["avatar"])) {
 					$_SESSION['avatar'] = $result["avatar"];
