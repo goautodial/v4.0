@@ -48,7 +48,7 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 			
 			function on_session_read($id) {
 				global $con;
-				error_log($key);
+				error_log($id);
 				//$stmt = "SELECT session_data from sessions ";
 				//$stmt .= "where session_id ='$key' ";
 				//$stmt .= "and unix_timestamp(session_expiration) > unix_timestamp(date_add(now(),interval 1 hour))";
@@ -68,7 +68,7 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 			
 			function on_session_write($id, $data) {
 				global $con;
-				error_log("$key = $value");
+				error_log("$id = $data");
 				//$val = addslashes($val);
 				//$insert_stmt  = "insert into sessions values('$key', ";
 				//$insert_stmt .= "'$val',unix_timestamp(date_add(now(), interval 1 hour)))";
