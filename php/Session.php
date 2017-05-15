@@ -32,7 +32,7 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
      }
 } else {
 	$db = new \creamy\DbHandler();
-	var_dump(session_status());
+	var_dump(PHP_SESSION_NONE);
 	if (session_status() == PHP_SESSION_NONE) {
 		session_start();
 	}
