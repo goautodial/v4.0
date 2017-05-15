@@ -28,13 +28,13 @@ namespace creamy;
 // Start session if not already started.
 if (version_compare(phpversion(), '5.4.0', '<')) {
      if(session_id() == '') {
-        session_start();
+		session_start();
      }
- }
- else {
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
+} else {
+	if (session_status() == PHP_SESSION_NONE) {
+		var_dump(CRM_SESSION_DRIVER);
+		session_start();
+	}
 }
 
 // force https protocol
