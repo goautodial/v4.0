@@ -26,13 +26,103 @@
 namespace creamy;
 
 // Start session if not already started.
-$sDB = new \creamy\DbHandler();
+$con = new \creamy\DbHandler();
 if (version_compare(phpversion(), '5.4.0', '<')) {
      if(session_id() == '') {
 		session_start();
      }
 } else {
 	if (session_status() == PHP_SESSION_NONE) {
+		if (CRM_SESSION_DRIVER == 'database') {
+			function _open($save_path, $session_name) {
+				//error_log($session_name . " ". session_id());
+				error_log("Session created: $session_name");
+			}
+			
+			function _close() {
+				// Noting to do here...
+				error_log("Session closed.");
+			}
+			
+			function _read($id) {
+				global $con;
+				error_log($key);
+				//$stmt = "SELECT session_data from sessions ";
+				//$stmt .= "where session_id ='$key' ";
+				//$stmt .= "and unix_timestamp(session_expiration) > unix_timestamp(date_add(now(),interval 1 hour))";
+				//$sth = mysql_query($stmt);
+				
+				//$con->where('id', $id);
+				//$con->where('last_activity', 'UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))', '>');
+				//$result = $con->getOne('go_sessions', 'user_data');
+				//
+				//if ($result) {
+				//	return($result['user_data']);
+				//} else {
+				//	return $result;
+				//}
+				return true;
+			}
+			
+			function _write($id, $data) {
+				global $con;
+				error_log("$key = $value");
+				//$val = addslashes($val);
+				//$insert_stmt  = "insert into sessions values('$key', ";
+				//$insert_stmt .= "'$val',unix_timestamp(date_add(now(), interval 1 hour)))";
+				//
+				//$update_stmt  = "update sessions set session_data ='$val', ";
+				//$update_stmt .= "session_expiration = unix_timestamp(date_add(now(), interval 1 hour))";
+				//$update_stmt .= "where session_id ='$key '";
+				//
+				//// First we try to insert, if that doesn't succeed, it means
+				//// session is already in the table and we try to update
+				//
+				//
+				//mysql_query($insert_stmt);
+				//
+				//$err = mysql_error();
+				//
+				//if ($err != 0)
+				//{
+				//	error_log( mysql_error());
+				//	mysql_query($update_stmt);
+				//}
+			}
+			
+			function _destroy($id) {
+				global $con;
+				error_log("Session destroyed.");
+				//$id = mysql_real_escape_string($id);
+				//$sql = "DELETE
+				//	   FROM   sessions
+				//	   WHERE  id = '$id'";
+				//return mysql_query($sql, $con);
+				return true;
+			}
+			 
+			function _clean($max) {
+				global $con;
+				error_log("Session cleaned.");
+			
+				//$old = time() - $max;
+				//$old = mysql_real_escape_string($old);
+				//
+				//$sql = "DELETE
+				//	   FROM   sessions
+				//	   WHERE  access < '$old'";
+				//
+				//return mysql_query($sql, $con);
+			}
+			
+			session_set_save_handler('_open',
+								'_close',
+								'_read',
+								'_write',
+								'_destroy',
+								'_clean');
+		}
+		
 		session_start();
 	}
 }
