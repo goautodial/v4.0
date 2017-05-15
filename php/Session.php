@@ -33,6 +33,7 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
      }
 } else {
 	if (session_status() == PHP_SESSION_NONE) {
+		error_log(CRM_SESSION_DRIVER);
 		if (CRM_SESSION_DRIVER == 'database') {
 			function _open($save_path, $session_name) {
 				//error_log($session_name . " ". session_id());
