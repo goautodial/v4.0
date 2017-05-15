@@ -26,14 +26,13 @@
 namespace creamy;
 
 // Start session if not already started.
+$sDB = new \creamy\DbHandler();
 if (version_compare(phpversion(), '5.4.0', '<')) {
      if(session_id() == '') {
 		session_start();
      }
 } else {
 	if (session_status() == PHP_SESSION_NONE) {
-		$sDB = new \creamy\DbHandler();
-		var_dump($sDB);
 		session_start();
 	}
 }
