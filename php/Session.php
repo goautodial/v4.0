@@ -36,13 +36,13 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 		if (CRM_SESSION_DRIVER == 'database') {
 			function on_session_start($save_path, $session_name) {
 				//error_log($session_name . " ". session_id());
-				error_log("Session created: $session_name");
+				var_export("Session created: $session_name");
 				return true;
 			}
 			
 			function on_session_end() {
 				// Noting to do here...
-				error_log("Session closed.");
+				var_export("Session closed.");
 				return true;
 			}
 			
@@ -68,7 +68,7 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 			
 			function on_session_write($id, $data) {
 				global $con;
-				error_log("$id = $data");
+				var_export("$id = $data");
 				//$val = addslashes($val);
 				//$insert_stmt  = "insert into sessions values('$key', ";
 				//$insert_stmt .= "'$val',unix_timestamp(date_add(now(), interval 1 hour)))";
@@ -94,7 +94,7 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 			
 			function on_session_destroy($id) {
 				global $con;
-				error_log("Session destroyed.");
+				var_export("Session destroyed.");
 				//$id = mysql_real_escape_string($id);
 				//$sql = "DELETE
 				//	   FROM   sessions
@@ -105,7 +105,7 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 			 
 			function on_session_gc($max) {
 				global $con;
-				error_log("Session cleaned.");
+				var_export("Session cleaned.");
 			
 				//$old = time() - $max;
 				//$old = mysql_real_escape_string($old);
