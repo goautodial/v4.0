@@ -43,8 +43,9 @@
 	
 
 	if (CRM_SESSION_DRIVER == 'database') {
+		$sDB = new \creamy\DbHandler();
 		function on_session_start($save_path, $session_name) {
-			error_log($session_name . " ". session_id());
+			//error_log($session_name . " ". session_id());
 			//error_log("Session created: $session_name");
 		}
 		
@@ -54,49 +55,48 @@
 		}
 		
 		function on_session_read($id) {
-			global $con;
 			//error_log($id);
 			//$stmt = "SELECT session_data from sessions ";
 			//$stmt .= "where session_id ='$key' ";
 			//$stmt .= "and unix_timestamp(session_expiration) > unix_timestamp(date_add(now(),interval 1 hour))";
 			//$sth = mysql_query($stmt);
 			
-			//$con->where('id', $id);
-			//$con->where('last_activity', 'UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))', '>');
-			//$result = $con->getOne('go_sessions', 'user_data');
-			//
-			//if ($result) {
-			//	return($result['user_data']);
-			//} else {
-			//	return $result;
-			//}
-			return true;
+			$sDB->where('session_id', $id);
+			$sDB->where('last_activity', 'UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))', '>');
+			$result = $con->getOne('go_sessions', 'user_data');
+			
+			if ($result) {
+				return($result['user_data']);
+			} else {
+				return $result;
+			}
 		}
 		
 		function on_session_write($id, $data) {
-			global $con;
 			//error_log("$id = $data");
-			//$insert_stmt  = "insert into sessions values('$key', ";
-			//$insert_stmt .= "'$val',unix_timestamp(date_add(now(), interval 1 hour)))";
-			//
-			//$update_stmt  = "update sessions set session_data ='$val', ";
-			//$update_stmt .= "session_expiration = unix_timestamp(date_add(now(), interval 1 hour))";
-			//$update_stmt .= "where session_id ='$key '";
-			//
-			//// First we try to insert, if that doesn't succeed, it means
-			//// session is already in the table and we try to update
-			//
-			//
-			////mysql_query($insert_stmt);
-			//$con->insert
-			//
-			////$err = mysql_error();
-			//
-			//if ($err != 0)
-			//{
-			//	error_log( mysql_error());
-			//	mysql_query($update_stmt);
-			//}
+			$postData = array(
+				'session_id' => $id,
+				'user_data' => $data,
+				'last_activity' => "UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))",
+				'ip_address' => $_SERVER['REMOTE_ADDR'],
+				'user_agent' => $_SERVER['HTTP_USER_AGENT']
+			);
+			$sDB->insert('go_sessions', $postData);
+			
+			$err = $sDB->getLastError();
+			
+			if ($err !== '') {
+				error_log($sDB->getLastError());
+				
+				$postData = array(
+					'user_data' => $data,
+					'last_activity' => "UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))",
+					'ip_address' => $_SERVER['REMOTE_ADDR'],
+					'user_agent' => $_SERVER['HTTP_USER_AGENT']
+				);
+				$sDB->where('session_id', $id);
+				$rslt = $sDB->update('go_sessions', $postData);
+			}
 		}
 		
 		function on_session_destroy($id) {
