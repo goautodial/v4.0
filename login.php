@@ -40,6 +40,8 @@
 	require_once('./php/UIHandler.php');
 	require_once('./php/DbHandler.php');
 	require_once('./php/LanguageHandler.php');
+	
+	var_dump(CRM_SESSION_DRIVER);
 
 	session_start(); // Starting Session
 	$lh = \creamy\LanguageHandler::getInstance();
