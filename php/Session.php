@@ -34,22 +34,19 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 } else {
 	if (session_status() == PHP_SESSION_NONE) {
 		if (CRM_SESSION_DRIVER == 'database') {
-			var_dump('test');
 			function on_session_start($save_path, $session_name) {
 				//error_log($session_name . " ". session_id());
-				var_export("Session created: $session_name");
-				return true;
+				var_dump("Session created: $session_name");
 			}
 			
 			function on_session_end() {
 				// Noting to do here...
-				var_export("Session closed.");
-				return true;
+				var_dump("Session closed.");
 			}
 			
 			function on_session_read($id) {
 				global $con;
-				error_log($id);
+				var_dump($id);
 				//$stmt = "SELECT session_data from sessions ";
 				//$stmt .= "where session_id ='$key' ";
 				//$stmt .= "and unix_timestamp(session_expiration) > unix_timestamp(date_add(now(),interval 1 hour))";
@@ -69,7 +66,7 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 			
 			function on_session_write($id, $data) {
 				global $con;
-				var_export("$id = $data");
+				var_dump("$id = $data");
 				//$val = addslashes($val);
 				//$insert_stmt  = "insert into sessions values('$key', ";
 				//$insert_stmt .= "'$val',unix_timestamp(date_add(now(), interval 1 hour)))";
@@ -95,7 +92,7 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 			
 			function on_session_destroy($id) {
 				global $con;
-				var_export("Session destroyed.");
+				var_dump("Session destroyed.");
 				//$id = mysql_real_escape_string($id);
 				//$sql = "DELETE
 				//	   FROM   sessions
@@ -106,7 +103,7 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 			 
 			function on_session_gc($max) {
 				global $con;
-				var_export("Session cleaned.");
+				var_dump("Session cleaned.");
 			
 				//$old = time() - $max;
 				//$old = mysql_real_escape_string($old);
