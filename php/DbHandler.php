@@ -2207,32 +2207,22 @@ class DbHandler {
 		return $result;
 	}
 	
-	public function onSessionWrite($id, $data) {
-		//$postData = array(
-		//	'session_id' => $id,
-		//	'user_data' => $data,
-		//	'last_activity' => "UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))",
-		//	'ip_address' => $_SERVER['REMOTE_ADDR'],
-		//	'user_agent' => $_SERVER['HTTP_USER_AGENT']
-		//);
-		//$result = $this->dbConnector->insert(CRM_SESSION_COOKIE_NAME, $postData);
-		//
-		//$err = $this->dbConnector->getLastError();
-		//
-		//if ($err !== '') {
-		//	error_log($this->dbConnector->getLastError());
-		//	
-		//	$postData = array(
-		//		'user_data' => $data,
-		//		'last_activity' => "UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))",
-		//		'ip_address' => $_SERVER['REMOTE_ADDR'],
-		//		'user_agent' => $_SERVER['HTTP_USER_AGENT']
-		//	);
-		//	$this->dbConnector->where('session_id', $id);
-		//	$result = $this->dbConnector->update(CRM_SESSION_COOKIE_NAME, $postData);
-		//}
-		//
-		return true;
+	public function onSessionWrite($postData) {
+		$result = $this->dbConnector->insert(CRM_SESSION_COOKIE_NAME, $postData);
+		
+		$err = $this->dbConnector->getLastError();
+		
+		if ($err !== '') {
+			error_log($this->dbConnector->getLastError());
+			
+			$id = $postData['session_id'];
+			unset($postData['session_id']);
+			
+			$this->dbConnector->where('session_id', $id);
+			$result = $this->dbConnector->update(CRM_SESSION_COOKIE_NAME, $postData);
+		}
+		
+		return $result;
 	}
 	
 }

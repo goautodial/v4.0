@@ -69,7 +69,15 @@
 		function on_session_write($id, $data) {
 			global $sDB;
 			//error_log("$id = $data");
-			$result = $sDB->onSessionWrite($id, $data);
+			$postData = array(
+				'session_id' => $id,
+				'user_data' => $data,
+				'last_activity' => "UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))",
+				'ip_address' => $_SERVER['REMOTE_ADDR'],
+				'user_agent' => $_SERVER['HTTP_USER_AGENT']
+			);
+			
+			$result = $sDB->onSessionWrite($postData);
 		}
 		
 		function on_session_destroy($id) {
