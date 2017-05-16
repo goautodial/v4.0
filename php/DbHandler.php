@@ -2225,6 +2225,20 @@ class DbHandler {
 		return $result;
 	}
 	
+	public function onSessionDestroy($id) {
+		$this->dbConnector->where('session_id', $id);
+		$this->dbConnector->delete(CRM_SESSION_COOKIE_NAME);
+		return true;
+	}
+	
+	public function onSessionGC($max) {
+		$old = time() - $max;
+		$old = $this->escape_string($old);
+		$this->dbConnector->where('last_activity', $old, '<');
+		$this->dbConnector->delete(CRM_SESSION_COOKIE_NAME);
+		return true;
+	}
+	
 }
 
 ?>

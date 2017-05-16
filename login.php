@@ -79,14 +79,9 @@
 		}
 		
 		function on_session_destroy($id) {
-			global $con;
+			$sDB = new \creamy\DbHandler();
 			//var_dump("Session destroyed.");
-			//$id = mysql_real_escape_string($id);
-			//$sql = "DELETE
-			//	   FROM   sessions
-			//	   WHERE  id = '$id'";
-			//return mysql_query($sql, $con);
-			return true;
+			$result = $sDB->onSessionDestroy($id);
 		}
 		 
 		function on_session_gc($max) {
