@@ -56,14 +56,7 @@
 		
 		function on_session_read($id) {
 			//error_log($id);
-			//$stmt = "SELECT session_data from sessions ";
-			//$stmt .= "where session_id ='$key' ";
-			//$stmt .= "and unix_timestamp(session_expiration) > unix_timestamp(date_add(now(),interval 1 hour))";
-			//$sth = mysql_query($stmt);
-			
-			$sDB->dbConnector->where('session_id', $id);
-			$sDB->dbConnector->where('last_activity', 'UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))', '>');
-			$result = $sDB->dbConnector->getOne('go_sessions', 'user_data');
+			$result = $sDB->onSessionRead($id);
 			
 			if ($result) {
 				return($result['user_data']);
@@ -74,29 +67,7 @@
 		
 		function on_session_write($id, $data) {
 			//error_log("$id = $data");
-			$postData = array(
-				'session_id' => $id,
-				'user_data' => $data,
-				'last_activity' => "UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))",
-				'ip_address' => $_SERVER['REMOTE_ADDR'],
-				'user_agent' => $_SERVER['HTTP_USER_AGENT']
-			);
-			$sDB->dbConnector->insert('go_sessions', $postData);
-			
-			$err = $sDB->dbConnector->getLastError();
-			
-			if ($err !== '') {
-				error_log($sDB->dbConnector->getLastError());
-				
-				$postData = array(
-					'user_data' => $data,
-					'last_activity' => "UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))",
-					'ip_address' => $_SERVER['REMOTE_ADDR'],
-					'user_agent' => $_SERVER['HTTP_USER_AGENT']
-				);
-				$sDB->dbConnector->where('session_id', $id);
-				$rslt = $sDB->dbConnector->update('go_sessions', $postData);
-			}
+			$sDB->onSessionWrite($id, $data);
 		}
 		
 		function on_session_destroy($id) {
