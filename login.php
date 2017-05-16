@@ -61,9 +61,9 @@
 			//$stmt .= "and unix_timestamp(session_expiration) > unix_timestamp(date_add(now(),interval 1 hour))";
 			//$sth = mysql_query($stmt);
 			
-			$sDB->where('session_id', $id);
-			$sDB->where('last_activity', 'UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))', '>');
-			$result = $con->getOne('go_sessions', 'user_data');
+			$sDB->dbConnector->where('session_id', $id);
+			$sDB->dbConnector->where('last_activity', 'UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))', '>');
+			$result = $sDB->dbConnector->getOne('go_sessions', 'user_data');
 			
 			if ($result) {
 				return($result['user_data']);
@@ -81,12 +81,12 @@
 				'ip_address' => $_SERVER['REMOTE_ADDR'],
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
 			);
-			$sDB->insert('go_sessions', $postData);
+			$sDB->dbConnector->insert('go_sessions', $postData);
 			
-			$err = $sDB->getLastError();
+			$err = $sDB->dbConnector->getLastError();
 			
 			if ($err !== '') {
-				error_log($sDB->getLastError());
+				error_log($sDB->dbConnector->getLastError());
 				
 				$postData = array(
 					'user_data' => $data,
@@ -94,8 +94,8 @@
 					'ip_address' => $_SERVER['REMOTE_ADDR'],
 					'user_agent' => $_SERVER['HTTP_USER_AGENT']
 				);
-				$sDB->where('session_id', $id);
-				$rslt = $sDB->update('go_sessions', $postData);
+				$sDB->dbConnector->where('session_id', $id);
+				$rslt = $sDB->dbConnector->update('go_sessions', $postData);
 			}
 		}
 		
