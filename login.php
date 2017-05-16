@@ -43,7 +43,6 @@
 	
 
 	if (CRM_SESSION_DRIVER == 'database') {
-		$sDB = new \creamy\DbHandler();
 		function on_session_start($save_path, $session_name) {
 			//error_log($session_name . " ". session_id());
 			//error_log("Session created: $session_name");
@@ -55,7 +54,7 @@
 		}
 		
 		function on_session_read($id) {
-			global $sDB;
+			$sDB = new \creamy\DbHandler();
 			//error_log($id);
 			$result = $sDB->onSessionRead($id);
 			
@@ -67,8 +66,7 @@
 		}
 		
 		function on_session_write($id, $data) {
-			global $sDB;
-			error_log($data);
+			$sDB = new \creamy\DbHandler();
 			$postData = array(
 				'session_id' => $sDB->escape_string($id),
 				'user_data' => $sDB->escape_string($data),
