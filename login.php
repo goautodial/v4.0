@@ -68,7 +68,7 @@
 		
 		function on_session_write($id, $data) {
 			global $sDB;
-			//error_log("$id = $data");
+			error_log("$id = $data");
 			$postData = array(
 				'session_id' => $id,
 				'user_data' => $data,
@@ -77,7 +77,7 @@
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
 			);
 			
-			$result = $sDB->onSessionWrite($postData);
+			$result = $sDB->onSessionRead($postData);
 		}
 		
 		function on_session_destroy($id) {
