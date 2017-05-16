@@ -2201,8 +2201,8 @@ class DbHandler {
 	}
 	
 	public function onSessionRead($id) {
-		$sDB->dbConnector->where('session_id', $id);
-		$sDB->dbConnector->where('last_activity', 'UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))', '>');
+		$this->dbConnector->where('session_id', $id);
+		$this->dbConnector->where('last_activity', 'UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))', '>');
 		$result = $this->dbConnector->getOne(CRM_SESSION_COOKIE_NAME, 'user_data');
 		return $result;
 	}
