@@ -70,7 +70,7 @@
 			$postData = array(
 				'session_id' => $sDB->escape_string($id),
 				'user_data' => $sDB->escape_string($data),
-				'last_activity' => "UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))",
+				'last_activity' => date("U"),
 				'ip_address' => $_SERVER['REMOTE_ADDR'],
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
 			);
