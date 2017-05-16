@@ -69,7 +69,7 @@
 		function on_session_write($id, $data) {
 			global $sDB;
 			//error_log("$id = $data");
-			$sDB->onSessionWrite($id, $data);
+			$result = $sDB->onSessionWrite($id, $data);
 		}
 		
 		function on_session_destroy($id) {

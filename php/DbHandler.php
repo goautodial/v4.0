@@ -2231,6 +2231,8 @@ class DbHandler {
 			$this->dbConnector->where('session_id', $id);
 			$result = $this->dbConnector->update(CRM_SESSION_COOKIE_NAME, $postData);
 		}
+		
+		return $result;
 	}
 	
 }
