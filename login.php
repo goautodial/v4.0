@@ -55,6 +55,7 @@
 		}
 		
 		function on_session_read($id) {
+			global $sDB;
 			//error_log($id);
 			$result = $sDB->onSessionRead($id);
 			
@@ -66,6 +67,7 @@
 		}
 		
 		function on_session_write($id, $data) {
+			global $sDB;
 			//error_log("$id = $data");
 			$sDB->onSessionWrite($id, $data);
 		}
