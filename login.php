@@ -70,7 +70,7 @@
 			$postData = array(
 				'session_id' => $sDB->escape_string($id),
 				'user_data' => $sDB->escape_string($data),
-				'last_activity' => date("U"),
+				'last_activity' => time(),
 				'ip_address' => $_SERVER['REMOTE_ADDR'],
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
 			);
@@ -82,20 +82,14 @@
 			$sDB = new \creamy\DbHandler();
 			//var_dump("Session destroyed.");
 			$result = $sDB->onSessionDestroy($id);
+			return $result;
 		}
 		 
 		function on_session_gc($max) {
 			global $con;
 			//var_dump("Session cleaned.");
-		
-			//$old = time() - $max;
-			//$old = mysql_real_escape_string($old);
-			//
-			//$sql = "DELETE
-			//	   FROM   sessions
-			//	   WHERE  access < '$old'";
-			//
-			//return mysql_query($sql, $con);
+			$result = $sDB->onSessionGC($max);
+			return true;
 		}
 		
 		session_set_save_handler('on_session_start',
