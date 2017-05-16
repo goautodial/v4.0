@@ -44,18 +44,18 @@
 
 	if (CRM_SESSION_DRIVER == 'database') {
 		function on_session_start($save_path, $session_name) {
-			//error_log($session_name . " ". session_id());
-			error_log("Session created: $session_name");
+			error_log($session_name . " ". session_id());
+			//error_log("Session created: $session_name");
 		}
 		
 		function on_session_end() {
 			// Noting to do here...
-			error_log("Session closed.");
+			//error_log("Session closed.");
 		}
 		
 		function on_session_read($id) {
 			global $con;
-			error_log($id);
+			//error_log($id);
 			//$stmt = "SELECT session_data from sessions ";
 			//$stmt .= "where session_id ='$key' ";
 			//$stmt .= "and unix_timestamp(session_expiration) > unix_timestamp(date_add(now(),interval 1 hour))";
@@ -75,7 +75,7 @@
 		
 		function on_session_write($id, $data) {
 			global $con;
-			error_log("$id = $data");
+			//error_log("$id = $data");
 			//$insert_stmt  = "insert into sessions values('$key', ";
 			//$insert_stmt .= "'$val',unix_timestamp(date_add(now(), interval 1 hour)))";
 			//
@@ -101,7 +101,7 @@
 		
 		function on_session_destroy($id) {
 			global $con;
-			var_dump("Session destroyed.");
+			//var_dump("Session destroyed.");
 			//$id = mysql_real_escape_string($id);
 			//$sql = "DELETE
 			//	   FROM   sessions
@@ -112,7 +112,7 @@
 		 
 		function on_session_gc($max) {
 			global $con;
-			var_dump("Session cleaned.");
+			//var_dump("Session cleaned.");
 		
 			//$old = time() - $max;
 			//$old = mysql_real_escape_string($old);
