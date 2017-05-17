@@ -29,7 +29,7 @@ class SessionHandler {
     function close () {
         if (!empty($this->fieldarray)) {
             // perform garbage collection
-            $result = $this->gc(CRM_SESSION_EXPIRATION);
+            //$result = $this->gc(CRM_SESSION_EXPIRATION);
             return TRUE;
         }
         
@@ -102,7 +102,7 @@ class SessionHandler {
     
     // ****************************************************************************
     function __destruct () {
-        //@session_write_close();
+        @session_write_close();
     }
     
 // ****************************************************************************
