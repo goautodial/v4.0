@@ -45,7 +45,7 @@ class SessionHandler {
         
         if (isset($fieldarray['user_data'])) {
             $this->fieldarray = $fieldarray;
-            //$this->fieldarray['user_data'] = '';
+            $this->fieldarray['user_data'] = '';
             return $fieldarray['user_data'];
         } else {
             return '';  // return an empty string
@@ -103,7 +103,7 @@ class SessionHandler {
     
     // ****************************************************************************
     function __destruct () {
-        //@session_write_close();
+        @session_write_close();
     }
     
 // ****************************************************************************
