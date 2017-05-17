@@ -4,6 +4,7 @@ namespace creamy;
 // dependencies
 require_once('CRMDefaults.php');
 require_once('LanguageHandler.php');
+require_once('DbHandler.php');
 
 //require_once('std.table.class.inc');
 class SessionHandler {
@@ -17,8 +18,6 @@ class SessionHandler {
     // class constructor
     // ****************************************************************************
     function __construct () {
-        require_once dirname(__FILE__) . '/DbHandler.php';
-        
         $this->db = new \creamy\DbHandler();
     }
     
