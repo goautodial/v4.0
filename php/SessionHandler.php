@@ -45,7 +45,7 @@ class SessionHandler {
         //$fieldarray = $this->_dml_getData("session_id='" .addslashes($session_id) ."'");
         
         $fieldarray = $this->db->onSessionRead($session_id);
-        
+        var_dump($fieldarray);
         if (isset($fieldarray['user_data'])) {
             $this->fieldarray = $fieldarray;
             $this->fieldarray['user_data'] = '';
@@ -57,7 +57,6 @@ class SessionHandler {
     
     // ****************************************************************************
     function write ($session_id, $session_data) {
-        var_dump($session_data);
         if (!empty($this->fieldarray)) {
             if ($this->fieldarray['session_id'] != $session_id) {
                 // user is starting a new session with previous data
