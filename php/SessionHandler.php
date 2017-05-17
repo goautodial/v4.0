@@ -2,9 +2,9 @@
 namespace creamy;
 
 // dependencies
-require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require_once('DbHandler.php');
+//require_once('CRMDefaults.php');
+//require_once('LanguageHandler.php');
+//require_once('DbHandler.php');
 
 class SessionHandler {
     // ****************************************************************************
