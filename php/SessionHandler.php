@@ -30,9 +30,9 @@ class SessionHandler {
     function close () {
         if (!empty($this->fieldarray)) {
             // perform garbage collection
-            $result = $this->gc(CRM_SESSION_EXPIRATION);
-            error_log('close '. $result);
-            return $result;
+            //$result = $this->gc(CRM_SESSION_EXPIRATION);
+            error_log('close');
+            //return $result;
         }
         
         return FALSE; 
