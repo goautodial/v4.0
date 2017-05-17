@@ -10,8 +10,6 @@ class SessionHandler {
     // ****************************************************************************
     // This class saves the PHP session data in a database table.
     // ****************************************************************************
-    private $db;
-    private $fieldarray;
     
     // ****************************************************************************
     // class constructor
@@ -68,8 +66,8 @@ class SessionHandler {
             // create new record
             error_log('insert');
 			$postData = array(
-				'session_id' => $session_id,
-				'user_data' => addslashes($session_data),
+				'session_id' => $this->db->escape_string($session_id),
+				'user_data' => $this->db->escape_string($session_data),
 				'last_activity' => time(),
 				'ip_address' => $_SERVER['REMOTE_ADDR'],
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
@@ -80,7 +78,7 @@ class SessionHandler {
             // update existing record
             error_log('update');
 			$postData = array(
-				'user_data' => addslashes($session_data),
+				'user_data' => $this->db->escape_string($session_data),
 				'last_activity' => time(),
 				'ip_address' => $_SERVER['REMOTE_ADDR'],
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
