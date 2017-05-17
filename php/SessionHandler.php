@@ -10,6 +10,8 @@ class SessionHandler {
     // ****************************************************************************
     // This class saves the PHP session data in a database table.
     // ****************************************************************************
+    private $db;
+    private $fieldarray;
     
     // ****************************************************************************
     // class constructor
@@ -99,7 +101,6 @@ class SessionHandler {
     
     // ****************************************************************************
     function gc ($max_lifetime) {
-        error_log('gc');
         $count = $this->db->onSessionGC($max_lifetime);
         
         return TRUE;
