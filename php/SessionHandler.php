@@ -29,7 +29,7 @@ class SessionHandler {
     function close () {
         if (!empty($this->fieldarray)) {
             // perform garbage collection
-            //$result = $this->gc(CRM_SESSION_EXPIRATION);
+            $result = $this->gc(CRM_SESSION_EXPIRATION);
             return TRUE;
         }
         
@@ -59,7 +59,7 @@ class SessionHandler {
                 $this->fieldarray = array();
             }
         }
-        
+        var_dump(empty($this->fieldarray));
         if (empty($this->fieldarray)) {
             // create new record
 			$postData = array(
