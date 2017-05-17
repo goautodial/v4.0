@@ -31,7 +31,8 @@ class SessionHandler {
         if (!empty($this->fieldarray)) {
             // perform garbage collection
             $result = $this->gc(CRM_SESSION_EXPIRATION);
-            return TRUE;
+            error_log('close '. $result);
+            return $result;
         }
         
         return FALSE; 
@@ -46,6 +47,7 @@ class SessionHandler {
         if (isset($fieldarray['user_data'])) {
             $this->fieldarray = $fieldarray;
             //$this->fieldarray['user_data'] = '';
+            error_log('read');
             return $fieldarray['user_data'];
         } else {
             return '';  // return an empty string
@@ -63,6 +65,7 @@ class SessionHandler {
         
         if (empty($this->fieldarray)) {
             // create new record
+            error_log('insert');
 			$postData = array(
 				'session_id' => $session_id,
 				'user_data' => addslashes($session_data),
@@ -74,6 +77,7 @@ class SessionHandler {
 			$result = $this->db->onSessionWrite('insert', $postData, $session_id);
         } else {
             // update existing record
+            error_log('update');
 			$postData = array(
 				'user_data' => addslashes($session_data),
 				'last_activity' => time(),
