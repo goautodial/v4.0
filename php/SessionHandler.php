@@ -33,7 +33,7 @@ class SessionHandler {
     function close () {
         if (!empty($this->fieldarray)) {
             // perform garbage collection
-            $result = $this->gc(CRM_SESSION_EXPIRATION);
+            //$result = $this->gc(CRM_SESSION_EXPIRATION);
             return $result;
         }
         
@@ -99,6 +99,7 @@ class SessionHandler {
     
     // ****************************************************************************
     function gc ($max_lifetime) {
+        error_log($max_lifetime);
         $count = $this->db->onSessionGC($max_lifetime);
         
         return TRUE;
