@@ -57,16 +57,16 @@ class SessionHandler {
     
     // ****************************************************************************
     function write ($session_id, $session_data) {
-        var_dump($this->fieldarray);
         if (!empty($this->fieldarray)) {
             if ($this->fieldarray['session_id'] != $session_id) {
                 // user is starting a new session with previous data
                 $this->fieldarray = array();
             }
         }
-        var_dump($this->fieldarray);
+        
         if (empty($this->fieldarray)) {
             // create new record
+            error_log('insert');
 			$postData = array(
 				'session_id' => $this->db->escape_string($session_id),
 				'user_data' => $this->db->escape_string($session_data),
@@ -78,6 +78,7 @@ class SessionHandler {
 			$result = $this->db->onSessionWrite('insert', $postData);
         } else {
             // update existing record
+            error_log('update');
 			$postData = array(
 				'user_data' => $this->db->escape_string($session_data),
 				'last_activity' => time(),
