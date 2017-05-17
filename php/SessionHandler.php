@@ -19,14 +19,14 @@ class SessionHandler {
         $this->_db = new \creamy\DbHandler();
         
         // set handler to overide SESSION
-        @session_set_save_handler(
-            array($this, "openSession"),
-            array($this, "closeSession"),
-            array($this, "readSession"),
-            array($this, "writeSession"),
-            array($this, "destroySession"),
-            array($this, "gcSession")
-        );
+        //@session_set_save_handler(
+        //    array($this, "openSession"),
+        //    array($this, "closeSession"),
+        //    array($this, "readSession"),
+        //    array($this, "writeSession"),
+        //    array($this, "destroySession"),
+        //    array($this, "gcSession")
+        //);
     }
     
     // ****************************************************************************
@@ -51,7 +51,7 @@ class SessionHandler {
     // ****************************************************************************
     public function readSession ($session_id) {
         $result = $this->_db->onSessionRead($session_id);
-        var_dump($result);
+        //var_dump($result);
         
         return isset($result[0]) ? $result[0] : "";
     }
