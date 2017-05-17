@@ -42,8 +42,7 @@ class SessionHandler {
         //$fieldarray = $this->_dml_getData("session_id='" .addslashes($session_id) ."'");
         
         $fieldarray = $this->db->onSessionRead($session_id);
-        error_log('read');
-        error_log($fieldarray);
+        var_dump('read', $fieldarray);
         
         if (isset($fieldarray[0]['user_data'])) {
             $this->fieldarray = $fieldarray[0];
