@@ -38,6 +38,8 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 } else {
 	if (session_status() == PHP_SESSION_NONE) {
 		if (CRM_SESSION_DRIVER == 'database') {
+			require_once('./php/DbHandler.php');
+			
 			function on_session_start($save_path, $session_name) {
 				//error_log($session_name . " ". session_id());
 				//error_log("Session created: $session_name");
