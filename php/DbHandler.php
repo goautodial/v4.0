@@ -2207,11 +2207,11 @@ class DbHandler {
 		return $result;
 	}
 	
-	public function onSessionWrite($type, $postData, $fields) {
+	public function onSessionWrite($type, $postData, $id) {
 		if ($type === 'insert') {
 			$this->dbConnector->insert(CRM_SESSION_COOKIE_NAME, $postData);
 		} else {
-			$this->dbConnector->where('session_id', $fields['session_id']);
+			$this->dbConnector->where('session_id', $id);
 			$this->dbConnector->update(CRM_SESSION_COOKIE_NAME, $postData);
 		}
 	}

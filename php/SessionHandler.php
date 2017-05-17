@@ -63,7 +63,7 @@ class SessionHandler {
                 $this->fieldarray = array();
             }
         }
-        
+        var_dump($this->fieldarray);
         if (empty($this->fieldarray)) {
             // create new record
 			$postData = array(
@@ -84,7 +84,7 @@ class SessionHandler {
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
 			);
 			
-			$result = $this->db->onSessionWrite('update', $postData, $this->fieldarray);
+			$result = $this->db->onSessionWrite('update', $postData, $session_id);
         }
         
         return TRUE;
@@ -99,7 +99,6 @@ class SessionHandler {
     
     // ****************************************************************************
     function gc ($max_lifetime) {
-        error_log($max_lifetime);
         $count = $this->db->onSessionGC($max_lifetime);
         
         return TRUE;
