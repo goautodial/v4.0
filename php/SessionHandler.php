@@ -45,7 +45,7 @@ class SessionHandler {
         //$fieldarray = $this->_dml_getData("session_id='" .addslashes($session_id) ."'");
         
         $fieldarray = $this->db->onSessionRead($session_id);
-        
+        var_dump(ini_get('session.gc_maxlifetime'));
         if (isset($fieldarray['user_data'])) {
             $this->fieldarray = $fieldarray;
             $this->fieldarray['user_data'] = '';
