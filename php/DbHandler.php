@@ -2202,18 +2202,27 @@ class DbHandler {
 	
 	public function onSessionRead($id) {
 		$this->dbConnector->where('session_id', $id);
-		//$this->dbConnector->where('last_activity', 'UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))', '>');
-		$result = $this->dbConnector->get(CRM_SESSION_COOKIE_NAME);
+		$this->dbConnector->where('last_activity', 'UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))', '>');
+		$result = $this->dbConnector->getOne(CRM_SESSION_COOKIE_NAME, 'user_data');
 		return $result;
 	}
 	
-	public function onSessionWrite($type, $postData, $id) {
-		if ($type === 'insert') {
-			$this->dbConnector->insert(CRM_SESSION_COOKIE_NAME, $postData);
-		} else {
+	public function onSessionWrite($postData) {
+		$result = $this->dbConnector->insert(CRM_SESSION_COOKIE_NAME, $postData);
+		
+		$err = $this->dbConnector->getLastError();
+		
+		if ($err !== '') {
+			error_log($this->dbConnector->getLastError());
+			
+			$id = $postData['session_id'];
+			unset($postData['session_id']);
+			
 			$this->dbConnector->where('session_id', $id);
-			$this->dbConnector->update(CRM_SESSION_COOKIE_NAME, $postData);
+			$result = $this->dbConnector->update(CRM_SESSION_COOKIE_NAME, $postData);
 		}
+		
+		return $result;
 	}
 	
 	public function onSessionDestroy($id) {
@@ -2223,11 +2232,9 @@ class DbHandler {
 	}
 	
 	public function onSessionGC($max) {
-		$real_now = date('Y-m-d H:i:s');
-		$dt1 = strtotime("$real_now -$max_lifetime seconds");
-		$dt2 = date('Y-m-d H:i:s', $dt1);
-		
-		$this->dbConnector->where('last_activity', $dt2, '<');
+		$old = time() - $max;
+		$old = $this->escape_string($old);
+		$this->dbConnector->where('last_activity', $old, '<');
 		$this->dbConnector->delete(CRM_SESSION_COOKIE_NAME);
 		return true;
 	}
