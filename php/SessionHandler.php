@@ -51,6 +51,7 @@ class SessionHandler {
     // ****************************************************************************
     public function readSession ($session_id) {
         $result = $this->_db->onSessionRead($session_id);
+        var_dump($result);
         
         return isset($result[0]) ? $result[0] : "";
     }
@@ -58,7 +59,7 @@ class SessionHandler {
     // ****************************************************************************
     public function writeSession ($session_id, $session_data) {
         $result = $this->_db->onSessionRead($session_id);
-        
+        var_dump($result);
         if (!$result) {
             // create new record
             error_log('insert');
