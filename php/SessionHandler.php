@@ -10,7 +10,6 @@ class SessionHandler {
     // ****************************************************************************
     // This class saves the PHP session data in a database table.
     // ****************************************************************************
-    private $fieldarray;
     
     // ****************************************************************************
     // class constructor
@@ -49,6 +48,7 @@ class SessionHandler {
             $this->fieldarray['user_data'] = '';
             error_log('read');
             error_log($this->fieldarray);
+            error_log($fieldarray[0];
             return $fieldarray[0]['user_data'];
         } else {
             return '';  // return an empty string
