@@ -2228,6 +2228,7 @@ class DbHandler {
 		
 		$this->dbConnector->where('last_activity', $old, '<');
 		$this->dbConnector->delete(CRM_SESSION_COOKIE_NAME);
+		error_log($this->dbConnector->getLastQuery());
 		return true;
 	}
 	
