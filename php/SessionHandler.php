@@ -10,57 +10,60 @@ class SessionHandler {
     // ****************************************************************************
     // This class saves the PHP session data in a database table.
     // ****************************************************************************
-    private $_db;
+    private $db;
     
     // ****************************************************************************
     // class constructor
     // ****************************************************************************
     function __construct () {
-        $this->_db = new \creamy\DbHandler();
+        $this->db = new \creamy\DbHandler();
+    }
+    
+    // ****************************************************************************
+    function open ($save_path, $session_name) {
+        // do nothing
+        return TRUE;
         
-        // set handler to overide SESSION
-        @session_set_save_handler(
-            array($this, "openSession"),
-            array($this, "closeSession"),
-            array($this, "readSession"),
-            array($this, "writeSession"),
-            array($this, "destroySession"),
-            array($this, "gcSession")
-        );
     }
     
     // ****************************************************************************
-    public function openSession ($save_path, $session_name) {
-        // if database connection exists
-        if ($this->_db) {
-            return true;
+    function close () {
+        if (!empty($this->fieldarray)) {
+            // perform garbage collection
+            //$result = $this->gc(CRM_SESSION_EXPIRATION);
+            error_log('close');
+            //return $result;
         }
-        return false; 
-    }
-    
-    // ****************************************************************************
-    public function closeSession () {
-        // if database connection is closed
-        if($this->_db->close()){
-            @session_write_close();
-            return true;
-        }
-        return false; 
-    }
-    
-    // ****************************************************************************
-    public function readSession ($session_id) {
-        $result = $this->_db->onSessionRead($session_id);
-        //var_dump($result);
         
-        return isset($result[0]) ? $result[0] : "";
+        return FALSE; 
     }
     
     // ****************************************************************************
-    public function writeSession ($session_id, $session_data) {
-        $result = $this->_db->onSessionRead($session_id);
-        var_dump($result);
-        if (!$result) {
+    function read ($session_id) {
+        //$fieldarray = $this->_dml_getData("session_id='" .addslashes($session_id) ."'");
+        
+        $fieldarray = $this->db->onSessionRead($session_id);
+        var_dump('read', $fieldarray);
+        
+        if (isset($fieldarray[0]['user_data'])) {
+            $this->fieldarray = $fieldarray[0];
+            $this->fieldarray['user_data'] = '';
+            return $fieldarray[0]['user_data'];
+        } else {
+            return '';  // return an empty string
+        }
+    }
+    
+    // ****************************************************************************
+    function write ($session_id, $session_data) {
+        if (!empty($this->fieldarray)) {
+            if ($this->fieldarray['session_id'] != $session_id) {
+                // user is starting a new session with previous data
+                $this->fieldarray = array();
+            }
+        }
+        
+        if (empty($this->fieldarray)) {
             // create new record
             error_log('insert');
 			$postData = array(
@@ -71,7 +74,7 @@ class SessionHandler {
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
 			);
             
-			$result = $this->_db->onSessionWrite('insert', $postData, $session_id);
+			$result = $this->db->onSessionWrite('insert', $postData, $session_id);
         } else {
             // update existing record
             error_log('update');
@@ -83,25 +86,30 @@ class SessionHandler {
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
 			);
 			
-			$result = $this->_db->onSessionWrite('update', $postData, $session_id);
+			$result = $this->db->onSessionWrite('update', $postData, $session_id);
         }
         
-        return true;
+        return TRUE;
     }
     
     // ****************************************************************************
-    public function destroySession ($session_id) {
+    function destroy ($session_id) {
         error_log('destroy');
-        $this->_db->onSessionDestroy($session_id);
+        $this->db->onSessionDestroy($session_id);
         
         return TRUE;
     }
     
     // ****************************************************************************
-    public function gcSession ($max_lifetime) {
-        $count = $this->_db->onSessionGC($max_lifetime);
+    function gc ($max_lifetime) {
+        $count = $this->db->onSessionGC($max_lifetime);
         
         return TRUE;
+    }
+    
+    // ****************************************************************************
+    function __destruct () {
+        @session_write_close();
     }
     
 // ****************************************************************************
