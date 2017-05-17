@@ -97,7 +97,7 @@ class SessionHandler {
     }
     
     // ****************************************************************************
-    public function gc ($max_lifetime) {
+    public function gcSession ($max_lifetime) {
         $count = $this->_db->onSessionGC($max_lifetime);
         
         return TRUE;
