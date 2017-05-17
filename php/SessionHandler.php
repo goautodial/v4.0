@@ -6,13 +6,10 @@ require_once('CRMDefaults.php');
 require_once('LanguageHandler.php');
 require_once('DbHandler.php');
 
-//require_once('std.table.class.inc');
 class SessionHandler {
     // ****************************************************************************
     // This class saves the PHP session data in a database table.
     // ****************************************************************************
-    private $db;
-    private $fieldarray;
     
     // ****************************************************************************
     // class constructor
