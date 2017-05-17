@@ -44,11 +44,11 @@ class SessionHandler {
         
         $fieldarray = $this->db->onSessionRead($session_id);
         
-        if (isset($fieldarray['user_data'])) {
-            $this->fieldarray = $fieldarray;
-            //$this->fieldarray['user_data'] = '';
+        if (isset($fieldarray[0]['user_data'])) {
+            $this->fieldarray = $fieldarray[0];
+            $this->fieldarray['user_data'] = '';
             error_log('read');
-            return $fieldarray['user_data'];
+            return $fieldarray[0]['user_data'];
         } else {
             return '';  // return an empty string
         }
@@ -78,6 +78,7 @@ class SessionHandler {
         } else {
             // update existing record
             error_log('update');
+            error_log($session_data);
 			$postData = array(
 				'user_data' => addslashes($session_data),
 				'last_activity' => time(),
