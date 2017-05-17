@@ -34,7 +34,6 @@ class SessionHandler {
         if (!empty($this->fieldarray)) {
             // perform garbage collection
             $result = $this->gc(ini_get('session.gc_maxlifetime'));
-            error_log('GC: '.$result);
             return $result;
         }
         
