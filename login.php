@@ -43,7 +43,7 @@
 	
 
 	if (CRM_SESSION_DRIVER == 'database') {
-	require_once('./php/SessionHandler.php');
+		require_once('./php/SessionHandler.php');
 		$session_class = new \creamy\SessionHandler();
 		session_set_save_handler(array(&$session_class, 'open'),
 								 array(&$session_class, 'close'),
