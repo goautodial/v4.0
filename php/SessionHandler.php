@@ -88,6 +88,7 @@ class SessionHandler {
     
     // ****************************************************************************
     function destroy ($session_id) {
+        error_log($session_id);
         $this->db->onSessionDestroy($session_id);
         
         return TRUE;
@@ -95,7 +96,6 @@ class SessionHandler {
     
     // ****************************************************************************
     function gc ($max_lifetime) {
-        error_log($max_lifetime);
         $count = $this->db->onSessionGC($max_lifetime);
         
         return TRUE;
