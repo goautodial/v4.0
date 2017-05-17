@@ -95,6 +95,7 @@ class SessionHandler {
     
     // ****************************************************************************
     function gc ($max_lifetime) {
+        error_log($max_lifetime);
         $count = $this->db->onSessionGC($max_lifetime);
         
         return TRUE;
