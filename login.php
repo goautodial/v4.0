@@ -54,6 +54,8 @@
 	}
 
 	session_start(); // Starting Session
+	
+	$_SESSION['test'] = 'test';
 	$lh = \creamy\LanguageHandler::getInstance();
 	$ui = \creamy\UIHandler::getInstance();
 	$error = ''; // Variable To Store Error Message
