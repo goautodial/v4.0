@@ -44,9 +44,7 @@ class SessionHandler {
         
         if (isset($fieldarray['user_data'])) {
             $this->fieldarray = $fieldarray;
-            var_dump($this->fieldarray);
-            $this->fieldarray['user_data'] = '';
-            var_dump($this->fieldarray);
+            //$this->fieldarray['user_data'] = '';
             return $fieldarray['user_data'];
         } else {
             return '';  // return an empty string
