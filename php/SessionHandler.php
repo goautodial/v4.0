@@ -46,6 +46,7 @@ class SessionHandler {
         if (isset($fieldarray['user_data'])) {
             $this->fieldarray = $fieldarray;
             //$this->fieldarray['user_data'] = '';
+            var_dump($this->fieldarray);
             return $fieldarray['user_data'];
         } else {
             return '';  // return an empty string
@@ -54,6 +55,7 @@ class SessionHandler {
     
     // ****************************************************************************
     function write ($session_id, $session_data) {
+        var_dump($this->fieldarray);
         if (!empty($this->fieldarray)) {
             if ($this->fieldarray['session_id'] != $session_id) {
                 // user is starting a new session with previous data
