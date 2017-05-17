@@ -73,7 +73,7 @@ class SessionHandler {
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
 			);
 			
-			$result = $this->db->onSessionWrite('insert', $postData);
+			$result = $this->db->onSessionWrite('insert', $postData, $session_id);
         } else {
             // update existing record
 			$postData = array(
