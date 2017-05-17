@@ -43,7 +43,7 @@ class SessionHandler {
         
         $fieldarray = $this->db->onSessionRead($session_id);
         error_log('read');
-        error_log(serialize($fieldarray));
+        error_log($fieldarray);
         
         if (isset($fieldarray[0]['user_data'])) {
             $this->fieldarray = $fieldarray[0];
