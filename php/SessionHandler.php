@@ -69,7 +69,7 @@ class SessionHandler {
 				'ip_address' => $_SERVER['REMOTE_ADDR'],
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
 			);
-			
+			var_dump($postData);
 			$result = $this->db->onSessionWrite('insert', $postData, $session_id);
         } else {
             // update existing record
