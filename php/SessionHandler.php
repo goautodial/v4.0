@@ -11,6 +11,7 @@ class SessionHandler {
     // This class saves the PHP session data in a database table.
     // ****************************************************************************
     private $db;
+    private $fieldarray;
     
     // ****************************************************************************
     // class constructor
@@ -44,6 +45,7 @@ class SessionHandler {
         //$fieldarray = $this->_dml_getData("session_id='" .addslashes($session_id) ."'");
         
         $fieldarray = $this->db->onSessionRead($session_id);
+        var_export($fieldarray);
         
         if (isset($fieldarray['user_data'])) {
             $this->fieldarray = $fieldarray;
@@ -56,6 +58,7 @@ class SessionHandler {
     
     // ****************************************************************************
     function write ($session_id, $session_data) {
+        var_export($this->fieldarray);
         if (!empty($this->fieldarray)) {
             if ($this->fieldarray['session_id'] != $session_id) {
                 // user is starting a new session with previous data
