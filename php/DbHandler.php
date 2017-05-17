@@ -2223,12 +2223,12 @@ class DbHandler {
 	}
 	
 	public function onSessionGC($max) {
-		$old = time() - $max;
-		$old = $this->escape_string($old);
+		$real_now = date('Y-m-d H:i:s');
+		$dt1 = strtotime("$real_now -$max_lifetime seconds");
+		$dt2 = date('Y-m-d H:i:s', $dt1);
 		
-		$this->dbConnector->where('last_activity', $old, '<');
+		$this->dbConnector->where('last_activity', $dt2, '<');
 		$this->dbConnector->delete(CRM_SESSION_COOKIE_NAME);
-		error_log($this->dbConnector->getLastQuery());
 		return true;
 	}
 	

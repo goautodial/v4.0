@@ -66,8 +66,8 @@ class SessionHandler {
         if (empty($this->fieldarray)) {
             // create new record
 			$postData = array(
-				'session_id' => $this->db->escape_string($session_id),
-				'user_data' => $this->db->escape_string($session_data),
+				'session_id' => $session_id,
+				'user_data' => addslashes($session_data),
 				'last_activity' => time(),
 				'ip_address' => $_SERVER['REMOTE_ADDR'],
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
@@ -77,7 +77,7 @@ class SessionHandler {
         } else {
             // update existing record
 			$postData = array(
-				'user_data' => $this->db->escape_string($session_data),
+				'user_data' => addslashes($session_data),
 				'last_activity' => time(),
 				'ip_address' => $_SERVER['REMOTE_ADDR'],
 				'user_agent' => $_SERVER['HTTP_USER_AGENT']
