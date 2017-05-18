@@ -44,7 +44,7 @@
 
 	if (CRM_SESSION_DRIVER == 'database') {
 		$sdb = new \creamy\DbHandler();
-		var_dump($sdb);
+		var_dump($sdb->dbConnector->connect_errno);
 		require_once('./php/SessionHandler.php');
 		$session_class = new \creamy\SessionHandler();
 		session_set_save_handler(array(&$session_class, 'open'),
