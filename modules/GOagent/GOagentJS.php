@@ -1,5 +1,6 @@
 <?php
-//namespace creamy;
+namespace creamy;
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -10,9 +11,10 @@ require_once(GO_BASE_DIRECTORY.'/php/CRMDefaults.php');
 require_once(GO_BASE_DIRECTORY.'/php/UIHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/LanguageHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/DbHandler.php');
-include_once(GO_BASE_DIRECTORY.'/php/Session.php');
 require_once(GO_BASE_DIRECTORY.'/php/goCRMAPISettings.php');
 $goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
+
+include_once(GO_BASE_DIRECTORY.'/php/Session.php');
 
 $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
