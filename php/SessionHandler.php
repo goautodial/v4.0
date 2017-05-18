@@ -31,7 +31,7 @@ class SessionHandler {
     function close () {
         if (!empty($this->fieldarray)) {
             // perform garbage collection
-            $result = $this->gc(CRM_SESSION_EXPIRATION);
+            //$result = $this->gc(CRM_SESSION_EXPIRATION);
             error_log('close');
             //return $result;
         }
@@ -44,7 +44,7 @@ class SessionHandler {
         //$fieldarray = $this->_dml_getData("session_id='" .addslashes($session_id) ."'");
         
         $fieldarray = $this->db->onSessionRead($session_id);
-        //var_dump('read', $fieldarray);
+        var_dump($fieldarray[0]);
         
 		error_log('read');
         if (isset($fieldarray[0]['user_data'])) {
