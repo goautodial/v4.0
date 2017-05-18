@@ -34,6 +34,7 @@ class SessionHandler {
             //$result = $this->gc(CRM_SESSION_EXPIRATION);
             error_log('close');
             //return $result;
+			return TRUE;
         }
         
         return FALSE; 
@@ -64,6 +65,8 @@ class SessionHandler {
                 $this->fieldarray = array();
             }
         }
+		
+		error_log('write');
         var_dump($this->fieldarray);
 		
         if (empty($this->fieldarray)) {
