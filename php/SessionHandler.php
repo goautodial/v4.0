@@ -97,7 +97,7 @@ class SessionHandler {
     // ****************************************************************************
     function destroy ($session_id) {
         error_log('destroy');
-        $this->db->onSessionDestroy($session_id);
+        //$this->db->onSessionDestroy($session_id);
         
         return TRUE;
     }
