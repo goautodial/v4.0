@@ -842,6 +842,7 @@ $(document).ready(function() {
         var loggedOut = 0;
         if (hRef.match(logoutRegX)) {
             event.preventDefault();
+            refresh_interval = 730000;
             swal({
                 title: "<?=$lh->translationFor('sure_to_logout')?>",
                 showCancelButton: true,
@@ -873,6 +874,8 @@ $(document).ready(function() {
                             2500
                         );
                     }
+                } else {
+                    refresh_interval = 1000;
                 }
             });
         }

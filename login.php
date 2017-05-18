@@ -43,19 +43,11 @@
 	
 
 	if (CRM_SESSION_DRIVER == 'database') {
-		$sdb = new \creamy\DbHandler();
-		//var_dump($sdb->connect_errno);
 		require_once('./php/SessionHandler.php');
 		$session_class = new \creamy\SessionHandler();
-		session_set_save_handler(array(&$session_class, 'open'),
-								 array(&$session_class, 'close'),
-								 array(&$session_class, 'read'),
-								 array(&$session_class, 'write'),
-								 array(&$session_class, 'destroy'),
-								 array(&$session_class, 'gc'));
+	} else {
+		session_start(); // Starting Session
 	}
-
-	session_start(); // Starting Session
 	
 	$lh = \creamy\LanguageHandler::getInstance();
 	$ui = \creamy\UIHandler::getInstance();

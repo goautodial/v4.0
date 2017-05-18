@@ -26,10 +26,10 @@
 
 	session_start();
 	
-	$log_user = $_SESSION['user'];
+	$log_user = (isset($_SESSION['user']) ? $_SESSION['user'] : '');
 	
 	if (strlen($log_user) > 0) {
-		$log_group = $_SESSION['usergroup'];
+		$log_group = (isset($_SESSION['usergroup']) ? $_SESSION['usergroup'] : '');
 		$details = "User {$log_user} logging out";
 	} else {
 		$log_user = 'sess_expired';
