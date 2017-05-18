@@ -65,6 +65,7 @@ class SessionHandler {
             }
         }
         var_dump($this->fieldarray);
+		
         if (empty($this->fieldarray)) {
             // create new record
             error_log('insert');
