@@ -8,7 +8,7 @@ require_once(GO_BASE_DIRECTORY.'/php/CRMDefaults.php');
 require_once(GO_BASE_DIRECTORY.'/php/UIHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/LanguageHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/DbHandler.php');
-include(GO_BASE_DIRECTORY.'/php/Session.php');
+include_once(GO_BASE_DIRECTORY.'/php/Session.php');
 require_once(GO_BASE_DIRECTORY.'/php/goCRMAPISettings.php');
 $goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 
