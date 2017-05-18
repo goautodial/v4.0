@@ -22,6 +22,7 @@ class SessionHandler {
     // ****************************************************************************
     function open ($save_path, $session_name) {
         // do nothing
+		error_log('open');
         return TRUE;
         
     }
@@ -30,7 +31,7 @@ class SessionHandler {
     function close () {
         if (!empty($this->fieldarray)) {
             // perform garbage collection
-            //$result = $this->gc(CRM_SESSION_EXPIRATION);
+            $result = $this->gc(CRM_SESSION_EXPIRATION);
             error_log('close');
             //return $result;
         }
@@ -45,6 +46,7 @@ class SessionHandler {
         $fieldarray = $this->db->onSessionRead($session_id);
         //var_dump('read', $fieldarray);
         
+		error_log('read');
         if (isset($fieldarray[0]['user_data'])) {
             $this->fieldarray = $fieldarray[0];
             $this->fieldarray['user_data'] = '';
@@ -102,6 +104,7 @@ class SessionHandler {
     
     // ****************************************************************************
     function gc ($max_lifetime) {
+		error_log('gc');
         $count = $this->db->onSessionGC($max_lifetime);
         
         return TRUE;
@@ -109,6 +112,7 @@ class SessionHandler {
     
     // ****************************************************************************
     function __destruct () {
+		error_log('destruct');
         @session_write_close();
     }
     
