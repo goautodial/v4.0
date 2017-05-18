@@ -44,7 +44,7 @@ class SessionHandler {
         //$fieldarray = $this->_dml_getData("session_id='" .addslashes($session_id) ."'");
         
         $fieldarray = $this->db->onSessionRead($session_id);
-        var_dump($fieldarray[0]);
+        //var_dump($fieldarray[0]);
         
 		error_log('read');
         if (isset($fieldarray[0]['user_data'])) {
@@ -64,7 +64,7 @@ class SessionHandler {
                 $this->fieldarray = array();
             }
         }
-        
+        var_dump($this->fieldarray);
         if (empty($this->fieldarray)) {
             // create new record
             error_log('insert');
