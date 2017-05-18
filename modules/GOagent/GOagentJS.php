@@ -1,5 +1,7 @@
 <?php
 //namespace creamy;
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 define('GO_AGENT_DIRECTORY', str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(__FILE__)));
 define('GO_BASE_DIRECTORY', dirname(dirname(dirname(__FILE__))));
