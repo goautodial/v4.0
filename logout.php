@@ -23,6 +23,7 @@
 		THE SOFTWARE.
 	*/
 	require_once('./php/goCRMAPISettings.php');
+	require_once('./php/CRMDefaults.php');
 
 	if (CRM_SESSION_DRIVER == 'database') {
 		require_once('./php/SessionHandler.php');
@@ -39,8 +40,13 @@
 	} else {
 		$log_user = 'sess_expired';
 		$details = "Session Expired";
+		$log_group = '';
 	}
-	if(session_destroy()) // Destroying All Sessions
+	
+	
+	$session_destroyed = session_destroy();
+	
+	if($session_destroyed) // Destroying All Sessions
 	{
 		$url = gourl."/goAdminLogs/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
