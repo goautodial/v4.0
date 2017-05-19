@@ -178,7 +178,6 @@ class SessionHandler {
 		$this->db->where('session_id', $session_id);
 		//$this->db->where('user_agent', $this->getUserAgent());
 		$result = $this->db->delete($this->table);
-		error_log($result);
 		return ($result) ? TRUE : FALSE;
 	}
 	
