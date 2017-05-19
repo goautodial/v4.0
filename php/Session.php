@@ -48,11 +48,9 @@ if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on") {
     exit();
 }
 
-error_log($_SESSION["username"]);
 if (!isset($_SESSION["username"])) {
 	header('Location: login.php'); // Redirecting To Login Page
 }
-error_log($_SESSION["userid"]);
 if (!isset($_SESSION["userid"])) {
 	header('Location: login.php'); // Redirecting To Login Page
 }
