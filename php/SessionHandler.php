@@ -56,7 +56,7 @@ class SessionHandler {
 	 * @param integer 	$lifeTime 	- Session lifetime
 	 * @param bool	 	$encrypt 	- Encrypt session data 
 	 */
-	function __construct ($table = NULL, $lifeTime = 0, $encrypt = FALSE) {
+	function __construct ($table = NULL, $lifeTime = 0, $encrypt = TRUE) {
 		$this->db = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL);
 		
 		$this->lifeTime = ($lifeTime === 0) ? CRM_SESSION_EXPIRATION : $lifeTime;
@@ -88,9 +88,9 @@ class SessionHandler {
 	/** Create table for session storage
 	 * @param void
 	 */	
-	function createStorageTable() {
-		return $this->db->query("CREATE TABLE IF NOT EXISTS `{$this->table}` ( `session_id` varchar(50) NOT NULL, `name` varchar(50) NOT NULL, `expires` int(10) unsigned NOT NULL DEFAULT '0', `data` text, `fingerprint` varchar(32) NOT NULL, PRIMARY KEY (`session_id`, `name`) ) ENGINE=InnoDB;");
-	}
+	//function createStorageTable() {
+	//	return $this->db->query("CREATE TABLE IF NOT EXISTS `{$this->table}` ( `session_id` varchar(50) NOT NULL, `name` varchar(50) NOT NULL, `expires` int(10) unsigned NOT NULL DEFAULT '0', `data` text, `fingerprint` varchar(32) NOT NULL, PRIMARY KEY (`session_id`, `name`) ) ENGINE=InnoDB;");
+	//}
 	
 	/** Initialize session
 	 * @param string 	$save_path 	- Session save path (not in use!)
@@ -123,7 +123,7 @@ class SessionHandler {
 	function _Read($session_id) {
 		// Read entry
 		//error_log('_Read');
-		$this->db->where('session_id', $session_id);
+		$this->db->where('session_id', md5($session_id));
 		//$this->db->where('user_agent', $this->getUserAgent());
 		$this->db->where('ip_address', $this->getUserIP());
 		$this->db->where('last_activity', time(), '>');
@@ -142,7 +142,7 @@ class SessionHandler {
 		//error_log('_Write');
 		if (!empty($data)) {
 			$insertData = array(
-				'session_id' => $session_id,
+				'session_id' => md5($session_id),
 				'user_agent' => $this->getUserAgent(),
 				'last_activity' => time() + $this->lifeTime,
 				'user_data' => $this->encrypt ? $this->encrypt($data) : $data,
@@ -161,7 +161,7 @@ class SessionHandler {
 					'ip_address' => $this->getUserIP()
 				);
 				
-				$this->db->where('session_id', $session_id);
+				$this->db->where('session_id', md5($session_id));
 				$this->db->update($this->table, $updateData);
 			}
 		}
@@ -175,8 +175,7 @@ class SessionHandler {
 	function _Destroy($session_id) {
 		//error_log('_Destroy: '.$session_id);
 		// Remove $session_id session
-		$this->db->where('session_id', $session_id);
-		//$this->db->where('user_agent', $this->getUserAgent());
+		$this->db->where('session_id', md5($session_id));
 		$result = $this->db->delete($this->table);
 		return ($result) ? TRUE : FALSE;
 	}
