@@ -35,7 +35,7 @@ class SessionHandler {
 	/** Key with which the data will be encrypted 
 	 * @var string 
 	 */
-	private $key = '19f84f108bf8897ff7b6e7ea5fdb876c';
+	private $key = '6d2b9c9b61e761b8c786ba1134c76b9c';
 	
 	/** Database object
 	 * @var object
