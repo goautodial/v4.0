@@ -34,7 +34,6 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 } else {
 	if (session_status() == PHP_SESSION_NONE) {
 		if (CRM_SESSION_DRIVER == 'database') {
-			error_log(__DIR__ . '/SessionHandler.php');
 			require_once(__DIR__ . '/SessionHandler.php');
 			$session_class = new \creamy\SessionHandler();
 		} else {
@@ -49,9 +48,11 @@ if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on") {
     exit();
 }
 
+error_log($_SESSION["username"]);
 if (!isset($_SESSION["username"])) {
 	header('Location: login.php'); // Redirecting To Login Page
 }
+error_log($_SESSION["userid"]);
 if (!isset($_SESSION["userid"])) {
 	header('Location: login.php'); // Redirecting To Login Page
 }
