@@ -34,6 +34,7 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 } else {
 	if (session_status() == PHP_SESSION_NONE) {
 		if (CRM_SESSION_DRIVER == 'database') {
+			error_log(__DIR__ . '/SessionHandler.php');
 			require_once(__DIR__ . '/SessionHandler.php');
 			$session_class = new \creamy\SessionHandler();
 		} else {
