@@ -59,7 +59,7 @@ class SessionHandler {
 	function __construct ($table = NULL, $lifeTime = 0, $encrypt = FALSE) {
 		$this->db = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL);
 		
-		$this->lifeTime = ($lifeTime === 0) ? ini_get('session.gc_maxlifetime') : $lifeTime;
+		$this->lifeTime = ($lifeTime === 0) ? CRM_SESSION_EXPIRATION : $lifeTime;
 		
 		// Session storage table
 		$this->table = ($table == NULL) ? $this->table : $table;
@@ -173,12 +173,13 @@ class SessionHandler {
 	 * @return 	bool
 	 */
 	function _Destroy($session_id) {
-		//error_log('_Destroy');
+		//error_log('_Destroy: '.$session_id);
 		// Remove $session_id session
 		$this->db->where('session_id', $session_id);
-		$this->db->where('user_agent', $this->getUserAgent());
-		$this->db->delete($this->table);
-		return ($this->db->getRowCount()) ? TRUE : FALSE;
+		//$this->db->where('user_agent', $this->getUserAgent());
+		$result = $this->db->delete($this->table);
+		error_log($result);
+		return ($result) ? TRUE : FALSE;
 	}
 	
 	/** Garbage collector

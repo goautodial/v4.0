@@ -4,6 +4,7 @@ namespace creamy;
 define('GO_AGENT_DIRECTORY', str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(__FILE__)));
 define('GO_BASE_DIRECTORY', dirname(dirname(dirname(__FILE__))));
 define('GO_LANG_DIRECTORY', dirname(__FILE__) . '/lang/');
+
 require_once(GO_BASE_DIRECTORY.'/php/CRMDefaults.php');
 require_once(GO_BASE_DIRECTORY.'/php/UIHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/LanguageHandler.php');
