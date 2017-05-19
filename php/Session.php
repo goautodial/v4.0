@@ -27,6 +27,7 @@ namespace creamy;
 
 
 // Start session if not already started.
+require_once('CRMDefaults.php');
 if (version_compare(phpversion(), '5.4.0', '<')) {
      if(session_id() == '') {
 		session_start();
@@ -34,7 +35,6 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 } else {
 	if (session_status() == PHP_SESSION_NONE) {
 		if (CRM_SESSION_DRIVER == 'database') {
-			$sessionHander = __DIR__ . '/SessionHandler.php';
 			require_once(__DIR__ . '/SessionHandler.php');
 			$session_class = new \creamy\SessionHandler();
 		} else {
@@ -50,10 +50,10 @@ if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on") {
 }
 
 if (!isset($_SESSION["username"])) {
-	header('Location: login.php?'.$sessionHander); // Redirecting To Login Page
+	header('Location: login.php'); // Redirecting To Login Page
 }
 if (!isset($_SESSION["userid"])) {
-	header('Location: login.php?'.$sessionHander); // Redirecting To Login Page
+	header('Location: login.php'); // Redirecting To Login Page
 }
 if (!isset($_SESSION["userrole"])) {
 	$_SESSION["userrole"] = CRM_DEFAULTS_USER_ROLE_GUEST; // no privileged account by default.
