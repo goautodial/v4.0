@@ -1910,8 +1910,9 @@ error_reporting(E_ERROR | E_PARSE);
 			$telephonyArea .= '</ul></li>';
 
 			$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
-			$settings .= $this-> getSidebarItem("./settingscalltimes.php", "list-ol", $this->lh->translationFor("call_times"));
+			//if($_SESSION['show_phones'] === "1")
 			//$settings .= $this-> getSidebarItem("./settingsphones.php", "phone", $this->lh->translationFor("phones"));
+			$settings .= $this-> getSidebarItem("./settingscalltimes.php", "list-ol", $this->lh->translationFor("call_times"));
 			//$settings .= $this-> getSidebarItem("./settingssystemsettings.php", "gear", $this->lh->translationFor("system_settings"));
 			$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
 			$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
@@ -3642,7 +3643,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetPhonesList"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
-
+		$postfields["session_user"] = $_SESSION['user']; #json. (required)
+		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -3663,7 +3665,7 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 
-		$columns = array("    ",$this->lh->translationFor("exten"), $this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"), $this->lh->translationFor("action"));
+		$columns = array($this->lh->translationFor("extension"), $this->lh->translationFor("protocol"), $this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $this->lh->translationFor("action"));
 	    $hideOnMedium = array($this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"));
 	    $hideOnLow = array($this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"));
 		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
@@ -3684,15 +3686,15 @@ error_reporting(E_ERROR | E_PARSE);
 				}
 
 				$action = $this->getUserActionMenuForPhones($output->extension[$i]);
-                $sessionAvatar = "<avatar username='".$output->messages[$i]."' :size='36'></avatar>";
-
+                //$sessionAvatar = "<avatar username='".$output->messages[$i]."' :size='36'></avatar><td>".$sessionAvatar."</a></td>";
+				
 				$result = $result."<tr>
-                        <td>".$sessionAvatar."</a></td>
 	                    <td><a class='edit-phone' data-id='".$output->extension[$i]."'><strong>".$output->extension[$i]."</strong></a></td>
+						<td class='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>
-						<td nowrap>".$action."</td>
+						<td nowrap style='width:16%;'>".$action."</td>
 	                </tr>";
 
 			}

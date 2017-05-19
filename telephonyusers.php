@@ -63,11 +63,6 @@
 		
    		<!-- SELECT2-->
    		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
-		<style>
-			.wizard > .steps > ul > li{
-				width: 33.33%!important;
-			}
-		</style>
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -103,16 +98,16 @@
 							<div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
 								<!-- Users panel tab -->
-									 <li role="presentation" class="active">
+									 <li role="presentation" <?php if(!isset($_GET['phone_tab']))echo 'class="active"';?>>
 										<a href="#users_tab" aria-controls="users_tab" role="tab" data-toggle="tab" class="bb0">
 											<?php $lh->translateText("users"); ?> </a>
 									 </li>
 									 <?php
-										 if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
+										 if((isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0) || $_SESSION['show_phones'] == 1 ){
 									 ?>
 									 
 									 <!-- Phones panel tabs-->
-									 <li role="presentation" >
+									 <li role="presentation" <?php if(isset($_GET['phone_tab']))echo 'class="active"';?>>
 										<a href="#phone_tab" aria-controls="phone_tab" role="tab" data-toggle="tab" class="bb0">
 											<?php $lh->translateText("phones"); ?></a>
 									 </li>
@@ -123,15 +118,15 @@
 								<!-- Tab panes-->
 								<div class="tab-content bg-white">
 									<!--==== users ====-->
-									<div id="users_tab" role="tabpanel" class="tab-pane active">
+									<div id="users_tab" role="tabpanel" class="tab-pane <?php if(!isset($_GET['phone_tab']))echo 'active';?>">
 										<?php print $ui->goGetAllUserList($_SESSION['user'], $perm); ?>
 									</div>
 									
 									<?php
-										if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
+										if((isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0) || $_SESSION['show_phones'] == 1 ){
 									?>
 									<!--==== Phones ====-->
-									<div id="phone_tab" role="tabpanel" class="tab-pane">
+									<div id="phone_tab" role="tabpanel" class="tab-pane <?php if(isset($_GET['phone_tab']))echo 'active';?>">
 										<?php print $ui->getPhonesList(); ?>
 									</div>
 									<?php
@@ -152,7 +147,7 @@
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         </div><!-- ./wrapper -->
 <?php
-	if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
+	if((isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0) || $_SESSION['show_phones'] == 1 ){
 ?>
     <!-- FIXED ACTION BUTTON --> 
 		<div class="bottom-menu skin-blue <?=($perm->user_create === 'N' ? 'hidden' : '')?>">
@@ -279,7 +274,7 @@
 									<label class="col-sm-4 control-label" for="phone_logins"> <?php $lh->translateText("phone_login"); ?> </label>
 									<div class="col-sm-8 mb">
 										<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="<?php $lh->translateText("phone_login"); ?> (<?php $lh->translateText("mandatory"); ?>)" 
-											value="<?php echo $output->last_phone_login;?>" pattern=".{3,}" title="Minimum of 3 characters" maxlength="20" required>
+											value="<?php echo $phones->available_phone;?>" pattern=".{3,}" title="Minimum of 3 characters" maxlength="20" required>
 										<label id="phone_login-duplicate-error"></label>
 									</div>
 								</div>
@@ -319,42 +314,6 @@
 									</div>
 								</div>
 	                        </fieldset>
-	                        <h4><?php $lh->translateText("review_and_submit"); ?>
-	                           <br>
-	                           <small><?php $lh->translateText("review_and_submit_sub_header"); ?></small>
-	                        </h4>
-	                        <fieldset>
-							<div class="form-group">
-								<label class="col-lg-6 control-label"><?php $lh->translateText("user_group"); ?>: </label>
-								<div class="col-lg-6 reverse_control_label mb">
-									<span id="submit-usergroup"></span>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-lg-6 control-label"><?php $lh->translateText("user_id"); ?>: </label>
-								<div class="col-lg-6 reverse_control_label mb">
-									<span id="submit-userid"></span>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-lg-6 control-label"><?php $lh->translateText("full_name"); ?>: </label>
-								<div class="col-lg-6 reverse_control_label mb">
-									<span id="submit-fullname"></span>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-lg-6 control-label" id="submit-password-lbl"><?php $lh->translateText("password"); ?>: </label>
-								<div class="col-lg-6 reverse_control_label mb">
-									<span id="submit-password"></span>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-lg-6 control-label"><?php $lh->translateText("active"); ?>: </label>
-								<div class="col-lg-6 reverse_control_label mb">
-									<span id="submit-active"></span>
-								</div>
-							</div>
-	                        </fieldset>
 	                     </div>
 					</form>
 			
@@ -365,7 +324,7 @@
 	<!-- end of add user modal -->
 
  <?php
-	if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0){
+	if((isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0) || $_SESSION['show_phones'] == 1 ){
 		$servers = $ui->getServers();
 ?>
 	<!-- ADD PHONE MODAL -->
@@ -387,7 +346,7 @@
 						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 						<div class="row">
 							<h4>
-								<?php $lh->translateText("add_new_phone"); ?> <br/>
+								<?php $lh->translateText("add_phone"); ?> <br/>
 								<small><?php $lh->translateText("add_phone_sub_header"); ?></small>
 							</h4>
 							<fieldset>
@@ -408,16 +367,17 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-4 control-label" for="start_ext"><?php $lh->translateText("starting_extention"); ?></label>
+									<label class="col-sm-4 control-label" for="start_ext"><?php $lh->translateText("starting_extension"); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="number" name="start_ext" id="start_ext" placeholder="<?php $lh->translateText("starting_extention"); ?>" value="<?php echo $output->last_phone_login;?>" class="form-control">
+										<input type="number" name="start_ext" id="start_ext" placeholder="<?php $lh->translateText("starting_extension"); ?>" value="<?php echo $phones->available_phone;?>" class="form-control">
 									</div>
 								</div>
 							</fieldset>
 					<!-- end of step 1-->
 					<!-- STEP 2 -->
 							<h4>
-								<small></small>
+								<?php $lh->translateText("add_new_phone2"); ?> <br/>
+								<small><?php $lh->translateText("add_phone_sub_header2"); ?></small>
 							</h4>
 							<fieldset>
 								<div class="form-group mt">
@@ -471,7 +431,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-4 control-label" for="gmt"></label>
+									<label class="col-sm-4 control-label" for="gmt"><?php $lh->translateText("local_gmt"); ?></label>
 									<div class="col-sm-8 mb">
 										<div class="row">
 											<div class="col-sm-6">
@@ -516,6 +476,23 @@
 										</div>
 									</div>
 								</div>
+							<?php if($_SESSION['use_webrtc'] == 0){ ?>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="protocol">Protocol</label>
+									<div class="col-sm-8 mb">
+										<select name="protocol" id="protocol" class="form-control" required>
+											<option value="SIP"> SIP </option>
+											<option value="Zap"> Zap </option>
+											<option value="IAX2"> IAX2 </option>
+											<option value="EXTERNAL"> EXTERNAL </option>
+										</select>
+									</div>
+								</div>
+							<?php }else{
+							?>
+								<input type="hidden" name="protocol" id="protocol" value="EXTERNAL">
+							<?php
+							} ?>
 							</fieldset><!-- end of step 2-->
 						</div><!-- end of row -->
 					</form>
@@ -612,7 +589,14 @@
 				});
 				//phones
 				$('#T_phones').dataTable({
-					stateSave: true
+					stateSave: true,
+					"aoColumnDefs": [{
+						"bSearchable": false,
+						"aTargets": [ 4 ]
+					},{
+						"bSortable": false,
+						"aTargets": [ 4 ]
+					}]
 				});
 				
 			/* init wizards */
@@ -654,8 +638,8 @@
 			        console.log(checker);
 			        // Disable next if there are duplicates
 			        if(checker > 0){
-				        $(".body:eq(" + newIndex + ") .error", uform).addClass("error");
-			        	return false;
+						$(".body:eq(" + newIndex + ") .error", uform).addClass("error");
+						return false;
 			        }
 					
 			        // form review
@@ -701,20 +685,20 @@
 						  // console.log(data);
 						$('#finish').text("Submit");
     					$('#finish').attr("disabled", false);
-							  if(data == 1){
-							  	  swal(
-									{
-										title: "<?php $lh->translateText("add_user_success"); ?>",
-										text: "<?php $lh->translateText("user_has_been_saved"); ?>",
-										type: "success"
-									},
-									function(){
-										window.location.href = 'telephonyusers.php';
-									}
-								  );
-							  }else{
-							  	  sweetAlert("<?php $lh->translateText("add_user_failed"); ?>", data, "error");
-							  }
+							if(data == 1){
+								swal(
+								  {
+									  title: "<?php $lh->translateText("add_user_success"); ?>",
+									  text: "<?php $lh->translateText("user_has_been_saved"); ?>",
+									  type: "success"
+								  },
+								  function(){
+									  window.location.href = 'telephonyusers.php';
+								  }
+								);
+							}else{
+								sweetAlert("<?php $lh->translateText("add_user_failed"); ?>", data, "error");
+							}
 						}
 					});
 		        }
@@ -727,13 +711,14 @@
 		        transitionEffect: "slideLeft",
 		        onStepChanging: function (event, currentIndex, newIndex)
 		        {
-		        	$("#phone_ext").val($("#start_ext").val());
-
-		        	// Allways allow step back to the previous step even if the current step is not valid!
-			        if (currentIndex > newIndex) {
-			            return true;
-			        }
-
+					
+		        $("#phone_ext").val($("#start_ext").val());
+				
+					// Allways allow step back to the previous step even if the current step is not valid!
+					if (currentIndex > newIndex) {
+						return true;
+					}
+					
 					// Clean up if user went backward before
 				    if (currentIndex < newIndex)
 				    {
@@ -741,7 +726,7 @@
 				        $(".body:eq(" + newIndex + ") label.error", pform).remove();
 				        $(".body:eq(" + newIndex + ") .error", pform).removeClass("error");
 				    }
-
+					
 		            pform.validate().settings.ignore = ":disabled,:hidden";
 		            return pform.valid();
 		        },
@@ -752,14 +737,9 @@
 		        },
 		        onFinished: function (event, currentIndex)
 		        {
-
-		        	$('#finish').text("<?php $lh->translateText("loading"); ?>");
-		        	$('#finish').attr("disabled", true);
-
-		        	/*********
-		        	** ADD EVENT
-		        	*********/
-
+					$('#finish').text("<?php $lh->translateText("loading"); ?>");
+					$('#finish').attr("disabled", true);
+				
 		            // Submit form via ajax
 			            $.ajax({
 							url: "./php/AddSettingsPhones.php",
@@ -770,7 +750,7 @@
 							$('#finish').text("Submit");
 							$('#finish').attr("disabled", false);
 								  if(data == 1){
-									swal({title: "<?php $lh->translateText("add_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_saved"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
+									swal({title: "<?php $lh->translateText("add_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_saved"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php?phone_tab';});
 								  }else{
 									sweetAlert("<?php $lh->translateText("add_phone_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
 								  }
@@ -1021,7 +1001,7 @@
 	                    cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
 	                    closeOnConfirm: false,   
 	                    closeOnCancel: false 
-	                    }, 
+	                    },
 	                    function(isConfirm){   
 	                        if (isConfirm) { 
 							$.ajax({
@@ -1035,7 +1015,7 @@
 							  success: function(data) {
 									// console.log(data);
 									if(data == 1){
-										swal({title: "<?php $lh->translateText("delete_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
+										swal({title: "<?php $lh->translateText("delete_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php?phone_tab';});
 									}else{
 										sweetAlert("<?php $lh->translateText("cancel_please"); ?>", "<?php $lh->translateText("delete_phone_failed"); ?>"+data, "error");
 									}
@@ -1165,12 +1145,11 @@
 		*********/
 
 		/* additional number custom */
-			$('#seats').on('change', function() {
-				if(this.value == "custom_seats") {
+			$(document).on('change','#add_phones',function() {
+				if(this.value == "CUSTOM") {
 				  $('#custom_seats').show();
-				}
-				if(this.value != "custom_seats") {
-				  $('#custom_seats').hide();
+				}else{
+					$('#custom_seats').hide();
 				}
 			});
 
@@ -1178,11 +1157,10 @@
 			$('.select2-1').select2({
 		        theme: 'bootstrap'
 		    });
-		   
+			
 		    //document.on("jqueryui-configure-dialog", function(e) { e.allowInteraction.push(".select2-1"); });
 		
-	});
-	
+});
 </script>
 		
 		<?php print $ui->creamyFooter();?>
