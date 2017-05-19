@@ -30,7 +30,8 @@
 	} else {
 		session_start(); // Starting Session
 	}
-	
+	var_dump($_SESSION);
+	die();
 	$log_user = (isset($_SESSION['user']) ? $_SESSION['user'] : '');
 	
 	if (strlen($log_user) > 0) {
