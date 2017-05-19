@@ -173,9 +173,8 @@ class SessionHandler {
 	 * @return 	bool
 	 */
 	function _Destroy($session_id) {
-		//error_log('_Destroy: '.$session_id);
+		error_log('_Destroy: '.$session_id);
 		// Remove $session_id session
-		error_log($session_id);
 		$this->db->where('session_id', md5($session_id));
 		$result = $this->db->delete($this->table);
 		return ($result) ? TRUE : FALSE;
