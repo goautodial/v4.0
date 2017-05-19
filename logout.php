@@ -24,7 +24,12 @@
 	*/
 	require_once('./php/goCRMAPISettings.php');
 
-	session_start();
+	if (CRM_SESSION_DRIVER == 'database') {
+		require_once('./php/SessionHandler.php');
+		$session_class = new \creamy\SessionHandler();
+	} else {
+		session_start(); // Starting Session
+	}
 	
 	$log_user = (isset($_SESSION['user']) ? $_SESSION['user'] : '');
 	
