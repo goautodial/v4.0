@@ -1,13 +1,13 @@
 <?php
 
-	###################################################
-	### Name: editsettingsphones.php 				###
-	### Functions: Edit Phones 				 		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
-	###################################################
+	######################################################
+	### Name: editsettingsphones.php 		###
+	### Functions: Edit Phones 		###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016 		###
+	### Version: 4.0 		###
+	### Written by: Alexander Jim H. Abenoja 		###
+	### License: AGPLv2 		###
+	######################################################
 
 require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
@@ -110,239 +110,221 @@ if (isset($_POST["extenid"])) {
                     
                     <div class="panel-body">
                     	<legend>MODIFY PHONE EXTENSION : <u><?php echo $output->extension[$i];?></u></legend>
-                   
-							<form id="modifyphones">
-								<input type="hidden" name="modifyid" value="<?php echo $extenid;?>">
-								<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>" />
-								<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>" />
-							
-						<!-- BASIC SETTINGS -->
-							<div role="tabpanel">
-							<!--<div class="nav-tabs-custom">-->
-								<ul role="tablist" class="nav nav-tabs nav-justified">
-									<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
-								</ul>
-				               <!-- Tab panes-->
-				               <div class="tab-content">
-
-					               	<!-- BASIC SETTINGS -->
-					                <div id="tab_1" class="tab-pane fade in active">
-
-					                <fieldset>
-										<div class="form-group">
-											<label for="plan" class="col-sm-2 control-label">Dial Plan Number</label>
-											<div class="col-sm-10 mb">
-												<input type="number" class="form-control" name="plan" id="plan" placeholder="Dial Plan Number (Mandatory)" value="<?php echo $output->dialplan_number[$i];?>">
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="vmid" class="col-sm-2 control-label">Voicemail ID</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="vmid" id="vmid" value="<?php echo $output->voicemail_id[$i];?>">
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="ip" class="col-sm-2 control-label">Server IP</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="ip" id="ip" value="<?php echo $output->server_ip[$i];?>">
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="status" class="col-sm-2 control-label">Active Account</label>
-											<div class="col-sm-10 mb">
-												<select class="form-control" name="active" id="active">
-												<?php
-													$active = NULL;
-													if($output->active[$i] == "Y"){
-														$active .= '<option value="Y" selected> YES </option>';
-													}else{
-														$active .= '<option value="Y" > YES </option>';
-													}
-													
-													if($output->active[$i] == "N" || $output->active[$i] == NULL){
-														$active .= '<option value="N" selected> NO </option>';
-													}else{
-														$active .= '<option value="N" > NO </option>';
-													}
-													echo $active;
-												?>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="status" class="col-sm-2 control-label">Status</label>
-											<div class="col-sm-10 mb">
-												<select class="form-control" id="status" name="status">
-													<?php
-														$status = NULL;
-
-														if($output->status[$i] == "ACTIVE"){
-															$status .= '<option value="ACTIVE" selected> ACTIVE </option>';
-														}else{
-															$status .= '<option value="ACTIVE" > ACTIVE </option>';
-														}
-														
-														if($output->status[$i] == "SUSPENDED"){
-															$status .= '<option value="SUSPENDED" selected> SUSPENDED </option>';
-														}else{
-															$status .= '<option value="SUSPENDED" > SUSPENDED </option>';
-														}
-					                                    
-					                                    if($output->status[$i] == "CLOSED"){
-															$status .= '<option value="CLOSED" selected> CLOSED </option>';
-														}else{
-															$status .= '<option value="CLOSED" > CLOSED </option>';
-														}
-					                                    
-					                                    if($output->status[$i] == "PENDING"){
-															$status .= '<option value="PENDING" selected> PENDING </option>';
-														}else{
-															$status .= '<option value="PENDING" > PENDING </option>';
-														}
-					                                    
-					                                    if($output->status[$i] == "ADMIN "){
-															$status .= '<option value="ADMIN " selected> ADMIN  </option>';
-														}else{
-															$status .= '<option value="ADMIN " > ADMIN  </option>';
-														}
-
-														echo $status;
-													?>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="fullname" class="col-sm-2 control-label">Fullname</label>
-											<div class="col-sm-10 mb">
-												<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->fullname[$i];?>">
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-sm-2 control-label">New Messages: </label>
-											<div class="col-sm-10 mb">
-												<span style="padding-left:20px; font-size: 20;"><?php echo $output->messages[$i];?></span>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-sm-2 control-label">Old Messages: </label>
-											<div class="col-sm-10 mb">
-												<span style="padding-left:20px; font-size: 20;"><?php echo $output->old_messages[$i];?></span>
-											</div>
-										</div>
-										<div class="form-group">
-											<label for="protocol" class="col-sm-2 control-label">Client Protocol</label>
-											<div class="col-sm-10 mb">
-												<select class="form-control" id="protocol" name="protocol">
-													<?php
-														$protocol = NULL;
-
-														if($output->protocol[$i] == "SIP"){
-					                                        $protocol .= '<option value="SIP" selected> SIP </option>';
-					                                    }else{
-					                                        $protocol .= '<option value="SIP"> SIP </option>';
-					                                    }
-					                                    
-					                                    if($output->protocol[$i] == "Zap"){
-					                                        $protocol .= '<option value="Zap" selected> Zap </option>';
-					                                    }else{
-					                                        $protocol .= '<option value="Zap"> Zap </option>';
-					                                    }
-					                                    
-					                                    if($output->protocol[$i] == "IAX2"){
-					                                        $protocol .= '<option value="IAX2" selected> IAX2 </option>';
-					                                    }else{
-					                                        $protocol .= '<option value="IAX2"> IAX2 </option>';
-					                                    }
-					                                     
-					                                    if($output->protocol[$i] == "EXTERNAL"){
-					                                        $protocol .= '<option value="EXTERNAL" selected> EXTERNAL </option>';
-					                                    }else{
-					                                        $protocol .= '<option value="EXTERNAL"> EXTERNAL </option>';
-					                                    }
-
-														echo $protocol;
-													?>
-												</select>
-											</div>
-										</div>
-									</fieldset>
-		                			
-		                			</div><!-- body -->
-
-									<fieldset>
-				                        <div class="box-footer">
-				                           <div class="col-sm-3 pull-right">
-													<a href="settingsphones.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-				                           	
-				                                	<button type="submit" class="btn btn-primary" id="update_phones" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
-												
-				                           </div>
-				                        </div>
-				                    </fieldset>
-						
-								</div>
-							</div>
-							</form>								
-							
+		<form id="modifyphones">
+			<input type="hidden" name="modifyid" value="<?php echo $extenid;?>">
+			<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>" />
+			<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>" />
+	
+	<!-- BASIC SETTINGS -->
+		<div role="tabpanel">
+		<!--<div class="nav-tabs-custom">-->
+			<ul role="tablist" class="nav nav-tabs nav-justified">
+				<li class="active"><a href="#tab_1" data-toggle="tab"> Basic Settings</a></li>
+			</ul>
+		   <!-- Tab panes-->
+		   <div class="tab-content">
+			<!-- BASIC SETTINGS -->
+			<div id="tab_1" class="tab-pane fade in active">
+				<fieldset>
+					<div class="form-group">
+						<label for="plan" class="col-sm-2 control-label">Dial Plan Number</label>
+						<div class="col-sm-10 mb">
+							<input type="number" class="form-control" name="plan" id="plan" placeholder="Dial Plan Number (Mandatory)" value="<?php echo $output->dialplan_number[$i];?>">
 						</div>
-
-					<?php
-							}
-						}	
-                        
-					?>
+					</div>
+					<div class="form-group">
+						<label for="vmid" class="col-sm-2 control-label">Voicemail ID</label>
+						<div class="col-sm-10 mb">
+							<input type="text" class="form-control" name="vmid" id="vmid" value="<?php echo $output->voicemail_id[$i];?>">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="ip" class="col-sm-2 control-label">Server IP</label>
+						<div class="col-sm-10 mb">
+							<input type="text" class="form-control" name="ip" id="ip" value="<?php echo $output->server_ip[$i];?>">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="status" class="col-sm-2 control-label">Active Account</label>
+						<div class="col-sm-10 mb">
+							<select class="form-control" name="active" id="active">
+							<?php
+								$active = NULL;
+								if($output->active[$i] == "Y"){
+									$active .= '<option value="Y" selected> YES </option>';
+								}else{
+									$active .= '<option value="Y" > YES </option>';
+								}
+								
+								if($output->active[$i] == "N" || $output->active[$i] == NULL){
+									$active .= '<option value="N" selected> NO </option>';
+								}else{
+									$active .= '<option value="N" > NO </option>';
+								}
+								echo $active;
+							?>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="status" class="col-sm-2 control-label">Status</label>
+						<div class="col-sm-10 mb">
+							<select class="form-control" id="status" name="status">
+								<?php
+									$status = NULL;
+									if($output->status[$i] == "ACTIVE"){
+										$status .= '<option value="ACTIVE" selected> ACTIVE </option>';
+									}else{
+										$status .= '<option value="ACTIVE" > ACTIVE </option>';
+									}
+									
+									if($output->status[$i] == "SUSPENDED"){
+										$status .= '<option value="SUSPENDED" selected> SUSPENDED </option>';
+									}else{
+										$status .= '<option value="SUSPENDED" > SUSPENDED </option>';
+									}
+									
+									if($output->status[$i] == "CLOSED"){
+										$status .= '<option value="CLOSED" selected> CLOSED </option>';
+									}else{
+										$status .= '<option value="CLOSED" > CLOSED </option>';
+									}
+									
+									if($output->status[$i] == "PENDING"){
+										$status .= '<option value="PENDING" selected> PENDING </option>';
+									}else{
+										$status .= '<option value="PENDING" > PENDING </option>';
+									}
+									
+									if($output->status[$i] == "ADMIN "){
+										$status .= '<option value="ADMIN " selected> ADMIN  </option>';
+									}else{
+										$status .= '<option value="ADMIN " > ADMIN  </option>';
+									}
+									echo $status;
+								?>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="fullname" class="col-sm-2 control-label">Fullname</label>
+						<div class="col-sm-10 mb">
+							<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->fullname[$i];?>">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">New Messages: </label>
+						<div class="col-sm-10 mb">
+							<span style="padding-left:20px; font-size: 20;"><?php echo $output->messages[$i];?></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Old Messages: </label>
+						<div class="col-sm-10 mb">
+							<span style="padding-left:20px; font-size: 20;"><?php echo $output->old_messages[$i];?></span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="protocol" class="col-sm-2 control-label">Client Protocol</label>
+						<div class="col-sm-10 mb">
+							<select class="form-control" id="protocol" name="protocol">
+								<?php
+									$protocol = NULL;
+									if($output->protocol[$i] == "SIP"){
+										$protocol .= '<option value="SIP" selected> SIP </option>';
+									}else{
+										$protocol .= '<option value="SIP"> SIP </option>';
+									}
+									
+									if($output->protocol[$i] == "Zap"){
+										$protocol .= '<option value="Zap" selected> Zap </option>';
+									}else{
+										$protocol .= '<option value="Zap"> Zap </option>';
+									}
+									
+									if($output->protocol[$i] == "IAX2"){
+										$protocol .= '<option value="IAX2" selected> IAX2 </option>';
+									}else{
+										$protocol .= '<option value="IAX2"> IAX2 </option>';
+									}
+									 
+									if($output->protocol[$i] == "EXTERNAL"){
+										$protocol .= '<option value="EXTERNAL" selected> EXTERNAL </option>';
+									}else{
+										$protocol .= '<option value="EXTERNAL"> EXTERNAL </option>';
+									}
+									echo $protocol;
+								?>
+							</select>
+						</div>
+					</div>
+				</fieldset>
+			</div><!-- body -->
+				<fieldset>
+					<div class="box-footer">
+					   <div class="col-sm-3 pull-right"><a href="telephonyusers.php?phone_tab" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+						<button type="submit" class="btn btn-primary" id="update_phones" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+					   </div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		</form>
+	</div>
+<?php
+		}
+	}
+?>
                 </section>
 				<!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 
-		<!-- Modal Dialogs -->
-		<?php print $ui->standardizedThemeJS(); ?>       
-		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-
-		<script type="text/javascript">
-			$(document).ready(function() {
-				
-				// for cancelling
-				$(document).on('click', '#cancel', function(){
-					swal("Cancelled", "No action has been done :)", "error");
-				});
-
-				/** 
-				 * Modifies a telephony list
-			 	 */
-				$("#modifyphones").validate({
-                	submitHandler: function() {
-						//submit the form
-							$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
-							$('#update_phones').prop("disabled", true);
-
-							$("#resultmessage").html();
-							$("#resultmessage").fadeOut();
-							$.post("./php/ModifySettingsPhones.php", //post
-							$("#modifyphones").serialize(), 
-								function(data){
-									//if message is sent
-									if (data == 1) {
-										swal("Updated!", "Phone has been successfully updated.", "success");
-                                        window.setTimeout(function(){location.replace('settingsphones.php')},2000)
-
-                                        ('#update_button').html("<i class='fa fa-check'></i> Update");
-										$('#update_phones').prop("disabled", false);		
-									} else {
-										sweetAlert("Oops...","Something went wrong! " + data, "error");
-										('#update_button').html("<i class='fa fa-check'></i> Update");
-										$('#update_phones').prop("disabled", false);	
-									}
-									//
-								});
-						return false; //don't let the form refresh the page...
-					}					
-				});
-				
-				
-				 
+	<!-- Modal Dialogs -->
+	<?php print $ui->standardizedThemeJS(); ?>       
+	<?php include_once "./php/ModalPasswordDialogs.php" ?>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			
+			// for cancelling
+			$(document).on('click', '#cancel', function(){
+				swal("Cancelled", "No action has been done :)", "error");
 			});
+			
+			/** 
+			 * Modifies a telephony list
+			 */
+			$("#modifyphones").validate({
+				submitHandler: function() {
+					//submit the form
+						$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+						$('#update_phones').prop("disabled", true);
+						$("#resultmessage").html();
+						$("#resultmessage").fadeOut();
+						$.post("./php/ModifySettingsPhones.php", //post
+						$("#modifyphones").serialize(),
+							function(data){
+								//if message is sent
+								$('#update_button').html("<i class='fa fa-check'></i> Update");
+								$('#update_phones').prop("disabled", false);
+								if (data == 1) {
+									swal({
+										title: "<?php $lh->translateText("success"); ?>",
+										text: "<?php $lh->translateText("phone_update_success"); ?>",
+										type: "success"
+									},
+									function(){
+										location.replace("./telephonyusers.php?phone_tab");
+									});
+								} else {
+									sweetAlert("Oops...","Something went wrong! " + data, "error");
+								}
+							});
+					return false; //don't let the form refresh the page...
+				}
+			});
+		});
 		</script>
 
 		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>

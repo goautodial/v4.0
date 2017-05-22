@@ -913,6 +913,11 @@ EOF;
 		$useWebRTC = (strlen($rslt['value']) > 0) ? $rslt['value'] : 0;
 		$_SESSION['use_webrtc'] = $useWebRTC;
 		
+		$this->goDB->where('setting', 'GO_show_phones');
+		$rslt = $this->goDB->getOne('settings', 'value');
+		$showPhones = (strlen($rslt['value']) > 0) ? $rslt['value'] : 0;
+		$_SESSION['show_phones'] = $showPhones;
+		
 		if ($useWebRTC) {
 			$this->goDB->where('setting', 'GO_agent_wss');
 			$rslt = $this->goDB->getOne('settings', 'value');
@@ -1272,6 +1277,8 @@ EOF;
 		$moduleSettings = array(
 			"GO_agent_use_wss_info" => CRM_SETTING_TYPE_LABEL,
 			"GO_agent_use_wss" => CRM_SETTING_TYPE_BOOL,
+			"GO_show_phones_info" => CRM_SETTING_TYPE_LABEL,
+			"GO_show_phones" => CRM_SETTING_TYPE_BOOL,
 			"GO_agent_wss" => CRM_SETTING_TYPE_STRING,
 			"GO_agent_wss_info" => CRM_SETTING_TYPE_LABEL,
 			"GO_agent_wss_port" => CRM_SETTING_TYPE_INT,

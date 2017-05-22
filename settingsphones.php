@@ -1,19 +1,21 @@
 <?php	
 
-	###################################################
-	### Name: settingsphones.php 					###
-	### Functions: Manage Phones 			 		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
-	###################################################
+	######################################################
+	### Name: settingsphones.php 		###
+	### Functions: Manage Phones 		###
+	### Copyright: GOAutoDial Ltd. (c) 2011-2016 		###
+	### Version: 4.0 		###
+	### Written by: Alexander Jim H. Abenoja 		###
+	### License: AGPLv2 		###
+	######################################################
 
 	require_once('./php/UIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
+	header("location: telephonyusers.php");
+	
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
@@ -84,154 +86,175 @@
 	$max = max($phones->extension);
 	$suggested_extension = $max + 1;
 ?>
-<!-- MODAL -->
-    <div class="modal fade" id="wizard-modal" tabindex="-1"aria-labelledby="T_Phones" >
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title animated bounceInRight" id="T_Phones">
-						<b>Phone Wizard » Add New Phone</b>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					</h4>
-				</div>
-				<div class="modal-body wizard-content">
-				
-				<form name="create_form" id="create_form" role="form">
-					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
-					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
-					<div class="row">
-						<h4>
-							Add Phones
-							<small>Specify a number of phones to be added</small>
+<!-- ADD PHONE MODAL -->
+	    <div class="modal fade" id="phone-wizard-modal" aria-labelledby="T_Phones" >
+	        <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+					<div class="modal-header">
+						
+						<h4 class="modal-title animated bounceInRight" id="T_Phones">
+							<i class="fa fa-info-circle" title="<?php $lh->translateText("phone_wizard_desc"); ?>"></i> 
+							<b><?php $lh->translateText("phone_wizard"); ?> » <?php $lh->translateText("add_new_phone"); ?></b>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						</h4>
-						<fieldset>
-							<div class="form-group mt">
-								<label class="col-sm-4 control-label" for="add_phones">Additional Phone(s):</label>
-								<div class="col-sm-6 mb">
-									<select class="form-control" name="add_phones" id="add_phones">
-										<option value="1"> 1 </option>
-										<option value="2"> 2 </option>
-										<option value="3"> 3 </option>
-										<option value="4"> 4 </option>
-										<option value="5"> 5 </option>
-										<option value="CUSTOM">CUSTOM</option>
-									</select>
+					</div>
+					<div class="modal-body wizard-content">
+					
+					<form name="create_form" id="create_form" role="form">
+						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
+						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
+						<div class="row">
+							<h4>
+								<?php $lh->translateText("add_phone"); ?> <br/>
+								<small><?php $lh->translateText("add_phone_sub_header"); ?></small>
+							</h4>
+							<fieldset>
+								<div class="form-group mt">
+									<label class="col-sm-4 control-label" for="add_phones">Additional Phone(s):</label>
+									<div class="col-sm-6 mb">
+										<select class="form-control" name="add_phones" id="add_phones">
+											<option value="1"> 1 </option>
+											<option value="2"> 2 </option>
+											<option value="3"> 3 </option>
+											<option value="4"> 4 </option>
+											<option value="5"> 5 </option>
+											<option value="CUSTOM">CUSTOM</option>
+										</select>
+									</div>
+									<div class="col-sm-2" id="custom_seats" style="display:none;">
+										<input type="number" class="form-control" name="custom_seats" value="1" min="1" max="99" required>
+									</div>
 								</div>
-								<div class="col-sm-2" id="custom_seats" style="display:none;">
-									<input type="number" class="form-control" name="custom_seats" value="1" min="1" max="99" required>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="start_ext"><?php $lh->translateText("starting_extension"); ?></label>
+									<div class="col-sm-8 mb">
+										<input type="number" name="start_ext" id="start_ext" placeholder="<?php $lh->translateText("starting_extension"); ?>" value="<?php echo $output->last_phone_login;?>" class="form-control">
+									</div>
 								</div>
-							</div>
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="start_ext">Starting Extension</label>
-								<div class="col-sm-8 mb">
-									<input type="number" name="start_ext" id="start_ext" placeholder="e.g. 8001" value="<?php echo $suggested_extension;?>" class="form-control" required>
+							</fieldset>
+					<!-- end of step 1-->
+					<!-- STEP 2 -->
+							<h4>
+								<?php $lh->translateText("add_new_phone2"); ?> <br/>
+								<small><?php $lh->translateText("add_phone_sub_header2"); ?></small>
+							</h4>
+							<fieldset>
+								<div class="form-group mt">
+									<label class="col-sm-4 control-label" for="phone_ext"><?php $lh->translateText("phone_login"); ?></label>
+									<div class="col-sm-8 mb">
+										<input text="number" name="phone_ext" id="phone_ext" class="form-control" placeholder="<?php $lh->translateText("phone_login"); ?> (<?php $lh->translateText("mandatory"); ?>)" title="Must be 3 - 20 characters and contains only numerical values." minlength="3" maxlength="20" required/>
+									</div>
 								</div>
-							</div>
-						</fieldset>
-				<!-- end of step 1-->
-				<!-- STEP 2 -->
-						<h4>
-							<small></small>
-						</h4>
-						<fieldset>
-							<div class="form-group mt">
-								<label class="col-sm-4 control-label" for="phone_ext">Phone Extension/Login</label>
-								<div class="col-sm-8 mb">
-									<input text="number" name="phone_ext" id="phone_ext" class="form-control" placeholder="Phone Login (Mandatory)" title="Must be 3 - 20 characters and contains only numerical values." minlength="3" maxlength="20" required/>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="phone_pass"><?php $lh->translateText("phone_login_password"); ?></label>
+									<div class="col-sm-8 mb">
+										<input type="text" name="phone_pass" id="phone_pass" class="form-control"  placeholder="<?php $lh->translateText("phone_login_password"); ?> (<?php $lh->translateText("mandatory"); ?>)" title="<?php $lh->translateText("default_pass_is"); ?>: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" maxlength="20" required>
+									</div>
 								</div>
-							</div>
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="phone_pass">Phone Login Password</label>
-								<div class="col-sm-8 mb">
-									<input type="text" value="G016gO" name="phone_pass" id="phone_pass" class="form-control"  placeholder="Phone Password (Mandatory)" title="Default Password is: Go<?php echo date('Y');?>" value="Go<?php echo date('Y');?>" maxlength="20" required>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="start_ext"><?php $lh->translateText("user_group"); ?></label>
+									<div class="col-sm-8 mb">
+										<select name="user_group" class="form-control select2-1" style="width:100%;" required>
+											<option value="ALL">ALL USER GROUPS</option>
+											<?php
+												for($i=0; $i < count($user_groups->user_group); $i++){
+											?>
+												<option value="<?php echo $user_groups->user_group[$i];?>"> <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i]; ?></option>
+											<?php
+												}
+											?>
+										</select>
+									</div>
 								</div>
-							</div>
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="start_ext">User Group</label>
-								<div class="col-sm-8 mb">
-									<select name="user_group" id="user_group" class="form-control" required>
-										<option value="ALL">ALL USER GROUPS</option>
-										<?php
-											for($i=0; $i < count($user_groups->user_group); $i++){
-										?>
-											<option value="<?php echo $user_groups->user_group[$i];?>"> <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i]; ?></option>
-										<?php
-											}
-										?>
-									</select>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="ip"><?php $lh->translateText("server_ip"); ?></label>
+									<div class="col-sm-8 mb">
+										<select name="ip" id="ip" class="form-control" required>
+											<?php
+												for($i=0;$i < count($servers->server_id);$i++){
+											?>
+											<option value="<?php echo $servers->server_ip[$i];?>">
+												<?php echo $servers->server_ip[$i].' - '.$servers->server_id[$i].' - '.$servers->server_description[$i];?>
+											</option>
+											<?php
+												}
+											?>
+										</select>
+									</div>
 								</div>
-							</div>
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="ip">Server IP	</label>
-								<div class="col-sm-8 mb">
-									<select name="ip" id="ip" class="form-control" required>
-										<option value="69.46.6.35">
-											<?php echo $_SERVER['REMOTE_ADDR'];?>
-										</option>
-									</select>
-								</div>
-							</div>
 
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="fullname">Full Name</label>
-								<div class="col-sm-8 mb">
-									<input type="text" name="fullname" id="fullname" placeholder="Full Name (Mandatory)" class="form-control" required>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="pfullname"><?php $lh->translateText("full_name"); ?></label>
+									<div class="col-sm-8 mb">
+										<input type="text" name="pfullname" id="pfullname" placeholder="Full Name (Mandatory)" class="form-control" required>
+									</div>
 								</div>
-							</div>
-							<div class="form-group">		
-								<label class="col-sm-4 control-label" for="gmt">Local GMT	</label>
-								<div class="col-sm-8 mb">
-									<div class="row">
-										<div class="col-sm-6">
-											<select name="gmt" id="gmt" class="form-control" required>
-												<option value="12:75"> 12:75 </option>
-												<option value="12:00"> 12:00 </option>
-												<option value="11:00"> 11:00 </option>
-												<option value="10:00"> 10:00 </option>
-												<option value="9:50"> 9:50 </option>
-												<option value="9:00"> 9:00 </option>
-												<option value="8:00"> 8:00 </option>
-												<option value="7:00"> 7:00 </option>
-												<option value="6:50"> 6:50 </option>
-												<option value="6:00"> 6:00 </option>
-												<option value="5:75"> 5:75 </option>
-												<option value="5:50"> 5:50 </option>
-												<option value="5:00"> 5:00 </option>
-												<option value="4:50"> 4:50 </option>
-												<option value="4:00"> 4:00 </option>
-												<option value="3:50"> 3:50 </option>
-												<option value="3:00"> 3:00 </option>
-												<option value="2:00"> 2:00 </option>
-												<option value="1:00"> 1:00 </option>
-												<option value="0:00"> 0:00 </option>
-												<option value="-1:00"> -1:00 </option>
-												<option value="-2:00"> -2:00 </option>
-												<option value="-3:00"> -3:00 </option>
-												<option value="-4:00"> -4:00 </option>
-												<option value="-5:00" selected> -5:00 </option>
-												<option value="-6:00"> -6:00 </option>
-												<option value="-7:00"> -7:00 </option>
-												<option value="-8:00"> -8:00 </option>	
-												<option value="-9:00"> -9:00 </option>
-												<option value="-10:00"> -10:00 </option>
-												<option value="-11:00"> -11:00 </option>
-												<option value="-12:00"> -12:00 </option>
-											</select>
-										</div>
-										<div class="col-sm-6">
-											<p class="text-muted">( Do NOT adjust for DST)</p>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="gmt"><?php $lh->translateText("local_gmt"); ?></label>
+									<div class="col-sm-8 mb">
+										<div class="row">
+											<div class="col-sm-6">
+												<select name="gmt" id="gmt" class="form-control" required>
+													<option value="12:75"> 12:75 </option>
+													<option value="12:00"> 12:00 </option>
+													<option value="11:00"> 11:00 </option>
+													<option value="10:00"> 10:00 </option>
+													<option value="9:50"> 9:50 </option>
+													<option value="9:00"> 9:00 </option>
+													<option value="8:00"> 8:00 </option>
+													<option value="7:00"> 7:00 </option>
+													<option value="6:50"> 6:50 </option>
+													<option value="6:00"> 6:00 </option>
+													<option value="5:75"> 5:75 </option>
+													<option value="5:50"> 5:50 </option>
+													<option value="5:00"> 5:00 </option>
+													<option value="4:50"> 4:50 </option>
+													<option value="4:00"> 4:00 </option>
+													<option value="3:50"> 3:50 </option>
+													<option value="3:00"> 3:00 </option>
+													<option value="2:00"> 2:00 </option>
+													<option value="1:00"> 1:00 </option>
+													<option value="0:00"> 0:00 </option>
+													<option value="-1:00"> -1:00 </option>
+													<option value="-2:00"> -2:00 </option>
+													<option value="-3:00"> -3:00 </option>
+													<option value="-4:00"> -4:00 </option>
+													<option value="-5:00" selected> -5:00 </option>
+													<option value="-6:00"> -6:00 </option>
+													<option value="-7:00"> -7:00 </option>
+													<option value="-8:00"> -8:00 </option>
+													<option value="-9:00"> -9:00 </option>
+													<option value="-10:00"> -10:00 </option>
+													<option value="-11:00"> -11:00 </option>
+													<option value="-12:00"> -12:00 </option>
+												</select>
+											</div>
+											<div class="col-sm-6">
+												<p class="text-muted">( <?php $lh->translateText("do_not_adjust_gmt"); ?> )</p>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</fieldset><!-- end of step 2-->
-					</div><!-- end of row -->
-				</form>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="protocol">Protocol</label>
+									<div class="col-sm-8 mb">
+										<select name="protocol" id="protocol" class="form-control" required>
+											<option value="SIP"> SIP </option>
+											<option value="Zap"> Zap </option>
+											<option value="IAX2"> IAX2 </option>
+											<option value="EXTERNAL"> EXTERNAL </option>
+										</select>
+									</div>
+								</div>
+							</fieldset><!-- end of step 2-->
+						</div><!-- end of row -->
+					</form>
 
-				</div> <!-- end of modal body -->
-			</div> <!-- end of modal content -->
-		</div> <!-- end of modal dialog -->
-	</div><!-- end of modal -->
+					</div> <!-- end of modal body -->
+				</div> <!-- end of modal content -->
+			</div> <!-- end of modal dialog -->
+		</div>
+	<!-- end of add phone modal -->
 		
 		<?php print $ui->standardizedThemeJS(); ?>
 		<!-- JQUERY STEPS-->
@@ -269,79 +292,77 @@
 			    form.validate({
 			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
 			    });
-
 			    form.children("div").steps({
 			        headerTag: "h4",
-			        bodyTag: "fieldset",
-			        transitionEffect: "slideLeft",
-			        onStepChanging: function (event, currentIndex, newIndex)
-			        {
-
+					bodyTag: "fieldset",
+					transitionEffect: "slideLeft",
+					onStepChanging: function (event, currentIndex, newIndex)
+					{
+						
+					$("#phone_ext").val($("#start_ext").val());
+					
+						// Allways allow step back to the previous step even if the current step is not valid!
+						if (currentIndex > newIndex) {
+							return true;
+						}
+						
 						// Clean up if user went backward before
-					    if (currentIndex < newIndex)
-					    {
-					        // To remove error styles
-					        $(".body:eq(" + newIndex + ") label.error", form).remove();
-					        $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
-					    }
-
-			            form.validate().settings.ignore = ":disabled,:hidden";
-			            return form.valid();
-			        },
-			        onFinishing: function (event, currentIndex)
-			        {
-			            form.validate().settings.ignore = ":disabled";
-			            return form.valid();
-			        },
-			        onFinished: function (event, currentIndex)
-			        {
-
-			        	$('#finish').text("Loading...");
-			        	$('#finish').attr("disabled", true);
-
-			        	/*********
-			        	** ADD EVENT
-			        	*********/
-
-			            // Submit form via ajax
-				            $.ajax({
+						if (currentIndex < newIndex)
+						{
+							// To remove error styles
+							$(".body:eq(" + newIndex + ") label.error", pform).remove();
+							$(".body:eq(" + newIndex + ") .error", pform).removeClass("error");
+						}
+						
+						pform.validate().settings.ignore = ":disabled,:hidden";
+						return pform.valid();
+					},
+					onFinishing: function (event, currentIndex)
+					{
+						pform.validate().settings.ignore = ":disabled";
+						return pform.valid();
+					},
+					onFinished: function (event, currentIndex)
+					{
+						$('#finish').text("<?php $lh->translateText("loading"); ?>");
+						$('#finish').attr("disabled", true);
+					
+						// Submit form via ajax
+							$.ajax({
 								url: "./php/AddSettingsPhones.php",
 								type: 'POST',
 								data: $("#create_form").serialize(),
 								success: function(data) {
 								  // console.log(data);
+								$('#finish').text("Submit");
+								$('#finish').attr("disabled", false);
 									  if(data == 1){
-											swal({title: "Success",text: "Phone Successfully Created!",type: "success"},function(){window.location.href = 'settingsphones.php';});
-											$('#finish').val("Submit");
-											$('#finish').attr("disabled", false);
+										swal({title: "<?php $lh->translateText("add_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_saved"); ?>",type: "success"},function(){window.location.href = 'settingsphones.php';});
 									  }else{
-										  sweetAlert("Oops...", "Something went wrong! "+data, "error");
-									  	  $('#finish').val("Submit");
-									  	  $('#finish').attr("disabled", false);
+										sweetAlert("<?php $lh->translateText("add_phone_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
 									  }
 								}
 							});
-			        }
-			    });
+					}
+				});
 
 		//--------------------
 		
 		/*********************
 		** EDIT EVENT
-		*********************/	
-			$(document).on('click','.edit-phone',function() {
-				var url = './editsettingsphones.php';
-				var extenid = $(this).attr('data-id');
-				//alert(extenid);
-				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="extenid" value="'+extenid+'" /></form>');
-				$('body').append(form);  // This line is not necessary
-				$(form).submit();
-			});
-						
-				
+		*********************/
+		$(document).on('click','.edit-phone',function() {
+			var url = './editsettingsphones.php';
+			var extenid = $(this).attr('data-id');
+			//alert(extenid);
+			var form = $('<form action="' + url + '" method="post"><input type="hidden" name="extenid" value="'+extenid+'" /></form>');
+			$('body').append(form);  // This line is not necessary
+			$(form).submit();
+		});
+		
 		/*********************
 		** DELETE EVENT
-		*********************/	
+		*********************/
 			$(document).on('click','.delete-phone',function() {
 			 	var id = $(this).attr('data-id');
 				var log_user = '<?=$_SESSION['user']?>';
@@ -360,34 +381,33 @@
                     function(isConfirm){   
                         if (isConfirm) { 
                         	$.ajax({
-							  url: "./php/DeleteSettingsPhones.php",
-							  type: 'POST',
-							  data: { 
-							  	exten_id: id,
-								log_user: log_user,
-								log_group: log_group
-							  },
-							  success: function(data) {
-							  		// console.log(data);
-							  		if(data == 1){
-							  			swal("Success!", "Phone Successfully Deleted!", "success");
-										window.setTimeout(function(){location.reload();},3000);
-									}else{
-										sweetAlert("Oops...", "Something went wrong!"+data, "error");
-									}
-							    }
-							});
-                        } else {     
-                                swal("Cancelled", "No action has been done :)", "error");   
-                        } 
+				url: "./php/DeleteSettingsPhones.php",
+				type: 'POST',
+				data: {
+				  exten_id: id,
+				  log_user: log_user,
+				  log_group: log_group
+				},
+				success: function(data) {
+					  // console.log(data);
+					  if(data == 1){
+						  swal("Success!", "Phone Successfully Deleted!", "success");
+						  window.setTimeout(function(){location.reload();},3000);
+					  }else{
+						  sweetAlert("Oops...", "Something went wrong!"+data, "error");
+					  }
+				  }
+			});
+                        } else {
+                                swal("Cancelled", "No action has been done :)", "error");
+                        }
                     }
                 );
 			});
 		
 		/*********************
 		** FILTERS
-		*********************/	
-
+		*********************/
 			// disable special characters on Fullname
 				$('#phone_ext').bind('keypress', function (event) {
 				    var regex = new RegExp("^[0-9]+$");
@@ -397,7 +417,6 @@
 				       return false;
 				    }
 				});
-
 			// disable special characters on Fullname
 				$('#fullname').bind('keypress', function (event) {
 				    var regex = new RegExp("^[a-zA-Z0-9]+$");
