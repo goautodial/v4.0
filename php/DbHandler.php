@@ -2199,39 +2199,6 @@ class DbHandler {
 		$return = ($this->dbConnector->getRowCount() > 0) ? $result : false;
 		return $return;
 	}
-	
-	public function onSessionRead($id) {
-		$this->dbConnector->where('session_id', $id);
-		//$this->dbConnector->where('last_activity', 'UNIX_TIMESTAMP(DATE_ADD(NOW(), INTERVAL 1 HOUR))', '>');
-		$result = $this->dbConnector->get(CRM_SESSION_COOKIE_NAME);
-		return $result;
-	}
-	
-	public function onSessionWrite($type, $postData, $id) {
-		if ($type === 'insert') {
-			$this->dbConnector->insert(CRM_SESSION_COOKIE_NAME, $postData);
-		} else {
-			$this->dbConnector->where('session_id', $id);
-			$this->dbConnector->update(CRM_SESSION_COOKIE_NAME, $postData);
-		}
-	}
-	
-	public function onSessionDestroy($id) {
-		$this->dbConnector->where('session_id', $id);
-		$this->dbConnector->delete(CRM_SESSION_COOKIE_NAME);
-		return true;
-	}
-	
-	public function onSessionGC($max) {
-		$real_now = date('Y-m-d H:i:s');
-		$dt1 = strtotime("$real_now -$max_lifetime seconds");
-		$dt2 = date('Y-m-d H:i:s', $dt1);
-		
-		$this->dbConnector->where('last_activity', $dt2, '<');
-		$this->dbConnector->delete(CRM_SESSION_COOKIE_NAME);
-		return true;
-	}
-	
 }
 
 ?>
