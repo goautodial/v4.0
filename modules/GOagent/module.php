@@ -519,7 +519,10 @@ EOF;
 				audio: true,
 				video: false
 			},
-			mediaStream: localStream
+			mediaStream: localStream,
+			pcConfig: {
+				rtcpMuxPolicy: "negotiate"
+			}
 		});
 		
 		session.connection.addEventListener('addstream', (event) => {
