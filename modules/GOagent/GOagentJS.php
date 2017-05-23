@@ -9232,13 +9232,14 @@ Number.prototype.between = function (a, b, inclusive) {
     return inclusive ? this >= min && this <= max : this > min && this < max;
 }
 
-var window_focus = false;
-$(window).focus(function() {
-    window_focus = true;
-}).blur(function() {
-    window_focus = false;
+$(function(){
+    var window_focus = false;
+    $(window).focus(function() {
+        window_focus = true;
+    }).blur(function() {
+        window_focus = false;
+    }).trigger('focus');
 });
-$(window).focus();
 
 <?php
 } else {
