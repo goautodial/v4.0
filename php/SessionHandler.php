@@ -109,13 +109,17 @@ class SessionHandler {
 	 * @return bool
 	 */
 	function _Close() {
+		error_log('_Close');
 		// Run the garbage collector in 15% of f. calls
 		if (rand(1, 100) <= 15) $this->_GC();
 		// Run the garbage collector for expired sessions
+		$this->db->where('session_id', md5($session_id));
 		$this->db->where('last_activity', time(), '<');
 		$result = $this->db->get($this->table);
 		error_log($this->db->getRowCount());
-		error_log('_Close');
+		if ($this->db->getRowCount() > 0) {
+			$this->_GC();
+		}
 		return TRUE;
 	}
 	
