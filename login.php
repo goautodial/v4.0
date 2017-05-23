@@ -108,6 +108,9 @@
 			}
 		}
 	}
+
+$browser = get_browser();
+var_dump($browser);
 ?>
 <html>
     <head>
