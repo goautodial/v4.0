@@ -359,6 +359,13 @@ $(document).ready(function() {
     setInterval("displaytime()", 1000);
     checkLogin = 0;
     
+    var window_focus = false;
+    $(window).focus(function() {
+        window_focus = true;
+    }).blur(function() {
+        window_focus = false;
+    }).trigger('focus');
+    
     $(window).load(function() {
         var refreshId = setInterval(function() {
             if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
@@ -9231,13 +9238,6 @@ Number.prototype.between = function (a, b, inclusive) {
 
     return inclusive ? this >= min && this <= max : this > min && this < max;
 }
-
-var window_focus = false;
-$(window).focus(function() {
-    window_focus = true;
-}).blur(function() {
-    window_focus = false;
-}).trigger('focus');
 
 <?php
 } else {
