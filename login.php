@@ -109,7 +109,7 @@
 		}
 	}
 
-$browser = get_browser();
+$browser = get_browser($_SERVER['HTTP_USER_AGENT']);
 var_dump($browser);
 ?>
 <html>
