@@ -359,7 +359,7 @@ $(document).ready(function() {
     setInterval("displaytime()", 1000);
     checkLogin = 0;
     
-    var window_focus = false;
+    var window_focus = true;
     $(window).focus(function() {
         window_focus = true;
     }).blur(function() {
