@@ -768,6 +768,8 @@ $(document).ready(function() {
                     checkIfStillLoggedIn(false);
                 }
             }
+            
+            console.log(window_focus);
         }, refresh_interval);
         
         if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
@@ -9229,6 +9231,14 @@ Number.prototype.between = function (a, b, inclusive) {
 
     return inclusive ? this >= min && this <= max : this > min && this < max;
 }
+
+var window_focus;
+$(window).focus(function() {
+    window_focus = true;
+}).blur(function() {
+    window_focus = false;
+});
+
 <?php
 } else {
     if ($_REQUEST['module_name'] == 'GOagent') {
@@ -9242,9 +9252,9 @@ Number.prototype.between = function (a, b, inclusive) {
                 break;
             case "ChecKLogiN":
                 $is_logged_in = $_REQUEST['is_logged_in'];
-                //$sess_logged_in = (strlen($_SESSION['is_logged_in']) > 0) ? $_SESSION['is_logged_in'] : 0;
-                //$_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $sess_logged_in;
-                $result = $is_logged_in;
+                $sess_logged_in = (strlen($_SESSION['is_logged_in']) > 0) ? $_SESSION['is_logged_in'] : 0;
+                $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $sess_logged_in;
+                $result = $_SESSION['is_logged_in'];
                 break;
             case "CustoMFielD":
                 $list_id = $_REQUEST['list_id'];
