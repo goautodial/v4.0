@@ -87,6 +87,7 @@ var alertLogout = true;
 var registrationFailed = false;
 var minimizedDispo = false;
 var check_login = false;
+var window_focus = true;
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -359,7 +360,6 @@ $(document).ready(function() {
     setInterval("displaytime()", 1000);
     checkLogin = 0;
     
-    var window_focus = true;
     $(window).focus(function() {
         window_focus = true;
     }).blur(function() {
