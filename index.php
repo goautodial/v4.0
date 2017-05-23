@@ -1317,12 +1317,12 @@ function goGetInSession(type) {
 			 });
     
 			// ---- loads datatable functions
-		
+			
 			// ---- Fixed Action Button
 					$(".bottom-menu").on('mouseenter mouseleave', function () {
 					  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 					});
-					
+				
 			// ---- status boxes
 				// ---- agents
 					load_totalagentscall(); 
@@ -1362,9 +1362,9 @@ function goGetInSession(type) {
 
 		//Refresh functions() after 5000 milliseconds
 			// ... status boxes ...
-				setInterval(load_totalagentscall,5000);
-				setInterval(load_totalagentspaused,5000);
-				setInterval(load_totalagentswaitingcall,5000);
+				var int_1 = setInterval(load_totalagentscall,5000);
+				var int_2 = setInterval(load_totalagentspaused,5000);
+				var int_3 = setInterval(load_totalagentswaitingcall,5000);
 				
 				//setInterval(load_totalSales,5000);
 				//setInterval(load_INSalesHour,5000);
@@ -1374,31 +1374,72 @@ function goGetInSession(type) {
 				//setInterval(load_LeadsinHopper,5000);
 				//setInterval(load_TotalDialableLeads,5000);
 				
-				setInterval(load_RingingCalls,5000);
-				setInterval(load_IncomingQueue,5000);
-				setInterval(load_AnsweredCalls,5000);
-				setInterval(load_DroppedCalls,5000);
+				var int_4 = setInterval(load_RingingCalls,5000);
+				var int_5 = setInterval(load_IncomingQueue,5000);
+				var int_6 = setInterval(load_AnsweredCalls,5000);
+				var int_7 = setInterval(load_DroppedCalls,5000);
 				//setInterval(load_TotalCalls,5000);
-				setInterval(load_TotalInboundCalls,5000);
-				setInterval(load_TotalOutboundCalls,5000);
-				setInterval(load_LiveOutbound,5000);
+				var int_8 = setInterval(load_TotalInboundCalls,5000);
+				var int_9 = setInterval(load_TotalOutboundCalls,5000);
+				var int_10 = setInterval(load_LiveOutbound,5000);
 				
 			// ... cluster status table ...
-				setInterval(load_cluster_status,10000);
+				var int_11 = setInterval(load_cluster_status,10000);
 				
 			// ... agent and campaign resources ...
-				setInterval(load_campaigns_resources,30000);
-				setInterval(load_campaigns_monitoring,20000);
-				setInterval(load_agents_monitoring_summary,5000);
+				var int_12 = setInterval(load_campaigns_resources,30000);
+				var int_13 = setInterval(load_campaigns_monitoring,20000);
+				var int_14 = setInterval(load_agents_monitoring_summary,5000);
 			
 			// ... realtime monitoring ...
-				setInterval(load_realtime_agents_monitoring,3000);
-				setInterval(load_realtime_calls_monitoring,3000);
-				setInterval(load_realtime_sla_monitoring,10000);
+				var int_15 = setInterval(load_realtime_agents_monitoring,3000);
+				var int_16 = setInterval(load_realtime_calls_monitoring,3000);
+				var int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			
 			// ... view agent information modal  ...
-				setInterval(load_view_agent_information,3000);
+				var int_18 = setInterval(load_view_agent_information,3000);
+				
+		$('#view_agent_information').on('show.bs.modal', function () {
+			clearInterval(int_1);
+			clearInterval(int_2);
+			clearInterval(int_3);
+			clearInterval(int_4);
+			clearInterval(int_5);
+			clearInterval(int_6);
+			clearInterval(int_7);
+			clearInterval(int_8);
+			clearInterval(int_9);
+			clearInterval(int_10);
+			clearInterval(int_11);
+			clearInterval(int_12);
+			clearInterval(int_13);
+			clearInterval(int_14);
+			clearInterval(int_15);
+			clearInterval(int_16);
+			clearInterval(int_17);
+			clearInterval(int_18);
+		});
 		
+		$('#view_agent_information').on('hidden.bs.modal', function () {
+			int_1 = setInterval(load_totalagentscall,5000);
+			int_2 = setInterval(load_totalagentspaused,5000);
+			int_3 = setInterval(load_totalagentswaitingcall,5000);
+			int_4 = setInterval(load_RingingCalls,5000);
+			int_5 = setInterval(load_IncomingQueue,5000);
+			int_6 = setInterval(load_AnsweredCalls,5000);
+			int_7 = setInterval(load_DroppedCalls,5000);
+			int_8 = setInterval(load_TotalInboundCalls,5000);
+			int_9 = setInterval(load_TotalOutboundCalls,5000);
+			int_10 = setInterval(load_LiveOutbound,5000);
+			int_11 = setInterval(load_cluster_status,10000);
+			int_12 = setInterval(load_campaigns_resources,30000);
+			int_13 = setInterval(load_campaigns_monitoring,20000);
+			int_14 = setInterval(load_agents_monitoring_summary,5000);
+			int_15 = setInterval(load_realtime_agents_monitoring,3000);
+			int_16 = setInterval(load_realtime_calls_monitoring,3000);
+			int_17 = setInterval(load_realtime_sla_monitoring,10000);
+			int_18 = setInterval(load_view_agent_information,3000);
+		});
 	</script>
 	
    <!-- FLOT CHART-->
