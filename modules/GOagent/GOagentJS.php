@@ -9238,6 +9238,7 @@ $(window).focus(function() {
 }).blur(function() {
     window_focus = false;
 });
+$(window).focus();
 
 <?php
 } else {
