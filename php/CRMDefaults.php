@@ -153,7 +153,7 @@ define('CRM_HELPDESK_TICKETS_CONTENT_TABLE_NAME', "ost_thread_entry");
 define('CRM_HELPDESK_USERS_TABLE_NAME', "ost_staff");
 
 // Session constants
-define('CRM_SESSION_DRIVER', 'database');              // The storage driver to use: files, database
+define('CRM_SESSION_DRIVER', 'files');              // The storage driver to use: files, database
 define('CRM_SESSION_COOKIE_NAME', 'go_sessions');   // The session cookie/table name, must contain only [0-9a-z_] characters
 define('CRM_SESSION_EXPIRATION', 300);             // The number of SECONDS you want the session to last. Setting to 0 (zero) means expire when the browser is closed.
 define('CRM_SESSION_MATCH_IP', FALSE);              // Whether to match the user's IP address when reading the session data.
