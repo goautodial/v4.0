@@ -9253,6 +9253,7 @@ Number.prototype.between = function (a, b, inclusive) {
                 $result = json_encode($result);
                 break;
             case "UpdateMessages":
+                require_once(GO_BASE_DIRECTORY.'/php/CreamyUser.php');
                 $user = \creamy\CreamyUser::currentUser();
                 $folder = $_REQUEST['folder'];
                 $user_id = $_REQUEST['user_id'];
@@ -9266,6 +9267,7 @@ Number.prototype.between = function (a, b, inclusive) {
                 $result = json_encode($updates, JSON_UNESCAPED_SLASHES);
                 break;
             case "ReadMessage":
+                require_once(GO_BASE_DIRECTORY.'/php/CreamyUser.php');
                 $db = new \creamy\DbHandler();
                 $user = \creamy\CreamyUser::currentUser();
                 $folder = $_REQUEST['folder'];
