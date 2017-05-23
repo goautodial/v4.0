@@ -99,7 +99,7 @@ class SessionHandler {
 	function _Open($save_path = NULL, $name) {
 		// Session name
 		$this->name = $name;
-		//error_log('_Open');
+		error_log('_Open');
 		// Is connection OK
 		return TRUE;
 	}
@@ -112,7 +112,7 @@ class SessionHandler {
 		// Run the garbage collector in 15% of f. calls
 		if (rand(1, 100) <= 15) $this->_GC();
 		// Close connection
-		//error_log('_Close');
+		error_log('_Close');
 		return TRUE;
 	}
 	
@@ -122,7 +122,7 @@ class SessionHandler {
 	 */
 	function _Read($session_id) {
 		// Read entry
-		//error_log('_Read');
+		error_log('_Read');
 		$this->db->where('session_id', md5($session_id));
 		//$this->db->where('user_agent', $this->getUserAgent());
 		$this->db->where('ip_address', $this->getUserIP());
@@ -139,7 +139,7 @@ class SessionHandler {
 	 * @param string 	$data 		- Session data
 	 */
 	function _Write($session_id, $data) {
-		//error_log('_Write');
+		error_log('_Write');
 		if (!empty($data)) {
 			$insertData = array(
 				'session_id' => md5($session_id),
@@ -173,7 +173,7 @@ class SessionHandler {
 	 * @return 	bool
 	 */
 	function _Destroy($session_id) {
-		//error_log('_Destroy: '.$session_id);
+		error_log('_Destroy: '.$session_id);
 		// Remove $session_id session
 		$this->db->where('session_id', md5($session_id));
 		$result = $this->db->delete($this->table);
@@ -185,7 +185,7 @@ class SessionHandler {
 	 * @return 	integer	- Affected rows
 	 */
 	function _GC($maxlifetime = 0) {
-		//error_log('_GC');
+		error_log('_GC');
 		// Remove expired sessions 
 		$this->db->where('last_activity', time(), '<');
 		return $this->db->getRowCount();
