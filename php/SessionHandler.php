@@ -111,7 +111,10 @@ class SessionHandler {
 	function _Close() {
 		// Run the garbage collector in 15% of f. calls
 		if (rand(1, 100) <= 15) $this->_GC();
-		// Close connection
+		// Run the garbage collector for expired sessions
+		$this->db->where('last_activity', time(), '<');
+		$result = $this->db->get($this->table);
+		error_log($this->db->getRowCount());
 		error_log('_Close');
 		return TRUE;
 	}
@@ -188,7 +191,8 @@ class SessionHandler {
 		error_log('_GC');
 		// Remove expired sessions 
 		$this->db->where('last_activity', time(), '<');
-		return $this->db->getRowCount();
+		$result = $this->db->delete($this->table);
+		return ($result) ? TRUE : FALSE;
 	}
 	
 	/** Encrypt session data

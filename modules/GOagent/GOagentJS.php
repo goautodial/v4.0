@@ -9242,9 +9242,9 @@ Number.prototype.between = function (a, b, inclusive) {
                 break;
             case "ChecKLogiN":
                 $is_logged_in = $_REQUEST['is_logged_in'];
-                $sess_logged_in = (strlen($_SESSION['is_logged_in']) > 0) ? $_SESSION['is_logged_in'] : 0;
-                $_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $sess_logged_in;
-                $result = $_SESSION['is_logged_in'];
+                //$sess_logged_in = (strlen($_SESSION['is_logged_in']) > 0) ? $_SESSION['is_logged_in'] : 0;
+                //$_SESSION['is_logged_in'] = (strlen($is_logged_in) > 0) ? $is_logged_in : $sess_logged_in;
+                $result = $is_logged_in;
                 break;
             case "CustoMFielD":
                 $list_id = $_REQUEST['list_id'];
