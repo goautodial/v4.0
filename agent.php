@@ -49,6 +49,9 @@ if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_AGENT){
     header("location: index.php");
 }
 
+$browser = get_browser();
+var_dump($browser);
+
 $lead_id = $_GET['lead_id'];
 $output = $ui->API_GetLeadInfo($lead_id);
 $list_id_ct = count($output->list_id);
