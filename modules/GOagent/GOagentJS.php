@@ -9,7 +9,6 @@ require_once(GO_BASE_DIRECTORY.'/php/CRMDefaults.php');
 require_once(GO_BASE_DIRECTORY.'/php/UIHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/LanguageHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/DbHandler.php');
-include(GO_BASE_DIRECTORY.'/php/Session.php');
 require_once(GO_BASE_DIRECTORY.'/php/goCRMAPISettings.php');
 $goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 
@@ -28,6 +27,8 @@ $FILE_TIME = date("Ymd-His");
 //error_reporting(E_ALL);
 
 if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
+    include(GO_BASE_DIRECTORY.'/php/Session.php');
+
     $result = get_user_info($_SESSION['user']);
     $default_settings = $result->default_settings;
     $agent = $result->user_info;
