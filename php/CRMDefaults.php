@@ -155,7 +155,7 @@ define('CRM_HELPDESK_USERS_TABLE_NAME', "ost_staff");
 // Session constants
 define('CRM_SESSION_DRIVER', 'files');              // The storage driver to use: files, database
 define('CRM_SESSION_COOKIE_NAME', 'go_sessions');   // The session cookie/table name, must contain only [0-9a-z_] characters
-define('CRM_SESSION_EXPIRATION', 7200);             // The number of SECONDS you want the session to last. Setting to 0 (zero) means expire when the browser is closed.
+define('CRM_SESSION_EXPIRATION', 300);             // The number of SECONDS you want the session to last. Setting to 0 (zero) means expire when the browser is closed.
 define('CRM_SESSION_MATCH_IP', FALSE);              // Whether to match the user's IP address when reading the session data.
 define('CRM_SESSION_TIME_TO_UPDATE', 300);          // How many seconds between CI regenerating the session ID.
 define('CRM_SESSION_REGENERATE_DESTROY', FALSE);    // Whether to destroy session data associated with the old session ID when auto-regenerating the session ID. When set to FALSE, the data will be later deleted by the garbage collector.
