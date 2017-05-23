@@ -370,7 +370,7 @@ EOF;
 			
 			preg_match("/Chrome\/(\d+)/", $_SERVER['HTTP_USER_AGENT'], $matches);
 			$rtcpMuxPolicy = '';
-			if ($matches[1] < 57) {
+			if ($matches[1] < 59) {
 				$rtcpMuxPolicy = 'rtcpMuxPolicy: "negotiate"';
 			}
 			$str .= <<<EOF
