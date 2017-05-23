@@ -2008,7 +2008,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				});
 				
 				setInterval(function() {
-					if (!$("#contents-messages").is(':visible') && (typeof refresh_interval !== 'undefined' && refresh_interval < 5000)) {
+					if (!$("#contents-messages").is(':visible') && (typeof refresh_interval !== 'undefined' && refresh_interval < 5000) && (typeof window_focus !== 'undefined' && window_focus)) {
 						updateMessages(<?=$user->getUserId()?>, 0);
 					}
 				}, 5000);

@@ -2380,7 +2380,7 @@ function checkIfStillLoggedIn(logged_out) {
     } else {
         if (!logging_in) {
             var update_login = ((use_webrtc && phoneRegistered) || (!use_webrtc && is_logged_in)) ? 1 : 0;
-            if (check_login) {
+            if (check_login && window_focus) {
                 check_login = false;
                 $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'ChecKLogiN', 'is_logged_in': update_login}, function(result) {
                     is_logged_in = parseInt(result);
