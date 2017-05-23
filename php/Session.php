@@ -28,6 +28,9 @@ namespace creamy;
 
 // Start session if not already started.
 require_once('CRMDefaults.php');
+
+define('GO_BASE_DIRECTORY', dirname(dirname(dirname(__FILE__))));
+error_log(GO_BASE_DIRECTORY);
 if (version_compare(phpversion(), '5.4.0', '<')) {
      if(session_id() == '') {
 		session_start();
