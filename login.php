@@ -108,10 +108,6 @@
 			}
 		}
 	}
-
-echo $_SERVER['HTTP_USER_AGENT'];
-$browser = get_browser();
-var_dump($browser);
 ?>
 <html>
     <head>

@@ -367,6 +367,12 @@ EOF;
 				$realm = $_SESSION['realm'];
 				$socketParams = "ha1: '$ha1_pass', realm: '$realm',";
 			}
+			
+			preg_match("/Chrome\/(\d+)/", $_SERVER['HTTP_USER_AGENT'], $matches);
+			$rtcpMuxPolicy = '';
+			if ($matches[1] < 58) {
+				$rtcpMuxPolicy = 'rtcpMuxPolicy: "negotiate"';
+			}
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
 <script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.4.js"></script>
@@ -521,7 +527,7 @@ EOF;
 			},
 			mediaStream: localStream,
 			pcConfig: {
-				rtcpMuxPolicy: "negotiate"
+				$rtcpMuxPolicy
 			}
 		});
 		
@@ -958,6 +964,12 @@ EOF;
 				$realm = $_SESSION['realm'];
 				$socketParams = "ha1: '$ha1_pass', realm: '$realm',";
 			}
+			
+			preg_match("/Chrome\/(\d+)/", $_SERVER['HTTP_USER_AGENT'], $matches);
+			$rtcpMuxPolicy = '';
+			if ($matches[1] < 58) {
+				$rtcpMuxPolicy = 'rtcpMuxPolicy: "negotiate"';
+			}
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
 <script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.4.js"></script>
@@ -1101,7 +1113,7 @@ EOF;
 				},
 				mediaStream: localStream,
 				pcConfig: {
-					rtcpMuxPolicy: "negotiate"
+					$rtcpMuxPolicy
 				}
 			});
 		
