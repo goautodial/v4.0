@@ -252,6 +252,7 @@ class DbHandler {
 		);
 
 
+
 		foreach($postfields as $key=>$value) { $postfields_string .= $key.'='.$value.'&'; }
 		$postfields_string = rtrim($postfields_string, '&');
 
@@ -267,7 +268,7 @@ class DbHandler {
 		curl_setopt($ch,CURLOPT_POST, count($postfields));
 		curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch,CURLOPT_POSTFIELDS, $postfields_string);
-
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
 		$userobj = json_decode($data);
 		curl_close($ch);
@@ -369,6 +370,7 @@ class DbHandler {
 		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
 
 		curl_close($ch);

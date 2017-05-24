@@ -40,6 +40,7 @@ ini_set('memory_limit','1024M');
 	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT , 0); //gg
 	curl_setopt ($ch, CURLOPT_TIMEOUT  , 10000); //gg
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	$data = curl_exec($ch);
 	
 	curl_close($ch);

@@ -37,11 +37,6 @@ if (isset($_POST["usergroup_id"])) {
 
         <?php print $ui->creamyThemeCSS(); ?>
 
-        <script type="text/javascript">
-			$(window).ready(function() {
-				$(".preloader").fadeOut("slow");
-			});
-		</script>
     </head>
     <style>
     	select{
@@ -99,6 +94,7 @@ if (isset($_POST["usergroup_id"])) {
 				         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 				         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+						 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 				         $data = curl_exec($ch);
 				         curl_close($ch);
 				         $output = json_decode($data);

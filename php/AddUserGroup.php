@@ -1,9 +1,8 @@
 <?php
-
-	/** Telephony Users API - Add a new Telephony User */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 */
+/** Telephony Users API - Add a new Telephony User */
+/**
+ * Generates action circle buttons for different pages/module
+ */
 require_once('goCRMAPISettings.php');	
 
 	$url = gourl."/goUserGroups/goAPI.php"; # URL to GoAutoDial API file
@@ -27,6 +26,7 @@ require_once('goCRMAPISettings.php');
 	curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	$data = curl_exec($ch);
 	curl_close($ch);
 
