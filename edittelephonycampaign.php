@@ -348,15 +348,6 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</select>
 												</div>
 											</div>
-											<div class="form-group">
-												<label class="col-sm-3 control-label"><?php $lh->translateText("alt_number_dialing"); ?>:</label>
-												<div class="col-sm-9 mb">
-													<select class="form-control" id="alt_number_dialing" name="alt_number_dialing">
-														<option value="N" <?php if($campaign->data->alt_number_dialing == "N") echo "selected";?>>No</option>
-														<option value="Y" <?php if($campaign->data->alt_number_dialing == "Y") echo "selected";?>>Yes</option>
-													</select>
-												</div>
-											</div>
 											<?php } ?>
 											<div class="form-group">
 												<label class="col-sm-3 control-label"><?php $lh->translateText("campaign_caller_id"); ?>:</label>
@@ -838,6 +829,15 @@ $audiofiles = $ui->API_getListAudioFiles();
 															</div>
 														</div>
 														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("alt_number_dialing"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select class="form-control" id="alt_number_dialing" name="alt_number_dialing">
+																	<option value="N" <?php if($campaign->data->alt_number_dialing == "N") echo "selected";?>>No</option>
+																	<option value="Y" <?php if($campaign->data->alt_number_dialing == "Y") echo "selected";?>>Yes</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("available_only_tally"); ?>:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="available_only_ratio_tally" name="available_only_ratio_tally">
@@ -1064,6 +1064,15 @@ $audiofiles = $ui->API_getListAudioFiles();
 																	<?php //} ?>
 																<!--</select>-->
 																<input type="text" class="form-control" id="manual_dial_list_id" name="manual_dial_list_id" value="<?php if($campaign->data->manual_dial_list_id != ''){echo $campaign->data->manual_dial_list_id;}else{echo "998";} ?>">
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("alt_number_dialing"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select class="form-control" id="alt_number_dialing" name="alt_number_dialing">
+																	<option value="N" <?php if($campaign->data->alt_number_dialing == "N") echo "selected";?>>No</option>
+																	<option value="Y" <?php if($campaign->data->alt_number_dialing == "Y") echo "selected";?>>Yes</option>
+																</select>
 															</div>
 														</div>
 														<div class="form-group">
@@ -1452,6 +1461,15 @@ $audiofiles = $ui->API_getListAudioFiles();
 																	<?php //} ?>
 																<!--</select>-->
 																<input type="text" class="form-control" id="manual_dial_list_id" name="manual_dial_list_id" value="<?php if($campaign->data->manual_dial_list_id != ''){echo $campaign->data->manual_dial_list_id;}else{echo "998";} ?>">
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("alt_number_dialing"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select class="form-control" id="alt_number_dialing" name="alt_number_dialing">
+																	<option value="N" <?php if($campaign->data->alt_number_dialing == "N") echo "selected";?>>No</option>
+																	<option value="Y" <?php if($campaign->data->alt_number_dialing == "Y") echo "selected";?>>Yes</option>
+																</select>
 															</div>
 														</div>
 														<div class="form-group">
