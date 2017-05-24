@@ -348,6 +348,15 @@ $audiofiles = $ui->API_getListAudioFiles();
 													</select>
 												</div>
 											</div>
+											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("alt_number_dialing"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<select class="form-control" id="alt_number_dialing" name="alt_number_dialing">
+														<option value="N" <?php if($campaign->data->alt_number_dialing == "N") echo "selected";?>>No</option>
+														<option value="Y" <?php if($campaign->data->alt_number_dialing == "Y") echo "selected";?>>Yes</option>
+													</select>
+												</div>
+											</div>
 											<?php } ?>
 											<div class="form-group">
 												<label class="col-sm-3 control-label"><?php $lh->translateText("campaign_caller_id"); ?>:</label>
