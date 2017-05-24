@@ -1498,6 +1498,13 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				</div>
 				<div style="font-weight: bold; text-transform: uppercase;"><?=$lh->translationFor('lead_preview')?></div>
 			</li>
+			<li id="DialALTPhoneMenu" style="padding: 0 5px 15px; display: none;">
+				<div class="material-switch pull-right">
+					<input id="DialALTPhone" name="DialALTPhone" value="0" type="checkbox"/>
+					<label for="DialALTPhone" class="label-primary"></label>
+				</div>
+				<div style="font-weight: bold; text-transform: uppercase;"><?=$lh->translationFor('alt_phone_dial')?></div>
+			</li>
 			<li id="toggleHotkeys" style="padding: 0 5px 15px;">
 				<div class="material-switch pull-right">
 					<input id="enableHotKeys" name="enableHotKeys" type="checkbox"/>

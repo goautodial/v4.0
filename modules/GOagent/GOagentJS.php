@@ -710,7 +710,7 @@ $(document).ready(function() {
                 updateButtons();
                 
                 if (DefaultALTDial == 1) {
-                    $("#DiaLAltPhonE").prop('checked', true);
+                    $("#DialALTPhone").prop('checked', true);
                 }
                 
                 $("#LeadLookUP").prop('checked', true);
@@ -1447,6 +1447,12 @@ $(document).ready(function() {
                             $.globalEval("hide_dispo_list = '0';");
                             $.globalEval("disable_dispo_screen = '1';");
                             $.globalEval("disable_dispo_status = '"+disable_dispo_status+"';");
+                        }
+                        
+                        if (alt_phone_dialing == 1) {
+                            $("#DialALTPhoneMenu").show();
+                        } else {
+                            $("#DialALTPhoneMenu").hide();
                         }
                         
                         var vro_patt = /DISABLED/;
@@ -4191,10 +4197,11 @@ function NewCallbackCall(taskCBid, taskLEADid, taskCBalt) {
             auto_dial_level = 0;
             manual_dial_in_progress = 1;
             MainPanelToFront();
-            //if (alt_phone_dialing == 1)
-            //    {buildDiv('DiaLDiaLAltPhonE');}
+            if (alt_phone_dialing == 1) {
+                $("#DialALTPhoneMenu").show();
+            }
             $("#LeadPreview").prop('checked', false);
-            //$("#DiaLAltPhonE").prop('checked', true);
+            //$("#DialALTPhone").prop('checked', true);
             ManualDialNext(taskCBid,taskLEADid,'','','','0','',taskCBalt);
         }
     }
@@ -4752,7 +4759,7 @@ function NewManualDialCall(tempDiaLnow) {
                 agent_dialed_type='MANUAL_PREVIEW';
                 //buildDiv('DiaLLeaDPrevieW');
                 if (alt_phone_dialing == 1) {
-                    //buildDiv('DiaLDiaLAltPhonE');
+                    $("#DialALTPhoneMenu").show();
                 }
                 $("#LeadPreview").prop('checked', true);
                 $("#DialALTPhone").prop('checked', true);
@@ -4804,8 +4811,9 @@ function NewManualDialCallFast() {
             manual_dial_in_progress = 1;
             MainPanelToFront();
             //buildDiv('DiaLLeaDPrevieW');
-            //if (alt_phone_dialing == 1)
-            //    {buildDiv('DiaLDiaLAltPhonE');}
+            if (alt_phone_dialing == 1) {
+                $("#DialALTPhoneMenu").show();
+            }
             $("#LeadPreview").prop('checked', false);
             //$("#DialALTPhone").prop('checked', true);
             ManualDialNext("","",MDDiaLCodEform,MDPhonENumbeRform,MDLookuPLeaD,MDVendorLeadCode,'0');
@@ -6183,6 +6191,8 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
     dialingINprogress = 1;
     if (waiting_on_dispo > 0) {
         dialingINprogress = 0;
+        alt_phone_dialing = starting_alt_phone_dialing;
+        auto_dial_level = starting_dial_level;
         swal({
             title: '<?=$lh->translationFor('error')?>',
             text: "<?=$lh->translationFor('system_delay_try_again')?><br><?=$lh->translationFor('code')?>: " + agent_log_id + " - " + waiting_on_dispo,
