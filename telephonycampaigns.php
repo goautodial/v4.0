@@ -1886,7 +1886,7 @@
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "<?php $lh->translateText("pause_code"); ?>!",
+					confirmButtonText: "<?php $lh->translateText("del_pause_code"); ?>!",
 					cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 					closeOnConfirm: false,
 					closeOnCancel: false
