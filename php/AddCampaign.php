@@ -52,6 +52,7 @@
             $postfields['call_route_text'] 		= $_POST['voicemail_text'];
         break;
     }
+	
 	$postfields['group_color'] 					= $_POST['group_color'];
 	$postfields['survey_type'] 					= $_POST['survey_type'];
 	$postfields['no_channels']  				= $_POST['no_channels'];
@@ -61,7 +62,7 @@
 	$postfields['check_for_duplicates'] 		= $_POST['check_for_duplicates'];
 	$postfields['dial_method'] 					= $_POST['dial_method'];
 	$postfields['auto_dial_level'] 				= (!isset($_POST['auto_dial_level']))? 'OFF':$_POST['auto_dial_level'];
-    $postfields["auto_dial_level_adv"] 			= $_POST["auto_dial_level_adv"];
+	$postfields["auto_dial_level_adv"] 			= $_POST["auto_dial_level_adv"];
 	$postfields['dial_prefix']					= (!isset($_POST['dial_prefix']))? 9:$_POST['dial_prefix'];
 	$postfields['custom_dial_prefix']			= ($postfields['dial_prefix'] == "CUSTOM")? $_POST['custom_prefix']:0;
 	$postfields['description'] 					= $_POST['description'];

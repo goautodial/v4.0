@@ -141,6 +141,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 						curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+						curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 						$data = curl_exec($ch);
 						curl_close($ch);
 						$output = json_decode($data);
@@ -1136,6 +1137,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 						curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+						curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 						$data = curl_exec($ch);
 						curl_close($ch);
 						$output = json_decode($data);
@@ -1775,6 +1777,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 						curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+						curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 						$data = curl_exec($ch);
 						curl_close($ch);
 						$output = json_decode($data);
