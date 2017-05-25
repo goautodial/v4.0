@@ -776,7 +776,7 @@ $(document).ready(function() {
                 }
             }
             
-            console.log(window_focus);
+            //console.log(window_focus);
         }, refresh_interval);
         
         if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
