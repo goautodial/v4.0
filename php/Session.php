@@ -49,13 +49,16 @@ if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on") {
     exit();
 }
 
-error_log('test: '.$isAgentUI);
+$realPath = '';
+if (preg_match("/GOagentJS/", $isAgentUI)) {
+	$realPath = "https://" . $_SERVER["HTTP_HOST"] . "/";
+}
 
 if (!isset($_SESSION["username"])) {
-	header('Location: login.php'); // Redirecting To Login Page
+	header('Location: '.$realPath.'login.php'); // Redirecting To Login Page
 }
 if (!isset($_SESSION["userid"])) {
-	header('Location: login.php'); // Redirecting To Login Page
+	header('Location: '.$realPath.'login.php'); // Redirecting To Login Page
 }
 if (!isset($_SESSION["userrole"])) {
 	$_SESSION["userrole"] = CRM_DEFAULTS_USER_ROLE_GUEST; // no privileged account by default.
