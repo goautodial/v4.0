@@ -49,7 +49,7 @@ if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on") {
     exit();
 }
 
-error_log($isAgentUI);
+error_log('test: '.$isAgentUI);
 
 if (!isset($_SESSION["username"])) {
 	header('Location: login.php'); // Redirecting To Login Page
