@@ -69,7 +69,6 @@ if (isset($_POST["id"])) {
 					<div class="panel panel-default">
 	                    <div class="panel-body">
 						<!-- standard custom edition form -->
-
 						<?php
 						$errormessage = NULL;
 						
@@ -83,7 +82,6 @@ if (isset($_POST["id"])) {
 							$postfields["log_user"] = $_SESSION['user'];
 							$postfields["log_group"] = $_SESSION['usergroup'];
 							$postfields["hostname"] = $_SERVER['REMOTE_ADDR'];
-
 							$ch = curl_init();
 							curl_setopt($ch, CURLOPT_URL, $url);
 							curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -99,10 +97,9 @@ if (isset($_POST["id"])) {
 					        //var_dump($output->data);
 							
 							if ($output->result=="success") {
-								
+							
 							$user_groups = $ui->API_goGetUserGroupsList();
 						?>
-
 				<legend><?php $lh->translateText("modify_server_id"); ?> : <u><?php echo $id;?></u></legend>
 				
 				<form id="modifyform">
@@ -202,6 +199,12 @@ if (isset($_POST["id"])) {
 										<option value="N" <?php if($output->data->vicidial_balance_active == "N")echo "selected"; ?> ><?php $lh->translateText("go_no"); ?></option>
 										<option value="Y" <?php if($output->data->vicidial_balance_active == "Y")echo "selected"; ?> ><?php $lh->translateText("go_yes"); ?></option>
 									</select>
+								</div>
+                            </div>
+							<div class="row form-group mt">        
+                                <label class="col-sm-2 control-label" for="vicidial_balance_rank"><?php $lh->translateText("balance_rank"); ?></label>
+                                <div class="col-sm-10 mb">
+									<input type="number" class="form-control" name="vicidial_balance_rank" value="<?php echo $output->data->vicidial_balance_rank; ?>" id="vicidial_balance_rank" min="0" max="999" minlenght="0" maxlength="3">
 								</div>
                             </div>
 							<div class="row form-group">        
@@ -330,14 +333,23 @@ if (isset($_POST["id"])) {
 		<script type="text/javascript">
 			$(document).ready(function() {
 			// disable special characters on Usergroup Name
-					$('#server_description').bind('keypress', function (event) {
-						var regex = new RegExp("^[a-zA-Z0-9 ]+$");
-						var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-						if (!regex.test(key)) {
-						   event.preventDefault();
-						   return false;
-						}
-					});
+				$('#server_description').bind('keypress', function (event) {
+					var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+					var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+					if (!regex.test(key)) {
+					   event.preventDefault();
+					   return false;
+					}
+				});
+				
+				$('#vicidial_balance_rank').bind('keypress', function (event) {
+					var regex = new RegExp("^[0-9]+$");
+					var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+					if (!regex.test(key)) {
+					   event.preventDefault();
+					   return false;
+					}
+				});
 					
 			//input mask
 				$("[data-mask]").inputmask();

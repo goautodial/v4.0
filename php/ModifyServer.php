@@ -66,6 +66,10 @@ require_once('goCRMAPISettings.php');
 		$external_server_ip = $_POST["external_server_ip"]; 
 		$external_server_ip = stripslashes($external_server_ip);
 	}
+	$vicidial_balance_rank = NULL; if (isset($_POST["vicidial_balance_rank"])) { 
+		$vicidial_balance_rank = $_POST["vicidial_balance_rank"]; 
+		$vicidial_balance_rank = stripslashes($vicidial_balance_rank);
+	}
 
 	$url = gourl."/goServers/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"]           = goUser; #Username goes here. (required)
@@ -83,17 +87,18 @@ require_once('goCRMAPISettings.php');
 	$postfields["max_vicidial_trunks"]          	= $max_vicidial_trunks;
 	$postfields["outbound_calls_per_second"]    	= $outbound_calls_per_second;
 	$postfields["vicidial_balance_active"]           	= $vicidial_balance_active;
+	$postfields["vicidial_balance_rank"]	= $vicidial_balance_rank;
 	$postfields["local_gmt"]           	= $local_gmt;
 	$postfields["generate_vicidial_conf"]           	= $generate_vicidial_conf;
 	$postfields["rebuild_conf_files"]           	= $rebuild_conf_files;
 	$postfields["rebuild_music_on_hold"]           	= $rebuild_music_on_hold;
-	$postfields["recording_web_link"] 				= $recording_web_link;
-	$postfields["alt_server_ip"]					= $alt_server_ip;
-	$postfields["external_server_ip"]				= $external_server_ip;
+	$postfields["recording_web_link"] 	= $recording_web_link;
+	$postfields["alt_server_ip"]	= $alt_server_ip;
+	$postfields["external_server_ip"]	= $external_server_ip;
 	
 	$postfields["log_user"]         = $_POST['log_user'];
 	$postfields["log_group"]        = $_POST['log_group'];
-
+	
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_POST, 1);
