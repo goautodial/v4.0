@@ -201,7 +201,7 @@ if (isset($_POST["id"])) {
 									</select>
 								</div>
                             </div>
-							<div class="row form-group mt">        
+							<div class="row form-group">        
                                 <label class="col-sm-2 control-label" for="vicidial_balance_rank"><?php $lh->translateText("balance_rank"); ?></label>
                                 <div class="col-sm-10 mb">
 									<input type="number" class="form-control" name="vicidial_balance_rank" value="<?php echo $output->data->vicidial_balance_rank; ?>" id="vicidial_balance_rank" min="0" max="999" minlenght="0" maxlength="3">
