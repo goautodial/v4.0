@@ -740,7 +740,7 @@
 										<!-- IN GROUP -->
 											<div class="route_ingroup_<?php echo $i;?>" style="display:none;">
 												<div class="row mb">
-													<label class="col-sm-3 control-label"><?php $lh->translateText("ingroup"); ?>In Group: </label>
+													<label class="col-sm-3 control-label"><?php $lh->translateText("ingroup"); ?>: </label>
 													<div class="col-sm-6">
 														<select class="select2-2 form-control" name="option_ingroup_value[]" style="width:100%;">
 															<option value="" selected><?php $lh->translateText("-none-"); ?></option>

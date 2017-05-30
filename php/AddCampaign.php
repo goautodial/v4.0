@@ -27,7 +27,7 @@
 	$postfields["goAction"] 					= "goAddCampaign"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] 				= responsetype; #json (required)
 	$postfields["hostname"] 					= $_SERVER['REMOTE_ADDR']; #Default value
-	$postfields["log_user"]						= $_POST['log_user'];
+	$postfields["session_user"]						= $_POST['log_user'];
 	$postfields["log_group"]					= $_POST['log_group'];
 	$postfields["session_user"] 				= $_SESSION['user']; #current user
 	$postfields['campaign_type'] 				= $_POST['campaign_type'];

@@ -4124,8 +4124,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "goGetVoiceFilesList"; #action performed by the [[API:Functions]]. (required)
 	    $postfields["responsetype"] = responsetype; #json. (required)
-
-
+		$postfields["session_user"] = $_SESSION['user']; #json. (required)
 	    $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
 	    // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -4147,11 +4146,10 @@ error_reporting(E_ERROR | E_PARSE);
 		$output = $this->API_GetVoiceFilesList();
 	    if ($output->result=="success") {
 	    # Result was OK!
-	    $columns = array($this->lh->translationFor('file_name'), $this->lh->translationFor('date'), $this->lh->translationFor('action'));
+	    $columns = array($this->lh->translationFor('file_name'), $this->lh->translationFor('date'), $this->lh->translationFor('size'), $this->lh->translationFor('action'));
 	    $hideOnMedium = array("Date");
 		$hideOnLow = array( "Date");
-
-		    $result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
 	    for($i=0;$i<count($output->file_name);$i++){
 
@@ -4161,7 +4159,6 @@ error_reporting(E_ERROR | E_PARSE);
 			 $web_host = getenv("SERVER_NAME");
 			 $file_link = "http://".$web_host."/sounds/".$output->file_name[$i];
 		 }
-
 	    //$file_link = "http://69.46.6.35/sounds/".$output->file_name[$i];
 
 	    $details = "<strong>Filename</strong>: <i>".$output->file_name[$i]."</i><br/>";
@@ -4179,6 +4176,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= "<tr>
 			<td>{$preFix}".$output->file_name[$i]."{$sufFix}</td>
 			<td class ='hide-on-medium hide-on-low'>".$output->file_date[$i]."</td>
+			<td class ='hide-on-medium hide-on-low'>".$output->file_size[$i]."</td>
 			<td nowrap>".$action."</td>
 		    </tr>";
 	    }
@@ -4344,28 +4342,29 @@ error_reporting(E_ERROR | E_PARSE);
 
 		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
-	        for($i=0;$i<count($output->call_time_id);$i++){
+	    for($i=0;$i<count($output->call_time_id);$i++){
 		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i], $output->call_time_name[$i]);
-
-            $output->ct_default_start[$i] = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start[$i])));
-            $output->ct_default_stop[$i] = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_stop[$i])));
-
-            if($output->user_group[$i] == "---ALL---"){
+			
+			if($output->ct_default_start[$i] !== 0 && $output->ct_default_stop[$i] !== 0){
+				$output->ct_default_start[$i] = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start[$i])));
+				$output->ct_default_stop[$i] = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_stop[$i])));
+			}else{
+				$output->ct_default_start[$i] = "NULL";
+				$output->ct_default_stop[$i] = "NULL";
+			}
+            if($output->user_group[$i] === "---ALL---"){
             	$output->user_group[$i] = "ALL USER GROUPS";
             }
-
-                    $result .= "<tr>
-	                    <td class ='hide-on-medium hide-on-low'><a class='edit-calltime' data-id='".$output->call_time_id[$i]."'>".$output->call_time_id[$i]."</a></td>
-	                    <td>".$output->call_time_name[$i]."</td>
-	                    <td class ='hide-on-medium hide-on-low'>".$output->ct_default_start[$i]."</td>
-			   			<td class ='hide-on-medium hide-on-low'>".$output->ct_default_stop[$i]."</td>
-			    		<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
-	                    <td nowrap>".$action."</td>
-	                </tr>";
-            }
-
+				$result .= "<tr>
+					<td class ='hide-on-medium hide-on-low'><a class='edit-calltime' data-id='".$output->call_time_id[$i]."'>".$output->call_time_id[$i]."</a></td>
+					<td>".$output->call_time_name[$i]."</td>
+					<td class ='hide-on-medium hide-on-low'>".$output->ct_default_start[$i]."</td>
+					<td class ='hide-on-medium hide-on-low'>".$output->ct_default_stop[$i]."</td>
+					<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
+					<td nowrap>".$action."</td>
+				</tr>";
+        }
 		    return $result.'</table>';
-
 	    } else {
 	       # An error occured
 	       return $output->result;

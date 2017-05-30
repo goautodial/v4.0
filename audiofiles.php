@@ -372,8 +372,7 @@
 	      	</div>
 		    <div class="modal-body clearfix">
 		        <form action="./php/AddVoiceFiles.php" method="POST" id="voicefile_form" enctype="multipart/form-data">
-					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
-					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
+					<input type="hidden" name="session_user" value="<?=$_SESSION['user']?>" />
 		  	      	<div class="row">
 		  	      		<h4>
 		  	      			<?php $lh->translateText("voice_file_wizard_header"); ?><br/>
@@ -732,7 +731,7 @@
 						swal(
 							{
 								title: "<?php $lh->translateText("oups"); ?>",
-								text: "<?php $lh->translateText("something_went_wrong"); ?>",
+								text: "<?php $lh->translateText("file_upload_failed"); ?>",
 								type: "error"
 							},
 							function(){
@@ -740,6 +739,19 @@
 							}
 						);
 				<?php
+					}elseif($_GET['upload_result'] == "exists"){
+				?>
+						swal(
+							{
+								title: "<?php $lh->translateText("oups"); ?>",
+								text: "<?php $lh->translateText("file_already_exists"); ?>",
+								type: "error"
+							},
+							function(){
+								window.location.href = 'audiofiles.php';
+							}
+						);
+				<?php		
 					}
 				?>
 

@@ -2593,28 +2593,28 @@
 		                    url: "./php/AddDisposition.php",
 		                    type: 'POST',
 		                    data: {
-		                    		userid : $('#userid').val(),
-			                    	campaign : $('#disposition_campaign').val(),
-			                    	status : $('#status').val(),
-						    		status_name : $('#status_name').val(),
-						   			selectable : selectable,
-						    		human_answered : human_answered,
-						    		sale : sale,
-						    		dnc : dnc,
-						    		scheduled_callback : scheduled_callback,
-						    		customer_contact : customer_contact,
-						    		not_interested : not_interested,
-						    		unworkable : unworkable,
-									log_user: log_user,
-									log_group: log_group
-			                    },
+								userid : $('#userid').val(),
+								campaign : $('#disposition_campaign').val(),
+								status : $('#status').val(),
+								status_name : $('#status_name').val(),
+								selectable : selectable,
+								human_answered : human_answered,
+								sale : sale,
+								dnc : dnc,
+								scheduled_callback : scheduled_callback,
+								customer_contact : customer_contact,
+								not_interested : not_interested,
+								unworkable : unworkable,
+								log_user: log_user,
+								log_group: log_group
+							},
 		                    success: function(data) {
 		                      // console.log(data);
 		                          if(data == 1){
 		                                swal(
 											{
 												title: "<?php $lh->translateText("success"); ?>",
-												text: "<?php $lh->translateText("statuses"); ?>!",
+												text: "<?php $lh->translateText("success_statuses"); ?>!",
 												type: "success"
 											},
 											function(){

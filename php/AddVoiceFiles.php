@@ -14,17 +14,14 @@
  	 require_once('CRMDefaults.php');
  	 // print_r($_FILES['file_upload']);die();
    $url = gourl."/goVoiceFiles/goAPI.php"; #URL to GoAutoDial API. (required)
-
-   $postfields["goUser"]         = goUser; #Username goes here. (required)
-   $postfields["goPass"]         = goPass; #Password goes here. (required)
-   $postfields["goAction"]       = "goAddVoiceFiles"; #action performed by the [[API:Functions]]. (required)
-   $postfields["responsetype"]   = responsetype; #json. (required)
-   $postfields["hostname"]       = $_SERVER['REMOTE_ADDR']; #Default value
-   $postfields["files"]          = curl_file_create($_FILES['voice_file']['tmp_name'], $_FILES['voice_file']['type'], $_FILES["voice_file"]["name"]);
-   $postfields["stage"]          = "upload";
-	
-	$postfields["log_user"]			= $_POST['log_user'];
-	$postfields["log_group"]		= $_POST['log_group'];
+   $postfields["goUser"] 		= goUser; #Username goes here. (required)
+   $postfields["goPass"] 		= goPass; #Password goes here. (required)
+   $postfields["goAction"] 		= "goAddVoiceFiles"; #action performed by the [[API:Functions]]. (required)
+   $postfields["responsetype"] 		= responsetype; #json. (required)
+   $postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
+   $postfields["files"] 		= curl_file_create($_FILES['voice_file']['tmp_name'], $_FILES['voice_file']['type'], $_FILES["voice_file"]["name"]);
+   $postfields["stage"] 		= "upload";
+   $postfields["session_user"] 		= $_POST['session_user'];
 
    $ch = curl_init();
    curl_setopt($ch, CURLOPT_URL, $url);
@@ -35,7 +32,6 @@
    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
    $data = curl_exec($ch);
    curl_close($ch);
-
    $output = json_decode($data);
 
    header("location: ../audiofiles.php?upload_result=".$output->result);
