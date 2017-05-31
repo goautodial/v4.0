@@ -4141,7 +4141,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	public function getListAllVoiceFiles(){
-		require_once('Session.php');
+		//require_once('Session.php');
 		$perm = $this->goGetPermissions('voicefiles', $_SESSION['usergroup']);
 		$output = $this->API_GetVoiceFilesList();
 	    if ($output->result=="success") {
