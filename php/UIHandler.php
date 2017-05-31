@@ -4140,9 +4140,9 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllVoiceFiles($ugroup){
-		//require_once('Session.php');
-		$perm = $this->goGetPermissions('voicefiles', $ugroup);
+	public function getListAllVoiceFiles(){
+		require_once('Session.php');
+		$perm = $this->goGetPermissions('voicefiles', $_SESSION['usergroup']);
 		$output = $this->API_GetVoiceFilesList();
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -4150,7 +4150,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $hideOnMedium = array("Date");
 		$hideOnLow = array( "Date");
 		$result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-		$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'https://';
+		$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
 	    $web_ip = getenv("SERVER_ADDR");
 	    for($i=0;$i<count($output->file_name);$i++){
 	    $file_link = $protocol.$web_ip."/sounds/".$output->file_name[$i];
