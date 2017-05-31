@@ -120,7 +120,7 @@
 
 							<!--==== Voicefiles ====-->
 							<div id="voicefiles_tab" role="tabpanel" class="tab-pane<?=$activeVoicefiles?>">
-								<?php print $ui->getListAllVoiceFiles(); ?>
+								<?php print $ui->getListAllVoiceFiles($_SESSION['usergrou']); ?>
 							</div>
 
 						</div><!-- END tab content-->

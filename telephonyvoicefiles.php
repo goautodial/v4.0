@@ -78,7 +78,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body table" id="recording_table">
                             <legend><?php $lh->translateText("voice_files"); ?></legend>
-							<?php print $ui->getListAllVoiceFiles(); ?>
+							<?php print $ui->getListAllVoiceFiles($_SESSION['usergroup']); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
