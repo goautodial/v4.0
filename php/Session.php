@@ -51,7 +51,7 @@ if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on") {
 
 $realPath = '';
 if (preg_match("/GOagentJS/", $isAgentUI)) {
-	$realPath = "https://" . $_SERVER["HTTP_HOST"] . "/";
+	$realPath = "https://" . $_SERVER["HTTP_HOST"] . "/CreamCRM/";
 }
 
 if (!isset($_SESSION["username"])) {
