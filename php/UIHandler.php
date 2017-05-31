@@ -4150,7 +4150,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $hideOnMedium = array("Date");
 		$hideOnLow = array( "Date");
 		$result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-		$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
+		$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'https://';
 	    $web_ip = getenv("SERVER_ADDR");
 	    for($i=0;$i<count($output->file_name);$i++){
 	    $file_link = $protocol.$web_ip."/sounds/".$output->file_name[$i];
