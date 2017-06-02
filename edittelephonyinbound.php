@@ -2100,13 +2100,13 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 											<div class="form-group">
 												<label for="route_exten" class="col-sm-3 control-label"><?php $lh->translateText("custom_extension"); ?>: </label>
 												<div class="col-sm-9 mb">
-													<input type="text" name="route_exten" id="route_exten" placeholder="Extension" class="form-control" value="<?php echo $ouput->data->extension; ?>" required>
+													<input type="text" name="route_exten" id="route_exten" placeholder="Extension" class="form-control" value="<?php echo $output->data->extension; ?>" required>
 												</div>
 											</div>
 											<div class="form-group">
 												<label for="route_exten_context" class="col-sm-3 control-label"><?php $lh->translateText("extension_context"); ?>: </label>
 												<div class="col-sm-9 mb">
-													<input type="text" name="route_exten_context" id="route_exten_context" placeholder="Extension Context" class="form-control" value="<?php echo $ouput->data->exten_context;?>" required>
+													<input type="text" name="route_exten_context" id="route_exten_context" placeholder="Extension Context" class="form-control" value="<?php echo $output->data->exten_context;?>" required>
 												</div>
 											</div>
 										</div><!-- end of custom extension div -->

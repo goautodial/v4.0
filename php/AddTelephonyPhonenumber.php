@@ -7,8 +7,7 @@ require_once('goCRMAPISettings.php');
 	$postfields["goAction"] 		= "goAddDID"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] 	= responsetype; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
-	$postfields["log_user"]			= $_POST['log_user'];
-	$postfields["log_group"]		= $_POST['log_group'];
+	$postfields["session_user"]			= $_POST['log_user'];
     
 	$postfields["did_pattern"]              = $_POST['did_exten']; #Desired pattern (required)
     $postfields["did_description"]          = $_POST['desc']; #Desired description(required)
@@ -42,6 +41,7 @@ require_once('goCRMAPISettings.php');
 	    $postfields["extension"]                = $_POST['route_exten']; #Desired extension (required if did_route is CUSTOM EXTENSION)
 	    $postfields["exten_context"]            = $_POST['route_exten_context']; #Deisred context (required if did_route is CUSTOM EXTENSION)
 	}
+	
 
 	 $ch = curl_init();
 	 curl_setopt($ch, CURLOPT_URL, $url);

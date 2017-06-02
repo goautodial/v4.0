@@ -243,7 +243,7 @@
 												if($phonenumber->did_route[$i] == "IN_GROUP"){
 													$phonenumber->did_route[$i] = "IN-GROUP";
 												}
-												if($phonenumber->did_route[$i] == "EXTENSION"){
+												if($phonenumber->did_route[$i] == "EXTEN"){
 													$phonenumber->did_route[$i] = "CUSTOM EXTENSION";
 												}
 
@@ -1034,7 +1034,7 @@
 										<option value="PHONE"><?php $lh->translateText('phone'); ?>  </option>
 										<option value="CALLMENU"><?php $lh->translateText('call_menu_ivr'); ?> </option>
 										<option value="VOICEMAIL"><?php $lh->translateText('voicemail'); ?>  </option>
-										<option value="EXTENSION"><?php $lh->translateText('custom_extension'); ?> </option>
+										<option value="EXTEN"><?php $lh->translateText('custom_extension'); ?> </option>
 									</select>
 								</div>
 							</div>
@@ -1085,7 +1085,7 @@
 											<option value="VOICEMAIL" ><?php $lh->translateText('voicemail'); ?>  </option>
 											<option value="PHONE" > <?php $lh->translateText('phone'); ?> </option>
 											<option value="IN_GROUP" > <?php $lh->translateText('in_group'); ?> </option>
-											<option value="EXTENSION" > <?php $lh->translateText('custom_extension'); ?> </option>
+											<option value="EXTEN" > <?php $lh->translateText('custom_extension'); ?> </option>
 										</select>
 									</div>
 								</div>
@@ -2865,7 +2865,7 @@
 						  $('#form_route_phone').hide();
 						  $('#form_route_callmenu').hide();
 						  $('#form_route_exten').hide();
-						}if(this.value == "EXTENSION") {
+						}if(this.value == "EXTEN") {
 						  $('#form_route_exten').show();
 						  
 						  $('#form_route_agent').hide();
