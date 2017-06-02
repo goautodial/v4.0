@@ -614,9 +614,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	      </div>
 	      <div class="modal-body">
 			<form id="dnc_form">
-				<input type="hidden" name="user_id" value="<?php echo $user->getUserId();?>">
-				<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>">
-				<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>">
+				<input type="hidden" name="session_user" value="<?php echo $_SESSION['user'];?>">
 				<div class="form-group mt">
 					<label class="col-md-3 control-label"><?php $lh->translateText("list"); ?>:</label>
 					<div class="col-md-9 mb">
