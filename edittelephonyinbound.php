@@ -90,12 +90,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
                     <h1 style="font-weight:normal;">
                     	<?php $lh->translateText("inbound"); ?>
                         <small><?php $lh->translateText("edit"); ?> 
-                        	<?php 
-				        		if($groupid != NULL){echo $lh->translateText('in_group');}
-				        		if($ivr != NULL){echo $lh->translateText('interactive_voice_record');}
-				        		if($did != NULL){echo $lh->translateText('did_phone_number');}
-					        ?>
-					    </small>
+							<?php
+								if($groupid != NULL){echo $lh->translateText('in_group');}
+								if($ivr != NULL){echo $lh->translateText('interactive_voice_record');}
+								if($did != NULL){echo $lh->translateText('did_phone_number');}
+							?>
+						</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
@@ -850,6 +850,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																$no_agent_action .= '<option value="HANGUP" selected> HANGUP </option>';
 															}else{
 																$no_agent_action .= '<option value="HANGUP" > HANGUP </option>';
+															}
+															if($output->data->no_agent_action == "DID"){
+																$no_agent_action .= '<option value="DID" selected> DID </option>';
+															}else{
+																$no_agent_action .= '<option value="DID" > DID </option>';
 															}
 															if($output->data->no_agent_action == "MESSAGE"){
 																$no_agent_action .= '<option value="MESSAGE" selected> MESSAGE </option>';
