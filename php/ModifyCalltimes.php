@@ -37,78 +37,78 @@ if ($validated == 1) {
 
     $url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
 	
-	if($_POST['start_default'] != "" || $_POST['start_default'] != "0" || $_POST['start_default'] != "NULL" )
+	if($_POST['start_default'] != "")
 		$start_default =  date('Hi', strtotime($_POST['start_default']));
 	else
 		$start_default =  "0";
-	if($_POST['stop_default'] != "" || $_POST['stop_default'] != "0" || $_POST['stop_default'] != "NULL" )
+	if($_POST['stop_default'] != "")
 		$stop_default =  date('Hi', strtotime($_POST['stop_default']));
 	else
 		$stop_default =  "0";
 		
-	if($_POST['start_sunday'] != "" || $_POST['start_sunday'] != "0" || $_POST['start_sunday'] != "NULL" )
+	if($_POST['start_sunday'] != "")
 		$start_sunday =  date('Hi', strtotime($_POST['start_sunday']));
 	else
 		$start_sunday =  "0";
-	if($_POST['stop_sunday'] != "" || $_POST['stop_sunday'] != "0" || $_POST['stop_sunday'] != "NULL" )
+	if($_POST['stop_sunday'] != "")
 		$stop_sunday =  date('Hi', strtotime($_POST['stop_sunday']));
 	else
 		$stop_sunday =  "0";
 		
-	if($_POST['start_monday'] != "" || $_POST['start_monday'] != "0" || $_POST['start_monday'] != "NULL" )
+	if($_POST['start_monday'] != "")
 		$start_monday =  date('Hi', strtotime($_POST['start_monday']));
 	else
 		$start_monday =  "0";
-	if($_POST['stop_monday'] != "" || $_POST['stop_monday'] != "0" || $_POST['stop_monday'] != "NULL" )
+	if($_POST['stop_monday'] != "")
 		$stop_monday =  date('Hi', strtotime($_POST['stop_monday']));
 	else
 		$stop_monday =  "0";
 		
-	if($_POST['start_tuesday'] != "" || $_POST['start_tuesday'] != "0" || $_POST['start_tuesday'] != "NULL" )
+	if($_POST['start_tuesday'] != "")
 		$start_tuesday =  date('Hi', strtotime($_POST['start_tuesday']));
 	else
 		$start_tuesday =  "0";
-	if($_POST['stop_tuesday'] != "" || $_POST['stop_tuesday'] != "0" || $_POST['stop_tuesday'] != "NULL" )
+	if($_POST['stop_tuesday'] != "")
 		$stop_tuesday =  date('Hi', strtotime($_POST['stop_tuesday']));
 	else
 		$stop_tuesday =  "0";
 		
-	if($_POST['start_wednesday'] != "" || $_POST['start_wednesday'] != "0" || $_POST['start_wednesday'] != "NULL" )
+	if($_POST['start_wednesday'] != "")
 		$start_wednesday =  date('Hi', strtotime($_POST['start_wednesday']));
 	else
 		$start_wednesday =  "0";
-	if($_POST['stop_wednesday'] != "" || $_POST['stop_wednesday'] != "0" || $_POST['stop_wednesday'] != "NULL" )
+	if($_POST['stop_wednesday'] != "")
 		$stop_wednesday =  date('Hi', strtotime($_POST['stop_wednesday']));
 	else
 		$stop_wednesday =  "0";
 		
-	if($_POST['start_thursday'] != "" || $_POST['start_thursday'] != "0" || $_POST['start_thursday'] != "NULL" )
+	if($_POST['start_thursday'] != "")
 		$start_thursday =  date('Hi', strtotime($_POST['start_thursday']));
 	else
 		$start_thursday =  "0";
-	if($_POST['stop_thursday'] != "" || $_POST['stop_thursday'] != "0" || $_POST['stop_thursday'] != "NULL" )
+	if($_POST['stop_thursday'] != "")
 		$stop_thursday =  date('Hi', strtotime($_POST['stop_thursday']));
 	else
 		$stop_thursday =  "0";
 		
-	if($_POST['start_friday'] != "" || $_POST['start_friday'] != "0" || $_POST['start_friday'] != "NULL" )
+	if($_POST['start_friday'] != "")
 		$start_friday =  date('Hi', strtotime($_POST['start_friday']));
 	else
 		$start_friday =  "0";
-	if($_POST['stop_friday'] != "" || $_POST['stop_friday'] != "0" || $_POST['stop_friday'] != "NULL" )
+	if($_POST['stop_friday'] != "")
 		$stop_friday =  date('Hi', strtotime($_POST['stop_friday']));
 	else
 		$stop_friday =  "0";
 		
-	if($_POST['start_saturday'] != "" || $_POST['start_saturday'] != "0" || $_POST['start_saturday'] != "NULL" )
+	if($_POST['start_saturday'] != "")
 		$start_saturday =  date('Hi', strtotime($_POST['start_saturday']));
 	else
 		$start_saturday =  "0";
-	if($_POST['stop_saturday'] != "" || $_POST['stop_saturday'] != "0" || $_POST['stop_saturday'] != "NULL" )
+	if($_POST['stop_saturday'] != "")
 		$stop_saturday =  date('Hi', strtotime($_POST['stop_saturday']));
 	else
 		$stop_saturday =  "0";
-		
+	
     $postfields["goUser"]             = goUser; #Username goes here. (required)
     $postfields["goPass"]             = goPass; #Password goes here. (required)
     $postfields["goAction"]           = "goEditCalltime"; #action performed by the [[API:Functions]]. (required)
