@@ -3308,7 +3308,7 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = $this->lh->translationFor("inactive");
 				}
 				$role = $output->user_level[$i];
-					$action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i], $output->user[$i], $perm);
+					$action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i], $user, $perm);
 					//$sessionAvatar = "<avatar username='".$output->full_name[$i]."' :size='36'></avatar>";
 					$avatar = NULL;
 					if ($this->db->getUserAvatar($output->user_id[$i])) {
