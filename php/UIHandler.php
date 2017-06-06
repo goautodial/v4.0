@@ -3301,14 +3301,13 @@ error_reporting(E_ERROR | E_PARSE);
 		   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		
 	       // iterate through all users
-	       for($i=0;$i<count($output->user_id);$i++){
-				
-					if($output->active[$i] == "Y"){
-						$output->active[$i] = $this->lh->translationFor("active");
-					}else{
-						$output->active[$i] = $this->lh->translationFor("inactive");
-					}
-
+			for($i=0;$i<count($output->user_id);$i++){
+				if($output->active[$i] == "Y"){
+					$output->active[$i] = $this->lh->translationFor("active");
+				}else{
+					$output->active[$i] = $this->lh->translationFor("inactive");
+				}
+				$role = $output->user_level[$i];
 					$action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i], $output->user[$i], $perm);
 					//$sessionAvatar = "<avatar username='".$output->full_name[$i]."' :size='36'></avatar>";
 					$avatar = NULL;
@@ -4150,10 +4149,12 @@ error_reporting(E_ERROR | E_PARSE);
 	    $hideOnMedium = array("Date");
 		$hideOnLow = array( "Date");
 		$result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-		$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
-	    $web_ip = getenv("SERVER_ADDR");
+	    $server_port = getenv("SERVER_PORT");
+		$web_ip = getenv("SERVER_ADDR");
+		if (preg_match("/443/",$server_port)) {$HTTPprotocol = 'https://';}
+		else {$HTTPprotocol = 'http://';}
 	    for($i=0;$i<count($output->file_name);$i++){
-	    $file_link = $protocol.$web_ip."/sounds/".$output->file_name[$i];
+	    $file_link = $HTTPprotocol.$web_ip."/sounds/".$output->file_name[$i];
 		 if (!$this->check_url($file_link)) {
 			 $web_host = getenv("SERVER_NAME");
 			 $file_link = "http://".$web_host."/sounds/".$output->file_name[$i];
@@ -4163,7 +4164,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $details = "<strong>Filename</strong>: <i>".$output->file_name[$i]."</i><br/>";
 	    $details .= "<strong>Date</strong>: <i>".$output->file_date[$i]."</i><br/>";
 
-		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i], $details, $perm, $protocol, $web_ip);
+		$action = $this->getUserActionMenuForVoiceFiles($output->file_name[$i], $details, $perm, $HTTPprotocol, $web_ip);
 
 		$preFix = "<a class='play_voice_file' data-location='".$file_link."' data-details='".$details."'>";
 		$sufFix = "</a>";
