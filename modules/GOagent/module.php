@@ -1289,13 +1289,13 @@ EOF;
 			"GO_agent_wss_sip_info" => CRM_SETTING_TYPE_LABEL,
 			"GO_agent_wss_sip_port" => CRM_SETTING_TYPE_INT,
 			"GO_agent_wss_sip_port_info" => CRM_SETTING_TYPE_LABEL,
-			"GO_agent_domain" => CRM_SETTING_TYPE_STRING,
-			"GO_agent_domain_info" => CRM_SETTING_TYPE_LABEL,
 			"GO_agent_sip_server" => array(
 				"type" => CRM_SETTING_TYPE_SELECT,
 				"options" => $options
 			),
-			"GO_agent_sip_server_info" => CRM_SETTING_TYPE_LABEL
+			"GO_agent_sip_server_info" => CRM_SETTING_TYPE_LABEL,
+			"GO_agent_domain" => CRM_SETTING_TYPE_STRING,
+			"GO_agent_domain_info" => CRM_SETTING_TYPE_LABEL
 		);
 		return $moduleSettings;
 	}
