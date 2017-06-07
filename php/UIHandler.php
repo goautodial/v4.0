@@ -479,8 +479,8 @@ error_reporting(E_ERROR | E_PARSE);
 	    $labelCode = empty($label) ? "" : '<label>'.$label.'</label>';
 	    $selectCode = '<div class="form-group">'.$labelCode.'<div class="input-group"><select id="'.$id.'" name="'.$name.'" class="form-control">';
 	    foreach ($options as $key => $value) {
-		    $isSelected = ($selectedOption == $key) ? " selected" : "";
-		    $selectCode .= '<option value="'.$key.'" '.$isSelected.'>'.($needsTranslation ? $this->lh->translationFor($value) : $value).'</option>';
+		    $isSelected = ($selectedOption == $value) ? " selected" : "";
+		    $selectCode .= '<option value="'.$value.'" '.$isSelected.'>'.($needsTranslation ? $this->lh->translationFor($value) : $value).'</option>';
 	    }
 		$selectCode .= '</select></div></div>';
 		return $selectCode;
