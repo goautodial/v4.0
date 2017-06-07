@@ -109,7 +109,7 @@ if ($error) { $title = $lh->translationFor("error"); }
 								$content .= $ui->inputFieldForModuleSettingOfType($setting, $type, $instance->valueForModuleSetting($setting));
 							}
 						}
-						
+						var_dump($content);
 						// show form
 						print $ui->boxWithForm("module_settings", $lh->translationFor("settings"), $content, $lh->translationFor("save"));
 						// javascript for submit.

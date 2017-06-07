@@ -957,13 +957,12 @@ error_reporting(E_ERROR | E_PARSE);
 					break;
 				case CRM_SETTING_TYPE_DATE:
 					$dateFormat = $this->lh->getDateFormatForCurrentLocale();
-				    return $this->singleFormGroupWithInputGroup($this->maskedDateInputElement($setting, $setting, $dateFormat, $currentValue), $this->lh->translationFor($setting));
+				   return $this->singleFormGroupWithInputGroup($this->maskedDateInputElement($setting, $setting, $dateFormat, $currentValue), $this->lh->translationFor($setting));
 					break;
 				case CRM_SETTING_TYPE_LABEL:
 					return $this->singleFormGroupWithInputGroup($this->lh->translationFor($setting));
 					break;
 				case CRM_SETTING_TYPE_SELECT:
-					var_dump($setting);
 					return $this->singleFormGroupWithInputGroup($this->dropdownFormInputElement($setting[0], $setting[0], $setting[1], $currentValue), $this->lh->translationFor($setting[0]));
 					break;
 				case CRM_SETTING_TYPE_PASS:
