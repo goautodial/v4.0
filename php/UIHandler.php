@@ -475,6 +475,17 @@ error_reporting(E_ERROR | E_PARSE);
 		return $selectCode;
     }
 
+    public function singleFormGroupWithSelectInputGroup($label, $id, $name, $options, $selectedOption, $needsTranslation = false) {
+	    $labelCode = empty($label) ? "" : '<label>'.$label.'</label>';
+	    $selectCode = '<div class="form-group">'.$labelCode.'<div class="input-group"><select id="'.$id.'" name="'.$name.'" class="form-control">';
+	    foreach ($options as $key => $value) {
+		    $isSelected = ($selectedOption == $key) ? " selected" : "";
+		    $selectCode .= '<option value="'.$key.'" '.$isSelected.'>'.($needsTranslation ? $this->lh->translationFor($value) : $value).'</option>';
+	    }
+		$selectCode .= '</select></div></div>';
+		return $selectCode;
+    }
+
     public function singleFormInputElement($id, $name, $type, $placeholder = "", $value = null, $icon = null, $required = false, $disabled = false) {
 	    $iconCode = empty($icon) ? '' : '<span class="input-group-addon"><i class="fa fa-'.$icon.'"></i></span>';
 	    $valueCode = empty($value) ? '' : ' value="'.$value.'"';
@@ -942,7 +953,7 @@ error_reporting(E_ERROR | E_PARSE);
     /** Returns the HTML code for the input field associated with a module setting data type */
     public function inputFieldForModuleSettingOfType($setting, $type, $currentValue) {
 	    if (is_array($type)) { // select type
-		   return $this->singleFormGroupWithSelect($this->lh->translationFor($setting), $setting, $setting, $type, $currentValue);
+		   return $this->singleFormGroupWithSelectInputGroup($this->lh->translationFor($setting), $setting, $setting, $type, $currentValue);
 	    } else { // single input type: text, number, bool, date...
 		   switch ($type) {
 			   case CRM_SETTING_TYPE_STRING:
