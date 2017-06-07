@@ -206,6 +206,10 @@ class GOagent extends Module {
 					$websocketSIPPort = "'";
 				}
 			}
+			
+			$this->goDB->where('setting', 'GO_agent_domain');
+			$rslt = $this->goDB->getOne('settings', 'value');
+			$domain = (strlen($rslt['value']) > 0) ? $rslt['value'] : "goautodial.com";
 		}
 		
 		$labels = $this->getLabels()->labels;
