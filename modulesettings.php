@@ -104,9 +104,9 @@ if ($error) { $title = $lh->translationFor("error"); }
 									${$k} = $v;
 								}
 								$setOpt[] = $options;
+								var_dump($type);
 								$content .= $ui->inputFieldForModuleSettingOfType($setOpt, $type, $instance->valueForModuleSetting($setting));
 							} else {
-								var_dump($type);
 								$content .= $ui->inputFieldForModuleSettingOfType($setting, $type, $instance->valueForModuleSetting($setting));
 							}
 						}
