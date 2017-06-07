@@ -850,7 +850,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						);
 		            });
 					
-					$(document).on('click','.delete-multiple',function() {
+					$(document).on('click','.delete-multiple-list',function() {
 					var arr = $('input:checkbox.check_list').filter(':checked').map(function () {
 						return this.id;
 					}).get();

@@ -592,10 +592,18 @@
 					stateSave: true,
 					"aoColumnDefs": [{
 						"bSearchable": false,
+						<?php if($perm->user_delete !== 'N'){?>
+						"aTargets": [ 1, 4 ]
+						<?php }else{ ?>
 						"aTargets": [ 4 ]
+						<?php } ?>
 					},{
 						"bSortable": false,
+						<?php if($perm->user_delete !== 'N'){?>
+						"aTargets": [ 1, 4 ]
+						<?php }else{ ?>
 						"aTargets": [ 4 ]
+						<?php } ?>
 					}]
 				});
 				
@@ -944,7 +952,7 @@
 				});
 			
 			//delete user 
-				$(document).on('click','.delete-multiple',function() {
+				$(document).on('click','.delete-multiple-user',function() {
 					var arr = $('input:checkbox.check_user').filter(':checked').map(function () {
 						return this.id;
 					}).get();
@@ -1027,7 +1035,50 @@
 	                    }
 	                );
 				});
-
+			
+			//delete phone 
+				$(document).on('click','.delete-multiple-phone',function() {
+					var arr = $('input:checkbox.check_phone').filter(':checked').map(function () {
+						return this.id;
+					}).get();
+					swal({
+						title: "<?php $lh->translateText("are_you_sure"); ?>",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
+						type: "warning",
+						showCancelButton: true, 
+						confirmButtonColor: "#DD6B55", 
+						confirmButtonText: "<?php $lh->translateText("confirm_delete_multiple_phones"); ?>", 
+						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>", 
+						closeOnConfirm: false,
+						closeOnCancel: false
+					},
+					function(isConfirm){
+						if (isConfirm) {
+							$.ajax({
+								url: "./php/DeleteSettingsPhones.php",
+								type: 'POST',
+								data: { 
+								exten_id: arr,
+								action: "delete_selected",
+								log_user: '<?=$_SESSION['user']?>',
+								log_group: '<?=$_SESSION['usergroup']?>'
+							},
+							success: function(data) {
+								console.log(data);
+								if(data == 1){
+									swal({title: "<?php $lh->translateText("delete_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php?phone_tab';});
+								}else{
+									sweetAlert("<?php $lh->translateText("cancel_please"); ?>", "<?php $lh->translateText("delete_phone_failed"); ?> "+data, "error");
+								}
+							}
+							});
+						} else {     
+						swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+						}
+					}
+					);
+				});
+				
 	// -------------------------
 	
 		$(document).on('change','#user_group',function() {

@@ -3681,11 +3681,14 @@ error_reporting(E_ERROR | E_PARSE);
 
 	public function getPhonesList() {
 		$output = $this->API_getPhonesList();
-
+		
 		if ($output->result=="success") {
 		# Result was OK!
-
-		$columns = array($this->lh->translationFor("extension"), $this->lh->translationFor("protocol"), $this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $this->lh->translationFor("action"));
+		$checkbox_all = $this->getCheckAll("phone");
+		//if($perm->user_delete !== 'N')
+			$columns = array($this->lh->translationFor("extension"), $checkbox_all,$this->lh->translationFor("protocol"),$this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $this->lh->translationFor("action"));
+	    //else
+		//	$columns = array($this->lh->translationFor("extension"), $this->lh->translationFor("protocol"), $this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $this->lh->translationFor("action"));
 	    $hideOnMedium = array($this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"));
 	    $hideOnLow = array($this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"));
 		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
@@ -3704,12 +3707,13 @@ error_reporting(E_ERROR | E_PARSE);
 				if($output->old_messages[$i] == NULL){
 					$output->old_messages[$i] = 0;
 				}
-
+				$checkbox = '<label for="'.$output->extension[$i].'"><div class="checkbox c-checkbox"><label><input name="" class="check_phone" id="'.$output->extension[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
 				$action = $this->getUserActionMenuForPhones($output->extension[$i]);
                 //$sessionAvatar = "<avatar username='".$output->messages[$i]."' :size='36'></avatar><td>".$sessionAvatar."</a></td>";
 				
 				$result = $result."<tr>
-	                    <td><a class='edit-phone' data-id='".$output->extension[$i]."'><strong>".$output->extension[$i]."</strong></a></td>
+	                    <td><a class='edit-phone' data-id='".$output->extension[$i]."'><strong>".$output->extension[$i]."</strong></a></td>";
+				$result .= "<td style='width:10%;'>".$checkbox."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
 						<td class='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
@@ -6350,7 +6354,7 @@ error_reporting(E_ERROR | E_PARSE);
 							<center><span class="caret"></span></center>
 							</a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a class="delete-multiple" href="#" >Delete Selected</a></li>
+								<li><a class="delete-multiple-'.$action.'" href="#" >Delete Selected</a></li>
 							</ul>
 						</div>
 					</div>';

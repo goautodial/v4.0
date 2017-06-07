@@ -2452,7 +2452,7 @@
 			            );
 			         });
 				
-				$(document).on('click','.delete-multiple',function() {
+				$(document).on('click','.delete-multiple-campaign',function() {
 					var arr = $('input:checkbox.check_campaign').filter(':checked').map(function () {
 						return this.id;
 					}).get();
