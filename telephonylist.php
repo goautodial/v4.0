@@ -817,7 +817,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							type: "warning",
 							showCancelButton: true,
 							confirmButtonColor: "#DD6B55",
-							confirmButtonText: "<?php $lh->translateText("list_delete"); ?>!",
+							confirmButtonText: "<?php $lh->translateText("confirm_list_delete"); ?>!",
 							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 							closeOnConfirm: false,
 							closeOnCancel: false
