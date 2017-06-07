@@ -942,7 +942,7 @@ error_reporting(E_ERROR | E_PARSE);
     /** Returns the HTML code for the input field associated with a module setting data type */
     public function inputFieldForModuleSettingOfType($setting, $type, $currentValue) {
 	    if (is_array($type)) { // select type
-		    return $this->singleFormGroupWithSelect($this->lh->translationFor($setting), $setting, $setting, $type, $currentValue);
+		   return $this->singleFormGroupWithSelect($this->lh->translationFor($setting), $setting, $setting, $type, $currentValue);
 	    } else { // single input type: text, number, bool, date...
 		   switch ($type) {
 			   case CRM_SETTING_TYPE_STRING:
