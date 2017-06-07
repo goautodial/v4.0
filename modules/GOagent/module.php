@@ -1001,6 +1001,8 @@ EOF;
 		});
 		
 		phone.on('newRTCSession', function(e) {
+			console.log(e);
+			
 			var session = e.session;
 			console.log('newRTCSession: originator', e.originator, 'session', e.session, 'request', e.request);
 		
