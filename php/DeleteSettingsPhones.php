@@ -18,6 +18,10 @@ if (!isset($_POST["exten_id"])) {
 
 if ($validated == 1) {
 	$extenid = $_POST["exten_id"];
+	$action = $_POST["action"];
+	if($action == "delete_selected"){
+		$extenid = implode(",",$extenid);
+	}
 	
     $url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -26,13 +30,12 @@ if ($validated == 1) {
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["extension"] = $extenid; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	
-	$postfields["log_user"]			= $_POST['log_user'];
-	$postfields["log_group"]		= $_POST['log_group'];
+	$postfields["action"] = $action;
+	$postfields["session_user"]	= $_POST['log_user'];
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_TIMEOUT, 100);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -45,7 +48,9 @@ if ($validated == 1) {
     if ($output->result=="success") {
     # Result was OK!
 		echo 1;
-    }
+    }else{
+		$output->result;
+	}
 
 }
 ?>
