@@ -4165,7 +4165,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$hideOnLow = array( "Date");
 		$result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 	    $server_port = getenv("SERVER_PORT");
-		$web_ip = getenv("SERVER_ADDR");
+		//$web_ip = getenv("SERVER_ADDR");
+		$web_ip = $_SERVER['SERVER_NAME'];
 		if (preg_match("/443/",$server_port)) {$HTTPprotocol = 'https://';}
 		else {$HTTPprotocol = 'http://';}
 	    for($i=0;$i<count($output->file_name);$i++){
