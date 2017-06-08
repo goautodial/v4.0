@@ -525,11 +525,14 @@ EOF;
 				audio: true,
 				video: false
 			},
-			mediaStream: localStream,
-			pcConfig: {
-				rtcpMuxPolicy: "negotiate"
-			}
+			mediaStream: localStream
 		});
+		
+		//Removed
+		//,
+		//	pcConfig: {
+		//		rtcpMuxPolicy: "negotiate"
+		//	}
 		
 		session.connection.addEventListener('addstream', (event) => {
 			console.log("session::addstream", event);
@@ -1105,11 +1108,14 @@ EOF;
 					audio: true,
 					video: false
 				},
-				mediaStream: localStream,
-				pcConfig: {
-					rtcpMuxPolicy: "negotiate"
-				}
+				mediaStream: localStream
 			});
+			
+			//Removed
+			//,
+			//	pcConfig: {
+			//		rtcpMuxPolicy: "negotiate"
+			//	}
 		
 			session.connection.addEventListener('addstream', (event) => {
 				console.log("session::addstream", event);
