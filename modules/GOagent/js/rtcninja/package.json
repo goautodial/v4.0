@@ -1,0 +1,42 @@
+{
+  "name": "rtcninja",
+  "version": "0.7.1",
+  "description": "WebRTC API wrapper to deal with different browsers",
+  "author": "Iñaki Baz Castillo <inaki.baz@eface2face.com> (http://eface2face.com)",
+  "contributors": [
+    "Jesús Pérez <jesus.perez@eface2face.com>"
+  ],
+  "license": "MIT",
+  "main": "lib/rtcninja.js",
+  "homepage": "https://github.com/eface2face/rtcninja.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eface2face/rtcninja.js.git"
+  },
+  "keywords": [
+    "webrtc"
+  ],
+  "engines": {
+    "node": ">=4"
+  },
+  "dependencies": {
+    "bowser": "^1.5.0",
+    "debug": "^2.3.3",
+    "merge": "^1.2.0"
+  },
+  "devDependencies": {
+    "browserify": "^13.1.1",
+    "gulp": "git+https://github.com/gulpjs/gulp.git#4.0",
+    "gulp-expect-file": "0.0.7",
+    "gulp-filelog": "^0.4.1",
+    "gulp-header": "^1.8.8",
+    "gulp-jscs": "^3.0.2",
+    "gulp-jscs-stylish": "^1.4.0",
+    "gulp-jshint": "^2.0.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.4",
+    "jshint": "^2.9.4",
+    "jshint-stylish": "^2.2.1",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
