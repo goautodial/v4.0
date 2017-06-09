@@ -373,9 +373,8 @@ EOF;
 			}
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
-<script type="text/javascript" src="{$goModuleDIR}js/require.js"></script>
-<script type="text/javascript" src="{$goModuleDIR}js/jsSIP/lib/JsSIP.js"></script>
-<script type="text/javascript" src="{$goModuleDIR}js/rtcninja/lib/rtcninja.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.12.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/rtcninja.js"></script>
 <script>
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
@@ -970,9 +969,8 @@ EOF;
 			}
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
-<script type="text/javascript" src="{$goModuleDIR}js/require.js"></script>
-<script type="text/javascript" src="{$goModuleDIR}js/jsSIP/lib/JsSIP.js"></script>
-<script type="text/javascript" src="{$goModuleDIR}js/rtcninja/lib/rtcninja.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.12.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/rtcninja.js"></script>
 <script>
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
