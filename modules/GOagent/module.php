@@ -969,7 +969,7 @@ EOF;
 			}
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
-<script type="text/javascript" src="{$goModuleDIR}js/plugins/jsSIP/lib/JsSIP.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/jsSIP/lib/JsSIP.js"></script>
 <script type="text/javascript" src="{$goModuleDIR}js/rtcninja.js"></script>
 <script>
 	var audioElement = document.querySelector('#remoteStream');
