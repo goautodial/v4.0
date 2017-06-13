@@ -1050,7 +1050,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>';
 	}
 	//telephony menu for users
-	private function getUserActionMenuForT_User($userid, $role, $name, $user, $perm) {
+	private function getUserActionMenuForT_User($userid, $user, $role, $name, $current_user, $perm) {
 
 		return '<div class="btn-group">
 	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -1059,7 +1059,7 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li'.($perm->user_update === 'N' ? ' class="hidden"' : '').'><a class="edit-T_user" href="#" data-id="'.$userid.'" data-user="'.$user.'"  data-role="'.$role.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li'.($perm->user_update === 'N' ? ' class="hidden"' : '').'><a class="edit-T_user" href="#" data-id="'.$userid.'" data-user="'.$current_user.'"  data-role="'.$role.'">'.$this->lh->translationFor("modify").'</a></li>
 						<li'.($perm->user_view === 'N' ? ' class="hidden"' : '').'><a class="view-stats" href="#" data-user="'.$user.'">'.$this->lh->translationFor("agent_log").'</a></li>
 	                    <li><a class="emergency-logout" href="#" data-emergency-logout-username="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("emergency_logout").'</a></li>
 	                    <li class="divider'.($perm->user_delete === 'N' ? ' hidden' : '').'"></li>
@@ -3319,7 +3319,7 @@ error_reporting(E_ERROR | E_PARSE);
 					$output->active[$i] = $this->lh->translationFor("inactive");
 				}
 				$role = $output->user_level[$i];
-					$action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user_level[$i], $output->full_name[$i], $user, $perm);
+					$action = $this->getUserActionMenuForT_User($output->user_id[$i], $output->user[$i], $output->user_level[$i], $output->full_name[$i], $user, $perm);
 					//$sessionAvatar = "<avatar username='".$output->full_name[$i]."' :size='36'></avatar>";
 					$avatar = NULL;
 					if ($this->db->getUserAvatar($output->user_id[$i])) {
@@ -4347,34 +4347,102 @@ error_reporting(E_ERROR | E_PARSE);
 
 	public function getListAllCallTimes($goUser, $goPass, $goAction, $responsetype){
 	    $output = $this->getCalltimes();
-
 	    if ($output->result=="success") {
 	    # Result was OK!
-
-        $columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
-        $hideOnMedium = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'));
-		$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'));
-
+        //$columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
+        //$hideOnMedium = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'));
+		//$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'));
+		$columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('Schedules'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
+        $hideOnMedium = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('user_group'));
+		$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('Schedules'), $this->lh->translationFor('user_group'));
+		
 		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
-
+		
 	    for($i=0;$i<count($output->call_time_id);$i++){
 		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i], $output->call_time_name[$i]);
-			
-			if($output->ct_default_start[$i] !== 0 && $output->ct_default_stop[$i] !== 0){
-				$output->ct_default_start[$i] = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start[$i])));
-				$output->ct_default_stop[$i] = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_stop[$i])));
+			$schedule = "NULL";
+			if($output->ct_default_start[$i] === $output->ct_default_stop[$i]){
+				$def = 'data-def="NULL"';
 			}else{
-				$output->ct_default_start[$i] = "NULL";
-				$output->ct_default_stop[$i] = "NULL";
+				$default_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start[$i])));
+				$default_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_stop[$i])));
+				$def = 'data-def="'.$default_start.' - '.$default_stop.'"';
+				$schedule = $default_start.' - '.$default_stop;
+			}
+			if($output->ct_sunday_start[$i] === $output->ct_sunday_stop[$i]){
+				$sun = 'data-sun="NULL"';
+			}else{
+				$sun_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_start[$i])));
+				$sun_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_stop[$i])));
+				$sun = 'data-sun="'.$sun_start.' - '.$sun_stop.'"';
+				if($schedule === "NULL")
+					$schedule = $sun_start.' - '.$sun_stop;
+			}
+			if($output->ct_monday_start[$i] === $output->ct_monday_stop[$i]){
+				$mon = 'data-mon="NULL"';
+			}else{
+				$mon_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_start[$i])));
+				$mon_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_stop[$i])));
+				$mon = 'data-mon="'.$mon_start.' - '.$mon_stop.'"';
+				if($schedule === "NULL")
+					$schedule = $mon_start.' - '.$mon_stop;
+			}
+			if($output->ct_tuesday_start[$i] === $output->ct_tuesday_stop[$i]){
+				$tue = 'data-tue="NULL"';
+			}else{
+				$tue_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_start[$i])));
+				$tue_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_stop[$i])));
+				$tue = 'data-tue="'.$tue_start.' - '.$tue_stop.'"';
+				if($schedule === "NULL")
+					$schedule = $tue_start.' - '.$tue_stop;
+			}
+			if($output->ct_wednesday_start[$i] === $output->ct_wednesday_stop[$i]){
+				$wed = 'data-wed="NULL"';
+			}else{
+				$wed_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_start[$i])));
+				$wed_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_stop[$i])));
+				$wed = 'data-wed="'.$wed_start.' - '.$wed_start.'"';
+				if($schedule === "NULL")
+					$schedule = $wed_start.' - '.$wed_stop;
+			}
+			if($output->ct_thursday_start[$i] === $output->ct_thursday_stop[$i]){
+				$thu = 'data-thu="NULL"';
+			}else{
+				$thu_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_start[$i])));
+				$thu_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_stop[$i])));
+				$thu = 'data-thu="'.$thu_start.' - '.$thu_stop.'"';
+				if($schedule === "NULL")
+					$schedule = $thu_start.' - '.$thu_stop;
+			}
+			if($output->ct_friday_start[$i] === $output->ct_friday_stop[$i]){
+				$fri = 'data-fri="NULL"';
+			}else{
+				$fri_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_start[$i])));
+				$fri_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_stop[$i])));
+				$fri = 'data-fri="'.$fri_start.' - '.$fri_stop.'"';
+				if($schedule === "NULL")
+					$schedule = $fri_start.' - '.$fri_stop;
+			}
+			if($output->ct_saturday_start[$i] === $output->ct_saturday_stop[$i]){
+				$sat = 'data-sat="NULL"';
+			}else{
+				$sat_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_start[$i])));
+				$sat_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_stop[$i])));
+				$sat = 'data-sat="'.$sat_start.' - '.$sat_stop.'"';
+				if($schedule === "NULL")
+					$schedule = $sat_start.' - '.$sat_stop;
 			}
             if($output->user_group[$i] === "---ALL---"){
             	$output->user_group[$i] = "ALL USER GROUPS";
             }
+			$scheds = $def.' '.$mon.' '.$tue.' '.$wed.' '.$thu.' '.$fri.' '.$sat.' '.$sun;
+			//<td class ='hide-on-medium hide-on-low'>".$output->ct_default_start[$i]."</td>
+			//<td class ='hide-on-medium hide-on-low'>".$output->ct_default_stop[$i]."</td>
+			$view_modal = '<a class="view_sched" data-toggle="modal" data-target="#view-sched-modal" data-id="'.$output->call_time_id[$i].' - '.$output->call_time_name[$i].'" '.$scheds.'>'.$schedule.'</a>';
 				$result .= "<tr>
 					<td class ='hide-on-medium hide-on-low'><a class='edit-calltime' data-id='".$output->call_time_id[$i]."'>".$output->call_time_id[$i]."</a></td>
 					<td>".$output->call_time_name[$i]."</td>
-					<td class ='hide-on-medium hide-on-low'>".$output->ct_default_start[$i]."</td>
-					<td class ='hide-on-medium hide-on-low'>".$output->ct_default_stop[$i]."</td>
+					<td class ='hide-on-medium hide-on-low'>".$view_modal."</td>
 					<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
 					<td nowrap>".$action."</td>
 				</tr>";
@@ -4387,7 +4455,6 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	private function getUserActionMenuForCalltimes($id, $name) {
-
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -4399,6 +4466,10 @@ error_reporting(E_ERROR | E_PARSE);
 			<li><a class="delete-calltime" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
+	}
+	
+	private function getCalltimeScheds($id, $name) {
+	    
 	}
 	
 	/** Carriers API - Get all list of carriers */
@@ -6375,7 +6446,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $return;
 	}
 	
-	public function API_getAgentLog($user, $sdate, $edate) {
+	public function API_getAgentLog($user, $session_user, $sdate, $edate) {
 		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
@@ -6384,8 +6455,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["user"] = $user; 
 		$postfields["start_date"] = $sdate;
 		$postfields["end_date"] = $edate; 
-		$postfields["session_user"] = $_SESSION['user']; #json. (required)
-
+		$postfields["session_user"] = $session_user; #json. (required)
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -6396,12 +6466,11 @@ error_reporting(E_ERROR | E_PARSE);
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$output = json_decode($data);
-		
 		return $output;
 	}
 	
-	public function getAgentLog($user, $sdate, $edate) {
-		$output = $this->API_getAgentLog($user, $sdate, $edate);
+	public function getAgentLog($user, $session_user, $sdate, $edate) {
+		$output = $this->API_getAgentLog($user, $session_user, $sdate, $edate);
 		if($output->result=="success") {
 			$columns = array($this->lh->translationFor('event_time'), $this->lh->translationFor('status'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'), $this->lh->translationFor('list_id'), $this->lh->translationFor('lead_id'), $this->lh->translationFor('term_reason'));
 			$hideOnMedium = array();
@@ -6421,6 +6490,8 @@ error_reporting(E_ERROR | E_PARSE);
 							</tr>';
 			}
 			$result .= "</table>";
+		}else{
+			$result = $output->result;
 		}
 		
 		return $result;

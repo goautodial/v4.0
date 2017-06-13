@@ -110,7 +110,6 @@
 
 	<div id="view-calltime-modal" class="modal fade">
 	  <div class="modal-dialog">
-
 	    <!-- Modal content-->
 	    <div class="modal-content">
 	      	<div class="modal-header">
@@ -396,8 +395,137 @@
 	    <!-- End of modal content -->
 	  </div>
 	</div>
+	
+	
+	<div id="view-sched-modal" class="modal fade">
+		<div class="modal-dialog">
+			<center>
+			<div class="modal-content">
+	      	<!--<div class="modal-header">
+					<h4 class="modal-title animated bounceInRight">
+						<b><?php $lh->translateText("Schedule"); ?> </b>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	       		</h4>
+				</div>
+				<div class="modal-body">-->
+					<div class="row">
+						<div class="panel panel-default" tabindex="-1">
+							<div class="panel widget col-md-12 col-sm-12 col-xs-12 br text-center bg-info info_sun_boxes">
+								<div class="h2 m3" style="margin: 10px;"><span id="schedule"></span> </div>
+							</div>
+							<div class="col-sm-12">
+								<div class="panel widget col-md-3 col-sm-3 col-xs-12 br text-center info_sun_boxes" style="padding: 10px;">
+									<div class="h4 m0">
+										<?=$lh->translateText("default")?>
+									</div>
+									<div class="text"><span class="text-sm text-muted" id="default">1200 AM - 1200 PM</span></div>
+								</div>
+								<div class="panel widget col-md-3 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
+									<div class="h4 m0">
+										<?=$lh->translateText("sunday")?>
+									</div>
+									<div class="text"><span class="text-sm text-muted" id="sunday">1200 AM - 1200 PM</span></div>
+								</div>	                	
+								<div class="panel widget col-md-3 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
+									<div class="h4 m0">
+										<?=$lh->translateText("tuesday")?>
+									</div>
+									<div class="text"><span class="text-sm text-muted" id="tuesday">1200 AM - 1200 PM</span></div>
+								</div>
+								<div class="panel widget col-md-3 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
+									<div class="h4 m0">
+										<?=$lh->translateText("wednesday")?>
+									</div>
+									<div class="text"><span class="text-sm text-muted" id="wednesday">1200 AM - 1200 PM</span></div>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="panel widget col-md-4 col-sm-4 col-xs-6 br text-center info_sun_boxes" style="padding: 10px; margin: 0px;">
+									<div class="h4 m0">
+										<?=$lh->translateText("thursday")?>
+									</div>
+									<div class="text"><span class="text-sm text-muted" id="thursday">1200 AM - 1200 PM</span></div>
+								</div>
+								<div class="panel widget col-md-4 col-sm-4 col-xs-6 br text-center info_sun_boxes" style="padding: 10px; margin: 0px;">
+									<div class="h4 m0">
+										<?=$lh->translateText("friday")?>
+									</div>
+									<div class="text"><span class="text-sm text-muted" id="friday">1200 AM - 1200 PM</span></div>
+								</div>
+								<div class="panel widget col-md-4 col-sm-4 col-xs-6 br text-center info_sun_boxes" style="padding: 10px; margin: 0px;">
+									<div class="h4 m0">
+										<?=$lh->translateText("saturday")?>
+									</div>
+									<div class="text"><span class="text-sm text-muted" id="saturday">1200 AM - 1200 PM</span></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php/*<div class="col-sm-12">
+						<div class="mt col-sm-row">
+							<div class="col-sm-12">
+								<h4><b><?php $lh->translateText("default"); ?> </b></h4>
+								<span id="default">1200 AM - 1200 PM</span>
+								<hr/>
+							</div>
+						</div>
+						<div class="mt col-sm-row">
+							<div class="col-sm-12">
+								<h4><b><?php $lh->translateText("sunday"); ?> </b></h4>
+								<span id="default">1200 AM - 1200 PM</span>
+								<hr/>
+							</div>
+						</div>
+						<div class="mt col-sm-row">
+							<div class="col-sm-12">
+								<h4><b><?php $lh->translateText("monday"); ?> </b></h4>
+								<span id="default">1200 AM - 1200 PM</span>
+								<hr/>
+							</div>
+						</div>
+						<div class="mt col-sm-row">
+							<div class="col-sm-12">
+								<h4><b><?php $lh->translateText("tuesday"); ?> </b></h4>
+								<span id="default">1200 AM - 1200 PM</span>
+								<hr/>
+							</div>
+						</div>
+						<div class="mt col-sm-row">
+							<div class="col-sm-12">
+								<h4><b><?php $lh->translateText("wednesday"); ?> </b></h4>
+								<span id="default">1200 AM - 1200 PM</span>
+								<hr/>
+							</div>
+						</div>
+						<div class="mt col-sm-row">
+							<div class="col-sm-12">
+								<h4><b><?php $lh->translateText("thursday"); ?> </b></h4>
+								<span id="default">1200 AM - 1200 PM</span>
+								<hr/>
+							</div>
+						</div>
+						<div class="mt col-sm-row">
+							<div class="col-sm-12">
+								<h4><b><?php $lh->translateText("friday"); ?> </b></h4>
+								<span id="default">1200 AM - 1200 PM</span>
+								<hr/>
+							</div>
+						</div>
+						<div class="mt col-sm-row">
+							<div class="col-sm-12">
+								<h4><b><?php $lh->translateText("saturday"); ?> </b></h4>
+								<span id="default">1200 AM - 1200 PM</span>
+								<hr/>
+							</div>
+						</div>
+					</div>*/?>
+				<!--</div>-->
+			</div>
+			</center>
+		</div>
+	</div>
 	<!-- End of modal -->
-
+	
 		<!-- Forms and actions -->
 		<?php print $ui->standardizedThemeJS(); ?>
 		<!-- JQUERY STEPS-->
@@ -482,6 +610,28 @@
 							});
 			        }
 			    });
+		
+				
+				$(document).on('click','.view_sched',function() {
+					var id = $(this).attr('data-id');
+					var def = $(this).attr('data-def');
+					var sun = $(this).attr('data-sun');
+					var mon = $(this).attr('data-mon');
+					var tue = $(this).attr('data-tue');
+					var wed = $(this).attr('data-wed');
+					var thu = $(this).attr('data-thu');
+					var fri = $(this).attr('data-fri');
+					var sat = $(this).attr('data-sat');
+					$('#schedule').html(id);
+					$('#default').html(def);
+					$('#sunday').html(sun);
+					$('#monday').html(mon);
+					$('#tuesday').html(tue);
+					$('#wednesday').html(wed);
+					$('#thursday').html(thu);
+					$('#friday').html(fri);
+					$('#saturday').html(sat);
+				});
 		
 		/*********************
 		** EDIT EVENT
