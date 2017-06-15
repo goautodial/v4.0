@@ -387,7 +387,7 @@ EOF;
 		uri: 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 		$socketParams
 		session_timers: false,
-		register: false
+		register: true
 	};
 	
 	//init rtcninja libraries...
