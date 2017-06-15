@@ -525,10 +525,15 @@ EOF;
 				audio: true,
 				video: false
 			},
+			rtcOfferConstraints: {
+				'offerToReceiveAudio': true,
+				'offerToReceiveVideo': false
+			},
+			sessionTimersExpires: 7200,
 			mediaStream: localStream,
 			pcConfig: {
 				rtcpMuxPolicy: "negotiate"
-			}
+			},
 		});
 		
 		//Removed
