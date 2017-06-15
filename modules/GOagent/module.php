@@ -525,7 +525,9 @@ EOF;
 				audio: true,
 				video: false
 			},
-			mediaStream: localStream
+			pcConfig: {
+				rtcpMuxPolicy: "negotiate"
+			}
 		});
 		
 		//Removed
@@ -579,17 +581,17 @@ EOF;
 		}
 	});
 	
-	navigator.getUserMedia({
-		audio: true,
-		video: false
-	}, function (stream) {
-		localStream = stream;
-		//console.log('getUserMedia', stream);
-	
-		//phone.start();
-	}, function (err) {
-		console.error('getUserMedia failed: %s', err.toString());
-	});
+	//navigator.getUserMedia({
+	//	audio: true,
+	//	video: false
+	//}, function (stream) {
+	//	localStream = stream;
+	//	//console.log('getUserMedia', stream);
+	//
+	//	//phone.start();
+	//}, function (err) {
+	//	console.error('getUserMedia failed: %s', err.toString());
+	//});
 </script>
 EOF;
 		}
