@@ -398,7 +398,7 @@ EOF;
 	phone.on('connected', function(e) {
 		console.log('connected', e);
 		
-		phone.register();
+		//phone.register();
 	});
 	
 	phone.on('disconnected', function(e) {
