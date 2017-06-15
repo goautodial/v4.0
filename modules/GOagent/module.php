@@ -463,15 +463,15 @@ EOF;
 			});
 		});
 	
-		//session.on('addstream', function (data) {
-		//	console.log('session::addstream', data);
-		//
-		//	remoteStream = data.stream;
-		//	audioElement = document.querySelector('#remoteStream');
-		//	audioElement.src = window.URL.createObjectURL(remoteStream);
-		//	
-		//	globalSession = session;
-		//});
+		session.on('addstream', function (data) {
+			console.log('session::addstream', data);
+		
+			remoteStream = data.stream;
+			audioElement = document.querySelector('#remoteStream');
+			audioElement.src = window.URL.createObjectURL(remoteStream);
+			
+			globalSession = session;
+		});
 	
 		session.on('removestream', function (data) {
 			console.log('session::removestream', data);
@@ -525,6 +525,7 @@ EOF;
 				audio: true,
 				video: false
 			},
+			mediaStream: localStream,
 			pcConfig: {
 				rtcpMuxPolicy: "negotiate"
 			}
@@ -536,15 +537,15 @@ EOF;
 		//		rtcpMuxPolicy: "negotiate"
 		//	}
 		
-		session.connection.addEventListener('addstream', (event) => {
-			console.log("session::addstream", event);
-			
-			remoteStream = event.stream;
-			audioElement = document.querySelector('#remoteStream');
-			audioElement.srcObject = remoteStream;
-			
-			globalSession = session;
-		});
+		//session.connection.addEventListener('addstream', (event) => {
+		//	console.log("session::addstream", event);
+		//	
+		//	remoteStream = event.stream;
+		//	audioElement = document.querySelector('#remoteStream');
+		//	audioElement.srcObject = remoteStream;
+		//	
+		//	globalSession = session;
+		//});
 	});
 	
 	phone.on('newMessage', function(e) {
