@@ -376,8 +376,6 @@ EOF;
 <script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.12.js"></script>
 <!--<script type="text/javascript" src="{$goModuleDIR}js/rtcninja.js"></script>-->
 <script>
-	JsSIP.debug.enable('JsSIP:*');
-	
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
 	var remoteStream;
