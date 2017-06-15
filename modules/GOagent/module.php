@@ -387,7 +387,7 @@ EOF;
 		uri: 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 		$socketParams
 		session_timers: false,
-		register: true
+		register: false
 	};
 	
 	//init rtcninja libraries...
@@ -398,7 +398,7 @@ EOF;
 	phone.on('connected', function(e) {
 		console.log('connected', e);
 		
-		//phone.register();
+		phone.register();
 	});
 	
 	phone.on('disconnected', function(e) {
