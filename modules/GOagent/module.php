@@ -391,7 +391,7 @@ EOF;
 	};
 	
 	//init rtcninja libraries...
-	rtcninja();
+	//rtcninja();
 	
 	var phone = new JsSIP.UA(configuration);
 	
@@ -579,7 +579,7 @@ EOF;
 		}
 	});
 	
-	rtcninja.getUserMedia({
+	navigator.getUserMedia({
 		audio: true,
 		video: false
 	}, function (stream) {
