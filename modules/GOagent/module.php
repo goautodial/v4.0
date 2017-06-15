@@ -525,12 +525,7 @@ EOF;
 				audio: true,
 				video: false
 			},
-			rtcOfferConstraints: {
-				'offerToReceiveAudio': true,
-				'offerToReceiveVideo': false
-			},
-			sessionTimersExpires: 7200,
-			mediaStream: localStream,
+			mediaStream: session.localMediaStream,
 			pcConfig: {
 				rtcpMuxPolicy: "negotiate"
 			},
