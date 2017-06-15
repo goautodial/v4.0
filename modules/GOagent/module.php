@@ -374,7 +374,7 @@ EOF;
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
 <script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.13.js"></script>
-<!--<script type="text/javascript" src="{$goModuleDIR}js/rtcninja.js"></script>-->
+<script type="text/javascript" src="{$goModuleDIR}js/rtcninja.js"></script>
 <script>
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
@@ -391,7 +391,7 @@ EOF;
 	};
 	
 	//init rtcninja libraries...
-	//rtcninja();
+	rtcninja();
 	
 	var phone = new JsSIP.UA(configuration);
 	
@@ -525,6 +525,7 @@ EOF;
 				audio: true,
 				video: false
 			},
+			mediaStream: localStream,
 			pcConfig: {
 				rtcpMuxPolicy: "negotiate"
 			},
@@ -581,17 +582,17 @@ EOF;
 		}
 	});
 	
-	//navigator.getUserMedia({
-	//	audio: true,
-	//	video: false
-	//}, function (stream) {
-	//	localStream = stream;
-	//	console.log('getUserMedia', stream);
-	//
-	//	//phone.start();
-	//}, function (err) {
-	//	console.error('getUserMedia failed: %s', err.toString());
-	//});
+	rtcninja.getUserMedia({
+		audio: true,
+		video: false
+	}, function (stream) {
+		localStream = stream;
+		//console.log('getUserMedia', stream);
+	
+		//phone.start();
+	}, function (err) {
+		console.error('getUserMedia failed: %s', err.toString());
+	});
 </script>
 EOF;
 		}
