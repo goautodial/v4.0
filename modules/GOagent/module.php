@@ -369,8 +369,7 @@ EOF;
 			if ($_SESSION['bcrypt'] > 0) {
 				$ha1_pass = $_SESSION['ha1'];
 				$realm = $_SESSION['realm'];
-				//$socketParams = "ha1: '$ha1_pass', realm: '$realm',";
-				$socketParams = "password: phone_pass, realm: '$realm',";
+				$socketParams = "ha1: '$ha1_pass', realm: '$realm',";
 			}
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
