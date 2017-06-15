@@ -525,7 +525,7 @@ EOF;
 				audio: true,
 				video: false
 			},
-			mediaStream: session.localMediaStream,
+			mediaStream: localStream,
 			pcConfig: {
 				rtcpMuxPolicy: "negotiate"
 			},
