@@ -535,15 +535,56 @@
 				</div>
 				<div class="modal-body">
 					<br/>
-					<div class="report-loader" style="color:lightgray; display:none;">
-						<center>
-							<h3>
-								<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-								<?php $lh->translateText("loading..."); ?>
-							</h3>
-						</center>
+					<div class="box">
+						<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("Agent Log"); ?>">
+						  <em class="glyphicon glyphicon-user pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("Agent Log"); ?></h3>
+						</div>
+						<div class="box-body table-responsive">
+							<div class="report-loader" style="color:lightgray; display:none;">
+								<center>
+									<h3>
+										<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+										<?php $lh->translateText("loading..."); ?>
+									</h3>
+								</center>
+							</div>
+							<div id='userlog_stats' class="user_stats"></div>
+						</div>
 					</div>
-					<div id='user_stats'></div>
+					
+					<div class="box collapsed-box">
+						<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("Outbound Calls Made"); ?>">
+						  <em class="glyphicon glyphicon-earphone pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("Outbound Calls Made"); ?></h3>
+						</div>
+						<div class="box-body table-responsive">
+							<div class="report-loader" style="color:lightgray; display:none;">
+								<center>
+									<h3>
+										<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+										<?php $lh->translateText("loading..."); ?>
+									</h3>
+								</center>
+							</div>
+							<div id='outbound_stats' class="user_stats"></div>
+						</div>
+					</div>
+					
+					<div class="box collapsed-box">
+						<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("Inbound Calls Made"); ?>">
+						  <em class="glyphicon glyphicon-earphone pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("Inbound Calls Made"); ?></h3>
+						</div>
+						<div class="box-body table-responsive">
+							<div class="report-loader" style="color:lightgray; display:none;">
+								<center>
+									<h3>
+										<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+										<?php $lh->translateText("loading..."); ?>
+									</h3>
+								</center>
+							</div>
+							<div id='inbound_stats' class="user_stats"></div>
+						</div>
+					</div>
 				</div> <!-- end of modal body -->
 			</div>
 		</div>
@@ -801,7 +842,7 @@
 			//user edit event
 			$(document).on('click','.view-stats',function() {
 				$(".report-loader").fadeIn("slow");
-				$("#user_stats").html("");
+				$(".user_stats").html("");
 				$("#daterange_input").val("");
 				var userid = $(this).attr('data-user');
 				$('#stats-modal').modal('toggle');
@@ -814,7 +855,7 @@
 					var sdate = start.format('YYYY-MM-DD');
 					var edate = end.format('YYYY-MM-DD');
 					$(".report-loader").fadeIn("slow");
-					$("#user_stats").html("");
+					$(".user_stats").html("");
 					$.ajax({
 						type: 'POST',
 						url: "agentlog.php",
@@ -824,12 +865,19 @@
 							end_date: edate
 						},
 						cache: false,
+						dataType: 'json',
 						success: function(data){
 							$(".report-loader").fadeOut("slow");
+							console.log(data);
 							if(data !== ""){
 								var title = "<?php $lh->translateText("agent_log"); ?>";
-								$("#user_stats").html(data);
-								$('#table_stats').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
+								$("#outbound_stats").html(data[0]);
+								$("#inbound_stats").html(data[1]);
+								$("#userlog_stats").html(data[2]);
+								$('#table_outbound').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
+								$('#table_inbound').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
+								$('#table_userstat').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
+							
 							}else{
 								$('#user_stats').html("<?php $lh->translateText("no_data"); ?>");
 							}
@@ -845,12 +893,17 @@
 						user: userid,
 					},
 					cache: false,
+					dataType: 'json',
 					success: function(data){
 						$(".report-loader").fadeOut("slow");
 						if(data !== ""){
 							var title = "<?php $lh->translateText("agent_log"); ?>";
-							$("#user_stats").html(data);
-							$('#table_stats').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
+							$("#outbound_stats").html(data[0]);
+							$("#inbound_stats").html(data[1]);
+							$("#userlog_stats").html(data[2]);
+							$('#table_outbound').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
+							$('#table_inbound').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
+							$('#table_userstat').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
 						}else{
 							$('#user_stats').html("<?php $lh->translateText("no_data"); ?>");
 						}
