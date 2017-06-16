@@ -393,7 +393,8 @@ EOF;
 			]
 		},
 		registrar_server: '$websocketSIP',
-		use_preloaded_route: false
+		use_preloaded_route: false,
+		register: true
 	};
 	
 	//init rtcninja libraries...
