@@ -533,7 +533,10 @@ EOF;
 			},
 			mediaStream: localStream,
 			pcConfig: {
-				rtcpMuxPolicy: "negotiate"
+				rtcpMuxPolicy: "negotiate",
+				iceServers: [
+					{ urls: ['stun:stun.l.google.com:19302'] }
+				]
 			},
 		});
 		
