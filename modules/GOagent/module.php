@@ -531,7 +531,6 @@ EOF;
 				audio: true,
 				video: false
 			},
-			mediaStream: localStream,
 			pcConfig: {
 				rtcpMuxPolicy: "negotiate",
 				iceServers: [
@@ -542,6 +541,7 @@ EOF;
 		
 		//Removed
 		//,
+			mediaStream: localStream,
 		//	pcConfig: {
 		//		rtcpMuxPolicy: "negotiate"
 		//	}
