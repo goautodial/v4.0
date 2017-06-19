@@ -373,7 +373,12 @@ EOF;
 				//$socketParams = "ha1: '$ha1_pass', realm: '$realm',";
 			}
 			$str .= <<<EOF
-<iframe src="{$goModuleDIR}jsSIP.php?display_name=$display_name&phone_login=$phone_login&phone_this=$phone_pass&wsSIP=$websocketSIP&wsURL=$websocketURL&wsPort=$websocketPORT" style="display: none;"></iframe>
+<script>
+	if (!JsSIPLoaded) {
+		JsSIPLoaded = true;
+		$("#loadJsSIPhere").attr("src", "{$goModuleDIR}jsSIP.php?display_name=$display_name&phone_login=$phone_login&phone_this=$phone_pass&wsSIP=$websocketSIP&wsURL=$websocketURL&wsPort=$websocketPORT");
+	}
+</script>
 
 EOF;
 		}

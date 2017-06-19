@@ -190,6 +190,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		<link rel="stylesheet" href="css/flags/flags.min.css">
 
         <script type="text/javascript">
+			var JsSIPLoaded = false;
 			history.pushState('', document.title, window.location.pathname);
 			
 			$(window).load(function() {
@@ -1603,6 +1604,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
       <!-- /.tab-pane -->
     </div>
   </aside>
+  
+  <iframe id="loadJsSIPhere" src="" style="display: none;"></iframe>
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
