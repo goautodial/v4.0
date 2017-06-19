@@ -374,11 +374,13 @@ EOF;
 			}
 			$str .= <<<EOF
 <script>
-	if (!JsSIPLoaded) {
-		console.log("JsSIP Loaded...");
-		JsSIPLoaded = true;
-		$("#loadJsSIPhere").attr("src", "/modules/GOagent/jsSIP.php?display_name=$display_name&phone_login=$phone_login&phone_this=$phone_pass&wsSIP=$websocketSIP&wsURL=$websocketURL&wsPort=$websocketPORT");
-	}
+	$(document).ready(function() {
+		if (!JsSIPLoaded) {
+			console.log("JsSIP Loaded...");
+			JsSIPLoaded = true;
+			$("#loadJsSIPhere").attr("src", "/modules/GOagent/jsSIP.php?display_name=$display_name&phone_login=$phone_login&phone_this=$phone_pass&wsSIP=$websocketSIP&wsURL=$websocketURL&wsPort=$websocketPORT");
+		}
+	});
 </script>
 
 EOF;
