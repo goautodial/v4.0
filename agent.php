@@ -190,7 +190,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		<link rel="stylesheet" href="css/flags/flags.min.css">
 
         <script type="text/javascript">
-			var JsSIPLoaded = false;
 			history.pushState('', document.title, window.location.pathname);
 			
 			$(window).load(function() {
@@ -443,7 +442,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
     </head>
     <?php print $ui->creamyAgentBody(); ?>
     <div class="wrapper">
-		<iframe id="loadJsSIPhere" src="" style="display: none;"></iframe>
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyAgentHeader($user); ?>
             <!-- Left side column. contains the logo and sidebar -->
