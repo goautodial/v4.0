@@ -362,7 +362,7 @@ class GOagent extends Module {
 					
 EOF;
 
-		if ($useWebRTC) {
+		//if ($useWebRTC) {
 			$display_name = $_SESSION['user'];
 			$phone_login = $_SESSION['phone_login'];
 			$phone_pass = $_SESSION['phone_this'];
@@ -397,12 +397,18 @@ EOF;
 	 		[
 	 			{ urls : [ 'stun:stun.l.google.com:19302' ] }
 	 		]
-	 	}
+	 	},
+		callstats           :
+		{
+			enabled   : false,
+			AppID     : null,
+			AppSecret : null
+		}
 	};
 </script>
 <script type="text/javascript" src="{$goModuleDIR}js/jssip.GOautodial.js"></script>
 EOF;
-		}
+		//}
 
 		$str .= <<<EOF
 <div id="dialog-custinfo" class="modal fade" tabindex="-1">
