@@ -357,7 +357,6 @@ class GOagent extends Module {
 		
 		$str  = <<<EOF
 		<link type='text/css' rel='stylesheet' href='{$goModuleDIR}css/style.css'></link>
-		<link type='text/css' rel='stylesheet' href='{$goModuleDIR}css/jssip.GOautodial.css'></link>
 					<script type='text/javascript' src='{$goModuleDIR}GOagentJS.php'></script>
 					<script type='text/javascript' src='{$goModuleDIR}js/addons.js'></script>
 					
