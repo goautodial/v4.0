@@ -366,11 +366,12 @@ EOF;
 		if ($useWebRTC) {
 			$display_name = $_SESSION['user'];
 			$phone_login = $_SESSION['phone_login'];
-			$socketParams = "password: phone_pass,";
+			$phone_pass = $_SESSION['phone_this'];
+			$socketParams = "password: '$phone_pass',";
 			if ($_SESSION['bcrypt'] > 0) {
-				$ha1_pass = $_SESSION['ha1'];
-				$realm = $_SESSION['realm'];
-				$socketParams = "ha1: '$ha1_pass', realm: '$realm',";
+				//$ha1_pass = $_SESSION['ha1'];
+				//$realm = $_SESSION['realm'];
+				//$socketParams = "ha1: '$ha1_pass', realm: '$realm',";
 			}
 			$str .= <<<EOF
 <script>
@@ -378,7 +379,7 @@ EOF;
 	{
 	 	display_name        : '$display_name',
 	 	uri                 : 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
-	 	$socketParams
+	 	password			: '$phone_pass',
 	 	socket              :
 	 	{
 	 		uri           : '{$webProtocol}://{$websocketURL}:{$websocketPORT}',
