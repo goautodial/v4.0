@@ -1603,9 +1603,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
       <!-- /.tab-pane -->
     </div>
   </aside>
-
-	<div id='GOautodial-jssip-container' style='display: none;'></div>
-	<div id='GOautodial-jssip-media-query-detector' style='display: none;'></div>
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->

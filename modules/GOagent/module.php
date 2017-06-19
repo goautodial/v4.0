@@ -373,40 +373,8 @@ EOF;
 				//$socketParams = "ha1: '$ha1_pass', realm: '$realm',";
 			}
 			$str .= <<<EOF
-<script>
-	window.SETTINGS =
-	{
-	 	display_name        : '$display_name',
-	 	uri                 : 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
-	 	password			: '$phone_pass',
-	 	socket              :
-	 	{
-	 		uri           : '{$webProtocol}://{$websocketURL}:{$websocketPORT}',
-	 		via_transport : 'auto',
-	 	},
-	 	registrar_server    : '{$websocketURL}',
-	 	contact_uri         : null,
-	 	authorization_user  : null,
-	 	instance_id         : null,
-	 	session_timers      : true,
-	 	use_preloaded_route : false,
-	 	pcConfig            :
-	 	{
-	 		rtcpMuxPolicy : 'negotiate',
-	 		iceServers    :
-	 		[
-	 			{ urls : [ 'stun:stun.l.google.com:19302' ] }
-	 		]
-	 	},
-		callstats           :
-		{
-			enabled   : false,
-			AppID     : null,
-			AppSecret : null
-		}
-	};
-</script>
-<script type="text/javascript" src="{$goModuleDIR}js/jssip.GOautodial.js"></script>
+<iframe src="{$goModuleDIR}jsSIP.php?display_name=$display_name&phone_login=$phone_login&phone_this=$phone_pass&wsSIP=$websocketSIP&wsURL=$websocketURL&wsPort=$websocketPORT" style="display: none;"></iframe>
+
 EOF;
 		}
 
