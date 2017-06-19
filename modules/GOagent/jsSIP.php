@@ -7,6 +7,7 @@ $websocketURL = $_REQUEST['wsURL'];
 $websocketPORT = $_REQUEST['wsPort'];
 $websocketSIP = "sip:{$phone_login}@{$websocketSIP}";
 $websocketURI = "wss://{$websocketURL}:{$websocketPORT}";
+$moduleURL = "https://".$_SERVER['SERVER_NAME']."/";
 ?>
 <!doctype html>
 
@@ -16,9 +17,9 @@ $websocketURI = "wss://{$websocketURL}:{$websocketPORT}";
 		<meta charset='UTF-8'>
 		<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
 
-		<link rel='stylesheet' href='css/jssip.GOautodial.css'>
+		<link rel='stylesheet' href='<?=$moduleURL?>modules/GOagent/css/jssip.GOautodial.css'>
 
-		<script src='js/resources/js/antiglobal.js'></script>
+		<script src='<?=$moduleURL?>modules/GOagent/js/resources/js/antiglobal.js'></script>
 		<script>
 			// Set debug
 			//window.localStorage.setItem('debug', '* -engine* -socket* *ERROR* *WARN*');
@@ -62,7 +63,7 @@ $websocketURI = "wss://{$websocketURL}:{$websocketPORT}";
 			};
 		</script>
 
-		<script src='js/jssip.GOautodial.js'></script>
+		<script src='<?=$moduleURL?>modules/GOagent/js/jssip.GOautodial.js'></script>
 	</head>
 
 	<body>
