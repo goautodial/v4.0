@@ -375,9 +375,9 @@ EOF;
 			$str .= <<<EOF
 <script>
 	if (!JsSIPLoaded) {
-		console.log("{$goModuleDIR}jsSIP.php?display_name=$display_name&phone_login=$phone_login&phone_this=$phone_pass&wsSIP=$websocketSIP&wsURL=$websocketURL&wsPort=$websocketPORT");
+		console.log("/modules/GOagent/jsSIP.php?display_name=$display_name&phone_login=$phone_login&phone_this=$phone_pass&wsSIP=$websocketSIP&wsURL=$websocketURL&wsPort=$websocketPORT");
 		JsSIPLoaded = true;
-		$("#loadJsSIPhere").attr("src", "{$goModuleDIR}jsSIP.php?display_name=$display_name&phone_login=$phone_login&phone_this=$phone_pass&wsSIP=$websocketSIP&wsURL=$websocketURL&wsPort=$websocketPORT");
+		$("#loadJsSIPhere").attr("src", "/modules/GOagent/jsSIP.php?display_name=$display_name&phone_login=$phone_login&phone_this=$phone_pass&wsSIP=$websocketSIP&wsURL=$websocketURL&wsPort=$websocketPORT");
 	}
 </script>
 
