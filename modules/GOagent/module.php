@@ -375,7 +375,7 @@ EOF;
 			$str .= <<<EOF
 <script>
 	if (!JsSIPLoaded) {
-		console.log("/modules/GOagent/jsSIP.php?display_name=$display_name&phone_login=$phone_login&phone_this=$phone_pass&wsSIP=$websocketSIP&wsURL=$websocketURL&wsPort=$websocketPORT");
+		console.log("JsSIP Loaded...");
 		JsSIPLoaded = true;
 		$("#loadJsSIPhere").attr("src", "/modules/GOagent/jsSIP.php?display_name=$display_name&phone_login=$phone_login&phone_this=$phone_pass&wsSIP=$websocketSIP&wsURL=$websocketURL&wsPort=$websocketPORT");
 	}
