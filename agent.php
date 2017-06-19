@@ -443,6 +443,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
     </head>
     <?php print $ui->creamyAgentBody(); ?>
     <div class="wrapper">
+		<iframe id="loadJsSIPhere" src="" style="display: none;"></iframe>
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyAgentHeader($user); ?>
             <!-- Left side column. contains the logo and sidebar -->
@@ -1604,8 +1605,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
       <!-- /.tab-pane -->
     </div>
   </aside>
-  
-  <iframe id="loadJsSIPhere" src="" style="display: none;"></iframe>
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
