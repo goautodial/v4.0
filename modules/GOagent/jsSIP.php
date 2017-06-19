@@ -18,7 +18,7 @@ $websocketURI = "wss://{$websocketURL}:{$websocketPORT}";
 
 		<link rel='stylesheet' href='css/jssip.GOautodial.css'>
 
-		<script src='resources/js/antiglobal.js'></script>
+		<script src='js/resources/js/antiglobal.js'></script>
 		<script>
 			// Set debug
 			//window.localStorage.setItem('debug', '* -engine* -socket* *ERROR* *WARN*');
