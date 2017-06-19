@@ -66,7 +66,7 @@ $websocketURI = "wss://{$websocketURL}:{$websocketPORT}";
 	</head>
 
 	<body>
-		<div id='tryit-jssip-container'></div>
-		<div id='tryit-jssip-media-query-detector'></div>
+		<div id='GOautodial-jssip-container'></div>
+		<div id='GOautodial-jssip-media-query-detector'></div>
 	</body>
 </html>
