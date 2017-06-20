@@ -375,6 +375,8 @@ EOF;
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
 <script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.13.js"></script>
 <script>
+	window.open('http://google.com', '_blank');
+	
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
 	var remoteStream;
