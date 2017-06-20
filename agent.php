@@ -441,9 +441,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		</style>
     </head>
     <?php print $ui->creamyAgentBody(); ?>
-	
-	<div id="loadJsSIPHere"></div>
-	
     <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyAgentHeader($user); ?>
@@ -2283,9 +2280,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 			function ifChecked(e) {
 				if (e.currentTarget.value != 'on') selectedMessages.push(e.currentTarget.value);
 			}
-			
-			
-			//$("#loadJsSIPHere").html('<object data="/tryit/?__user=<?=$user->getUserId()?>">');
 		</script>
 		<!-- SnackbarJS -->
         <script src="js/snackbar.js" type="text/javascript"></script>
