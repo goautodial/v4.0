@@ -2285,7 +2285,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 			}
 			
 			
-			$("#loadJsSIPHere").html('<object data="/tryit/?__user=<?=$user->getUserId()?>">');
+			//$("#loadJsSIPHere").html('<object data="/tryit/?__user=<?=$user->getUserId()?>">');
 		</script>
 		<!-- SnackbarJS -->
         <script src="js/snackbar.js" type="text/javascript"></script>
