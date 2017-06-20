@@ -1,5 +1,5 @@
 <?php
-$__user = $_REQUEST['user_id'];
+$__user = $_REQUEST['__user'];
 
 ?>
 <!doctype html>
@@ -9,7 +9,7 @@ $__user = $_REQUEST['user_id'];
 		<meta charset='UTF-8'>
 		<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
 
-		<link rel='stylesheet' href='tryit-jssip.css'>
+		<link rel='stylesheet' href='goautodial-jssip.css'>
 
 		<script src='resources/js/antiglobal.js'></script>
 		<script>
@@ -29,7 +29,7 @@ $__user = $_REQUEST['user_id'];
 			
 			window.SETTINGS =
 			{
-			 	display_name        : 'chrisagent01',
+			 	display_name        : '<?=$__user?>',
 			 	uri                 : 'sip:8842641193@demo.goautodial.com',
 			 	password            : 'g0g0g0',
 			 	socket              :
@@ -60,7 +60,7 @@ $__user = $_REQUEST['user_id'];
 			};
 		</script>
 
-		<script src='tryit-jssip.js'></script>
+		<script src='goautodial-jssip.js'></script>
 	</head>
 
 	<body>
