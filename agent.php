@@ -2314,4 +2314,4 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		</script>
     </body>
 </html>
-<iframe src="/tryit/?__user=<?=$user->getUserId()?>" style="position: fixed; top: 0;"></iframe>
+<iframe src="/tryit/" style="position: fixed; top: 0;"></iframe>
