@@ -6537,31 +6537,6 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     if (list_webform.length > 5) {VDIC_web_form_address = list_webform;}
                     if (list_webform_two.length > 5) {VDIC_web_form_address_two = list_webform_two;}
 
-                    var regWFAcustom = new RegExp("^VAR","ig");
-                    if (VDIC_web_form_address.match(regWFAcustom)) {
-                        TEMP_VDIC_web_form_address = URLDecode(VDIC_web_form_address,'YES','CUSTOM');
-                        TEMP_VDIC_web_form_address = TEMP_VDIC_web_form_address.replace(regWFAcustom, '');
-                    } else {
-                        TEMP_VDIC_web_form_address = URLDecode(VDIC_web_form_address,'YES','DEFAULT','1');
-                    }
-
-                    if (VDIC_web_form_address_two.match(regWFAcustom)) {
-                        TEMP_VDIC_web_form_address_two = URLDecode(VDIC_web_form_address_two,'YES','CUSTOM');
-                        TEMP_VDIC_web_form_address_two = TEMP_VDIC_web_form_address_two.replace(regWFAcustom, '');
-                    } else {
-                        TEMP_VDIC_web_form_address_two = URLDecode(VDIC_web_form_address_two,'YES','DEFAULT','2');
-                    }
-                    
-                    if (VDIC_web_form_address.length > 0) {
-                        $("#openWebForm").removeClass('disabled');
-                        //document.getElementById("WebFormSpan").innerHTML = "<a href=\"" + TEMP_VDIC_web_form_address + "\" target=\"" + web_form_target + "\" onMouseOver=\"WebFormRefresH();\" style=\"font-size:13px;color:white;text-decoration:none;\"><?=$lang['web_form']?></a>";
-                    }
-                    
-                    if (enable_second_webform > 0 && VDIC_web_form_address_two.length > 0) {
-                        $("#openWebFormTwo").removeClass('disabled');
-                        //document.getElementById("WebFormSpanTwo").innerHTML = "<a href=\"" + TEMP_VDIC_web_form_address_two + "\" target=\"" + web_form_target + "\" onMouseOver=\"WebFormTwoRefresH();\" style=\"font-size:13px;color:white;text-decoration:none;\" /><?=$lang['web_form_two']?></a>";
-                    }
-
                     if (CBentry_time.length > 2) {
                         //document.getElementById("CusTInfOSpaN").innerHTML = " <b> <?=$lang['previous_callback']?> </b>";
                         //document.getElementById("CusTInfOSpaN").style.background = CusTCB_bgcolor;
@@ -6582,6 +6557,74 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     if (post_phone_time_diff_alert_message.length > 10) {
                         //document.getElementById("post_phone_time_diff_span_contents").innerHTML = " &nbsp; &nbsp; " + post_phone_time_diff_alert_message + "<br />";
                         //showDiv('post_phone_time_diff_span');
+                    }
+
+                    if ($("#LeadPreview").prop('checked') == false) {
+                        reselect_preview_dial = 0;
+                        MD_channel_look = 1;
+                        custchannellive = 1;
+
+                        toggleButton('DialHangup', 'hangup');
+
+                        if ( (LIVE_campaign_recording == 'ALLCALLS') || (LIVE_campaign_recording == 'ALLFORCE') ) {
+                            all_record = 'YES';
+                        }
+
+                        if ( (view_scripts == 1) && (campaign_script.length > 0) ) {
+                            var SCRIPT_web_form = 'http://127.0.0.1/testing.php';
+                            var TEMP_SCRIPT_web_form = URLDecode(SCRIPT_web_form,'YES','DEFAULT','1');
+                            //$("#ScriptButtonSpan").html("<a href=\"#\" id=\"ScriptButtonSpan\" onClick=\"ScriptPanelToFront();\" style=\"font-size:13px;color:white;text-decoration:none;\"><?=ucwords($lh->translationFor('script'))?></a> <!-- <A HREF=\"#\" onClick=\"ScriptPanelToFront();\"><IMG SRC=\"./images/script_tab.png\" ALT=\"<?=$lh->translationFor('script')?>\" WIDTH=143 HEIGHT=27 BORDER=0></A>-->");
+
+                            if ( (script_recording_delay > 0) && ( (LIVE_campaign_recording == 'ALLCALLS') || (LIVE_campaign_recording == 'ALLFORCE') ) ) {
+                                delayed_script_load = 'YES';
+                                //RefresHScript('CLEAR');
+                                ClearScript();
+                            } else {
+                                LoadScriptContents();
+                            }
+                        }
+
+                        if (custom_fields_enabled > 0) {
+                            $("#CustomFormSpan").html(" <a href=\"#\" id=\"CustomFormSpan\" onclick=\"FormPanelToFront();\"  style=\"font-size:13px;color:white;text-decoration:none;\" /><?=ucwords($lh->translationFor('custom_form'))?></a>");  
+                            //FormContentsLoad();
+                        }
+
+                        if (email_enabled > 0 && EMAILgroupCOUNT > 0) {
+                            //EmailContentsLoad();
+                        }
+                        if (get_call_launch == 'SCRIPT') {
+                            if (delayed_script_load == 'YES') {
+                                LoadScriptContents();
+                            }
+                            //ScriptPanelToFront();
+                            $('#agent_tablist a[href="#scripts"]').tab('show');
+                        }
+
+                        if (get_call_launch == 'FORM') {
+                            //FormPanelToFront();
+                        }
+
+                        if (get_call_launch == 'EMAIL') {
+                            //EmailPanelToFront();
+                        }
+
+                        if (get_call_launch == 'WEBFORM') {
+                            window.open(TEMP_VDIC_web_form_address, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
+                        }
+                        if (get_call_launch == 'WEBFORMTWO') {
+                            window.open(TEMP_VDIC_web_form_address_two, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
+                        }
+                    } else {
+                        if (custom_fields_enabled > 0) {
+                            $("#CustomFormSpan").html(" <a href=\"#\" id=\"CustomFormSpan\" onclick=\"FormPanelToFront();\"  style=\"font-size:13px;color:white;text-decoration:none;\" /><?=ucwords($lh->translationFor('custom_form'))?></a>");
+                            //FormContentsLoad();
+                        }
+                        if ( (view_scripts == 1) && (campaign_script.length > 0) ) {
+                            var SCRIPT_web_form = 'http://127.0.0.1/testing.php';
+                            var TEMP_SCRIPT_web_form = URLDecode(SCRIPT_web_form,'YES','DEFAULT','1');
+                            //RefresHScript();
+                        }
+                        reselect_preview_dial = 1;
                     }
                 }
             }
