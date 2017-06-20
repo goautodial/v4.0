@@ -6190,6 +6190,8 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
 
 
 function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnStagE, mdVendorid, mdgroupalias, mdtype) {
+
+    return false;
     dialingINprogress = 1;
     if (waiting_on_dispo > 0) {
         dialingINprogress = 0;
@@ -8574,7 +8576,6 @@ function set_length(SLnumber, SLlength_goal, SLdirection) {
 
 // decode the scripttext and scriptname so that it can be displayed
 function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
-    return false;
     // Replace %ZZ with equivalent character
     // Put [ERR] in output if %ZZ is invalid.
 	var HEXCHAR = '0123456789ABCDEFabcdef'; 
