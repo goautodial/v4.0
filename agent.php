@@ -2026,7 +2026,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 					theme: 'bootstrap'
 				});
 				
-				$("#loadJsSIPHere").load('/tryit/?__user=<?=$user->getUserId()?>');
+				$("#loadJsSIPHere").html('<object data="/tryit/?__user=<?=$user->getUserId()?>">');
 			});
 			
 			// generates the reply-to or forward message text. This text will be suitable for placing in the reply-to/forward content
