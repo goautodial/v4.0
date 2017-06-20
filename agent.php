@@ -1603,8 +1603,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
       <!-- /.tab-pane -->
     </div>
   </aside>
-  
-  <iframe src="/tryit/?__user=<?=$user->getUserId()?>"></iframe>
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
@@ -2314,5 +2312,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 			};
 			var goAvatar = new Vue(goOptions);
 		</script>
+		
+  
+		<iframe src="/tryit/?__user=<?=$user->getUserId()?>"></iframe>
     </body>
 </html>
