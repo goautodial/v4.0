@@ -373,8 +373,7 @@ EOF;
 			}
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
-<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.12.js"></script>
-<script type="text/javascript" src="{$goModuleDIR}js/rtcninja.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.13.js"></script>
 <script>
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
@@ -386,61 +385,68 @@ EOF;
 		sockets : [ socket ],
 		uri: 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 		$socketParams
-		session_timers: false,
+		session_timers: true,
+		pcConfig: {
+			rtcpMuxPolicy : 'negotiate',
+			iceServers: [
+				{ urls: ['stun:stun.l.google.com:19302'] }
+			]
+		},
+		registrar_server: '$websocketSIP',
+		use_preloaded_route: false,
 		register: true
 	};
 	
 	//init rtcninja libraries...
-	rtcninja();
 	
 	var phone = new JsSIP.UA(configuration);
 	
 	phone.on('connected', function(e) {
-		console.log('connected', e);
+		//console.log('connected', e);
 		
-		phone.register();
+		//phone.register();
 	});
 	
 	phone.on('disconnected', function(e) {
-		console.log('disconnected', e);
+		//console.log('disconnected', e);
 	});
 	
 	phone.on('newRTCSession', function(e) {
-		console.log(e);
+		//console.log(e);
 		
 		var session = e.session;
-		console.log('newRTCSession: originator', e.originator, 'session', e.session, 'request', e.request);
+		//console.log('newRTCSession: originator', e.originator, 'session', e.session, 'request', e.request);
 	
 		session.on('peerconnection', function (data) {
-			console.log('session::peerconnection', data);
+			//console.log('session::peerconnection', data);
 		});
 	
 		session.on('iceconnectionstatechange', function (data) {
-			console.log('session::iceconnectionstatechange', data);
+			//console.log('session::iceconnectionstatechange', data);
 		});
 	
 		session.on('connecting', function (data) {
-			console.log('session::connecting', data);
+			//console.log('session::connecting', data);
 		});
 	
 		session.on('sending', function (data) {
-			console.log('session::sending', data);
+			//console.log('session::sending', data);
 		});
 	
 		session.on('progress', function (data) {
-			console.log('session::progress', data);
+			//console.log('session::progress', data);
 		});
 	
 		session.on('accepted', function (data) {
-			console.log('session::accepted', data);
+			//console.log('session::accepted', data);
 		});
 	
 		session.on('confirmed', function (data) {
-			console.log('session::confirmed', data);
+			//console.log('session::confirmed', data);
 		});
 	
 		session.on('ended', function (data) {
-			console.log('session::ended', data);
+			//console.log('session::ended', data);
 			if (data.cause !== 'Terminated') {
 				alertLogout = false;
 				sendLogout(true);
@@ -453,7 +459,7 @@ EOF;
 		});
 	
 		session.on('failed', function (data) {
-			console.log('session::failed', data);
+			//console.log('session::failed', data);
 			alertLogout = false;
 			sendLogout(true);
 			swal({
@@ -474,50 +480,50 @@ EOF;
 		//});
 	
 		session.on('removestream', function (data) {
-			console.log('session::removestream', data);
+			//console.log('session::removestream', data);
 		});
 	
 		session.on('newDTMF', function (data) {
-			console.log('session::newDTMF', data);
+			//console.log('session::newDTMF', data);
 		});
 	
 		session.on('hold', function (data) {
-			console.log('session::hold', data);
+			//console.log('session::hold', data);
 		});
 	
 		session.on('unhold', function (data) {
-			console.log('session::unhold', data);
+			//console.log('session::unhold', data);
 		});
 	
 		session.on('muted', function (data) {
-			console.log('session::muted', data);
+			//console.log('session::muted', data);
             $.snackbar({id: "mutedMic", content: "<i class='fa fa-microphone-slash fa-lg text-danger' aria-hidden='true'></i>&nbsp; $youTurnOffMic", timeout: 0, htmlAllowed: true});
 		});
 	
 		session.on('unmuted', function (data) {
-			console.log('session::unmuted', data);
+			//console.log('session::unmuted', data);
 			$("#mutedMic").snackbar('hide');
             $.snackbar({content: "<i class='fa fa-microphone fa-lg text-success' aria-hidden='true'></i>&nbsp; $youTurnOnMic", timeout: 5000, htmlAllowed: true});
 		});
 	
 		session.on('reinvite', function (data) {
-			console.log('session::reinvite', data);
+			//console.log('session::reinvite', data);
 		});
 	
 		session.on('update', function (data) {
-			console.log('session::update', data);
+			//console.log('session::update', data);
 		});
 	
 		session.on('refer', function (data) {
-			console.log('session::refer', data);
+			//console.log('session::refer', data);
 		});
 	
 		session.on('replaces', function (data) {
-			console.log('session::replaces', data);
+			//console.log('session::replaces', data);
 		});
 	
 		session.on('sdp', function (data) {
-			console.log('session::sdp', data);
+			//console.log('session::sdp', data);
 		});
 	
 		session.answer({
@@ -525,17 +531,23 @@ EOF;
 				audio: true,
 				video: false
 			},
-			mediaStream: localStream
+			pcConfig: {
+				rtcpMuxPolicy: "negotiate",
+				iceServers: [
+					{ urls: ['stun:stun.l.google.com:19302'] }
+				]
+			},
 		});
 		
 		//Removed
 		//,
+			mediaStream: localStream,
 		//	pcConfig: {
 		//		rtcpMuxPolicy: "negotiate"
 		//	}
 		
 		session.connection.addEventListener('addstream', (event) => {
-			console.log("session::addstream", event);
+			//console.log("session::addstream", event);
 			
 			remoteStream = event.stream;
 			audioElement = document.querySelector('#remoteStream');
@@ -546,11 +558,11 @@ EOF;
 	});
 	
 	phone.on('newMessage', function(e) {
-		console.log('newMessage', e);
+		//console.log('newMessage', e);
 	});
 	
 	phone.on('registered', function(e) {
-		console.log('registered', e);
+		//console.log('registered', e);
 		phoneRegistered = true;
 		registrationFailed = false;
 		if ( !!$.prototype.snackbar ) {
@@ -559,12 +571,12 @@ EOF;
 	});
 	
 	phone.on('unregistered', function(e) {
-		console.log('unregistered', e);
+		//console.log('unregistered', e);
 		phoneRegistered = false;
 	});
 	
 	phone.on('registrationFailed', function(e) {
-		console.log('registrationFailed', e);
+		//console.log('registrationFailed', e);
 		phoneRegistered = false;
 		registrationFailed = true;
 		phone.stop();
@@ -579,7 +591,7 @@ EOF;
 		}
 	});
 	
-	rtcninja.getUserMedia({
+	navigator.getUserMedia({
 		audio: true,
 		video: false
 	}, function (stream) {
@@ -969,8 +981,7 @@ EOF;
 			}
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
-<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.12.js"></script>
-<script type="text/javascript" src="{$goModuleDIR}js/rtcninja.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.13.js"></script>
 <script>
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
@@ -981,9 +992,6 @@ EOF;
 	var phone_pass = '$phone_pass';
 	var uName = '$user_id';
 	var uPass = '$user_pass';
-	
-	//init rtcninja libraries...
-	rtcninja();
 	
 	function registerPhone(login, pass) {
 		var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}/');
@@ -1108,7 +1116,12 @@ EOF;
 					audio: true,
 					video: false
 				},
-				mediaStream: localStream
+				pcConfig: {
+					rtcpMuxPolicy: "negotiate",
+					iceServers: [
+						{ urls: ['stun:stun.l.google.com:19302'] }
+					]
+				}
 			});
 			
 			//Removed
@@ -1155,7 +1168,7 @@ EOF;
 			}
 		});
 		
-		rtcninja.getUserMedia({
+		navigator.getUserMedia({
 			audio: true,
 			video: false
 		}, function (stream) {
