@@ -190,8 +190,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		<link rel="stylesheet" href="css/flags/flags.min.css">
 
 		<script src='tryit/resources/js/antiglobal.js'></script>
-		
-		<script src='tryit/goautodial-jssip.js'></script>
 
         <script type="text/javascript">
 			history.pushState('', document.title, window.location.pathname);
@@ -315,6 +313,9 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 					'<i class="fa fa-remove"></i>'+
 				'</button>';
 		</script>
+		
+		<script src='tryit/goautodial-jssip.js'></script>
+		
 		<style>
 			.nav-tabs > li > a{
 				font-weight: normal;
