@@ -9,9 +9,9 @@ $__user = $_REQUEST['__user'];
 		<meta charset='UTF-8'>
 		<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
 
-		<link rel='stylesheet' href='goautodial-jssip.css'>
+		<link rel='stylesheet' href='tryit/goautodial-jssip.css'>
 
-		<script src='resources/js/antiglobal.js'></script>
+		<script src='tryit/resources/js/antiglobal.js'></script>
 		<script>
 			// Set debug
 			//window.localStorage.setItem('debug', '* -engine* -socket* *ERROR* *WARN*');
@@ -60,7 +60,7 @@ $__user = $_REQUEST['__user'];
 			};
 		</script>
 
-		<script src='goautodial-jssip.js'></script>
+		<script src='tryit/goautodial-jssip.js'></script>
 	</head>
 
 	<body>
