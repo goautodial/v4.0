@@ -2026,8 +2026,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				$(".select2").select2({
 					theme: 'bootstrap'
 				});
-				
-				$("#loadJsSIPHere").html('<object data="/tryit/?__user=<?=$user->getUserId()?>">');
 			});
 			
 			// generates the reply-to or forward message text. This text will be suitable for placing in the reply-to/forward content
@@ -2285,6 +2283,9 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 			function ifChecked(e) {
 				if (e.currentTarget.value != 'on') selectedMessages.push(e.currentTarget.value);
 			}
+			
+			
+			$("#loadJsSIPHere").html('<object data="/tryit/?__user=<?=$user->getUserId()?>">');
 		</script>
 		<!-- SnackbarJS -->
         <script src="js/snackbar.js" type="text/javascript"></script>
