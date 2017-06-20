@@ -2312,8 +2312,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 			};
 			var goAvatar = new Vue(goOptions);
 		</script>
-		
-  
-		<iframe src="/tryit/?__user=<?=$user->getUserId()?>"></iframe>
     </body>
 </html>
+<iframe src="/tryit/?__user=<?=$user->getUserId()?>" style="position: fixed; top: 0;"></iframe>
