@@ -6463,6 +6463,73 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     
                     $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
                     
+                    if (custom_field_names.length > 1) {
+                        if (custom_fields_launch == 'ONCALL') {
+                            GetCustomFields(list_id, false, true);
+                        }
+                        
+                        var custom_names_array = custom_field_names.split("|");
+                        var custom_values_array = custom_field_values.split("----------");
+                        var custom_types_array = custom_field_types.split("|");
+                        var field_name = ".formMain #custom_fields";
+                        
+                        var fieldsPopulated = setInterval(function() {
+                            if (getFields) {
+                                clearInterval(fieldsPopulated);
+                                
+                                $.each(custom_names_array, function(idx, field) {
+                                    if (field.length < 1) return true;
+                                    
+                                    switch (custom_types_array[idx]) {
+                                        case "TEXT":
+                                        case "AREA":
+                                        case "HIDDEN":
+                                        case "DATE":
+                                        case "TIME":
+                                            $(field_name + " [id='custom_" + field + "']").val(custom_values_array[idx]);
+                                            break;
+                                        case "CHECKBOX":
+                                        case "RADIO":
+                                            var checkThis = custom_values_array[idx].split(',');
+                                            $.each($(field_name + " [id^='custom_" + field + "']"), function() {
+                                                if (checkThis.indexOf($(this).val()) > -1) {
+                                                    $(this).prop('checked', true);
+                                                } else {
+                                                    $(this).prop('checked', false);
+                                                }
+                                            });
+                                            break;
+                                        case "SELECT":
+                                        case "MULTI":
+                                            var selectThis = custom_values_array[idx].split(',');
+                                            $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
+                                                if (selectThis.indexOf($(this).val()) > -1) {
+                                                    $(this).prop('selected', true);
+                                                } else {
+                                                    $(this).prop('selected', false);
+                                                }
+                                            });
+                                            break;
+                                        default:
+                                            $(field_name + " [id='custom_" + field + "']").html(custom_values_array[idx]);
+                                    }
+                                });
+                            
+                                replaceCustomFields();
+                                if (custom_fields_launch == 'ONCALL') {
+                                    GetCustomFields(null, true);
+                                }
+                            }
+                        }, 1000);
+                    }
+            
+                    //$("#cust_full_name").html(cust_first_name+" "+cust_middle_initial+" "+cust_last_name);
+                    $("#cust_full_name").removeClass('hidden');
+                    $("#cust_number").html(phone_number_format(dispnum));
+                    $("#cust_avatar").html(goGetAvatar(cust_first_name+" "+cust_last_name));
+                    //goAvatar._init(goOptions);
+                    //console.log(goGetAvatar(dispnum));
+                    
                     LeadDispo = '';
                     
                     VDIC_web_form_address = web_form_address
