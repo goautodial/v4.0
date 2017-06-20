@@ -385,7 +385,7 @@ EOF;
 		sockets : [ socket ],
 		uri: 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 		$socketParams
-		session_timers: true
+		session_timers: true,
 		registrar_server: '$websocketSIP',
 		use_preloaded_route: false,
 		register: true
@@ -981,6 +981,8 @@ EOF;
 			uri: 'sip:'+login+'@{$websocketSIP}{$websocketSIPPort},
 			$socketParams
 			session_timers: false,
+			registrar_server: '$websocketSIP',
+			use_preloaded_route: false,
 			register: true
 		};
 		
