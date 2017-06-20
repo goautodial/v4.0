@@ -385,13 +385,7 @@ EOF;
 		sockets : [ socket ],
 		uri: 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 		$socketParams
-		session_timers: true,
-		pcConfig: {
-			rtcpMuxPolicy : 'negotiate',
-			iceServers: [
-				{ urls: ['stun:stun.l.google.com:19302'] }
-			]
-		},
+		session_timers: true
 		registrar_server: '$websocketSIP',
 		use_preloaded_route: false,
 		register: true
@@ -530,21 +524,8 @@ EOF;
 			mediaConstraints: {
 				audio: true,
 				video: false
-			},
-			pcConfig: {
-				rtcpMuxPolicy: "negotiate",
-				iceServers: [
-					{ urls: ['stun:stun.l.google.com:19302'] }
-				]
-			},
+			}
 		});
-		
-		//Removed
-		//,
-			mediaStream: localStream,
-		//	pcConfig: {
-		//		rtcpMuxPolicy: "negotiate"
-		//	}
 		
 		session.connection.addEventListener('addstream', (event) => {
 			//console.log("session::addstream", event);
@@ -1115,20 +1096,8 @@ EOF;
 				mediaConstraints: {
 					audio: true,
 					video: false
-				},
-				pcConfig: {
-					rtcpMuxPolicy: "negotiate",
-					iceServers: [
-						{ urls: ['stun:stun.l.google.com:19302'] }
-					]
 				}
 			});
-			
-			//Removed
-			//,
-			//	pcConfig: {
-			//		rtcpMuxPolicy: "negotiate"
-			//	}
 		
 			session.connection.addEventListener('addstream', (event) => {
 				console.log("session::addstream", event);
