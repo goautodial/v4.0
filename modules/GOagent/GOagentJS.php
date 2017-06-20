@@ -8498,7 +8498,7 @@ function goGetAvatar(account, size) {
 }
 
 function MainPanelToFront() {
-    history.pushState('', document.title, window.location.pathname);
+    //history.pushState('', document.title, window.location.pathname);
     
     $("#cust_info").show();
     $("#loaded-contents").hide();
