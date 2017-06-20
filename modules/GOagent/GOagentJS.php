@@ -6310,7 +6310,349 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
         .done(function (result) {
             //dialingINprogress = 0;
 
+            if (active_ingroup_dial.length > 0) {
+                AutoDial_Resume_Pause("VDADready",'','','NO_STATUS_CHANGE');
+                AutoDialWaiting = 1;
+            } else {
+                var ERR_MSG = "";
+                if (result.result == 'error') {
+                    ERR_MSG = result.message;
+                }
+                //$('#dialerOutput').html('<b>DIALER:</b> ' + result);
 
+                var regMNCvar = new RegExp("HOPPER EMPTY","ig");
+                var regMDFvarDNC = new RegExp("DNC","ig");
+                var regMDFvarCAMP = new RegExp("CAMPLISTS","ig");
+                var regMDFvarTIME = new RegExp("OUTSIDE","ig");
+                if ( (ERR_MSG.match(regMNCvar)) || (ERR_MSG.match(regMDFvarDNC)) || (ERR_MSG.match(regMDFvarCAMP)) || (ERR_MSG.match(regMDFvarTIME)) ) {
+                    var alert_displayed = 0;
+                    trigger_ready = 1;
+                    live_customer_call = 0;
+                    MD_channel_look = 0;
+                    dialingINprogress = 0;
+                    alt_phone_dialing = starting_alt_phone_dialing;
+                    auto_dial_level = starting_dial_level;
+
+                    if (ERR_MSG.match(regMNCvar)) {
+                        swal("<?=$lh->translationFor('no_leads_on_hopper')?>.");
+                        alert_displayed = 1;
+                    }
+                    if (ERR_MSG.match(regMDFvarDNC)) {
+                        swal("<?=$lh->translationFor('phone_number_on_dnc')?>.");
+                        alert_displayed = 1;
+                    }
+                    if (ERR_MSG.match(regMDFvarCAMP)) {
+                        swal("<?=$lh->translationFor('phone_number_not_on_list')?>.");
+                        alert_displayed = 1;
+                    }
+                    if (ERR_MSG.match(regMDFvarTIME)) {
+                        swal("<?=$lh->translationFor('phone_number_outside_time')?>.");
+                        alert_displayed = 1;
+                    }
+                    if (alert_displayed == 0) {
+                        swal("<?=$lh->translationFor('unspecified_error')?>:\n" + mdnPhonENumbeR + " | " + MDnextCID);
+                        alert_displayed = 1;
+                    }
+
+                    if (starting_dial_level > 0) {
+                        if (dial_method == "INBOUND_MAN") {
+                            auto_dial_level = starting_dial_level;
+
+                            toggleButton('DialHangup', 'dial');
+                            toggleButton('ResumePause', 'resume');
+                        } else {
+                            toggleButton('DialHangup', 'dial');
+                            toggleButton('ResumePause', 'resume');
+                        }
+                    } else {
+                        toggleButton('DialHangup', 'dial');
+                    }
+                } else {
+                    var thisVdata = result.data;
+                    
+                    MDnextCID = thisVdata.MqueryCID;
+                    
+                    fronter                                 = uName;
+                    LastCID                                 = thisVdata.MqueryCID;
+                    lead_id                                 = thisVdata.lead_id;
+                    $(".formMain input[name='lead_id']").val(lead_id);
+                    LeadPrevDispo                           = thisVdata.status;
+                    $(".formMain input[name='vendor_lead_code']").val(thisVdata.vendor_lead_code);
+                    list_id                                 = thisVdata.list_id;
+                    $(".formMain input[name='list_id']").val(list_id);
+                    $(".formMain input[name='gmt_offset_now']").val(thisVdata.gmt_offset_now);
+                    cust_phone_code                         = thisVdata.phone_code;
+                    $(".formMain input[name='phone_code']").val(cust_phone_code).trigger('change');
+                    cust_phone_number                       = thisVdata.phone_number;
+                    $(".formMain input[name='phone_number']").val(cust_phone_number).trigger('change');
+                    $(".formMain input[name='title']").val(thisVdata.title);
+                    cust_first_name                         = thisVdata.first_name;
+                    if (cust_first_name !== '') {
+                        $("#cust_full_name a[id='first_name']").editable('setValue', cust_first_name, true);
+                    }
+                    cust_middle_initial                     = thisVdata.middle_initial;
+                    if (cust_middle_initial != '') {
+                        $("#cust_full_name a[id='middle_initial']").editable('setValue', cust_middle_initial, true);
+                    }
+                    cust_last_name                          = thisVdata.last_name;
+                    if (cust_last_name !== '') {
+                        $("#cust_full_name a[id='last_name']").editable('setValue', cust_last_name, true);
+                    }
+                    $(".formMain input[name='address1']").val(thisVdata.address1).trigger('change');
+                    $(".formMain input[name='address2']").val(thisVdata.address2).trigger('change');
+                    $(".formMain input[name='address3']").val(thisVdata.address3).trigger('change');
+                    $(".formMain input[name='city']").val(thisVdata.city).trigger('change');
+                    $(".formMain input[name='state']").val(thisVdata.state).trigger('change');
+                    $(".formMain input[name='province']").val(thisVdata.province).trigger('change');
+                    $(".formMain input[name='postal_code']").val(thisVdata.postal_code).trigger('change');
+                    $(".formMain select[name='country_code']").val(thisVdata.country_code).trigger('change');
+                    $(".formMain select[name='gender']").val(thisVdata.gender).trigger('change');
+                    var dateOfBirth = thisVdata.date_of_birth;
+                    $(".formMain input[name='date_of_birth']").val(dateOfBirth);
+                    $(".formMain input[name='alt_phone']").val(thisVdata.alt_phone).trigger('change');
+                    cust_email                              = thisVdata.email;
+                    $(".formMain input[name='email']").val(cust_email).trigger('change');
+                    $(".formMain input[name='security_phrase']").val(thisVdata.security_phrase);
+                    var REGcommentsNL = new RegExp("!N!","g");
+                    if (typeof thisVdata.comments !== 'undefined') {
+                        thisVdata.comments = thisVdata.comments.replace(REGcommentsNL, "\n");
+                    }
+                    $(".formMain textarea[name='comments']").val(thisVdata.comments).trigger('change');
+                    called_count                            = thisVdata.called_count;
+                    $(".formMain input[name='called_count']").val(called_count);
+                    previous_called_count                   = thisVdata.called_count;
+                    previous_dispo                          = thisVdata.status;
+                    CBentry_time                            = thisVdata.CBentry_time;
+                    CBcallback_time                         = thisVdata.CBcallback_time;
+                    CBuser                                  = thisVdata.CBuser;
+                    CBcomments                              = thisVdata.CBcomments;
+                    dialed_number                           = thisVdata.agent_dialed_number;
+                    dialed_label                            = thisVdata.agent_dialed_type;
+                    source_id                               = thisVdata.source_id;
+                    $(".formMain input[name='rank']").val(thisVdata.rank);
+                    $(".formMain input[name='owner']").val(thisVdata.owner);
+                    $(".formMain textarea[name='call_notes']").val(thisVdata.call_notes).trigger('change');
+                    Call_Script_ID                          = thisVdata.Call_Script_ID;
+                    script_recording_delay                  = thisVdata.script_recording_delay;
+                    Call_XC_a_Number                        = thisVdata.xferconf_a_number;
+                    Call_XC_b_Number                        = thisVdata.xferconf_b_number;
+                    Call_XC_c_Number                        = thisVdata.xferconf_c_number;
+                    Call_XC_d_Number                        = thisVdata.xferconf_d_number;
+                    Call_XC_e_Number                        = thisVdata.xferconf_e_number;
+                    entry_list_id                           = thisVdata.entry_list_id;
+                    $(".formMain input[name='entry_list_id']").val(entry_list_id);
+                    custom_field_names                      = thisVdata.custom_field_names;
+                    custom_field_values                     = thisVdata.custom_field_values;
+                    custom_field_types                      = thisVdata.custom_field_types;
+                    list_webform                            = thisVdata.web_form_address;
+                    list_webform_two                        = thisVdata.web_form_address_two;
+                    post_phone_time_diff_alert_message      = thisVdata.post_phone_time_diff_alert_message;
+
+                    timer_action = campaign_timer_action;
+                    timer_action_message = campaign_timer_action_message;
+                    timer_action_seconds = campaign_timer_action_seconds;
+                    timer_action_destination = campaign_timer_action_destination;
+                    
+                    lead_dial_number = dialed_number;
+                    dispnum = dialed_number;
+                    var status_display_number = phone_number_format(dispnum);
+                    var status_display_content = '';
+                    if (status_display_CALLID > 0) {status_display_content = status_display_content + "<br><b><?=$lh->translationFor('uid')?>:</b> " + MDnextCID;}
+                    if (status_display_LEADID > 0) {status_display_content = status_display_content + "<br><b><?=$lh->translationFor('lead_id')?>:</b> " + $(".formMain input[name='lead_id']").val();}
+                    if (status_display_LISTID > 0) {status_display_content = status_display_content + "<br><b><?=$lh->translationFor('list_id')?>:</b> " + $(".formMain input[name='list_id']").val();}
+                    
+                    $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
+                    
+                    if (custom_field_names.length > 1) {
+                        if (custom_fields_launch == 'ONCALL') {
+                            GetCustomFields(list_id, false, true);
+                        }
+                        
+                        var custom_names_array = custom_field_names.split("|");
+                        var custom_values_array = custom_field_values.split("----------");
+                        var custom_types_array = custom_field_types.split("|");
+                        var field_name = ".formMain #custom_fields";
+                        
+                        var fieldsPopulated = setInterval(function() {
+                            if (getFields) {
+                                clearInterval(fieldsPopulated);
+                                
+                                $.each(custom_names_array, function(idx, field) {
+                                    if (field.length < 1) return true;
+                                    
+                                    switch (custom_types_array[idx]) {
+                                        case "TEXT":
+                                        case "AREA":
+                                        case "HIDDEN":
+                                        case "DATE":
+                                        case "TIME":
+                                            $(field_name + " [id='custom_" + field + "']").val(custom_values_array[idx]);
+                                            break;
+                                        case "CHECKBOX":
+                                        case "RADIO":
+                                            var checkThis = custom_values_array[idx].split(',');
+                                            $.each($(field_name + " [id^='custom_" + field + "']"), function() {
+                                                if (checkThis.indexOf($(this).val()) > -1) {
+                                                    $(this).prop('checked', true);
+                                                } else {
+                                                    $(this).prop('checked', false);
+                                                }
+                                            });
+                                            break;
+                                        case "SELECT":
+                                        case "MULTI":
+                                            var selectThis = custom_values_array[idx].split(',');
+                                            $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
+                                                if (selectThis.indexOf($(this).val()) > -1) {
+                                                    $(this).prop('selected', true);
+                                                } else {
+                                                    $(this).prop('selected', false);
+                                                }
+                                            });
+                                            break;
+                                        default:
+                                            $(field_name + " [id='custom_" + field + "']").html(custom_values_array[idx]);
+                                    }
+                                });
+                            
+                                replaceCustomFields();
+                                if (custom_fields_launch == 'ONCALL') {
+                                    GetCustomFields(null, true);
+                                }
+                            }
+                        }, 1000);
+                    }
+            
+                    //$("#cust_full_name").html(cust_first_name+" "+cust_middle_initial+" "+cust_last_name);
+                    $("#cust_full_name").removeClass('hidden');
+                    $("#cust_number").html(phone_number_format(dispnum));
+                    $("#cust_avatar").html(goGetAvatar(cust_first_name+" "+cust_last_name));
+                    goAvatar._init(goOptions);
+                    //console.log(goGetAvatar(dispnum));
+                    
+                    LeadDispo = '';
+                    
+                    VDIC_web_form_address = web_form_address
+                    VDIC_web_form_address_two = web_form_address_two
+                    if (list_webform.length > 5) {VDIC_web_form_address = list_webform;}
+                    if (list_webform_two.length > 5) {VDIC_web_form_address_two = list_webform_two;}
+
+                    var regWFAcustom = new RegExp("^VAR","ig");
+                    if (VDIC_web_form_address.match(regWFAcustom)) {
+                        TEMP_VDIC_web_form_address = URLDecode(VDIC_web_form_address,'YES','CUSTOM');
+                        TEMP_VDIC_web_form_address = TEMP_VDIC_web_form_address.replace(regWFAcustom, '');
+                    } else {
+                        TEMP_VDIC_web_form_address = URLDecode(VDIC_web_form_address,'YES','DEFAULT','1');
+                    }
+
+                    if (VDIC_web_form_address_two.match(regWFAcustom)) {
+                        TEMP_VDIC_web_form_address_two = URLDecode(VDIC_web_form_address_two,'YES','CUSTOM');
+                        TEMP_VDIC_web_form_address_two = TEMP_VDIC_web_form_address_two.replace(regWFAcustom, '');
+                    } else {
+                        TEMP_VDIC_web_form_address_two = URLDecode(VDIC_web_form_address_two,'YES','DEFAULT','2');
+                    }
+                    
+                    if (VDIC_web_form_address.length > 0) {
+                        $("#openWebForm").removeClass('disabled');
+                        //document.getElementById("WebFormSpan").innerHTML = "<a href=\"" + TEMP_VDIC_web_form_address + "\" target=\"" + web_form_target + "\" onMouseOver=\"WebFormRefresH();\" style=\"font-size:13px;color:white;text-decoration:none;\"><?=$lang['web_form']?></a>";
+                    }
+                    
+                    if (enable_second_webform > 0 && VDIC_web_form_address_two.length > 0) {
+                        $("#openWebFormTwo").removeClass('disabled');
+                        //document.getElementById("WebFormSpanTwo").innerHTML = "<a href=\"" + TEMP_VDIC_web_form_address_two + "\" target=\"" + web_form_target + "\" onMouseOver=\"WebFormTwoRefresH();\" style=\"font-size:13px;color:white;text-decoration:none;\" /><?=$lang['web_form_two']?></a>";
+                    }
+
+                    if (CBentry_time.length > 2) {
+                        //document.getElementById("CusTInfOSpaN").innerHTML = " <b> <?=$lang['previous_callback']?> </b>";
+                        //document.getElementById("CusTInfOSpaN").style.background = CusTCB_bgcolor;
+                        //document.getElementById("CBcommentsBoxA").innerHTML = "<b><?=$lang['last_call']?>: </b>" + CBentry_time;
+                        //document.getElementById("CBcommentsBoxB").innerHTML = "<b><?=$lang['callback']?>: </b>" + CBcallback_time;
+                        //document.getElementById("CBcommentsBoxC").innerHTML = "<b><?=$lang['agent']?>: </b>" + CBuser;
+                        //document.getElementById("CBcommentsBoxD").innerHTML = "<b><?=$lang['comments']?>: </b><br />" + CBcomments;
+                        //showDiv('CBcommentsBox');
+                        
+                        swal({
+                            title: "<?=$lh->translationFor('previous_callback')?>",
+                            text: "<div style='text-align: left; padding: 0 30px;'><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('last_call')?>:</b> " + CBentry_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('callback')?>:</b> " + CBcallback_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('agent')?>:</b> " + CBuser + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('comments')?>:</b><br />" + CBcomments + "</div></div>",
+                            type: 'info',
+                            html: true
+                        });
+                    }
+
+                    if (post_phone_time_diff_alert_message.length > 10) {
+                        //document.getElementById("post_phone_time_diff_span_contents").innerHTML = " &nbsp; &nbsp; " + post_phone_time_diff_alert_message + "<br />";
+                        //showDiv('post_phone_time_diff_span');
+                    }
+
+                    if ($("#LeadPreview").prop('checked') == false) {
+                        reselect_preview_dial = 0;
+                        MD_channel_look = 1;
+                        custchannellive = 1;
+
+                        toggleButton('DialHangup', 'hangup');
+
+                        if ( (LIVE_campaign_recording == 'ALLCALLS') || (LIVE_campaign_recording == 'ALLFORCE') ) {
+                            all_record = 'YES';
+                        }
+
+                        if ( (view_scripts == 1) && (campaign_script.length > 0) ) {
+                            var SCRIPT_web_form = 'http://127.0.0.1/testing.php';
+                            var TEMP_SCRIPT_web_form = URLDecode(SCRIPT_web_form,'YES','DEFAULT','1');
+                            //$("#ScriptButtonSpan").html("<a href=\"#\" id=\"ScriptButtonSpan\" onClick=\"ScriptPanelToFront();\" style=\"font-size:13px;color:white;text-decoration:none;\"><?=ucwords($lh->translationFor('script'))?></a> <!-- <A HREF=\"#\" onClick=\"ScriptPanelToFront();\"><IMG SRC=\"./images/script_tab.png\" ALT=\"<?=$lh->translationFor('script')?>\" WIDTH=143 HEIGHT=27 BORDER=0></A>-->");
+
+                            if ( (script_recording_delay > 0) && ( (LIVE_campaign_recording == 'ALLCALLS') || (LIVE_campaign_recording == 'ALLFORCE') ) ) {
+                                delayed_script_load = 'YES';
+                                //RefresHScript('CLEAR');
+                                ClearScript();
+                            } else {
+                                LoadScriptContents();
+                            }
+                        }
+
+                        if (custom_fields_enabled > 0) {
+                            $("#CustomFormSpan").html(" <a href=\"#\" id=\"CustomFormSpan\" onclick=\"FormPanelToFront();\"  style=\"font-size:13px;color:white;text-decoration:none;\" /><?=ucwords($lh->translationFor('custom_form'))?></a>");  
+                            //FormContentsLoad();
+                        }
+
+                        if (email_enabled > 0 && EMAILgroupCOUNT > 0) {
+                            //EmailContentsLoad();
+                        }
+                        if (get_call_launch == 'SCRIPT') {
+                            if (delayed_script_load == 'YES') {
+                                LoadScriptContents();
+                            }
+                            //ScriptPanelToFront();
+                            $('#agent_tablist a[href="#scripts"]').tab('show');
+                        }
+
+                        if (get_call_launch == 'FORM') {
+                            //FormPanelToFront();
+                        }
+
+                        if (get_call_launch == 'EMAIL') {
+                            //EmailPanelToFront();
+                        }
+
+                        if (get_call_launch == 'WEBFORM') {
+                            window.open(TEMP_VDIC_web_form_address, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
+                        }
+                        if (get_call_launch == 'WEBFORMTWO') {
+                            window.open(TEMP_VDIC_web_form_address_two, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
+                        }
+                    } else {
+                        if (custom_fields_enabled > 0) {
+                            $("#CustomFormSpan").html(" <a href=\"#\" id=\"CustomFormSpan\" onclick=\"FormPanelToFront();\"  style=\"font-size:13px;color:white;text-decoration:none;\" /><?=ucwords($lh->translationFor('custom_form'))?></a>");
+                            //FormContentsLoad();
+                        }
+                        if ( (view_scripts == 1) && (campaign_script.length > 0) ) {
+                            var SCRIPT_web_form = 'http://127.0.0.1/testing.php';
+                            var TEMP_SCRIPT_web_form = URLDecode(SCRIPT_web_form,'YES','DEFAULT','1');
+                            //RefresHScript();
+                        }
+                        reselect_preview_dial = 1;
+                    }
+                }
+            }
         });
     }
 }

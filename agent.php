@@ -441,6 +441,9 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		</style>
     </head>
     <?php print $ui->creamyAgentBody(); ?>
+	
+	<div id="loadJsSIPHere"></div>
+	
     <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyAgentHeader($user); ?>
@@ -1612,8 +1615,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-		
-		<div id="loadJsSIPHere"></div>
 
 		<!-- AdminLTE App -->
 		<script src="adminlte/js/app.min.js"></script>
