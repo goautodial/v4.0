@@ -8574,6 +8574,7 @@ function set_length(SLnumber, SLlength_goal, SLdirection) {
 
 // decode the scripttext and scriptname so that it can be displayed
 function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
+    return false;
     // Replace %ZZ with equivalent character
     // Put [ERR] in output if %ZZ is invalid.
 	var HEXCHAR = '0123456789ABCDEFabcdef'; 
