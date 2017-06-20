@@ -3220,7 +3220,7 @@ function CheckForIncoming () {
             $("#cust_full_name").removeClass('hidden');
             $("#cust_number").html(phone_number_format(dispnum));
             $("#cust_avatar").html(goGetAvatar(this_VDIC_data.first_name+" "+this_VDIC_data.last_name));
-            goAvatar._init(goOptions);
+            //goAvatar._init(goOptions);
 
             var status_display_content = '';
             if (status_display_CALLID > 0) {status_display_content = status_display_content + "<br><b><?=$lh->translationFor('uid')?>:</b> " + LastCID;}
@@ -3581,7 +3581,7 @@ function RefreshAgentsView(RAlocation, RAcount) {
                         });
                         agent_list += '<li style="bottom: 25; position: absolute;"><div class="text-center"><span><i class="fa fa-square" style="color: #ADD8E6;"></i> <?=$lh->translationFor('ready')?></span> &nbsp; <span><i class="fa fa-square" style="color: #D8BFD8;"></i> <?=$lh->translationFor('incall')?></span> &nbsp; <span><i class="fa fa-square" style="color: #F0E68C;"></i> <?=$lh->translationFor('paused')?></span></div></li>';
                         $("#go_agent_view_list").html(agent_list);
-                        goAvatar._init(goOptions);
+                        //goAvatar._init(goOptions);
                     }
                 }
             });
@@ -5498,7 +5498,7 @@ function DispoSelectSubmit() {
             $("#cust_full_name").addClass('hidden');
             $("#cust_number").empty();
             $("#cust_avatar").html(goGetAvatar());
-            goAvatar._init(goOptions);
+            //goAvatar._init(goOptions);
             //console.log(goGetAvatar());
     
             //CLEAR ALL SUB FORM VARIABLES
@@ -5665,7 +5665,7 @@ function ManualDialSkip() {
                     $("#cust_full_name").addClass('hidden');
                     $("#cust_number").empty();
                     $("#cust_avatar").html(goGetAvatar());
-                    goAvatar._init(goOptions);
+                    //goAvatar._init(goOptions);
 
                     if (post_phone_time_diff_alert_message.length > 10) {
                         $("#post_phone_time_diff_span_contents").html();
