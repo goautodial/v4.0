@@ -189,8 +189,44 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		<!-- flag sprites -->
 		<link rel="stylesheet" href="css/flags/flags.min.css">
 
+		<script src='tryit/resources/js/antiglobal.js'></script>
+		
+		<script src='tryit/goautodial-jssip.js'></script>
+
         <script type="text/javascript">
 			history.pushState('', document.title, window.location.pathname);
+			
+			window.SETTINGS =
+			{
+			 	display_name        : '<?=$user->getUserName()?>',
+			 	uri                 : 'sip:8842641193@demo.goautodial.com',
+			 	password            : 'g0g0g0',
+			 	socket              :
+			 	{
+			 		uri           : 'wss://demo.goautodial.com:4443',
+			 		via_transport : 'auto',
+			 	},
+			 	registrar_server    : null,
+			 	contact_uri         : null,
+			 	authorization_user  : null,
+			 	instance_id         : null,
+			 	session_timers      : true,
+			 	use_preloaded_route : false,
+			 	pcConfig            :
+			 	{
+			 		rtcpMuxPolicy : 'negotiate',
+			 		iceServers    :
+			 		[
+			 			{ urls : [ 'stun:stun.l.google.com:19302' ] }
+			 		]
+			 	},
+			 	callstats           :
+			 	{
+			 		enabled   : false,
+			 		AppID     : null,
+			 		AppSecret : null
+			 	}
+			};
 			
 			$(window).load(function() {
 				$(".preloader").fadeOut("slow", function() {
@@ -1607,13 +1643,14 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg" style="position: fixed; height: auto;"></div>
+  
+		<div id='tryit-jssip-container'></div>
+		<div id='tryit-jssip-media-query-detector'></div>
 
         </div><!-- ./wrapper -->
 
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-		
-		<div id="loadJsSIPHere"></div>
 
 		<!-- AdminLTE App -->
 		<script src="adminlte/js/app.min.js"></script>
