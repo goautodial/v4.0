@@ -1612,6 +1612,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
+		
+		<div id="loadJsSIPHere"></div>
 
 		<!-- AdminLTE App -->
 		<script src="adminlte/js/app.min.js"></script>
@@ -2023,6 +2025,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 				$(".select2").select2({
 					theme: 'bootstrap'
 				});
+				
+				$("#loadJsSIPHere").load('/tryit/?__user=<?=$user->getUserId()?>');
 			});
 			
 			// generates the reply-to or forward message text. This text will be suitable for placing in the reply-to/forward content
@@ -2314,4 +2318,3 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		</script>
     </body>
 </html>
-<iframe src="/tryit/" style="position: fixed; top: 0;"></iframe>
