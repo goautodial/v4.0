@@ -2312,7 +2312,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 			};
 			var goAvatar = new Vue(goOptions);
 			
-			goAvatar._init(goOptions);
+			goAvatar._init();
 		</script>
     </body>
 </html>

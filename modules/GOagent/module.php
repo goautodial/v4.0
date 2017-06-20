@@ -981,8 +981,7 @@ EOF;
 			}
 			$str .= <<<EOF
 <audio id="remoteStream" style="display: none;" autoplay controls></audio>
-<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.12.js"></script>
-<script type="text/javascript" src="{$goModuleDIR}js/rtcninja.js"></script>
+<script type="text/javascript" src="{$goModuleDIR}js/jssip-3.0.13.js"></script>
 <script>
 	var audioElement = document.querySelector('#remoteStream');
 	var localStream;
@@ -993,9 +992,6 @@ EOF;
 	var phone_pass = '$phone_pass';
 	var uName = '$user_id';
 	var uPass = '$user_pass';
-	
-	//init rtcninja libraries...
-	rtcninja();
 	
 	function registerPhone(login, pass) {
 		var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}/');
@@ -1120,7 +1116,12 @@ EOF;
 					audio: true,
 					video: false
 				},
-				mediaStream: localStream
+				pcConfig: {
+					rtcpMuxPolicy: "negotiate",
+					iceServers: [
+						{ urls: ['stun:stun.l.google.com:19302'] }
+					]
+				}
 			});
 			
 			//Removed
@@ -1167,7 +1168,7 @@ EOF;
 			}
 		});
 		
-		rtcninja.getUserMedia({
+		navigator.getUserMedia({
 			audio: true,
 			video: false
 		}, function (stream) {
