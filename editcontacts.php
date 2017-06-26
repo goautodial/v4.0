@@ -372,12 +372,13 @@ if ($list_id_ct != NULL) {
 														class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" required>
 													<label for="first_name"><?php $lh->translateText("first_name"); ?></label>
 												</div>
+												<label id="first_name-error" class="error hide" for="first_name">This field is required.</label>
 											</div>
 											<div class="col-sm-4">
 												<div class="mda-form-group label-floating">
 													<input id="middle_initial" name="middle_initial" type="text" maxlength="2" value="<?php echo $middle_initial;?>"
-														class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-													<label for="middle_initial"><?php $lh->translateText("middle_name"); ?></label>
+														class="mda-form-control ng-pristine ng-empty ng-invalid ng-touched">
+													<label for="middle_initial"><?php $lh->translateText("middle_initial"); ?></label>
 												</div>
 											</div>
 											<div class="col-sm-4">
@@ -386,6 +387,7 @@ if ($list_id_ct != NULL) {
 														class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" required>
 													<label for="last_name"><?php $lh->translateText("last_name"); ?></label>
 												</div>
+												<label id="last_name-error" class="error hide" for="last_name">This field is required.</label>
 											</div>
 										</div>
 										</form>
@@ -688,9 +690,17 @@ if ($list_id_ct != NULL) {
 					if(validate == 1){
 						sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("incomplete"); ?>", "error");
 						validate = 0;
-						$("#name_form").validate().element("#first_name");
+						$("#first_name-error").removeClass("hide");
+						$("#last_name-error").removeClass("hide");
+						$("#first_name").addClass("error");
+						$("#last_name").addClass("error");
 						$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("update"); ?>");
 						$('#submit_edit_form').prop("disabled", false);
+					}else{
+						$("#first_name-error").addClass("hide");
+						$("#last_name-error").addClass("hide");
+						$("#first_name").removeClass("error");
+						$("#last_name").removeClass("error");
 					}
 				
 				});

@@ -186,7 +186,7 @@ $user_id = $_POST['user_id'];
     $output = json_decode($data);
     
 	// return result
-	var_dump($output);
+	//var_dump($output);
 	if ($output->result == "success") {
 		echo $output->result;
 	}else{
