@@ -663,10 +663,10 @@ error_reporting(E_ALL)
 							<button class="btn btn-danger btn-sm"><?=$lh->translateText("emergency_logout")?> &nbsp;<i class="fa fa-arrow-right"></i></button>
 						</a>
 						<div class="pull-left">
-							<a href="#" onClick="goGetInSession('barge');">
+							<a href="#" onClick="goGetInSession('BARGE');">
 								<button class="btn btn-success btn-sm"><?=$lh->translateText("barge")?> &nbsp;<i class="fa fa-microphone"></i></button>
 							</a>
-							<a href="#" onClick="goGetInSession('listen');">
+							<a href="#" onClick="goGetInSession('MONITOR');">
 								<button class="btn btn-primary btn-sm"><?=$lh->translateText("listen")?> &nbsp;<i class="fa fa-microphone-slash"></i></button>
 							</a>
 						</div>
@@ -1119,7 +1119,7 @@ function goGetInSession(type) {
 				isMonitoring = false,
 				checkIfConnected;
 			
-			if (type == 'barge') {
+			if (type == 'BARGE') {
 				bTitle = "Barging...";
 				bText = "You're currently barging "+who+"...";
 			} else {
