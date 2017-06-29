@@ -659,16 +659,14 @@ error_reporting(E_ALL)
 						</div>
 					</div>
 					<div class="modal-footer">
-						<input type="hidden" id="phone_login" />
-						<input type="hidden" id="phone_pass" />
 						<a href="#" class="pull-right" onClick="goGetModalUsernameValue();">
 							<button class="btn btn-danger btn-sm"><?=$lh->translateText("emergency_logout")?> &nbsp;<i class="fa fa-arrow-right"></i></button>
 						</a>
 						<div class="pull-left">
-							<a href="#" onClick="goGetInSession('BARGE');">
+							<a href="#" onClick="goGetInSession('barge');">
 								<button class="btn btn-success btn-sm"><?=$lh->translateText("barge")?> &nbsp;<i class="fa fa-microphone"></i></button>
 							</a>
-							<a href="#" onClick="goGetInSession('MONITOR');">
+							<a href="#" onClick="goGetInSession('listen');">
 								<button class="btn btn-primary btn-sm"><?=$lh->translateText("listen")?> &nbsp;<i class="fa fa-microphone-slash"></i></button>
 							</a>
 						</div>
@@ -1097,8 +1095,8 @@ function goGetModalUsernameValue(){
 }
 
 function goGetInSession(type) {
-	var phone_login = $('#phone_login').val();
-	var phone_pass = $('#phone_pass').val();
+	var phone_login = "<?php echo $_SESSION['phone_login'];?>";
+	var phone_pass = "<?php echo $_SESSION['phone_this'];?>";
 	//console.log(phone_login);
 	if (phone_login.length > 0 && phone_pass.length > 0) {
 		var use_webrtc = <?=($_SESSION['use_webrtc'] ? $_SESSION['use_webrtc'] : 0)?>;
@@ -1254,8 +1252,6 @@ function goGetInSession(type) {
 								$('#modal-conf-exten').html(JSONObject.data[0].vla_conf_exten);
 								$('#modal-server-ip').html(JSONObject.data[0].vla_server_ip);
 								//$('#modal-campaign_cid').html(JSONObject.data[0].campaign_cid);
-								$('#phone_login').val(JSONObject.data[0].vu_phone_login);
-								$('#phone_pass').val(JSONObject.data[0].vu_phone_pass);
 								var avatar = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" :size="160"></avatar>';
 								$('#modal-avatar').html(avatar);
 								goAvatar._init(goOptions);
