@@ -973,10 +973,11 @@ EOF;
 	var phone_pass = '$phone_pass';
 	var uName = '$user_id';
 	var uPass = '$user_pass';
+	var configuration;
 	
 	function registerPhone(login, pass) {
 		var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}/');
-		var configuration = {
+		configuration = {
 			sockets : [ socket ],
 			uri: 'sip:'+login+'@{$websocketSIP}{$websocketSIPPort},
 			$socketParams
