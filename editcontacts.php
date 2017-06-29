@@ -372,12 +372,13 @@ if ($list_id_ct != NULL) {
 														class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" required>
 													<label for="first_name"><?php $lh->translateText("first_name"); ?></label>
 												</div>
+												<label id="first_name-error" class="error hide" for="first_name">This field is required.</label>
 											</div>
 											<div class="col-sm-4">
 												<div class="mda-form-group label-floating">
 													<input id="middle_initial" name="middle_initial" type="text" maxlength="2" value="<?php echo $middle_initial;?>"
-														class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-													<label for="middle_initial"><?php $lh->translateText("middle_name"); ?></label>
+														class="mda-form-control ng-pristine ng-empty ng-invalid ng-touched">
+													<label for="middle_initial"><?php $lh->translateText("middle_initial"); ?></label>
 												</div>
 											</div>
 											<div class="col-sm-4">
@@ -386,6 +387,7 @@ if ($list_id_ct != NULL) {
 														class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" required>
 													<label for="last_name"><?php $lh->translateText("last_name"); ?></label>
 												</div>
+												<label id="last_name-error" class="error hide" for="last_name">This field is required.</label>
 											</div>
 										</div>
 										</form>
@@ -634,6 +636,7 @@ if ($list_id_ct != NULL) {
 				var is_customer = <?php echo $is_customer; ?>;
 				if (is_customer > 0) {
 					$('#convert-customer').prop('checked', true);
+					$('#convert-customer').val("1");
 					$('#convert-customer').prop('disabled', true);
 				}
 				
@@ -650,16 +653,14 @@ if ($list_id_ct != NULL) {
 				//alert("User Created!");
 					$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 					$('#submit_edit_form').prop("disabled", true);
-
+					
 					var validate = 0;
 					var log_user = '<?=$_SESSION['user']?>';
 					var log_group = '<?=$_SESSION['usergroup']?>';
 
 					if($('#name_form')[0].checkValidity()) {
 					    if($('#gender_form')[0].checkValidity()) {
-					    	if($('#contact_details_form')[0].checkValidity()) {
-								
-								//alert("Form Submitted!");
+							if($('#contact_details_form')[0].checkValidity()) {
 								var postData = $("#name_form, #gender_form, #contact_details_form, #comment_form").serialize() + '&is_customer=' + $('#convert-customer').is(':checked') + '&user_id=' + <?php echo $user->getUserId(); ?> + '&log_user=' + log_user + '&log_group=' + log_group;
 								$.ajax({
 									url: "./php/ModifyContact.php",
@@ -667,18 +668,15 @@ if ($list_id_ct != NULL) {
 									data: postData,
 									success: function(data) {
 									  // console.log(data);
-										if(data == 1){
+									  $('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("update"); ?>");
+									  $('#submit_edit_form').prop("disabled", false);
+										if(data == "success"){
 											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("contact_update_success"); ?>",type: "success"},function(){location.reload();});
-											$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
-											$('#submit_edit_form').prop("disabled", false);
 										}else{
 											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
-											$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
-											$('#submit_edit_form').prop("disabled", false);
 										}
 									}
 								});
-
 							}else{
 								validate = 1;
 							}
@@ -692,6 +690,17 @@ if ($list_id_ct != NULL) {
 					if(validate == 1){
 						sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("incomplete"); ?>", "error");
 						validate = 0;
+						$("#first_name-error").removeClass("hide");
+						$("#last_name-error").removeClass("hide");
+						$("#first_name").addClass("error");
+						$("#last_name").addClass("error");
+						$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("update"); ?>");
+						$('#submit_edit_form').prop("disabled", false);
+					}else{
+						$("#first_name-error").addClass("hide");
+						$("#last_name-error").addClass("hide");
+						$("#first_name").removeClass("error");
+						$("#last_name").removeClass("error");
 					}
 				
 				});

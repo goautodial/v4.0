@@ -157,10 +157,17 @@ $user_id = $_POST['user_id'];
 	$postfields["country_code"] 	= $country; 
 	$postfields["date_of_birth"] 	= $date_of_birth; 
 	$postfields["title"] 	= $title; 
-	$postfields["status"] 	= $dispo; 
+	$postfields["status"] 	= $dispo;
 	
-	$postfields["is_customer"]		= ($is_customer) ? 1 : 0;
-	$postfields["user_id"]		= $user_id;
+	$postfields["avatar"] = "";
+	
+	if($is_customer === "true")
+		$is_customer = 1;
+	else
+		$is_customer = 0;
+	
+	$postfields["is_customer"]	= $is_customer;
+	$postfields["user_id"] = $user_id;
 	
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["log_user"] = $_POST['log_user'];
@@ -179,9 +186,9 @@ $user_id = $_POST['user_id'];
     $output = json_decode($data);
     
 	// return result
-	
+	//var_dump($output);
 	if ($output->result == "success") {
-		echo 1;
+		echo $output->result;
 	}else{
 		echo $output->result;
 	}

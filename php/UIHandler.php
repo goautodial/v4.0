@@ -6471,30 +6471,67 @@ error_reporting(E_ERROR | E_PARSE);
 	
 	public function getAgentLog($user, $session_user, $sdate, $edate) {
 		$output = $this->API_getAgentLog($user, $session_user, $sdate, $edate);
+		//var_dump($output);
 		if($output->result=="success") {
 			$columns = array($this->lh->translationFor('event_time'), $this->lh->translationFor('status'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'), $this->lh->translationFor('list_id'), $this->lh->translationFor('lead_id'), $this->lh->translationFor('term_reason'));
 			$hideOnMedium = array();
 			$hideOnLow = array( );
-			$result = $this->generateTableHeaderWithItems($columns, "table_stats", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			$outbound = $this->generateTableHeaderWithItems($columns, "table_outbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
-			for($i=0;$i < count($output->campaign_id);$i++){
-				$result .= '<tr>
-								<td>' .$output->event_time[$i]. '</a></td>
-								<td>' .$output->status[$i].'</td>
-								<td>' .$output->phone_number[$i].'</td>
-								<td>' .$output->campaign_id[$i].'</td>
-								<td>' .$output->user_group[$i].'</td>
-								<td>' .$output->list_id[$i].'</td>
-								<td>' .$output->lead_id[$i].'</td>
-								<td>' .$output->term_reason[$i].'</td>
+			for($i=0;$i < count($output->outbound->campaign_id);$i++){
+				$outbound .= '<tr>
+								<td>' .$output->outbound->event_time[$i]. '</a></td>
+								<td>' .$output->outbound->status[$i].'</td>
+								<td>' .$output->outbound->phone_number[$i].'</td>
+								<td>' .$output->outbound->campaign_id[$i].'</td>
+								<td>' .$output->outbound->user_group[$i].'</td>
+								<td>' .$output->outbound->list_id[$i].'</td>
+								<td>' .$output->outbound->lead_id[$i].'</td>
+								<td>' .$output->outbound->term_reason[$i].'</td>
 							</tr>';
 			}
-			$result .= "</table>";
+			$outbound .= "</table>";
+			
+			$columns = array($this->lh->translationFor('event_time'), $this->lh->translationFor('status'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'), $this->lh->translationFor('list_id'), $this->lh->translationFor('lead_id'), $this->lh->translationFor('term_reason'));
+			$hideOnMedium = array();
+			$hideOnLow = array( );
+			$inbound = $this->generateTableHeaderWithItems($columns, "table_inbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			
+			for($i=0;$i < count($output->inbound->campaign_id);$i++){
+				$inbound .= '<tr>
+								<td>' .$output->inbound->call_date[$i]. '</a></td>
+								<td>' .$output->inbound->queue_seconds[$i].'</td>
+								<td>' .$output->inbound->status[$i].'</td>
+								<td>' .$output->inbound->campaign_id[$i].'</td>
+								<td>' .$output->inbound->user_group[$i].'</td>
+								<td>' .$output->inbound->list_id[$i].'</td>
+								<td>' .$output->inbound->lead_id[$i].'</td>
+								<td>' .$output->inbound->term_reason[$i].'</td>
+							</tr>';
+			}
+			$inbound .= "</table>";
+			
+			$columns = array($this->lh->translationFor('event_time'), $this->lh->translationFor('event'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'));
+			$hideOnMedium = array();
+			$hideOnLow = array( );
+			$userlog = $this->generateTableHeaderWithItems($columns, "table_userstat", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			
+			for($i=0;$i < count($output->userlog->user_log_id);$i++){
+				$userlog .= '<tr>
+								<td>' .$output->userlog->event_date[$i]. '</a></td>
+								<td>' .$output->userlog->event[$i].'</td>
+								<td>' .$output->userlog->campaign_id[$i].'</td>
+								<td>' .$output->userlog->user_group[$i].'</td>
+							</tr>';
+			}
+			$userlog .= "</table>";
+			
+			$result = array($outbound, $inbound, $userlog);
 		}else{
-			$result = $output->result;
+			$result = "";
 		}
 		
-		return $result;
+		return json_encode($result);
 	}
 }
 
