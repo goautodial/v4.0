@@ -637,7 +637,7 @@ error_reporting(E_ALL)
 							<!--<img src="img/avatars/demian_avatar.jpg" name="aboutme" width="160" height="160" border="0" class="img-circle">-->
 							<h3 class="media-heading"><span id="modal-fullname"></span> <small></small></h3>
 							<span><strong><?=$lh->translateText("logged_into")?>:</strong></span> 
-							<span class="label label-warning" id="modal-phonelogin-vu"></span> 
+							<span class="label label-warning" id="modal-phonelogin-vu"></span>
 							<span class="label label-info" id="modal-campaign"></span> 
 							<!-- <span class="label label-info" id="modal-userlevel-vu"></span> -->
 							<span class="label label-success" id="modal-usergroup-vu"></span>
@@ -659,6 +659,8 @@ error_reporting(E_ALL)
 						</div>
 					</div>
 					<div class="modal-footer">
+						<input type="hidden" id="phone_login" />
+						<input type="hidden" id="phone_pass" />
 						<a href="#" class="pull-right" onClick="goGetModalUsernameValue();">
 							<button class="btn btn-danger btn-sm"><?=$lh->translateText("emergency_logout")?> &nbsp;<i class="fa fa-arrow-right"></i></button>
 						</a>
@@ -1095,6 +1097,9 @@ function goGetModalUsernameValue(){
 }
 
 function goGetInSession(type) {
+	var phone_login = $('#phone_login').val();
+	var phone_pass = $('#phone_pass').val();
+	//console.log(phone_login);
 	if (phone_login.length > 0 && phone_pass.length > 0) {
 		var use_webrtc = <?=($_SESSION['use_webrtc'] ? $_SESSION['use_webrtc'] : 0)?>;
 		if (use_webrtc) {
@@ -1143,7 +1148,7 @@ function goGetInSession(type) {
 				if ((use_webrtc && phone.isConnected()) || !use_webrtc) {
 					$.ajax({
 						type: 'POST',
-						url: '<?=$goAPI?>/goBarging/goAPI.php',
+						url: './php/BargeListen.php',
 						processData: true,
 						data: postData,
 						dataType: "json",
@@ -1249,7 +1254,8 @@ function goGetInSession(type) {
 								$('#modal-conf-exten').html(JSONObject.data[0].vla_conf_exten);
 								$('#modal-server-ip').html(JSONObject.data[0].vla_server_ip);
 								//$('#modal-campaign_cid').html(JSONObject.data[0].campaign_cid);
-								
+								$('#phone_login').val(JSONObject.data[0].vu_phone_login);
+								$('#phone_pass').val(JSONObject.data[0].vu_phone_pass);
 								var avatar = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" :size="160"></avatar>';
 								$('#modal-avatar').html(avatar);
 								goAvatar._init(goOptions);
