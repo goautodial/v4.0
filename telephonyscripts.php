@@ -35,11 +35,13 @@
 
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-
+        
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-
+        
+        <script src="js/plugins/ckeditor/styles.js" type="text/javascript"></script>
+		<script src="js/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
     </head>
 
      <?php print $ui->creamyBody(); ?>
@@ -259,11 +261,14 @@
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
-									<div class="col-sm-2">&nbsp;</div>
-									<div class="col-sm-9">
+									<<!-- div class="col-sm-2">&nbsp;</div> -->
+									<div class="col-sm-12">
 										<div class="panel">
 											<div class="panel-body">
-												<textarea rows="5" class="form-control note-editor" id="script_text" name="script_text" required></textarea>
+												<!-- <textarea rows="5" class="form-control textarea" id="script_text" name="script_text" required></textarea> -->
+												<div class="box-body pad">
+									                <textarea rows="5" class="form-control" id="script_text" name="script_text" required></textarea>
+									            </div>
 											</div>
 										</div>
 									</div>
@@ -283,8 +288,14 @@
   		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 	
 <script>
+	// function wysihtml5(){
+	// 	$(".textarea").wysihtml5();
+	// }
 	$(document).ready(function(){
-		
+		$('#scripts-modal').on('shown.bs.modal', function(){
+	        // $('.textarea').wysihtml5();
+	        CKEDITOR.replace('script_text');
+	    });
 		/*******************
 		** INITIALIZATIONS
 		*******************/

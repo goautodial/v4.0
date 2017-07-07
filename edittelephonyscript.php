@@ -40,7 +40,8 @@
         <?php print $ui->standardizedThemeCSS();?>
 
         <?php print $ui->creamyThemeCSS(); ?>
-
+        <script src="js/plugins/ckeditor/styles.js" type="text/javascript"></script>
+		<script src="js/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
     </head>
     <style>
     	select{
@@ -312,7 +313,15 @@
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 		
-
+		<script>
+	  	$(function () {
+		    // Replace the <textarea id="editor1"> with a CKEditor
+		    // instance, using default configuration.
+		    CKEDITOR.replace('script_text');
+		    //bootstrap WYSIHTML5 - text editor
+		    // $(".textarea").wysihtml5();
+		  });
+		</script>
 		<script language="javascript" type="text/javascript">
 			$(document).ready(function() {
 				
