@@ -335,12 +335,12 @@
 			 	$('#modifyOkButton').click(function(){
 			 		$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 					$('#modifyOkButton').prop("disabled", true);
-					
 					$.ajax({
                         url: "./php/ModifyScript.php",
                         type: 'POST',
-                        data: $("#modifyform").serialize(),
+                        data: $("#modifyform").serialize() + '&script_text_value=' + CKEDITOR.instances['script_text'].getData(),
                         success: function(data) {
+                        	// console.log(data);
 							$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 	                        $('#modifyOkButton').prop("disabled", false);
 							

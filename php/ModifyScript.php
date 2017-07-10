@@ -19,8 +19,9 @@ require_once('goCRMAPISettings.php');
         }
 
         $script_text = NULL; if (isset($_POST["script_text"])) { 
-                $script_text = $_POST["script_text"]; 
-                $script_text = stripslashes($script_text);
+                $script_text = $_POST["script_text_value"]; 
+                // $script_text = $_POST["script_text"]; 
+                //$script_text = stripslashes($script_text);
         }
 
         $active = NULL; if (isset($_POST["active"])) { 
@@ -61,7 +62,7 @@ require_once('goCRMAPISettings.php');
          $output = json_decode($data);
         
 //      print_r($data);
-
+         // print_r($output->result); die;
         if ($output->result=="success") {
            # Result was OK!
                 echo "success";  
