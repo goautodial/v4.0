@@ -3874,7 +3874,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
-		$postfields["user_group"] = $_SESSION['usergroup'];
+		$postfields["session_user"] = $_SESSION['user'];
 	    $postfields["responsetype"] = responsetype; #json. (required)
 
 	    $ch = curl_init();
@@ -5703,7 +5703,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goVarLimit"] = "500";
 	}
 
-	$postfields["user_id"] = $userName;
+	$postfields["user"] = $userName;
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
 	$postfields["search"] = $search;
