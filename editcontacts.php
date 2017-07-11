@@ -19,6 +19,11 @@ $lead_id = $_POST['modifyid'];
 $output = $ui->API_GetLeadInfo($lead_id);
 $list_id_ct = $output->data->list_id;
 
+if($output->result !== "success"){
+	die($output->result);
+}
+
+
 if ($list_id_ct != NULL) {
 	$first_name 	= $output->data->first_name;
 	$middle_initial 	= $output->data->middle_initial;

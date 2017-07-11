@@ -6116,7 +6116,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetUserGroupInfo"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["agent_id"] = $group; #json. (required)
+		$postfields["user_group"] = $group; #json. (required)
 		
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);

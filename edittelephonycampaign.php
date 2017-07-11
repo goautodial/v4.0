@@ -439,6 +439,21 @@ $audiofiles = $ui->API_getListAudioFiles();
 											</div>-->
 										<?php } elseif($campaign->campaign_type == "BLENDED") { ?>
 											<div class="form-group">
+												<label class="col-sm-3 control-label"><?php $lh->translateText("minimum_hopper_level"); ?>:</label>
+												<div class="col-sm-9 mb">
+													<select class="form-control" id="hopper_level" name="hopper_level">
+														<?php
+														$hopper_level = array (1, 5, 10, 20, 50, 100, 200, 500, 700, 1000, 2000);
+														foreach ($hopper_level as $level) {
+															$selectThis = '';
+															if ($level == $campaign->data->hopper_level) { $selectThis = 'selected'; }
+															echo '<option value="'.$level.'" '.$selectThis.'>'.$level.'</option>';
+														}
+														?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
 												<label class="col-sm-3 control-label"><?php $lh->translateText("phone_numbers_did/ftn_on_this_campaign"); ?>:</label>
 												<span class="col-sm-9 control-label" style="text-align: left; vertical-align: top;">
 													<?php if(count($dids->did_id) != 0) {?>

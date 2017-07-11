@@ -82,7 +82,7 @@ if (isset($_POST["usergroup_id"])) {
 				        $postfields["goPass"] = goPass; #Password goes here. (required)
 				        $postfields["goAction"] = "goGetUserGroupInfo"; #action performed by the [[API:Functions]]. (required)
 				        $postfields["responsetype"] = responsetype; #json. (required)
-				        $postfields["agent_id"] = $usergroup_id; #Desired exten ID. (required)
+				        $postfields["user_group"] = $usergroup_id; #Desired exten ID. (required)
 						$postfields["log_user"] = $_SESSION['user'];
 						$postfields["log_group"] = $_SESSION['usergroup'];
 						$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
