@@ -146,6 +146,9 @@
 	 * API used for display in tables
 	 */
 	$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
+	if($campaign->result !== "success"){
+		die("API ERROR: ".$campaign->result);
+	}
 	$disposition = $ui->API_getAllDispositions("custom");
 	$leadfilter = $ui->API_getAllLeadFilters();
 	$country_codes = $ui->getCountryCodes();

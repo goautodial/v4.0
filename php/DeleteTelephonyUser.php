@@ -41,6 +41,7 @@ if ($validated == 1) {
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["user_id"] = $userid; #Desired User ID. (required)
 	$postfields["action"] = $action;
+	$postfields["session_user"] = $_POST['log_user'];
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	
 	$postfields["log_user"]		= $_POST["log_user"];

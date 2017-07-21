@@ -726,24 +726,24 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 															}else{
 																$after_hours_action .= '<option value="HANGUP" > HANGUP </option>';
 															}
-		
+															
 															if($output->data->after_hours_action == "EXTENSION"){
 																$after_hours_action .= '<option value="EXTENSION" selected> EXTENSION </option>';
 															}else{
 																$after_hours_action .= '<option value="EXTENSION" > EXTENSION </option>';
 															}
-		
+															
 															if($output->data->after_hours_action == "VOICEMAIL"){
 																$after_hours_action .= '<option value="VOICEMAIL" selected> VOICEMAIL </option>';
 															}else{
 																$after_hours_action .= '<option value="VOICEMAIL" > VOICEMAIL </option>';
 															}
-															/*
+															
 															if($output->data->after_hours_action == "IN_GROUP"){
 																$after_hours_action .= '<option value="IN_GROUP" selected> IN_GROUP </option>';
 															}else{
 																$after_hours_action .= '<option value="IN_GROUP" > IN_GROUP </option>';
-															}*/
+															}
 													echo $after_hours_action;
 													?>
 												</select>
@@ -977,7 +977,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 															<label for="no_agents_callmenu" class="col-sm-4 control-label"><?php $lh->translateText("call_menu"); ?> </label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_callmenu" name="no_agents_callmenu" value="<?php if($output->data->no_agents_callmenu == NULL)echo ""; else echo $output->data->no_agents_callmenu;?>">
+																	<input type="text" class="form-control" id="no_agents_callmenu" name="no_agents_callmenu" value="<?php if($output->data->no_agent_action_value == NULL)echo ""; else echo $output->data->no_agent_action_value;?>">
 																	<span class="input-group-btn">
 																		<button class="btn btn-default show_no_agents_callmenu" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 																	</span>

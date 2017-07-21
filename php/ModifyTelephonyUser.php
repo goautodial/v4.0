@@ -124,6 +124,7 @@ if ($validated == 1) {
     $postfields["hotkeys_active"] = $hotkeys_active;
 	$postfields["agent_lead_search_override"] = $agent_lead_search_override;
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["session_user"] = $_POST['log_user'];
 	
     $postfields["log_user"] = $_POST['log_user'];
     $postfields["log_group"] = $_POST['log_group'];

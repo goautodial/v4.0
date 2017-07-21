@@ -948,6 +948,7 @@ auto_generated = "Auto-generated"
 leads_count = "Leads Count"
 list_name = "List Name"
 list_description = "List Description"
+drop_inbound_group_override = "Drop Inbound Group Override"
 
 copy_custom_wizard = "Copy Custom Fields Wizard"
 copy_from_list_id = "List ID to copy Fields from"
