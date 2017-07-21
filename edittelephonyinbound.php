@@ -1674,9 +1674,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("audio_file"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="select2-2 form-control select2" name="option_hangup_value[]" style="width:100%;">
-																			<option value=""> <?php $lh->translateText("-none-"); ?> </option>
+																			<option value="vm-goodbye"> <?php $lh->translateText("vm-goodbye"); ?> </option>
 																		<?php
-																			if($ivr_options->option_route_value[$i] == "vm-goodbye"){echo '<option value="vm-goodbye" selected> vm-goodbye </option>';}
+																			//if($ivr_options->option_route_value[$i] == "vm-goodbye"){echo '<option value="vm-goodbye" selected> vm-goodbye </option>';}
 																			$hangup_option = '';
 																			for($x=0;$x<count($voicefiles->file_name);$x++){
 																				$file = substr($voicefiles->file_name[$x], 0, -4);
