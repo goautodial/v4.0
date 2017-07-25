@@ -1412,6 +1412,9 @@ $(document).ready(function() {
                                     } else if (key == 'callback_statuses_list') {
                                         $.globalEval(key+" = '"+value+"';");
                                         $.globalEval("VARCBstatusesLIST = '"+value+"';");
+                                    } else if (key == 'custom_fields_launch') {
+                                        console.log('custom_fields_launch = '+value);
+                                        $.globalEval(key+" = '"+value+"';");
                                     } else {
                                         $.globalEval(key+" = '"+value+"';");
                                     }
