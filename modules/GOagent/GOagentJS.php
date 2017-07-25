@@ -1413,7 +1413,8 @@ $(document).ready(function() {
                                         $.globalEval(key+" = '"+value+"';");
                                         $.globalEval("VARCBstatusesLIST = '"+value+"';");
                                     } else if (key == 'custom_fields_launch') {
-                                        console.log('custom_fields_launch = '+value);
+                                        $.globalEval(key+" = '"+value+"';");
+                                    } else if (key == 'custom_fields_list_id') {
                                         $.globalEval(key+" = '"+value+"';");
                                     } else {
                                         $.globalEval(key+" = '"+value+"';");
