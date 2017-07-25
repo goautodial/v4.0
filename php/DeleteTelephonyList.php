@@ -28,6 +28,7 @@ if ($validated == 1) {
     $postfields["list_id"] = $listid; #Desired User ID. (required)
 	$postfields["action"] = $action; 
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["session_user"] = $_POST['log_user'];
 	$postfields["log_user"] = $_POST['log_user'];
 	$postfields["log_group"] = $_POST['log_group'];
     

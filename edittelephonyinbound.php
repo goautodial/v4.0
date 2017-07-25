@@ -680,7 +680,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 											</div>
 											<div class="form-group">
 												<label for="onhold_prompt_filename" class="col-sm-4 control-label"><?php $lh->translateText("on_hold_prompt_filename"); ?></label>
-												<div class="col-sm-8 mb mb">
+												<div class="col-sm-8 mb">
 													<div class="input-group">
 														<input type="text" class="form-control" id="onhold_prompt_filename" name="onhold_prompt_filename" value="<?php if($output->data->onhold_prompt_filename == NULL)echo "generic_hold"; else echo $output->data->onhold_prompt_filename;?>">
 														<span class="input-group-btn">
@@ -726,20 +726,25 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 															}else{
 																$after_hours_action .= '<option value="HANGUP" > HANGUP </option>';
 															}
-		
+															
 															if($output->data->after_hours_action == "EXTENSION"){
 																$after_hours_action .= '<option value="EXTENSION" selected> EXTENSION </option>';
 															}else{
 																$after_hours_action .= '<option value="EXTENSION" > EXTENSION </option>';
 															}
-		
+															
 															if($output->data->after_hours_action == "VOICEMAIL"){
 																$after_hours_action .= '<option value="VOICEMAIL" selected> VOICEMAIL </option>';
 															}else{
 																$after_hours_action .= '<option value="VOICEMAIL" > VOICEMAIL </option>';
 															}
-															/*
-															if($output->data->after_hours_action == "IN_GROUP"){
+															
+															if($output->data->after_hours_action == "CALLMENU"){
+																$after_hours_action .= '<option value="CALLMENU" selected> CALLMENU </option>';
+															}else{
+																$after_hours_action .= '<option value="CALLMENU" > CALLMENU </option>';
+															}
+															/*if($output->data->after_hours_action == "IN_GROUP"){
 																$after_hours_action .= '<option value="IN_GROUP" selected> IN_GROUP </option>';
 															}else{
 																$after_hours_action .= '<option value="IN_GROUP" > IN_GROUP </option>';
@@ -749,8 +754,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												</select>
 											</div>
 										</div>
-										<div class="form-group">
-											<label for="after_hours_exten" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_message_filename"); ?></label>
+										<div class="after_hours after_hours_message_filename form-group" <?php if($output->data->after_hours_action != "MESSAGE"){ ?>style="display:none;"<?php }?>>
+											<label for="after_hours_message_filename" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_message_filename"); ?></label>
 											<div class="col-sm-8 mb">
 												<div class="input-group">
 													<input type="text" class="form-control" id="after_hours_message_filename" name="after_hours_message_filename" value="<?php if($output->data->after_hours_message_filename == NULL)echo "vm-goodbye"; else echo $output->data->after_hours_message_filename;?>">
@@ -775,15 +780,17 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														?>
 													</select>
 												</div>
+												<br/>
 											</div>
 										</div>
-										<div class="form-group">
-												<label for="after_hours_exten" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_extension"); ?></label>
-												<div class="col-sm-8 mb">
-													<input type="number" class="form-control" name="after_hours_exten" id="after_hours_exten" value="<?php if($output->data->after_hours_exten != NULL)echo $output->data->after_hours_exten; else echo "8300";?>" />
-												</div>
+										<div class="after_hours after_hours_exten form-group" <?php if($output->data->after_hours_action != "EXTENSION"){ ?>style="display:none;"<?php }?>>
+											<label for="after_hours_exten" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_extension"); ?></label>
+											<div class="col-sm-8 mb">
+												<input type="number" class="form-control" name="after_hours_exten" id="after_hours_exten" value="<?php if($output->data->after_hours_exten != NULL)echo $output->data->after_hours_exten; else echo "8300";?>" />
+											<br/>
 											</div>
-										<div class="form-group">
+										</div>
+										<div class="after_hours after_hours_voicemail form-group" <?php if($output->data->after_hours_action != "VOICEMAIL"){ ?>style="display:none;"<?php }?>>
 											<label for="after_hours_voicemail" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_voicemail"); ?></label>
 											<div class="col-sm-8 mb">
 												<div class="input-group">
@@ -811,8 +818,36 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<br/>
 											</div>
 										</div>
+										<div class="after_hours after_hours_callmenu form-group" <?php if($output->data->after_hours_action != "CALLMENU"){ ?>style="display:none;"<?php }?>>
+											<label for="after_hours_callmenu" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_callmenu"); ?> </label>
+											<div class="col-sm-8 mb">
+												<div class="input-group">
+													<input type="text" class="form-control" id="after_hours_callmenu" name="after_hours_callmenu" value="<?php if($output->data->after_hours_callmenu == NULL)echo ""; else echo $output->data->after_hours_callmenu;?>">
+													<span class="input-group-btn">
+														<button class="btn btn-default show_after_hours_callmenu" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
+													</span>
+												</div><!-- /input-group -->
+												<div class="row col-sm-12 select_after_hours_callmenu">
+													<select class="form-control select2-2" id="select_after_hours_callmenu" style="width:100%;">
+														<option value=""><?php $lh->translateText("-none-"); ?></option>
+														<?php
+															$no_agents_callmenu = NULL;
+																for($x=0; $x < count($call_menu->menu_id);$x++){
+																	if($output->data->after_hours_callmenu == $call_menu->menu_id[$x]){
+																		$no_agents_callmenu .= '<option value="'.$call_menu->menu_id[$x].'" selected> '.$call_menu->menu_id[$x].' - '.$call_menu->menu_name[$x].' </option>';
+																	}else{
+																		$no_agents_callmenu .= '<option value="'.$call_menu->menu_id[$x].'"> '.$call_menu->menu_id[$x].' - '.$call_menu->menu_name[$x].' </option>';
+																	}
+																}
+															echo $no_agents_callmenu;
+														?>
+													</select>
+												</div>
+												<br/>
+											</div>
+										</div><!-- /. callmenu -->
 										
-							       			<div class="form-group">
+							       			<div class="form-group mt">
 							       				<label for="no_agent_no_queue" class="col-sm-4 control-label"><?php $lh->translateText("accept_calls_when_no_available_agent"); ?></label>
 							       				<div class="col-sm-8 mb">
 												<select class="form-control" id="no_agent_no_queue" name="no_agent_no_queue">
@@ -977,7 +1012,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 															<label for="no_agents_callmenu" class="col-sm-4 control-label"><?php $lh->translateText("call_menu"); ?> </label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_callmenu" name="no_agents_callmenu" value="<?php if($output->data->no_agents_callmenu == NULL)echo ""; else echo $output->data->no_agents_callmenu;?>">
+																	<input type="text" class="form-control" id="no_agents_callmenu" name="no_agents_callmenu" value="<?php if($output->data->no_agent_action_value == NULL)echo ""; else echo $output->data->no_agent_action_value;?>">
 																	<span class="input-group-btn">
 																		<button class="btn btn-default show_no_agents_callmenu" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 																	</span>
@@ -1639,9 +1674,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("audio_file"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="select2-2 form-control select2" name="option_hangup_value[]" style="width:100%;">
-																			<option value=""> <?php $lh->translateText("-none-"); ?> </option>
+																			<option value="vm-goodbye"> <?php $lh->translateText("vm-goodbye"); ?> </option>
 																		<?php
-																			if($ivr_options->option_route_value[$i] == "vm-goodbye"){echo '<option value="vm-goodbye" selected> vm-goodbye </option>';}
+																			//if($ivr_options->option_route_value[$i] == "vm-goodbye"){echo '<option value="vm-goodbye" selected> vm-goodbye </option>';}
 																			$hangup_option = '';
 																			for($x=0;$x<count($voicefiles->file_name);$x++){
 																				$file = substr($voicefiles->file_name[$x], 0, -4);
@@ -2361,7 +2396,27 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					}
 					
 				});
-	
+				
+			//no_agent_action
+				$(document).on("change","#after_hours_action",function() {
+					if(this.value == "VOICEMAIL") {
+						$('.after_hours').hide();
+						$('.after_hours_voicemail').show();
+					}else if(this.value == "MESSAGE") {
+						$('.after_hours').hide();
+						$('.after_hours_message_filename').show();
+					}else if(this.value == "EXTENSION") {
+						$('.after_hours').hide();
+						$('.after_hours_exten').show();
+					}else if(this.value == "CALLMENU") {
+						$('.after_hours').hide();
+						$('.after_hours_callmenu').show();
+					}else{
+						$('.after_hours').hide();
+					}
+					
+				});
+				
 			// on tab change hide footer
 				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 				  var target = $(e.target).attr("href"); // activated tab
@@ -2387,13 +2442,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
                         data: $("#modifyingroup").serialize(),
                         success: function(data) {
                           //if message is sent
+							$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
+							$('#modifyInboundOkButton').prop("disabled", false);
 							if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-								swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("inbound_update_success"); ?>", "success");
-								window.setTimeout(function(){location.replace("./telephonyinbound.php");},2000);
+								swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("inbound_update_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 							} else {
 								sweetAlert("<?php $lh->translateText("oups"); ?>","<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
-								$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
-								$('#modifyInboundOkButton').prop("disabled", false);
 							}
                         }
                     });	
@@ -2569,7 +2623,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.select_no_agents_ingroup').toggle('hide');
 					});
 				$('.select_no_agents_callmenu').hide();
-					$('.show_no_agents_callmenu').on('click', function(event) {
+					$('.show_no_agents_callmenu').on('click', function() {
 						 $('.select_no_agents_callmenu').toggle('show');
 					});
 					$(document).on('change', '#select_no_agents_callmenu',function(){
@@ -2577,7 +2631,15 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('#no_agents_callmenu').val(val);
 						$('.select_no_agents_callmenu').toggle('hide');
 					});
-				
+				$('.select_after_hours_callmenu').hide();
+					$('.show_after_hours_callmenu').on('click', function() {
+						 $('.select_after_hours_callmenu').toggle('show');
+					});
+					$(document).on('change', '#select_after_hours_callmenu',function(){
+						var val = $(this).val();
+						$('#after_hours_callmenu').val(val);
+						$('.select_after_hours_callmenu').toggle('hide');
+					});
 			// IVR
 				$(document).on('change', '.route_option',function(){
 					//alert(this.value);

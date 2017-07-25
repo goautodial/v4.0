@@ -118,6 +118,10 @@ if ($groupid != NULL) {
 		$after_hours_message_filename = $_POST["after_hours_message_filename"]; 
 		$after_hours_message_filename = stripslashes($after_hours_message_filename);
 	}
+	$after_hours_callmenu = NULL; if (isset($_POST["after_hours_callmenu"])) { 
+		$after_hours_callmenu = $_POST["after_hours_callmenu"]; 
+		$after_hours_callmenu = stripslashes($after_hours_callmenu);
+	}
 	/*$afterhours_xfer_group = NULL; if (isset($_POST["afterhours_xfer_group"])) { 
 		$afterhours_xfer_group = $_POST["afterhours_xfer_group"]; 
 		$afterhours_xfer_group = stripslashes($afterhours_xfer_group);
@@ -195,6 +199,8 @@ if ($groupid != NULL) {
     $postfields["after_hours_voicemail"] = $after_hours_voicemail; 
     $postfields["after_hours_exten"] = $after_hours_exten;
 	$postfields["after_hours_message_filename"] = $after_hours_message_filename;
+	$postfields["after_hours_callmenu"] = $after_hours_callmenu;
+	
     //$postfields["afterhours_xfer_group"] = $afterhours_xfer_group; 
     $postfields["get_call_launch"] = $get_call_launch; 
     $postfields["no_agent_no_queue"] = $no_agent_no_queue; 

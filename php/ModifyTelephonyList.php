@@ -113,6 +113,7 @@ if ($validated == 1) {
 	$postfields["drop_inbound_group_override"] = $drop_inbound_group_override;
 	$postfields["campaign_cid_override"] = $campaign_cid_override;
 	$postfields["web_form_address"] = $web_form;
+	$postfields["session_user"] = $_POST['log_user'];
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["log_user"] = $_POST['log_user'];
 	$postfields["log_group"] = $_POST['log_group'];

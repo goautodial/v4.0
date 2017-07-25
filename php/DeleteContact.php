@@ -21,6 +21,7 @@ if ($validated == 1) {
     $postfields["goAction"] = "goDeleteLead"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
     $postfields["lead_id"] = $leadid; #Desired User ID. (required)
+	$postfields["session_user"] = $_POST['log_user'];
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["log_user"] = $_POST['log_user'];
 	$postfields["log_group"] = $_POST['log_group'];

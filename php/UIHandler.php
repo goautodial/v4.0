@@ -3875,6 +3875,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
 		$postfields["user_group"] = $_SESSION['usergroup'];
+		$postfields["session_user"] = $_SESSION['user'];
 	    $postfields["responsetype"] = responsetype; #json. (required)
 
 	    $ch = curl_init();
@@ -3916,6 +3917,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goAction"] = "getCampaignInfo"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["campaign_id"] = $campid; #Desired campaign id. (required)
+		$postfields["session_user"] = $_SESSION['user'];
 		$postfields["log_user"] = $_SESSION['user'];
 		$postfields["log_group"] = $_SESSION['usergroup'];
 		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
@@ -4789,17 +4791,17 @@ error_reporting(E_ERROR | E_PARSE);
         $postfields["goAction"] = "getAllDispositions"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
         $postfields["custom_request"] = $custom;
-
-         $ch = curl_init();
-         curl_setopt($ch, CURLOPT_URL, $url);
-         curl_setopt($ch, CURLOPT_POST, 1);
-         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-         $data = curl_exec($ch);
-         curl_close($ch);
-         $output = json_decode($data);
+		$postfields["session_user"] = $_SESSION["user"];
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
 
 		//var_dump($output->status);
 		return $output;
@@ -4857,17 +4859,16 @@ error_reporting(E_ERROR | E_PARSE);
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getAllLeadFilters"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
-         $ch = curl_init();
-         curl_setopt($ch, CURLOPT_URL, $url);
-         curl_setopt($ch, CURLOPT_POST, 1);
-         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-         $data = curl_exec($ch);
-         curl_close($ch);
-         $output = json_decode($data);
-
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
 		//var_dump($data);
 		return $output;
 	}
@@ -5703,7 +5704,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goVarLimit"] = "500";
 	}
 
-	$postfields["user_id"] = $userName;
+	$postfields["user"] = $userName;
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
 	$postfields["search"] = $search;

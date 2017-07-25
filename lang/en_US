@@ -948,6 +948,7 @@ auto_generated = "Auto-generated"
 leads_count = "Leads Count"
 list_name = "List Name"
 list_description = "List Description"
+drop_inbound_group_override = "Drop Inbound Group Override"
 
 copy_custom_wizard = "Copy Custom Fields Wizard"
 copy_from_list_id = "List ID to copy Fields from"
@@ -1069,6 +1070,7 @@ after_hours_action = "After Hours Action"
 after_hours_message_filename = "After Hours Message Filename"
 after_hours_extension = "After Hours Extension"
 after_hours_voicemail = "After Hours Voicemail"
+after_hours_callmenu = "After Hours Callmenu"
 accept_calls_when_no_available_agent = "Accept Calls when there are No Available Agents?"
 no_available_agent_routing = "No Available Agent Routing"
 selected = "Selected"
@@ -1099,7 +1101,8 @@ time = "Time"
 route = "Route"
 
 //  AUDIOFILES
-	
+
+audio_file = "Audio File"
 voicefiles = "Voicefiles"
 voice_playback = "Voice Files Playback"
 upload_voice_file = "Upload Voice Files"

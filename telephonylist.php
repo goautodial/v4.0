@@ -249,7 +249,7 @@
 											<table class="table table-striped table-bordered table-hover" id="table_lists">
 												<thead>
 													<tr>
-													<th style="color: white;">Pic</th>
+													<!--<th style="color: white;">Pic</th>-->
 													<?php if ($perm->list->list_delete !== 'N'){ ?>
 													<th><?php echo $checkbox_all;?></th>
 													<?php } ?>
@@ -277,7 +277,7 @@
 												$checkbox = '<label for="'.$lists->list_id[$i].'"><div class="checkbox c-checkbox"><label><input name="" class="check_list" id="'.$lists->list_id[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
 												?>
 												<tr>
-												<td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>
+												<!--<td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>-->
 												<?php if ($perm->list->list_delete !== 'N'){ ?>
 												<td style="width:10%;"><?php echo $checkbox;?></td>
 												<?php } ?>
@@ -706,16 +706,16 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						"aoColumnDefs": [{
 							"bSearchable": false,
 							<?php if($perm->list->list_delete !== 'N'){?>
-							"aTargets": [ 0, 1, 8 ]
-							<?php }else{ ?>
 							"aTargets": [ 0, 7 ]
+							<?php }else{ ?>
+							"aTargets": [ 0, 6 ]
 							<?php } ?>
 						},{
 							"bSortable": false,
 							<?php if($perm->list->list_delete !== 'N'){?>
-							"aTargets": [ 0, 1, 8 ]
-							<?php }else{ ?>
 							"aTargets": [ 0, 7 ]
+							<?php }else{ ?>
+							"aTargets": [ 0, 6 ]
 							<?php } ?>
 						}]
 					});

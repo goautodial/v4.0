@@ -224,7 +224,7 @@ $scripts = $ui->API_goGetAllScripts($_SESSION['user']);
 										</div>
 									</div>
 									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;"></label>
+										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("drop_inbound_group_override"); ?></label>
 										<div class="col-lg-9">
 											<select name="drop_inbound_group_override" class="form-control">
 												<option value="NONE">NONE</option>
