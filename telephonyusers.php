@@ -513,7 +513,7 @@
 					<h4 class="modal-title animated bounceInRight">
 						<div class="col-sm-12 col-md-8">
 							<i class="fa fa-info-circle" title="<?php $lh->translateText("agentlog_desc"); ?>"></i> 
-							<b><?php $lh->translateText("agent_log"); ?> </b>
+							<b><?php $lh->translateText("agent_log"); ?>  </b>
 						</div>
 						<div class="col-sm-12 col-md-4 row" id="daterange">
 							<div class="col-sm-12">
@@ -537,7 +537,7 @@
 					<br/>
 					<div class="box">
 						<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("Agent Log"); ?>">
-						  <em class="glyphicon glyphicon-user pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("Agent Log"); ?></h3>
+						  <em class="glyphicon glyphicon-user pull-left"></em><h3 class="box-title pull-left"> <span id="user_container"></span></h3>
 						</div>
 						<div class="box-body table-responsive">
 							<div class="report-loader" style="color:lightgray; display:none;">
@@ -845,9 +845,11 @@
 				$(".user_stats").html("");
 				$("#daterange_input").val("");
 				var userid = $(this).attr('data-user');
+				var username = $(this).attr('data-name');
 				$('#stats-modal').modal('toggle');
 				$("#user_agentlog").val(userid);
-				
+				$('#user_container').html(userid + " - " + username);
+
 				$('#daterange_input').daterangepicker({
 					"opens": "left"
 				}, function(start, end, label) {
@@ -877,7 +879,7 @@
 								$('#table_outbound').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
 								$('#table_inbound').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
 								$('#table_userstat').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
-							
+								//$('#user_container').html(data[3]);
 							}else{
 								$('#user_stats').html("<?php $lh->translateText("no_data"); ?>");
 							}
