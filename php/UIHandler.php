@@ -1060,7 +1060,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
 	                    <li'.($perm->user_update === 'N' ? ' class="hidden"' : '').'><a class="edit-T_user" href="#" data-id="'.$userid.'" data-user="'.$current_user.'"  data-role="'.$role.'">'.$this->lh->translationFor("modify").'</a></li>
-						<li'.($perm->user_view === 'N' ? ' class="hidden"' : '').'><a class="view-stats" href="#" data-user="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("agent_log").'</a></li>
+						<li'.($perm->user_view === 'N' ? ' class="hidden"' : '').'><a class="view-stats" href="#" data-user="'.$user.'">'.$this->lh->translationFor("agent_log").'</a></li>
 	                    <li><a class="emergency-logout" href="#" data-emergency-logout-username="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("emergency_logout").'</a></li>
 	                    <li class="divider'.($perm->user_delete === 'N' ? ' hidden' : '').'"></li>
 	                    <li'.($perm->user_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
@@ -3875,6 +3875,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
 	    $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
 		$postfields["user_group"] = $_SESSION['usergroup'];
+		$postfields["session_user"] = $_SESSION['user'];
 	    $postfields["responsetype"] = responsetype; #json. (required)
 
 	    $ch = curl_init();
@@ -3916,6 +3917,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goAction"] = "getCampaignInfo"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["campaign_id"] = $campid; #Desired campaign id. (required)
+		$postfields["session_user"] = $_SESSION['user'];
 		$postfields["log_user"] = $_SESSION['user'];
 		$postfields["log_group"] = $_SESSION['usergroup'];
 		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
@@ -4789,17 +4791,17 @@ error_reporting(E_ERROR | E_PARSE);
         $postfields["goAction"] = "getAllDispositions"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
         $postfields["custom_request"] = $custom;
-
-         $ch = curl_init();
-         curl_setopt($ch, CURLOPT_URL, $url);
-         curl_setopt($ch, CURLOPT_POST, 1);
-         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-         $data = curl_exec($ch);
-         curl_close($ch);
-         $output = json_decode($data);
+		$postfields["session_user"] = $_SESSION["user"];
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
 
 		//var_dump($output->status);
 		return $output;
@@ -4857,17 +4859,16 @@ error_reporting(E_ERROR | E_PARSE);
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getAllLeadFilters"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
-         $ch = curl_init();
-         curl_setopt($ch, CURLOPT_URL, $url);
-         curl_setopt($ch, CURLOPT_POST, 1);
-         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-         $data = curl_exec($ch);
-         curl_close($ch);
-         $output = json_decode($data);
-
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
 		//var_dump($data);
 		return $output;
 	}
@@ -5703,7 +5704,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goVarLimit"] = "500";
 	}
 
-	$postfields["user_id"] = $userName;
+	$postfields["user"] = $userName;
 	$postfields["goAction"] = "goGetLeads"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype; #json. (required)
 	$postfields["search"] = $search;
@@ -6116,7 +6117,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetUserGroupInfo"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["agent_id"] = $group; #json. (required)
+		$postfields["user_group"] = $group; #json. (required)
 		
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);
@@ -6532,32 +6533,6 @@ error_reporting(E_ERROR | E_PARSE);
 		}
 		
 		return json_encode($result);
-	}
-
-	// Getting all Standard Fields
-	public function API_getAllStandardFields(){
-        $url = gourl."/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass;
-		$postfields["goAction"] = "goGetStandardFields"; #action performed by the [[API:Functions]]
-		$postfields["responsetype"] = responsetype;
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
-
-		if($output->result == "success"){
-			return $output->field_name;
-		}else{
-			return "EMPTY";
-		}
 	}
 }
 

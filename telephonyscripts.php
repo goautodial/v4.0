@@ -45,9 +45,7 @@
     </head>
 
      <?php print $ui->creamyBody(); ?>
-     <?php 
-     	$standard_fields = $ui->API_getAllStandardFields();
-     ?>
+
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
@@ -186,9 +184,75 @@
 														<button type="button" class="btn btn-default" onClick="addtext();"><?php $lh->translateText("insert"); ?></button>
 													</span>
 													<select class="form-control" name="script_text_dropdown" id="script_text_dropdown">
-														<?php foreach($standard_fields as $sf) { ?>
-															<option value="--A--<?php echo $sf; ?>--B-- "><?php echo $sf; ?></option>
-														<?php } ?>
+														<option value="--A--fullname--B-- ">Agent Name</option>
+														<option value="--A--vendor_lead_code--B-- ">vendor_lead_code</option>
+														<option value="--A--source_id--B-- ">source_id</option>
+														<option value="--A--list_id--B-- ">list_id</option>
+														<option value="--A--gmt_offset_now--B-- ">gmt_offset_now</option>
+														<option value="--A--called_since_last_reset--B-- ">called_since_last_reset</option>
+														<option value="--A--phone_code--B-- ">phone_code</option>
+														<option value="--A--phone_number--B-- ">phone_number</option>
+														<option value="--A--title--B-- ">title</option>
+														<option value="--A--first_name--B-- ">first_name</option>
+														<option value="--A--middle_initial--B-- ">middle_initial</option>
+														<option value="--A--last_name--B-- ">last_name</option>
+														<option value="--A--address1--B-- ">address1</option>
+														<option value="--A--address2--B-- ">address2</option>
+														<option value="--A--address3--B-- ">address3</option>
+														<option value="--A--city--B-- ">city</option>
+														<option value="--A--state--B-- ">state</option>
+														<option value="--A--province--B-- ">province</option>
+														<option value="--A--postal_code--B-- ">postal_code</option>
+														<option value="--A--country_code--B-- ">country_code</option>
+														<option value="--A--gender--B-- ">gender</option>
+														<option value="--A--date_of_birth--B-- ">date_of_birth</option>
+														<option value="--A--alt_phone--B-- ">alt_phone</option>
+														<option value="--A--email--B-- ">email</option>
+														<option value="--A--security_phrase--B-- ">security_phrase</option>
+														<option value="--A--comments--B-- ">comments</option>
+														<option value="--A--lead_id--B-- ">lead_id</option>
+														<option value="--A--campaign--B-- ">campaign</option>
+														<option value="--A--phone_login--B-- ">phone_login</option>
+														<option value="--A--group--B-- ">group</option>
+														<option value="--A--channel_group--B-- ">channel_group</option>
+														<option value="--A--SQLdate--B-- ">SQLdate</option>
+														<option value="--A--epoch--B-- ">epoch</option>
+														<option value="--A--uniqueid--B-- ">uniqueid</option>
+														<option value="--A--customer_zap_channel--B-- ">customer_zap_channel</option>
+														<option value="--A--server_ip--B-- ">server_ip</option>
+														<option value="--A--SIPexten--B-- ">SIPexten</option>
+														<option value="--A--session_id--B-- ">session_id</option>
+														<option value="--A--dialed_number--B-- ">dialed_number</option>
+														<option value="--A--dialed_label--B-- ">dialed_label</option>
+														<option value="--A--rank--B-- ">rank</option>
+														<option value="--A--owner--B-- ">owner</option>
+														<option value="--A--camp_script--B-- ">camp_script</option>
+														<option value="--A--in_script--B-- ">in_script</option>
+														<option value="--A--script_width--B-- ">script_width</option>
+														<option value="--A--script_height--B-- ">script_height</option>
+														<option value="--A--recording_filename--B-- ">recording_filename</option>
+														<option value="--A--recording_id--B-- ">recording_id</option>
+														<option value="--A--user_custom_one--B-- ">user_custom_one</option>
+														<option value="--A--user_custom_two--B-- ">user_custom_two</option>
+														<option value="--A--user_custom_three--B-- ">user_custom_three</option>
+														<option value="--A--user_custom_four--B-- ">user_custom_four</option>
+														<option value="--A--user_custom_five--B-- ">user_custom_five</option>
+														<option value="--A--preset_number_a--B-- ">preset_number_a</option>
+														<option value="--A--preset_number_b--B-- ">preset_number_b</option>
+														<option value="--A--preset_number_c--B-- ">preset_number_c</option>
+														<option value="--A--preset_number_d--B-- ">preset_number_d</option>
+														<option value="--A--preset_number_e--B-- ">preset_number_e</option>
+														<option value="--A--preset_number_f--B-- ">preset_number_f</option>
+														<option value="--A--preset_dtmf_a--B-- ">preset_dtmf_a</option>
+														<option value="--A--preset_dtmf_b--B-- ">preset_dtmf_b</option>
+														<option value="--A--did_id--B-- ">did_id</option>
+														<option value="--A--did_extension--B-- ">did_extension</option>
+														<option value="--A--did_pattern--B-- ">did_pattern</option>
+														<option value="--A--did_description--B-- ">did_description</option>
+														<option value="--A--closecallid--B-- ">closecallid</option>
+														<option value="--A--xfercallid--B-- ">xfercallid</option>
+														<option value="--A--agent_log_id--B-- ">agent_log_id</option>
+														<option value="--A--entry_list_id--B-- ">entry_list_id</option>
 													</select>
 												</div>
 											</div>
@@ -197,7 +261,7 @@
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
-									<!-- div class="col-sm-2">&nbsp;</div> -->
+									<<!-- div class="col-sm-2">&nbsp;</div> -->
 									<div class="col-sm-12">
 										<div class="panel">
 											<div class="panel-body">
@@ -295,7 +359,7 @@
 						$.ajax({
 							url: "./php/AddScript.php",
 							type: 'POST',
-							data: $("#create_form").serialize() + '&script_text_value=' + CKEDITOR.instances['script_text'].getData(),
+							data: $("#create_form").serialize(),
 							success: function(data) {
 								// console.log(data);
 								$('#finish').text("<?php $lh->translateText("submit"); ?>");
