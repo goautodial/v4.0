@@ -11,12 +11,12 @@ $pageTitle = $_POST['pageTitle'];
 $log_user = $_POST['log_user'];
 $log_group = $_POST['log_group'];
 		
-		$url = gourl."/goReports/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "goGetReports"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["session_user"] = $_SESSION['user']; #current user
+		$url = gourl."/goReports/goAPI.php"; //URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; //Username goes here. (required)
+		$postfields["goPass"] = goPass; //Password goes here. (required)
+		$postfields["goAction"] = "goGetReports"; //action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; //json. (required)
+		$postfields["session_user"] = $_SESSION['user']; //current user
 		$postfields["log_user"] = $log_user;
 		$postfields["log_group"] = $log_group;
 		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
@@ -92,10 +92,22 @@ if($output->result == "success"){
 			        </thead>
 			        <tbody>
 			';
-
+//var_dump($output->getReports->TOPsorted_output);
 			if($output->getReports->TOPsorted_output != NULL){
-				for($i=0; $i <= count($output->getReports->TOPsorted_output); $i++){
-			    	$agent_detail .= $output->getReports->TOPsorted_output[$i];
+				//var_dump($output->getReports->TOPsorted_output[$i]->name);
+				for($i=0; $i < count($output->getReports->TOPsorted_output); $i++){
+			    	$agent_detail .= '<tr>
+			    						<td nowrap>'.$output->getReports->TOPsorted_output[$i]->name.'</td>
+			    						<td nowrap>'.$output->getReports->TOPsorted_output[$i]->user.'</td>
+			    						<td nowrap>'.$output->getReports->TOPsorted_output[$i]->number_of_calls.'</td>
+			    						<td nowrap>'.$output->getReports->TOPsorted_output[$i]->agent_time.'</td>
+			    						<td nowrap>'.$output->getReports->TOPsorted_output[$i]->wait_time.'</td>
+			    						<td nowrap>'.$output->getReports->TOPsorted_output[$i]->talk_time.'</td>
+			    						<td nowrap>'.$output->getReports->TOPsorted_output[$i]->dispo_time.'</td>
+			    						<td nowrap>'.$output->getReports->TOPsorted_output[$i]->pause_time.'</td>
+			    						<td nowrap>'.$output->getReports->TOPsorted_output[$i]->wrap_up.'</td>
+			    						<td nowrap>'.$output->getReports->TOPsorted_output[$i]->customer_time.'</td>
+			    					</tr>';
 			    }
 			}else{
 				$agent_detail .= "";
@@ -105,15 +117,15 @@ if($output->result == "success"){
 
 		    if($output->getReports->TOTcalls != NULL){
 			   		$agent_detail .= '<tfoot><tr class="warning"><th nowrap> Total </th>';
-					    $agent_detail .= $output->getReports->TOT_AGENTS;
+					    $agent_detail .= '<th nowrap>'.$output->getReports->TOT_AGENTS.'</th>';
 					    $agent_detail .= '<th nowrap>'.$output->getReports->TOTcalls.'</th>';
-					    $agent_detail .= $output->getReports->TOTALtime;
-					    $agent_detail .= $output->getReports->TOTwait;
-					    $agent_detail .= $output->getReports->TOTtalk;
-					    $agent_detail .= $output->getReports->TOTdispo;
-					    $agent_detail .= $output->getReports->TOTpause;
-					    $agent_detail .= $output->getReports->TOTdead;
-					    $agent_detail .= $output->getReports->TOTcustomer;
+					    $agent_detail .= '<th nowrap>'.$output->getReports->TOTALtime.'</th>';
+					    $agent_detail .= '<th nowrap>'.$output->getReports->TOTwait.'</th>';
+					    $agent_detail .= '<th nowrap>'.$output->getReports->TOTtalk.'</th>';
+					    $agent_detail .= '<th nowrap>'.$output->getReports->TOTdispo.'</th>';
+					    $agent_detail .= '<th nowrap>'.$output->getReports->TOTpause.'</th>';
+					    $agent_detail .= '<th nowrap>'.$output->getReports->TOTdead.'</th>';
+					    $agent_detail .= '<th nowrap>'.$output->getReports->TOTcustomer.'</th>';
 					$agent_detail .= '</tr></tfoot>';
 				}
 
@@ -126,8 +138,13 @@ if($output->result == "success"){
 					<table class="table table-striped table-bordered table-hover" id="agent_detail_login">
 						<thead>
 							<tr>
-								<th nowrap> &nbsp </th>';
-					            $agent_detail .= $output->getReports->sub_statusesTOP;
+								<th nowrap> User </th>';
+								//var_dump($output->getReports->sub_statusesTOP);
+						for($i=0; $i < count($output->getReports->sub_statusesTOP); $i++){
+							//$Hstatuses = explode(",", $output->getReports->sub_statusesTOP[$i]);
+							$agent_detail .= '<th nowrap>'.$output->getReports->sub_statusesTOP[$i].'</th>';
+						}
+					           // $agent_detail .= $output->getReports->sub_statusesTOP;
 				
 				$agent_detail .= '</tr>
 				        </thead>
@@ -135,8 +152,16 @@ if($output->result == "success"){
 				';
 
 				if($output->getReports->BOTsorted_output != NULL){
-					for($i=0; $i <= count($output->getReports->BOTsorted_output); $i++){
-				    	$agent_detail .= $output->getReports->BOTsorted_output[$i];
+					for($i=0; $i < count($output->getReports->BOTsorted_output); $i++){
+						$statuses = explode(",", $output->getReports->BOTsorted_output[$i]->statuses);
+						$agent_detail .= '<tr>
+			    						<td nowrap>'.$output->getReports->BOTsorted_output[$i]->name.'</td>';
+			    					for($a=0; $a < count($statuses); $a++){
+			    						$agent_detail .= '<td nowrap>'.$statuses[$a].'</td>';
+			    					}
+			    					'</tr>';
+			    		unset($statuses);
+				    	//$agent_detail .= $output->getReports->BOTsorted_output[$i];
 				    }
 				}else{
 					$agent_detail .= "";
@@ -144,11 +169,13 @@ if($output->result == "success"){
 		   		
 		   		$agent_detail .= '</tbody>';
 
-		   		if($output->getReports->SUMstatuses != NULL){
-			   		$agent_detail .= '<tfoot><tr class="warning"><th nowrap> Total </th>';
-					    $agent_detail .= $output->getReports->SUMstatuses;
-					$agent_detail .= '</tr></tfoot>';
-				}
+		    		if($output->getReports->SUMstatuses != NULL){
+			    		$agent_detail .= '<tfoot><tr class="warning"><th nowrap> Total </th>';
+			    		for($i=0; $i < count($output->getReports->SUMstatuses); $i++){
+				 	    	$agent_detail .= '<th nowrap>'.$output->getReports->SUMstatuses[$i].'</th>';
+				 	    }
+				 		$agent_detail .= '</tr></tfoot>';
+				 	}
 
 				$agent_detail .= '</table></div><br/>'; 
 
@@ -1028,12 +1055,13 @@ if($output->result == "success"){
 // EXPORT CALL REPORT	
 	if ($pageTitle == "call_export_report"){
 		// GET CAMPAIGNS
-			$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = goUser; #Username goes here. (required)
-			$postfields["goPass"] = goPass; #Password goes here. (required)
-			$postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
-			$postfields["responsetype"] = responsetype; #json. (required)
+			$url = gourl."/goCampaigns/goAPI.php"; //URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; //Username goes here. (required)
+			$postfields["goPass"] = goPass; //Password goes here. (required)
+			$postfields["goAction"] = "getAllCampaigns"; //action performed by the [[API:Functions]]. (required)
+			$postfields["responsetype"] = responsetype; //json. (required)
 			$postfields["user_group"] = $_SESSION['usergroup'];
+			$postfields["session_user"] = $_SESSION['user']; //current user
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -1045,12 +1073,13 @@ if($output->result == "success"){
 			$campaigns = json_decode($data);
 		
 		// GET INBOUND GROUPS
-			$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = goUser; #Username goes here. (required)
-			$postfields["goPass"] = goPass; #Password goes here. (required)
-			$postfields["goAction"] = "goGetAllInboundList"; #action performed by the [[API:Functions]]. (required)
-			$postfields["responsetype"] = responsetype; #json. (required)
+			$url = gourl."/goInbound/goAPI.php"; //URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; //Username goes here. (required)
+			$postfields["goPass"] = goPass; //Password goes here. (required)
+			$postfields["goAction"] = "goGetAllInboundList"; //action performed by the [[API:Functions]]. (required)
+			$postfields["responsetype"] = responsetype; //json. (required)
 			$postfields["user_group"] = $_SESSION['usergroup'];
+			$postfields["session_user"] = $_SESSION['user']; //current user
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -1062,12 +1091,13 @@ if($output->result == "success"){
 			$inbound = json_decode($data);
 		
 		// GET LISTS
-			$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = goUser; #Username goes here. (required)
-			$postfields["goPass"] = goPass; #Password goes here. (required)
-			$postfields["goAction"] = "goGetAllLists"; #action performed by the [[API:Functions]]. (required)
-			$postfields["responsetype"] = responsetype; #json. (required)
+			$url = gourl."/goLists/goAPI.php"; //URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; //Username goes here. (required)
+			$postfields["goPass"] = goPass; //Password goes here. (required)
+			$postfields["goAction"] = "goGetAllLists"; //action performed by the [[API:Functions]]. (required)
+			$postfields["responsetype"] = responsetype; //json. (required)
 			$postfields["user_group"] = $_SESSION['usergroup'];
+			$postfields["session_user"] = $_SESSION['user']; //current user
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -1079,11 +1109,11 @@ if($output->result == "success"){
 			$list = json_decode($data);
 			
 		// GET STATUSES
-			$url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
-			$postfields["goUser"] = goUser; #Username goes here. (required)
-			$postfields["goPass"] = goPass; #Password goes here. (required)
-			$postfields["goAction"] = "getAllDispositions"; #action performed by the [[API:Functions]]. (required)
-			$postfields["responsetype"] = responsetype; #json. (required)
+			$url = gourl."/goDispositions/goAPI.php"; //URL to GoAutoDial API. (required)
+			$postfields["goUser"] = goUser; //Username goes here. (required)
+			$postfields["goPass"] = goPass; //Password goes here. (required)
+			$postfields["goAction"] = "getAllDispositions"; //action performed by the [[API:Functions]]. (required)
+			$postfields["responsetype"] = responsetype; //json. (required)
 	
 			 $ch = curl_init();
 			 curl_setopt($ch, CURLOPT_URL, $url);
