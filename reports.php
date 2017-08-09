@@ -133,6 +133,8 @@ if($output->result == "success"){
 
 
 	    // login table
+			
+			
 		    if($output->getReports->sub_statusesTOP != NULL){
 			    $agent_detail .= '<div class="table-responsive">
 					<table class="table table-striped table-bordered table-hover" id="agent_detail_login">
@@ -155,11 +157,14 @@ if($output->result == "success"){
 					for($i=0; $i < count($output->getReports->BOTsorted_output); $i++){
 						$statuses = explode(",", $output->getReports->BOTsorted_output[$i]->statuses);
 						$agent_detail .= '<tr>
-			    						<td nowrap>'.$output->getReports->BOTsorted_output[$i]->name.'</td>';
-			    					for($a=0; $a < count($statuses); $a++){
-			    						$agent_detail .= '<td nowrap>'.$statuses[$a].'</td>';
-			    					}
-			    					'</tr>';
+				    						<td nowrap>'.$output->getReports->BOTsorted_output[$i]->name.'</td>';
+					    					for($a=0; $a < count($output->getReports->sub_statusesTOP); $a++){
+					    						if(!empty($statuses[$a]))
+					    							$agent_detail .= '<td nowrap>'.$statuses[$a].'</td>';
+					    						else
+					    							$agent_detail .= '<td nowrap>00:00:00</td>';
+					    					}
+				    					'</tr>';
 			    		unset($statuses);
 				    	//$agent_detail .= $output->getReports->BOTsorted_output[$i];
 				    }
@@ -168,7 +173,7 @@ if($output->result == "success"){
 				}
 		   		
 		   		$agent_detail .= '</tbody>';
-
+				
 		    		if($output->getReports->SUMstatuses != NULL){
 			    		$agent_detail .= '<tfoot><tr class="warning"><th nowrap> Total </th>';
 			    		for($i=0; $i < count($output->getReports->SUMstatuses); $i++){
@@ -178,9 +183,9 @@ if($output->result == "success"){
 				 	}
 
 				$agent_detail .= '</table></div><br/>'; 
-
+			
 			}
-
+			
 	    echo $agent_detail; // return for agent details
 
 	}// end of agent_detail
