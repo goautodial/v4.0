@@ -295,7 +295,7 @@
 						$.ajax({
 							url: "./php/AddScript.php",
 							type: 'POST',
-							data: $("#create_form").serialize(),
+							data: $("#create_form").serialize() + '&script_text_value=' + CKEDITOR.instances['script_text'].getData(),
 							success: function(data) {
 								// console.log(data);
 								$('#finish').text("<?php $lh->translateText("submit"); ?>");
