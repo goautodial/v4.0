@@ -210,7 +210,7 @@
 					<div class="col-sm-11">
 						<div class="panel">
 							<div class="panel-body">
-								<textarea rows="14" class="form-control note-editor" id="script_text" name="script_text"><?php echo $output->script_text[$i];?></textarea>
+								<textarea rows="14" class="form-control note-editor" id="script_text" name="script_text"><?php echo str_replace('Â', '', htmlspecialchars_decode($output->script_text, ENT_QUOTES));?></textarea>
 							</div>
 						</div>
 					</div>
@@ -254,14 +254,14 @@
 	  	$(function () {
 		    // Replace the <textarea id="editor1"> with a CKEditor
 		    // instance, using default configuration.
-		    CKEDITOR.replace('script_text');
+		    // CKEDITOR.replace('script_text');
 		    //bootstrap WYSIHTML5 - text editor
 		    // $(".textarea").wysihtml5();
 		  });
 		</script>
 		<script language="javascript" type="text/javascript">
 			$(document).ready(function() {
-				
+				CKEDITOR.replace('script_text');
 				$(document).on('click', '#cancel', function(){
 					sweetAlert({title: "<?php $lh->translateText("cancelled"); ?>",text: "<?php $lh->translateText("cancel_msg"); ?>", type: "error"}, function(){window.location.href = 'telephonyscripts.php';});
 				});
