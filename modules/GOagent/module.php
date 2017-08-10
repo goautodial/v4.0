@@ -156,7 +156,7 @@ class GOagent extends Module {
 		$send = $this->lh()->translationFor('send');
 		$sendDTMF = $this->lh()->translationFor('send_dtmf');
 		$hangupXferLine = $this->lh()->translationFor('hangup_xfer_line');
-		$hangupBotnLine = $this->lh()->translationFor('hangup_both_line');
+		$hangupBothLine = $this->lh()->translationFor('hangup_both_line');
 		$leave3wayCall = $this->lh()->translationFor('leave_3way_call');
 		$blindTransfer = $this->lh()->translationFor('blind_transfer');
 		$dialWithCustomer = $this->lh()->translationFor('dial_with_customer');
