@@ -336,7 +336,22 @@
 										
 										if($("#filter_type").val() == "agent_detail"){
 											var title = "<?php $lh->translateText("agent_detail"); ?>";
-											$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+											$('#agent_detail_top').dataTable(
+                                            {
+                                                dom: 'Bfrtip',
+                                                buttons: [
+                                                    {
+                                                        text: 'Export Agent Time Detail',
+                                                        action: function ( ) {
+                                                            console.log("Exporting...");
+                                                            $( "#export_agentdetail_form" ).submit();
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                            //{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
+                                        );
+                                            //$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
 										}
 										if($("#filter_type").val() == "agent_pdetail"){
 											var title = "<?php $lh->translateText("agent_pdetail"); ?>";
@@ -428,7 +443,22 @@
 	
 										if($("#filter_type").val() == "agent_detail"){
 											var title = "<?php $lh->translateText("agent_detail"); ?>";
-											$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+											$('#agent_detail_top').dataTable(
+                                            {
+                                                dom: 'Bfrtip',
+                                                buttons: [
+                                                    {
+                                                        text: 'Export Agent Time Detail',
+                                                        action: function ( ) {
+                                                            console.log("Exporting...");
+                                                            $( "#export_agentdetail_form" ).submit();
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                            //{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
+                                        );
+                                            //$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
 										}
 										if($("#filter_type").val() == "agent_pdetail"){
 											var title = "<?php $lh->translateText("agent_pdetail"); ?>";
@@ -554,7 +584,22 @@
 
                                     if($("#filter_type").val() == "agent_detail"){
 										var title = "<?php $lh->translateText("agent_detail"); ?>";
-                                        $('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+                                        $('#agent_detail_top').dataTable(
+                                            {
+                                                dom: 'Bfrtip',
+                                                buttons: [
+                                                    {
+                                                        text: 'Export Agent Time Detail',
+                                                        action: function ( ) {
+                                                            console.log("Exporting...");
+                                                            $( "#export_agentdetail_form" ).submit();
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                            //{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
+                                        );
+                                        //$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
                                         //$('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
                                     }
                                     if($("#filter_type").val() == "agent_pdetail"){
@@ -647,8 +692,23 @@
                                     }
                                     if($("#filter_type").val() == "agent_detail"){
 										var title = "<?php $lh->translateText("agent_detail"); ?>";
-                                        $('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+                                        $('#agent_detail_top').dataTable(
+                                            {
+                                                dom: 'Bfrtip',
+                                                buttons: [
+                                                    {
+                                                        text: 'Export Agent Time Detail',
+                                                        action: function ( ) {
+                                                            console.log("Exporting...");
+                                                            $( "#export_agentdetail_form" ).submit();
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                            //{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
+                                        );
+                                        //$('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+                                        
                                         $('.request_div').hide();
 										$('.campaign_div').show();
 										$('.ingroup_div').hide();
@@ -765,8 +825,23 @@
                                     }
                                     if($("#filter_type").val() == "agent_detail"){
 										var title = "<?php $lh->translateText("agent_detail"); ?>";
-                                        $('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+                                        $('#agent_detail_top').dataTable(
+                                            {
+                                                dom: 'Bfrtip',
+                                                buttons: [
+                                                    {
+                                                        text: 'Export Agent Time Detail',
+                                                        action: function ( ) {
+                                                            console.log("Exporting...");
+                                                            $( "#export_agentdetail_form" ).submit();
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                            //{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
+                                        );
+                                        //$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+                                        //$('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
                                         $('.request_div').hide();
 										$('.campaign_div').show();
 										$('.ingroup_div').hide();
@@ -884,8 +959,23 @@
                                     }
                                     if($("#filter_type").val() == "agent_detail"){
 										var title = "<?php $lh->translateText("agent_detail"); ?>";
-                                        $('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+                                        $('#agent_detail_top').dataTable(
+                                            {
+                                                dom: 'Bfrtip',
+                                                buttons: [
+                                                    {
+                                                        text: 'Export Agent Time Detail',
+                                                        action: function ( ) {
+                                                            console.log("Exporting...");
+                                                            $( "#export_agentdetail_form" ).submit();
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                            //{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
+                                        );
+                                        //$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+                                        //$('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
                                         $('.request_div').hide();
 										$('.campaign_div').show();
 										$('.ingroup_div').hide();

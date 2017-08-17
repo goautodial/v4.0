@@ -92,7 +92,7 @@ if($output->result == "success"){
 			        </thead>
 			        <tbody>
 			';
-//var_dump($output->getReports->TOPsorted_output);
+
 			if($output->getReports->TOPsorted_output != NULL){
 				//var_dump($output->getReports->TOPsorted_output[$i]->name);
 				for($i=0; $i < count($output->getReports->TOPsorted_output); $i++){
@@ -131,10 +131,7 @@ if($output->result == "success"){
 
 			$agent_detail .= '</table></div><br/>'; 
 
-
 	    // login table
-			
-			
 		    if($output->getReports->sub_statusesTOP != NULL){
 			    $agent_detail .= '<div class="table-responsive">
 					<table class="table table-striped table-bordered table-hover" id="agent_detail_login">
@@ -185,7 +182,16 @@ if($output->result == "success"){
 				$agent_detail .= '</table></div><br/>'; 
 			
 			}
-			
+		
+		//FORM TO BE PASSED WHEN EXPORT IS CALLED
+		$agent_detail .= '<form action="php/ExportAgentDetails.php" id="export_agentdetail_form"  method="POST">
+                            <input type="hidden" name="pageTitle" value="'.$pageTitle.'" />
+                            <input type="hidden" name="fromDate" value="'.$fromDate.'" />
+                            <input type="hidden" name="toDate" value="'.$toDate.'" />
+                            <input type="hidden" name="campaignID" value="'.$_POST["campaignID"].'" />
+                            <input type="hidden" name="session_user" value="'.$_SESSION["user"].'" />
+                        </form>';
+
 	    echo $agent_detail; // return for agent details
 
 	}// end of agent_detail

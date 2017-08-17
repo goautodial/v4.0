@@ -1,13 +1,13 @@
 <?php
 
-	###########################################################
-	### Name: edittelephonyuser.php 	       ###
-	### Functions: Edit Users 		   ###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016		   ###
-	### Version: 4.0 		   ###
-	### Written by: Alexander Abenoja & Noel Umandap		   ###
-	### License: AGPLv2		   ###
-	###########################################################
+	/****************************************************
+	* Name: edittelephonyuser.php 						*
+	* Functions: Edit Users 							*
+	* Copyright: GOAutoDial Ltd. (c) 2011-2016 			*
+	* Version: 4.0 										*
+	* Written by: Alexander Abenoja & Noel Umandap 		*
+	* License: AGPLv2 									*
+	****************************************************/
 
 	require_once('./php/CRMDefaults.php');
 	require_once('./php/UIHandler.php');
