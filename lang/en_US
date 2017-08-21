@@ -1436,5 +1436,7 @@ manual = "MANUAL"
 adapt_tapered = "ADAPT_TAPERED"
 inbound_man = "INBOUND_MAN"
 
+dynamic_cid = "Dynamic Caller ID"
+
 omit_phone_code = "Omit Phone Code"
 agent_lead_search_override = "Agent Lead Search Override"
