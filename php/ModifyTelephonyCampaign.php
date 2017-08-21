@@ -73,6 +73,8 @@
 	$postfields["omit_phone_code"]				= $_POST["omit_phone_code"];
 	$postfields["alt_number_dialing"]			= $_POST["alt_number_dialing"];
 	
+	$postfields["dynamic_cid"]					= $_POST["dynamic_cid"];
+	
 	$postfields["survey_first_audio_file"] 		= (isset($_POST["survey_first_audio_file"]))? $_POST["survey_first_audio_file"] : "";
 	$postfields["survey_method"] 				= (isset($_POST["survey_method"]))? $_POST["survey_method"] : "";
 	$postfields["survey_menu_id"] 				= (isset($_POST["survey_menu_id"]))? $_POST["survey_menu_id"] : "";

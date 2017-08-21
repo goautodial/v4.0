@@ -562,6 +562,15 @@ $audiofiles = $ui->API_getListAudioFiles();
 															<input type="text" class="form-control" placeholder="Enter URL (eg. https://www.goautodial.com, URL must be served over HTTPS)" value="<?php if(!empty($campaign->url_tab_second_url)){echo $campaign->url_tab_second_url;}?>" id="url_tab_second_url" name="url_tab_second_url">
 														</div>
 													</div>
+													<div class="form-group">
+														<label class="col-sm-3 control-label"><?php $lh->translateText("dynamic_cid"); ?>:</label>
+														<div class="col-sm-9 mb">
+															<select class="form-control" id="dynamic_cid" name="dynamic_cid">
+																<option value="N" <?php if($campaign->dynamic_cid == "N") echo "selected";?>>DISABLED</option>
+																<option value="Y" <?php if($campaign->dynamic_cid == "Y") echo "selected";?>>ENABLED</option>
+															</select>
+														</div>
+													</div>
 													<?php } ?>
 													<?php if($campaign->campaign_type == "OUTBOUND") { ?>
 														<div class="form-group" style="margin-bottom: 10px;">
