@@ -4877,6 +4877,10 @@ function SendManualDial(taskFromConf) {
         toggleButton('DialWithCustomer', 'off');
 
         toggleButton('ParkCustomerDial', 'off');
+        
+        toggleButton('Leave3WayCall', 'on');
+
+        toggleButton('HangupBothLines', 'on');
 
         var manual_number = $(".formXFER input[name='xfernumber']").val();
         var manual_number_hidden = $(".formXFER input[name='xfernumhidden']").val();
@@ -5307,7 +5311,7 @@ function DispoSelectSubmit() {
     toggleButton('ParkCustomerDial', 'on');
     toggleButton('HangupBothLines', 'on');
 
-    var DispoChoice = $("#DispoSelection").val();
+    var DispoChoice = $("#DispoSelection").val().toString();
 
     if (DispoChoice.length < 1) {
      	swal("<?=$lh->translationFor('must_select_disposition')?>.");
