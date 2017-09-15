@@ -44,7 +44,7 @@ $moduleURL = "https://".$_SERVER['SERVER_NAME']."/";
 				contact_uri         : null,
 				authorization_user  : null,
 				instance_id         : null,
-				session_timers      : true,
+				session_timers      : false,
 				use_preloaded_route : false,
 				pcConfig            :
 				{
