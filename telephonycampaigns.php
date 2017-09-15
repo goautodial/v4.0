@@ -18,6 +18,7 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	$perm = $ui->goGetPermissions('campaign,disposition,pausecodes,hotkeys,list', $_SESSION['usergroup']);
+	$gopackage = $ui->API_getGOPackage();
 ?>
 <html>
     <head>
@@ -450,10 +451,16 @@
 				    				<div class="col-lg-8 mb">
 				    					<select id="campaignType" name="campaign_type" class="form-control">
 				    						<option value="outbound"><?php $lh->translateText("outbound"); ?></option>
+				    						<?php
+				    							if($gopackage->packagetype !== "gosmall"){
+				    						?>
 				    						<option value="inbound"><?php $lh->translateText("inbound"); ?></option>
 				    						<option value="blended"><?php $lh->translateText("blended"); ?></option>
 				    						<option value="survey"><?php $lh->translateText("survey"); ?></option>
 				    						<option value="copy"><?php $lh->translateText("copy_from_campaign"); ?></option>
+				    						<?php
+				    							}
+				    						?>
 				    					</select>
 				    				</div>
 				    			</div>

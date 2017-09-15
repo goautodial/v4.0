@@ -1875,6 +1875,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$numNotifications = $this->db->getNumberOfTodayNotifications($userid) + $this->db->getNumberOfTodayEvents($userid);
 		$mh = \creamy\ModuleHandler::getInstance();
 		$smtp_status = $this->API_getSMTPActivation(); // smtp_status
+		$gopackage = $this->API_getGOPackage(); // smtp_status
 		
 		$usergroup = (!isset($usergroup) ? $_SESSION['usergroup'] : $usergroup);
 		$perms = $this->goGetPermissions('sidebar', $usergroup);
@@ -1911,7 +1912,7 @@ error_reporting(E_ERROR | E_PARSE);
 				$telephonyArea .= $this-> getSidebarItem("./telephonylist.php", "list", $this->lh->translationFor("lists"));
 			if ($perms->script->script_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "comment", $this->lh->translationFor("scripts"));
-			if ($perms->inbound->inbound_read == 'R')
+			if ($perms->inbound->inbound_read == 'R' && $gopackage->packagetype !== "gosmall")
 				$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
 			if ($perms->voicefiles->voicefiles_upload == 'C') {
 				$telephonyArea .= $this-> getSidebarItem("./audiofiles.php", "music", $this->lh->translationFor("audiofiles"));
@@ -1927,6 +1928,7 @@ error_reporting(E_ERROR | E_PARSE);
 			//$settings .= $this-> getSidebarItem("./settingssystemsettings.php", "gear", $this->lh->translationFor("system_settings"));
 			$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
 			$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
+			if ($gopackage->show_carrier_settings === "Y")
 			$settings .= $this-> getSidebarItem("./settingscarriers.php", "signal", $this->lh->translationFor("carriers"));
 			$settings .= $this-> getSidebarItem("./settingsservers.php", "server", $this->lh->translationFor("servers"));
 			$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "book", $this->lh->translationFor("admin_logs"));
@@ -6559,6 +6561,28 @@ error_reporting(E_ERROR | E_PARSE);
 		}else{
 			return "EMPTY";
 		}
+	}
+
+	public function API_getGOPackage(){
+		$url = gourl."/goPackages/goAPI.php"; //URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; //Username goes here. (required)
+		$postfields["goPass"] = goPass; //Password goes here. (required)
+		$postfields["goAction"] = "goGetPackage"; //action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; //json. (required)
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+		
+		return $output;
+		
 	}
 }
 
