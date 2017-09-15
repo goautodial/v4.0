@@ -452,7 +452,7 @@
 				    					<select id="campaignType" name="campaign_type" class="form-control">
 				    						<option value="outbound"><?php $lh->translateText("outbound"); ?></option>
 				    						<?php
-				    							if($gopackage->packagetype !== "gosmall"){
+				    							if($gopackage->packagetype !== "gosmall" || ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") ){
 				    						?>
 				    						<option value="inbound"><?php $lh->translateText("inbound"); ?></option>
 				    						<option value="blended"><?php $lh->translateText("blended"); ?></option>

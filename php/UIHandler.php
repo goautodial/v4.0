@@ -1912,7 +1912,7 @@ error_reporting(E_ERROR | E_PARSE);
 				$telephonyArea .= $this-> getSidebarItem("./telephonylist.php", "list", $this->lh->translationFor("lists"));
 			if ($perms->script->script_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "comment", $this->lh->translationFor("scripts"));
-			if ($perms->inbound->inbound_read == 'R' && $gopackage->packagetype !== "gosmall")
+			if ( ($perms->inbound->inbound_read == 'R' && $gopackage->packagetype !== "gosmall") || ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") )
 				$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
 			if ($perms->voicefiles->voicefiles_upload == 'C') {
 				$telephonyArea .= $this-> getSidebarItem("./audiofiles.php", "music", $this->lh->translationFor("audiofiles"));
@@ -1928,7 +1928,7 @@ error_reporting(E_ERROR | E_PARSE);
 			//$settings .= $this-> getSidebarItem("./settingssystemsettings.php", "gear", $this->lh->translationFor("system_settings"));
 			$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
 			$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
-			if ($gopackage->show_carrier_settings === "Y")
+			if ($gopackage->show_carrier_settings === "Y" || ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") )
 			$settings .= $this-> getSidebarItem("./settingscarriers.php", "signal", $this->lh->translationFor("carriers"));
 			$settings .= $this-> getSidebarItem("./settingsservers.php", "server", $this->lh->translationFor("servers"));
 			$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "book", $this->lh->translationFor("admin_logs"));
