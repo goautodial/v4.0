@@ -1876,7 +1876,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$mh = \creamy\ModuleHandler::getInstance();
 		$smtp_status = $this->API_getSMTPActivation(); // smtp_status
 		$gopackage = $this->API_getGOPackage(); // smtp_status
-		
 		$usergroup = (!isset($usergroup) ? $_SESSION['usergroup'] : $usergroup);
 		$perms = $this->goGetPermissions('sidebar', $usergroup);
 
