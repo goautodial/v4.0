@@ -6583,6 +6583,56 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 		
 	}
+
+	public function getAllCampaignStatuses(){
+        $campaign = $this->API_getListAllCampaigns();
+        for($i=0;$i < count($campaign->campaign_id);$i++){
+	        $campdialStatus = $this->API_getAllCampaignDialStatuses($campaign->campaign_id[$i]);
+			for($x=0;$x<count($campdialStatus->status);$x++){
+				$status[] = $campdialStatus->status[$x];
+				$status_name[] = $campdialStatus->status_name[$x];
+			}
+			$output = array("status" => $status, "status_name" => $status_name);
+		}
+		return $output;
+	}
+	
+	public function API_getLeadRecycling($user){
+		$url = gourl."/goLeadRecycling/goAPI.php"; #URL to GoAutoDial API. (required)
+	    $postfields["goUser"] = goUser; #Username goes here. (required)
+	    $postfields["goPass"] = goPass; #Password goes here. (required)
+	    $postfields["goAction"] = "goGetAllLeadRecycling"; #action performed by the [[API:Functions]]. (required)
+	    $postfields["responsetype"] = responsetype; #json. (required)
+	    $postfields["session_user"] = $user; #json. (required)
+
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_POST, 1);
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	    $data = curl_exec($ch);
+	    curl_close($ch);
+	    $output = json_decode($data);
+
+	    return $output;
+	}
+	
+	public function ActionMenuForLeadRecycling($id) {
+
+	    return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="edit-leadrecycling" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li><a class="delete-leadrecycling" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
+		    </ul>
+		</div>';
+	}
 }
 
 ?>
