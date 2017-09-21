@@ -17,8 +17,11 @@
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
 	$perm = $ui->goGetPermissions('inbound,ivr,did', $_SESSION['usergroup']);
+	$gopackage = $ui->API_getGOPackage();
+	if($gopackage->packagetype === "gosmall" && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
+		header("location:index.php");
+	}
 ?>
 <html>
     <head>

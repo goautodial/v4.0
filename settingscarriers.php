@@ -18,6 +18,10 @@
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$gopackage = $ui->API_getGOPackage();
+	if( ($gopackage->show_carrier_settings === "N" || $gopackage->show_carrier_settings === NULL) && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
+		header("location:index.php");
+	}
 ?>
 <html>
     <head>
