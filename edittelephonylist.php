@@ -282,22 +282,22 @@ $scripts = $ui->API_goGetAllScripts($_SESSION['user']);
 													?>
 													<?php for($s=0;$s<count($statuses->stats);$s++){ ?>
 														<?php 
-															if($statuses->called_since_last_reset[$s] == 'N'){
-																$countCalled = 0;
-																$countNCalled = $statuses->countvlists[$s];
+															// if($statuses->called_since_last_reset[$s] == 'N'){
+															// 	$countCalled = 0;
+															// 	$countNCalled = $statuses->countvlists[$s];
 
-															}else{
-																$countCalled = $statuses->countvlists[$s];
-																$countNCalled = 0;
-															}
-															array_push($called, $countCalled);
-															array_push($ncalled, $countNCalled);
+															// }else{
+															// 	$countCalled = $statuses->countvlists[$s];
+															// 	$countNCalled = 0;
+															// }
+															array_push($called, $statuses->is_called[$s]);
+															array_push($ncalled, $statuses->not_called[$s]);
 														?>
 														<tr>
 															<td><?php echo $statuses->stats[$s]; ?></td>
 															<td><?php echo $statuses->status_name[$s]; ?></td>
-															<td style="text-align: center; width: 15%;"><?php echo $countCalled; ?></td>
-															<td style="text-align: center; width: 15%;"><?php echo $countNCalled; ?></td>
+															<td style="text-align: center; width: 15%;"><?php echo $statuses->is_called[$s]; ?></td>
+															<td style="text-align: center; width: 15%;"><?php echo $statuses->not_called[$s]; ?></td>
 														</tr>
 													<?php } ?>
 													<tr>

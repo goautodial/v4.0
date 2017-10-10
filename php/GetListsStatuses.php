@@ -29,21 +29,21 @@
 	$called = array();
 	$ncalled = array();
 	for($s=0;$s<count($output->stats);$s++){
-		if($output->called_since_last_reset[$s] == 'N'){
-			$countCalled = 0;
-			$countNCalled = $output->countvlists[$s];
+		// if($output->called_since_last_reset[$s] == 'N'){
+		// 	$countCalled = 0;
+		// 	$countNCalled = $output->countvlists[$s];
 
-		}else{
-			$countCalled = $output->countvlists[$s];
-			$countNCalled = 0;
-		}
-		array_push($called, $countCalled);
-		array_push($ncalled, $countNCalled);
+		// }else{
+		// 	$countCalled = $output->countvlists[$s];
+		// 	$countNCalled = 0;
+		// }
+		array_push($called, $output->is_called[$s]);
+		array_push($ncalled, $output->not_called[$s]);
 		$data .= '<tr>';
 		$data .= '<td>'.$output->stats[$s].'</td>';
 		$data .= '<td>'.$output->status_name[$s].'</td>';
-		$data .= '<td style="text-align: center; width: 15%;">'.$countCalled.'</td>';
-		$data .= '<td style="text-align: center; width: 15%;">'.$countNCalled.'</td>';
+		$data .= '<td style="text-align: center; width: 15%;">'.$output->is_called[$s].'</td>';
+		$data .= '<td style="text-align: center; width: 15%;">'.$output->not_called[$s].'</td>';
 		$data .= '</tr>';
 	}
 	$total = array_sum($called) + array_sum($ncalled);
