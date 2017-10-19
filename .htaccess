@@ -35,3 +35,4 @@ Deny from all
 
 RedirectMatch 404 /\.git|/bin|/uploads|phpmailer
 
+Options -Indexes
