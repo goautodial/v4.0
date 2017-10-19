@@ -33,4 +33,5 @@ Order allow,deny
 Deny from all
 </FilesMatch>
 
-RedirectMatch 404 /\.git|/bin|/uploads|phpmailer|theme_dashboard|adminlte
+RedirectMatch 404 /\.git|/bin|/uploads|phpmailer
+
