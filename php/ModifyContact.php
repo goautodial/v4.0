@@ -168,8 +168,8 @@ $user_id = $_POST['user_id'];
 	
 	$postfields["is_customer"]	= $is_customer;
 	$postfields["user_id"] = $user_id;
-	
-    $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields["session_user"] = $_POST['log_user'];
+	$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["log_user"] = $_POST['log_user'];
 	$postfields["log_group"] = $_POST['log_group'];
     
