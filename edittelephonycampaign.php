@@ -247,7 +247,6 @@ $audiofiles = $ui->API_getListAudioFiles();
 														</select>
 													</div>
 												</div>
-												<?php } ?>
 												<div class="form-group">
 													<label class="col-sm-3 control-label"><?php $lh->translateText("autodial_level"); ?>:</label>
 													<div class="col-sm-9 mb">
@@ -313,6 +312,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 														</div>
 													</div>
 												</div>
+												<?php } ?>
 												<div class="form-group">
 													<label class="col-sm-3 control-label"><?php $lh->translateText("carrier_to_use_for_campaign"); ?>:</label>
 													<div class="col-sm-9 mb">
@@ -2679,13 +2679,13 @@ $audiofiles = $ui->API_getListAudioFiles();
 			}
 			
 			function checkSurveyMethod(value) {
-				$("#survey_dial_method").val("RATIO").trigger('change');
-				$("#survey_auto_dial_level").val("SLOW").trigger('change');
 				if (value == "AGENT_XFER") {
 					$("#survey_dial_method").prop("disabled", false);
 					$("#survey_auto_dial_level").prop("disabled", false);
 					$("#no-channels").prop("disabled", true);
 				}else{
+					$("#survey_dial_method").val("RATIO").trigger('change');
+					$("#survey_auto_dial_level").val("SLOW").trigger('change');
 					$("#survey_dial_method").prop("disabled", true);
 					$("#survey_auto_dial_level").prop("disabled", true);
 					$("#survey_auto_dial_level_adv").addClass('hide');
