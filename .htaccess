@@ -33,6 +33,6 @@ Order allow,deny
 Deny from all
 </FilesMatch>
 
-RedirectMatch 404 /\.git|/bin|/uploads|phpmailer
+RedirectMatch 404 /\.git|phpmailer
 
 Options -Indexes
