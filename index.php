@@ -1146,7 +1146,7 @@ function goGetInSession(type) {
 				if ((use_webrtc && phone.isConnected()) || !use_webrtc) {
 					$.ajax({
 						type: 'POST',
-						url: './php/BargeListen.php',
+						url: '<?=$goAPI?>/goBarging/goAPI.php',
 						processData: true,
 						data: postData,
 						dataType: "json",
