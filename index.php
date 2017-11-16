@@ -629,7 +629,7 @@ error_reporting(E_ALL)
 				<div class="modal-content"> 
 					<div class="modal-header"> 
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-						<h4 class="modal-title"><?=$lh->translateText("more_about")?><span id="modal-username"></span>:</h4> 
+						<h4 class="modal-title"><?=$lh->translateText("more_about")?> <span id="modal-username"></span>:</h4> 
 					</div>
 					<div class="modal-body" style="min-height: initial;"> 
 						<center> 
@@ -1097,6 +1097,8 @@ function goGetModalUsernameValue(){
 function goGetInSession(type) {
 	var phone_login = "<?php echo $_SESSION['phone_login'];?>";
 	var phone_pass = "<?php echo $_SESSION['phone_this'];?>";
+	var uName = "<?php echo $_SESSION["user"]; ?>";
+	var uPass = "<?php echo $_SESSION['phone_this'];?>";
 	//console.log(phone_login);
 	if (phone_login.length > 0 && phone_pass.length > 0) {
 		var use_webrtc = <?=($_SESSION['use_webrtc'] ? $_SESSION['use_webrtc'] : 0)?>;
