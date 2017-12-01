@@ -89,7 +89,7 @@
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         </div><!-- ./wrapper -->
 
-		<div class="action-button-circle" data-toggle="modal" data-target="#wizard-modal">
+		<div class="action-button-circle <?php if ($perm->carriers->carriers_create == 'N') { echo "hidden"; } ?>" data-toggle="modal" data-target="#wizard-modal">
 			<?php print $ui->getCircleButton("carriers", "plus"); ?>
 		</div>
 <?php
