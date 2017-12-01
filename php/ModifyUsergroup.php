@@ -143,6 +143,20 @@ if ($validated == 1) {
 	$group_permission .= '"moh_delete":' . (isset($_POST["moh_delete"]) ? '"D"' : '"N"');
 	$group_permission .= '},';
 	
+	$group_permission .= '"servers":{';
+	$group_permission .= '"servers_create":' . (isset($_POST["servers_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"servers_read":' . (isset($_POST["servers_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"servers_update":' . (isset($_POST["servers_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"servers_delete":' . (isset($_POST["servers_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
+	$group_permission .= '"carriers":{';
+	$group_permission .= '"carriers_create":' . (isset($_POST["carriers_create"]) ? '"C"' : '"N"') . ',';
+	$group_permission .= '"carriers_read":' . (isset($_POST["carriers_read"]) ? '"R"' : '"N"') . ',';
+	$group_permission .= '"carriers_update":' . (isset($_POST["carriers_update"]) ? '"U"' : '"N"') . ',';
+	$group_permission .= '"carriers_delete":' . (isset($_POST["carriers_delete"]) ? '"D"' : '"N"');
+	$group_permission .= '},';
+	
 	$group_permission .= '"reportsanalytics":{';
 	$group_permission .= '"reportsanalytics_statistical_display":' . (isset($_POST["reportsanalytics_statistical_display"]) ? '"Y"' : '"N"') . ',';
 	$group_permission .= '"reportsanalytics_agent_time_display":' . (isset($_POST["reportsanalytics_agent_time_display"]) ? '"Y"' : '"N"') . ',';
