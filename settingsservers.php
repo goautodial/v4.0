@@ -62,7 +62,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body table" id="servers">
                             <legend><?php $lh->translateText("servers"); ?></legend>
-							<?php print $ui->getServerList(); ?>
+							<?php print $ui->getServerList($perm); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
