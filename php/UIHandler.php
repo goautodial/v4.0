@@ -1920,7 +1920,7 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 			$telephonyArea .= '</ul></li>';
 
-			if ($perms->servers->servers_read == 'R') {
+			//if ($perms->servers->servers_read == 'R') {
 				$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
 				//if($_SESSION['show_phones'] === "1")
 				//if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
@@ -1939,7 +1939,7 @@ error_reporting(E_ERROR | E_PARSE);
 				//if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
 				$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "book", $this->lh->translationFor("admin_logs"));
 				$settings .= '</ul></li>';
-			}
+			//}
 
 			$callreports = '<li class="treeview"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>'.$this->lh->translationFor("call_reports").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
 			$callreports .= $this-> getSidebarItem("./callreports.php", "bar-chart", $this->lh->translationFor("reports_and_go_analytics"));
