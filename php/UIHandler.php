@@ -4511,7 +4511,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 	
-	public function getServerList(){
+	public function getServerList($perm){
 		$output = $this->getServers();
 
 	    if ($output->result=="success") {
@@ -4525,7 +4525,10 @@ error_reporting(E_ERROR | E_PARSE);
 
 	        for($i=0;$i<count($output->server_id);$i++){
 
-		    	$action = $this->ActionMenuForServers($output->server_id[$i]);
+				$action = '';
+				if ($perm->servers_update != 'N' || $perm->servers_delete != 'N') {
+					$action = $this->ActionMenuForServers($output->server_id[$i], $perm);
+				}
 
 			    if($output->active[$i] == "Y"){
 				    $active = $this->lh->translationFor('active');
@@ -4561,8 +4564,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-server" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
-			<li><a class="delete-server" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
+			<li'.($perm->servers_update === 'N' ? ' class="hidden"' : '').'><a class="edit-server" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li'.($perm->servers_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-server" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
