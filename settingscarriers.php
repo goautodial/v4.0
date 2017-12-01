@@ -22,6 +22,7 @@
 	if( ($gopackage->show_carrier_settings === "N" || $gopackage->show_carrier_settings === NULL) && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
 		header("location:index.php");
 	}
+	$perm = $ui->goGetPermissions('carriers', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -70,7 +71,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-                <?php if ($user->userHasAdminPermission()) { ?>
+                <?php if ($perm->carriers->carriers_read !== 'N') { ?>
                     <div class="panel panel-default">
                         <div class="panel-body table" id="recording_table">
                             <legend><?php $lh->translateText("carriers"); ?></legend>
