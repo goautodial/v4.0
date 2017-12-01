@@ -4555,7 +4555,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 	
-	public function ActionMenuForServers($id) {
+	public function ActionMenuForServers($id, $perm) {
 
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
