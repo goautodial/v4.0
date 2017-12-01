@@ -4596,7 +4596,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllCarriers(){
+	public function getListAllCarriers($perm){
 		$output = $this->getCarriers();
 
 	    if ($output->result=="success") {
@@ -4610,7 +4610,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	        for($i=0;$i<count($output->carrier_id);$i++){
 
-		    	$action = $this->getUserActionMenuForCarriers($output->carrier_id[$i]);
+		    	$action = $this->getUserActionMenuForCarriers($output->carrier_id[$i], $perm);
 
 			    if($output->active[$i] == "Y"){
 				    $active = $this->lh->translationFor('active');
@@ -4635,7 +4635,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 
-	public function getUserActionMenuForCarriers($id) {
+	public function getUserActionMenuForCarriers($id, $perm) {
 
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -4644,8 +4644,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-carrier" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
-			<li><a class="delete-carrier" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
+			<li'.($perm->carriers_update === 'N' ? ' class="hidden"' : '').'><a class="edit-carrier" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li'.($perm->carriers_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-carrier" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
