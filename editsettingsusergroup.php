@@ -386,11 +386,24 @@ if (isset($_POST["usergroup_id"])) {
 				
 				$("div.checkbox input[type='checkbox']").on('click', function() {
 					var thisID = $(this).attr('id');
-					if (/_create$/.test(thisID)) {
+					if (/(_create|_update|_delete)$/.test(thisID)) {
 						if ($(this).is(':checked')) {
 							var readID = thisID.replace("_create", "_read");
 							if (! $("#"+readID).is(':checked')) {
 								$("#"+readID).prop('checked', true);
+							}
+						}
+					} else if (/_read$/.test(thisID)) {
+						if (! $(this).is(':checked')) {
+							var newID = thisID.replace("_read", "");
+							if ($("#"+newID+"_create").is(':checked')) {
+								$("#"+newID+"_create").prop('checked', false);
+							}
+							if ($("#"+newID+"_update").is(':checked')) {
+								$("#"+newID+"_update").prop('checked', false);
+							}
+							if ($("#"+newID+"_delete").is(':checked')) {
+								$("#"+newID+"_delete").prop('checked', false);
 							}
 						}
 					}
