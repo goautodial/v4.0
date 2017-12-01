@@ -387,7 +387,12 @@ if (isset($_POST["usergroup_id"])) {
 				$("div.checkbox input[type='checkbox']").on('click', function() {
 					var thisID = $(this).attr('id');
 					if (/_create$/.test(thisID)) {
-						console.log(thisID);
+						if ($(this).is(':checked')) {
+							var readID = thisID.replace("_create", "_read");
+							if (! $("#"+readID).is(':checked')) {
+								$("#"+readID).prop('checked', true);
+							}
+						}
 					}
 				});
 			});
