@@ -4608,24 +4608,27 @@ error_reporting(E_ERROR | E_PARSE);
 
 		$result = $this->generateTableHeaderWithItems($columns, "carriers", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
-	        for($i=0;$i<count($output->carrier_id);$i++){
+	      for($i=0;$i<count($output->carrier_id);$i++){
 
-		    	$action = $this->getUserActionMenuForCarriers($output->carrier_id[$i], $perm);
+				$action = '';
+				if ($perm->carriers_update != 'N' || $perm->carriers_delete != 'N') {
+					$action = $this->getUserActionMenuForCarriers($output->carrier_id[$i], $perm);
+				}
 
 			    if($output->active[$i] == "Y"){
 				    $active = $this->lh->translationFor('active');
 				}else{
 				    $active = $this->lh->translationFor('inactive');
 				}
-                    $result .= "<tr>
-	                    <td class ='hide-on-low'><a class='edit-carrier' data-id='".$output->carrier_id[$i]."'>".$output->carrier_id[$i]."</td>
-	                    <td>".$output->carrier_name[$i]."</td>
-	                    <td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
-			    		<td class ='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
-			    		<td class ='hide-on-low'>".$active."</td>
-	                    <td nowrap>".$action."</td>
-	                </tr>";
-            }
+            $result .= "<tr>
+						<td class ='hide-on-low'><a class='edit-carrier' data-id='".$output->carrier_id[$i]."'>".$output->carrier_id[$i]."</td>
+						<td>".$output->carrier_name[$i]."</td>
+						<td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
+						<td class ='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
+						<td class ='hide-on-low'>".$active."</td>
+						<td nowrap>".$action."</td>
+	            </tr>";
+         }
 
 		    return $result.'</table>';
 
