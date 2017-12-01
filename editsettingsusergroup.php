@@ -384,6 +384,9 @@ if (isset($_POST["usergroup_id"])) {
 					}					
 				});
 				
+				$("div.checkbox input[type='checkbox']").on('click', function() {
+					console.log($(this).attr('id'));
+				});
 			});
 		</script>
 
