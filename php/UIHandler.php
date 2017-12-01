@@ -4536,7 +4536,7 @@ error_reporting(E_ERROR | E_PARSE);
 				    $active = $this->lh->translationFor('inactive');
 				}
                     $result .= "<tr>
-	                    <td class ='hide-on-low'><a class='edit-server' data-id='".$output->server_id[$i]."'>".$output->server_id[$i]."</td>
+	                    <td class ='hide-on-low'>".($perm->servers_update !== 'N' ? "<a class='edit-server' data-id='".$output->server_id[$i]."'>" : '')."".$output->server_id[$i]."</td>
 	                    <td>".$output->server_description[$i]."</td>
 	                    <td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 						<td class ='hide-on-medium hide-on-low'>".$active."</td>
@@ -4624,7 +4624,7 @@ error_reporting(E_ERROR | E_PARSE);
 				    $active = $this->lh->translationFor('inactive');
 				}
             $result .= "<tr>
-						<td class ='hide-on-low'><a class='edit-carrier' data-id='".$output->carrier_id[$i]."'>".$output->carrier_id[$i]."</td>
+						<td class ='hide-on-low'>".($perm->carriers_update !== 'N' ? "<a class='edit-carrier' data-id='".$output->carrier_id[$i]."'>" : '')."".$output->carrier_id[$i]."</td>
 						<td>".$output->carrier_name[$i]."</td>
 						<td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 						<td class ='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
