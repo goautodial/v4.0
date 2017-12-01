@@ -71,11 +71,11 @@
 
                 <!-- Main content -->
                 <section class="content">
-                <?php if ($perm->carriers->carriers_read !== 'N') { ?>
+                <?php if ($perm->carriers_read !== 'N') { ?>
                     <div class="panel panel-default">
                         <div class="panel-body table" id="recording_table">
                             <legend><?php $lh->translateText("carriers"); ?></legend>
-							<?php print $ui->getListAllCarriers(); ?>
+							<?php print $ui->getListAllCarriers($perm); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -88,10 +88,8 @@
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         </div><!-- ./wrapper -->
-<?php
-var_dump($perm);
-?>
-		<div class="action-button-circle <?php if ($perm->carriers->carriers_create == 'N') { echo "hidden"; } ?>" data-toggle="modal" data-target="#wizard-modal">
+
+		<div class="action-button-circle <?php if ($perm->carriers_create == 'N') { echo "hidden"; } ?>" data-toggle="modal" data-target="#wizard-modal">
 			<?php print $ui->getCircleButton("carriers", "plus"); ?>
 		</div>
 <?php
