@@ -388,9 +388,11 @@ if (isset($_POST["usergroup_id"])) {
 					var thisID = $(this).attr('id');
 					if (/(_create|_update|_delete)$/.test(thisID)) {
 						if ($(this).is(':checked')) {
-							var readID = thisID.replace("_create", "_read");
-							if (! $("#"+readID).is(':checked')) {
-								$("#"+readID).prop('checked', true);
+							var readID = thisID.replace("_create", "");
+								readID = readID.replace("_update", "");
+								readID = readID.replace("_delete", "");
+							if (! $("#"+readID+"_read").is(':checked')) {
+								$("#"+readID+"_read").prop('checked', true);
 							}
 						}
 					} else if (/_read$/.test(thisID)) {
