@@ -7733,10 +7733,10 @@ function GetCustomFields(listid, show, getData, viewFields) {
 
 function checkForCallbacks() {
     if (callback_alerts.length > 0) {
-        callback_alerts.each(key, value) {
+        $.each(callback_alerts, function(key, value) {
             var nowDate = new Date();
             console.log(minutesBetween(nowDate, value.callback_time));
-        }
+        });
     }
 }
 
