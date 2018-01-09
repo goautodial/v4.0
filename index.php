@@ -59,8 +59,8 @@ error_reporting(E_ALL)
 		$lh = \creamy\LanguageHandler::getInstance();
 		//$colors = $ui->generateStatisticsColors();
 	
-		$perms = $ui->goGetPermissions('dashboard', $_SESSION['usergroup']);
-		if ($perms->dashboard_display === 'N') {
+		$perms = $ui->goGetPermissions('dashboard,servers', $_SESSION['usergroup']);
+		if ($perms->dashboard->dashboard_display === 'N') {
 			header("location: crm.php");
 		}
 
@@ -336,7 +336,7 @@ error_reporting(E_ALL)
 							</div>
 							
 							<!--  CLUSTER STATUS -->
-							<div class="row">
+							<div class="row <?=($perms->servers->servers_read === 'N' ? 'hidden' : '')?>">
 								<div class="panel panel-default" tabindex="-1">
 									<div class="panel-heading">
 										<div class="panel-title"><h4><?=$lh->translateText("cluster_status")?></h4></div>

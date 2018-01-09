@@ -1920,18 +1920,26 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 			$telephonyArea .= '</ul></li>';
 
-			$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
-			//if($_SESSION['show_phones'] === "1")
-			//$settings .= $this-> getSidebarItem("./settingsphones.php", "phone", $this->lh->translationFor("phones"));
-			$settings .= $this-> getSidebarItem("./settingscalltimes.php", "list-ol", $this->lh->translationFor("call_times"));
-			//$settings .= $this-> getSidebarItem("./settingssystemsettings.php", "gear", $this->lh->translationFor("system_settings"));
-			$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
-			$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
-			if ($gopackage->show_carrier_settings === "Y" || ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") )
-			$settings .= $this-> getSidebarItem("./settingscarriers.php", "signal", $this->lh->translationFor("carriers"));
-			$settings .= $this-> getSidebarItem("./settingsservers.php", "server", $this->lh->translationFor("servers"));
-			$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "book", $this->lh->translationFor("admin_logs"));
-			$settings .= '</ul></li>';
+			//if ($perms->servers->servers_read == 'R') {
+				$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
+				//if($_SESSION['show_phones'] === "1")
+				//if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
+				//$settings .= $this-> getSidebarItem("./settingsphones.php", "phone", $this->lh->translationFor("phones"));
+				$settings .= $this-> getSidebarItem("./settingscalltimes.php", "list-ol", $this->lh->translationFor("call_times"));
+				//$settings .= $this-> getSidebarItem("./settingssystemsettings.php", "gear", $this->lh->translationFor("system_settings"));
+				$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
+				$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
+				//}
+				//if ($gopackage->show_carrier_settings === "Y" || ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") )
+				if ($perms->carriers->carriers_read == 'R' || $userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
+					$settings .= $this-> getSidebarItem("./settingscarriers.php", "signal", $this->lh->translationFor("carriers"));
+				if ($perms->servers->servers_read == 'R' || $userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
+					$settings .= $this-> getSidebarItem("./settingsservers.php", "server", $this->lh->translationFor("servers"));
+					
+				//if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
+				$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "book", $this->lh->translationFor("admin_logs"));
+				$settings .= '</ul></li>';
+			//}
 
 			$callreports = '<li class="treeview"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>'.$this->lh->translationFor("call_reports").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
 			$callreports .= $this-> getSidebarItem("./callreports.php", "bar-chart", $this->lh->translationFor("reports_and_go_analytics"));
@@ -1984,7 +1992,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$telephonyArea = '';
 		}
 		$result .= $telephonyArea;
-		if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
+		if($userrole != CRM_DEFAULTS_USER_ROLE_AGENT) {
 			$result .= $settings;
 		}
 		$result .= $callreports;
@@ -4504,7 +4512,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 	
-	public function getServerList(){
+	public function getServerList($perm){
 		$output = $this->getServers();
 
 	    if ($output->result=="success") {
@@ -4518,7 +4526,10 @@ error_reporting(E_ERROR | E_PARSE);
 
 	        for($i=0;$i<count($output->server_id);$i++){
 
-		    	$action = $this->ActionMenuForServers($output->server_id[$i]);
+				$action = '';
+				if ($perm->servers_update != 'N' || $perm->servers_delete != 'N') {
+					$action = $this->ActionMenuForServers($output->server_id[$i], $perm);
+				}
 
 			    if($output->active[$i] == "Y"){
 				    $active = $this->lh->translationFor('active');
@@ -4526,7 +4537,7 @@ error_reporting(E_ERROR | E_PARSE);
 				    $active = $this->lh->translationFor('inactive');
 				}
                     $result .= "<tr>
-	                    <td class ='hide-on-low'><a class='edit-server' data-id='".$output->server_id[$i]."'>".$output->server_id[$i]."</td>
+	                    <td class ='hide-on-low'>".($perm->servers_update !== 'N' ? "<a class='edit-server' data-id='".$output->server_id[$i]."'>" : '')."".$output->server_id[$i]."</td>
 	                    <td>".$output->server_description[$i]."</td>
 	                    <td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
 						<td class ='hide-on-medium hide-on-low'>".$active."</td>
@@ -4545,7 +4556,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 	
-	public function ActionMenuForServers($id) {
+	public function ActionMenuForServers($id, $perm) {
 
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -4554,8 +4565,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-server" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
-			<li><a class="delete-server" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
+			<li'.($perm->servers_update === 'N' ? ' class="hidden"' : '').'><a class="edit-server" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li'.($perm->servers_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-server" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
@@ -4589,7 +4600,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllCarriers(){
+	public function getListAllCarriers($perm){
 		$output = $this->getCarriers();
 
 	    if ($output->result=="success") {
@@ -4601,24 +4612,27 @@ error_reporting(E_ERROR | E_PARSE);
 
 		$result = $this->generateTableHeaderWithItems($columns, "carriers", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
-	        for($i=0;$i<count($output->carrier_id);$i++){
+	      for($i=0;$i<count($output->carrier_id);$i++){
 
-		    	$action = $this->getUserActionMenuForCarriers($output->carrier_id[$i]);
+				$action = '';
+				if ($perm->carriers_update != 'N' || $perm->carriers_delete != 'N') {
+					$action = $this->getUserActionMenuForCarriers($output->carrier_id[$i], $perm);
+				}
 
 			    if($output->active[$i] == "Y"){
 				    $active = $this->lh->translationFor('active');
 				}else{
 				    $active = $this->lh->translationFor('inactive');
 				}
-                    $result .= "<tr>
-	                    <td class ='hide-on-low'><a class='edit-carrier' data-id='".$output->carrier_id[$i]."'>".$output->carrier_id[$i]."</td>
-	                    <td>".$output->carrier_name[$i]."</td>
-	                    <td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
-			    		<td class ='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
-			    		<td class ='hide-on-low'>".$active."</td>
-	                    <td nowrap>".$action."</td>
-	                </tr>";
-            }
+            $result .= "<tr>
+						<td class ='hide-on-low'>".($perm->carriers_update !== 'N' ? "<a class='edit-carrier' data-id='".$output->carrier_id[$i]."'>" : '')."".$output->carrier_id[$i]."</td>
+						<td>".$output->carrier_name[$i]."</td>
+						<td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
+						<td class ='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
+						<td class ='hide-on-low'>".$active."</td>
+						<td nowrap>".$action."</td>
+	            </tr>";
+         }
 
 		    return $result.'</table>';
 
@@ -4628,7 +4642,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 
-	public function getUserActionMenuForCarriers($id) {
+	public function getUserActionMenuForCarriers($id, $perm) {
 
 	    return '<div class="btn-group">
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
@@ -4637,8 +4651,8 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-carrier" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
-			<li><a class="delete-carrier" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
+			<li'.($perm->carriers_update === 'N' ? ' class="hidden"' : '').'><a class="edit-carrier" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li'.($perm->carriers_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-carrier" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}

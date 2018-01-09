@@ -7,6 +7,8 @@
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
+	$perm = $ui->goGetPermissions('servers', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -56,11 +58,11 @@
 
                 <!-- Main content -->
                 <section class="content">
-                <?php if ($user->userHasAdminPermission()) { ?>
+                <?php if ($perm->servers_read !== 'N') { ?>
                     <div class="panel panel-default">
                         <div class="panel-body table" id="servers">
                             <legend><?php $lh->translateText("servers"); ?></legend>
-							<?php print $ui->getServerList(); ?>
+							<?php print $ui->getServerList($perm); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -75,7 +77,7 @@
         </div><!-- ./wrapper -->
 		
        <!-- Fixed Action Button -->
-        <div class="action-button-circle" data-toggle="modal" data-target="#addserver-modal">
+        <div class="action-button-circle <?php if ($perm->servers_create == 'N') { echo "hidden"; } ?>" data-toggle="modal" data-target="#addserver-modal">
             <?php print $ui->getCircleButton("calls", "user-plus"); ?>
         </div>
 		
