@@ -7741,11 +7741,11 @@ function checkForCallbacks() {
             var minsBetween = minutesBetween(nowDate, cbDate);
             var swalContent = '';
             if (!value.seen && minsBetween <= 5 && (live_customer_call < 1 && XD_live_customer_call < 1)) {
-                swalContent += '<div style="padding: 0 30px; text-align: left;"><strong>Name:</strong> '+value.cust_name+'</div>';
-                swalContent += '<div style="padding: 0 30px; text-align: left;"><strong>Phone:</strong> '+value.phone_number+'</div>';
-                swalContent += '<div style="padding: 0 30px; text-align: left;"><strong>Callback Date:</strong> '+value.callback_time+'</div>';
-                swalContent += '<div style="padding: 0 30px; text-align: left;"><strong>Last Call Date:</strong> '+value.entry_time+'</div>';
-                swalContent += '<div style="padding: 0 30px; text-align: left;"><strong>Comments:</strong> '+value.comments+'</div>';
+                swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Name:</strong> '+value.cust_name+'</div>';
+                swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Phone:</strong> '+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary"><i class="fa fa-calendar"></i></a></span></div>';
+                swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Callback Date:</strong> '+value.callback_time+'</div>';
+                swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Last Call Date:</strong> '+value.entry_time+'</div>';
+                swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Comments:</strong> '+value.comments+'</div>';
                 
                 swal({
                     title: "<?=$lh->translateText('Call Back')?>",
