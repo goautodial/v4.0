@@ -90,7 +90,7 @@ var registrationFailed = false;
 var minimizedDispo = false;
 var check_login = false;
 var window_focus = true;
-var callback_alerts = new Array();
+var callback_alerts = {};
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
