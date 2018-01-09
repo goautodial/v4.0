@@ -7755,9 +7755,10 @@ function checkForCallbacks() {
                     title: "<?=$lh->translateText('Call Back')?>",
                     text: swalContent,
                     type: "info",
-                    html: true
+                    html: true,
+                    allowEscapeKey: false
                 }, function(){
-                    
+                    callback_alerts[key].seen = true;
                 });
             }
         });
