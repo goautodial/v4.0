@@ -4129,6 +4129,7 @@ function CallBacksCountCheck() {
                 $.each(CBallList, function(key, value) {
                     var thisComments = value.comments;
                     var commentTitle = '';
+                    callback_alerts[value.callback_id] = new Array();
                     if (thisComments.length > 20) {
                         commentTitle = ' title="'+thisComments+'"';
                         thisComments = thisComments.substring(0, 20) + "...";
