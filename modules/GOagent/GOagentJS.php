@@ -4141,8 +4141,9 @@ function CallBacksCountCheck() {
                     callback_alerts[value.callback_id]['phone_number'] = value.phone_number;
                     callback_alerts[value.callback_id]['entry_time'] = value.entry_time;
                     callback_alerts[value.callback_id]['callback_time'] = value.callback_time;
-                    callback_alerts[value.callback_id]['campaign_name'] = value.campaign_name;
+                    callback_alerts[value.callback_id]['campaign_id'] = value.campaign_id;
                     callback_alerts[value.callback_id]['comments'] = thisComments;
+                    callback_alerts[value.callback_id]['seen'] = false;
                 });
                 $("#callback-list").css('width', '100%');
                 $("#callback-list").DataTable({
@@ -7732,7 +7733,10 @@ function GetCustomFields(listid, show, getData, viewFields) {
 
 function checkForCallbacks() {
     if (callback_alerts.length > 0) {
-        console.log(callback_alerts);
+        callback_alerts.each(key, value) {
+            var nowDate = new Date();
+            console.log(minutesBetween(nowDate, value.callback_time));
+        }
     }
 }
 
@@ -8544,6 +8548,21 @@ function MainPanelToFront() {
 function padlength(what){
     var output=(what.toString().length==1)? "0"+what : what
     return output
+}
+
+function minutesBetween( date1, date2 ) {
+  //Get 1 minute in milliseconds
+  var one_min=1000*60;
+
+  // Convert both dates to milliseconds
+  var date1_ms = date1.getTime();
+  var date2_ms = date2.getTime();
+
+  // Calculate the difference in milliseconds
+  var difference_ms = date2_ms - date1_ms;
+    
+  // Convert back to minutes and return
+  return Math.floor(difference_ms/one_min); 
 }
 
 function displaytime(){
