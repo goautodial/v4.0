@@ -4129,7 +4129,9 @@ function CallBacksCountCheck() {
                 $.each(CBallList, function(key, value) {
                     var thisComments = value.comments;
                     var commentTitle = '';
-                    callback_alerts[value.callback_id] = new Array();
+                    if (typeof callback_alerts[value.callback_id] === 'undefined') {
+                        callback_alerts[value.callback_id] = new Array();
+                    }
                     if (thisComments.length > 20) {
                         commentTitle = ' title="'+thisComments+'"';
                         thisComments = thisComments.substring(0, 20) + "...";
@@ -4144,7 +4146,9 @@ function CallBacksCountCheck() {
                     callback_alerts[value.callback_id]['callback_time'] = value.callback_time;
                     callback_alerts[value.callback_id]['campaign_id'] = value.campaign_id;
                     callback_alerts[value.callback_id]['comments'] = thisComments;
-                    callback_alerts[value.callback_id]['seen'] = false;
+                    if (typeof callback_alerts[value.callback_id]['seen'] === 'undefined') {
+                        callback_alerts[value.callback_id]['seen'] = false;
+                    }
                 });
                 $("#callback-list").css('width', '100%');
                 $("#callback-list").DataTable({
@@ -7753,7 +7757,7 @@ function checkForCallbacks() {
                     type: "info",
                     html: true
                 }, function(){
-                
+                    
                 });
             }
         });
