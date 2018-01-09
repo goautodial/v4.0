@@ -4138,6 +4138,7 @@ function CallBacksCountCheck() {
                     $("#callback-list tbody").append(appendThis);
                     
                     callback_alerts[value.callback_id]['lead_id'] = value.lead_id;
+                    callback_alerts[value.callback_id]['cust_name'] = value.cust_name;
                     callback_alerts[value.callback_id]['phone_number'] = value.phone_number;
                     callback_alerts[value.callback_id]['entry_time'] = value.entry_time;
                     callback_alerts[value.callback_id]['callback_time'] = value.callback_time;
@@ -7732,10 +7733,29 @@ function GetCustomFields(listid, show, getData, viewFields) {
 }
 
 function checkForCallbacks() {
-    if (callback_alerts.length > 0) {
+    if (Object.keys(callback_alerts).length > 0) {
         $.each(callback_alerts, function(key, value) {
             var nowDate = new Date();
-            console.log(minutesBetween(nowDate, value.callback_time));
+            var dateParts = value.callback_time.match(/(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)/);
+            var cbDate = new Date(dateParts[1], parseInt(dateParts[2], 10) - 1, dateParts[3], dateParts[4], dateParts[5], dateParts[6]);
+            var minsBetween = minutesBetween(nowDate, cbDate);
+            var swalContent = '';
+            if (!value.seen && minsBetween <= 5 && (live_customer_call < 1 && XD_live_customer_call < 1)) {
+                swalContent .= '<div style="padding: 0 30px; text-align: left;"><strong>Name:</strong> '+value.cust_name+'</div>';
+                swalContent .= '<div style="padding: 0 30px; text-align: left;"><strong>Phone:</strong> '+value.phone_number+'</div>';
+                swalContent .= '<div style="padding: 0 30px; text-align: left;"><strong>Callback Date:</strong> '+value.callback_time+'</div>';
+                swalContent .= '<div style="padding: 0 30px; text-align: left;"><strong>Last Call Date:</strong> '+value.entry_time+'</div>';
+                swalContent .= '<div style="padding: 0 30px; text-align: left;"><strong>Comments:</strong> '+value.comments+'</div>';
+                
+                swal({
+                    title: "<?=$lh->translateText('Call Back')?>",
+                    text: swalContent,
+                    type: "info",
+                    html: true
+                }, function(){
+                
+                });
+            }
         });
     }
 }
