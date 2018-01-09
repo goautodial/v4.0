@@ -90,6 +90,7 @@ var registrationFailed = false;
 var minimizedDispo = false;
 var check_login = false;
 var window_focus = true;
+var callback_alerts = new Array();
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -705,6 +706,9 @@ $(document).ready(function() {
                             {consult_custom_wait++;}
                     }
                 }
+                
+                //Check for Callbacks
+                checkForCallbacks();
                 
                 //Check if Agent is still logged in
                 checkIfStillLoggedIn(check_if_logged_out);
@@ -4131,6 +4135,13 @@ function CallBacksCountCheck() {
                     }
                     var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td>'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" onclick="NewCallbackCall('+value.callback_id+', '+value.lead_id+');" class="btn btn-primary btn-sm dial-callback"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
                     $("#callback-list tbody").append(appendThis);
+                    
+                    callback_alerts[value.callback_id]['lead_id'] = value.lead_id;
+                    callback_alerts[value.callback_id]['phone_number'] = value.phone_number;
+                    callback_alerts[value.callback_id]['entry_time'] = value.entry_time;
+                    callback_alerts[value.callback_id]['callback_time'] = value.callback_time;
+                    callback_alerts[value.callback_id]['campaign_name'] = value.campaign_name;
+                    callback_alerts[value.callback_id]['comments'] = thisComments;
                 });
                 $("#callback-list").css('width', '100%');
                 $("#callback-list").DataTable({
@@ -7715,6 +7726,12 @@ function GetCustomFields(listid, show, getData, viewFields) {
                 unloadPreloader = true;
             }
         });
+    }
+}
+
+function checkForCallbacks() {
+    if (callback_alerts.length > 0) {
+        console.log(callback_alerts);
     }
 }
 
