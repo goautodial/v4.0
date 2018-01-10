@@ -4146,9 +4146,7 @@ function CallBacksCountCheck() {
                     callback_alerts[value.callback_id]['callback_time'] = value.callback_time;
                     callback_alerts[value.callback_id]['campaign_id'] = value.campaign_id;
                     callback_alerts[value.callback_id]['comments'] = thisComments;
-                    if (typeof callback_alerts[value.callback_id]['seen'] === 'undefined') {
-                        callback_alerts[value.callback_id]['seen'] = false;
-                    }
+                    callback_alerts[value.callback_id]['seen'] = value.seen;
                 });
                 $("#callback-list").css('width', '100%');
                 $("#callback-list").DataTable({
@@ -7758,6 +7756,29 @@ function checkForCallbacks() {
                     html: true
                 }, function(){
                     callback_alerts[key].seen = true;
+                    
+                    var postData = {
+                        goAction: 'goGetCallbackCount',
+                        goUser: uName,
+                        goPass: uPass,
+                        goSeen: true,
+                        goCallbackID: key,
+                        responsetype: 'json'
+                    };
+                
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?=$goAPI?>/goAgent/goAPI.php',
+                        processData: true,
+                        data: postData,
+                        dataType: "json",
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                    .done(function (result) {
+                        console.log(result);
+                    });
                 });
             }
         });
