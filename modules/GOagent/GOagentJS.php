@@ -7759,6 +7759,29 @@ function checkForCallbacks() {
                     allowEscapeKey: false
                 }, function(){
                     callback_alerts[key].seen = true;
+                    
+                    var postData = {
+                        goAction: 'goGetCallbackCount',
+                        goUser: uName,
+                        goPass: uPass,
+                        goSeen: true,
+                        goCallbackID: key,
+                        responsetype: 'json'
+                    };
+                
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?=$goAPI?>/goAgent/goAPI.php',
+                        processData: true,
+                        data: postData,
+                        dataType: "json",
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                    .done(function (result) {
+                        console.log(result);
+                    });
                 });
             }
         });
