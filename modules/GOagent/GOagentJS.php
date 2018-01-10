@@ -7755,8 +7755,7 @@ function checkForCallbacks() {
                     title: "<?=$lh->translateText('Call Back')?>",
                     text: swalContent,
                     type: "info",
-                    html: true,
-                    allowEscapeKey: false
+                    html: true
                 }, function(){
                     callback_alerts[key].seen = true;
                 });
