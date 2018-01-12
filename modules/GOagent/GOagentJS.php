@@ -4207,6 +4207,11 @@ function NewCallbackCall(taskCBid, taskLEADid, taskCBalt) {
     if (typeof taskCBalt == 'undefined' || taskCBalt == '') {
         taskCBalt = 'MAIN';
     }
+    
+    if ($(".sweet-alert.visible").length > 0) {
+        swal.close();
+    }
+    
     if ( (AutoDialWaiting == 1) || (live_customer_call == 1) || (alt_dial_active == 1) || (MD_channel_look == 1) || (in_lead_preview_state == 1) ) {
         if ( (auto_pause_precall == 'Y') && ( (agent_pause_codes_active == 'Y') || (agent_pause_codes_active == 'FORCE') ) && (AutoDialWaiting == 1) && (live_customer_call != 1) && (alt_dial_active != 1) && (MD_channel_look != 1) && (in_lead_preview_state != 1) ) {
             agent_log_id = AutoDial_ReSume_PauSe("VDADpause", '', '', '', '', '1', auto_pause_precall_code);
@@ -7753,7 +7758,8 @@ function checkForCallbacks() {
                     title: "<?=$lh->translateText('Call Back')?>",
                     text: swalContent,
                     type: "info",
-                    html: true
+                    html: true,
+                    allowEscapeKey: false
                 }, function(){
                     callback_alerts[key].seen = true;
                     
