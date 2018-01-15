@@ -65,6 +65,8 @@ var isMobile = false; //initiate as false
 var is_logged_in = <?=$is_logged_in?>;
 var logging_in = false;
 var logoutWarn = true;
+var reschedule_cb = false;
+var reschedule_cb_id = 0;
 var use_webrtc = <?=($use_webrtc ? $use_webrtc : 0)?>;
 var NOW_TIME = '<?=$NOW_TIME?>';
 var SQLdate = '<?=$NOW_TIME?>';
@@ -1622,7 +1624,14 @@ $(document).ready(function() {
     $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail|readmail)").on('click', hijackThisLink);
     
     $("#submitCBDate").click(function() {
-        CallBackDateSubmit();
+        if (!reschedule_cb && reschedule_cb_id < 1) {
+            CallBackDateSubmit();
+        } else {
+            var cbOnly = $("#CallBackOnlyMe").prop('checked');
+            var cbDate = $("#callback-date").val();
+            var cbComment = $("#callback-comments").val();
+            ReschedCallback(reschedule_cb_id, cbDate, cbComment, cbOnly);
+        }
     });
     
     $("#openWebForm").click(function() {
@@ -3093,8 +3102,10 @@ function CheckForIncoming () {
             $(".formMain input[name='vendor_lead_code']").val(this_VDIC_data.vendor_id);
             $(".formMain input[name='list_id']").val(this_VDIC_data.list_id);
             $(".formMain input[name='gmt_offset_now']").val(this_VDIC_data.gmt_offset_now);
-            $(".formMain input[name='phone_code']").val(this_VDIC_data.phone_code);
-            $(".formMain input[name='phone_number']").val(this_VDIC_data.phone_number).trigger('change');
+            cust_phone_code                         = this_VDIC_data.phone_code;
+            $(".formMain input[name='phone_code']").val(cust_phone_code);
+            cust_phone_number                       = this_VDIC_data.phone_number;
+            $(".formMain input[name='phone_number']").val(cust_phone_number).trigger('change');
             $(".formMain input[name='title']").val(this_VDIC_data.title).trigger('change');
             if (this_VDIC_data.first_name !== '') {
                 $("#cust_full_name a[id='first_name']").editable('setValue', this_VDIC_data.first_name, true);
@@ -5364,6 +5375,7 @@ function DispoSelectSubmit() {
             }
             $("#select-disposition").modal('hide');
             $("#callback-datepicker").modal({
+                keyboard: false,
                 backdrop: 'static',
                 show: true
             });
@@ -7749,7 +7761,7 @@ function checkForCallbacks() {
             var swalContent = '';
             if (!value.seen && minsBetween <= 5 && (live_customer_call < 1 && XD_live_customer_call < 1)) {
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Name:</strong> '+value.cust_name+'</div>';
-                swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Phone:</strong> '+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary"><i class="fa fa-calendar"></i></a></span></div>';
+                swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Phone:</strong> '+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick="ShowCBDatePicker(key, value.callback_time, value.comments);"><i class="fa fa-calendar"></i></a></span></div>';
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Callback Date:</strong> '+value.callback_time+'</div>';
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Last Call Date:</strong> '+value.entry_time+'</div>';
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Comments:</strong> '+value.comments+'</div>';
@@ -8571,6 +8583,62 @@ function getContactList() {
 
 function NoneInSession() {
     //still on development
+}
+
+function ShowCBDatePicker(cbId, cbDate, cbComment) {
+    reschedule_cb = true;
+    reschedule_cb_id = cbId;
+    $("#callback-datepicker").modal({
+        keyboard: false,
+        backdrop: 'static',
+        show: true
+    });
+    
+    $("#CallBackOnlyMe").prop('checked', false);
+    if (my_callback_option == 'CHECKED')
+        {$("#CallBackOnlyMe").prop('checked', true);}
+    $("#callback-date").val(cbDate);
+    $("#callback-comments").val(cbComment);
+}
+
+function ReschedCallback(cbId, cbDate, cbComment, cbOnly) {
+    var postData = {
+        goAction: 'goCallbackResched',
+        goUser: uName,
+        goPass: uPass,
+        goCampaign: campaign,
+        goCallbackID: cbId,
+        goCallbackDate: cbDate,
+        goCallbackComment: cbComment,
+        goCallbackOnly: cbOnly,
+        responsetype: 'json'
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    .done(function (data) {
+        var thisStatus = (data.result == 'success') ? data.result : 'danger';
+        if ( !!$.prototype.snackbar ) {
+            $.snackbar({content: "<i class='fa fa-calendar fa-lg text-"+data.result+"' aria-hidden='true'></i>&nbsp; "+data.message, timeout: 3000, htmlAllowed: true});
+        }
+        CallBacksCountCheck();
+        
+        reschedule_cb = false;
+        reschedule_cb_id = 0;
+        $("#CallBackOnlyMe").prop('checked', false);
+        if (my_callback_option == 'CHECKED')
+            {$("#CallBackOnlyMe").prop('checked', true);}
+        $("#callback-date").val('');
+        $("#callback-comments").val('');
+    });
 }
 
 function goGetAvatar(account, size) {
