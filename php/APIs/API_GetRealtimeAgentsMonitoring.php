@@ -12,60 +12,59 @@
     include_once('../UIHandler.php');
     require_once('../LanguageHandler.php');
     require_once('../DbHandler.php');
-    $ui = \creamy\UIHandler::getInstance();
-    $lh = \creamy\LanguageHandler::getInstance();
-    //$colors = $ui->generateStatisticsColors();
-
     require_once('../Session.php');    
     require_once('../goCRMAPISettings.php');
 
+    $ui = \creamy\UIHandler::getInstance();
+    $lh = \creamy\LanguageHandler::getInstance();
+    //$colors = $ui->generateStatisticsColors();    
     $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass;
-    $postfields["goAction"] = "goGetRealtimeAgentsMonitoring"; #action performed by the [[API:Functions]]
-	$postfields["session_user"] = $_SESSION['user']; #current user
-    $postfields["responsetype"] = responsetype; 
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
+	$postfields = array(
+		'goUser' => goUser,
+		'goPass' => goPass,
+		'goAction' => 'goGetRealtimeAgentsMonitoring',
+		'session_user' => $_SESSION['user'],
+		'responsetype' => 'json',
+	);				
+
+	// Call the API
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+	$data = curl_exec($ch);
+	curl_close($ch);
 
     $output = json_decode($data);
-    //echo "<pre>";
-    //print_r($output);    
-                        
-    $creamyAvatar = $ui->getSessionAvatar();
-
     $barracks = '[';   
     
     foreach ($output->data as $key => $value) {
    
-        $userid = $value->vu_user_id;
-        $agentid = $value->vla_user;
-        $agentname =  $value->vu_full_name;
-        $campname = $value->vla_campaign_name;    
-        $station = $value->vla_extension;
-        $user_group = $value->vu_user_group;
-        $sessionid = $value->vla_conf_exten;
-        $status = $value->vla_status;
-        $call_type = $value->vla_comments;
-        $server_ip = $value->vla_server_ip;
-        $call_server_ip = $value->vla_call_server_ip;
-        $last_call_time = $value->last_call_time;
-        $last_call_finish = $value->last_call_finish;
-        $campaign_id = $value->vla_campaign_id;
-        $last_state_change = $value->last_state_change;
-        $lead_id = $value->vla_lead_id;
-        $agent_log_id = $value->vla_agent_log_id;
-        $vla_callerid = $value->vla_callerid;    
-        $cust_phone = $value->vl_phone_number;
-        $pausecode = $value->vla_pausecode;
+        $userid = $ui->escapeJsonString($value->vu_user_id);
+        $agentid = $ui->escapeJsonString($value->vla_user);
+        $agentname = $ui->escapeJsonString($value->vu_full_name);
+        $campname = $ui->escapeJsonString($value->vla_campaign_name);    
+        $station = $ui->escapeJsonString($value->vla_extension);
+        $user_group = $ui->escapeJsonString($value->vu_user_group);
+        $sessionid = $ui->escapeJsonString($value->vla_conf_exten);
+        $status = $ui->escapeJsonString($value->vla_status);
+        $call_type = $ui->escapeJsonString($value->vla_comments);
+        $server_ip = $ui->escapeJsonString($value->vla_server_ip);
+        $call_server_ip = $ui->escapeJsonString($value->vla_call_server_ip);
+        $last_call_time = $ui->escapeJsonString($value->last_call_time);
+        $last_call_finish = $ui->escapeJsonString($value->last_call_finish);
+        $campaign_id = $ui->escapeJsonString($value->vla_campaign_id);
+        $last_state_change = $ui->escapeJsonString($value->last_state_change);
+        $lead_id = $ui->escapeJsonString($value->vla_lead_id);
+        $agent_log_id = $ui->escapeJsonString($value->vla_agent_log_id);
+        $vla_callerid = $ui->escapeJsonString($value->vla_callerid);    
+        $cust_phone = $ui->escapeJsonString($value->vl_phone_number);
+        $pausecode = $ui->escapeJsonString($value->vla_pausecode);
 		
         foreach ($output->callerids as $key => $callerids){
         
@@ -87,8 +86,6 @@
         
         //$call_time_MS = "";
         $STARTtime = date("U");       
-        
-        //$sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='36'></avatar></div>";
         $sessionAvatar = "<div class='media'><avatar username='$agentname' :size='32'></avatar></div>";
     
         if ($status == "INCALL"){
@@ -210,7 +207,6 @@
             $textclass = "text-danger";
         }
     
-    
         $barracks .='[';       
         $barracks .= '"'.$sessionAvatar.'",';
         $barracks .= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 
@@ -226,5 +222,5 @@
     $barracks .= ']';
     
     echo json_encode($barracks);
-    //print_r($output);
+    
 ?>
