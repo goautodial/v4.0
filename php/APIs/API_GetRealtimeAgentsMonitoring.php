@@ -1,12 +1,11 @@
 <?php
-    ####################################################
-    #### Name: goGetRealtimeAgentsMonitoring.php    ####
-    #### Type: API for dashboard php encode         ####
-    #### Version: 0.9                               ####
-    #### Copyright: GOAutoDial Inc. (c) 2011-2016   ####
-    #### Written by: Demian Lizandro Biscocho       ####
-    #### License: AGPLv2                            ####
-    ####################################################
+/*
+ *  Copyright (c) 2018 GOautodial Inc. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a aGPLv3 license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+*/
 
     //initialize session and DDBB handler
     include_once('../UIHandler.php');
@@ -17,7 +16,6 @@
 
     $ui = \creamy\UIHandler::getInstance();
     $lh = \creamy\LanguageHandler::getInstance();
-    //$colors = $ui->generateStatisticsColors();    
     $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 
 	$postfields = array(
@@ -92,49 +90,27 @@
             //$last_call_time = $last_state_change;
             $textclass = "text-success";        
             
-            if ($pc_channel != NULL){
-                    //$last_call_time = $pc_parked_time;
-                    $status = "PARK";
-            }
-        
-            if ($vla_callerid != $vac_callerid){
-                    $last_state_change = $last_call_time;
-                    $status = "HUNGUP";
-            }        
-            
-            if ($call_type == "AUTO"){
-                    $CM="[A]";
-            }
-            
-            if ($call_type == "INBOUND"){
-                    $CM=" [I]";
-            }
-            
-            if ($call_type == "MANUAL"){
-                    $CM=" [M]";
-            }                        
+            if ($pc_channel != NULL){ //$last_call_time = $pc_parked_time; $status = "PARK"; }        
+            if ($vla_callerid != $vac_callerid){ $last_state_change = $last_call_time; $status = "HUNGUP"; }                    
+            if ($call_type == "AUTO"){ $CM=" [A]"; }            
+            if ($call_type == "INBOUND"){ $CM=" [I]"; }            
+            if ($call_type == "MANUAL"){ $CM=" [M]"; }                        
         }  
         
         if (preg_match("/READY|PAUSED|CLOSER/",$status)){
             $last_call_time = $last_state_change;
             $textclass = "text-info";
             
-            if ($lead_id>0){ 
-                $status="DISPO";
-            }
+            if ($lead_id>0){ $status="DISPO"; }
         }
                
         if (!preg_match("/INCALL|QUEUE|PARK|3-WAY/",$status)){
             $call_time_S = ($STARTtime - $last_state_change);
             $textclass = "text-info";
                         
-                if ($call_time_M_int >= 3){
-                    $textclass = "text-warning";
-                }
+			if ($call_time_M_int >= 3){ $textclass = "text-warning"; }                
+			if ($call_time_M_int >= 5){ $textclass = "text-danger"; }
                 
-                if ($call_time_M_int >= 5){
-                    $textclass = "text-danger";
-                }        
         } else {
             $call_time_S = ($STARTtime - $last_call_time);         
         }
@@ -163,51 +139,31 @@
             $textclass = "text-warning";
             $nametextclass = "text-warning";
             
-            if (strlen($pausecode) > 0) {
-                $status .= " [$pausecode]";
-            }
+            if (strlen($pausecode) > 0) { $status .= " [$pausecode]"; }
             
-            if ($call_time_S >= 10){
-                $textclass = "text-warning";
-            }
-            if ($call_time_M_int >= 1){
-                $textclass = "text-warning";
-            }
-            if ($call_time_M_int >= 5){
-                $textclass = "text-danger";
-            }
-            if ($call_time_M_int >= 15){
-                $textclass = "text";
-            }
+            if ($call_time_S >= 10){ $textclass = "text-warning"; }
+            if ($call_time_M_int >= 1){ $textclass = "text-warning"; }
+            if ($call_time_M_int >= 5){ $textclass = "text-danger"; }
+            if ($call_time_M_int >= 15){ $textclass = "text"; }
         }
         
         if ($status == "READY"){                
-                $textclass = "text-info";
+			$textclass = "text-info";
                 
-                if ($call_time_M_int >= 3){
-                    $textclass = "text-warning";
-                }            
-                if ($call_time_M_int >= 5){
-                    $textclass = "text-danger";
-                }            
-            }  
+			if ($call_time_M_int >= 3){ $textclass = "text-warning"; }            
+			if ($call_time_M_int >= 5){ $textclass = "text-danger"; }            
+		}  
             
         if ($status == "DISPO"){                
-                $textclass = "text-warning";
-                
-                if ($call_time_M_int >= 3){
-                    $textclass = "text-danger";
-                }            
-                if ($call_time_M_int >= 5){
-                    $textclass = "text";
-                }            
-            }         
+			$textclass = "text-warning";
+			
+			if ($call_time_M_int >= 3){ $textclass = "text-danger"; }            
+			if ($call_time_M_int >= 5){ $textclass = "text"; }            
+		}         
         
-        if ($status == "HUNGUP"){
-            $textclass = "text-danger";
-        }
+        if ($status == "HUNGUP"){ $textclass = "text-danger"; }
     
-        $barracks .='[';       
+        $barracks .='[';
         $barracks .= '"'.$sessionAvatar.'",';
         $barracks .= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#view_agent_information\" data-id=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 
         $barracks .= '"'.$user_group.'",';    
