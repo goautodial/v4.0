@@ -8695,6 +8695,7 @@ function ReschedCallback(cbId, cbDate, cbComment, cbOnly) {
             {$("#CallBackOnlyMe").prop('checked', true);}
         $("#callback-date").val('');
         $("#callback-comments").val('');
+        $("#callback-datepicker").modal('hide');
     });
 }
 
