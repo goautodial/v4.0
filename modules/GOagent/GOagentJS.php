@@ -823,7 +823,7 @@ $(document).ready(function() {
         });
         
         var d = new Date();
-        var currDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() + 30);
+        var currDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() + 15);
         $("#cb-datepicker").datetimepicker({
             inline: true,
             sideBySide: true,
