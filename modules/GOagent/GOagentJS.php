@@ -4221,6 +4221,31 @@ function NewCallbackCall(taskCBid, taskLEADid, taskCBalt) {
     
     if ($(".sweet-alert.visible").length > 0) {
         swal.close();
+        
+        callback_alerts[taskCBid].seen = true;
+        
+        var postData = {
+            goAction: 'goGetCallbackCount',
+            goUser: uName,
+            goPass: uPass,
+            goSeen: true,
+            goCallbackID: taskCBid,
+            responsetype: 'json'
+        };
+    
+        $.ajax({
+            type: 'POST',
+            url: '<?=$goAPI?>/goAgent/goAPI.php',
+            processData: true,
+            data: postData,
+            dataType: "json",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+        .done(function (result) {
+            console.log(result);
+        });
     }
     
     if ( (AutoDialWaiting == 1) || (live_customer_call == 1) || (alt_dial_active == 1) || (MD_channel_look == 1) || (in_lead_preview_state == 1) ) {
@@ -8590,6 +8615,36 @@ function NoneInSession() {
 function ShowCBDatePicker(cbId, cbDate, cbComment) {
     reschedule_cb = true;
     reschedule_cb_id = cbId;
+    
+    if ($(".sweet-alert.visible").length > 0) {
+        swal.close();
+        
+        callback_alerts[cbId].seen = true;
+        
+        var postData = {
+            goAction: 'goGetCallbackCount',
+            goUser: uName,
+            goPass: uPass,
+            goSeen: true,
+            goCallbackID: cbId,
+            responsetype: 'json'
+        };
+    
+        $.ajax({
+            type: 'POST',
+            url: '<?=$goAPI?>/goAgent/goAPI.php',
+            processData: true,
+            data: postData,
+            dataType: "json",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+        .done(function (result) {
+            console.log(result);
+        });
+    }
+    
     $("#callback-datepicker").modal({
         keyboard: false,
         backdrop: 'static',
