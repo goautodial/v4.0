@@ -901,7 +901,7 @@ EOF;
 				<h4 class="modal-title">$missedCallbacks</h4>
 			</div>
 			<div class="modal-body">
-				<div id="missed-callbacks-loading">
+				<div id="missed-callbacks-loading" style="text-align: center;">
 					<i class="fa fa-spinner fa-spin fa-5x fa-fw"></i>
 					<span class="sr-only">Loading...</span>
 				</div>
