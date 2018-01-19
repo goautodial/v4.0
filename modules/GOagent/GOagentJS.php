@@ -823,7 +823,8 @@ $(document).ready(function() {
         });
         
         var d = new Date();
-        var currDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() + 15);
+        //var currDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() + 15);
+        var currDate = new Date(serverdate.getFullYear(), serverdate.getMonth(), serverdate.getDate(), serverdate.getHours(), serverdate.getMinutes() + 15);
         $("#cb-datepicker").datetimepicker({
             inline: true,
             sideBySide: true,
@@ -7779,7 +7780,7 @@ function GetCustomFields(listid, show, getData, viewFields) {
 function checkForCallbacks() {
     if (Object.keys(callback_alerts).length > 0 && (live_customer_call < 1 && XD_live_customer_call < 1 && AgentDispoing < 1)) {
         $.each(callback_alerts, function(key, value) {
-            var nowDate = new Date();
+            var nowDate = serverdate;
             var dateParts = value.callback_time.match(/(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)/);
             var cbDate = new Date(dateParts[1], parseInt(dateParts[2], 10) - 1, dateParts[3], dateParts[4], dateParts[5], dateParts[6]);
             var minsBetween = minutesBetween(nowDate, cbDate);
