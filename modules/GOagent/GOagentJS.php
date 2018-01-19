@@ -8655,7 +8655,9 @@ function ShowCBDatePicker(cbId, cbDate, cbComment) {
     $("#CallBackOnlyMe").prop('checked', false);
     if (my_callback_option == 'CHECKED')
         {$("#CallBackOnlyMe").prop('checked', true);}
-    $("#callback-date").val(cbDate);
+    
+    var newDate = moment(cbDate).format('YYYY-MM-DD HH:mm:00');
+    $("#callback-date").val(newDate);
     $("#callback-comments").val(cbComment);
 }
 
