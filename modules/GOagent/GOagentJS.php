@@ -94,6 +94,7 @@ var check_login = false;
 var window_focus = true;
 var callback_alert = false;
 var callback_alerts = {};
+var just_logged_in = false;
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -1304,6 +1305,7 @@ $(document).ready(function() {
                         is_logged_in = 1;
                         check_if_logged_out = 1;
                         logout_stop_timeouts = 0;
+                        just_logged_in = true;
                         
                         $.each(result.data, function(key, value) {
                             if (key == 'campaign_settings') {
@@ -1745,6 +1747,9 @@ $(document).ready(function() {
     
     $('#view-missed-callbacks').on('hidden.bs.modal', function () {
         callback_alert = false;
+        $("#missed-callbacks-content table tbody").html('');
+        $("#missed-callbacks-content").hide();
+        $("#missed-callbacks-loading").show();
     });
 });
 
@@ -4227,6 +4232,10 @@ function NewCallbackCall(taskCBid, taskLEADid, taskCBalt) {
     
     if ($(".sweet-alert.visible").length > 0) {
         swal.close();
+    }
+    
+    if (($("#view-missed-callbacks").data('bs.modal') || {}).isShown) {
+        $("#view-missed-callbacks").modal('hide');
     }
     
     if (callback_alert) {
@@ -7798,7 +7807,7 @@ function checkForCallbacks() {
                 callback_alert = true;
                 swalContent  = '';
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Name:</strong> '+value.cust_name+'</div>';
-                swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Phone:</strong> '+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time.trim()+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></div>';
+                swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Phone:</strong> '+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></div>';
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Callback Date:</strong> '+value.callback_time+'</div>';
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Last Call Date:</strong> '+value.entry_time+'</div>';
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Comments:</strong> '+value.comments+'</div>';
@@ -7841,7 +7850,7 @@ function checkForCallbacks() {
                 
                 swalContent += '<tr>';
                 swalContent += '<td>'+value.cust_name+'</td>';
-                swalContent += '<td>'+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time.trim()+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></td>';
+                swalContent += '<td>'+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></td>';
                 swalContent += '<td>'+value.callback_time+'</td>';
                 swalContent += '<td>'+value.entry_time+'</td>';
                 swalContent += '<td>'+value.comments+'</td>';
@@ -7849,7 +7858,12 @@ function checkForCallbacks() {
             }
         });
         
-        if (missedCB && swalContent !== '') {
+        if (just_logged_in && missedCB && swalContent !== '') {
+            just_logged_in = false;
+            
+            $("#missed-callbacks-content table tbody").html(swalContent);
+            $("#missed-callbacks-loading").hide();
+            $("#missed-callbacks-content").show();
             $("#view-missed-callbacks").modal({
                 keyboard: false,
                 backdrop: 'static',
@@ -8648,6 +8662,10 @@ function ShowCBDatePicker(cbId, cbDate, cbComment) {
     
     if ($(".sweet-alert.visible").length > 0) {
         swal.close();
+    }
+    
+    if (($("#view-missed-callbacks").data('bs.modal') || {}).isShown) {
+        $("#view-missed-callbacks").modal('hide');
     }
     
     if (callback_alert) {
