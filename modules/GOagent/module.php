@@ -902,10 +902,24 @@ EOF;
 			</div>
 			<div class="modal-body">
 				<div id="missed-callbacks-loading" style="text-align: center;">
-					<i class="fa fa-spinner fa-spin fa-5x fa-fw"></i>
+					<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
 					<span class="sr-only">Loading...</span>
 				</div>
-				<div id="missed-callbacks-content" style="display: none;"></div>
+				<div id="missed-callbacks-content" style="display: none;">
+					<table width="100%" border=0>
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Phone</th>
+								<th>Callback Date</th>
+								<th>Last Call Date</th>
+								<th>Comments</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-default btn-raised pull-right" id="missed-cb-close" data-dismiss="modal">OK</button>

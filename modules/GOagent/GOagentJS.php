@@ -7787,14 +7787,16 @@ function GetCustomFields(listid, show, getData, viewFields) {
 
 function checkForCallbacks() {
     if (Object.keys(callback_alerts).length > 0 && (live_customer_call < 1 && XD_live_customer_call < 1 && AgentDispoing < 1) && !callback_alert) {
+        var missedCB = false;
+        var swalContent = '';
         $.each(callback_alerts, function(key, value) {
             var nowDate = serverdate;
             var dateParts = value.callback_time.match(/(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)/);
             var cbDate = new Date(dateParts[1], parseInt(dateParts[2], 10) - 1, dateParts[3], dateParts[4], dateParts[5], dateParts[6]);
             var minsBetween = minutesBetween(nowDate, cbDate);
-            var swalContent = '';
             if (!value.seen && (minsBetween <= 5 && minsBetween >= 0)) {
                 callback_alert = true;
+                swalContent  = '';
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Name:</strong> '+value.cust_name+'</div>';
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Phone:</strong> '+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time.trim()+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></div>';
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Callback Date:</strong> '+value.callback_time+'</div>';
@@ -7835,14 +7837,25 @@ function checkForCallbacks() {
                 });
             } else if (!value.seen && minsBetween < 0) {
                 callback_alert = true;
+                missedCB = true;
                 
-                $("#view-missed-callbacks").modal({
-                    keyboard: false,
-                    backdrop: 'static',
-                    show: true
-                });
+                swalContent += '<tr>';
+                swalContent += '<td>'+value.cust_name+'</td>';
+                swalContent += '<td>'+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time.trim()+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></td>';
+                swalContent += '<td>'+value.callback_time+'</td>';
+                swalContent += '<td>'+value.entry_time+'</td>';
+                swalContent += '<td>'+value.comments+'</td>';
+                swalContent += '</tr>';
             }
         });
+        
+        if (missedCB && swalContent !== '') {
+            $("#view-missed-callbacks").modal({
+                keyboard: false,
+                backdrop: 'static',
+                show: true
+            });
+        }
     }
 }
 
