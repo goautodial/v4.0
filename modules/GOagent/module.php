@@ -901,10 +901,14 @@ EOF;
 				<h4 class="modal-title">$missedCallbacks</h4>
 			</div>
 			<div class="modal-body">
-				<div id="missed-callbacks-content"></div>
+				<div id="missed-callbacks-loading">
+					<i class="fa fa-spinner fa-spin fa-5x fa-fw"></i>
+					<span class="sr-only">Loading...</span>
+				</div>
+				<div id="missed-callbacks-content" style="display: none;"></div>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-default btn-raised pull-right" id="missed-cb-close" data-dismiss="modal">$close</button>
+				<button class="btn btn-default btn-raised pull-right" id="missed-cb-close" data-dismiss="modal">OK</button>
 			</div>
 		</div>
 	</div>
