@@ -94,7 +94,7 @@ var check_login = false;
 var window_focus = true;
 var callback_alert = false;
 var callback_alerts = {};
-var enable_callback_alert = true;
+var enable_callback_alert = false;
 var just_logged_in = false;
 <?php
     foreach ($default_settings as $idx => $val) {
