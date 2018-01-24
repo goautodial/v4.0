@@ -93,42 +93,42 @@
 				if ($call_type == "INBOUND") { $CM=" [I]"; }            
 				if ($call_type == "MANUAL") { $CM=" [M]"; }                        
 			}  
-		
-			if (preg_match("/READY|PAUSED|CLOSER/",$status)){
-				$last_call_time = $last_state_change;
-				$textclass = "text-info";
-				
-				if ($lead_id>0) { $status="DISPO"; }
-			}
-				
-			if (!preg_match("/INCALL|QUEUE|PARK|3-WAY/",$status)){
-				$call_time_S = ($STARTtime - $last_state_change);
-				$textclass = "text-info";
-							
-				if ($call_time_M_int >= 3) { $textclass = "text-warning"; }                
-				if ($call_time_M_int >= 5) { $textclass = "text-danger"; }
-					
-			} else { $call_time_S = ($STARTtime - $last_call_time); }
-			
-			if (preg_match("/3-WAY/",$status)) {
-				$call_time_S = ($STARTtime - $last_state_change);
-				$textclass = "text-success";
-			}
-		
-			$call_time_S = ($STARTtime - $last_state_change);
-			$call_time_M = ($call_time_S / 60);
-			$call_time_M = round($call_time_M, 2);
-			$call_time_M_int = intval("$call_time_M");
-			$call_time_SEC = ($call_time_M - $call_time_M_int);
-			$call_time_SEC = ($call_time_SEC * 60);
-			$call_time_SEC = round($call_time_SEC, 0);
-				
-			if ($call_time_SEC < 10) {
-				$call_time_SEC = "0$call_time_SEC";
-			}
-			
-			$call_time_MS = "$call_time_M_int:$call_time_SEC"; 
 		}
+		
+		if (preg_match("/READY|PAUSED|CLOSER/",$status)){
+			$last_call_time = $last_state_change;
+			$textclass = "text-info";
+			
+			if ($lead_id>0) { $status="DISPO"; }
+		}
+			
+		if (!preg_match("/INCALL|QUEUE|PARK|3-WAY/",$status)){
+			$call_time_S = ($STARTtime - $last_state_change);
+			$textclass = "text-info";
+						
+			if ($call_time_M_int >= 3) { $textclass = "text-warning"; }                
+			if ($call_time_M_int >= 5) { $textclass = "text-danger"; }
+				
+		} else { $call_time_S = ($STARTtime - $last_call_time); }
+		
+		if (preg_match("/3-WAY/",$status)) {
+			$call_time_S = ($STARTtime - $last_state_change);
+			$textclass = "text-success";
+		}
+	
+		$call_time_S = ($STARTtime - $last_state_change);
+		$call_time_M = ($call_time_S / 60);
+		$call_time_M = round($call_time_M, 2);
+		$call_time_M_int = intval("$call_time_M");
+		$call_time_SEC = ($call_time_M - $call_time_M_int);
+		$call_time_SEC = ($call_time_SEC * 60);
+		$call_time_SEC = round($call_time_SEC, 0);
+			
+		if ($call_time_SEC < 10) {
+			$call_time_SEC = "0$call_time_SEC";
+		}
+		
+		$call_time_MS = "$call_time_M_int:$call_time_SEC";
 		
 		if ($status == "PAUSED") {
 			$circleclass = "circle circle-warning circle-lg text-left";
