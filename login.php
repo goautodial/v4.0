@@ -161,7 +161,7 @@
             <div class="col-xs-3"></div>
           </div>
         </form>
-		<p class="text-center"><?php $lh->translateText("forgotten_password"); ?> <a href="lostpassword.php"><?php $lh->translateText("click_here"); ?>.</a></p>
+	<!--<p class="text-center"><?php $lh->translateText("forgotten_password"); ?> <a href="lostpassword.php"><?php $lh->translateText("click_here"); ?>.</a></p>-->
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
    <!--<div class="margin text-center">

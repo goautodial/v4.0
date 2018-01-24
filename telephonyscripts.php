@@ -39,9 +39,9 @@
 		<!-- Data Tables -->
         <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-        
+        <script src="js/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
         <script src="js/plugins/ckeditor/styles.js" type="text/javascript"></script>
-		<script src="js/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
+		
     </head>
 
      <?php print $ui->creamyBody(); ?>
@@ -230,7 +230,37 @@
 	$(document).ready(function(){
 		$('#scripts-modal').on('shown.bs.modal', function(){
 	        // $('.textarea').wysihtml5();
-	        CKEDITOR.replace('script_text');
+	        CKEDITOR.replace('script_text', 
+	        	{
+	                toolbar: [
+	                    // { name: 'document', items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
+						{ name: 'clipboard', items: [ 'Source', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+						{ name: 'editing', items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
+						{ name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
+						'/',
+						{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
+						{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
+						{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+						{ name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
+						'/',
+						{ name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+						{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+						{ name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+						{ name: 'about', items: [ 'About' ] }
+	                ],
+	                allowedContent: {
+		                script: true,
+		                div: true,
+		                $1: {
+		                    // This will set the default set of elements
+		                    elements: CKEDITOR.dtd,
+		                    attributes: true,
+		                    styles: true,
+		                    classes: true
+		                }
+		            }
+            	}
+	        );
 	    });
 		/*******************
 		** INITIALIZATIONS
@@ -295,7 +325,7 @@
 						$.ajax({
 							url: "./php/AddScript.php",
 							type: 'POST',
-							data: $("#create_form").serialize() + '&script_text_value=' + CKEDITOR.instances['script_text'].getData(),
+							data: $("#create_form").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()),
 							success: function(data) {
 								// console.log(data);
 								$('#finish').text("<?php $lh->translateText("submit"); ?>");

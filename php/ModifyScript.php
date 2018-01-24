@@ -49,7 +49,7 @@ require_once('goCRMAPISettings.php');
         
         $postfields["log_user"]         = $_POST['log_user'];
         $postfields["log_group"]        = $_POST['log_group'];
-
+        // print_r($postfields);die;
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
          curl_setopt($ch, CURLOPT_POST, 1);
@@ -61,7 +61,7 @@ require_once('goCRMAPISettings.php');
          curl_close($ch);
          $output = json_decode($data);
         
-//      print_r($data);
+     
          // print_r($output->result); die;
         if ($output->result=="success") {
            # Result was OK!

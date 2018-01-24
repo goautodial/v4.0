@@ -169,6 +169,7 @@ class GOagent extends Module {
 		$close = $this->lh()->translationFor('close');
 		$maximize = $this->lh()->translationFor('maximize');
 		$minimize = $this->lh()->translationFor('minimize');
+		$missedCallbacks = $this->lh()->translationFor('missed_callbacks');
 		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
 		$userrole = $this->userrole;
@@ -889,6 +890,39 @@ EOF;
 					</div>
 					<button class="btn btn-warning btn-raised" id="cust-info-submit">$save</button>
 				</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="view-missed-callbacks" class="modal fade" tabindex="-1">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">$missedCallbacks</h4>
+			</div>
+			<div class="modal-body">
+				<div id="missed-callbacks-loading" style="text-align: center;">
+					<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+					<span class="sr-only">Loading...</span>
+				</div>
+				<div id="missed-callbacks-content" style="display: none;">
+					<table width="100%" border=0>
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Phone</th>
+								<th>Callback Date</th>
+								<th>Last Call Date</th>
+								<th>Comments</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-default btn-raised pull-right" id="missed-cb-close" data-dismiss="modal">OK</button>
 			</div>
 		</div>
 	</div>
