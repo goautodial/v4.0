@@ -3310,7 +3310,6 @@ error_reporting(E_ERROR | E_PARSE);
 	public function goGetAllUserList($user, $perm) {
 
 	$output = $this->API_goGetAllUserLists($user);
-       if($output->result=="success") {
 		$checkbox_all = $this->getCheckAll("user", $perm);
 		if($perm->user_delete !== 'N')
        	    $columns = array("     ", $checkbox_all,$this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
@@ -3360,11 +3359,6 @@ error_reporting(E_ERROR | E_PARSE);
 	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 
 			return $result.'</table>';
-       }else{
-			// error getting contacts
-			//return $output->result;
-	       return $this->calloutErrorMessage($this->lh->translationFor("unable_get_user_list"));
-       }
 	}
 
 
