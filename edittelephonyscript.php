@@ -40,8 +40,9 @@
         <?php print $ui->standardizedThemeCSS();?>
 
         <?php print $ui->creamyThemeCSS(); ?>
+        <script src="js/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
         <script src="js/plugins/ckeditor/styles.js" type="text/javascript"></script>
-		<script src="js/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
+		
     </head>
     <style>
     	select{
@@ -261,7 +262,38 @@
 		</script>
 		<script language="javascript" type="text/javascript">
 			$(document).ready(function() {
-				CKEDITOR.replace('script_text');
+				CKEDITOR.replace("script_text",
+					{
+		                toolbar: [
+		                    // { name: 'document', items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
+							{ name: 'clipboard', items: [ 'Source', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+							{ name: 'editing', items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
+							{ name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
+							'/',
+							{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
+							{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
+							{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+							{ name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
+							'/',
+							{ name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+							{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+							{ name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+							{ name: 'about', items: [ 'About' ] }
+		                ],
+		                allowedContent: {
+			                script: true,
+			                div: true,
+			                span: true,
+			                $1: {
+			                    // This will set the default set of elements
+			                    elements: CKEDITOR.dtd,
+			                    attributes: true,
+			                    styles: true,
+			                    classes: true
+			                }
+			            }
+	            	}
+				);
 				$(document).on('click', '#cancel', function(){
 					sweetAlert({title: "<?php $lh->translateText("cancelled"); ?>",text: "<?php $lh->translateText("cancel_msg"); ?>", type: "error"}, function(){window.location.href = 'telephonyscripts.php';});
 				});
@@ -275,7 +307,7 @@
 					$.ajax({
                         url: "./php/ModifyScript.php",
                         type: 'POST',
-                        data: $("#modifyform").serialize() + '&script_text_value=' + CKEDITOR.instances['script_text'].getData(),
+                        data: $("#modifyform").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()),
                         success: function(data) {
                         	// console.log(data);
 							$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
