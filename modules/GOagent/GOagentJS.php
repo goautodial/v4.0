@@ -7849,7 +7849,7 @@ function checkForCallbacks() {
                         callback_alert = false;
                     });
                 });
-            } else if (!value.seen && minsBetween < 0) {
+            } else if (!value.seen && minsBetween < 0 && just_logged_in) {
                 callback_alert = true;
                 missedCB = true;
                 
