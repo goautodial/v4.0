@@ -1,59 +1,55 @@
 <?php
-    ####################################################
-    #### Name: goGetAgentsMonitoringSummary.php     ####
-    #### Type: API for dashboard php encode         ####
-    #### Version: 0.9                               ####
-    #### Copyright: GOAutoDial Inc. (c) 2011-2016   ####
-    #### Written by: Demian Lizandro Biscocho       ####
-    #### License: AGPLv2                            ####
-    ####################################################
+/*
+ *  Copyright (c) 2018 GOautodial Inc. All Rights Reserved.
+ *
+ *  Use of this source code is governed by the aGPLv3 license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+*/
 
     // initialize session and DDBB handler
     include_once('../UIHandler.php');
     require_once('../LanguageHandler.php');
     require_once('../DbHandler.php');
-    $ui = \creamy\UIHandler::getInstance();
-    $lh = \creamy\LanguageHandler::getInstance();
-    //$colors = $ui->generateStatisticsColors();
-
     require_once('../Session.php');
     require_once('../goCRMAPISettings.php');    
 
+    $ui = \creamy\UIHandler::getInstance();
+    $lh = \creamy\LanguageHandler::getInstance();    
     $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass;
-    $postfields["goAction"] = "goGetAgentsMonitoringSummary"; #action performed by the [[API:Functions]]
-	$postfields["session_user"] = $_SESSION['user']; #current user
-    $postfields["responsetype"] = responsetype; 
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
+	$postfields = array(
+		'goUser' => goUser,
+		'goPass' => goPass,
+		'goAction' => 'goGetAgentsMonitoringSummary',
+		'session_user' => $_SESSION['user'],
+		'responsetype' => 'json',
+	);
+	
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+	$data = curl_exec($ch);
+	curl_close($ch);
 
     $output = json_decode($data);
-    //echo "<pre>";
-    //print_r($output);
+        
+    if (count($output->data) < 1) {
     
-    $creamyAvatar = $ui->getSessionAvatar();
-    //$creamyAvatar = $ui->getVueAvatar();
-    
-    if (count($output->data) < 1){
-    
-    echo '<span class="list-group-item">
-            <div class="media-box">
-                    <div class="media-box-body clearfix">
-                        <strong class="media-box-heading text-primary">
-                        - - There are no available agents - -</strong>
-                    </div>
-                </div>
-            </span>
-        </div>';
+		echo '<span class="list-group-item">
+				<div class="media-box">
+						<div class="media-box-body clearfix">
+							<strong class="media-box-heading text-primary">
+							- - There are no available agents - -</strong>
+						</div>
+					</div>
+				</span>
+			</div>';
 
     } else {
         
@@ -87,59 +83,57 @@
             $parked_channel = $value->pc_channel;
             $STARTtime = date("U");
             
-            //$sessionAvatar = $ui->getVueAvatar($agentname, $creamyAvatar, 32);
             $sessionAvatar = "<avatar username='$agentname' :size='32'></avatar>";
             
-        if (preg_match("/READY|CLOSER/",$status)){
-            $last_call_time=$last_state_change;
-            $class = "circle circle-warning circle-lg text-left";
-            if ($lead_id>0){ 
-                $status="DISPO";
-            }
-        }
-        if (preg_match("/PAUSED/",$status)){
-            $class = "circle circle-danger circle-lg text-left";
-            if ($lead_id>0){ 
-                $status="DISPO";
-            }
-        }
-        if (!preg_match("/INCALL|QUEUE|PARK|3-WAY/",$status)){
-            $call_time_S = ($STARTtime - $last_state_change);
-        }
-        else if (preg_match("/3-WAY/",$status)){
-            $call_time_S = ($STARTtime - $call_mostrecent);
-        }
-        else{
-            $call_time_S = ($STARTtime - $last_call_time);
-            $class = "circle circle-success circle-lg text-left";
-        }
+			if (preg_match("/READY|CLOSER/",$status)){
+				$last_call_time=$last_state_change;
+				$class = "circle circle-warning circle-lg text-left";
+				if ($lead_id>0){ 
+					$status="DISPO";
+				}
+			}
+			if (preg_match("/PAUSED/",$status)){
+				$class = "circle circle-danger circle-lg text-left";
+				if ($lead_id>0){ 
+					$status="DISPO";
+				}
+			}
+			if (!preg_match("/INCALL|QUEUE|PARK|3-WAY/",$status)){
+				$call_time_S = ($STARTtime - $last_state_change);
+			}
+			else if (preg_match("/3-WAY/",$status)){
+				$call_time_S = ($STARTtime - $call_mostrecent);
+			}
+			else{
+				$call_time_S = ($STARTtime - $last_call_time);
+				$class = "circle circle-success circle-lg text-left";
+			}
 
-        $call_time_M = ($call_time_S / 60);
-        $call_time_M = round($call_time_M, 2);
-        $call_time_M_int = intval("$call_time_M");
-        $call_time_SEC = ($call_time_M - $call_time_M_int);
-        $call_time_SEC = ($call_time_SEC * 60);
-        $call_time_SEC = round($call_time_SEC, 0);
-        if ($call_time_SEC < 10) {$call_time_SEC = "0$call_time_SEC";}
-        $call_time_MS = "$call_time_M_int:$call_time_SEC";
-        $G = "";		
-        $EG = "";
-            
-        echo    '<a class="list-group-item">
-                    <div class="media-box">
-                        <div class="pull-left">
-                            '.$sessionAvatar.'
-                        </div>            
-                        <div class="media-box-body clearfix">
-                            <strong class="media-box-heading text-primary">
-                            <b id="onclick-userinfo" data-toggle="modal" data-target="#view_agent_information" data-id="'.$agentid.'"><span class="'.$class.'"></span>'.$agentname.'</b>
-                            </strong><br/>
-                            <strong style="padding-left:20px;">'.$campname.'</strong>
-                            <small class="text-muted pull-right ml" style="padding-right:20px;">'.$call_time_MS.'</small>
-                        </div>
-                    </div>
-                </a>';
-
+			$call_time_M = ($call_time_S / 60);
+			$call_time_M = round($call_time_M, 2);
+			$call_time_M_int = intval("$call_time_M");
+			$call_time_SEC = ($call_time_M - $call_time_M_int);
+			$call_time_SEC = ($call_time_SEC * 60);
+			$call_time_SEC = round($call_time_SEC, 0);
+			if ($call_time_SEC < 10) {$call_time_SEC = "0$call_time_SEC";}
+			$call_time_MS = "$call_time_M_int:$call_time_SEC";
+			$G = "";		
+			$EG = "";
+				
+			echo '<a class="list-group-item">
+					<div class="media-box">
+						<div class="pull-left">
+							'.$sessionAvatar.'
+						</div>            
+						<div class="media-box-body clearfix">
+							<strong class="media-box-heading text-primary">
+							<b id="onclick-userinfo" data-toggle="modal" data-target="#view_agent_information" data-id="'.$agentid.'"><span class="'.$class.'"></span>'.$agentname.'</b>
+							</strong><br/>
+							<strong style="padding-left:20px;">'.$campname.'</strong>
+							<small class="text-muted pull-right ml" style="padding-right:20px;">'.$call_time_MS.'</small>
+						</div>
+					</div>
+				</a>';
         }
     }
 ?>
