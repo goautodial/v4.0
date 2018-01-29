@@ -8748,6 +8748,7 @@ function ReschedCallback(cbId, cbDate, cbComment, cbOnly) {
         
         reschedule_cb = false;
         reschedule_cb_id = 0;
+        callback_alert = false;
         $("#CallBackOnlyMe").prop('checked', false);
         if (my_callback_option == 'CHECKED')
             {$("#CallBackOnlyMe").prop('checked', true);}
