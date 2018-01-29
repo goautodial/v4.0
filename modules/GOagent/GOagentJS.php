@@ -4171,7 +4171,7 @@ function CallBacksCountCheck() {
                         callback_alerts[value.callback_id]['entry_time'] = value.entry_time;
                         callback_alerts[value.callback_id]['callback_time'] = value.callback_time;
                         callback_alerts[value.callback_id]['campaign_id'] = value.campaign_id;
-                        callback_alerts[value.callback_id]['comments'] = thisComments;
+                        callback_alerts[value.callback_id]['comments'] = value.comments;
                         callback_alerts[value.callback_id]['seen'] = value.seen;
                     }
                 });
