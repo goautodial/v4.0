@@ -8701,6 +8701,18 @@ function ShowCBDatePicker(cbId, cbDate, cbComment) {
         });
     }
     
+    // Change Calendar date
+    var d = new Date();
+    var currDate = new Date(serverdate.getFullYear(), serverdate.getMonth(), serverdate.getDate(), serverdate.getHours(), serverdate.getMinutes() + 15);
+    var selectedDate = moment(currDate).format('YYYY-MM-DD HH:mm:00');
+    $("#date-selected").html(moment(currDate).format('dddd, MMMM Do YYYY, h:mm a'));
+    $("#callback-date").val(selectedDate);
+    
+    if (agentonly_callbacks > 0) {
+        $("#my_callback_only p, #my_callback_only div").show();
+    } else {
+        $("#my_callback_only p, #my_callback_only div").hide();
+    }
     $("#callback-datepicker").modal({
         keyboard: false,
         backdrop: 'static',
