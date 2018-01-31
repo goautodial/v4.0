@@ -5418,6 +5418,12 @@ function DispoSelectSubmit() {
         //console.log((VARCBstatusesLIST.match(regCBstatus)), (DispoChoice.length > 0), scheduled_callbacks, (DispoChoice != 'CBHOLD'));
         if ((VARCBstatusesLIST.match(regCBstatus)) && (DispoChoice.length > 0) && (scheduled_callbacks > 0) && (DispoChoice != 'CBHOLD')) {
             console.info("Open Callback Selection Box");
+            // Change Calendar date
+            var d = new Date();
+            var currDate = new Date(serverdate.getFullYear(), serverdate.getMonth(), serverdate.getDate(), serverdate.getHours(), serverdate.getMinutes() + 15);
+            var selectedDate = moment(currDate).format('YYYY-MM-DD HH:mm:00');
+            $("#date-selected").html(moment(currDate).format('dddd, MMMM Do YYYY, h:mm a'));
+            $("#callback-date").val(selectedDate);
             if (agentonly_callbacks > 0) {
                 $("#my_callback_only p, #my_callback_only div").show();
             } else {
@@ -7863,6 +7869,52 @@ function checkForCallbacks() {
                 swalContent += '<td>'+value.entry_time+'</td>';
                 swalContent += '<td>'+value.comments+'</td>';
                 swalContent += '</tr>';
+            } else if (!value.seen && minsBetween < 0) {
+                var recurringDate = new Date(serverdate.getFullYear(), serverdate.getMonth() + 1, serverdate.getDate(), dateParts[4], dateParts[5], dateParts[6]);
+                var newMinsBetween = minutesBetween(nowDate, recurringDate);
+                if (newMinsBetween <= 5 && newMinsBetween >= 0) {
+                    callback_alert = true;
+                    swalContent  = '';
+                    swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Name:</strong> '+value.cust_name+'</div>';
+                    swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Phone:</strong> '+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></div>';
+                    swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Callback Date:</strong> '+value.callback_time+'</div>';
+                    swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Last Call Date:</strong> '+value.entry_time+'</div>';
+                    swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Comments:</strong> '+value.comments.replace(/\n/, "<br>")+'</div>';
+                    
+                    swal({
+                        title: "<?=$lh->translateText('Call Back')?>",
+                        text: swalContent,
+                        type: "info",
+                        html: true
+                    }, function(){
+                        callback_alerts[key].seen = true;
+                        
+                        var postData = {
+                            goAction: 'goGetCallbackCount',
+                            goUser: uName,
+                            goPass: uPass,
+                            goSeen: true,
+                            goCampaign: campaign,
+                            goCallbackID: key,
+                            responsetype: 'json'
+                        };
+                    
+                        $.ajax({
+                            type: 'POST',
+                            url: '<?=$goAPI?>/goAgent/goAPI.php',
+                            processData: true,
+                            data: postData,
+                            dataType: "json",
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            }
+                        })
+                        .done(function (result) {
+                            console.log(result);
+                            callback_alert = false;
+                        });
+                    });
+                }
             }
         });
         
@@ -8727,8 +8779,8 @@ function ShowCBDatePicker(cbId, cbDate, cbComment) {
     if (my_callback_option == 'CHECKED')
         {$("#CallBackOnlyMe").prop('checked', true);}
     
-    var newDate = moment(cbDate).format('YYYY-MM-DD HH:mm:00');
-    $("#callback-date").val(newDate);
+    //var newDate = moment(cbDate).format('YYYY-MM-DD HH:mm:00');
+    //$("#callback-date").val(newDate);
     $("#callback-comments").val(cbComment);
 }
 
