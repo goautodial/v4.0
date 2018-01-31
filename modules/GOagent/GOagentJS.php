@@ -4061,6 +4061,7 @@ function CallBacksCountCheck() {
         goAction: 'goGetCallbackCount',
         goUser: uName,
         goPass: uPass,
+        goCampaign: campaign,
         responsetype: 'json'
     };
 
@@ -4251,6 +4252,7 @@ function NewCallbackCall(taskCBid, taskLEADid, taskCBalt) {
             goUser: uName,
             goPass: uPass,
             goSeen: true,
+            goCampaign: campaign,
             goCallbackID: taskCBid,
             responsetype: 'json'
         };
@@ -7830,6 +7832,7 @@ function checkForCallbacks() {
                         goUser: uName,
                         goPass: uPass,
                         goSeen: true,
+                        goCampaign: campaign,
                         goCallbackID: key,
                         responsetype: 'json'
                     };
@@ -8681,6 +8684,7 @@ function ShowCBDatePicker(cbId, cbDate, cbComment) {
             goUser: uName,
             goPass: uPass,
             goSeen: true,
+            goCampaign: campaign,
             goCallbackID: cbId,
             responsetype: 'json'
         };
