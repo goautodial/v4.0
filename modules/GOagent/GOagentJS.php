@@ -162,6 +162,9 @@ var just_logged_in = false;
             } else if ($idx == 'pause_codes') {
                 echo "var pause_codes_names = new Array({$valList2});\n";
             }
+        } else if (preg_match("/^(timezone)$/", $idx)) {
+            ${$idx} = $val;
+            echo "var {$idx} = '{$val}';\n";
         } else {
             echo "var {$idx} = '{$val}';\n";
             if ($idx == 'callback_statuses_list') {
@@ -233,7 +236,8 @@ var just_logged_in = false;
         }
     }
     
-    $tz = ini_get('date.timezone');
+    //$tz = ini_get('date.timezone');
+    $tz = $timezone;
     if (strlen($tz) < 1) {
         $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, -1);
         if($tz === false) $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, 1);
