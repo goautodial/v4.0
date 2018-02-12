@@ -7568,9 +7568,12 @@ function sendXFERdtmf() {
     var dtmferror = 1;
     
     if (live_customer_call > 0 || XD_live_customer_call > 0) {
-        if ($.isNumeric(xferDTMF)) {
-            xferDTMF = parseInt(xferDTMF);
-            if (xferDTMF.between(0, 9, true)) {
+        // $.isNumeric(xferDTMF) -- Old condition
+        if (xferDTMF.length > 0 && xferDTMF !== '') {
+            //xferDTMF = parseInt(xferDTMF);
+            // xferDTMF.between(0, 9, true) -- Old condition
+            var regDTMF = /(^[0-9\#\*]+$)/ig;
+            if (regDTMF.test(xferDTMF)) {
                 var options = {
                     'duration': 160,
                     'eventHandlers': {
