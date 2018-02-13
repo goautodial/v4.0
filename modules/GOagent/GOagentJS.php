@@ -67,6 +67,7 @@ var logging_in = false;
 var logoutWarn = true;
 var reschedule_cb = false;
 var reschedule_cb_id = 0;
+var cb_noexpire = 0;
 var use_webrtc = <?=($use_webrtc ? $use_webrtc : 0)?>;
 var NOW_TIME = '<?=$NOW_TIME?>';
 var SQLdate = '<?=$NOW_TIME?>';
@@ -7847,6 +7848,7 @@ function checkForCallbacks() {
                         goSeen: true,
                         goCampaign: campaign,
                         goCallbackID: key,
+                        goNoExpire: cb_noexpire,
                         responsetype: 'json'
                     };
                 
