@@ -67,6 +67,7 @@ var logging_in = false;
 var logoutWarn = true;
 var reschedule_cb = false;
 var reschedule_cb_id = 0;
+var cb_noexpire = 0;
 var use_webrtc = <?=($use_webrtc ? $use_webrtc : 0)?>;
 var NOW_TIME = '<?=$NOW_TIME?>';
 var SQLdate = '<?=$NOW_TIME?>';
@@ -162,6 +163,9 @@ var just_logged_in = false;
             } else if ($idx == 'pause_codes') {
                 echo "var pause_codes_names = new Array({$valList2});\n";
             }
+        } else if (preg_match("/^(timezone)$/", $idx)) {
+            ${$idx} = $val;
+            echo "var {$idx} = '{$val}';\n";
         } else {
             echo "var {$idx} = '{$val}';\n";
             if ($idx == 'callback_statuses_list') {
@@ -233,7 +237,8 @@ var just_logged_in = false;
         }
     }
     
-    $tz = ini_get('date.timezone');
+    //$tz = ini_get('date.timezone');
+    $tz = $timezone;
     if (strlen($tz) < 1) {
         $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, -1);
         if($tz === false) $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, 1);
@@ -4061,6 +4066,8 @@ function CallBacksCountCheck() {
         goAction: 'goGetCallbackCount',
         goUser: uName,
         goPass: uPass,
+        goCampaign: campaign,
+        goNoExpire: cb_noexpire,
         responsetype: 'json'
     };
 
@@ -4171,7 +4178,7 @@ function CallBacksCountCheck() {
                         callback_alerts[value.callback_id]['entry_time'] = value.entry_time;
                         callback_alerts[value.callback_id]['callback_time'] = value.callback_time;
                         callback_alerts[value.callback_id]['campaign_id'] = value.campaign_id;
-                        callback_alerts[value.callback_id]['comments'] = thisComments;
+                        callback_alerts[value.callback_id]['comments'] = value.comments;
                         callback_alerts[value.callback_id]['seen'] = value.seen;
                     }
                 });
@@ -4251,7 +4258,9 @@ function NewCallbackCall(taskCBid, taskLEADid, taskCBalt) {
             goUser: uName,
             goPass: uPass,
             goSeen: true,
+            goCampaign: campaign,
             goCallbackID: taskCBid,
+            goNoExpire: cb_noexpire,
             responsetype: 'json'
         };
     
@@ -5416,6 +5425,12 @@ function DispoSelectSubmit() {
         //console.log((VARCBstatusesLIST.match(regCBstatus)), (DispoChoice.length > 0), scheduled_callbacks, (DispoChoice != 'CBHOLD'));
         if ((VARCBstatusesLIST.match(regCBstatus)) && (DispoChoice.length > 0) && (scheduled_callbacks > 0) && (DispoChoice != 'CBHOLD')) {
             console.info("Open Callback Selection Box");
+            // Change Calendar date
+            var d = new Date();
+            var currDate = new Date(serverdate.getFullYear(), serverdate.getMonth(), serverdate.getDate(), serverdate.getHours(), serverdate.getMinutes() + 15);
+            var selectedDate = moment(currDate).format('YYYY-MM-DD HH:mm:00');
+            $("#date-selected").html(moment(currDate).format('dddd, MMMM Do YYYY, h:mm a'));
+            $("#callback-date").val(selectedDate);
             if (agentonly_callbacks > 0) {
                 $("#my_callback_only p, #my_callback_only div").show();
             } else {
@@ -7556,9 +7571,12 @@ function sendXFERdtmf() {
     var dtmferror = 1;
     
     if (live_customer_call > 0 || XD_live_customer_call > 0) {
-        if ($.isNumeric(xferDTMF)) {
-            xferDTMF = parseInt(xferDTMF);
-            if (xferDTMF.between(0, 9, true)) {
+        // $.isNumeric(xferDTMF) -- Old condition
+        if (xferDTMF.length > 0 && xferDTMF !== '') {
+            //xferDTMF = parseInt(xferDTMF);
+            // xferDTMF.between(0, 9, true) -- Old condition
+            var regDTMF = /(^[0-9\#\*]+$)/ig;
+            if (regDTMF.test(xferDTMF)) {
                 var options = {
                     'duration': 160,
                     'eventHandlers': {
@@ -7815,7 +7833,7 @@ function checkForCallbacks() {
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Phone:</strong> '+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></div>';
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Callback Date:</strong> '+value.callback_time+'</div>';
                 swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Last Call Date:</strong> '+value.entry_time+'</div>';
-                swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Comments:</strong> '+value.comments+'</div>';
+                swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Comments:</strong> '+value.comments.replace(/\n/, "<br>")+'</div>';
                 
                 swal({
                     title: "<?=$lh->translateText('Call Back')?>",
@@ -7830,7 +7848,9 @@ function checkForCallbacks() {
                         goUser: uName,
                         goPass: uPass,
                         goSeen: true,
+                        goCampaign: campaign,
                         goCallbackID: key,
+                        goNoExpire: cb_noexpire,
                         responsetype: 'json'
                     };
                 
@@ -7849,7 +7869,7 @@ function checkForCallbacks() {
                         callback_alert = false;
                     });
                 });
-            } else if (!value.seen && minsBetween < 0) {
+            } else if (!value.seen && minsBetween < 0 && just_logged_in) {
                 callback_alert = true;
                 missedCB = true;
                 
@@ -7860,6 +7880,53 @@ function checkForCallbacks() {
                 swalContent += '<td>'+value.entry_time+'</td>';
                 swalContent += '<td>'+value.comments+'</td>';
                 swalContent += '</tr>';
+            } else if (!value.seen && minsBetween < 0) {
+                var recurringDate = new Date(serverdate.getFullYear(), serverdate.getMonth() + 1, serverdate.getDate(), dateParts[4], dateParts[5], dateParts[6]);
+                var newMinsBetween = minutesBetween(nowDate, recurringDate);
+                if (newMinsBetween <= 5 && newMinsBetween >= 0) {
+                    callback_alert = true;
+                    swalContent  = '';
+                    swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Name:</strong> '+value.cust_name+'</div>';
+                    swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Phone:</strong> '+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></div>';
+                    swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Callback Date:</strong> '+value.callback_time+'</div>';
+                    swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Last Call Date:</strong> '+value.entry_time+'</div>';
+                    swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Comments:</strong> '+value.comments.replace(/\n/, "<br>")+'</div>';
+                    
+                    swal({
+                        title: "<?=$lh->translateText('Call Back')?>",
+                        text: swalContent,
+                        type: "info",
+                        html: true
+                    }, function(){
+                        callback_alerts[key].seen = true;
+                        
+                        var postData = {
+                            goAction: 'goGetCallbackCount',
+                            goUser: uName,
+                            goPass: uPass,
+                            goSeen: true,
+                            goCampaign: campaign,
+                            goCallbackID: key,
+                            goNoExpire: cb_noexpire,
+                            responsetype: 'json'
+                        };
+                    
+                        $.ajax({
+                            type: 'POST',
+                            url: '<?=$goAPI?>/goAgent/goAPI.php',
+                            processData: true,
+                            data: postData,
+                            dataType: "json",
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            }
+                        })
+                        .done(function (result) {
+                            console.log(result);
+                            callback_alert = false;
+                        });
+                    });
+                }
             }
         });
         
@@ -8681,7 +8748,9 @@ function ShowCBDatePicker(cbId, cbDate, cbComment) {
             goUser: uName,
             goPass: uPass,
             goSeen: true,
+            goCampaign: campaign,
             goCallbackID: cbId,
+            goNoExpire: cb_noexpire,
             responsetype: 'json'
         };
     
@@ -8701,6 +8770,18 @@ function ShowCBDatePicker(cbId, cbDate, cbComment) {
         });
     }
     
+    // Change Calendar date
+    var d = new Date();
+    var currDate = new Date(serverdate.getFullYear(), serverdate.getMonth(), serverdate.getDate(), serverdate.getHours(), serverdate.getMinutes() + 15);
+    var selectedDate = moment(currDate).format('YYYY-MM-DD HH:mm:00');
+    $("#date-selected").html(moment(currDate).format('dddd, MMMM Do YYYY, h:mm a'));
+    $("#callback-date").val(selectedDate);
+    
+    if (agentonly_callbacks > 0) {
+        $("#my_callback_only p, #my_callback_only div").show();
+    } else {
+        $("#my_callback_only p, #my_callback_only div").hide();
+    }
     $("#callback-datepicker").modal({
         keyboard: false,
         backdrop: 'static',
@@ -8711,8 +8792,8 @@ function ShowCBDatePicker(cbId, cbDate, cbComment) {
     if (my_callback_option == 'CHECKED')
         {$("#CallBackOnlyMe").prop('checked', true);}
     
-    var newDate = moment(cbDate).format('YYYY-MM-DD HH:mm:00');
-    $("#callback-date").val(newDate);
+    //var newDate = moment(cbDate).format('YYYY-MM-DD HH:mm:00');
+    //$("#callback-date").val(newDate);
     $("#callback-comments").val(cbComment);
 }
 
@@ -8748,6 +8829,7 @@ function ReschedCallback(cbId, cbDate, cbComment, cbOnly) {
         
         reschedule_cb = false;
         reschedule_cb_id = 0;
+        callback_alert = false;
         $("#CallBackOnlyMe").prop('checked', false);
         if (my_callback_option == 'CHECKED')
             {$("#CallBackOnlyMe").prop('checked', true);}
