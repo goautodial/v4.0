@@ -83,16 +83,15 @@
 		$CM = "";        
 		$STARTtime = date("U");       
 		$sessionAvatar = "<div class='media'><avatar username='$agentname' :size='32'></avatar></div>";
-
+        
 		if ($status == "INCALL") {
 			$textclass = "text-success";        
 			
-			if ($pc_channel != NULL) {            
-				if ($vla_callerid != $vac_callerid) { $last_state_change = $last_call_time; $status = "HUNGUP"; }                    
-				if ($call_type == "AUTO") { $CM=" [A]"; }            
-				if ($call_type == "INBOUND") { $CM=" [I]"; }            
-				if ($call_type == "MANUAL") { $CM=" [M]"; }                        
-			}  
+			if ($pc_channel != NULL) { $status = "PARK"; }            
+			if ($vla_callerid != $vac_callerid) { $last_state_change = $last_call_time; $status = "HUNGUP"; }                    
+			if ($call_type == "AUTO") { $CM="[A]"; }            
+			if ($call_type == "INBOUND") { $CM=" [I]"; }            
+			if ($call_type == "MANUAL") { $CM=" [M]"; }                        
 		}
 		
 		if (preg_match("/READY|PAUSED|CLOSER/",$status)){
@@ -124,9 +123,7 @@
 		$call_time_SEC = ($call_time_SEC * 60);
 		$call_time_SEC = round($call_time_SEC, 0);
 			
-		if ($call_time_SEC < 10) {
-			$call_time_SEC = "0$call_time_SEC";
-		}
+		if ($call_time_SEC < 10) { $call_time_SEC = "0$call_time_SEC"; }
 		
 		$call_time_MS = "$call_time_M_int:$call_time_SEC";
 		
