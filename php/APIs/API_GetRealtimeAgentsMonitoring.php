@@ -89,7 +89,7 @@
 			
 			if ($pc_channel != NULL) { $status = "PARK"; }            
 			if ($vla_callerid != $vac_callerid) { $last_state_change = $last_call_time; $status = "HUNGUP"; }                    
-			if ($call_type == "AUTO") { $CM=" [A]"; }            
+			if ($call_type == "AUTO") { $CM="[A]"; }            
 			if ($call_type == "INBOUND") { $CM=" [I]"; }            
 			if ($call_type == "MANUAL") { $CM=" [M]"; }                        
 		}
