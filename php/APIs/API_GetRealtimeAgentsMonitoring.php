@@ -66,9 +66,9 @@
 		
         foreach ($output->callerids as $key => $callerids) {
         
-            $vac_callerid = $callerids->vac_callerid;        
-            $vac_lead_id = $callerids->vac_lead_id;
-            $vac_phone_number = $callerids->vac_phone_number;
+            $vac_callerid = $ui->escapeJsonString($callerids->vac_callerid);        
+            $vac_lead_id = $ui->escapeJsonString($callerids->vac_lead_id);
+            $vac_phone_number = $ui->escapeJsonString($callerids->vac_phone_number);
         }
         
         foreach ($output->parked as $key => $parked){
@@ -88,8 +88,8 @@
 			$textclass = "text-success";        
 			
 			if ($pc_channel != NULL) { $status = "PARK"; }            
-			if ($vla_callerid != $vac_callerid) { $last_state_change = $last_call_time; $status = "HUNGUP"; }                    
-			if ($call_type == "AUTO") { $CM="[A]"; }            
+			if (($vla_callerid != $vac_callerid) && ($last_state_change != $last_call_time)) { $status = "HUNGUP"; }                    
+			if ($call_type == "AUTO") { $CM=" [A]"; }            
 			if ($call_type == "INBOUND") { $CM=" [I]"; }            
 			if ($call_type == "MANUAL") { $CM=" [M]"; }                        
 		}
