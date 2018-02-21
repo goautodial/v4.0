@@ -36,6 +36,7 @@
 	$postfields["force_reset_hopper"] 			= $_POST["force_reset_hopper"];
 	$postfields["dial_status"] 					= $_POST["dial_status"];
 	$postfields["lead_order"] 					= $_POST["lead_order"];
+	$postfields["lead_order_secondary"] = $_POST["lead_order_secondary"];
 	$postfields["lead_filter"] 					= $_POST["lead_filter"];
 	$postfields["dial_timeout"] 				= $_POST["dial_timeout"];
 	$postfields["manual_dial_prefix"] 			= $_POST["manual_dial_prefix"];
