@@ -6651,7 +6651,19 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = str_replace($escapers, $replacements, $value);
 
 		return $result;
-	} 	
+	}
+	
+	public function getSettingsAPIKey($type) {
+		switch ($type) {
+			case 'google':
+				$return = $this->db->getSettingValueForKey(CRM_SETTING_GOOGLE_API_KEY);
+				break;
+			default:
+				$return = false;
+		}
+		
+		return $return;
+	}
 }
 
 ?>
