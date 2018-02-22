@@ -199,6 +199,7 @@ define ('CRM_SETTING_JOB_SCHEDULING_MIN_FREQ', 'job_scheduling_min_freq');
 define ('CRM_SETTING_JOB_LAST_DAY', 'job_scheduling_last_day');
 define ('CRM_SETTING_JOB_LAST_WEEK', 'job_scheduling_last_week');
 define ('CRM_SETTING_JOB_LAST_MONTH', 'job_scheduling_last_month');
+define ('CRM_SETTING_GOOGLE_API_KEY', 'google_api_key');
 
 
 //define ('CRM_SETTING_DEFAULT_CUSTOMER_LIST_FIELDS', 'id,name,email,phone,id_number');
