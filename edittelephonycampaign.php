@@ -582,7 +582,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																<input type="text" class="form-control" placeholder="Enter URL (eg. https://www.goautodial.com, URL must be served over HTTPS)" value="<?php if(!empty($campaign->url_tab_second_url)){echo $campaign->url_tab_second_url;}?>" id="url_tab_second_url" name="url_tab_second_url">
 															</div>
 														</div>
-														<div class="form-group">
+														<div class="form-group<?=($campaign->dynamic_cid === '' ? ' hidden': '')?>">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("dynamic_cid"); ?>:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="dynamic_cid" name="dynamic_cid">
@@ -591,7 +591,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</select>
 															</div>
 														</div>
-														<div class="form-group">
+														<div class="form-group<?=(empty($campaign->data->nextdial_seconds) ? ' hidden': '')?>">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("nextdial_seconds"); ?>:</label>
 															<div class="col-sm-9 mb">
 																<input type="number" min="3" max="60" class="form-control" value="<?php if(!empty($campaign->data->nextdial_seconds)){echo $campaign->data->nextdial_seconds;}?>" id="nextdial_seconds" name="nextdial_seconds">
@@ -2129,6 +2129,33 @@ $audiofiles = $ui->API_getListAudioFiles();
 																<select id="agent_lead_search_method" name="agent_lead_search_method" class="form-control">
 																	<option value="SYSTEM" <?php if($campaign->data->agent_lead_search_method == "SYSTEM") echo "selected";?>>SYSTEM</option>
 																	<option value="CAMPLISTS_ALL" <?php if($campaign->data->agent_lead_search_method == "CAMPLISTS_ALL") echo "selected";?>>CAMPLISTS ALL</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group<?=($campaign->enable_callback_alert === '' ? ' hidden': '')?>">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("enable_callback_alert"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select id="enable_callback_alert" name="enable_callback_alert" class="form-control">
+																	<option value="0" <?php if($campaign->enable_callback_alert == 0) echo "selected";?>>DISABLED</option>
+																	<option value="1" <?php if($campaign->enable_callback_alert == 1) echo "selected";?>>ENABLED</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group<?=($campaign->cb_noexpire === '' ? ' hidden': '')?>">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("cb_noexpire"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select id="cb_noexpire" name="cb_noexpire" class="form-control">
+																	<option value="0" <?php if($campaign->cb_noexpire == 0) echo "selected";?>>DISABLED</option>
+																	<option value="1" <?php if($campaign->cb_noexpire == 1) echo "selected";?>>ENABLED</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group<?=($campaign->cb_sendemail === '' ? ' hidden': '')?>">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("cb_sendemail"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select id="cb_sendemail" name="cb_sendemail" class="form-control">
+																	<option value="0" <?php if($campaign->cb_sendemail == 0) echo "selected";?>>DISABLED</option>
+																	<option value="1" <?php if($campaign->cb_sendemail == 1) echo "selected";?>>ENABLED</option>
 																</select>
 															</div>
 														</div>
