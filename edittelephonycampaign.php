@@ -2251,7 +2251,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																<button type="button" class="btn btn-default btn-add-google-sheet-id" data-campaign="<?php echo $campaign_id; ?>" data-google-sheet-ids="<?php echo $campaign->google_sheet_ids;?>">Add</button>
 															</div>
 														</div>
-														<div class="form-group<?=((empty($googleAPIKey) || $i > 5) ? ' hidden' : '')?>">
+														<div class="form-group<?=(empty($googleAPIKey) ? ' hidden' : '')?>">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("google_sheet_list_id"); ?>:</label>
 															<div class="col-sm-9 mb">
 																<select id="google_sheet_list_id" name="google_sheet_list_id" class="form-control">
