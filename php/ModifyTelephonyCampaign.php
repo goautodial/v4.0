@@ -77,6 +77,7 @@
 	$postfields["enable_callback_alert"]		= $_POST["enable_callback_alert"];
 	$postfields["cb_noexpire"]					= $_POST["cb_noexpire"];
 	$postfields["cb_sendemail"]					= $_POST["cb_sendemail"];
+	$postfields["google_sheet_list_id"]			= $_POST["google_sheet_list_id"];
 	
 	$postfields["dynamic_cid"]					= $_POST["dynamic_cid"];
 	
