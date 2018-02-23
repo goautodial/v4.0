@@ -30,7 +30,7 @@
 	$postfields["campaign_script"] 				= $_POST["campaign_script"];
 	$postfields["campaign_cid"] 				= $_POST["campaign_cid"];
 	$postfields["campaign_recording"] 			= $_POST["campaign_recording"];
-	$postfields["campaign_vdad_exten"] 			= ($_POST["campaign_type"] != "SURVEY")? $_POST["campaign_vdad_exten"] : 8366;
+	$postfields["campaign_vdad_exten"] 			= $_POST["campaign_vdad_exten"];
 	$postfields["local_call_time"] 				= $_POST["local_call_time"];
 	$postfields["hopper_level"] 				= $_POST["hopper_level"];
 	$postfields["force_reset_hopper"] 			= $_POST["force_reset_hopper"];
@@ -125,7 +125,8 @@
 	} else {
 		$postfields["inbound_man"] 					= "";
 	}
-
+	// echo "<pre>";
+	// print_r($postfields);die;
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	// curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -140,9 +141,10 @@
 	curl_close($ch);
 
 	$output = json_decode($data);
-	// echo "<pre>";
-	// print_r($output);die;
-	$home = $_SERVER['HTTP_REFERER'];
+	 /*echo "<pre>";
+	 var_dump($output);
+	echo "</pre>";
+	*/$home = $_SERVER['HTTP_REFERER'];
 	if ($output->result == "success") {
 		# Result was OK!
 		$url = str_replace("?message=Success&campaign=".$_POST["campaign_id"], "", $home);
@@ -152,5 +154,4 @@
 		$url = str_replace("?message=Error&campaign=".$_POST["campaign_id"], "", $home);
 		header("Location: ".$url."?message=Error&campaign=".$_POST["campaign_id"]);
 	}
-
 ?>
