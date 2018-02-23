@@ -159,6 +159,7 @@ if ($sthGrows > 0) {
                             if ($sthA->rows > 0 ) {
                                 $isDup = "Y";
                             }
+                            $sthA->finish();
                         }
                         
                         if (!$Q) {print "Is Duplicate?: $isDup\n";}
@@ -169,6 +170,7 @@ if ($sthGrows > 0) {
                             if (!$Q) {print "$stmtB\n";}
                             $sthB = $dbhA->prepare($stmtB) or die "preparing: ",$dbhA->errstr;
                             $sthB->execute($NOWdate,$status,$sheet_list_id,$phone_code,$phone_number,$first_name,$middle_initial,$last_name,$address,$address2,$address3,$city,$state,$province,$zip,$country_code,$comments,$vendor_lead_code,$gmt_offset_now,$title,$date_of_birth,$alt_phone,$email,$security_phrase) or die "executing: $stmtB ", $dbhA->errstr;
+                            $sthB->finish();
                             $insertedRows++;
                         }
                     } else {
