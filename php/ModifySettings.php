@@ -84,6 +84,7 @@ if ($validated == 1) {
 	$baseURL = $_POST["base_url"];
 	$minFreq = $_POST["jobScheduling"];
 	$customCompanyName = isset($_POST["company_name"]) ? $_POST["company_name"] : null;
+	$googleAPIKey = $_POST["google_api_key"];
 	// generate settings array
 	$data = array(
 		CRM_SETTING_CONFIRMATION_EMAIL => $confirmationEmail, 
@@ -92,7 +93,8 @@ if ($validated == 1) {
 		CRM_SETTING_LOCALE => $locale,
 		CRM_SETTING_COMPANY_NAME => $customCompanyName,
 		CRM_SETTING_EVENTS_EMAIL => $eventEmail,
-		CRM_SETTING_JOB_SCHEDULING_MIN_FREQ => $minFreq
+		CRM_SETTING_JOB_SCHEDULING_MIN_FREQ => $minFreq,
+		CRM_SETTING_GOOGLE_API_KEY => $googleAPIKey
 	);
 	if (!empty($baseURL)) { $data[CRM_SETTING_CRM_BASE_URL] = $baseURL; }
 	

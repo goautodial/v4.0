@@ -92,12 +92,9 @@ var check_login = false;
 var window_focus = true;
 var callback_alert = false;
 var callback_alerts = {};
-var enable_callback_alert = false;
 var reschedule_cb = false;
 var reschedule_cb_id = 0;
 var just_logged_in = false;
-var cb_noexpire = 0; // Set to 1 to enable No expiration of callback lists. Default is 0 (disable).
-var cb_sendmail = 0; // Set to 1 to enable Sending of email upon disposing a call with a callback status. Default is 0 (disable).
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -293,6 +290,8 @@ var group = '<?=$camp_info->campaign_id?>';         // same value as campaign va
                                 echo "var {$idx} = {".$hkList."};\n";
                             }
                         } else if (is_numeric($val) && $idx == 'call_requeue_button') {
+                            echo "var {$idx} = $val;\n";
+                        } else if (is_numeric($val) && preg_match("/^(enable_callback_alert|cb_noexpire|cb_sendemail)$/", $idx)) {
                             echo "var {$idx} = $val;\n";
                         } else {
                             echo "var {$idx} = '{$val}';\n";
@@ -1435,6 +1434,12 @@ $(document).ready(function() {
                                         $.globalEval(key+" = '"+value+"';");
                                     } else if (key == 'custom_fields_list_id') {
                                         $.globalEval(key+" = '"+value+"';");
+                                    } else if (key == 'enable_callback_alert') {
+                                        $.globalEval(key+" = "+value+";");
+                                    } else if (key == 'cb_noexpire') {
+                                        $.globalEval(key+" = "+value+";");
+                                    } else if (key == 'cb_sendemail') {
+                                        $.globalEval(key+" = "+value+";");
                                     } else {
                                         $.globalEval(key+" = '"+value+"';");
                                     }
@@ -5472,7 +5477,7 @@ function DispoSelectSubmit() {
                 goCallNotes: encodeURIComponent($("[name='call_notes_dispo']").val()),
                 goQMDispoCode: DispoQMcsCODE,
                 goEmailEnabled: email_enabled,
-                goSendEmail: cb_sendmail,
+                goSendEmail: cb_sendemail,
                 responsetype: 'json'
             };
     

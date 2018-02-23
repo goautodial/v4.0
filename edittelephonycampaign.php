@@ -582,7 +582,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																<input type="text" class="form-control" placeholder="Enter URL (eg. https://www.goautodial.com, URL must be served over HTTPS)" value="<?php if(!empty($campaign->url_tab_second_url)){echo $campaign->url_tab_second_url;}?>" id="url_tab_second_url" name="url_tab_second_url">
 															</div>
 														</div>
-														<div class="form-group">
+														<div class="form-group<?=($campaign->dynamic_cid === '' ? ' hidden': '')?>">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("dynamic_cid"); ?>:</label>
 															<div class="col-sm-9 mb">
 																<select class="form-control" id="dynamic_cid" name="dynamic_cid">
@@ -591,7 +591,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</select>
 															</div>
 														</div>
-														<div class="form-group">
+														<div class="form-group<?=(empty($campaign->data->nextdial_seconds) ? ' hidden': '')?>">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("nextdial_seconds"); ?>:</label>
 															<div class="col-sm-9 mb">
 																<input type="number" min="3" max="60" class="form-control" value="<?php if(!empty($campaign->data->nextdial_seconds)){echo $campaign->data->nextdial_seconds;}?>" id="nextdial_seconds" name="nextdial_seconds">
@@ -603,7 +603,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=1;?>
 																<?php foreach($dial_statuses as $dial_status) { ?>
 																	<?php if(!empty($dial_status)) { ?>
-																		<label class="col-sm-3 control-label">Active Dial Status <?php echo $i; ?>:</label>
+																		<label class="col-sm-3 control-label"><?php $lh->translateText("active_dial_status"); ?> <?php echo $i; ?>:</label>
 																		<span class="col-sm-8 control-label" style="text-align: left;">
 																			<label><?php echo $dial_status; ?></label> - <span><?php $lh->translateText($dial_status); ?></span>
 																		</span>
@@ -1006,7 +1006,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=1;?>
 																<?php foreach($dial_statuses as $dial_status) { ?>
 																	<?php if(!empty($dial_status)) { ?>
-																		<label class="col-sm-3 control-label">Active Dial Status <?php echo $i; ?>:</label>
+																		<label class="col-sm-3 control-label"><?php $lh->translateText("active_dial_status"); ?> <?php echo $i; ?>:</label>
 																		<span class="col-sm-8 control-label" style="text-align: left;">
 																			<label><?php echo $dial_status; ?></label> - <span><?php $lh->translateText($dial_status); ?></span>
 																		</span>
@@ -1260,7 +1260,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=1;?>
 																<?php foreach($dial_statuses as $dial_status) { ?>
 																	<?php if(!empty($dial_status)) { ?>
-																		<label class="col-sm-3 control-label">Active Dial Status <?php echo $i; ?>:</label>
+																		<label class="col-sm-3 control-label"><?php $lh->translateText("active_dial_status"); ?> <?php echo $i; ?>:</label>
 																		<span class="col-sm-8 control-label" style="text-align: left;">
 																			<label><?php echo $dial_status; ?></label> - <span><?php $lh->translateText($dial_status); ?></span>
 																		</span>
@@ -2199,6 +2199,58 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</select>
 															</div>
 														</div>
+														<div class="form-group<?=($campaign->enable_callback_alert === '' ? ' hidden': '')?>">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("enable_callback_alert"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select id="enable_callback_alert" name="enable_callback_alert" class="form-control">
+																	<option value="0" <?php if($campaign->enable_callback_alert == 0) echo "selected";?>>DISABLED</option>
+																	<option value="1" <?php if($campaign->enable_callback_alert == 1) echo "selected";?>>ENABLED</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group<?=($campaign->cb_noexpire === '' ? ' hidden': '')?>">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("cb_noexpire"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select id="cb_noexpire" name="cb_noexpire" class="form-control">
+																	<option value="0" <?php if($campaign->cb_noexpire == 0) echo "selected";?>>DISABLED</option>
+																	<option value="1" <?php if($campaign->cb_noexpire == 1) echo "selected";?>>ENABLED</option>
+																</select>
+															</div>
+														</div>
+														<div class="form-group<?=($campaign->cb_sendemail === '' ? ' hidden': '')?>">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("cb_sendemail"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<select id="cb_sendemail" name="cb_sendemail" class="form-control">
+																	<option value="0" <?php if($campaign->cb_sendemail == 0) echo "selected";?>>DISABLED</option>
+																	<option value="1" <?php if($campaign->cb_sendemail == 1) echo "selected";?>>ENABLED</option>
+																</select>
+															</div>
+														</div>
+														<?php $googleAPIKey = $ui->getSettingsAPIKey('google'); ?>
+														<div class="form-group<?=(empty($googleAPIKey) ? ' hidden' : '')?>" style="margin-bottom: 10px;">
+															<?php $google_sheet_ids = explode(" ", rtrim($campaign->google_sheet_ids, " -")); $i=1;?>
+															<?php foreach($google_sheet_ids as $google_sheet_id) { ?>
+																<?php if(!empty($google_sheet_id)) { ?>
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("google_sheet_id"); ?> <?php echo $i; ?>:</label>
+																	<span class="col-sm-8 control-label" style="text-align: left;">
+																		<span><?php echo $google_sheet_id; ?></span>
+																	</span>
+																	<span class="col-sm-1 control-label">
+																		<a href="#" class="remove-this-google-sheet-id"  data-campaign="<?php echo $campaign_id; ?>" data-google-sheet-ids="<?php echo $campaign->google_sheet_ids;?>" data-selected-sheet-id="<?php echo $google_sheet_id; ?>">Remove</a>
+																	</span>
+																<?php $i++; ?>
+																<?php } ?>
+															<?php } ?>
+														</div>
+														<div class="form-group<?=((empty($googleAPIKey) || $i > 5) ? ' hidden' : '')?>">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("google_sheet_id"); ?>:</label>
+															<div class="col-sm-8 mb">
+																<input type="text" class="form-control" id="google_sheet_id" name="google_sheet_id" value="" placeholder="<?php $lh->translateText("enter_google_sheet_id"); ?>">
+															</div>
+															<div class="col-sm-1 mb">
+																<button type="button" class="btn btn-default btn-add-google-sheet-id" data-campaign="<?php echo $campaign_id; ?>" data-google-sheet-ids="<?php echo $campaign->google_sheet_ids;?>">Add</button>
+															</div>
+														</div>
 														<?php } ?>
 														<div class="campaign_allow_inbound_div hide">
 															<div class="form-group">
@@ -2924,6 +2976,119 @@ $audiofiles = $ui->API_getListAudioFiles();
 															swal({
 																	title: "<?php $lh->translateText("success"); ?>",
 																	text: "<?php $lh->translateText("campaign_dial_status_succesfully_updated"); ?>!",
+																	type: "success"
+																},
+																function(){
+																	location.reload();
+																}
+															);
+														}else{
+																sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+														}
+												}
+										});
+								} else {
+										swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?> :)", "error");
+								}
+						}
+					);
+				});
+
+				$(document).on('click', '.btn-add-google-sheet-id', function(){
+					var google_sheet_id = $('#google_sheet_id').val();
+					var campaign_id = $(this).data('campaign');
+					var old_google_sheet_ids = $(this).data('google-sheet-ids');
+
+					if (google_sheet_id !== '') {
+						if (/^[0-9a-zA-Z_-]+$/g.test(google_sheet_id)) {
+							swal({
+								title: "<?php $lh->translateText("are_you_sure"); ?>?",
+								text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+								type: "warning",
+								showCancelButton: true,
+								confirmButtonColor: "#DD6B55",
+								confirmButtonText: "Yes, add the google sheet id!",
+								cancelButtonText: "No, cancel please!",
+								closeOnConfirm: false,
+								closeOnCancel: false
+								},
+								function(isConfirm){
+									if (isConfirm) {
+										$.ajax({
+											url: "./php/AddGoogleSheet.php",
+											type: 'POST',
+											data: {
+													campaign_id:campaign_id,
+													google_sheet_id:google_sheet_id,
+													old_google_sheet_ids:old_google_sheet_ids
+											},
+											dataType: 'json',
+											success: function(data) {
+											console.log(data);
+												if(data == 1){
+													swal({
+															title: "<?php $lh->translateText("success"); ?>",
+															text: "<?php $lh->translateText("campaign_google_sheet_ids_successfully_updated"); ?>!",
+															type: "success"
+														},
+														function(){
+															location.reload();
+													});
+												}else{
+													sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+												}
+											}
+										});
+										} else {
+												swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?> :)", "error");
+										}
+								}
+							);
+						} else {
+							swal("Error", "<?php $lh->translateText("you_have_entered_an_invalid_id"); ?> :)", "error");
+						}
+					} else {
+						swal("Error", "<?php $lh->translateText("you_have_not_entered_an_id"); ?> :)", "error");
+					}
+				});
+
+				$(document).on('click', '.remove-this-google-sheet-id', function(){
+					var campaign_id = $(this).data('campaign');
+					var google_sheet_ids = $(this).data('google-sheet-ids');
+					var selected_sheet_id = $(this).data('selected-sheet-id');
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
+
+					swal({
+						title: "<?php $lh->translateText("are_you_sure"); ?>?",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "Yes, remove the google sheet id!",
+						cancelButtonText: "No, cancel please!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+												url: "./php/DeleteGoogleSheet.php",
+												type: 'POST',
+												data: {
+														campaign_id:campaign_id,
+														google_sheet_ids:google_sheet_ids,
+														selected_sheet_id:selected_sheet_id,
+														log_user: log_user,
+														log_group: log_group
+												},
+												// dataType: 'json',
+												success: function(data) {
+												// console.log(data);
+														if(data == 1){
+															swal({
+																	title: "<?php $lh->translateText("success"); ?>",
+																	text: "<?php $lh->translateText("campaign_google_sheet_ids_successfully_updated"); ?>!",
 																	type: "success"
 																},
 																function(){

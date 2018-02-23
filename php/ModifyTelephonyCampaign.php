@@ -74,6 +74,10 @@
 	$postfields["omit_phone_code"]				= $_POST["omit_phone_code"];
 	$postfields["alt_number_dialing"]			= $_POST["alt_number_dialing"];
 	
+	$postfields["enable_callback_alert"]		= $_POST["enable_callback_alert"];
+	$postfields["cb_noexpire"]					= $_POST["cb_noexpire"];
+	$postfields["cb_sendemail"]					= $_POST["cb_sendemail"];
+	
 	$postfields["dynamic_cid"]					= $_POST["dynamic_cid"];
 	
 	$postfields["survey_first_audio_file"] 		= (isset($_POST["survey_first_audio_file"]))? $_POST["survey_first_audio_file"] : "";

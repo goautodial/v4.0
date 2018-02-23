@@ -918,6 +918,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $cv = $this->db->getSettingValueForKeyAsBooleanValue(CRM_SETTING_EVENTS_EMAIL);
 	    $cn = $this->db->getSettingValueForKey(CRM_SETTING_COMPANY_NAME);
 	    $cl = $this->db->getSettingValueForKey(CRM_SETTING_COMPANY_LOGO);
+	    $go = $this->db->getSettingValueForKey(CRM_SETTING_GOOGLE_API_KEY);
 	    if (isset($cl)) { $cl = $this->imageWithData($cl, "", null); }
 	    $tOpts = array("black" => "black", "blue" => "blue", "green" => "green", "minimalist" => "minimalist", "purple" => "purple", "red" => "red", "yellow" => "yellow");
 
@@ -931,6 +932,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $bu_text = $this->lh->translationFor("base_url");
 	    $cn_text = $this->lh->translationFor("company_name");
 	    $cl_text = $this->lh->translationFor("custom_company_logo");
+	    $go_text = $this->lh->translationFor("google_api_key");
 
 	    // form
 	    $form = '<form role="form" id="adminsettings" name="adminsettings" class="form" enctype="multipart/form-data">
@@ -943,6 +945,7 @@ error_reporting(E_ERROR | E_PARSE);
 			  '.$this->singleFormGroupWithSelect($es_text, "theme", "theme", $tOpts, $ct, false).'
 			  '.$this->singleFormGroupWithSelect($tz_text, "timezone", "timezone", \creamy\CRMUtils::getTimezonesAsArray(), $tz).'
 			  '.$this->singleFormGroupWithSelect($lo_text, "locale", "locale", \creamy\LanguageHandler::getAvailableLanguages(), $lo).'
+			  '.$this->singleFormGroupWithInputGroup($this->singleFormInputElement("google_api_key", "google_api_key", "text", $go_text, $go, "google"), $go_text).'
 			  <div class="box-footer">
 			  '.$this->emptyMessageDivWithTag(CRM_UI_DEFAULT_RESULT_MESSAGE_TAG).'
 			  <button type="submit" class="btn btn-primary">'.$this->lh->translationFor("modify").'</button></div></form>';
@@ -6648,7 +6651,19 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = str_replace($escapers, $replacements, $value);
 
 		return $result;
-	} 	
+	}
+	
+	public function getSettingsAPIKey($type) {
+		switch ($type) {
+			case 'google':
+				$return = $this->db->getSettingValueForKey(CRM_SETTING_GOOGLE_API_KEY);
+				break;
+			default:
+				$return = false;
+		}
+		
+		return $return;
+	}
 }
 
 ?>
