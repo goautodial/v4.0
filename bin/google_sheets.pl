@@ -211,7 +211,7 @@ if ($sthGrows > 0) {
                         $province = $leadRow->[12];
                         $postal_code = $leadRow->[13];
                         $country_code = $leadRow->[14];
-						$gender = $leadRow->[15];
+                        $gender = $leadRow->[15];
                         $date_of_birth = $leadRow->[16];
                         $alt_phone = $leadRow->[17];
                         $email = $leadRow->[18];
@@ -220,9 +220,9 @@ if ($sthGrows > 0) {
                         $gmt_offset_now = '';
                         
                         if ($check_dup) {
-                            $stmtA = "SELECT lead_id FROM vicidial_list WHERE phone_number = ?";
+                            $stmtA = "SELECT lead_id FROM vicidial_list WHERE phone_number = ? AND list_id = ?";
                             $sthA = $dbhA->prepare($stmtA) or die "preparing: ",$dbhA->errstr;
-                            $sthA->execute($phone_number) or die "executing: $stmtA ", $dbhA->errstr;
+                            $sthA->execute($phone_number,$sheet_list_id) or die "executing: $stmtA ", $dbhA->errstr;
                             if ($sthA->rows > 0 ) {
                                 $isDup = "Y";
                             }
@@ -232,8 +232,8 @@ if ($sthGrows > 0) {
                         if (!$Q and $check_dup) {print "Is '$phone_number' Duplicate?: $isDup\n";}
                         if ($isDup eq "N") {
                             my $NOWdate = strftime "%F %H:%M:%S", localtime;
-							$USarea = substr $phone_number, 0, 3;
-							$gmt_offset_now = lookup_gmt($phone_code, $USarea, $state, $LOCAL_GMT_OFF_STD, $hour, $min, $sec, $mon, $mday, $year, $tz_method, $postal_code);
+                            $USarea = substr $phone_number, 0, 3;
+                            $gmt_offset_now = lookup_gmt($phone_code, $USarea, $state, $LOCAL_GMT_OFF_STD, $hour, $min, $sec, $mon, $mday, $year, $tz_method, $postal_code);
                             $status = 'NEW';
                             $stmtB = "INSERT INTO vicidial_list (entry_date,status,list_id,phone_code,phone_number,first_name,middle_initial,last_name,address1,address2,address3,city,state,province,postal_code,country_code,comments,vendor_lead_code,gmt_offset_now,title,date_of_birth,alt_phone,email,security_phrase,gender) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
                             $sthB = $dbhA->prepare($stmtB) or die "preparing: ",$dbhA->errstr;
@@ -317,7 +317,7 @@ if ($sthGrows > 0) {
 
         ### Find out if DST to raise the gmt offset ###
         $AC_GMT_diff = ($gmt_offset - $SLOCAL_GMT_OFF_STD);
-		$AC_localtime = timelocal($Ssec,$Smin,($Shour + $AC_GMT_diff),$Smday,$Smon,($Syear + 1900));
+	$AC_localtime = timelocal($Ssec,$Smin,($Shour + $AC_GMT_diff),$Smday,$Smon,($Syear + 1900));
         $Xhour = strftime "%H", localtime($AC_localtime);
         $Xmin = strftime "%M", localtime($AC_localtime);
         $Xsec = strftime "%S", localtime($AC_localtime);
