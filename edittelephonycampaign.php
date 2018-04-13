@@ -508,11 +508,12 @@ $audiofiles = $ui->API_getListAudioFiles();
 														</div><!-- /input-group -->
 														<select class="form-control survey_first_audio_file_dropdown" id="survey_first_audio_file_dropdown" data-label="survey_first_audio_file">
 															<option value="">-- Default Value --</option>
-															<?php for($i=0;$i<=count($audiofiles->data);$i++) { ?>
-																<?php if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
-																	<option value="<?php echo substr($audiofiles->data[$i], 0, -4); ?>"><?php echo substr($audiofiles->data[$i], 0, -4); ?></option>
-																<?php } ?>
-															<?php } ?>
+															<?php for($i=0;$i<=count($voicefiles->file_name);$i++) { ?>
+                                                                                                                                                        <?php if(!empty($voicefiles->file_name[$i])) { ?>
+                                                                                                                                                                <option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>"><?php echo substr($voicefiles->file_name[$i], 0, -4); ?></option>
+                                                                                                                                                        <?php } ?>
+                                                                                                                                                <?php } ?>
+
 														</select>
 													</div>
 												</div>
@@ -1801,15 +1802,14 @@ $audiofiles = $ui->API_getListAudioFiles();
 																		$hopper_level = array (1, 5, 10, 20, 50, 100, 200, 500, 700, 1000, 2000);
 																		foreach ($hopper_level as $level) {
 																			$selectThis = '';
-																			if ($level == $campaign->data->hopper_level) { $selectThis = 'selected'; }
-																			if ($level == 100) { $selectThis = 'selected'; }
+																			if ($level == $campaign->data->hopper_level) { $selectThis = 'selected';} 
 																			echo '<option value="'.$level.'" '.$selectThis.'>'.$level.'</option>';
 																		}
 																		?>
 																	</select>
 																</div>
 															</div>
-															<?php if($campaign->data->campaign_vdad_exten != 8373) { ?>
+															<?php //if($campaign->data->campaign_vdad_exten != 8373) { ?>
 															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("next_agent_call"); ?>:</label>
 																<div class="col-sm-9 mb">
@@ -1858,15 +1858,6 @@ $audiofiles = $ui->API_getListAudioFiles();
 																</div>
 															</div>
 															<div class="form-group">
-																<label class="col-sm-3 control-label"><?php $lh->translateText("amd_send_to_action"); ?>:</label>
-																<div class="col-sm-9 mb">
-																	<select class="form-control" id="amd_send_to_vmx" name="amd_send_to_vmx">
-																		<option value="Y" <?php if($campaign->data->amd_send_to_vmx == "Y") echo "selected";?>>YES</option>
-																		<option value="N" <?php if($campaign->data->amd_send_to_vmx == "N") echo "selected";?>>NO</option>
-																	</select>
-																</div>
-															</div>
-															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("answering_machine_message"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<div class="input-group">
@@ -1900,9 +1891,9 @@ $audiofiles = $ui->API_getListAudioFiles();
 																	<input type="text" class="form-control" id="waitforsilence_options" name="waitforsilence_options" value="<?php echo $campaign->data->waitforsilence_options; ?>">
 																</div>
 															</div>
-															<?php } ?>
+															<?php //} ?>
 															<br /><br />
-															<?php if($campaign->data->campaign_vdad_exten != 8373) { ?>
+															<?php //if($campaign->data->campaign_vdad_exten != 8373) { ?>
 																<div class="form-group">
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("survey_method"); ?>:</label>
 																	<div class="col-sm-9 mb">
@@ -2174,7 +2165,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 																		<input type="number" class="form-control" id="survey_fourth_exten" name="survey_fourth_exten" min="0" value="<?php if(!empty($campaign->data->survey_fourth_exten)){echo $campaign->data->survey_fourth_exten;}else{echo "8300";} ?>">
 																	</div>
 																</div>
-															<?php } ?>
+															<?php //} ?>
 														<?php } else { ?>
 															<!--Default-->
 														<?php }
