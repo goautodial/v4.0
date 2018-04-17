@@ -1676,7 +1676,7 @@
 				},
 				dataType: 'json',
 				success: function(response) {
-						// console.log(response);
+						console.log(response);
 						$('#modal_view_lists').modal('hide');
 						$('#modal_view_leads_on_hopper').modal('show');
 						$('body').addClass('modal-open');
@@ -1884,54 +1884,73 @@
 			
 			$(document).on('click','.edit-list',function() {
 				var dataInfo = $(this).data('info');
-				//console.log(dataInfo);
-				$('.lists-id').val(dataInfo.list_id);
-				$('.lists-name').val(dataInfo.list_name);
-				$('.lists-description').val(dataInfo.list_description);
-				$('.lists-campaign').val(dataInfo.campaign_id).trigger('change');
-				$('.lists-reset-time').val(dataInfo.reset_time);
-				$('.lists-lead-called-status').val(dataInfo.reset_called_lead_status).trigger('change');
-				$('.lists-active').val(dataInfo.active).trigger('change');
-				$('.lists-agent-script-override').val(dataInfo.agent_script_override).trigger('change');
-				$('.lists-cid-override').val(dataInfo.campaign_cid_override);
-				$('.lists-drop-inbound-group-override').val(dataInfo.drop_inbound_group_override).trigger('change');
-				$('.lists-web-form').val(dataInfo.web_from_address);
-				$('.lists-xferconf-a-number').val(dataInfo.xferconf_a_number);
-				$('.lists-xferconf-b-number').val(dataInfo.xferconf_b_number);
-				$('.lists-xferconf-c-number').val(dataInfo.xferconf_c_number);
-				$('.lists-xferconf-d-number').val(dataInfo.xferconf_d_number);
-				$('.lists-xferconf-e-number').val(dataInfo.xferconf_e_number);
+                                        //console.log(dataInfo);
+                                        $('.lists-id').val(dataInfo.list_id);
+                                        $('.lists-name').val(dataInfo.list_name);
+                                        $('.lists-description').val(dataInfo.list_description);
+                                        $('.lists-campaign').val(dataInfo.campaign_id).trigger('change');
+                                        $('.lists-reset-time').val(dataInfo.reset_time);
+                                        $('.lists-lead-called-status').val(dataInfo.reset_called_lead_status).trigger('change');
+                                        $('.lists-active').val(dataInfo.active).trigger('change');
+                                        $('.lists-agent-script-override').val(dataInfo.agent_script_override).trigger('change');
+                                        $('.lists-cid-override').val(dataInfo.campaign_cid_override);
+                                        $('.lists-drop-inbound-group-override').val(dataInfo.drop_inbound_group_override).trigger('change');
+                                        $('.lists-web-form').val(dataInfo.web_from_address);
+                                        $('.lists-xferconf-a-number').val(dataInfo.xferconf_a_number);
+                                        $('.lists-xferconf-b-number').val(dataInfo.xferconf_b_number);
+                                        $('.lists-xferconf-c-number').val(dataInfo.xferconf_c_number);
+                                       $('.lists-xferconf-d-number').val(dataInfo.xferconf_d_number);
+                                  $('.lists-xferconf-e-number').val(dataInfo.xferconf_e_number);
 
-				$.ajax({
-					url: "./php/GetListsStatuses.php",
-					type: 'POST',
-					data: {
-						list_id : dataInfo.list_id,
-					},
-					dataType: 'json',
-					success: function(response) {
-							//console.log(response);
-							$('#lists_statuses_container').html(response);
-						}
-				});
+				swal({
+                                title: "<?php $lh->translateText("Warning"); ?>",
+                                text: "<?php $lh->translateText("If you have large number of leads, this might take a few minutes."); ?>.",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "<?php $lh->translateText("Continue"); ?>...",
+                                cancelButtonText: "<?php $lh->translateText("cancel"); ?>",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                                },
+                                function(isConfirm){
+                                if (isConfirm) {
+					swal.close()
+                                        $.ajax({
+                                                url: "./php/GetListsStatuses.php",
+                                                type: 'POST',
+                                                data: {
+                                                        list_id : dataInfo.list_id,
+                                                },
+                                                dataType: 'json',
+                                                success: function(response) {
+                                                        //console.log(response);
+                                                        $('#lists_statuses_container').html(response);
+                                                }
+                                        });
 
-				$.ajax({
-					url: "./php/GetListsTimezones.php",
-					type: 'POST',
-					data: {
-						list_id : dataInfo.list_id,
-					},
-					dataType: 'json',
-					success: function(response) {
-							//console.log(response);
-							$('#lists_timezone_container').html(response);
-						}
-				});
+                                        $.ajax({
+                                                url: "./php/GetListsTimezones.php",
+                                                type: 'POST',
+                                                data: {
+                                                        list_id : dataInfo.list_id,
+                                                },
+                                                dataType: 'json',
+                                                success: function(response) {
+                                                        //console.log(response);
+                                                        $('#lists_timezone_container').html(response);
+                                                }
+                                        });
 
-				$('.btn-update-lists').attr('data-campaign', dataInfo.campaign_id);
-				$('#modal_view_lists').modal('hide');
-				$('#modal_form_lists').modal('show');
-				$('body').addClass('modal-open');
+                                        $('.btn-update-lists').attr('data-campaign', dataInfo.campaign_id);
+                                        $('#modal_view_lists').modal('hide');
+                                        $('#modal_form_lists').modal('show');
+                                        $('body').addClass('modal-open');
+
+                                } else {
+                                        swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+                                }
+                            });
 			});
 
 			$(document).on('click', '.view-pause-codes', function(){
