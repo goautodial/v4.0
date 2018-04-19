@@ -2476,7 +2476,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('#submit_agent_rank').prop("disabled", false);
 							console.log(data);
 							if(data == "success"){
-								swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("agent_rank_update_success"); ?>", "success");
+								swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("agent_rank_update_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+
 							}else{
 								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 							}
