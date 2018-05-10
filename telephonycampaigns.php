@@ -1445,6 +1445,8 @@
 											<input type="text" class="form-control lists-xferconf-e-number" name="xferconf_e_number">
 										</div>
 									</div>
+									<!-- for feature 6605 -->
+									<input type="hidden" id="donotshow" />
 			               		</div>
 			               		<div id="tab_2" class="tab-pane">
 			               			<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
@@ -1546,7 +1548,7 @@
 	<?php print $ui->standardizedThemeJS(); ?>
 	<!-- JQUERY STEPS-->
   	<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     <!-- iCheck 1.0.1 -->
 	<script src="js/plugins/iCheck/icheck.min.js"></script>
 
@@ -1704,6 +1706,9 @@
 		}
 
 		$(document).ready(function(){
+			// load cookies
+				var cook_donotshow = "yes";
+
 			//$('#modal_form_lists').modal('show');
 				$('.select2').select2({
 					theme: 'bootstrap'
@@ -1883,6 +1888,8 @@
 			});
 			
 			$(document).on('click','.edit-list',function() {
+				cook_donotshow = Cookies.get('donotshow');
+				
 				var dataInfo = $(this).data('info');
                                         //console.log(dataInfo);
                                         $('.lists-id').val(dataInfo.list_id);
@@ -1901,26 +1908,62 @@
                                         $('.lists-xferconf-c-number').val(dataInfo.xferconf_c_number);
                                        $('.lists-xferconf-d-number').val(dataInfo.xferconf_d_number);
                                   $('.lists-xferconf-e-number').val(dataInfo.xferconf_e_number);
+				
+				if(cook_donotshow === "yes"){
+					$('.nav-tabs a[href="#tab_1"]').tab('show');
+                                        $('.btn-update-lists').attr('data-campaign', dataInfo.campaign_id);
+                                        $('#modal_view_lists').modal('hide');
+                                        $('#modal_form_lists').modal('show');
+                                        $('body').addClass('modal-open');
+				}else{		
+					swal({
+	                                title: "<?php $lh->translateText("Warning!"); ?>",
+        	                        text: "<?php $lh->translateText("If you have large number of leads, this might take a few minutes."); ?>.<br/><br/><br/><div class='row'><input class='show' type='checkbox' id='donotshowbox' style='width: 20px!important;margin-left: 90px;margin-right:  10px;float: left;margin-top: -10px;' /><p style='float:left;'> Do not show this message again.</p></div>",
+                	                type: "warning",
+					html: true,
+                                	showCancelButton: true,
+	                                confirmButtonColor: "#DD6B55",
+        	                        confirmButtonText: "<?php $lh->translateText("Continue"); ?>...",
+                	                cancelButtonText: "<?php $lh->translateText("cancel"); ?>",
+                        	        closeOnConfirm: false,
+                                	closeOnCancel: false
+	                                },
+        	                        function(isConfirm){
+                                	if (isConfirm) {
+						swal.close();
+						$('.nav-tabs a[href="#tab_1"]').tab('show');
+	                                        $('.btn-update-lists').attr('data-campaign', dataInfo.campaign_id);
+	                                        $('#modal_view_lists').modal('hide');
+        	                                $('#modal_form_lists').modal('show');
+                	                        $('body').addClass('modal-open');
+                                	} else {
+                                        	swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+                                	}
+                            		});
+				}
+			});
 
-				swal({
-                                title: "<?php $lh->translateText("Warning"); ?>",
-                                text: "<?php $lh->translateText("If you have large number of leads, this might take a few minutes."); ?>.",
-                                type: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#DD6B55",
-                                confirmButtonText: "<?php $lh->translateText("Continue"); ?>...",
-                                cancelButtonText: "<?php $lh->translateText("cancel"); ?>",
-                                closeOnConfirm: false,
-                                closeOnCancel: false
-                                },
-                                function(isConfirm){
-                                if (isConfirm) {
-					swal.close()
-                                        $.ajax({
+			$(document).on('click', '#donotshowbox', function(){
+				if($(this).is(':checked')){
+					Cookies.set('donotshow', 'yes', { expires: 30 });
+				}
+                        });
+
+			// Feature #6605	
+			$("#modal_form_lists").on("hidden.bs.modal", function () {
+				$('#lists_statuses_container').html("<br/><br/><center><i class='fa fa-circle-o-notch fa-spin fa-2x fa-fw'></i> Loading...</center><br/><br/>");
+				$('#lists_timezone_container').html("<br/><br/><center><i class='fa fa-circle-o-notch fa-spin fa-2x fa-fw'></i> Loading...</center><br/><br/>");	
+			});	
+			
+			$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  				var target = $(e.target).attr("href") // activated tab
+				var listid = $('.lists-id').val();
+  				if(target === "#tab_2"){
+					$.ajax({
                                                 url: "./php/GetListsStatuses.php",
                                                 type: 'POST',
                                                 data: {
-                                                        list_id : dataInfo.list_id,
+                                                        list_id : listid,
                                                 },
                                                 dataType: 'json',
                                                 success: function(response) {
@@ -1928,12 +1971,13 @@
                                                         $('#lists_statuses_container').html(response);
                                                 }
                                         });
-
-                                        $.ajax({
+				}
+				if(target === "#tab_3"){
+					$.ajax({
                                                 url: "./php/GetListsTimezones.php",
                                                 type: 'POST',
                                                 data: {
-                                                        list_id : dataInfo.list_id,
+                                                        list_id : listid,
                                                 },
                                                 dataType: 'json',
                                                 success: function(response) {
@@ -1941,16 +1985,7 @@
                                                         $('#lists_timezone_container').html(response);
                                                 }
                                         });
-
-                                        $('.btn-update-lists').attr('data-campaign', dataInfo.campaign_id);
-                                        $('#modal_view_lists').modal('hide');
-                                        $('#modal_form_lists').modal('show');
-                                        $('body').addClass('modal-open');
-
-                                } else {
-                                        swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-                                }
-                            });
+				}
 			});
 
 			$(document).on('click', '.view-pause-codes', function(){
