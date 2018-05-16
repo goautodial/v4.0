@@ -919,7 +919,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $cn = $this->db->getSettingValueForKey(CRM_SETTING_COMPANY_NAME);
 	    $cl = $this->db->getSettingValueForKey(CRM_SETTING_COMPANY_LOGO);
 	    $go = $this->db->getSettingValueForKey(CRM_SETTING_GOOGLE_API_KEY);
-	    $slaveDB = $this->db->getSettingValueForKey(CRM_SETTING_SLAVE_DB);
+	    $slaveDB = $this->db->getSettingValueForKey(CRM_SETTING_SLAVE_DB_IP);
 	    if (isset($cl)) { $cl = $this->imageWithData($cl, "", null); }
 	    $tOpts = array("black" => "black", "blue" => "blue", "green" => "green", "minimalist" => "minimalist", "purple" => "purple", "red" => "red", "yellow" => "yellow");
 
