@@ -934,7 +934,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $cn_text = $this->lh->translationFor("company_name");
 	    $cl_text = $this->lh->translationFor("custom_company_logo");
 	    $go_text = $this->lh->translationFor("google_api_key");
-	    $db_text = $this->lh->translationFor("slave_db");
+	    $db_text = $this->lh->translationFor("slave_db_ip");
 
 	    // form
 	    $form = '<form role="form" id="adminsettings" name="adminsettings" class="form" enctype="multipart/form-data">
@@ -948,7 +948,7 @@ error_reporting(E_ERROR | E_PARSE);
 			  '.$this->singleFormGroupWithSelect($tz_text, "timezone", "timezone", \creamy\CRMUtils::getTimezonesAsArray(), $tz).'
 			  '.$this->singleFormGroupWithSelect($lo_text, "locale", "locale", \creamy\LanguageHandler::getAvailableLanguages(), $lo).'
 			  '.$this->singleFormGroupWithInputGroup($this->singleFormInputElement("google_api_key", "google_api_key", "text", $go_text, $go, "google"), $go_text).'
-			  '.$this->singleFormGroupWithInputGroup($this->singleFormInputElement("slave_db", "slave_db", "text", $db_text, $slaveDB, "database"), $db_text).'
+			  '.$this->singleFormGroupWithInputGroup($this->singleFormInputElement("slave_db_ip", "slave_db_ip", "text", $db_text, $slaveDB, "database"), $db_text).'
 			  <div class="box-footer">
 			  '.$this->emptyMessageDivWithTag(CRM_UI_DEFAULT_RESULT_MESSAGE_TAG).'
 			  <button type="submit" class="btn btn-primary">'.$this->lh->translationFor("modify").'</button></div></form>';
