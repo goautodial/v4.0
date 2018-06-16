@@ -291,8 +291,14 @@ class DbHandler {
 			//if ($status == 1) { // user is active
 
 			if ($bcrypt > 0) {
-				$pass_hash = exec("{$cwd}/bin/bp.pl --pass=$password --salt=$salt --cost=$cost");
-				$pass_hash = preg_replace("/PHASH: |\n|\r|\t| /",'',$pass_hash);
+				//$pass_hash = exec("{$cwd}/bin/bp.pl --pass=$password --salt=$salt --cost=$cost");
+				//$pass_hash = preg_replace("/PHASH: |\n|\r|\t| /",'',$pass_hash);
+                              	$pass_options = [
+                                      	'cost' => $cost,
+                                      	'salt' => base64_encode($salt)
+                               	];
+                              	$pass_hash = password_hash($password, PASSWORD_BCRYPT, $pass_options);
+                              	$pass_hash = substr($pass_hash, 29, 31);				
 			} else {$pass_hash = $password;}
 
 			if ( preg_match("/Y/i", $status) ) {
@@ -392,8 +398,14 @@ class DbHandler {
 			//if ($status == 1) { // user is active
 
 			if ($bcrypt > 0) {
-				$pass_hash = exec("{$cwd}/bin/bp.pl --pass=$password --salt=$salt --cost=$cost");
-				$pass_hash = preg_replace("/PHASH: |\n|\r|\t| /",'',$pass_hash);
+				//$pass_hash = exec("{$cwd}/bin/bp.pl --pass=$password --salt=$salt --cost=$cost");
+				//$pass_hash = preg_replace("/PHASH: |\n|\r|\t| /",'',$pass_hash);
+                              	$pass_options = [
+                                      	'cost' => $cost,
+                                      	'salt' => base64_encode($salt)
+                               	];
+                              	$pass_hash = password_hash($password, PASSWORD_BCRYPT, $pass_options);
+                              	$pass_hash = substr($pass_hash, 29, 31);				
 			} else {$pass_hash = $password;}
 			
 			if ($user_role == 9) {
