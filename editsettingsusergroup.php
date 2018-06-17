@@ -1,13 +1,25 @@
 <?php
-
-	###################################################
-	### Name: editsettingsusergroups.php 	   ###
-	### Functions: Edit Usergroups 	   ###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	   ###
-	### Version: 4.0    	   ###
-	### Written by: Alexander Jim H. Abenoja	   ###
-	### License: AGPLv2	   ###
-	###################################################
+/**
+ * @file 		editsettingsusergroups.php
+ * @brief 		Modify Usergroup settings
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author     	Alexander Jim H. Abenoja <alex@goautodial.com>
+ * @author		Demian Lizandro A. Biscocho <demian@goautodial.com> 
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
 	require_once('./php/CRMDefaults.php');
 	require_once('./php/UIHandler.php');
@@ -61,52 +73,30 @@ if (isset($_POST["usergroup_id"])) {
                     <ol class="breadcrumb">
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
                         <li> <?php $lh->translateText("settings"); ?></li>
-                        <?php
-							if(isset($_POST["usergroup_id"])){
+                        <?php                       
+							if(isset($usergroup_id)){
 						?>	
 							<li><a href="./settingsusergroups.php"><?php $lh->translateText("User Groups"); ?></a></li>
                         <?php
-	}
+							}
                         ?>	                    
                         <li class="active"><?php $lh->translateText("modify"); ?></li>
                     </ol>
                 </section>
 
-						<!-- standard custom edition form -->
-					<?php
-					$errormessage = NULL;
-					
-					//if(isset($extenid)) {
-						$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
-				        $postfields["goUser"] = goUser; #Username goes here. (required)
-				        $postfields["goPass"] = goPass; #Password goes here. (required)
-				        $postfields["goAction"] = "goGetUserGroupInfo"; #action performed by the [[API:Functions]]. (required)
-				        $postfields["responsetype"] = responsetype; #json. (required)
-				        $postfields["user_group"] = $usergroup_id; #Desired exten ID. (required)
-						$postfields["log_user"] = $_SESSION['user'];
-						$postfields["log_group"] = $_SESSION['usergroup'];
-						$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
-
-				         $ch = curl_init();
-				         curl_setopt($ch, CURLOPT_URL, $url);
-				         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-				         curl_setopt($ch, CURLOPT_POST, 1);
-				         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-				         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-						 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-				         $data = curl_exec($ch);
-				         curl_close($ch);
-				         $output = json_decode($data);
-						 
-						if ($output->result=="success") {
-							
-						# Result was OK!
-					?>
-
             <!-- Main content -->
             <section class="content">
 				<div class="panel panel-default">
+					<?php
+						$userobj = NULL;
+						$errormessage = NULL;
+						$output = $ui->API_goGetGroupPermission($usergroup_id);
+						//echo "<pre>";
+						//var_dump($output);
+						if(isset($usergroup_id)) {
+							if ($output->result=="success") {
+							# Result was OK!
+					?>				
                     <div class="panel-body">
 					<legend><?php echo $lh->translationFor("modify_user_group"); ?> : <u><?php echo $usergroup_id;?></u></legend>
 					
@@ -325,13 +315,18 @@ if (isset($_POST["usergroup_id"])) {
 	</div><!-- end of tab content -->
 	                    	</div><!-- tab panel -->
 	                    </form>
+	<?php
+			
+		} else {
+		# An error occured
+			echo $output->result;
+		}
+	}
+		
+	?>	                    
 	                </div><!-- body -->
 	            </div>
             </section>
-					<?php
-						}
-					?>
-					
 				<!-- /.content -->
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>

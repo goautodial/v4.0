@@ -6160,6 +6160,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goAction"] = "goGetUserGroupInfo"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["user_group"] = $group; #json. (required)
+		$postfields["session_user"] = $_SESSION['user'];		
 		
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);
@@ -6173,7 +6174,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 curl_close($ch);
 		 $output = json_decode($data);
 
-		 return json_decode($output->data->permissions);
+		 return $output;
 	}
 	
 	public function goGetPermissions($type = 'dashboard', $group) {
