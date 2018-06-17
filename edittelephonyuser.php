@@ -1,25 +1,37 @@
 <?php
+/**
+ * @file 		edittelephonyusers.php
+ * @brief 		Modify user accounts
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author     	Alexander Jim H. Abenoja <alex@goautodial.com> 
+ * @author		Demian Lizandro A. Biscocho <demian@goautodial.com>
+ * @author     	Noel Umandap <noel@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
-	/****************************************************
-	* Name: edittelephonyuser.php 						*
-	* Functions: Edit Users 							*
-	* Copyright: GOAutoDial Ltd. (c) 2011-2016 			*
-	* Version: 4.0 										*
-	* Written by: Alexander Abenoja & Noel Umandap 		*
-	* License: AGPLv2 									*
-	****************************************************/
+require_once('./php/CRMDefaults.php');
+require_once('./php/UIHandler.php');
+require_once('./php/LanguageHandler.php');
+require('./php/Session.php');
+require_once('./php/goCRMAPISettings.php');
 
-	require_once('./php/CRMDefaults.php');
-	require_once('./php/UIHandler.php');
-	//require_once('./php/DbHandler.php');
-	require_once('./php/LanguageHandler.php');
-	require('./php/Session.php');
-	require_once('./php/goCRMAPISettings.php');
-
-	// initialize structures
-	$ui = \creamy\UIHandler::getInstance();
-	$lh = \creamy\LanguageHandler::getInstance();
-	$user = \creamy\CreamyUser::currentUser();
+// initialize structures
+$ui = \creamy\UIHandler::getInstance();
+$lh = \creamy\LanguageHandler::getInstance();
+$user = \creamy\CreamyUser::currentUser();
 
 $userid = NULL;
 if (isset($_POST["user_id"])) {
@@ -96,14 +108,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 						//$output = $ui->goGetUserInfo($userid, "user_id");
 						$output = $ui->goGetUserInfoNew($userid);
 						//echo "<pre>";
-						//print_r($userid);
 						//print_r($output);
 						if(isset($userid)) {
 							if ($output->result=="success") {
 							# Result was OK!
 					?>
 							<div class="panel-body">
-							<legend><?php $lh->translateText("modify_user"); ?> : <u><?php echo $output->user;?></u></legend>
+							<legend><?php $lh->translateText("modify_user"); ?> : <u><?php echo $output->data->user;?></u></legend>
 								<form id="modifyuser">
 									<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 									<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
@@ -125,14 +136,14 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<label for="fullname" class="col-sm-2 control-label"><?php $lh->translateText("full_name"); ?></label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="fullname" id="fullname" 
-															value="<?php echo $output->full_name;?>" maxlength="50" placeholder="<?php $lh->translateText("full_name"); ?>" />
+															value="<?php echo $output->data->full_name;?>" maxlength="50" placeholder="<?php $lh->translateText("full_name"); ?>" />
 													</div>
 												</div>
 												<div class="form-group">
 													<label for="email" class="col-sm-2 control-label"><?php $lh->translateText("email"); ?></label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="email" id="email" 
-															value="<?php echo $output->email;?>"  maxlength="100" placeholder="<?php $lh->translateText("email"); ?>" />
+															value="<?php echo $output->data->email;?>"  maxlength="100" placeholder="<?php $lh->translateText("email"); ?>" />
 														<small><span id="email_check"></span></small>
 													</div>
 												</div>
@@ -144,7 +155,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 																for($a=0;$a<count($user_groups->user_group);$a++){
 															?>
 																<option value="<?php echo $user_groups->user_group[$a];?>" 
-																		<?php if($output->user_group == $user_groups->user_group[$a]){echo "selected";}?> />  
+																		<?php if($output->data->user_group == $user_groups->user_group[$a]){echo "selected";}?> />  
 																	<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>  
 																</option>
 															<?php
@@ -159,13 +170,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														<select class="form-control" name="status" id="status">
 														<?php
 															$status = NULL;
-															if($output->active == "Y"){
+															if($output->data->active == "Y"){
 																$status .= '<option value="Y" selected> Active </option>';
 															}else{
 																$status .= '<option value="Y" > Active </option>';
 															}
 															
-															if($output->active == "N" || $output->active == NULL){
+															if($output->data->active == "N" || $output->data->active == NULL){
 																$status .= '<option value="N" selected> Inactive </option>';
 															}else{
 																$status .= '<option value="N" > Inactive </option>';
@@ -181,47 +192,47 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														<select class="form-control" name="userlevel" id="userlevel">
 														<?php
 															$userlevel = NULL;
-																if($output->user_level == "1"){
+																if($output->data->user_level == "1"){
 																	$userlevel .= '<option value="1" selected> 1 </option>';
 																}else{
 																	$userlevel .= '<option value="1" > 1 </option>';
 																}
-																if($output->user_level == "2"){
+																if($output->data->user_level == "2"){
 																	$userlevel .= '<option value="2" selected> 2 </option>';
 																}else{
 																	$userlevel .= '<option value="2" > 2 </option>';
 																}
-																if($output->user_level == "3"){
+																if($output->data->user_level == "3"){
 																	$userlevel .= '<option value="3" selected> 3 </option>';
 																}else{
 																	$userlevel .= '<option value="3" > 3 </option>';
 																}
-																if($output->user_level == "4"){
+																if($output->data->user_level == "4"){
 																	$userlevel .= '<option value="4" selected disabled> 4 </option>';
 																}else{
 																	$userlevel .= '<option value="4"  disabled> 4 </option>';
 																}
-																if($output->user_level == "5"){
+																if($output->data->user_level == "5"){
 																	$userlevel .= '<option value="5" selected> 5 </option>';
 																}else{
 																	$userlevel .= '<option value="5" > 5 </option>';
 																}
-																if($output->user_level == "6"){
+																if($output->data->user_level == "6"){
 																	$userlevel .= '<option value="6" selected> 6 </option>';
 																}else{
 																	$userlevel .= '<option value="6" > 6 </option>';
 																}
-																if($output->user_level == "7"){
+																if($output->data->user_level == "7"){
 																	$userlevel .= '<option value="7" selected> 7 </option>';
 																}else{
 																	$userlevel .= '<option value="7" > 7 </option>';
 																}
-																if($output->user_level == "8"){
+																if($output->data->user_level == "8"){
 																	$userlevel .= '<option value="8" selected> 8 </option>';
 																}else{
 																	$userlevel .= '<option value="8" > 8 </option>';
 																}
-																if($output->user_level == "9"){
+																if($output->data->user_level == "9"){
 																	$userlevel .= '<option value="9" selected> 9 </option>';
 																}else{
 																	$userlevel .= '<option value="9" > 9 </option>';
@@ -237,7 +248,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<label for="phone_login" class="col-sm-2 control-label"><?php if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){ echo "<i class='fa fa-info-circle' title='You cannot edit this field since WebRTC is enabled.'></i> ";} ?> Phone Login</label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="phone_login" id="phone_login"  <?php if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){ echo "disabled";} ?>
-															value="<?php echo $output->phone_login;?>" maxlength="20" placeholder="<?php $lh->translateText("phone_login"); ?>" />
+															value="<?php echo $output->data->phone_login;?>" maxlength="20" placeholder="<?php $lh->translateText("phone_login"); ?>" />
 														<label id="phone_login-error"></label>
 													</div>
 												</div>
@@ -246,7 +257,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<label for="phone_password" class="col-sm-2 control-label">Phone Password</label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="phone_password" id="phone_password" 
-															value="<?php echo $output->phone_pass;?>" maxlength="20" placeholder="Phone Password" />
+															value="<?php echo $output->data->phone_pass;?>" maxlength="20" placeholder="Phone Password" />
 													</div>
 												</div> -->									
 												<div class="form-group">
@@ -287,7 +298,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 												<div class="form-group form_password" style="display:none;">
 													<label for="password" class="col-sm-2 control-label"><?php $lh->translateText("password"); ?></label>
 													<div class="col-sm-10 mb">
-														<input type="password" class="form-control" name="password" id="password" <?php if($output->user_level >= 8){echo 'maxlength="20"';}else{echo 'maxlength="10"';} ?> placeholder="<?php $lh->translateText("password"); ?>" />
+														<input type="password" class="form-control" name="password" id="password" <?php if($output->data->user_level >= 8){echo 'maxlength="20"';}else{echo 'maxlength="10"';} ?> placeholder="<?php $lh->translateText("password"); ?>" />
 														<small><i><span id="pass_result"></span></i></small>
 													</div>
 												</div>
@@ -537,7 +548,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 					<div class="box-footer">
 					   <div class="col-sm-4 pull-right">
 							<a href="telephonyusers.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-							<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href="" data-id="<?php echo $output->user; ?>"> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+							<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href="" data-id="<?php echo $output->data->user; ?>"> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 					   </div>
 					</div>
 					</fieldset>
@@ -551,7 +562,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 			
 		} else {
 		# An error occured
-			echo $output->result;
+			echo $output->data->result;
 		}
 	}
 		
