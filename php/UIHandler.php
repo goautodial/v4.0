@@ -3257,7 +3257,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "goGetAllUserLists"; #action performed by the [[API:Functions]]. (required)
+		$postfields["goAction"] = "goGetAllUsers"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["session_user"] = $_SESSION['user']; #json. (required)
 		
@@ -3669,7 +3669,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "goGetPhonesList"; #action performed by the [[API:Functions]]. (required)
+		$postfields["goAction"] = "goGetAllPhones"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["session_user"] = $_SESSION['user']; #json. (required)
 		
