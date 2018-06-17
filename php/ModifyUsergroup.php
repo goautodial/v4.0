@@ -201,6 +201,7 @@ if ($validated == 1) {
 	$postfields["shift_enforcement"] = $shift_enforcement; #Desired value for user (required)
 	$postfields["allowed_campaigns"] = $allowed_campaigns;
 	$postfields["permissions"] = $group_permission;
+	$postfields["session_user"] = $_SESSION['user'];
 	
 	$postfields["log_user"] = $_POST['log_user'];
 	$postfields["log_group"] = $_POST['log_group'];
@@ -208,7 +209,7 @@ if ($validated == 1) {
 	
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_TIMEOUT, 100);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -217,6 +218,8 @@ if ($validated == 1) {
     $data = curl_exec($ch);
     curl_close($ch);
     $output = json_decode($data);
+    
+    //var_dump($output);
 
     if ($output->result=="success") {
     # Result was OK!
@@ -227,8 +230,5 @@ if ($validated == 1) {
         //$lh->translateText("unable_modify_list");
     }
     
-} else { 
-	//ob_clean(); 
-	print $reason; 
-}
+} else { ob_clean(); print $reason; }
 ?>
