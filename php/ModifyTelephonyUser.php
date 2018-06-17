@@ -17,6 +17,7 @@ if ($validated == 1) {
 
 	// collect new user data.	
 	$modifyid = $_POST["modifyid"];
+    $user = $_POST["user"];
     
 	$name = NULL; if (isset($_POST["fullname"])) { 
 		$name = $_POST["fullname"]; 
@@ -105,6 +106,10 @@ if ($validated == 1) {
 		$agent_lead_search_override = $_POST["agent_lead_search_override"]; 
 		$agent_lead_search_override = stripslashes($agent_lead_search_override);
 	}
+	$avatar = NULL; if (isset($_POST["avatar"])) { 
+		$avatar = $_POST["avatar"]; 
+		$avatar = stripslashes($avatar);
+	}	
 
 	$url = gourl."/goUsers/goAPI.php"; # URL to GoAutoDial API file
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -112,6 +117,7 @@ if ($validated == 1) {
     $postfields["goAction"] = "goEditUser"; #action performed by the [[API:Functions]]
     $postfields["responsetype"] = responsetype; #json (required)
 	$postfields["user_id"] = $modifyid; #Desired value for user (required)
+	$postfields["user"] = $user; #Desired value for user (required)
 	$postfields["full_name"] = $name; #Desired value for user (required)
 	$postfields["user_group"] = $user_group; #Desired value for user (required)
 	$postfields["user_level"] = $userlevel; #Desired value for user (required)
@@ -125,6 +131,7 @@ if ($validated == 1) {
 	$postfields["agent_lead_search_override"] = $agent_lead_search_override;
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["session_user"] = $_POST['log_user'];
+	$postfields["avatar"] = $avatar;
 	
     $postfields["log_user"] = $_POST['log_user'];
     $postfields["log_group"] = $_POST['log_group'];
@@ -166,7 +173,7 @@ if ($validated == 1) {
     curl_close($ch);
     $output = json_decode($data);
     
-    //var_dump($data);
+    //var_dump($output);
 
     if ($output->result=="success") {
     # Result was OK!

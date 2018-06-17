@@ -71,11 +71,11 @@ $user_groups = $ui->API_goGetUserGroupsList();
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
                         <li> <?php $lh->translateText("telephony"); ?></li>
                         <?php
-							if(isset($_POST["userid"])){
+							//if(isset($_POST["userid"])){
 						?>	
 							<li><a href="./telephonyusers.php"><?php $lh->translateText("users"); ?></a></li>
                         <?php
-							}
+							//}
                         ?>	                    
                         <li class="active"><?php $lh->translateText("modify"); ?></li>
                     </ol>
@@ -93,16 +93,17 @@ $user_groups = $ui->API_goGetUserGroupsList();
 					<?php
 						$userobj = NULL;
 						$errormessage = NULL;
-						$output = $ui->goGetUserInfo($userid, "user_id");
+						//$output = $ui->goGetUserInfo($userid, "user_id");
+						$output = $ui->goGetUserInfoNew($userid);
 						//echo "<pre>";
-						//var_dump($userid);
-						//var_dump($output);
+						//print_r($userid);
+						//print_r($output);
 						if(isset($userid)) {
 							if ($output->result=="success") {
 							# Result was OK!
 					?>
 							<div class="panel-body">
-							<legend><?php $lh->translateText("modify_user"); ?> : <u><?php echo $output->data->user;?></u></legend>
+							<legend><?php $lh->translateText("modify_user"); ?> : <u><?php echo $output->user;?></u></legend>
 								<form id="modifyuser">
 									<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 									<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
@@ -124,14 +125,14 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<label for="fullname" class="col-sm-2 control-label"><?php $lh->translateText("full_name"); ?></label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="fullname" id="fullname" 
-															value="<?php echo $output->data->full_name;?>" maxlength="50" placeholder="<?php $lh->translateText("full_name"); ?>" />
+															value="<?php echo $output->full_name;?>" maxlength="50" placeholder="<?php $lh->translateText("full_name"); ?>" />
 													</div>
 												</div>
 												<div class="form-group">
 													<label for="email" class="col-sm-2 control-label"><?php $lh->translateText("email"); ?></label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="email" id="email" 
-															value="<?php echo $output->data->email;?>"  maxlength="100" placeholder="<?php $lh->translateText("email"); ?>" />
+															value="<?php echo $output->email;?>"  maxlength="100" placeholder="<?php $lh->translateText("email"); ?>" />
 														<small><span id="email_check"></span></small>
 													</div>
 												</div>
@@ -143,7 +144,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 																for($a=0;$a<count($user_groups->user_group);$a++){
 															?>
 																<option value="<?php echo $user_groups->user_group[$a];?>" 
-																		<?php if($output->data->user_group == $user_groups->user_group[$a]){echo "selected";}?> />  
+																		<?php if($output->user_group == $user_groups->user_group[$a]){echo "selected";}?> />  
 																	<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>  
 																</option>
 															<?php
@@ -158,13 +159,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														<select class="form-control" name="status" id="status">
 														<?php
 															$status = NULL;
-															if($output->data->active == "Y"){
+															if($output->active == "Y"){
 																$status .= '<option value="Y" selected> Active </option>';
 															}else{
 																$status .= '<option value="Y" > Active </option>';
 															}
 															
-															if($output->data->active == "N" || $output->data->active == NULL){
+															if($output->active == "N" || $output->active == NULL){
 																$status .= '<option value="N" selected> Inactive </option>';
 															}else{
 																$status .= '<option value="N" > Inactive </option>';
@@ -180,47 +181,47 @@ $user_groups = $ui->API_goGetUserGroupsList();
 														<select class="form-control" name="userlevel" id="userlevel">
 														<?php
 															$userlevel = NULL;
-																if($output->data->user_level == "1"){
+																if($output->user_level == "1"){
 																	$userlevel .= '<option value="1" selected> 1 </option>';
 																}else{
 																	$userlevel .= '<option value="1" > 1 </option>';
 																}
-																if($output->data->user_level == "2"){
+																if($output->user_level == "2"){
 																	$userlevel .= '<option value="2" selected> 2 </option>';
 																}else{
 																	$userlevel .= '<option value="2" > 2 </option>';
 																}
-																if($output->data->user_level == "3"){
+																if($output->user_level == "3"){
 																	$userlevel .= '<option value="3" selected> 3 </option>';
 																}else{
 																	$userlevel .= '<option value="3" > 3 </option>';
 																}
-																if($output->data->user_level == "4"){
+																if($output->user_level == "4"){
 																	$userlevel .= '<option value="4" selected disabled> 4 </option>';
 																}else{
 																	$userlevel .= '<option value="4"  disabled> 4 </option>';
 																}
-																if($output->data->user_level == "5"){
+																if($output->user_level == "5"){
 																	$userlevel .= '<option value="5" selected> 5 </option>';
 																}else{
 																	$userlevel .= '<option value="5" > 5 </option>';
 																}
-																if($output->data->user_level == "6"){
+																if($output->user_level == "6"){
 																	$userlevel .= '<option value="6" selected> 6 </option>';
 																}else{
 																	$userlevel .= '<option value="6" > 6 </option>';
 																}
-																if($output->data->user_level == "7"){
+																if($output->user_level == "7"){
 																	$userlevel .= '<option value="7" selected> 7 </option>';
 																}else{
 																	$userlevel .= '<option value="7" > 7 </option>';
 																}
-																if($output->data->user_level == "8"){
+																if($output->user_level == "8"){
 																	$userlevel .= '<option value="8" selected> 8 </option>';
 																}else{
 																	$userlevel .= '<option value="8" > 8 </option>';
 																}
-																if($output->data->user_level == "9"){
+																if($output->user_level == "9"){
 																	$userlevel .= '<option value="9" selected> 9 </option>';
 																}else{
 																	$userlevel .= '<option value="9" > 9 </option>';
@@ -236,7 +237,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<label for="phone_login" class="col-sm-2 control-label"><?php if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){ echo "<i class='fa fa-info-circle' title='You cannot edit this field since WebRTC is enabled.'></i> ";} ?> Phone Login</label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="phone_login" id="phone_login"  <?php if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){ echo "disabled";} ?>
-															value="<?php echo $output->data->phone_login;?>" maxlength="20" placeholder="<?php $lh->translateText("phone_login"); ?>" />
+															value="<?php echo $output->phone_login;?>" maxlength="20" placeholder="<?php $lh->translateText("phone_login"); ?>" />
 														<label id="phone_login-error"></label>
 													</div>
 												</div>
@@ -245,7 +246,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<label for="phone_password" class="col-sm-2 control-label">Phone Password</label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="phone_password" id="phone_password" 
-															value="<?php echo $output->data->phone_pass;?>" maxlength="20" placeholder="Phone Password" />
+															value="<?php echo $output->phone_pass;?>" maxlength="20" placeholder="Phone Password" />
 													</div>
 												</div> -->									
 												<div class="form-group">
@@ -264,7 +265,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 																for($a=0;$a<count($voicemails->voicemail_id);$a++){
 															?>
 																<option value="<?php echo $voicemails->voicemail_id[$a];?>" 
-																	<?php if($output->data->voicemail_id == $voicemails->voicemail_id[$a]){echo "selected";}?> />
+																	<?php if($output->voicemail_id == $voicemails->voicemail_id[$a]){echo "selected";}?> />
 																<?php echo $voicemails->voicemail_id[$a].' - '.$voicemails->fullname[$a];?>
 																</option>									
 															<?php
@@ -286,7 +287,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 												<div class="form-group form_password" style="display:none;">
 													<label for="password" class="col-sm-2 control-label"><?php $lh->translateText("password"); ?></label>
 													<div class="col-sm-10 mb">
-														<input type="password" class="form-control" name="password" id="password" <?php if($output->data->user_level >= 8){echo 'maxlength="20"';}else{echo 'maxlength="10"';} ?> placeholder="<?php $lh->translateText("password"); ?>" />
+														<input type="password" class="form-control" name="password" id="password" <?php if($output->user_level >= 8){echo 'maxlength="20"';}else{echo 'maxlength="10"';} ?> placeholder="<?php $lh->translateText("password"); ?>" />
 														<small><i><span id="pass_result"></span></i></small>
 													</div>
 												</div>
@@ -309,13 +310,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								<select class="form-control" name="hotkeys" id="hotkeys">
 								<?php
 									$hotkeys = NULL;
-									if($output->data->hotkeys_active == "1"){
+									if($output->hotkeys_active == "1"){
 										$hotkeys .= '<option value="1" selected> Active </option>';
 									}else{
 										$hotkeys .= '<option value="1" > Active </option>';
 									}
 									
-									if($output->data->hotkeys_active == "0"){
+									if($output->hotkeys_active == "0"){
 										$hotkeys .= '<option value="0" selected> Inactive </option>';
 									}else{
 										$hotkeys .= '<option value="0" > Inactive </option>';
@@ -331,28 +332,28 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								<select class="form-control" name="vicidial_recording_override" id="vicidial_recording_override">
 									<?php
 										$agents_recordings = NULL;
-										if($output->data->vicidial_recording_override == "DISABLED"){
+										if($output->vicidial_recording_override == "DISABLED"){
 											$agents_recordings .= '<option value="DISABLED" selected> DISABLED </option>';
 										}else{
 											$agents_recordings .= '<option value="DISABLED" > DISABLED </option>';
 										}
 										
-										if($output->data->vicidial_recording_override == "NEVER"){
+										if($output->vicidial_recording_override == "NEVER"){
 											$agents_recordings .= '<option value="NEVER" selected> NEVER </option>';
 										}else{
 											$agents_recordings .= '<option value="NEVER" > NEVER </option>';
 										}
-										if($output->data->vicidial_recording_override == "ONDEMAND"){
+										if($output->vicidial_recording_override == "ONDEMAND"){
 											$agents_recordings .= '<option value="ONDEMAND" selected> ONDEMAND </option>';
 										}else{
 											$agents_recordings .= '<option value="ONDEMAND" > ONDEMAND </option>';
 										}
-										if($output->data->vicidial_recording_override == "ALLCALLS"){
+										if($output->vicidial_recording_override == "ALLCALLS"){
 											$agents_recordings .= '<option value="ALLCALLS" selected> ALLCALLS </option>';
 										}else{
 											$agents_recordings .= '<option value="ALLCALLS" > ALLCALLS </option>';
 										}
-										if($output->data->vicidial_recording_override == "ALLFORCE"){
+										if($output->vicidial_recording_override == "ALLFORCE"){
 											$agents_recordings .= '<option value="ALLFORCE" selected> ALLFORCE </option>';
 										}else{
 											$agents_recordings .= '<option value="ALLFORCE" > ALLFORCE </option>';
@@ -368,13 +369,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								<select class="form-control" name="vicidial_transfers" id="vicidial_transfers">
 									<?php
 										$vicidial_transfers = NULL;
-										if($output->data->vicidial_transfers == "0"){
+										if($output->vicidial_transfers == "0"){
 											$vicidial_transfers .= '<option value="0" selected> NO </option>';
 										}else{
 											$vicidial_transfers .= '<option value="0" > NO </option>';
 										}
 										
-										if($output->data->vicidial_transfers == "1"){
+										if($output->vicidial_transfers == "1"){
 											$vicidial_transfers .= '<option value="1" selected> YES </option>';
 										}else{
 											$vicidial_transfers .= '<option value="1" > YES </option>';
@@ -390,13 +391,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								<select class="form-control" name="closer_default_blended" id="closer_default_blended">
 									<?php
 										$closer_default_blended = NULL;
-										if($output->data->closer_default_blended == "0"){
+										if($output->closer_default_blended == "0"){
 											$closer_default_blended .= '<option value="0" selected> NO </option>';
 										}else{
 											$closer_default_blended .= '<option value="0" > NO </option>';
 										}
 										
-										if($output->data->closer_default_blended == "1" ){
+										if($output->closer_default_blended == "1" ){
 											$closer_default_blended .= '<option value="1" selected> YES </option>';
 										}else{
 											$closer_default_blended .= '<option value="1" > YES </option>';
@@ -412,13 +413,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								<select class="form-control" name="agentcall_manual" id="agentcall_manual">
 									<?php
 										$agentcall_manual = NULL;
-										if($output->data->agentcall_manual == "0"){
+										if($output->agentcall_manual == "0"){
 											$agentcall_manual .= '<option value="0" selected> NO </option>';
 										}else{
 											$agentcall_manual .= '<option value="0" > NO </option>';
 										}
 										
-										if($output->data->agentcall_manual == "1" ){
+										if($output->agentcall_manual == "1" ){
 											$agentcall_manual .= '<option value="1" selected> YES </option>';
 										}else{
 											$agentcall_manual .= '<option value="1" > YES </option>';
@@ -434,13 +435,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								<select class="form-control" name="scheduled_callbacks" id="scheduled_callbacks">
 									<?php
 										$scheduled_callbacks = NULL;
-										if($output->data->scheduled_callbacks == "0"){
+										if($output->scheduled_callbacks == "0"){
 											$scheduled_callbacks .= '<option value="0" selected> NO </option>';
 										}else{
 											$scheduled_callbacks .= '<option value="0" > NO </option>';
 										}
 										
-										if($output->data->scheduled_callbacks == "1" ){
+										if($output->scheduled_callbacks == "1" ){
 											$scheduled_callbacks .= '<option value="1" selected> YES </option>';
 										}else{
 											$scheduled_callbacks .= '<option value="1" > YES </option>';
@@ -456,13 +457,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								<select class="form-control" name="agentonly_callbacks" id="agentonly_callbacks">
 									<?php
 										$agentonly_callbacks = NULL;
-										if($output->data->agentonly_callbacks == "0"){
+										if($output->agentonly_callbacks == "0"){
 											$agentonly_callbacks .= '<option value="0" selected> '.$lh->translationFor("go_no").' </option>';
 										}else{
 											$agentonly_callbacks .= '<option value="0" > '.$lh->translationFor("go_no").' </option>';
 										}
 										
-										if($output->data->agentonly_callbacks == "1" ){
+										if($output->agentonly_callbacks == "1" ){
 											$agentonly_callbacks .= '<option value="1" selected> YES </option>';
 										}else{
 											$agentonly_callbacks .= '<option value="1" > YES </option>';
@@ -478,13 +479,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								<select class="form-control" name="api_access" id="api_access">
 									<?php
 										$api_access = NULL;
-										if($output->data->vdc_agent_api_access == "1"){
+										if($output->vdc_agent_api_access == "1"){
 											$api_access .= '<option value="1" selected> Enabled </option>';
 										}else{
 											$api_access .= '<option value="1" > Enable </option>';
 										}
 										
-										if($output->data->vdc_agent_api_access == "0" || $output->data->vdc_agent_api_access == NULL){
+										if($output->vdc_agent_api_access == "0" || $output->vdc_agent_api_access == NULL){
 											$api_access .= '<option value="0" selected> Disabled </option>';
 										}else{
 											$api_access .= '<option value="0" > Disable </option>';
@@ -500,13 +501,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 								<select class="form-control" name="choose_ingroup" id="choose_ingroup">
 									<?php
 										$choose_ingroup = NULL;
-										if($output->data->agent_choose_ingroups == "1"){
+										if($output->agent_choose_ingroups == "1"){
 											$choose_ingroup .= '<option value="1" selected> YES </option>';
 										}else{
 											$choose_ingroup .= '<option value="1" > YES </option>';
 										}
 										
-										if($output->data->agent_choose_ingroups == "0" || $output->data->agent_choose_ingroups == NULL){
+										if($output->agent_choose_ingroups == "0" || $output->agent_choose_ingroups == NULL){
 											$choose_ingroup .= '<option value="0" selected> '.$lh->translationFor("go_no").' </option>';
 										}else{
 											$choose_ingroup .= '<option value="0" > '.$lh->translationFor("go_no").' </option>';
@@ -520,9 +521,9 @@ $user_groups = $ui->API_goGetUserGroupsList();
 							<label for="agent_lead_search_override" class="col-sm-3 control-label"><?php $lh->translateText("agent_lead_search_override"); ?></label>
 							<div class="col-sm-9 mb">
 								<select class="form-control" name="agent_lead_search_override" id="agent_lead_search_override">
-									<option value="ENABLED" <?php if ($output->data->agent_lead_search_override == 'ENABLED') { echo "selected"; }?>>ENABLED</option>
-									<option value="DISABLED" <?php if ($output->data->agent_lead_search_override == 'DISABLED') { echo "selected"; }?>>DISABLED</option>
-									<option value="NOT_ACTIVE" <?php if ($output->data->agent_lead_search_override == 'NOT_ACTIVE') { echo "selected"; }?>>NOT ACTIVE</option>
+									<option value="ENABLED" <?php if ($output->agent_lead_search_override == 'ENABLED') { echo "selected"; }?>>ENABLED</option>
+									<option value="DISABLED" <?php if ($output->agent_lead_search_override == 'DISABLED') { echo "selected"; }?>>DISABLED</option>
+									<option value="NOT_ACTIVE" <?php if ($output->agent_lead_search_override == 'NOT_ACTIVE') { echo "selected"; }?>>NOT ACTIVE</option>
 								</select>
 							</div>
 						</div>
@@ -536,7 +537,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 					<div class="box-footer">
 					   <div class="col-sm-4 pull-right">
 							<a href="telephonyusers.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-							<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+							<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href="" data-id="<?php echo $output->user; ?>"> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 					   </div>
 					</div>
 					</fieldset>
@@ -617,7 +618,8 @@ $user_groups = $ui->API_goGetUserGroupsList();
 	 	*******/
 			
 		$('#modifyUserOkButton').click(function(){ // on click submit
-			
+			var user = $(this).attr('data-id');
+			console.log(user);
 			$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
 			$('#modifyUserOkButton').prop("disabled", true);
 
@@ -673,13 +675,13 @@ $user_groups = $ui->API_goGetUserGroupsList();
 
 			// validations
 			if(validate_email == 0 && validate_password == 0){
-				$("#phone_login").prop("disabled", false);
+				$("#phone_login").prop("disabled", false);				
 					$.ajax({
 						url: "./php/ModifyTelephonyUser.php",
 						type: 'POST',
-						data: $("#modifyuser").serialize(),
+						data: $("#modifyuser").serialize() + '&user=' + user,
 						success: function(data) {
-						  // console.log(data);
+						console.log($("#modifyuser").serialize() + '&user=' + user);
 						$("#phone_login").prop("disabled", true);
 							if (data == 1) {
 								$('#update_button').html("<i class='fa fa-check'></i> Update");
