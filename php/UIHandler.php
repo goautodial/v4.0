@@ -1884,14 +1884,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$gopackage = $this->API_getGOPackage(); // smtp_status
 		$usergroup = (!isset($usergroup) ? $_SESSION['usergroup'] : $usergroup);
 		$perms = $this->goGetPermissions('sidebar', $usergroup);
-		$perms = json_decode($perms->data->permissions, true);
-		
-		$user_read = $perms["user"]["user_read"];
-		$campaign_read = $perms["campaign"]["campaign_read"];
-		$list_read = $perms["list"]["list_read"];
-		$script_read = $perms["script"]["script_read"];
-		$inbound_read = $perms["inbound"]["inbound_read"];
-		$voicefiles_upload = $perms["voicefiles"]["voicefiles_upload"];
 		
 		$adminArea = "";
 		$telephonyArea = "";
@@ -1917,17 +1909,17 @@ error_reporting(E_ERROR | E_PARSE);
 				$adminArea .= $this->getSidebarItem("./settingssmtp.php", "envelope-square", $this->lh->translationFor("smtp_settings")); // smtp settings
 			$adminArea .= '</ul></li>';
 			$telephonyArea = '<li class="treeview"><a href="#"><i class="fa fa-phone"></i> <span>'.$this->lh->translationFor("telephony").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
-			if ($user_read == 'R')
+			if ($perms["user_read"] == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "users", $this->lh->translationFor("users"));
-			if ($campaign_read == 'R')
+			if ($perms["campaign_read"] == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonycampaigns.php", "fa fa-dashboard", $this->lh->translationFor("campaigns"));
-			if ($list_read == 'R')
+			if ($perms["list_read"] == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonylist.php", "list", $this->lh->translationFor("lists"));
-			if ($script_read == 'R')
+			if ($perms["script_read"] == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "comment", $this->lh->translationFor("scripts"));
-			if ( ($inbound_read == 'R' && $gopackage->packagetype !== "gosmall") || ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") )
+			if ( ($perms["inbound_read"] == 'R' && $gopackage->packagetype !== "gosmall") || ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") )
 				$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
-			if ($voicefiles_upload == 'C') {
+			if ($perms["voicefiles_upload"] == 'C') {
 				$telephonyArea .= $this-> getSidebarItem("./audiofiles.php", "music", $this->lh->translationFor("audiofiles"));
 				//$telephonyArea .= $this-> getSidebarItem("./telephonymusiconhold.php", "music", $this->lh->translationFor("music_on_hold"));
 				//$telephonyArea .= $this-> getSidebarItem("./telephonyvoicefiles.php", "files-o", $this->lh->translationFor("voice_files"));
@@ -1945,9 +1937,9 @@ error_reporting(E_ERROR | E_PARSE);
 				$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
 				//}
 				//if ($gopackage->show_carrier_settings === "Y" || ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") )
-				if ($perms->carriers->carriers_read == 'R' || $userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
+				if ($perms["carriers_read"] == 'R' || $userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
 					$settings .= $this-> getSidebarItem("./settingscarriers.php", "signal", $this->lh->translationFor("carriers"));
-				if ($perms->servers->servers_read == 'R' || $userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
+				if ($perms["servers_read"] == 'R' || $userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
 					$settings .= $this-> getSidebarItem("./settingsservers.php", "server", $this->lh->translationFor("servers"));
 					
 				//if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
@@ -1992,7 +1984,7 @@ error_reporting(E_ERROR | E_PARSE);
 	            <ul class="sidebar-menu"><li class="header">'.strtoupper($this->lh->translationFor("menu")).'</li>';
 	    // body: home and customer menus
 	    if($userrole != CRM_DEFAULTS_USER_ROLE_AGENT){
-			if ($perms->dashboard->dashboard_display === 'Y') {
+			if ($perms["dashboard_display"] === 'Y') {
 				$result .= $this->getSidebarItem("./index.php", "dashboard", $this->lh->translationFor("Dashboard"));
 			}
 	    }
@@ -2001,8 +1993,8 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 
 	    // menu for admin
-		if ($perms->user->user_read == 'N' && $perms->campaign->campaign_read == 'N' && $perms->list->list_read == 'N'
-			 && $perms->script->script_read == 'N' && $perms->inbound->inbound_read == 'N' && $perms->voicefiles->voicefiles_upload == 'N') {
+		if ($perms["user_read"] == 'N' && $perms["campaign_read"] == 'N' && $perms["list_read"] == 'N'
+			 && $perms["script_read"] == 'N' && $perms["inbound_read"] == 'N' && $perms["voicefiles_upload"] == 'N') {
 			$telephonyArea = '';
 		}
 		$result .= $telephonyArea;
@@ -3917,7 +3909,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
-	    $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
+	    $postfields["goAction"] = "goGetAllCampaigns"; #action performed by the [[API:Functions]]. (required)
 		$postfields["user_group"] = $_SESSION['usergroup'];
 		$postfields["session_user"] = $_SESSION['user'];
 	    $postfields["responsetype"] = responsetype; #json. (required)
@@ -6197,6 +6189,18 @@ error_reporting(E_ERROR | E_PARSE);
 				}
 			} else {
 				if ($type == 'sidebar') {
+					$permissions = json_decode($permissions->data->permissions, true);
+					$dashboard_display = $permissions["dashboard"]["dashboard_display"];
+					$user_read = $permissions["user"]["user_read"];
+					$campaign_read = $permissions["campaign"]["campaign_read"];
+					$list_read = $permissions["list"]["list_read"];
+					$script_read = $permissions["script"]["script_read"];
+					$inbound_read = $permissions["inbound"]["inbound_read"];
+					$voicefiles_upload = $permissions["voicefiles"]["voicefiles_upload"];
+					$carriers_read = $permissions["carriers"]["carriers_read"];
+					$servers_read = $permissions["servers"]["servers_read"];
+					
+					$permissions = array("dashboard_display" => $dashboard_display, "user_read" => $user_read, "campaign_read" => $campaign_read, "list_read" => $list_read, "script_read" => $script_read, "inbound_read" => $inbound_read, "voicefiles_upload" => $voicefiles_upload, "carriers_read" => $carriers_read, "servers_read" => $servers_read);
 					$return = $permissions;
 				} else if (array_key_exists($type, $permissions)) {
 					$return = $permissions->{$type};

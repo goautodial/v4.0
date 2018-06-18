@@ -91,8 +91,6 @@ if (isset($_POST["usergroup_id"])) {
 						$userobj = NULL;
 						$errormessage = NULL;
 						$output = $ui->API_goGetGroupPermission($usergroup_id);
-						//$perms = $ui->goGetPermissions('sidebar', $usergroup_id);
-						//$perms = json_decode($perms->data->permissions, true);
 					
 						//echo "<pre>";
 						//var_dump($output);						
@@ -125,7 +123,7 @@ if (isset($_POST["usergroup_id"])) {
 									<div class="form-group row mt">
 										<label for="group_name" class="col-sm-2 control-label"><?php $lh->translateText("group_name"); ?></label>
 										<div class="col-sm-10 mb">
-											<input type="text" class="form-control" name="group_name" id="group_name" placeholder="Group Name (Mandatory)" value="<?php echo $output->data->group_name;?>">
+											<input type="text" class="form-control" name="group_name" id="group_name" placeholder="Group Name (Mandatory)" value="<?php echo $output->data[0]->group_name;?>">
 										</div>
 									</div>
 									<div class="form-group row">
@@ -134,19 +132,19 @@ if (isset($_POST["usergroup_id"])) {
 											<select class="form-control" name="forced_timeclock_login" id="forced_timeclock_login">
 											<?php
 												$forced_timeclock_login = NULL;
-												if($output->data->forced_timeclock_login == "N"){
+												if($output->data[0]->forced_timeclock_login == "N"){
 													$forced_timeclock_login .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
 												}else{
 													$forced_timeclock_login .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
 												}
 												
-												if($output->data->forced_timeclock_login == "Y"){
+												if($output->data[0]->forced_timeclock_login == "Y"){
 													$forced_timeclock_login .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
 												}else{
 													$forced_timeclock_login .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 												}
 					
-												if($output->data->forced_timeclock_login == "ADMIN_EXEMPT"){
+												if($output->data[0]->forced_timeclock_login == "ADMIN_EXEMPT"){
 													$forced_timeclock_login .= '<option value="ADMIN_EXEMPT" selected> ADMIN EXEMPT </option>';
 												}else{
 													$forced_timeclock_login .= '<option value="ADMIN_EXEMPT" > ADMIN EXEMPT </option>';
@@ -164,19 +162,19 @@ if (isset($_POST["usergroup_id"])) {
 												<?php
 													$shift_enforcement = NULL;
 					
-													if($output->data->shift_enforcement == "OFF" || $output->data->shift_enforcement == ""){
+													if($output->data[0]->shift_enforcement == "OFF" || $output->data[0]->shift_enforcement == ""){
 														$shift_enforcement .= '<option value="OFF" selected> OFF </option>';
 													}else{
 														$shift_enforcement .= '<option value="OFF" > OFF </option>';
 													}
 													
-													if($output->data->shift_enforcement== "START"){
+													if($output->data[0]->shift_enforcement== "START"){
 														$shift_enforcement .= '<option value="START" selected> START </option>';
 													}else{
 														$shift_enforcement .= '<option value="START" > START </option>';
 													}
 													
-													if($output->data->shift_enforcement == "ALL"){
+													if($output->data[0]->shift_enforcement == "ALL"){
 														$shift_enforcement .= '<option value="ALL" selected> ALL </option>';
 													}else{
 														$shift_enforcement .= '<option value="ALL" > ALL </option>';
@@ -194,7 +192,7 @@ if (isset($_POST["usergroup_id"])) {
 											<?php
 												$group_level = NULL;
 												for($o=1; $o <= 9; $o++){
-													if($output->data->group_level == $o){
+													if($output->data[1]->group_level == $o){
 														$group_level .= '<option value="'.$o.'" selected> '.$o.' </option>';
 													}else{
 														$group_level .= '<option value="'.$o.'"> '.$o.' </option>';
@@ -210,7 +208,7 @@ if (isset($_POST["usergroup_id"])) {
 									<div class="form-group row">
 										<label for="group_list_id" class="col-sm-2 control-label">Group List ID</label>
 										<div class="col-sm-10 mb">
-											<input type="text" class="form-control" name="group_list_id" id="group_list_id" placeholder="Group List ID" value="<?php echo $output->data->group_list_id;?>" readonly>
+											<input type="text" class="form-control" name="group_list_id" id="group_list_id" placeholder="Group List ID" value="<?php echo $output->data[0]->group_list_id;?>" readonly>
 										</div>
 									</div>-->
 								</fieldset>
@@ -223,17 +221,18 @@ if (isset($_POST["usergroup_id"])) {
 										<div class="col-sm-10 mb responsive" style="height: 50%;overflow-y: auto;">
 											<div class="checkbox c-checkbox" style="margin-right: 15px;">
 												<?php
-												$checkAllCamp = (preg_match("/ALL-CAMPAIGNS/", $output->data->allowed_campaigns) ? ' checked' : '');
+													$checkAllCamp = (preg_match("/ALL-CAMPAIGNS/", $output->data[0]->allowed_campaigns) ? ' checked' : '');
+													//var_dump($output->data[0]->allowed_campaigns);
 												?>
-												<label><input id="camp-all" name="allowed_camp[]" type="checkbox" value="-ALL-CAMPAIGNS-"<?=$checkAllCamp?>><span class="fa fa-check"></span> <strong>ALL-CAMPAIGNS - USERS CAN VIEW ANY CAMPAIGN</strong></label>
+												<label><input id="camp-all" name="allowed_campaigns" type="checkbox" value="-ALL-CAMPAIGNS-"<?=$checkAllCamp?>><span class="fa fa-check"></span> <strong>ALL-CAMPAIGNS - USERS CAN VIEW ANY CAMPAIGN</strong></label>
 											</div>
 											<?php
 											$camp_list = $ui->API_getListAllCampaigns();
 											if (count($camp_list->campaign_id) > 0) {
 												foreach ($camp_list->campaign_id as $k => $camp) {
-													$checkCamp = (preg_match("/\s{$camp}\s/", $output->data->allowed_campaigns) ? ' checked' : '');
+													$checkCamp = (preg_match("/\s{$camp}\s/", $output->data[0]->allowed_campaigns) ? ' checked' : '');
 													echo '<div class="checkbox c-checkbox" style="margin-right: 15px;">';
-													echo '<label><input id="camp-'.$camp.'" name="allowed_camp[]" type="checkbox" value="'.$camp.'"'.$checkCamp.'><span class="fa fa-check"></span> '.$camp.' - '.$camp_list->campaign_name[$k].'</label>';
+													echo '<label><input id="camp-'.$camp.'" name="allowed_campaigns" type="checkbox" value="'.$camp.'"'.$checkCamp.'><span class="fa fa-check"></span> '.$camp.' - '.$camp_list->campaign_name[$k].'</label>';
 													echo '</div>';
 												}
 											}
@@ -244,7 +243,7 @@ if (isset($_POST["usergroup_id"])) {
 									<div class="form-group row">
 										<label for="group_list_id" class="col-sm-2 control-label">Group List ID</label>
 										<div class="col-sm-10 mb">
-											<input type="text" class="form-control" name="group_list_id" id="group_list_id" placeholder="Group List ID" value="<?php echo $output->data->group_list_id;?>" readonly>
+											<input type="text" class="form-control" name="group_list_id" id="group_list_id" placeholder="Group List ID" value="<?php echo $output->data[0]->group_list_id;?>" readonly>
 										</div>
 									</div>-->
 								</fieldset>
@@ -254,8 +253,9 @@ if (isset($_POST["usergroup_id"])) {
 							<div id="tab_3" class="tab-pane fade in">
 								<fieldset>
 								<?php
-									$perms = json_decode($output->data->permissions);
-									
+									$perms = json_decode($output->data[1]->permissions);
+									//echo "<pre>";
+									//var_dump($perms->dashboard->dashboard_display);
 									if (is_null($perms) || is_null($perms->dashboard->dashboard_display)) {
 										$perms = json_decode('{"dashboard":{"dashboard_display":"N"},"user":{"user_create":"N","user_read":"N","user_update":"N","user_delete":"N"},"campaign":{"campaign_create":"N","campaign_read":"N","campaign_update":"N","campaign_delete":"N"},"disposition":{"disposition_create":"N","disposition_update":"N","disposition_delete":"N"},"pausecodes":{"pausecodes_create":"N","pausecodes_read":"N","pausecodes_update":"N","pausecodes_delete":"N"},"hotkeys":{"hotkeys_create":"N","hotkeys_read":"N","hotkeys_delete":"N"},"list":{"list_create":"N","list_read":"N","list_update":"N","list_delete":"N","list_upload":"N"},"customfields":{"customfields_create":"N","customfields_read":"N","customfields_update":"N","customfields_delete":"N"},"script":{"script_create":"N","script_read":"N","script_update":"N","script_delete":"N"},"inbound":{"inbound_create":"N","inbound_read":"N","inbound_update":"N","inbound_delete":"N"},"ivr":{"ivr_create":"N","ivr_read":"N","ivr_update":"N","ivr_delete":"N"},"did":{"did_create":"N","did_read":"N","did_update":"N","did_delete":"N"},"voicefiles":{"voicefiles_upload":"N","voicefiles_play":"N","voicefiles_download":"N"},"moh":{"moh_create":"N","moh_read":"N","moh_update":"N","moh_delete":"N"},"servers":{"servers_create":"N","servers_read":"N","servers_update":"N","servers_delete":"N"},"carriers":{"carriers_create":"N","carriers_read":"N","carriers_update":"N","carriers_delete":"N"},"reportsanalytics":{"reportsanalytics_statistical_display":"N","reportsanalytics_agent_time_display":"N","reportsanalytics_agent_performance_display":"N","reportsanalytics_dial_status_display":"N","reportsanalytics_agent_sales_display":"N","reportsanalytics_sales_tracker_display":"N","reportsanalytics_inbound_call_display":"N","reportsanalytics_export_call_display":"N"},"recordings":{"recordings_display":"N"},"support":{"support_display":"N"},"multi-tenant":{"tenant_create":"N","tenant_display":"N","tenant_update":"N","tenant_delete":"N","tenant_logs":"N","tenant_calltimes":"N","tenant_phones":"N","tenant_voicemails":"N"},"chat":{"chat_create":"N","chat_read":"N","chat_update":"N","chat_delete":"N"},"osticket":{"osticket_create":"N","osticket_read":"N","osticket_update":"N","osticket_delete":"N"}}');
 									}
@@ -365,7 +365,7 @@ if (isset($_POST["usergroup_id"])) {
 							$("#modifyvoicemail").serialize(), 
 								function(data){
 									//if message is sent
-									console.log($("#modifyvoicemail").serialize());
+									console.log(data);
 									if (data == 1) {
 										swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("usergroup_modify_success"); ?>", "success");
                                         window.setTimeout(function(){location.reload()},2000);

@@ -40,9 +40,9 @@ if ($validated == 1) {
 	}
 	
 	$allowed_campaigns = " ";
-	$allowed_camp = $_REQUEST['allowed_camp'];
-	if (count($allowed_camp) > 0) {
-		foreach ($allowed_camp as $camp) {
+	$allowed_campaigns = $_REQUEST['allowed_campaigns'];
+	if (count($allowed_campaigns) > 0) {
+		foreach ($allowed_campaigns as $camp) {
 			$allowed_campaigns .= "{$camp} ";
 		}
 	}
@@ -201,10 +201,10 @@ if ($validated == 1) {
 	$postfields["shift_enforcement"] = $shift_enforcement; #Desired value for user (required)
 	$postfields["allowed_campaigns"] = $allowed_campaigns;
 	$postfields["permissions"] = $group_permission;
-	$postfields["session_user"] = $_SESSION['user'];
+	$postfields["session_user"] = $_POST['log_user'];
 	
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
+	//$postfields["log_user"] = $_POST['log_user'];
+	//$postfields["log_group"] = $_POST['log_group'];
 	$postfields["hostname"] = $_SERVER['REMOTE_ADDR'];
 	
     $ch = curl_init();
@@ -230,5 +230,7 @@ if ($validated == 1) {
         //$lh->translateText("unable_modify_list");
     }
     
-} else { ob_clean(); print $reason; }
+} else {
+	ob_clean(); //print $reason; 
+}
 ?>
