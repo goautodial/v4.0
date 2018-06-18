@@ -1884,7 +1884,15 @@ error_reporting(E_ERROR | E_PARSE);
 		$gopackage = $this->API_getGOPackage(); // smtp_status
 		$usergroup = (!isset($usergroup) ? $_SESSION['usergroup'] : $usergroup);
 		$perms = $this->goGetPermissions('sidebar', $usergroup);
-
+		$perms = json_decode($perms->data->permissions, true);
+		
+		$user_read = $perms["user"]["user_read"];
+		$campaign_read = $perms["campaign"]["campaign_read"];
+		$list_read = $perms["list"]["list_read"];
+		$script_read = $perms["script"]["script_read"];
+		$inbound_read = $perms["inbound"]["inbound_read"];
+		$voicefiles_upload = $perms["voicefiles"]["voicefiles_upload"];
+		
 		$adminArea = "";
 		$telephonyArea = "";
 		$settings = "";
@@ -1909,17 +1917,17 @@ error_reporting(E_ERROR | E_PARSE);
 				$adminArea .= $this->getSidebarItem("./settingssmtp.php", "envelope-square", $this->lh->translationFor("smtp_settings")); // smtp settings
 			$adminArea .= '</ul></li>';
 			$telephonyArea = '<li class="treeview"><a href="#"><i class="fa fa-phone"></i> <span>'.$this->lh->translationFor("telephony").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
-			if ($perms->user->user_read == 'R')
+			if ($user_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "users", $this->lh->translationFor("users"));
-			if ($perms->campaign->campaign_read == 'R')
+			if ($campaign_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonycampaigns.php", "fa fa-dashboard", $this->lh->translationFor("campaigns"));
-			if ($perms->list->list_read == 'R')
+			if ($list_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonylist.php", "list", $this->lh->translationFor("lists"));
-			if ($perms->script->script_read == 'R')
+			if ($script_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "comment", $this->lh->translationFor("scripts"));
-			if ( ($perms->inbound->inbound_read == 'R' && $gopackage->packagetype !== "gosmall") || ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") )
+			if ( ($inbound_read == 'R' && $gopackage->packagetype !== "gosmall") || ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") )
 				$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
-			if ($perms->voicefiles->voicefiles_upload == 'C') {
+			if ($voicefiles_upload == 'C') {
 				$telephonyArea .= $this-> getSidebarItem("./audiofiles.php", "music", $this->lh->translationFor("audiofiles"));
 				//$telephonyArea .= $this-> getSidebarItem("./telephonymusiconhold.php", "music", $this->lh->translationFor("music_on_hold"));
 				//$telephonyArea .= $this-> getSidebarItem("./telephonyvoicefiles.php", "files-o", $this->lh->translationFor("voice_files"));

@@ -91,8 +91,11 @@ if (isset($_POST["usergroup_id"])) {
 						$userobj = NULL;
 						$errormessage = NULL;
 						$output = $ui->API_goGetGroupPermission($usergroup_id);
+						//$perms = $ui->goGetPermissions('sidebar', $usergroup_id);
+						//$perms = json_decode($perms->data->permissions, true);
+					
 						//echo "<pre>";
-						//var_dump($output);
+						//var_dump($output);						
 						if(isset($usergroup_id)) {
 							if ($output->result=="success") {
 							# Result was OK!
