@@ -40,9 +40,9 @@ if ($validated == 1) {
 	}
 	
 	$allowed_campaigns = " ";
-	$allowed_campaigns = $_REQUEST['allowed_campaigns'];
-	if (count($allowed_campaigns) > 0) {
-		foreach ($allowed_campaigns as $camp) {
+	$allowed_camp = ($_REQUEST['allowed_campaigns']);
+	if (count($allowed_camp) > 0) {
+		foreach ($allowed_camp as $camp) {
 			$allowed_campaigns .= "{$camp} ";
 		}
 	}

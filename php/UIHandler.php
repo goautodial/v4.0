@@ -1884,7 +1884,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$gopackage = $this->API_getGOPackage(); // smtp_status
 		$usergroup = (!isset($usergroup) ? $_SESSION['usergroup'] : $usergroup);
 		$perms = $this->goGetPermissions('sidebar', $usergroup);
-		$perms = json_decode($perms->data[1]->permissions);
+		$perms = json_decode(stripslashes($perms->data[1]->permissions));
 
 		$adminArea = "";
 		$telephonyArea = "";
@@ -3910,7 +3910,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
-	    $postfields["goAction"] = "getAllCampaigns"; #action performed by the [[API:Functions]]. (required)
+	    $postfields["goAction"] = "goGetAllCampaigns"; #action performed by the [[API:Functions]]. (required)
 		$postfields["user_group"] = $_SESSION['usergroup'];
 		$postfields["session_user"] = $_SESSION['user'];
 	    $postfields["responsetype"] = responsetype; #json. (required)

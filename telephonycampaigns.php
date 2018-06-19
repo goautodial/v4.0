@@ -1,9 +1,9 @@
 <?php
  /**
- * @file 	telephonycampaigns.php
- * @brief 	Manage Campaigns, Dispositions & etc.
+ * @file 		telephonycampaigns.php
+ * @brief 		Manage Campaigns, Dispositions & etc.
  * @copyright 	Copyright (C) GOautodial Inc.
- * @author	Alexander Jim H. Abenoja  <alex@goautodial.com>
+ * @author		Alexander Jim H. Abenoja  <alex@goautodial.com>
  * @author     	Noel Umandap  <noelumandap@goautodial.com>
  *
  * @par <b>License</b>:
