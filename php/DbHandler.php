@@ -30,6 +30,7 @@ require_once('PassHash.php');
 require_once('ImageHandler.php');
 require_once('RandomStringGenerator.php');
 require_once('LanguageHandler.php');
+require_once('APIHandler.php');
 require_once('DatabaseConnectorFactory.php');
 require_once('goCRMAPISettings.php');
 
@@ -50,6 +51,7 @@ class DbHandler {
 	private $dbConnectorAsterisk;
 	/** Language handler */
 	private $lh;
+	private $api;
         
 	/** Creation and class lifetime management */
     
@@ -61,12 +63,16 @@ class DbHandler {
 		// language handler
 		$locale = $this->getLocaleSetting();
 		$this->lh = \creamy\LanguageHandler::getInstance($locale, $dbConnectorType);
+
+		// api handler
+		$this->api = \creamy\APIHandler::getInstance();
     
     }
     
     function __destruct() {
 	    if (isset($this->dbConnector)) { unset($this->dbConnector); }
 	    if (isset($this->dbConnectorAsterisk)) { unset($this->dbConnectorAsterisk); }
+	    if (isset($this->api)) { unset($this->api); }
     }    
     
     /** Administration of users */

@@ -50,8 +50,10 @@ if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on") {
 }
 
 $realPath = '';
-if (preg_match("/GOagentJS/", $isAgentUI)) {
-	$realPath = "https://" . $_SERVER["HTTP_HOST"] . "/";
+if(isset($isAgentUI)){
+	if (preg_match("/GOagentJS/", $isAgentUI)) {
+		$realPath = "https://" . $_SERVER["HTTP_HOST"] . "/";
+	}
 }
 
 if (!isset($_SESSION["username"])) {

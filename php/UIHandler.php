@@ -50,7 +50,8 @@ error_reporting(E_ERROR | E_PARSE);
 	private $lh;
 	// Database handler
 	private $db;
-
+	// API handler
+	private $api;
 	/** Creation and class lifetime management */
 
 	/**
@@ -78,6 +79,7 @@ error_reporting(E_ERROR | E_PARSE);
         require_once dirname(__FILE__) . '/DbHandler.php';
         // opening db connection
         $this->db = new \creamy\DbHandler();
+        $this->api = \creamy\APIHandler::getInstance();
         $this->lh = \creamy\LanguageHandler::getInstance();
     }
 
@@ -1875,7 +1877,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * Generates the HTML for the sidebar of a user, given its role.
 	 * @param $userid the id of the user.
 	 */
-	public function getSidebar($userid, $username, $userrole, $avatar, $usergroup) {
+	public function getSidebar($userid, $username, $userrole, $avatar, $usergroup = "") {
 		$numMessages = $this->db->getUnreadMessagesNumber($userid);
 		$numTasks = $this->db->getUnfinishedTasksNumber($userid);
 		$numNotifications = $this->db->getNumberOfTodayNotifications($userid) + $this->db->getNumberOfTodayEvents($userid);
@@ -1883,8 +1885,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$smtp_status = $this->API_getSMTPActivation(); // smtp_status
 		$gopackage = $this->API_getGOPackage(); // smtp_status
 		$usergroup = (!isset($usergroup) ? $_SESSION['usergroup'] : $usergroup);
-		$perms = $this->goGetPermissions('sidebar', $usergroup);
-		$perms = json_decode(stripslashes($perms->data[1]->permissions));
+		$perms = $this->api->goGetPermissions('sidebar');
+		$perms = json_decode(stripslashes($perms->data->permissions));
 
 		$adminArea = "";
 		$telephonyArea = "";
@@ -3703,7 +3705,6 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -4171,7 +4172,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction
 	 * @param responsetype
 	 */
-	public function API_GetVoiceFilesList($goUser, $goPass, $goAction, $responsetype){
+	public function API_GetVoiceFilesList(){
 	    $url = gourl."/goVoiceFiles/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -6165,7 +6166,6 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);
-		 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 		 curl_setopt($ch, CURLOPT_POST, 1);
 		 curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
