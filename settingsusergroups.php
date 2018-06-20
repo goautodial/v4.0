@@ -231,7 +231,7 @@
                                 type: 'POST',
                                 data: $("#create_usergroup").serialize(),
                                 success: function(data) {
-                                  console.log($("#create_usergroup").serialize());
+                                  //console.log($("#create_usergroup").serialize());
 								  $('#finish').val("<?php $lh->translateText("submit"); ?>");
                                   $('#finish').prop("disabled", false);
                                       if(data == 1){

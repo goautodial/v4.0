@@ -1,4 +1,27 @@
 <?php
+/**
+ * @file        ModifyUsergroup.php
+ * @brief       
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho
+ * @author      Alexander Jim H. Abenoja
+ * @author		Jerico James F. Milo
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 /*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);*/
@@ -14,8 +37,7 @@ if (!isset($_POST["modifyid"])) {
 	$validated = 0;
 }
 
-if ($validated == 1) {
-    
+if ($validated == 1) {    
 	// collect new user data.	
 	$modifyid = $_POST["modifyid"];
     
@@ -41,11 +63,13 @@ if ($validated == 1) {
 	
 	$allowed_campaigns = " ";
 	$allowed_camp = $_REQUEST['allowed_camp'];
+	
 	if (count($allowed_camp) > 0) {
 		foreach ($allowed_camp as $camp) {
 			$allowed_campaigns .= "{$camp} ";
 		}
 	}
+	
 	$allowed_campaigns .= "-";
 	
 	$group_permission  = '{';	
@@ -189,7 +213,6 @@ if ($validated == 1) {
 	$group_permission .= '}';
     
 	$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
-
 	$postfields = array(
 		'goUser' => goUser,
 		'goPass' => goPass,
@@ -218,8 +241,6 @@ if ($validated == 1) {
 	$data = curl_exec($ch);
 	curl_close($ch);
     $output = json_decode($data);
-    
-    //var_dump($output);
 
     if ($output->result=="success") {
     # Result was OK!
@@ -229,7 +250,6 @@ if ($validated == 1) {
 		echo $output->result;
         //$lh->translateText("unable_modify_list");
     }
-    
 } else {
 	//ob_clean(); 
 	print $reason; 
