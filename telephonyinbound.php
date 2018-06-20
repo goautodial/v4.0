@@ -1,27 +1,42 @@
 <?php
+/**
+ * @file        telephonyinbound.php
+ * @brief       Manage Inbound, IVR & DID
+ * @copyright   Copyright (C) GOautodial Inc.
+ * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	###################################################
-	### Name: telephonyinbound.php 	   ###
-	### Functions: Manage Inbound, IVR & DID  	   ###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	   ###
-	### Version: 4.0 	   ###
-	### Written by: Alexander Jim H. Abenoja	   ###
-	### License: AGPLv2	   ###
-	###################################################
-
-	require_once('./php/UIHandler.php');
+	require_once('php/UIHandler.php');
+	require_once('php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	$perm = $ui->goGetPermissions('inbound,ivr,did', $_SESSION['usergroup']);
-	$gopackage = $ui->API_getGOPackage();
-	if($gopackage->packagetype === "gosmall" && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
+	
+	$perm = $api->goGetPermissions('inbound,ivr,did');
+	$gopackage = $api->API_getGOPackage();
+
+	/*if($gopackage->packagetype === "gosmall" && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
 		header("location:index.php");
-	}
+	}*/
 ?>
 <html>
     <head>
@@ -59,7 +74,7 @@
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
             <!-- Left side column. contains the logo and sidebar -->
-			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
+			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar(), $_SESSION["usergroup"]); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
@@ -85,12 +100,21 @@
 	 * APIs used
 	 */
 
-	$ingroup = $ui->API_getInGroups($_SESSION['usergroup']);
+	$ingroup = $api->API_getInGroups();
+	$ivr = $api->API_getIVR();
+	$phonenumber = $api->API_getPhoneNumber();
 
-	$ivr = $ui->API_getIVR($_SESSION['usergroup']);
-	
-	$phonenumber = $ui->API_getPhoneNumber($_SESSION['usergroup']);
-
+	/*
+	 * APIs for getting lists for the some of the forms
+	 */
+	$users = $api->API_goGetAllUsers();
+	$user_groups = $api->API_goGetAllUserGroups();
+	$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
+	$voicemails = $ui->API_goGetVoiceMails();
+	$phones = $ui->API_getPhonesList();
+	$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
+	$voicefiles = $api->API_GetVoiceFilesList();
+	$calltimes = $ui->getCalltimes();
 ?>
 			<div class="panel panel-default">
 				<div class="panel-body">
@@ -317,22 +341,6 @@
     </aside><!-- /.right-side -->
 	<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 </div><!-- ./wrapper -->
-
-<?php
-	/*
-	 * APIs for getting lists for the some of the forms
-	 */
-	$users = $ui->API_goGetAllUserLists();
-	$user_groups = $ui->API_goGetUserGroupsList();
-	$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
-	$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
-	$voicemails = $ui->API_goGetVoiceMails();
-	$phones = $ui->API_getPhonesList();
-	$ivr = $ui->API_getIVR($_SESSION['usergroup']);
-	$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
-	$voicefiles = $ui->API_GetVoiceFilesList();
-	$calltimes = $ui->getCalltimes();
-?>
 
 
 <!-- TELEPHONY INBOUND MODALS -->
@@ -639,10 +647,10 @@
 								<select name="tracking_group" id="tracking_group" class="form-control select2-1" style="width:100%;">
 									<option value="CALLMENU"><?php $lh->translateText("callmenu_default"); ?></option>
 								<?php
-									for($i=0;$i<count($ingroups->group_id);$i++){
+									for($i=0;$i<count($ingroup->group_id);$i++){
 								?>
-									<option value="<?php echo $ingroups->group_id[$i];?>">
-										<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+									<option value="<?php echo $ingroup->group_id[$i];?>">
+										<?php echo $ingroup->group_id[$i].' - '.$ingroup->group_name[$i];?>
 									</option>
 								<?php
 									}
@@ -1101,10 +1109,10 @@
 								<div class="col-sm-8 mb">
 									<select name="route_ingroupid" id="route_ingroupid" class="form-control select2-1" style="width:100%;">
 										<?php
-											for($i=0;$i<count($ingroups->group_id);$i++){
+											for($i=0;$i<count($ingroup->group_id);$i++){
 										?>
-											<option value="<?php echo $ingroups->group_id[$i];?>">
-												<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+											<option value="<?php echo $ingroup->group_id[$i];?>">
+												<?php echo $ingroup->group_id[$i].' - '.$ingroup->group_name[$i];?>
 											</option>									
 										<?php
 											}
