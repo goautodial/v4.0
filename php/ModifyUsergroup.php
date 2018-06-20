@@ -40,7 +40,7 @@ if ($validated == 1) {
 	}
 	
 	$allowed_campaigns = " ";
-	$allowed_camp = ($_REQUEST['allowed_campaigns']);
+	$allowed_camp = $_REQUEST['allowed_camp'];
 	if (count($allowed_camp) > 0) {
 		foreach ($allowed_camp as $camp) {
 			$allowed_campaigns .= "{$camp} ";
@@ -48,8 +48,7 @@ if ($validated == 1) {
 	}
 	$allowed_campaigns .= "-";
 	
-	$group_permission  = '{';
-	
+	$group_permission  = '{';	
 	$group_permission .= '"dashboard":{';
 	$group_permission .= '"dashboard_display":' . (isset($_POST["dashboard_display"]) ? '"Y"' : '"N"');
 	$group_permission .= '},';
@@ -190,33 +189,34 @@ if ($validated == 1) {
 	$group_permission .= '}';
     
 	$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goEditUserGroup"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = responsetype; #json (required)
-    $postfields["user_group"] = $modifyid; #Desired list id. (required)
-	$postfields["group_name"] = $group_name; #Desired value for user (required)
-	$postfields["group_level"] = $group_level; #Desired value for user (required)
-	$postfields["forced_timeclock_login"] = $forced_timeclock_login; #Desired value for user (required)
-	$postfields["shift_enforcement"] = $shift_enforcement; #Desired value for user (required)
-	$postfields["allowed_campaigns"] = $allowed_campaigns;
-	$postfields["permissions"] = $group_permission;
-	$postfields["session_user"] = $_POST['log_user'];
-	
-	//$postfields["log_user"] = $_POST['log_user'];
-	//$postfields["log_group"] = $_POST['log_group'];
-	$postfields["hostname"] = $_SERVER['REMOTE_ADDR'];
-	
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
+
+	$postfields = array(
+		'goUser' => goUser,
+		'goPass' => goPass,
+		'goAction' => 'goEditUserGroup',		
+		'responsetype' => responsetype,
+		'user_group' => $modifyid,
+		'group_name' => $group_name,
+		'group_level' => $group_level,
+		'forced_timeclock_login' => $forced_timeclock_login,
+		'shift_enforcement' => $shift_enforcement,
+		'allowed_campaigns' => $allowed_campaigns,
+		'permissions' => $group_permission,
+		'session_user' => $_POST['log_user'],
+		'hostname' => $_SERVER['REMOTE_ADDR']
+	);				
+
+	// Call the API
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+	$data = curl_exec($ch);
+	curl_close($ch);
     $output = json_decode($data);
     
     //var_dump($output);
@@ -231,6 +231,7 @@ if ($validated == 1) {
     }
     
 } else {
-	ob_clean(); //print $reason; 
+	//ob_clean(); 
+	print $reason; 
 }
 ?>
