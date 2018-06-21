@@ -108,7 +108,7 @@
 	 * APIs for getting lists for the some of the forms
 	 */
 	$users = $api->API_goGetAllUsers();
-	$user_groups = $api->API_goGetAllUserGroups();
+	$user_groups = $api->API_getAllUserGroups();
 	$campaign = $api->API_getAllCampaigns($_SESSION['usergroup']);
 	$voicemails = $api->API_getAllVoicemails();
 	$phones = $ui->API_getPhonesList();

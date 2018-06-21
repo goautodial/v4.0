@@ -111,8 +111,7 @@ define("session_password", $_SESSION["phone_this"]);
 		$postfields["goPass"] = goPass;
 		$postfields["goAction"] = "goGetUserGroupInfo";
 		$postfields["responsetype"] = responsetype;
-		$postfields["user_group"] = "admin";
-		$postfields["session_user"] = "goautodial";		
+		$postfields["session_user"] = session_user;		
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -180,21 +179,25 @@ define("session_password", $_SESSION["phone_this"]);
 	}
 
 	// API to get usergroups
-	public function API_goGetAllUserGroups() {
+	public function API_getAllUserGroups() {
 		$url = gourl."/goUserGroups/goAPI.php";
-        $postfields["goUser"] = session_user;
-        $postfields["goPass"] = session_password;
-        $postfields["goAction"] = "goGetAllUserGroups";
-        $postfields["responsetype"] = "json";
-		$postfields["session_user"] = session_user;
-		$postfields["group_id"] = session_usergroup;
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllUserGroups',		
+			'responsetype' => responsetype,
+			'session_user' => session_user
+		);		
+
+		// Call the API
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$output = json_decode($data);
@@ -695,7 +698,7 @@ define("session_password", $_SESSION["phone_this"]);
 		return $output;
 	}	
 	
-	public function API_goGetAllUserLists(){
+	public function API_getAllUsers(){
 		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields = array(
 			'goUser' => session_user,

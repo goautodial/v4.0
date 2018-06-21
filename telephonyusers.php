@@ -21,15 +21,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-require_once('./php/UIHandler.php');
-require_once('./php/CRMDefaults.php');
-require_once('./php/LanguageHandler.php');
-include('./php/Session.php');
+	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
 
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
-$perm = $ui->goGetPermissions('user', $_SESSION['usergroup']);
+	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
+
+	$perm = $ui->goGetPermissions('user', $_SESSION['usergroup']);
 
 ?>
 <html>
@@ -186,8 +189,8 @@ $perm = $ui->goGetPermissions('user', $_SESSION['usergroup']);
 	
 <!-- MODALS -->
 <?php
-	$output = $ui->API_goGetAllUserLists($_SESSION['user']);
-	$user_groups = $ui->API_goGetUserGroupsList();
+	$output = $api->API_getAllUsers();
+	$user_groups = $api->API_getAllUserGroups();
 	$phones = $ui->API_getPhonesList();
 	$max = max($phones->extension);
 	$suggested_extension = $max + 1;
