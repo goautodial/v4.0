@@ -100,8 +100,8 @@
 	 * APIs used
 	 */
 
-	$ingroup = $api->API_getInGroups();
-	$ivr = $api->API_getIVR();
+	$ingroup = $api->API_getAllInGroups();
+	$ivr = $api->API_getAllIVRs();
 	$phonenumber = $api->API_getPhoneNumber();
 
 	/*
@@ -109,11 +109,11 @@
 	 */
 	$users = $api->API_goGetAllUsers();
 	$user_groups = $api->API_goGetAllUserGroups();
-	$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
-	$voicemails = $ui->API_goGetVoiceMails();
+	$campaign = $api->API_getAllCampaigns($_SESSION['usergroup']);
+	$voicemails = $api->API_getAllVoicemails();
 	$phones = $ui->API_getPhonesList();
-	$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
-	$voicefiles = $api->API_GetVoiceFilesList();
+	$scripts = $api->API_getAllScripts();
+	$voicefiles = $api->API_getVoiceFiles();
 	$calltimes = $ui->getCalltimes();
 ?>
 			<div class="panel panel-default">

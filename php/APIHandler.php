@@ -202,20 +202,24 @@ define("session_password", $_SESSION["phone_this"]);
         return $output;
 	}
 
-	public function API_getInGroups() {
+	public function API_getAllInGroups() {
 		$url = gourl."/goInbound/goAPI.php";
-		$postfields["goUser"] = session_user;
-		$postfields["goPass"] = session_password;
-		$postfields["goAction"] = "goGetAllIngroup";
-		$postfields["responsetype"] = responsetype;
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllIngroup',		
+			'responsetype' => responsetype,
+		);		
 
+		// Call the API
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$output = json_decode($data);
@@ -224,20 +228,26 @@ define("session_password", $_SESSION["phone_this"]);
 	}
 
 	// Telephony IVR
-	public function API_getIVR() {
+	public function API_getAllIVRs() {
 		$url = gourl."/goInbound/goAPI.php";
-		$postfields["goUser"] = session_user;
-		$postfields["goPass"] = session_password;
-		$postfields["goAction"] = "goGetAllIVR";
-		$postfields["responsetype"] = responsetype;
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllIVR',		
+			'responsetype' => responsetype,
+			'session_user' => session_user,
+			'user_group' => session_usergroup
+		);		
 
+		// Call the API
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$output = json_decode($data);
@@ -268,12 +278,39 @@ define("session_password", $_SESSION["phone_this"]);
 		return $output;
 	}
 
+	public function API_getAllDIDs($campaign_id){
+		$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllDID',		
+			'responsetype' => responsetype,
+			'campaign_id' => $campaign_id,
+			'session_user' => session_user,
+			'user_group' => session_usergroup
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+
+	    return $output;
+	}	
 	/** Voice Files API - Get all list of voice files */
-	public function API_GetVoiceFilesList(){
+	public function API_getVoiceFiles(){
 	    $url = gourl."/goVoiceFiles/goAPI.php";
 	    $postfields["goUser"] = session_user;
 	    $postfields["goPass"] = session_password; 
-	    $postfields["goAction"] = "goGetVoiceFilesList";
+	    $postfields["goAction"] = "goGetVoiceFiles";
 	    $postfields["responsetype"] = responsetype;
 		$postfields["session_user"] = session_user;
 
@@ -314,6 +351,459 @@ define("session_password", $_SESSION["phone_this"]);
 
 		return $output;
 	}
+	
+	public function API_getAllCampaigns(){
+		$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)	
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllCampaigns',		
+			'responsetype' => responsetype,			
+			'session_user' => session_user,
+			'user_group' => session_usergroup
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+
+		return $output;
+	}	
+	
+	public function getAllCampaignStatuses(){
+        $campaign = $this->API_getAllCampaigns();
+        for($i=0;$i < count($campaign->campaign_id);$i++){
+	        $campdialStatus = $this->API_getAllCampaignDialStatuses($campaign->campaign_id[$i]);
+			for($x=0;$x<count($campdialStatus->status);$x++){
+				$status[] = $campdialStatus->status[$x];
+				$status_name[] = $campdialStatus->status_name[$x];
+			}
+			$output = array("status" => $status, "status_name" => $status_name);
+		}
+		return $output;
+	}
+		
+	/*
+	 * Displaying Disposition
+	 * [[API: Function]] - getAllDispositions
+	 * 	This application is used to get list of campaign belongs to user.
+	*/
+	public function API_getAllDispositions($custom){
+        $url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'getAllDispositions',		
+			'responsetype' => responsetype,
+			'custom_request' => $custom,
+			'session_user' => session_user
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+	
+		return $output;
+	}	
+	
+	public function API_getDispositionInfo($campid){
+        $url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetDispositionInfo',		
+			'responsetype' => responsetype,
+			'campaign_id' => $campid,
+			'session_user' => session_user,
+			'user_group' => session_usergroup
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+		
+		return $output;
+	}
+	
+	public function API_getLeadRecycling(){
+		$url = gourl."/goLeadRecycling/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllLeadRecycling',		
+			'responsetype' => responsetype,
+			'session_user' => session_user
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+
+	    return $output;
+	}	
+	
+	public function API_getAllDialStatuses($campaign_id){
+		$url = gourl."/goDialStatus/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllDialStatuses',		
+			'responsetype' => responsetype,
+			'campaign_id' => $campaign_id,
+			'session_user' => session_user
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+		
+	    return $output;
+	}	
+	
+	public function API_getAllDialStatusesSurvey($campaign_id){
+		$url = gourl."/goDialStatus/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllDialStatuses',		
+			'responsetype' => responsetype,
+			'campaign_id' => $campaign_id,
+			'hotkeys_only' => 1,
+			'session_user' => session_user
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+		
+		return $output;
+	}	
+	/*
+	 * Displaying Lead Filter
+	 * [[API: Function]] - getAllLeadFilters
+	 * 	This application is used to get list of lead filter belongs to user.
+	*/
+	public function API_getAllLeadFilters(){
+        $url = gourl."/goLeadFilters/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllLeadFilters',		
+			'responsetype' => responsetype,
+			'session_user' => session_user
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+		
+		return $output;
+	}	
+	
+	public function API_getCountryCodes(){
+		$url = gourl."/goCountryCode/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'getAllCountryCodes',		
+			'responsetype' => responsetype,
+			'session_user' => session_user
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+
+		return $output;
+	}	
+	
+	public function API_getAllLists(){
+		$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllLists',		
+			'responsetype' => responsetype,
+			'session_user' => session_user,
+			'user_group' => session_usergroup
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+
+		return $output;
+	}	
+	
+	public function API_getAllCarriers(){
+		$url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllCarriers',		
+			'responsetype' => responsetype,
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+
+	    return $output;
+	}	
+	
+	public function API_getAllCampaignDialStatuses($campaign_id){
+		$url = gourl."/goDialStatus/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllCampaignDialStatuses',		
+			'responsetype' => responsetype,
+			'campaign_id' => $campaign_id
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+
+	    return $output;
+	}	
+	
+	public function API_getCampaignInfo($campid){
+		$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetCampaignInfo',		
+			'responsetype' => responsetype,
+			'campaign_id' => $campid,
+			'session_user' => session_user,
+			'user_group' => session_usergroup			
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+		
+		return $output;
+	}	
+	
+	public function API_goGetAllUserLists(){
+		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllUsers',		
+			'responsetype' => responsetype,
+			'session_user' => session_user
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+
+		 return $output;
+	}	
+	
+	public function API_getCalltimes(){
+		$url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllCalltimes',		
+			'responsetype' => responsetype,
+			'session_user' => session_user,
+			'user_group' => session_usergroup			
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+
+	    return $output;
+	}
+	
+	public function API_getAllScripts(){
+		$url = gourl."/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllScripts',		
+			'responsetype' => responsetype,
+			'session_user' => session_user,
+			'user_group' => session_usergroup			
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);        
+
+		 return $output;
+	}	
+	
+	public function API_getAllVoicemails() {
+
+		$url = gourl."/goVoicemails/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'goAction' => 'goGetAllVoicemails',		
+			'responsetype' => responsetype,
+			'session_user' => session_user,
+			'user_group' => session_usergroup			
+		);		
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+
+		return $output;
+
+	}	
+	
 }
 
 ?>
