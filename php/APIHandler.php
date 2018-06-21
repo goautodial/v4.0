@@ -27,7 +27,9 @@ require_once('CRMDefaults.php');
 require_once('LanguageHandler.php');
 require_once('CRMUtils.php');
 require_once('goCRMAPISettings.php');
-require_once('Session.php');
+//require_once('Session.php');
+require_once('SessionHandler.php');
+$session_class = new \creamy\SessionHandler();
 
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
@@ -128,9 +130,9 @@ define("session_password", $_SESSION["phone_this"]);
 		return $output;
 	}
 
-    public function goGetPermissions($type = 'dashboard', $group) {
+    public function goGetPermissions($type = 'dashboard', $user_group) {
 		
-		$permissions = $this->API_goGetGroupPermission($group);
+		$permissions = $this->API_goGetGroupPermission($user_group);
 		$decoded_permission = json_decode($permissions->data->permissions);
 		
 		$return = NULL;
@@ -362,8 +364,7 @@ define("session_password", $_SESSION["phone_this"]);
 			'goPass' => session_password,
 			'goAction' => 'goGetAllCampaigns',		
 			'responsetype' => responsetype,			
-			'session_user' => session_user,
-			'user_group' => session_usergroup
+			'session_user' => session_user
 		);		
 
 		// Call the API

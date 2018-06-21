@@ -30,11 +30,14 @@ error_reporting(E_ALL)
 
 	// check if Creamy has been installed.
 		require_once('./php/CRMDefaults.php');
-		if (!file_exists(CRM_INSTALLED_FILE)) { // check if already installed 
-			header("location: ./install.php");
-			die();
-		}
-	
+		require_once('./php/APIHandler.php');
+		require_once('./php/UIHandler.php');
+		require_once('./php/LanguageHandler.php');
+		require_once('./php/DbHandler.php');
+		$ui = \creamy\UIHandler::getInstance();
+		$lh = \creamy\LanguageHandler::getInstance();
+		$api = \creamy\APIHandler::getInstance();
+		
 	// Try to get the authenticated user.
 		require_once('./php/Session.php');
 		try {
@@ -50,16 +53,9 @@ error_reporting(E_ALL)
 				header("location: agent.php");
 			}
 		}
+
 	
-	// initialize session and DDBB handler
-		include_once('./php/UIHandler.php');
-		require_once('./php/LanguageHandler.php');
-		require_once('./php/DbHandler.php');
-		$ui = \creamy\UIHandler::getInstance();
-		$lh = \creamy\LanguageHandler::getInstance();
-		//$colors = $ui->generateStatisticsColors();
-	
-		$perms = $ui->goGetPermissions('dashboard,servers', $_SESSION['usergroup']);
+		$perms = $api->goGetPermissions('dashboard,servers', $_SESSION['usergroup']);
 		if ($perms->dashboard->dashboard_display === 'N') {
 			header("location: crm.php");
 		}
@@ -72,8 +68,8 @@ error_reporting(E_ALL)
 		$goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 	
 	// APIs FOR FILTER LIST
-		$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
-		$ingroup = $ui->API_getInGroups($_SESSION['usergroup']);
+		$campaign = $api->API_getAllCampaigns($_SESSION['usergroup']);
+		$ingroup = $api->API_getAllInGroups($_SESSION['usergroup']);
 	/*
 	 * API for call statistics - Demian
 	*/

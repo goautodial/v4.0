@@ -25,10 +25,11 @@
 	error_reporting(E_ERROR | E_PARSE);
 
 	require_once('./php/CRMDefaults.php');
-	// check installation before login.
-	if (!file_exists(CRM_INSTALLED_FILE)) { // check if already installed 
-		header("location: ./install.php");
-	}
+	require_once('./php/UIHandler.php');
+	require_once('./php/DbHandler.php');
+	require_once('./php/LanguageHandler.php');
+	require_once('./php/SessionHandler.php');
+	$session_class = new \creamy\SessionHandler();		
 	
 	// force https protocol
 	if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on") {
@@ -36,18 +37,12 @@
 		exit();
 	}
 
-	// load DB handler and Language Handler.
-	require_once('./php/UIHandler.php');
-	require_once('./php/DbHandler.php');
-	require_once('./php/LanguageHandler.php');
-	
-
-	if (CRM_SESSION_DRIVER == 'database') {
+	/*if (CRM_SESSION_DRIVER == 'database') {
 		require_once('./php/SessionHandler.php');
 		$session_class = new \creamy\SessionHandler();
 	} else {
 		session_start(); // Starting Session
-	}
+	}*/
 	
 	$lh = \creamy\LanguageHandler::getInstance();
 	$ui = \creamy\UIHandler::getInstance();

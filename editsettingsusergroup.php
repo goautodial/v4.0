@@ -93,9 +93,9 @@ if (isset($_POST["usergroup_id"])) {
 						$userobj = NULL;
 						$errormessage = NULL;
 						$output = $api->API_goGetGroupPermission($usergroup_id);
-					
+
 						//echo "<pre>";
-						//var_dump($perms);						
+						//var_dump($output);						
 						if(isset($usergroup_id)) {
 							if ($output->result=="success") {
 							# Result was OK!
@@ -228,7 +228,7 @@ if (isset($_POST["usergroup_id"])) {
 												<label><input id="camp-all" name="allowed_camp[]" type="checkbox" value="-ALL-CAMPAIGNS-"<?=$checkAllCamp?>><span class="fa fa-check"></span> <strong>ALL-CAMPAIGNS - USERS CAN VIEW ANY CAMPAIGN</strong></label>
 											</div>
 											<?php
-											$camp_list = $ui->API_getListAllCampaigns();
+											$camp_list = $api->API_getAllCampaigns();
 											if (count($camp_list->campaign_id) > 0) {
 												foreach ($camp_list->campaign_id as $k => $camp) {
 													$checkCamp = (preg_match("/\s{$camp}\s/", $output->data->allowed_campaigns) ? ' checked' : '');
@@ -255,8 +255,8 @@ if (isset($_POST["usergroup_id"])) {
 								<fieldset>
 								<?php
 									$perms = json_decode(stripslashes($output->data->permissions));
-									//echo "<pre>";
-									//var_dump($perms);
+									echo "<pre>";
+									var_dump($perms);
 									if (is_null($perms) || is_null($perms->dashboard->dashboard_display)) {
 										$perms = json_decode('{"dashboard":{"dashboard_display":"N"},"user":{"user_create":"N","user_read":"N","user_update":"N","user_delete":"N"},"campaign":{"campaign_create":"N","campaign_read":"N","campaign_update":"N","campaign_delete":"N"},"disposition":{"disposition_create":"N","disposition_update":"N","disposition_delete":"N"},"pausecodes":{"pausecodes_create":"N","pausecodes_read":"N","pausecodes_update":"N","pausecodes_delete":"N"},"hotkeys":{"hotkeys_create":"N","hotkeys_read":"N","hotkeys_delete":"N"},"list":{"list_create":"N","list_read":"N","list_update":"N","list_delete":"N","list_upload":"N"},"customfields":{"customfields_create":"N","customfields_read":"N","customfields_update":"N","customfields_delete":"N"},"script":{"script_create":"N","script_read":"N","script_update":"N","script_delete":"N"},"inbound":{"inbound_create":"N","inbound_read":"N","inbound_update":"N","inbound_delete":"N"},"ivr":{"ivr_create":"N","ivr_read":"N","ivr_update":"N","ivr_delete":"N"},"did":{"did_create":"N","did_read":"N","did_update":"N","did_delete":"N"},"voicefiles":{"voicefiles_upload":"N","voicefiles_play":"N","voicefiles_download":"N"},"moh":{"moh_create":"N","moh_read":"N","moh_update":"N","moh_delete":"N"},"servers":{"servers_create":"N","servers_read":"N","servers_update":"N","servers_delete":"N"},"carriers":{"carriers_create":"N","carriers_read":"N","carriers_update":"N","carriers_delete":"N"},"reportsanalytics":{"reportsanalytics_statistical_display":"N","reportsanalytics_agent_time_display":"N","reportsanalytics_agent_performance_display":"N","reportsanalytics_dial_status_display":"N","reportsanalytics_agent_sales_display":"N","reportsanalytics_sales_tracker_display":"N","reportsanalytics_inbound_call_display":"N","reportsanalytics_export_call_display":"N"},"recordings":{"recordings_display":"N"},"support":{"support_display":"N"},"multi-tenant":{"tenant_create":"N","tenant_display":"N","tenant_update":"N","tenant_delete":"N","tenant_logs":"N","tenant_calltimes":"N","tenant_phones":"N","tenant_voicemails":"N"},"chat":{"chat_create":"N","chat_read":"N","chat_update":"N","chat_delete":"N"},"osticket":{"osticket_create":"N","osticket_read":"N","osticket_update":"N","osticket_delete":"N"}}');
 									}
