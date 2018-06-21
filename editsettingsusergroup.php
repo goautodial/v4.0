@@ -22,6 +22,7 @@
 **/
 
 	require_once('./php/CRMDefaults.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/UIHandler.php');
 	//require_once('./php/DbHandler.php');
 	require_once('./php/LanguageHandler.php');
@@ -29,6 +30,7 @@
 	require_once('./php/goCRMAPISettings.php');
 
 	// initialize structures
+	$api = \creamy\APIHandler::getInstance();
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
@@ -90,10 +92,10 @@ if (isset($_POST["usergroup_id"])) {
 					<?php
 						$userobj = NULL;
 						$errormessage = NULL;
-						$output = $ui->API_goGetGroupPermission($usergroup_id);
+						$output = $api->API_goGetGroupPermission($usergroup_id);
 					
 						//echo "<pre>";
-						//var_dump($output);						
+						//var_dump($perms);						
 						if(isset($usergroup_id)) {
 							if ($output->result=="success") {
 							# Result was OK!

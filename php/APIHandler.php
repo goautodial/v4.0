@@ -105,13 +105,14 @@ define("session_password", $_SESSION["phone_this"]);
 		
 	}
 
-    public function API_goGetGroupPermission() {
+    public function API_goGetGroupPermission($group) {
 		$url = gourl."/goUserGroups/goAPI.php";
 		$postfields["goUser"] = goUser;
 		$postfields["goPass"] = goPass;
 		$postfields["goAction"] = "goGetUserGroupInfo";
 		$postfields["responsetype"] = responsetype;
-		$postfields["session_user"] = session_user;		
+		$postfields["session_user"] = session_user;	
+		$postfields["user_group"] = $group;
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -127,10 +128,9 @@ define("session_password", $_SESSION["phone_this"]);
 		return $output;
 	}
 
-    public function goGetPermissions($type = 'dashboard') {
+    public function goGetPermissions($type = 'dashboard', $group) {
 		
-		$permissions = $this->API_goGetGroupPermission(session_usergroup);
-
+		$permissions = $this->API_goGetGroupPermission($group);
 		$decoded_permission = json_decode($permissions->data->permissions);
 		
 		$return = NULL;

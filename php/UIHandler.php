@@ -1877,15 +1877,15 @@ error_reporting(E_ERROR | E_PARSE);
 	 * Generates the HTML for the sidebar of a user, given its role.
 	 * @param $userid the id of the user.
 	 */
-	public function getSidebar($userid, $username, $userrole, $avatar, $usergroup = "") {
+	public function getSidebar($userid, $username, $userrole, $avatar, $usergroup = NULL) {
 		$numMessages = $this->db->getUnreadMessagesNumber($userid);
 		$numTasks = $this->db->getUnfinishedTasksNumber($userid);
 		$numNotifications = $this->db->getNumberOfTodayNotifications($userid) + $this->db->getNumberOfTodayEvents($userid);
 		$mh = \creamy\ModuleHandler::getInstance();
 		$smtp_status = $this->API_getSMTPActivation(); // smtp_status
-		$gopackage = $this->API_getGOPackage(); // smtp_status
+		$gopackage = $this->api->API_getGOPackage(); // smtp_status
 		$usergroup = (!isset($usergroup) ? $_SESSION['usergroup'] : $usergroup);
-		$perms = $this->api->goGetPermissions('sidebar');
+		$perms = $this->api->goGetPermissions('sidebar', $usergroup);
 		$perms = json_decode(stripslashes($perms->data->permissions));
 
 		$adminArea = "";
