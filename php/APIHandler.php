@@ -32,13 +32,15 @@ require_once('SessionHandler.php');
 $session_class = new \creamy\SessionHandler();
 
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
-
+if(isset($_SESSION["user"]))
 define("session_user", $_SESSION["user"]);
+if(isset($_SESSION["usergroup"]))
 define("session_usergroup", $_SESSION["usergroup"]);
+if(isset($_SESSION["phone_this"]))
 define("session_password", $_SESSION["phone_this"]);
 /**
  *  APIHandler.
@@ -395,35 +397,7 @@ define("session_password", $_SESSION["phone_this"]);
 			'session_user' => session_user
 		);		
 		return $this->API_Request("goUsers", $postfields);
-	}	
-	
-	public function API_getCalltimes(){
-		$postfields = array(
-			'goAction' => 'goGetAllCalltimes',
-			'session_user' => session_user,
-			'user_group' => session_usergroup			
-		);		
-		return $this->API_Request("goCalltimes", $postfields);
 	}
-	
-	public function API_getAllScripts(){
-		$postfields = array(
-			'goAction' => 'goGetAllScripts',
-			'session_user' => session_user,
-			'user_group' => session_usergroup			
-		);		
-		return $this->API_Request("goScripts", $postfields);
-	}	
-	
-	public function API_getAllVoicemails() {
-		$postfields = array(
-			'goAction' => 'goGetAllVoicemails',
-			'session_user' => session_user,
-			'user_group' => session_usergroup			
-		);		
-		return $this->API_Request("goVoicemails", $postfields);
-	}	
-	
 }
 
 ?>
