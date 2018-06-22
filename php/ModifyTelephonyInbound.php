@@ -1,11 +1,40 @@
 <?php
+/**
+ * @file        ModifyTelephonyInbound.php
+ * @brief       Handles Modify Requests for Inbound, IVR & DID
+ * @copyright   Copyright (C) GOautodial Inc.
+ * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 //ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);
 //error_reporting(E_ALL);
 
 require_once('CRMDefaults.php');
 require_once('goCRMAPISettings.php');
+require_once('APIHandler.php');
 
+$api = \creamy\APIHandler::getInstance();
+$postfields = array("dwda", 1213, 213,3123);
+$default = array("d1d21d21", 123121312, 41);
+
+$data = array_merge($default, $postfields);
+var_dump($data);
+/*
 // check required fields
 $reason = "Unable to Modify Inbound";
 
@@ -122,10 +151,6 @@ if ($groupid != NULL) {
 		$after_hours_callmenu = $_POST["after_hours_callmenu"]; 
 		$after_hours_callmenu = stripslashes($after_hours_callmenu);
 	}
-	/*$afterhours_xfer_group = NULL; if (isset($_POST["afterhours_xfer_group"])) { 
-		$afterhours_xfer_group = $_POST["afterhours_xfer_group"]; 
-		$afterhours_xfer_group = stripslashes($afterhours_xfer_group);
-	}*/
 	$get_call_launch = NULL; if (isset($_POST["call_launch"])) { 
 		$get_call_launch = $_POST["call_launch"]; 
 		$get_call_launch = stripslashes($get_call_launch);
@@ -171,69 +196,51 @@ if ($groupid != NULL) {
 		$onhold_prompt_filename = stripslashes($onhold_prompt_filename);
 	}
 
-    
-	$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goEditInbound"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = responsetype; #json (required)
-    
-    $postfields["group_id"] = $modify_groupid; 
-	$postfields["group_name"] = $desc; 
-	$postfields["group_color"] = $color; 
-	$postfields["web_form_address"] = $webform; 
-	$postfields["active"] = $status; 
-    $postfields["next_agent_call"] = $nextagent; 
-	$postfields["fronter_display"] = $display; 
-    $postfields["ingroup_script"] = $script; 
-    $postfields["queue_priority"] = $prio; 
-	$postfields["call_time_id"] = $call_time_id; 
-	
-    $postfields["drop_call_seconds"] = $drop_call_seconds; 
-    $postfields["drop_action"] = $drop_action; 
-    $postfields["drop_exten"] = $drop_exten; 
-    $postfields["voicemail_ext"] = $voicemail_ext; 
-    $postfields["drop_inbound_group"] = $drop_inbound_group; 
-    $postfields["drop_callmenu"] = $drop_callmenu; 
-    $postfields["after_hours_action"] = $after_hours_action; 
-    $postfields["after_hours_voicemail"] = $after_hours_voicemail; 
-    $postfields["after_hours_exten"] = $after_hours_exten;
-	$postfields["after_hours_message_filename"] = $after_hours_message_filename;
-	$postfields["after_hours_callmenu"] = $after_hours_callmenu;
-	
-    //$postfields["afterhours_xfer_group"] = $afterhours_xfer_group; 
-    $postfields["get_call_launch"] = $get_call_launch; 
-    $postfields["no_agent_no_queue"] = $no_agent_no_queue; 
-    $postfields["no_agent_action"] = $no_agent_action; 
-    $postfields["no_agents_exten"] = $no_agents_exten; 
-    $postfields["no_agents_voicemail"] = $no_agents_voicemail; 
-    $postfields["no_agents_ingroup"] = $no_agents_ingroup; 
-    $postfields["no_agents_callmenu"] = $no_agents_callmenu; 
-    $postfields["welcome_message_filename"] = $welcome_message_filename; 
-    $postfields["play_welcome_message"] = $play_welcome_message; 
-    $postfields["moh_context"] = $moh_context; 
-    $postfields["onhold_prompt_filename"] = $onhold_prompt_filename; 
-    $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
+	$postfields = array(
+		'goAction' => 'goEditInbound',
+		'group_id' => $modify_groupid, 
+		'group_name' => $desc, 
+		'group_color' => $color, 
+		'web_form_address' => $webform, 
+		'active' => $status, 
+	    'next_agent_call' => $nextagent, 
+		'fronter_display' => $display, 
+	    'ingroup_script' => $script, 
+	    'queue_priority' => $prio, 
+		'call_time_id' => $call_time_id, 
+	    'drop_call_seconds' => $drop_call_seconds, 
+	    'drop_action' => $drop_action, 
+	    'drop_exten' => $drop_exten, 
+	    'voicemail_ext' => $voicemail_ext, 
+	    'drop_inbound_group' => $drop_inbound_group, 
+	    'drop_callmenu' => $drop_callmenu, 
+	    'after_hours_action' => $after_hours_action, 
+	    'after_hours_voicemail' => $after_hours_voicemail, 
+	    'after_hours_exten' => $after_hours_exten,
+		'after_hours_message_filename' => $after_hours_message_filename,
+		'after_hours_callmenu' => $after_hours_callmenu,
+	    'get_call_launch' => $get_call_launch, 
+	    'no_agent_no_queue' => $no_agent_no_queue, 
+	    'no_agent_action' => $no_agent_action, 
+	    'no_agents_exten' => $no_agents_exten, 
+	    'no_agents_voicemail' => $no_agents_voicemail, 
+	    'no_agents_ingroup' => $no_agents_ingroup, 
+	    'no_agents_callmenu' => $no_agents_callmenu, 
+	    'welcome_message_filename' => $welcome_message_filename, 
+	    'play_welcome_message' => $play_welcome_message, 
+	    'moh_context' => $moh_context, 
+	    'onhold_prompt_filename' => $onhold_prompt_filename, 
+	    'hostname' => $_SERVER['REMOTE_ADDR'],
+		'log_user' => session_user,
+		'log_group' => session_usergroup,
+	);				
+
+	$output = $api->API_modifyInGroups($postfields);
 	
     if ($output->result=="success") {
-    # Result was OK!
         ob_clean();
 		print (CRM_DEFAULT_SUCCESS_RESPONSE);
     } else {
-    # An error occured
         ob_clean();
 		print $output->result;
         //$lh->translateText("unable_modify_list");
@@ -297,26 +304,8 @@ if ($ivr != NULL) {
 	$user_group = NULL; if (isset($_POST["user_group"])) { 
 		$user_group = $_POST["user_group"]; 
 		$user_group = stripslashes($user_group);
-	}	
-    
-	$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goEditIVR"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = responsetype; #json (required)
-    $postfields["menu_id"] = $ivr; 
-	$postfields["menu_name"] = $menu_name; 
-	$postfields["menu_prompt"] = $menu_prompt; 
-	$postfields["menu_timeout"] = $menu_timeout; 
-	$postfields["menu_timeout_prompt"] = $menu_timeout_prompt; 
-	$postfields["menu_invalid_prompt"] = $menu_invalid_prompt; 
-	$postfields["menu_repeat"] = $menu_repeat; 
-	$postfields["menu_time_check"] = $menu_time_check; 
-	$postfields["call_time_id"] = $call_time_id; 
-	$postfields["track_in_vdac"] = $track_in_vdac; 
-	$postfields["tracking_group"] = $tracking_group; 
-	$postfields["user_group"] = $user_group;
-	
+	}
+
 	// options
 	$route_option = $_POST['option'];
 	$route_menu = $_POST['route_menu'];
@@ -392,33 +381,33 @@ if ($ivr != NULL) {
 		$items .= $route_option[$i]."+".$route_desc[$i]."+".$route_menu[$i]."+".$option_route_value[$i]."+".$option_route_context[$i];
 		$items .= "|";
 	}
-	//$items_array = explode("|", $items);
-	$postfields['items'] = $items;
-	//echo "<pre>";
-	//var_dump($items_array);
-	//echo "</pre>";
-	
-    $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
+
+	$postfields = array(
+		'goAction' => 'goEditIVR',
+		'menu_id' => $ivr, 
+	    'menu_name' => $menu_name, 
+	    'menu_prompt' => $menu_prompt, 
+	    'menu_timeout' => $menu_timeout, 
+	    'menu_timeout_prompt' => $menu_timeout_prompt, 
+	    'menu_invalid_prompt' => $menu_invalid_prompt, 
+	    'menu_repeat' => $menu_repeat, 
+	    'menu_time_check' => $menu_time_check, 
+	    'call_time_id' => $call_time_id, 
+	    'track_in_vdac' => $track_in_vdac, 
+	    'tracking_group' => $tracking_group, 
+	    'user_group' => $user_group,
+	    'items' => $items,
+	    'hostname' => $_SERVER['REMOTE_ADDR'],
+	    'log_user' => session_user,
+	    'log_group' => session_usergroup
+	);
+
+	$output = $api->API_modifyIVR($postfields);
 	
     if ($output->result=="success") {
-    # Result was OK!
         ob_clean();
 		print (CRM_DEFAULT_SUCCESS_RESPONSE);
     } else {
-    # An error occured
         ob_clean();
 		print $output->result;
         //$lh->translateText("unable_modify_list");
@@ -457,20 +446,8 @@ if ($did != NULL) {
 		$filter_clean_cid_number = $_POST["cid_num"]; 
 		$filter_clean_cid_number = stripslashes($filter_clean_cid_number);
 	}
-	
-    
-	$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goEditDID"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = responsetype; #json (required)
-    $postfields["did_id"] = $modify_did; #Desired list id. (required)
-    $postfields["did_pattern"] = $did_pattern; #Desired list id. (required)
-	$postfields["did_description"] = $desc; #Desired value for user (required)
-	$postfields["did_route"] = $route; #Desired value for user (required)
-	$postfields["did_active"] = $status; #Desired value for user (required)
-	$postfields["filter_clean_cid_number"] = $filter_clean_cid_number;
 
+	/*
 	if($_POST['route'] == "AGENT"){
 	    $postfields["user"]                     = $_POST['route_agentid']; #Desired user (required if did_route is AGENT)
 	    $postfields["user_unavailable_action"]  = $_POST['route_unavail']; #Desired user unavailable action (required if did_route is AGENT)
@@ -498,34 +475,42 @@ if ($did != NULL) {
 	    $postfields["extension"]                = $_POST['route_exten']; #Desired extension (required if did_route is CUSTOM EXTENSION)
 	    $postfields["exten_context"]            = $_POST['route_exten_context']; #Deisred context (required if did_route is CUSTOM EXTENSION)
 	}
-	
-    $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
+	*
 
-    //print($output);
+    $postfields = array(
+		'goAction' => 'goEditDID',
+	    'did_id' => $modify_did,
+	    'did_pattern' => $did_pattern,
+	    'did_description' => $desc,
+	    'did_route' => $route,
+	    'did_active' => $status,
+	    'filter_clean_cid_number' => $filter_clean_cid_number,
+	    'user' => $_POST['route_agentid'],
+	    'user_unavailable_action' => $_POST['route_unavail'],
+	    'user_route_settings_ingroup' => $_POST['user_route_settings_ingroup'],
+	    'group_id' => $_POST['route_ingroupid'],
+	    'phone' => $_POST['route_phone_exten'],
+	    'server_ip' => $_POST['route_phone_server'],
+	    'menu_id' => $_POST['route_ivr'],
+	    'voicemail_ext' => $_POST['route_voicemail'],
+	    'extension' => $_POST['route_exten'],
+	    'exten_context' => $_POST['route_exten_context'],
+	    'hostname' => $_SERVER['REMOTE_ADDR'],
+	    'log_user' => session_user,
+	    'log_group' => session_usergroup
+	);				
+
+    $output = $api->API_modifyIVR($postfields);
 
     if ($output->result == "success") {
-    # Result was OK!
          ob_clean();
 		print (CRM_DEFAULT_SUCCESS_RESPONSE);
     } else {
-    # An error occured
         ob_clean();
 		print $output->result;
         //$lh->translateText("unable_modify_list");
     }
     
 }
+*/
 ?>

@@ -34,9 +34,9 @@
 	$perm = $api->goGetPermissions('inbound,ivr,did');
 	$gopackage = $api->API_getGOPackage();
 
-	/*if($gopackage->packagetype === "gosmall" && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
+	if($gopackage->packagetype === "gosmall" && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
 		header("location:index.php");
-	}*/
+	}
 ?>
 <html>
     <head>
@@ -112,9 +112,9 @@
 	$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
 	$voicemails = $ui->API_goGetVoiceMails();
 	$phones = $ui->API_getPhonesList();
-	$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
-	$voicefiles = $api->API_GetVoiceFilesList();
-	$calltimes = $ui->getCalltimes();
+	$scripts = $api->API_getAllScripts();
+	$voicefiles = $api->API_getAllVoiceFiles();
+	$calltimes = $api->API_getCalltimes();
 ?>
 			<div class="panel panel-default">
 				<div class="panel-body">

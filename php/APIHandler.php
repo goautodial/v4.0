@@ -29,9 +29,11 @@ require_once('CRMUtils.php');
 require_once('goCRMAPISettings.php');
 require_once('Session.php');
 
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 
 define("session_user", $_SESSION["user"]);
 define("session_usergroup", $_SESSION["usergroup"]);
@@ -49,8 +51,8 @@ define("session_password", $_SESSION["phone_this"]);
 
 	/**
      * Returns the singleton instance of UIHandler.
-     * @staticvar UIHandler $instance The UIHandler instance of this class.
-     * @return UIHandler The singleton instance.
+     * @staticvar APIHandler $instance The APIHandler instance of this class.
+     * @return APIHandler The singleton instance.
      */
     public static function getInstance()
     {
@@ -83,49 +85,55 @@ define("session_password", $_SESSION["phone_this"]);
     {
     }
 
-    public function API_getGOPackage(){
-		$url = gourl."/goPackages/goAPI.php";
-		$postfields["goUser"] = session_user;
-		$postfields["goPass"] = session_password;
-		$postfields["goAction"] = "goGetPackage";
-		$postfields["responsetype"] = responsetype;
+    /*
+     * Handles All API Requests
+     * @param String $folder - Folder Name where API is located (ex. goUsers, goInbound, goVoicemails)
+     * @param Array $postfields - Post Requests. API Name is required (ex. goAction => goGetUserGroupInfo, goAction => goGetAllUsers, goAction => goEditDID)
+     * 
+     * @return Array $output
+    */
+    public function API_Request($folder, $postfields){
+		$url = gourl."/".$folder."/goAPI.php";
 
+		$default_entries = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'responsetype' => responsetype);
+
+		$postdata = array_merge($default_entries, $postfields);
+
+		// Call the API
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postdata));
 		$data = curl_exec($ch);
 		curl_close($ch);
-		$output = json_decode($data);
-		
+	    $output = json_decode($data);
+	    
 		return $output;
-		
+	}
+
+    public function API_getGOPackage(){
+		$postfields = array(
+			'goAction' => 'goGetPackage'
+		);				
+
+		return $this->API_Request("goPackages", $postfields);
 	}
 
     public function API_goGetGroupPermission() {
-		$url = gourl."/goUserGroups/goAPI.php";
-		$postfields["goUser"] = goUser;
-		$postfields["goPass"] = goPass;
-		$postfields["goAction"] = "goGetUserGroupInfo";
-		$postfields["responsetype"] = responsetype;
-		$postfields["user_group"] = "admin";
-		$postfields["session_user"] = "goautodial";		
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
+		$postfields = array(
+			'goAction' => 'goGetUserGroupInfo',
+			'user_group' => session_usergroup,
+			'session_user' => session_user
+		);				
 
-		return $output;
+		return $this->API_Request("goUserGroups", $postfields);
 	}
 
     public function goGetPermissions($type = 'dashboard') {
@@ -146,8 +154,8 @@ define("session_password", $_SESSION["phone_this"]);
 			} else {
 				if ($type == 'sidebar') {
 					$return = $permissions;
-				} else if (array_key_exists($type, $permissions)) {
-					$return = $permissions->{$type};
+				} else if (array_key_exists($type, $decoded_permission)) {
+					$return = $decoded_permission->{$type};
 				} else {
 					$return = null;
 				}
@@ -158,161 +166,120 @@ define("session_password", $_SESSION["phone_this"]);
 	}
 
 	public function API_goGetAllUsers(){
-		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = session_user; #Username goes here. (required)
-		$postfields["goPass"] = session_password; #Password goes here. (required)
-		$postfields["goAction"] = "goGetAllUsers"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["session_user"] = session_user; #json. (required)
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
+		$postfields = array(
+			'goAction' => 'goGetAllUsers',
+			'session_user' => session_user
+		);				
 
-		return $output;
+		return $this->API_Request("goUsers", $postfields);
 	}
 
 	// API to get usergroups
 	public function API_goGetAllUserGroups() {
-		$url = gourl."/goUserGroups/goAPI.php";
-        $postfields["goUser"] = session_user;
-        $postfields["goPass"] = session_password;
-        $postfields["goAction"] = "goGetAllUserGroups";
-        $postfields["responsetype"] = "json";
-		$postfields["session_user"] = session_user;
-		$postfields["group_id"] = session_usergroup;
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
+		$postfields = array(
+			'goAction' => 'goGetAllUserGroups',
+			'session_user' => session_user,
+			'group_id' => session_usergroup
+		);				
 
-        return $output;
+		return $this->API_Request("goUserGroups", $postfields);
 	}
 
 	public function API_getInGroups() {
-		$url = gourl."/goInbound/goAPI.php";
-		$postfields["goUser"] = session_user;
-		$postfields["goPass"] = session_password;
-		$postfields["goAction"] = "goGetAllIngroup";
-		$postfields["responsetype"] = responsetype;
+		$postfields = array(
+			'goAction' => 'goGetAllIngroup'
+		);				
 
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
+		return $this->API_Request("goInbound", $postfields);
+	}
 
-		return $output;
+	public function API_modifyInGroups($postfields) {
+		return $this->API_Request("goInbound", $postfields);
+	}
+
+	public function API_getInGroupInfo($groupid) {
+		$postfields = array(
+			'goAction' => 'goGetIngroupInfo',
+			'group_id' => $groupid
+		);				
+		return $this->API_Request("goInbound", $postfields);
 	}
 
 	// Telephony IVR
 	public function API_getIVR() {
-		$url = gourl."/goInbound/goAPI.php";
-		$postfields["goUser"] = session_user;
-		$postfields["goPass"] = session_password;
-		$postfields["goAction"] = "goGetAllIVR";
-		$postfields["responsetype"] = responsetype;
+		$postfields = array(
+			'goAction' => 'goGetAllIVR'
+		);
 
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
+		return $this->API_Request("goInbound", $postfields);
+	}
 
-		return $output;
-
+	public function API_modifyIVR($postfields) {
+		return $this->API_Request("goInbound", $postfields);
 	}
 
 	//Telephony > phonenumber(DID)
 	public function API_getPhoneNumber() {
-		$url = gourl."/goInbound/goAPI.php";
-		$postfields["goUser"] = session_user;
-		$postfields["goPass"] = session_password;
-		$postfields["goAction"] = "goGetDIDsList";
-		$postfields["responsetype"] = responsetype;
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
-
-		return $output;
-	}
-
-	/** Voice Files API - Get all list of voice files */
-	public function API_GetVoiceFilesList(){
-	    $url = gourl."/goVoiceFiles/goAPI.php";
-	    $postfields["goUser"] = session_user;
-	    $postfields["goPass"] = session_password; 
-	    $postfields["goAction"] = "goGetVoiceFilesList";
-	    $postfields["responsetype"] = responsetype;
-		$postfields["session_user"] = session_user;
-
-	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $url);
-	    // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-	    curl_setopt($ch, CURLOPT_POST, 1);
-	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	    $data = curl_exec($ch);
-	    curl_close($ch);
-	    $output = json_decode($data);
-
-	    return $output;
+		$postfields = array(
+			'goAction' => 'goGetDIDsList'
+		);				
+		return $this->API_Request("goInbound", $postfields);
 	}
 
 	// Telephony Users -> Phone
 	public function API_getAllPhones(){
-		$url = gourl."/goPhones/goAPI.php";
-		$postfields["goUser"] = session_user;
-		$postfields["goPass"] = session_password;
-		$postfields["goAction"] = "goGetAllPhones";
-		$postfields["responsetype"] = responsetype;
-		$postfields["session_user"] = session_user;
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
+		$postfields = array(
+			'goAction' => 'goGetAllPhones',
+			'session_user' => session_user
+		);				
+		return $this->API_Request("goPhones", $postfields);
+	}
 
-		return $output;
+	/** Call Times API - Get all list of call times */
+	public function API_getCalltimes(){
+        $postfields = array(
+			'goAction' => 'goGetAllCalltimes',
+			'log_user' => session_user,
+			'log_group' => session_usergroup,
+			'log_ip' => $_SERVER['REMOTE_ADDR']
+		);				
+        return $this->API_Request("goCalltimes", $postfields);
+	}
+
+	// API Scripts
+	public function API_getAllScripts(){
+		$url = gourl."/goScripts/goAPI.php";
+        $postfields = array(
+			'goAction' => 'getAllScripts',
+			'userid' => session_user
+		);				
+        return $this->API_Request("goScripts", $postfields);
+	}
+
+	// VoiceMails
+	public function API_getAllVoiceMails() {
+		$postfields = array(
+			'goAction' => 'goGetAllVoicemails',
+			'session_user' => session_user
+		);				
+		return $this->API_Request("goVoicemails", $postfields);
+	}
+
+	/** Voice Files API - Get all list of voice files */
+	public function API_getAllVoiceFiles(){
+		$postfields = array(
+			'goAction' => 'goGetAllVoiceFiles',
+			'session_user' => session_user
+		);				
+		return $this->API_Request("goVoiceFiles", $postfields);
+	}
+
+	/** Music On Hold API - Get all list of music on hold */
+	public function API_getAllMusicOnHold(){
+		$postfields = array(
+			'goAction' => 'goGetAllMusicOnHold'
+		);
+		return $this->API_Request("goMusicOnHold", $postfields);
 	}
 }
 

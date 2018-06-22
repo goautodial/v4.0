@@ -1,25 +1,33 @@
 <?php
-
-	###################################################
-	### Name: edittelephonyinbound.php 	  ###
-	### Functions: Edit Inbound, IVR & DID  	  ###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	  ###
-	### Version: 4.0 	  ###
-	### Written by: Alexander Jim H. Abenoja	  ###
-	### License: AGPLv2	  ###
-	###################################################
-/*ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
+/**
+ * @file        edittelephonyinbound.php
+ * @brief       Edit Inbound, IVR & DID
+ * @copyright   Copyright (C) GOautodial Inc.
+ * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 	require_once('./php/CRMDefaults.php');
 	require_once('./php/UIHandler.php');
-	//require_once('./php/DbHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/LanguageHandler.php');
 	require('./php/Session.php');
-	require_once('./php/goCRMAPISettings.php');
 
 	// initialize structures
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
@@ -119,36 +127,18 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					if($groupid != NULL) {
 
 					/* APIs used for forms */
-						$call_menu = $ui->API_getIVR($_SESSION['usergroup']);
-						$call_time = $ui->getCalltimes();
-						$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
-						$voicemail = $ui->API_goGetVoiceMails();
-						$ingroup = $ui->API_getInGroups($_SESSION['usergroup']);
-						$voicefiles = $ui->API_GetVoiceFilesList();
-						$moh = $ui->API_goGetAllMusicOnHold();
+						$call_menu = $api->API_getIVR();
+						$call_time = $api->API_getCalltimes();
+						$scripts = $api->API_getAllScripts();
+						$voicemail = $api->API_getAllVoiceMails();
+						$ingroup = $api->API_getInGroups();
+						$voicefiles = $api->API_getAllVoiceFiles();
+						$moh = $api->API_getAllMusicOnHold();
 
-						$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-						$postfields["goUser"] = goUser; #Username goes here. (required)
-						$postfields["goPass"] = goPass; #Password goes here. (required)
-						$postfields["goAction"] = "goGetInboundInfo"; #action performed by the [[API:Functions]]. (required)
-						$postfields["responsetype"] = responsetype; #json. (required)
-						$postfields["group_id"] = $groupid; #Desired list id. (required)
-            
-						$ch = curl_init();
-						curl_setopt($ch, CURLOPT_URL, $url);
-						curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-						curl_setopt($ch, CURLOPT_POST, 1);
-						curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-						curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-						curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-						$data = curl_exec($ch);
-						curl_close($ch);
-						$output = json_decode($data);
-						//var_dump($output);
+						$output = $api->API_getInGroupInfo($groupid);
 
 						if ($output->result=="success") {
-						# Result was OK!
+
 					?>			
 				<!-- Main content -->
                  <section class="content">
@@ -954,7 +944,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 															<label for="no_agents_voicemail" class="col-sm-4 control-label"><?php $lh->translateText("voicemail"); ?></label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_voicemail" name="no_agents_voicemail" value="<?php if($output->data->no_agents_voicemail == NULL)echo ""; else echo $output->data->no_agents_voicemail;?>">
+																	<input type="text" class="form-control" id="no_agents_voicemail" name="no_agents_voicemail" value="<?php if($output->data->no_agent_action_value == NULL)echo ""; else echo $output->data->no_agent_action_value;?>">
 																	<span class="input-group-btn">
 																		<button class="btn btn-default show_no_agents_voicemail" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 																	</span>
@@ -3769,54 +3759,40 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 			});
 		});
 		
-			function checkdatas(groupID) {
-		        if (groupID !== undefined) {
-						var log_user = '<?=$_SESSION['user']?>';
-						var log_group = '<?=$_SESSION['usergroup']?>';
-		                var itemdatas = $('#agentrankform').serialize();
-		                $('input:checkbox[id^="CHECK"]').each(function() {
-		                        if (!this.checked) {
-		                                itemdatas += '&'+this.name+'=NO';
-		                        }
-		                });
+		function checkdatas(groupID) {
+	        if (groupID !== undefined) {
+					var log_user = '<?=$_SESSION['user']?>';
+					var log_group = '<?=$_SESSION['usergroup']?>';
+	                var itemdatas = $('#agentrankform').serialize();
+	                $('input:checkbox[id^="CHECK"]').each(function() {
+	                        if (!this.checked) {
+	                                itemdatas += '&'+this.name+'=NO';
+	                        }
+	                });
 
-		                $.ajax({
-						    url: "php/ModifyAgentRank.php",
-						    type: 'POST',
-						    data: {
-						    	itemrank: itemdatas,
-						    	idgroup: groupID,
-								log_user: log_user,
-								log_group: log_group
-						    },
-							success: function(data) {
-								$('#submit_agent_rank').html("<i class='fa fa-check'></i> Submit");
-                				$('#submit_agent_rank').prop("disabled", false)
-								console.log(data);
-								if(data == "success"){
-									swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("agent_rank_update_success"); ?>", "success");
-								}else{
-									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
-								}
+	                $.ajax({
+					    url: "php/ModifyAgentRank.php",
+					    type: 'POST',
+					    data: {
+					    	itemrank: itemdatas,
+					    	idgroup: groupID,
+							log_user: log_user,
+							log_group: log_group
+					    },
+						success: function(data) {
+							$('#submit_agent_rank').html("<i class='fa fa-check'></i> Submit");
+            				$('#submit_agent_rank').prop("disabled", false)
+							console.log(data);
+							if(data == "success"){
+								swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("agent_rank_update_success"); ?>", "success");
+							}else{
+								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 							}
-						});
-		    	}
-			        /*else {
-			                if ($("#selectAllAgents").is(':checked'))
-			                {
-		                        $('input:checkbox[id^="CHECK"]').each(function() {
-		                                        $(this).attr('checked',true);
-		                        });
-			                }
-			                else
-			                {
-		                        $('input:checkbox[id^="CHECK"]').each(function() {
-		                                        $(this).removeAttr('checked');
-		                        });
-			                }
-			        }*/
-			}
-		</script>
+						}
+					});
+	    	}
+		}
+	</script>
 
 		<?php print $ui->creamyFooter(); ?>
     </body>
