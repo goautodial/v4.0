@@ -27,7 +27,9 @@ require_once('CRMDefaults.php');
 require_once('LanguageHandler.php');
 require_once('CRMUtils.php');
 require_once('goCRMAPISettings.php');
-require_once('Session.php');
+//require_once('Session.php');
+require_once('SessionHandler.php');
+$session_class = new \creamy\SessionHandler();
 
 
 ini_set('display_errors', 1);
@@ -131,15 +133,14 @@ define("session_password", $_SESSION["phone_this"]);
 			'goAction' => 'goGetUserGroupInfo',
 			'user_group' => session_usergroup,
 			'session_user' => session_user
-		);				
+		);
 
 		return $this->API_Request("goUserGroups", $postfields);
 	}
 
-    public function goGetPermissions($type = 'dashboard') {
+    public function goGetPermissions($type = 'dashboard', $user_group) {
 		
-		$permissions = $this->API_goGetGroupPermission(session_usergroup);
-
+		$permissions = $this->API_goGetGroupPermission($user_group);
 		$decoded_permission = json_decode($permissions->data->permissions);
 		
 		$return = NULL;
@@ -163,26 +164,6 @@ define("session_password", $_SESSION["phone_this"]);
 		}
 
 		return $return;
-	}
-
-	public function API_goGetAllUsers(){
-		$postfields = array(
-			'goAction' => 'goGetAllUsers',
-			'session_user' => session_user
-		);				
-
-		return $this->API_Request("goUsers", $postfields);
-	}
-
-	// API to get usergroups
-	public function API_goGetAllUserGroups() {
-		$postfields = array(
-			'goAction' => 'goGetAllUserGroups',
-			'session_user' => session_user,
-			'group_id' => session_usergroup
-		);				
-
-		return $this->API_Request("goUserGroups", $postfields);
 	}
 
 	public function API_getInGroups() {
@@ -281,6 +262,168 @@ define("session_password", $_SESSION["phone_this"]);
 		);
 		return $this->API_Request("goMusicOnHold", $postfields);
 	}
+	
+	public function API_getAllCampaigns(){
+		$postfields = array(
+			'goAction' => 'goGetAllCampaigns',	
+			'session_user' => session_user
+		);		
+		return $this->API_Request("goCampaigns", $postfields);
+	}	
+	
+	public function getAllCampaignStatuses(){
+        $campaign = $this->API_getAllCampaigns();
+        for($i=0;$i < count($campaign->campaign_id);$i++){
+	        $campdialStatus = $this->API_getAllCampaignDialStatuses($campaign->campaign_id[$i]);
+			for($x=0;$x<count($campdialStatus->status);$x++){
+				$status[] = $campdialStatus->status[$x];
+				$status_name[] = $campdialStatus->status_name[$x];
+			}
+			$output = array("status" => $status, "status_name" => $status_name);
+		}
+		return $output;
+	}
+		
+	/*
+	 * Displaying Disposition
+	 * [[API: Function]] - getAllDispositions
+	 * 	This application is used to get list of campaign belongs to user.
+	*/
+	public function API_getAllDispositions($custom){
+		$postfields = array(
+			'goAction' => 'getAllDispositions',
+			'custom_request' => $custom,
+			'session_user' => session_user
+		);		
+		return $this->API_Request("goDispositions", $postfields);
+	}	
+	
+	public function API_getDispositionInfo($campid){
+		$postfields = array(
+			'goAction' => 'goGetDispositionInfo',
+			'campaign_id' => $campid,
+			'session_user' => session_user,
+			'user_group' => session_usergroup
+		);		
+		return $this->API_Request("goDispositions", $postfields);
+	}
+	
+	public function API_getLeadRecycling(){
+		$postfields = array(
+			'goAction' => 'goGetAllLeadRecycling',
+			'session_user' => session_user
+		);		
+		return $this->API_Request("goLeadRecycling", $postfields);
+	}	
+	
+	public function API_getAllDialStatuses($campaign_id){
+		$postfields = array(
+			'goAction' => 'goGetAllDialStatuses',
+			'campaign_id' => $campaign_id,
+			'session_user' => session_user
+		);		
+		return $this->API_Request("goDialStatus", $postfields);
+	}	
+	
+	public function API_getAllDialStatusesSurvey($campaign_id){
+		$postfields = array(
+			'goAction' => 'goGetAllDialStatuses',
+			'campaign_id' => $campaign_id,
+			'hotkeys_only' => 1,
+			'session_user' => session_user
+		);		
+		return $this->API_Request("goDialStatus", $postfields);
+	}	
+	/*
+	 * Displaying Lead Filter
+	 * [[API: Function]] - getAllLeadFilters
+	 * 	This application is used to get list of lead filter belongs to user.
+	*/
+	public function API_getAllLeadFilters(){
+		$postfields = array(
+			'goAction' => 'goGetAllLeadFilters',
+			'session_user' => session_user
+		);		
+		return $this->API_Request("goLeadFilters", $postfields);
+	}	
+	
+	public function API_getCountryCodes(){
+		$postfields = array(
+			'goAction' => 'getAllCountryCodes',
+			'session_user' => session_user
+		);		
+		return $this->API_Request("goCountryCode", $postfields);
+	}	
+	
+	public function API_getAllLists(){
+		$postfields = array(
+			'goAction' => 'goGetAllLists',
+			'session_user' => session_user,
+			'user_group' => session_usergroup
+		);		
+		return $this->API_Request("goLists", $postfields);
+	}	
+	
+	public function API_getAllCarriers(){
+		$postfields = array(
+			'goAction' => 'goGetAllCarriers'
+		);		
+		return $this->API_Request("goCarriers", $postfields);
+	}	
+	
+	public function API_getAllCampaignDialStatuses($campaign_id){
+		$postfields = array(
+			'goAction' => 'goGetAllCampaignDialStatuses',
+			'campaign_id' => $campaign_id
+		);		
+		return $this->API_Request("goDialStatus", $postfields);
+	}	
+	
+	public function API_getCampaignInfo($campid){
+		$postfields = array(
+			'goAction' => 'goGetCampaignInfo',
+			'campaign_id' => $campid,
+			'session_user' => session_user,
+			'user_group' => session_usergroup			
+		);		
+		return $this->API_Request("goCampaigns", $postfields);
+	}	
+	
+	public function API_getAllUsers(){
+		$postfields = array(
+			'goAction' => 'goGetAllUsers',
+			'session_user' => session_user
+		);		
+		return $this->API_Request("goUsers", $postfields);
+	}	
+	
+	public function API_getCalltimes(){
+		$postfields = array(
+			'goAction' => 'goGetAllCalltimes',
+			'session_user' => session_user,
+			'user_group' => session_usergroup			
+		);		
+		return $this->API_Request("goCalltimes", $postfields);
+	}
+	
+	public function API_getAllScripts(){
+		$postfields = array(
+			'goAction' => 'goGetAllScripts',
+			'session_user' => session_user,
+			'user_group' => session_usergroup			
+		);		
+		return $this->API_Request("goScripts", $postfields);
+	}	
+	
+	public function API_getAllVoicemails() {
+		$postfields = array(
+			'goAction' => 'goGetAllVoicemails',
+			'session_user' => session_user,
+			'user_group' => session_usergroup			
+		);		
+		return $this->API_Request("goVoicemails", $postfields);
+	}	
+	
 }
 
 ?>

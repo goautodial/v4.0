@@ -100,17 +100,17 @@
 	 * APIs used
 	 */
 
-	$ingroup = $api->API_getInGroups();
-	$ivr = $api->API_getIVR();
+	$ingroup = $api->API_getAllInGroups();
+	$ivr = $api->API_getAllIVRs();
 	$phonenumber = $api->API_getPhoneNumber();
 
 	/*
 	 * APIs for getting lists for the some of the forms
 	 */
-	$users = $api->API_goGetAllUsers();
-	$user_groups = $api->API_goGetAllUserGroups();
-	$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
-	$voicemails = $ui->API_goGetVoiceMails();
+	$users = $api->API_getAllUsers();
+	$user_groups = $api->API_getAllUserGroups();
+	$campaign = $api->API_getAllCampaigns($_SESSION['usergroup']);
+	$voicemails = $api->API_getAllVoicemails();
 	$phones = $ui->API_getPhonesList();
 	$scripts = $api->API_getAllScripts();
 	$voicefiles = $api->API_getAllVoiceFiles();

@@ -22,15 +22,18 @@
 */
 
 	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
-	require_once('./php/LanguageHandler.php');
-	include('./php/Session.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	$perm = $ui->goGetPermissions('campaign,disposition,pausecodes,hotkeys,list', $_SESSION['usergroup']);
-	$gopackage = $ui->API_getGOPackage();
+
+	$perm = $api->goGetPermissions('campaign,disposition,pausecodes,hotkeys,list', $_SESSION['usergroup']);
+	$gopackage = $api->API_getGOPackage();
 ?>
 <html>
     <head>
@@ -158,24 +161,24 @@
 	/*
 	 * API used for display in tables
 	 */
-	$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
+	$campaign = $api->API_getAllCampaigns();
 	if($campaign->result !== "success"){
 		die("API ERROR: ".$campaign->result);
 	}
-	$disposition = $ui->API_getAllDispositions("custom");
-	$leadrecycling = $ui->API_getLeadRecycling($_SESSION['user']);
+	$disposition = $api->API_getAllDispositions("custom");
+	$leadrecycling = $api->API_getLeadRecycling();
 
-	$dialStatus = $ui->API_getAllDialStatuses($campaign->data->campaign_id);
-	$campaignStatuses = $ui->getAllCampaignStatuses();
+	$dialStatus = $api->API_getAllDialStatuses($campaign->data->campaign_id);
+	$campaignStatuses = $api->getAllCampaignStatuses();
 	//var_dump($campaignStatuses);
-	$leadfilter = $ui->API_getAllLeadFilters();
-	$country_codes = $ui->getCountryCodes();
-	$list = $ui->API_goGetAllLists();
-	$ingroup = $ui->API_getInGroups($_SESSION['usergroup']);
-	$ivr = $ui->API_getIVR($_SESSION['usergroup']);
-	$voicemails = $ui->API_goGetVoiceMails();
-	$users = $ui->API_goGetAllUserLists();
-	$carriers = $ui->getCarriers();
+	$leadfilter = $api->API_getAllLeadFilters();
+	$country_codes = $api->API_getCountryCodes();
+	$list = $api->API_getAllLists();
+	$ingroup = $api->API_getAllInGroups();
+	$ivr = $api->API_getAllIVRs();
+	$voicemails = $api->API_getVoiceFiles();
+	$users = $api->API_goGetAllUsers();
+	$carriers = $api->API_getAllCarriers();
 	$checkbox_all = $ui->getCheckAll("campaign");
 ?>
 							 <div role="tabpanel">

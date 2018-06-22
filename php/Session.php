@@ -28,20 +28,22 @@ namespace creamy;
 
 // Start session if not already started.
 require_once('CRMDefaults.php');
-if (version_compare(phpversion(), '5.4.0', '<')) {
+require_once('SessionHandler.php');
+$session_class = new \creamy\SessionHandler();
+/*if (version_compare(phpversion(), '5.4.0', '<')) {
      if(session_id() == '') {
 		session_start();
      }
 } else {
 	if (session_status() == PHP_SESSION_NONE) {
 		if (CRM_SESSION_DRIVER == 'database') {
-			require_once(__DIR__ . '/SessionHandler.php');
+			require_once('SessionHandler.php');
 			$session_class = new \creamy\SessionHandler();
 		} else {
 			session_start(); // Starting Session
 		}
 	}
-}
+}*/
 
 // force https protocol
 if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on") {

@@ -1,31 +1,41 @@
 <?php
+/**
+ * @file 		editsettingsusergroups.php
+ * @brief 		Modify Usergroup settings
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author     	Alexander Jim H. Abenoja
+ * @author		Noel Umandap
+ * @author		Demian Lizandro A. Biscocho 
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
-	###########################################################
-	### Name: edittelephonycampaigns.php		  ###
-	### Functions: Edit Campaings, Disposition 		  ###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016		  ###
-	### Version: 4.0 		  ###
-	### Written by: Alexander Abenoja & Noel Umandap		  ###
-	### License: AGPLv2		  ###
-	###########################################################
-
-	require_once('./php/CRMDefaults.php');
 	require_once('./php/UIHandler.php');
-	//require_once('./php/DbHandler.php');
-	require_once('./php/LanguageHandler.php');
-	require('./php/Session.php');
-	require_once('./php/goCRMAPISettings.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
 
-	// initialize structures
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
 $campaign_id = NULL;
 if (isset($_POST["campaign"])) {
 	$campaign_id = $_POST["campaign"];
-}else{
-	$campaign_id = $_GET["campaign"];
 }
 
 $did = NULL;
@@ -46,21 +56,21 @@ if (isset($_POST["leadfilter"])) {
 /*
  * APIs for forms
  */
-$campaign = $ui->API_getCampaignInfo($campaign_id);
-$disposition = $ui->API_getDispositionInfo($did);
+$campaign = $api->API_getCampaignInfo($campaign_id);
+$disposition = $api->API_getDispositionInfo($did);
 
-$calltimes = $ui->getCalltimes();
-$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
-$carriers = $ui->getCarriers();
-$leadfilter = $ui->API_getAllLeadFilters();
-$dialStatus = $ui->API_getAllDialStatuses($campaign->data->campaign_id);
-$sdialStatus = $ui->getDialStatusesforSurvey($campaign->data->campaign_id);
-$campdialStatus = $ui->API_getAllCampaignDialStatuses($campaign->data->campaign_id);
-$dids = $ui->API_getAllDIDs($campaign->data->campaign_id);
-$voicefiles = $ui->API_GetVoiceFilesList();
-$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
-$ivr = $ui->API_getIVR($_SESSION['usergroup']);
-$lists = $ui->API_goGetAllLists();
+$calltimes = $api->API_getCalltimes();
+$scripts = $api->API_getAllScripts();
+$carriers = $api->API_getAllCarriers();
+$leadfilter = $api->API_getAllLeadFilters();
+$dialStatus = $api->API_getAllDialStatuses($campaign_id);
+$sdialStatus = $api->API_getAllDialStatusesSurvey($campaign_id);
+$campdialStatus = $api->API_getAllCampaignDialStatuses($campaign_id);
+$dids = $api->API_getAllDIDs($campaign_id);
+$voicefiles = $api->API_getVoiceFiles();
+$ingroups = $api->API_getAllInGroups();
+$ivr = $api->API_getAllIVRs();
+$lists = $api->API_getAllLists();
 $audiofiles = $ui->API_getListAudioFiles();
 
 ?>
@@ -184,7 +194,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 					?>
 					
 						<form id="campaign_form_edit" class="form-horizontal"  action="./php/ModifyTelephonyCampaign.php" method="POST" enctype="multipart/form-data">
-							<input type="hidden" name="campaign_id" value="<?php echo $campaign->data->campaign_id;?>">
+							<input type="hidden" name="campaign_id" value="<?php echo $campaign_id;?>">
 							<input type="hidden" name="campaign_type" value="<?php echo $campaign->campaign_type;?>">
 							<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>">
 							<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>">
