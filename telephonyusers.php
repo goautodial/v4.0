@@ -743,7 +743,7 @@
 					
 		            // Submit form via ajax
 		            $.ajax({
-						url: "./php/CreateTelephonyUser.php",
+						url: "./php/AddUser.php",
 						type: 'POST',
 						data: $("#wizard_form").serialize(),
 						success: function(data) {
@@ -807,7 +807,7 @@
 				
 		            // Submit form via ajax
 			            $.ajax({
-							url: "./php/AddSettingsPhones.php",
+							url: "./php/AddPhone.php",
 							type: 'POST',
 							data: $("#create_form").serialize(),
 							success: function(data) {

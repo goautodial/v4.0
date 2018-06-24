@@ -1,25 +1,26 @@
 <?php
-
-	/** Campaigns API - Add a new Campaign */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 * @param goUser
-	 * @param goPass
-	 * @param goAction
-	 * @param responsetype
-	 * @param hostname
-	 * @param did_pattern
-	 * @param group_color
-	 * @param call_route
-	 * @param survey_type
-	 * @param number_channels
-	 * @param campaign_type
-	 * @param campaign_id
-	 * @param campaign_name
-	 */
-
-    require_once('goCRMAPISettings.php');
-	require_once('Session.php');
+/**
+ * @file        AddCampaign.php
+ * @brief       Add New Campaign
+ * @copyright   Copyright (C) GOautodial Inc.
+ * @author      Noel Umandap
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
 	$url = gourl."/goCampaigns/goAPI.php"; # URL to GoAutoDial API file
 	$postfields["goUser"] 						= goUser; #Username goes here. (required)
@@ -91,17 +92,14 @@
 	curl_close($ch);
 
 	$output = json_decode($data);
-    //echo "<pre>";
-    //print_r($postfields);die;
 	$home = $_SERVER['HTTP_REFERER'];
+
 	if ($output->result=="success") {
-		# Result was OK!
 		// $status = 1;
 		// $return['msg'] = "New Campaign has been successfully saved.";
 		$url = str_replace("?message=Success", "", $home);
 		header("Location: ".$url."?message=Success");
 	} else {
-		# An error occured
 		// $status = 0;
 		// $return['msg'] = "Something went wrong please see input data on form.";
 		$url = str_replace("?message=Error", "", $home);

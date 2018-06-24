@@ -360,7 +360,7 @@
 				</div>
 				<div class="modal-body wizard-content">
 				
-				<form action="AddTelephonyIngroup.php" method="POST" id="create_ingroup" role="form">
+				<form action="AddyIngroup.php" method="POST" id="create_ingroup" role="form">
 					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
@@ -526,7 +526,7 @@
 				</div>
 				<div class="modal-body wizard-content">
 				
-				<form action="AddTelephonyIVR.php" method="POST" id="create_ivr" role="form">
+				<form action="AddIVR.php" method="POST" id="create_ivr" role="form">
 					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
@@ -1005,7 +1005,7 @@
 				</div>
 				<div class="modal-body wizard-content">
 				
-				<form action="AddTelephonyPhonenumber.php" method="POST" id="create_phonenumber" role="form">
+				<form action="AddDID.php" method="POST" id="create_phonenumber" role="form">
 					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
@@ -1612,7 +1612,7 @@
 						** ADD EVENT 
 						*********/
 				            $.ajax({
-								url: "./php/AddTelephonyPhonenumber.php",
+								url: "./php/AddDID.php",
 								type: 'POST',
 								data: $("#create_phonenumber").serialize(),
 								success: function(data) {

@@ -1,10 +1,27 @@
 <?php
-
-/** Server API - Add a new Server */
 /**
- * Generates action circle buttons for different pages/module
- */
-
+ * @file        AddServer.php
+ * @brief       Handles Add Server Request
+ * @copyright   Copyright (C) GOautodial Inc.
+ * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+require_once('APIHandler.php');
+$api = \creamy\APIHandler::getInstance();
+/*
 require_once('goCRMAPISettings.php');	
 
 	$url = gourl."/goServers/goAPI.php"; # URL to GoAutoDial API file
@@ -23,31 +40,19 @@ require_once('goCRMAPISettings.php');
 	
 	$postfields["log_user"] 		= $_POST['log_user']; 
 	$postfields["log_group"] 		= $_POST['log_group'];
-
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url);
-	// curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	$data = curl_exec($ch);
-	curl_close($ch);
-
-	$output = json_decode($data);
+*/
+	$postfields = array(
+		'goAction' => 'goAddServer',
+		'server_id' => $_POST['server_id'], 
+		'server_description' => $_POST['server_description'], 
+		'server_ip' => $_POST['server_ip'],
+		'active' => $_POST['active'],
+		'asterisk_version' => $_POST['asterisk_version'],
+		'user_group' => $_POST['user_group']
+	);
 	
-	if ($output->result=="success") {
-		# Result was OK!
-		$status = $output->result;
-		//$return['msg'] = "New User has been successfully saved.";
-	} else {
-		# An error occured
-		//$status = 0;
-		// $return['msg'] = "Something went wrong please see input data on form.";
-        $status = $output->result;
-	}
+	$output = $api->API_addServer($postfields);
 
-	echo $status;
+	echo $output->result;;
 
 ?>

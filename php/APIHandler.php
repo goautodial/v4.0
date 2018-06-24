@@ -29,19 +29,16 @@ require_once('CRMUtils.php');
 require_once('goCRMAPISettings.php');
 //require_once('Session.php');
 require_once('SessionHandler.php');
-$session_class = new \creamy\SessionHandler();
-
 
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
 // error_reporting(E_ALL);
 
-if(isset($_SESSION["user"]))
-define("session_user", $_SESSION["user"]);
-if(isset($_SESSION["usergroup"]))
-define("session_usergroup", $_SESSION["usergroup"]);
-if(isset($_SESSION["phone_this"]))
-define("session_password", $_SESSION["phone_this"]);
+if(isset($_SESSION["user"])){
+	define("session_user", $_SESSION["user"]);
+	define("session_usergroup", $_SESSION["usergroup"]);
+	define("session_password", $_SESSION["phone_this"]);
+}
 /**
  *  APIHandler.
  *  This class is in charge of storing the API Connections for the basic functionality of the system.
@@ -90,19 +87,25 @@ define("session_password", $_SESSION["phone_this"]);
     }
 
     /*
-     * Handles All API Requests
+     * API_Request - Handles All API Requests
      * @param String $folder - Folder Name where API is located (ex. goUsers, goInbound, goVoicemails)
      * @param Array $postfields - Post Requests. API Name is required (ex. goAction => goGetUserGroupInfo, goAction => goGetAllUsers, goAction => goEditDID)
-     * 
+     * @param Boolean $request_data - true or false. If true, converts return data to original format without json_decode. Returns json_decoded data if false.
      * @return Array $output
     */
-    public function API_Request($folder, $postfields){
+    public function API_Request($folder, $postfields, $request_data = false){
 		$url = gourl."/".$folder."/goAPI.php";
 
+		// Constant Data to be passed
 		$default_entries = array(
 			'goUser' => session_user,
 			'goPass' => session_password,
-			'responsetype' => responsetype);
+			'responsetype' => responsetype,
+			'session_user' => session_user,
+			'log_user' => session_user,
+			'log_group' => session_usergroup,
+			'log_ip' => $_SERVER['REMOTE_ADDR'],
+			'hostname' => $_SERVER['REMOTE_ADDR']);
 
 		$postdata = array_merge($default_entries, $postfields);
 
@@ -119,6 +122,50 @@ define("session_password", $_SESSION["phone_this"]);
 		curl_close($ch);
 	    $output = json_decode($data);
 	    
+	    if($request_data === true)
+	    	return $data;
+	    else
+			return $output;
+	}
+
+	/*
+     * API_Upload - Handles All API with Upload. Examples: Upload Leads, Upload Voicefiles
+     * @param String $folder - Folder Name where API is located (ex. goUsers, goInbound, goVoicemails)
+     * @param Array $postfields - Post Requests. API Name is required (ex. goAction => goGetUserGroupInfo, goAction => goGetAllUsers, goAction => goEditDID)
+     * 
+     * @return Array $output
+    */
+	public function API_Upload($folder, $postfields){
+		$url = gourl."/".$folder."/goAPI.php";
+
+		// Constant Data to be passed
+		$default_entries = array(
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'responsetype' => responsetype,
+			'session_user' => session_user,
+			'log_user' => session_user,
+			'log_group' => session_usergroup,
+			'log_ip' => $_SERVER['REMOTE_ADDR'],
+			'hostname' => $_SERVER['REMOTE_ADDR']);
+
+		$postdata = array_merge($default_entries, $postfields);
+
+		// Call the API
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT , 0); //gg
+		curl_setopt ($ch, CURLOPT_TIMEOUT  , 10000); //gg
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+	    
 		return $output;
 	}
 
@@ -133,8 +180,7 @@ define("session_password", $_SESSION["phone_this"]);
     public function API_goGetGroupPermission() {
 		$postfields = array(
 			'goAction' => 'goGetUserGroupInfo',
-			'user_group' => session_usergroup,
-			'session_user' => session_user
+			'user_group' => session_usergroup
 		);
 
 		return $this->API_Request("goUserGroups", $postfields);
@@ -212,8 +258,7 @@ define("session_password", $_SESSION["phone_this"]);
 	// Telephony Users -> Phone
 	public function API_getAllPhones(){
 		$postfields = array(
-			'goAction' => 'goGetAllPhones',
-			'session_user' => session_user
+			'goAction' => 'goGetAllPhones'
 		);				
 		return $this->API_Request("goPhones", $postfields);
 	}
@@ -221,10 +266,7 @@ define("session_password", $_SESSION["phone_this"]);
 	/** Call Times API - Get all list of call times */
 	public function API_getCalltimes(){
         $postfields = array(
-			'goAction' => 'goGetAllCalltimes',
-			'log_user' => session_user,
-			'log_group' => session_usergroup,
-			'log_ip' => $_SERVER['REMOTE_ADDR']
+			'goAction' => 'goGetAllCalltimes'
 		);				
         return $this->API_Request("goCalltimes", $postfields);
 	}
@@ -233,8 +275,7 @@ define("session_password", $_SESSION["phone_this"]);
 	public function API_getAllScripts(){
 		$url = gourl."/goScripts/goAPI.php";
         $postfields = array(
-			'goAction' => 'getAllScripts',
-			'userid' => session_user
+			'goAction' => 'getAllScripts'
 		);				
         return $this->API_Request("goScripts", $postfields);
 	}
@@ -242,8 +283,7 @@ define("session_password", $_SESSION["phone_this"]);
 	// VoiceMails
 	public function API_getAllVoiceMails() {
 		$postfields = array(
-			'goAction' => 'goGetAllVoicemails',
-			'session_user' => session_user
+			'goAction' => 'goGetAllVoicemails'
 		);				
 		return $this->API_Request("goVoicemails", $postfields);
 	}
@@ -251,8 +291,7 @@ define("session_password", $_SESSION["phone_this"]);
 	/** Voice Files API - Get all list of voice files */
 	public function API_getAllVoiceFiles(){
 		$postfields = array(
-			'goAction' => 'goGetAllVoiceFiles',
-			'session_user' => session_user
+			'goAction' => 'goGetAllVoiceFiles'
 		);				
 		return $this->API_Request("goVoiceFiles", $postfields);
 	}
@@ -267,8 +306,7 @@ define("session_password", $_SESSION["phone_this"]);
 	
 	public function API_getAllCampaigns(){
 		$postfields = array(
-			'goAction' => 'goGetAllCampaigns',	
-			'session_user' => session_user
+			'goAction' => 'goGetAllCampaigns'
 		);		
 		return $this->API_Request("goCampaigns", $postfields);
 	}	
@@ -294,8 +332,7 @@ define("session_password", $_SESSION["phone_this"]);
 	public function API_getAllDispositions($custom){
 		$postfields = array(
 			'goAction' => 'getAllDispositions',
-			'custom_request' => $custom,
-			'session_user' => session_user
+			'custom_request' => $custom
 		);		
 		return $this->API_Request("goDispositions", $postfields);
 	}	
@@ -304,7 +341,6 @@ define("session_password", $_SESSION["phone_this"]);
 		$postfields = array(
 			'goAction' => 'goGetDispositionInfo',
 			'campaign_id' => $campid,
-			'session_user' => session_user,
 			'user_group' => session_usergroup
 		);		
 		return $this->API_Request("goDispositions", $postfields);
@@ -312,8 +348,7 @@ define("session_password", $_SESSION["phone_this"]);
 	
 	public function API_getLeadRecycling(){
 		$postfields = array(
-			'goAction' => 'goGetAllLeadRecycling',
-			'session_user' => session_user
+			'goAction' => 'goGetAllLeadRecycling'
 		);		
 		return $this->API_Request("goLeadRecycling", $postfields);
 	}	
@@ -321,8 +356,7 @@ define("session_password", $_SESSION["phone_this"]);
 	public function API_getAllDialStatuses($campaign_id){
 		$postfields = array(
 			'goAction' => 'goGetAllDialStatuses',
-			'campaign_id' => $campaign_id,
-			'session_user' => session_user
+			'campaign_id' => $campaign_id
 		);		
 		return $this->API_Request("goDialStatus", $postfields);
 	}	
@@ -331,8 +365,7 @@ define("session_password", $_SESSION["phone_this"]);
 		$postfields = array(
 			'goAction' => 'goGetAllDialStatuses',
 			'campaign_id' => $campaign_id,
-			'hotkeys_only' => 1,
-			'session_user' => session_user
+			'hotkeys_only' => 1
 		);		
 		return $this->API_Request("goDialStatus", $postfields);
 	}	
@@ -343,16 +376,14 @@ define("session_password", $_SESSION["phone_this"]);
 	*/
 	public function API_getAllLeadFilters(){
 		$postfields = array(
-			'goAction' => 'goGetAllLeadFilters',
-			'session_user' => session_user
+			'goAction' => 'goGetAllLeadFilters'
 		);		
 		return $this->API_Request("goLeadFilters", $postfields);
 	}	
 	
 	public function API_getCountryCodes(){
 		$postfields = array(
-			'goAction' => 'getAllCountryCodes',
-			'session_user' => session_user
+			'goAction' => 'getAllCountryCodes'
 		);		
 		return $this->API_Request("goCountryCode", $postfields);
 	}	
@@ -360,7 +391,6 @@ define("session_password", $_SESSION["phone_this"]);
 	public function API_getAllLists(){
 		$postfields = array(
 			'goAction' => 'goGetAllLists',
-			'session_user' => session_user,
 			'user_group' => session_usergroup
 		);		
 		return $this->API_Request("goLists", $postfields);
@@ -385,7 +415,6 @@ define("session_password", $_SESSION["phone_this"]);
 		$postfields = array(
 			'goAction' => 'goGetCampaignInfo',
 			'campaign_id' => $campid,
-			'session_user' => session_user,
 			'user_group' => session_usergroup			
 		);		
 		return $this->API_Request("goCampaigns", $postfields);
@@ -393,11 +422,121 @@ define("session_password", $_SESSION["phone_this"]);
 	
 	public function API_getAllUsers(){
 		$postfields = array(
-			'goAction' => 'goGetAllUsers',
-			'session_user' => session_user
-		);		
+			'goAction' => 'goGetAllUsers'
+		);
+		return $this->API_Request("goUsers", $postfields);
+	}
+
+	public function API_actionDNC($postfields){
+		return $this->API_Request("goLists", $postfields);
+	}
+
+	public function API_SMTPActivation($postfields){
+		return $this->API_Request("goSMTP", $postfields);
+	}
+
+	public function API_addCalltime($postfields){
+		return $this->API_Request("goCalltimes", $postfields);
+	}
+
+	public function API_addCarrier($postfields){
+		return $this->API_Request("goCarriers", $postfields);
+	}
+
+	public function API_addCustomFields($postfields){
+		return $this->API_Request("goCustomFields", $postfields);
+	}
+
+	public function API_addDialStatus($postfields){
+		return $this->API_Request("goCampaigns", $postfields);
+	}
+
+	public function API_addDisposition($postfields){
+		return $this->API_Request("goDispositions", $postfields);
+	}
+	
+	public function API_addGoogleSheet($postfields){
+		return $this->API_Request("goCampaigns", $postfields);
+	}
+
+	public function API_addHotkey($postfields){
+		return $this->API_Request("goCampaigns", $postfields);
+	}
+
+	public function API_addIVR($postfields){
+		return $this->API_Request("goInbound", $postfields);
+	}
+
+	public function API_addLeadFilter($postfields){
+		return $this->API_Request("goLeadFilters", $postfields);
+	}
+
+	public function API_addLeadRecycling($postfields){
+		return $this->API_Request("goLeadRecycling", $postfields);
+	}
+
+	public function API_addLoadLeads($postfields){
+		return $this->API_Upload("goUploadLeads", $postfields);
+	}
+
+	public function API_addMOH($postfields){
+		return $this->API_Request("goMusicOnHold", $postfields);
+	}
+
+	public function API_addPauseCode($postfields){
+		return $this->API_Request("goPauseCodes", $postfields);
+	}
+
+	public function API_addScript($postfields){
+		return $this->API_Request("goScripts", $postfields);
+	}
+
+	public function API_addServer($postfields){
+		return $this->API_Request("goServers", $postfields);
+	}
+
+	public function API_addUser($postfields){
+		return $this->API_Request("goUsers", $postfields);
+	}
+
+	public function API_addPhones($postfields){
+		return $this->API_Request("goPhones", $postfields);
+	}
+
+	public function API_addIngroup($postfields){
+		return $this->API_Request("goInbound", $postfields);
+	}
+
+	public function API_addDID($postfields){
+		return $this->API_Request("goInbound", $postfields);
+	}
+
+	public function API_addList($postfields){
+		return $this->API_Request("goLists", $postfields);
+	}
+
+	public function API_addUserGroup($postfields){
+		return $this->API_Request("goUserGroups", $postfields);
+	}
+
+	public function API_addVoiceFiles($postfields){
+		return $this->API_Upload("goVoiceFiles", $postfields);
+	}
+
+	public function API_addVoicemail($postfields){
+		return $this->API_Request("goVoicemails", $postfields);
+	}
+
+	public function API_checkCalltimes($postfields){
+		return $this->API_Request("goCalltimes", $postfields);
+	}
+
+	public function API_checkCampaign($postfields){
+		return $this->API_Request("goCampaigns", $postfields, true);
+	}
+
+	public function API_checkUser($postfields){
 		return $this->API_Request("goUsers", $postfields);
 	}
 }
-
 ?>

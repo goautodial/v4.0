@@ -1,10 +1,26 @@
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
-
-require_once('goCRMAPISettings.php');	
+/**
+ * @file        AddDisposition.php
+ * @brief       Handles Add Disposition Request
+ * @copyright   Copyright (C) GOautodial Inc.
+ * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+require_once('APIHandler.php');
+$api = \creamy\APIHandler::getInstance();
 
 if(!isset($_POST['selectable'])){
 	$_POST['selectable'] = "N";
@@ -37,7 +53,7 @@ if(!isset($_POST['not_interested'])){
 if(!isset($_POST['unworkable'])){
 	$_POST['unworkable'] = "N";
 }
-
+/*
 	$url = gourl."/goDispositions/goAPI.php"; # URL to GoAutoDial API file
 	$postfields["goUser"] 			= goUser; #Username goes here. (required)
 	$postfields["goPass"] 			= goPass; #Password goes here. (required)
@@ -60,27 +76,29 @@ if(!isset($_POST['unworkable'])){
 	
 	$postfields['log_user']				=  $_POST['log_user'];
 	$postfields['log_group']			=  $_POST['log_group'];
+*/
+	$postfields = array(
+			'goAction' => 'goAddDisposition',
+			'userid' => $_POST['userid'],
+			'campaign_id' => $_POST['campaign'],
+			'status' => $_POST['status'],
+			'status_name' => $_POST['status_name'],
+			'selectable' => $_POST['selectable'],
+			'human_answered' => $_POST['human_answered'],
+			'sale' => $_POST['sale'],
+			'dnc' => $_POST['dnc'],
+			'scheduled_callback' => $_POST['scheduled_callback'],
+			'customer_contact']  $_POST['customer_contact'],
+			'not_interested' => $_POST['not_interested'],
+			'unworkable' => $_POST['unworkable']
+		);
 
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url);
-	// curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	$data = curl_exec($ch);
-	curl_close($ch);
-
-	$output = json_decode($data);
+	$output = $api->API_addDisposition($postfields);
 	
 	if ($output->result=="success") {
-		# Result was OK!
 		$status = 1;
 		//$return['msg'] = "New User has been successfully saved.";
 	} else {
-		# An error occured
-		//$status = 0;
 		// $return['msg'] = "Something went wrong please see input data on form.";
         $status = $output->result;
 	}

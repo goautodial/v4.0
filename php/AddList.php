@@ -1,11 +1,9 @@
 <?php
 /**
- * @file        AddUserGroup.php
- * @brief       
- * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author     Demian Lizandro A, Biscocho
- * @author      Alexander Jim H. Abenoja
- * @author     Jerico James F. Milo
+ * @file        AddList.php
+ * @brief       Handles Add List Request
+ * @copyright   Copyright (C) GOautodial Inc.
+ * @author      Alexander Jim Abenoja  <alex@goautodial.com>
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -25,35 +23,32 @@ require_once('APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
 
 /*
-	$url = gourl."/goVoicemails/goAPI.php"; # URL to GoAutoDial API file
+	$url = gourl."/goLists/goAPI.php"; # URL to GoAutoDial API file
 	$postfields["goUser"] 			= goUser; #Username goes here. (required)
 	$postfields["goPass"] 			= goPass; #Password goes here. (required)
-	$postfields["goAction"] 		= "goAddVoicemail"; #action performed by the [[API:Functions]]
+	$postfields["goAction"] 		= "goAddList"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] 	= responsetype; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
 	
-	$postfields["voicemail_id"] 	= $_POST['voicemail_id']; 
-	$postfields["pass"] 			= $_POST['password']; 
-	$postfields["fullname"] 		= $_POST['name'];
-	$postfields["email"] 			= $_POST['email']; 
-	$postfields["user_group"] 		= $_POST['user_group']; 
-	$postfields["active"] 			= $_POST['active'];
+	$postfields["list_id"] 			= $_POST['add_list_id']; 
+	$postfields["list_name"] 		= $_POST['list_name']; 
+	$postfields["list_description"] = $_POST['list_desc'];
+	$postfields["campaign_id"] 		= $_POST['campaign_select'];
+	$postfields["active"] 			= $_POST['status'];
 	
-	$postfields["log_user"]			= $_POST['log_user'];
-	$postfields["log_group"]		= $_POST['log_group'];
+	$postfields["log_user"] 		= $_POST['log_user'];
+	$postfields["log_group"] 		= $_POST['log_group'];
 */
-
 	$postfields = array(
-		'goAction' => 'goAddVoicemail',
-		'voicemail_id' => $_POST['voicemail_id'], 
-		'pass' => $_POST['password'], 
-		'fullname' => $_POST['name'],
-		'email' => $_POST['email'], 
-		'user_group' => $_POST['user_group'], 
-		'active' => $_POST['active']
+		'goAction' => 'goAddList',
+		'list_id' => $_POST['add_list_id'], 
+		'list_name' => $_POST['list_name'], 
+		'list_description' => $_POST['list_desc'],
+		'campaign_id' => $_POST['campaign_select'],
+		'active' => $_POST['status']
 	);
 
-   $output = $api->API_addVoicemail($postfields);
+    $output = $api->API_addList($postfields);
 	
 	if ($output->result=="success") {
 		$status = 1;

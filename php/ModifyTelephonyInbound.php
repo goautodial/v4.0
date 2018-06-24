@@ -29,12 +29,7 @@ require_once('goCRMAPISettings.php');
 require_once('APIHandler.php');
 
 $api = \creamy\APIHandler::getInstance();
-$postfields = array("dwda", 1213, 213,3123);
-$default = array("d1d21d21", 123121312, 41);
 
-$data = array_merge($default, $postfields);
-var_dump($data);
-/*
 // check required fields
 $reason = "Unable to Modify Inbound";
 
@@ -475,7 +470,7 @@ if ($did != NULL) {
 	    $postfields["extension"]                = $_POST['route_exten']; #Desired extension (required if did_route is CUSTOM EXTENSION)
 	    $postfields["exten_context"]            = $_POST['route_exten_context']; #Deisred context (required if did_route is CUSTOM EXTENSION)
 	}
-	*
+	*/
 
     $postfields = array(
 		'goAction' => 'goEditDID',
@@ -512,5 +507,5 @@ if ($did != NULL) {
     }
     
 }
-*/
+
 ?>

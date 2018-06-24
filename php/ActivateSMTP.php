@@ -1,29 +1,35 @@
 <?php
-	require_once('goCRMAPISettings.php');
+/**
+ * @file        ActivateSMTP.php
+ * @brief       Activate/Deactivate SMTP
+ * @copyright   Copyright (C) GOautodial Inc.
+ * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 	
 	$id = $_POST['action_id'];
 	
-    $url = gourl."/goSMTP/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goSMTPActivation"; #action performed by the [[API:Functions]]. (required)
-	$postfields['action_smtp'] = $id;
-	
-    $postfields["responsetype"] = responsetype; #json. (required)
-	$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-	
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
+	$postfields = array(
+		'goAction' => 'goActionDNC',
+		'action_smtp' => $id
+	);	
+    
+	$output = $api->API_SMTPActivation($postfields);
 
 	if($output->result == "success"){
 		$status = $output->result;

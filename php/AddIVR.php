@@ -1,11 +1,29 @@
 <?php
+/**
+ * @file        AddHotkey.php
+ * @brief       Handles Add Hotkey Request
+ * @copyright   Copyright (C) GOautodial Inc.
+ * @author      Noel Umandap
+ * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+require_once('APIHandler.php');
+$api = \creamy\APIHandler::getInstance();
 
-	/** Telephony Callmenu API - Add a new Telephony Callmenu */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 */
-require_once('goCRMAPISettings.php');
-
+	/*
 	$url = gourl."/goInbound/goAPI.php"; # URL to GoAutoDial API file
 	$postfields["goUser"] 			= goUser; #Username goes here. (required)
 	$postfields["goPass"] 			= goPass; #Password goes here. (required)
@@ -28,7 +46,7 @@ require_once('goCRMAPISettings.php');
 	$postfields['track_in_vdac'] = $_POST['track_in_vdac'];
 	$postfields['custom_dialplan_entry'] = $_POST['custom_dialplan_entry'];
 	$postfields['tracking_group'] = $_POST['tracking_group'];
-    
+    */
 	$route_option = $_POST['option'];
 	$route_desc = $_POST['route_desc'];
 	$route_menu = $_POST['route_menu'];
@@ -93,10 +111,6 @@ require_once('goCRMAPISettings.php');
 		}
 	}
 	
-	//echo "<pre>";
-	//var_dump($option_route_context);
-	//echo "</pre>";
-	
 	$items = "";
 	for($i=0;$i < count($route_option);$i++){
 		if($route_option[$i] == "A") $route_option[$i] = '#';
@@ -108,27 +122,32 @@ require_once('goCRMAPISettings.php');
 		$items .= "|";
 	}
 	
-	$postfields['items'] = $items;
-	
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url);
-	// curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	$data = curl_exec($ch);
-	curl_close($ch);
+	//$postfields['items'] = $items;
 
-	$output = json_decode($data);
+	$postfields = array(
+		'goAction' => 'goAddIVRmenu',
+		'menu_id' => $_POST['menu_id'],
+		'menu_name' => $_POST['menu_name'],
+		'user_group' => $_POST['user_groups'],
+		'menu_prompt' => $_POST['menu_prompt'],
+		'menu_timeout' => $_POST['menu_timeout'],
+		'menu_timeout_prompt' => $_POST['menu_timeout_prompt'],
+		'menu_invalid_prompt' => $_POST['menu_invalid_prompt'],
+		'menu_repeat' => $_POST['menu_repeat'],
+		'postfields' => $_POST['menu_time_check'],
+		'call_time_id' => $_POST['call_time_id'],
+		'track_in_vdac' => $_POST['track_in_vdac'],
+		'custom_dialplan_entry' => $_POST['custom_dialplan_entry'],
+		'tracking_group' => $_POST['tracking_group'],
+		'items' => $items
+	);
+
+	$output = $api->API_addIVR($postfields);
 	
 	if ($output->result=="success") {
-		# Result was OK!
 		$status = $output->result;
 		//$return['msg'] = "New User has been successfully saved.";
 	} else {
-		# An error occured
 		//$status = 0;
 		// $return['msg'] = "Something went wrong please see input data on form.";
         $status = $output->result;

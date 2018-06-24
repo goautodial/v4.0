@@ -177,7 +177,7 @@
 	$ingroup = $api->API_getAllInGroups();
 	$ivr = $api->API_getAllIVRs();
 	$voicemails = $api->API_getVoiceFiles();
-	$users = $api->API_goGetAllUsers();
+	$users = $api->API_getAllUsers();
 	$carriers = $api->API_getAllCarriers();
 	$checkbox_all = $ui->getCheckAll("campaign");
 ?>
