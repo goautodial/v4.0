@@ -1,10 +1,29 @@
 <?php
+/**
+ * @file        DeletePauseCode.php
+ * @brief       Handles Delete Pause Code Requests
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author      Alexander Jim H. Abenoja  <alex@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	/** Campaigns API - Add a new Campaign */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 */
+require_once('APIHandler.php');
+$api = \creamy\APIHandler::getInstance();
 
+/*
     require_once('goCRMAPISettings.php');
 
     $url = gourl."/goPauseCodes/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -18,25 +37,20 @@
 	
 	$postfields["log_user"] = $_POST['log_user'];
 	$postfields["log_group"] = $_POST['log_group'];
+*/
+	$postfields = array(
+		'goAction' => 'goDeletePauseCode',
+		'pauseCampID' => $_POST['campaign_id'],
+		'pause_code' => $_POST['pause_code']
+	);
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
+	$output = $api->API_Request("goPauseCodes", $postfields);
 
-		if ($output->result=="success") {
-			# Result was OK!
-			$status = "success";
-		} else {
-			# An error occured
-			$status = "error";
-		}
+	if ($output->result=="success") {
+		$status = "success";
+	} else {
+		$status = "error";
+	}
 
-		echo $status;
+	echo $status;
 ?>

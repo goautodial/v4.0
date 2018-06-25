@@ -1,7 +1,31 @@
 <?php
+/**
+ * @file        DeleteDisposition.php
+ * @brief       Handles Delete Disposition Requests
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author      Alexander Jim H. Abenoja  <alex@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+require_once('APIHandler.php');
+$api = \creamy\APIHandler::getInstance();
+/*
 require_once('CRMDefaults.php');
 require_once('goCRMAPISettings.php');
-
+*/
 // check required fields
 $validated = 1;
 if (!isset($_POST["disposition_id"])) {
@@ -13,7 +37,7 @@ if ($validated == 1) {
 
 	if(isset($_POST['status'])){
         $status = $_POST["status"];
-
+        /*
         $url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -24,26 +48,22 @@ if ($validated == 1) {
         $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 		$postfields["log_user"] = $_POST['log_user'];
 		$postfields["log_group"] = $_POST['log_group'];
+        */
+        $postfields = array(
+            'goAction' => 'goDeleteDisposition',
+            'campaign_id' => $disposition_id,
+            'statuses' => $status
+        );
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $data = curl_exec($ch);
-        curl_close($ch);
-        $output = json_decode($data);
+        $output = $api->API_Request("goDispositions", $postfields);
 
         if ($output->result=="success") {
-        # Result was OK!
             echo 1;
         }else{
             echo $output->result;
         }
     }else{
+        /*
         $url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -51,20 +71,16 @@ if ($validated == 1) {
         $postfields["responsetype"] = responsetype; #json. (required)
         $postfields["campaign_id"] = $disposition_id; #Desired User ID. (required)
         $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+        */
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-        $data = curl_exec($ch);
-        curl_close($ch);
-        $output = json_decode($data);
+        $postfields = array(
+            'goAction' => 'goDeleteDisposition',
+            'campaign_id' => $disposition_id
+        );
+
+        $output = $api->API_Request("goDispositions", $postfields);
 
         if ($output->result=="success") {
-        # Result was OK!
     		echo 1;
         }else{
             echo $output->result;

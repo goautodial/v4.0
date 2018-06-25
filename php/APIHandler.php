@@ -217,7 +217,7 @@ if(isset($_SESSION["user"])){
 	public function API_getInGroups() {
 		$postfields = array(
 			'goAction' => 'goGetAllIngroup'
-		);				
+		);	
 
 		return $this->API_Request("goInbound", $postfields);
 	}

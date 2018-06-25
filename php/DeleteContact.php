@@ -1,11 +1,31 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+/**
+ * @file        DeleteContact.php
+ * @brief       Handles Delete Lead/Contact Requests
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author      Alexander Jim H. Abenoja  <alex@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
+require_once('APIHandler.php');
+$api = \creamy\APIHandler::getInstance();
+/*
 require_once('CRMDefaults.php');
 require_once('goCRMAPISettings.php');
-
+*/
 // check required fields
 $validated = 1;
 if (!isset($_POST["leadid"])) {
@@ -13,8 +33,8 @@ if (!isset($_POST["leadid"])) {
 }
 
 if ($validated == 1) {
-	$leadid = $_POST["leadid"];
-	
+	//$leadid = $_POST["leadid"];
+/*	
     $url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -25,21 +45,15 @@ if ($validated == 1) {
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["log_user"] = $_POST['log_user'];
 	$postfields["log_group"] = $_POST['log_group'];
-    
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
-     
+*/    
+    $postfields = array(
+        'goAction' => 'goDeleteLead',
+        'leadid' => $_POST["leadid"]
+    );
+
+    $output = $api->API_Request("goGetLeads", $postfields);
+
     if ($output->result=="success") {
-    # Result was OK!
         echo $output->result;
     } else {
         echo $output->result;
