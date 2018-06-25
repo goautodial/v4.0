@@ -22,16 +22,16 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-require_once('./php/CRMDefaults.php');
-require_once('./php/UIHandler.php');
-require_once('./php/LanguageHandler.php');
-require('./php/Session.php');
-require_once('./php/goCRMAPISettings.php');
+	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
 
-// initialize structures
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
+	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
 
 $userid = NULL;
 if (isset($_POST["user_id"])) {
@@ -45,8 +45,8 @@ if(isset($_POST["role"])){
 	$userrole = $_POST["role"];
 }
 
-$voicemails = $ui->API_goGetVoiceMails();
-$user_groups = $ui->API_goGetUserGroupsList();
+$voicemails = $api->API_getAllVoiceMails();
+$user_groups = $api->API_getAllUserGroups();
 ?>
 <html>
     <head>

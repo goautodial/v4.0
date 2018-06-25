@@ -102,7 +102,7 @@
 
 	$ingroup = $api->API_getAllInGroups();
 	$ivr = $api->API_getAllIVRs();
-	$phonenumber = $api->API_getPhoneNumber();
+	$phonenumber = $api->API_getAllDIDs();
 
 	/*
 	 * APIs for getting lists for the some of the forms
