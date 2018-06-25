@@ -111,7 +111,7 @@
 	$user_groups = $api->API_getAllUserGroups();
 	$campaign = $api->API_getAllCampaigns();
 	$voicemails = $api->API_getAllVoicemails();
-	$phones = $api->API_getAllPhones();
+	$phones = $api->API_getAllDIDs();
 	$scripts = $api->API_getAllScripts();
 	$voicefiles = $api->API_getAllVoiceFiles();
 	$calltimes = $api->API_getCalltimes();

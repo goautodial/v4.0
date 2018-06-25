@@ -248,7 +248,7 @@ if(isset($_SESSION["user"])){
 	}
 
 	//Telephony > phonenumber(DID)
-	public function API_getPhoneNumber() {
+	public function API_getAllDIDs() {
 		$postfields = array(
 			'goAction' => 'goGetDIDsList'
 		);				
