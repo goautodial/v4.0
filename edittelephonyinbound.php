@@ -127,11 +127,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					if($groupid != NULL) {
 
 					/* APIs used for forms */
-						$call_menu = $api->API_getIVR();
+						$call_menu = $api->API_getAllIVRs();
 						$call_time = $api->API_getCalltimes();
 						$scripts = $api->API_getAllScripts();
 						$voicemail = $api->API_getAllVoiceMails();
-						$ingroup = $api->API_getInGroups();
+						$ingroup = $api->API_getAllInGroups();
 						$voicefiles = $api->API_getAllVoiceFiles();
 						$moh = $api->API_getAllMusicOnHold();
 
@@ -1148,45 +1148,21 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					
 				// IF IVR
 					if($ivr != NULL) {
-						/*
-						 * Displaying Interactive Voice Response Information
-						 * [[API:Function]] – goGetIVRInfo
-						 * Allows to retrieve some attributes of a given IVR menu. IVR menu should belong to the user that authenticated the request.
-						 */
-
-						$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-						$postfields["goUser"] = goUser; #Username goes here. (required)
-						$postfields["goPass"] = goPass; #Password goes here. (required)
-						$postfields["goAction"] = "goGetIVRInfo"; #action performed by the [[API:Functions]]. (required)
-						$postfields["responsetype"] = responsetype; #json. (required)
-						$postfields["menu_id"] = $ivr; #Desired menu id. (required)
-						$ch = curl_init();
-						curl_setopt($ch, CURLOPT_URL, $url);
-						curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-						curl_setopt($ch, CURLOPT_POST, 1);
-						curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-						curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-						curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-						$data = curl_exec($ch);
-						curl_close($ch);
-						$output = json_decode($data);
-
-						//var_dump($output);
-
+						$output = $api->API_getIVRInfo($ivr);
+						
 						if ($output->result=="success") {
-							$user_groups = $ui->API_goGetUserGroupsList();
-							$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
-							$calltimes = $ui->getCalltimes();
-							$ivr_options = $ui->API_getIVROptions($ivr);
-							$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
-							$voicemails = $ui->API_goGetVoiceMails();
-							$phones = $ui->API_getPhonesList();
-							$ivr = $ui->API_getIVR($_SESSION['usergroup']);
-							$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
-							$voicefiles = $ui->API_GetVoiceFilesList();
-							$calltimes = $ui->getCalltimes();
-							$phonenumber = $ui->API_getPhoneNumber($_SESSION['usergroup']);
+							$user_groups = $api->API_getAllUserGroups();
+							$ingroups = $api->API_getAllInGroups();							
+							$phonenumber = $api->API_getAllDIDs();							
+							$campaign = $api->API_getAllCampaigns();
+							$voicemails = $api->API_getAllVoicemails();
+							$phones = $api->API_getAllDIDs();
+							$scripts = $api->API_getAllScripts();
+							$voicefiles = $api->API_getAllVoiceFiles();
+							$calltimes = $api->API_getCalltimes();
+	
+							$ivr_options = $api->API_getIVROptions($ivr);
+							$ivr = $api->API_getAllIVRs();
 						# Result was OK!
 					?>
 						<section class="content">
@@ -1789,7 +1765,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 	$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
 	$voicemails = $ui->API_goGetVoiceMails();
 	$phones = $ui->API_getPhonesList();
-	$ivr = $ui->API_getIVR($_SESSION['usergroup']);
+	$ivr = $ui->API_getAllIVRs($_SESSION['usergroup']);
 	$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
 	$voicefiles = $ui->API_GetVoiceFilesList();
 	//var_dump($ingroups);

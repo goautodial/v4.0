@@ -239,10 +239,25 @@ if(isset($_SESSION["user"])){
 		$postfields = array(
 			'goAction' => 'goGetAllIVR'
 		);
-
 		return $this->API_Request("goInbound", $postfields);
 	}
+	
+	public function API_getIVRInfo($menu_id) {
+		$postfields = array(
+			'goAction' => 'goGetIVRInfo',
+			'menu_id' => $menu_id
+		);
+		return $this->API_Request("goInbound", $postfields);
+	}	
 
+	public function API_getIVROptions($menu_id) {
+		$postfields = array(
+			'goAction' => 'goGetIVROptions',
+			'menu_id' => $menu_id
+		);
+		return $this->API_Request("goInbound", $postfields);
+	}
+	
 	public function API_modifyIVR($postfields) {
 		return $this->API_Request("goInbound", $postfields);
 	}
@@ -263,6 +278,14 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goPhones", $postfields);
 	}
 
+	public function API_getPhoneInfo($extenid){
+		$postfields = array(
+			'goAction' => 'goGetPhoneInfo',
+			'extension' => $extenid
+		);				
+		return $this->API_Request("goPhones", $postfields);
+	}
+	
 	/** Call Times API - Get all list of call times */
 	public function API_getCalltimes(){
         $postfields = array(
