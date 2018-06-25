@@ -109,9 +109,9 @@
 	 */
 	$users = $api->API_getAllUsers();
 	$user_groups = $api->API_getAllUserGroups();
-	$campaign = $api->API_getAllCampaigns($_SESSION['usergroup']);
+	$campaign = $api->API_getAllCampaigns();
 	$voicemails = $api->API_getAllVoicemails();
-	$phones = $ui->API_getPhonesList();
+	$phones = $api->API_getAllPhones();
 	$scripts = $api->API_getAllScripts();
 	$voicefiles = $api->API_getAllVoiceFiles();
 	$calltimes = $api->API_getCalltimes();

@@ -1,23 +1,34 @@
 <?php
+/**
+ * @file 		edittelephonylist.php
+ * @brief 		Edit list details
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author		Demian Lizandro A. Biscocho
+ * @author     	Alexander Jim H. Abenoja
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
-	######################################################
-	### Name: edittelephonylist.php 		###
-	### Functions: Edit List Details 		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016 		###
-	### Version: 4.0 		###
-	### Written by: Alexander Jim H. Abenoja 		###
-	### License: AGPLv2 		###
-	######################################################
-
-	require_once('./php/CRMDefaults.php');
 	require_once('./php/UIHandler.php');
-	//require_once('./php/DbHandler.php');
-	require_once('./php/LanguageHandler.php');
-	require('./php/Session.php');
-	require_once('./php/goCRMAPISettings.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
 
-	// initialize structures
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
@@ -30,9 +41,9 @@ if (isset($_POST["modifyid"])) {
 $statuses = $ui->API_ListsStatuses($modifyid);
 $timezones = $ui->API_ListsTimezone($modifyid);
 
-$perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
+$perm = $api->goGetPermissions('customfields', $_SESSION['usergroup']);
 
-$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
+$scripts = $api->API_getAllScripts($_SESSION['user']);
 ?>
 <html>
     <head>
@@ -88,8 +99,10 @@ $scripts = $ui->API_goGetAllScripts($_SESSION['user']);
 						<!-- standard custom edition form -->
 					<?php
 					$errormessage = NULL;
-					$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
+					//$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
+					$campaign = $api->API_getAllCampaigns();
 
+					/*
 					//if(isset($extenid)) {
 						$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
 				        $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -117,6 +130,7 @@ $scripts = $ui->API_goGetAllScripts($_SESSION['user']);
 
 						# Result was OK!
 							for($i=0;$i<count($output->list_id);$i++){
+					*/
 					?>
 
             <!-- Main content -->
@@ -397,8 +411,9 @@ $scripts = $ui->API_goGetAllScripts($_SESSION['user']);
 	            </div>
             </section>
 					<?php
+						/*
 							}
-						}
+						}*/
 					?>
 
 				<!-- /.content -->

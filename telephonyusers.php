@@ -191,7 +191,7 @@
 <?php
 	$output = $api->API_getAllUsers();
 	$user_groups = $api->API_getAllUserGroups();
-	$phones = $ui->API_getPhonesList();
+	$phones = $api->API_getAllPhones();
 	$max = max($phones->extension);
 	$suggested_extension = $max + 1;
 	$count_users = count($output->user);

@@ -27,7 +27,6 @@ require_once('CRMDefaults.php');
 require_once('LanguageHandler.php');
 require_once('CRMUtils.php');
 require_once('goCRMAPISettings.php');
-//require_once('Session.php');
 require_once('SessionHandler.php');
 $session_class = new \creamy\SessionHandler();
 
@@ -236,7 +235,7 @@ if(isset($_SESSION["user"])){
 	}
 
 	// Telephony IVR
-	public function API_getIVR() {
+	public function API_getAllIVRs() {
 		$postfields = array(
 			'goAction' => 'goGetAllIVR'
 		);
@@ -276,11 +275,20 @@ if(isset($_SESSION["user"])){
 	public function API_getAllScripts(){
 		$url = gourl."/goScripts/goAPI.php";
         $postfields = array(
-			'goAction' => 'getAllScripts'
+			'goAction' => 'goGetAllScripts'
 		);				
         return $this->API_Request("goScripts", $postfields);
 	}
 
+	public function API_getScriptInfo($scriptid){
+		$url = gourl."/goScripts/goAPI.php";
+        $postfields = array(
+			'goAction' => 'goGetScriptInfo',
+			'script_id' => $scriptid
+		);				
+        return $this->API_Request("goScripts", $postfields);
+	}
+	
 	// VoiceMails
 	public function API_getAllVoiceMails() {
 		$postfields = array(
@@ -428,6 +436,13 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goUsers", $postfields);
 	}
 
+	public function API_getAllUserGroups() {
+		$postfields = array(
+			'goAction' => 'goGetAllUserGroups'
+		);
+		return $this->API_Request("goUserGroups", $postfields);
+	}
+	
 	public function API_actionDNC($postfields){
 		return $this->API_Request("goLists", $postfields);
 	}
