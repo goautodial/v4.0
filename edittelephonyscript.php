@@ -1,23 +1,34 @@
 <?php
+/**
+ * @file 		edittelephonyscript.php
+ * @brief 		Edit scripts
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author		Demian Lizandro A. Biscocho
+ * @author     	Alexander Jim H. Abenoja
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
-	###################################################
-	### Name: edittelephonyscript.php 	   ###
-	### Functions: Edit Scripts 	   ###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	   ###
-	### Version: 4.0 	   ###
-	### Written by: Alexander Jim H. Abenoja	   ###
-	### License: AGPLv2	   ###
-	###################################################
-
-	require_once('./php/CRMDefaults.php');
 	require_once('./php/UIHandler.php');
-	//require_once('./php/DbHandler.php');
-	require_once('./php/LanguageHandler.php');
-	require('./php/Session.php');
-	require_once('./php/goCRMAPISettings.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
 
-	// initialize structures
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
@@ -28,7 +39,7 @@
 		header("location: telephonyscripts.php");
 	}
 
-	$user_groups = $ui->API_goGetUserGroupsList();
+	$user_groups = $api->API_getAllUserGroups();
 ?>
 <html>
     <head>
@@ -83,34 +94,8 @@
 
 						<!-- standard custom edition form -->
 					<?php
-					$errormessage = NULL;
-
-					//if(isset($extenid)) {
-						$url = gourl."/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
-				        $postfields["goUser"] = goUser; #Username goes here. (required)
-				        $postfields["goPass"] = goPass; #Password goes here. (required)
-				        $postfields["goAction"] = "getScriptInfo"; #action performed by the [[API:Functions]]. (required)
-				        $postfields["responsetype"] = responsetype; #json. (required)
-				        $postfields["script_id"] = $script_id; #Desired exten ID. (required)
-
-				         $ch = curl_init();
-				         curl_setopt($ch, CURLOPT_URL, $url);
-				         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-				         curl_setopt($ch, CURLOPT_POST, 1);
-				         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-				         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-						 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-				         $data = curl_exec($ch);
-				         curl_close($ch);
-				         $output = json_decode($data);
-				         
-				        // var_dump($output);
-
-						if ($output->result=="success") {
-						
-						# Result was OK!
-							for($i=0;$i<count($output->script_id);$i++){
+						$errormessage = NULL;
+						$output = $api->API_getScriptInfo($script_id);
 					?>
             <!-- Main content -->
             <section class="content">
@@ -135,13 +120,13 @@
 				<div class="form-group mt">
 					<label for="script_name" class="col-sm-2 control-label"><?php $lh->translateText("script_name"); ?></label>
 					<div class="col-sm-10 mb">
-						<input type="text" class="form-control" name="script_name" id="script_name" placeholder="<?php $lh->translateText("script_name"); ?> (<?php $lh->translateText("mandatory"); ?>)" value="<?php echo $output->script_name[$i];?>">
+						<input type="text" class="form-control" name="script_name" id="script_name" placeholder="<?php $lh->translateText("script_name"); ?> (<?php $lh->translateText("mandatory"); ?>)" value="<?php echo $output->script_name;?>">
 					</div>
 				</div>
 				<div class="form-group mt">
 					<label for="script_comments" class="col-sm-2 control-label"><?php $lh->translateText("script_comment"); ?></label>
 					<div class="col-sm-10 mb">
-						<input type="text" class="form-control" name="script_comments" id="script_comments" placeholder="<?php $lh->translateText("script_comments"); ?>" value="<?php echo $output->script_comments[$i];?>">
+						<input type="text" class="form-control" name="script_comments" id="script_comments" placeholder="<?php $lh->translateText("script_comments"); ?>" value="<?php echo $output->script_comments;?>">
 					</div>
 				</div>
 				<div class="form-group">
@@ -150,13 +135,13 @@
 						<select class="form-control" name="active" id="active">
 						<?php
 							$active = NULL;
-							if($output->active[$i] == "Y"){
+							if($output->active == "Y"){
 								$active .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
 							}else{
 								$active .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 							}
 							
-							if($output->active[$i] == "N" || $output->active[$i] == NULL){
+							if($output->active == "N" || $output->active == NULL){
 								$active .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
 							}else{
 								$active .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
@@ -173,7 +158,7 @@
 							<option value="" disabled selected> - - - <?php $lh->translateText('Select User Group'); ?> - - -</option>
 							<?php
 							if ($user_groups->result == 'success') {
-								$myGroup = $output->user_group[$i];
+								$myGroup = $output->user_group;
 								foreach ($user_groups->user_group as $x => $group) {
 									$isSelected = '';
 									if ($group == $myGroup) {
@@ -234,12 +219,6 @@
 	                </div><!-- body -->
 	            </div>
             </section>
-					<?php
-							}
-						}	
-                        
-					?>
-					
 				<!-- /.content -->
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>

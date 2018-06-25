@@ -3986,10 +3986,10 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 
-	public function getListAllMusicOnHold($goUser, $goPass, $goAction, $responsetype){
-		require_once('Session.php');
-		$perm = $this->goGetPermissions('moh', $_SESSION['usergroup']);
-	    $output = $this->API_goGetAllMusicOnHold();
+	public function getListAllMusicOnHold($user_group){
+		//require_once('Session.php');
+		$perm = $this->api->goGetPermissions('moh', $user_group);
+	    $output = $this->api->API_getAllMusicOnHold();
 
 	    # Result was OK!
 	    $columns = array($this->lh->translationFor('moh_name'), $this->lh->translationFor('status'), $this->lh->translationFor('random_order'), $this->lh->translationFor('group'), $this->lh->translationFor('action'));
@@ -4049,7 +4049,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction
 	 * @param responsetype
 	 */
-	public function API_GetVoiceFilesList(){
+	public function API_getAllVoiceFiles(){
 	    $url = gourl."/goVoiceFiles/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -4071,11 +4071,11 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllVoiceFiles(){
-		require_once('Session.php');
-		$perm = $this->goGetPermissions('voicefiles', $_SESSION['usergroup']);
-		$output = $this->API_GetVoiceFilesList();
-	    if ($output->result=="success") {
+	public function getListAllVoiceFiles($user_group){
+		//require_once('Session.php');
+		$perm = $this->api->goGetPermissions('voicefiles', $user_group);
+		$output = $this->api->API_getAllVoiceFiles();
+	    //if ($output->result=="success") {
 	    # Result was OK!
 	    $columns = array($this->lh->translationFor('file_name'), $this->lh->translationFor('date'), $this->lh->translationFor('size'), $this->lh->translationFor('action'));
 	    $hideOnMedium = array("Date");
@@ -4083,7 +4083,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 	    $server_port = getenv("SERVER_PORT");
 		//$web_ip = getenv("SERVER_ADDR");
-		$web_ip = $_SERVER['SERVER_NAME'];
+		//$web_ip = $_SERVER['SERVER_NAME'];
+		$web_ip = $log_ip;
 		if (preg_match("/443/",$server_port)) {$HTTPprotocol = 'https://';}
 		else {$HTTPprotocol = 'http://';}
 	    for($i=0;$i<count($output->file_name);$i++){
@@ -4114,10 +4115,10 @@ error_reporting(E_ERROR | E_PARSE);
 		    </tr>";
 	    }
 		return $result.'</table>';
-	    } else {
+	    //} else {
 		# An error occured
-		return $output->result;
-	    }
+		//return $output->result;
+	    //}
 	}
 
 	private function getUserActionMenuForVoiceFiles($filename, $details, $perm, $protocol, $web_ip) {

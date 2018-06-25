@@ -1,24 +1,38 @@
 <?php
-
-	###################################################
-	### Name: telephonyinbound.php 	   ###
-	### Functions: Manage Inbound, IVR & DID  	   ###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	   ###
-	### Version: 4.0 	   ###
-	### Written by: Alexander Jim H. Abenoja	   ###
-	### License: AGPLv2	   ###
-	###################################################
+/**
+ * @file        telephonyaudiofiles.php
+ * @brief       Manage audio files
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A. Biscocho
+ * @author      Alexander Jim Abenoja
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	
-	$perm = $ui->goGetPermissions('voicefiles,moh', $_SESSION['usergroup']);
+	$perm = $api->goGetPermissions('voicefiles,moh', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -115,12 +129,18 @@
 
 							<!--==== MOH ====-->
 							<div id="moh_tab" role="tabpanel" class="tab-pane<?=$activeMOH?>">
-								<?php print $ui->getListAllMusicOnHold(); ?>
+								<?php print $ui->getListAllMusicOnHold($_SESSION['usergroup']); ?>
 							</div>
 
 							<!--==== Voicefiles ====-->
 							<div id="voicefiles_tab" role="tabpanel" class="tab-pane<?=$activeVoicefiles?>">
-								<?php print $ui->getListAllVoiceFiles(); ?>
+								<?php 
+									//$output2 = $api->API_getAllVoiceFiles();
+									
+									//echo "<pre>";									
+									//var_dump($output2);
+									print $ui->getListAllVoiceFiles($_SESSION['usergroup']); 
+								?>
 							</div>
 
 						</div><!-- END tab content-->
@@ -170,7 +190,7 @@
  /*
   * APIs needed for form
   */
-   $user_groups = $ui->API_goGetUserGroupsList();
+   $user_groups = $api->API_getAllUserGroups();
 ?>
 <!-- MOH MODALS -->
 	<!-- Modal -->
