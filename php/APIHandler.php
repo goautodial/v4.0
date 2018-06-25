@@ -378,12 +378,20 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goDispositions", $postfields);
 	}
 	
-	public function API_getLeadRecycling(){
+	public function API_getAllLeadRecycling(){
 		$postfields = array(
 			'goAction' => 'goGetAllLeadRecycling'
 		);		
 		return $this->API_Request("goLeadRecycling", $postfields);
 	}	
+	
+	public function API_getLeadRecyclingInfo($campaign_id){
+		$postfields = array(
+			'goAction' => 'goGetLeadRecyclingInfo',
+			'campaign_id' => $campaign_id
+		);		
+		return $this->API_Request("goLeadRecycling", $postfields);
+	}
 	
 	public function API_getAllDialStatuses($campaign_id){
 		$postfields = array(

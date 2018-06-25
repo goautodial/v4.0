@@ -57,7 +57,7 @@ if (isset($_POST["leadfilter"])) {
  * APIs for forms
  */
 $campaign = $api->API_getCampaignInfo($campaign_id);
-$disposition = $api->API_getDispositionInfo($did);
+$disposition = $api->API_getDispositionInfo($campaign_id);
 
 $calltimes = $api->API_getCalltimes();
 $scripts = $api->API_getAllScripts();
@@ -71,7 +71,7 @@ $voicefiles = $api->API_getAllVoiceFiles();
 $ingroups = $api->API_getAllInGroups();
 $ivr = $api->API_getAllIVRs();
 $lists = $api->API_getAllLists();
-$audiofiles = $ui->API_getListAudioFiles();
+$audiofiles = $api->API_getAllVoiceFiles();
 
 ?>
 <html>
@@ -2600,8 +2600,7 @@ $audiofiles = $ui->API_getListAudioFiles();
 
 							// ---- IF Lead Recycling alex
 							if($leadrecycling_id != NULL){
-								$leadrecycling = $ui->API_getLeadRecycling($_SESSION['user']);
-								//var_dump($leadrecycling);
+								$leadrecycling = $api->API_getLeadRecyclingInfo($leadrecycling_id);
 						?>
 								<div class="box-body table-responsive no-padding">
 					              <table class="table table-hover">
@@ -2636,35 +2635,35 @@ $audiofiles = $ui->API_getListAudioFiles();
 				               		<tbody>
 							<?php
 								for($i=0;$i < count($leadrecycling->data);$i++){
-									if($leadrecycling->data[$i]->campaign_id === $leadrecycling_id){
+									if($leadrecycling->data->campaign_id === $leadrecycling_id){
 							?>
 									<tr>
 										<td>
-											<?php echo $leadrecycling->data[$i]->recycle_id;?>
+											<?php echo $leadrecycling->data->recycle_id;?>
 										</td>
 										<td>
-											<?php echo $leadrecycling->data[$i]->status;?>
+											<?php echo $leadrecycling->data->status;?>
 										</td>
 										<td class="custom_statuses">
-											<?php echo $leadrecycling->data[$i]->attempt_delay;?>
+											<?php echo $leadrecycling->data->attempt_delay;?>
 										</td>
 										<td class="custom_statuses">
-											<?php echo $leadrecycling->data[$i]->attempt_maximum;?>
+											<?php echo $leadrecycling->data->attempt_maximum;?>
 										</td>
 										<td class="custom_statuses">
-											<?php if($leadrecycling->data[$i]->active == "Y")echo "Active"; else echo "Inactive";?>
+											<?php if($leadrecycling->data->active == "Y")echo "Active"; else echo "Inactive";?>
 										</td>
 
 										
 									<!-- ACTION BUTTONS -->
 										<td><center>
 											<a class="edit_leadrecycling btn btn-primary" href="#" data-toggle="modal" data-target="#edit_leadrecycling_modal" 
-												data-id="<?php echo $leadrecycling->data[$i]->recycle_id;?>"
-												data-status="<?php echo $leadrecycling->data[$i]->status;?>" 
-												data-attemptdelay="<?php echo $leadrecycling->data[$i]->attempt_delay;?>"
-												data-attemptmaximum="<?php echo $leadrecycling->data[$i]->attempt_maximum;?>" 
-												data-active="<?php echo $leadrecycling->data[$i]->active;?>"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
-											<a class="delete_leadrecycling btn btn-danger" href="#" data-id="<?php echo $leadrecycling->data[$i]->recycle_id;?>"><i class="fa fa-trash"></i></a>
+												data-id="<?php echo $leadrecycling->data->recycle_id;?>"
+												data-status="<?php echo $leadrecycling->data->status;?>" 
+												data-attemptdelay="<?php echo $leadrecycling->data->attempt_delay;?>"
+												data-attemptmaximum="<?php echo $leadrecycling->data->attempt_maximum;?>" 
+												data-active="<?php echo $leadrecycling->data->active;?>"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+											<a class="delete_leadrecycling btn btn-danger" href="#" data-id="<?php echo $leadrecycling->data->recycle_id;?>"><i class="fa fa-trash"></i></a>
 											</center>
 										</td>
 									</tr>
