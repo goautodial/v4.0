@@ -29,6 +29,7 @@ require_once('CRMUtils.php');
 require_once('goCRMAPISettings.php');
 //require_once('Session.php');
 require_once('SessionHandler.php');
+$session_class = new \creamy\SessionHandler();
 
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
@@ -214,7 +215,7 @@ if(isset($_SESSION["user"])){
 		return $return;
 	}
 
-	public function API_getInGroups() {
+	public function API_getAllInGroups() {
 		$postfields = array(
 			'goAction' => 'goGetAllIngroup'
 		);	
