@@ -9754,7 +9754,6 @@ function get_user_info($user) {
     $data = curl_exec($ch);
     $result = json_decode($data);
     
-    var_dump($data);
     //close connection
     curl_close($ch);
     
