@@ -192,8 +192,8 @@
 	$output = $api->API_getAllUsers();
 	$user_groups = $api->API_getAllUserGroups();
 	$phones = $api->API_getAllPhones();
-	$max = max($phones->extension);
-	$suggested_extension = $max + 1;
+	//$max = max($phones->extension);
+	//$suggested_extension = $max + 1;
 	$count_users = count($output->user);
 	$license_seats = intval($output->licensedSeats);
 	$avail_seats = $license_seats-$count_users;
@@ -257,12 +257,10 @@
 	                        </h4>
 	                        <fieldset>
 	                           <?php
-								$agent_num = $output->last_count;
-
-								$num_padded = sprintf("%03d", $agent_num);
-								
-								$fullname = "Agent ".$num_padded;
-								$user_id_for_form = "agent".$num_padded;
+									$agent_num = $output->last_count;
+									$num_padded = sprintf("%03d", $agent_num);								
+									$fullname = "Agent ".$num_padded;
+									$user_id_for_form = "agent".$num_padded;
 								?>
 								<div class="form-group">
 									<label class="col-sm-4 control-label"> <?php $lh->translateText("user_id"); ?> </label>
@@ -318,7 +316,7 @@
 								<div class="row">
 									<p class="col-sm-12"><small class="pull-right" style="padding-right:20px;"><i><span id="pass_result" class="control-label"></span></i></small></p>
 								</div>-->
-								<input type="hidden" name="phone_pass" id="phone_pass" class="form-control">
+								<!-- <input type="hidden" name="phone_pass" id="phone_pass" class="form-control"> -->
 
 								<div class="form-group">
 									<label class="col-sm-4 control-label" for="status"><?php $lh->translateText("active"); ?> </label>
@@ -504,11 +502,9 @@
 										</select>
 									</div>
 								</div>
-							<?php }else{
-							?>
+							<?php }else{ ?>
 								<input type="hidden" name="protocol" id="protocol" value="EXTERNAL">
-							<?php
-							} ?>
+							<?php } ?>
 							</fieldset><!-- end of step 2-->
 						</div><!-- end of row -->
 					</form>
@@ -747,9 +743,10 @@
 						type: 'POST',
 						data: $("#wizard_form").serialize(),
 						success: function(data) {
-						  // console.log(data);
-						$('#finish').text("Submit");
-    					$('#finish').attr("disabled", false);
+							console.log(data);
+							console.log($("#wizard_form").serialize());
+							$('#finish').text("Submit");
+							$('#finish').attr("disabled", false);
 							if(data == 1){
 								swal(
 								  {

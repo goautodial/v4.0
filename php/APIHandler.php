@@ -38,6 +38,7 @@ if(isset($_SESSION["user"])){
 	define("session_user", $_SESSION["user"]);
 	define("session_usergroup", $_SESSION["usergroup"]);
 	define("session_password", $_SESSION["phone_this"]);
+	//define("responsetype", "json");
 }
 /**
  *  APIHandler.
@@ -93,8 +94,9 @@ if(isset($_SESSION["user"])){
      * @param Boolean $request_data - true or false. If true, converts return data to original format without json_decode. Returns json_decoded data if false.
      * @return Array $output
     */
-    public function API_Request($folder, $postfields, $request_data = false, $responsetype = 'json'){
+    public function API_Request($folder, $postfields, $request_data = false){
 		$url = gourl."/".$folder."/goAPI.php";
+		$responsetype = "json";
 
 		// Constant Data to be passed
 		$default_entries = array(
@@ -135,9 +137,10 @@ if(isset($_SESSION["user"])){
      * 
      * @return Array $output
     */
-	public function API_Upload($folder, $postfields, $responsetype = 'json'){
+	public function API_Upload($folder, $postfields){
 		$url = gourl."/".$folder."/goAPI.php";
-
+		$responsetype = "json";
+		
 		// Constant Data to be passed
 		$default_entries = array(
 			'goUser' => session_user,
@@ -513,6 +516,14 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goUsers", $postfields);
 	}
 
+	public function API_getUserInfo($user_id){
+		$postfields = array(
+			'goAction' => 'goGetUserInfoNew',
+			'user_id' => $user_id
+		);
+		return $this->API_Request("goUsers", $postfields);
+	}
+	
 	public function API_getAllUserGroups() {
 		$postfields = array(
 			'goAction' => 'goGetAllUserGroups'
