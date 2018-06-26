@@ -76,7 +76,6 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
         }
     }
     echo "// {$sess_vars}\n";
-    var_dump($default_settings);
 ?>
 
 // Settings
@@ -9755,6 +9754,7 @@ function get_user_info($user) {
     $data = curl_exec($ch);
     $result = json_decode($data);
     
+    var_dump($data);
     //close connection
     curl_close($ch);
     
