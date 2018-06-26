@@ -72,7 +72,7 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
             if ($idx == 'is_logged_in')
                 $val = ($val) ? 1 : 0;
             ${$idx} = $val;
-            $sess_vars .= "{$idx}|";
+            $sess_vars .= "{$idx} = ".${$idx}."|";
         }
     }
     echo "// {$sess_vars}\n";
