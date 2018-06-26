@@ -1,7 +1,26 @@
 <?php
-/*ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
+/**
+ * @file        ModifySettingsVoicemail.php
+ * @brief       
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho
+ * @author      Alexander Jim H. Abenoja
+ * @author		Jerico James F. Milo
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 require_once('CRMDefaults.php');
 require_once('goCRMAPISettings.php');
@@ -21,7 +40,7 @@ if ($validated == 1) {
     
 	$pass = NULL; if (isset($_POST["password"])) { 
 		$pass = $_POST["password"]; 
-		$pass = stripslashes($password);
+		$pass = stripslashes($pass);
 	}
 	
     $fullname = NULL; if (isset($_POST["fullname"])) { 
@@ -45,30 +64,33 @@ if ($validated == 1) {
 	}  
     
 	$url = gourl."/goVoicemails/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goEditVoicemail"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = responsetype; #json (required)
-    $postfields["voicemail_id"] = $modifyid; #Desired list id. (required)
-	$postfields["pass"] = $pass; #Desired value for user (required)
-	$postfields["fullname"] = $fullname; #Desired value for user (required)
-	$postfields["email"] = $email; #Desired value for user (required)
-	$postfields["active"] = $active; #Desired value for user (required)
-    $postfields["delete_vm_after_email"] = $delete_vm_after_email; #Desired value for user (required)
-	$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
+	$postfields = array(
+		'goUser' => goUser,
+		'goPass' => goPass,
+		'goAction' => 'goEditVoicemail',		
+		'responsetype' => responsetype,
+		'voicemail_id' => $modifyid,
+		'pass' => $pass,
+		'fullname' => $fullname,
+		'email' => $email,
+		'active' => $active,
+		'delete_vm_after_email' => $delete_vm_after_email,
+		'session_user' => $_POST['log_user'],
+		'log_ip' => $_SERVER['REMOTE_ADDR']
+	);				
+
+	// Call the API
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+	$data = curl_exec($ch);
+	curl_close($ch);
+    $output = json_decode($data);	
 
     if ($output->result=="success") {
     # Result was OK!

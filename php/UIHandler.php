@@ -4241,16 +4241,16 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllCallTimes($goUser, $goPass, $goAction, $responsetype){
-	    $output = $this->api->API_getCalltimes();
+	public function getListAllCallTimes(){
+	    $output = $this->api->API_getAllCalltimes();
 	    if ($output->result=="success") {
 	    # Result was OK!
         //$columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
         //$hideOnMedium = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'));
 		//$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'));
-		$columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('Schedules'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
+		$columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('Schedule'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
         $hideOnMedium = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('user_group'));
-		$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('Schedules'), $this->lh->translationFor('user_group'));
+		$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('Schedule'), $this->lh->translationFor('user_group'));
 		
 		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		

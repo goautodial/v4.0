@@ -1,22 +1,34 @@
 <?php
+/**
+ * @file 		editsettingsvoicemail.php
+ * @brief 		Modify Voicemail settings
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author     	Alexander Jim H. Abenoja
+ * @author		Demian Lizandro A. Biscocho 
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
-	###################################################
-	### Name: editsettingsvoicemail.php 			###
-	### Functions: Edit Voicemail 			 		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
-	###################################################
-
-	require_once('./php/CRMDefaults.php');
 	require_once('./php/UIHandler.php');
-	require_once('./php/LanguageHandler.php');
-	require('./php/Session.php');
-	require_once('./php/goCRMAPISettings.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
 
-	// initialize structures
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
@@ -82,41 +94,16 @@ if (isset($_POST["vmid"])) {
                 
 					<!-- standard custom edition form -->
 					<?php
-					$errormessage = NULL;
-					
-					//if(isset($extenid)) {
-						$url = gourl."/goVoicemails/goAPI.php"; #URL to GoAutoDial API. (required)
-				        $postfields["goUser"] = goUser; #Username goes here. (required)
-				        $postfields["goPass"] = goPass; #Password goes here. (required)
-				        $postfields["goAction"] = "getVoicemailInfo"; #action performed by the [[API:Functions]]. (required)
-				        $postfields["responsetype"] = responsetype; #json. (required)
-				        $postfields["voicemail_id"] = $vmid; #Desired exten ID. (required)
-
-				         $ch = curl_init();
-				         curl_setopt($ch, CURLOPT_URL, $url);
-				         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-				         curl_setopt($ch, CURLOPT_POST, 1);
-				         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-				         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-						 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-				         $data = curl_exec($ch);
-				         curl_close($ch);
-				         $output = json_decode($data);
-
-				        //var_dump($data);
-
+						$errormessage = NULL;						
+						$output = $api->API_getVoicemailInfo($vmid);
 						if ($output->result=="success") {
-							
-						# Result was OK!
-							for($i=0;$i<count($output->voicemail_id);$i++){
 					?>
                 <!-- Main content -->
                 <section class="content">
 					<div class="panel panel-default">
                     
                     <div class="panel-body">
-						<legend>MODIFY VOICEMAIL ID: <u><?php echo $output->voicemail_id[$i];?></u></legend>
+						<legend>MODIFY VOICEMAIL ID: <u><?php echo $output->data->voicemail_id;?></u></legend>
 	
 							<form id="modifyform">
 								<input type="hidden" name="modifyid" value="<?php echo $vmid;?>">
@@ -138,19 +125,19 @@ if (isset($_POST["vmid"])) {
 										<div class="form-group mt">
 											<label for="password" class="col-sm-3 control-label"><?php $lh->translateText("your_password"); ?></label>
 											<div class="col-sm-9 mb">
-												<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="<?php echo $output->password[$i];?>">
+												<input type="text" class="form-control" name="password" id="password" placeholder="Password" value="<?php echo $output->data->password;?>">
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="fullname" class="col-sm-3 control-label"><?php $lh->translateText("name"); ?></label>
 											<div class="col-sm-9 mb">
-												<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->fullname[$i];?>">
+												<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->data->fullname;?>">
 											</div>
 										</div>
 										<div class="form-group">
 											<label for="email" class="col-sm-3 control-label"><?php $lh->translateText("email"); ?></label>
 											<div class="col-sm-9 mb">
-												<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->email[$i];?>">
+												<input type="text" class="form-control" name="email" id="email" value="<?php echo $output->data->email;?>">
 											</div>
 										</div>
 									
@@ -160,13 +147,13 @@ if (isset($_POST["vmid"])) {
 												<select class="form-control" name="active" id="active">
 												<?php
 													$active = NULL;
-													if($output->active[$i] == "Y"){
+													if($output->data->active == "Y"){
 														$active .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
 													}else{
 														$active .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 													}
 													
-													if($output->active[$i] == "N" || $output->active[$i] == NULL){
+													if($output->data->active == "N" || $output->data->active == NULL){
 														$active .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
 													}else{
 														$active .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
@@ -182,13 +169,13 @@ if (isset($_POST["vmid"])) {
 												<select class="form-control" name="delete_vm_after_email" id="delete_vm_after_email">
 												<?php
 													$delete_vm_after_email = NULL;
-													if($output->delete_vm_after_email[$i] == "Y"){
+													if($output->data->delete_vm_after_email == "Y"){
 														$delete_vm_after_email .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
 													}else{
 														$delete_vm_after_email .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 													}
 													
-													if($output->delete_vm_after_email[$i] == "N" || $output->delete_vm_after_email[$i] == NULL){
+													if($output->data->delete_vm_after_email == "N" || $output->data->delete_vm_after_email == NULL){
 														$delete_vm_after_email .= '<option value="N" selected>'.$lh->translationFor("go_no").'</option>';
 													}else{
 														$delete_vm_after_email .= '<option value="N" > '.$lh->translationFor("go_no").'</option>';
@@ -200,12 +187,12 @@ if (isset($_POST["vmid"])) {
 										</div>
 										<div class="form-group">
 											<label class="col-sm-3 control-label"><?php $lh->translateText("new_message"); ?></label>
-												<span style="padding-left:20px; font-size: 20;"><?php echo $output->messages[$i];?></span>
+												<span style="padding-left:20px; font-size: 20;"><?php echo $output->data->messages;?></span>
 											
 										</div>
 										<div class="form-group">
 											<label class="col-sm-3 control-label"><?php $lh->translateText("old_message"); ?></label>
-												<span style="padding-left:20px; font-size: 20;"><?php echo $output->old_messages[$i];?></span>
+												<span style="padding-left:20px; font-size: 20;"><?php echo $output->data->old_messages;?></span>
 											
 										</div>
 									</fieldset>
@@ -231,9 +218,7 @@ if (isset($_POST["vmid"])) {
             </section>  	
 
 				<?php
-						}
-					}	
-                    
+					}                    
 				?>
 					
 				<!-- /.content -->

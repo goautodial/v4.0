@@ -93,14 +93,14 @@ if(isset($_SESSION["user"])){
      * @param Boolean $request_data - true or false. If true, converts return data to original format without json_decode. Returns json_decoded data if false.
      * @return Array $output
     */
-    public function API_Request($folder, $postfields, $request_data = false){
+    public function API_Request($folder, $postfields, $request_data = false, $responsetype = 'json'){
 		$url = gourl."/".$folder."/goAPI.php";
 
 		// Constant Data to be passed
 		$default_entries = array(
 			'goUser' => session_user,
 			'goPass' => session_password,
-			'responsetype' => responsetype,
+			'responsetype' => $responsetype,
 			'session_user' => session_user,
 			'log_user' => session_user,
 			'log_group' => session_usergroup,
@@ -135,14 +135,14 @@ if(isset($_SESSION["user"])){
      * 
      * @return Array $output
     */
-	public function API_Upload($folder, $postfields){
+	public function API_Upload($folder, $postfields, $responsetype = 'json'){
 		$url = gourl."/".$folder."/goAPI.php";
 
 		// Constant Data to be passed
 		$default_entries = array(
 			'goUser' => session_user,
 			'goPass' => session_password,
-			'responsetype' => responsetype,
+			'responsetype' => $responsetype,
 			'session_user' => session_user,
 			'log_user' => session_user,
 			'log_group' => session_usergroup,
@@ -177,10 +177,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goPackages", $postfields);
 	}
 
-    public function API_goGetGroupPermission() {
+    public function API_goGetGroupPermission($user_group) {
 		$postfields = array(
 			'goAction' => 'goGetUserGroupInfo',
-			'user_group' => session_usergroup
+			'user_group' => $user_group
 		);
 
 		return $this->API_Request("goUserGroups", $postfields);
@@ -287,7 +287,7 @@ if(isset($_SESSION["user"])){
 	}
 	
 	/** Call Times API - Get all list of call times */
-	public function API_getCalltimes(){
+	public function API_getAllCalltimes(){
         $postfields = array(
 			'goAction' => 'goGetAllCalltimes'
 		);				
@@ -328,6 +328,14 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goVoicemails", $postfields);
 	}
 
+	public function API_getVoicemailInfo($voicemail_id) {
+		$postfields = array(
+			'goAction' => 'goGetVoicemailInfo',
+			'voicemail_id' => $voicemail_id
+		);				
+		return $this->API_Request("goVoicemails", $postfields);
+	}
+	
 	/** Voice Files API - Get all list of voice files */
 	public function API_getAllVoiceFiles(){
 		$postfields = array(
@@ -508,6 +516,14 @@ if(isset($_SESSION["user"])){
 	public function API_getAllUserGroups() {
 		$postfields = array(
 			'goAction' => 'goGetAllUserGroups'
+		);
+		return $this->API_Request("goUserGroups", $postfields);
+	}
+	
+	public function API_getUserGroupInfo($group_id) {
+		$postfields = array(
+			'goAction' => 'goGetUserGroupInfo',
+			'user_group' => $group_id
 		);
 		return $this->API_Request("goUserGroups", $postfields);
 	}

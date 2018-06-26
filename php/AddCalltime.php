@@ -1,9 +1,9 @@
 <?php
 /**
- * @file        ActivateSMTP.php
- * @brief       Activate/Deactivate SMTP
+ * @file        AddCalltime.php
+ * @brief       Add new calltime
  * @copyright   Copyright (C) GOautodial Inc.
- * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ * @author      Alexander Jim Abenoja 
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -47,7 +47,6 @@ $start_saturday =	(strlen($_POST['start_saturday']) > 0) ? date('Hi', strtotime(
 $stop_saturday =	(strlen($_POST['stop_saturday']) > 0) ? date('Hi', strtotime($_POST['stop_saturday'])) : "0";
 
 $postfields = array(
-        'goAction' => 'goAddCalltime',
         'goAction' => "goAddCalltime",
         'call_time_id' => $_POST['call_time_id'],
         'call_time_name' => $_POST['call_time_name'],

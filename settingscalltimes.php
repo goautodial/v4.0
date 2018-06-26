@@ -418,7 +418,7 @@
 			<div class="modal-content">
 	      	<!--<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight">
-						<b><?php $lh->translateText("Schedule"); ?> </b>
+						<b><?php //$lh->translateText("Schedule"); ?> </b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	       		</h4>
 				</div>

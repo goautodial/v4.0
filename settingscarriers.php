@@ -33,10 +33,13 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	
+	$gopackage = $api->API_getGOPackage();
+	$perm = $api->goGetPermissions('carriers', $_SESSION['usergroup']);
+	
 	if( ($gopackage->show_carrier_settings === "N" || $gopackage->show_carrier_settings === NULL) && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
 		header("location:index.php");
 	}
-	$perm = $api->goGetPermissions('carriers', $_SESSION['usergroup']);
+	
 ?>
 <html>
     <head>
@@ -180,7 +183,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="carrier_description" class="col-sm-3 control-label"><?php $lh->translateText('user_groups'); ?></label>
+									<label for="user_groups" class="col-sm-3 control-label"><?php $lh->translateText('user_groups'); ?></label>
 									<div class="col-sm-8 mb">
 										<select id="user_group" class="form-control" name="user_group">
 												<option value="---ALL---"><?php $lh->translateText('all_usergroups'); ?>   </option>
@@ -218,7 +221,7 @@ host=</textarea>
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
-									<label for="carrier_desc" class="col-sm-3 control-label"><?php $lh->translateText('authentication'); ?></label>
+									<label for="authentication" class="col-sm-3 control-label"><?php $lh->translateText('authentication'); ?></label>
 									<div class="col-sm-8 mb">
 										<div class="row mt">
 											<label class="col-sm-1">
@@ -272,7 +275,7 @@ host=</textarea>
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
-									<label for="carrier_desc" class="col-sm-3 control-label"><?php $lh->translateText('codecs'); ?></label>
+									<label for="codecs" class="col-sm-3 control-label"><?php $lh->translateText('codecs'); ?></label>
 									<div class="col-sm-8 mb">
 										<div class="row mt">
 											<label class="col-sm-1">
@@ -298,7 +301,7 @@ host=</textarea>
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
-									<label for="carrier_desc" class="col-sm-3 control-label"><?php $lh->translateText('dtmf_mode'); ?></label>
+									<label for="dtmf_mode" class="col-sm-3 control-label"><?php $lh->translateText('dtmf_mode'); ?></label>
 									<div class="col-sm-8 mb">
 										<div class="row mt">
 											<label class="col-sm-1">
@@ -740,7 +743,7 @@ host=</textarea>
 							type: 'POST',
 							data: $("#create_form").serialize(),
 							success: function(data) {
-							   console.log(data);
+							   console.log($("#create_form").serialize());
 								$('#finish').text("<?php $lh->translateText("submit"); ?>");
 								$('#finish').attr("disabled", false);
 								

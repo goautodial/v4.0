@@ -92,7 +92,7 @@ if (isset($_POST["usergroup_id"])) {
 					<?php
 						$userobj = NULL;
 						$errormessage = NULL;
-						$output = $api->API_goGetGroupPermission($usergroup_id);
+						$output = $api->API_getUserGroupInfo($usergroup_id);
 
 						//echo "<pre>";
 						//var_dump($output);						
@@ -107,6 +107,7 @@ if (isset($_POST["usergroup_id"])) {
 							<input type="hidden" name="modifyid" value="<?php echo $usergroup_id;?>">
 							<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>">
 							<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup'];?>">
+							<input type="hidden" name="admin_viewable_groups" value="<?php echo $output->data->admin_viewable_groups;?>">
 						
 					<!-- Custom Tabs -->
 					<div role="tabpanel">
@@ -373,7 +374,7 @@ if (isset($_POST["usergroup_id"])) {
                                         $('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
                                         $('#modifyUserGroupOkButton').prop("disabled", false);
 									} else {
-										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
+										sweetAlert("<?php $lh->translateText("oops"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 										$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?> ");
 										$('#modifyUserGroupOkButton').prop("disabled", false);
 									}
