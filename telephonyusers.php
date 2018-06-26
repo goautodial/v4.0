@@ -808,9 +808,10 @@
 							type: 'POST',
 							data: $("#create_form").serialize(),
 							success: function(data) {
-							  // console.log(data);
-							$('#finish').text("Submit");
-							$('#finish').attr("disabled", false);
+								console.log(data);
+								console.log($("#create_form").serialize());
+								$('#finish').text("Submit");
+								$('#finish').attr("disabled", false);
 								  if(data == 1){
 									swal({title: "<?php $lh->translateText("add_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_saved"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php?phone_tab';});
 								  }else{

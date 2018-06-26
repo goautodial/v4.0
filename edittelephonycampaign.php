@@ -59,7 +59,7 @@ if (isset($_POST["leadfilter"])) {
 $campaign = $api->API_getCampaignInfo($campaign_id);
 $disposition = $api->API_getDispositionInfo($campaign_id);
 
-$calltimes = $api->API_getCalltimes();
+$calltimes = $api->API_getAllCalltimes();
 $scripts = $api->API_getAllScripts();
 $carriers = $api->API_getAllCarriers();
 $leadfilter = $api->API_getAllLeadFilters();

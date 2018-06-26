@@ -105,10 +105,8 @@ $user_groups = $api->API_getAllUserGroups();
 					<?php
 						$userobj = NULL;
 						$errormessage = NULL;
-						//$output = $ui->goGetUserInfo($userid, "user_id");
-						$output = $ui->goGetUserInfoNew($userid);
-						//echo "<pre>";
-						//print_r($output);
+						$output = $api->API_getUserInfo($userid);
+	
 						if(isset($userid)) {
 							if ($output->result=="success") {
 							# Result was OK!
@@ -257,7 +255,7 @@ $user_groups = $api->API_getAllUserGroups();
 													<label for="phone_password" class="col-sm-2 control-label">Phone Password</label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="phone_password" id="phone_password" 
-															value="<?php echo $output->data->phone_pass;?>" maxlength="20" placeholder="Phone Password" />
+															value="<?php //echo $output->data->phone_pass;?>" maxlength="20" placeholder="Phone Password" />
 													</div>
 												</div> -->									
 												<div class="form-group">
@@ -692,7 +690,7 @@ $user_groups = $api->API_getAllUserGroups();
 						type: 'POST',
 						data: $("#modifyuser").serialize() + '&user=' + user,
 						success: function(data) {
-						console.log($("#modifyuser").serialize() + '&user=' + user);
+						//console.log($("#modifyuser").serialize() + '&user=' + user);
 						$("#phone_login").prop("disabled", true);
 							if (data == 1) {
 								$('#update_button').html("<i class='fa fa-check'></i> Update");

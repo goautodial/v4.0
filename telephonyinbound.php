@@ -114,7 +114,7 @@
 	$phones = $api->API_getAllDIDs();
 	$scripts = $api->API_getAllScripts();
 	$voicefiles = $api->API_getAllVoiceFiles();
-	$calltimes = $api->API_getCalltimes();
+	$calltimes = $api->API_getAllCalltimes();
 ?>
 			<div class="panel panel-default">
 				<div class="panel-body">
