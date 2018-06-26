@@ -294,6 +294,14 @@ if(isset($_SESSION["user"])){
         return $this->API_Request("goCalltimes", $postfields);
 	}
 
+	public function API_getCalltimeInfo($call_time_id){
+        $postfields = array(
+			'goAction' => 'goGetCalltimeInfo',
+			'call_time_id' => $call_time_id
+		);				
+        return $this->API_Request("goCalltimes", $postfields);
+	}
+	
 	// API Scripts
 	public function API_getAllScripts(){
 		$url = gourl."/goScripts/goAPI.php";
@@ -441,6 +449,36 @@ if(isset($_SESSION["user"])){
 			'goAction' => 'goGetAllCarriers'
 		);		
 		return $this->API_Request("goCarriers", $postfields);
+	}	
+	
+	public function API_getCarrierInfo($carrier_id){
+		$postfields = array(
+			'goAction' => 'goGetCarrierInfo',
+			'carrier_id' => $carrier_id
+		);		
+		return $this->API_Request("goCarriers", $postfields);
+	}	
+	
+	public function API_getAllServers(){
+		$postfields = array(
+			'goAction' => 'goGetAllServers'
+		);		
+		return $this->API_Request("goServers", $postfields);
+	}	
+	
+	public function API_getServerInfo($server_id){
+		$postfields = array(
+			'goAction' => 'goGetServerInfo',
+			'server_id' => $server_id
+		);		
+		return $this->API_Request("goServers", $postfields);
+	}
+	
+	public function API_getAdminLogsList(){
+		$postfields = array(
+			'goAction' => 'goGetAdminLogsList'
+		);		
+		return $this->API_Request("goAdminLogs", $postfields);
 	}	
 	
 	public function API_getAllCampaignDialStatuses($campaign_id){

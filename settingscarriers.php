@@ -1,28 +1,42 @@
 <?php
+/**
+ * @file        settingscarriers.php
+ * @brief       Manage Carriers
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author      Alexander Jim Abenoja
+ * @author		Demian Lizandro A. Biscocho
+ * @author		Noel Umandap
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-    ###########################################################
-    ### Name: settingscarriers.php                          ###
-    ### Functions: Manage Carriers                          ###
-    ### Copyright: GOAutoDial Ltd. (c) 2011-2016            ###
-    ### Version: 4.0                                        ###
-    ### Written by: Alexander Abenoja & Noel Umandap        ###
-    ### License: AGPLv2                                     ###
-    ###########################################################
-
-	require_once('./php/UIHandler.php');
+	require_once('php/UIHandler.php');
+	require_once('php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
-    include('./php/goCRMAPISettings.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	$gopackage = $ui->API_getGOPackage();
+	
 	if( ($gopackage->show_carrier_settings === "N" || $gopackage->show_carrier_settings === NULL) && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
 		header("location:index.php");
 	}
-	$perm = $ui->goGetPermissions('carriers', $_SESSION['usergroup']);
+	$perm = $api->goGetPermissions('carriers', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -96,9 +110,9 @@
 	/*
 	* MODAL
 	*/
-	$user_groups = $ui->API_goGetUserGroupsList();
-	$carriers = $ui->getCarriers();
-	$servers = $ui->getServers();
+	$user_groups = $api->API_getAllUserGroups();
+	$carriers = $api->API_getAllCarriers();
+	$servers = $api->API_getAllServers();
 ?>
 	<!-- ADD WIZARD MODAL -->
 	<div class="modal fade" id="wizard-modal" tabindex="-1">

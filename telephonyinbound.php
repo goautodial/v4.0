@@ -20,8 +20,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('php/UIHandler.php');
-	require_once('php/APIHandler.php');
+	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
@@ -31,7 +31,7 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	
-	$perm = $api->goGetPermissions('inbound,ivr,did');
+	$perm = $api->goGetPermissions('inbound,ivr,did', $_SESSION['usergroup']);
 	$gopackage = $api->API_getGOPackage();
 
 	if($gopackage->packagetype === "gosmall" && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){

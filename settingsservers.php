@@ -1,14 +1,38 @@
 <?php	
-	require_once('./php/UIHandler.php');
+/**
+ * @file        settingsservers.php
+ * @brief       Manage servers
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author      Alexander Jim Abenoja
+ * @author		Demian Lizandro A. Biscocho
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+	require_once('php/UIHandler.php');
+	require_once('php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	
-	$perm = $ui->goGetPermissions('servers', $_SESSION['usergroup']);
+	$perm = $api->goGetPermissions('servers', $_SESSION['usergroup']);
 ?>
 <html>
     <head>
@@ -82,7 +106,7 @@
         </div>
 		
 	<?php
-		$user_groups = $ui->API_goGetUserGroupsList();
+		$user_groups = $api->API_getAllUserGroups();
 	?>
     <!-- ADD USER GROUP MODAL -->
         <div class="modal fade" id="addserver-modal" tabindex="-1" aria-labelledby="addserver-modal" >
@@ -261,7 +285,7 @@
 							var id = $(this).attr('data-id');
 							//alert(extenid);
 							var form = 
-							$('<form action="' + url + '" method="post"><input type="hidden" name="id" value="'+id+'" /></form>');
+							$('<form action="' + url + '" method="post"><input type="hidden" name="server_id" value="'+id+'" /></form>');
 							$('body').append(form);  // This line is not necessary
 							$(form).submit();
 						});

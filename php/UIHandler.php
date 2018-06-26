@@ -3592,9 +3592,9 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 
-	public function getAdminLogsList($group, $limit) {
-		$output = $this->API_goGetAdminLogsList($group, $limit);
-
+	public function getAdminLogsList() {
+		//$output = $this->API_goGetAdminLogsList($group, $limit);
+		$output = $this->api->API_getAdminLogsList();
 		if ($output->result=="success") {
 		# Result was OK!
 
@@ -3607,7 +3607,7 @@ error_reporting(E_ERROR | E_PARSE);
 				//$details = (strlen($details) > 30) ? substr($details, 0, 30) . "..." : $details;
 				//$db_query = (strlen($db_query) > 30) ? substr($db_query, 0, 30) . "..." : $db_query;
 				$result = $result."<tr>
-					<td><span class='hidden-xs'>".$log->name. " (".$log->user.")</span><span class='visible-xs'>".$log->user."</span></td>
+					<td><span class='hidden-xs'>".$log->name. " ".$log->user."</span><span class='visible-xs'>".$log->user."</span></td>
 					<td><a href='http://www.ip-tracker.org/locator/ip-lookup.php?ip=".$log->ip_address."' target='_new'>".$log->ip_address."</a></td>
 					<td>".$log->event_date."</td>
 					<td>".$log->action."</td>
@@ -3725,7 +3725,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	public function getVoiceMails() {
-		$output = $this->API_goGetVoiceMails();
+		$output = $this->api->API_getAllVoiceMails();
 
 		if ($output->result=="success") {
 		# Result was OK!
@@ -4398,42 +4398,41 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 	
 	public function getServerList($perm){
-		$output = $this->getServers();
+		$output = $this->api->API_getAllServers();
 
 	    if ($output->result=="success") {
 	    # Result was OK!
+			$columns = array($this->lh->translationFor('server_id'), $this->lh->translationFor('server_name'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'), $this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'), $this->lh->translationFor('action'));
+			$hideOnMedium = array($this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'));
+			$hideOnLow = array($this->lh->translationFor('server_ip'), $this->lh->translationFor('server_name'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'),$this->lh->translationFor('gmt'));
 
-        $columns = array($this->lh->translationFor('server_id'), $this->lh->translationFor('server_name'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'), $this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'), $this->lh->translationFor('action'));
-        $hideOnMedium = array($this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'));
-		$hideOnLow = array($this->lh->translationFor('server_ip'), $this->lh->translationFor('server_name'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'),$this->lh->translationFor('gmt'));
+			$result = $this->generateTableHeaderWithItems($columns, "servers_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
-		$result = $this->generateTableHeaderWithItems($columns, "servers_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+				for($i=0;$i<count($output->server_id);$i++){
 
-	        for($i=0;$i<count($output->server_id);$i++){
+					$action = '';
+					if ($perm->servers_update != 'N' || $perm->servers_delete != 'N') {
+						$action = $this->ActionMenuForServers($output->server_id[$i], $perm);
+					}
 
-				$action = '';
-				if ($perm->servers_update != 'N' || $perm->servers_delete != 'N') {
-					$action = $this->ActionMenuForServers($output->server_id[$i], $perm);
+					if($output->active[$i] == "Y"){
+						$active = $this->lh->translationFor('active');
+					}else{
+						$active = $this->lh->translationFor('inactive');
+					}
+						$result .= "<tr>
+							<td class ='hide-on-low'>".($perm->servers_update !== 'N' ? "<a class='edit-server' data-id='".$output->server_id[$i]."'>" : '')."".$output->server_id[$i]."</td>
+							<td>".$output->server_description[$i]."</td>
+							<td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
+							<td class ='hide-on-medium hide-on-low'>".$active."</td>
+							<td class ='hide-on-low'>".$output->asterisk_version[$i]."</td>
+							<td class ='hide-on-low'>".$output->max_vicidial_trunks[$i]."</td>
+							<td class ='hide-on-low'>".$output->local_gmt[$i]."</td>
+							<td nowrap>".$action."</td>
+						</tr>";
 				}
 
-			    if($output->active[$i] == "Y"){
-				    $active = $this->lh->translationFor('active');
-				}else{
-				    $active = $this->lh->translationFor('inactive');
-				}
-                    $result .= "<tr>
-	                    <td class ='hide-on-low'>".($perm->servers_update !== 'N' ? "<a class='edit-server' data-id='".$output->server_id[$i]."'>" : '')."".$output->server_id[$i]."</td>
-	                    <td>".$output->server_description[$i]."</td>
-	                    <td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
-						<td class ='hide-on-medium hide-on-low'>".$active."</td>
-						<td class ='hide-on-low'>".$output->asterisk_version[$i]."</td>
-						<td class ='hide-on-low'>".$output->max_vicidial_trunks[$i]."</td>
-						<td class ='hide-on-low'>".$output->local_gmt[$i]."</td>
-	                    <td nowrap>".$action."</td>
-	                </tr>";
-            }
-
-		    return $result.'</table>';
+				return $result.'</table>';
 
 	    } else {
 	       # An error occured
@@ -4467,7 +4466,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 
 	public function getListAllCarriers($perm){
-		$output = $this->api->API_getCarriers();
+		$output = $this->api->API_getAllCarriers();
 
 	    if ($output->result=="success") {
 	    # Result was OK!

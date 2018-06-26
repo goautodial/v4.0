@@ -1,22 +1,40 @@
 <?php
-    
-	require_once('./php/CRMDefaults.php');
-	require_once('./php/UIHandler.php');
-	//require_once('./php/DbHandler.php');
-	require_once('./php/LanguageHandler.php');
-	require('./php/Session.php');
-	require_once('./php/goCRMAPISettings.php');
+/**
+ * @file        editsettingsserver.php
+ * @brief       Manage specific server
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A. Biscocho 
+ * @author      Alexander Jim Abenoja
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	// initialize structures
+	require_once('php/UIHandler.php');
+	require_once('php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
+
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
-$id = NULL;
-if (isset($_POST["id"])) {
-	$id = $_POST["id"];
-}else{
-	header("location: settingsservers.php");
+$server_id = NULL;
+if (isset($_POST["server_id"])) {
+	$server_id = $_POST["server_id"];
 }
 
 ?>
@@ -55,7 +73,7 @@ if (isset($_POST["id"])) {
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
                         <li> <?php $lh->translateText("settings"); ?></li>
                         <?php
-							if(isset($_POST["id"])){
+							if(isset($_POST["server_id"])){
 						?>	
 							<li><a href="./settingsservers.php"><?php $lh->translateText("servers"); ?></a></li>
                         <?php
@@ -71,39 +89,18 @@ if (isset($_POST["id"])) {
 						<!-- standard custom edition form -->
 						<?php
 						$errormessage = NULL;
-						
-						if(isset($id)) {
-							$url = gourl."/goServers/goAPI.php"; #URL to GoAutoDial API. (required)
-					        $postfields["goUser"] = goUser; #Username goes here. (required)
-					        $postfields["goPass"] = goPass; #Password goes here. (required)
-					        $postfields["goAction"] = "goGetServerInfo"; #action performed by the [[API:Functions]]. (required)
-					        $postfields["responsetype"] = responsetype; #json. (required)
-					        $postfields["server_id"] = $id; #Desired exten ID. (required)
-							$postfields["log_user"] = $_SESSION['user'];
-							$postfields["log_group"] = $_SESSION['usergroup'];
-							$postfields["hostname"] = $_SERVER['REMOTE_ADDR'];
-							$ch = curl_init();
-							curl_setopt($ch, CURLOPT_URL, $url);
-							curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-							curl_setopt($ch, CURLOPT_POST, 1);
-							curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-							curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-							curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-							curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-							$data = curl_exec($ch);
-							curl_close($ch);
-							$output = json_decode($data);
-					        
-					        //var_dump($output->data);
+						if(isset($server_id)) {
+							$output = $api->API_getServerInfo($server_id);
+							//echo "<pre>";
+					        //var_dump($output);
 							
-							if ($output->result=="success") {
-							
-							$user_groups = $ui->API_goGetUserGroupsList();
+							if ($output->result=="success") {							
+								$user_groups = $api->API_getAllUserGroups();
 						?>
-				<legend><?php $lh->translateText("modify_server_id"); ?> : <u><?php echo $id;?></u></legend>
+				<legend><?php $lh->translateText("modify_server_id"); ?> : <u><?php echo $server_id;?></u></legend>
 				
 				<form id="modifyform">
-					<input type="hidden" name="modifyid" value="<?php echo $id;?>">
+					<input type="hidden" name="modifyid" value="<?php echo $server_id;?>">
 					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					
