@@ -744,7 +744,7 @@ host=</textarea>
 							data: $("#create_form").serialize(),
 							success: function(data) {
 								console.log(data);
-								console.log($("#create_form").serialize());
+								//console.log($("#create_form").serialize());
 								$('#finish').text("<?php $lh->translateText("submit"); ?>");
 								$('#finish').attr("disabled", false);
 								
