@@ -263,7 +263,8 @@
 										type: 'POST',
 										data: $("#create_server").serialize(),
 										success: function(data) {
-										  // console.log(data);
+											console.log(data);
+											console.log($("#create_server").serialize());
 										$('#finish').text("<?php $lh->translateText("submit"); ?>");
 										$('#finish').attr("disabled", false);
 											if(data == "success"){

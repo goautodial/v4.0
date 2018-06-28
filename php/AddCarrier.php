@@ -27,37 +27,37 @@
 	$carrier_id = $_POST['carrier_id'];
 
 	$postfields = array(
-			'goAction' => 'goAddCarrier',
-			'carrier_type'	=> $_POST['carrier_type'],
-			'carrier_id' => $carrier_id,
-			'carrier_name'	=> $_POST['carrier_name'],
-			'active' => $_POST['active'],
-			'protocol'	=> $_POST['protocol'],
-			'carrier_description' => $_POST['carrier_description'],
-			'user_group' => $_POST['user_group'],
-			'authentication' => $_POST['authentication'],
-			'username'	=> $_POST['username'],
-			'password'	=> $_POST['password'],
-			'reg_host'	=> $_POST['reg_host'],
-			'reg_port'	=> $_POST['reg_port'],
-			'sip_server_ip' => $_POST['sip_server_ip'],
-			'codecs' => $_POST['codecs'],
-			'dtmf'	=> $_POST['dtmf'],
-			'custom_dtmf' => $_POST['custom_dtmf'],
-			'dialprefix' => $_POST['dialprefix'],
-			'cust_protocol' => $_POST['cust_protocol'],
-			'registration_string' => $_POST['registration_string'],
-			'account_entry' => $_POST['account_entry'],
-			'global_string' => $_POST['globals_string'],
-			'dialplan_entry' => $_POST['dialplan_entry'],
-			'manual_server_ip'	=> $_POST['server_ip'],
-			'copy_server_ip' => $_POST['copy_server_ip'],
-			'source_carrier' => $_POST['source_carrier']			
+			'goAction' 				=> 'goAddCarrier',
+			'carrier_type'			=> $_POST['carrier_type'],
+			'carrier_id' 			=> $carrier_id,
+			'carrier_name'			=> $_POST['carrier_name'],
+			'active' 				=> $_POST['active'],
+			'protocol'				=> $_POST['protocol'],
+			'carrier_description' 	=> $_POST['carrier_description'],
+			'user_group' 			=> $_POST['user_group'],
+			'authentication' 		=> $_POST['authentication'],
+			'username'				=> $_POST['username'],
+			'password'				=> $_POST['password'],
+			'reg_host'				=> $_POST['reg_host'],
+			'reg_port'				=> $_POST['reg_port'],
+			'sip_server_ip' 		=> $_POST['sip_server_ip'],
+			'codecs' 				=> $_POST['codecs'],
+			'dtmf'					=> $_POST['dtmf'],
+			'custom_dtmf' 			=> $_POST['custom_dtmf'],
+			'dialprefix' 			=> $_POST['dialprefix'],
+			'cust_protocol' 		=> $_POST['cust_protocol'],
+			'registration_string' 	=> $_POST['registration_string'],
+			'account_entry' 		=> $_POST['account_entry'],
+			'globals_string' 		=> $_POST['globals_string'],
+			'dialplan_entry' 		=> $_POST['dialplan_entry'],
+			'manual_server_ip'		=> $_POST['server_ip'],
+			'copy_server_ip' 		=> $_POST['copy_server_ip'],
+			'source_carrier' 		=> $_POST['source_carrier']
 		);
 
 	$output = $api->API_addCarrier($postfields);
 
-	if ($output->result=="success") {
+	if ($output->result == "success") {
 		$status = 1;
 		//$return['msg'] = "New User has been successfully saved.";
 	} else {
@@ -65,5 +65,5 @@
 		$status = $output->data;
 	}
 
-	echo  $status;
+	echo json_encode($status);
 ?>
