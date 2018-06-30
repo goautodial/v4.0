@@ -1084,7 +1084,7 @@
 	                    function(isConfirm){   
 	                        if (isConfirm) { 
 							$.ajax({
-							  url: "./php/DeleteSettingsPhones.php",
+							  url: "./php/DeletePhones.php",
 							  type: 'POST',
 							  data: { 
 								exten_id: id,
@@ -1126,7 +1126,7 @@
 					function(isConfirm){
 						if (isConfirm) {
 							$.ajax({
-								url: "./php/DeleteSettingsPhones.php",
+								url: "./php/DeletePhones.php",
 								type: 'POST',
 								data: { 
 								exten_id: arr,
