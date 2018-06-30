@@ -1,27 +1,34 @@
 <?php
+/**
+ * @file        editsettingscarrier.php
+ * @brief       Manage Carriers
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author      Alexander Jim Abenoja
+ * @author		Demian Lizandro A. Biscocho
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	######################################################
-	### Name: editsettingscarrier.php 		###
-	### Functions: Edit Carrier 		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016 		###
-	### Version: 4.0 		###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2 		###
-	######################################################
-
-	//ini_set('display_errors', 1);
-	//ini_set('display_startup_errors', 1);
-	//error_reporting(E_ALL);
-
+	require_once('php/UIHandler.php');
+	require_once('php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
-	require_once('./php/UIHandler.php');
-	//require_once('./php/DbHandler.php');
-	require_once('./php/LanguageHandler.php');
-	require('./php/Session.php');
-	require_once('./php/goCRMAPISettings.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
 
-	// initialize structures
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
@@ -82,36 +89,14 @@ if (isset($_POST["cid"])) {
 						<!-- standard custom edition form -->
 
 						<?php
-						$errormessage = NULL;
+						$errormessage = NULL;						
 						
 						if(isset($cid)) {
-							$url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
-					        $postfields["goUser"] = goUser; #Username goes here. (required)
-					        $postfields["goPass"] = goPass; #Password goes here. (required)
-					        $postfields["goAction"] = "goGetCarrierInfo"; #action performed by the [[API:Functions]]. (required)
-					        $postfields["responsetype"] = responsetype; #json. (required)
-					        $postfields["carrier_id"] = $cid; #Desired exten ID. (required)
-							$postfields["log_user"] = $_SESSION['user'];
-							$postfields["log_group"] = $_SESSION['usergroup'];
-							$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
-
-					         $ch = curl_init();
-					         curl_setopt($ch, CURLOPT_URL, $url);
-					         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-					         curl_setopt($ch, CURLOPT_POST, 1);
-					         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-					         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-					         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-							 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-					         $data = curl_exec($ch);
-					         curl_close($ch);
-					         $output = json_decode($data);
-					        
-					        //var_dump($output->result);
-							$servers = $ui->getServers();
-							
-							if ($output->result=="success") {
-							
+							$output = $api->API_getCarrierInfo($cid);
+							$servers = $api->API_getAllServers();
+							//echo "<pre>";
+							//var_dump($output->data->carrier_description);
+							if ($output->result=="success") {							
 						?>
 
 					<legend>MODIFY CARRIER ID : <u><?php echo $cid;?></u></legend>
@@ -215,7 +200,7 @@ if (isset($_POST["cid"])) {
 						<div class="form-group registration_div" style="display:none;">
 							<label for="carrier_desc" class="col-sm-2 control-label">Port</label>
 							<div class="col-sm-10 mb">
-								<input type="text" class="form-control" name="carrier_desc" id="carrier_desc" placeholder="Carrier Description" value="<?php echo $output->data->carrier_description;?>">
+								<input type="text" class="form-control" name="carrier_desc" id="carrier_desc" placeholder="Carrier Description" value="<?php //echo $output->data->carrier_description;?>">
 							</div>
 						</div>
 						<div class="form-group">
@@ -351,13 +336,13 @@ if (isset($_POST["cid"])) {
 									<div class="form-group mt">
 										<label for="registration_string" class="col-sm-2 control-label">Registration String</label>
 										<div class="col-sm-10 mb">
-											<input type="text" class="form-control" name="registration_string" id="registration_string" placeholder="Registration String" value="<?php echo $output->data->registration_string;?>">
+											<input type="text" class="form-control" name="registration_string" id="registration_string" placeholder="Registration String" value="<?php //echo $output->data->registration_string;?>">
 										</div>
 									</div>
 									<div class="form-group mt">
 										<label for="globals_string" class="col-sm-2 control-label">Global String</label>
 										<div class="col-sm-10 mb">
-											<input type="text" class="form-control" name="globals_string" id="globals_string" placeholder="Global String" value="<?php echo $output->data->globals_string;?>">
+											<input type="text" class="form-control" name="globals_string" id="globals_string" placeholder="Global String" value="<?php //echo $output->data->globals_string;?>">
 										</div>
 									</div>
 									<div class="form-group">
@@ -365,7 +350,7 @@ if (isset($_POST["cid"])) {
 										<div class="col-sm-10 mb">
 											<div class="panel">
 												<div class="panel-body">
-													<textarea rows="11" class="form-control note-editor" id="account_entry" name="account_entry"><?php echo $output->data->account_entry;?></textarea>
+													<textarea rows="11" class="form-control note-editor" id="account_entry" name="account_entry"><?php //echo $output->data->account_entry;?></textarea>
 												</div>
 											</div>
 										</div>
@@ -375,7 +360,7 @@ if (isset($_POST["cid"])) {
 										<div class="col-sm-10 mb">
 											<div class="panel">
 												<div class="panel-body">
-													<textarea rows="3" class="form-control note-editor" id="dialplan_entry" name="dialplan_entry"><?php echo $output->data->dialplan_entry;?></textarea>
+													<textarea rows="3" class="form-control note-editor" id="dialplan_entry" name="dialplan_entry"><?php //echo $output->data->dialplan_entry;?></textarea>
 												</div>
 											</div>
 										</div>
@@ -468,6 +453,8 @@ if (isset($_POST["cid"])) {
 							$.post("./php/ModifyCarrier.php", //post
 							$("#modifycarrier").serialize(), 
 								function(data){
+									console.log(data);
+									console.log($("#modifycarrier").serialize());
 									//if message is sent
 									$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 									$('#modifyCarrierOkButton').prop("disabled", false);

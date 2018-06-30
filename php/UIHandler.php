@@ -3592,9 +3592,9 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 
-	public function getAdminLogsList($group, $limit) {
-		$output = $this->API_goGetAdminLogsList($group, $limit);
-
+	public function getAdminLogsList() {
+		//$output = $this->API_goGetAdminLogsList($group, $limit);
+		$output = $this->api->API_getAdminLogsList();
 		if ($output->result=="success") {
 		# Result was OK!
 
@@ -3607,7 +3607,7 @@ error_reporting(E_ERROR | E_PARSE);
 				//$details = (strlen($details) > 30) ? substr($details, 0, 30) . "..." : $details;
 				//$db_query = (strlen($db_query) > 30) ? substr($db_query, 0, 30) . "..." : $db_query;
 				$result = $result."<tr>
-					<td><span class='hidden-xs'>".$log->name. " (".$log->user.")</span><span class='visible-xs'>".$log->user."</span></td>
+					<td><span class='hidden-xs'>".$log->name. " ".$log->user."</span><span class='visible-xs'>".$log->user."</span></td>
 					<td><a href='http://www.ip-tracker.org/locator/ip-lookup.php?ip=".$log->ip_address."' target='_new'>".$log->ip_address."</a></td>
 					<td>".$log->event_date."</td>
 					<td>".$log->action."</td>
@@ -3725,7 +3725,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	public function getVoiceMails() {
-		$output = $this->API_goGetVoiceMails();
+		$output = $this->api->API_getAllVoiceMails();
 
 		if ($output->result=="success") {
 		# Result was OK!
@@ -3986,10 +3986,10 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 
-	public function getListAllMusicOnHold($goUser, $goPass, $goAction, $responsetype){
-		require_once('Session.php');
-		$perm = $this->goGetPermissions('moh', $_SESSION['usergroup']);
-	    $output = $this->API_goGetAllMusicOnHold();
+	public function getListAllMusicOnHold($user_group){
+		//require_once('Session.php');
+		$perm = $this->api->goGetPermissions('moh', $user_group);
+	    $output = $this->api->API_getAllMusicOnHold();
 
 	    # Result was OK!
 	    $columns = array($this->lh->translationFor('moh_name'), $this->lh->translationFor('status'), $this->lh->translationFor('random_order'), $this->lh->translationFor('group'), $this->lh->translationFor('action'));
@@ -4049,7 +4049,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction
 	 * @param responsetype
 	 */
-	public function API_GetVoiceFilesList(){
+	public function API_getAllVoiceFiles(){
 	    $url = gourl."/goVoiceFiles/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -4071,11 +4071,11 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllVoiceFiles(){
-		require_once('Session.php');
-		$perm = $this->goGetPermissions('voicefiles', $_SESSION['usergroup']);
-		$output = $this->API_GetVoiceFilesList();
-	    if ($output->result=="success") {
+	public function getListAllVoiceFiles($user_group){
+		//require_once('Session.php');
+		$perm = $this->api->goGetPermissions('voicefiles', $user_group);
+		$output = $this->api->API_getAllVoiceFiles();
+	    //if ($output->result=="success") {
 	    # Result was OK!
 	    $columns = array($this->lh->translationFor('file_name'), $this->lh->translationFor('date'), $this->lh->translationFor('size'), $this->lh->translationFor('action'));
 	    $hideOnMedium = array("Date");
@@ -4083,7 +4083,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 	    $server_port = getenv("SERVER_PORT");
 		//$web_ip = getenv("SERVER_ADDR");
-		$web_ip = $_SERVER['SERVER_NAME'];
+		//$web_ip = $_SERVER['SERVER_NAME'];
+		$web_ip = $log_ip;
 		if (preg_match("/443/",$server_port)) {$HTTPprotocol = 'https://';}
 		else {$HTTPprotocol = 'http://';}
 	    for($i=0;$i<count($output->file_name);$i++){
@@ -4114,10 +4115,10 @@ error_reporting(E_ERROR | E_PARSE);
 		    </tr>";
 	    }
 		return $result.'</table>';
-	    } else {
+	    //} else {
 		# An error occured
-		return $output->result;
-	    }
+		//return $output->result;
+	    //}
 	}
 
 	private function getUserActionMenuForVoiceFiles($filename, $details, $perm, $protocol, $web_ip) {
@@ -4240,16 +4241,16 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllCallTimes($goUser, $goPass, $goAction, $responsetype){
-	    $output = $this->api->API_getCalltimes();
+	public function getListAllCallTimes(){
+	    $output = $this->api->API_getAllCalltimes();
 	    if ($output->result=="success") {
 	    # Result was OK!
         //$columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
         //$hideOnMedium = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'));
 		//$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'));
-		$columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('Schedules'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
+		$columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('Schedule'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
         $hideOnMedium = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('user_group'));
-		$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('Schedules'), $this->lh->translationFor('user_group'));
+		$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('Schedule'), $this->lh->translationFor('user_group'));
 		
 		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		
@@ -4397,42 +4398,41 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 	
 	public function getServerList($perm){
-		$output = $this->getServers();
+		$output = $this->api->API_getAllServers();
 
 	    if ($output->result=="success") {
 	    # Result was OK!
+			$columns = array($this->lh->translationFor('server_id'), $this->lh->translationFor('server_name'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'), $this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'), $this->lh->translationFor('action'));
+			$hideOnMedium = array($this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'));
+			$hideOnLow = array($this->lh->translationFor('server_ip'), $this->lh->translationFor('server_name'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'),$this->lh->translationFor('gmt'));
 
-        $columns = array($this->lh->translationFor('server_id'), $this->lh->translationFor('server_name'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'), $this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'), $this->lh->translationFor('action'));
-        $hideOnMedium = array($this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'));
-		$hideOnLow = array($this->lh->translationFor('server_ip'), $this->lh->translationFor('server_name'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'),$this->lh->translationFor('gmt'));
+			$result = $this->generateTableHeaderWithItems($columns, "servers_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
-		$result = $this->generateTableHeaderWithItems($columns, "servers_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+				for($i=0;$i<count($output->server_id);$i++){
 
-	        for($i=0;$i<count($output->server_id);$i++){
+					$action = '';
+					if ($perm->servers_update != 'N' || $perm->servers_delete != 'N') {
+						$action = $this->ActionMenuForServers($output->server_id[$i], $perm);
+					}
 
-				$action = '';
-				if ($perm->servers_update != 'N' || $perm->servers_delete != 'N') {
-					$action = $this->ActionMenuForServers($output->server_id[$i], $perm);
+					if($output->active[$i] == "Y"){
+						$active = $this->lh->translationFor('active');
+					}else{
+						$active = $this->lh->translationFor('inactive');
+					}
+						$result .= "<tr>
+							<td class ='hide-on-low'>".($perm->servers_update !== 'N' ? "<a class='edit-server' data-id='".$output->server_id[$i]."'>" : '')."".$output->server_id[$i]."</td>
+							<td>".$output->server_description[$i]."</td>
+							<td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
+							<td class ='hide-on-medium hide-on-low'>".$active."</td>
+							<td class ='hide-on-low'>".$output->asterisk_version[$i]."</td>
+							<td class ='hide-on-low'>".$output->max_vicidial_trunks[$i]."</td>
+							<td class ='hide-on-low'>".$output->local_gmt[$i]."</td>
+							<td nowrap>".$action."</td>
+						</tr>";
 				}
 
-			    if($output->active[$i] == "Y"){
-				    $active = $this->lh->translationFor('active');
-				}else{
-				    $active = $this->lh->translationFor('inactive');
-				}
-                    $result .= "<tr>
-	                    <td class ='hide-on-low'>".($perm->servers_update !== 'N' ? "<a class='edit-server' data-id='".$output->server_id[$i]."'>" : '')."".$output->server_id[$i]."</td>
-	                    <td>".$output->server_description[$i]."</td>
-	                    <td class ='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
-						<td class ='hide-on-medium hide-on-low'>".$active."</td>
-						<td class ='hide-on-low'>".$output->asterisk_version[$i]."</td>
-						<td class ='hide-on-low'>".$output->max_vicidial_trunks[$i]."</td>
-						<td class ='hide-on-low'>".$output->local_gmt[$i]."</td>
-	                    <td nowrap>".$action."</td>
-	                </tr>";
-            }
-
-		    return $result.'</table>';
+				return $result.'</table>';
 
 	    } else {
 	       # An error occured
@@ -4466,7 +4466,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 
 	public function getListAllCarriers($perm){
-		$output = $this->api->API_getCarriers();
+		$output = $this->api->API_getAllCarriers();
 
 	    if ($output->result=="success") {
 	    # Result was OK!

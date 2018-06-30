@@ -61,6 +61,11 @@ if ($validated == 1) {
 		$shift_enforcement = stripslashes($shift_enforcement);
 	}
 	
+	$allowed_usergroups = NULL; if (isset($_POST["admin_viewable_groups"])) { 
+		$allowed_usergroups = $_POST["admin_viewable_groups"]; 
+		$allowed_usergroups = stripslashes($allowed_usergroups);
+	}
+	
 	$allowed_campaigns = " ";
 	$allowed_camp = $_REQUEST['allowed_camp'];
 	
@@ -224,9 +229,11 @@ if ($validated == 1) {
 		'forced_timeclock_login' => $forced_timeclock_login,
 		'shift_enforcement' => $shift_enforcement,
 		'allowed_campaigns' => $allowed_campaigns,
+		'allowed_usergroups' => $allowed_usergroups,
 		'permissions' => $group_permission,
 		'session_user' => $_POST['log_user'],
-		'hostname' => $_SERVER['REMOTE_ADDR']
+		'log_user' => $_POST['log_user'],
+		'log_ip' => $_SERVER['REMOTE_ADDR']
 	);				
 
 	// Call the API

@@ -20,8 +20,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('php/UIHandler.php');
-	require_once('php/APIHandler.php');
+	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
@@ -31,7 +31,7 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	
-	$perm = $api->goGetPermissions('inbound,ivr,did');
+	$perm = $api->goGetPermissions('inbound,ivr,did', $_SESSION['usergroup']);
 	$gopackage = $api->API_getGOPackage();
 
 	if($gopackage->packagetype === "gosmall" && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
@@ -102,19 +102,19 @@
 
 	$ingroup = $api->API_getAllInGroups();
 	$ivr = $api->API_getAllIVRs();
-	$phonenumber = $api->API_getPhoneNumber();
+	$phonenumber = $api->API_getAllDIDs();
 
 	/*
 	 * APIs for getting lists for the some of the forms
 	 */
 	$users = $api->API_getAllUsers();
 	$user_groups = $api->API_getAllUserGroups();
-	$campaign = $api->API_getAllCampaigns($_SESSION['usergroup']);
+	$campaign = $api->API_getAllCampaigns();
 	$voicemails = $api->API_getAllVoicemails();
-	$phones = $ui->API_getPhonesList();
+	$phones = $api->API_getAllDIDs();
 	$scripts = $api->API_getAllScripts();
 	$voicefiles = $api->API_getAllVoiceFiles();
-	$calltimes = $api->API_getCalltimes();
+	$calltimes = $api->API_getAllCalltimes();
 ?>
 			<div class="panel panel-default">
 				<div class="panel-body">

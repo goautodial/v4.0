@@ -1,23 +1,38 @@
 <?php
-
-	###########################################################
-	### Name: telephonylist.php                             ###
-	### Functions: Manage List and Upload Leads             ###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016            ###
-	### Version: 4.0                                        ###
-	### Written by: Alexander Abenoja & Noel Umandap        ###
-	### License: AGPLv2                                     ###
-	###########################################################
+/**
+ * @file 		telephonylist.php
+ * @brief 		Manage List and Upload Leads
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author		Demian Lizandro A. Biscocho
+ * @author     	Alexander Jim H. Abenoja
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
 	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	$perm = $ui->goGetPermissions('list,customfields', $_SESSION['usergroup']);
+
+	$perm = $api->goGetPermissions('list,customfields', $_SESSION['usergroup']);
 	$checkbox_all = $ui->getCheckAll("list");
 ?>
 <html>
@@ -218,7 +233,7 @@
 				/****
 				** API to get data of tables
 				****/
-				$lists = $ui->API_goGetAllLists($_SESSION['usergroup']);
+				$lists = $api->API_getAllLists($_SESSION['usergroup']);
 				//var_dump($lists);
 		?>
                 	<div class="row">
@@ -455,23 +470,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 <?php print $ui->getCircleButton("list_and_call_recording", "pencil-square-o"); ?>
 </div>
 <?php
-	/*
-	* APIs for add form
-	*/
-	$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
-	//$max_list = max($lists->list_id);
-	//$min_list = min($lists->list_id);
-	//
-	//if($max_list >= 99999999){
-	//	for($i=1;$i < $max_list;$i++){
-	//		if(!in_array($i, $lists->list_id)){
-	//			$next_list = $i;
-	//			$i = $max_list;
-	//		}
-	//	}
-	//}else{
-	//	$next_list = $max_list + 1;
-	//}
+	$campaign = $api->API_getAllCampaigns();
 	
 	$next_listname = "ListID ".$lists->next_listID;
 	$datenow = date("j-n-Y");

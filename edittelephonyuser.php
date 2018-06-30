@@ -22,16 +22,16 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-require_once('./php/CRMDefaults.php');
-require_once('./php/UIHandler.php');
-require_once('./php/LanguageHandler.php');
-require('./php/Session.php');
-require_once('./php/goCRMAPISettings.php');
+	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
 
-// initialize structures
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
+	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
 
 $userid = NULL;
 if (isset($_POST["user_id"])) {
@@ -45,8 +45,8 @@ if(isset($_POST["role"])){
 	$userrole = $_POST["role"];
 }
 
-$voicemails = $ui->API_goGetVoiceMails();
-$user_groups = $ui->API_goGetUserGroupsList();
+$voicemails = $api->API_getAllVoiceMails();
+$user_groups = $api->API_getAllUserGroups();
 ?>
 <html>
     <head>
@@ -105,10 +105,8 @@ $user_groups = $ui->API_goGetUserGroupsList();
 					<?php
 						$userobj = NULL;
 						$errormessage = NULL;
-						//$output = $ui->goGetUserInfo($userid, "user_id");
-						$output = $ui->goGetUserInfoNew($userid);
-						//echo "<pre>";
-						//print_r($output);
+						$output = $api->API_getUserInfo($userid);
+	
 						if(isset($userid)) {
 							if ($output->result=="success") {
 							# Result was OK!
@@ -257,7 +255,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 													<label for="phone_password" class="col-sm-2 control-label">Phone Password</label>
 													<div class="col-sm-10 mb">
 														<input type="text" class="form-control" name="phone_password" id="phone_password" 
-															value="<?php echo $output->data->phone_pass;?>" maxlength="20" placeholder="Phone Password" />
+															value="<?php //echo $output->data->phone_pass;?>" maxlength="20" placeholder="Phone Password" />
 													</div>
 												</div> -->									
 												<div class="form-group">
@@ -692,7 +690,7 @@ $user_groups = $ui->API_goGetUserGroupsList();
 						type: 'POST',
 						data: $("#modifyuser").serialize() + '&user=' + user,
 						success: function(data) {
-						console.log($("#modifyuser").serialize() + '&user=' + user);
+						//console.log($("#modifyuser").serialize() + '&user=' + user);
 						$("#phone_login").prop("disabled", true);
 							if (data == 1) {
 								$('#update_button').html("<i class='fa fa-check'></i> Update");

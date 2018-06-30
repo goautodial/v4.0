@@ -1,22 +1,37 @@
 <?php	
-	
-	###################################################
-	### Name: settingscalltimes.php 	   ###
-	### Functions: Manage Calltimes 	   ###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	   ###
-	### Version: 4.0 	   ###
-	### Written by: Alexander Jim H. Abenoja	   ###
-	### License: AGPLv2	   ###
-	###################################################
+/**
+ * @file        settingscalltimes.php
+ * @brief       Manage Calltimes
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author      Alexander Jim Abenoja
+ * @author		Demian Lizandro A. Biscocho
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	require_once('./php/UIHandler.php');
+	require_once('php/UIHandler.php');
+	require_once('php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
 ?>
 <html>
     <head>
@@ -103,8 +118,8 @@
 		</div>
 
 <?php
-	$user_groups = $ui->API_goGetUserGroupsList();
-	$voicefiles = $ui->API_GetVoiceFilesList();
+	$user_groups = $api->API_getAllUserGroups();
+	$voicefiles = $api->API_getAllVoiceFiles();
 ?>
 	<!-- Modal -->
 
@@ -403,7 +418,7 @@
 			<div class="modal-content">
 	      	<!--<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight">
-						<b><?php $lh->translateText("Schedule"); ?> </b>
+						<b><?php //$lh->translateText("Schedule"); ?> </b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	       		</h4>
 				</div>

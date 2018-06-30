@@ -1,28 +1,45 @@
 <?php
+/**
+ * @file        settingscarriers.php
+ * @brief       Manage Carriers
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author      Alexander Jim Abenoja
+ * @author		Demian Lizandro A. Biscocho
+ * @author		Noel Umandap
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-    ###########################################################
-    ### Name: settingscarriers.php                          ###
-    ### Functions: Manage Carriers                          ###
-    ### Copyright: GOAutoDial Ltd. (c) 2011-2016            ###
-    ### Version: 4.0                                        ###
-    ### Written by: Alexander Abenoja & Noel Umandap        ###
-    ### License: AGPLv2                                     ###
-    ###########################################################
-
-	require_once('./php/UIHandler.php');
+	require_once('php/UIHandler.php');
+	require_once('php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
-    include('./php/goCRMAPISettings.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	$gopackage = $ui->API_getGOPackage();
+	
+	$gopackage = $api->API_getGOPackage();
+	$perm = $api->goGetPermissions('carriers', $_SESSION['usergroup']);
+	
 	if( ($gopackage->show_carrier_settings === "N" || $gopackage->show_carrier_settings === NULL) && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
 		header("location:index.php");
 	}
-	$perm = $ui->goGetPermissions('carriers', $_SESSION['usergroup']);
+	
 ?>
 <html>
     <head>
@@ -96,9 +113,9 @@
 	/*
 	* MODAL
 	*/
-	$user_groups = $ui->API_goGetUserGroupsList();
-	$carriers = $ui->getCarriers();
-	$servers = $ui->getServers();
+	$user_groups = $api->API_getAllUserGroups();
+	$carriers = $api->API_getAllCarriers();
+	$servers = $api->API_getAllServers();
 ?>
 	<!-- ADD WIZARD MODAL -->
 	<div class="modal fade" id="wizard-modal" tabindex="-1">
@@ -166,7 +183,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="carrier_description" class="col-sm-3 control-label"><?php $lh->translateText('user_groups'); ?></label>
+									<label for="user_groups" class="col-sm-3 control-label"><?php $lh->translateText('user_groups'); ?></label>
 									<div class="col-sm-8 mb">
 										<select id="user_group" class="form-control" name="user_group">
 												<option value="---ALL---"><?php $lh->translateText('all_usergroups'); ?>   </option>
@@ -204,7 +221,7 @@ host=</textarea>
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
-									<label for="carrier_desc" class="col-sm-3 control-label"><?php $lh->translateText('authentication'); ?></label>
+									<label for="authentication" class="col-sm-3 control-label"><?php $lh->translateText('authentication'); ?></label>
 									<div class="col-sm-8 mb">
 										<div class="row mt">
 											<label class="col-sm-1">
@@ -258,14 +275,14 @@ host=</textarea>
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
-									<label for="carrier_desc" class="col-sm-3 control-label"><?php $lh->translateText('codecs'); ?></label>
+									<label for="codecs" class="col-sm-3 control-label"><?php $lh->translateText('codecs'); ?></label>
 									<div class="col-sm-8 mb">
 										<div class="row mt">
 											<label class="col-sm-1">
 												&nbsp;
 											</label>
 											<label class="col-sm-2 checkbox-inline c-checkbox" for="gsm">
-												<input type="checkbox" id="gsm" name="codecs[]" value="GSM" checked>
+												<input type="checkbox" id="gsm" name="codecs[]" value="GSM">
 												<span class="fa fa-check"></span>GSM
 											</label>
 											<label class="col-sm-2 checkbox-inline c-checkbox" for="ulaw">
@@ -284,7 +301,7 @@ host=</textarea>
 									</div>
 								</div>
 								<div class="form-group not_custom_protocol">
-									<label for="carrier_desc" class="col-sm-3 control-label"><?php $lh->translateText('dtmf_mode'); ?></label>
+									<label for="dtmf_mode" class="col-sm-3 control-label"><?php $lh->translateText('dtmf_mode'); ?></label>
 									<div class="col-sm-8 mb">
 										<div class="row mt">
 											<label class="col-sm-1">
@@ -424,7 +441,7 @@ host=</textarea>
 									<div class="form-group mb">
 										<div class="welcome-header">
 										  <span><?php $lh->translateText('justgo_welcome'); ?></span><br class="clear"><br class="clear">
-										  <span><a href="https://webrtc.goautodial.com/justgocloud/" target="_new"><img src="https://webrtc.goautodial.com/img/goautodial_logo.png"></a></span><br class="clear"><br class="clear">
+										  <!-- <span><a href="https://webrtc.goautodial.com/justgocloud/" target="_new"><img src="https://webrtc.goautodial.com/img/goautodial_logo.png"></a></span><br class="clear"><br class="clear"> -->
 										  <span><?php $lh->translateText('justgo_title'); ?></span><br>
 										  <br>
 										  <span align="center" style="padding-left: 100px;">
@@ -726,7 +743,8 @@ host=</textarea>
 							type: 'POST',
 							data: $("#create_form").serialize(),
 							success: function(data) {
-							   console.log(data);
+								console.log(data);
+								//console.log($("#create_form").serialize());
 								$('#finish').text("<?php $lh->translateText("submit"); ?>");
 								$('#finish').attr("disabled", false);
 								
@@ -737,7 +755,7 @@ host=</textarea>
 										function(){ window.location.href = 'settingscarriers.php'; }
 									);
 								}else{
-									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
+									sweetAlert("<?php $lh->translateText("oops"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 								}
 							}
 						});

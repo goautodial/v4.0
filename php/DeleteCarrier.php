@@ -3,7 +3,7 @@
  * @file        DeleteCarrier.php
  * @brief       Handles Delete Carrier Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author      Alexander Jim H. Abenoja  <alex@goautodial.com>
+ * @author      Alexander Jim H. Abenoja
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -22,18 +22,7 @@
 
 require_once('APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
-/*
-require_once('goCRMAPISettings.php');    
-    $url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeleteCarrier"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["carrier_id"] = $_POST['carrier_id']; #Desired uniqueid. (required)
-	$postfields["ip_address"] = $_POST['hostname'];
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-*/
+
 	$postfields = array(
         'goAction' => 'goDeleteCarrier',
         'carrier_id' => $_POST['carrier_id']

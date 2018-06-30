@@ -68,8 +68,8 @@ error_reporting(E_ALL)
 		$goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 	
 	// APIs FOR FILTER LIST
-		$campaign = $api->API_getAllCampaigns($_SESSION['usergroup']);
-		$ingroup = $api->API_getAllInGroups($_SESSION['usergroup']);
+		//$campaign = $api->API_getAllCampaigns($_SESSION['usergroup']);
+		//$ingroup = $api->API_getAllInGroups($_SESSION['usergroup']);
 	/*
 	 * API for call statistics - Demian
 	*/
@@ -80,7 +80,7 @@ error_reporting(E_ALL)
 		$callsperhour = explode(";",trim($callsperhour, ';'));
 		
 	/* Sales */
-		$totalSales = $ui->API_goGetTotalSales($_SESSION['user']);
+		//$totalSales = $ui->API_goGetTotalSales($_SESSION['user']);
 		$inboundSales =  $ui->API_goGetInboundSales($_SESSION['user']);
 		$outboundSales = $ui->API_goGetOutboundSales($_SESSION['user']);
 		$inSalesHour = $ui->API_goGetINSalesPerHour($_SESSION['user']);
@@ -1359,7 +1359,7 @@ function goGetInSession(type) {
 				// ---- view agent information modal
 					load_view_agent_information();
 		});
-
+		/*
 		//Refresh functions() after 5000 milliseconds
 			// ... status boxes ...
 				var int_1 = setInterval(load_totalagentscall,5000);
@@ -1398,7 +1398,7 @@ function goGetInSession(type) {
 			
 			// ... view agent information modal  ...
 				var int_18 = setInterval(load_view_agent_information,3000);
-				
+		*/
 		$('#view_agent_information').on('show.bs.modal', function () {
 			clearInterval(int_1);
 			clearInterval(int_2);
@@ -1420,7 +1420,7 @@ function goGetInSession(type) {
 			clearInterval(int_18);
 		});
 		
-		$('#view_agent_information').on('hidden.bs.modal', function () {
+		/*$('#view_agent_information').on('hidden.bs.modal', function () {
 			int_1 = setInterval(load_totalagentscall,5000);
 			int_2 = setInterval(load_totalagentspaused,5000);
 			int_3 = setInterval(load_totalagentswaitingcall,5000);
@@ -1439,7 +1439,7 @@ function goGetInSession(type) {
 			int_16 = setInterval(load_realtime_calls_monitoring,3000);
 			int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			int_18 = setInterval(load_view_agent_information,3000);
-		});
+		});*/
 	</script>
 	
    <!-- FLOT CHART-->

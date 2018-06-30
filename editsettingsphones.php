@@ -1,25 +1,36 @@
 <?php
+/**
+ * @file 		editsettingsphones.php
+ * @brief 		Modify phone entries
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author     	Alexander Jim H. Abenoja <alex@goautodial.com> 
+ * @author		Demian Lizandro A. Biscocho <demian@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
-	######################################################
-	### Name: editsettingsphones.php 		###
-	### Functions: Edit Phones 		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016 		###
-	### Version: 4.0 		###
-	### Written by: Alexander Jim H. Abenoja 		###
-	### License: AGPLv2 		###
-	######################################################
+	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
 
-require_once('./php/CRMDefaults.php');
-require_once('./php/UIHandler.php');
-//require_once('./php/DbHandler.php');
-require_once('./php/LanguageHandler.php');
-require('./php/Session.php');
-require_once('./php/goCRMAPISettings.php');
-
-// initialize structures
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
+	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
 
 $extenid = NULL;
 if (isset($_POST["extenid"])) {
@@ -78,39 +89,12 @@ if (isset($_POST["extenid"])) {
 
 						<!-- standard custom edition form -->
 					<?php
-					$errormessage = NULL;
-					
-					//if(isset($extenid)) {
-						$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
-				        $postfields["goUser"] = goUser; #Username goes here. (required)
-				        $postfields["goPass"] = goPass; #Password goes here. (required)
-				        $postfields["goAction"] = "goGetPhoneInfo"; #action performed by the [[API:Functions]]. (required)
-				        $postfields["responsetype"] = responsetype; #json. (required)
-				        $postfields["exten_id"] = $extenid; #Desired exten ID. (required)
-						$postfields["log_user"] = $_SESSION['user'];
-						$postfields["log_group"] = $_SESSION['usergroup'];
-						$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
-
-				         $ch = curl_init();
-				         curl_setopt($ch, CURLOPT_URL, $url);
-				         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-				         curl_setopt($ch, CURLOPT_POST, 1);
-				         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-				         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-						 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-				         $data = curl_exec($ch);
-				         curl_close($ch);
-				         $output = json_decode($data);
-
-						if ($output->result=="success") {
-							
-						# Result was OK!
-							for($i=0;$i<count($output->extension);$i++){
+						$errormessage = NULL;
+						$output = $api->API_getPhoneInfo($extenid);
 					?>
                     
                     <div class="panel-body">
-                    	<legend>MODIFY PHONE EXTENSION : <u><?php echo $output->extension[$i];?></u></legend>
+                    	<legend>MODIFY PHONE EXTENSION : <u><?php echo $output->extension;?></u></legend>
 		<form id="modifyphones">
 			<input type="hidden" name="modifyid" value="<?php echo $extenid;?>">
 			<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>" />
@@ -130,19 +114,19 @@ if (isset($_POST["extenid"])) {
 					<div class="form-group">
 						<label for="plan" class="col-sm-2 control-label">Dial Plan Number</label>
 						<div class="col-sm-10 mb">
-							<input type="number" class="form-control" name="plan" id="plan" placeholder="Dial Plan Number (Mandatory)" value="<?php echo $output->dialplan_number[$i];?>">
+							<input type="number" class="form-control" name="plan" id="plan" placeholder="Dial Plan Number (Mandatory)" value="<?php echo $output->dialplan_number;?>">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="vmid" class="col-sm-2 control-label">Voicemail ID</label>
 						<div class="col-sm-10 mb">
-							<input type="text" class="form-control" name="vmid" id="vmid" value="<?php echo $output->voicemail_id[$i];?>">
+							<input type="text" class="form-control" name="vmid" id="vmid" value="<?php echo $output->voicemail_id;?>">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="ip" class="col-sm-2 control-label">Server IP</label>
 						<div class="col-sm-10 mb">
-							<input type="text" class="form-control" name="ip" id="ip" value="<?php echo $output->server_ip[$i];?>">
+							<input type="text" class="form-control" name="ip" id="ip" value="<?php echo $output->server_ip;?>">
 						</div>
 					</div>
 					<div class="form-group">
@@ -151,13 +135,13 @@ if (isset($_POST["extenid"])) {
 							<select class="form-control" name="active" id="active">
 							<?php
 								$active = NULL;
-								if($output->active[$i] == "Y"){
+								if($output->active == "Y"){
 									$active .= '<option value="Y" selected> YES </option>';
 								}else{
 									$active .= '<option value="Y" > YES </option>';
 								}
 								
-								if($output->active[$i] == "N" || $output->active[$i] == NULL){
+								if($output->active == "N" || $output->active == NULL){
 									$active .= '<option value="N" selected> NO </option>';
 								}else{
 									$active .= '<option value="N" > NO </option>';
@@ -173,31 +157,31 @@ if (isset($_POST["extenid"])) {
 							<select class="form-control" id="status" name="status">
 								<?php
 									$status = NULL;
-									if($output->status[$i] == "ACTIVE"){
+									if($output->status == "ACTIVE"){
 										$status .= '<option value="ACTIVE" selected> ACTIVE </option>';
 									}else{
 										$status .= '<option value="ACTIVE" > ACTIVE </option>';
 									}
 									
-									if($output->status[$i] == "SUSPENDED"){
+									if($output->status == "SUSPENDED"){
 										$status .= '<option value="SUSPENDED" selected> SUSPENDED </option>';
 									}else{
 										$status .= '<option value="SUSPENDED" > SUSPENDED </option>';
 									}
 									
-									if($output->status[$i] == "CLOSED"){
+									if($output->status == "CLOSED"){
 										$status .= '<option value="CLOSED" selected> CLOSED </option>';
 									}else{
 										$status .= '<option value="CLOSED" > CLOSED </option>';
 									}
 									
-									if($output->status[$i] == "PENDING"){
+									if($output->status == "PENDING"){
 										$status .= '<option value="PENDING" selected> PENDING </option>';
 									}else{
 										$status .= '<option value="PENDING" > PENDING </option>';
 									}
 									
-									if($output->status[$i] == "ADMIN "){
+									if($output->status == "ADMIN "){
 										$status .= '<option value="ADMIN " selected> ADMIN  </option>';
 									}else{
 										$status .= '<option value="ADMIN " > ADMIN  </option>';
@@ -210,19 +194,19 @@ if (isset($_POST["extenid"])) {
 					<div class="form-group">
 						<label for="fullname" class="col-sm-2 control-label">Fullname</label>
 						<div class="col-sm-10 mb">
-							<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->fullname[$i];?>">
+							<input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $output->fullname;?>">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">New Messages: </label>
 						<div class="col-sm-10 mb">
-							<span style="padding-left:20px; font-size: 20;"><?php echo $output->messages[$i];?></span>
+							<span style="padding-left:20px; font-size: 20;"><?php echo $output->messages;?></span>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Old Messages: </label>
 						<div class="col-sm-10 mb">
-							<span style="padding-left:20px; font-size: 20;"><?php echo $output->old_messages[$i];?></span>
+							<span style="padding-left:20px; font-size: 20;"><?php echo $output->old_messages;?></span>
 						</div>
 					</div>
 					<div class="form-group">
@@ -231,25 +215,25 @@ if (isset($_POST["extenid"])) {
 							<select class="form-control" id="protocol" name="protocol">
 								<?php
 									$protocol = NULL;
-									if($output->protocol[$i] == "SIP"){
+									if($output->protocol == "SIP"){
 										$protocol .= '<option value="SIP" selected> SIP </option>';
 									}else{
 										$protocol .= '<option value="SIP"> SIP </option>';
 									}
 									
-									if($output->protocol[$i] == "Zap"){
+									if($output->protocol == "Zap"){
 										$protocol .= '<option value="Zap" selected> Zap </option>';
 									}else{
 										$protocol .= '<option value="Zap"> Zap </option>';
 									}
 									
-									if($output->protocol[$i] == "IAX2"){
+									if($output->protocol == "IAX2"){
 										$protocol .= '<option value="IAX2" selected> IAX2 </option>';
 									}else{
 										$protocol .= '<option value="IAX2"> IAX2 </option>';
 									}
 									 
-									if($output->protocol[$i] == "EXTERNAL"){
+									if($output->protocol == "EXTERNAL"){
 										$protocol .= '<option value="EXTERNAL" selected> EXTERNAL </option>';
 									}else{
 										$protocol .= '<option value="EXTERNAL"> EXTERNAL </option>';
@@ -273,8 +257,9 @@ if (isset($_POST["extenid"])) {
 		</form>
 	</div>
 <?php
+	/*
 		}
-	}
+	}*/
 ?>
                 </section>
 				<!-- /.content -->

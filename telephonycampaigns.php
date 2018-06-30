@@ -166,7 +166,7 @@
 		die("API ERROR: ".$campaign->result);
 	}
 	$disposition = $api->API_getAllDispositions("custom");
-	$leadrecycling = $api->API_getLeadRecycling();
+	$leadrecycling = $api->API_getAllLeadRecycling();
 
 	$dialStatus = $api->API_getAllDialStatuses($campaign->data->campaign_id);
 	$campaignStatuses = $api->getAllCampaignStatuses();
@@ -176,7 +176,7 @@
 	$list = $api->API_getAllLists();
 	$ingroup = $api->API_getAllInGroups();
 	$ivr = $api->API_getAllIVRs();
-	$voicemails = $api->API_getVoiceFiles();
+	$voicemails = $api->API_getAllVoiceFiles();
 	$users = $api->API_getAllUsers();
 	$carriers = $api->API_getAllCarriers();
 	$checkbox_all = $ui->getCheckAll("campaign");
@@ -286,35 +286,40 @@
 											  </tr>
 										   </thead>
 										   <tbody>
-											   	<?php
-											   		for($i=0;$i < count($campaign->campaign_id);$i++){
-														$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i], $perm);
+											   	<?php			
+													if (count($disposition->campaign_id[$i]) > 0){
+														for($i=0;$i < count($campaign->campaign_id);$i++){
+															$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i], $perm);
 											   	?>
 													<tr>
-														<td><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit_disposition" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
+														<td><?php 																
+																if ($perm->disposition->disposition_update !== 'N') { 
+																	echo '<a class="edit_disposition" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; 
+																} ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
 														<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit_disposition" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'>
 												<?php
-												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
-													for($a=0; $a<count($disposition->status); $a++){
-														
-														if($disposition->campaign_id[$a] == $campaign->campaign_id[$i]){
-															 echo "<i>".$disposition->status[$a]."</i>";
-															 
-															if($disposition->campaign_id[$a+1] == $campaign->campaign_id[$i]){
-																echo ", ";
+															//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
+															for($a=0; $a<count($disposition->status); $a++){
+																
+																if($disposition->campaign_id[$a] == $campaign->campaign_id[$i]){
+																	echo "<i>".$disposition->status[$a]."</i>";
+																	
+																	if($disposition->campaign_id[$a+1] == $campaign->campaign_id[$i]){
+																		echo ", ";
+																	}
+																}
 															}
-														}
-													}
-												//}else{
-												//	echo "- - - NONE - - -";
-												//}
+															/*}else{
+																echo "- - - NONE - - -";
+															}*/
 												?>
 														</td>
 														<td style="width:16%;"><?php echo $action_DISPOSITION;?></td>
 													</tr>
 												<?php
+														}
 													}
 												?>
 										   </tbody>
@@ -335,9 +340,8 @@
 									   </thead>
 									   <tbody>
 										   	<?php
-										   		for($i=0;$i < count($campaign->campaign_id);$i++){
-
-													
+												if (count($leadrecycling->campaign_id[$i]) > 0){
+													for($i=0;$i < count($campaign->campaign_id);$i++){													
 										   	?>
 												<tr>
 													<td><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit-leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
@@ -345,25 +349,25 @@
 													<td><?php echo $campaign->campaign_name[$i];?></td>
 													<td class='hide-on-medium hide-on-low'>
 											<?php
-											//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
-												
-												for($a=0; $a<count($leadrecycling->data); $a++){
-													if($leadrecycling->data[$a]->campaign_id == $campaign->campaign_id[$i]){
-														$leadrecycles[] = $leadrecycling->data[$a]->status;
-													}
-												}
-												$imploded_leadrecycles = implode(", ", $leadrecycles);
-												unset($leadrecycles);
-											echo "<i>".$imploded_leadrecycles." </i>";
-											//}else{s
-											//	echo "- - - NONE - - -";
-											//}
-												$action_LeadRecycling = $ui->ActionMenuForLeadRecycling($campaign->campaign_id[$i]);
+														//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){												
+														for($a=0; $a<count($leadrecycling->data); $a++){
+															if($leadrecycling->data[$a]->campaign_id == $campaign->campaign_id[$i]){
+																$leadrecycles[] = $leadrecycling->data[$a]->status;
+															}
+														}
+														$imploded_leadrecycles = implode(", ", $leadrecycles);
+														unset($leadrecycles);
+														echo "<i>".$imploded_leadrecycles." </i>";
+														//}else{s
+														//	echo "- - - NONE - - -";
+														//}
+														$action_LeadRecycling = $ui->ActionMenuForLeadRecycling($campaign->campaign_id[$i]);
 											?>
 													</td>
 													<td style="width:16%;"><?php echo $action_LeadRecycling;?></td>
 												</tr>
 											<?php
+													}
 												}
 											?>
 									   </tbody>
