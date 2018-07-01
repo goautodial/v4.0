@@ -106,7 +106,7 @@
 			'log_ip' => $_SERVER['REMOTE_ADDR']
 		);				
 
-		$output = $api->API_addCarrier($postfields);
+		$output = $api->API_editCarrier($postfields);
 
 		if ($output->result == "success") {
 			$status = 1;

@@ -556,7 +556,7 @@ if(isset($_SESSION["user"])){
 	}
 
 	public function API_editCarrier($postfields){
-		return $this->API_Request("goCarriers", $postfields, true);
+		return $this->API_Request("goCarriers", $postfields);
 	}
 	
 	public function API_addCustomFields($postfields){

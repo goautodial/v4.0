@@ -417,7 +417,6 @@ if (isset($_POST["cid"])) {
 
 		<script type="text/javascript">
 			$(document).ready(function() {
-
 			    /* on authorization change */
 				$('input[type=radio][name=authentication]').on('change', function() {
 				//  alert( this.value ); // or $(this).val()
@@ -439,39 +438,34 @@ if (isset($_POST["cid"])) {
 					}
 				});
 
-			/** 
-			 * Modifies a telephony list
-			 */
 			$("#modifycarrier").validate({
 				submitHandler: function() {
 					//submit the form
-						$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
-						$('#modifyCarrierOkButton').prop("disabled", true);
-
-							$("#resultmessage").html();
-							$("#resultmessage").fadeOut();
-							$.post("./php/ModifyCarrier.php", //post
-							$("#modifycarrier").serialize(), 
-								function(data){
-									console.log(data);
-									console.log($("#modifycarrier").serialize());
-									//if message is sent
-									$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
-									$('#modifyCarrierOkButton').prop("disabled", false);
-									
-									if (data == 1) {
-										sweetAlert("<?php $lh->translateText("carrier_modify_success"); ?>", "<?php $lh->translateText("carrier_updated"); ?>", "success");
-										window.setTimeout(function(){location.reload()},2000);
-									} else {
-										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
-									}
-									//
-								});
-						return false; //don't let the form refresh the page...
-					}					
-				});
-				
-			});
+					$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
+					$('#modifyCarrierOkButton').prop("disabled", true);
+						$("#resultmessage").html();
+						$("#resultmessage").fadeOut();
+						$.post("./php/ModifyCarrier.php", //post
+						$("#modifycarrier").serialize(), 
+						function(data){
+							console.log(data);
+							//console.log($("#modifycarrier").serialize());
+							//if message is sent
+							$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
+							$('#modifyCarrierOkButton').prop("disabled", false);
+							
+							if (data == 1) {
+								sweetAlert("<?php $lh->translateText("carrier_modify_success"); ?>", "<?php $lh->translateText("carrier_updated"); ?>", "success");
+								window.setTimeout(function(){location.reload()},2000);
+							} else {
+								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
+							}
+							//
+						});
+					return false; //don't let the form refresh the page...
+				}					
+			});				
+		});
 		</script>
 
 		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
