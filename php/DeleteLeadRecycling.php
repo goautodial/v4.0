@@ -1,7 +1,7 @@
 <?php
 /**
- * @file        DeleteHotkey.php
- * @brief       Handles Delete Hotkey Request
+ * @file        DeleteLeadRecycling.php
+ * @brief       Handles Delete Lead Recycling Request
  * @copyright   Copyright (C) GOautodial Inc.
  * @author      Noel Umandap
  * @author      Alexander Jim Abenoja  <alex@goautodial.com>
@@ -23,8 +23,6 @@
 require_once('APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
 
-    require_once('goCRMAPISettings.php');
-    
     $campaign_id = NULL;
     if(isset($_POST['campaign_id'])){
         $campaign_id = $_POST['campaign_id'];

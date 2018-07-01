@@ -180,18 +180,18 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goPackages", $postfields);
 	}
 
-    public function API_goGetGroupPermission($user_group) {
+    public function API_goGetGroupPermission() {
 		$postfields = array(
 			'goAction' => 'goGetUserGroupInfo',
-			'user_group' => $user_group
+			'user_group' => session_usergroup
 		);
 
 		return $this->API_Request("goUserGroups", $postfields);
 	}
 
-    public function goGetPermissions($type = 'dashboard', $user_group) {
+    public function goGetPermissions($type = 'dashboard') {
 		
-		$permissions = $this->API_goGetGroupPermission($user_group);
+		$permissions = $this->API_goGetGroupPermission();
 		$decoded_permission = json_decode($permissions->data->permissions);
 		
 		$return = NULL;
