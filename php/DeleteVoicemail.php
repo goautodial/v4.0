@@ -1,14 +1,31 @@
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
-require_once('CRMDefaults.php');
-//require_once('LanguageHandler.php');
-require_once('goCRMAPISettings.php');
-//require_once('DbHandler.php');
+/**
+ * @file        DeleteVoicemail.php
+ * @brief       Handles Delete Voicemail Requests
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author      Demian Lizandro A, Biscocho
+ * @author      Alexander Jim H. Abenoja
+ * @author      Jerico James F. Milo
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-//$lh = \creamy\LanguageHandler::getInstance();
+require_once('APIHandler.php');
+require_once('CRMDefaults.php');
+
+$api = \creamy\APIHandler::getInstance();
 
 // check required fields
 $validated = 1;
@@ -17,8 +34,7 @@ if (!isset($_POST["voicemail_id"])) {
 }
 
 if ($validated == 1) {
-	$voicemail_id = $_POST["voicemail_id"];
-	
+/*
     $url = gourl."/goVoicemails/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -29,24 +45,17 @@ if ($validated == 1) {
 	
 	$postfields["log_user"] = $_POST['log_user'];
 	$postfields["log_group"] = $_POST['log_group'];
-    
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
-    
-    //var_dump($output);
+*/
+    $postfields = array(
+        'goAction' => 'goDeleteVoicemail',
+        'voicemail_id' => $_POST['voicemail_id']
+    );
+
+    $output = $api->API_Request("goVoicemails", $postfields);
 
     if ($output->result=="success") {
-    # Result was OK!
-		echo 1;
+    	ob_clean();
+        print CRM_DEFAULT_SUCCESS_RESPONSE;
     }else{
         echo $output->result;
     }

@@ -21,6 +21,7 @@
 */
 
 require_once('APIHandler.php');
+require_once('CRMDefaults.php');
 $api = \creamy\APIHandler::getInstance();
 /*
 require_once('goCRMAPISettings.php');
@@ -46,8 +47,9 @@ $postfields = array(
 $output = $api->API_Request("goMusicOnHold", $postfields);
 
 if ($output->result=="success") {
-        echo 1;
+    ob_clean();
+	print CRM_DEFAULT_SUCCESS_RESPONSE;
 }else{
-        echo $output->result;
+    echo $output->result;
 }
 ?>

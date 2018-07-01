@@ -1,7 +1,7 @@
 <?php
 /**
- * @file        DeleteUser.php
- * @brief       Handles Delete User/s Requests
+ * @file        DeletePhones.php
+ * @brief       Handles Delete Phones Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
  * @author      Alexander Jim H. Abenoja  <alex@goautodial.com>
  *
@@ -21,45 +21,44 @@
 */
 
 require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
 require_once('CRMDefaults.php');
+
+$api = \creamy\APIHandler::getInstance();
 
 // check required fields
 $validated = 1;
-if (!isset($_POST["userid"])) {
+if (!isset($_POST["exten_id"])) {
 	$validated = 0;
 }
 
 if ($validated == 1) {
-	// sanity checks	
-	$userid = $_POST["userid"];
-	$userid = implode(",",$userid);
-/*uncomment to work
-    $url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
+	$extenid = $_POST["exten_id"];
+	$extenid = implode(",",$extenid);
+/*	
+    $url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeleteUser"; #action performed by the [[API:Functions]]. (required)
+    $postfields["goAction"] = "goDeletePhone"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["user_id"] = $userid; #Desired User ID. (required)
-	$postfields["action"] = $action;
-	$postfields["session_user"] = $_POST['log_user'];
+    $postfields["extension"] = $extenid; #Desired User ID. (required)
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	
-	$postfields["log_user"]		= $_POST["log_user"];
-	$postfields["log_group"]		= $_POST["log_group"];
+	$postfields["action"] = $action;
+	$postfields["session_user"]	= $_POST['log_user'];
 */  
-	$postfields = array(
-        'goAction' => 'goDeleteUser',
-        'user_id' => $userid
+    
+    $postfields = array(
+        'goAction' => 'goDeletePhone',
+        'extension' => $extenid
     );
 
-    $output = $api->API_Request("goUsers", $postfields);
-		
+    $output = $api->API_Request("goPhones", $postfields);
+
     if ($output->result=="success") {
-		ob_clean();
+        ob_clean();
 		print CRM_DEFAULT_SUCCESS_RESPONSE;
-    } else {
+    }else{
 		echo $output->result;
-    }
+	}
+
 }
 ?>

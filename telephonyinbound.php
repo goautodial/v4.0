@@ -31,7 +31,7 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	
-	$perm = $api->goGetPermissions('inbound,ivr,did', $_SESSION['usergroup']);
+	$perm = $api->goGetPermissions('inbound,ivr,did');
 	$gopackage = $api->API_getGOPackage();
 
 	if($gopackage->packagetype === "gosmall" && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
@@ -1416,7 +1416,7 @@
 									},
 									success: function(data) {
 									console.log(data);
-								  		if(data == <?=CRM_DEFAULT_SUCCESS_RESPONSE?>){
+								  		if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
 											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("inbound_delete_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 										}else{
 											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
@@ -1547,7 +1547,7 @@
 									},
 									success: function(data) {
 									console.log(data);
-								  		if(data == <?=CRM_DEFAULT_SUCCESS_RESPONSE?>){
+								  		if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
 											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("ivr_delete_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 										}else{
 											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
@@ -1676,7 +1676,7 @@
 									success: function(data) {
 									//console.log(modify_did);
 									console.log(data);
-								  		if(data == <?=CRM_DEFAULT_SUCCESS_RESPONSE?>){
+								  		if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
 											swal({title: "<?php $lh->translateText('success'); ?>",text: "<?php $lh->translateText('phonenumber_delete_success'); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
 										}else{
 											sweetAlert("<?php $lh->translateText('oups'); ?>", "<?php $lh->translateText('something_went_wrong'); ?> "+data, "error");

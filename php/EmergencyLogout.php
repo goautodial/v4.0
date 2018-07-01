@@ -1,11 +1,11 @@
 <?php
 /**
- * @file        DeleteUserGroup.php
- * @brief       
+ * @file        EmergencyLogout.php
+ * @brief       Handles Emergency Logout Request
  * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author		Demian Lizandro A, Biscocho
+ * @author      Demian Lizandro A, Biscocho
  * @author      Alexander Jim H. Abenoja
- * @author		Jerico James F. Milo
+ * @author      Jerico James F. Milo
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -27,25 +27,31 @@ require_once('CRMDefaults.php');
 
 $api = \creamy\APIHandler::getInstance();
 
-// check required fields
-$validated = 1;
-if (!isset($_POST["usergroup_id"])) {
-	$validated = 0;
-}
+/*
+require_once('goCRMAPISettings.php');
 
-if ($validated == 1) {
-    $postfields = array(
-		'goAction' => 'goDeleteUserGroup',
-		'user_group' => $_POST['usergroup_id']
-	);
+	$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
+	$postfields["goUser"] = goUser; #Username goes here. (required)
+	$postfields["goPass"] = goPass;
+	$postfields["goAction"] = "goEmergencyLogout"; #action performed by the [[API:Functions]]
+	$postfields["responsetype"] = responsetype;
+	$postfields["goUserAgent"] = $_POST['goUserAgent'];
+	$postfields["log_user"] = $_POST['log_user'];
+	$postfields["log_group"] = $_POST['log_group'];
+	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
+*/
+	$postfields = array(
+        'goAction' => 'goEmergencyLogout',
+        'goUserAgent' => $_POST['goUserAgent']
+    );
 
-	$output = $api->API_Request("goUserGroups", $postfields);
-     
+    $output = $api->API_Request("goDashboard", $postfields);
+
     if ($output->result=="success") {
-		ob_clean();
+    	ob_clean();
         print CRM_DEFAULT_SUCCESS_RESPONSE;
     }else{
         echo $output->result;
     }
-}
+	
 ?>

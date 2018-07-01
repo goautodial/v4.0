@@ -32,7 +32,7 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
-	$perm = $api->goGetPermissions('user', $_SESSION['usergroup']);
+	$perm = $api->goGetPermissions('user');
 
 ?>
 <html>
@@ -952,7 +952,7 @@
 						if (isConfirm) { 
 							$.ajax({
 								type: 'POST',
-								url: "php/emergency_logout.php",
+								url: "php/EmergencyLogout.php",
 								data: {
 									goUserAgent: userid,
 									log_user: log_user,
@@ -961,7 +961,7 @@
 								cache: false,
 								//dataType: 'json',
 								success: function(data){
-									if(data == "success"){
+									if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
 										sweetAlert("<?php $lh->translateText("agent_logout_notif"); ?>", "", "success");
 									}else{
 										sweetAlert("<?php $lh->translateText("emergency_logout"); ?>",data, "warning");
@@ -977,176 +977,174 @@
 				
 	// ------------------
 				
-		/*********
-		** Delete Event
-		*********/
-			//delete user 
-				$(document).on('click','.delete-T_user',function() {
-					var id = $(this).attr('data-id');
-					swal({
-						title: "<?php $lh->translateText("are_you_sure"); ?>",
-						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
-						type: "warning",
-						showCancelButton: true, 
-						confirmButtonColor: "#DD6B55", 
-						confirmButtonText: "<?php $lh->translateText("confirm_delete_user"); ?>", 
-						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>", 
-						closeOnConfirm: false,
-						closeOnCancel: false
+	/*********
+	** Delete Event
+	*********/
+	//delete user 
+		$(document).on('click','.delete-T_user',function() {
+			var id = $(this).attr('data-id');
+			swal({
+				title: "<?php $lh->translateText("are_you_sure"); ?>",
+				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
+				type: "warning",
+				showCancelButton: true, 
+				confirmButtonColor: "#DD6B55", 
+				confirmButtonText: "<?php $lh->translateText("confirm_delete_user"); ?>", 
+				cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>", 
+				closeOnConfirm: false,
+				closeOnCancel: false
+			},
+			function(isConfirm){
+				if (isConfirm) {
+					$.ajax({
+						url: "./php/DeleteUser.php",
+						type: 'POST',
+						data: { 
+						userid: id,
+						log_user: '<?=$_SESSION['user']?>',
+						log_group: '<?=$_SESSION['usergroup']?>'
 					},
-					function(isConfirm){
-						if (isConfirm) {
-							$.ajax({
-								url: "./php/DeleteTelephonyUser.php",
-								type: 'POST',
-								data: { 
-								userid: id,
-								log_user: '<?=$_SESSION['user']?>',
-								log_group: '<?=$_SESSION['usergroup']?>'
-							},
-							success: function(data) {
-								console.log(data);
-								if(data == 1){
-									swal({title: "<?php $lh->translateText("delete_user_success"); ?>",text: "<?php $lh->translateText("user_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
-								}else{
-									sweetAlert("<?php $lh->translateText("delete_user_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
-								}
-							}
-							});
-						} else {     
-						swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+					success: function(data) {
+						console.log(data);
+						if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
+							swal({title: "<?php $lh->translateText("delete_user_success"); ?>",text: "<?php $lh->translateText("user_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
+						}else{
+							sweetAlert("<?php $lh->translateText("delete_user_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
 						}
 					}
-					);
-				});
-			
-			//delete user 
-				$(document).on('click','.delete-multiple-user',function() {
-					var arr = $('input:checkbox.check_user').filter(':checked').map(function () {
-						return this.id;
-					}).get();
-					swal({
-						title: "<?php $lh->translateText("are_you_sure"); ?>",
-						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
-						type: "warning",
-						showCancelButton: true, 
-						confirmButtonColor: "#DD6B55", 
-						confirmButtonText: "<?php $lh->translateText("confirm_delete_multiple_user"); ?>", 
-						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>", 
-						closeOnConfirm: false,
-						closeOnCancel: false
+					});
+				} else {     
+				swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+				}
+			}
+			);
+		});
+	
+	//delete user 
+		$(document).on('click','.delete-multiple-user',function() {
+			var arr = $('input:checkbox.check_user').filter(':checked').map(function () {
+				return this.id;
+			}).get();
+			swal({
+				title: "<?php $lh->translateText("are_you_sure"); ?>",
+				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
+				type: "warning",
+				showCancelButton: true, 
+				confirmButtonColor: "#DD6B55", 
+				confirmButtonText: "<?php $lh->translateText("confirm_delete_multiple_user"); ?>", 
+				cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>", 
+				closeOnConfirm: false,
+				closeOnCancel: false
+			},
+			function(isConfirm){
+				if (isConfirm) {
+					$.ajax({
+						url: "./php/DeleteUser.php",
+						type: 'POST',
+						data: { 
+						userid: arr,
+						log_user: '<?=$_SESSION['user']?>',
+						log_group: '<?=$_SESSION['usergroup']?>'
 					},
-					function(isConfirm){
-						if (isConfirm) {
-							$.ajax({
-								url: "./php/DeleteTelephonyUser.php",
-								type: 'POST',
-								data: { 
-								userid: arr,
-								action: "delete_selected",
-								log_user: '<?=$_SESSION['user']?>',
-								log_group: '<?=$_SESSION['usergroup']?>'
-							},
-							success: function(data) {
-								console.log(data);
-								if(data == 1){
-									swal({title: "<?php $lh->translateText("delete_user_success"); ?>",text: "<?php $lh->translateText("user_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
-								}else{
-									sweetAlert("<?php $lh->translateText("delete_user_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
-								}
-							}
-							});
-						} else {     
-						swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+					success: function(data) {
+						console.log(data);
+						if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
+							swal({title: "<?php $lh->translateText("delete_user_success"); ?>",text: "<?php $lh->translateText("user_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
+						}else{
+							sweetAlert("<?php $lh->translateText("delete_user_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
 						}
 					}
-					);
-				});
-			
-			//delete phone
-				$(document).on('click','.delete-phone',function() {
-				 	var id = $(this).attr('data-id');
-					var log_user = '<?=$_SESSION['user']?>';
-					var log_group = '<?=$_SESSION['usergroup']?>';
-	                swal({   
-	                    title: "<?php $lh->translateText("are_you_sure"); ?>",
-						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
-	                    type: "warning",   
-	                    showCancelButton: true,   
-	                    confirmButtonColor: "#DD6B55",   
-	                    confirmButtonText: "<?php $lh->translateText("confirm_delete_phone"); ?>",   
-	                    cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
-	                    closeOnConfirm: false,   
-	                    closeOnCancel: false 
-	                    },
-	                    function(isConfirm){   
-	                        if (isConfirm) { 
-							$.ajax({
-							  url: "./php/DeletePhones.php",
-							  type: 'POST',
-							  data: { 
-								exten_id: id,
-								log_user: log_user,
-								log_group: log_group
-							  },
-							  success: function(data) {
-									// console.log(data);
-									if(data == 1){
-										swal({title: "<?php $lh->translateText("delete_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php?phone_tab';});
-									}else{
-										sweetAlert("<?php $lh->translateText("cancel_please"); ?>", "<?php $lh->translateText("delete_phone_failed"); ?>"+data, "error");
-									}
-								}
-							});
-	                        } else {     
-	                                swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");   
-	                        } 
-	                    }
-	                );
-				});
-			
-			//delete phone 
-				$(document).on('click','.delete-multiple-phone',function() {
-					var arr = $('input:checkbox.check_phone').filter(':checked').map(function () {
-						return this.id;
-					}).get();
-					swal({
-						title: "<?php $lh->translateText("are_you_sure"); ?>",
-						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
-						type: "warning",
-						showCancelButton: true, 
-						confirmButtonColor: "#DD6B55", 
-						confirmButtonText: "<?php $lh->translateText("confirm_delete_multiple_phones"); ?>", 
-						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>", 
-						closeOnConfirm: false,
-						closeOnCancel: false
-					},
-					function(isConfirm){
-						if (isConfirm) {
-							$.ajax({
-								url: "./php/DeletePhones.php",
-								type: 'POST',
-								data: { 
-								exten_id: arr,
-								action: "delete_selected",
-								log_user: '<?=$_SESSION['user']?>',
-								log_group: '<?=$_SESSION['usergroup']?>'
-							},
-							success: function(data) {
-								console.log(data);
-								if(data == 1){
-									swal({title: "<?php $lh->translateText("delete_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php?phone_tab';});
-								}else{
-									sweetAlert("<?php $lh->translateText("cancel_please"); ?>", "<?php $lh->translateText("delete_phone_failed"); ?> "+data, "error");
-								}
+					});
+				} else {     
+				swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+				}
+			}
+			);
+		});
+	
+	//delete phone
+		$(document).on('click','.delete-phone',function() {
+		 	var id = $(this).attr('data-id');
+			var log_user = '<?=$_SESSION['user']?>';
+			var log_group = '<?=$_SESSION['usergroup']?>';
+            swal({   
+                title: "<?php $lh->translateText("are_you_sure"); ?>",
+				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "<?php $lh->translateText("confirm_delete_phone"); ?>",   
+                cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
+                closeOnConfirm: false,   
+                closeOnCancel: false 
+                },
+                function(isConfirm){   
+                    if (isConfirm) { 
+					$.ajax({
+					  url: "./php/DeletePhones.php",
+					  type: 'POST',
+					  data: { 
+						exten_id: id,
+						log_user: log_user,
+						log_group: log_group
+					  },
+					  success: function(data) {
+							// console.log(data);
+							if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
+								swal({title: "<?php $lh->translateText("delete_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php?phone_tab';});
+							}else{
+								sweetAlert("<?php $lh->translateText("cancel_please"); ?>", "<?php $lh->translateText("delete_phone_failed"); ?>"+data, "error");
 							}
-							});
-						} else {     
-						swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+						}
+					});
+                    } else {     
+                            swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");   
+                    } 
+                }
+            );
+		});
+	
+	//delete phone 
+		$(document).on('click','.delete-multiple-phone',function() {
+			var arr = $('input:checkbox.check_phone').filter(':checked').map(function () {
+				return this.id;
+			}).get();
+			swal({
+				title: "<?php $lh->translateText("are_you_sure"); ?>",
+				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
+				type: "warning",
+				showCancelButton: true, 
+				confirmButtonColor: "#DD6B55", 
+				confirmButtonText: "<?php $lh->translateText("confirm_delete_multiple_phones"); ?>", 
+				cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>", 
+				closeOnConfirm: false,
+				closeOnCancel: false
+			},
+			function(isConfirm){
+				if (isConfirm) {
+					$.ajax({
+						url: "./php/DeletePhones.php",
+						type: 'POST',
+						data: { 
+						exten_id: arr,
+						log_user: '<?=$_SESSION['user']?>',
+						log_group: '<?=$_SESSION['usergroup']?>'
+					},
+					success: function(data) {
+						console.log(data);
+						if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
+							swal({title: "<?php $lh->translateText("delete_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php?phone_tab';});
+						}else{
+							sweetAlert("<?php $lh->translateText("cancel_please"); ?>", "<?php $lh->translateText("delete_phone_failed"); ?> "+data, "error");
 						}
 					}
-					);
-				});
+					});
+				} else {     
+				swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+				}
+			}
+			);
+		});
 				
 	// -------------------------
 	

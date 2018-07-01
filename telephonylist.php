@@ -32,7 +32,7 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
-	$perm = $api->goGetPermissions('list,customfields', $_SESSION['usergroup']);
+	$perm = $api->goGetPermissions('list,customfields');
 	$checkbox_all = $ui->getCheckAll("list");
 ?>
 <html>
@@ -172,13 +172,6 @@
 					},
 					mimeType:"multipart/form-data"
 				}).done(function(res){
-					
-					//$(result_output).html(res); //output response from server
-					//submit_btn.val("Upload").prop( "disabled", false); //enable submit button once ajax is done
-					//$(my_form_id)[0].reset(); //reset form
-					//$('#dStatus').css("display", "block");
-					//$('#dStatus').css("color", "#4CAF50");
-					//$('#qstatus').text("Total leads uploaded: "+res);
 					
 					var uploadMsgTotal = "<?php $lh->translateText('total_leads_upload'); ?>: "+res;
 					
@@ -825,7 +818,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								if (isConfirm) {
 	
 									$.ajax({
-										url: "./php/DeleteTelephonyList.php",
+										url: "./php/DeleteList.php",
 										type: 'POST',
 										data: {
 											listid: id,
@@ -834,7 +827,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 										},
 										success: function(data) {
 										console.log(data);
-											if(data == 1){
+											if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
 												swal({title: "<?php $lh->translateText("delete_list_success"); ?>",text: "<?php $lh->translateText("delete_list_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonylist.php';});
 											}else{
 											   sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>!", "error");
