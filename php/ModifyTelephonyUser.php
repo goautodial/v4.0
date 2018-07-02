@@ -2,9 +2,10 @@
 /**
  * @file        ModifyTelephonyUser.php
  * @brief       Modify user account
- * @copyright   Copyright (C) GOautodial Inc.
- * @author      Alexander Jim H. Abenoja  <alex@goautodial.com>
- * @author		Jerico James F. Milo <james@goautodial.com>
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho
+ * @author      Alexander Jim H. Abenoja
+ * @author		Jerico James F. Milo
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -21,12 +22,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
 
-require_once('CRMDefaults.php');
-require_once('goCRMAPISettings.php');
+	require_once('CRMDefaults.php');
+	require_once('goCRMAPISettings.php');
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
 // check required fields
 $reason = "Unable to Modify Users";

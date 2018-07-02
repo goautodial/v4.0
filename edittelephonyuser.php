@@ -112,7 +112,7 @@ $user_groups = $api->API_getAllUserGroups();
 							# Result was OK!
 					?>
 							<div class="panel-body">
-							<legend><?php $lh->translateText("modify_user"); ?> : <u><?php echo $output->data->user;?></u></legend>
+							<legend><?php $lh->translateText("modify_user"); ?> : <u><?php echo $output->data->user; ?></u></legend>
 								<form id="modifyuser">
 									<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 									<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
@@ -274,7 +274,7 @@ $user_groups = $api->API_getAllUserGroups();
 																for($a=0;$a<count($voicemails->voicemail_id);$a++){
 															?>
 																<option value="<?php echo $voicemails->voicemail_id[$a];?>" 
-																	<?php if($output->voicemail_id == $voicemails->voicemail_id[$a]){echo "selected";}?> />
+																	<?php if($output->data->voicemail_id == $voicemails->voicemail_id[$a]){echo "selected";}?> />
 																<?php echo $voicemails->voicemail_id[$a].' - '.$voicemails->fullname[$a];?>
 																</option>									
 															<?php
@@ -319,13 +319,13 @@ $user_groups = $api->API_getAllUserGroups();
 								<select class="form-control" name="hotkeys" id="hotkeys">
 								<?php
 									$hotkeys = NULL;
-									if($output->hotkeys_active == "1"){
+									if($output->data->hotkeys_active == "1"){
 										$hotkeys .= '<option value="1" selected> Active </option>';
 									}else{
 										$hotkeys .= '<option value="1" > Active </option>';
 									}
 									
-									if($output->hotkeys_active == "0"){
+									if($output->data->hotkeys_active == "0"){
 										$hotkeys .= '<option value="0" selected> Inactive </option>';
 									}else{
 										$hotkeys .= '<option value="0" > Inactive </option>';
@@ -341,28 +341,28 @@ $user_groups = $api->API_getAllUserGroups();
 								<select class="form-control" name="vicidial_recording_override" id="vicidial_recording_override">
 									<?php
 										$agents_recordings = NULL;
-										if($output->vicidial_recording_override == "DISABLED"){
+										if($output->data->vicidial_recording_override == "DISABLED"){
 											$agents_recordings .= '<option value="DISABLED" selected> DISABLED </option>';
 										}else{
 											$agents_recordings .= '<option value="DISABLED" > DISABLED </option>';
 										}
 										
-										if($output->vicidial_recording_override == "NEVER"){
+										if($output->data->vicidial_recording_override == "NEVER"){
 											$agents_recordings .= '<option value="NEVER" selected> NEVER </option>';
 										}else{
 											$agents_recordings .= '<option value="NEVER" > NEVER </option>';
 										}
-										if($output->vicidial_recording_override == "ONDEMAND"){
+										if($output->data->vicidial_recording_override == "ONDEMAND"){
 											$agents_recordings .= '<option value="ONDEMAND" selected> ONDEMAND </option>';
 										}else{
 											$agents_recordings .= '<option value="ONDEMAND" > ONDEMAND </option>';
 										}
-										if($output->vicidial_recording_override == "ALLCALLS"){
+										if($output->data->vicidial_recording_override == "ALLCALLS"){
 											$agents_recordings .= '<option value="ALLCALLS" selected> ALLCALLS </option>';
 										}else{
 											$agents_recordings .= '<option value="ALLCALLS" > ALLCALLS </option>';
 										}
-										if($output->vicidial_recording_override == "ALLFORCE"){
+										if($output->data->vicidial_recording_override == "ALLFORCE"){
 											$agents_recordings .= '<option value="ALLFORCE" selected> ALLFORCE </option>';
 										}else{
 											$agents_recordings .= '<option value="ALLFORCE" > ALLFORCE </option>';
@@ -378,13 +378,13 @@ $user_groups = $api->API_getAllUserGroups();
 								<select class="form-control" name="vicidial_transfers" id="vicidial_transfers">
 									<?php
 										$vicidial_transfers = NULL;
-										if($output->vicidial_transfers == "0"){
+										if($output->data->vicidial_transfers == "0"){
 											$vicidial_transfers .= '<option value="0" selected> NO </option>';
 										}else{
 											$vicidial_transfers .= '<option value="0" > NO </option>';
 										}
 										
-										if($output->vicidial_transfers == "1"){
+										if($output->data->vicidial_transfers == "1"){
 											$vicidial_transfers .= '<option value="1" selected> YES </option>';
 										}else{
 											$vicidial_transfers .= '<option value="1" > YES </option>';
@@ -400,13 +400,13 @@ $user_groups = $api->API_getAllUserGroups();
 								<select class="form-control" name="closer_default_blended" id="closer_default_blended">
 									<?php
 										$closer_default_blended = NULL;
-										if($output->closer_default_blended == "0"){
+										if($output->data->closer_default_blended == "0"){
 											$closer_default_blended .= '<option value="0" selected> NO </option>';
 										}else{
 											$closer_default_blended .= '<option value="0" > NO </option>';
 										}
 										
-										if($output->closer_default_blended == "1" ){
+										if($output->data->closer_default_blended == "1" ){
 											$closer_default_blended .= '<option value="1" selected> YES </option>';
 										}else{
 											$closer_default_blended .= '<option value="1" > YES </option>';
@@ -422,13 +422,13 @@ $user_groups = $api->API_getAllUserGroups();
 								<select class="form-control" name="agentcall_manual" id="agentcall_manual">
 									<?php
 										$agentcall_manual = NULL;
-										if($output->agentcall_manual == "0"){
+										if($output->data->agentcall_manual == "0"){
 											$agentcall_manual .= '<option value="0" selected> NO </option>';
 										}else{
 											$agentcall_manual .= '<option value="0" > NO </option>';
 										}
 										
-										if($output->agentcall_manual == "1" ){
+										if($output->data->agentcall_manual == "1" ){
 											$agentcall_manual .= '<option value="1" selected> YES </option>';
 										}else{
 											$agentcall_manual .= '<option value="1" > YES </option>';
@@ -444,13 +444,13 @@ $user_groups = $api->API_getAllUserGroups();
 								<select class="form-control" name="scheduled_callbacks" id="scheduled_callbacks">
 									<?php
 										$scheduled_callbacks = NULL;
-										if($output->scheduled_callbacks == "0"){
+										if($output->data->scheduled_callbacks == "0"){
 											$scheduled_callbacks .= '<option value="0" selected> NO </option>';
 										}else{
 											$scheduled_callbacks .= '<option value="0" > NO </option>';
 										}
 										
-										if($output->scheduled_callbacks == "1" ){
+										if($output->data->scheduled_callbacks == "1" ){
 											$scheduled_callbacks .= '<option value="1" selected> YES </option>';
 										}else{
 											$scheduled_callbacks .= '<option value="1" > YES </option>';
@@ -466,13 +466,13 @@ $user_groups = $api->API_getAllUserGroups();
 								<select class="form-control" name="agentonly_callbacks" id="agentonly_callbacks">
 									<?php
 										$agentonly_callbacks = NULL;
-										if($output->agentonly_callbacks == "0"){
+										if($output->data->agentonly_callbacks == "0"){
 											$agentonly_callbacks .= '<option value="0" selected> '.$lh->translationFor("go_no").' </option>';
 										}else{
 											$agentonly_callbacks .= '<option value="0" > '.$lh->translationFor("go_no").' </option>';
 										}
 										
-										if($output->agentonly_callbacks == "1" ){
+										if($output->data->agentonly_callbacks == "1" ){
 											$agentonly_callbacks .= '<option value="1" selected> YES </option>';
 										}else{
 											$agentonly_callbacks .= '<option value="1" > YES </option>';
@@ -488,13 +488,13 @@ $user_groups = $api->API_getAllUserGroups();
 								<select class="form-control" name="api_access" id="api_access">
 									<?php
 										$api_access = NULL;
-										if($output->vdc_agent_api_access == "1"){
+										if($output->data->vdc_agent_api_access == "1"){
 											$api_access .= '<option value="1" selected> Enabled </option>';
 										}else{
 											$api_access .= '<option value="1" > Enable </option>';
 										}
 										
-										if($output->vdc_agent_api_access == "0" || $output->vdc_agent_api_access == NULL){
+										if($output->data->vdc_agent_api_access == "0" || $output->data->vdc_agent_api_access == NULL){
 											$api_access .= '<option value="0" selected> Disabled </option>';
 										}else{
 											$api_access .= '<option value="0" > Disable </option>';
@@ -510,13 +510,13 @@ $user_groups = $api->API_getAllUserGroups();
 								<select class="form-control" name="choose_ingroup" id="choose_ingroup">
 									<?php
 										$choose_ingroup = NULL;
-										if($output->agent_choose_ingroups == "1"){
+										if($output->data->agent_choose_ingroups == "1"){
 											$choose_ingroup .= '<option value="1" selected> YES </option>';
 										}else{
 											$choose_ingroup .= '<option value="1" > YES </option>';
 										}
 										
-										if($output->agent_choose_ingroups == "0" || $output->agent_choose_ingroups == NULL){
+										if($output->data->agent_choose_ingroups == "0" || $output->data->agent_choose_ingroups == NULL){
 											$choose_ingroup .= '<option value="0" selected> '.$lh->translationFor("go_no").' </option>';
 										}else{
 											$choose_ingroup .= '<option value="0" > '.$lh->translationFor("go_no").' </option>';
@@ -530,9 +530,9 @@ $user_groups = $api->API_getAllUserGroups();
 							<label for="agent_lead_search_override" class="col-sm-3 control-label"><?php $lh->translateText("agent_lead_search_override"); ?></label>
 							<div class="col-sm-9 mb">
 								<select class="form-control" name="agent_lead_search_override" id="agent_lead_search_override">
-									<option value="ENABLED" <?php if ($output->agent_lead_search_override == 'ENABLED') { echo "selected"; }?>>ENABLED</option>
-									<option value="DISABLED" <?php if ($output->agent_lead_search_override == 'DISABLED') { echo "selected"; }?>>DISABLED</option>
-									<option value="NOT_ACTIVE" <?php if ($output->agent_lead_search_override == 'NOT_ACTIVE') { echo "selected"; }?>>NOT ACTIVE</option>
+									<option value="ENABLED" <?php if ($output->data->agent_lead_search_override == 'ENABLED') { echo "selected"; }?>>ENABLED</option>
+									<option value="DISABLED" <?php if ($output->data->agent_lead_search_override == 'DISABLED') { echo "selected"; }?>>DISABLED</option>
+									<option value="NOT_ACTIVE" <?php if ($output->data->agent_lead_search_override == 'NOT_ACTIVE') { echo "selected"; }?>>NOT ACTIVE</option>
 								</select>
 							</div>
 						</div>
@@ -685,36 +685,36 @@ $user_groups = $api->API_getAllUserGroups();
 			// validations
 			if(validate_email == 0 && validate_password == 0){
 				$("#phone_login").prop("disabled", false);				
-					$.ajax({
-						url: "./php/ModifyTelephonyUser.php",
-						type: 'POST',
-						data: $("#modifyuser").serialize() + '&user=' + user,
-						success: function(data) {
-						//console.log($("#modifyuser").serialize() + '&user=' + user);
-						$("#phone_login").prop("disabled", true);
-							if (data == 1) {
-								$('#update_button').html("<i class='fa fa-check'></i> Update");
-								$('#modifyUserOkButton').prop("disabled", false);
-								swal(
-									{
-										title: "<?php $lh->translateText("success"); ?>",
-										text: "<?php $lh->translateText("user_update_success"); ?>",
-										type: "success"
-									},
-									function(){
-										location.replace("./telephonyusers.php");
-									}
-								);
-							} else {
-								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> " + data, "error");
-								$('#update_button').html("<i class='fa fa-check'></i> Update");
-								$('#modifyUserOkButton').prop("disabled", false);
-							}
+				$.ajax({
+					url: "./php/ModifyTelephonyUser.php",
+					type: 'POST',
+					data: $("#modifyuser").serialize() + '&user=' + user,
+					success: function(data) {
+					console.log($("#modifyuser").serialize() + '&user=' + user);
+					$("#phone_login").prop("disabled", true);
+						if (data == 1) {
+							$('#update_button').html("<i class='fa fa-check'></i> Update");
+							$('#modifyUserOkButton').prop("disabled", false);
+							swal(
+								{
+									title: "<?php $lh->translateText("success"); ?>",
+									text: "<?php $lh->translateText("user_update_success"); ?>",
+									type: "success"
+								},
+								function(){
+									location.replace("./telephonyusers.php");
+								}
+							);
+						} else {
+							sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> " + data, "error");
+							$('#update_button').html("<i class='fa fa-check'></i> Update");
+							$('#modifyUserOkButton').prop("disabled", false);
 						}
-					});
-				}
-				return false;
-			});
+					}
+				});
+			}
+			return false;
+		});
 		
 		$(document).on('change','#userlevel',function() {
 			if($("#userlevel").val() >= 8){
