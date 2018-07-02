@@ -57,13 +57,8 @@
 
 	$output = $api->API_addCarrier($postfields);
 
-	if ($output->result == "success") {
-		$status = 1;
-		//$return['msg'] = "New User has been successfully saved.";
-	} else {
-		// $return['msg'] = "Something went wrong please see input data on form.";
-		$status = $output->data;
-	}
+	if ($output->result=="success") { $status = 1; } 
+		else { $status = $output->result; }
 
 	echo json_encode($status);
 ?>

@@ -3,7 +3,8 @@
  * @file        DeleteUser.php
  * @brief       Handles Delete User/s Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author      Alexander Jim H. Abenoja  <alex@goautodial.com>
+ * @author		Demian Lizandro A, Biscocho 
+ * @author      Alexander Jim Abenoja
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -20,46 +21,23 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
-require_once('CRMDefaults.php');
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
-// check required fields
-$validated = 1;
-if (!isset($_POST["userid"])) {
-	$validated = 0;
-}
+	if (isset($_POST["userid"])) {
+		// sanity checks	
+		$userid = $_POST["userid"];
 
-if ($validated == 1) {
-	// sanity checks	
-	$userid = $_POST["userid"];
-	$userid = implode(",",$userid);
-/*uncomment to work
-    $url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeleteUser"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["user_id"] = $userid; #Desired User ID. (required)
-	$postfields["action"] = $action;
-	$postfields["session_user"] = $_POST['log_user'];
-    $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	
-	$postfields["log_user"]		= $_POST["log_user"];
-	$postfields["log_group"]		= $_POST["log_group"];
-*/  
-	$postfields = array(
-        'goAction' => 'goDeleteUser',
-        'user_id' => $userid
-    );
+		$postfields = array(
+			'goAction' => 'goDeleteUser',
+			'user_id' => $userid
+		);
 
-    $output = $api->API_Request("goUsers", $postfields);
+		$output = $api->API_Request("goUsers", $postfields);
+			
+		if ($output->result=="success") { $status = 1; } 
+			else { $status = $output->result; }
 		
-    if ($output->result=="success") {
-		ob_clean();
-		print CRM_DEFAULT_SUCCESS_RESPONSE;
-    } else {
-		echo $output->result;
-    }
-}
+		echo json_encode($status);
+	}
 ?>

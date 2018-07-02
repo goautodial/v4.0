@@ -1,9 +1,10 @@
 <?php
 /**
- * @file        checkCalltime.php
- * @brief       Handles Check Add/Edit Campaign, Disposition & Lead Filter Details Requests
- * @copyright   Copyright (C) GOautodial Inc.
- * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ * @file        AddUser.php
+ * @brief       Handles Add User variables
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho 
+ * @author      Alexander Jim Abenoja
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -36,14 +37,9 @@
 
     $output = $api->API_addUser($postfields);
 	
-	/*if ($output->result=="success") {
-		$status = 1;
-		//$return['msg'] = "New User has been successfully saved.";
-	} else {
-		//$status = 0;
-		// $return['msg'] = "Something went wrong please see input data on form.";
-        $status = $output->result;
-	}*/
-	echo $output;
+	if ($output->result=="success") { $status = 1; } 
+		else { $status = $output->result; }
+	
+	echo json_encode($status);
 
 ?>

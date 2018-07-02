@@ -33,7 +33,7 @@
 	$user = \creamy\CreamyUser::currentUser();
 
 	$perm = $api->goGetPermissions('user');
-
+	$all_users = $api->API_getAllUsers();
 ?>
 <html>
     <head>
@@ -135,12 +135,10 @@
 								<div class="tab-content bg-white">
 									<!--==== users ====-->
 									<div id="users_tab" role="tabpanel" class="tab-pane <?php if(!isset($_GET['phone_tab']))echo 'active';?>">
-										<?php print $ui->goGetAllUserList($_SESSION['user'], $perm); ?>
+										<?php print $ui->goGetAllUserList($all_users, $perm); ?>
 									</div>
 									
-									<?php
-										if((isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0) || $_SESSION['show_phones'] == 1 ){
-									?>
+									<?php if((isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0) || $_SESSION['show_phones'] == 1 ){ ?>
 									<!--==== Phones ====-->
 									<div id="phone_tab" role="tabpanel" class="tab-pane <?php if(isset($_GET['phone_tab']))echo 'active';?>">
 										<?php print $ui->getPhonesList(); ?>
@@ -189,13 +187,13 @@
 	
 <!-- MODALS -->
 <?php
-	$output = $api->API_getAllUsers();
+	//$output = $api->API_getAllUsers();
 	$user_groups = $api->API_getAllUserGroups();
 	$phones = $api->API_getAllPhones();
-	//$max = max($phones->extension);
-	//$suggested_extension = $max + 1;
-	$count_users = count($output->user);
-	$license_seats = intval($output->licensedSeats);
+	$max = max($phones->extension);
+	$suggested_extension = $max + 1;
+	$count_users = count($all_users->user);
+	$license_seats = intval($all_users->licensedSeats);
 	$avail_seats = $license_seats-$count_users;
 ?>
 	<!-- ADD USER MODAL -->
@@ -257,7 +255,7 @@
 	                        </h4>
 	                        <fieldset>
 	                           <?php
-									$agent_num = $output->last_count;
+									$agent_num = $all_users->last_count;
 									$num_padded = sprintf("%03d", $agent_num);								
 									$fullname = "Agent ".$num_padded;
 									$user_id_for_form = "agent".$num_padded;
@@ -287,7 +285,7 @@
 								<div class="form-group" id="phone_logins_form" style="display:none;">
 									<label class="col-sm-4 control-label" for="phone_logins"> <?php $lh->translateText("phone_login"); ?> </label>
 									<div class="col-sm-8 mb">
-										<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="<?php $lh->translateText("phone_login"); ?> (<?php $lh->translateText("mandatory"); ?>)" 
+										<input type="number" name="phone_login"s id="phone_logins" class="form-control" minlength="3" placeholder="<?php $lh->translateText("phone_login"); ?> (<?php $lh->translateText("mandatory"); ?>)" 
 											value="<?php echo $phones->available_phone;?>" pattern=".{3,}" title="Minimum of 3 characters" maxlength="20" required>
 										<label id="phone_login-duplicate-error"></label>
 									</div>
@@ -705,6 +703,7 @@
 					
 			        // form review
 					show_form_review();
+					//validate_user();
 					
 					if($('#seats').val() > 1){
 						$('#password_div').hide();
@@ -999,22 +998,18 @@
 					$.ajax({
 						url: "./php/DeleteUser.php",
 						type: 'POST',
-						data: { 
-						userid: id,
-						log_user: '<?=$_SESSION['user']?>',
-						log_group: '<?=$_SESSION['usergroup']?>'
-					},
-					success: function(data) {
-						console.log(data);
-						if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
-							swal({title: "<?php $lh->translateText("delete_user_success"); ?>",text: "<?php $lh->translateText("user_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
-						}else{
-							sweetAlert("<?php $lh->translateText("delete_user_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
+						data: { userid: id },
+						success: function(data) {
+							console.log(data);
+							if(data == 1){
+								swal({title: "<?php $lh->translateText("delete_user_success"); ?>",text: "<?php $lh->translateText("user_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
+							}else{
+								sweetAlert("<?php $lh->translateText("delete_user_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
+							}
 						}
-					}
 					});
 				} else {     
-				swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+					swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
 				}
 			}
 			);
@@ -1041,19 +1036,15 @@
 					$.ajax({
 						url: "./php/DeleteUser.php",
 						type: 'POST',
-						data: { 
-						userid: arr,
-						log_user: '<?=$_SESSION['user']?>',
-						log_group: '<?=$_SESSION['usergroup']?>'
-					},
-					success: function(data) {
-						console.log(data);
-						if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
-							swal({title: "<?php $lh->translateText("delete_user_success"); ?>",text: "<?php $lh->translateText("user_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
-						}else{
-							sweetAlert("<?php $lh->translateText("delete_user_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
+						data: { userid: arr },
+						success: function(data) {
+							console.log(data);
+							if(data == 1){
+								swal({title: "<?php $lh->translateText("delete_user_success"); ?>",text: "<?php $lh->translateText("user_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php';});
+							}else{
+								sweetAlert("<?php $lh->translateText("delete_user_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
+							}
 						}
-					}
 					});
 				} else {     
 				swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
@@ -1213,7 +1204,7 @@
 
 			function validate_user(){
 				var user_form_value = $('#user_form').val();
-				var phone_logins_value = "";
+				var phones_login_value = "";
 		        if(user_form_value != ""){
 				    $.ajax({
 					    url: "php/checkUser.php",
@@ -1225,15 +1216,17 @@
 						success: function(data) {
 							console.log(data);
 							$("#next").attr('disabled', false);
-							if(data == "success"){
+							if(data == 1){
 								checker = 0;
+								$('#finish').attr("disabled", false);
 								$( "#user_form" ).removeClass("error");
 								$( "#user-duplicate-error" ).text( "<?php $lh->translateText("dup_check_success"); ?>" ).removeClass("error").addClass("avail");
 							}else{
-								if(data == "user"){
+								//if(data == "user"){
+									$('#finish').attr("disabled", true);
 									$( "#user_form" ).removeClass("valid").addClass( "error" );
 									$( "#user-duplicate-error" ).text( "<?php $lh->translateText("dup_check_error"); ?>" ).removeClass("avail").addClass("error");
-								}
+								//}
 								
 								checker = 1;
 							}

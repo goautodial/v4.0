@@ -20,8 +20,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
 	$postfields = array(
         'goAction' => 'goDeleteCarrier',

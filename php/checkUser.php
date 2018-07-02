@@ -3,7 +3,8 @@
  * @file        checkUser.php
  * @brief       Validate user entries
  * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author      Alexander Jim H. Abenoja  <alex@goautodial.com>
+ * @author		Demian Lizandro A, Biscocho  
+ * @author      Alexander Jim H. Abenoja
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -20,37 +21,22 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
-/*
-	$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
-	$postfields["goUser"] = goUser; #Username goes here. (required)
-	$postfields["goPass"] = goPass; #Password goes here. (required)
-	$postfields["goAction"] = "goCheckUser"; #action performed by the [[API:Functions]]. (required)
-	$postfields["responsetype"] = responsetype; #json. (required)
-*/
-	$postfields["goAction"] = "goCheckUser";
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
-	if(isset($_POST['user'])){
-		$postfields["user"] = $_POST['user'];
-	}
-	
-
-	if(isset($_POST['phone_login'])){
-		$postfields["phone_login"] = $_POST['phone_login']; 
-	}
+	$postfields = array(
+		'goAction' => 'goCheckUser',
+		'user' => $_POST['user'],
+		'phone_login' => $_POST["phone_logins"]
+	);
 	
 	$output = $api->API_checkUser($postfields);
 
 	if($output->result == "success"){
-		echo $output->result;
+		$status = 1;
 	}else{
-		if($output->user != NULL){
-			echo $output->result;
-		}
-		if($output->result == "fail"){
-			echo $output->phone_login;
-		}
+		$status = $output->data;
 	}
 
+	echo json_encode($status);
 ?>
