@@ -285,7 +285,7 @@
 								<div class="form-group" id="phone_logins_form" style="display:none;">
 									<label class="col-sm-4 control-label" for="phone_logins"> <?php $lh->translateText("phone_login"); ?> </label>
 									<div class="col-sm-8 mb">
-										<input type="number" name="phone_login"s id="phone_logins" class="form-control" minlength="3" placeholder="<?php $lh->translateText("phone_login"); ?> (<?php $lh->translateText("mandatory"); ?>)" 
+										<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="<?php $lh->translateText("phone_login"); ?> (<?php $lh->translateText("mandatory"); ?>)" 
 											value="<?php echo $phones->available_phone;?>" pattern=".{3,}" title="Minimum of 3 characters" maxlength="20" required>
 										<label id="phone_login-duplicate-error"></label>
 									</div>
@@ -981,7 +981,9 @@
 	*********/
 	//delete user 
 		$(document).on('click','.delete-T_user',function() {
-			var id = $(this).attr('data-id');
+			var id = [];
+			id.push($(this).attr('data-id'));
+			//console.log(id);
 			swal({
 				title: "<?php $lh->translateText("are_you_sure"); ?>",
 				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
@@ -998,7 +1000,10 @@
 					$.ajax({
 						url: "./php/DeleteUser.php",
 						type: 'POST',
-						data: { userid: id },
+						data: { 
+							userid: id,
+							action: "delete_selected"
+						},
 						success: function(data) {
 							console.log(data);
 							if(data == 1){
@@ -1020,6 +1025,7 @@
 			var arr = $('input:checkbox.check_user').filter(':checked').map(function () {
 				return this.id;
 			}).get();
+			//console.log(arr);
 			swal({
 				title: "<?php $lh->translateText("are_you_sure"); ?>",
 				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
@@ -1036,7 +1042,10 @@
 					$.ajax({
 						url: "./php/DeleteUser.php",
 						type: 'POST',
-						data: { userid: arr },
+						data: { 
+							userid: arr,
+							action: "delete_selected"
+						},
 						success: function(data) {
 							console.log(data);
 							if(data == 1){

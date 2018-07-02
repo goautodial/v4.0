@@ -21,22 +21,39 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once('APIHandler.php');	
+	require_once('DbHandler.php');
+	require_once('LanguageHandler.php');
+	
 	$api = \creamy\APIHandler::getInstance();
-
+	$db = new \creamy\DbHandler();
+	$lh = \creamy\LanguageHandler::getInstance();
+	
 	if (isset($_POST["userid"])) {
 		// sanity checks	
 		$userid = $_POST["userid"];
-
+		$action = $_POST["action"];
+		
+		/*$currentMainAdminData = $db->getMainAdminUserData(); // check that we are not deleting the main admin user.
+		
+		if (is_array($currentMainAdminData) && (array_key_exists("id", $currentMainAdminData))) {
+			if ($userid == $currentMainAdminData["id"]) {
+				// can't delete the main admin user.
+				print $lh->translateText("unable_delete_main_admin");
+				return;
+			}
+		} */
+		
 		$postfields = array(
 			'goAction' => 'goDeleteUser',
-			'user_id' => $userid
+			'user_id' => $userid,
+			'action' => $action
 		);
 
 		$output = $api->API_Request("goUsers", $postfields);
 			
 		if ($output->result=="success") { $status = 1; } 
-			else { $status = $output->result; }
+			else { $status = $output->data; }
 		
 		echo json_encode($status);
 	}

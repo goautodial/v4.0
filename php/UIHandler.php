@@ -3320,7 +3320,7 @@ error_reporting(E_ERROR | E_PARSE);
 	// get user list
 	public function goGetAllUserList($output, $perm) {
 		//$output = $this->api->API_getAllUsers();		
-		$checkbox_all = $this->getCheckAll("user", $perm);
+		$checkbox_all = $this->getCheckAll("user");
 		
 		if($perm->user_delete !== 'N') {
        	    $columns = array("     ", $checkbox_all,$this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
