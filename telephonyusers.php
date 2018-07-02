@@ -337,7 +337,7 @@
 
  <?php
 	if((isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0) || $_SESSION['show_phones'] == 1 ){
-		$servers = $ui->getServers();
+		$servers = $api->API_getAllServers();
 ?>
 	<!-- ADD PHONE MODAL -->
 	    <div class="modal fade" id="phone-wizard-modal" aria-labelledby="T_Phones" >
@@ -1064,9 +1064,9 @@
 	
 	//delete phone
 		$(document).on('click','.delete-phone',function() {
-		 	var id = $(this).attr('data-id');
-			var log_user = '<?=$_SESSION['user']?>';
-			var log_group = '<?=$_SESSION['usergroup']?>';
+			var id = [];
+			id.push($(this).attr('data-id'));	
+			console.log(id);
             swal({   
                 title: "<?php $lh->translateText("are_you_sure"); ?>",
 				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
@@ -1085,12 +1085,11 @@
 					  type: 'POST',
 					  data: { 
 						exten_id: id,
-						log_user: log_user,
-						log_group: log_group
+						action: "delete_selected"
 					  },
 					  success: function(data) {
-							// console.log(data);
-							if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
+							console.log(data);
+							if(data == 1){
 								swal({title: "<?php $lh->translateText("delete_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php?phone_tab';});
 							}else{
 								sweetAlert("<?php $lh->translateText("cancel_please"); ?>", "<?php $lh->translateText("delete_phone_failed"); ?>"+data, "error");
@@ -1109,6 +1108,7 @@
 			var arr = $('input:checkbox.check_phone').filter(':checked').map(function () {
 				return this.id;
 			}).get();
+			console.log(arr);
 			swal({
 				title: "<?php $lh->translateText("are_you_sure"); ?>",
 				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
@@ -1127,12 +1127,11 @@
 						type: 'POST',
 						data: { 
 						exten_id: arr,
-						log_user: '<?=$_SESSION['user']?>',
-						log_group: '<?=$_SESSION['usergroup']?>'
+						action: "delete_selected"
 					},
 					success: function(data) {
 						console.log(data);
-						if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
+						if(data == 1){
 							swal({title: "<?php $lh->translateText("delete_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_deleted"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php?phone_tab';});
 						}else{
 							sweetAlert("<?php $lh->translateText("cancel_please"); ?>", "<?php $lh->translateText("delete_phone_failed"); ?> "+data, "error");

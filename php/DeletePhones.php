@@ -3,7 +3,8 @@
  * @file        DeletePhones.php
  * @brief       Handles Delete Phones Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author      Alexander Jim H. Abenoja  <alex@goautodial.com>
+ * @author		Demian Lizandro A, Biscocho 
+ * @author      Alexander Jim Abenoja
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -20,45 +21,24 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-require_once('CRMDefaults.php');
+	require_once('APIHandler.php');	
+	$api = \creamy\APIHandler::getInstance();
 
-$api = \creamy\APIHandler::getInstance();
+	if (isset($_POST["exten_id"])) {
+		$extenid = $_POST["exten_id"];
+		$action = $_POST["action"];
+		
+		$postfields = array(
+			'goAction' => 'goDeletePhone',
+			'extension' => $extenid,
+			'action' => $action
+		);
 
-// check required fields
-$validated = 1;
-if (!isset($_POST["exten_id"])) {
-	$validated = 0;
-}
+		$output = $api->API_Request("goPhones", $postfields);
 
-if ($validated == 1) {
-	$extenid = $_POST["exten_id"];
-	$extenid = implode(",",$extenid);
-/*	
-    $url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeletePhone"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["extension"] = $extenid; #Desired User ID. (required)
-    $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	$postfields["action"] = $action;
-	$postfields["session_user"]	= $_POST['log_user'];
-*/  
-    
-    $postfields = array(
-        'goAction' => 'goDeletePhone',
-        'extension' => $extenid
-    );
-
-    $output = $api->API_Request("goPhones", $postfields);
-
-    if ($output->result=="success") {
-        ob_clean();
-		print CRM_DEFAULT_SUCCESS_RESPONSE;
-    }else{
-		echo $output->result;
+		if ($output->result=="success") { $status = 1; } 
+			else { $status = $output->result; }
+		
+		echo json_encode($status);
 	}
-
-}
 ?>

@@ -1,96 +1,116 @@
 <?php
-/*ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
+/**
+ * @file        ModifySettingsPhones.php
+ * @brief       Modify specific phone extension
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho
+ * @author      Alexander Jim H. Abenoja
+ * @author		Jerico James F. Milo
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-require_once('CRMDefaults.php');
-require_once('goCRMAPISettings.php');
 
-// check required fields
-$reason = "Unable to Modify Phones";
+	require_once('CRMDefaults.php');
+	require_once('goCRMAPISettings.php');
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();	
 
-$validated = 1;
-if (!isset($_POST["modifyid"])) {
-	$validated = 0;
-}
+	// check required fields
+	$reason = "Unable to Modify Phones";
 
-if ($validated == 1) {
-    
-	// collect new user data.	
-	$modifyid = $_POST["modifyid"];
-    
-	$plan = NULL; if (isset($_POST["plan"])) { 
-		$plan = $_POST["plan"]; 
-		$plan = stripslashes($plan);
+	$validated = 1;
+	if (!isset($_POST["modifyid"])) {
+		$validated = 0;
+	}
+
+	if ($validated == 1) {
+		
+		// collect new user data.	
+		$modifyid = $_POST["modifyid"];
+		
+		$dialplan = NULL; if (isset($_POST["dialplan"])) { 
+			$dialplan = $_POST["dialplan"]; 
+			$dialplan = stripslashes($dialplan);
+		}
+		
+		$vmid = NULL; if (isset($_POST["vmid"])) { 
+			$vmid = $_POST["vmid"];
+			$vmid = stripslashes($vmid);
+		}
+
+		$ip = NULL; if (isset($_POST["ip"])) { 
+			$ip = $_POST["ip"]; 
+			$ip = stripslashes($ip);
+		}
+		
+		$active = NULL; if (isset($_POST["active"])) { 
+			$active = $_POST["active"]; 
+			$active = stripslashes($active);
+		}
+		
+		$status = NULL; if (isset($_POST["status"])) { 
+			$status = $_POST["status"]; 
+			$status = stripslashes($status);
+		}
+		
+		$fullname = NULL; if (isset($_POST["fullname"])) { 
+			$fullname = $_POST["fullname"]; 
+			$fullname = stripslashes($fullname);
+		}
+		
+		$protocol = NULL; if (isset($_POST["protocol"])) { 
+			$protocol = $_POST["protocol"]; 
+			$protocol = stripslashes($protocol);
+		}
+	
+		$password = NULL; if (isset($_POST["password"])) { 
+			$password = $_POST["password"]; 
+			$password = stripslashes($password);
+		}
+		
+		$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields = array(
+			'goUser'			=> goUser,
+			'goPass' 			=> goPass,
+			'goAction' 			=> 'goEditPhone',		
+			'responsetype' 		=> responsetype,
+			'extension' 		=> $modifyid,
+			'dialplan_number' 	=> $dialplan,
+			'voicemail_id' 		=> $vmid,			
+			'server_ip' 		=> $ip,
+			'active' 			=> $active,						
+			'status'			=> $status,
+			'fullname' 			=> $fullname,
+			'protocol' 			=> $protocol,
+			'pass' 				=> $password,
+			'session_user' 		=> $_POST['log_user'],
+			'log_user' 			=> $_POST['log_user'],
+			'log_ip' 			=> $_SERVER['REMOTE_ADDR']
+		);				
+
+		$output = $api->API_editPhone($postfields);
+
+	if ($output->result=="success") { $status = 1; } 
+		else { $status = $output->result; }
+	
+	echo json_encode($status);
+		
+	} else { 
+		//ob_clean(); 
+		print $reason; 
 	}
 	
-    $vmid = NULL; if (isset($_POST["vmid"])) { 
-		$vmid = $_POST["vmid"];
-		$vmid = stripslashes($vmid);
-	}
-
-    $ip = NULL; if (isset($_POST["ip"])) { 
-		$ip = $_POST["ip"]; 
-		$ip = stripslashes($ip);
-	}
-	
-    $active = NULL; if (isset($_POST["active"])) { 
-		$active = $_POST["active"]; 
-		$active = stripslashes($active);
-	}
-	
-    $status = NULL; if (isset($_POST["status"])) { 
-		$status = $_POST["status"]; 
-		$status = stripslashes($status);
-	}
-    
-    $fullname = NULL; if (isset($_POST["pfullname"])) { 
-		$fullname = $_POST["pfullname"]; 
-		$fullname = stripslashes($fullname);
-	}
-    
-    $protocol = NULL; if (isset($_POST["protocol"])) { 
-		$protocol = $_POST["protocol"]; 
-		$protocol = stripslashes($protocol);
-	}
-  
-    
-	$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goEditPhone"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = responsetype; #json (required)
-    $postfields["extension"] = $modifyid; #Desired list id. (required)
-	$postfields["dialplan_number"] = $plan; #Desired value for user (required)
-	$postfields["voicemail_id"] = $vmid; #Desired value for user (required)
-	$postfields["server_ip"] = $ip; #Desired value for user (required)
-	$postfields["active"] = $active; #Desired value for user (required)
-    $postfields["status"] = $status; #Desired value for user (required)
-	$postfields["fullname"] = $fullname; #Desired value for user (required)
-    $postfields["protocol"] = $protocol; #Desired value for user (required)
-    $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
-
-    if ($output->result=="success") {
-    # Result was OK!
-        echo 1;
-    } else {
-    # An error occured
-		echo $output->result;
-        //$lh->translateText("unable_modify_list");
-    }
-    
-} else { ob_clean(); print $reason; }
 ?>

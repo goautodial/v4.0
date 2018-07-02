@@ -619,6 +619,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goPhones", $postfields);
 	}
 
+	public function API_editPhone($postfields){
+		return $this->API_Request("goPhones", $postfields);
+	}
+	
 	public function API_addIngroup($postfields){
 		return $this->API_Request("goInbound", $postfields);
 	}

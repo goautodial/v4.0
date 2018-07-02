@@ -1071,7 +1071,7 @@ error_reporting(E_ERROR | E_PARSE);
 						<li'.($perm->user_view === 'N' ? ' class="hidden"' : '').'><a class="view-stats" href="#" data-user="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("agent_log").'</a></li>
 	                    <li><a class="emergency-logout" href="#" data-emergency-logout-username="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("emergency_logout").'</a></li>
 	                    <li class="divider'.($perm->user_delete === 'N' ? ' hidden' : '').'"></li>
-	                    <li'.($perm->user_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
+	                    <li'.(($perm->user_delete === 'N' || $user === $current_user) ? ' class="hidden"' : '').'><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 	                </ul>
 	            </div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -3346,37 +3346,37 @@ error_reporting(E_ERROR | E_PARSE);
 				$active = $this->lh->translationFor("inactive");
 			}
 			$role = $user_level;
-				$action = $this->getUserActionMenuForT_User($user_id, $user, $user_level, $full_name, $user, $perm);
-				//$sessionAvatar = "<avatar username='".$full_name."' :size='36'></avatar>";
-				$avatar = NULL;
-				if ($this->db->getUserAvatar($user_id)) {
-					$avatar = "./php/ViewImage.php?user_id=" . $user_id;
-				}
-				$sessionAvatar = $this->getVueAvatar($full_name, $avatar, 36);
-				
-				$preFix = "<a class='edit-T_user' data-id=".$user_id." data-user=".$user." data-role=".$role.">"; 
-				$sufFix = "</a>";
-				if ($perm->user_update === 'N') {
-					$preFix = '';
-					$sufFix = '';
-				}
-				$checkbox = '<label for="'.$user_id.'"'.($perm->user_delete === 'N' ? ' class="hidden"' : '').'><div class="checkbox c-checkbox"><label><input name="" class="check_user" id="'.$user_id.'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
-				
-				$result .= "<tr>
-								<td style='width:5%;'>".$sessionAvatar."</a></td>";
-				if($perm->user_delete !== 'N')
-					$result .= "<td style='width:10%;'>".$checkbox."</td>";
-					$result .= "<td class='hide-on-low'>".$preFix."<strong>".$user."</strong>".$sufFix."</td>
-								<td>".$full_name."</td>
-								<td class=' hide-on-low hide-on-medium'>".$$user_group."</td>
-								<td class='hide-on-low hide-on-medium'>".$active."</td>
-								<td nowrap style='width:16%;'>".$action."</td>
-							</tr>";
+			$action = $this->getUserActionMenuForT_User($user_id, $user, $user_level, $full_name, $_SESSION['user'], $perm);
+			$avatar = NULL;
+			
+			if ($this->db->getUserAvatar($user_id)) {
+				$avatar = "./php/ViewImage.php?user_id=" . $user_id;
 			}
-
+			
+			$sessionAvatar = $this->getVueAvatar($full_name, $avatar, 36);				
+			$preFix = "<a class='edit-T_user' data-id=".$user_id." data-user=".$user." data-role=".$role.">"; 
+			$sufFix = "</a>";
+			
+			if ($perm->user_update === 'N') {
+				$preFix = '';
+				$sufFix = '';
+			}
+			
+			$checkbox = '<label for="'.$user_id.'"'.(($perm->user_delete === 'N' || $user === $_SESSION['user']) ? ' class="hidden"' : '').'><div class="checkbox c-checkbox"><label><input name="" class="check_user" id="'.$user_id.'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';				
+			$result .= "<tr>
+							<td style='width:5%;'>".$sessionAvatar."</a></td>";
+							
+			if($perm->user_delete !== 'N')
+				$result .= "<td style='width:10%;'>".$checkbox."</td>";
+				$result .= "<td class='hide-on-low'>".$preFix."<strong>".$user."</strong>".$sufFix."</td>
+							<td>".$full_name."</td>
+							<td class=' hide-on-low hide-on-medium'>".$user_group."</td>
+							<td class='hide-on-low hide-on-medium'>".$active."</td>
+							<td nowrap style='width:16%;'>".$action."</td>
+						</tr>";
+		}
 		// print suffix
 		//$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
-
 		return $result.'</table>';
 	}
 

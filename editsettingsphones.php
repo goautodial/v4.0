@@ -75,7 +75,7 @@ if (isset($_POST["extenid"])) {
                         <?php
 							if(isset($_POST["extenid"])){
 						?>	
-							<li><a href="./settingsphones.php"><?php $lh->translateText("phones"); ?></a></li>
+							<li><a href="./telephonyusers.php?phone_tab"><?php $lh->translateText("phones"); ?></a></li>
                         <?php
 							}
                         ?>	                    
@@ -112,9 +112,9 @@ if (isset($_POST["extenid"])) {
 			<div id="tab_1" class="tab-pane fade in active">
 				<fieldset>
 					<div class="form-group">
-						<label for="plan" class="col-sm-2 control-label">Dial Plan Number</label>
+						<label for="dialplan" class="col-sm-2 control-label">Dialplan Number</label>
 						<div class="col-sm-10 mb">
-							<input type="number" class="form-control" name="plan" id="plan" placeholder="Dial Plan Number (Mandatory)" value="<?php echo $output->dialplan_number;?>">
+							<input type="number" class="form-control" name="dialplan" id="dialplan" placeholder="Dialplan Number (Mandatory)" value="<?php echo $output->dialplan_number;?>">
 						</div>
 					</div>
 					<div class="form-group">
@@ -243,12 +243,36 @@ if (isset($_POST["extenid"])) {
 							</select>
 						</div>
 					</div>
+					<div class="form-group">
+						<label for="change_pass" class="col-sm-2 control-label"><?php $lh->translateText("change_password"); ?></label>
+						<div class="col-sm-10 mb">
+							<select class="form-control " name="change_pass" id="change_pass">
+								<option value="N" selected> No </option>
+								<option value="Y" > Yes </option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group form_password" style="display:none;">
+						<label for="password" class="col-sm-2 control-label"><?php $lh->translateText("password"); ?></label>
+						<div class="col-sm-10 mb">
+							<input type="password" class="form-control" name="password" id="password" maxlength="20" placeholder="<?php $lh->translateText("password"); ?>" />
+							<small><i><span id="pass_result"></span></i></small>
+						</div>
+					</div>
+					<div class="form-group form_password" style="display:none;">
+						<label for="conf_password" class="col-sm-2 control-label"><?php $lh->translateText("confirm_password"); ?></label>
+						<div class="col-sm-10 mb">
+							<input type="password" class="form-control" id="conf_password" placeholder="<?php $lh->translateText("confirm_password"); ?>" required />
+							<span id="pass_result"></span></i></small>
+						</div> 
+					</div>					
 				</fieldset>
 			</div><!-- body -->
 				<fieldset>
 					<div class="box-footer">
-					   <div class="col-sm-3 pull-right"><a href="telephonyusers.php?phone_tab" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-						<button type="submit" class="btn btn-primary" id="update_phones" href=""> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+					   <div class="col-sm-3 pull-right">
+							<a href="telephonyusers.php?phone_tab" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+							<button type="submit" class="btn btn-primary" id="modifyPhoneOkButton" href="" data-id="<?php echo $output->extension; ?>"> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 					   </div>
 					</div>
 				</fieldset>
@@ -271,49 +295,108 @@ if (isset($_POST["extenid"])) {
 	<?php include_once "./php/ModalPasswordDialogs.php" ?>
 	
 	<script type="text/javascript">
-		$(document).ready(function() {
+		$(document).ready(function(){
 			
 			// for cancelling
 			$(document).on('click', '#cancel', function(){
 				swal("Cancelled", "No action has been done :)", "error");
 			});
 			
-			/** 
-			 * Modifies a telephony list
-			 */
-			$("#modifyphones").validate({
-				submitHandler: function() {
-					//submit the form
-						$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
-						$('#update_phones').prop("disabled", true);
-						$("#resultmessage").html();
-						$("#resultmessage").fadeOut();
-						$.post("./php/ModifySettingsPhones.php", //post
-						$("#modifyphones").serialize(),
-							function(data){
-								//if message is sent
+			$('#change_pass').on('change', function() {
+			//  alert( this.value ); // or $(this).val()
+				if(this.value == "Y") 
+				  $('.form_password').show();
+				
+				if(this.value == "N") 
+				  $('.form_password').hide();
+				
+			});
+
+			// password
+			$("#password").keyup(checkPasswordMatch);
+			$("#conf_password").keyup(checkPasswordMatch);
+			
+			$('#modifyPhoneOkButton').click(function(){ // on click submit
+				$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+				$('#modifyPhoneOkButton').prop("disabled", true);
+
+				// variables for check password
+				var validate_password = 0;
+				var change_pass = document.getElementById('change_pass').value;
+				var password = document.getElementById('password').value;
+				var conf_password = document.getElementById('conf_password').value;
+				
+				// conditional statements
+				if(change_pass == "Y"){
+					if(password != conf_password){
+					validate_password = 1;
+					}
+					if(password == ""){
+					validate_password = 2;
+					}
+				}
+
+				// validate results
+				if(validate_password == 1){
+					$('#update_button').html("<i class='fa fa-check'></i> Update");
+					$('#modifyPhoneOkButton').prop("disabled", false);	
+				}
+				if(validate_password == 2){
+					$("#pass_result").html("<font color='red'><i class='fa fa-warning'></i> Input and Confirm Password, otherwise mark Change Password? as NO! </font>");
+					$('#update_button').html("<i class='fa fa-check'></i> Update");
+					$('#modifyPhoneOkButton').prop("disabled", false);
+				}
+				
+				// validations
+				if(validate_password == 0){
+					$("#update_phones").prop("disabled", false);				
+					$.ajax({
+						url: "./php/ModifySettingsPhones.php",
+						type: 'POST',
+						data: $("#modifyphones").serialize(),
+						success: function(data) {
+							console.log(data);
+							$("#update_phones").prop("disabled", true);
+							if (data == 1) {
 								$('#update_button').html("<i class='fa fa-check'></i> Update");
-								$('#update_phones').prop("disabled", false);
-								if (data == 1) {
-									swal({
+								$('#modifyPhoneOkButton').prop("disabled", false);
+								swal(
+									{
 										title: "<?php $lh->translateText("success"); ?>",
 										text: "<?php $lh->translateText("phone_update_success"); ?>",
 										type: "success"
 									},
 									function(){
 										location.replace("./telephonyusers.php?phone_tab");
-									});
-								} else {
-									sweetAlert("Oops...","Something went wrong! " + data, "error");
-								}
-							});
-					return false; //don't let the form refresh the page...
+									}
+								);
+							} else {
+								sweetAlert("<?php $lh->translateText("oops"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> " + data, "error");
+								$('#update_button').html("<i class='fa fa-check'></i> Update");
+								$('#modifyPhoneOkButton').prop("disabled", false);
+							}
+						}
+					});
 				}
+				return false;	
 			});
-		});
-		</script>
+	});
+	
+	/**************
+	** password validation
+	**************/
+	function checkPasswordMatch() {
+		var password = $("#password").val();
+		var confirmPassword = $("#conf_password").val();
 
-		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
-		<?php print $ui->creamyFooter(); ?>
-    </body>
+		if (password != confirmPassword)
+			$("#pass_result").html("<font color='red'>Passwords Do Not Match! <font size='5'>✖</font> </font>");
+		else
+			$("#pass_result").html("<font color='green'>Passwords Match! <font size='5'>✔</font> </font>");
+	}	
+</script>
+
+<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
+<?php print $ui->creamyFooter(); ?>
+</body>
 </html>
