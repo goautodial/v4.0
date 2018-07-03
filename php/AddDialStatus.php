@@ -19,50 +19,31 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
 
-/*
-	$url = gourl."/goCampaigns/goAPI.php"; # URL to GoAutoDial API file
-	$postfields["goUser"] 						= goUser; #Username goes here. (required)
-	$postfields["goPass"] 						= goPass; #Password goes here. (required)
-	$postfields["goAction"] 					= "goUpdateCampaignDialStatus"; #action performed by the [[API:Functions]]
-	$postfields["responsetype"] 			= responsetype; #json (required)
-	$postfields["hostname"] 					= $_SERVER['REMOTE_ADDR']; #Default value
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
-	$postfields['campaign_id']  			= $_POST['campaign_id'];
+	if (isset($_POST['old_dial_status'])) {
+		$statuses = explode(" ", $_POST['old_dial_status']);
+	}
+	
+	if (in_array($_POST['dial_status'], $statuses)) {
+		$new_status = $_POST['old_dial_status'];
+	} else {
+		$new_status = " ".$_POST['dial_status']." ".$_POST['old_dial_status'];
+	}		
 
-	$statuses = explode(" ", $_POST['old_dial_status']);
-  
-  if(in_array($_POST['dial_status'], $statuses)){
-    $new_status = $_POST['old_dial_status'];
-  }else{
-    $new_status = " ".$_POST['dial_status']." ".$_POST['old_dial_status'];
-  }
-
-  $postfields['dial_status']  			= $new_status;
-*/
-if(isset($_POST['old_dial_status']))
-  $statuses = explode(" ", $_POST['old_dial_status']);
-  
-  if(in_array($_POST['dial_status'], $statuses)){
-    $new_status = $_POST['old_dial_status'];
-  }else{
-    $new_status = " ".$_POST['dial_status']." ".$_POST['old_dial_status'];
-  }
-
-  $postfields = array(
-		'goAction' => 'goUpdateCampaignDialStatus'
-		'campaign_id' => $_POST['campaign_id'],
-		'dial_status' => $new_status
+	$postfields = array(
+		'goAction' 			=> 'goUpdateCampaignDialStatus',
+		'campaign_id' 		=> $_POST['campaign_id'],
+		'dial_statuses' 	=> $new_status
 	);
 
-  $output = $api->API_addDialStatus($postfields);
-  
-  if ($output->result=="success") {
-  	echo json_encode(1);
-  } else {
-  	echo json_encode(0);
-  }
+	$output = $api->API_addDialStatus($postfields);
+	
+	if ($output->result=="success") { $status = 1; } 
+		else { $status = $output->result; }
+
+	echo json_encode($status);
 
 ?>

@@ -20,22 +20,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
-/*
-    require_once('goCRMAPISettings.php');
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
-	$url = gourl."/goCampaigns/goAPI.php"; # URL to GoAutoDial API file
-	$postfields["goUser"] 						= goUser; #Username goes here. (required)
-	$postfields["goPass"] 						= goPass; #Password goes here. (required)
-	$postfields["goAction"] 					= "goUpdateCampaignDialStatus"; #action performed by the [[API:Functions]]
-	$postfields["responsetype"] 			= responsetype; #json (required)
-	$postfields["hostname"] 					= $_SERVER['REMOTE_ADDR']; #Default value
-	$postfields["log_user"]						= $_POST['log_user'];
-	$postfields["log_group"]					= $_POST['log_group'];
-
-	$postfields['campaign_id']  			= $_POST['campaign_id'];
-*/	
 	$old_statuses = explode(" ",$_POST['dial_status']);
 	$oldStats = array();
 	foreach($old_statuses as $old){
@@ -48,22 +35,20 @@ $api = \creamy\APIHandler::getInstance();
 	foreach($oldStats as $OLD){
 		$new_status .= $OLD.' ';
 	}
-	$new_status = rtrim($new_status, " ");
 	
-	//$postfields['dial_status'] = $new_status;
+	$new_status = rtrim($new_status, " ");
 
 	$postfields = array(
         'goAction' => 'goUpdateCampaignDialStatus',
         'campaign_id' => $_POST['campaign_id'],
-        'dial_status' => $new_status
+        'dial_statuses' => $new_status
     );
 
 	$output = $api->API_Request("goCampaigns", $postfields);
 
-	if ($output->result=="success") {
-		echo json_encode(1);
-	} else {
-		echo json_encode(0);
-	}
+	if ($output->result=="success") { $status = 1; } 
+		else { $status = $output->result; }
+
+	echo json_encode($status);
 
 ?>

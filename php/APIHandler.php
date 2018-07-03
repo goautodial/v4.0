@@ -652,7 +652,7 @@ if(isset($_SESSION["user"])){
 	}
 
 	public function API_checkCampaign($postfields){
-		return $this->API_Request("goCampaigns", $postfields, true);
+		return $this->API_Request("goCampaigns", $postfields);
 	}
 
 	public function API_checkUser($postfields){

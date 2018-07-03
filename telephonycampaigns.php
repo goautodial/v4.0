@@ -2680,9 +2680,9 @@
 
 				//delete campaign
 			         $(document).on('click','.delete-campaign',function() {
-			            var id = $(this).attr('data-id');
-						var log_user = '<?=$_SESSION['user']?>';
-						var log_group = '<?=$_SESSION['usergroup']?>';
+						var id = [];
+			            id.push($(this).attr('data-id'));
+			            console.log(id);
 			            swal({
 							title: "<?php $lh->translateText("are_you_sure"); ?>",
 							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -2700,9 +2700,8 @@
 										url: "./php/DeleteCampaign.php",
 										type: 'POST',
 										data: {
-											campaign_id:id,
-											log_user: log_user,
-											log_group: log_group
+											campaign_id: id,
+											action: "delete_selected"
 										},
 										success: function(data) {
 										console.log(data);
@@ -2734,8 +2733,7 @@
 					var arr = $('input:checkbox.check_campaign').filter(':checked').map(function () {
 						return this.id;
 					}).get();
-					var log_user = '<?=$_SESSION['user']?>';
-					var log_group = '<?=$_SESSION['usergroup']?>';
+					console.log(arr);
 					swal({
 							title: "<?php $lh->translateText("are_you_sure"); ?>",
 							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -2753,10 +2751,8 @@
 										url: "./php/DeleteCampaign.php",
 										type: 'POST',
 										data: {
-											campaign_id:arr,
-											action: "delete_selected",
-											log_user: log_user,
-											log_group: log_group
+											campaign_id: arr,
+											action: "delete_selected"
 										},
 										success: function(data) {
 										console.log(data);
@@ -3486,12 +3482,15 @@
 				},
 				dataType: 'json',
 				success: function(data) {
-					// console.log(data);
-					var info = $.parseJSON(data);
-					if(info.result == "success"){
+					console.log(data);
+					if (data == 1) {
 						status = 1;
-					}else{
-						status = info.status;
+						$('#finish').attr("disabled", false);
+						$( "#campaign_form" ).removeClass("error");
+					} else {
+						$('#finish').attr("disabled", true);
+						$( "#campaign_form" ).removeClass("valid").addClass( "error" );						
+						status = 0;
 					}
 				}
 			});

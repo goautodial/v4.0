@@ -193,7 +193,8 @@ $audiofiles = $api->API_getAllVoiceFiles();
 						}
 					?>
 					
-						<form id="campaign_form_edit" class="form-horizontal"  action="./php/ModifyTelephonyCampaign.php" method="POST" enctype="multipart/form-data">
+						<!-- <form id="campaign_form_edit" class="form-horizontal"  action="./php/ModifyTelephonyCampaign.php" method="POST" enctype="multipart/form-data"> -->
+						<form id="campaign_form_edit" class="form-horizontal">
 							<input type="hidden" name="campaign_id" value="<?php echo $campaign_id;?>">
 							<input type="hidden" name="campaign_type" value="<?php echo $campaign->campaign_type;?>">
 							<input type="hidden" name="log_user" value="<?php echo $_SESSION['user'];?>">
@@ -202,11 +203,8 @@ $audiofiles = $api->API_getAllVoiceFiles();
 
 						<!-- IF CAMPAIGN -->
 						<?php
-						if($campaign_id != NULL) {
-							if ($campaign->result=="success") {
-								//echo "<pre>";
-								//var_dump($campaign);
-								//echo "</pre>";
+							if($campaign_id != NULL) {
+								if ($campaign->result=="success") {
 						?>
 							<div class="panel-body">
 								<legend><?php $lh->translateText("modify_campaign_id"); ?> : <u><?php echo $campaign_id." - ".$campaign->data->campaign_name;?></u>
@@ -2294,7 +2292,7 @@ $audiofiles = $api->API_getAllVoiceFiles();
 												<!-- /.tab-pane -->
 
 												<!-- Notification -->
-											   	<div id="modifyUSERresult"></div>
+											   	<div id="modifyCAMPAIGNresult"></div>
 
 											   	<!-- FOOTER BUTTONS -->
 							                    <fieldset class="footer-buttons">
@@ -2302,7 +2300,7 @@ $audiofiles = $api->API_getAllVoiceFiles();
 							                           <div class="col-sm-3 pull-right">
 																<a href="telephonycampaigns.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i><?php $lh->translateText("cancel"); ?></a>
 
-							                                	<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i><?php $lh->translateText("update"); ?></span></button>
+							                                	<button type="submit" class="btn btn-primary" id="modifyCampaignOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i><?php $lh->translateText("update"); ?></span></button>
 							                           </div>
 							                        </div>
 							                    </fieldset>
@@ -2907,7 +2905,6 @@ $audiofiles = $api->API_getAllVoiceFiles();
 					var dial_status = $('#dial_status').val();
 					var campaign_id = $(this).data('campaign');
 					var old_dial_status = $(this).data('dial-status');
-
 					swal({
 						title: "<?php $lh->translateText("are_you_sure"); ?>?",
 						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -2925,9 +2922,9 @@ $audiofiles = $api->API_getAllVoiceFiles();
 									url: "./php/AddDialStatus.php",
 									type: 'POST',
 									data: {
-											campaign_id:campaign_id,
-											dial_status:dial_status,
-											old_dial_status:old_dial_status
+											campaign_id: campaign_id,
+											dial_status: dial_status,
+											old_dial_status: old_dial_status
 									},
 									dataType: 'json',
 									success: function(data) {
@@ -2957,8 +2954,6 @@ $audiofiles = $api->API_getAllVoiceFiles();
 					var campaign_id = $(this).data('campaign');
 					var dial_status = $(this).data('dial-status');
 					var selected_status = $(this).data('selected-status');
-					var log_user = '<?=$_SESSION['user']?>';
-					var log_group = '<?=$_SESSION['usergroup']?>';
 
 					swal({
 						title: "<?php $lh->translateText("are_you_sure"); ?>?",
@@ -2979,9 +2974,7 @@ $audiofiles = $api->API_getAllVoiceFiles();
 												data: {
 														campaign_id:campaign_id,
 														dial_status:dial_status,
-														selected_status:selected_status,
-														log_user: log_user,
-														log_group: log_group
+														selected_status:selected_status
 												},
 												// dataType: 'json',
 												success: function(data) {
@@ -3143,10 +3136,44 @@ $audiofiles = $api->API_getAllVoiceFiles();
 				*************/
 
 					//edit campaign
-						$('#modifyCampaignButton').click(function(){
+						/*$('#modifyCampaignOkButton').click(function(){
 							$('#campaign_form_edit').submit();
-						});
+						});*/
 
+		$('#modifyCampaignOkButton').click(function(){ // on click submit
+			$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
+			$('#modifyCampaignOkButton').prop("disabled", true);
+
+			// validations
+			$.ajax({
+				url: "./php/ModifyTelephonyCampaign.php",
+				type: 'POST',
+				data: $("#campaign_form_edit").serialize(),
+				success: function(data) {
+					console.log(data);
+					if (data == 1) {
+						$('#update_button').html("<i class='fa fa-check'></i> Update");
+						$('#modifyCampaignOkButton').prop("disabled", false);
+						swal(
+							{
+								title: "<?php $lh->translateText("success"); ?>",
+								text: "<?php $lh->translateText("user_update_success"); ?>",
+								type: "success"
+							},
+							function(){
+								location.replace("./telephonycampaigns.php");
+							}
+						);
+					} else {
+						sweetAlert("<?php $lh->translateText("oops"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> " + data, "error");
+						$('#update_button').html("<i class='fa fa-check'></i> Update");
+						$('#modifyCampaignOkButton').prop("disabled", false);
+					}
+				}
+			});
+			return false;
+		});
+		
 						$('.am_message_chooser').hide();
 						$('.show_am_message_chooser').on('click', function(event) {
 					        $('.am_message_chooser').toggle('show');
