@@ -694,7 +694,6 @@
 		        onStepChanging: function (event, currentIndex, newIndex)
 		        {
 					
-			        console.log(checker);
 			        // Disable next if there are duplicates
 			        if(checker > 0){
 						$(".body:eq(" + newIndex + ") .error", uform).addClass("error");
@@ -703,14 +702,15 @@
 					
 			        // form review
 					show_form_review();
-					//validate_user();
 					
 					if($('#seats').val() > 1){
-						$('#password_div').hide();
-						$('#confirm_div').hide();
+						$('#password').attr("disabled", true);
+						$('#confirm').attr("disabled", true);
 						$('#submit-password-lbl').text('<?php $lh->translateText("default_pass_is"); ?>: ');
 						$('#submit-password').html('<i><?php echo 'Go'.date("Y")?></i>');
 					}else{
+						$('#password').attr("disabled", false);
+						$('#confirm').attr("disabled", false);					
 						$('#submit-password-lbl').text('<?php $lh->translateText("password"); ?>: ');
 					}
 					
@@ -743,7 +743,6 @@
 						data: $("#wizard_form").serialize(),
 						success: function(data) {
 							console.log(data);
-							console.log($("#wizard_form").serialize());
 							$('#finish').text("Submit");
 							$('#finish').attr("disabled", false);
 							if(data == 1){
@@ -808,7 +807,6 @@
 							data: $("#create_form").serialize(),
 							success: function(data) {
 								console.log(data);
-								console.log($("#create_form").serialize());
 								$('#finish').text("Submit");
 								$('#finish').attr("disabled", false);
 								  if(data == 1){
@@ -1212,7 +1210,7 @@
 
 			function validate_user(){
 				var user_form_value = $('#user_form').val();
-				var phones_login_value = "";
+				var phone_logins_value = "";
 		        if(user_form_value != ""){
 				    $.ajax({
 					    url: "php/checkUser.php",
