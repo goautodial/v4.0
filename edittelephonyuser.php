@@ -690,7 +690,7 @@ $user_groups = $api->API_getAllUserGroups();
 					type: 'POST',
 					data: $("#modifyuser").serialize() + '&user=' + user,
 					success: function(data) {
-					console.log($("#modifyuser").serialize() + '&user=' + user);
+					//console.log($("#modifyuser").serialize() + '&user=' + user);
 					$("#phone_login").prop("disabled", true);
 						if (data == 1) {
 							$('#update_button').html("<i class='fa fa-check'></i> Update");
