@@ -1,20 +1,34 @@
 <?php
-
-	######################################################
-	### Name: crm.php 		###
-	### Functions: Display, Search and Filter  		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016 		###
-	### Version: 4.0 		###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2 		###
-	######################################################
+/**
+ * @file 		crm.php
+ * @brief 		Manage leads and contacts
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author		Demian Lizandro A. Biscocho
+ * @author     	Alexander Jim H. Abenoja
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
 	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 ?>
@@ -90,8 +104,7 @@
                     </ol>
                 </section>
 <?php
-$lists = $ui->API_goGetAllLists();
-$leads = $ui->API_GetLeads($_SESSION['user']);
+	$leads = $ui->API_GetLeads($_SESSION['user']);
 ?>
                 <!-- Main content -->
                 <section class="content">
@@ -156,9 +169,8 @@ $leads = $ui->API_GetLeads($_SESSION['user']);
 </div><!-- /.panel -->
 </div><!-- /.col-lg-9 -->
 <?php
-$lists = $ui->API_goGetAllLists($_SESSION['user']);
-$agents = $ui->API_goGetAllUserLists($_SESSION['user']);
-$disposition = $ui->API_getAllDispositions();
+$lists = $api->API_getAllLists();
+$disposition = $api->API_getAllDispositions();
 ?>
 	               		<div class="col-lg-3">
 				<h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>
