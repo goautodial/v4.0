@@ -367,7 +367,8 @@ if (isset($_POST["usergroup_id"])) {
 							$("#modifyvoicemail").serialize(), 
 								function(data){
 									//if message is sent
-									console.log($("#modifyvoicemail").serialize());
+									//console.log($("#modifyvoicemail").serialize());
+									console.log(data);
 									if (data == 1) {
 										swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("usergroup_modify_success"); ?>", "success");
                                         window.setTimeout(function(){location.reload()},2000);

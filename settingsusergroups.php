@@ -231,7 +231,7 @@
                                 type: 'POST',
                                 data: $("#create_usergroup").serialize(),
                                 success: function(data) {
-                                  console.log($("#create_usergroup").serialize());
+                                  //console.log($("#create_usergroup").serialize());
 								  $('#finish').val("<?php $lh->translateText("submit"); ?>");
                                   $('#finish').prop("disabled", false);
                                       if(data == 1){
@@ -252,8 +252,7 @@
                     var url = './editsettingsusergroup.php';
                     var id = $(this).attr('data-id');
                     //alert(extenid);
-                    var form = 
-                    $('<form action="' + url + '" method="post"><input type="hidden" name="usergroup_id" value="'+id+'" /></form>');
+                    var form = $('<form action="' + url + '" method="post"><input type="hidden" name="usergroup_id" value="'+id+'" /></form>');
                     $('body').append(form);  // This line is not necessary
                     $(form).submit();
                 });

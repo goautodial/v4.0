@@ -22,30 +22,30 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-require_once('CRMDefaults.php');
+	require_once('APIHandler.php');
+	$api 							= \creamy\APIHandler::getInstance();
 
-$api = \creamy\APIHandler::getInstance();
+	// check required fields
+	$validated = 1;
+	if (!isset($_POST["usergroup_id"])) {
+		$validated 					= 0;
+	}
 
-// check required fields
-$validated = 1;
-if (!isset($_POST["usergroup_id"])) {
-	$validated = 0;
-}
+	if ($validated == 1) {
+		$postfields 				= array(
+			'goAction' 					=> 'goDeleteUserGroup',
+			'user_group' 				=> $_POST['usergroup_id']
+		);
 
-if ($validated == 1) {
-    $postfields = array(
-		'goAction' => 'goDeleteUserGroup',
-		'user_group' => $_POST['usergroup_id']
-	);
-
-	$output = $api->API_Request("goUserGroups", $postfields);
-     
-    if ($output->result=="success") {
-		ob_clean();
-        print CRM_DEFAULT_SUCCESS_RESPONSE;
-    }else{
-        echo $output->result;
-    }
-}
+		$output 					= $api->API_Request("goUserGroups", $postfields);
+		
+		if ($output->result=="success") { 
+			$status 				= 1; 
+		} else { 
+			$status 				= $output->result; 
+		}
+		
+		echo json_encode($status);
+		
+	}
 ?>

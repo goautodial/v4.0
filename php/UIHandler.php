@@ -3437,7 +3437,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 	//USERGROUPS LIST
 	public function goGetUserGroupsList() {
-		$output = $this->API_goGetUserGroupsList();
+		$output = $this->api->API_getAllUserGroups();
 
 		if ($output->result=="success") {
 		# Result was OK!
