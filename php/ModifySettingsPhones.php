@@ -81,7 +81,6 @@
 			$password = stripslashes($password);
 		}
 		
-		$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields = array(
 			'goUser'			=> goUser,
 			'goPass' 			=> goPass,

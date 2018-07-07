@@ -382,7 +382,7 @@ if(isset($_SESSION["user"])){
 	*/
 	public function API_getAllDispositions($custom){
 		$postfields = array(
-			'goAction' => 'getAllDispositions',
+			'goAction' => 'goGetAllDispositions',
 			'custom_request' => $custom
 		);		
 		return $this->API_Request("goDispositions", $postfields);
@@ -415,7 +415,8 @@ if(isset($_SESSION["user"])){
 	public function API_getAllDialStatuses($campaign_id){
 		$postfields = array(
 			'goAction' => 'goGetAllDialStatuses',
-			'campaign_id' => $campaign_id
+			'campaign_id' => $campaign_id,
+			'hotkeys_only' => "1"
 		);		
 		return $this->API_Request("goDialStatus", $postfields);
 	}	
@@ -424,7 +425,7 @@ if(isset($_SESSION["user"])){
 		$postfields = array(
 			'goAction' => 'goGetAllDialStatuses',
 			'campaign_id' => $campaign_id,
-			'hotkeys_only' => 1
+			'hotkeys_only' => "1"
 		);		
 		return $this->API_Request("goDialStatus", $postfields);
 	}	
@@ -611,6 +612,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goServers", $postfields);
 	}
 
+	public function API_editServer($postfields){
+		return $this->API_Request("goServers", $postfields);
+	}
+	
 	public function API_addUser($postfields){
 		return $this->API_Request("goUsers", $postfields);
 	}

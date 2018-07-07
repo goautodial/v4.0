@@ -3,7 +3,8 @@
  * @file        DeleteServer.php
  * @brief       Handles Delete Server Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author      Alexander Jim H. Abenoja  <alex@goautodial.com>
+ * @author		Demian Lizandro A, Biscocho 
+ * @author      Alexander Jim H. Abenoja
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -20,33 +21,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
-
-/*
-    require_once('goCRMAPISettings.php');
-    
-    $url = gourl."/goServers/goAPI.php"; #URL to GoAutoDial API. (required)
-
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeleteServer"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["server_id"] = $_POST['server_id']; #Desired script id. (required)
-    $postfields['hostname'] = $_SERVER['REMOTE_ADDR'];
-
-    $postfields['log_user'] = $_POST['log_user'];
-    $postfields['log_group'] = $_POST['log_group'];
-    
-*/
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
     $postfields = array(
-        'goAction' => 'goDeleteServer',
+        'goAction' => 'goDeleteServers',
         'server_id' => $_POST['server_id']
     );
 
     $output = $api->API_Request("goServers", $postfields);
 
-    echo $output->result;
+	if ($output->result=="success") { $status = 1; } 
+		else { $status = $output->result; }
+
+	echo json_encode($status);
     
 ?>

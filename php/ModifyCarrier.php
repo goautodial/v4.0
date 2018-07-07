@@ -85,7 +85,6 @@
 			$dialplan_entry = stripslashes($dialplan_entry);
 		}
 		
-		$url = gourl."/goCarriers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields = array(
 			'goUser' => goUser,
 			'goPass' => goPass,
@@ -108,11 +107,8 @@
 
 		$output = $api->API_editCarrier($postfields);
 
-		if ($output->result == "success") {
-			$status = 1;
-		} else {
-			$status = $output->data;
-		}
+		if ($output->result=="success") { $status = 1; } 
+			else { $status = $output->result; }
 
 		echo json_encode($status);
 		
