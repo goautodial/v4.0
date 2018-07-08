@@ -644,6 +644,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goUserGroups", $postfields);
 	}
 
+	public function API_editUserGroup($postfields){
+		return $this->API_Request("goUserGroups", $postfields);
+	}
+	
 	public function API_addVoiceFiles($postfields){
 		return $this->API_Upload("goVoiceFiles", $postfields);
 	}
