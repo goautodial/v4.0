@@ -652,6 +652,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goVoicemails", $postfields);
 	}
 
+	public function API_editVoicemail($postfields){
+		return $this->API_Request("goVoicemails", $postfields);
+	}
+	
 	public function API_checkCalltimes($postfields){
 		return $this->API_Request("goCalltimes", $postfields);
 	}
