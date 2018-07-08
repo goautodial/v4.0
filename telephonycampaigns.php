@@ -155,32 +155,32 @@
                 	<div class="panel panel-default">
                 		<div class="panel-body">
                 			<legend><?php $lh->translateText("campaigns"); ?></legend>
-                <?php if ($perm->campaign->campaign_read !== 'N') { ?>
-<?php
+							<?php if ($perm->campaign->campaign_read !== 'N') { ?>
+							<?php
 
-	/*
-	 * API used for display in tables
-	 */
-	$campaign = $api->API_getAllCampaigns();
-	if($campaign->result !== "success"){
-		die("API ERROR: ".$campaign->result);
-	}
-	$disposition = $api->API_getAllDispositions("custom");
-	$leadrecycling = $api->API_getAllLeadRecycling();
-
-	$dialStatus = $api->API_getAllDialStatuses($campaign->data->campaign_id);
-	$campaignStatuses = $api->getAllCampaignStatuses();
-	//var_dump($campaignStatuses);
-	$leadfilter = $api->API_getAllLeadFilters();
-	$country_codes = $api->API_getCountryCodes();
-	$list = $api->API_getAllLists();
-	$ingroup = $api->API_getAllInGroups();
-	$ivr = $api->API_getAllIVRs();
-	$voicemails = $api->API_getAllVoiceFiles();
-	$users = $api->API_getAllUsers();
-	$carriers = $api->API_getAllCarriers();
-	$checkbox_all = $ui->getCheckAll("campaign");
-?>
+								/*
+								* API used for display in tables
+								*/
+								$campaign = $api->API_getAllCampaigns();
+								if($campaign->result !== "success"){
+									die("API ERROR: ".$campaign->result);
+								}
+								$disposition = $api->API_getAllDispositions("campaign");
+								$leadrecycling = $api->API_getAllLeadRecycling();
+								$dialStatus = $api->API_getAllDispositions("custom");
+								//$campaignStatuses = $api->getAllCampaignStatuses();
+								//$leadfilter = $api->API_getAllLeadFilters();
+								//$country_codes = $api->API_getCountryCodes();
+								//$list = $api->API_getAllLists();
+								//$ingroup = $api->API_getAllInGroups();
+								//$ivr = $api->API_getAllIVRs();
+								//$voicemails = $api->API_getAllVoiceFiles();
+								//$users = $api->API_getAllUsers();
+								//$carriers = $api->API_getAllCarriers();
+								$checkbox_all = $ui->getCheckAll("campaign");
+								//echo "<pre>";
+								//var_dump($leadrecycling);
+							?>
 							 <div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
 
@@ -340,32 +340,32 @@
 									   </thead>
 									   <tbody>
 										   	<?php
-												if (count($leadrecycling->campaign_id[$i]) > 0){
+												if (count($leadrecycling->campaign_id) > 0){
 													for($i=0;$i < count($campaign->campaign_id);$i++){													
 										   	?>
-												<tr>
-													<td><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit-leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
-													<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit-leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
-													<td><?php echo $campaign->campaign_name[$i];?></td>
-													<td class='hide-on-medium hide-on-low'>
+											<tr>
+												<td><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit-leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
+												<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit-leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
+												<td><?php echo $campaign->campaign_name[$i];?></td>
+												<td class='hide-on-medium hide-on-low'>
 											<?php
-														//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){												
-														for($a=0; $a<count($leadrecycling->data); $a++){
-															if($leadrecycling->data[$a]->campaign_id == $campaign->campaign_id[$i]){
-																$leadrecycles[] = $leadrecycling->data[$a]->status;
-															}
-														}
-														$imploded_leadrecycles = implode(", ", $leadrecycles);
-														unset($leadrecycles);
-														echo "<i>".$imploded_leadrecycles." </i>";
-														//}else{s
-														//	echo "- - - NONE - - -";
-														//}
-														$action_LeadRecycling = $ui->ActionMenuForLeadRecycling($campaign->campaign_id[$i]);
+												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){												
+												for($a=0; $a<count($leadrecycling->campaign_id); $a++){
+													if($leadrecycling->campaign_id[$a] == $campaign->campaign_id[$i]){
+														$leadrecycles[] = $leadrecycling->status[$a];
+													}
+												}
+												$imploded_leadrecycles = implode(", ", $leadrecycles);
+												unset($leadrecycles);
+												echo "<i>".$imploded_leadrecycles." </i>";
+												//}else{s
+												//	echo "- - - NONE - - -";
+												//}
+												$action_LeadRecycling = $ui->ActionMenuForLeadRecycling($campaign->campaign_id[$i]);
 											?>
-													</td>
-													<td style="width:16%;"><?php echo $action_LeadRecycling;?></td>
-												</tr>
+												</td>
+												<td style="width:16%;"><?php echo $action_LeadRecycling;?></td>
+											</tr>
 											<?php
 													}
 												}
@@ -961,29 +961,31 @@
 		                                		<option value="ALL"> - - - ALL CAMPAIGNS - - - </option>
 		                                   <?php
 		                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
-		                                   			echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
+											?>
+		                                   			<option value='<?php echo $campaign->campaign_id[$i];?>'> <?php echo $campaign->campaign_id[$i] . " - " .$campaign->campaign_name[$i];?></option>
+											<?php
 		                                   		}
 		                                   ?>
 		                                </select>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
-		                            <label class="col-sm-3 control-label" for="status"><?php $lh->translateText("status"); ?></label>
+		                            <label class="col-sm-3 control-label" for="disposition_status"><?php $lh->translateText("status"); ?></label>
 		                            <div class="col-sm-9 mb">
-		                                <input type="text" name="status" id="status" class="form-control" placeholder="<?php $lh->translateText("status_mandatory"); ?>" minlength="1" maxlength="6" required>
+		                                <input type="text" name="disposition_status" id="disposition_status" class="form-control" placeholder="<?php $lh->translateText("status_mandatory"); ?>" minlength="1" maxlength="6" required>
 		                            	<label id="status-duplicate-error"></label>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
 		                            <label class="col-sm-3 control-label" for="status_name"><?php $lh->translateText("status_capital"); ?></label>
 		                            <div class="col-sm-9 mb">
-		                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="<?php $lh->translateText("status_name"); ?>" maxlength="30" required>
+		                                <input type="text" name="disposition_status_name" id="disposition_status_name" class="form-control" placeholder="<?php $lh->translateText("status_name"); ?>" maxlength="30" required>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
-		                            <label class="col-sm-3 control-label" for="priority"><?php $lh->translateText("priority"); ?></label>
+		                            <label class="col-sm-3 control-label" for="disposition_priority"><?php $lh->translateText("priority"); ?></label>
 		                            <div class="col-sm-9 mb">
-		                                <select id="priority" name="priority" class="form-control">
+		                                <select id="disposition_priority" name="disposition_priority" class="form-control">
 											<?php
 											for ($i=1; $i<=10; $i++) {
 												echo "<option value='$i'>$i</option>\n";
@@ -996,7 +998,7 @@
 		                            <label class="col-sm-3 control-label" for="color"><?php $lh->translateText("color"); ?></label>
 		                            <div class="col-sm-9 mb">
 										<div id="status-color" data-format="alias" class="input-group colorpicker-component">
-											<input type="text" name="status_color" id="status_color" class="form-control" placeholder="<?php $lh->translateText("color"); ?> (eg. #FFFFFF or white)" value="#B5B5B5" maxlength="20" required>
+											<input type="text" name="disposition_status_color" id="disposition_status_color" class="form-control" placeholder="<?php $lh->translateText("color"); ?> (eg. #FFFFFF or white)" value="#B5B5B5" maxlength="20" required>
 											<span class="input-group-addon"><i></i></span>
 										</div>
 		                            </div>
@@ -1083,10 +1085,10 @@
 		                            <label class="col-sm-3 control-label" for="leadrecycling_campaign"><?php $lh->translateText("campaign"); ?>: </label>
 		                            <div class="col-sm-9 mb">
 		                                <select id="leadrecycling_campaign" name="leadrecycling_campaign" class="form-control select2-1" style="width:100%;">
-		                                		<option value="ALL"> - - - ALL CAMPAIGNS - - - </option>
+		                                		<option value="ALL" selected> - - - ALL CAMPAIGNS - - - </option>
 		                                   <?php
 		                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
-		                                   			echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
+		                                   			echo "<option value='".$campaign->campaign_id[$i]."'>".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
 		                                   		}
 		                                   ?>
 		                                </select>
@@ -1105,11 +1107,11 @@
 													<?php } ?>
 												<?php } ?>
 											</optgroup>
-											<?php if(count($campaignStatuses) > 0){ ?>
+											<?php if(count($disposition) > 0){ ?>
 												<optgroup label="Campaign Statuses">
-												<?php for($i=0;$i<count($campaignStatuses['status']);$i++) { ?>
-														<option value="<?php echo $campaignStatuses['status'][$i];?>">
-															<?php echo $campaignStatuses['status'][$i]." - ".$campaignStatuses['status_name'][$i]?>
+												<?php for($i=0;$i<count($disposition->status);$i++) { ?>
+														<option value="<?php echo $disposition->status[$i];?>">
+															<?php echo $disposition->status[$i]." - ".$disposition->status_name[$i]?>
 														</option>
 												<?php } ?>
 												</optgroup>
@@ -2057,12 +2059,11 @@
 					url: "./php/GetDialStatuses.php",
 					type: 'POST',
 					data: {
-						campaign_id : campaign_id,
-						hotkeys_only: 1
+						campaign_id : campaign_id
 					},
 					dataType: 'json',
 					success: function(response) {
-							// console.log(response);
+							console.log(response);
 							$('.status').html(response);
 							$('.status').select2({
 								theme: 'bootstrap'
@@ -2560,8 +2561,8 @@
 						    	if (currentIndex < newIndex)
 						    	{
 						        // To remove error styles
-						        $(".body:eq(" + newIndex + ") label.error", disposition_form).remove();
-						        $(".body:eq(" + newIndex + ") .error", disposition_form).removeClass("error");
+						        $(".body:eq(" + newIndex + ") label.error", campaign_form).remove();
+						        $(".body:eq(" + newIndex + ") .error", campaign_form).removeClass("error");
 						    	}
 
 				          campaign_form.validate().settings.ignore = ":disabled,:hidden";
@@ -2870,7 +2871,8 @@
 		                $.ajax({
 		                    url: "./php/AddDisposition.php",
 		                    type: 'POST',
-		                    data: {
+		                    data: $("#create_disposition").serialize(),
+		                    /*data: {
 								userid : $('#userid').val(),
 								campaign : $('#disposition_campaign').val(),
 								status : $('#status').val(),
@@ -2888,27 +2890,28 @@
 								priority: $('#priority').val(),
 								color: $('#status_color').val(),
 								type: 'CUSTOM'
-							},
+							},*/
 		                    success: function(data) {
-		                      // console.log(data);
-		                          if(data == 1){
-		                                swal(
-											{
-												title: "<?php $lh->translateText("success"); ?>",
-												text: "<?php $lh->translateText("success_statuses"); ?>!",
-												type: "success"
-											},
-											function(){
-												window.location.href = 'telephonycampaigns.php';
-												$(".preloader").fadeIn();
-											}
-										);
-		                          }
-		                          else{
-		                              sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-		                              $('#finish').val("Submit");
-									  $('#finish').prop("disabled", false);
-		                          }
+								console.log(data);
+								console.log($("#create_disposition").serialize());
+								if(data == 1){
+									swal(
+										{
+											title: "<?php $lh->translateText("success"); ?>",
+											text: "<?php $lh->translateText("success_statuses"); ?>!",
+											type: "success"
+										},
+										function(){
+											window.location.href = 'telephonycampaigns.php';
+											$(".preloader").fadeIn();
+										}
+									);
+								}
+								else{
+									sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+									$('#finish').val("Submit");
+									$('#finish').prop("disabled", false);
+								}
 		                    }
 		                });
 
@@ -3025,33 +3028,28 @@
 		                $.ajax({
 		                    url: "./php/AddLeadRecycling.php",
 		                    type: 'POST',
-		                    data: {
-								leadrecycling_campaign : $('#leadrecycling_campaign').val(),
-								leadrecycling_status : $('#leadrecycling_status').val(),
-								attempt_delay : $('#attempt_delay').val(),
-								active : $('#active').val(),
-								attempt_maximum : $('#attempt_maximum').val()
-							},
+		                    data: $("#create_leadrecycling").serialize(),
 		                    success: function(data) {
-		                      // console.log(data);
-		                          if(data == "success"){
-		                                swal(
-											{
-												title: "<?php $lh->translateText("success"); ?>",
-												text: "<?php $lh->translateText("created_leadrecycling"); ?>!",
-												type: "success"
-											},
-											function(){
-												window.location.href = 'telephonycampaigns.php';
-												$(".preloader").fadeIn();
-											}
-										);
-		                          }
-		                          else{
-		                              sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-		                              $('#finish').val("Submit");
-									  $('#finish').prop("disabled", false);
-		                          }
+							console.log(data);
+							console.log($("#create_leadrecycling").serialize());
+								if(data == 1){
+									swal(
+										{
+											title: "<?php $lh->translateText("success"); ?>",
+											text: "<?php $lh->translateText("created_leadrecycling"); ?>!",
+											type: "success"
+										},
+										function(){
+											window.location.href = 'telephonycampaigns.php';
+											$(".preloader").fadeIn();
+										}
+									);
+								}
+								else{
+									sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+									$('#finish').val("Submit");
+									$('#finish').prop("disabled", false);
+								}
 		                    }
 		                });
 

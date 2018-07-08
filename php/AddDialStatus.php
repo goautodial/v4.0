@@ -2,8 +2,8 @@
 /**
  * @file        AddDialStatus.php
  * @brief       Handles Add Dial Status Request
- * @copyright   Copyright (C) GOautodial Inc.
- * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ * @copyright   Copyright (c) 2018 GOautoial Inc.
+ * @author      Alexander Jim Abenoja
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
