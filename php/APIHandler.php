@@ -540,7 +540,26 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goUserGroups", $postfields);
 	}
 	
-	public function API_actionDNC($postfields){
+	public function API_getCallRecordingList($search_phone, $start_filterdate, $end_filterdate, $agent_filter) {
+		$postfields = array(
+			'goAction' => 'goGetCallRecordingList'
+		);
+		if (isset($search_phone)) { 
+			$postfields .= array(
+				'requestDataPhone' => $search_phone
+			);
+		}
+	    if (isset($start_filterdate)) {
+			$postfields .= array(
+				'start_filterdate' => $start_filterdate,
+				'end_filterdate' => $end_filterdate,
+				'agent_filter' => $agent_filter
+			);	    
+	    }
+		return $this->API_Request("goCallRecordings", $postfields);
+	}	
+	
+	public function API_actionDNC($postfields) {
 		return $this->API_Request("goLists", $postfields);
 	}
 
