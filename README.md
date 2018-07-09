@@ -4,12 +4,12 @@ The GOautodial CE Application (also called "GOautodial app") is the next generat
 
 Rewritten from ground up using the following standards and technologies:
 
-Bootstrap 3
-WebRTC
-HTML5
-PHP7
-JQuery
-REST API
+Bootstrap 3<br>
+WebRTC<br>
+HTML5<br>
+PHP7<br>
+JQuery<br>
+REST API<br>
 
 Major Features:
 
