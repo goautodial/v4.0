@@ -2,8 +2,9 @@
 /**
  * @file        AddDisposition.php
  * @brief       Handles Add Disposition Request
- * @copyright   Copyright (C) GOautodial Inc.
- * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author      Alexander Jim Abenoja
+ * @author		Demian Lizandro A, Biscocho  
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -25,42 +26,58 @@
 
 	if(!isset($_POST['selectable'])){
 		$_POST['selectable'] 			= "N";
+	} else {
+		$_POST['selectable'] 			= "Y";
 	}
 
 	if(!isset($_POST['human_answered'])){
 		$_POST['human_answered'] 		= "N";
+	} else {
+		$_POST['human_answered'] 		= "Y";
 	}
 
 	if(!isset($_POST['sale'])){
 		$_POST['sale'] 					= "N";
+	} else {
+		$_POST['sale'] 					= "Y";
 	}
 
 	if(!isset($_POST['dnc'])){
 		$_POST['dnc'] 					= "N";
+	} else {
+		$_POST['dnc'] 					= "Y";
 	}
 
 	if(!isset($_POST['scheduled_callback'])){
 		$_POST['scheduled_callback'] 	= "N";
+	} else {
+		$_POST['scheduled_callback'] 	= "Y";
 	}
 
 	if(!isset($_POST['customer_contact'])){
 		$_POST['customer_contact'] 		= "N";
+	} else {
+		$_POST['customer_contact'] 		= "Y";
 	}
 
 	if(!isset($_POST['not_interested'])){
 		$_POST['not_interested'] 		= "N";
+	} else {
+		$_POST['not_interested'] 		= "Y";
 	}
 
 	if(!isset($_POST['unworkable'])){
 		$_POST['unworkable'] 			= "N";
+	} else {
+		$_POST['unworkable'] 			= "Y";
 	}
 
 	$postfields 						= array(
 		'goAction' 							=> 'goAddDisposition',
 		'userid' 							=> $_POST['userid'],
-		'campaign_id' 						=> $_POST['campaign'],
-		'status' 							=> $_POST['status'],
-		'status_name' 						=> $_POST['status_name'],
+		'campaign_id' 						=> $_POST['disposition_campaign'],
+		'status' 							=> $_POST['disposition_status'],
+		'status_name' 						=> $_POST['disposition_status_name'],
 		'selectable' 						=> $_POST['selectable'],
 		'human_answered' 					=> $_POST['human_answered'],
 		'sale' 								=> $_POST['sale'],
@@ -68,7 +85,9 @@
 		'scheduled_callback' 				=> $_POST['scheduled_callback'],
 		'customer_contact'					=> $_POST['customer_contact'],
 		'not_interested' 					=> $_POST['not_interested'],
-		'unworkable' 						=> $_POST['unworkable']
+		'unworkable' 						=> $_POST['unworkable'],
+		'color'								=> $_POST['disposition_status_color'],
+		'priority'							=> $_POST['disposition_priority']
 	);
 
 	$output 							= $api->API_addDisposition($postfields);

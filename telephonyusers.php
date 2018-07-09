@@ -830,7 +830,7 @@
 					var userid = $(this).attr('data-id');
 					var user = $(this).attr('data-user');
 					var role = $(this).attr('data-role');
-					console.log(userid);
+					//console.log("userid: " + userid + " user: " + user + " role: " + role);
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="user_id" value="'+userid+'" /><input type="hidden" name="user" value="'+user+'"><input type="hidden" name="role" value="'+role+'"></form>');
 					$('body').append(form);  // This line is not necessary
 					$(form).submit();

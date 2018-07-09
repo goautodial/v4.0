@@ -33,20 +33,25 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
-$userid = NULL;
-if (isset($_POST["user_id"])) {
-	$userid = $_POST["user_id"];
-}
-$current_user = NULL;
-if (isset($_POST["user"])) {
-	$current_user = $_POST["user"];
-}
-if(isset($_POST["role"])){
-	$userrole = $_POST["role"];
-}
+	$userid = NULL;
+	if (isset($_POST["user_id"])) {
+		$userid = $_POST["user_id"];
+	}
+	$current_user = NULL;
+	if (isset($_POST["user"])) {
+		$current_user = $_POST["user"];
+	}
+	if(isset($_POST["role"])){
+		$userrole = $_POST["role"];
+	}
 
-$voicemails = $api->API_getAllVoiceMails();
-$user_groups = $api->API_getAllUserGroups();
+	$output = $api->API_getUserInfo($userid);
+	$voicemails = $api->API_getAllVoiceMails();
+	$user_groups = $api->API_getAllUserGroups();
+	
+	$log_user = $_SESSION["user"];
+	$log_group = $_SESSION["usergroup"];
+	$log_userlevel = $_SESSION["level"];
 ?>
 <html>
     <head>
@@ -93,24 +98,22 @@ $user_groups = $api->API_getAllUserGroups();
                     </ol>
                 </section>
                 <?php
-				if($_SESSION['user'] !== $current_user && $_SESSION['user'] !== "goautodial" && $_SESSION['level'] >= $userrole){
-					echo "<br/><br/>";
-					print $ui->getUnauthotizedAccessMessage();
-				}else{
+					if ($log_user !== $current_user && $log_group !== "ADMIN" && $log_group !== $output->data->user_group){
+						echo "<br/><br/>";
+						print $ui->getUnauthotizedAccessMessage();
+					} else {
                 ?>
                <!-- Main content -->
                 <section class="content">
 					<div class="panel panel-default">
 					<!-- standard custom edition form -->
-					<?php
-						$userobj = NULL;
-						$errormessage = NULL;
-						$output = $api->API_getUserInfo($userid);
-	
-						if(isset($userid)) {
-							if ($output->result=="success") {
-							# Result was OK!
-					?>
+						<?php
+							$userobj = NULL;
+							$errormessage = NULL;	
+							if(isset($userid)) {
+								if ($output->result=="success") {
+								# Result was OK!
+						?>
 							<div class="panel-body">
 							<legend><?php $lh->translateText("modify_user"); ?> : <u><?php echo $output->data->user; ?></u></legend>
 								<form id="modifyuser">
