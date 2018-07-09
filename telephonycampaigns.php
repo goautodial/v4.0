@@ -1211,7 +1211,7 @@
 		
 		$footer_pc_form = '
 			<button type="button" class="btn btn-default" data-dismiss="modal">'.$lh->translationFor("close").'</button>
-			<button type="button" class="btn btn-primary btn-save-pause-code">'.$lh->translationFor("save").'</button>
+			<button type="button" class="btn btn-primary btn-save-pause-code" data-id="'.$id.'">'.$lh->translationFor("save").'</button>
 			<button type="button" class="btn btn-success btn-update-pause-code hide">'.$lh->translationFor("update").'</button>
 		';
 		
@@ -1577,166 +1577,39 @@
 		
 			isNotWanted = (keyCode == 69 || keyCode == 101);
 			return !isNotWanted;
-		}
-
-		function get_pause_codes(campaign_id){
-			$.ajax({
-				url: "./php/GetPauseCodes.php",
-				type: 'POST',
-				data: {
-					campaign_id : campaign_id,
-				},
-				dataType: 'json',
-				success: function(response) {
-						// var values = JSON.parse(response.result);
-						// console.log(response);
-						$('.btn-new-pause-code').attr('data-campaign', campaign_id);
-						$('#modal_view_pause_codes').modal('show');
-						var table = $('#pause_codes_list').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#pause_code_data_container').html(response);
-						$('#pause_codes_list').DataTable({
-							"searching": true,
-							bFilter: true,
-							"aoColumnDefs": [{
-								"bSearchable": false,
-								"aTargets": [ 3 ]
-							},{
-								"bSortable": false,
-								"aTargets": [ 3 ]
-							}]
-						});
-						$("#pause_codes_list").css("width","100%");
-					}
-			});
-		}
-
-		function get_hotkeys(campaign_id){
-			$.ajax({
-				url: "./php/GetHotkeys.php",
-				type: 'POST',
-				data: {
-					campaign_id : campaign_id,
-				},
-				dataType: 'json',
-				success: function(response) {
-						// var values = JSON.parse(response.result);
-						// console.log(response);
-						$('.btn-new-hotkey').attr('data-campaign', campaign_id);
-						$('#modal_view_hotkeys').modal('show');
-						var table = $('#hotkeys_list').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#hotkey_data_container').html(response);
-						$('#hotkeys_list').DataTable({
-							"searching": true,
-							bFilter: true,
-							"aoColumnDefs": [{
-								"bSearchable": false,
-								"aTargets": [ 3 ]
-							},{
-								"bSortable": false,
-								"aTargets": [ 3 ]
-							}]
-						});
-						$("#hotkeys_list").css("width","100%");
-					}
-			});
-		}
-		
-		function get_lists(campaign_id){
-			$.ajax({
-				url: "./php/GetLists.php",
-				type: 'POST',
-				data: {
-					campaign_id : campaign_id,
-				},
-				dataType: 'json',
-				success: function(response) {
-						// var values = JSON.parse(response.result);
-						// console.log(response);
-						// $('.btn-new-lists').attr('data-campaign', campaign_id);
-						$('#modal_view_lists').modal('show');
-						var table = $('#lists_list').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#lists_data_container').html(response.data);
-						$('.count_active').text(response.count_active);
-						$('.count_inactive').text(response.count_inactive);
-						
-						$('.view-leads-on-hopper').attr('data-campaign', campaign_id);
-						$('#lists_list').DataTable({
-							"searching": true,
-							bFilter: true
-						});
-						$("#lists_list").css("width","100%");
-					}
-			});
-
-			$.ajax({
-				url: "./php/GetLeadsOnHopper.php",
-				type: 'POST',
-				data: {
-					campaign_id : campaign_id,
-				},
-				dataType: 'json',
-				success: function(response) {
-						//console.log(response);
-						$('.count_leads').text(response.count);
-					}
-			});
-		}
-
-		function get_leads_on_hopper(campaign_id){
-			$.ajax({
-				url: "./php/GetLeadsOnHopper.php",
-				type: 'POST',
-				data: {
-					campaign_id : campaign_id,
-				},
-				dataType: 'json',
-				success: function(response) {
-						console.log(response);
-						$('#modal_view_lists').modal('hide');
-						$('#modal_view_leads_on_hopper').modal('show');
-						$('body').addClass('modal-open');
-						var table = $('#leads_on_hopper').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#leads_hopper_container').html(response.data);
-						$('#leads_on_hopper').DataTable({
-							"searching": true,
-							bFilter: true
-						});
-						$("#leads_on_hopper").css("width","100%");
-					}
-			});
-		}
-		
-		function dialPrefix(value){
-			if(value == "CUSTOM"){
-				$('#custom_prefix').removeClass('hide');
-				$("#custom_prefix").attr("required", true);
-			}else{
-				$('#custom_prefix').addClass('hide');
-				$("#custom_prefix").attr("required", false);
-			}
-		}
+		}		
 
 		$(document).ready(function(){
 			// load cookies
-				var cook_donotshow = "yes";
+			var cook_donotshow = "yes";
 
 			//$('#modal_form_lists').modal('show');
-				$('.select2').select2({
-					theme: 'bootstrap'
-				});
+			$('.select2').select2({
+				theme: 'bootstrap'
+			});
+			
+			var table = $('#pause_codes_list').DataTable({
+				destroy:true,    
+				stateSave: true,
+				drawCallback: function(settings) {
+					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+					pagination.toggle(this.api().page.info().pages > 1);
+				},
+				"columnDefs": [{
+					"searchable": false,
+					"targets": [ 3 ]
+				},{
+					"sortable": false,
+					"targets": [ 3 ]
+				}]
+			});	
+			
+			
 			
 			// FAB HOVER
-				$(".bottom-menu").on('mouseenter mouseleave', function () {
-				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
-				});
+			$(".bottom-menu").on('mouseenter mouseleave', function () {
+				$(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
+			});
 		
 			var dial_prefix = $('#dial_prefix').val();
 			dialPrefix(dial_prefix);
@@ -2009,8 +1882,25 @@
 
 			$(document).on('click', '.view-pause-codes', function(){
 				var campaign_id = $(this).data('id');
-				// alert(campaign_id);
-				get_pause_codes(campaign_id);
+				console.log(campaign_id);
+				$.ajax({
+					url: "./php/GetPauseCodes.php",
+					type: 'POST',
+					data: {
+						campaign_id : campaign_id
+					},
+					dataType: 'json',
+					success: function(data) {
+						// var values = JSON.parse(response.result);
+						console.log(data);
+						$('.btn-new-pause-code').attr('data-campaign', campaign_id);
+						$('#modal_view_pause_codes').modal('show');
+						//var table = $('#pause_codes_list').DataTable();
+						$('#pause_code_data_container').html(data);
+						$("#pause_codes_list").css("width","100%");
+					}
+				});
+				//}				
 			});
 
 			$(document).on('click', '.view-hotkeys', function(){
@@ -2247,7 +2137,10 @@
 
 			$(document).on('click', '.btn-save-pause-code', function(){
 				var form_data = new FormData($("#form_pause_codes")[0]);
-				var campaign_id = $('.campaign-id').val();
+				//var campaign_id = $('.campaign-id').val();
+				var campaign_id = $(this).data('id');
+				console.log($('.campaign-id').val());
+				console.log(campaign_id);
 				swal({
 					title: "<?php $lh->translateText("pause_code_create_question"); ?>",
 					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -2262,37 +2155,37 @@
 					function(isConfirm){
 						if (isConfirm) {
 							$.ajax({
-											url: "./php/AddPauseCode.php",
-											type: 'POST',
-											data: form_data,
-											// dataType: 'json',
-											cache: false,
-											contentType: false,
-											processData: false,
-											success: function(data) {
-													// console.log(data);
-													if(data == "success"){
-														swal({
-																title: "Success",
-																text: "Pause Code Successfully Created",
-																type: "success"
-															},
-															function(){
-																$('.pause-code').val('');
-																$('.pause-code-name').val('');
-																$('.billable').val('YES').trigger('change');
-																$('#modal_form_pause_codes').modal('hide');
-																get_pause_codes(campaign_id);
-															}
-														);
-													}else{
-															sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
-													}
+								url: "./php/AddPauseCode.php",
+								type: 'POST',
+								data: form_data,
+								// dataType: 'json',
+								cache: false,
+								contentType: false,
+								processData: false,
+								success: function(data) {
+									console.log(data);
+									if (data == 1) {
+										swal({
+											title: "Success",
+											text: "Pause Code Successfully Created",
+											type: "success"
+											},
+											function(){
+												$('.pause-code').val('');
+												$('.pause-code-name').val('');
+												$('.billable').val('YES').trigger('change');
+												$('#modal_form_pause_codes').modal('hide');
+												get_pause_codes(campaign_id);
 											}
-								});
-							} else {
-									swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-							}
+										);
+									} else {
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
+									}
+								}
+							});
+						} else {
+							swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+						}
 					}
 				);
 			});
@@ -3367,6 +3260,151 @@
 				
 		}); // end of document ready
 
+		function get_pause_codes(campaign_id){
+			$.ajax({
+				url: "./php/GetPauseCodes.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						// var values = JSON.parse(response.result);
+						console.log(response);
+						$('.btn-new-pause-code').attr('data-campaign', campaign_id);
+						$('#modal_view_pause_codes').modal('show');
+						var table = $('#pause_codes_list').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('#pause_code_data_container').html(response);
+						$('#pause_codes_list').DataTable({
+							destroy: true,
+							"searching": true,
+							bFilter: true,
+							"aoColumnDefs": [{
+								"bSearchable": false,
+								"aTargets": [ 3 ]
+							},{
+								"bSortable": false,
+								"aTargets": [ 3 ]
+							}]
+						});
+						$("#pause_codes_list").css("width","100%");
+					}
+			});
+		}
+
+		function get_hotkeys(campaign_id){
+			$.ajax({
+				url: "./php/GetHotkeys.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						// var values = JSON.parse(response.result);
+						// console.log(response);
+						$('.btn-new-hotkey').attr('data-campaign', campaign_id);
+						$('#modal_view_hotkeys').modal('show');
+						var table = $('#hotkeys_list').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('#hotkey_data_container').html(response);
+						$('#hotkeys_list').DataTable({
+							"searching": true,
+							bFilter: true,
+							"aoColumnDefs": [{
+								"bSearchable": false,
+								"aTargets": [ 3 ]
+							},{
+								"bSortable": false,
+								"aTargets": [ 3 ]
+							}]
+						});
+						$("#hotkeys_list").css("width","100%");
+					}
+			});
+		}
+		
+		function get_lists(campaign_id){
+			$.ajax({
+				url: "./php/GetLists.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						// var values = JSON.parse(response.result);
+						// console.log(response);
+						// $('.btn-new-lists').attr('data-campaign', campaign_id);
+						$('#modal_view_lists').modal('show');
+						var table = $('#lists_list').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('#lists_data_container').html(response.data);
+						$('.count_active').text(response.count_active);
+						$('.count_inactive').text(response.count_inactive);
+						
+						$('.view-leads-on-hopper').attr('data-campaign', campaign_id);
+						$('#lists_list').DataTable({
+							"searching": true,
+							bFilter: true
+						});
+						$("#lists_list").css("width","100%");
+					}
+			});
+
+			$.ajax({
+				url: "./php/GetLeadsOnHopper.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						//console.log(response);
+						$('.count_leads').text(response.count);
+					}
+			});
+		}
+
+		function get_leads_on_hopper(campaign_id){
+			$.ajax({
+				url: "./php/GetLeadsOnHopper.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						console.log(response);
+						$('#modal_view_lists').modal('hide');
+						$('#modal_view_leads_on_hopper').modal('show');
+						$('body').addClass('modal-open');
+						var table = $('#leads_on_hopper').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('#leads_hopper_container').html(response.data);
+						$('#leads_on_hopper').DataTable({
+							"searching": true,
+							bFilter: true
+						});
+						$("#leads_on_hopper").css("width","100%");
+					}
+			});
+		}
+		
+		function dialPrefix(value){
+			if(value == "CUSTOM"){
+				$('#custom_prefix').removeClass('hide');
+				$("#custom_prefix").attr("required", true);
+			}else{
+				$('#custom_prefix').addClass('hide');
+				$("#custom_prefix").attr("required", false);
+			}
+		}		
 
 		function clear_form(){
 

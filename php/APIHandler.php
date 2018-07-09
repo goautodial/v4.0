@@ -216,7 +216,16 @@ if(isset($_SESSION["user"])){
 
 		return $return;
 	}
+	
+	public function API_getAllPauseCodes($campaign_id) {
+		$postfields = array(
+			'goAction' => 'goGetAllPauseCodes',
+			'campaign_id' => $campaign_id
+		);	
 
+		return $this->API_Request("goPauseCodes", $postfields);
+	}
+	
 	public function API_getAllInGroups() {
 		$postfields = array(
 			'goAction' => 'goGetAllIngroup'

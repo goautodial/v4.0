@@ -20,37 +20,22 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
-/*
-    $url = gourl."/goPauseCodes/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goAddPauseCode"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["pauseCampID"] = $_POST['campaign_id'];
-	$postfields["pause_code"] = $_POST['pause_code'];
-	$postfields["pause_code_name"] = $_POST['pause_code_name'];
-	$postfields["billable"] = $_POST['billable'];
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
-*/
-	$postfields = array(
-		'goAction' => 'goAddPauseCode',
-		'pauseCampID' => $_POST['campaign_id'],
-		'pause_code' => $_POST['pause_code'],
-		'pause_code_name' => $_POST['pause_code_name'],
-		'billable' => $_POST['billable']
+
+	require_once('APIHandler.php');
+	$api 							= \creamy\APIHandler::getInstance();
+
+	$postfields 					= array(
+		'goAction'						=> 'goAddPauseCode',
+		'pauseCampID' 					=> $_POST['campaign_id'],
+		'pause_code' 					=> $_POST['pause_code'],
+		'pause_code_name' 				=> $_POST['pause_code_name'],
+		'billable' 						=> $_POST['billable']
 	);
 	
-	$output = $api->API_addPauseCode($postfields);
+	$output 						= $api->API_addPauseCode($postfields);
 	
-	if ($output->result=="success") {			
-		$status = "success";
-	} else {
-		$status = $output->result;
-	}
+	if ($output->result=="success") { $status = 1; } 
+		else { $status = $output->result; }
 
-	echo $status;
+	echo json_encode($status);
 ?>
