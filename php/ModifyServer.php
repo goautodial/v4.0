@@ -22,7 +22,7 @@
 */
 
 	require_once('APIHandler.php');
-	$api = \creamy\APIHandler::getInstance();;
+	$api = \creamy\APIHandler::getInstance();
 
 	// collect new user data.       
 	$modifyid = $_POST["modifyid"];
