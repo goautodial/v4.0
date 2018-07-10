@@ -2034,8 +2034,6 @@
 			$(document).on('click', '.btn-delete-pc', function(){
 				var campaign_id = $(this).data('camp-id');
 				var pause_code = $(this).data('code');
-				var log_user = '<?=$_SESSION['user']?>';
-				var log_group = '<?=$_SESSION['usergroup']?>';
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>",
 					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -2050,35 +2048,33 @@
 					function(isConfirm){
 						if (isConfirm) {
 							$.ajax({
-											url: "./php/DeletePauseCode.php",
-											type: 'POST',
-											data: {
-												campaign_id: campaign_id,
-												pause_code: pause_code,
-												log_user: log_user,
-												log_group: log_group
-											},
-											// dataType: 'json',
-											success: function(data) {
-													// console.log(data);
-													if(data == "success"){
-														swal({
-																title: "Success",
-																text: "Pause Code Successfully Deleted",
-																type: "success"
-															},
-															function(){
-																get_pause_codes(campaign_id);
-															}
-														);
-													}else{
-															sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
-													}
-											}
-								});
-							} else {
-									swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-							}
+								url: "./php/DeletePauseCode.php",
+								type: 'POST',
+								data: {
+									campaign_id: campaign_id,
+									pause_code: pause_code
+								},
+								// dataType: 'json',
+								success: function(data) {
+									console.log(data);
+									if (data == 1) {
+										swal({
+											title: "Success",
+											text: "Pause Code Successfully Deleted",
+											type: "success"
+										},
+										function(){
+											get_pause_codes(campaign_id);
+										}
+										);
+									} else {
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
+									}
+								}
+							});
+						} else {
+							swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+						}
 					}
 				);
 			});
@@ -2137,9 +2133,7 @@
 
 			$(document).on('click', '.btn-save-pause-code', function(){
 				var form_data = new FormData($("#form_pause_codes")[0]);
-				//var campaign_id = $('.campaign-id').val();
-				var campaign_id = $(this).data('id');
-				console.log($('.campaign-id').val());
+				var campaign_id = $('.campaign-id').val();
 				console.log(campaign_id);
 				swal({
 					title: "<?php $lh->translateText("pause_code_create_question"); ?>",
@@ -2316,6 +2310,7 @@
 			$(document).on('click', '.btn-update-pause-code', function(){
 				var form_data = new FormData($("#form_pause_codes")[0]);
 				var campaign_id = $('.campaign-id').val();
+				console.log(campaign_id);
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>",
 					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -2330,37 +2325,37 @@
 					function(isConfirm){
 						if (isConfirm) {
 							$.ajax({
-											url: "./php/ModifyPauseCode.php",
-											type: 'POST',
-											data: form_data,
-											// dataType: 'json',
-											cache: false,
-											contentType: false,
-											processData: false,
-											success: function(data) {
-													// console.log(data);
-													if(data == "success"){
-														swal({
-																title: "Success",
-																text: "<?php $lh->translateText("pause_success"); ?>",
-																type: "success"
-															},
-															function(){
-																$('.pause-code').val('');
-																$('.pause-code-name').val('');
-																$('.billable').val('YES').trigger('change');
-																$('#modal_form_pause_codes').modal('hide');
-																get_pause_codes(campaign_id);
-															}
-														);
-													}else{
-															sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
-													}
-											}
-								});
-							} else {
-									swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-							}
+								url: "./php/ModifyPauseCode.php",
+								type: 'POST',
+								data: form_data,
+								// dataType: 'json',
+								cache: false,
+								contentType: false,
+								processData: false,
+								success: function(data) {
+									console.log(data);
+									if (data == 1) {
+										swal({
+											title: "Success",
+											text: "<?php $lh->translateText("pause_success"); ?>",
+											type: "success"
+										},
+										function(){
+											$('.pause-code').val('');
+											$('.pause-code-name').val('');
+											$('.billable').val('YES').trigger('change');
+											$('#modal_form_pause_codes').modal('hide');
+											get_pause_codes(campaign_id);
+										}
+										);
+									}else{
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
+									}
+								}
+							});
+						} else {
+							swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+						}
 					}
 				);
 			});

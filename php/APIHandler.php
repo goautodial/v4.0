@@ -226,6 +226,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goPauseCodes", $postfields);
 	}
 	
+	public function API_modifyPauseCode($postfields) {
+		return $this->API_Request("goPauseCodes", $postfields);
+	}	
+	
 	public function API_getAllInGroups() {
 		$postfields = array(
 			'goAction' => 'goGetAllIngroup'
