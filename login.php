@@ -87,6 +87,7 @@
                 $_SESSION["ha1"] = $result["ha1"];
                 $_SESSION["realm"] = $result["realm"];
                 $_SESSION["bcrypt"] = $result["bcrypt"];
+				$_SESSION["use_webrtc"] = $result["use_webrtc"];
 				
 				if (!empty($result["avatar"])) {
 					$_SESSION['avatar'] = $result["avatar"];

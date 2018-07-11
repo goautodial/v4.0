@@ -342,6 +342,7 @@ class DbHandler {
 					$arr["role"] = $user_role;
 					$arr["avatar"] = $userobj->avatar;
 					$arr["user_group"] = $userobj->user_group;
+					$arr["use_webrtc"] = $userobj->use_webrtc;
 	                
 	                return $arr;
 	            } else {
@@ -452,6 +453,7 @@ class DbHandler {
 					$arr["role"] = $user_role;
 					$arr["avatar"] = $userobj->avatar;
 					$arr["user_group"] = $userobj->user_group;
+					$arr["use_webrtc"] = $userobj->use_webrtc;
 	                
 	                return $arr;
 	            } else {
